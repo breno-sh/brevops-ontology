@@ -24,18 +24,15 @@ $py -I -m bo.contracts.validate docs_facts "$BO_DATA/DOCS-GCP/docs_facts.jsonl" 
 $py -I -m bo.contracts.validate C15_result results/DOCS-GCP/coverage.json | tail -1
 $py -I -m bo.contracts.validate C17_summary results/DOCS-GCP/summary.json | tail -1
 
-step "type_subcategory.jsonl: um registro por tipo do schema fixado, molde C03 (ver CONTRACT_CHANGE.txt)"
+step "type_subcategory.jsonl: C03 3.1.0 type_fact, um registro por tipo do schema fixado"
+$py -I -m bo.contracts.validate type_subcategory "$BO_DATA/DOCS-GCP/type_subcategory.jsonl" | tail -1
 $py -I -B -c '
 import json, os, sys
 from bo.docs_gcp import sources as S
 recs = [json.loads(x) for x in open(os.environ["BO_DATA"] + "/DOCS-GCP/type_subcategory.jsonl", encoding="utf-8")]
-types = S.load_types()
 ids = [r["type_id"] for r in recs]
-bad = [r["type_id"] for r in recs if (r["status"] == "stated") != ("subcategory" in r and "source" in r)
-       or (r["status"] == "unknown") != ("unknown_reason" in r)]
-ok = len(ids) == len(set(ids)) == len(types) and set(ids) == {"google:" + t for t in types} and not bad
-n_st = sum(r["status"] == "stated" for r in recs)
-print(f"{len(recs)} tipos; {n_st} com subcategoria; {len(bad)} malformado(s)")
+ok = len(ids) == len(set(ids)) and set(ids) == {"google:" + t for t in S.load_types()}
+print(f"{len(recs)} tipos (= schema fixado: {ok})")
 sys.exit(0 if ok else 1)
 '
 

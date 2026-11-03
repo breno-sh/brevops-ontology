@@ -6,7 +6,8 @@
 
 Saídas ($BO_DATA/DOCS-GCP/):
   docs_facts.jsonl       C03 3.0.0: um fato por (átomo, tipo de fato, item de origem); unknown explícito
-  type_subcategory.jsonl um registro por tipo de recurso do schema: subcategoria do front matter (com linha), página
+  type_subcategory.jsonl C03 3.1.0 type_fact: um registro por tipo de recurso do schema, com os blocos subcategory
+                         (front matter, com linha) e import (formatos aceitos, métodos, identidade, frase-chave)
   unresolved.jsonl       itens da documentação que não viram átomo (bloco, fora do schema, contexto ambíguo)
   redactions.jsonl       frases mascaradas pela regra de privacidade (só id do fato, campo e regra; nunca o valor)
 Saída ($BO_REPO/results/DOCS-GCP/): coverage.json (C15 result; censo dos átomos do schema fixado).
@@ -194,22 +195,6 @@ def build(out_dir: Path, res_dir: Path, at: str) -> dict:
                             if f.kind == "default":
                                 rec["as_of"] = commit_date
                         add(rec)
-            # ID de importação: formato do atributo id (tipo-nível, ancorado no átomo id)
-            if pg.imports.formats:
-                if "id" in idx.atoms:
-                    atom_id = f"{S.PROVIDER}:{t}:id"
-                    sent = pg.imports.sentence if len(pg.imports.sentence or "") >= 5 else \
-                        "accepted import formats: " + ", ".join(x for _, x in pg.imports.formats)
-                    add({"fact_id": fid(atom_id, "format", pg.imports.line, "P-IMPORT"), "atom_id": atom_id,
-                         "provider_version": version, "fact_kind": "format", "status": "stated",
-                         "value": {"aspect": "import_id", "formats": [x for _, x in pg.imports.formats],
-                                   "format_lines": [ln for ln, _ in pg.imports.formats]},
-                         "source": src(rel, pg.imports.line, _clip(sent, MAX_SENTENCE)),
-                         "extraction_method": "parser", "evidence_level": "published"})
-                    stats["pattern_hits"]["P-IMPORT"] = stats["pattern_hits"].get("P-IMPORT", 0) + 1
-                else:
-                    unresolved.append({"type": t, "file": rel, "line": pg.imports.line, "name": "id",
-                                       "class": "IMPORT_WITHOUT_ID_ATOM"})
         for bi, b in enumerate(pg.bullets):
             cls = per_bullet_any[bi]
             if "ATOM" in cls:
@@ -260,23 +245,8 @@ def build(out_dir: Path, res_dir: Path, at: str) -> dict:
                               "status": "unknown", "unknown_reason": "not_documented",
                               "extraction_method": "parser", "evidence_level": "derived"})
 
-    # subcategoria por tipo (front matter da página)
-    subcats = []
-    for t in sorted(types):
-        pages_t = type_page.get(t, [])
-        rec = {"type_id": f"{S.PROVIDER}:{t}", "provider_version": version, "extraction_method": "parser",
-               "evidence_level": "published"}
-        if not pages_t:
-            rec.update(status="unknown", unknown_reason="not_documented")
-        else:
-            rel, pg = pages_t[0]
-            rec["doc_pages"] = [r for r, _ in pages_t]
-            if pg.subcategory:
-                rec.update(status="stated", subcategory=pg.subcategory,
-                           source=src(rel, pg.subcategory_line, f'subcategory: "{pg.subcategory}"'))
-            else:
-                rec.update(status="unknown", unknown_reason="not_documented")
-        subcats.append(rec)
+    # fatos do TIPO (C03 3.1.0, type_subcategory): subcategoria e ID de importação, em blocos
+    subcats = [type_fact(t, type_page.get(t, []), version, src) for t in sorted(types)]
 
     facts.sort(key=lambda f: f["fact_id"])
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -295,6 +265,62 @@ def build(out_dir: Path, res_dir: Path, at: str) -> dict:
     cov = COV.compute(out_dir, types, at)
     (res_dir / "coverage.json").write_text(json.dumps(cov, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
     return {"facts": len(facts), "types": len(types), "stats": stats, "coverage": cov}
+
+
+PLACEHOLDER = re.compile(r"\{\{([A-Za-z0-9_]+)\}\}")
+
+
+def import_block(rel: str, pg, src) -> dict:
+    """Bloco import (C03 3.1.0) da seção Import da página."""
+    imp = pg.imports
+    base = {"extraction_method": "parser", "evidence_level": "published"}
+    if imp.formats:
+        fmts = [f for _, f in imp.formats]
+        ln0, f0 = imp.formats[0]
+        blk = {**base, "status": "stated", "supported": True, "value": fmts,
+               "source": src(rel, ln0, _clip(pg.lines[ln0 - 1].strip(), MAX_SENTENCE)),
+               "statements": [{"line": ln, "sentence": _clip(pg.lines[ln - 1].strip(), MAX_SENTENCE)}
+                              for ln, _ in imp.formats if len(pg.lines[ln - 1].strip()) >= 5],
+               "placeholders": sorted({p for f in fmts for p in PLACEHOLDER.findall(f)})}
+        if not blk["statements"]:
+            del blk["statements"]
+        if imp.line and len(imp.sentence or "") >= 5:
+            blk["key_sentence"] = src(rel, imp.line, _clip(imp.sentence, MAX_SENTENCE))
+        if imp.methods:
+            blk["methods"] = sorted(imp.methods)
+        if imp.identity["required"] or imp.identity["optional"]:
+            blk["identity"] = {"required": list(imp.identity["required"]),
+                               "optional": list(imp.identity["optional"])}
+        return blk
+    if imp.unsupported:
+        ln, sent = imp.unsupported
+        return {**base, "status": "unknown", "unknown_reason": "not_supported", "supported": False,
+                "source": src(rel, ln, _clip(sent, MAX_SENTENCE))}
+    return {**base, "status": "unknown", "unknown_reason": "not_documented"}
+
+
+def type_fact(t: str, pages_t: list, version: str, src) -> dict:
+    rec = {"type_id": f"{S.PROVIDER}:{t}", "provider": S.PROVIDER, "provider_version": version, "resource_type": t,
+           "kind": "resource", "in_schema": True}
+    undoc = {"status": "unknown", "unknown_reason": "not_documented", "extraction_method": "parser",
+             "evidence_level": "derived"}
+    if not pages_t:
+        rec.update(doc_file=None, subcategory=dict(undoc), **{"import": dict(undoc)})
+        return rec
+    rel, pg = pages_t[0]
+    rec["doc_file"] = rel
+    rec["doc_pages"] = [r for r, _ in pages_t]
+    heads = [ln for ty, ln in pg.types if ty == t]
+    if heads:
+        rec["title"] = {"text": t, "line": heads[0]}
+    if pg.subcategory:
+        rec["subcategory"] = {"status": "stated", "value": pg.subcategory, "extraction_method": "parser",
+                              "evidence_level": "published",
+                              "source": src(rel, pg.subcategory_line, f'subcategory: "{pg.subcategory}"')}
+    else:
+        rec["subcategory"] = dict(undoc)
+    rec["import"] = import_block(rel, pg, src)
+    return rec
 
 
 def core_write(path: Path, recs) -> None:

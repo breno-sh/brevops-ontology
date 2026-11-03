@@ -3,7 +3,7 @@
  "contract": "C15",
  "contract_version": "3.0.0",
  "module": "DOCS-GCP",
- "generated_at": "2026-11-03T07:23:44-03:00",
+ "generated_at": "2026-11-03T17:43:38-03:00",
  "metrics": [
   {
    "metric_id": "M-DOCS-GCP-DESC",
@@ -101,7 +101,7 @@
   "n_atoms": 32659,
   "n_atoms_configurable": 27438,
   "n_types": 1392,
-  "n_facts": 44177,
+  "n_facts": 42822,
   "by_kind": {
    "description": {
     "atoms": 30472,
@@ -134,10 +134,10 @@
     "frac_configurable": 0.016947
    },
    "format": {
-    "atoms": 1957,
-    "frac_all": 0.059922,
-    "atoms_configurable": 1620,
-    "frac_configurable": 0.059042
+    "atoms": 1505,
+    "frac_all": 0.046082,
+    "atoms_configurable": 1169,
+    "frac_configurable": 0.042605
    },
    "forces_replacement": {
     "atoms": 51,
@@ -202,6 +202,9 @@
   },
   "types_with_page": 1392,
   "types_with_subcategory": 1392,
-  "subcategories": 165
+  "subcategories": 165,
+  "types_with_import_id": 1355,
+  "types_import_not_supported": 31,
+  "types_with_import_identity": 831
  }
 }

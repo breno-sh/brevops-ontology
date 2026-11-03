@@ -92,8 +92,11 @@ def compute(out_dir: Path, types: dict, at: str) -> dict:
     if sub.exists():
         recs = [json.loads(x) for x in sub.read_text(encoding="utf-8").splitlines()]
         data["types_with_page"] = sum("doc_pages" in r for r in recs)
-        data["types_with_subcategory"] = sum(r["status"] == "stated" for r in recs)
-        data["subcategories"] = len({r["subcategory"] for r in recs if r["status"] == "stated"})
+        data["types_with_subcategory"] = sum(r["subcategory"]["status"] == "stated" for r in recs)
+        data["subcategories"] = len({r["subcategory"]["value"] for r in recs if r["subcategory"]["status"] == "stated"})
+        data["types_with_import_id"] = sum(r["import"]["status"] == "stated" for r in recs)
+        data["types_import_not_supported"] = sum(r["import"].get("unknown_reason") == "not_supported" for r in recs)
+        data["types_with_import_identity"] = sum("identity" in r["import"] for r in recs)
     return {"schema": "bo.result/1", "contract": "C15", "contract_version": "3.0.0", "module": S.MODULE,
             "generated_at": at, "metrics": metrics,
             "notes": "censo dos átomos do schema fixado (sem amostragem; intervalo degenerado, método exact); "

@@ -12,7 +12,9 @@ Regras do analisador (declaradas, as mesmas para toda página):
     ou linha em branco seguida de linha sem recuo que não é item. Item com recuo maior dentro do corpo é
     subitem (filho do item de cima) e também fica no texto do pai.
   * links '(#nested_x)' no corpo de um item ligam o item ao contexto de âncora nested_x.
-  * import: itens com '{{' ou '/' no texto entre crases (formatos aceitos) e a frase que os introduz.
+  * import: itens com '{{' ou '/' no texto entre crases (formatos aceitos) e a frase que os introduz; nos blocos de
+    código da seção, 'identity = {' (atributos '<-required value->'/'<-optional value->'), 'id = "' e
+    'terraform import' dão os métodos; 'does not support import' marca importação não suportada.
 """
 
 from __future__ import annotations
@@ -68,6 +70,11 @@ class ImportInfo:
     line: int | None = None
     sentence: str | None = None
     formats: list = field(default_factory=list)     # [(nº da linha, formato)]
+    section_line: int | None = None                 # título '## Import'
+    methods: list = field(default_factory=list)     # import_block_identity | import_block_id | terraform_import_cli
+    identity: dict = field(default_factory=lambda: {"required": [], "optional": []})
+    identity_line: int | None = None
+    unsupported: tuple | None = None                # (linha, frase) 'does not support import'
 
 
 @dataclass
@@ -105,14 +112,22 @@ def parse_text(text: str, rel: str) -> Page:
     pending_anchor = None
     in_code = False
     import_intro = None
+    in_identity = False
     while i < n:
         raw = lines[i]
         ln = i + 1
         if FENCE.match(raw):
             in_code = not in_code
+            in_identity = False
             i += 1
             continue
         if in_code:
+            if section == "import":
+                _import_code(pg.imports, raw, ln, in_identity)
+                if IDENTITY_OPEN.match(raw):
+                    in_identity = True
+                elif in_identity and raw.strip().startswith("}"):
+                    in_identity = False
             i += 1
             continue
         m = TYPE_HEAD.match(raw)
@@ -121,6 +136,8 @@ def parse_text(text: str, rel: str) -> Page:
         m = SECTION.match(raw)
         if m:
             section = section_kind(m.group(1))
+            if section == "import" and pg.imports.section_line is None:
+                pg.imports.section_line = ln
             ctx = Context(len(pg.contexts), section, ln)
             pg.contexts.append(ctx)
             pending_anchor = None
@@ -136,6 +153,8 @@ def parse_text(text: str, rel: str) -> Page:
             elif "imported using" in raw or "can be imported" in raw:
                 if import_intro is None:
                     import_intro = (ln, raw.strip())
+            elif NO_IMPORT.search(raw) and pg.imports.unsupported is None:
+                pg.imports.unsupported = (ln, raw.strip())
             i += 1
             continue
         if section not in ("args", "attrs", "timeouts"):
@@ -162,6 +181,34 @@ def parse_text(text: str, rel: str) -> Page:
             continue
         i += 1
     return pg
+
+
+IDENTITY_OPEN = re.compile(r"^\s*identity\s*=\s*\{")
+IDENTITY_ATTR = re.compile(r'^\s*([A-Za-z0-9_]+)\s*=\s*"<-(required|optional) value->"')
+NO_IMPORT = re.compile(r"\b(?:does\s+not|doesn't)\s+support\s+import|\bcannot\s+be\s+imported\b|"
+                       r"\bimport\s+is\s+not\s+supported\b", re.I)
+
+
+def _add_method(imp: ImportInfo, m: str) -> None:
+    if m not in imp.methods:
+        imp.methods.append(m)
+
+
+def _import_code(imp: ImportInfo, raw: str, ln: int, in_identity: bool) -> None:
+    """Linha de bloco de código na seção Import: métodos de importação e atributos de identidade."""
+    if IDENTITY_OPEN.match(raw):
+        _add_method(imp, "import_block_identity")
+        imp.identity_line = imp.identity_line or ln
+        return
+    if in_identity:
+        m = IDENTITY_ATTR.match(raw)
+        if m and m.group(1) not in imp.identity[m.group(2)]:
+            imp.identity[m.group(2)].append(m.group(1))
+        return
+    if re.match(r'^\s*id\s*=\s*"', raw):
+        _add_method(imp, "import_block_id")
+    elif re.match(r"^\s*\$?\s*terraform\s+import\s", raw):
+        _add_method(imp, "terraform_import_cli")
 
 
 def _is_stop(line: str) -> bool:

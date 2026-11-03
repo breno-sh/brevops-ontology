@@ -1,5 +1,9 @@
 CONTRACT_CHANGE — DOCS-GCP — 2026-11-03T07:22-03:00 (America/Recife)
 
+RESOLVIDO em 2026-11-03T17:46-03:00: o C03 3.1.0 (emenda 2, 513113d) criou o tipo type_subcategory (type_fact, em
+blocos). O DOCS-GCP converteu o type_subcategory.jsonl para ele e moveu o ID de importação para o bloco import;
+nenhum fato format com aspect import_id resta no docs_facts.jsonl. Itens 1 e 2 abaixo: atendidos. Item 3: sem mudança.
+
 Proposta NÃO bloqueante (mesmo tratamento da do SCHEMALIB). Nenhum gate do catálogo depende do que falta: o
 docs_facts.jsonl confere no validador único (C03 3.0.0, 0 erro). O que falta é lugar, no C03, para dois fatos que o
 objetivo do módulo pede e que são do TIPO, não do atributo. Dono do que muda: CONTRACTS. O DOCS-GCP não editou

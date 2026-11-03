@@ -197,8 +197,8 @@ def test_fatos_conhecidos(facts):
     assert [f["value"] for f in _get(facts, "google_compute_instance:can_ip_forward", "default")] == [False]
     assert {tuple(f["value"]["values"]) for f in _get(facts, "google_compute_instance:desired_status",
                                                        "allowed_values")} == {("RUNNING", "SUSPENDED", "TERMINATED")}
-    imp = [f for f in _get(facts, "google_compute_instance:id", "format") if f["value"]["aspect"] == "import_id"]
-    assert imp and imp[0]["value"]["formats"][0] == "projects/{{project}}/zones/{{zone}}/instances/{{name}}"
+    assert not [f for f in facts if f["fact_kind"] == "format" and f["status"] == "stated"
+                and f["value"].get("aspect") == "import_id"]   # importação mora no type_subcategory (C03 3.1.0)
     assert [f["value"] for f in _get(facts, "google_compute_subnetwork:purpose", "default")] == ["PRIVATE"]
     assert all(f["as_of"] == "2026-10-26" for f in facts if f["fact_kind"] == "default" and f["status"] == "stated")
 
@@ -228,9 +228,27 @@ def test_unknown_sem_valor_e_ids_unicos(facts):
 def test_subcategoria(facts):
     recs = [json.loads(x) for x in (S.out_dir() / "type_subcategory.jsonl").read_text(encoding="utf-8").splitlines()]
     by = {r["type_id"]: r for r in recs}
-    assert by["google:google_compute_instance"]["subcategory"] == "Compute Engine"
-    assert by["google:google_compute_instance"]["source"]["line"] == 16
+    ci = by["google:google_compute_instance"]
+    assert ci["subcategory"]["value"] == "Compute Engine" and ci["subcategory"]["source"]["line"] == 16
+    assert ci["title"] == {"text": "google_compute_instance", "line": 21}
+    imp = ci["import"]
+    assert imp["status"] == "stated" and imp["value"] == [
+        "projects/{{project}}/zones/{{zone}}/instances/{{name}}", "{{project}}/{{zone}}/{{name}}", "{{name}}"]
+    assert imp["source"]["line"] == 831 and imp["key_sentence"]["line"] == 829
+    assert imp["methods"] == ["import_block_id", "terraform_import_cli"]
+    net = by["google:google_compute_network"]["import"]
+    assert "import_block_identity" in net["methods"] and net["identity"] == {"required": ["name"],
+                                                                            "optional": ["project"]}
     assert len(recs) == len(S.load_types())
+
+
+def test_import_sintetico(page):
+    assert page.imports.section_line is not None and page.imports.methods == []
+    pg = MD.parse_text(PAGE.replace("* `{{name}}`\n", "* `{{name}}`\n\n```\n$ terraform import google_x.a {{name}}\n```\n"),
+                       "x")
+    assert pg.imports.methods == ["terraform_import_cli"]
+    pg = MD.parse_text(PAGE.split("## Import")[0] + "## Import\n\nThis resource does not support import.\n", "x")
+    assert pg.imports.unsupported == (pg.imports.section_line + 2, "This resource does not support import.")
 
 
 @pytest.mark.parametrize("text", [

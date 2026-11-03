@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "DOCS-GCP",
- "generated_at": "2026-11-03T07:21:58-03:00",
+ "generated_at": "2026-11-03T17:45:33-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/DOCS-GCP.txt",
@@ -19,7 +19,8 @@
    "tag": "v8.9.0",
    "commit": "ffc5d7f2c4af44558f1b6a7c66142fac3a7abd80",
    "paginas": "r/",
-   "amostra_github": "19/19"
+   "amostra_github": "19/19",
+   "contrato_c03": "3.1.0"
   },
   "inputs": [
    {
@@ -40,12 +41,10 @@
    {
     "path": "$BO_DATA/downloads/docs-google/website/docs",
     "kind": "dir",
-    "sha256": "5ab1461786fe6fd69927531f0048249e1022c55df68aa0fb506d6b06d60a0ec2",
-    "sha256_before_plan_regen_stubpath": "5ab1461786fe6fd69927531f0048249e1022c55df68aa0fb506d6b06d60a0ec2",
-    "sha256_before_coord_fix_0303": "d77b032c02292b9321eb2e1a1a89d89317131efac9fa8aed8e3909c1988adac0"
+    "sha256": "5ab1461786fe6fd69927531f0048249e1022c55df68aa0fb506d6b06d60a0ec2"
    }
   ],
-  "recorded_at": "2026-11-03T07:21:58-03:00"
+  "recorded_at": "2026-11-03T17:45:33-03:00"
  },
  "sources": [
   {
@@ -59,5 +58,5 @@
    "transformation": "átomos C01 via bo.schema.core; sha256 conferido com pins.json"
   }
  ],
- "notes": "Fatos por atributo (C03) da documentação do provider google v8.9.0; cobertura relatada sem meta em coverage.json (C15); proposta não bloqueante em CONTRACT_CHANGE.txt (subcategoria e ID de importação sem lugar próprio no C03)."
+ "notes": "Fatos por atributo (C03 docs_facts) e fatos do tipo (C03 3.1.0 type_subcategory: subcategoria e ID de importação) da documentação do provider google v8.9.0; cobertura relatada sem meta em coverage.json (C15)."
 }
