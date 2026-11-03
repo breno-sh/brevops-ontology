@@ -37,7 +37,8 @@
    {
     "path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/PLANO_BREVOPS_ONTOLOGY.html",
     "kind": "file",
-    "sha256": "12cae53d3db728eabadc2ce7af689b8c62062c48d26ce715ea03a96d4978edb2"
+    "sha256": "28f77288b7dffeb4aadfaefd0bbecbb0c26f2b911073f9309c909b475499e732",
+    "sha256_before_coord_amendment": "12cae53d3db728eabadc2ce7af689b8c62062c48d26ce715ea03a96d4978edb2"
    },
    {
     "path": "$BO_DATA/downloads/skos/skos.rdf",
@@ -64,5 +65,5 @@
    "transformation": "linhas da composição RCC5 usadas para conferir a enumeração exaustiva"
   }
  ],
- "notes": "Teoria das correspondências (C09/C10): implementação de referência, tabela de composição calculada, contraexemplos por regra com controle e mutação. Achados: sssom-py descarta slots de extensão; subject_type/object_type colidem com slots padrão do SSSOM."
+ "notes": "Teoria das correspondências (C09/C10): implementação de referência, tabela de composição calculada, contraexemplos por regra com controle e mutação. Achados: sssom-py descarta slots de extensão; subject_type/object_type colidem com slots padrão do SSSOM. | 03/11 COORD: plano regenerado só para trocar os gates bo.gold.resolve/levels/bridge pelos pacotes bo.gold_<fonte> (pacote bo/gold sem dono, achado do GOLD-CARTO); semântica do SEMANTICS inalterada; hash do plano atualizado."
 }
