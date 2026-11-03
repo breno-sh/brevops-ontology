@@ -32,6 +32,7 @@ UNIT_WORDS = {
     "tb": "TB", "tbs": "TB", "terabyte": "TB", "terabytes": "TB",
     "pb": "PB", "pbs": "PB",
     "kib": "KiB", "mib": "MiB", "gib": "GiB", "tib": "TiB",
+    "kibs": "KiB", "mibs": "MiB", "gibs": "GiB", "tibs": "TiB",
     "kbps": "Kbps", "mbps": "Mbps", "gbps": "Gbps",
     "percent": "%", "percentage": "%", "percentages": "%",
     "ocpu": "OCPU", "ocpus": "OCPU", "ecpu": "ECPU", "ecpus": "ECPU",
@@ -42,7 +43,7 @@ UNIT_PATTERNS = [
     re.compile(rf"\b[Ii]n[ \t]+(?:units[ \t]+of[ \t]+)?(?:the[ \t]+)?(?P<u>{_UW})\b", re.I),
     re.compile(rf"\((?:in[ \t]+)?(?P<u>{_UW})\)", re.I),
     re.compile(rf"\b[Uu]nits?(?:[ \t]+is|[ \t]+are|:)[ \t]*`?(?P<u>{_UW})\b", re.I),
-    re.compile(r"\b[Nn]umber[ \t]+of[ \t]+(?P<u>seconds|minutes|hours|days|milliseconds|bytes)\b"),
+    re.compile(r"\b[Nn]umber[ \t]+of[ \t]+(?P<u>seconds|minutes|hours|days|milliseconds|bytes|OCPUs|ECPUs)\b"),
 ]
 # sufixo do nome do atributo: size_in_gbs, timeout_in_seconds, ...
 NAME_UNIT = re.compile(r"_in_(?P<u>[a-z]+)$")
@@ -74,6 +75,9 @@ ENUM_TOKEN = re.compile(r"^[A-Za-z0-9_.:/+\-]+$")
 LIST_BULLET = re.compile(r"^[ \t]*[*-][ \t]+(?:`(?P<bt>[^`]+)`|'(?P<sq>[^']+)'|\"(?P<dq>[^\"]+)\"|(?P<w>[A-Z0-9_][A-Z0-9_.\-]*)\b)")
 
 # ------------------------------------------------------------------ faixa
+# a doc de identity_domains lista as propriedades SCIM++ do campo: '* idcsMinValue: 1' e '* idcsMaxValue: 20'
+SCIM_MIN = re.compile(rf"\bidcsMinValue:[ \t]*(?P<a>{NUM})(?!\d|[:.]\d)")
+SCIM_MAX = re.compile(rf"\bidcsMaxValue:[ \t]*(?P<b>{NUM})(?!\d|[:.]\d)")
 RANGE_PATTERNS = [
     ("both", re.compile(rf"\bbetween[ \t]+(?P<a>{NUM})[ \t]+(?:and|to)[ \t]+(?P<b>{NUM})(?!\d|[:.]\d)")),
     ("both", re.compile(rf"\b(?:range|ranges|ranging|can[ \t]+be|must[ \t]+be|values?[ \t]+(?:is|are))[ \t]+(?:is[ \t]+)?"
@@ -82,6 +86,8 @@ RANGE_PATTERNS = [
     ("min", re.compile(rf"\b[Mm]inimum(?:[ \t]+(?:value|length|size|number))?(?:[ \t]+of[ \t]+`?[A-Za-z_][A-Za-z0-9_]*`?(?=[ \t]+is))?(?:[ \t]+is|[ \t]+of|:)?[ \t]+(?P<a>{NUM})(?!\d|[:.]\d)")),
     ("max", re.compile(rf"\b[Mm]aximum(?:[ \t]+(?:value|length|size|number))?(?:[ \t]+of[ \t]+`?[A-Za-z_][A-Za-z0-9_]*`?(?=[ \t]+is))?(?:[ \t]+is|[ \t]+of|:)?[ \t]+(?P<b>{NUM})(?!\d|[:.]\d)")),
     ("min", re.compile(rf"\b(?:at[ \t]+least|no[ \t]+less[ \t]+than|greater[ \t]+than[ \t]+or[ \t]+equal[ \t]+to)[ \t]+(?P<a>{NUM})(?!\d|[:.]\d)")),
+    ("min", SCIM_MIN),
+    ("max", SCIM_MAX),
     ("max", re.compile(rf"\b(?:at[ \t]+most|no[ \t]+more[ \t]+than|less[ \t]+than[ \t]+or[ \t]+equal[ \t]+to|cannot[ \t]+exceed|"
                        rf"must[ \t]+not[ \t]+exceed|up[ \t]+to[ \t]+a[ \t]+maximum[ \t]+of)[ \t]+(?P<b>{NUM})(?!\d|[:.]\d)")),
 ]
@@ -292,6 +298,27 @@ ENUM_LINE = re.compile(r"^[ \t]*[*-][ \t]+(?:`(?P<b>[A-Z][A-Z0-9_]*)`(?:[ \t]*[-
                        r"|(?P<v>[A-Z][A-Z0-9_]*)(?:[ \t]+[-–][ \t]|[ \t]*$))")
 
 
+CAN_BE = re.compile(r"\b(?:[Cc]an|[Mm]ust)[ \t]+be[ \t]+(?:either[ \t]+)?(?=[`'\"A-Z])")
+CAPS_TOKEN = re.compile(r"^[A-Z][A-Z0-9_]*$")
+
+
+def rule_enum_can_be(item, tf_type=None) -> list:
+    """'Can be SENDER or RECEIVER.': gatilho genérico, então só vale com 2+ valores todos em CAIXA ALTA ou
+    entre aspas/crases; sem isso, nada (não é marcado ambíguo, porque 'can be' quase sempre é prosa)."""
+    out = []
+    for n, text in item.lines():
+        for m in CAN_BE.finditer(text):
+            vals = _enum_inline(text[m.end():])
+            if not vals or len(vals) < 2 or len(set(vals)) != len(vals):
+                continue
+            seg = text[m.end():]
+            quoted = bool(re.match(r"[`'\"]", seg))
+            if quoted or all(CAPS_TOKEN.match(v) for v in vals):
+                out.append(fact("allowed_values", n, sentence_at(text, m.start()),
+                                value=[typed(v, tf_type) for v in vals]))
+    return out
+
+
 def rule_enum_list(item) -> list:
     """Lista de valores em CAIXA ALTA logo abaixo do item ('* `NATIVE` - ...'): o conjunto de valores do
     atributo. Fonte: a linha do item, que apresenta a lista; método parser (estrutura da página)."""
@@ -438,6 +465,8 @@ def extract_item(item, atom: dict, page, sibling_names: set) -> list:
     out += rule_enum(item, atom.get("tf_type"))
     if not any(f["fact_kind"] == "allowed_values" and f["status"] == "stated" for f in out):
         out += rule_enum_list(item)
+    if not any(f["fact_kind"] == "allowed_values" and f["status"] == "stated" for f in out):
+        out += rule_enum_can_be(item, atom.get("tf_type"))
     out += rule_range(item)
     out += rule_unit(item, atom)
     out += rule_format(item)

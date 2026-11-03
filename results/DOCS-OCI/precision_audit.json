@@ -7,7 +7,7 @@
   "model_id": "claude-opus-5-5",
   "note": "julgamento do agente, não ouro humano; serve para dimensionar erro, não como gabarito"
  },
- "population": "$BO_DATA/DOCS-OCI/docs_facts.jsonl (status=stated), versão final das regras",
+ "population": "$BO_DATA/DOCS-OCI/docs_facts.jsonl (status=stated), versão final das regras = estrato da rodada 2 (regras v2) + estrato da rodada 3 (fatos acrescentados no polimento)",
  "sampling": {
   "method": "random.Random(20261104).sample, 10 por fact_kind, população ordenada por fact_id",
   "kinds": [
@@ -402,5 +402,160 @@
   ],
   "note": "rodada feita antes das correções acima; fact_ids não preservados (listagem truncada). As regras mudaram depois dela, por isso a rodada 2 foi sorteada de novo, com outra semente, sobre os dados finais."
  },
- "not_audited": "forces_replacement (a doc só permite derivar; a prova é o código do provider ou o plano), description (texto copiado), required_when/behavior (marcadores lidos pelo parser), example"
+ "not_audited": "forces_replacement (a doc só permite derivar; a prova é o código do provider ou o plano), description (texto copiado), required_when/behavior (marcadores lidos pelo parser), example",
+ "round_3_added_facts": {
+  "seed": 20261105,
+  "what": "fatos stated que entraram na passada de polimento (regras novas: \"can/must be X or Y\" só com CAIXA ALTA ou aspas, idcsMinValue/idcsMaxValue do SCIM++, GiBs/TiBs, \"number of OCPUs\"); amostra de 10 por fact_kind desse estrato",
+  "stratum_sizes": {
+   "allowed_values": 20,
+   "range": 188,
+   "unit": 77
+  },
+  "by_kind": {
+   "allowed_values": {
+    "n": 10,
+    "correct": 7,
+    "partial": 3,
+    "wrong": 0
+   },
+   "range": {
+    "n": 10,
+    "correct": 10,
+    "partial": 0,
+    "wrong": 0
+   },
+   "unit": {
+    "n": 10,
+    "correct": 9,
+    "partial": 0,
+    "wrong": 1
+   }
+  },
+  "facts": [
+   {
+    "fact_id": "DF-oci:oci_dns_zone:zone_type:allowed_values:2",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_opsi_chargeback_plan:plan_type:allowed_values:2",
+    "verdict": "partial",
+    "reason": "lista vale só para Exadata (a sentença condiciona)"
+   },
+   {
+    "fact_id": "DF-oci:oci_dns_zone:zone_type:allowed_values:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_golden_gate_deployment:backup_schedule.frequency_backup_scheduled:allowed_values:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_file_storage_filesystem_snapshot_policy:schedules.lock_duration_details.lock_mode:allowed_values:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_file_storage_filesystem_snapshot_policy:schedules.lock_duration_details.lock_mode:allowed_values:2",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_objectstorage_object_lifecycle_policy:rules.target:allowed_values:2",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_opsi_chargeback_plan:plan_type:allowed_values:1",
+    "verdict": "partial",
+    "reason": "lista vale só para Exadata (a sentença condiciona)"
+   },
+   {
+    "fact_id": "DF-oci:oci_dns_action_create_zone_from_zone_file:zone_type:allowed_values:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_gdp_gdp_pipeline:bucket_details.bucket_type:allowed_values:2",
+    "verdict": "partial",
+    "reason": "lista vale só para pipelines SENDER (a sentença condiciona)"
+   },
+   {
+    "fact_id": "DF-oci:oci_identity_domains_authentication_factor_setting:totp_settings.sms_passcode_length:range:3",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_identity_domains_password_policy:priority:range:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_identity_domains_authentication_factor_setting:endpoint_restrictions.max_enrolled_devices:range:3",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_identity_domains_authentication_factor_setting:client_app_settings.key_pair_length:range:2",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_identity_domains_authentication_factor_setting:client_app_settings.initial_lockout_period_in_secs:range:2",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_identity_domains_account_recovery_setting:max_incorrect_attempts:range:3",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_identity_domains_authentication_factor_setting:endpoint_restrictions.max_enrolled_devices:range:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_identity_domains_authentication_factor_setting:client_app_settings.policy_update_freq_in_days:range:3",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_identity_domains_authentication_factor_setting:endpoint_restrictions.max_trusted_endpoints:range:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_identity_domains_app:urnietfparamsscimschemasoracleidcsextensionenterprise_app_app.deny_authz_decision_ttl:range:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_dif_stack:ggcs.ocpu:unit:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_bds_bds_instance:kafka_broker_node.shape_config.ocpus:unit:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_dif_stack:dataflow.executor_shape_config.ocpus:unit:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_opensearch_opensearch_cluster:search_node_host_ocpu_count:unit:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_core_instance_configuration:instance_details.launch_details.shape_config.vcpus:unit:1",
+    "verdict": "wrong",
+    "reason": "o atributo é vcpus; a sentença fala de OCPUs como alternativa"
+   },
+   {
+    "fact_id": "DF-oci:oci_opsi_operations_insights_warehouse:cpu_used:unit:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_core_instance:shape_config.ocpus:unit:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_datascience_pipeline:step_details.step_infrastructure_configuration_details.shape_config_details.ocpus_parameterized:unit:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_cluster_placement_groups_cluster_placement_group:capabilities.items.additional_details.ocpus:unit:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_golden_gate_deployment:cpu_core_count:unit:1",
+    "verdict": "correct"
+   }
+  ]
+ }
 }

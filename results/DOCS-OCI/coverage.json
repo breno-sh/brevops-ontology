@@ -5,11 +5,11 @@
   "atoms": 27172,
   "atoms_configurable": 19986,
   "atoms_with": {
-   "allowed_values": 263,
+   "allowed_values": 275,
    "description": 25972,
-   "unit": 710
+   "unit": 782
   },
-  "atoms_with_unit_published_only": 570,
+  "atoms_with_unit_published_only": 644,
   "d_pages_without_schema_type": 36,
   "doc_items": {
    "arguments": 20052,
@@ -32,10 +32,10 @@
   },
   "doc_optional_but_schema_required": 26,
   "doc_required_but_schema_not_required": 70,
-  "facts": 63555,
+  "facts": 63840,
   "facts_by_kind": {
    "allowed_values": {
-    "stated:published": 400,
+    "stated:published": 420,
     "unknown:ambiguous": 165
    },
    "behavior": {
@@ -76,15 +76,15 @@
     "stated:published": 7077
    },
    "range": {
-    "stated:published": 190
+    "stated:published": 378
    },
    "required_when": {
     "stated:published": 1257
    },
    "unit": {
-    "stated:derived": 140,
-    "stated:published": 570,
-    "unknown:ambiguous": 2
+    "stated:derived": 138,
+    "stated:published": 644,
+    "unknown:ambiguous": 7
    }
   },
   "pages": {
@@ -92,15 +92,15 @@
    "r": 1014
   },
   "pct_atoms_with": {
-   "allowed_values": 0.97,
+   "allowed_values": 1.01,
    "description": 95.58,
-   "unit": 2.61
+   "unit": 2.88
   },
-  "pct_atoms_with_unit_published_only": 2.1,
+  "pct_atoms_with_unit_published_only": 2.37,
   "pct_configurable_atoms_with": {
-   "allowed_values": 1.27,
+   "allowed_values": 1.31,
    "description": 95.07,
-   "unit": 2.61
+   "unit": 2.96
   },
   "provider": "oci",
   "provider_version": "9.11.0",
@@ -148,7 +148,7 @@
    "resource": 1007
   }
  },
- "generated_at": "2026-11-03T07:28:54-03:00",
+ "generated_at": "2026-11-03T07:33:49-03:00",
  "metrics": [
   {
    "axis": "representability",
@@ -199,10 +199,10 @@
    "metric_id": "M-DOCS-OCI-ENUM",
    "name": "átomos do oci com valores válidos (enum) na documentação",
    "operational_coverage": {
-    "est": 0.009679,
-    "lower": 0.009679,
+    "est": 0.010121,
+    "lower": 0.010121,
     "n": 27172,
-    "upper": 0.009679
+    "upper": 0.010121
    },
    "quantifier": "observed_fraction",
    "reading": "field",
@@ -229,10 +229,10 @@
    "metric_id": "M-DOCS-OCI-UNIT",
    "name": "átomos do oci com unidade na documentação (publicada ou derivada do nome)",
    "operational_coverage": {
-    "est": 0.02613,
-    "lower": 0.02613,
+    "est": 0.02878,
+    "lower": 0.02878,
     "n": 27172,
-    "upper": 0.02613
+    "upper": 0.02878
    },
    "quantifier": "observed_fraction",
    "reading": "field",

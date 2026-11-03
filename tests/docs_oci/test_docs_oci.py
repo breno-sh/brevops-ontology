@@ -300,3 +300,20 @@ def test_redact_twelve_digit_number_value():
     c = Counter()
     assert build.redact_value({"max": int("9" * 12), "min": 0}, c) == {"max": "[redigido]", "min": 0}
     assert c["doze_digitos"] == 1
+
+
+def test_polish_rules():
+    it = parse.Item("arguments", ("pipeline_type",), 1, "* `pipeline_type` - (Optional) Type. Can be SENDER or RECEIVER.",
+                    ["Optional"], "Type. Can be SENDER or RECEIVER.")
+    assert kinds(extract.rule_enum_can_be(it), "allowed_values")[0]["value"] == ["SENDER", "RECEIVER"]
+    it = parse.Item("arguments", ("x",), 1, "* `x` - (Optional) It can be changed later or kept.", ["Optional"],
+                    "It can be changed later or kept.")
+    assert extract.rule_enum_can_be(it) == []
+    it = parse.Item("arguments", ("max_devices",), 1, "* `max_devices` - Maximum devices", [], "Maximum devices",
+                    [(2, "\t* idcsMaxValue: 20"), (3, "\t* idcsMinValue: 1")])
+    rs = kinds(extract.rule_range(it), "range")
+    assert {json.dumps(r["value"], sort_keys=True) for r in rs} == {'{"applies_to": "value", "max": 20}',
+                                                                   '{"applies_to": "value", "min": 1}'}
+    it = parse.Item("arguments", ("size",), 1, "* `size` - The size of the volume, in GiBs.", [],
+                    "The size of the volume, in GiBs.")
+    assert kinds(extract.rule_unit(it, {}), "unit")[0]["value"] == "GiB"

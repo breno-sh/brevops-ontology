@@ -35,7 +35,7 @@ step "auditoria de precisão: todo fact_id auditado existe nos dados atuais"
 $py -I -B -c '
 import json, os, sys
 a = json.load(open("results/DOCS-OCI/precision_audit.json", encoding="utf-8"))
-ids = {f["fact_id"] for f in a["round_2_final"]["facts"]}
+ids = {f["fact_id"] for r in ("round_2_final", "round_3_added_facts") for f in a[r]["facts"]}
 seen = set()
 with open(os.environ["BO_DATA"] + "/DOCS-OCI/docs_facts.jsonl", encoding="utf-8") as f:
     for line in f:
