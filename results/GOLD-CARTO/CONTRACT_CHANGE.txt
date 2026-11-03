@@ -35,5 +35,6 @@ B) Trocar, no modulos.json, o gate de cada GOLD-<X> por "python -I -m bo.gold_<x
 
 ESTADO DOS GATES DESTE MÓDULO ENQUANTO ISSO
 G2, G3 e G4 ficam ABANDON com este motivo em ../execucao/gates/GOLD-CARTO.md (não afrouxados).
-Sem todos os gates verdes, o merge em bo/base NÃO foi feito (G10 também ABANDON): a branch bo/gold-carto
-fica pronta para ff-only depois que o despachante (A) ou a troca do gate (B) entrar.
+Todos os outros gates (G1, G5–G9 e gates/GOLD-CARTO.sh) passaram depois do rebase, sob a trava merge-base, e
+a branch bo/gold-carto entrou em bo/base por fast-forward (2026-11-03, ~01:43-03:00). Quando o despachante (A)
+ou a troca do gate (B) entrar, G2–G4 passam sem mudar nada neste módulo.
