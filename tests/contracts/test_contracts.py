@@ -250,3 +250,31 @@ def test_history_versions_do_pins_se_presente():
             assert validate.validate("versions", base / "pins.json").ok
             return
     pytest.skip("history_versions.json do PINS ainda não publicado")
+
+
+# ----------------------------------------------------------------------------------- emenda 2 (2026-11-03)
+def test_stub_c26_um_plano_por_provedor():
+    """Gate de render dos HARNESS-*: exatamente UM plano por target_provider, cada um com o graph_ir irmão."""
+    lp = [json.loads(l) for l in (ROOT / "contracts/stubs/C26/lowering_plan.jsonl").read_text().splitlines()]
+    gi = {json.loads(l)["graph_id"] for l in (ROOT / "contracts/stubs/C26/graph_ir.jsonl").read_text().splitlines()}
+    provs = sorted(p["target_provider"] for p in lp)
+    assert provs == sorted(["aws", "google", "azurerm", "oci"])
+    assert all(p["graph_id"] in gi for p in lp)
+    assert validate.validate("lowering_plan", ROOT / "contracts/stubs/C26/lowering_plan.jsonl").ok
+
+
+@pytest.mark.parametrize("alias,path,kind", [
+    ("C03", "$BO_DATA/DOCS-OCI/type_subcategory.jsonl", "C03:type_subcategory"),
+    ("docs_facts", "$BO_DATA/DOCS-OCI/type_subcategory.jsonl", "C03:type_subcategory"),
+    ("docs_facts", "$BO_DATA/DOCS-OCI/docs_facts.jsonl", "C03:docs_facts"),
+])
+def test_c03_tipo_por_arquivo(alias, path, kind):
+    fk = catalog.resolve(alias, Path(path))
+    assert f"{fk.cid}:{fk.kind}" == kind
+
+
+def test_emenda2_versoes():
+    pub = catalog.schemas()
+    for cid, v in {"C00": "3.0.1", "C03": "3.1.0", "C12": "3.1.0", "C15": "3.1.0", "C19": "3.1.0", "C26": "1.1.0"}.items():
+        assert pub[cid]["x-bo-contract"]["version"] == v
+        assert "3.0.0" in amendments.chain(cid) or "1.0.0" in amendments.chain(cid)

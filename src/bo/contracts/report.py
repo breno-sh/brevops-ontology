@@ -69,6 +69,17 @@ FINDINGS = [
     "TSV), DEPSAMPLE (cases_aws.jsonl) e STATS-SUPP (numbers_supp.json). Depois da emenda: 122/122.",
     "paper/numbers_supp.json (STATS-SUPP) não tem contrato no artifact_catalog, mas o gate o valida como C18: "
     "o catálogo do coordenador deveria marcá-lo C18.",
+    "Emenda 2: o stub C26 tem um plano por provedor, copiado das fixtures dos HARNESS-* (adopted/C26_plans_stub.json). "
+    "Renderizado em 2026-11-03: aws (2 recursos), google (1), azurerm (4) saem RENDERED com fmt -check 0. O oci sai "
+    "UNKNOWN_SYMBOLIC_INPUT sem --bindings (compartment_id e tags vêm do contexto privado do run, por desenho do "
+    "HARNESS-OCI) e RENDERED com --bindings deploy/fixtures/oci/_templates/examples/bindings.json: o gate do "
+    "HARNESS-OCI precisa passar --bindings (decisão do coordenador/HARNESS-OCI; nenhum plano OCI real renderiza sem).",
+    "Emenda 2: type_subcategory.jsonl (C03 3.1.0) num só formato, superconjunto dos blocos subcategory/import. O do "
+    "DOCS-OCI passa sem mudança; o do DOCS-AZURE precisa renomear import_id para import; o do DOCS-GCP é plano "
+    "(subcategoria no topo) e precisa converter para o bloco subcategory; o do DOCS-AWS tem blocos import sem "
+    "extraction_method/evidence_level e alguns interpreted sem model_id.",
+    "C01 2.1.0: a biblioteca que grava os átomos (src/bo/schema/, FLAGS em core.py) é posse do SCHEMALIB; ela ainda "
+    "não grava write_only (campo opcional, os átomos 2.0.0 continuam válidos). Não mexi no código dele.",
     "SCHEMALIB: nested_type (protocolo 6) como UM átomo com tf_type cty cabe no C01 sem mudança (tf_type aceita "
     "lista; stub C01 tem um); o write_only entra como campo opcional (átomos já gravados continuam válidos).",
 ]
