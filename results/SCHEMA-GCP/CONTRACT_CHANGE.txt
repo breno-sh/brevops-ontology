@@ -1,0 +1,49 @@
+CONTRACT_CHANGE — SCHEMA-GCP
+gravado em: 2026-11-03T07:29:00-03:00 (America/Recife)
+tipo: dois gates do catálogo que este módulo não consegue passar sem mexer em código de outro dono, e uma
+lacuna da biblioteca. Nenhum contrato C01/C02/C17 está errado; as saídas conferem no validador único.
+
+1. G3 "python -I -m bo.schema.crosscheck --provider google" (dono do comando: SCHEMALIB)
+   Fato, google 8.9.0 (re-medido): 1392 tipos no schema, 1188 páginas 'resources' no índice do Registry,
+   954 iguais, 438 tipos explicados pela família IAM, 0 tipo sem página, 89 páginas sem tipo -> FAIL (sai 1).
+   Na 8.2.0 o SCHEMALIB tinha medido 1358 tipos, 1155 páginas, 84 páginas sem tipo: o padrão se mantém.
+   Causa medida (bo.schema_gcp.beta_check, $BO_DATA/SCHEMA-GCP/crosscheck_beta_google-8.9.0.json): as 89 páginas
+   são TODAS tipos do google-beta 8.9.0 (schema do binário assinado do google-beta, mesma versão, extraído pela
+   biblioteca no mesmo sandbox; 1512 tipos, e os 1392 do google estão todos nele). A doc do google e do
+   google-beta é uma só e o índice do hashicorp/google lista as páginas beta. Prova por página: 89/89 no
+   google-beta; 87/89 com o aviso "in beta, and should be used with the terraform-provider-google-beta
+   provider"; as 2 sem aviso (google_saas_runtime_unit, google_saas_runtime_unit_operation) têm exemplos só com
+   provider = google-beta. Controle: 4 páginas com o aviso beta descrevem tipos que EXISTEM no google GA
+   (google_healthcare_{dataset,dicom_store,fhir_store,hl7_v2_store}_iam): o aviso da doc não serve sozinho de
+   critério; o schema do google-beta serve.
+   O crosscheck NÃO foi afrouxado e o veredito continua FAIL. G3 fica ABANDON com este motivo.
+   Mudança proposta ao SCHEMALIB (opcional): causa mecânica nova "so_beta" em bo.schema.crosscheck, só para
+   --provider google, que aceite uma página sem tipo quando o tipo (ou x_iam_member/_binding/_policy, para
+   página x_iam) está no schema do google-beta da MESMA versão (--beta-types ARQ, types.jsonl ou schema.json.gz
+   do google-beta); a causa aparece listada no relatório como as outras. Não aceitar pelo aviso da doc.
+
+2. G7 "python -I tools/privacy_lint.py --strict results/SCHEMA-GCP $BO_DATA/SCHEMA-GCP" (dono: REPO)
+   Reprova por dois achados que não são dado da empresa:
+   a) nao_varrido: plugin_cache/.../terraform-provider-google_v8.9.0_x5 tem 129.263.778 bytes (> 50 MiB de
+      TEXT_LIMIT). O plugin_cache é saída exigida do módulo (binário assinado para o terraform validate offline
+      dos pilotos). Medido à parte: se o limite não existisse, as sequências imprimíveis do binário dariam 71
+      achados léxicos (57 e-mail, 11 doze_digitos, 2 arn, 1 secret_private_key), todos do código do fornecedor.
+   b) secret_assignment em atoms.jsonl, linha do átomo google:google_ces_app_version:snapshot: o tf_type cty
+      é um objeto com um campo chamado private_key cujo tipo cty é string (nome de campo do schema e tipo,
+      nenhum valor). Qualquer serialização JSON do C01 casa com a regex.
+   G7 fica ABANDON com este motivo; G4 (make gate, que roda G3 e G7) fica ABANDON por consequência.
+   Mudança proposta ao REPO (uma das duas para a): (a1) o privacy_lint aceita, em vez de varrer, um arquivo
+   cujo sha256 está num lock/manifesto de pacote assinado conferido (aqui: h1 do plugin_cache = h1 do
+   terraform.lock.hcl derivado do SHA256SUMS fixado no pins.json); (a2) o catálogo tira plugin_cache/ do
+   caminho varrido do G7 dos SCHEMA-*. Para b: a regra secret_assignment não casa quando o valor é um tipo
+   primitivo do cty ("string", "number", "bool", "dynamic").
+   O mesmo vale para SCHEMA-AWS, SCHEMA-AZURE e SCHEMA-OCI (todos guardam o binário em plugin_cache/).
+
+3. Lacuna da biblioteca (dono: SCHEMALIB), sem bloqueio
+   bo.schema.core ainda não grava o campo opcional write_only do C01 2.1.0. Este módulo o acrescenta em
+   bo.schema_gcp.atoms ("write_only": true nos 31 átomos marcados no schema; os outros 32.628 átomos e o
+   types.jsonl são byte a byte os do bo.schema.build, conferido no gate). Quando a biblioteca gravar o campo,
+   bo.schema_gcp.atoms.annotate_write_only pode sair sem mudar os bytes.
+
+Estado: todos os outros gates passam (ver ../execucao/gates/SCHEMA-GCP.md); o merge em bo/base segue o
+precedente do GOLD-CARTO (gates impossíveis ABANDON com motivo, demais verdes, sob a trava merge-base).

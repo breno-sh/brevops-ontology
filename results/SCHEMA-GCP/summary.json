@@ -1,0 +1,94 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "SCHEMA-GCP",
+ "generated_at": "2026-11-03T07:29:27-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/SCHEMA-GCP.txt",
+  "brief_sha256": "db2acbdd71fa1550540b231c095187d1b4350bb32f30c8077d1cb3c7da80bc07",
+  "params": {
+   "onda": "6",
+   "fase": "F1",
+   "modo": "unlazy",
+   "provider": "google",
+   "versao": "8.9.0",
+   "terraform": "1.15.8",
+   "os_arch": "darwin_arm64",
+   "sandbox": "env -i, HOME temporario, sandbox-exec sem credenciais; schema e validate sem rede IP",
+   "write_only": "acrescentado sobre bo.schema.core (C01 2.1.0), so quando true"
+  },
+  "inputs": [
+   {
+    "path": "$BO_REPO/universe/pins.json",
+    "kind": "file",
+    "sha256": "594a4e878ac489b3ed97cdd6344b9945a8fd3a5d22ae4d6f4bfebd264decfe3d"
+   },
+   {
+    "path": "$BO_DATA/downloads/prefetch/google/8.9.0/terraform-provider-google_8.9.0_SHA256SUMS",
+    "kind": "file",
+    "sha256": "259099fb04f7cfda6fae304bfb7c1f7a840bfd09f74ea7855b3d458ac40254ba"
+   },
+   {
+    "path": "$BO_DATA/downloads/prefetch/google/8.9.0/terraform.lock.hcl",
+    "kind": "file",
+    "sha256": "bd40c25a46a4813dfedf3ee170a93b5fd64cebd12dcb4aa107bca276240b9298"
+   },
+   {
+    "path": "$BO_DATA/downloads/prefetch/google/8.9.0/verification.json",
+    "kind": "file",
+    "sha256": "2c44d6c64b4f8aef0b97152c8557405393acf614e3f87cef9a32786e0c7907bd"
+   },
+   {
+    "path": "$BO_DATA/downloads/prefetch/google/8.9.0/docs/r",
+    "kind": "dir",
+    "sha256": "1c2d0864dbdce1304b60b6c4c4856f980f3a5b62edb3b4ed8573611a50d4f83a"
+   },
+   {
+    "path": "$BO_DATA/downloads/tfschema/google-8.9.0/schema.json.gz",
+    "kind": "file",
+    "sha256": "203424c12203c994b9f05ca7c74061e677a6a787f0f8f553b9cf172cc2fbd346"
+   },
+   {
+    "path": "$BO_DATA/downloads/registry-docs/google-8.9.0/index.json",
+    "kind": "file",
+    "sha256": "bcc13eddf5b065578f37ce0e2befaee28b8375c6dc7e35293f419e659c07a988"
+   },
+   {
+    "path": "$BO_DATA/downloads/google-beta-8.9.0/terraform-provider-google-beta_8.9.0_SHA256SUMS",
+    "kind": "file",
+    "sha256": "fac4972853f6d66f25710d761ff05719c5dec899979ebfe8cb3c176a1e93c7aa"
+   },
+   {
+    "path": "$BO_DATA/downloads/tfschema/google-beta-8.9.0/schema.json.gz",
+    "kind": "file",
+    "sha256": "8861f2b39be897ab6291556ae9ee4639a7049081e01dccb95f3b9e6fb0d4a901"
+   }
+  ],
+  "recorded_at": "2026-11-03T07:29:27-03:00"
+ },
+ "sources": [
+  {
+   "uri": "https://registry.terraform.io/providers/hashicorp/google/8.9.0",
+   "license": "MPL-2.0",
+   "transformation": "pacote assinado; terraform providers schema -json; atomos C01 e tipos C02 pela bo.schema; plugin_cache para validate offline"
+  },
+  {
+   "uri": "https://registry.terraform.io/v1/providers/hashicorp/google/8.9.0",
+   "license": "MPL-2.0",
+   "transformation": "indice de docs (campo docs) para o bo.schema.crosscheck"
+  },
+  {
+   "uri": "https://registry.terraform.io/providers/hashicorp/google-beta/8.9.0",
+   "license": "MPL-2.0",
+   "transformation": "pacote assinado; so a lista de tipos, para medir a causa das paginas sem tipo"
+  },
+  {
+   "uri": "https://github.com/hashicorp/terraform-provider-google/tree/v8.9.0/website/docs",
+   "license": "MPL-2.0",
+   "transformation": "pre-busca; aviso beta e exemplos por pagina sem tipo"
+  }
+ ],
+ "notes": "G3 (crosscheck) e G7 (privacy_lint) ABANDON com motivo em results/SCHEMA-GCP/CONTRACT_CHANGE.txt; G4 por consequencia"
+}
