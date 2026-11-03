@@ -1,0 +1,52 @@
+{
+ "declared_boilerplate": [
+  {
+   "path": "terraform.required_version",
+   "value": "= 1.15.8",
+   "why": "Terraform fixado (PINS)"
+  },
+  {
+   "path": "terraform.required_providers.azurerm.source",
+   "value": "hashicorp/azurerm",
+   "why": "origem do provider"
+  },
+  {
+   "path": "terraform.required_providers.azurerm.version",
+   "value": "= 5.12.0",
+   "why": "provider fixado (PINS)"
+  },
+  {
+   "path": "provider.azurerm.features",
+   "value": {},
+   "why": "bloco features{} obrigatório no azurerm"
+  }
+ ],
+ "files": {
+  "schema_index.jsonl": "718cc571236c0de31b40c0d0c11bd4d1ea10f86671f5243fe80e114f8d42dfb7",
+  "terraform.lock.hcl": "a69ca2429c0b3df1ddec38336dbe0a60bae70e550c96555ec34a9365b2c51511",
+  "versions.tf": "fdffb7515ef58e8329b6326919d5cbd942db4c0a61f3ac7b406b6ac56b881822"
+ },
+ "module": "HARNESS-AZURE",
+ "provider": "azurerm",
+ "provider_source": "registry.terraform.io/hashicorp/azurerm",
+ "provider_version": "5.12.0",
+ "schema": "bo.harness_azurerm.templates/1",
+ "sources": [
+  {
+   "path": "$BO_DATA/downloads/prefetch/azurerm/5.12.0/providers-schema.json",
+   "sha256": "d6c6ad1c8347a81c4cdf36abd7d07990046adbc0695691f4ca6d54284bb81cdb",
+   "what": "terraform providers schema -json (azurerm fixado)"
+  },
+  {
+   "path": "$BO_REPO/universe/pins.json",
+   "sha256": "594a4e878ac489b3ed97cdd6344b9945a8fd3a5d22ae4d6f4bfebd264decfe3d",
+   "what": "versões fixadas (PINS)"
+  },
+  {
+   "path": "$BO_DATA/downloads/prefetch/azurerm/5.12.0/terraform.lock.hcl",
+   "sha256": "a69ca2429c0b3df1ddec38336dbe0a60bae70e550c96555ec34a9365b2c51511",
+   "what": "lock do provider (prefetch, GPG ok)"
+  }
+ ],
+ "terraform_version": "1.15.8"
+}

@@ -1,0 +1,50 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "HARNESS-AZURE",
+ "generated_at": "2026-11-03T07:26:29-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/HARNESS-AZURE.txt",
+  "brief_sha256": "de600394c4fa62b54c344d39d463b6d7fb9063de0ad126fe8fe35807c874baee",
+  "params": {
+   "effort": "maximo",
+   "modo": "unlazy",
+   "onda": "6",
+   "fase": "F1",
+   "terraform": "1.15.8",
+   "azurerm": "5.12.0",
+   "python-hcl2": "8.1.4",
+   "jsonschema": "4.26.0",
+   "pytest": "9.1.1",
+   "nuvem": "nenhuma"
+  },
+  "inputs": [
+   {
+    "path": "$BO_REPO/contracts/stubs",
+    "kind": "dir",
+    "sha256": "83834d95cee77815c0364a2354c4170cef924c61ca43de28a494460c718b1ff8"
+   }
+  ],
+  "recorded_at": "2026-11-03T07:26:29-03:00"
+ },
+ "sources": [
+  {
+   "uri": "$BO_DATA/downloads/prefetch/azurerm/5.12.0/providers-schema.json",
+   "license": "MPL-2.0 (terraform-provider-azurerm)",
+   "transformation": "terraform providers schema -json do azurerm 5.12.0 (sha256 d6c6ad1c…, igual ao PINS) reduzido a árvore de blocos e marcas r/o/c/s/w em _templates/schema_index.jsonl"
+  },
+  {
+   "uri": "$BO_DATA/downloads/prefetch/azurerm/5.12.0/terraform.lock.hcl",
+   "license": "MPL-2.0",
+   "transformation": "lock do provider copiado para _templates/terraform.lock.hcl (validate offline com -plugin-dir)"
+  },
+  {
+   "uri": "$BO_REPO/universe/pins.json",
+   "license": "produção do módulo PINS",
+   "transformation": "versões de Terraform e azurerm fixadas em _templates/versions.tf"
+  }
+ ],
+ "notes": "Harness offline do azurerm: render C26 -> HCL sem inserção silenciosa, redator antes de gravar, leitura C12, executor com respostas gravadas. Nenhuma chamada de nuvem, nenhuma credencial, nenhum apply."
+}

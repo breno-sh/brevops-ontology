@@ -1,0 +1,215 @@
+{
+ "apply": {
+  "rc": 0,
+  "stderr": ""
+ },
+ "destroy": {
+  "rc": 0,
+  "stderr": ""
+ },
+ "identity_sha256": "a7711ef015908552304c81c86fb5ebcac23ac6417891d5ecf36f6c1606bf332b",
+ "note": "resposta sintética no formato de terraform show -json; não veio de conta",
+ "plan_id": "LP-AZREF-0001",
+ "schema": "bo.harness_azurerm.recording/1",
+ "show": [
+  {
+   "format_version": "1.0",
+   "terraform_version": "1.15.8",
+   "values": {
+    "root_module": {
+     "resources": [
+      {
+       "address": "azurerm_resource_group.r1",
+       "mode": "managed",
+       "name": "r1",
+       "provider_name": "registry.terraform.io/hashicorp/azurerm",
+       "schema_version": 0,
+       "sensitive_values": {},
+       "type": "azurerm_resource_group",
+       "values": {
+        "id": "{{SUBSCRIPTION_PATH}}/resourceGroups/bo-{{VAR:sym_a1b2c3d4e5f60718}}-rg",
+        "location": "brazilsouth",
+        "managed_by": "",
+        "name": "bo-{{VAR:sym_a1b2c3d4e5f60718}}-rg",
+        "tags": {
+         "bo-case": "CASE-AZREF-STO-0001",
+         "bo-run": "RUN-AZTEST-01"
+        }
+       }
+      },
+      {
+       "address": "azurerm_storage_account.r2",
+       "mode": "managed",
+       "name": "r2",
+       "provider_name": "registry.terraform.io/hashicorp/azurerm",
+       "schema_version": 0,
+       "sensitive_values": {
+        "blob_properties": [
+         {
+          "cors_rule": [],
+          "delete_retention_policy": [
+           {}
+          ]
+         }
+        ],
+        "primary_access_key": true,
+        "primary_connection_string": true,
+        "tags": {}
+       },
+       "type": "azurerm_storage_account",
+       "values": {
+        "account_replication_type": "LRS",
+        "account_tier": "Standard",
+        "blob_properties": [
+         {
+          "change_feed_enabled": false,
+          "cors_rule": [],
+          "delete_retention_policy": [
+           {
+            "days": 7,
+            "permanent_delete_enabled": false
+           }
+          ],
+          "versioning_enabled": true
+         }
+        ],
+        "id": "{{SUBSCRIPTION_PATH}}/resourceGroups/bo-{{VAR:sym_a1b2c3d4e5f60718}}-rg/providers/Microsoft.Storage/storageAccounts/bo{{VAR:sym_a1b2c3d4e5f60718}}st",
+        "location": "brazilsouth",
+        "min_tls_version": "TLS1_2",
+        "name": "bo{{VAR:sym_a1b2c3d4e5f60718}}st",
+        "primary_access_key": "SINTETICO-chave-primaria",
+        "primary_connection_string": "{{CONNSTR}}",
+        "resource_group_name": "bo-{{VAR:sym_a1b2c3d4e5f60718}}-rg",
+        "tags": {
+         "bo-case": "CASE-AZREF-STO-0001",
+         "bo-run": "RUN-AZTEST-01",
+         "env": "test"
+        }
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "format_version": "1.0",
+   "terraform_version": "1.15.8",
+   "values": {
+    "root_module": {
+     "resources": [
+      {
+       "address": "azurerm_resource_group.r1",
+       "mode": "managed",
+       "name": "r1",
+       "provider_name": "registry.terraform.io/hashicorp/azurerm",
+       "schema_version": 0,
+       "sensitive_values": {},
+       "type": "azurerm_resource_group",
+       "values": {
+        "id": "{{SUBSCRIPTION_PATH}}/resourceGroups/bo-{{VAR:sym_a1b2c3d4e5f60718}}-rg",
+        "location": "brazilsouth",
+        "managed_by": "",
+        "name": "bo-{{VAR:sym_a1b2c3d4e5f60718}}-rg",
+        "tags": {
+         "bo-case": "CASE-AZREF-STO-0001",
+         "bo-run": "RUN-AZTEST-01"
+        }
+       }
+      },
+      {
+       "address": "azurerm_storage_account.r2",
+       "mode": "managed",
+       "name": "r2",
+       "provider_name": "registry.terraform.io/hashicorp/azurerm",
+       "schema_version": 0,
+       "sensitive_values": {
+        "blob_properties": [
+         {
+          "cors_rule": [],
+          "delete_retention_policy": [
+           {}
+          ]
+         }
+        ],
+        "primary_access_key": true,
+        "primary_connection_string": true,
+        "tags": {}
+       },
+       "type": "azurerm_storage_account",
+       "values": {
+        "account_replication_type": "LRS",
+        "account_tier": "Standard",
+        "blob_properties": [
+         {
+          "change_feed_enabled": false,
+          "cors_rule": [],
+          "delete_retention_policy": [
+           {
+            "days": 7,
+            "permanent_delete_enabled": false
+           }
+          ],
+          "versioning_enabled": true
+         }
+        ],
+        "id": "{{SUBSCRIPTION_PATH}}/resourceGroups/bo-{{VAR:sym_a1b2c3d4e5f60718}}-rg/providers/Microsoft.Storage/storageAccounts/bo{{VAR:sym_a1b2c3d4e5f60718}}st",
+        "location": "brazilsouth",
+        "min_tls_version": "TLS1_2",
+        "name": "bo{{VAR:sym_a1b2c3d4e5f60718}}st",
+        "primary_access_key": "SINTETICO-chave-primaria",
+        "primary_connection_string": "{{CONNSTR}}",
+        "resource_group_name": "bo-{{VAR:sym_a1b2c3d4e5f60718}}-rg",
+        "tags": {
+         "bo-case": "CASE-AZREF-STO-0001",
+         "bo-run": "RUN-AZTEST-01",
+         "env": "test"
+        }
+       }
+      },
+      {
+       "address": "azurerm_virtual_network.r3",
+       "mode": "managed",
+       "name": "r3",
+       "provider_name": "registry.terraform.io/hashicorp/azurerm",
+       "schema_version": 0,
+       "sensitive_values": {},
+       "type": "azurerm_virtual_network",
+       "values": {
+        "address_space": [
+         "10.20.0.0/16"
+        ],
+        "id": "{{SUBSCRIPTION_PATH}}/resourceGroups/x/providers/Microsoft.Network/virtualNetworks/v",
+        "location": "brazilsouth",
+        "name": "bo-{{VAR:sym_a1b2c3d4e5f60718}}-vnet",
+        "resource_group_name": "bo-{{VAR:sym_a1b2c3d4e5f60718}}-rg",
+        "tags": {
+         "bo-case": "CASE-AZREF-STO-0001",
+         "bo-run": "RUN-AZTEST-01"
+        }
+       }
+      },
+      {
+       "address": "azurerm_subnet.r4",
+       "mode": "managed",
+       "name": "r4",
+       "provider_name": "registry.terraform.io/hashicorp/azurerm",
+       "schema_version": 0,
+       "sensitive_values": {},
+       "type": "azurerm_subnet",
+       "values": {
+        "address_prefixes": [
+         "10.20.1.0/24"
+        ],
+        "id": "{{SUBSCRIPTION_PATH}}/resourceGroups/x/providers/Microsoft.Network/virtualNetworks/v/subnets/s",
+        "name": "bo-{{VAR:sym_a1b2c3d4e5f60718}}-snet",
+        "resource_group_name": "bo-{{VAR:sym_a1b2c3d4e5f60718}}-rg",
+        "virtual_network_name": "bo-{{VAR:sym_a1b2c3d4e5f60718}}-vnet"
+       }
+      }
+     ]
+    }
+   }
+  }
+ ],
+ "state_list_after_destroy": []
+}

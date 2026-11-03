@@ -1,0 +1,46 @@
+{
+ "apply": {
+  "rc": 1,
+  "stderr": "Error: creating Storage Account: unexpected status 400 (400 Bad Request) with error: AccountNameInvalid: nome inválido"
+ },
+ "destroy": {
+  "rc": 0,
+  "stderr": ""
+ },
+ "identity_sha256": "a7711ef015908552304c81c86fb5ebcac23ac6417891d5ecf36f6c1606bf332b",
+ "note": "apply rejeitado pela API (texto sintético)",
+ "plan_id": "LP-AZREF-0001",
+ "schema": "bo.harness_azurerm.recording/1",
+ "show": [
+  {
+   "format_version": "1.0",
+   "terraform_version": "1.15.8",
+   "values": {
+    "root_module": {
+     "resources": [
+      {
+       "address": "azurerm_resource_group.r1",
+       "mode": "managed",
+       "name": "r1",
+       "provider_name": "registry.terraform.io/hashicorp/azurerm",
+       "schema_version": 0,
+       "sensitive_values": {},
+       "type": "azurerm_resource_group",
+       "values": {
+        "id": "{{SUBSCRIPTION_PATH}}/resourceGroups/bo-{{VAR:sym_a1b2c3d4e5f60718}}-rg",
+        "location": "brazilsouth",
+        "managed_by": "",
+        "name": "bo-{{VAR:sym_a1b2c3d4e5f60718}}-rg",
+        "tags": {
+         "bo-case": "CASE-AZREF-STO-0001",
+         "bo-run": "RUN-AZTEST-01"
+        }
+       }
+      }
+     ]
+    }
+   }
+  }
+ ],
+ "state_list_after_destroy": []
+}

@@ -1,0 +1,53 @@
+CONTRACT_CHANGE — HARNESS-AZURE
+gravado em: 2026-11-03T07:26-03:00 (America/Recife)
+dono do que muda: CONTRACTS (contracts/stubs/, INDEX.json) e o catálogo (modulos.json), não este módulo
+
+PROBLEMA 1 (BLOQUEIA o gate G2 do catálogo, e o G4 por consequência)
+  Gate: python -I -m bo.harness.azurerm.render $BO_REPO/contracts/stubs/lowering_plan.jsonl --out $BO_TMP/render
+        && terraform -chdir=$BO_TMP/render fmt -check
+  a) O arquivo não existe: o CONTRACTS publicou o stub em contracts/stubs/C26/lowering_plan.jsonl.
+     Rodado como está: "render: plano não encontrado: .../contracts/stubs/lowering_plan.jsonl" (saída 2).
+  b) Mesmo apontando para stubs/C26/, o único plano do stub tem target_provider=google
+     (google_compute_network, google_sql_database_instance). Um renderizador azurerm não tem o que renderizar:
+     saída 4 ("nenhum plano com target_provider=azurerm"). Passar aí seria passar por vacuidade: o fmt -check
+     de uma pasta sem .tf sai 0. O caminho inexistente atinge os 4 HARNESS (mesmo comando no catálogo); o
+     provedor único do stub atinge pelo menos HARNESS-AWS e HARNESS-OCI.
+  c) O fmt -check do gate não tem -recursive: só confere a raiz de $BO_TMP/render. O renderizador grava o
+     módulo na raiz quando o arquivo tem exatamente UM plano azurerm (com vários, DIR/<plan_id>/). Por isso o
+     stub precisa de exatamente um plano por provedor.
+
+  Mudança proposta (o coordenador escolhe uma):
+  A) preferida: o CONTRACTS acrescenta contracts/stubs/lowering_plan.jsonl e contracts/stubs/graph_ir.jsonl
+     (irmãos, registrados no INDEX.json como C26:lowering_plan e C26:graph_ir), com EXATAMENTE um plano por
+     target_provider (aws, google, azurerm, oci), cada um com o graph_ir correspondente. Para o azurerm serve a
+     1ª linha de deploy/fixtures/azurerm/_templates/reference/lowering_plan.jsonl (LP-AZREF-0001, 4 recursos:
+     resource group, storage account com blob_properties aninhado, VNet e subnet) e a 1ª linha do graph_ir.jsonl
+     irmão; os dois passam no validador único (C26, 0 erro).
+  B) mínima: trocar, no modulos.json, o caminho do gate dos 4 HARNESS para $BO_REPO/contracts/stubs/C26/... e
+     acrescentar ao stub C26 um plano por provedor (como em A).
+  Prova de que A resolve sem tocar este módulo (rodado agora, offline):
+     arquivo = stub C26 (google) + LP-AZREF-0001, graph_ir com os dois
+     validate lowering_plan -> 2 item(ns), 0 erro(s) -> OK
+     render -> RENDERED=1, WRONG_PROVIDER=1; main.tf e versions.tf na raiz; terraform fmt -check -> saída 0
+
+ESTADO ENQUANTO A EMENDA NÃO SAI
+  G2 e G4 ficam ABANDON com este motivo no arquivo de gates (não afrouxados, comando intacto).
+  O que o G2 quer provar está coberto, sem vacuidade, por gates/HARNESS-AZURE.sh e pelos testes:
+    render dos planos de referência (2 RENDERED, 1 BLOCKED por UNKNOWN_INPUT) + terraform fmt -check -recursive
+    + terraform validate offline no azurerm 5.12.0 fixado (cache local, -plugin-dir, sem credencial).
+
+PROPOSTAS NÃO BLOQUEANTES (para o CONTRACTS e o GRAPH-LOWERING; o harness já trata cada uma sem inventar valor)
+  1. C26, termo reference: target_address é tipo.SYM-..., sem ligação com o passo do plano. O harness resolve
+     só entre os passos de depends_on com o mesmo resource_type (e data/resource conforme o prefixo); nenhum
+     -> UNKNOWN_INPUT, mais de um -> AMBIGUOUS_TARGET. Proposta: campo opcional target_node (r/c do grafo).
+  2. C26, derived_name: não diz que campo preenche. O harness usa o atributo `name` e reprova o plano
+     (NAME_FIELD_ABSENT) quando o tipo não tem `name` configurável. Proposta: derived_name.field.
+  3. C12 readback com vários recursos no mesmo caso: o caminho do campo precisa do nó. O harness grava
+     `<rótulo do passo>.<caminho HCL>` (ex.: r2.blob_properties[0].delete_retention_policy[0].days); o stub do
+     C12 usa caminho sem prefixo. Proposta: registrar a convenção no C12 (o padrão de path já aceita).
+  4. Bloqueio pré-deploy (UNKNOWN_INPUT, UNKNOWN_SYMBOLIC_INPUT, AMBIGUOUS_TARGET) não tem lugar no C12
+     (outcome só tem os 6 valores de persistência). O harness grava em render_report.json e case_result.json;
+     quem consome (DEP-*, JUDGE) precisa levar o código ao C21/C23 (block_code do C00).
+  5. Achado (não é ajuste): atributos que são identificadores da conta (ex.: azurerm_key_vault.tenant_id) saem
+     sempre withheld na leitura (REDACT-IDENT-01). Persistência desses campos nunca será PERSISTED por leitura;
+     o JUDGE deve tratá-los como NOT_READABLE por política, não como falha do mapeamento.
