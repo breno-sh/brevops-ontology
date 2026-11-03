@@ -1,29 +1,25 @@
 CONTRACT_CHANGE — HARNESS-AWS
-gravado em: 2026-11-03T07:28-03:00 (America/Recife)
+gravado em: 2026-11-03T07:28-03:00, revisto em 2026-11-03T07:35-03:00 (America/Recife)
 dono do que muda: CONTRACTS (contracts/stubs/, C12, C26) e o coordenador (modulos.json, gate do catálogo)
 
 1. BLOQUEANTE para o gate G2 do catálogo (e, por consequência, G4 = make gate)
-   Gate: python -I -m bo.harness.aws.render $BO_REPO/contracts/stubs/lowering_plan.jsonl --out $BO_TMP/render \
-         && terraform -chdir=$BO_TMP/render fmt -check
-   a) O caminho não existe. Os stubs estão por contrato: o do C26 é contracts/stubs/C26/lowering_plan.jsonl
-      (INDEX.json: "C26/lowering_plan.jsonl": "C26:lowering_plan"). O render sai 2 ("plano inexistente").
-   b) Mesmo no caminho certo, o único plano do stub tem target_provider = google (google_compute_network,
-      google_sql_database_instance). O harness AWS lista o plano como OTHER_PROVIDER e não renderiza nada:
-        python -I -m bo.harness.aws.render contracts/stubs/C26/lowering_plan.jsonl --out $BO_TMP/r
-        -> "nenhum plano com target_provider=aws na entrada (nada renderizado)", saída 2.
-      Renderizar plano google com o harness AWS seria passar por vacuidade (o fmt -check de um diretório só
-      com os modelos sai 0). O mesmo atinge HARNESS-AZURE e HARNESS-OCI; só o HARNESS-GCP acha plano.
-   Mudança proposta (o CONTRACTS/coordenador escolhe uma):
-     A) preferida: o stub C26 ganha um plano por provedor-alvo (aws, azurerm, oci, além do google), cada um
-        completo pelo schema fixado em universe/pins.json, com o graph_ir irmão; e o modulos.json troca, nos 4
-        HARNESS, o caminho do gate para $BO_REPO/contracts/stubs/C26/lowering_plan.jsonl.
-        Para o aws serve, sem mudar nada, o plano LP-AWS-NET-01 de
-        tests/harness/aws/fixtures/plans/{lowering_plan,graph_ir}.jsonl (VPC + sub-rede ligada por referência ao
-        símbolo do nome derivado; valida no C26; RENDERED; terraform validate offline aceita).
-     B) mínima: o CONTRACTS cria contracts/stubs/lowering_plan.jsonl e contracts/stubs/graph_ir.jsonl
-        (registrados no INDEX.json como C26) com os planos dos 4 provedores; o texto do gate fica como está.
-   O que já está pronto: o render, o fmt -check e a conferência de inserção silenciosa passam nos planos aws de
-   fixture (gates/HARNESS-AWS.sh); quando A ou B entrar, G2 e G4 passam sem mudança neste módulo.
+   Gate (texto do catálogo de 2026-11-03T07:29-03:00, já com o caminho por contrato):
+     python -I -m bo.harness.aws.render $BO_REPO/contracts/stubs/C26/lowering_plan.jsonl --out $BO_TMP/render \
+       && terraform -chdir=$BO_TMP/render fmt -check
+   (Na versão anterior o caminho era contracts/stubs/lowering_plan.jsonl, que não existe; isso o coordenador já
+   corrigiu.) O defeito que resta: o único plano do stub C26 tem target_provider = google
+   (google_compute_network, google_sql_database_instance). O harness AWS lista o plano como OTHER_PROVIDER e
+   não renderiza nada:
+       render: 0 RENDERED, 0 UNKNOWN_INPUT, 0 INVALID_PLAN, 1 de outro provedor
+       render: nenhum plano com target_provider=aws na entrada (nada renderizado)   -> saída 2
+   Renderizar plano google com o harness AWS, ou sair 0 sem plano, seria passar por vacuidade (o fmt -check de
+   um diretório só com os modelos sai 0). O mesmo atinge HARNESS-AZURE e HARNESS-OCI; só o HARNESS-GCP acha plano.
+   Mudança proposta (CONTRACTS): o stub C26 ganha um plano por provedor-alvo (aws, azurerm, oci, além do google),
+   cada um completo pelo schema fixado em universe/pins.json, com o graph_ir irmão. Para o aws serve, sem mudar
+   nada, o plano LP-AWS-NET-01 (e o grafo GIR-AWS-NET-01) de tests/harness/aws/fixtures/plans/: VPC + sub-rede
+   ligada por referência ao símbolo do nome derivado; valida no C26; RENDERED; terraform validate offline aceita.
+   O que já está pronto: render, fmt -check e conferência de inserção silenciosa passam nos planos aws de
+   fixture (gates/HARNESS-AWS.sh). Quando o stub tiver o plano aws, G2 e G4 passam sem mudança neste módulo.
 
 2. Não bloqueante — C12 não tem onde tipar UNKNOWN_INPUT
    O C00 tem block_code (com UNKNOWN_INPUT), mas o outcome_persistence do C12 só aceita PERSISTED | ALTERED |
