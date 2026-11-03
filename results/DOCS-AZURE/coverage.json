@@ -1,0 +1,247 @@
+{
+ "schema": "bo.result/1",
+ "contract": "C15",
+ "contract_version": "3.0.0",
+ "module": "DOCS-AZURE",
+ "generated_at": "2026-11-03T07:20:41-03:00",
+ "metrics": [
+  {
+   "metric_id": "M-DOCAZ-DESC",
+   "name": "átomos com descrição na documentação",
+   "reading": "field",
+   "axis": "representability",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.975847,
+    "upper": 0.975847,
+    "est": 0.975847,
+    "n": 23351
+   },
+   "frame": {
+    "ref": {
+     "path": "$BO_DATA/DOCS-AZURE/docs_facts.jsonl",
+     "sha256": "eabb75f5ffcb2f21fd97ad2f0545ac334843c6be742782121f3b4ee24596c1fd"
+    },
+    "description": "todos os átomos (C01) de resource_schemas do azurerm 5.12.0 fixado; censo, não amostra"
+   },
+   "inclusion": {
+    "rule_id": "INC-DOCAZ-DESCRIPTION",
+    "text": "átomo com pelo menos um fato description status=stated (published ou derived)"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "exact"
+   }
+  },
+  {
+   "metric_id": "M-DOCAZ-ENUM",
+   "name": "átomos com valores válidos (enum) na documentação",
+   "reading": "field",
+   "axis": "representability",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.101837,
+    "upper": 0.101837,
+    "est": 0.101837,
+    "n": 23351
+   },
+   "frame": {
+    "ref": {
+     "path": "$BO_DATA/DOCS-AZURE/docs_facts.jsonl",
+     "sha256": "eabb75f5ffcb2f21fd97ad2f0545ac334843c6be742782121f3b4ee24596c1fd"
+    },
+    "description": "todos os átomos (C01) de resource_schemas do azurerm 5.12.0 fixado; censo, não amostra"
+   },
+   "inclusion": {
+    "rule_id": "INC-DOCAZ-ALLOWEDVALUES",
+    "text": "átomo com pelo menos um fato allowed_values status=stated (published ou derived)"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "exact"
+   }
+  },
+  {
+   "metric_id": "M-DOCAZ-UNIT",
+   "name": "átomos com unidade (texto ou sufixo do nome)",
+   "reading": "field",
+   "axis": "representability",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.023297,
+    "upper": 0.023297,
+    "est": 0.023297,
+    "n": 23351
+   },
+   "frame": {
+    "ref": {
+     "path": "$BO_DATA/DOCS-AZURE/docs_facts.jsonl",
+     "sha256": "eabb75f5ffcb2f21fd97ad2f0545ac334843c6be742782121f3b4ee24596c1fd"
+    },
+    "description": "todos os átomos (C01) de resource_schemas do azurerm 5.12.0 fixado; censo, não amostra"
+   },
+   "inclusion": {
+    "rule_id": "INC-DOCAZ-UNIT",
+    "text": "átomo com pelo menos um fato unit status=stated (published ou derived)"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "exact"
+   }
+  }
+ ],
+ "notes": "Relatado, sem meta (brief do DOCS-AZURE). Censo dos átomos do pin; lower = upper = est. Os denominadores alternativos (configuráveis, string para enum, numéricos para unidade) e a unidade só publicada (sem o sufixo do nome) estão em data.",
+ "data": {
+  "n_atoms": 23351,
+  "by_kind_all_atoms": {
+   "description": {
+    "k": 22787,
+    "n": 23351,
+    "frac": 0.975847
+   },
+   "default": {
+    "k": 6628,
+    "n": 23351,
+    "frac": 0.283842
+   },
+   "allowed_values": {
+    "k": 2378,
+    "n": 23351,
+    "frac": 0.101837
+   },
+   "range": {
+    "k": 627,
+    "n": 23351,
+    "frac": 0.026851
+   },
+   "unit": {
+    "k": 544,
+    "n": 23351,
+    "frac": 0.023297
+   },
+   "format": {
+    "k": 456,
+    "n": 23351,
+    "frac": 0.019528
+   },
+   "forces_replacement": {
+    "k": 5081,
+    "n": 23351,
+    "frac": 0.217592
+   },
+   "deprecation": {
+    "k": 7,
+    "n": 23351,
+    "frac": 0.0003
+   },
+   "conflicts_with": {
+    "k": 251,
+    "n": 23351,
+    "frac": 0.010749
+   },
+   "required_when": {
+    "k": 331,
+    "n": 23351,
+    "frac": 0.014175
+   },
+   "example": {
+    "k": 218,
+    "n": 23351,
+    "frac": 0.009336
+   },
+   "behavior": {
+    "k": 1270,
+    "n": 23351,
+    "frac": 0.054387
+   }
+  },
+  "by_kind_configurable_atoms": {
+   "description": {
+    "k": 21409,
+    "n": 21736,
+    "frac": 0.984956
+   },
+   "default": {
+    "k": 6628,
+    "n": 21736,
+    "frac": 0.304932
+   },
+   "allowed_values": {
+    "k": 2370,
+    "n": 21736,
+    "frac": 0.109036
+   },
+   "range": {
+    "k": 627,
+    "n": 21736,
+    "frac": 0.028846
+   },
+   "unit": {
+    "k": 534,
+    "n": 21736,
+    "frac": 0.024568
+   },
+   "format": {
+    "k": 429,
+    "n": 21736,
+    "frac": 0.019737
+   },
+   "forces_replacement": {
+    "k": 5081,
+    "n": 21736,
+    "frac": 0.23376
+   },
+   "deprecation": {
+    "k": 4,
+    "n": 21736,
+    "frac": 0.000184
+   },
+   "conflicts_with": {
+    "k": 251,
+    "n": 21736,
+    "frac": 0.011548
+   },
+   "required_when": {
+    "k": 331,
+    "n": 21736,
+    "frac": 0.015228
+   },
+   "example": {
+    "k": 192,
+    "n": 21736,
+    "frac": 0.008833
+   },
+   "behavior": {
+    "k": 1244,
+    "n": 21736,
+    "frac": 0.057232
+   }
+  },
+  "allowed_values_string_atoms": {
+   "k": 1962,
+   "n": 17807,
+   "frac": 0.110181
+  },
+  "unit_numeric_atoms": {
+   "k": 544,
+   "n": 1404,
+   "frac": 0.387464
+  },
+  "unit_numeric_atoms_published_only": {
+   "k": 424,
+   "n": 1404,
+   "frac": 0.301994
+  },
+  "unknown_facts": {
+   "default:ambiguous": 43,
+   "description:not_documented": 561,
+   "unit:not_documented": 860
+  }
+ }
+}
