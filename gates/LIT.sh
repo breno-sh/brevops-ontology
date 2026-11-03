@@ -18,11 +18,12 @@ shasum -a 256 -c results/LIT/MANIFEST.sha256 --quiet
 
 step "livro de resolução é do .bib atual"
 $py -I -B -c '
-import hashlib, json, sys
+import json, sys
+from bo.lit import bib
 led = json.load(open("results/LIT/id_resolution.json", encoding="utf-8"))
-sha = hashlib.sha256(open("lit/related.bib", "rb").read()).hexdigest()
+sha = bib.content_sha256(open("lit/related.bib", encoding="utf-8").read())
 bad = [k for k, r in led["records"].items() if r.get("status") != "ok"]
-if led.get("bib_sha256") != sha:
+if led.get("bib_content_sha256") != sha:
     sys.exit("id_resolution.json é de outra versão do related.bib")
 if bad:
     sys.exit("identificadores sem verificação: " + ", ".join(bad))

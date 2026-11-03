@@ -118,6 +118,13 @@ def parse(text: str) -> list[dict]:
     return out
 
 
+def content_sha256(text: str) -> str:
+    """sha256 do .bib sem as linhas de comentário (%): o carimbo do cabeçalho não invalida o livro."""
+    import hashlib
+    body = "\n".join(ln for ln in text.splitlines() if not ln.lstrip().startswith("%"))
+    return hashlib.sha256(body.encode("utf-8")).hexdigest()
+
+
 def split_altids(v: str | None) -> list[tuple[str, str]]:
     out = []
     for part in (v or "").split(" ; "):

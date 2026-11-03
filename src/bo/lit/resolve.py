@@ -167,7 +167,7 @@ def run(bib_path: Path, out: Path, reuse_ok: dict | None = None) -> dict:
             core.emit(f"  {rec['status']:<12} {key[:110]}")
     ledger = {
         "schema": SCHEMA, "module": "LIT", "resolved_at": core.now(),
-        "bib": "$BO_REPO/lit/related.bib", "bib_sha256": core.sha256_file(bib_path),
+        "bib": "$BO_REPO/lit/related.bib", "bib_content_sha256": bib.content_sha256(bib_path.read_text(encoding="utf-8")),
         "sources": {
             "doi_ra": "https://doi.org/ra/<doi>", "crossref": "https://api.crossref.org/works/<doi>",
             "github": "https://api.github.com/repos/<dono>/<repo>/commits/<sha>",

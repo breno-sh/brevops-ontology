@@ -37,8 +37,8 @@ def main(argv=None) -> int:
         raise core.BoError(f"livro de resolução ausente: {led_path} (rode python -I -m bo.lit.resolve)")
     ledger = json.loads(led_path.read_text(encoding="utf-8"))
     problems = 0
-    if ledger.get("bib_sha256") != core.sha256_file(bib_path):
-        core.emit("FALHA livro de resolução é de outra versão do .bib (sha256 diferente); rode bo.lit.resolve")
+    if ledger.get("bib_content_sha256") != bib.content_sha256(bib_path.read_text(encoding="utf-8")):
+        core.emit("FALHA livro de resolução é de outra versão do .bib (sha256 das entradas difere); rode bo.lit.resolve")
         problems += 1
     if a.live:
         from . import resolve

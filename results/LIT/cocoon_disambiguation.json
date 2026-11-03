@@ -1,7 +1,7 @@
 {
  "schema": "bo.lit.cocoon_disambiguation/1",
  "module": "LIT",
- "edited_at": "2026-11-02T23:40:00-03:00",
+ "edited_at": "2026-11-02T22:34:00-03:00",
  "question": "O PDF de Kalinin e Skvortsov e a revisão R4 citam entradas distintas para o CoCoOn.",
  "resolution": "São duas obras distintas com o mesmo nome de ontologia: a versão de 2012 (CollaborateCom, Miranda Zhang et al., descoberta de serviços IaaS) é a que Kalinin e Skvortsov citam; a versão de 2019 (ISWC Resources, Qian Zhang, Haller e Wang, comparação de preço e desempenho de IaaS) é a que a R4 cita. As duas entram no related.bib.",
  "entries": [

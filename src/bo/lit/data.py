@@ -15,7 +15,7 @@ Regras de redação:
 
 # Data da última edição do conteúdo (America/Recife). O gerador usa este carimbo para que a
 # regeneração seja idêntica; muda só quando o conteúdo muda.
-EDITED_AT = "2026-11-02T23:40:00-03:00"
+EDITED_AT = "2026-11-02T22:34:00-03:00"
 RETRIEVED_ON = "2026-11-02"
 
 # ----------------------------------------------------------------------------- bibliografia

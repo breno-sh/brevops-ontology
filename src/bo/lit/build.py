@@ -110,7 +110,8 @@ def render_html(ledger: dict) -> str:
       '<title>Trabalhos relacionados BrevOps</title><style>' + CSS + '</style></head><body><main>')
     a('<h1>Trabalhos relacionados e posicionamento</h1>')
     a(f'<p class="meta">BrevOps Ontology, módulo LIT. Conteúdo editado em {esc(data.EDITED_AT)} (America/Recife); '
-      f'identificadores resolvidos em {esc(ledger.get("resolved_at", "?"))}. Gerado por '
+      f'livro de identificadores gravado em {esc(ledger.get("resolved_at", "?"))} (cada identificador traz a própria '
+      'hora de conferência em results/LIT/id_resolution.json). Gerado por '
       '<code>python -I -m bo.lit.build</code>; fontes em <code>lit/related.bib</code> e '
       '<code>lit/positioning_matrix.csv</code>.</p>')
 
@@ -197,7 +198,8 @@ def render_html(ledger: dict) -> str:
       'referência [6]), mas descrevem "uma ontologia OWL para portabilidade e interoperabilidade", que é o título '
       'do artigo do IJWGS 2015. Os dois estão no .bib.</li>')
     a('<li>Fix Inventory: a R4 cita o commit 2118338, que não existe no repositório; o commit é '
-      '211833381fdd07690bc789d30ffc2bd84a67744e, de 2025-03-28 (a data de 2025, e não 2026, é a certa).</li>')
+      '211833381fdd07690bc789d30ffc2bd84a67744e, de 2025-03-28. A R4 também aponta a data como 28/03/2025 num '
+      'documento e 28/03/2026 em outro; o repositório confirma 2025.</li>')
     a('<li>CertGraph: a R4 agrupa CPG e CertGraph sob os DOIs de 2021 (que é o Cloud Property Graph) e 2023 (SAC); '
       'o CertGraph propriamente dito é Schöberl et al. 2024 (MODELS Companion). Aqui são linhas separadas.</li>')
     a('<li>Kumara et al. 2020: a R4 cita só o preprint arXiv 2007.02135; o registro do arXiv aponta a versão '

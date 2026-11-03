@@ -1,9 +1,9 @@
 {
  "schema": "bo.lit.id_resolution/1",
  "module": "LIT",
- "resolved_at": "2026-11-02T22:30:31-03:00",
+ "resolved_at": "2026-11-02T22:34:16-03:00",
  "bib": "$BO_REPO/lit/related.bib",
- "bib_sha256": "8ce9e2ea9175092c061e0ca5148507334375952550e5f347c4897a3dea80097e",
+ "bib_content_sha256": "978b40a2fa9af11d7aa4c8b74eb6deb32e116e6ad79669259773c0e0fcf19d17",
  "sources": {
   "doi_ra": "https://doi.org/ra/<doi>",
   "crossref": "https://api.crossref.org/works/<doi>",
