@@ -1,0 +1,7 @@
+{
+ "case_id": "CASE-HAWS-DB01-UNKNOWN-INPUT",
+ "expect": "UNKNOWN",
+ "note": "instance_class ausente no plano: nada é aplicado",
+ "plan_id": "LP-AWS-DB-01",
+ "run_id": "RUN-HAWS-008"
+}

@@ -1,0 +1,31 @@
+{
+ "schema": "bo.harness_declared_insertions/1",
+ "module": "HARNESS-AWS",
+ "note": "Tudo o que o harness acrescenta ao HCL além dos valores do plano C26. O gate no_silent_insert compara o HCL renderizado com o plano mais esta lista; qualquer outra coisa reprova. Nenhuma inserção é valor de configuração de recurso: são versões, provider, entradas da execução sem default, nomes de variáveis e rótulos.",
+ "templates": {
+  "versions.tf": [
+   {"id": "HI-01", "path": "terraform.required_version", "value": "= 1.15.8", "from": "universe/pins.json terraform.version"},
+   {"id": "HI-02", "path": "terraform.required_providers.aws.source", "value": "hashicorp/aws", "from": "universe/pins.json providers[aws].source"},
+   {"id": "HI-02", "path": "terraform.required_providers.aws.version", "value": "= 6.71.0", "from": "universe/pins.json providers[aws].version"}
+  ],
+  "providers.tf": [
+   {"id": "HI-03", "path": "provider.aws.region", "expr": "var.bo_region", "from": "região da execução, dada pelo executor; o contexto do grafo só confere"},
+   {"id": "HI-05", "path": "provider.aws.allowed_account_ids", "expr": "var.bo_allowed_account_ids", "from": "guarda do provider: aborta se a credencial for de conta fora da allowlist (valor nunca gravado)"},
+   {"id": "HI-04", "path": "provider.aws.default_tags.tags.bo-run", "expr": "var.bo_run_id", "from": "tag da execução (filtro de propriedade da limpeza, §10.2)"},
+   {"id": "HI-04", "path": "provider.aws.default_tags.tags.bo-case", "expr": "var.bo_case_id", "from": "tag do caso (filtro de propriedade da limpeza, §10.2)"}
+  ],
+  "variables.tf": [
+   {"id": "HI-06", "path": "variable.bo_region", "attrs": {"type": "string", "nullable": false}},
+   {"id": "HI-06", "path": "variable.bo_run_id", "attrs": {"type": "string", "nullable": false}},
+   {"id": "HI-06", "path": "variable.bo_case_id", "attrs": {"type": "string", "nullable": false}},
+   {"id": "HI-06", "path": "variable.bo_allowed_account_ids", "attrs": {"type": "list(string)", "nullable": false, "sensitive": true}}
+  ]
+ },
+ "per_plan": [
+  {"id": "HI-07", "rule": "variable \"<plano>_sym_<hex do SYM>\" {type = any, nullable = false}, sem default, para cada termo symbol de um valor do plano; o executor liga o valor ou o caso falha UNKNOWN_INPUT"},
+  {"id": "HI-08", "rule": "variable \"<plano>_secret_<n>\" {type = string, nullable = false, sensitive = true}, sem default, para cada termo withheld(secret); o valor é gerado na hora pelo executor e nunca gravado"},
+  {"id": "HI-09", "rule": "rótulo do recurso = <plano>_<node_id> (identificador do bloco, não configuração)"},
+  {"id": "HI-10", "rule": "depends_on = [<tipo>.<rótulo>] para cada depends_on do passo (meta-argumento vindo do plano)"},
+  {"id": "HI-11", "rule": "comentários de cabeçalho com plan_id, graph_id, estado e campos faltantes"}
+ ]
+}

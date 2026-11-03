@@ -1,0 +1,75 @@
+{
+ "apply": {
+  "ok": true
+ },
+ "case_id": "CASE-HAWS-DB02-PERSISTED",
+ "destroy": {
+  "ok": true
+ },
+ "expect": "PERSISTED",
+ "init": {
+  "ok": true
+ },
+ "note": "senha sensível sai withheld e não entra no julgamento",
+ "plan_id": "LP-AWS-DB-02",
+ "reads": [
+  {
+   "format_version": "1.0",
+   "values": {
+    "root_module": {
+     "resources": [
+      {
+       "address": "aws_db_instance.lp_aws_db_02_r1",
+       "mode": "managed",
+       "name": "lp_aws_db_02_r1",
+       "sensitive_values": {
+        "password": true
+       },
+       "type": "aws_db_instance",
+       "values": {
+        "allocated_storage": 20,
+        "backup_retention_period": 7,
+        "engine": "postgres",
+        "id": "db-ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+        "instance_class": "db.t4g.micro",
+        "password": "REDACTED",
+        "skip_final_snapshot": true,
+        "username": "boadmin"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "format_version": "1.0",
+   "values": {
+    "root_module": {
+     "resources": [
+      {
+       "address": "aws_db_instance.lp_aws_db_02_r1",
+       "mode": "managed",
+       "name": "lp_aws_db_02_r1",
+       "sensitive_values": {
+        "password": true
+       },
+       "type": "aws_db_instance",
+       "values": {
+        "allocated_storage": 20,
+        "backup_retention_period": 7,
+        "engine": "postgres",
+        "id": "db-ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+        "instance_class": "db.t4g.micro",
+        "password": "REDACTED",
+        "skip_final_snapshot": true,
+        "username": "boadmin"
+       }
+      }
+     ]
+    }
+   }
+  }
+ ],
+ "run_id": "RUN-HAWS-009",
+ "state_list_after_destroy": []
+}

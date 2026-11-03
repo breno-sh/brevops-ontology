@@ -1,0 +1,23 @@
+{
+ "apply": {
+  "diagnostics": [
+   {
+    "detail": "operation error RDS: CreateDBInstance, https response error StatusCode: 400, api error InvalidParameterCombination: combinação não suportada",
+    "severity": "error",
+    "summary": "creating RDS DB Instance"
+   }
+  ],
+  "ok": false
+ },
+ "case_id": "CASE-HAWS-DB02-REJECTED",
+ "destroy": {
+  "ok": true
+ },
+ "expect": "REJECTED_BY_API",
+ "init": {
+  "ok": true
+ },
+ "plan_id": "LP-AWS-DB-02",
+ "run_id": "RUN-HAWS-010",
+ "state_list_after_destroy": []
+}

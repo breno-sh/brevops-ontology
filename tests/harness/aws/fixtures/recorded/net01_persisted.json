@@ -1,0 +1,116 @@
+{
+ "apply": {
+  "ok": true
+ },
+ "case_id": "CASE-HAWS-NET01-PERSISTED",
+ "destroy": {
+  "ok": true
+ },
+ "expect": "PERSISTED",
+ "init": {
+  "ok": true
+ },
+ "note": "consistência eventual: a 1ª leitura ainda não mostra a sub-rede; estabiliza na 3ª",
+ "plan_id": "LP-AWS-NET-01",
+ "reads": [
+  {
+   "format_version": "1.0",
+   "values": {
+    "root_module": {
+     "resources": [
+      {
+       "address": "aws_vpc.lp_aws_net_01_r1",
+       "mode": "managed",
+       "name": "lp_aws_net_01_r1",
+       "sensitive_values": {},
+       "type": "aws_vpc",
+       "values": {
+        "cidr_block": "10.42.0.0/16",
+        "enable_dns_hostnames": false,
+        "id": "vpc-0a1b2c3d4e5f6a7b8",
+        "instance_tenancy": "default",
+        "tags": null
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "format_version": "1.0",
+   "values": {
+    "root_module": {
+     "resources": [
+      {
+       "address": "aws_vpc.lp_aws_net_01_r1",
+       "mode": "managed",
+       "name": "lp_aws_net_01_r1",
+       "sensitive_values": {},
+       "type": "aws_vpc",
+       "values": {
+        "cidr_block": "10.42.0.0/16",
+        "enable_dns_hostnames": true,
+        "id": "vpc-0a1b2c3d4e5f6a7b8",
+        "instance_tenancy": "default",
+        "tags": null
+       }
+      },
+      {
+       "address": "aws_subnet.lp_aws_net_01_r2",
+       "mode": "managed",
+       "name": "lp_aws_net_01_r2",
+       "sensitive_values": {},
+       "type": "aws_subnet",
+       "values": {
+        "cidr_block": "10.42.1.0/24",
+        "id": "subnet-0b1c2d3e4f5a6b7c8",
+        "vpc_id": "vpc-0a1b2c3d4e5f6a7b8"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "format_version": "1.0",
+   "values": {
+    "root_module": {
+     "resources": [
+      {
+       "address": "aws_vpc.lp_aws_net_01_r1",
+       "mode": "managed",
+       "name": "lp_aws_net_01_r1",
+       "sensitive_values": {},
+       "type": "aws_vpc",
+       "values": {
+        "cidr_block": "10.42.0.0/16",
+        "enable_dns_hostnames": true,
+        "id": "vpc-0a1b2c3d4e5f6a7b8",
+        "instance_tenancy": "default",
+        "tags": null
+       }
+      },
+      {
+       "address": "aws_subnet.lp_aws_net_01_r2",
+       "mode": "managed",
+       "name": "lp_aws_net_01_r2",
+       "sensitive_values": {},
+       "type": "aws_subnet",
+       "values": {
+        "cidr_block": "10.42.1.0/24",
+        "id": "subnet-0b1c2d3e4f5a6b7c8",
+        "vpc_id": "vpc-0a1b2c3d4e5f6a7b8"
+       }
+      }
+     ]
+    }
+   }
+  }
+ ],
+ "run_id": "RUN-HAWS-001",
+ "state_list": [
+  "aws_subnet.lp_aws_net_01_r2",
+  "aws_vpc.lp_aws_net_01_r1"
+ ],
+ "state_list_after_destroy": []
+}

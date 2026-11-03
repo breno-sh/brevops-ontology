@@ -1,0 +1,23 @@
+{
+ "apply": {
+  "diagnostics": [
+   {
+    "detail": "operation error IAM: CreateRole, ThrottlingException: Rate exceeded",
+    "severity": "error",
+    "summary": "creating IAM Role"
+   }
+  ],
+  "ok": false
+ },
+ "case_id": "CASE-HAWS-SEC02-THROTTLED",
+ "destroy": {
+  "ok": true
+ },
+ "expect": "INFRA_ERROR",
+ "init": {
+  "ok": true
+ },
+ "plan_id": "LP-AWS-SEC-02",
+ "run_id": "RUN-HAWS-012",
+ "state_list_after_destroy": []
+}

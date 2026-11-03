@@ -1,0 +1,7 @@
+{
+ "case_id": "CASE-HAWS-STO01-UNBOUND",
+ "expect": "UNKNOWN",
+ "note": "símbolo do nome do bucket sem valor: UNKNOWN_INPUT antes de qualquer chamada",
+ "plan_id": "LP-AWS-STO-01",
+ "run_id": "RUN-HAWS-007"
+}

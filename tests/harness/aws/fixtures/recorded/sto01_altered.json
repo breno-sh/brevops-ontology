@@ -1,0 +1,106 @@
+{
+ "apply": {
+  "ok": true
+ },
+ "bindings": {
+  "SYM-b2c3d4e5f6071829": "bo-hawssto-bkt-7f3a"
+ },
+ "case_id": "CASE-HAWS-STO01-ALTERED",
+ "destroy": {
+  "ok": true
+ },
+ "expect": "ALTERED",
+ "init": {
+  "ok": true
+ },
+ "note": "versionamento lido como Suspended",
+ "plan_id": "LP-AWS-STO-01",
+ "reads": [
+  {
+   "format_version": "1.0",
+   "values": {
+    "root_module": {
+     "resources": [
+      {
+       "address": "aws_s3_bucket.lp_aws_sto_01_r1",
+       "mode": "managed",
+       "name": "lp_aws_sto_01_r1",
+       "sensitive_values": {},
+       "type": "aws_s3_bucket",
+       "values": {
+        "bucket": "bo-hawssto-bkt-7f3a",
+        "force_destroy": true,
+        "id": "bo-hawssto-bkt-7f3a",
+        "tags": {
+         "bo-nota": "a${b}",
+         "purpose": "bo-teste"
+        }
+       }
+      },
+      {
+       "address": "aws_s3_bucket_versioning.lp_aws_sto_01_r2",
+       "mode": "managed",
+       "name": "lp_aws_sto_01_r2",
+       "sensitive_values": {},
+       "type": "aws_s3_bucket_versioning",
+       "values": {
+        "bucket": "bo-hawssto-bkt-7f3a",
+        "id": "bo-hawssto-bkt-7f3a",
+        "versioning_configuration": [
+         {
+          "mfa_delete": "",
+          "status": "Suspended"
+         }
+        ]
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "format_version": "1.0",
+   "values": {
+    "root_module": {
+     "resources": [
+      {
+       "address": "aws_s3_bucket.lp_aws_sto_01_r1",
+       "mode": "managed",
+       "name": "lp_aws_sto_01_r1",
+       "sensitive_values": {},
+       "type": "aws_s3_bucket",
+       "values": {
+        "bucket": "bo-hawssto-bkt-7f3a",
+        "force_destroy": true,
+        "id": "bo-hawssto-bkt-7f3a",
+        "tags": {
+         "bo-nota": "a${b}",
+         "purpose": "bo-teste"
+        }
+       }
+      },
+      {
+       "address": "aws_s3_bucket_versioning.lp_aws_sto_01_r2",
+       "mode": "managed",
+       "name": "lp_aws_sto_01_r2",
+       "sensitive_values": {},
+       "type": "aws_s3_bucket_versioning",
+       "values": {
+        "bucket": "bo-hawssto-bkt-7f3a",
+        "id": "bo-hawssto-bkt-7f3a",
+        "versioning_configuration": [
+         {
+          "mfa_delete": "",
+          "status": "Suspended"
+         }
+        ]
+       }
+      }
+     ]
+    }
+   }
+  }
+ ],
+ "run_id": "RUN-HAWS-005",
+ "state_list_after_destroy": []
+}

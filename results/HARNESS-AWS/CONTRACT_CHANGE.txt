@@ -1,0 +1,51 @@
+CONTRACT_CHANGE — HARNESS-AWS
+gravado em: 2026-11-03T07:28-03:00 (America/Recife)
+dono do que muda: CONTRACTS (contracts/stubs/, C12, C26) e o coordenador (modulos.json, gate do catálogo)
+
+1. BLOQUEANTE para o gate G2 do catálogo (e, por consequência, G4 = make gate)
+   Gate: python -I -m bo.harness.aws.render $BO_REPO/contracts/stubs/lowering_plan.jsonl --out $BO_TMP/render \
+         && terraform -chdir=$BO_TMP/render fmt -check
+   a) O caminho não existe. Os stubs estão por contrato: o do C26 é contracts/stubs/C26/lowering_plan.jsonl
+      (INDEX.json: "C26/lowering_plan.jsonl": "C26:lowering_plan"). O render sai 2 ("plano inexistente").
+   b) Mesmo no caminho certo, o único plano do stub tem target_provider = google (google_compute_network,
+      google_sql_database_instance). O harness AWS lista o plano como OTHER_PROVIDER e não renderiza nada:
+        python -I -m bo.harness.aws.render contracts/stubs/C26/lowering_plan.jsonl --out $BO_TMP/r
+        -> "nenhum plano com target_provider=aws na entrada (nada renderizado)", saída 2.
+      Renderizar plano google com o harness AWS seria passar por vacuidade (o fmt -check de um diretório só
+      com os modelos sai 0). O mesmo atinge HARNESS-AZURE e HARNESS-OCI; só o HARNESS-GCP acha plano.
+   Mudança proposta (o CONTRACTS/coordenador escolhe uma):
+     A) preferida: o stub C26 ganha um plano por provedor-alvo (aws, azurerm, oci, além do google), cada um
+        completo pelo schema fixado em universe/pins.json, com o graph_ir irmão; e o modulos.json troca, nos 4
+        HARNESS, o caminho do gate para $BO_REPO/contracts/stubs/C26/lowering_plan.jsonl.
+        Para o aws serve, sem mudar nada, o plano LP-AWS-NET-01 de
+        tests/harness/aws/fixtures/plans/{lowering_plan,graph_ir}.jsonl (VPC + sub-rede ligada por referência ao
+        símbolo do nome derivado; valida no C26; RENDERED; terraform validate offline aceita).
+     B) mínima: o CONTRACTS cria contracts/stubs/lowering_plan.jsonl e contracts/stubs/graph_ir.jsonl
+        (registrados no INDEX.json como C26) com os planos dos 4 provedores; o texto do gate fica como está.
+   O que já está pronto: o render, o fmt -check e a conferência de inserção silenciosa passam nos planos aws de
+   fixture (gates/HARNESS-AWS.sh); quando A ou B entrar, G2 e G4 passam sem mudança neste módulo.
+
+2. Não bloqueante — C12 não tem onde tipar UNKNOWN_INPUT
+   O C00 tem block_code (com UNKNOWN_INPUT), mas o outcome_persistence do C12 só aceita PERSISTED | ALTERED |
+   REJECTED_BY_API | NOT_READABLE | INFRA_ERROR | UNKNOWN e detail livre. Hoje o harness grava
+   {"axis": "persistence", "value": "UNKNOWN", "detail": "UNKNOWN_INPUT: <campos>"} com rule_id HAWS-RENDER-01
+   (render) ou HAWS-BIND-01 (símbolo sem valor). Proposta: campo opcional block_code ($defs/block_code do C00) no
+   outcome_persistence, com a regra "block_code presente => value = UNKNOWN", para o JUDGE contar UNKNOWN_INPUT
+   sem ler texto.
+
+3. Não bloqueante — caminho do campo no readback de plano com vários recursos
+   O C12 não diz a qual recurso do plano um campo pertence. O harness usa path = "<node_id>.<campo do plano>"
+   (ex.: r2.vpc_id), que cabe no padrão atual. Proposta: registrar a convenção no C12 (ou um campo node_id).
+
+4. Não bloqueante — fiação do catálogo (entradas do HARNESS-AWS)
+   O renderizador precisa dos campos obrigatórios do schema fixado: lê $BO_REPO/universe/pins.json (PINS) e
+   ext:$BO_DATA/downloads/prefetch/aws/6.71.0/providers-schema.json, conferido por sha256 contra o
+   schema_sha256 do pins.json, e usa o zip assinado do provider (mirror em
+   $BO_DATA/downloads/terraform-aws-6.71.0/, D1) só para terraform validate offline. Nenhum dos dois está nas
+   entradas declaradas e o PINS não está nas deps. Proposta: inputs += $BO_REPO/universe/pins.json e o ext: do
+   schema; deps += PINS.
+
+5. Não bloqueante — C26 não diz em que campo entra o nome derivado
+   lowering_step.derived_name traz template e from_terms, mas não o campo HCL que recebe o nome. O harness não
+   adivinha (seria inserção): registra o nome derivado no render_manifest.json e só renderiza o que vier em
+   values. Proposta: derived_name.field opcional; sem ele o nome não vai para o HCL.

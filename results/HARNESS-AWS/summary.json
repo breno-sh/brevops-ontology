@@ -1,0 +1,61 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "HARNESS-AWS",
+ "generated_at": "2026-11-03T07:28:39-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/HARNESS-AWS.txt",
+  "brief_sha256": "d2f32adb31d8b55bd5889adb03c7789ece97e29bdc4db5c64854b4ddea1e2b51",
+  "params": {
+   "effort": "maximo",
+   "modo": "unlazy",
+   "onda": "6",
+   "fase": "F1",
+   "render_version": "1.0.0",
+   "protocol_version": "1.0.0",
+   "terraform": "1.15.8",
+   "provider_aws": "6.71.0",
+   "python-hcl2": "8.1.4",
+   "jsonschema": "4.26.0",
+   "nuvem": "nenhuma"
+  },
+  "inputs": [
+   {
+    "path": "$BO_REPO/contracts/stubs",
+    "kind": "dir",
+    "sha256": "83834d95cee77815c0364a2354c4170cef924c61ca43de28a494460c718b1ff8"
+   },
+   {
+    "path": "$BO_REPO/universe/pins.json",
+    "kind": "file",
+    "sha256": "594a4e878ac489b3ed97cdd6344b9945a8fd3a5d22ae4d6f4bfebd264decfe3d"
+   },
+   {
+    "path": "$BO_DATA/downloads/prefetch/aws/6.71.0/providers-schema.json",
+    "kind": "file",
+    "sha256": "ee012f92aeab529dc2abd73c2932261694da877dc116e2320ce7cc986bcdee7e"
+   }
+  ],
+  "recorded_at": "2026-11-03T07:28:39-03:00"
+ },
+ "sources": [
+  {
+   "uri": "https://registry.terraform.io/providers/hashicorp/aws/6.71.0",
+   "license": "MPL-2.0",
+   "transformation": "schema estrutural (terraform providers schema -json, binário assinado, D1) lido para obrigatórios, sensíveis e write_only; zip assinado usado só em terraform validate offline"
+  },
+  {
+   "uri": "https://developer.hashicorp.com/terraform/language/syntax/style",
+   "license": "MPL-2.0 (Terraform)",
+   "transformation": "regras do terraform fmt (alinhamento de =, escapes $${ e %%{) reimplementadas e conferidas contra o binário 1.15.8"
+  },
+  {
+   "uri": "https://pypi.org/project/python-hcl2/8.1.4/",
+   "license": "MIT",
+   "transformation": "parser independente usado só para reler o HCL no gate no_silent_insert"
+  }
+ ],
+ "notes": "Offline: nenhum apply, nenhuma credencial, nenhuma chamada de API de nuvem. Ver CONTRACT_CHANGE.txt (G2 bloqueado pelo caminho e pelo provedor do stub C26)."
+}
