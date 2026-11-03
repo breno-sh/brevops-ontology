@@ -245,3 +245,14 @@ def test_report_lists_losses_and_derived_name_note(tmp_out):
     assert [x["code"] for x in net["losses"]] == ["DENY_NOT_EXPRESSIBLE"]
     assert any("derived_name" in n for n in net["notes"])
     assert rep["counts"]["RENDERED"] == 2 and len(load_jsonl(EX / "lowering_plan.jsonl")) == 2
+
+
+def test_null_on_required_is_missing(tmp_out, example_plans):
+    def f(s):
+        for v in s["values"]:
+            if v["field"] == "name":
+                v["term"] = {"kind": "literal", "datatype": "null", "value": None}
+    pf, bf = write_plan(tmp_out / "a", [mutate(example_plans["LP-OCI-STO-0001"], 1, f)])
+    res = R.render(pf, tmp_out / "oa", bindings_path=bf)
+    assert res.renders[0].status == "UNKNOWN_INPUT"
+    assert [(i.code, i.field) for i in res.renders[0].issues] == [("MISSING_REQUIRED_FIELD", "name")]

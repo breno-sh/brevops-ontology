@@ -505,6 +505,13 @@ def render_plan(plan: dict, graph: dict | None, bindings: dict, tpl: Templates,
                 pr.issues.append(Issue(e.code, step["order"], step["node_id"], fpath, str(e)))
                 continue
             typ = S.leaf_type(attr, toks)
+            t = v["term"]
+            if attr.required and len(toks) and toks[-1].kind == "attr" and t["kind"] == "literal" \
+                    and t["value"] is None:
+                # null num obrigatório é ausência: o Terraform recusaria, e o renderizador não troca por default
+                pr.issues.append(Issue("MISSING_REQUIRED_FIELD", step["order"], step["node_id"], fpath,
+                                       "obrigatório com valor nulo no plano"))
+                continue
             try:
                 expr, source = term_expr(ctx, step, v, typ, f"passo {step['order']} {fpath}", pr, label)
                 w = Written(label, rtype, kind, fpath, _hcl_path(toks), v["origin"], v["marked"],
