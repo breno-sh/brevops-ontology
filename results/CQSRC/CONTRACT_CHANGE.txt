@@ -39,3 +39,12 @@ Efeito enquanto a emenda não sai
   G1 (bo.cq.src_check) reprova por import; G2 (make gate) e G3 (gate_smoke) reprovam por consequência, porque o
   smoke barra tudo quando um comando não resolve. Os demais gates (G4–G8) e gates/CQSRC.sh passam. Pelo
   protocolo (merge só com gates verdes), a branch bo/cqsrc fica pronta e NÃO é mergeada em bo/base.
+
+Precedente (2026-11-03T01:47-03:00)
+  A regeneração do plano às 01:44 (versoes/gerador_pre_gold_fix_20261103_0144) corrigiu o mesmo defeito nos
+  GOLD-*: bo.gold.resolve virou bo.gold_carto.resolve, bo.gold_libcloud.resolve etc. Aplicar a opção B ao
+  CQSRC (bo.cq.src_check -> bo.cqsrc.src_check), e o equivalente ao CQFIX e ao CQRUN, segue a mesma linha.
+
+Outro bloqueio, fora do CQSRC
+  consume_check CQSRC reprova desde 01:44: "SEMANTICS: entrada .../PLANO_BREVOPS_ONTOLOGY.html mudou depois
+  que SEMANTICS a consumiu". Às 01:31 passava. Precisa de invalidate/refresh do SEMANTICS pelo coordenador.
