@@ -19,8 +19,9 @@
    {
     "path": "/Users/breno/doutorado/tese_organizada/papers/01_icse2027-positioning/artifact",
     "kind": "dir",
-    "sha256": "c6461d5f0aa08f50bd45e621c24b6677ac862f1606ce3b1a0039c98394e5e5f9",
-    "sha256_before_semantics_guard_fix": "8fc20eb879baa83bd6d1349a158b3a71f258708458c8808a22326adbfb42b43a"
+    "sha256": "8fc20eb879baa83bd6d1349a158b3a71f258708458c8808a22326adbfb42b43a",
+    "sha256_before_semantics_guard_fix": "8fc20eb879baa83bd6d1349a158b3a71f258708458c8808a22326adbfb42b43a",
+    "sha256_before_coord_fix_0303": "c6461d5f0aa08f50bd45e621c24b6677ac862f1606ce3b1a0039c98394e5e5f9"
    },
    {
     "path": "/Users/breno/doutorado/pesquisa/superficie/reports/ontologia_neutra/revisao_adversarial/R4_novidade_posicionamento.html",

@@ -22,8 +22,9 @@
    {
     "path": "$BO_REPO/requirements",
     "kind": "dir",
-    "sha256": "13ee2afbd304d714bfd7aaa532bfda3869ec78e2c4b4a075872e3024ff502666",
-    "sha256_before_plan_regen_stubpath": "b09d2f301174f7e0cdb7c97483a7729aea19b5f5747cdd8a9e98262237d2cc98"
+    "sha256": "b09d2f301174f7e0cdb7c97483a7729aea19b5f5747cdd8a9e98262237d2cc98",
+    "sha256_before_plan_regen_stubpath": "b09d2f301174f7e0cdb7c97483a7729aea19b5f5747cdd8a9e98262237d2cc98",
+    "sha256_before_coord_fix_0303": "13ee2afbd304d714bfd7aaa532bfda3869ec78e2c4b4a075872e3024ff502666"
    },
    {
     "path": "$BO_REPO/ontology/patterns/ONTPAT.html",

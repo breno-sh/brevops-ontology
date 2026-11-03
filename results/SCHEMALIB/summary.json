@@ -27,8 +27,9 @@
    {
     "path": "/Users/breno/doutorado/pesquisa-lanes/c1-37-icsa/superficie/data/tfschema4",
     "kind": "dir",
-    "sha256": "6bf7f693b86bf2287639670fc9cec8a05ca02482a6ec7e828b5d49d7471dd512",
-    "sha256_before_plan_regen_stubpath": "b316deb417a5fcdafa8e40f621d820a53fb82a0ed7f251898c84fb40c98e0504"
+    "sha256": "b316deb417a5fcdafa8e40f621d820a53fb82a0ed7f251898c84fb40c98e0504",
+    "sha256_before_plan_regen_stubpath": "b316deb417a5fcdafa8e40f621d820a53fb82a0ed7f251898c84fb40c98e0504",
+    "sha256_before_coord_fix_0303": "6bf7f693b86bf2287639670fc9cec8a05ca02482a6ec7e828b5d49d7471dd512"
    },
    {
     "path": "$BO_DATA/downloads/tfschema/aws-5.83.1/schema.json.gz",

@@ -23,26 +23,30 @@
    {
     "path": "/Users/breno/doutorado/pesquisa/superficie/reports/ontologia_neutra/tabelas_oficiais",
     "kind": "dir",
-    "sha256": "dd37cfd76721155699f3e04fa850d8dd7b1acee6ef3640674418b28aba2b45d3",
-    "sha256_before_plan_regen_stubpath": "2570f08ee66ceaea7f42f6035f43866ecb33973cf4302438bdfdb7d0d5b253ce"
+    "sha256": "2570f08ee66ceaea7f42f6035f43866ecb33973cf4302438bdfdb7d0d5b253ce",
+    "sha256_before_plan_regen_stubpath": "2570f08ee66ceaea7f42f6035f43866ecb33973cf4302438bdfdb7d0d5b253ce",
+    "sha256_before_coord_fix_0303": "dd37cfd76721155699f3e04fa850d8dd7b1acee6ef3640674418b28aba2b45d3"
    },
    {
     "path": "/Users/breno/doutorado/pesquisa/superficie/reports/ontologia_neutra/bakeoff/downloads/azure-aws-comparison",
     "kind": "dir",
-    "sha256": "2156376901d843677fc1c83b4e16d09a1503c4a8463f2835938b382457b7fe90",
-    "sha256_before_plan_regen_stubpath": "1625b3068a92bcd40a3441ebde124d5878b186bc9c0e4ed41fdb848c32921e92"
+    "sha256": "1625b3068a92bcd40a3441ebde124d5878b186bc9c0e4ed41fdb848c32921e92",
+    "sha256_before_plan_regen_stubpath": "1625b3068a92bcd40a3441ebde124d5878b186bc9c0e4ed41fdb848c32921e92",
+    "sha256_before_coord_fix_0303": "2156376901d843677fc1c83b4e16d09a1503c4a8463f2835938b382457b7fe90"
    },
    {
     "path": "/Users/breno/doutorado/pesquisa/superficie/reports/ontologia_neutra/bakeoff/downloads/gcloud-comparison",
     "kind": "dir",
-    "sha256": "22cf4ac6dfbf9e89017d689e7c4b337ebe24f0980ec1e065f9caba5f8db0a945",
-    "sha256_before_plan_regen_stubpath": "ad7b6cb778d712230659e9002ed2e18f11c97c4c763b6edb79ad9dd3dd49477d"
+    "sha256": "ad7b6cb778d712230659e9002ed2e18f11c97c4c763b6edb79ad9dd3dd49477d",
+    "sha256_before_plan_regen_stubpath": "ad7b6cb778d712230659e9002ed2e18f11c97c4c763b6edb79ad9dd3dd49477d",
+    "sha256_before_coord_fix_0303": "22cf4ac6dfbf9e89017d689e7c4b337ebe24f0980ec1e065f9caba5f8db0a945"
    },
    {
     "path": "$BO_DATA/downloads/oci-service-comparison",
     "kind": "dir",
-    "sha256": "7c68fab50858bf1d01ec551e1f71388b9a92982fa23226f8171d96d433cdb3d7",
-    "sha256_before_plan_regen_stubpath": "b701ecd1c8aaa8840513bdced11e47dfc939e3f1d80b7d1c708e455b2da02317"
+    "sha256": "b701ecd1c8aaa8840513bdced11e47dfc939e3f1d80b7d1c708e455b2da02317",
+    "sha256_before_plan_regen_stubpath": "b701ecd1c8aaa8840513bdced11e47dfc939e3f1d80b7d1c708e455b2da02317",
+    "sha256_before_coord_fix_0303": "7c68fab50858bf1d01ec551e1f71388b9a92982fa23226f8171d96d433cdb3d7"
    }
   ],
   "recorded_at": "2026-11-03T01:41:19-03:00"
