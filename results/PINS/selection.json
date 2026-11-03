@@ -1,0 +1,296 @@
+{
+ "schema": "bo.pins.selection/1",
+ "module": "PINS",
+ "generated_at": "2026-11-03T01:37:14-03:00",
+ "cutoff": {
+  "date": "2026-11-02",
+  "timezone": "America/Recife",
+  "end_exclusive": "2026-11-03T00:00:00-03:00",
+  "rule": "pin = maior versão SemVer sem pré-lançamento com published-at (Registry v2) antes de end_exclusive; a mesma data para os 4 providers"
+ },
+ "window": {
+  "start": "2021-01-01",
+  "rule": "estado (mesma regra do pin) no fim de cada trimestre completo desde start; mais a primeira estável de cada major publicada na janela; mais o pin. Antes de start: truncamento à esquerda declarado (left_truncation)."
+ },
+ "index": {
+  "path": "$BO_DATA/PINS/registry_index/snapshot.json",
+  "sha256": "0fa34ddb8097eedb45e0fd59acb2758f0f96cb579a48ee537a3b6635b6c69487",
+  "fetched_at": "2026-11-03T01:37:14-03:00"
+ },
+ "terraform": {
+  "pinned": "1.15.8",
+  "pinned_published_at": "2026-07-08T17:45:58.036Z",
+  "pinned_status": "supported",
+  "zip": "terraform_1.15.8_darwin_arm64.zip",
+  "zip_sha256": "f210110c5698b94d803a7a63cdb0251b5455c150841478808e2bbb343f95ed68",
+  "stable_at_cutoff": "1.17.1",
+  "local_binary_matches_official": true,
+  "why_not_stable_at_cutoff": "o CLI é ferramenta de extração, não objeto de estudo: fica no que o ambiente usa (mise global) e que gerou os schemas da pré-busca; trocar mudaria o PATH global do Mac e o formato de saída do schema (e com ele os sha256). A data de corte vale para os providers."
+ },
+ "providers": [
+  {
+   "provider": "aws",
+   "source": "registry.terraform.io/hashicorp/aws",
+   "pin": "6.71.0",
+   "pin_published_at": "2026-10-28T20:19:55Z",
+   "pin_age_days_at_cutoff": 5,
+   "releases_total": 514,
+   "stable_total": 511,
+   "prerelease_total": 3,
+   "stable_in_window": 343,
+   "history_selected": 26,
+   "quarters": 23,
+   "quarters_without_release": [],
+   "majors_in_window": [
+    "4.0.0",
+    "5.0.0",
+    "6.0.0"
+   ],
+   "index_first_in_window": [],
+   "history_without_darwin_arm64": [],
+   "history_protocols": [
+    "5.0"
+   ],
+   "published_after_cutoff_in_snapshot": [],
+   "left_truncation": {
+    "at": "2021-01-01T00:00:00-03:00",
+    "version_in_force": "3.22.0",
+    "major_in_force": 3,
+    "index_first_version": "0.1.0",
+    "index_first_published_at": "2017-07-12T17:43:35Z"
+   },
+   "signature": {
+    "registry_key_good": false,
+    "registry_key_expired_copy": true,
+    "vendor_key_good": true,
+    "primary_fingerprint": "C874011F0AB405110D02105534365D9472D7468F"
+   },
+   "schema": {
+    "schema_sha256": "ee012f92aeab529dc2abd73c2932261694da877dc116e2320ce7cc986bcdee7e",
+    "schema_canonical_sha256": "f87afa8dc03bae1c5fe6d9053f15cee115643cbea87d741bde825b636fc16468",
+    "lock_h1": [
+     "h1:sZCupscga0Grk22+04FNY1RYDeOcVbCTd6ff8+hsF94="
+    ],
+    "schema_file": "$BO_DATA/downloads/prefetch/aws/6.71.0/providers-schema.json",
+    "schema_bytes": 20306332,
+    "format_version": "1.0",
+    "counts": {
+     "resource_schemas": 1746,
+     "data_source_schemas": 687,
+     "ephemeral_resource_schemas": 11,
+     "list_resource_schemas": 262,
+     "action_schemas": 12,
+     "functions": 4
+    }
+   },
+   "legacy_pin": {
+    "version": "6.64.0",
+    "published_at": "2026-09-09T20:52:07Z",
+    "stable_releases_between_legacy_and_pin": 8
+   }
+  },
+  {
+   "provider": "google",
+   "source": "registry.terraform.io/hashicorp/google",
+   "pin": "8.9.0",
+   "pin_published_at": "2026-10-27T17:27:23Z",
+   "pin_age_days_at_cutoff": 6,
+   "releases_total": 435,
+   "stable_total": 434,
+   "prerelease_total": 1,
+   "stable_in_window": 323,
+   "history_selected": 29,
+   "quarters": 23,
+   "quarters_without_release": [],
+   "majors_in_window": [
+    "4.0.0",
+    "5.0.0",
+    "6.0.0",
+    "7.0.0",
+    "8.0.0"
+   ],
+   "index_first_in_window": [],
+   "history_without_darwin_arm64": [
+    "3.62.0"
+   ],
+   "history_protocols": [
+    "5.0"
+   ],
+   "published_after_cutoff_in_snapshot": [],
+   "left_truncation": {
+    "at": "2021-01-01T00:00:00-03:00",
+    "version_in_force": "3.51.0",
+    "major_in_force": 3,
+    "index_first_version": "0.1.0",
+    "index_first_published_at": "2017-07-12T17:45:07Z"
+   },
+   "signature": {
+    "registry_key_good": false,
+    "registry_key_expired_copy": true,
+    "vendor_key_good": true,
+    "primary_fingerprint": "C874011F0AB405110D02105534365D9472D7468F"
+   },
+   "schema": {
+    "schema_sha256": "239c0eae0e0ae9453cfe8cb7690646882f8ac0f9387ba4a67b5168917ecb8345",
+    "schema_canonical_sha256": "de1e52374c9030d5e458ce6e42d5662a6c4bf51e621a60b011eb7e7ff1cb8e40",
+    "lock_h1": [
+     "h1:EcUkiM2dD/TtxkpcH/2BtPFp8oHIiU4x6R/Dn43sS3Y="
+    ],
+    "schema_file": "$BO_DATA/downloads/prefetch/google/8.9.0/providers-schema.json",
+    "schema_bytes": 9939270,
+    "format_version": "1.0",
+    "counts": {
+     "resource_schemas": 1392,
+     "data_source_schemas": 473,
+     "ephemeral_resource_schemas": 6,
+     "list_resource_schemas": 153,
+     "action_schemas": 0,
+     "functions": 6
+    }
+   },
+   "legacy_pin": {
+    "version": "8.2.0",
+    "published_at": "2026-09-08T17:43:19Z",
+    "stable_releases_between_legacy_and_pin": 8
+   }
+  },
+  {
+   "provider": "azurerm",
+   "source": "registry.terraform.io/hashicorp/azurerm",
+   "pin": "5.12.0",
+   "pin_published_at": "2026-10-29T15:00:28Z",
+   "pin_age_days_at_cutoff": 4,
+   "releases_total": 413,
+   "stable_total": 413,
+   "prerelease_total": 0,
+   "stable_in_window": 298,
+   "history_selected": 27,
+   "quarters": 23,
+   "quarters_without_release": [],
+   "majors_in_window": [
+    "3.0.0",
+    "4.0.0",
+    "5.0.0"
+   ],
+   "index_first_in_window": [],
+   "history_without_darwin_arm64": [],
+   "history_protocols": [
+    "5.0"
+   ],
+   "published_after_cutoff_in_snapshot": [],
+   "left_truncation": {
+    "at": "2021-01-01T00:00:00-03:00",
+    "version_in_force": "2.41.0",
+    "major_in_force": 2,
+    "index_first_version": "0.1.0",
+    "index_first_published_at": "2017-07-12T17:43:53Z"
+   },
+   "signature": {
+    "registry_key_good": false,
+    "registry_key_expired_copy": true,
+    "vendor_key_good": true,
+    "primary_fingerprint": "C874011F0AB405110D02105534365D9472D7468F"
+   },
+   "schema": {
+    "schema_sha256": "d6c6ad1c8347a81c4cdf36abd7d07990046adbc0695691f4ca6d54284bb81cdb",
+    "schema_canonical_sha256": "7ae7058feb494eefaf690c01f0652da50dff749d8a3664c755fbd5e2a2a51cb4",
+    "lock_h1": [
+     "h1:yX4T/9JVOTsMDL9wBMTBRj2t/2EAHhc+U3Mibps26Rs="
+    ],
+    "schema_file": "$BO_DATA/downloads/prefetch/azurerm/5.12.0/providers-schema.json",
+    "schema_bytes": 3240087,
+    "format_version": "1.0",
+    "counts": {
+     "resource_schemas": 1107,
+     "data_source_schemas": 398,
+     "ephemeral_resource_schemas": 2,
+     "list_resource_schemas": 124,
+     "action_schemas": 8,
+     "functions": 2
+    }
+   },
+   "legacy_pin": {
+    "version": "5.5.0",
+    "published_at": "2026-09-10T15:56:21Z",
+    "stable_releases_between_legacy_and_pin": 7
+   }
+  },
+  {
+   "provider": "oci",
+   "source": "registry.terraform.io/oracle/oci",
+   "pin": "9.11.0",
+   "pin_published_at": "2026-10-21T21:11:04Z",
+   "pin_age_days_at_cutoff": 12,
+   "releases_total": 227,
+   "stable_total": 227,
+   "prerelease_total": 0,
+   "stable_in_window": 227,
+   "history_selected": 25,
+   "quarters": 23,
+   "quarters_without_release": [
+    "2021Q1",
+    "2021Q2",
+    "2021Q3",
+    "2021Q4"
+   ],
+   "majors_in_window": [
+    "5.0.0",
+    "6.0.0",
+    "7.0.0",
+    "8.0.0",
+    "9.0.0"
+   ],
+   "index_first_in_window": [
+    "4.67.3"
+   ],
+   "history_without_darwin_arm64": [],
+   "history_protocols": [
+    "5.0"
+   ],
+   "published_after_cutoff_in_snapshot": [],
+   "left_truncation": {
+    "at": "2021-01-01T00:00:00-03:00",
+    "version_in_force": null,
+    "major_in_force": null,
+    "index_first_version": "4.67.3",
+    "index_first_published_at": "2022-03-14T19:33:16Z"
+   },
+   "signature": {
+    "registry_key_good": true,
+    "registry_key_expired_copy": false,
+    "vendor_key_good": null,
+    "primary_fingerprint": "7F1079B5E6547DBFCCEFB9A41533A49284137CEB"
+   },
+   "schema": {
+    "schema_sha256": "ae0101e5473f7adfd65993dfc335c99285df2bc88ed97fe74c712fb704f55237",
+    "schema_canonical_sha256": "6692ef7f13367bea7bb6f9ff9516530b688208349f98d82ce2873ce82aaf1a69",
+    "lock_h1": [
+     "h1:J8gYgPyT7qX79lIQG6gadh6Al7NvttM3Icm7VH3NlD4="
+    ],
+    "schema_file": "$BO_DATA/downloads/prefetch/oci/9.11.0/providers-schema.json",
+    "schema_bytes": 7236734,
+    "format_version": "1.0",
+    "counts": {
+     "resource_schemas": 1026,
+     "data_source_schemas": 2431,
+     "ephemeral_resource_schemas": 0,
+     "list_resource_schemas": 0,
+     "action_schemas": 0,
+     "functions": 0
+    }
+   },
+   "legacy_pin": {
+    "version": "9.1.0",
+    "published_at": "2026-09-10T15:19:01Z",
+    "stable_releases_between_legacy_and_pin": 7
+   }
+  }
+ ],
+ "legacy": {
+  "file": "/Users/breno/doutorado/pesquisa-lanes/c1-37-icsa/superficie/data/tfschema4/versions.tf",
+  "sha256": "a5adf05c5293631b491a468790c62c672a8aeb369c7c4dfc0ef223f42ef6f82e",
+  "published_span_hours": 46.2,
+  "note": "pins anteriores (catálogo C1, versions.tf): versões escolhidas sem data de corte declarada; published_span_hours = distância entre a mais antiga e a mais nova delas. O PINS declara a data e a regra, e conta quantas estáveis saíram entre cada pin antigo e o novo (providers[].legacy_pin)."
+ },
+ "schema_sha256_definition": "sha256 dos bytes de `terraform providers schema -json` (Terraform 1.15.8 darwin_arm64) com main.tf só com required_providers desse provider; schema_canonical_sha256 = sha256 do bloco do provider em JSON canônico (chaves ordenadas, sem espaços), estável entre versões do CLI que não mudem o conteúdo"
+}

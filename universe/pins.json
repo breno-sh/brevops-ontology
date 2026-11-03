@@ -1,0 +1,41 @@
+{
+ "schema": "bo.pins/1",
+ "contract": "C13",
+ "contract_version": "3.0.0",
+ "module": "PINS",
+ "generated_at": "2026-11-03T01:37:14-03:00",
+ "terraform": {
+  "version": "1.15.8",
+  "sha256": "f210110c5698b94d803a7a63cdb0251b5455c150841478808e2bbb343f95ed68"
+ },
+ "providers": [
+  {
+   "provider": "aws",
+   "source": "registry.terraform.io/hashicorp/aws",
+   "version": "6.71.0",
+   "shasums_sha256": "5ec758085857f8d05d98043738a0c69632ec6dc54cc3561cd196936ce55728a9",
+   "schema_sha256": "ee012f92aeab529dc2abd73c2932261694da877dc116e2320ce7cc986bcdee7e"
+  },
+  {
+   "provider": "google",
+   "source": "registry.terraform.io/hashicorp/google",
+   "version": "8.9.0",
+   "shasums_sha256": "259099fb04f7cfda6fae304bfb7c1f7a840bfd09f74ea7855b3d458ac40254ba",
+   "schema_sha256": "239c0eae0e0ae9453cfe8cb7690646882f8ac0f9387ba4a67b5168917ecb8345"
+  },
+  {
+   "provider": "azurerm",
+   "source": "registry.terraform.io/hashicorp/azurerm",
+   "version": "5.12.0",
+   "shasums_sha256": "496bf13fde1cfa927a585fedfcb14743dd64ee35f9ebab9b8db57499be02c04c",
+   "schema_sha256": "d6c6ad1c8347a81c4cdf36abd7d07990046adbc0695691f4ca6d54284bb81cdb"
+  },
+  {
+   "provider": "oci",
+   "source": "registry.terraform.io/oracle/oci",
+   "version": "9.11.0",
+   "shasums_sha256": "02b240477f7ac618ea249461b8bf8f4b0be0e2d43fd78a16144b858313633956",
+   "schema_sha256": "ae0101e5473f7adfd65993dfc335c99285df2bc88ed97fe74c712fb704f55237"
+  }
+ ]
+}

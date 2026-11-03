@@ -1,0 +1,67 @@
+PINS -> CONTRACTS: mudança proposta no C13 3.0.0 e no validador único
+Gravado em 2026-11-03T01:42:08-03:00 (America/Recife) pelo módulo PINS, branch bo/pins, base 755f655.
+Dono do que muda: CONTRACTS (contracts/C13_versions.schema.json, src/bo/contracts/catalog.py). O PINS não
+edita nada disso; parou antes do merge em bo/base.
+
+PROBLEMA 1 (bloqueia o gate G1 do catálogo; nada no pins.json está errado)
+  Gate: python -I -m bo.contracts.validate versions $BO_REPO/universe/pins.json
+  "versions" é ao mesmo tempo o NOME do contrato C13 e o TIPO de arquivo versions (versions.json).
+  catalog.resolve() procura primeiro por tipo; acha só "versions" e não chega a escolher pelo nome do
+  arquivo. Resultado: pins.json é validado contra o schema de versions.json e sempre reprova:
+    C13:versions universe/pins.json: 4 erro(s) -> REPROVADO ('provider' e 'versions' obrigatórios, ...)
+  O mesmo arquivo passa com o alias do contrato ou do tipo certo:
+    python -I -m bo.contracts.validate C13 universe/pins.json        -> C13:pins ... 0 erro(s) -> OK
+    python -I -m bo.contracts.validate C13_pins universe/pins.json   -> C13:pins ... 0 erro(s) -> OK
+  Reproduzir com o próprio stub: python -I -m bo.contracts.validate versions contracts/stubs/C13/pins.json
+  (reprova; o stub é do CONTRACTS).
+
+  Mudança proposta (uma das duas; a A não mexe em texto de gate do plano):
+  A. catalog.resolve(alias, path): quando o alias é o nome de um contrato (NAMES) E também o tipo de um
+     arquivo desse mesmo contrato, e há path, escolher entre os tipos do contrato pelo nome do arquivo
+     (como já faz para Cnn); só cair no tipo homônimo se nenhum padrão de arquivo casar. Teste novo:
+     "validate versions pins.json" -> C13:pins; "validate versions versions.json" -> C13:versions;
+     "validate versions events.jsonl" -> C13:events.
+  B. trocar no modulos.json o gate do PINS para "python -I -m bo.contracts.validate pins $BO_REPO/universe/pins.json".
+
+PROBLEMA 2 (falta tipo no C13 para universe/history_versions.json)
+  O catálogo de artefatos diz "universe/history_versions.json  PINS  C13@3.0.0  HIST x4", mas o C13 3.0.0
+  só tem pins.json, versions.json (UM provider por documento: "provider" obrigatório,
+  additionalProperties=false) e events.jsonl. A lista histórica dos 4 providers não cabe em nenhum deles,
+  e o nome history_versions.json não casa com o padrão "versions.json".
+  O que o PINS gravou (sem inventar campo dentro do C13): um envelope cujo providers[].versions_doc é,
+  cada um, um documento C13 versions completo e válido (bo.pins.check valida os 4 com o validador único);
+  o resto do envelope é metadado da escolha. Os HIST-{provider} podem copiar versions_doc como ponto de
+  partida do seu $BO_DATA/HIST-*/versions.json.
+
+  Mudança proposta: tipo novo "history_versions" no C13 (file history_versions.json, format json,
+  record history_versions, unit document), produtor PINS, consumidores HIST-{provider}:
+    {
+     "schema": {"const": "bo.history_versions/1"}, "contract": {"const": "C13"},
+     "contract_version": {"const": "3.0.0"}, "module": stable_id, "generated_at": datetime,
+     "cutoff": {"date": date, "timezone": "America/Recife", "end_exclusive": datetime, "rule": string},
+     "window": {"start": date, "rule": string},
+     "index": file_ref + {"fetched_at": datetime},
+     "providers": [{
+        "provider": provider, "source": "registry.terraform.io/<ns>/<tipo>", "pin": semver,
+        "index_files": {"registry_v1": file_ref, "registry_v2": file_ref},
+        "versions_doc": {"$ref": "#/$defs/versions"},
+        "selection": [{"version": semver, "published_at": datetime, "released_at": date,
+                       "reasons": [/^(quarter_end:\d{4}Q[1-4]|major_first:\d+|index_first|cutoff:\d{4}-\d{2}-\d{2})$/],
+                       "index_sha256": sha256, "protocols": [string], "darwin_arm64": bool,
+                       "linux_amd64": bool}],
+        "left_truncation": {"at": datetime, "version_in_force": semver|null, "major_in_force": int|null,
+                            "index_first_version": semver, "index_first_published_at": datetime}
+     }] (minItems 1),
+     "note": string
+    }
+  Regras semânticas propostas: C13-HIST-PIN (a última versão de cada versions_doc é o pin daquele
+  provider em pins.json, com schema_sha256 igual); C13-HIST-SEL (selection e versions_doc listam as
+  mesmas versões, mesma ordem e mesmo released_at); C13-UNIQ já vale dentro de cada versions_doc.
+
+FORA DO PINS, só para o CONTRACTS saber (não bloqueia o PINS)
+  O gate do DRIFT "validate versions $BO_DATA/DRIFT/atom_history.jsonl" também não casa com nenhum
+  tipo do C13 (atom_history.jsonl não existe no contrato).
+
+Estado do PINS: implementação, instantâneo do Registry e saídas prontos e conferidos na branch bo/pins
+(bo.pins.check: tudo OK). Falta só o G1 (e o G3, que roda o G1, e o G10, o merge). Depois da mudança A,
+basta rodar de novo o gate-check do PINS e fazer o merge; nenhuma saída do PINS muda.

@@ -1,0 +1,116 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "PINS",
+ "generated_at": "2026-11-03T01:42:55-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PINS.txt",
+  "brief_sha256": "9a0cbcf447e8a976d97b93a1a3f662bd6fcfb2a46e9627fe4c7375d937b3059a",
+  "params": {
+   "cutoff_date": "2026-11-02",
+   "cutoff_timezone": "America/Recife",
+   "history_start": "2021-01-01",
+   "history_rule": "fim de cada trimestre completo + primeira estável de cada major na janela + pin",
+   "stable_rule": "maior SemVer sem pré-lançamento publicada antes do fim do dia de corte",
+   "terraform_cli": "1.15.8",
+   "platform": "darwin_arm64",
+   "network": "registry.terraform.io,api.releases.hashicorp.com,releases.hashicorp.com,www.hashicorp.com",
+   "cloud": "none",
+   "fetch": "python -I -m bo.pins.fetch",
+   "generator": "python -I -m bo.pins.build"
+  },
+  "inputs": [
+   {
+    "path": "/Users/breno/doutorado/pesquisa-lanes/c1-37-icsa/superficie/data/tfschema4/versions.tf",
+    "kind": "file",
+    "sha256": "a5adf05c5293631b491a468790c62c672a8aeb369c7c4dfc0ef223f42ef6f82e"
+   },
+   {
+    "path": "$BO_DATA/PINS/registry_index/snapshot.json",
+    "kind": "file",
+    "sha256": "0fa34ddb8097eedb45e0fd59acb2758f0f96cb579a48ee537a3b6635b6c69487"
+   },
+   {
+    "path": "$BO_DATA/downloads/prefetch/aws/6.71.0/providers-schema.json",
+    "kind": "file",
+    "sha256": "ee012f92aeab529dc2abd73c2932261694da877dc116e2320ce7cc986bcdee7e"
+   },
+   {
+    "path": "$BO_DATA/downloads/prefetch/aws/6.71.0/MANIFEST.json",
+    "kind": "file",
+    "sha256": "f060d45ed2640966363a245a9fc8fa105fcc3475e82b6220b90c5652de0c0826"
+   },
+   {
+    "path": "$BO_DATA/downloads/prefetch/google/8.9.0/providers-schema.json",
+    "kind": "file",
+    "sha256": "239c0eae0e0ae9453cfe8cb7690646882f8ac0f9387ba4a67b5168917ecb8345"
+   },
+   {
+    "path": "$BO_DATA/downloads/prefetch/google/8.9.0/MANIFEST.json",
+    "kind": "file",
+    "sha256": "2660793138517df06ffd44ed74bd8e96efb3d79944a2d5ba92056fa49264c6de"
+   },
+   {
+    "path": "$BO_DATA/downloads/prefetch/azurerm/5.12.0/providers-schema.json",
+    "kind": "file",
+    "sha256": "d6c6ad1c8347a81c4cdf36abd7d07990046adbc0695691f4ca6d54284bb81cdb"
+   },
+   {
+    "path": "$BO_DATA/downloads/prefetch/azurerm/5.12.0/MANIFEST.json",
+    "kind": "file",
+    "sha256": "fb4baa1cdcc84b3da86a5399ff6f0b7f6bf5bf9f671bbf0e206f3447ee0f5a0e"
+   },
+   {
+    "path": "$BO_DATA/downloads/prefetch/oci/9.11.0/providers-schema.json",
+    "kind": "file",
+    "sha256": "ae0101e5473f7adfd65993dfc335c99285df2bc88ed97fe74c712fb704f55237"
+   },
+   {
+    "path": "$BO_DATA/downloads/prefetch/oci/9.11.0/MANIFEST.json",
+    "kind": "file",
+    "sha256": "3a3bedf5a1e7fd6f48fd23a8f6a103c7f6c28b9be394ac8ef1cfab0ad4d01b9b"
+   }
+  ],
+  "recorded_at": "2026-11-03T01:42:55-03:00"
+ },
+ "sources": [
+  {
+   "uri": "https://registry.terraform.io/v1/providers/{ns}/{tipo}/versions",
+   "license": "metadados públicos do Terraform Registry (termos de uso da HashiCorp)",
+   "transformation": "versões, protocolos e plataformas; resposta bruta em $BO_DATA/PINS/registry_index/providers/{provider}/"
+  },
+  {
+   "uri": "https://registry.terraform.io/v2/providers/{ns}/{tipo}?include=provider-versions",
+   "license": "metadados públicos do Terraform Registry (termos de uso da HashiCorp)",
+   "transformation": "published-at de cada versão: data de corte, estado trimestral e released_at"
+  },
+  {
+   "uri": "https://registry.terraform.io/v1/providers/{ns}/{tipo}/{versão}/download/darwin/arm64",
+   "license": "metadados públicos do Terraform Registry",
+   "transformation": "shasum do zip, URLs do SHA256SUMS e chave pública de assinatura do pin"
+  },
+  {
+   "uri": "https://api.releases.hashicorp.com/v1/releases/terraform",
+   "license": "metadados públicos da HashiCorp",
+   "transformation": "versão estável do Terraform CLI no corte e dados do 1.15.8"
+  },
+  {
+   "uri": "https://releases.hashicorp.com/terraform/1.15.8/",
+   "license": "binário oficial (BUSL-1.1), só conferido",
+   "transformation": "SHA256SUMS assinado e zip darwin_arm64 para comparar com o binário local; zip apagado"
+  },
+  {
+   "uri": "https://www.hashicorp.com/.well-known/pgp-key.txt",
+   "license": "chave pública da HashiCorp",
+   "transformation": "conferência das assinaturas (a cópia servida pelo Registry está com a validade vencida)"
+  },
+  {
+   "uri": "$BO_DATA/downloads/prefetch/",
+   "license": "pré-busca do coordenador (dados públicos)",
+   "transformation": "providers-schema.json e SHA256SUMS(.sig) reaproveitados após conferir sha256 contra o MANIFEST.json"
+  }
+ ],
+ "notes": "C13 pins + lista histórica; nenhuma conta de nuvem, nenhuma credencial; contrato com lacuna em results/PINS/CONTRACT_CHANGE.txt"
+}
