@@ -177,3 +177,22 @@ def read_sha_file(p: Path) -> str:
     if not re.fullmatch(r"[0-9a-f]{64}", sha):
         raise PinError(f"{p}: sha256 fora do formato")
     return sha
+
+
+def signed_lines(cache: Path, version: str, lock_h1: str) -> str:
+    """Conteúdo do plugin_cache/SIGNED.sha256 (formato do sha256sum, caminhos relativos ao plugin_cache).
+
+    Só sai se o h1 da pasta do provider for o do lock (cujos zh: vêm do SHA256SUMS assinado fixado no pin):
+    o SHA256SUMS assina o zip; o terraform init conferiu o zip contra os zh: ao desempacotar, e o h1 amarra os
+    arquivos desempacotados. O privacy_lint aceita o binário grande que aparece aqui ([COORD] 1d74cd8).
+    """
+    pdir = provider_dir(cache, version)
+    h1 = dirhash_h1(pdir)
+    if h1 != lock_h1:
+        raise PinError(f"SIGNED.sha256: h1 da pasta do provider ({h1}) != h1 do lock ({lock_h1})")
+    files = sorted(p for p in pdir.rglob("*") if p.is_file())
+    return "".join(f"{sha256_file(p)}  {p.relative_to(cache).as_posix()}\n" for p in files)
+
+
+def signed_path() -> Path:
+    return plugin_cache() / "SIGNED.sha256"

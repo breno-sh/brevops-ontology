@@ -11,7 +11,8 @@
 6. átomos e tipos pela biblioteca (bo.schema_gcp.atoms), validados no validador único (C01, C02);
 7. bo.schema.crosscheck --provider google (índice do Registry da versão); o veredito é registrado, não ajustado;
    bo.schema_gcp.beta_check mede a causa das páginas sem tipo (google-beta da mesma versão), sem mudar o veredito;
-8. build_report.json e MANIFEST.sha256 da pasta do módulo.
+8. plugin_cache/SIGNED.sha256 (sha256 dos arquivos do provider, depois do h1 conferido), build_report.json e
+   MANIFEST.sha256 da pasta do módulo.
 """
 
 from __future__ import annotations
@@ -90,6 +91,7 @@ def run(do_extract: bool, fetch_index: bool) -> dict:
     binary = sorted(pdir.glob("terraform-provider-*"))
     if len(binary) != 1 or C.sha256_file(binary[0]) != receipt["provider_binary"]["sha256"]:
         raise C.PinError("binário do plugin_cache não é o do receipt do extract")
+    C.signed_path().write_text(C.signed_lines(cache, v, sig["h1"]), encoding="utf-8")
 
     off = offline.run(C.bo_tmp() / "offline-pipeline")
     if off["sha256"] != raw_sha:

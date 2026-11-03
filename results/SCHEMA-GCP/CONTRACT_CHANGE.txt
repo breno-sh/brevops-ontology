@@ -39,6 +39,9 @@ lacuna da biblioteca. Nenhum contrato C01/C02/C17 está errado; as saídas confe
    terraform.lock.hcl derivado do SHA256SUMS fixado no pins.json); (a2) o catálogo tira plugin_cache/ do
    caminho varrido do G7 dos SCHEMA-*.
    O mesmo vale para SCHEMA-AWS, SCHEMA-AZURE e SCHEMA-OCI (todos guardam o binário em plugin_cache/).
+   Resolução (2026-11-03T17:37-03:00): o driver adotou a1 ([COORD] 1d74cd8). O módulo grava
+   $BO_DATA/SCHEMA-GCP/plugin_cache/SIGNED.sha256 só depois de conferir o h1 da pasta do provider contra o lock
+   (zh: do SHA256SUMS fixado no pin); o regen_check confere o arquivo. G7 e G4 saem do ABANDON se passarem.
 
 3. Lacuna da biblioteca (dono: SCHEMALIB), sem bloqueio
    bo.schema.core ainda não grava o campo opcional write_only do C01 2.1.0. Este módulo o acrescenta em

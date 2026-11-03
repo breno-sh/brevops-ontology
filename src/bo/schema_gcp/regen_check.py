@@ -53,6 +53,8 @@ def main(argv=None) -> int:
     h1 = C.dirhash_h1(C.provider_dir(C.plugin_cache(), v))
     if h1 not in lock.hashes:
         problems.append(f"h1 da pasta do provider ({h1}) fora do lock")
+    if C.signed_path().read_text(encoding="utf-8") != C.signed_lines(C.plugin_cache(), v, sig["h1"]):
+        problems.append("plugin_cache/SIGNED.sha256 não confere com os arquivos do provider")
     out = C.out_dir()
     stored = {"schema_json": C.read_sha_file(out / "schema.json.sha256"),
               "atoms.jsonl": C.sha256_file(out / "atoms.jsonl"), "types.jsonl": C.sha256_file(out / "types.jsonl")}

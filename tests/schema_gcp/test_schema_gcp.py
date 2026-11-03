@@ -59,6 +59,18 @@ def test_h1_e_o_dirhash_do_terraform(work):
     assert C.dirhash_h1(d) != want
 
 
+def test_signed_sha256_so_com_h1_do_lock(work):
+    d = C.provider_dir(work, "8.9.0")
+    d.mkdir(parents=True)
+    (d / "terraform-provider-google_v8.9.0_x5").write_bytes(b"\x00binario")
+    h1 = C.dirhash_h1(d)
+    txt = C.signed_lines(work, "8.9.0", h1)
+    want = hashlib.sha256(b"\x00binario").hexdigest()
+    assert txt == f"{want}  {C.ADDRESS}/8.9.0/{C.OS_ARCH}/terraform-provider-google_v8.9.0_x5\n"
+    with pytest.raises(C.PinError):
+        C.signed_lines(work, "8.9.0", "h1:outro=")
+
+
 def test_signed_inputs_reprova_pin_com_outro_sha():
     pin = C.read_pin()
     if not C.prefetch_dir(pin["version"]).exists():
