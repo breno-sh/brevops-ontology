@@ -1,0 +1,125 @@
+{
+ "schema": "bo.contracts_adoption/1",
+ "module": "CONTRACTS",
+ "generated_at": "2026-11-03T01:13:38-03:00",
+ "adopted": [
+  {
+   "source": "results/REQUIREMENTS/C24_proposta/requirements.schema.json",
+   "source_sha256_now": "a0c2b8f02076b6fd0416abdfa69651ccbc00dde9ac5504c189e7c9d72e8a4e2d",
+   "frozen_copy": "src/bo/contracts/adopted/C24_requirements.json",
+   "frozen_sha256": "a0c2b8f02076b6fd0416abdfa69651ccbc00dde9ac5504c189e7c9d72e8a4e2d",
+   "drift": false,
+   "contract": "C24",
+   "definition": "#/$defs/requirement",
+   "change": "adotado sem mudança (só $schema/$id saem, o contrato dá o $id)"
+  },
+  {
+   "source": "results/REQUIREMENTS/C24_proposta/commitments.schema.json",
+   "source_sha256_now": "7b713c63e36eede9d31f5427fda91acb670165f0d2dc23a5e4c9f95358093ffe",
+   "frozen_copy": "src/bo/contracts/adopted/C24_commitments.json",
+   "frozen_sha256": "7b713c63e36eede9d31f5427fda91acb670165f0d2dc23a5e4c9f95358093ffe",
+   "drift": false,
+   "contract": "C24",
+   "definition": "#/$defs/commitment",
+   "change": "adotado sem mudança"
+  },
+  {
+   "source": "results/REQUIREMENTS/C24_proposta/cq_spec.schema.json",
+   "source_sha256_now": "7127bf23e5ebed9c52939439339c79a5deb8fe1e7836472b1e9a221d6f4a8e63",
+   "frozen_copy": "src/bo/contracts/adopted/C24_cq_spec.json",
+   "frozen_sha256": "7127bf23e5ebed9c52939439339c79a5deb8fe1e7836472b1e9a221d6f4a8e63",
+   "drift": false,
+   "contract": "C24",
+   "definition": "#/$defs/cq_spec",
+   "change": "adotado sem mudança"
+  },
+  {
+   "source": "results/ONTPAT/C14_proposta/realization_row.schema.json",
+   "source_sha256_now": "38f5598fd8913a786992320bcf0f1926b159e70264c03535d00a9ebcd7ba4668",
+   "frozen_copy": "src/bo/contracts/adopted/C14_realization.json",
+   "frozen_sha256": "38f5598fd8913a786992320bcf0f1926b159e70264c03535d00a9ebcd7ba4668",
+   "drift": false,
+   "contract": "C14",
+   "definition": "#/$defs/realization",
+   "change": "provider passa a ser o do C00 (real ou sintético provider_x); guards aceitam texto ou guarda tipada do C10; acrescenta references (referências entre artefatos criados) e exclusivity_proof, exigida só quando há alternativas declaradas ProvenExclusive (o exemplo do ONTPAT continua válido)"
+  },
+  {
+   "source": "results/SEMANTICS/C09_proposta/correspondence.schema.json",
+   "source_sha256_now": "551887f87c5f130e04d2f9766ff7fd5e6e7881eb4c58f2a5aeda02cc1c483d8a",
+   "frozen_copy": "src/bo/contracts/adopted/C09_correspondence.json",
+   "frozen_sha256": "551887f87c5f130e04d2f9766ff7fd5e6e7881eb4c58f2a5aeda02cc1c483d8a",
+   "drift": false,
+   "contract": "C09",
+   "definition": "#/$defs/correspondence",
+   "change": "ids pelo C00; guarda por $ref ao C10; value_type com os marcadores QUDT do C00; translation_fn por nome (o registro do núcleo/C10 é conferido na regra C09-FN, não num enum congelado); projection e group tipados; acrescenta alternative_to, exclusivity, supersedes, inverse_of e os slots padrão do SSSOM; registro fechado"
+  },
+  {
+   "source": "results/SEMANTICS/C10_proposta/guard.schema.json",
+   "source_sha256_now": "29e814a0f83fc9af3af2f2403c103d70da56fe6a606e090761b295c185dc1a62",
+   "frozen_copy": "src/bo/contracts/adopted/C10_guard.json",
+   "frozen_sha256": "29e814a0f83fc9af3af2f2403c103d70da56fe6a606e090761b295c185dc1a62",
+   "drift": false,
+   "contract": "C10",
+   "definition": "#/$defs/guard",
+   "change": "adotado sem mudança"
+  },
+  {
+   "source": "results/SEMANTICS/C10_proposta/composition_table.schema.json",
+   "source_sha256_now": "61b52f177d95577a8724db65fd273f06ad07e71acdbd36824a06db40bc9fab7f",
+   "frozen_copy": "src/bo/contracts/adopted/C10_composition_table.json",
+   "frozen_sha256": "61b52f177d95577a8724db65fd273f06ad07e71acdbd36824a06db40bc9fab7f",
+   "drift": false,
+   "contract": "C10",
+   "definition": "#/$defs/composition_table",
+   "change": "contract_version fixo 3.0.0; linhas de VDR e de fidelidade tipadas; predicate nulo só com resultado nulo; regra C10-TABLE confere a cobertura dos 25/25/16 pares"
+  },
+  {
+   "source": "results/SEMANTICS/C10_proposta/conditions.grammar.json",
+   "source_sha256_now": "a13e72a6ffcf1d8a73573641db1764dced04048f8e0b10a7bdd64cf5934a52a0",
+   "frozen_copy": "src/bo/contracts/adopted/C10_conditions_grammar.json",
+   "frozen_sha256": "a13e72a6ffcf1d8a73573641db1764dced04048f8e0b10a7bdd64cf5934a52a0",
+   "drift": false,
+   "contract": "C10",
+   "definition": "#/$defs/conditions_grammar",
+   "change": "o documento proposto vira o formato de conditions.grammar.json, com sat_tests obrigatórios (SAT, UNSAT, UNKNOWN) executados por bo.semantics.guards.satisfiable"
+  }
+ ],
+ "suggestions": [
+  {
+   "from": "SEMANTICS (C10_proposta/LEIA.txt, 1)",
+   "suggestion": "C23 sem código para alegação refutada",
+   "decision": "REFUTED_BY_RULE entra no C23 (C00 block_code), junto com UNKNOWN_INPUT (T-ABSENCE)"
+  },
+  {
+   "from": "SEMANTICS (C09_proposta/LEIA.txt, 1)",
+   "suggestion": "tipo de valor em subject_value_type/object_value_type",
+   "decision": "adotado; subject_type/object_type ficam como slots padrão do SSSOM"
+  },
+  {
+   "from": "SEMANTICS (C09_proposta/LEIA.txt, 2)",
+   "suggestion": "sssom-py 0.4.22 descarta extensões",
+   "decision": "I/O do C09 em bo.contracts.sssom, que delega a bo.semantics.sssom_io (mesmos bytes para as colunas da teoria) e preserva as colunas novas; teste em tests/contracts"
+  },
+  {
+   "from": "SEMANTICS (C09_proposta/LEIA.txt, 4)",
+   "suggestion": "value_domain_relation = {relation, orientation}",
+   "decision": "adotado; a relação calculada × declarada é obrigação do árbitro (bo.semantics.obligations), não de formato"
+  },
+  {
+   "from": "REQUIREMENTS (C24_proposta/LEIA.txt)",
+   "suggestion": "adotar os schemas e chamar as regras como validação semântica",
+   "decision": "adotado: regra C24-MODEL chama bo.requirements.model.validate_* com os arquivos irmãos"
+  },
+  {
+   "from": "ONTPAT (C14_proposta/LEIA.txt)",
+   "suggestion": "linha de realizations.jsonl pelo padrão de descritor",
+   "decision": "adotada com acréscimos (references, exclusivity_proof); regra C14-ALT confere alternativas mútuas"
+  }
+ ],
+ "findings": [
+  "bo.semantics.sssom_io.write_tsv só escreve as colunas que a teoria conhece: alternative_to, exclusivity, supersedes e os slots padrão do SSSOM somem em silêncio. Quem grava C09 3.0.0 usa bo.contracts.sssom.write_tsv.",
+  "ontology/patterns/upper_trial/*/cases.ttl não importam bo-patterns.ttl: sozinhos, reprovam no C14 (punning aparente, porque os papéis vêm do fecho); o ONTPAT os confere junto com o fecho, e o validador confere o fecho dos owl:imports locais. Os demais TTL do ONTPAT passam.",
+  "modulos.json (catálogo do coordenador) passa no C00: ids, branches, worktrees, tmp_dir, ondas recalculadas do DAG, índices declarados e versões dos 30 contratos iguais às publicadas.",
+  "SEMANTICS examples.sssom.tsv passa no C09 3.0.0 sem mudança (20 alegações)."
+ ]
+}

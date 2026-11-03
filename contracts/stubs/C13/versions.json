@@ -1,0 +1,19 @@
+{
+ "schema": "bo.versions/1",
+ "contract": "C13",
+ "contract_version": "3.0.0",
+ "module": "HIST-AWS",
+ "generated_at": "2026-11-03T08:00:00-03:00",
+ "provider": "aws",
+ "versions": [
+  {
+   "version": "5.90.0",
+   "released_at": "2026-03-01"
+  },
+  {
+   "version": "6.0.0",
+   "released_at": "2026-06-18",
+   "schema_sha256": "05c4859fd6018f42588cdb6f48fb2d4d015a431128f35ed2ba5cffd9ff7d2380"
+  }
+ ]
+}

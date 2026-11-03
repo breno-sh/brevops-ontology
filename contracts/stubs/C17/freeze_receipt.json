@@ -1,0 +1,40 @@
+{
+ "schema": "bo.freeze_receipt/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "name": "FREEZE0",
+ "owner": "coordenador",
+ "created_at": "2026-11-03T08:00:00-03:00",
+ "note": "",
+ "git": {
+  "commit": "0000000000000000000000000000000000000000",
+  "tag": "bo-freeze-FREEZE0"
+ },
+ "modules": [
+  "EXAMPLE-MOD"
+ ],
+ "artifacts": [
+  {
+   "path": "$BO_REPO/results/EXAMPLE-MOD/out.json",
+   "kind": "file",
+   "sha256": "762069bc07a6e1b5df123a5ae7bd91c10daa04694fbaa17fba0cd6a8dcce8f22",
+   "producers": [
+    "EXAMPLE-MOD"
+   ]
+  }
+ ],
+ "transitive_inputs": [
+  {
+   "path": "$BO_REPO/CONVENTIONS.html",
+   "kind": "file",
+   "sha256": "04214ab48a17be412c75b225b33e7ca08edbea71558435f32362ee259723c13d",
+   "via": "EXAMPLE-MOD"
+  }
+ ],
+ "digest": "61b03d804c2ba7816024c423c0a2e28a8ecd92f53199b374476e7494518ef522",
+ "ots": {
+  "status": "PENDING",
+  "reason": "cliente ots ausente",
+  "digest": "61b03d804c2ba7816024c423c0a2e28a8ecd92f53199b374476e7494518ef522"
+ }
+}

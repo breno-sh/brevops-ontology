@@ -1,0 +1,40 @@
+schema: bo.probe_types/1
+contract: C22
+contract_version: 3.0.0
+module: PROBEKIT
+generated_at: '2026-11-03T08:00:00-03:00'
+protocol_version: 1.0.0
+probe_types:
+- probe_type: item_ttl
+  preconditions:
+  - tabela com TTL habilitado no atributo declarado
+  negative_control:
+    description: item sem atributo de TTL
+    expected: continua legível ao fim da janela
+  repetitions: 3
+  tolerance:
+    kind: exact
+    value: 0
+  polling:
+    interval: PT15M
+    max_wait: PT48H
+  window:
+    duration: PT72H
+    margin_over_ttl: PT24H
+  cost_limit:
+    amount: 1.0
+    currency: USD
+  validated_support:
+  - provider: aws
+    status: validated
+    evidence:
+    - level: published
+      doc:
+        repo: hashicorp/terraform-provider-aws
+        tag: v6.0.0
+        file: website/docs/r/db_instance.html.markdown
+        line: 120
+        sentence: frase sintética de documentação que sustenta o fato
+  - provider: oci
+    status: unknown
+    evidence: []

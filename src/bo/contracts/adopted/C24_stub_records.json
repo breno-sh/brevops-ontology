@@ -1,0 +1,451 @@
+{
+ "commitments": [
+  {
+   "answers": [
+    "S1"
+   ],
+   "case": "GENERAL",
+   "check": {
+    "assertion": "value_origin(c1.versioning) = default AND NOT configured_explicitly(c1.versioning)",
+    "kind": "entails"
+   },
+   "commitment_id": "CMT-CFG-P02",
+   "consumers": [
+    "ONTPAT",
+    "AXIOMS",
+    "SEMANTIC-REGRESSION",
+    "CQ"
+   ],
+   "contract": "C24",
+   "contract_version": "1.0.0",
+   "expected_answer": {
+    "value": "ENTAILED",
+    "why": "S1: configurado x default"
+   },
+   "fixtures": [
+    {
+     "attributes": [
+      {
+       "attr": "versioning",
+       "of": "c1",
+       "value": "disabled"
+      },
+      {
+       "attr": "value_origin",
+       "of": "c1",
+       "value": "default"
+      }
+     ],
+     "entities": [
+      {
+       "id": "c1",
+       "kind": "object_container"
+      }
+     ],
+     "fixture_id": "FX-CFG-P02",
+     "read": {
+      "completeness": "complete",
+      "not_read": [],
+      "withheld": []
+     },
+     "relations": [],
+     "summary": "versionamento só por padrão"
+    }
+   ],
+   "layer": "domain",
+   "polarity": "positive",
+   "protects": "origem do valor",
+   "provider_grounding": [],
+   "requirement_ids": [
+    "REQ-CFG-02"
+   ],
+   "schema": "bo.commitment/1",
+   "statement": "Valor que veio do padrão do provedor é marcado como padrão, não como configurado.",
+   "upper_axes": []
+  },
+  {
+   "answers": [
+    "R1-M5",
+    "R1-M8"
+   ],
+   "case": "GENERAL",
+   "check": {
+    "assertion": "has_alarm(i1) = UNKNOWN",
+    "kind": "unknown"
+   },
+   "commitment_id": "CMT-ABS-U01",
+   "consumers": [
+    "ONTPAT",
+    "AXIOMS",
+    "SEMANTIC-REGRESSION",
+    "CQ"
+   ],
+   "contract": "C24",
+   "contract_version": "1.0.0",
+   "expected_answer": {
+    "code": "INCOMPLETE_READ",
+    "value": "UNKNOWN",
+    "why": "R1: CQ5 do esqueleto era negação sob leitura incompleta"
+   },
+   "fixtures": [
+    {
+     "attributes": [
+      {
+       "attr": "read_complete",
+       "of": "s1",
+       "value": false
+      }
+     ],
+     "entities": [
+      {
+       "id": "i1",
+       "kind": "db_instance"
+      },
+      {
+       "id": "s1",
+       "kind": "scope_node"
+      }
+     ],
+     "fixture_id": "FX-ABS-U01",
+     "read": {
+      "completeness": "partial",
+      "not_read": [
+       {
+        "of": "s1",
+        "what": "alarm"
+       }
+      ],
+      "withheld": []
+     },
+     "relations": [
+      {
+       "from": "i1",
+       "rel": "in_scope",
+       "to": "s1"
+      }
+     ],
+     "summary": "alarmes não lidos"
+    }
+   ],
+   "layer": "domain",
+   "polarity": "unknown",
+   "protects": "UNKNOWN sob leitura parcial",
+   "provider_grounding": [],
+   "requirement_ids": [
+    "REQ-ABS-01",
+    "REQ-METH-02"
+   ],
+   "schema": "bo.commitment/1",
+   "statement": "Sob leitura parcial dos alarmes do escopo, 'o recurso tem alarme?' é UNKNOWN, não falso.",
+   "upper_axes": []
+  },
+  {
+   "answers": [
+    "S1"
+   ],
+   "case": "GENERAL",
+   "check": {
+    "assertion": "NOT has_secret(i1) = false AND valor de k1 ausente de toda saída",
+    "kind": "not_entails"
+   },
+   "commitment_id": "CMT-ABS-N01",
+   "consumers": [
+    "ONTPAT",
+    "AXIOMS",
+    "SEMANTIC-REGRESSION",
+    "CQ",
+    "ABOX-LIFT"
+   ],
+   "contract": "C24",
+   "contract_version": "1.0.0",
+   "expected_answer": {
+    "code": "WITHHELD",
+    "value": "NOT_ENTAILED",
+    "why": "retido != ausente (S1)"
+   },
+   "fixtures": [
+    {
+     "attributes": [
+      {
+       "attr": "secret_present",
+       "of": "k1",
+       "value": true
+      }
+     ],
+     "entities": [
+      {
+       "id": "i1",
+       "kind": "db_instance"
+      },
+      {
+       "id": "k1",
+       "kind": "secret_value_holder"
+      }
+     ],
+     "fixture_id": "FX-ABS-N01",
+     "read": {
+      "completeness": "complete",
+      "not_read": [],
+      "withheld": [
+       {
+        "attr": "value",
+        "of": "k1"
+       }
+      ]
+     },
+     "relations": [
+      {
+       "from": "k1",
+       "rel": "secret_of",
+       "to": "i1"
+      }
+     ],
+     "summary": "senha administrativa definida, valor retido"
+    }
+   ],
+   "layer": "domain",
+   "polarity": "negative",
+   "protects": "estado retido",
+   "provider_grounding": [],
+   "requirement_ids": [
+    "REQ-ABS-01",
+    "REQ-METH-02"
+   ],
+   "schema": "bo.commitment/1",
+   "statement": "Segredo com valor retido: a presença é conhecida, o valor nunca é gravado (nem como hash), e a ontologia não conclui que o recurso não tem segredo.",
+   "upper_axes": []
+  }
+ ],
+ "cq_spec": [
+  {
+   "answer_form": "boolean",
+   "answers": [
+    "S4",
+    "S1"
+   ],
+   "applicability": "todo provedor fixado; NOT_APPLICABLE só com evidência (SERVICE-EVIDENCE) de que o provedor não tem a estrutura; a decisão é do CQFIX e fica registrada",
+   "cases": [],
+   "closed_world": {
+    "negation_requires_complete_read": true,
+    "uses_negation": false
+   },
+   "commitment_ids": [
+    "CMT-ABS-N01"
+   ],
+   "contract": "C24",
+   "contract_version": "1.0.0",
+   "cq_id": "CQ-CVO-04",
+   "criterion": "conforme = o atributo secreto tem valor definido (o valor nunca é lido nem gravado)",
+   "family": "config_vs_observation",
+   "fixtures": {
+    "conforming": {
+     "expected": {
+      "value": true,
+      "why": "presença conhecida, valor retido"
+     },
+     "fixture": {
+      "attributes": [
+       {
+        "attr": "secret_present",
+        "of": "k1",
+        "value": true
+       }
+      ],
+      "entities": [
+       {
+        "id": "i1",
+        "kind": "db_instance"
+       },
+       {
+        "id": "k1",
+        "kind": "secret_value_holder"
+       }
+      ],
+      "fixture_id": "FX-CVO-04-C",
+      "read": {
+       "completeness": "complete",
+       "not_read": [],
+       "withheld": [
+        {
+         "attr": "value",
+         "of": "k1"
+        }
+       ]
+      },
+      "relations": [
+       {
+        "from": "k1",
+        "rel": "secret_of",
+        "to": "i1"
+       }
+      ],
+      "summary": "segredo definido, valor retido"
+     }
+    },
+    "incomplete": {
+     "expected": {
+      "code": "INCOMPLETE_READ",
+      "value": "UNKNOWN",
+      "why": "não lido != ausente != retido"
+     },
+     "fixture": {
+      "attributes": [],
+      "entities": [
+       {
+        "id": "i1",
+        "kind": "db_instance"
+       },
+       {
+        "id": "k1",
+        "kind": "secret_value_holder"
+       }
+      ],
+      "fixture_id": "FX-CVO-04-I",
+      "read": {
+       "completeness": "partial",
+       "not_read": [
+        {
+         "of": "k1",
+         "what": "secret"
+        }
+       ],
+       "withheld": []
+      },
+      "relations": [
+       {
+        "from": "k1",
+        "rel": "secret_of",
+        "to": "i1"
+       }
+      ],
+      "summary": "atributo secreto não lido"
+     }
+    },
+    "nonconforming": {
+     "expected": {
+      "value": false,
+      "why": "ausência lida"
+     },
+     "fixture": {
+      "attributes": [
+       {
+        "attr": "secret_present",
+        "of": "k1",
+        "value": false
+       }
+      ],
+      "entities": [
+       {
+        "id": "i1",
+        "kind": "db_instance"
+       },
+       {
+        "id": "k1",
+        "kind": "secret_value_holder"
+       }
+      ],
+      "fixture_id": "FX-CVO-04-N",
+      "read": {
+       "completeness": "complete",
+       "not_read": [],
+       "withheld": []
+      },
+      "relations": [
+       {
+        "from": "k1",
+        "rel": "secret_of",
+        "to": "i1"
+       }
+      ],
+      "summary": "segredo não definido sob leitura completa"
+     }
+    }
+   },
+   "question": "O recurso R tem senha administrativa definida?",
+   "reasoning_needs": "estados retido, ausente e não lido distintos; valor retido nunca gravado, nem como hash",
+   "requirement_ids": [
+    "REQ-ABS-01",
+    "REQ-METH-01"
+   ],
+   "schema": "bo.cq_spec/1"
+  }
+ ],
+ "requirements": [
+  {
+   "answers": [
+    "S1"
+   ],
+   "area": "desired_vs_observed",
+   "consumers": [
+    "ONTPAT",
+    "ABOX-LIFT"
+   ],
+   "contract": "C24",
+   "contract_version": "1.0.0",
+   "priority": "MUST",
+   "rationale": "S1: separar configurado, inferido, default e observado.",
+   "req_id": "REQ-CFG-02",
+   "schema": "bo.requirement/1",
+   "statement": "A origem de cada valor é explícita: configurado, inferido, padrão do provedor ou observado. Valor que veio do padrão não é registrado como configurado; valor computado só depois da criação não é registrado como vazio."
+  },
+  {
+   "answers": [
+    "S1",
+    "R1-M5",
+    "R1-M8"
+   ],
+   "area": "absence",
+   "consumers": [
+    "ONTPAT",
+    "CQ",
+    "CQFIX"
+   ],
+   "contract": "C24",
+   "contract_version": "1.0.0",
+   "priority": "MUST",
+   "rationale": "R1 (armadilhas de mundo aberto nas CQs 5 e 7 do esqueleto) e S1 (desconhecido/ausente/não lido/retido).",
+   "req_id": "REQ-ABS-01",
+   "schema": "bo.requirement/1",
+   "statement": "Desconhecido, ausente, não lido e retido são estados distintos. Uma pergunta com negação (\"não tem alarme\", \"não há caminho\") só responde falso/não sob leitura completa declarada do escopo; sob leitura parcial a resposta é UNKNOWN. Retido (segredo, conteúdo de objeto, variáveis de ambiente) pode ter presença conhecida, mas o valor nunca é gravado, nem como hash."
+  },
+  {
+   "answers": [
+    "R1-M8",
+    "S4"
+   ],
+   "area": "method",
+   "consumers": [
+    "CQ",
+    "CQFIX",
+    "CQRUN",
+    "PREREG"
+   ],
+   "contract": "C24",
+   "contract_version": "1.0.0",
+   "priority": "MUST",
+   "rationale": "R1-M8 (CQs escritas depois do desenho, sem gabarito) e S4 (CQs cobrem interseção fácil e chegam tarde).",
+   "req_id": "REQ-METH-01",
+   "schema": "bo.requirement/1",
+   "statement": "As CQs, suas respostas esperadas e suas fixtures conforme, não conforme e incompleta são congeladas aqui, em vocabulário independente, antes de qualquer indução; vão além do CIS nas 7 famílias; são compiladas assim que o vocabulário existir e reexecutadas a cada reparo."
+  },
+  {
+   "answers": [
+    "F9"
+   ],
+   "area": "method",
+   "consumers": [
+    "AXIOMS",
+    "REPAIR",
+    "SEMANTIC-REGRESSION"
+   ],
+   "contract": "C24",
+   "contract_version": "1.0.0",
+   "priority": "MUST",
+   "rationale": "F9: o reparo podia apagar os axiomas que denunciariam erros.",
+   "req_id": "REQ-METH-02",
+   "schema": "bo.requirement/1",
+   "statement": "Compromissos negativos são protegidos: nenhum reparo pode retirar o axioma ou forma que mantém um contraexemplo rejeitado; reparo que quebra um compromisso vira versão nova, e o que não fecha vai para candidatos fora da release. Compromissos UNKNOWN também são protegidos: um reparo não pode transformar UNKNOWN em resposta definida sem evidência nova."
+  }
+ ],
+ "source": "requirements/*.jsonl em bo/base (REQUIREMENTS), selecionados em 2026-11-03"
+}

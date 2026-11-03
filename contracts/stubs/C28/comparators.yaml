@@ -1,0 +1,53 @@
+schema: bo.comparators/1
+contract: C28
+contract_version: 1.0.0
+module: BENCH-CONTRACT
+generated_at: '2026-11-03T08:00:00-03:00'
+comparators:
+- comparator_id: kalinin
+  version: artigo publicado
+  source:
+    uri: https://example.org/fixture/kalinin-paper
+    kind: paper
+  native_scope: ontologia OWL DL de recursos de nuvem com ABox e checagem de conformidade
+  artifact: 'no'
+  native_task: verificação de conformidade (CSPM)
+  decision: adapt
+  decision_reason: 'sem artefato público: reconstrução da família sob o mesmo orçamento'
+  axes:
+  - native
+  - representation
+  adaptation_budget:
+    hours: 6
+    unit: agent_hours
+  kalinin_family: true
+  metrics:
+  - axis: representation
+    name: cobertura de CQs
+    value: 0.31
+  - axis: translation
+    name: cobertura operacional
+    value: NOT_APPLICABLE
+    reason: sem tradutor nem artefato
+  - axis: native
+    name: acurácia CSPM
+    value: UNKNOWN
+- comparator_id: cartography
+  version: fixture
+  source:
+    uri: https://example.org/fixture/cartography-repo
+    kind: repo
+  native_scope: grafo de inventário multi-nuvem
+  artifact: 'yes'
+  native_task: inventário e consulta
+  decision: include
+  decision_reason: artefato executável no mesmo universo
+  axes:
+  - native
+  - representation
+  - translation
+  adaptation_budget:
+    hours: 6
+    unit: agent_hours
+  kalinin_family: false
+  metrics: []

@@ -1,0 +1,116 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://w3id.org/brevops/contracts/C02/types.schema.json",
+ "title": "C02 types 2.0.0: tipos de recurso",
+ "description": "Um tipo de recurso por linha, com contagens e o sha256 canônico do bloco do schema.",
+ "x-bo-contract": {
+  "id": "C02",
+  "name": "types",
+  "version": "2.0.0",
+  "status": "unchanged_v3",
+  "owner": "CONTRACTS",
+  "files": [
+   {
+    "kind": "types",
+    "file": "types.jsonl",
+    "format": "jsonl",
+    "record": "type",
+    "unit": "record"
+   }
+  ],
+  "semantic_rules": [
+   "C02-ID: type_id = provider:resource_type",
+   "C02-COUNTS: configurable = required + optional <= attributes"
+  ],
+  "producers": [
+   "SCHEMA-{provider}"
+  ],
+  "consumers": [],
+  "adopted_from": []
+ },
+ "$defs": {
+  "type": {
+   "type": "object",
+   "properties": {
+    "type_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^[a-z][a-z0-9_]*:[a-z][a-z0-9_]*$"
+    },
+    "provider": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/provider"
+    },
+    "provider_version": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/semver"
+    },
+    "resource_type": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/resource_type"
+    },
+    "counts": {
+     "type": "object",
+     "properties": {
+      "attributes": {
+       "type": "integer",
+       "minimum": 0
+      },
+      "blocks": {
+       "type": "integer",
+       "minimum": 0
+      },
+      "required": {
+       "type": "integer",
+       "minimum": 0
+      },
+      "optional": {
+       "type": "integer",
+       "minimum": 0
+      },
+      "computed": {
+       "type": "integer",
+       "minimum": 0
+      },
+      "configurable": {
+       "type": "integer",
+       "minimum": 0
+      },
+      "sensitive": {
+       "type": "integer",
+       "minimum": 0
+      },
+      "deprecated": {
+       "type": "integer",
+       "minimum": 0
+      }
+     },
+     "required": [
+      "attributes",
+      "blocks",
+      "required",
+      "optional",
+      "computed",
+      "configurable",
+      "sensitive",
+      "deprecated"
+     ],
+     "additionalProperties": false
+    },
+    "max_depth": {
+     "type": "integer",
+     "minimum": 0
+    },
+    "block_sha256": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/sha256"
+    }
+   },
+   "required": [
+    "type_id",
+    "provider",
+    "provider_version",
+    "resource_type",
+    "counts",
+    "block_sha256"
+   ],
+   "additionalProperties": false
+  }
+ }
+}

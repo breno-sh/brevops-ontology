@@ -1,0 +1,17 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix bo: <https://w3id.org/brevops/ontology#> .
+@prefix x: <https://example.org/bo-stub#> .
+
+x:Resource a owl:Class .
+x:StorageContainer a owl:Class ; rdfs:subClassOf x:Resource .
+x:DatabaseInstance a owl:Class ; rdfs:subClassOf x:Resource .
+x:Encryptable a owl:Class .
+x:backupRetention a owl:DatatypeProperty ;
+    rdfs:domain [ a owl:Class ; owl:unionOf ( x:StorageContainer x:DatabaseInstance ) ] .
+bo:describesProperty a owl:AnnotationProperty .
+bo:of a owl:ObjectProperty .
+x:desc_backupRetention a owl:NamedIndividual , bo:PropertyDescriptor ; bo:describesProperty x:backupRetention .
+x:real_db_a a owl:NamedIndividual , bo:Realization ; bo:of x:desc_backupRetention .
+bo:PropertyDescriptor a owl:Class .
+bo:Realization a owl:Class .

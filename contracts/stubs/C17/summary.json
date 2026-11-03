@@ -1,0 +1,31 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "EXAMPLE-MOD",
+ "generated_at": "2026-11-03T08:00:00-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/srv/briefs/EXAMPLE-MOD.txt",
+  "brief_sha256": "29a8825bd242f14386ee528d76e0e8f1e38f3c8c4047d7b2d6df7493368a17d0",
+  "params": {
+   "effort": "maximo"
+  },
+  "inputs": [
+   {
+    "path": "$BO_REPO/CONVENTIONS.html",
+    "kind": "file",
+    "sha256": "04214ab48a17be412c75b225b33e7ca08edbea71558435f32362ee259723c13d"
+   }
+  ],
+  "recorded_at": "2026-11-03T08:00:00-03:00"
+ },
+ "sources": [
+  {
+   "uri": "https://registry.terraform.io/providers/hashicorp/aws/6.0.0",
+   "license": "MPL-2.0",
+   "transformation": "schema lido com terraform providers schema -json"
+  }
+ ],
+ "notes": "stub"
+}

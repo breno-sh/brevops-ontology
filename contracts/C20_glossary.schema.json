@@ -1,0 +1,346 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://w3id.org/brevops/contracts/C20/glossary.schema.json",
+ "title": "C20 glossary 3.0.0: glossário, âncoras como alegações e auditoria",
+ "description": "Conceito com grandeza (IRI | NOT_APPLICABLE | UNKNOWN); âncora como alegação com sentença, contexto, contraexemplo procurado, método de extração e evidence_state (STRUCTURALLY_VALID | DOC_SUPPORTED | PERSISTENCE_VERIFIED | OBSERVATION_TESTED | UNRESOLVED).",
+ "x-bo-contract": {
+  "id": "C20",
+  "name": "glossary",
+  "version": "3.0.0",
+  "status": "changed_v3",
+  "owner": "CONTRACTS",
+  "files": [
+   {
+    "kind": "glossary",
+    "file": "glossary.jsonl",
+    "format": "jsonl",
+    "record": "concept",
+    "unit": "record"
+   },
+   {
+    "kind": "claims",
+    "file": "claims.jsonl",
+    "format": "jsonl",
+    "record": "anchor_claim",
+    "unit": "record"
+   },
+   {
+    "kind": "glossary_audit",
+    "file": "glossary_audit.jsonl",
+    "format": "jsonl",
+    "record": "audit",
+    "unit": "record"
+   }
+  ],
+  "semantic_rules": [
+   "C20-IDS: claim_version_id = <claim_id>@n, únicos; event_id único por versão; supersedes = versão anterior da mesma alegação (claim_id nunca muda entre versões)",
+   "C20-NA: grandeza NOT_APPLICABLE não tem unidade; UNKNOWN ≠ NOT_APPLICABLE",
+   "C20-AUDIT: a auditoria cita uma versão existente quando claims.jsonl é irmão",
+   "C20-UNIQ: concept_id único"
+  ],
+  "producers": [
+   "GLOSSARY-AUDIT",
+   "GLOSSARY-FREEZE",
+   "GLOSSARY-{domain}",
+   "PILOT-{slice}-GLOSS"
+  ],
+  "consumers": [],
+  "adopted_from": []
+ },
+ "$defs": {
+  "concept": {
+   "type": "object",
+   "properties": {
+    "concept_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/concept_id"
+    },
+    "label": {
+     "type": "string",
+     "minLength": 2
+    },
+    "definition": {
+     "type": "string",
+     "minLength": 10
+    },
+    "domain": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/domain"
+    },
+    "quantity_kind": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/quantity_kind"
+    },
+    "unit": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/unit_qudt"
+    },
+    "status": {
+     "enum": [
+      "active",
+      "deprecated",
+      "merged",
+      "split"
+     ]
+    },
+    "replaced_by": {
+     "type": "array",
+     "items": {
+      "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/concept_id"
+     },
+     "minItems": 1
+    },
+    "evidence_state": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/evidence_state"
+    }
+   },
+   "required": [
+    "concept_id",
+    "label",
+    "definition",
+    "domain",
+    "quantity_kind",
+    "status",
+    "evidence_state"
+   ],
+   "additionalProperties": false,
+   "allOf": [
+    {
+     "if": {
+      "properties": {
+       "status": {
+        "enum": [
+         "merged",
+         "split",
+         "deprecated"
+        ]
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "replaced_by"
+      ]
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "quantity_kind": {
+        "const": "NOT_APPLICABLE"
+       }
+      }
+     },
+     "then": {
+      "properties": {
+       "unit": {
+        "const": "NOT_APPLICABLE"
+       }
+      }
+     }
+    }
+   ]
+  },
+  "anchor_claim": {
+   "type": "object",
+   "properties": {
+    "claim_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/claim_id"
+    },
+    "claim_version_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/claim_version_id"
+    },
+    "event_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/event_id"
+    },
+    "supersedes": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/claim_version_id"
+    },
+    "concept_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/concept_id"
+    },
+    "atom_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/atom_id"
+    },
+    "sentence": {
+     "type": "string",
+     "minLength": 10
+    },
+    "context": {
+     "type": "string",
+     "minLength": 5
+    },
+    "counterexample_search": {
+     "type": "object",
+     "properties": {
+      "query": {
+       "type": "string",
+       "minLength": 3
+      },
+      "found": {
+       "type": "boolean"
+      },
+      "result": {
+       "type": "string",
+       "minLength": 3
+      }
+     },
+     "required": [
+      "query",
+      "found",
+      "result"
+     ],
+     "additionalProperties": false
+    },
+    "extraction_method": {
+     "enum": [
+      "parser",
+      "regex",
+      "table",
+      "manual",
+      "model"
+     ]
+    },
+    "evidence_level": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/evidence_level"
+    },
+    "model_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/model_id"
+    },
+    "source": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/doc_source"
+    },
+    "evidence_state": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/evidence_state"
+    },
+    "recorded_at": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/datetime"
+    }
+   },
+   "required": [
+    "claim_id",
+    "claim_version_id",
+    "event_id",
+    "concept_id",
+    "atom_id",
+    "sentence",
+    "context",
+    "counterexample_search",
+    "extraction_method",
+    "evidence_level",
+    "evidence_state",
+    "recorded_at"
+   ],
+   "additionalProperties": false,
+   "allOf": [
+    {
+     "if": {
+      "properties": {
+       "evidence_level": {
+        "const": "interpreted"
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "model_id"
+      ]
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "extraction_method": {
+        "const": "model"
+       }
+      }
+     },
+     "then": {
+      "properties": {
+       "evidence_level": {
+        "const": "interpreted"
+       }
+      }
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "evidence_state": {
+        "enum": [
+         "DOC_SUPPORTED"
+        ]
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "source"
+      ]
+     }
+    }
+   ],
+   "description": "âncora como alegação: claim_id imutável; cada versão tem claim_version_id e event_id próprios"
+  },
+  "audit": {
+   "type": "object",
+   "properties": {
+    "audit_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^GA-[A-Za-z0-9_\\-]+$"
+    },
+    "claim_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/claim_id"
+    },
+    "claim_version_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/claim_version_id"
+    },
+    "event_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/event_id"
+    },
+    "check": {
+     "enum": [
+      "evidence_support",
+      "same_quantity_distinction",
+      "indirect_anchor",
+      "no_test_in_train",
+      "counterexample"
+     ]
+    },
+    "result": {
+     "enum": [
+      "pass",
+      "fail",
+      "unresolved"
+     ]
+    },
+    "evidence_state_before": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/evidence_state"
+    },
+    "evidence_state_after": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/evidence_state"
+    },
+    "auditor": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/stable_id"
+    },
+    "at": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/datetime"
+    },
+    "note": {
+     "type": "string",
+     "minLength": 3
+    }
+   },
+   "required": [
+    "audit_id",
+    "claim_id",
+    "claim_version_id",
+    "event_id",
+    "check",
+    "result",
+    "evidence_state_before",
+    "evidence_state_after",
+    "auditor",
+    "at"
+   ],
+   "additionalProperties": false
+  }
+ }
+}

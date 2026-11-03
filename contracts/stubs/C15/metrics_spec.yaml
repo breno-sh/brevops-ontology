@@ -1,0 +1,15 @@
+schema: bo.metrics_spec/1
+contract: C15
+contract_version: 3.0.0
+module: METRICSLIB
+generated_at: '2026-11-03T08:00:00-03:00'
+metrics:
+- metric_id: M-OPCOV-FIELD
+  definition: fração dos campos do universo emitidos em B
+  reading: field
+  axis: operational
+  quantifier: observed_fraction
+  frame: universo U
+  inclusion: INC-FIELD-01
+  weights: uniform
+  uncertainty: bootstrap

@@ -1,0 +1,190 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://w3id.org/brevops/contracts/C07/universe.schema.json",
+ "title": "C07 universe 3.0.0: universo U de unidades",
+ "description": "Unidades por provedor, domínio, regra, fecho, semente, split_ref (C27), pilot_exposed[unit] e o sha do hold-out cifrado.",
+ "x-bo-contract": {
+  "id": "C07",
+  "name": "universe",
+  "version": "3.0.0",
+  "status": "changed_v3",
+  "owner": "CONTRACTS",
+  "files": [
+   {
+    "kind": "universe",
+    "file": "universe.json",
+    "format": "json",
+    "record": "universe",
+    "unit": "document"
+   }
+  ],
+  "semantic_rules": [
+   "C07-UNITS: unit_id único",
+   "C07-PILOT: pilot_exposed tem exatamente as unidades do universo",
+   "C07-HOLDOUT: o hold-out só aparece cifrado (sha256 + caminho .age); nenhum id de teste em claro"
+  ],
+  "producers": [
+   "SPLIT",
+   "UNIVERSE"
+  ],
+  "consumers": [],
+  "adopted_from": []
+ },
+ "$defs": {
+  "universe": {
+   "type": "object",
+   "properties": {
+    "schema": {
+     "const": "bo.universe/1"
+    },
+    "contract": {
+     "const": "C07"
+    },
+    "contract_version": {
+     "const": "3.0.0"
+    },
+    "module": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/stable_id"
+    },
+    "generated_at": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/datetime"
+    },
+    "rule": {
+     "type": "object",
+     "properties": {
+      "rule_id": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/rule_id"
+      },
+      "text": {
+       "type": "string",
+       "minLength": 10
+      }
+     },
+     "required": [
+      "rule_id",
+      "text"
+     ],
+     "additionalProperties": false
+    },
+    "closure": {
+     "type": "object",
+     "properties": {
+      "rule": {
+       "type": "string",
+       "minLength": 10
+      },
+      "iterations": {
+       "type": "integer",
+       "minimum": 0
+      },
+      "fixed_point": {
+       "type": "boolean"
+      }
+     },
+     "required": [
+      "rule",
+      "iterations",
+      "fixed_point"
+     ],
+     "additionalProperties": false
+    },
+    "seed": {
+     "type": "integer",
+     "minimum": 0
+    },
+    "split_ref": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/file_ref"
+    },
+    "units": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "unit_id": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/unit_id"
+       },
+       "provider": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/provider"
+       },
+       "domain": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/domain"
+       },
+       "rule_id": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/rule_id"
+       },
+       "in_universe": {
+        "type": "boolean"
+       },
+       "reason": {
+        "type": "string",
+        "minLength": 3
+       }
+      },
+      "required": [
+       "unit_id",
+       "provider",
+       "domain",
+       "rule_id",
+       "in_universe"
+      ],
+      "additionalProperties": false
+     },
+     "minItems": 1
+    },
+    "pilot_exposed": {
+     "type": "object",
+     "properties": {},
+     "additionalProperties": {
+      "type": "boolean"
+     },
+     "propertyNames": {
+      "pattern": "^CU-"
+     }
+    },
+    "holdout": {
+     "type": "object",
+     "properties": {
+      "encrypted_sha256": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/sha256"
+      },
+      "path": {
+       "type": "string",
+       "minLength": 1,
+       "pattern": "^\\$BO_DATA/SPLIT/sealed/\\S+\\.age$"
+      },
+      "cipher": {
+       "const": "age"
+      },
+      "recipient_fingerprint": {
+       "type": "string",
+       "minLength": 1,
+       "pattern": "^age1[0-9a-z]{20,}$|^SHA256:[A-Za-z0-9+/=]{20,}$"
+      }
+     },
+     "required": [
+      "encrypted_sha256",
+      "path",
+      "cipher",
+      "recipient_fingerprint"
+     ],
+     "additionalProperties": false
+    }
+   },
+   "required": [
+    "schema",
+    "contract",
+    "contract_version",
+    "module",
+    "generated_at",
+    "rule",
+    "closure",
+    "seed",
+    "split_ref",
+    "units",
+    "pilot_exposed",
+    "holdout"
+   ],
+   "additionalProperties": false
+  }
+ }
+}

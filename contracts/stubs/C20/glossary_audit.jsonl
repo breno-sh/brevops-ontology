@@ -1,0 +1,1 @@
+{"at": "2026-11-03T09:30:00-03:00", "audit_id": "GA-0001", "auditor": "GLOSSARY-AUDIT", "check": "evidence_support", "claim_id": "ANC-aws-0001", "claim_version_id": "ANC-aws-0001@2", "event_id": "EV-AUDIT-0007", "evidence_state_after": "DOC_SUPPORTED", "evidence_state_before": "STRUCTURALLY_VALID", "result": "pass"}

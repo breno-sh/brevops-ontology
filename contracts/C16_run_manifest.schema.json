@@ -1,0 +1,332 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://w3id.org/brevops/contracts/C16/run_manifest.schema.json",
+ "title": "C16 run_manifest 3.0.0: manifesto de intenção e de execução",
+ "description": "Manifesto privado intenção → criação → confirmação → remoção (pedido, pendente, expurgo agendado, ausente), com prazo de expurgo e custo residual máximo; effective_identity_check (hash da identidade, nunca o id); cópia pública redigida; suporte a tag/TTL do tipo.",
+ "x-bo-contract": {
+  "id": "C16",
+  "name": "run_manifest",
+  "version": "3.0.0",
+  "status": "changed_v3",
+  "owner": "CONTRACTS",
+  "files": [
+   {
+    "kind": "intent_manifest",
+    "file": "intent_manifest.jsonl",
+    "format": "jsonl",
+    "record": "intent",
+    "unit": "record"
+   },
+   {
+    "kind": "run_manifest",
+    "file": "run_manifest.jsonl",
+    "format": "jsonl",
+    "record": "run",
+    "unit": "record"
+   }
+  ],
+  "semantic_rules": [
+   "C16-ORDER: por intent_id, os estágios do run_manifest seguem a ordem intent < creating < created < confirmed < removal_requested < removal_pending < purge_scheduled < absent, com tempo crescente",
+   "C16-INTENT: todo run cita um intent_id do intent_manifest irmão (a intenção vem ANTES da criação)",
+   "C16-PUBLIC: a cópia pública não tem provider_resource_ref",
+   "C16-IDENTITY: identidade conferida (matches_allowlist) antes de created"
+  ],
+  "producers": [
+   "DEP-{provider}-A",
+   "DEP-{provider}-B",
+   "PROBE-{provider}",
+   "SMOKE-{provider}"
+  ],
+  "consumers": [],
+  "adopted_from": []
+ },
+ "$defs": {
+  "intent": {
+   "type": "object",
+   "properties": {
+    "intent_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^INT-[A-Za-z0-9_\\-]+$"
+    },
+    "module": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/stable_id"
+    },
+    "provider": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/provider"
+    },
+    "batch_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^B-[A-Za-z0-9_\\-]+$"
+    },
+    "case_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^CASE-[A-Za-z0-9_\\-]+$"
+    },
+    "resource_type": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/resource_type"
+    },
+    "logical_name": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^bo-[a-z0-9\\-]{3,40}$"
+    },
+    "recorded_at": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/datetime"
+    },
+    "effective_identity_check": {
+     "type": "object",
+     "properties": {
+      "identity_sha256": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/sha256"
+      },
+      "checked_at": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/datetime"
+      },
+      "matches_allowlist": {
+       "type": "boolean"
+      }
+     },
+     "required": [
+      "identity_sha256",
+      "checked_at",
+      "matches_allowlist"
+     ],
+     "additionalProperties": false,
+     "description": "hash da identidade efetiva (nunca o id da conta)"
+    },
+    "purge_deadline": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/datetime"
+    },
+    "max_residual_cost": {
+     "type": "object",
+     "properties": {
+      "amount": {
+       "type": "number",
+       "minimum": 0
+      },
+      "currency": {
+       "const": "USD"
+      }
+     },
+     "required": [
+      "amount",
+      "currency"
+     ],
+     "additionalProperties": false
+    },
+    "tag_supported": {
+     "type": "boolean"
+    },
+    "ttl_supported": {
+     "type": "boolean"
+    },
+    "tags": {
+     "type": "object",
+     "properties": {},
+     "additionalProperties": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_.:\\-]{1,63}$"
+     },
+     "propertyNames": {
+      "pattern": "^bo-[a-z\\-]+$"
+     }
+    },
+    "ttl_hours": {
+     "type": "integer",
+     "minimum": 1
+    }
+   },
+   "required": [
+    "intent_id",
+    "module",
+    "provider",
+    "batch_id",
+    "resource_type",
+    "logical_name",
+    "recorded_at",
+    "effective_identity_check",
+    "purge_deadline",
+    "max_residual_cost",
+    "tag_supported",
+    "ttl_supported"
+   ],
+   "additionalProperties": false,
+   "allOf": [
+    {
+     "if": {
+      "properties": {
+       "tag_supported": {
+        "const": true
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "tags"
+      ]
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "tag_supported": {
+        "const": false
+       }
+      }
+     },
+     "then": {
+      "not": {
+       "required": [
+        "tags"
+       ]
+      }
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "ttl_supported": {
+        "const": true
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "ttl_hours"
+      ]
+     }
+    }
+   ]
+  },
+  "run": {
+   "type": "object",
+   "properties": {
+    "run_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^RUN-[A-Za-z0-9_\\-]+$"
+    },
+    "intent_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^INT-[A-Za-z0-9_\\-]+$"
+    },
+    "stage": {
+     "enum": [
+      "intent",
+      "creating",
+      "created",
+      "confirmed",
+      "removal_requested",
+      "removal_pending",
+      "purge_scheduled",
+      "absent"
+     ]
+    },
+    "at": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/datetime"
+    },
+    "visibility": {
+     "enum": [
+      "private",
+      "public"
+     ]
+    },
+    "provider_resource_ref": {
+     "type": "string",
+     "minLength": 1
+    },
+    "effective_identity_check": {
+     "type": "object",
+     "properties": {
+      "identity_sha256": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/sha256"
+      },
+      "checked_at": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/datetime"
+      },
+      "matches_allowlist": {
+       "type": "boolean"
+      }
+     },
+     "required": [
+      "identity_sha256",
+      "checked_at",
+      "matches_allowlist"
+     ],
+     "additionalProperties": false,
+     "description": "hash da identidade efetiva (nunca o id da conta)"
+    },
+    "residual_cost": {
+     "type": "object",
+     "properties": {
+      "amount": {
+       "type": "number",
+       "minimum": 0
+      },
+      "currency": {
+       "const": "USD"
+      }
+     },
+     "required": [
+      "amount",
+      "currency"
+     ],
+     "additionalProperties": false
+    },
+    "note": {
+     "type": "string",
+     "minLength": 3
+    }
+   },
+   "required": [
+    "run_id",
+    "intent_id",
+    "stage",
+    "at",
+    "visibility"
+   ],
+   "additionalProperties": false,
+   "allOf": [
+    {
+     "if": {
+      "properties": {
+       "visibility": {
+        "const": "public"
+       }
+      }
+     },
+     "then": {
+      "not": {
+       "required": [
+        "provider_resource_ref"
+       ]
+      }
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "stage": {
+        "enum": [
+         "created",
+         "confirmed"
+        ]
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "effective_identity_check"
+      ]
+     }
+    }
+   ],
+   "description": "cópia pública: sem provider_resource_ref (redigida)"
+  }
+ }
+}

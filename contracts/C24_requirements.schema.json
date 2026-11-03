@@ -1,0 +1,2342 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://w3id.org/brevops/contracts/C24/requirements.schema.json",
+ "title": "C24 requirements 1.0.0: requisitos, compromissos e CQs",
+ "description": "Requisito; compromisso {positive | negative | unknown, fixture, resposta esperada}; CQ em vocabulário independente com família (CIS, identidade e ciclo de vida, composição, efeito de autorização, caminho de rede, configuração × observação, perda, provedor novo) e fixtures conforme, não conforme e incompleta. Os três schemas são a proposta do REQUIREMENTS, sem mudança; as regras que o schema não exprime são as de bo.requirements.model, chamadas pelo validador.",
+ "x-bo-contract": {
+  "id": "C24",
+  "name": "requirements",
+  "version": "1.0.0",
+  "status": "new_v3",
+  "owner": "CONTRACTS",
+  "files": [
+   {
+    "kind": "requirements",
+    "file": "requirements.jsonl",
+    "format": "jsonl",
+    "record": "requirement",
+    "unit": "record"
+   },
+   {
+    "kind": "commitments",
+    "file": "commitments.jsonl",
+    "format": "jsonl",
+    "record": "commitment",
+    "unit": "record"
+   },
+   {
+    "kind": "cq_spec",
+    "file": "cq_spec.jsonl",
+    "format": "jsonl",
+    "record": "cq_spec",
+    "unit": "record"
+   }
+  ],
+  "semantic_rules": [
+   "C24-MODEL: regras de bo.requirements.model (polaridade × checagem, leitura completa para resposta definida, UNKNOWN com leitura parcial e o que falta, vocabulário de fixture, ids únicos)",
+   "C24-XREF: requirement_ids e commitment_ids existem nos arquivos irmãos quando presentes"
+  ],
+  "producers": [
+   "CQ",
+   "CQFIX",
+   "PILOT-{slice}-ORACLE",
+   "REQUIREMENTS",
+   "SEMANTICS"
+  ],
+  "consumers": [],
+  "adopted_from": [
+   "results/REQUIREMENTS/C24_proposta/requirements.schema.json",
+   "results/REQUIREMENTS/C24_proposta/commitments.schema.json",
+   "results/REQUIREMENTS/C24_proposta/cq_spec.schema.json"
+  ]
+ },
+ "$defs": {
+  "requirement": {
+   "additionalProperties": false,
+   "properties": {
+    "answers": {
+     "items": {
+      "pattern": "^(R[1-4]-M\\d{1,2}|R[1-4]-W\\d{1,2}|F[1-9]|S\\d{1,2}|N\\d{1,2}|A\\d{1,2})$",
+      "type": "string"
+     },
+     "minItems": 1,
+     "type": "array"
+    },
+    "area": {
+     "enum": [
+      "absence",
+      "authorization",
+      "composition",
+      "database",
+      "desired_vs_observed",
+      "entity",
+      "identity",
+      "lifecycle",
+      "load_balancing",
+      "loss",
+      "method",
+      "network",
+      "new_provider",
+      "relation",
+      "storage",
+      "taxonomy"
+     ]
+    },
+    "consumers": {
+     "items": {
+      "pattern": "^[A-Z][A-Z0-9-]{1,40}$",
+      "type": "string"
+     },
+     "type": "array"
+    },
+    "contract": {
+     "const": "C24"
+    },
+    "contract_version": {
+     "const": "1.0.0"
+    },
+    "priority": {
+     "enum": [
+      "MUST",
+      "SHOULD"
+     ]
+    },
+    "rationale": {
+     "minLength": 20,
+     "type": "string"
+    },
+    "req_id": {
+     "pattern": "^REQ-[A-Z]{2,5}-\\d{2}$",
+     "type": "string"
+    },
+    "schema": {
+     "const": "bo.requirement/1"
+    },
+    "statement": {
+     "minLength": 20,
+     "type": "string"
+    }
+   },
+   "required": [
+    "schema",
+    "contract",
+    "contract_version",
+    "req_id",
+    "area",
+    "priority",
+    "statement",
+    "rationale",
+    "answers",
+    "consumers"
+   ],
+   "title": "C24 requirements.jsonl (registro)",
+   "type": "object"
+  },
+  "commitment": {
+   "additionalProperties": false,
+   "allOf": [
+    {
+     "if": {
+      "properties": {
+       "polarity": {
+        "const": "positive"
+       }
+      }
+     },
+     "then": {
+      "properties": {
+       "check": {
+        "properties": {
+         "kind": {
+          "enum": [
+           "entails",
+           "count",
+           "invariant"
+          ]
+         }
+        }
+       }
+      }
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "polarity": {
+        "const": "negative"
+       }
+      }
+     },
+     "then": {
+      "properties": {
+       "check": {
+        "properties": {
+         "kind": {
+          "enum": [
+           "rejects",
+           "not_entails"
+          ]
+         }
+        }
+       }
+      }
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "polarity": {
+        "const": "unknown"
+       }
+      }
+     },
+     "then": {
+      "properties": {
+       "check": {
+        "properties": {
+         "kind": {
+          "const": "unknown"
+         }
+        }
+       },
+       "expected_answer": {
+        "properties": {
+         "value": {
+          "const": "UNKNOWN"
+         }
+        }
+       }
+      }
+     }
+    }
+   ],
+   "properties": {
+    "answers": {
+     "items": {
+      "pattern": "^(R[1-4]-M\\d{1,2}|R[1-4]-W\\d{1,2}|F[1-9]|S\\d{1,2}|N\\d{1,2}|A\\d{1,2})$",
+      "type": "string"
+     },
+     "minItems": 1,
+     "type": "array"
+    },
+    "case": {
+     "enum": [
+      "BUCKET",
+      "NIC",
+      "FIREWALL",
+      "IAM",
+      "LB",
+      "DB",
+      "GENERAL"
+     ]
+    },
+    "check": {
+     "additionalProperties": false,
+     "properties": {
+      "assertion": {
+       "minLength": 10,
+       "type": "string"
+      },
+      "kind": {
+       "enum": [
+        "count",
+        "entails",
+        "invariant",
+        "not_entails",
+        "rejects",
+        "unknown"
+       ]
+      }
+     },
+     "required": [
+      "kind",
+      "assertion"
+     ],
+     "type": "object"
+    },
+    "commitment_id": {
+     "pattern": "^CMT-[A-Z]{2,8}-[PNU]\\d{2}$",
+     "type": "string"
+    },
+    "consumers": {
+     "items": {
+      "pattern": "^[A-Z][A-Z0-9-]{1,40}$",
+      "type": "string"
+     },
+     "type": "array"
+    },
+    "contract": {
+     "const": "C24"
+    },
+    "contract_version": {
+     "const": "1.0.0"
+    },
+    "expected_answer": {
+     "additionalProperties": false,
+     "properties": {
+      "code": {
+       "enum": [
+        "OUT_OF_PIN",
+        "UNKNOWN_INPUT",
+        "UNKNOWN_SYMBOLIC_INPUT",
+        "CONDITION_INDETERMINATE",
+        "UNRESOLVED",
+        "UNPROVEN",
+        "UNSUPPORTED_BY_TRANSLATOR",
+        "UNGLOSSED",
+        "TRANSFORM_OUT_OF_DOMAIN",
+        "NO_REALIZATION",
+        "SHACL_VIOLATION",
+        "INCONSISTENT",
+        "RELATED_ONLY",
+        "DECLARED_LOSS",
+        "MISSING_EVIDENCE",
+        "INCOMPLETE_READ",
+        "WITHHELD"
+       ]
+      },
+      "value": {
+       "type": [
+        "string",
+        "integer",
+        "boolean"
+       ]
+      },
+      "why": {
+       "minLength": 10,
+       "type": "string"
+      }
+     },
+     "required": [
+      "value",
+      "why"
+     ],
+     "type": "object"
+    },
+    "fixtures": {
+     "items": {
+      "additionalProperties": false,
+      "properties": {
+       "attributes": {
+        "items": {
+         "additionalProperties": false,
+         "properties": {
+          "attr": {
+           "enum": [
+            "action",
+            "authoritative",
+            "backup_retention_days",
+            "changed_attribute",
+            "condition",
+            "condition_attribute_modeled",
+            "context",
+            "declared_inline",
+            "default_state_tracking",
+            "dest_cidr",
+            "device_index",
+            "direction",
+            "documented",
+            "domain_max",
+            "effect",
+            "engine",
+            "evaluation",
+            "evidence_state",
+            "exclusive",
+            "expression_form",
+            "ha_managed",
+            "in_construction",
+            "layer",
+            "lifecycle_controller",
+            "local_key",
+            "match",
+            "mutable",
+            "observed_at",
+            "port",
+            "precedence_mechanism",
+            "principal_type",
+            "priority",
+            "protocol",
+            "public",
+            "public_access",
+            "read_complete",
+            "references_missing",
+            "replacement",
+            "required",
+            "resource_ref",
+            "retention",
+            "secret_present",
+            "semantic_relation",
+            "setting_kind",
+            "source_cidr",
+            "state_tracking",
+            "supports_deny",
+            "text_position",
+            "tie_break",
+            "tls",
+            "transport_fidelity",
+            "value",
+            "value_origin",
+            "value_symbolic",
+            "versioning"
+           ]
+          },
+          "of": {
+           "type": "string"
+          },
+          "value": {
+           "type": [
+            "string",
+            "integer",
+            "boolean"
+           ]
+          }
+         },
+         "required": [
+          "of",
+          "attr",
+          "value"
+         ],
+         "type": "object"
+        },
+        "type": "array"
+       },
+       "entities": {
+        "items": {
+         "additionalProperties": false,
+         "properties": {
+          "also_kinds": {
+           "items": {
+            "enum": [
+             "access_condition",
+             "access_request",
+             "alarm",
+             "assignment",
+             "backend_pool",
+             "compute_instance",
+             "concept",
+             "config_description",
+             "db_backup",
+             "db_instance",
+             "db_parameter_set",
+             "dedicated_host",
+             "deny_statement",
+             "dns_record",
+             "dns_zone",
+             "external_directory",
+             "filter_rule",
+             "flow",
+             "health_probe",
+             "internet_gateway",
+             "ip_address",
+             "label",
+             "lb_frontend",
+             "lb_listener",
+             "load_balancer",
+             "location",
+             "logical_database",
+             "logical_server",
+             "network_interface",
+             "notification_topic",
+             "object_container",
+             "observation",
+             "observed_state",
+             "permission",
+             "permission_set",
+             "placement_policy",
+             "policy_document",
+             "principal",
+             "provider_slot",
+             "route",
+             "route_table",
+             "routing_rule",
+             "rule_set",
+             "scope_node",
+             "secret_value_holder",
+             "source_setting",
+             "storage_namespace",
+             "storage_setting",
+             "stored_object",
+             "subnet",
+             "synthetic_account",
+             "target_setting",
+             "tls_certificate",
+             "virtual_network"
+            ]
+           },
+           "minItems": 1,
+           "type": "array"
+          },
+          "id": {
+           "pattern": "^[a-z][a-z0-9_]{0,23}$",
+           "type": "string"
+          },
+          "kind": {
+           "enum": [
+            "access_condition",
+            "access_request",
+            "alarm",
+            "assignment",
+            "backend_pool",
+            "compute_instance",
+            "concept",
+            "config_description",
+            "db_backup",
+            "db_instance",
+            "db_parameter_set",
+            "dedicated_host",
+            "deny_statement",
+            "dns_record",
+            "dns_zone",
+            "external_directory",
+            "filter_rule",
+            "flow",
+            "health_probe",
+            "internet_gateway",
+            "ip_address",
+            "label",
+            "lb_frontend",
+            "lb_listener",
+            "load_balancer",
+            "location",
+            "logical_database",
+            "logical_server",
+            "network_interface",
+            "notification_topic",
+            "object_container",
+            "observation",
+            "observed_state",
+            "permission",
+            "permission_set",
+            "placement_policy",
+            "policy_document",
+            "principal",
+            "provider_slot",
+            "route",
+            "route_table",
+            "routing_rule",
+            "rule_set",
+            "scope_node",
+            "secret_value_holder",
+            "source_setting",
+            "storage_namespace",
+            "storage_setting",
+            "stored_object",
+            "subnet",
+            "synthetic_account",
+            "target_setting",
+            "tls_certificate",
+            "virtual_network"
+           ]
+          }
+         },
+         "required": [
+          "id",
+          "kind"
+         ],
+         "type": "object"
+        },
+        "minItems": 1,
+        "type": "array"
+       },
+       "fixture_id": {
+        "pattern": "^FX-[A-Z0-9-]{3,40}$",
+        "type": "string"
+       },
+       "read": {
+        "additionalProperties": false,
+        "properties": {
+         "completeness": {
+          "enum": [
+           "complete",
+           "partial"
+          ]
+         },
+         "not_read": {
+          "items": {
+           "additionalProperties": false,
+           "properties": {
+            "of": {
+             "type": "string"
+            },
+            "what": {
+             "enum": [
+              "alarm",
+              "attachment",
+              "calendar_context",
+              "concept",
+              "condition_attribute",
+              "correspondence",
+              "default",
+              "documentation",
+              "group_membership",
+              "identity_fields",
+              "instance_count",
+              "lifecycle",
+              "location",
+              "membership",
+              "mutability",
+              "observation",
+              "precedence",
+              "principal",
+              "reference",
+              "route_table",
+              "rules",
+              "scope",
+              "secret",
+              "setting",
+              "state_tracking",
+              "target_semantics",
+              "tie_break",
+              "unit",
+              "value"
+             ]
+            }
+           },
+           "required": [
+            "of",
+            "what"
+           ],
+           "type": "object"
+          },
+          "type": "array"
+         },
+         "withheld": {
+          "items": {
+           "additionalProperties": false,
+           "properties": {
+            "attr": {
+             "type": "string"
+            },
+            "of": {
+             "type": "string"
+            }
+           },
+           "required": [
+            "of",
+            "attr"
+           ],
+           "type": "object"
+          },
+          "type": "array"
+         }
+        },
+        "required": [
+         "completeness",
+         "not_read",
+         "withheld"
+        ],
+        "type": "object"
+       },
+       "relations": {
+        "items": {
+         "additionalProperties": false,
+         "properties": {
+          "from": {
+           "type": "string"
+          },
+          "rel": {
+           "enum": [
+            "alarm_on",
+            "anchored_to",
+            "assigns_principal",
+            "assigns_set",
+            "at_scope",
+            "attached_to",
+            "backup_of",
+            "child_scope_of",
+            "conditioned_by",
+            "container_in",
+            "database_on",
+            "denies",
+            "depends_on",
+            "describes",
+            "forwards_to",
+            "frontend_of",
+            "has_address",
+            "has_label",
+            "in_account",
+            "in_location",
+            "in_scope",
+            "in_subnet",
+            "includes",
+            "instance_of_server",
+            "listener_on",
+            "member_of_group",
+            "member_of_pool",
+            "next_hop",
+            "notifies",
+            "object_in",
+            "observed_state_of",
+            "of_provider",
+            "placed_by",
+            "principal_held_in",
+            "probes",
+            "produced_by",
+            "record_in",
+            "replica_of",
+            "requested_by",
+            "route_in",
+            "routes_via",
+            "rule_in",
+            "rule_of_listener",
+            "runs_on",
+            "secret_of",
+            "setting_applies_to",
+            "setting_declared_on",
+            "setting_owned_by",
+            "statement_in",
+            "subnet_of",
+            "targets_label",
+            "translates_to",
+            "uses_certificate",
+            "uses_parameter_set"
+           ]
+          },
+          "to": {
+           "type": "string"
+          }
+         },
+         "required": [
+          "from",
+          "rel",
+          "to"
+         ],
+         "type": "object"
+        },
+        "type": "array"
+       },
+       "summary": {
+        "minLength": 5,
+        "type": "string"
+       }
+      },
+      "required": [
+       "fixture_id",
+       "summary",
+       "entities",
+       "relations",
+       "attributes",
+       "read"
+      ],
+      "type": "object"
+     },
+     "minItems": 1,
+     "type": "array"
+    },
+    "layer": {
+     "enum": [
+      "domain",
+      "terraform",
+      "api",
+      "translation",
+      "evaluation"
+     ]
+    },
+    "polarity": {
+     "enum": [
+      "positive",
+      "negative",
+      "unknown"
+     ]
+    },
+    "protects": {
+     "minLength": 10,
+     "type": "string"
+    },
+    "provider_grounding": {
+     "items": {
+      "additionalProperties": false,
+      "properties": {
+       "evidence_state": {
+        "enum": [
+         "UNRESOLVED",
+         "DOC_SUPPORTED",
+         "STRUCTURALLY_VALID",
+         "PERSISTENCE_VERIFIED",
+         "OBSERVATION_TESTED"
+        ]
+       },
+       "note": {
+        "minLength": 10,
+        "type": "string"
+       },
+       "provider": {
+        "enum": [
+         "aws",
+         "google",
+         "azurerm",
+         "oci"
+        ]
+       },
+       "verify_in": {
+        "type": "string"
+       }
+      },
+      "required": [
+       "provider",
+       "note",
+       "evidence_state",
+       "verify_in"
+      ],
+      "type": "object"
+     },
+     "type": "array"
+    },
+    "requirement_ids": {
+     "items": {
+      "pattern": "^REQ-[A-Z]{2,5}-\\d{2}$",
+      "type": "string"
+     },
+     "minItems": 1,
+     "type": "array"
+    },
+    "schema": {
+     "const": "bo.commitment/1"
+    },
+    "statement": {
+     "minLength": 20,
+     "type": "string"
+    },
+    "upper_axes": {
+     "items": {
+      "enum": [
+       "identity",
+       "time",
+       "role"
+      ]
+     },
+     "type": "array"
+    }
+   },
+   "required": [
+    "schema",
+    "contract",
+    "contract_version",
+    "commitment_id",
+    "case",
+    "polarity",
+    "check",
+    "statement",
+    "fixtures",
+    "expected_answer",
+    "protects",
+    "layer",
+    "upper_axes",
+    "requirement_ids",
+    "answers",
+    "provider_grounding",
+    "consumers"
+   ],
+   "title": "C24 commitments.jsonl (registro)",
+   "type": "object"
+  },
+  "cq_spec": {
+   "additionalProperties": false,
+   "properties": {
+    "answer_form": {
+     "enum": [
+      "boolean",
+      "count",
+      "decision",
+      "enum",
+      "identity"
+     ]
+    },
+    "answers": {
+     "items": {
+      "pattern": "^(R[1-4]-M\\d{1,2}|R[1-4]-W\\d{1,2}|F[1-9]|S\\d{1,2}|N\\d{1,2}|A\\d{1,2})$",
+      "type": "string"
+     },
+     "minItems": 1,
+     "type": "array"
+    },
+    "applicability": {
+     "minLength": 15,
+     "type": "string"
+    },
+    "cases": {
+     "items": {
+      "enum": [
+       "BUCKET",
+       "NIC",
+       "FIREWALL",
+       "IAM",
+       "LB",
+       "DB"
+      ]
+     },
+     "type": "array"
+    },
+    "closed_world": {
+     "additionalProperties": false,
+     "properties": {
+      "negation_requires_complete_read": {
+       "const": true
+      },
+      "uses_negation": {
+       "type": "boolean"
+      }
+     },
+     "required": [
+      "uses_negation",
+      "negation_requires_complete_read"
+     ],
+     "type": "object"
+    },
+    "commitment_ids": {
+     "items": {
+      "pattern": "^CMT-[A-Z]{2,8}-[PNU]\\d{2}$",
+      "type": "string"
+     },
+     "type": "array"
+    },
+    "contract": {
+     "const": "C24"
+    },
+    "contract_version": {
+     "const": "1.0.0"
+    },
+    "cq_id": {
+     "pattern": "^CQ-[A-Z]{3,4}-\\d{2}$",
+     "type": "string"
+    },
+    "criterion": {
+     "minLength": 15,
+     "type": "string"
+    },
+    "family": {
+     "enum": [
+      "cis",
+      "identity_lifecycle",
+      "composition",
+      "authorization_effect",
+      "network_path",
+      "config_vs_observation",
+      "loss",
+      "new_provider"
+     ]
+    },
+    "fixtures": {
+     "additionalProperties": false,
+     "properties": {
+      "conforming": {
+       "additionalProperties": false,
+       "properties": {
+        "expected": {
+         "additionalProperties": false,
+         "properties": {
+          "code": {
+           "enum": [
+            "OUT_OF_PIN",
+            "UNKNOWN_INPUT",
+            "UNKNOWN_SYMBOLIC_INPUT",
+            "CONDITION_INDETERMINATE",
+            "UNRESOLVED",
+            "UNPROVEN",
+            "UNSUPPORTED_BY_TRANSLATOR",
+            "UNGLOSSED",
+            "TRANSFORM_OUT_OF_DOMAIN",
+            "NO_REALIZATION",
+            "SHACL_VIOLATION",
+            "INCONSISTENT",
+            "RELATED_ONLY",
+            "DECLARED_LOSS",
+            "MISSING_EVIDENCE",
+            "INCOMPLETE_READ",
+            "WITHHELD"
+           ]
+          },
+          "value": {
+           "type": [
+            "string",
+            "integer",
+            "boolean"
+           ]
+          },
+          "why": {
+           "minLength": 10,
+           "type": "string"
+          }
+         },
+         "required": [
+          "value",
+          "why"
+         ],
+         "type": "object"
+        },
+        "fixture": {
+         "additionalProperties": false,
+         "properties": {
+          "attributes": {
+           "items": {
+            "additionalProperties": false,
+            "properties": {
+             "attr": {
+              "enum": [
+               "action",
+               "authoritative",
+               "backup_retention_days",
+               "changed_attribute",
+               "condition",
+               "condition_attribute_modeled",
+               "context",
+               "declared_inline",
+               "default_state_tracking",
+               "dest_cidr",
+               "device_index",
+               "direction",
+               "documented",
+               "domain_max",
+               "effect",
+               "engine",
+               "evaluation",
+               "evidence_state",
+               "exclusive",
+               "expression_form",
+               "ha_managed",
+               "in_construction",
+               "layer",
+               "lifecycle_controller",
+               "local_key",
+               "match",
+               "mutable",
+               "observed_at",
+               "port",
+               "precedence_mechanism",
+               "principal_type",
+               "priority",
+               "protocol",
+               "public",
+               "public_access",
+               "read_complete",
+               "references_missing",
+               "replacement",
+               "required",
+               "resource_ref",
+               "retention",
+               "secret_present",
+               "semantic_relation",
+               "setting_kind",
+               "source_cidr",
+               "state_tracking",
+               "supports_deny",
+               "text_position",
+               "tie_break",
+               "tls",
+               "transport_fidelity",
+               "value",
+               "value_origin",
+               "value_symbolic",
+               "versioning"
+              ]
+             },
+             "of": {
+              "type": "string"
+             },
+             "value": {
+              "type": [
+               "string",
+               "integer",
+               "boolean"
+              ]
+             }
+            },
+            "required": [
+             "of",
+             "attr",
+             "value"
+            ],
+            "type": "object"
+           },
+           "type": "array"
+          },
+          "entities": {
+           "items": {
+            "additionalProperties": false,
+            "properties": {
+             "also_kinds": {
+              "items": {
+               "enum": [
+                "access_condition",
+                "access_request",
+                "alarm",
+                "assignment",
+                "backend_pool",
+                "compute_instance",
+                "concept",
+                "config_description",
+                "db_backup",
+                "db_instance",
+                "db_parameter_set",
+                "dedicated_host",
+                "deny_statement",
+                "dns_record",
+                "dns_zone",
+                "external_directory",
+                "filter_rule",
+                "flow",
+                "health_probe",
+                "internet_gateway",
+                "ip_address",
+                "label",
+                "lb_frontend",
+                "lb_listener",
+                "load_balancer",
+                "location",
+                "logical_database",
+                "logical_server",
+                "network_interface",
+                "notification_topic",
+                "object_container",
+                "observation",
+                "observed_state",
+                "permission",
+                "permission_set",
+                "placement_policy",
+                "policy_document",
+                "principal",
+                "provider_slot",
+                "route",
+                "route_table",
+                "routing_rule",
+                "rule_set",
+                "scope_node",
+                "secret_value_holder",
+                "source_setting",
+                "storage_namespace",
+                "storage_setting",
+                "stored_object",
+                "subnet",
+                "synthetic_account",
+                "target_setting",
+                "tls_certificate",
+                "virtual_network"
+               ]
+              },
+              "minItems": 1,
+              "type": "array"
+             },
+             "id": {
+              "pattern": "^[a-z][a-z0-9_]{0,23}$",
+              "type": "string"
+             },
+             "kind": {
+              "enum": [
+               "access_condition",
+               "access_request",
+               "alarm",
+               "assignment",
+               "backend_pool",
+               "compute_instance",
+               "concept",
+               "config_description",
+               "db_backup",
+               "db_instance",
+               "db_parameter_set",
+               "dedicated_host",
+               "deny_statement",
+               "dns_record",
+               "dns_zone",
+               "external_directory",
+               "filter_rule",
+               "flow",
+               "health_probe",
+               "internet_gateway",
+               "ip_address",
+               "label",
+               "lb_frontend",
+               "lb_listener",
+               "load_balancer",
+               "location",
+               "logical_database",
+               "logical_server",
+               "network_interface",
+               "notification_topic",
+               "object_container",
+               "observation",
+               "observed_state",
+               "permission",
+               "permission_set",
+               "placement_policy",
+               "policy_document",
+               "principal",
+               "provider_slot",
+               "route",
+               "route_table",
+               "routing_rule",
+               "rule_set",
+               "scope_node",
+               "secret_value_holder",
+               "source_setting",
+               "storage_namespace",
+               "storage_setting",
+               "stored_object",
+               "subnet",
+               "synthetic_account",
+               "target_setting",
+               "tls_certificate",
+               "virtual_network"
+              ]
+             }
+            },
+            "required": [
+             "id",
+             "kind"
+            ],
+            "type": "object"
+           },
+           "minItems": 1,
+           "type": "array"
+          },
+          "fixture_id": {
+           "pattern": "^FX-[A-Z0-9-]{3,40}$",
+           "type": "string"
+          },
+          "read": {
+           "additionalProperties": false,
+           "properties": {
+            "completeness": {
+             "enum": [
+              "complete",
+              "partial"
+             ]
+            },
+            "not_read": {
+             "items": {
+              "additionalProperties": false,
+              "properties": {
+               "of": {
+                "type": "string"
+               },
+               "what": {
+                "enum": [
+                 "alarm",
+                 "attachment",
+                 "calendar_context",
+                 "concept",
+                 "condition_attribute",
+                 "correspondence",
+                 "default",
+                 "documentation",
+                 "group_membership",
+                 "identity_fields",
+                 "instance_count",
+                 "lifecycle",
+                 "location",
+                 "membership",
+                 "mutability",
+                 "observation",
+                 "precedence",
+                 "principal",
+                 "reference",
+                 "route_table",
+                 "rules",
+                 "scope",
+                 "secret",
+                 "setting",
+                 "state_tracking",
+                 "target_semantics",
+                 "tie_break",
+                 "unit",
+                 "value"
+                ]
+               }
+              },
+              "required": [
+               "of",
+               "what"
+              ],
+              "type": "object"
+             },
+             "type": "array"
+            },
+            "withheld": {
+             "items": {
+              "additionalProperties": false,
+              "properties": {
+               "attr": {
+                "type": "string"
+               },
+               "of": {
+                "type": "string"
+               }
+              },
+              "required": [
+               "of",
+               "attr"
+              ],
+              "type": "object"
+             },
+             "type": "array"
+            }
+           },
+           "required": [
+            "completeness",
+            "not_read",
+            "withheld"
+           ],
+           "type": "object"
+          },
+          "relations": {
+           "items": {
+            "additionalProperties": false,
+            "properties": {
+             "from": {
+              "type": "string"
+             },
+             "rel": {
+              "enum": [
+               "alarm_on",
+               "anchored_to",
+               "assigns_principal",
+               "assigns_set",
+               "at_scope",
+               "attached_to",
+               "backup_of",
+               "child_scope_of",
+               "conditioned_by",
+               "container_in",
+               "database_on",
+               "denies",
+               "depends_on",
+               "describes",
+               "forwards_to",
+               "frontend_of",
+               "has_address",
+               "has_label",
+               "in_account",
+               "in_location",
+               "in_scope",
+               "in_subnet",
+               "includes",
+               "instance_of_server",
+               "listener_on",
+               "member_of_group",
+               "member_of_pool",
+               "next_hop",
+               "notifies",
+               "object_in",
+               "observed_state_of",
+               "of_provider",
+               "placed_by",
+               "principal_held_in",
+               "probes",
+               "produced_by",
+               "record_in",
+               "replica_of",
+               "requested_by",
+               "route_in",
+               "routes_via",
+               "rule_in",
+               "rule_of_listener",
+               "runs_on",
+               "secret_of",
+               "setting_applies_to",
+               "setting_declared_on",
+               "setting_owned_by",
+               "statement_in",
+               "subnet_of",
+               "targets_label",
+               "translates_to",
+               "uses_certificate",
+               "uses_parameter_set"
+              ]
+             },
+             "to": {
+              "type": "string"
+             }
+            },
+            "required": [
+             "from",
+             "rel",
+             "to"
+            ],
+            "type": "object"
+           },
+           "type": "array"
+          },
+          "summary": {
+           "minLength": 5,
+           "type": "string"
+          }
+         },
+         "required": [
+          "fixture_id",
+          "summary",
+          "entities",
+          "relations",
+          "attributes",
+          "read"
+         ],
+         "type": "object"
+        }
+       },
+       "required": [
+        "fixture",
+        "expected"
+       ],
+       "type": "object"
+      },
+      "incomplete": {
+       "additionalProperties": false,
+       "properties": {
+        "expected": {
+         "additionalProperties": false,
+         "properties": {
+          "code": {
+           "enum": [
+            "OUT_OF_PIN",
+            "UNKNOWN_INPUT",
+            "UNKNOWN_SYMBOLIC_INPUT",
+            "CONDITION_INDETERMINATE",
+            "UNRESOLVED",
+            "UNPROVEN",
+            "UNSUPPORTED_BY_TRANSLATOR",
+            "UNGLOSSED",
+            "TRANSFORM_OUT_OF_DOMAIN",
+            "NO_REALIZATION",
+            "SHACL_VIOLATION",
+            "INCONSISTENT",
+            "RELATED_ONLY",
+            "DECLARED_LOSS",
+            "MISSING_EVIDENCE",
+            "INCOMPLETE_READ",
+            "WITHHELD"
+           ]
+          },
+          "value": {
+           "const": "UNKNOWN"
+          },
+          "why": {
+           "minLength": 10,
+           "type": "string"
+          }
+         },
+         "required": [
+          "value",
+          "why"
+         ],
+         "type": "object"
+        },
+        "fixture": {
+         "additionalProperties": false,
+         "properties": {
+          "attributes": {
+           "items": {
+            "additionalProperties": false,
+            "properties": {
+             "attr": {
+              "enum": [
+               "action",
+               "authoritative",
+               "backup_retention_days",
+               "changed_attribute",
+               "condition",
+               "condition_attribute_modeled",
+               "context",
+               "declared_inline",
+               "default_state_tracking",
+               "dest_cidr",
+               "device_index",
+               "direction",
+               "documented",
+               "domain_max",
+               "effect",
+               "engine",
+               "evaluation",
+               "evidence_state",
+               "exclusive",
+               "expression_form",
+               "ha_managed",
+               "in_construction",
+               "layer",
+               "lifecycle_controller",
+               "local_key",
+               "match",
+               "mutable",
+               "observed_at",
+               "port",
+               "precedence_mechanism",
+               "principal_type",
+               "priority",
+               "protocol",
+               "public",
+               "public_access",
+               "read_complete",
+               "references_missing",
+               "replacement",
+               "required",
+               "resource_ref",
+               "retention",
+               "secret_present",
+               "semantic_relation",
+               "setting_kind",
+               "source_cidr",
+               "state_tracking",
+               "supports_deny",
+               "text_position",
+               "tie_break",
+               "tls",
+               "transport_fidelity",
+               "value",
+               "value_origin",
+               "value_symbolic",
+               "versioning"
+              ]
+             },
+             "of": {
+              "type": "string"
+             },
+             "value": {
+              "type": [
+               "string",
+               "integer",
+               "boolean"
+              ]
+             }
+            },
+            "required": [
+             "of",
+             "attr",
+             "value"
+            ],
+            "type": "object"
+           },
+           "type": "array"
+          },
+          "entities": {
+           "items": {
+            "additionalProperties": false,
+            "properties": {
+             "also_kinds": {
+              "items": {
+               "enum": [
+                "access_condition",
+                "access_request",
+                "alarm",
+                "assignment",
+                "backend_pool",
+                "compute_instance",
+                "concept",
+                "config_description",
+                "db_backup",
+                "db_instance",
+                "db_parameter_set",
+                "dedicated_host",
+                "deny_statement",
+                "dns_record",
+                "dns_zone",
+                "external_directory",
+                "filter_rule",
+                "flow",
+                "health_probe",
+                "internet_gateway",
+                "ip_address",
+                "label",
+                "lb_frontend",
+                "lb_listener",
+                "load_balancer",
+                "location",
+                "logical_database",
+                "logical_server",
+                "network_interface",
+                "notification_topic",
+                "object_container",
+                "observation",
+                "observed_state",
+                "permission",
+                "permission_set",
+                "placement_policy",
+                "policy_document",
+                "principal",
+                "provider_slot",
+                "route",
+                "route_table",
+                "routing_rule",
+                "rule_set",
+                "scope_node",
+                "secret_value_holder",
+                "source_setting",
+                "storage_namespace",
+                "storage_setting",
+                "stored_object",
+                "subnet",
+                "synthetic_account",
+                "target_setting",
+                "tls_certificate",
+                "virtual_network"
+               ]
+              },
+              "minItems": 1,
+              "type": "array"
+             },
+             "id": {
+              "pattern": "^[a-z][a-z0-9_]{0,23}$",
+              "type": "string"
+             },
+             "kind": {
+              "enum": [
+               "access_condition",
+               "access_request",
+               "alarm",
+               "assignment",
+               "backend_pool",
+               "compute_instance",
+               "concept",
+               "config_description",
+               "db_backup",
+               "db_instance",
+               "db_parameter_set",
+               "dedicated_host",
+               "deny_statement",
+               "dns_record",
+               "dns_zone",
+               "external_directory",
+               "filter_rule",
+               "flow",
+               "health_probe",
+               "internet_gateway",
+               "ip_address",
+               "label",
+               "lb_frontend",
+               "lb_listener",
+               "load_balancer",
+               "location",
+               "logical_database",
+               "logical_server",
+               "network_interface",
+               "notification_topic",
+               "object_container",
+               "observation",
+               "observed_state",
+               "permission",
+               "permission_set",
+               "placement_policy",
+               "policy_document",
+               "principal",
+               "provider_slot",
+               "route",
+               "route_table",
+               "routing_rule",
+               "rule_set",
+               "scope_node",
+               "secret_value_holder",
+               "source_setting",
+               "storage_namespace",
+               "storage_setting",
+               "stored_object",
+               "subnet",
+               "synthetic_account",
+               "target_setting",
+               "tls_certificate",
+               "virtual_network"
+              ]
+             }
+            },
+            "required": [
+             "id",
+             "kind"
+            ],
+            "type": "object"
+           },
+           "minItems": 1,
+           "type": "array"
+          },
+          "fixture_id": {
+           "pattern": "^FX-[A-Z0-9-]{3,40}$",
+           "type": "string"
+          },
+          "read": {
+           "additionalProperties": false,
+           "properties": {
+            "completeness": {
+             "enum": [
+              "complete",
+              "partial"
+             ]
+            },
+            "not_read": {
+             "items": {
+              "additionalProperties": false,
+              "properties": {
+               "of": {
+                "type": "string"
+               },
+               "what": {
+                "enum": [
+                 "alarm",
+                 "attachment",
+                 "calendar_context",
+                 "concept",
+                 "condition_attribute",
+                 "correspondence",
+                 "default",
+                 "documentation",
+                 "group_membership",
+                 "identity_fields",
+                 "instance_count",
+                 "lifecycle",
+                 "location",
+                 "membership",
+                 "mutability",
+                 "observation",
+                 "precedence",
+                 "principal",
+                 "reference",
+                 "route_table",
+                 "rules",
+                 "scope",
+                 "secret",
+                 "setting",
+                 "state_tracking",
+                 "target_semantics",
+                 "tie_break",
+                 "unit",
+                 "value"
+                ]
+               }
+              },
+              "required": [
+               "of",
+               "what"
+              ],
+              "type": "object"
+             },
+             "type": "array"
+            },
+            "withheld": {
+             "items": {
+              "additionalProperties": false,
+              "properties": {
+               "attr": {
+                "type": "string"
+               },
+               "of": {
+                "type": "string"
+               }
+              },
+              "required": [
+               "of",
+               "attr"
+              ],
+              "type": "object"
+             },
+             "type": "array"
+            }
+           },
+           "required": [
+            "completeness",
+            "not_read",
+            "withheld"
+           ],
+           "type": "object"
+          },
+          "relations": {
+           "items": {
+            "additionalProperties": false,
+            "properties": {
+             "from": {
+              "type": "string"
+             },
+             "rel": {
+              "enum": [
+               "alarm_on",
+               "anchored_to",
+               "assigns_principal",
+               "assigns_set",
+               "at_scope",
+               "attached_to",
+               "backup_of",
+               "child_scope_of",
+               "conditioned_by",
+               "container_in",
+               "database_on",
+               "denies",
+               "depends_on",
+               "describes",
+               "forwards_to",
+               "frontend_of",
+               "has_address",
+               "has_label",
+               "in_account",
+               "in_location",
+               "in_scope",
+               "in_subnet",
+               "includes",
+               "instance_of_server",
+               "listener_on",
+               "member_of_group",
+               "member_of_pool",
+               "next_hop",
+               "notifies",
+               "object_in",
+               "observed_state_of",
+               "of_provider",
+               "placed_by",
+               "principal_held_in",
+               "probes",
+               "produced_by",
+               "record_in",
+               "replica_of",
+               "requested_by",
+               "route_in",
+               "routes_via",
+               "rule_in",
+               "rule_of_listener",
+               "runs_on",
+               "secret_of",
+               "setting_applies_to",
+               "setting_declared_on",
+               "setting_owned_by",
+               "statement_in",
+               "subnet_of",
+               "targets_label",
+               "translates_to",
+               "uses_certificate",
+               "uses_parameter_set"
+              ]
+             },
+             "to": {
+              "type": "string"
+             }
+            },
+            "required": [
+             "from",
+             "rel",
+             "to"
+            ],
+            "type": "object"
+           },
+           "type": "array"
+          },
+          "summary": {
+           "minLength": 5,
+           "type": "string"
+          }
+         },
+         "required": [
+          "fixture_id",
+          "summary",
+          "entities",
+          "relations",
+          "attributes",
+          "read"
+         ],
+         "type": "object"
+        }
+       },
+       "required": [
+        "fixture",
+        "expected"
+       ],
+       "type": "object"
+      },
+      "nonconforming": {
+       "additionalProperties": false,
+       "properties": {
+        "expected": {
+         "additionalProperties": false,
+         "properties": {
+          "code": {
+           "enum": [
+            "OUT_OF_PIN",
+            "UNKNOWN_INPUT",
+            "UNKNOWN_SYMBOLIC_INPUT",
+            "CONDITION_INDETERMINATE",
+            "UNRESOLVED",
+            "UNPROVEN",
+            "UNSUPPORTED_BY_TRANSLATOR",
+            "UNGLOSSED",
+            "TRANSFORM_OUT_OF_DOMAIN",
+            "NO_REALIZATION",
+            "SHACL_VIOLATION",
+            "INCONSISTENT",
+            "RELATED_ONLY",
+            "DECLARED_LOSS",
+            "MISSING_EVIDENCE",
+            "INCOMPLETE_READ",
+            "WITHHELD"
+           ]
+          },
+          "value": {
+           "type": [
+            "string",
+            "integer",
+            "boolean"
+           ]
+          },
+          "why": {
+           "minLength": 10,
+           "type": "string"
+          }
+         },
+         "required": [
+          "value",
+          "why"
+         ],
+         "type": "object"
+        },
+        "fixture": {
+         "additionalProperties": false,
+         "properties": {
+          "attributes": {
+           "items": {
+            "additionalProperties": false,
+            "properties": {
+             "attr": {
+              "enum": [
+               "action",
+               "authoritative",
+               "backup_retention_days",
+               "changed_attribute",
+               "condition",
+               "condition_attribute_modeled",
+               "context",
+               "declared_inline",
+               "default_state_tracking",
+               "dest_cidr",
+               "device_index",
+               "direction",
+               "documented",
+               "domain_max",
+               "effect",
+               "engine",
+               "evaluation",
+               "evidence_state",
+               "exclusive",
+               "expression_form",
+               "ha_managed",
+               "in_construction",
+               "layer",
+               "lifecycle_controller",
+               "local_key",
+               "match",
+               "mutable",
+               "observed_at",
+               "port",
+               "precedence_mechanism",
+               "principal_type",
+               "priority",
+               "protocol",
+               "public",
+               "public_access",
+               "read_complete",
+               "references_missing",
+               "replacement",
+               "required",
+               "resource_ref",
+               "retention",
+               "secret_present",
+               "semantic_relation",
+               "setting_kind",
+               "source_cidr",
+               "state_tracking",
+               "supports_deny",
+               "text_position",
+               "tie_break",
+               "tls",
+               "transport_fidelity",
+               "value",
+               "value_origin",
+               "value_symbolic",
+               "versioning"
+              ]
+             },
+             "of": {
+              "type": "string"
+             },
+             "value": {
+              "type": [
+               "string",
+               "integer",
+               "boolean"
+              ]
+             }
+            },
+            "required": [
+             "of",
+             "attr",
+             "value"
+            ],
+            "type": "object"
+           },
+           "type": "array"
+          },
+          "entities": {
+           "items": {
+            "additionalProperties": false,
+            "properties": {
+             "also_kinds": {
+              "items": {
+               "enum": [
+                "access_condition",
+                "access_request",
+                "alarm",
+                "assignment",
+                "backend_pool",
+                "compute_instance",
+                "concept",
+                "config_description",
+                "db_backup",
+                "db_instance",
+                "db_parameter_set",
+                "dedicated_host",
+                "deny_statement",
+                "dns_record",
+                "dns_zone",
+                "external_directory",
+                "filter_rule",
+                "flow",
+                "health_probe",
+                "internet_gateway",
+                "ip_address",
+                "label",
+                "lb_frontend",
+                "lb_listener",
+                "load_balancer",
+                "location",
+                "logical_database",
+                "logical_server",
+                "network_interface",
+                "notification_topic",
+                "object_container",
+                "observation",
+                "observed_state",
+                "permission",
+                "permission_set",
+                "placement_policy",
+                "policy_document",
+                "principal",
+                "provider_slot",
+                "route",
+                "route_table",
+                "routing_rule",
+                "rule_set",
+                "scope_node",
+                "secret_value_holder",
+                "source_setting",
+                "storage_namespace",
+                "storage_setting",
+                "stored_object",
+                "subnet",
+                "synthetic_account",
+                "target_setting",
+                "tls_certificate",
+                "virtual_network"
+               ]
+              },
+              "minItems": 1,
+              "type": "array"
+             },
+             "id": {
+              "pattern": "^[a-z][a-z0-9_]{0,23}$",
+              "type": "string"
+             },
+             "kind": {
+              "enum": [
+               "access_condition",
+               "access_request",
+               "alarm",
+               "assignment",
+               "backend_pool",
+               "compute_instance",
+               "concept",
+               "config_description",
+               "db_backup",
+               "db_instance",
+               "db_parameter_set",
+               "dedicated_host",
+               "deny_statement",
+               "dns_record",
+               "dns_zone",
+               "external_directory",
+               "filter_rule",
+               "flow",
+               "health_probe",
+               "internet_gateway",
+               "ip_address",
+               "label",
+               "lb_frontend",
+               "lb_listener",
+               "load_balancer",
+               "location",
+               "logical_database",
+               "logical_server",
+               "network_interface",
+               "notification_topic",
+               "object_container",
+               "observation",
+               "observed_state",
+               "permission",
+               "permission_set",
+               "placement_policy",
+               "policy_document",
+               "principal",
+               "provider_slot",
+               "route",
+               "route_table",
+               "routing_rule",
+               "rule_set",
+               "scope_node",
+               "secret_value_holder",
+               "source_setting",
+               "storage_namespace",
+               "storage_setting",
+               "stored_object",
+               "subnet",
+               "synthetic_account",
+               "target_setting",
+               "tls_certificate",
+               "virtual_network"
+              ]
+             }
+            },
+            "required": [
+             "id",
+             "kind"
+            ],
+            "type": "object"
+           },
+           "minItems": 1,
+           "type": "array"
+          },
+          "fixture_id": {
+           "pattern": "^FX-[A-Z0-9-]{3,40}$",
+           "type": "string"
+          },
+          "read": {
+           "additionalProperties": false,
+           "properties": {
+            "completeness": {
+             "enum": [
+              "complete",
+              "partial"
+             ]
+            },
+            "not_read": {
+             "items": {
+              "additionalProperties": false,
+              "properties": {
+               "of": {
+                "type": "string"
+               },
+               "what": {
+                "enum": [
+                 "alarm",
+                 "attachment",
+                 "calendar_context",
+                 "concept",
+                 "condition_attribute",
+                 "correspondence",
+                 "default",
+                 "documentation",
+                 "group_membership",
+                 "identity_fields",
+                 "instance_count",
+                 "lifecycle",
+                 "location",
+                 "membership",
+                 "mutability",
+                 "observation",
+                 "precedence",
+                 "principal",
+                 "reference",
+                 "route_table",
+                 "rules",
+                 "scope",
+                 "secret",
+                 "setting",
+                 "state_tracking",
+                 "target_semantics",
+                 "tie_break",
+                 "unit",
+                 "value"
+                ]
+               }
+              },
+              "required": [
+               "of",
+               "what"
+              ],
+              "type": "object"
+             },
+             "type": "array"
+            },
+            "withheld": {
+             "items": {
+              "additionalProperties": false,
+              "properties": {
+               "attr": {
+                "type": "string"
+               },
+               "of": {
+                "type": "string"
+               }
+              },
+              "required": [
+               "of",
+               "attr"
+              ],
+              "type": "object"
+             },
+             "type": "array"
+            }
+           },
+           "required": [
+            "completeness",
+            "not_read",
+            "withheld"
+           ],
+           "type": "object"
+          },
+          "relations": {
+           "items": {
+            "additionalProperties": false,
+            "properties": {
+             "from": {
+              "type": "string"
+             },
+             "rel": {
+              "enum": [
+               "alarm_on",
+               "anchored_to",
+               "assigns_principal",
+               "assigns_set",
+               "at_scope",
+               "attached_to",
+               "backup_of",
+               "child_scope_of",
+               "conditioned_by",
+               "container_in",
+               "database_on",
+               "denies",
+               "depends_on",
+               "describes",
+               "forwards_to",
+               "frontend_of",
+               "has_address",
+               "has_label",
+               "in_account",
+               "in_location",
+               "in_scope",
+               "in_subnet",
+               "includes",
+               "instance_of_server",
+               "listener_on",
+               "member_of_group",
+               "member_of_pool",
+               "next_hop",
+               "notifies",
+               "object_in",
+               "observed_state_of",
+               "of_provider",
+               "placed_by",
+               "principal_held_in",
+               "probes",
+               "produced_by",
+               "record_in",
+               "replica_of",
+               "requested_by",
+               "route_in",
+               "routes_via",
+               "rule_in",
+               "rule_of_listener",
+               "runs_on",
+               "secret_of",
+               "setting_applies_to",
+               "setting_declared_on",
+               "setting_owned_by",
+               "statement_in",
+               "subnet_of",
+               "targets_label",
+               "translates_to",
+               "uses_certificate",
+               "uses_parameter_set"
+              ]
+             },
+             "to": {
+              "type": "string"
+             }
+            },
+            "required": [
+             "from",
+             "rel",
+             "to"
+            ],
+            "type": "object"
+           },
+           "type": "array"
+          },
+          "summary": {
+           "minLength": 5,
+           "type": "string"
+          }
+         },
+         "required": [
+          "fixture_id",
+          "summary",
+          "entities",
+          "relations",
+          "attributes",
+          "read"
+         ],
+         "type": "object"
+        }
+       },
+       "required": [
+        "fixture",
+        "expected"
+       ],
+       "type": "object"
+      }
+     },
+     "required": [
+      "conforming",
+      "nonconforming",
+      "incomplete"
+     ],
+     "type": "object"
+    },
+    "question": {
+     "minLength": 15,
+     "type": "string"
+    },
+    "reasoning_needs": {
+     "minLength": 15,
+     "type": "string"
+    },
+    "requirement_ids": {
+     "items": {
+      "pattern": "^REQ-[A-Z]{2,5}-\\d{2}$",
+      "type": "string"
+     },
+     "minItems": 1,
+     "type": "array"
+    },
+    "schema": {
+     "const": "bo.cq_spec/1"
+    }
+   },
+   "required": [
+    "schema",
+    "contract",
+    "contract_version",
+    "cq_id",
+    "family",
+    "question",
+    "criterion",
+    "answer_form",
+    "fixtures",
+    "closed_world",
+    "applicability",
+    "reasoning_needs",
+    "requirement_ids",
+    "commitment_ids",
+    "cases",
+    "answers"
+   ],
+   "title": "C24 cq_spec.jsonl (registro)",
+   "type": "object"
+  }
+ }
+}

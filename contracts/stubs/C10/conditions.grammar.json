@@ -1,0 +1,80 @@
+{
+ "composition": "papéis renomeados (n0 sujeito, n1 meio, n2 objeto), conjunção, eliminação existencial de n1",
+ "contract": "C10",
+ "contract_version": "3.0.0",
+ "evaluation": "TRUE | FALSE | INDETERMINATE (termo não lido, NOT_READ ou simbólico)",
+ "form": "conjunção de átomos <term, op, value>; sem negação nem disjunção (decidível termo a termo)",
+ "operators": {
+  "edition_in": "<papel>.edition ∈ lista",
+  "eq": "termo vizinho tipado (term_types) = valor",
+  "in": "termo vizinho ∈ lista",
+  "present": "termo presente (true) ou sabidamente ausente (false)",
+  "refers_to_kind": "a referência aponta para unidade do tipo; tipos distintos só incompatíveis com kind_disjoint",
+  "region_in": "<papel>.region ∈ lista",
+  "version_range": "<papel>.provider_version em [min, max_exclusive)"
+ },
+ "roles": [
+  "subject",
+  "object"
+ ],
+ "satisfiability": "SAT (com testemunha) | UNSAT | UNKNOWN; UNKNOWN só por tipos de referência sem disjunção declarada",
+ "schema": "bo.conditions_grammar/1",
+ "schema_ref": "guard.schema.json",
+ "sat_tests": [
+  {
+   "test_id": "SAT-EDITION-ONE",
+   "guard": {
+    "all": [
+     {
+      "term": "object.edition",
+      "op": "edition_in",
+      "value": [
+       "standard"
+      ]
+     }
+    ]
+   },
+   "expected": "SAT"
+  },
+  {
+   "test_id": "SAT-EDITION-DISJ",
+   "guard": {
+    "all": [
+     {
+      "term": "object.edition",
+      "op": "edition_in",
+      "value": [
+       "standard"
+      ]
+     },
+     {
+      "term": "object.edition",
+      "op": "edition_in",
+      "value": [
+       "premium"
+      ]
+     }
+    ]
+   },
+   "expected": "UNSAT"
+  },
+  {
+   "test_id": "SAT-KIND-OPEN",
+   "guard": {
+    "all": [
+     {
+      "term": "object.target",
+      "op": "refers_to_kind",
+      "value": "subnet"
+     },
+     {
+      "term": "object.target",
+      "op": "refers_to_kind",
+      "value": "network_interface"
+     }
+    ]
+   },
+   "expected": "UNKNOWN"
+  }
+ ]
+}

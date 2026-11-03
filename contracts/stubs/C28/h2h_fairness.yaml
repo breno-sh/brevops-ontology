@@ -1,0 +1,26 @@
+schema: bo.h2h_fairness/1
+contract: C28
+contract_version: 1.0.0
+module: BENCH-CONTRACT
+generated_at: '2026-11-03T08:00:00-03:00'
+universe_ref:
+  path: $BO_DATA/UNIVERSE/universe.json
+  sha256: 327a7380d2cc7cf09ed5820e1ecdb8abe585d696b5b5526986dfebe70acec59e
+cq_ref:
+  path: $BO_REPO/cq/CQ_INDEX.json
+  sha256: b79b5ab81f291e0d8ac4eab37e0e26b2a83e73b294f9ba97cf38de2b8a49e0a8
+budget:
+  unit: agent_hours
+  per_comparator: 6
+comparators:
+- comparator_id: kalinin
+  budget_hours: 6
+  same_universe: true
+  same_cqs: true
+- comparator_id: cartography
+  budget_hours: 6
+  same_universe: true
+  same_cqs: true
+rules:
+- mesmo orçamento de adaptação para todos os comparadores
+- NOT_APPLICABLE nunca vira zero

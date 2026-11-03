@@ -1,0 +1,2 @@
+{"atom_id": "aws:aws_db_instance:backup_retention_period", "role": "CONFIG", "rule_id": "ROLE-DEFAULT-CONFIG"}
+{"atom_id": "aws:aws_db_instance:identifier", "evidence": [{"level": "derived", "ref": "DF-aws-0001"}], "role": "NAME", "rule_id": "ROLE-NAME-01"}

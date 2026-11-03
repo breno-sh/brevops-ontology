@@ -1,0 +1,93 @@
+schema: bo.transforms/1
+contract: C10
+contract_version: 3.0.0
+module: TRANSFORMS
+generated_at: '2026-11-03T08:00:00-03:00'
+scalar:
+- name: identity
+  kind: scalar
+  domain:
+    datatype: any
+    quantity_kind: NOT_APPLICABLE
+    unit: NOT_APPLICABLE
+  codomain:
+    datatype: any
+    quantity_kind: NOT_APPLICABLE
+    unit: NOT_APPLICABLE
+  precondition: nenhuma
+  error: nunca
+  loss: nenhuma
+  inverse:
+    name: identity
+    partial: false
+- name: unit_convert
+  kind: scalar
+  domain:
+    datatype: number
+    quantity_kind: quantitykind:Time
+    unit: unit:HR
+  codomain:
+    datatype: number
+    quantity_kind: quantitykind:Time
+    unit: unit:DAY
+  precondition: mesma grandeza; fatores fixos
+  error: OutOfDomain se mês/ano
+  loss: arredondamento declarado à parte
+  inverse:
+    name: unit_convert
+    partial: true
+  params:
+    from:
+      type: string
+    to:
+      type: string
+- name: number_to_duration
+  kind: scalar
+  domain:
+    datatype: integer
+    quantity_kind: quantitykind:Time
+    unit: unit:SEC
+  codomain:
+    datatype: duration
+    quantity_kind: quantitykind:Time
+    unit: NOT_APPLICABLE
+  precondition: segundos inteiros
+  error: OutOfDomain
+  loss: nenhuma
+  inverse:
+    name: null
+    partial: false
+  duration_calendar: forbidden
+combinators:
+- name: split_port_range
+  kind: tuple
+  inputs:
+  - name: ports
+    datatype: string
+  outputs:
+  - name: from_port
+    datatype: integer
+  - name: to_port
+    datatype: integer
+  precondition: texto 'p1-p2' com p1 <= p2
+  error: OutOfDomain
+  loss: nenhuma
+  inverse:
+    name: join_port_range
+    partial: false
+- name: join_port_range
+  kind: tuple
+  inputs:
+  - name: from_port
+    datatype: integer
+  - name: to_port
+    datatype: integer
+  outputs:
+  - name: ports
+    datatype: string
+  precondition: from_port <= to_port
+  error: OutOfDomain
+  loss: nenhuma
+  inverse:
+    name: split_port_range
+    partial: false

@@ -1,0 +1,204 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://w3id.org/brevops/contracts/C06/symbolic_config.schema.json",
+ "title": "C06 symbolic_config 3.0.0: configuração simbólica, recursos e uso",
+ "description": "Configuração simbólica sem executar HCL: por valor, termo tipado (literal | símbolo de nome por repositório | árvore de expressão | documento parseado com principais e identificadores simbolizados | referência com tipo e endereço | retido); usage por repositório e família, sem split (o split é C27). Nomes de recurso, de repositório e de módulo nunca em claro.",
+ "x-bo-contract": {
+  "id": "C06",
+  "name": "symbolic_config",
+  "version": "3.0.0",
+  "status": "changed_v3",
+  "owner": "CONTRACTS",
+  "files": [
+   {
+    "kind": "symbolic_config",
+    "file": "symbolic_config.jsonl",
+    "format": "jsonl",
+    "record": "symbolic_config",
+    "unit": "record"
+   },
+   {
+    "kind": "resources",
+    "file": "resources.parquet",
+    "format": "parquet",
+    "record": "resource_row",
+    "unit": "row",
+    "note": "colunas: string, int64 e bool; nada além das declaradas"
+   },
+   {
+    "kind": "usage",
+    "file": "usage.jsonl",
+    "format": "jsonl",
+    "record": "usage",
+    "unit": "record"
+   }
+  ],
+  "semantic_rules": [
+   "C06-SYM: endereços e referências só com símbolos SYM-… (nome por repositório), nunca o nome real",
+   "C06-DOC: documento parseado simboliza todo principal e identificador (symbolized não vazio quando há)",
+   "C06-WITHHELD: termo retido não tem valor nem hash",
+   "C06-USAGE: n_literal + n_symbolic + n_withheld = n_set <= n_resources",
+   "C06-NOSPLIT: nenhum campo de partição (o split é do C27)"
+  ],
+  "producers": [
+   "CORPUS-{provider}",
+   "HCL"
+  ],
+  "consumers": [],
+  "adopted_from": []
+ },
+ "$defs": {
+  "symbolic_config": {
+   "type": "object",
+   "properties": {
+    "repo_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/repo_id"
+    },
+    "family_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/family_id"
+    },
+    "file": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^(?!/)(?!.*\\.\\.)[^\\s]+\\.tf(\\.json)?$"
+    },
+    "resource_address": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^(module\\.SYM-[0-9a-f]{8,16}\\.)*(data\\.)?[a-z][a-z0-9_]*\\.SYM-[0-9a-f]{8,16}(\\[[^\\]]+\\])?$"
+    },
+    "resource_type": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/resource_type"
+    },
+    "provider": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/provider"
+    },
+    "attr_path": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^[A-Za-z0-9_]+(\\.[A-Za-z0-9_]+|\\[[0-9]+\\]|\\[\\\"[^\\\"]+\\\"\\])*$"
+    },
+    "term": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/term"
+    }
+   },
+   "required": [
+    "repo_id",
+    "family_id",
+    "file",
+    "resource_address",
+    "resource_type",
+    "provider",
+    "attr_path",
+    "term"
+   ],
+   "additionalProperties": false
+  },
+  "resource_row": {
+   "type": "object",
+   "properties": {
+    "repo_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/repo_id"
+    },
+    "family_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/family_id"
+    },
+    "file": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^(?!/)(?!.*\\.\\.)[^\\s]+\\.tf(\\.json)?$"
+    },
+    "resource_address": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^(module\\.SYM-[0-9a-f]{8,16}\\.)*(data\\.)?[a-z][a-z0-9_]*\\.SYM-[0-9a-f]{8,16}(\\[[^\\]]+\\])?$"
+    },
+    "resource_type": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/resource_type"
+    },
+    "provider": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/provider"
+    },
+    "n_attrs": {
+     "type": "integer",
+     "minimum": 0
+    },
+    "has_count": {
+     "type": "boolean"
+    },
+    "has_for_each": {
+     "type": "boolean"
+    },
+    "module_depth": {
+     "type": "integer",
+     "minimum": 0
+    }
+   },
+   "required": [
+    "repo_id",
+    "family_id",
+    "file",
+    "resource_address",
+    "resource_type",
+    "provider",
+    "n_attrs",
+    "has_count",
+    "has_for_each",
+    "module_depth"
+   ],
+   "additionalProperties": false
+  },
+  "usage": {
+   "type": "object",
+   "properties": {
+    "repo_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/repo_id"
+    },
+    "family_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/family_id"
+    },
+    "provider": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/provider"
+    },
+    "resource_type": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/resource_type"
+    },
+    "atom_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/atom_id"
+    },
+    "n_resources": {
+     "type": "integer",
+     "minimum": 0
+    },
+    "n_set": {
+     "type": "integer",
+     "minimum": 0
+    },
+    "n_literal": {
+     "type": "integer",
+     "minimum": 0
+    },
+    "n_symbolic": {
+     "type": "integer",
+     "minimum": 0
+    },
+    "n_withheld": {
+     "type": "integer",
+     "minimum": 0
+    }
+   },
+   "required": [
+    "repo_id",
+    "family_id",
+    "provider",
+    "resource_type",
+    "n_resources",
+    "n_set",
+    "n_literal",
+    "n_symbolic",
+    "n_withheld"
+   ],
+   "additionalProperties": false
+  }
+ }
+}

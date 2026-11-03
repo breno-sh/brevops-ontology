@@ -1,0 +1,25 @@
+{
+ "schema": "bo.numbers/1",
+ "contract": "C18",
+ "contract_version": "2.0.0",
+ "module": "STATS",
+ "generated_at": "2026-11-03T08:00:00-03:00",
+ "macros": {
+  "PersFieldRate": {
+   "value": 0.47,
+   "display": "47\\,\\%",
+   "file": "$BO_REPO/results/MATRIX/matrix.json",
+   "sha256": "6e00cd562cc2d88e238dfb81d9439de7ec843ee9d0c9879d549cb1436786f975",
+   "pointer": "/metrics/0/operational_coverage/est",
+   "category": "persistence"
+  },
+  "CovFieldN": {
+   "value": 120,
+   "display": "120",
+   "file": "$BO_REPO/results/MATRIX/matrix.json",
+   "sha256": "6e00cd562cc2d88e238dfb81d9439de7ec843ee9d0c9879d549cb1436786f975",
+   "pointer": "/metrics/0/operational_coverage/n",
+   "category": "coverage"
+  }
+ }
+}

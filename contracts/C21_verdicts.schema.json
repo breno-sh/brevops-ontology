@@ -1,0 +1,122 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://w3id.org/brevops/contracts/C21/verdicts.schema.json",
+ "title": "C21 verdicts 3.0.0: vereditos do árbitro",
+ "description": "Por claim_id: OK | REFUTED_BY_RULE | UNPROVEN | CONTESTED | AMBIGUOUS, regra, ciclo, composição usada, sha do árbitro.",
+ "x-bo-contract": {
+  "id": "C21",
+  "name": "verdicts",
+  "version": "3.0.0",
+  "status": "changed_v3",
+  "owner": "CONTRACTS",
+  "files": [
+   {
+    "kind": "verdicts",
+    "file": "verdicts.jsonl",
+    "format": "jsonl",
+    "record": "verdict",
+    "unit": "record"
+   }
+  ],
+  "semantic_rules": [
+   "C21-RULES: veredito diferente de OK cita a(s) regra(s)",
+   "C21-VER: claim_version_id é versão do claim_id",
+   "C21-UNIQ: um veredito por (claim_version_id, cycle)"
+  ],
+  "producers": [
+   "ARBITER",
+   "PILOT-{slice}-MAP"
+  ],
+  "consumers": [],
+  "adopted_from": []
+ },
+ "$defs": {
+  "verdict": {
+   "type": "object",
+   "properties": {
+    "claim_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/claim_id"
+    },
+    "claim_version_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/claim_version_id"
+    },
+    "event_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/event_id"
+    },
+    "verdict": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/verdict"
+    },
+    "rules": {
+     "type": "array",
+     "items": {
+      "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/rule_id"
+     },
+     "uniqueItems": true
+    },
+    "cycle": {
+     "type": "integer",
+     "minimum": 1
+    },
+    "composition_used": {
+     "anyOf": [
+      {
+       "type": "null"
+      },
+      {
+       "type": "array",
+       "items": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/claim_id"
+       },
+       "minItems": 2
+      }
+     ]
+    },
+    "arbiter_sha256": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/sha256"
+    },
+    "decided_at": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/datetime"
+    },
+    "detail": {
+     "type": "string",
+     "minLength": 3
+    }
+   },
+   "required": [
+    "claim_id",
+    "claim_version_id",
+    "event_id",
+    "verdict",
+    "rules",
+    "cycle",
+    "composition_used",
+    "arbiter_sha256",
+    "decided_at"
+   ],
+   "additionalProperties": false,
+   "allOf": [
+    {
+     "if": {
+      "properties": {
+       "verdict": {
+        "enum": [
+         "REFUTED_BY_RULE",
+         "UNPROVEN",
+         "CONTESTED",
+         "AMBIGUOUS"
+        ]
+       }
+      }
+     },
+     "then": {
+      "properties": {
+       "rules": {
+        "minItems": 1
+       }
+      }
+     }
+    }
+   ]
+  }
+ }
+}

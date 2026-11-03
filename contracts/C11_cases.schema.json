@@ -1,0 +1,256 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://w3id.org/brevops/contracts/C11/cases.schema.json",
+ "title": "C11 cases 3.0.0: casos de implantação",
+ "description": "case_id, group_id, claim_id, estrato (par, domínio, cardinalidade, relação, direção), frame_ref e peso, origin (sample | blocked | dispute | cq), lado, plano de lowering (C26) em vez de lista de caminhos, valores, comparador, classe de custo.",
+ "x-bo-contract": {
+  "id": "C11",
+  "name": "cases",
+  "version": "3.0.0",
+  "status": "changed_v3",
+  "owner": "CONTRACTS",
+  "files": [
+   {
+    "kind": "cases",
+    "file": "cases.jsonl",
+    "format": "jsonl",
+    "record": "case",
+    "unit": "record"
+   }
+  ],
+  "semantic_rules": [
+   "C11-UNIQ: case_id único",
+   "C11-CQ: origin=cq exige cq_id",
+   "C11-VER: claim_version_id é versão do claim_id do caso",
+   "C11-NOPATHS: o caso aponta para um plano de lowering (C26), nunca para lista de caminhos"
+  ],
+  "producers": [
+   "DEPSAMPLE",
+   "DISPUTE-SAMPLE"
+  ],
+  "consumers": [],
+  "adopted_from": []
+ },
+ "$defs": {
+  "case": {
+   "type": "object",
+   "properties": {
+    "case_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^CASE-[A-Za-z0-9_\\-]+$"
+    },
+    "group_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^(GRP|G)-[A-Za-z0-9_\\-]+$"
+    },
+    "claim_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/claim_id"
+    },
+    "claim_version_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/claim_version_id"
+    },
+    "stratum": {
+     "type": "object",
+     "properties": {
+      "pair": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/pair"
+      },
+      "domain": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/domain"
+      },
+      "cardinality": {
+       "enum": [
+        "1:1",
+        "1:N",
+        "N:1",
+        "N:M"
+       ]
+      },
+      "relation": {
+       "enum": [
+        "exact",
+        "close",
+        "broad",
+        "narrow",
+        "related"
+       ]
+      },
+      "direction": {
+       "enum": [
+        "forward",
+        "inverse"
+       ]
+      }
+     },
+     "required": [
+      "pair",
+      "domain",
+      "cardinality",
+      "relation",
+      "direction"
+     ],
+     "additionalProperties": false
+    },
+    "frame_ref": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/file_ref"
+    },
+    "weight": {
+     "type": "number",
+     "exclusiveMinimum": 0
+    },
+    "origin": {
+     "enum": [
+      "sample",
+      "blocked",
+      "dispute",
+      "cq"
+     ]
+    },
+    "cq_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^CQ-[A-Z]{3,4}-\\d{2}$"
+    },
+    "side": {
+     "enum": [
+      "subject",
+      "object",
+      "both"
+     ]
+    },
+    "lowering_plan": {
+     "type": "object",
+     "properties": {
+      "plan_id": {
+       "type": "string",
+       "minLength": 1,
+       "pattern": "^LP-[A-Za-z0-9_\\-]+$"
+      },
+      "graph_id": {
+       "type": "string",
+       "minLength": 1,
+       "pattern": "^GIR-[A-Za-z0-9_\\-]+$"
+      }
+     },
+     "required": [
+      "plan_id",
+      "graph_id"
+     ],
+     "additionalProperties": false
+    },
+    "values": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "var": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^(\\?[a-z][a-z0-9_]*|[a-z][a-z0-9_]*:\\S+)$"
+       },
+       "term": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/term"
+       }
+      },
+      "required": [
+       "var",
+       "term"
+      ],
+      "additionalProperties": false
+     },
+     "minItems": 1
+    },
+    "comparator": {
+     "type": "object",
+     "properties": {
+      "name": {
+       "enum": [
+        "exact",
+        "numeric_tolerance",
+        "set_equal",
+        "normalized_string",
+        "duration_equal",
+        "cidr_equal"
+       ]
+      },
+      "tolerance": {
+       "type": "number",
+       "minimum": 0
+      }
+     },
+     "required": [
+      "name"
+     ],
+     "additionalProperties": false
+    },
+    "cost_class": {
+     "enum": [
+      "free",
+      "low",
+      "medium",
+      "high"
+     ]
+    },
+    "guard": {
+     "$ref": "https://w3id.org/brevops/contracts/C10/transforms.schema.json#/$defs/guard"
+    }
+   },
+   "required": [
+    "case_id",
+    "group_id",
+    "claim_id",
+    "claim_version_id",
+    "stratum",
+    "frame_ref",
+    "weight",
+    "origin",
+    "side",
+    "lowering_plan",
+    "values",
+    "comparator",
+    "cost_class"
+   ],
+   "additionalProperties": false,
+   "allOf": [
+    {
+     "if": {
+      "properties": {
+       "origin": {
+        "const": "cq"
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "cq_id"
+      ]
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "comparator": {
+        "properties": {
+         "name": {
+          "const": "numeric_tolerance"
+         }
+        }
+       }
+      }
+     },
+     "then": {
+      "properties": {
+       "comparator": {
+        "required": [
+         "tolerance"
+        ]
+       }
+      }
+     }
+    }
+   ]
+  }
+ }
+}

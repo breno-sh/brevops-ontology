@@ -1,0 +1,57 @@
+schema: bo.domain_contracts/1
+contract: C29
+contract_version: 1.0.0
+module: DOMAIN-CONTRACTS
+generated_at: '2026-11-03T08:00:00-03:00'
+domains:
+- domain: NET
+  identity:
+    key_fields:
+    - provider
+    - location
+    - type
+    - local_key
+    composite: true
+  owner:
+    rule: dono = controlador de ciclo de vida da rede
+  scope:
+    rule: alcance efetivo = rede ou sub-rede citada
+  authorization:
+    principal:
+      status: SUPPORTED
+    permission:
+      status: SUPPORTED
+    effect:
+      status: SUPPORTED
+    binding:
+      status: UNRESOLVED
+      note: binding por tag sem evidência
+    scope:
+      status: SUPPORTED
+    inheritance:
+      status: UNSUPPORTED_BY_TRANSLATOR
+    context:
+      status: OUT_OF_PIN
+    combination:
+      status: ABSENCE_DEMONSTRATED
+      evidence:
+      - level: published
+        doc:
+          repo: hashicorp/terraform-provider-aws
+          tag: v6.0.0
+          file: website/docs/r/db_instance.html.markdown
+          line: 120
+          sentence: frase sintética de documentação que sustenta o fato
+  network_fragment: FRG-NET-01
+  decision_units:
+  - name: ingress_allowed
+    decision: tráfego de entrada permitido no destino
+    units:
+    - CU-aws-sg-rule-block
+  observability:
+    signals:
+    - flow_logs
+    status: UNRESOLVED
+  out_of_support:
+  - item: regras de prefix list gerenciada
+    status: OUT_OF_PIN

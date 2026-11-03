@@ -1,0 +1,337 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://w3id.org/brevops/contracts/C19/canonical_units.schema.json",
+ "title": "C19 canonical_units 3.0.0: unidades e átomos canônicos",
+ "description": "Unidade: kind (ENTITY | COMPONENT | FACET | BINDING | UNKNOWN), identity{evidência, campos-chave, anonymous, occurrence_key}, lifecycle_controller, owner, effective_scope, evidence[], rule_applied, missing_evidence[]; ligação unidade canônica ↔ recurso/bloco Terraform ↔ recurso de API. Sem evidência, UNKNOWN (nunca 'entidade' por omissão); nada depende de quantos elementos o bloco aceita.",
+ "x-bo-contract": {
+  "id": "C19",
+  "name": "canonical_units",
+  "version": "3.0.0",
+  "status": "changed_v3",
+  "owner": "CONTRACTS",
+  "files": [
+   {
+    "kind": "canonical_units",
+    "file": "canonical_units.jsonl",
+    "format": "jsonl",
+    "record": "canonical_unit",
+    "unit": "record"
+   },
+   {
+    "kind": "canonical_atoms",
+    "file": "canonical_atoms.jsonl",
+    "format": "jsonl",
+    "record": "canonical_atom",
+    "unit": "record"
+   }
+  ],
+  "semantic_rules": [
+   "C19-UNKNOWN: kind = UNKNOWN ⇔ missing_evidence não vazio",
+   "C19-ANON: componente anônimo (bloco sem identidade) tem occurrence_key",
+   "C19-LINK: canonical_atoms citam unit_id do canonical_units irmão",
+   "C19-UNIQ: unit_id único; atom_id em uma unidade só"
+  ],
+  "producers": [
+   "DECOMPOSE",
+   "GRAIN-REPRO",
+   "PILOT-{slice}-GLOSS"
+  ],
+  "consumers": [],
+  "adopted_from": []
+ },
+ "$defs": {
+  "canonical_unit": {
+   "type": "object",
+   "properties": {
+    "unit_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/unit_id"
+    },
+    "provider": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/provider"
+    },
+    "kind": {
+     "enum": [
+      "ENTITY",
+      "COMPONENT",
+      "FACET",
+      "BINDING",
+      "UNKNOWN"
+     ]
+    },
+    "layers": {
+     "type": "object",
+     "properties": {
+      "api_resource": {
+       "type": "object",
+       "properties": {
+        "service": {
+         "type": "string",
+         "minLength": 1
+        },
+        "resource": {
+         "type": "string",
+         "minLength": 1
+        }
+       },
+       "required": [
+        "service",
+        "resource"
+       ],
+       "additionalProperties": false
+      },
+      "terraform": {
+       "type": "object",
+       "properties": {
+        "resource_type": {
+         "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/resource_type"
+        },
+        "block_path": {
+         "type": "string",
+         "minLength": 1,
+         "pattern": "^[A-Za-z0-9_]+(\\.[A-Za-z0-9_]+)*$"
+        }
+       },
+       "required": [
+        "resource_type"
+       ],
+       "additionalProperties": false
+      },
+      "domain_unit": {
+       "type": "string",
+       "minLength": 2
+      }
+     },
+     "required": [
+      "terraform",
+      "domain_unit"
+     ],
+     "additionalProperties": false
+    },
+    "identity": {
+     "type": "object",
+     "properties": {
+      "evidence": {
+       "type": "array",
+       "items": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/evidence_item"
+       }
+      },
+      "key_fields": {
+       "type": "array",
+       "items": {
+        "type": "string",
+        "minLength": 1
+       },
+       "uniqueItems": true
+      },
+      "anonymous": {
+       "type": "boolean"
+      },
+      "occurrence_key": {
+       "type": "array",
+       "items": {
+        "type": "string",
+        "minLength": 1
+       },
+       "uniqueItems": true
+      }
+     },
+     "required": [
+      "evidence",
+      "key_fields",
+      "anonymous",
+      "occurrence_key"
+     ],
+     "additionalProperties": false
+    },
+    "lifecycle_controller": {
+     "type": "object",
+     "properties": {
+      "kind": {
+       "enum": [
+        "self",
+        "parent",
+        "provider",
+        "external",
+        "UNKNOWN"
+       ]
+      },
+      "ref": {
+       "type": "string",
+       "minLength": 1
+      }
+     },
+     "required": [
+      "kind"
+     ],
+     "additionalProperties": false
+    },
+    "owner": {
+     "type": "object",
+     "properties": {
+      "kind": {
+       "enum": [
+        "self",
+        "parent",
+        "provider",
+        "external",
+        "UNKNOWN"
+       ]
+      },
+      "ref": {
+       "type": "string",
+       "minLength": 1
+      }
+     },
+     "required": [
+      "kind"
+     ],
+     "additionalProperties": false
+    },
+    "effective_scope": {
+     "type": "object",
+     "properties": {
+      "kind": {
+       "enum": [
+        "self",
+        "parent",
+        "container",
+        "global",
+        "UNKNOWN"
+       ]
+      },
+      "ref": {
+       "type": "string",
+       "minLength": 1
+      }
+     },
+     "required": [
+      "kind"
+     ],
+     "additionalProperties": false
+    },
+    "evidence": {
+     "type": "array",
+     "items": {
+      "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/evidence_item"
+     }
+    },
+    "rule_applied": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/rule_id"
+    },
+    "missing_evidence": {
+     "type": "array",
+     "items": {
+      "enum": [
+       "identity",
+       "lifecycle_controller",
+       "owner",
+       "effective_scope",
+       "api_resource"
+      ]
+     },
+     "uniqueItems": true
+    }
+   },
+   "required": [
+    "unit_id",
+    "provider",
+    "kind",
+    "layers",
+    "identity",
+    "lifecycle_controller",
+    "owner",
+    "effective_scope",
+    "evidence",
+    "rule_applied",
+    "missing_evidence"
+   ],
+   "additionalProperties": false,
+   "allOf": [
+    {
+     "if": {
+      "properties": {
+       "kind": {
+        "const": "UNKNOWN"
+       }
+      }
+     },
+     "then": {
+      "properties": {
+       "missing_evidence": {
+        "minItems": 1
+       }
+      }
+     },
+     "else": {
+      "properties": {
+       "missing_evidence": {
+        "maxItems": 0
+       },
+       "evidence": {
+        "minItems": 1
+       }
+      }
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "identity": {
+        "properties": {
+         "anonymous": {
+          "const": true
+         }
+        }
+       }
+      }
+     },
+     "then": {
+      "properties": {
+       "identity": {
+        "properties": {
+         "occurrence_key": {
+          "minItems": 1
+         }
+        }
+       }
+      }
+     }
+    }
+   ]
+  },
+  "canonical_atom": {
+   "type": "object",
+   "properties": {
+    "atom_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/atom_id"
+    },
+    "unit_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/unit_id"
+    },
+    "path_in_unit": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^[A-Za-z0-9_]+(\\.[A-Za-z0-9_]+)*$"
+    },
+    "role": {
+     "enum": [
+      "CONFIG",
+      "IDENTIFIER",
+      "NAME",
+      "TAG",
+      "REFERENCE",
+      "TIMESTAMP",
+      "SECRET"
+     ]
+    }
+   },
+   "required": [
+    "atom_id",
+    "unit_id",
+    "path_in_unit"
+   ],
+   "additionalProperties": false
+  }
+ }
+}

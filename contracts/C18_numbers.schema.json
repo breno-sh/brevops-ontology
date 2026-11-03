@@ -1,0 +1,128 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://w3id.org/brevops/contracts/C18/numbers.schema.json",
+ "title": "C18 numbers 2.0.0: números do artigo",
+ "description": "Macro → {valor, arquivo, sha, ponteiro}; prefixos distintos para persistência (Pers), observação (Obs) e cobertura (Cov); numbers.tex é gerado de numbers.json e tem de bater com ele.",
+ "x-bo-contract": {
+  "id": "C18",
+  "name": "numbers",
+  "version": "2.0.0",
+  "status": "unchanged_v3",
+  "owner": "CONTRACTS",
+  "files": [
+   {
+    "kind": "numbers",
+    "file": "numbers.json",
+    "format": "json",
+    "record": "numbers",
+    "unit": "document"
+   },
+   {
+    "kind": "numbers_tex",
+    "file": "numbers.tex",
+    "format": "tex_macros",
+    "record": null,
+    "unit": "line",
+    "note": "uma linha \\newcommand{\\Nome}{exibição} por macro; comentários com %"
+   }
+  ],
+  "semantic_rules": [
+   "C18-PREFIX: o prefixo do nome é o da categoria (Pers, Obs, Cov, Num)",
+   "C18-TEX: numbers.tex tem exatamente as macros de numbers.json, com a mesma exibição",
+   "C18-NOLETTERS: nome de macro só com letras (LaTeX)"
+  ],
+  "producers": [
+   "STATS"
+  ],
+  "consumers": [
+   "ARTIFACT",
+   "PAPER-RESULTS"
+  ],
+  "adopted_from": []
+ },
+ "$defs": {
+  "macro": {
+   "type": "object",
+   "properties": {
+    "value": {
+     "type": [
+      "number",
+      "string"
+     ]
+    },
+    "display": {
+     "type": "string",
+     "minLength": 1
+    },
+    "file": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/portable_path"
+    },
+    "sha256": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/sha256"
+    },
+    "pointer": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^(/[^/]*)+$"
+    },
+    "category": {
+     "enum": [
+      "persistence",
+      "observation",
+      "coverage",
+      "other"
+     ]
+    }
+   },
+   "required": [
+    "value",
+    "display",
+    "file",
+    "sha256",
+    "pointer",
+    "category"
+   ],
+   "additionalProperties": false
+  },
+  "numbers": {
+   "type": "object",
+   "properties": {
+    "schema": {
+     "const": "bo.numbers/1"
+    },
+    "contract": {
+     "const": "C18"
+    },
+    "contract_version": {
+     "const": "2.0.0"
+    },
+    "module": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/stable_id"
+    },
+    "generated_at": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/datetime"
+    },
+    "macros": {
+     "type": "object",
+     "properties": {},
+     "additionalProperties": {
+      "$ref": "#/$defs/macro"
+     },
+     "propertyNames": {
+      "pattern": "^(Pers|Obs|Cov|Num)[A-Z][A-Za-z]*$"
+     },
+     "minProperties": 1
+    }
+   },
+   "required": [
+    "schema",
+    "contract",
+    "contract_version",
+    "module",
+    "generated_at",
+    "macros"
+   ],
+   "additionalProperties": false
+  }
+ }
+}

@@ -1,0 +1,319 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://w3id.org/brevops/contracts/C05/value_space.schema.json",
+ "title": "C05 value_space 3.0.0: espaço de valores por átomo",
+ "description": "datatype estruturado (escalar, tupla, árvore, referência); quantity_kind e unit_qudt = IRI | NOT_APPLICABLE | UNKNOWN; rate_window; byte_convention (SI | IEC); enum, faixa, formato, evidência.",
+ "x-bo-contract": {
+  "id": "C05",
+  "name": "value_space",
+  "version": "3.0.0",
+  "status": "changed_v3",
+  "owner": "CONTRACTS",
+  "files": [
+   {
+    "kind": "value_space",
+    "file": "value_space.jsonl",
+    "format": "jsonl",
+    "record": "value_space",
+    "unit": "record"
+   }
+  ],
+  "semantic_rules": [
+   "C05-NA: quantity_kind NOT_APPLICABLE ⇔ unit_qudt NOT_APPLICABLE; UNKNOWN de grandeza ⇒ unidade UNKNOWN (NOT_APPLICABLE ≠ UNKNOWN)",
+   "C05-KIND: string, booleano, enum, árvore e referência não têm grandeza (NOT_APPLICABLE)",
+   "C05-BYTES: unidade de informação (byte/bit) exige byte_convention SI ou IEC",
+   "C05-RATE: grandeza de taxa (…Rate, Frequency ou unidade -PER-) exige rate_window",
+   "C05-ENUM: enum só com escalar enum (e obrigatório nele); range só com numérico ou duração",
+   "C05-UNIQ: atom_id único"
+  ],
+  "producers": [
+   "UNITS"
+  ],
+  "consumers": [],
+  "adopted_from": []
+ },
+ "$defs": {
+  "value_space": {
+   "type": "object",
+   "properties": {
+    "atom_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/atom_id"
+    },
+    "datatype": {
+     "oneOf": [
+      {
+       "type": "object",
+       "properties": {
+        "kind": {
+         "const": "scalar"
+        },
+        "scalar": {
+         "enum": [
+          "integer",
+          "decimal",
+          "boolean",
+          "string",
+          "enum",
+          "duration"
+         ]
+        }
+       },
+       "required": [
+        "kind",
+        "scalar"
+       ],
+       "additionalProperties": false
+      },
+      {
+       "type": "object",
+       "properties": {
+        "kind": {
+         "const": "tuple"
+        },
+        "components": {
+         "type": "array",
+         "items": {
+          "type": "object",
+          "properties": {
+           "name": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[a-z][a-z0-9_]*$"
+           },
+           "scalar": {
+            "enum": [
+             "integer",
+             "decimal",
+             "boolean",
+             "string",
+             "enum",
+             "duration"
+            ]
+           }
+          },
+          "required": [
+           "name",
+           "scalar"
+          ],
+          "additionalProperties": false
+         },
+         "minItems": 2
+        }
+       },
+       "required": [
+        "kind",
+        "components"
+       ],
+       "additionalProperties": false
+      },
+      {
+       "type": "object",
+       "properties": {
+        "kind": {
+         "const": "tree"
+        },
+        "format": {
+         "enum": [
+          "json_document",
+          "yaml_document",
+          "policy_document",
+          "map",
+          "list"
+         ]
+        },
+        "key_scalar": {
+         "enum": [
+          "integer",
+          "decimal",
+          "boolean",
+          "string",
+          "enum",
+          "duration"
+         ]
+        },
+        "value_scalar": {
+         "enum": [
+          "integer",
+          "decimal",
+          "boolean",
+          "string",
+          "enum",
+          "duration"
+         ]
+        }
+       },
+       "required": [
+        "kind",
+        "format"
+       ],
+       "additionalProperties": false
+      },
+      {
+       "type": "object",
+       "properties": {
+        "kind": {
+         "const": "reference"
+        },
+        "target_kind": {
+         "enum": [
+          "resource",
+          "data_source",
+          "component",
+          "external"
+         ]
+        },
+        "target_types": {
+         "type": "array",
+         "items": {
+          "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/resource_type"
+         }
+        }
+       },
+       "required": [
+        "kind",
+        "target_kind"
+       ],
+       "additionalProperties": false
+      }
+     ]
+    },
+    "quantity_kind": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/quantity_kind"
+    },
+    "unit_qudt": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/unit_qudt"
+    },
+    "rate_window": {
+     "anyOf": [
+      {
+       "type": "null"
+      },
+      {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/xsd_duration"
+      }
+     ]
+    },
+    "byte_convention": {
+     "enum": [
+      "SI",
+      "IEC",
+      "NOT_APPLICABLE"
+     ]
+    },
+    "enum": {
+     "type": "array",
+     "items": {},
+     "minItems": 1,
+     "uniqueItems": true
+    },
+    "range": {
+     "type": "object",
+     "properties": {
+      "min": {
+       "type": "number"
+      },
+      "max": {
+       "type": "number"
+      },
+      "min_exclusive": {
+       "type": "boolean"
+      },
+      "max_exclusive": {
+       "type": "boolean"
+      },
+      "step": {
+       "type": "number",
+       "exclusiveMinimum": 0
+      }
+     },
+     "additionalProperties": false
+    },
+    "format": {
+     "type": "string",
+     "minLength": 1
+    },
+    "sentinels": {
+     "type": "object",
+     "properties": {},
+     "additionalProperties": {
+      "type": "string",
+      "minLength": 2
+     }
+    },
+    "evidence": {
+     "type": "array",
+     "items": {
+      "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/evidence_item"
+     },
+     "minItems": 1
+    }
+   },
+   "required": [
+    "atom_id",
+    "datatype",
+    "quantity_kind",
+    "unit_qudt",
+    "rate_window",
+    "byte_convention",
+    "evidence"
+   ],
+   "additionalProperties": false,
+   "allOf": [
+    {
+     "if": {
+      "properties": {
+       "quantity_kind": {
+        "const": "NOT_APPLICABLE"
+       }
+      }
+     },
+     "then": {
+      "properties": {
+       "unit_qudt": {
+        "const": "NOT_APPLICABLE"
+       },
+       "byte_convention": {
+        "const": "NOT_APPLICABLE"
+       },
+       "rate_window": {
+        "type": "null"
+       }
+      }
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "unit_qudt": {
+        "const": "NOT_APPLICABLE"
+       }
+      }
+     },
+     "then": {
+      "properties": {
+       "quantity_kind": {
+        "const": "NOT_APPLICABLE"
+       }
+      }
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "quantity_kind": {
+        "const": "UNKNOWN"
+       }
+      }
+     },
+     "then": {
+      "properties": {
+       "unit_qudt": {
+        "const": "UNKNOWN"
+       }
+      }
+     }
+    }
+   ]
+  }
+ }
+}

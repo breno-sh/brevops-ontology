@@ -1,0 +1,303 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://w3id.org/brevops/contracts/C27/split.schema.json",
+ "title": "C27 split 1.0.0: split global por família",
+ "description": "Famílias deduplicadas, split global, projeções de treino por papel, sha do arquivo cifrado, recibo de abertura. O teste nunca aparece em claro nem é projetado para papel algum.",
+ "x-bo-contract": {
+  "id": "C27",
+  "name": "split",
+  "version": "1.0.0",
+  "status": "new_v3",
+  "owner": "CONTRACTS",
+  "files": [
+   {
+    "kind": "split",
+    "file": "split.json",
+    "format": "json",
+    "record": "split",
+    "unit": "document"
+   },
+   {
+    "kind": "families",
+    "file": "families.jsonl",
+    "format": "jsonl",
+    "record": "family",
+    "unit": "record"
+   }
+  ],
+  "semantic_rules": [
+   "C27-DISJOINT: um repositório em uma família só; family_id único",
+   "C27-COUNTS: com families.jsonl irmão, as contagens de train e dev batem",
+   "C27-SEALED: nenhum papel vê o teste; o teste só como sha256 + caminho .age"
+  ],
+  "producers": [
+   "SPLIT"
+  ],
+  "consumers": [],
+  "adopted_from": []
+ },
+ "$defs": {
+  "split": {
+   "type": "object",
+   "properties": {
+    "schema": {
+     "const": "bo.split/1"
+    },
+    "contract": {
+     "const": "C27"
+    },
+    "contract_version": {
+     "const": "1.0.0"
+    },
+    "module": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/stable_id"
+    },
+    "generated_at": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/datetime"
+    },
+    "seed": {
+     "type": "integer",
+     "minimum": 0
+    },
+    "method": {
+     "type": "string",
+     "minLength": 5
+    },
+    "dedup": {
+     "type": "object",
+     "properties": {
+      "method": {
+       "enum": [
+        "exact_hash",
+        "near_dup_minhash",
+        "fork_graph",
+        "manual"
+       ]
+      },
+      "threshold": {
+       "type": "number",
+       "minimum": 0,
+       "maximum": 1
+      }
+     },
+     "required": [
+      "method"
+     ],
+     "additionalProperties": false
+    },
+    "partitions": {
+     "type": "object",
+     "properties": {
+      "train": {
+       "type": "object",
+       "properties": {
+        "n_families": {
+         "type": "integer",
+         "minimum": 0
+        },
+        "ids_sha256": {
+         "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/sha256"
+        }
+       },
+       "required": [
+        "n_families",
+        "ids_sha256"
+       ],
+       "additionalProperties": false
+      },
+      "dev": {
+       "type": "object",
+       "properties": {
+        "n_families": {
+         "type": "integer",
+         "minimum": 0
+        },
+        "ids_sha256": {
+         "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/sha256"
+        }
+       },
+       "required": [
+        "n_families",
+        "ids_sha256"
+       ],
+       "additionalProperties": false
+      },
+      "test": {
+       "type": "object",
+       "properties": {
+        "n_families": {
+         "type": "integer",
+         "minimum": 0
+        },
+        "encrypted": {
+         "type": "object",
+         "properties": {
+          "path": {
+           "type": "string",
+           "minLength": 1,
+           "pattern": "^\\$BO_DATA/SPLIT/sealed/\\S+\\.age$"
+          },
+          "sha256": {
+           "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/sha256"
+          },
+          "cipher": {
+           "const": "age"
+          },
+          "recipient_fingerprint": {
+           "type": "string",
+           "minLength": 1,
+           "pattern": "^age1[0-9a-z]{20,}$|^SHA256:[A-Za-z0-9+/=]{20,}$"
+          }
+         },
+         "required": [
+          "path",
+          "sha256",
+          "cipher",
+          "recipient_fingerprint"
+         ],
+         "additionalProperties": false
+        }
+       },
+       "required": [
+        "n_families",
+        "encrypted"
+       ],
+       "additionalProperties": false,
+       "description": "o teste nunca lista ids em claro"
+      }
+     },
+     "required": [
+      "train",
+      "dev",
+      "test"
+     ],
+     "additionalProperties": false
+    },
+    "role_projections": {
+     "type": "object",
+     "properties": {},
+     "additionalProperties": {
+      "type": "object",
+      "properties": {
+       "partitions": {
+        "type": "array",
+        "items": {
+         "enum": [
+          "train",
+          "dev"
+         ]
+        },
+        "minItems": 1,
+        "uniqueItems": true
+       }
+      },
+      "required": [
+       "partitions"
+      ],
+      "additionalProperties": false
+     },
+     "propertyNames": {
+      "enum": [
+       "mapper",
+       "glossarist",
+       "hunter",
+       "auditor",
+       "evaluator",
+       "extractor",
+       "builder"
+      ]
+     }
+    },
+    "opening_receipt": {
+     "anyOf": [
+      {
+       "type": "null"
+      },
+      {
+       "type": "object",
+       "properties": {
+        "opened_at": {
+         "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/datetime"
+        },
+        "by": {
+         "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/stable_id"
+        },
+        "freeze_name": {
+         "type": "string",
+         "minLength": 1,
+         "pattern": "^[A-Z][A-Z0-9_\\-]*$"
+        },
+        "receipt_sha256": {
+         "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/sha256"
+        }
+       },
+       "required": [
+        "opened_at",
+        "by",
+        "freeze_name",
+        "receipt_sha256"
+       ],
+       "additionalProperties": false
+      }
+     ]
+    }
+   },
+   "required": [
+    "schema",
+    "contract",
+    "contract_version",
+    "module",
+    "generated_at",
+    "seed",
+    "method",
+    "dedup",
+    "partitions",
+    "role_projections",
+    "opening_receipt"
+   ],
+   "additionalProperties": false
+  },
+  "family": {
+   "type": "object",
+   "properties": {
+    "family_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/family_id"
+    },
+    "members": {
+     "type": "array",
+     "items": {
+      "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/repo_id"
+     },
+     "minItems": 1,
+     "uniqueItems": true
+    },
+    "dedup_method": {
+     "enum": [
+      "exact_hash",
+      "near_dup_minhash",
+      "fork_graph",
+      "manual"
+     ]
+    },
+    "signature_sha256": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/sha256"
+    },
+    "partition": {
+     "enum": [
+      "train",
+      "dev"
+     ]
+    }
+   },
+   "required": [
+    "family_id",
+    "members",
+    "dedup_method",
+    "signature_sha256",
+    "partition"
+   ],
+   "additionalProperties": false,
+   "description": "famílias de desenvolvimento; as de teste só no arquivo cifrado"
+  }
+ }
+}

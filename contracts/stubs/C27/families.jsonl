@@ -1,0 +1,2 @@
+{"dedup_method": "near_dup_minhash", "family_id": "F-00a1b2c3d4e5", "members": ["R-00a1b2c3d4e5", "R-11b2c3d4e5f6"], "partition": "train", "signature_sha256": "f13f9bc28e74fd95d709c7da2178ccc2991b83fc890b2182da07b7b161b6e672"}
+{"dedup_method": "exact_hash", "family_id": "F-11b2c3d4e5f6", "members": ["R-22c3d4e5f607"], "partition": "dev", "signature_sha256": "c87c14b02a8baaafa063a1f382cbb93f92f5ad09650c903f8137b9727f7418f3"}

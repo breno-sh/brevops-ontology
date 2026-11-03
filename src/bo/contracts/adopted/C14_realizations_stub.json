@@ -1,0 +1,100 @@
+[
+ {
+  "attributed_to": "agent_mapper",
+  "derived_from": [
+   "schema_a"
+  ],
+  "evidence_state": "DocSupported",
+  "exclusivity": "ProvenExclusive",
+  "generated_by": "map_run1",
+  "lifting_fidelity": "Lossless",
+  "losses": [
+   "DEFAULT_NOT_CARRIED"
+  ],
+  "lowering_fidelity": "DeclaredLoss",
+  "of": {
+   "describes": "https://example.org/bo-example/vocab#ComputeInstance",
+   "descriptor_key": "ComputeInstance",
+   "kind": "class"
+  },
+  "provider": "provider_a",
+  "realization_id": "r_ci_a",
+  "realized_by": [
+   {
+    "artifact_name": "type_a_instance",
+    "schema": "schema_a"
+   }
+  ]
+ },
+ {
+  "alternative_to": [
+   "r_ver_b2"
+  ],
+  "attributed_to": "agent_mapper",
+  "derived_from": [
+   "schema_b"
+  ],
+  "evidence_state": "DocSupported",
+  "exclusivity": "Ambiguous",
+  "generated_by": "map_run1",
+  "guards": [
+   "edition = standard"
+  ],
+  "lifting_fidelity": "PartialTransport",
+  "losses": [
+   "SUSPENDED_STATE_NOT_EXPRESSIBLE"
+  ],
+  "lowering_fidelity": "DeclaredLoss",
+  "of": {
+   "describes": "https://example.org/bo-example/vocab#versioningStatus",
+   "descriptor_key": "versioningStatus",
+   "kind": "property"
+  },
+  "projections": [
+   {
+    "descriptor_key": "versioningStatus",
+    "from_field": "versioning.mode"
+   }
+  ],
+  "provider": "provider_b",
+  "realization_id": "r_ver_b",
+  "realized_by": [
+   {
+    "artifact_name": "type_b_container",
+    "artifact_path": "versioning.mode",
+    "schema": "schema_b"
+   }
+  ]
+ },
+ {
+  "alternative_to": [
+   "r_ver_b"
+  ],
+  "attributed_to": "agent_mapper",
+  "derived_from": [
+   "schema_b"
+  ],
+  "evidence_state": "Unresolved",
+  "exclusivity": "Ambiguous",
+  "generated_by": "map_run1",
+  "guards": [
+   "edition = premium"
+  ],
+  "lifting_fidelity": "NoTransport",
+  "lowering_fidelity": "NoTransport",
+  "of": {
+   "describes": "https://example.org/bo-example/vocab#versioningStatus",
+   "descriptor_key": "versioningStatus",
+   "kind": "property"
+  },
+  "provider": "provider_b",
+  "realization_id": "r_ver_b2",
+  "realized_by": [
+   {
+    "artifact_name": "type_b_container",
+    "artifact_path": "retention_lock.enabled",
+    "schema": "schema_b"
+   }
+  ]
+ }
+]

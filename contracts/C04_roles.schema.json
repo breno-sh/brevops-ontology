@@ -1,0 +1,68 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://w3id.org/brevops/contracts/C04/roles.schema.json",
+ "title": "C04 roles 2.0.0: papel de cada átomo",
+ "description": "atom_id, role ∈ {CONFIG, IDENTIFIER, NAME, TAG, REFERENCE, TIMESTAMP, SECRET}, rule_id.",
+ "x-bo-contract": {
+  "id": "C04",
+  "name": "roles",
+  "version": "2.0.0",
+  "status": "unchanged_v3",
+  "owner": "CONTRACTS",
+  "files": [
+   {
+    "kind": "roles",
+    "file": "roles.jsonl",
+    "format": "jsonl",
+    "record": "role",
+    "unit": "record"
+   }
+  ],
+  "semantic_rules": [
+   "C04-UNIQ: um papel por atom_id"
+  ],
+  "producers": [
+   "ROLES"
+  ],
+  "consumers": [],
+  "adopted_from": []
+ },
+ "$defs": {
+  "role": {
+   "type": "object",
+   "properties": {
+    "atom_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/atom_id"
+    },
+    "role": {
+     "enum": [
+      "CONFIG",
+      "IDENTIFIER",
+      "NAME",
+      "TAG",
+      "REFERENCE",
+      "TIMESTAMP",
+      "SECRET"
+     ]
+    },
+    "rule_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^ROLE-[A-Z0-9][A-Z0-9\\-]*$"
+    },
+    "evidence": {
+     "type": "array",
+     "items": {
+      "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/evidence_item"
+     }
+    }
+   },
+   "required": [
+    "atom_id",
+    "role",
+    "rule_id"
+   ],
+   "additionalProperties": false
+  }
+ }
+}

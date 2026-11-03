@@ -1,0 +1,885 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://w3id.org/brevops/contracts/C10/transforms.schema.json",
+ "title": "C10 transforms 3.0.0: transformações, gramática de guarda e tabela de composição",
+ "description": "Transformação escalar (grandeza de entrada = de saída) separada de combinador de tupla; domínio e codomínio, pré-condições, erro, perda, inversa parcial; durações com mês/ano só com contexto; gramática de guarda tipada e decidível (eq, in, present, refers_to_kind, region_in, edition_in, version_range) com teste de satisfatibilidade; tabela de composição.",
+ "x-bo-contract": {
+  "id": "C10",
+  "name": "transforms",
+  "version": "3.0.0",
+  "status": "changed_v3",
+  "owner": "CONTRACTS",
+  "files": [
+   {
+    "kind": "transforms",
+    "file": "transforms.yaml",
+    "format": "yaml",
+    "record": "transforms",
+    "unit": "document"
+   },
+   {
+    "kind": "conditions_grammar",
+    "file": "conditions.grammar.json",
+    "format": "json",
+    "record": "conditions_grammar",
+    "unit": "document"
+   },
+   {
+    "kind": "composition_table",
+    "file": "composition_table.json",
+    "format": "json",
+    "record": "composition_table",
+    "unit": "document"
+   },
+   {
+    "kind": "guard",
+    "file": "guard.json",
+    "format": "json",
+    "record": "guard",
+    "unit": "document",
+    "note": "uma guarda solta (stub e testes)"
+   }
+  ],
+  "semantic_rules": [
+   "C10-KIND: transformação escalar tem a mesma grandeza na entrada e na saída (kind_in = kind_out só vale para escalar); tupla vai em combinators",
+   "C10-CAL: duração com mês/ano (P…M, P…Y) só com context_required ∋ calendar",
+   "C10-INV: inverse.name, quando há, é transformação declarada no mesmo documento",
+   "C10-SAT: cada sat_test dá o resultado esperado em bo.semantics.guards.satisfiable",
+   "C10-TABLE: semantic_relation e value_domain_relation cobrem os 25 pares (r1, r2) uma vez cada; transport_fidelity os 16 pares (f1, f2)",
+   "C10-GUARD: guarda passa no typecheck da gramática"
+  ],
+  "producers": [
+   "SEMANTICS",
+   "TRANSFORMS"
+  ],
+  "consumers": [],
+  "adopted_from": [
+   "results/SEMANTICS/C10_proposta/guard.schema.json",
+   "results/SEMANTICS/C10_proposta/composition_table.schema.json",
+   "results/SEMANTICS/C10_proposta/conditions.grammar.json"
+  ]
+ },
+ "$defs": {
+  "guard": {
+   "additionalProperties": false,
+   "properties": {
+    "all": {
+     "items": {
+      "additionalProperties": false,
+      "properties": {
+       "op": {
+        "enum": [
+         "eq",
+         "in",
+         "present",
+         "refers_to_kind",
+         "region_in",
+         "edition_in",
+         "version_range"
+        ]
+       },
+       "term": {
+        "pattern": "^(subject|object)\\.[A-Za-z0-9_.\\[\\]]+$",
+        "type": "string"
+       },
+       "value": {}
+      },
+      "required": [
+       "term",
+       "op",
+       "value"
+      ],
+      "type": "object"
+     },
+     "type": "array"
+    },
+    "kind_disjoint": {
+     "items": {
+      "items": {
+       "type": "string"
+      },
+      "maxItems": 2,
+      "minItems": 2,
+      "type": "array"
+     },
+     "type": "array"
+    },
+    "term_types": {
+     "additionalProperties": {
+      "properties": {
+       "datatype": {
+        "enum": [
+         "string",
+         "enum",
+         "boolean",
+         "integer"
+        ]
+       }
+      },
+      "required": [
+       "datatype"
+      ],
+      "type": "object"
+     },
+     "type": "object"
+    }
+   },
+   "required": [
+    "all"
+   ],
+   "title": "Guarda tipada (conjunção de átomos)",
+   "type": "object"
+  },
+  "composition_table": {
+   "properties": {
+    "contract": {
+     "const": "C10"
+    },
+    "schema": {
+     "const": "bo.composition_table/1"
+    },
+    "semantic_relation": {
+     "items": {
+      "properties": {
+       "derivation": {
+        "enum": [
+         "rcc5",
+         "policy"
+        ]
+       },
+       "r1": {
+        "enum": [
+         "exact",
+         "close",
+         "broad",
+         "narrow",
+         "related"
+        ]
+       },
+       "r2": {
+        "enum": [
+         "exact",
+         "close",
+         "broad",
+         "narrow",
+         "related"
+        ]
+       },
+       "result": {
+        "enum": [
+         "exact",
+         "close",
+         "broad",
+         "narrow",
+         "related",
+         null
+        ]
+       },
+       "why": {
+        "type": "string",
+        "minLength": 3
+       },
+       "predicate": {
+        "enum": [
+         "skos:exactMatch",
+         "skos:closeMatch",
+         "skos:broadMatch",
+         "skos:narrowMatch",
+         "skos:relatedMatch",
+         null
+        ]
+       },
+       "rcc5": {
+        "type": "array",
+        "items": {
+         "enum": [
+          "equal",
+          "subset",
+          "superset",
+          "overlap",
+          "disjoint"
+         ]
+        },
+        "minItems": 1,
+        "uniqueItems": true
+       }
+      },
+      "required": [
+       "r1",
+       "r2",
+       "result",
+       "derivation",
+       "why"
+      ],
+      "type": "object",
+      "allOf": [
+       {
+        "if": {
+         "properties": {
+          "result": {
+           "type": "null"
+          }
+         }
+        },
+        "then": {
+         "properties": {
+          "predicate": {
+           "type": "null"
+          }
+         }
+        },
+        "else": {
+         "required": [
+          "predicate"
+         ]
+        }
+       }
+      ]
+     },
+     "maxItems": 25,
+     "minItems": 25,
+     "type": "array"
+    },
+    "transport_fidelity": {
+     "properties": {
+      "rows": {
+       "maxItems": 16,
+       "minItems": 16,
+       "type": "array",
+       "items": {
+        "type": "object",
+        "properties": {
+         "f1": {
+          "enum": [
+           "lossless",
+           "declared_loss",
+           "partial",
+           "none"
+          ]
+         },
+         "f2": {
+          "enum": [
+           "lossless",
+           "declared_loss",
+           "partial",
+           "none"
+          ]
+         },
+         "result": {
+          "enum": [
+           "lossless",
+           "declared_loss",
+           "partial",
+           "none"
+          ]
+         }
+        },
+        "required": [
+         "f1",
+         "f2",
+         "result"
+        ],
+        "additionalProperties": false
+       }
+      }
+     },
+     "required": [
+      "rows"
+     ],
+     "type": "object"
+    },
+    "value_domain_relation": {
+     "properties": {
+      "rows": {
+       "maxItems": 25,
+       "minItems": 25,
+       "type": "array",
+       "items": {
+        "type": "object",
+        "properties": {
+         "r1": {
+          "enum": [
+           "equal",
+           "subset",
+           "superset",
+           "overlap",
+           "disjoint"
+          ]
+         },
+         "r2": {
+          "enum": [
+           "equal",
+           "subset",
+           "superset",
+           "overlap",
+           "disjoint"
+          ]
+         },
+         "result": {
+          "enum": [
+           "equal",
+           "subset",
+           "superset",
+           "overlap",
+           "disjoint",
+           "unknown"
+          ]
+         },
+         "possible": {
+          "type": "array",
+          "items": {
+           "enum": [
+            "equal",
+            "subset",
+            "superset",
+            "overlap",
+            "disjoint"
+           ]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+         }
+        },
+        "required": [
+         "r1",
+         "r2",
+         "result",
+         "possible"
+        ],
+        "additionalProperties": false
+       }
+      }
+     },
+     "required": [
+      "rows"
+     ],
+     "type": "object"
+    },
+    "contract_version": {
+     "const": "3.0.0"
+    },
+    "module": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/stable_id"
+    },
+    "reading": {
+     "type": "string",
+     "minLength": 10
+    },
+    "guard": {
+     "type": "object",
+     "properties": {
+      "rule": {
+       "type": "string",
+       "minLength": 10
+      }
+     },
+     "required": [
+      "rule"
+     ]
+    },
+    "domain": {
+     "type": "object",
+     "properties": {
+      "rule": {
+       "type": "string",
+       "minLength": 10
+      }
+     },
+     "required": [
+      "rule"
+     ]
+    },
+    "evidence": {
+     "type": "object",
+     "properties": {
+      "rule": {
+       "type": "string",
+       "minLength": 10
+      }
+     },
+     "required": [
+      "rule"
+     ]
+    },
+    "verdict": {
+     "type": "object",
+     "properties": {
+      "rule": {
+       "type": "string",
+       "minLength": 10
+      }
+     },
+     "required": [
+      "rule"
+     ]
+    },
+    "closure": {
+     "type": "object",
+     "properties": {
+      "rule": {
+       "type": "string",
+       "minLength": 10
+      }
+     },
+     "required": [
+      "rule"
+     ]
+    }
+   },
+   "required": [
+    "schema",
+    "contract",
+    "contract_version",
+    "semantic_relation",
+    "value_domain_relation",
+    "transport_fidelity",
+    "guard",
+    "domain",
+    "evidence",
+    "verdict",
+    "closure"
+   ],
+   "title": "C10 3.0.0: tabela formal de composição",
+   "type": "object"
+  },
+  "conditions_grammar": {
+   "type": "object",
+   "properties": {
+    "schema": {
+     "const": "bo.conditions_grammar/1"
+    },
+    "contract": {
+     "const": "C10"
+    },
+    "contract_version": {
+     "const": "3.0.0"
+    },
+    "form": {
+     "type": "string",
+     "minLength": 10
+    },
+    "roles": {
+     "const": [
+      "subject",
+      "object"
+     ]
+    },
+    "operators": {
+     "type": "object",
+     "properties": {
+      "eq": {
+       "type": "string",
+       "minLength": 5
+      },
+      "in": {
+       "type": "string",
+       "minLength": 5
+      },
+      "present": {
+       "type": "string",
+       "minLength": 5
+      },
+      "refers_to_kind": {
+       "type": "string",
+       "minLength": 5
+      },
+      "region_in": {
+       "type": "string",
+       "minLength": 5
+      },
+      "edition_in": {
+       "type": "string",
+       "minLength": 5
+      },
+      "version_range": {
+       "type": "string",
+       "minLength": 5
+      }
+     },
+     "required": [
+      "eq",
+      "in",
+      "present",
+      "refers_to_kind",
+      "region_in",
+      "edition_in",
+      "version_range"
+     ],
+     "additionalProperties": false
+    },
+    "satisfiability": {
+     "type": "string",
+     "minLength": 10
+    },
+    "evaluation": {
+     "type": "string",
+     "minLength": 10
+    },
+    "composition": {
+     "type": "string",
+     "minLength": 10
+    },
+    "schema_ref": {
+     "type": "string",
+     "minLength": 3
+    },
+    "sat_tests": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "test_id": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^SAT-[A-Za-z0-9_\\-]+$"
+       },
+       "guard": {
+        "$ref": "#/$defs/guard"
+       },
+       "expected": {
+        "enum": [
+         "SAT",
+         "UNSAT",
+         "UNKNOWN"
+        ]
+       }
+      },
+      "required": [
+       "test_id",
+       "guard",
+       "expected"
+      ],
+      "additionalProperties": false
+     },
+     "minItems": 3
+    }
+   },
+   "required": [
+    "schema",
+    "contract",
+    "contract_version",
+    "form",
+    "roles",
+    "operators",
+    "satisfiability",
+    "evaluation",
+    "composition",
+    "sat_tests"
+   ],
+   "additionalProperties": false
+  },
+  "transforms": {
+   "type": "object",
+   "properties": {
+    "schema": {
+     "const": "bo.transforms/1"
+    },
+    "contract": {
+     "const": "C10"
+    },
+    "contract_version": {
+     "const": "3.0.0"
+    },
+    "module": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/stable_id"
+    },
+    "generated_at": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/datetime"
+    },
+    "scalar": {
+     "type": "array",
+     "items": {
+      "$ref": "#/$defs/scalar_transform"
+     },
+     "minItems": 1
+    },
+    "combinators": {
+     "type": "array",
+     "items": {
+      "$ref": "#/$defs/combinator"
+     }
+    }
+   },
+   "required": [
+    "schema",
+    "contract",
+    "contract_version",
+    "module",
+    "generated_at",
+    "scalar",
+    "combinators"
+   ],
+   "additionalProperties": false
+  },
+  "scalar_transform": {
+   "type": "object",
+   "properties": {
+    "name": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "kind": {
+     "const": "scalar"
+    },
+    "domain": {
+     "type": "object",
+     "properties": {
+      "datatype": {
+       "enum": [
+        "integer",
+        "decimal",
+        "boolean",
+        "string",
+        "enum",
+        "duration",
+        "tuple",
+        "number",
+        "any"
+       ]
+      },
+      "quantity_kind": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/quantity_kind"
+      },
+      "unit": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/unit_qudt"
+      }
+     },
+     "required": [
+      "datatype",
+      "quantity_kind"
+     ],
+     "additionalProperties": false
+    },
+    "codomain": {
+     "type": "object",
+     "properties": {
+      "datatype": {
+       "enum": [
+        "integer",
+        "decimal",
+        "boolean",
+        "string",
+        "enum",
+        "duration",
+        "tuple",
+        "number",
+        "any"
+       ]
+      },
+      "quantity_kind": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/quantity_kind"
+      },
+      "unit": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/unit_qudt"
+      }
+     },
+     "required": [
+      "datatype",
+      "quantity_kind"
+     ],
+     "additionalProperties": false
+    },
+    "precondition": {
+     "type": "string",
+     "minLength": 3
+    },
+    "error": {
+     "type": "string",
+     "minLength": 3
+    },
+    "loss": {
+     "type": "string",
+     "minLength": 3
+    },
+    "inverse": {
+     "type": "object",
+     "properties": {
+      "name": {
+       "anyOf": [
+        {
+         "type": "null"
+        },
+        {
+         "type": "string",
+         "minLength": 1,
+         "pattern": "^[a-z][a-z0-9_]*$"
+        }
+       ]
+      },
+      "partial": {
+       "type": "boolean"
+      }
+     },
+     "required": [
+      "name",
+      "partial"
+     ],
+     "additionalProperties": false
+    },
+    "params": {
+     "type": "object",
+     "properties": {},
+     "additionalProperties": {
+      "type": "object"
+     }
+    },
+    "context_required": {
+     "type": "array",
+     "items": {
+      "enum": [
+       "calendar",
+       "region",
+       "edition",
+       "provider_version"
+      ]
+     },
+     "uniqueItems": true
+    },
+    "duration_calendar": {
+     "enum": [
+      "forbidden",
+      "with_context"
+     ],
+     "description": "duração com mês/ano: recusada ou só com contexto de calendário"
+    }
+   },
+   "required": [
+    "name",
+    "kind",
+    "domain",
+    "codomain",
+    "precondition",
+    "error",
+    "loss",
+    "inverse"
+   ],
+   "additionalProperties": false
+  },
+  "combinator": {
+   "type": "object",
+   "properties": {
+    "name": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "kind": {
+     "const": "tuple"
+    },
+    "inputs": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "name": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[a-z][a-z0-9_]*$"
+       },
+       "datatype": {
+        "enum": [
+         "integer",
+         "decimal",
+         "boolean",
+         "string",
+         "enum",
+         "duration",
+         "tuple",
+         "number",
+         "any"
+        ]
+       }
+      },
+      "required": [
+       "name",
+       "datatype"
+      ],
+      "additionalProperties": false
+     },
+     "minItems": 1
+    },
+    "outputs": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "name": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[a-z][a-z0-9_]*$"
+       },
+       "datatype": {
+        "enum": [
+         "integer",
+         "decimal",
+         "boolean",
+         "string",
+         "enum",
+         "duration",
+         "tuple",
+         "number",
+         "any"
+        ]
+       }
+      },
+      "required": [
+       "name",
+       "datatype"
+      ],
+      "additionalProperties": false
+     },
+     "minItems": 1
+    },
+    "precondition": {
+     "type": "string",
+     "minLength": 3
+    },
+    "error": {
+     "type": "string",
+     "minLength": 3
+    },
+    "loss": {
+     "type": "string",
+     "minLength": 3
+    },
+    "inverse": {
+     "type": "object",
+     "properties": {
+      "name": {
+       "anyOf": [
+        {
+         "type": "null"
+        },
+        {
+         "type": "string",
+         "minLength": 1,
+         "pattern": "^[a-z][a-z0-9_]*$"
+        }
+       ]
+      },
+      "partial": {
+       "type": "boolean"
+      }
+     },
+     "required": [
+      "name",
+      "partial"
+     ],
+     "additionalProperties": false
+    }
+   },
+   "required": [
+    "name",
+    "kind",
+    "inputs",
+    "outputs",
+    "precondition",
+    "error",
+    "loss",
+    "inverse"
+   ],
+   "additionalProperties": false
+  }
+ }
+}

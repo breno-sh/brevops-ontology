@@ -1,0 +1,753 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://w3id.org/brevops/contracts/C29/domain_contracts.schema.json",
+ "title": "C29 domain_contracts 1.0.0: contratos de domínio e fragmentos",
+ "description": "Por domínio: identidade, dono e alcance; extensão de autorização (principal, permissão, efeito, binding, escopo, herança, contexto, combinação); fragmento de rede; grafos de LB e banco; unidades de decisão; observabilidade; OUT_OF_PIN | UNSUPPORTED_BY_TRANSLATOR | UNRESOLVED | ausência demonstrada (ABSENCE_DEMONSTRATED, com evidência).",
+ "x-bo-contract": {
+  "id": "C29",
+  "name": "domain_contracts",
+  "version": "1.0.0",
+  "status": "new_v3",
+  "owner": "CONTRACTS",
+  "files": [
+   {
+    "kind": "domain_contracts",
+    "file": "domain_contracts.yaml",
+    "format": "yaml",
+    "record": "domain_contracts",
+    "unit": "document"
+   },
+   {
+    "kind": "fragment",
+    "file": "fragments/*.json",
+    "format": "json",
+    "record": "fragment",
+    "unit": "document"
+   }
+  ],
+  "semantic_rules": [
+   "C29-FRAG: todo fragmento citado existe em fragments/ irmão e é do mesmo domínio e do tipo certo",
+   "C29-EDGES: arestas do fragmento citam nós dele",
+   "C29-UNIQ: um contrato por domínio"
+  ],
+  "producers": [
+   "DOMAIN-CONTRACTS"
+  ],
+  "consumers": [],
+  "adopted_from": []
+ },
+ "$defs": {
+  "domain_contract": {
+   "type": "object",
+   "properties": {
+    "domain": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/domain"
+    },
+    "identity": {
+     "type": "object",
+     "properties": {
+      "key_fields": {
+       "type": "array",
+       "items": {
+        "type": "string",
+        "minLength": 1
+       },
+       "minItems": 1
+      },
+      "composite": {
+       "type": "boolean"
+      }
+     },
+     "required": [
+      "key_fields",
+      "composite"
+     ],
+     "additionalProperties": false
+    },
+    "owner": {
+     "type": "object",
+     "properties": {
+      "rule": {
+       "type": "string",
+       "minLength": 5
+      }
+     },
+     "required": [
+      "rule"
+     ],
+     "additionalProperties": false
+    },
+    "scope": {
+     "type": "object",
+     "properties": {
+      "rule": {
+       "type": "string",
+       "minLength": 5
+      }
+     },
+     "required": [
+      "rule"
+     ],
+     "additionalProperties": false
+    },
+    "authorization": {
+     "type": "object",
+     "properties": {
+      "principal": {
+       "type": "object",
+       "properties": {
+        "status": {
+         "enum": [
+          "SUPPORTED",
+          "OUT_OF_PIN",
+          "UNSUPPORTED_BY_TRANSLATOR",
+          "UNRESOLVED",
+          "ABSENCE_DEMONSTRATED"
+         ]
+        },
+        "note": {
+         "type": "string",
+         "minLength": 3
+        },
+        "evidence": {
+         "type": "array",
+         "items": {
+          "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/evidence_item"
+         }
+        }
+       },
+       "required": [
+        "status"
+       ],
+       "additionalProperties": false,
+       "allOf": [
+        {
+         "if": {
+          "properties": {
+           "status": {
+            "const": "ABSENCE_DEMONSTRATED"
+           }
+          }
+         },
+         "then": {
+          "required": [
+           "evidence"
+          ],
+          "properties": {
+           "evidence": {
+            "minItems": 1
+           }
+          }
+         }
+        }
+       ]
+      },
+      "permission": {
+       "type": "object",
+       "properties": {
+        "status": {
+         "enum": [
+          "SUPPORTED",
+          "OUT_OF_PIN",
+          "UNSUPPORTED_BY_TRANSLATOR",
+          "UNRESOLVED",
+          "ABSENCE_DEMONSTRATED"
+         ]
+        },
+        "note": {
+         "type": "string",
+         "minLength": 3
+        },
+        "evidence": {
+         "type": "array",
+         "items": {
+          "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/evidence_item"
+         }
+        }
+       },
+       "required": [
+        "status"
+       ],
+       "additionalProperties": false,
+       "allOf": [
+        {
+         "if": {
+          "properties": {
+           "status": {
+            "const": "ABSENCE_DEMONSTRATED"
+           }
+          }
+         },
+         "then": {
+          "required": [
+           "evidence"
+          ],
+          "properties": {
+           "evidence": {
+            "minItems": 1
+           }
+          }
+         }
+        }
+       ]
+      },
+      "effect": {
+       "type": "object",
+       "properties": {
+        "status": {
+         "enum": [
+          "SUPPORTED",
+          "OUT_OF_PIN",
+          "UNSUPPORTED_BY_TRANSLATOR",
+          "UNRESOLVED",
+          "ABSENCE_DEMONSTRATED"
+         ]
+        },
+        "note": {
+         "type": "string",
+         "minLength": 3
+        },
+        "evidence": {
+         "type": "array",
+         "items": {
+          "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/evidence_item"
+         }
+        }
+       },
+       "required": [
+        "status"
+       ],
+       "additionalProperties": false,
+       "allOf": [
+        {
+         "if": {
+          "properties": {
+           "status": {
+            "const": "ABSENCE_DEMONSTRATED"
+           }
+          }
+         },
+         "then": {
+          "required": [
+           "evidence"
+          ],
+          "properties": {
+           "evidence": {
+            "minItems": 1
+           }
+          }
+         }
+        }
+       ]
+      },
+      "binding": {
+       "type": "object",
+       "properties": {
+        "status": {
+         "enum": [
+          "SUPPORTED",
+          "OUT_OF_PIN",
+          "UNSUPPORTED_BY_TRANSLATOR",
+          "UNRESOLVED",
+          "ABSENCE_DEMONSTRATED"
+         ]
+        },
+        "note": {
+         "type": "string",
+         "minLength": 3
+        },
+        "evidence": {
+         "type": "array",
+         "items": {
+          "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/evidence_item"
+         }
+        }
+       },
+       "required": [
+        "status"
+       ],
+       "additionalProperties": false,
+       "allOf": [
+        {
+         "if": {
+          "properties": {
+           "status": {
+            "const": "ABSENCE_DEMONSTRATED"
+           }
+          }
+         },
+         "then": {
+          "required": [
+           "evidence"
+          ],
+          "properties": {
+           "evidence": {
+            "minItems": 1
+           }
+          }
+         }
+        }
+       ]
+      },
+      "scope": {
+       "type": "object",
+       "properties": {
+        "status": {
+         "enum": [
+          "SUPPORTED",
+          "OUT_OF_PIN",
+          "UNSUPPORTED_BY_TRANSLATOR",
+          "UNRESOLVED",
+          "ABSENCE_DEMONSTRATED"
+         ]
+        },
+        "note": {
+         "type": "string",
+         "minLength": 3
+        },
+        "evidence": {
+         "type": "array",
+         "items": {
+          "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/evidence_item"
+         }
+        }
+       },
+       "required": [
+        "status"
+       ],
+       "additionalProperties": false,
+       "allOf": [
+        {
+         "if": {
+          "properties": {
+           "status": {
+            "const": "ABSENCE_DEMONSTRATED"
+           }
+          }
+         },
+         "then": {
+          "required": [
+           "evidence"
+          ],
+          "properties": {
+           "evidence": {
+            "minItems": 1
+           }
+          }
+         }
+        }
+       ]
+      },
+      "inheritance": {
+       "type": "object",
+       "properties": {
+        "status": {
+         "enum": [
+          "SUPPORTED",
+          "OUT_OF_PIN",
+          "UNSUPPORTED_BY_TRANSLATOR",
+          "UNRESOLVED",
+          "ABSENCE_DEMONSTRATED"
+         ]
+        },
+        "note": {
+         "type": "string",
+         "minLength": 3
+        },
+        "evidence": {
+         "type": "array",
+         "items": {
+          "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/evidence_item"
+         }
+        }
+       },
+       "required": [
+        "status"
+       ],
+       "additionalProperties": false,
+       "allOf": [
+        {
+         "if": {
+          "properties": {
+           "status": {
+            "const": "ABSENCE_DEMONSTRATED"
+           }
+          }
+         },
+         "then": {
+          "required": [
+           "evidence"
+          ],
+          "properties": {
+           "evidence": {
+            "minItems": 1
+           }
+          }
+         }
+        }
+       ]
+      },
+      "context": {
+       "type": "object",
+       "properties": {
+        "status": {
+         "enum": [
+          "SUPPORTED",
+          "OUT_OF_PIN",
+          "UNSUPPORTED_BY_TRANSLATOR",
+          "UNRESOLVED",
+          "ABSENCE_DEMONSTRATED"
+         ]
+        },
+        "note": {
+         "type": "string",
+         "minLength": 3
+        },
+        "evidence": {
+         "type": "array",
+         "items": {
+          "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/evidence_item"
+         }
+        }
+       },
+       "required": [
+        "status"
+       ],
+       "additionalProperties": false,
+       "allOf": [
+        {
+         "if": {
+          "properties": {
+           "status": {
+            "const": "ABSENCE_DEMONSTRATED"
+           }
+          }
+         },
+         "then": {
+          "required": [
+           "evidence"
+          ],
+          "properties": {
+           "evidence": {
+            "minItems": 1
+           }
+          }
+         }
+        }
+       ]
+      },
+      "combination": {
+       "type": "object",
+       "properties": {
+        "status": {
+         "enum": [
+          "SUPPORTED",
+          "OUT_OF_PIN",
+          "UNSUPPORTED_BY_TRANSLATOR",
+          "UNRESOLVED",
+          "ABSENCE_DEMONSTRATED"
+         ]
+        },
+        "note": {
+         "type": "string",
+         "minLength": 3
+        },
+        "evidence": {
+         "type": "array",
+         "items": {
+          "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/evidence_item"
+         }
+        }
+       },
+       "required": [
+        "status"
+       ],
+       "additionalProperties": false,
+       "allOf": [
+        {
+         "if": {
+          "properties": {
+           "status": {
+            "const": "ABSENCE_DEMONSTRATED"
+           }
+          }
+         },
+         "then": {
+          "required": [
+           "evidence"
+          ],
+          "properties": {
+           "evidence": {
+            "minItems": 1
+           }
+          }
+         }
+        }
+       ]
+      }
+     },
+     "required": [
+      "principal",
+      "permission",
+      "effect",
+      "binding",
+      "scope",
+      "inheritance",
+      "context",
+      "combination"
+     ],
+     "additionalProperties": false
+    },
+    "network_fragment": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^FRG-[A-Za-z0-9_\\-]+$"
+    },
+    "graphs": {
+     "type": "object",
+     "properties": {
+      "lb": {
+       "type": "string",
+       "minLength": 1,
+       "pattern": "^FRG-[A-Za-z0-9_\\-]+$"
+      },
+      "db": {
+       "type": "string",
+       "minLength": 1,
+       "pattern": "^FRG-[A-Za-z0-9_\\-]+$"
+      }
+     },
+     "additionalProperties": false
+    },
+    "decision_units": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "name": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[a-z][a-z0-9_]*$"
+       },
+       "decision": {
+        "type": "string",
+        "minLength": 5
+       },
+       "units": {
+        "type": "array",
+        "items": {
+         "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/unit_id"
+        }
+       }
+      },
+      "required": [
+       "name",
+       "decision"
+      ],
+      "additionalProperties": false
+     },
+     "minItems": 1
+    },
+    "observability": {
+     "type": "object",
+     "properties": {
+      "signals": {
+       "type": "array",
+       "items": {
+        "type": "string",
+        "minLength": 2
+       }
+      },
+      "status": {
+       "enum": [
+        "SUPPORTED",
+        "OUT_OF_PIN",
+        "UNSUPPORTED_BY_TRANSLATOR",
+        "UNRESOLVED",
+        "ABSENCE_DEMONSTRATED"
+       ]
+      }
+     },
+     "required": [
+      "signals",
+      "status"
+     ],
+     "additionalProperties": false
+    },
+    "out_of_support": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "item": {
+        "type": "string",
+        "minLength": 2
+       },
+       "status": {
+        "enum": [
+         "OUT_OF_PIN",
+         "UNSUPPORTED_BY_TRANSLATOR",
+         "UNRESOLVED",
+         "ABSENCE_DEMONSTRATED"
+        ]
+       },
+       "evidence": {
+        "type": "array",
+        "items": {
+         "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/evidence_item"
+        }
+       }
+      },
+      "required": [
+       "item",
+       "status"
+      ],
+      "additionalProperties": false
+     }
+    }
+   },
+   "required": [
+    "domain",
+    "identity",
+    "owner",
+    "scope",
+    "authorization",
+    "decision_units",
+    "observability",
+    "out_of_support"
+   ],
+   "additionalProperties": false
+  },
+  "domain_contracts": {
+   "type": "object",
+   "properties": {
+    "schema": {
+     "const": "bo.domain_contracts/1"
+    },
+    "contract": {
+     "const": "C29"
+    },
+    "contract_version": {
+     "const": "1.0.0"
+    },
+    "module": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/stable_id"
+    },
+    "generated_at": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/datetime"
+    },
+    "domains": {
+     "type": "array",
+     "items": {
+      "$ref": "#/$defs/domain_contract"
+     },
+     "minItems": 1
+    }
+   },
+   "required": [
+    "schema",
+    "contract",
+    "contract_version",
+    "module",
+    "generated_at",
+    "domains"
+   ],
+   "additionalProperties": false
+  },
+  "fragment": {
+   "type": "object",
+   "properties": {
+    "fragment_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^FRG-[A-Za-z0-9_\\-]+$"
+    },
+    "domain": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/domain"
+    },
+    "kind": {
+     "enum": [
+      "authorization",
+      "network",
+      "lb_graph",
+      "db_graph"
+     ]
+    },
+    "nodes": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "node_id": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^n[0-9]+$"
+       },
+       "kind": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[a-z][a-z0-9_]*$"
+       },
+       "unit_id": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/unit_id"
+       }
+      },
+      "required": [
+       "node_id",
+       "kind"
+      ],
+      "additionalProperties": false
+     },
+     "minItems": 1
+    },
+    "edges": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "from": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^n[0-9]+$"
+       },
+       "to": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^n[0-9]+$"
+       },
+       "kind": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[a-z][a-z0-9_]*$"
+       }
+      },
+      "required": [
+       "from",
+       "to",
+       "kind"
+      ],
+      "additionalProperties": false
+     }
+    },
+    "status": {
+     "enum": [
+      "SUPPORTED",
+      "OUT_OF_PIN",
+      "UNSUPPORTED_BY_TRANSLATOR",
+      "UNRESOLVED",
+      "ABSENCE_DEMONSTRATED"
+     ]
+    }
+   },
+   "required": [
+    "fragment_id",
+    "domain",
+    "kind",
+    "nodes",
+    "edges",
+    "status"
+   ],
+   "additionalProperties": false
+  }
+ }
+}

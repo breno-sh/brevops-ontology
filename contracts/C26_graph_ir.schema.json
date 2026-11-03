@@ -1,0 +1,552 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://w3id.org/brevops/contracts/C26/graph_ir.schema.json",
+ "title": "C26 graph_ir 1.0.0: IR de grafo e plano de lowering",
+ "description": "IR de grafo: termos simbólicos, recursos, componentes, referências, pré-condições, contextos; plano de criação com ordem, nomes derivados, escolhas tipadas, valores sintetizados (marcados), perdas, desconhecidos simbólicos; fechamento de dependências.",
+ "x-bo-contract": {
+  "id": "C26",
+  "name": "graph_ir",
+  "version": "1.0.0",
+  "status": "new_v3",
+  "owner": "CONTRACTS",
+  "files": [
+   {
+    "kind": "graph_ir",
+    "file": "graph_ir.jsonl",
+    "format": "jsonl",
+    "record": "graph_ir",
+    "unit": "record"
+   },
+   {
+    "kind": "lowering_plan",
+    "file": "lowering_plan.jsonl",
+    "format": "jsonl",
+    "record": "lowering_plan",
+    "unit": "record"
+   }
+  ],
+  "semantic_rules": [
+   "C26-NODES: referências, componentes e pré-condições citam nós do mesmo grafo",
+   "C26-ORDER: ordens 1..n sem repetição; depends_on só aponta para passos anteriores",
+   "C26-SYNTH: valor sintetizado ou default é marcado",
+   "C26-TERMS: from_terms e symbolic_unknowns citam termos do graph_ir irmão",
+   "C26-CHOICE: selected é uma das opções (ou nulo com motivo)"
+  ],
+  "producers": [
+   "GRAPH-LOWERING",
+   "PILOT-{slice}-E2E"
+  ],
+  "consumers": [],
+  "adopted_from": []
+ },
+ "$defs": {
+  "graph_ir": {
+   "type": "object",
+   "properties": {
+    "graph_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^GIR-[A-Za-z0-9_\\-]+$"
+    },
+    "case_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^CASE-[A-Za-z0-9_\\-]+$"
+    },
+    "source_provider": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/provider"
+    },
+    "terms": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "term_id": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^t[0-9]+$"
+       },
+       "term": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/term"
+       }
+      },
+      "required": [
+       "term_id",
+       "term"
+      ],
+      "additionalProperties": false
+     }
+    },
+    "resources": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "node_id": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^r[0-9]+$"
+       },
+       "class_iri": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/iri"
+       },
+       "unit_id": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/unit_id"
+       }
+      },
+      "required": [
+       "node_id",
+       "class_iri"
+      ],
+      "additionalProperties": false
+     },
+     "minItems": 1
+    },
+    "components": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "node_id": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^c[0-9]+$"
+       },
+       "of": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^r[0-9]+$"
+       },
+       "class_iri": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/iri"
+       },
+       "occurrence_key": {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "minLength": 1
+        },
+        "minItems": 1
+       }
+      },
+      "required": [
+       "node_id",
+       "of",
+       "class_iri",
+       "occurrence_key"
+      ],
+      "additionalProperties": false
+     }
+    },
+    "references": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "from": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[rc][0-9]+$"
+       },
+       "to": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[rc][0-9]+$"
+       },
+       "property_iri": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/iri"
+       },
+       "kind": {
+        "enum": [
+         "reference",
+         "attachment",
+         "facet_of"
+        ]
+       }
+      },
+      "required": [
+       "from",
+       "to",
+       "property_iri",
+       "kind"
+      ],
+      "additionalProperties": false
+     }
+    },
+    "preconditions": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "precondition_id": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^PRE-[A-Za-z0-9_\\-]+$"
+       },
+       "guard": {
+        "$ref": "https://w3id.org/brevops/contracts/C10/transforms.schema.json#/$defs/guard"
+       },
+       "applies_to": {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "minLength": 1,
+         "pattern": "^[rc][0-9]+$"
+        },
+        "minItems": 1
+       }
+      },
+      "required": [
+       "precondition_id",
+       "guard",
+       "applies_to"
+      ],
+      "additionalProperties": false
+     }
+    },
+    "contexts": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "key": {
+        "enum": [
+         "region",
+         "edition",
+         "provider_version",
+         "synthetic_account"
+        ]
+       },
+       "value": {
+        "type": [
+         "string",
+         "null"
+        ]
+       },
+       "state": {
+        "enum": [
+         "known",
+         "symbolic",
+         "unknown"
+        ]
+       }
+      },
+      "required": [
+       "key",
+       "state"
+      ],
+      "additionalProperties": false
+     }
+    }
+   },
+   "required": [
+    "graph_id",
+    "source_provider",
+    "terms",
+    "resources",
+    "components",
+    "references",
+    "preconditions",
+    "contexts"
+   ],
+   "additionalProperties": false
+  },
+  "lowering_step": {
+   "type": "object",
+   "properties": {
+    "order": {
+     "type": "integer",
+     "minimum": 1
+    },
+    "action": {
+     "enum": [
+      "create",
+      "configure",
+      "attach",
+      "reference"
+     ]
+    },
+    "node_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^[rc][0-9]+$"
+    },
+    "resource_type": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/resource_type"
+    },
+    "derived_name": {
+     "type": "object",
+     "properties": {
+      "template": {
+       "type": "string",
+       "minLength": 1,
+       "pattern": "^[a-z0-9\\-_{}]+$"
+      },
+      "from_terms": {
+       "type": "array",
+       "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^t[0-9]+$"
+       }
+      }
+     },
+     "required": [
+      "template",
+      "from_terms"
+     ],
+     "additionalProperties": false
+    },
+    "typed_choices": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "choice_id": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^CH-[A-Za-z0-9_\\-]+$"
+       },
+       "options": {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "minLength": 1,
+         "pattern": "^[A-Za-z0-9_.:\\-]+$"
+        },
+        "minItems": 2,
+        "uniqueItems": true
+       },
+       "selected": {
+        "anyOf": [
+         {
+          "type": "null"
+         },
+         {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:\\-]+$"
+         }
+        ]
+       },
+       "guard": {
+        "$ref": "https://w3id.org/brevops/contracts/C10/transforms.schema.json#/$defs/guard"
+       },
+       "reason": {
+        "type": "string",
+        "minLength": 3
+       }
+      },
+      "required": [
+       "choice_id",
+       "options",
+       "selected",
+       "reason"
+      ],
+      "additionalProperties": false
+     }
+    },
+    "values": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "field": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9_]+(\\.[A-Za-z0-9_]+)*$"
+       },
+       "term": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/term"
+       },
+       "origin": {
+        "enum": [
+         "carried",
+         "synthesized",
+         "default_declared"
+        ]
+       },
+       "marked": {
+        "type": "boolean"
+       }
+      },
+      "required": [
+       "field",
+       "term",
+       "origin",
+       "marked"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+       {
+        "if": {
+         "properties": {
+          "origin": {
+           "enum": [
+            "synthesized",
+            "default_declared"
+           ]
+          }
+         }
+        },
+        "then": {
+         "properties": {
+          "marked": {
+           "const": true
+          }
+         }
+        }
+       }
+      ]
+     }
+    },
+    "losses": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "code": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[A-Z][A-Z_]+$"
+       },
+       "field": {
+        "type": "string",
+        "minLength": 1
+       },
+       "detail": {
+        "type": "string",
+        "minLength": 3
+       }
+      },
+      "required": [
+       "code",
+       "field"
+      ],
+      "additionalProperties": false
+     }
+    },
+    "symbolic_unknowns": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "term_id": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^t[0-9]+$"
+       },
+       "reason": {
+        "type": "string",
+        "minLength": 3
+       }
+      },
+      "required": [
+       "term_id",
+       "reason"
+      ],
+      "additionalProperties": false
+     }
+    },
+    "depends_on": {
+     "type": "array",
+     "items": {
+      "type": "integer",
+      "minimum": 1
+     },
+     "uniqueItems": true
+    }
+   },
+   "required": [
+    "order",
+    "action",
+    "node_id",
+    "resource_type",
+    "typed_choices",
+    "values",
+    "losses",
+    "symbolic_unknowns",
+    "depends_on"
+   ],
+   "additionalProperties": false
+  },
+  "lowering_plan": {
+   "type": "object",
+   "properties": {
+    "plan_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^LP-[A-Za-z0-9_\\-]+$"
+    },
+    "graph_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^GIR-[A-Za-z0-9_\\-]+$"
+    },
+    "target_provider": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/provider"
+    },
+    "steps": {
+     "type": "array",
+     "items": {
+      "$ref": "#/$defs/lowering_step"
+     },
+     "minItems": 1
+    },
+    "dependency_closure": {
+     "type": "object",
+     "properties": {
+      "closed": {
+       "type": "boolean"
+      },
+      "missing": {
+       "type": "array",
+       "items": {
+        "type": "string",
+        "minLength": 1
+       }
+      }
+     },
+     "required": [
+      "closed",
+      "missing"
+     ],
+     "additionalProperties": false,
+     "allOf": [
+      {
+       "if": {
+        "properties": {
+         "closed": {
+          "const": true
+         }
+        }
+       },
+       "then": {
+        "properties": {
+         "missing": {
+          "maxItems": 0
+         }
+        }
+       },
+       "else": {
+        "properties": {
+         "missing": {
+          "minItems": 1
+         }
+        }
+       }
+      }
+     ]
+    }
+   },
+   "required": [
+    "plan_id",
+    "graph_id",
+    "target_provider",
+    "steps",
+    "dependency_closure"
+   ],
+   "additionalProperties": false
+  }
+ }
+}

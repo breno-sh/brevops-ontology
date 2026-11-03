@@ -1,0 +1,116 @@
+{
+ "project": "catálogo sintético de exemplo",
+ "generated_at": "2026-11-03T08:00:00-03:00",
+ "timezone": "America/Recife",
+ "plan_version": 3,
+ "env": {
+  "BO_REPO": "/srv/bo",
+  "BO_DATA": "/srv/bo-data",
+  "BO_TMP": "$BO_DATA/tmp/<ID>"
+ },
+ "index_sets": {
+  "provider": [
+   "aws",
+   "google",
+   "azurerm",
+   "oci"
+  ],
+  "pair": [
+   "AWSGCP",
+   "AWSAZ",
+   "AWSOCI",
+   "GCPAZ",
+   "GCPOCI",
+   "AZOCI"
+  ],
+  "domain": [
+   "CMP",
+   "NET",
+   "STO",
+   "DB",
+   "SEC",
+   "OPS"
+  ],
+  "slice": [
+   "sto",
+   "net"
+  ],
+  "model": [
+   "kalinin"
+  ],
+  "candidate": [
+   "none"
+  ],
+  "probe_type": [
+   "item_ttl"
+  ],
+  "control": [
+   "c1_table",
+   "c2_taxonomy",
+   "c3_full"
+  ],
+  "lens": [
+   "R1"
+  ],
+  "version": "dynamic:$BO_DATA/HIST-*/versions.json"
+ },
+ "contracts": {
+  "C00": {
+   "name": "conventions",
+   "version": "3.0.0"
+  }
+ },
+ "modules": [
+  {
+   "id": "EXAMPLE-MOD",
+   "stable_id": "EXAMPLE-MOD",
+   "wave": 0,
+   "deps": [],
+   "inputs": [
+    "$BO_REPO/CONVENTIONS.html"
+   ],
+   "outputs": [
+    "$BO_REPO/results/EXAMPLE-MOD/"
+   ],
+   "gates": [
+    "python -I -m bo.contracts.validate --all-stubs"
+   ],
+   "contracts": [
+    "C00"
+   ],
+   "worktree": "/srv/lanes/bo-example-mod",
+   "branch": "bo/example-mod",
+   "owns": [
+    "$BO_REPO/results/EXAMPLE-MOD/",
+    "$BO_DATA/EXAMPLE-MOD/"
+   ],
+   "tmp_dir": "$BO_DATA/tmp/EXAMPLE-MOD"
+  },
+  {
+   "id": "EXAMPLE-NEXT",
+   "stable_id": "EXAMPLE-NEXT",
+   "wave": 1,
+   "deps": [
+    "EXAMPLE-MOD"
+   ],
+   "inputs": [
+    "$BO_REPO/results/EXAMPLE-MOD/"
+   ],
+   "outputs": [
+    "$BO_REPO/results/EXAMPLE-NEXT/{provider}.json"
+   ],
+   "gates": [
+    "python -I -m bo.contracts.validate --all-stubs"
+   ],
+   "contracts": [
+    "C00"
+   ],
+   "worktree": "/srv/lanes/bo-example-next",
+   "branch": "bo/example-next",
+   "owns": [
+    "$BO_REPO/results/EXAMPLE-NEXT/"
+   ],
+   "tmp_dir": "$BO_DATA/tmp/EXAMPLE-NEXT"
+  }
+ ]
+}

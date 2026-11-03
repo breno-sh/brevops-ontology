@@ -1,0 +1,1 @@
+{"case_id": "CASE-AWSGCP-DB-0001", "group_id": "G-AWSGCP-DB-0001", "judged_at": "2026-11-03T11:00:00-03:00", "judged_by": "PROBE-JOIN", "judgement_id": "PJ-0001", "observations": {"A": "OBS-A-0001", "B": "OBS-B-0001"}, "outcome": {"axis": "behavior", "value": "OBSERVATIONS_MATCH_UNDER_PROTOCOL"}, "pair_case_id": "PC-0001", "protocol_version": "1.0.0"}

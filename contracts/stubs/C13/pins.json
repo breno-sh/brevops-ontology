@@ -1,0 +1,26 @@
+{
+ "schema": "bo.pins/1",
+ "contract": "C13",
+ "contract_version": "3.0.0",
+ "module": "PINS",
+ "generated_at": "2026-11-03T08:00:00-03:00",
+ "terraform": {
+  "version": "1.13.4",
+  "sha256": "94dc3ea57721d541aae09b7bf2368c1e20d4c89996ff6df4349d86048877c0e7"
+ },
+ "providers": [
+  {
+   "provider": "aws",
+   "source": "registry.terraform.io/hashicorp/aws",
+   "version": "6.0.0",
+   "shasums_sha256": "b060c369c289f500d7cc959988fe9e1b242e41dd8dfd166d8a6af30b3f83ea60",
+   "schema_sha256": "05c4859fd6018f42588cdb6f48fb2d4d015a431128f35ed2ba5cffd9ff7d2380"
+  },
+  {
+   "provider": "google",
+   "source": "registry.terraform.io/hashicorp/google",
+   "version": "7.0.0",
+   "schema_sha256": "f40d2f7d7f13b9e833f46a200a88914e83cd258f44cc46aa72ff1d97a9875c42"
+  }
+ ]
+}

@@ -1,0 +1,41 @@
+@prefix align: <http://knowledgeweb.semanticweb.org/heterogeneity/alignment#> .
+@prefix bofn: <https://w3id.org/brevops/transform#> .
+@prefix bosx: <https://w3id.org/brevops/sssom-ext#> .
+@prefix edoal: <http://ns.inria.org/edoal/1.0/#> .
+@prefix pa: <https://example.org/provider-a/> .
+@prefix pb: <https://example.org/provider-b/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://example.org/alignment/stub> a align:Alignment ;
+    align:level "2EDOAL" ;
+    align:map [ a align:Cell ;
+            align:entity1 pa:backup_retention_days ;
+            align:entity2 pb:backup_retention_days ;
+            align:measure "1.0"^^xsd:float ;
+            align:relation "=" ;
+            edoal:transformation [ a edoal:Transformation ;
+                    edoal:direction "o-" ;
+                    edoal:entity1 pa:backup_retention_days ;
+                    edoal:entity2 [ a edoal:Apply ;
+                            edoal:arguments ( "{}" ) ;
+                            edoal:operator bofn:identity ] ] ;
+            bosx:basis "direct" ;
+            bosx:claimId "CLM-EX-01" ;
+            bosx:claimVersionId "CLM-EX-01@2" ;
+            bosx:eventId "EV-CLM-EX-01-2" ;
+            bosx:evidenceState "DOC_SUPPORTED" ;
+            bosx:guard "{\"all\": []}" ;
+            bosx:lossContract "[]" ;
+            bosx:objectConcept "concept:backup_retention" ;
+            bosx:objectValueType "{\"datatype\": \"integer\", \"quantity_kind\": \"quantitykind:Time\", \"range\": {\"max\": 365, \"min\": 0}, \"unit\": \"unit:DAY\"}" ;
+            bosx:proof "{\"evidence\": [{\"date\": \"2026-11-03\", \"sentence\": \"frase sintética que sustenta a alegação\", \"source\": \"fixture:doc-sintetica\"}], \"tests\": [{\"expected\": 7, \"input\": 7}], \"type\": \"normalization\"}" ;
+            bosx:subjectConcept "concept:backup_retention" ;
+            bosx:subjectValueType "{\"datatype\": \"integer\", \"quantity_kind\": \"quantitykind:Time\", \"range\": {\"max\": 35, \"min\": 0}, \"unit\": \"unit:DAY\"}" ;
+            bosx:transportFidelity "lossless" ;
+            bosx:valueDomainRelation "{\"orientation\": \"subject_to_object\", \"relation\": \"subset\"}" ] .
+
+pb:backup_retention_days a edoal:Property .
+
+pa:backup_retention_days a edoal:Property .
+

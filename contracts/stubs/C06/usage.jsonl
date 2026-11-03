@@ -1,0 +1,1 @@
+{"atom_id": "aws:aws_db_instance:backup_retention_period", "family_id": "F-00a1b2c3d4e5", "n_literal": 1, "n_resources": 1, "n_set": 1, "n_symbolic": 0, "n_withheld": 0, "provider": "aws", "repo_id": "R-00a1b2c3d4e5", "resource_type": "aws_db_instance"}

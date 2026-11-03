@@ -1,0 +1,146 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://w3id.org/brevops/contracts/C01/atoms.schema.json",
+ "title": "C01 atoms 2.0.0: átomos de atributo",
+ "description": "Um atributo configurável de um tipo, com o caminho dos blocos aninhados.",
+ "x-bo-contract": {
+  "id": "C01",
+  "name": "atoms",
+  "version": "2.0.0",
+  "status": "unchanged_v3",
+  "owner": "CONTRACTS",
+  "files": [
+   {
+    "kind": "atoms",
+    "file": "atoms.jsonl",
+    "format": "jsonl",
+    "record": "atom",
+    "unit": "record"
+   }
+  ],
+  "semantic_rules": [
+   "C01-ID: atom_id = provider:resource_type:path",
+   "C01-FLAGS: required e optional se excluem; required não é computed; configurable = required ou optional",
+   "C01-BLOCKS: os blocos de block_path são o prefixo de path; nesting = modo do último bloco (none no topo)",
+   "C01-UNIQ: atom_id único por (provider_version)"
+  ],
+  "producers": [
+   "HIST-{provider}",
+   "SCHEMA-POST",
+   "SCHEMA-{provider}"
+  ],
+  "consumers": [],
+  "adopted_from": []
+ },
+ "$defs": {
+  "atom": {
+   "type": "object",
+   "properties": {
+    "atom_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/atom_id"
+    },
+    "provider": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/provider"
+    },
+    "provider_version": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/semver"
+    },
+    "resource_type": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/resource_type"
+    },
+    "path": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^[A-Za-z0-9_]+(\\.[A-Za-z0-9_]+)*$"
+    },
+    "block_path": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "block": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9_]+$"
+       },
+       "nesting_mode": {
+        "enum": [
+         "single",
+         "list",
+         "set",
+         "map",
+         "group"
+        ]
+       },
+       "min_items": {
+        "type": "integer",
+        "minimum": 0
+       },
+       "max_items": {
+        "type": "integer",
+        "minimum": 0
+       }
+      },
+      "required": [
+       "block",
+       "nesting_mode"
+      ],
+      "additionalProperties": false
+     }
+    },
+    "tf_type": {
+     "type": [
+      "string",
+      "array"
+     ],
+     "description": "tipo cty do schema do provider"
+    },
+    "nesting": {
+     "enum": [
+      "none",
+      "single",
+      "list",
+      "set",
+      "map",
+      "group"
+     ]
+    },
+    "required": {
+     "type": "boolean"
+    },
+    "optional": {
+     "type": "boolean"
+    },
+    "computed": {
+     "type": "boolean"
+    },
+    "sensitive": {
+     "type": "boolean"
+    },
+    "deprecated": {
+     "type": "boolean"
+    },
+    "configurable": {
+     "type": "boolean"
+    }
+   },
+   "required": [
+    "atom_id",
+    "provider",
+    "provider_version",
+    "resource_type",
+    "path",
+    "block_path",
+    "tf_type",
+    "nesting",
+    "required",
+    "optional",
+    "computed",
+    "sensitive",
+    "deprecated",
+    "configurable"
+   ],
+   "additionalProperties": false
+  }
+ }
+}

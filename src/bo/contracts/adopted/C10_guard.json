@@ -1,0 +1,72 @@
+{
+ "$id": "https://w3id.org/brevops/schema/C10/guard.schema.json",
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "additionalProperties": false,
+ "properties": {
+  "all": {
+   "items": {
+    "additionalProperties": false,
+    "properties": {
+     "op": {
+      "enum": [
+       "eq",
+       "in",
+       "present",
+       "refers_to_kind",
+       "region_in",
+       "edition_in",
+       "version_range"
+      ]
+     },
+     "term": {
+      "pattern": "^(subject|object)\\.[A-Za-z0-9_.\\[\\]]+$",
+      "type": "string"
+     },
+     "value": {}
+    },
+    "required": [
+     "term",
+     "op",
+     "value"
+    ],
+    "type": "object"
+   },
+   "type": "array"
+  },
+  "kind_disjoint": {
+   "items": {
+    "items": {
+     "type": "string"
+    },
+    "maxItems": 2,
+    "minItems": 2,
+    "type": "array"
+   },
+   "type": "array"
+  },
+  "term_types": {
+   "additionalProperties": {
+    "properties": {
+     "datatype": {
+      "enum": [
+       "string",
+       "enum",
+       "boolean",
+       "integer"
+      ]
+     }
+    },
+    "required": [
+     "datatype"
+    ],
+    "type": "object"
+   },
+   "type": "object"
+  }
+ },
+ "required": [
+  "all"
+ ],
+ "title": "Guarda tipada (conjunção de átomos)",
+ "type": "object"
+}

@@ -1,0 +1,48 @@
+{
+ "schema": "bo.universe/1",
+ "contract": "C07",
+ "contract_version": "3.0.0",
+ "module": "UNIVERSE",
+ "generated_at": "2026-11-03T08:00:00-03:00",
+ "rule": {
+  "rule_id": "U-RULE-01",
+  "text": "unidades canônicas do pin com domínio declarado e evidência"
+ },
+ "closure": {
+  "rule": "fecho por referência obrigatória até ponto fixo",
+  "iterations": 2,
+  "fixed_point": true
+ },
+ "seed": 20261103,
+ "split_ref": {
+  "path": "$BO_DATA/SPLIT/split.json",
+  "sha256": "ad1a64057f9ab34fecfe3f4ee78660bb0316dbda9370581ffbeb1e8bddf3d598"
+ },
+ "units": [
+  {
+   "unit_id": "CU-aws-db-instance",
+   "provider": "aws",
+   "domain": "DB",
+   "rule_id": "U-RULE-01",
+   "in_universe": true
+  },
+  {
+   "unit_id": "CU-aws-db-backup-window",
+   "provider": "aws",
+   "domain": "DB",
+   "rule_id": "U-RULE-01",
+   "in_universe": false,
+   "reason": "faceta sem evidência de dono"
+  }
+ ],
+ "pilot_exposed": {
+  "CU-aws-db-instance": true,
+  "CU-aws-db-backup-window": false
+ },
+ "holdout": {
+  "encrypted_sha256": "d179b28cc8927b726d766bc0a22ed40ffc879d40f62a100e7d97dabb24253669",
+  "path": "$BO_DATA/SPLIT/sealed/holdout.jsonl.age",
+  "cipher": "age",
+  "recipient_fingerprint": "age1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"
+ }
+}

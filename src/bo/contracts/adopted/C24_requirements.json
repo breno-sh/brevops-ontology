@@ -1,0 +1,82 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "additionalProperties": false,
+ "properties": {
+  "answers": {
+   "items": {
+    "pattern": "^(R[1-4]-M\\d{1,2}|R[1-4]-W\\d{1,2}|F[1-9]|S\\d{1,2}|N\\d{1,2}|A\\d{1,2})$",
+    "type": "string"
+   },
+   "minItems": 1,
+   "type": "array"
+  },
+  "area": {
+   "enum": [
+    "absence",
+    "authorization",
+    "composition",
+    "database",
+    "desired_vs_observed",
+    "entity",
+    "identity",
+    "lifecycle",
+    "load_balancing",
+    "loss",
+    "method",
+    "network",
+    "new_provider",
+    "relation",
+    "storage",
+    "taxonomy"
+   ]
+  },
+  "consumers": {
+   "items": {
+    "pattern": "^[A-Z][A-Z0-9-]{1,40}$",
+    "type": "string"
+   },
+   "type": "array"
+  },
+  "contract": {
+   "const": "C24"
+  },
+  "contract_version": {
+   "const": "1.0.0"
+  },
+  "priority": {
+   "enum": [
+    "MUST",
+    "SHOULD"
+   ]
+  },
+  "rationale": {
+   "minLength": 20,
+   "type": "string"
+  },
+  "req_id": {
+   "pattern": "^REQ-[A-Z]{2,5}-\\d{2}$",
+   "type": "string"
+  },
+  "schema": {
+   "const": "bo.requirement/1"
+  },
+  "statement": {
+   "minLength": 20,
+   "type": "string"
+  }
+ },
+ "required": [
+  "schema",
+  "contract",
+  "contract_version",
+  "req_id",
+  "area",
+  "priority",
+  "statement",
+  "rationale",
+  "answers",
+  "consumers"
+ ],
+ "title": "C24 requirements.jsonl (registro)",
+ "type": "object"
+}

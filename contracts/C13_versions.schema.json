@@ -1,0 +1,316 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://w3id.org/brevops/contracts/C13/versions.schema.json",
+ "title": "C13 versions 3.0.0: pins, versões e eventos",
+ "description": "Pins do Terraform e dos providers; versões por provider; eventos tipados (adição, renome, remoção, mudança de contrato) com o intervalo de versão em que podem ter ocorrido.",
+ "x-bo-contract": {
+  "id": "C13",
+  "name": "versions",
+  "version": "3.0.0",
+  "status": "changed_v3",
+  "owner": "CONTRACTS",
+  "files": [
+   {
+    "kind": "pins",
+    "file": "pins.json",
+    "format": "json",
+    "record": "pins",
+    "unit": "document"
+   },
+   {
+    "kind": "versions",
+    "file": "versions.json",
+    "format": "json",
+    "record": "versions",
+    "unit": "document"
+   },
+   {
+    "kind": "events",
+    "file": "events.jsonl",
+    "format": "jsonl",
+    "record": "event",
+    "unit": "record"
+   }
+  ],
+  "semantic_rules": [
+   "C13-INTERVAL: after < until (ordem semver)",
+   "C13-RENAME: from_atom ≠ to_atom, mesmo provider e tipo",
+   "C13-UNIQ: event_id único; versões únicas e em ordem crescente"
+  ],
+  "producers": [
+   "DRIFT",
+   "HIST-{provider}",
+   "PINS",
+   "SCHEMA-POST"
+  ],
+  "consumers": [],
+  "adopted_from": []
+ },
+ "$defs": {
+  "pins": {
+   "type": "object",
+   "properties": {
+    "schema": {
+     "const": "bo.pins/1"
+    },
+    "contract": {
+     "const": "C13"
+    },
+    "contract_version": {
+     "const": "3.0.0"
+    },
+    "module": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/stable_id"
+    },
+    "generated_at": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/datetime"
+    },
+    "terraform": {
+     "type": "object",
+     "properties": {
+      "version": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/semver"
+      },
+      "sha256": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/sha256"
+      }
+     },
+     "required": [
+      "version",
+      "sha256"
+     ],
+     "additionalProperties": false
+    },
+    "providers": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "provider": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/provider"
+       },
+       "source": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^registry\\.terraform\\.io/[a-z0-9-]+/[a-z0-9-]+$"
+       },
+       "version": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/semver"
+       },
+       "shasums_sha256": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/sha256"
+       },
+       "schema_sha256": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/sha256"
+       }
+      },
+      "required": [
+       "provider",
+       "source",
+       "version",
+       "schema_sha256"
+      ],
+      "additionalProperties": false
+     },
+     "minItems": 1
+    }
+   },
+   "required": [
+    "schema",
+    "contract",
+    "contract_version",
+    "module",
+    "generated_at",
+    "terraform",
+    "providers"
+   ],
+   "additionalProperties": false
+  },
+  "versions": {
+   "type": "object",
+   "properties": {
+    "schema": {
+     "const": "bo.versions/1"
+    },
+    "contract": {
+     "const": "C13"
+    },
+    "contract_version": {
+     "const": "3.0.0"
+    },
+    "module": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/stable_id"
+    },
+    "generated_at": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/datetime"
+    },
+    "provider": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/provider"
+    },
+    "versions": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "version": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/semver"
+       },
+       "released_at": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/date"
+       },
+       "schema_sha256": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/sha256"
+       }
+      },
+      "required": [
+       "version",
+       "released_at"
+      ],
+      "additionalProperties": false
+     },
+     "minItems": 1
+    }
+   },
+   "required": [
+    "schema",
+    "contract",
+    "contract_version",
+    "module",
+    "generated_at",
+    "provider",
+    "versions"
+   ],
+   "additionalProperties": false
+  },
+  "event": {
+   "type": "object",
+   "properties": {
+    "event_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/event_id"
+    },
+    "provider": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/provider"
+    },
+    "resource_type": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/resource_type"
+    },
+    "event_type": {
+     "enum": [
+      "addition",
+      "rename",
+      "removal",
+      "contract_change"
+     ]
+    },
+    "atom_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/atom_id"
+    },
+    "from_atom": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/atom_id"
+    },
+    "to_atom": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/atom_id"
+    },
+    "change": {
+     "type": "object",
+     "properties": {
+      "field": {
+       "type": "string",
+       "minLength": 1
+      },
+      "before": {},
+      "after": {}
+     },
+     "required": [
+      "field",
+      "before",
+      "after"
+     ],
+     "additionalProperties": false
+    },
+    "version_interval": {
+     "type": "object",
+     "properties": {
+      "after": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/semver"
+      },
+      "until": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/semver"
+      }
+     },
+     "required": [
+      "after",
+      "until"
+     ],
+     "additionalProperties": false,
+     "description": "o evento ocorreu em (after, until]: after = última versão sem a mudança, until = primeira com ela"
+    },
+    "evidence": {
+     "type": "array",
+     "items": {
+      "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/evidence_item"
+     },
+     "minItems": 1
+    }
+   },
+   "required": [
+    "event_id",
+    "provider",
+    "resource_type",
+    "event_type",
+    "version_interval",
+    "evidence"
+   ],
+   "additionalProperties": false,
+   "allOf": [
+    {
+     "if": {
+      "properties": {
+       "event_type": {
+        "enum": [
+         "addition",
+         "removal"
+        ]
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "atom_id"
+      ]
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "event_type": {
+        "const": "rename"
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "from_atom",
+       "to_atom"
+      ]
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "event_type": {
+        "const": "contract_change"
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "atom_id",
+       "change"
+      ]
+     }
+    }
+   ]
+  }
+ }
+}

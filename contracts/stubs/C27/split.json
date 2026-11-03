@@ -1,0 +1,46 @@
+{
+ "schema": "bo.split/1",
+ "contract": "C27",
+ "contract_version": "1.0.0",
+ "module": "SPLIT",
+ "generated_at": "2026-11-03T08:00:00-03:00",
+ "seed": 20261103,
+ "method": "split por família, estratificado por provedor",
+ "dedup": {
+  "method": "near_dup_minhash",
+  "threshold": 0.9
+ },
+ "partitions": {
+  "train": {
+   "n_families": 1,
+   "ids_sha256": "6b1232f88801815f7e865ee286260f4a7b70ff8731650e18e49a8bfa7d28aef1"
+  },
+  "dev": {
+   "n_families": 1,
+   "ids_sha256": "f77269dbfeb3706f9bfbafa92e670367f52d7bd45993e13237de9d138aed7447"
+  },
+  "test": {
+   "n_families": 1,
+   "encrypted": {
+    "path": "$BO_DATA/SPLIT/sealed/test_families.jsonl.age",
+    "sha256": "db1b7ad9d5c2bf1059e09a16bd438c6652582bb40e56defece9c6b564e846bd6",
+    "cipher": "age",
+    "recipient_fingerprint": "age1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"
+   }
+  }
+ },
+ "role_projections": {
+  "mapper": {
+   "partitions": [
+    "train"
+   ]
+  },
+  "glossarist": {
+   "partitions": [
+    "train",
+    "dev"
+   ]
+  }
+ },
+ "opening_receipt": null
+}

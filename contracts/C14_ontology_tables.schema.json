@@ -1,0 +1,680 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://w3id.org/brevops/contracts/C14/ontology_tables.schema.json",
+ "title": "C14 ontology_tables 3.0.0: classes, propriedades, realizações e TTL",
+ "description": "Classe com vários pais (aninhados, ortogonais declarados, condicionais com guarda). Propriedade com domínio como união ou restrição local (nunca vários rdfs:domain). Realização pelo padrão de descritor (sem punning): recursos criados, referências, condições, projeções, perdas, realizações alternativas guardadas com prova de exclusividade ou Ambiguous; sem injetividade global. Modelo Resource / ConfigurationDescription / ObservedState / Observation; identidade composta; marcas configurado/inferido/default/observado e desconhecido/ausente/não lido/retido.",
+ "x-bo-contract": {
+  "id": "C14",
+  "name": "ontology_tables",
+  "version": "3.0.0",
+  "status": "changed_v3",
+  "owner": "CONTRACTS",
+  "files": [
+   {
+    "kind": "classes",
+    "file": "classes.jsonl",
+    "format": "jsonl",
+    "record": "class",
+    "unit": "record"
+   },
+   {
+    "kind": "properties",
+    "file": "properties.jsonl",
+    "format": "jsonl",
+    "record": "property",
+    "unit": "record"
+   },
+   {
+    "kind": "realizations",
+    "file": "realizations*.jsonl",
+    "format": "jsonl",
+    "record": "realization",
+    "unit": "record"
+   },
+   {
+    "kind": "ttl",
+    "file": "*.ttl",
+    "format": "turtle",
+    "record": null,
+    "unit": "graph",
+    "note": "Turtle que parseia, sem punning e sem propriedade com mais de um rdfs:domain"
+   }
+  ],
+  "semantic_rules": [
+   "C14-PARENTS: ortogonal declara o eixo; condicional tem guarda",
+   "C14-DOMAIN: domínio é single, union (>= 2) ou restrição local; no TTL nenhuma propriedade tem dois rdfs:domain",
+   "C14-PUN: nenhum IRI do TTL é ao mesmo tempo classe/propriedade e indivíduo (padrão de descritor)",
+   "C14-ALT: alternativas mútuas, mesmo descritor e provedor, mesma exclusividade; ProvenExclusive entre alternativas exige prova",
+   "C14-LOSS: fidelidade com perda declarada ou parcial exige losses",
+   "C14-UNIQ: class_id, property_id e realization_id únicos"
+  ],
+  "producers": [
+   "AXIOMS",
+   "BASELINE-ADAPT",
+   "CLASS",
+   "CQRUN",
+   "NAMING",
+   "ONTPAT",
+   "OWL",
+   "PROP",
+   "REPAIR",
+   "SHACL"
+  ],
+  "consumers": [],
+  "adopted_from": [
+   "results/ONTPAT/C14_proposta/realization_row.schema.json"
+  ]
+ },
+ "$defs": {
+  "class": {
+   "type": "object",
+   "properties": {
+    "class_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/iri"
+    },
+    "label": {
+     "type": "string",
+     "minLength": 2
+    },
+    "definition": {
+     "type": "string",
+     "minLength": 10
+    },
+    "parents": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "iri": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/iri"
+       },
+       "kind": {
+        "enum": [
+         "nested",
+         "orthogonal",
+         "conditional"
+        ]
+       },
+       "axis": {
+        "type": "string",
+        "minLength": 2
+       },
+       "guard": {
+        "$ref": "https://w3id.org/brevops/contracts/C10/transforms.schema.json#/$defs/guard"
+       }
+      },
+      "required": [
+       "iri",
+       "kind"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+       {
+        "if": {
+         "properties": {
+          "kind": {
+           "const": "orthogonal"
+          }
+         }
+        },
+        "then": {
+         "required": [
+          "axis"
+         ]
+        }
+       },
+       {
+        "if": {
+         "properties": {
+          "kind": {
+           "const": "conditional"
+          }
+         }
+        },
+        "then": {
+         "required": [
+          "guard"
+         ]
+        }
+       }
+      ]
+     }
+    },
+    "model_role": {
+     "enum": [
+      "Resource",
+      "ConfigurationDescription",
+      "ObservedState",
+      "Observation",
+      "Other"
+     ]
+    },
+    "identity": {
+     "type": "object",
+     "properties": {
+      "fields": {
+       "type": "array",
+       "items": {
+        "enum": [
+         "synthetic_account",
+         "provider",
+         "location",
+         "type",
+         "local_key"
+        ]
+       },
+       "minItems": 1,
+       "uniqueItems": true
+      },
+      "composite": {
+       "type": "boolean"
+      }
+     },
+     "required": [
+      "fields",
+      "composite"
+     ],
+     "additionalProperties": false
+    },
+    "status": {
+     "enum": [
+      "active",
+      "deprecated",
+      "merged",
+      "split"
+     ]
+    },
+    "replaced_by": {
+     "type": "array",
+     "items": {
+      "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/iri"
+     }
+    },
+    "evidence_state": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/evidence_state"
+    }
+   },
+   "required": [
+    "class_id",
+    "label",
+    "definition",
+    "parents",
+    "model_role",
+    "status",
+    "evidence_state"
+   ],
+   "additionalProperties": false,
+   "allOf": [
+    {
+     "if": {
+      "properties": {
+       "status": {
+        "enum": [
+         "merged",
+         "split",
+         "deprecated"
+        ]
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "replaced_by"
+      ]
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "model_role": {
+        "const": "Resource"
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "identity"
+      ]
+     }
+    }
+   ]
+  },
+  "property": {
+   "type": "object",
+   "properties": {
+    "property_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/iri"
+    },
+    "label": {
+     "type": "string",
+     "minLength": 2
+    },
+    "kind": {
+     "enum": [
+      "object",
+      "datatype",
+      "annotation"
+     ]
+    },
+    "domain": {
+     "oneOf": [
+      {
+       "type": "object",
+       "properties": {
+        "kind": {
+         "const": "single"
+        },
+        "class": {
+         "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/iri"
+        }
+       },
+       "required": [
+        "kind",
+        "class"
+       ],
+       "additionalProperties": false
+      },
+      {
+       "type": "object",
+       "properties": {
+        "kind": {
+         "const": "union"
+        },
+        "classes": {
+         "type": "array",
+         "items": {
+          "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/iri"
+         },
+         "minItems": 2,
+         "uniqueItems": true
+        }
+       },
+       "required": [
+        "kind",
+        "classes"
+       ],
+       "additionalProperties": false
+      },
+      {
+       "type": "object",
+       "properties": {
+        "kind": {
+         "const": "local_restriction"
+        },
+        "class": {
+         "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/iri"
+        },
+        "restriction": {
+         "enum": [
+          "some",
+          "only",
+          "exactly",
+          "max",
+          "min"
+         ]
+        },
+        "cardinality": {
+         "type": "integer",
+         "minimum": 0
+        }
+       },
+       "required": [
+        "kind",
+        "class",
+        "restriction"
+       ],
+       "additionalProperties": false
+      }
+     ],
+     "description": "nunca vários rdfs:domain (seriam conjunção): união ou restrição local"
+    },
+    "range": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/iri"
+    },
+    "definition": {
+     "type": "string",
+     "minLength": 10
+    },
+    "value_marks": {
+     "type": "array",
+     "items": {
+      "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/value_mark"
+     },
+     "minItems": 1,
+     "uniqueItems": true
+    },
+    "unknown_marks": {
+     "type": "array",
+     "items": {
+      "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/unknown_mark"
+     },
+     "minItems": 1,
+     "uniqueItems": true
+    },
+    "status": {
+     "enum": [
+      "active",
+      "deprecated",
+      "merged",
+      "split"
+     ]
+    },
+    "evidence_state": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/evidence_state"
+    }
+   },
+   "required": [
+    "property_id",
+    "label",
+    "kind",
+    "domain",
+    "range",
+    "definition",
+    "value_marks",
+    "unknown_marks",
+    "status",
+    "evidence_state"
+   ],
+   "additionalProperties": false
+  },
+  "realization": {
+   "title": "C14 realizations.jsonl (padrão de descritor; proposta do ONTPAT + referências e prova)",
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "realization_id",
+    "of",
+    "provider",
+    "realized_by",
+    "lifting_fidelity",
+    "lowering_fidelity",
+    "evidence_state",
+    "derived_from",
+    "generated_by"
+   ],
+   "properties": {
+    "realization_id": {
+     "type": "string",
+     "pattern": "^[A-Za-z0-9_.:-]+$"
+    },
+    "of": {
+     "type": "object",
+     "additionalProperties": false,
+     "required": [
+      "descriptor_key",
+      "kind",
+      "describes"
+     ],
+     "properties": {
+      "descriptor_key": {
+       "type": "string"
+      },
+      "kind": {
+       "enum": [
+        "class",
+        "property"
+       ]
+      },
+      "describes": {
+       "type": "string",
+       "format": "iri",
+       "description": "IRI da entidade OWL, levado por anotação (bo:describesProperty/describesClass), nunca como indivíduo"
+      }
+     }
+    },
+    "provider": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/provider"
+    },
+    "realized_by": {
+     "type": "array",
+     "minItems": 1,
+     "items": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+       "artifact_name",
+       "schema"
+      ],
+      "properties": {
+       "artifact_name": {
+        "type": "string"
+       },
+       "artifact_path": {
+        "type": "string"
+       },
+       "schema": {
+        "type": "string"
+       }
+      }
+     }
+    },
+    "lifting_fidelity": {
+     "enum": [
+      "Lossless",
+      "DeclaredLoss",
+      "PartialTransport",
+      "NoTransport"
+     ]
+    },
+    "lowering_fidelity": {
+     "enum": [
+      "Lossless",
+      "DeclaredLoss",
+      "PartialTransport",
+      "NoTransport"
+     ]
+    },
+    "evidence_state": {
+     "enum": [
+      "StructurallyValid",
+      "DocSupported",
+      "PersistenceVerified",
+      "ObservationTested",
+      "Unresolved"
+     ]
+    },
+    "exclusivity": {
+     "enum": [
+      "ProvenExclusive",
+      "Ambiguous"
+     ]
+    },
+    "guards": {
+     "type": "array",
+     "items": {
+      "anyOf": [
+       {
+        "type": "string",
+        "minLength": 3
+       },
+       {
+        "$ref": "https://w3id.org/brevops/contracts/C10/transforms.schema.json#/$defs/guard"
+       }
+      ]
+     }
+    },
+    "alternative_to": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "losses": {
+     "type": "array",
+     "items": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z_]+$"
+     }
+    },
+    "projections": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+       "from_field",
+       "descriptor_key"
+      ],
+      "properties": {
+       "from_field": {
+        "type": "string"
+       },
+       "descriptor_key": {
+        "type": "string"
+       }
+      }
+     }
+    },
+    "derived_from": {
+     "type": "array",
+     "minItems": 1,
+     "items": {
+      "type": "string"
+     }
+    },
+    "generated_by": {
+     "type": "string"
+    },
+    "attributed_to": {
+     "type": "string"
+    },
+    "references": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "from_artifact": {
+        "type": "string",
+        "minLength": 1
+       },
+       "to_artifact": {
+        "type": "string",
+        "minLength": 1
+       },
+       "via_field": {
+        "type": "string",
+        "minLength": 1
+       }
+      },
+      "required": [
+       "from_artifact",
+       "to_artifact",
+       "via_field"
+      ],
+      "additionalProperties": false
+     }
+    },
+    "exclusivity_proof": {
+     "type": "object",
+     "properties": {
+      "method": {
+       "enum": [
+        "guard_intersection_unsat",
+        "documented_exclusive"
+       ]
+      },
+      "evidence": {
+       "type": "array",
+       "items": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/evidence_item"
+       },
+       "minItems": 1
+      }
+     },
+     "required": [
+      "method",
+      "evidence"
+     ],
+     "additionalProperties": false
+    }
+   },
+   "allOf": [
+    {
+     "if": {
+      "anyOf": [
+       {
+        "properties": {
+         "lifting_fidelity": {
+          "enum": [
+           "DeclaredLoss",
+           "PartialTransport"
+          ]
+         }
+        },
+        "required": [
+         "lifting_fidelity"
+        ]
+       },
+       {
+        "properties": {
+         "lowering_fidelity": {
+          "enum": [
+           "DeclaredLoss",
+           "PartialTransport"
+          ]
+         }
+        },
+        "required": [
+         "lowering_fidelity"
+        ]
+       }
+      ]
+     },
+     "then": {
+      "required": [
+       "losses"
+      ],
+      "properties": {
+       "losses": {
+        "minItems": 1
+       }
+      }
+     }
+    },
+    {
+     "if": {
+      "required": [
+       "alternative_to"
+      ],
+      "properties": {
+       "alternative_to": {
+        "minItems": 1
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "guards",
+       "exclusivity"
+      ],
+      "properties": {
+       "guards": {
+        "minItems": 1
+       }
+      }
+     }
+    },
+    {
+     "if": {
+      "required": [
+       "alternative_to"
+      ],
+      "properties": {
+       "exclusivity": {
+        "const": "ProvenExclusive"
+       },
+       "alternative_to": {
+        "minItems": 1
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "exclusivity_proof"
+      ]
+     }
+    }
+   ]
+  }
+ }
+}

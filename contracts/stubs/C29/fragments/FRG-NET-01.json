@@ -1,0 +1,33 @@
+{
+ "fragment_id": "FRG-NET-01",
+ "domain": "NET",
+ "kind": "network",
+ "nodes": [
+  {
+   "node_id": "n0",
+   "kind": "virtual_network"
+  },
+  {
+   "node_id": "n1",
+   "kind": "subnet"
+  },
+  {
+   "node_id": "n2",
+   "kind": "filter_rule",
+   "unit_id": "CU-aws-sg-rule-block"
+  }
+ ],
+ "edges": [
+  {
+   "from": "n1",
+   "to": "n0",
+   "kind": "contained_in"
+  },
+  {
+   "from": "n2",
+   "to": "n1",
+   "kind": "applies_to"
+  }
+ ],
+ "status": "SUPPORTED"
+}

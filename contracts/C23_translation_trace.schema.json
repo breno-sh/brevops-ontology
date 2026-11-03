@@ -1,0 +1,275 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://w3id.org/brevops/contracts/C23/translation_trace.schema.json",
+ "title": "C23 translation_trace 3.0.0: rastro de tradução por valor",
+ "description": "Por valor: entrada, indivíduo, classes inferidas, propriedade, realização, transformação, guarda avaliada, justifying_axioms separados de consulted_metadata, controle (c1 | c2 | c3 = c1_table | c2_taxonomy | c3_full), saída e resultado: carried, omitted (opcional sem valor) ou blocked com código — os 13 do plano, UNKNOWN_INPUT (obrigatório no destino sem valor na origem, T-ABSENCE) e REFUTED_BY_RULE (alegação refutada, proposta do SEMANTICS).",
+ "x-bo-contract": {
+  "id": "C23",
+  "name": "translation_trace",
+  "version": "3.0.0",
+  "status": "changed_v3",
+  "owner": "CONTRACTS",
+  "files": [
+   {
+    "kind": "translation_trace",
+    "file": "translation_trace.jsonl",
+    "format": "jsonl",
+    "record": "trace",
+    "unit": "record"
+   }
+  ],
+  "semantic_rules": [
+   "C23-RESULT: carried tem saída e nenhum código; blocked tem código e nenhuma saída",
+   "C23-GUARD: CONDITION_FALSE/INDETERMINATE vêm com a guarda avaliada e o resultado coerente",
+   "C23-SEP: justifying_axioms e consulted_metadata não se sobrepõem",
+   "C23-UNIQ: trace_id único"
+  ],
+  "producers": [
+   "PAIRWISE",
+   "PILOT-{slice}-E2E",
+   "TRANSLATOR"
+  ],
+  "consumers": [],
+  "adopted_from": []
+ },
+ "$defs": {
+  "trace": {
+   "type": "object",
+   "properties": {
+    "trace_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^TR-[A-Za-z0-9_\\-]+$"
+    },
+    "case_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^CASE-[A-Za-z0-9_\\-]+$"
+    },
+    "claim_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/claim_id"
+    },
+    "input": {
+     "type": "object",
+     "properties": {
+      "atom_id": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/atom_id"
+      },
+      "term": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/term"
+      }
+     },
+     "required": [
+      "atom_id",
+      "term"
+     ],
+     "additionalProperties": false
+    },
+    "individual": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/iri"
+    },
+    "inferred_classes": {
+     "type": "array",
+     "items": {
+      "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/iri"
+     }
+    },
+    "property": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/iri"
+    },
+    "realization_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^[A-Za-z0-9_.:\\-]+$"
+    },
+    "transform": {
+     "type": "object",
+     "properties": {
+      "name": {
+       "type": "string",
+       "minLength": 1,
+       "pattern": "^[a-z][a-z0-9_]*$"
+      },
+      "params": {
+       "type": "object"
+      }
+     },
+     "required": [
+      "name"
+     ],
+     "additionalProperties": false
+    },
+    "guard_evaluated": {
+     "type": "object",
+     "properties": {
+      "guard": {
+       "$ref": "https://w3id.org/brevops/contracts/C10/transforms.schema.json#/$defs/guard"
+      },
+      "result": {
+       "enum": [
+        "TRUE",
+        "FALSE",
+        "INDETERMINATE"
+       ]
+      }
+     },
+     "required": [
+      "guard",
+      "result"
+     ],
+     "additionalProperties": false
+    },
+    "justifying_axioms": {
+     "type": "array",
+     "items": {
+      "type": "string",
+      "minLength": 3
+     }
+    },
+    "consulted_metadata": {
+     "type": "array",
+     "items": {
+      "type": "string",
+      "minLength": 3
+     }
+    },
+    "control": {
+     "enum": [
+      "c1",
+      "c2",
+      "c3"
+     ]
+    },
+    "output": {
+     "type": "object",
+     "properties": {
+      "atom_id": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/atom_id"
+      },
+      "term": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/term"
+      }
+     },
+     "required": [
+      "atom_id",
+      "term"
+     ],
+     "additionalProperties": false
+    },
+    "result": {
+     "enum": [
+      "carried",
+      "omitted",
+      "blocked"
+     ]
+    },
+    "block_code": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/block_code"
+    },
+    "rule": {
+     "type": "string",
+     "minLength": 2
+    },
+    "detail": {
+     "type": "string",
+     "minLength": 3
+    }
+   },
+   "required": [
+    "trace_id",
+    "input",
+    "justifying_axioms",
+    "consulted_metadata",
+    "control",
+    "result"
+   ],
+   "additionalProperties": false,
+   "allOf": [
+    {
+     "if": {
+      "properties": {
+       "result": {
+        "const": "carried"
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "output",
+       "property"
+      ],
+      "not": {
+       "required": [
+        "block_code"
+       ]
+      }
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "result": {
+        "const": "blocked"
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "block_code"
+      ],
+      "not": {
+       "required": [
+        "output"
+       ]
+      }
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "result": {
+        "const": "omitted"
+       }
+      }
+     },
+     "then": {
+      "not": {
+       "anyOf": [
+        {
+         "required": [
+          "output"
+         ]
+        },
+        {
+         "required": [
+          "block_code"
+         ]
+        }
+       ]
+      }
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "block_code": {
+        "enum": [
+         "CONDITION_FALSE",
+         "CONDITION_INDETERMINATE"
+        ]
+       }
+      },
+      "required": [
+       "block_code"
+      ]
+     },
+     "then": {
+      "required": [
+       "guard_evaluated"
+      ]
+     }
+    }
+   ]
+  }
+ }
+}

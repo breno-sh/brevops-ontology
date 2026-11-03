@@ -1,0 +1,385 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://w3id.org/brevops/contracts/C17/manifest_receipt.schema.json",
+ "title": "C17 manifest_receipt 3.0.0: MANIFEST.sha256, summary.json e freeze_receipt.json",
+ "description": "Hashes transitivos das entradas; comprovante de congelamento (dono, hora, tag, carimbo); sources[{uri, licença, transformação}]; agent_provenance{model_id, brief_sha256, params, inputs}. Formato do REPO (CONVENTIONS.html §7), agora com schema.",
+ "x-bo-contract": {
+  "id": "C17",
+  "name": "manifest_receipt",
+  "version": "3.0.0",
+  "status": "changed_v3",
+  "owner": "CONTRACTS",
+  "files": [
+   {
+    "kind": "manifest",
+    "file": "MANIFEST.sha256",
+    "format": "sha256_manifest",
+    "record": null,
+    "unit": "line",
+    "note": "linhas '<sha256>  <caminho>' (formato do shasum -a 256)"
+   },
+   {
+    "kind": "summary",
+    "file": "summary.json",
+    "format": "json",
+    "record": "summary",
+    "unit": "document",
+    "note": "blocos extras do módulo são permitidos; results, quando há, é C15"
+   },
+   {
+    "kind": "freeze_receipt",
+    "file": "freeze_receipt.json",
+    "format": "json",
+    "record": "freeze_receipt",
+    "unit": "document"
+   }
+  ],
+  "semantic_rules": [
+   "C17-MANIFEST: toda linha é '<sha256 minúsculo>  <caminho>', sem caminho repetido, sem reticências",
+   "C17-DIGEST: digest do comprovante = sha256 do JSON canônico sem digest e ots (bo.repo.receipts)",
+   "C17-MODEL: model_id do agente nunca é Fable (regra do projeto: Opus)",
+   "C17-SOURCES: toda fonte tem uri, licença e transformação"
+  ],
+  "producers": [
+   "(todo módulo)"
+  ],
+  "consumers": [
+   "consume_check"
+  ],
+  "adopted_from": []
+ },
+ "$defs": {
+  "summary": {
+   "type": "object",
+   "properties": {
+    "schema": {
+     "const": "bo.summary/1"
+    },
+    "contract": {
+     "const": "C17"
+    },
+    "contract_version": {
+     "const": "3.0.0"
+    },
+    "module": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/stable_id"
+    },
+    "generated_at": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/datetime"
+    },
+    "agent_provenance": {
+     "type": "object",
+     "properties": {
+      "model_id": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/model_id"
+      },
+      "brief_path": {
+       "type": "string",
+       "minLength": 1
+      },
+      "brief_sha256": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/sha256"
+      },
+      "params": {
+       "type": "object",
+       "properties": {},
+       "additionalProperties": {
+        "type": [
+         "string",
+         "number",
+         "boolean"
+        ]
+       }
+      },
+      "inputs": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "properties": {
+         "path": {
+          "type": "string",
+          "minLength": 1
+         },
+         "kind": {
+          "enum": [
+           "file",
+           "dir",
+           "missing"
+          ]
+         },
+         "sha256": {
+          "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/sha256"
+         }
+        },
+        "required": [
+         "path",
+         "kind",
+         "sha256"
+        ],
+        "additionalProperties": false
+       }
+      },
+      "recorded_at": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/datetime"
+      }
+     },
+     "required": [
+      "model_id",
+      "brief_sha256",
+      "params",
+      "inputs"
+     ],
+     "additionalProperties": false
+    },
+    "sources": {
+     "type": "array",
+     "items": {
+      "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/source_license"
+     }
+    },
+    "notes": {
+     "type": "string",
+     "minLength": 1
+    },
+    "results": {
+     "type": "array",
+     "items": {
+      "$ref": "https://w3id.org/brevops/contracts/C15/results.schema.json#/$defs/metric"
+     },
+     "minItems": 1
+    }
+   },
+   "required": [
+    "schema",
+    "contract",
+    "contract_version",
+    "module",
+    "generated_at",
+    "agent_provenance",
+    "sources"
+   ]
+  },
+  "freeze_receipt": {
+   "type": "object",
+   "properties": {
+    "schema": {
+     "const": "bo.freeze_receipt/1"
+    },
+    "contract": {
+     "const": "C17"
+    },
+    "contract_version": {
+     "const": "3.0.0"
+    },
+    "name": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^[A-Z][A-Z0-9_\\-]*$"
+    },
+    "owner": {
+     "type": "string",
+     "minLength": 2
+    },
+    "created_at": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/datetime"
+    },
+    "note": {
+     "type": "string"
+    },
+    "git": {
+     "type": "object",
+     "properties": {
+      "commit": {
+       "type": "string",
+       "minLength": 1,
+       "pattern": "^[0-9a-f]{40}$"
+      },
+      "tag": {
+       "type": "string",
+       "minLength": 1,
+       "pattern": "^bo-freeze-[A-Z][A-Z0-9_\\-]*$"
+      }
+     },
+     "required": [
+      "commit",
+      "tag"
+     ],
+     "additionalProperties": false
+    },
+    "modules": {
+     "type": "array",
+     "items": {
+      "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/stable_id"
+     }
+    },
+    "artifacts": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "path": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/portable_path"
+       },
+       "kind": {
+        "enum": [
+         "file",
+         "dir"
+        ]
+       },
+       "sha256": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/sha256"
+       },
+       "files": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": {
+         "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/sha256"
+        }
+       },
+       "producers": {
+        "type": "array",
+        "items": {
+         "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/stable_id"
+        }
+       },
+       "via": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/stable_id"
+       }
+      },
+      "required": [
+       "path",
+       "kind",
+       "sha256"
+      ],
+      "additionalProperties": false
+     },
+     "minItems": 1
+    },
+    "transitive_inputs": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "path": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/portable_path"
+       },
+       "kind": {
+        "enum": [
+         "file",
+         "dir"
+        ]
+       },
+       "sha256": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/sha256"
+       },
+       "files": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": {
+         "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/sha256"
+        }
+       },
+       "producers": {
+        "type": "array",
+        "items": {
+         "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/stable_id"
+        }
+       },
+       "via": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/stable_id"
+       }
+      },
+      "required": [
+       "path",
+       "kind",
+       "sha256"
+      ],
+      "additionalProperties": false
+     }
+    },
+    "digest": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/sha256"
+    },
+    "ots": {
+     "type": "object",
+     "properties": {
+      "status": {
+       "enum": [
+        "STAMPED",
+        "PENDING",
+        "DISABLED"
+       ]
+      },
+      "digest": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/sha256"
+      },
+      "file": {
+       "type": "string",
+       "minLength": 1
+      },
+      "reason": {
+       "type": "string",
+       "minLength": 1
+      },
+      "at": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/datetime"
+      }
+     },
+     "required": [
+      "status"
+     ],
+     "additionalProperties": false,
+     "allOf": [
+      {
+       "if": {
+        "properties": {
+         "status": {
+          "const": "STAMPED"
+         }
+        }
+       },
+       "then": {
+        "required": [
+         "file",
+         "digest"
+        ]
+       }
+      },
+      {
+       "if": {
+        "properties": {
+         "status": {
+          "enum": [
+           "PENDING",
+           "DISABLED"
+          ]
+         }
+        }
+       },
+       "then": {
+        "required": [
+         "reason"
+        ]
+       }
+      }
+     ]
+    }
+   },
+   "required": [
+    "schema",
+    "contract",
+    "contract_version",
+    "name",
+    "owner",
+    "created_at",
+    "git",
+    "modules",
+    "artifacts",
+    "transitive_inputs",
+    "digest",
+    "ots"
+   ],
+   "additionalProperties": false
+  }
+ }
+}

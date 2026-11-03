@@ -1,0 +1,81 @@
+{
+ "schema": "bo.result/1",
+ "contract": "C15",
+ "contract_version": "3.0.0",
+ "module": "MATRIX",
+ "generated_at": "2026-11-03T08:00:00-03:00",
+ "metrics": [
+  {
+   "metric_id": "M-OPCOV-FIELD",
+   "name": "cobertura operacional por campo",
+   "reading": "field",
+   "axis": "operational",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.41,
+    "upper": 0.58,
+    "est": 0.47,
+    "n": 120
+   },
+   "frame": {
+    "ref": {
+     "path": "$BO_DATA/UNIVERSE/universe.json",
+     "sha256": "327a7380d2cc7cf09ed5820e1ecdb8abe585d696b5b5526986dfebe70acec59e"
+    },
+    "description": "unidades do universo U no pin"
+   },
+   "inclusion": {
+    "rule_id": "INC-FIELD-01",
+    "text": "átomo configurável com evidência"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "bootstrap",
+    "level": 0.95,
+    "correlated_with": [
+     "M-PERS-FIELD"
+    ]
+   }
+  },
+  {
+   "metric_id": "M-PERS-FIELD",
+   "name": "persistência por campo",
+   "reading": "field",
+   "axis": "persistence",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.0,
+    "upper": 1.0,
+    "est": null,
+    "n": 0
+   },
+   "frame": {
+    "ref": {
+     "path": "$BO_DATA/UNIVERSE/universe.json",
+     "sha256": "327a7380d2cc7cf09ed5820e1ecdb8abe585d696b5b5526986dfebe70acec59e"
+    },
+    "description": "unidades do universo U no pin"
+   },
+   "inclusion": {
+    "rule_id": "INC-FIELD-01",
+    "text": "átomo configurável com evidência"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   }
+  }
+ ],
+ "absence_audit": {
+  "n_absences": 14,
+  "n_audited": 14,
+  "method": "NONEHUNT dirigido por par"
+ },
+ "data": {
+  "pairs": 6
+ }
+}

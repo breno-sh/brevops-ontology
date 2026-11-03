@@ -1,0 +1,1118 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://w3id.org/brevops/contracts/C00/conventions.schema.json",
+ "title": "C00 conventions 3.0.0: convenções e definições comuns",
+ "description": "ID = stable_id; onda calculada do DAG; código em $BO_REPO/src/bo/<pacote>/; dados em $BO_DATA/<ID>/; temporário em $BO_TMP=$BO_DATA/tmp/<ID> (nunca /tmp); caminhos só com índices declarados em index_sets; datas ISO-8601 com fuso America/Recife. $defs comuns a todos os contratos.",
+ "x-bo-contract": {
+  "id": "C00",
+  "name": "conventions",
+  "version": "3.0.0",
+  "status": "changed_v3",
+  "owner": "CONTRACTS",
+  "files": [
+   {
+    "kind": "module_catalog",
+    "file": "modulos.json",
+    "format": "json",
+    "record": "module_catalog",
+    "unit": "document"
+   },
+   {
+    "kind": "module",
+    "file": "module.json",
+    "format": "json",
+    "record": "module",
+    "unit": "document",
+    "note": "uma entrada do catálogo (stub e testes)"
+   }
+  ],
+  "semantic_rules": [
+   "C00-ID: id = stable_id; branch = bo/<id minúsculo>; worktree = .../bo-<id minúsculo>; tmp_dir = $BO_DATA/tmp/<ID>",
+   "C00-WAVE: wave = 0 sem deps, senão 1 + max(wave das deps) (onda calculada do DAG)",
+   "C00-DEPS: toda dep existe no catálogo; sem ciclo",
+   "C00-INDEX: todo {x} num caminho é um index_set declarado",
+   "C00-CONTRACTS: versões do catálogo = versões publicadas em contracts/"
+  ],
+  "producers": [
+   "COORD"
+  ],
+  "consumers": [
+   "REPO"
+  ],
+  "adopted_from": []
+ },
+ "$defs": {
+  "stable_id": {
+   "type": "string",
+   "minLength": 1,
+   "pattern": "^[A-Z][A-Z0-9]*(-[A-Z0-9]+)*$",
+   "description": "ID do módulo = stable_id (não depende da onda)"
+  },
+  "contract_id": {
+   "type": "string",
+   "minLength": 1,
+   "pattern": "^C([01]\\d|2[0-9])$"
+  },
+  "semver": {
+   "type": "string",
+   "minLength": 1,
+   "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)$"
+  },
+  "datetime": {
+   "type": "string",
+   "minLength": 1,
+   "pattern": "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])T([01]\\d|2[0-3]):[0-5]\\d(:[0-5]\\d(\\.\\d{1,6})?)?-03:00$",
+   "description": "ISO-8601 com fuso America/Recife (-03:00)"
+  },
+  "date": {
+   "type": "string",
+   "minLength": 1,
+   "pattern": "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])$"
+  },
+  "sha256": {
+   "type": "string",
+   "minLength": 1,
+   "pattern": "^[0-9a-f]{64}$"
+  },
+  "portable_path": {
+   "type": "string",
+   "pattern": "^\\$BO_(REPO|DATA|TMP)(/[^/\\s]+)*/?$",
+   "not": {
+    "pattern": "(\\.\\.\\.|…|<|>)"
+   },
+   "description": "caminho portátil concreto ($BO_REPO/..., $BO_DATA/..., $BO_TMP/...)"
+  },
+  "path_template": {
+   "type": "string",
+   "minLength": 1,
+   "pattern": "^(\\$BO_(REPO|DATA|TMP)(/[^/\\s]+)*/?|/(?!tmp/|private/tmp/)\\S+|ext:\\S.*)$",
+   "not": {
+    "pattern": "(\\.\\.\\.|…|<|>)"
+   },
+   "description": "caminho com índices {x} declarados em index_sets; sem reticências nem <modelo>; absoluto só para entrada externa (nunca /tmp); ext:... é referência sem arquivo"
+  },
+  "iri": {
+   "type": "string",
+   "minLength": 1,
+   "pattern": "^[A-Za-z][A-Za-z0-9+.\\-_]*:[^\\s<>\\\"{}|\\\\^`]+$",
+   "description": "IRI absoluto ou CURIE"
+  },
+  "marker": {
+   "enum": [
+    "NOT_APPLICABLE",
+    "UNKNOWN"
+   ],
+   "description": "NOT_APPLICABLE (não há grandeza) ≠ UNKNOWN (há, mas não se sabe)"
+  },
+  "quantity_kind": {
+   "anyOf": [
+    {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^(quantitykind:|http://qudt\\.org/vocab/quantitykind/)[A-Za-z0-9_\\-]+$"
+    },
+    {
+     "enum": [
+      "NOT_APPLICABLE",
+      "UNKNOWN"
+     ]
+    }
+   ]
+  },
+  "unit_qudt": {
+   "anyOf": [
+    {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^(unit:|http://qudt\\.org/vocab/unit/)[A-Za-z0-9_\\-]+$"
+    },
+    {
+     "enum": [
+      "NOT_APPLICABLE",
+      "UNKNOWN"
+     ]
+    }
+   ]
+  },
+  "iri_or_marker": {
+   "anyOf": [
+    {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^[A-Za-z][A-Za-z0-9+.\\-_]*:[^\\s<>\\\"{}|\\\\^`]+$",
+     "not": {
+      "enum": [
+       "NOT_APPLICABLE",
+       "UNKNOWN"
+      ]
+     }
+    },
+    {
+     "enum": [
+      "NOT_APPLICABLE",
+      "UNKNOWN"
+     ]
+    }
+   ]
+  },
+  "xsd_duration": {
+   "type": "string",
+   "minLength": 1,
+   "pattern": "^P(?=\\d|T\\d)(\\d+Y)?(\\d+M)?(\\d+W)?(\\d+D)?(T(?=\\d)(\\d+H)?(\\d+M)?(\\d+(\\.\\d+)?S)?)?$"
+  },
+  "provider": {
+   "anyOf": [
+    {
+     "enum": [
+      "aws",
+      "google",
+      "azurerm",
+      "oci"
+     ]
+    },
+    {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^provider_[a-z]$",
+     "description": "sintético, só em fixture"
+    }
+   ]
+  },
+  "pair": {
+   "enum": [
+    "AWSGCP",
+    "AWSAZ",
+    "AWSOCI",
+    "GCPAZ",
+    "GCPOCI",
+    "AZOCI"
+   ]
+  },
+  "domain": {
+   "enum": [
+    "CMP",
+    "NET",
+    "STO",
+    "DB",
+    "SEC",
+    "OPS"
+   ]
+  },
+  "model_id": {
+   "type": "string",
+   "minLength": 1,
+   "pattern": "^[a-z][a-z0-9.\\-]*[a-z0-9]$"
+  },
+  "rule_id": {
+   "type": "string",
+   "minLength": 1,
+   "pattern": "^[A-Z][A-Z0-9]*(-[A-Z0-9]+)+$"
+  },
+  "atom_id": {
+   "type": "string",
+   "minLength": 1,
+   "pattern": "^[a-z][a-z0-9_]*:[a-z][a-z0-9_]*:[A-Za-z0-9_]+(\\.[A-Za-z0-9_]+)*$",
+   "description": "provider:resource_type:caminho.de.blocos"
+  },
+  "resource_type": {
+   "type": "string",
+   "minLength": 1,
+   "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "unit_id": {
+   "type": "string",
+   "minLength": 1,
+   "pattern": "^CU-[A-Za-z0-9][A-Za-z0-9_.:\\-]*$"
+  },
+  "concept_id": {
+   "type": "string",
+   "minLength": 1,
+   "pattern": "^(concept:[a-z][a-z0-9_]*|bo:UNGLOSSED)$"
+  },
+  "repo_id": {
+   "type": "string",
+   "minLength": 1,
+   "pattern": "^R-[0-9a-f]{12}$",
+   "description": "id sintético por repositório (nunca o nome)"
+  },
+  "family_id": {
+   "type": "string",
+   "minLength": 1,
+   "pattern": "^F-[0-9a-f]{12}$"
+  },
+  "claim_id": {
+   "type": "string",
+   "minLength": 1,
+   "pattern": "^(?![0-9a-f]{16,}$)(?!EV-)[A-Za-z][A-Za-z0-9_.:\\-]*(~inv)?(∘(?!EV-)[A-Za-z][A-Za-z0-9_.:\\-]*(~inv)?)*$",
+   "description": "ID imutável da alegação; nunca carrega versão (@n) nem evento (EV-) nem é hash da linha"
+  },
+  "claim_version_id": {
+   "type": "string",
+   "minLength": 1,
+   "pattern": "^[^@\\s]+@[1-9][0-9]*(~inv)?$",
+   "description": "<claim_id>@<n>: uma versão da alegação"
+  },
+  "event_id": {
+   "type": "string",
+   "minLength": 1,
+   "pattern": "^EV-[A-Za-z0-9][A-Za-z0-9_.:~∘\\-]*$",
+   "description": "EV-...: o evento que criou esta versão"
+  },
+  "evidence_level": {
+   "enum": [
+    "published",
+    "derived",
+    "interpreted"
+   ]
+  },
+  "evidence_state": {
+   "enum": [
+    "UNRESOLVED",
+    "STRUCTURALLY_VALID",
+    "DOC_SUPPORTED",
+    "PERSISTENCE_VERIFIED",
+    "OBSERVATION_TESTED"
+   ]
+  },
+  "verdict": {
+   "enum": [
+    "OK",
+    "REFUTED_BY_RULE",
+    "UNPROVEN",
+    "CONTESTED",
+    "AMBIGUOUS"
+   ]
+  },
+  "block_code": {
+   "enum": [
+    "OUT_OF_SUBSET",
+    "UNKNOWN_SYMBOLIC_INPUT",
+    "TRANSFORM_OUT_OF_DOMAIN",
+    "NO_UNIT",
+    "NO_REALIZATION",
+    "SHACL_VIOLATION",
+    "CONDITION_FALSE",
+    "CONDITION_INDETERMINATE",
+    "RELATED_ONLY",
+    "REPAIR_EXCLUDED",
+    "AMBIGUOUS_TARGET",
+    "UNPROVEN",
+    "INFRA_ERROR",
+    "UNKNOWN_INPUT",
+    "REFUTED_BY_RULE"
+   ]
+  },
+  "value_mark": {
+   "enum": [
+    "configured",
+    "inferred",
+    "default",
+    "observed"
+   ]
+  },
+  "unknown_mark": {
+   "enum": [
+    "unknown",
+    "absent",
+    "not_read",
+    "withheld"
+   ]
+  },
+  "side": {
+   "enum": [
+    "subject",
+    "object"
+   ]
+  },
+  "outcome_persistence": {
+   "type": "object",
+   "properties": {
+    "axis": {
+     "const": "persistence"
+    },
+    "value": {
+     "enum": [
+      "PERSISTED",
+      "ALTERED",
+      "REJECTED_BY_API",
+      "NOT_READABLE",
+      "INFRA_ERROR",
+      "UNKNOWN"
+     ]
+    },
+    "detail": {
+     "type": "string",
+     "minLength": 3
+    }
+   },
+   "required": [
+    "axis",
+    "value"
+   ],
+   "additionalProperties": false
+  },
+  "outcome_behavior": {
+   "type": "object",
+   "properties": {
+    "axis": {
+     "const": "behavior"
+    },
+    "value": {
+     "enum": [
+      "OBSERVATIONS_MATCH_UNDER_PROTOCOL",
+      "OBSERVATIONS_DIFFER_UNDER_PROTOCOL",
+      "NOT_OBSERVED_IN_WINDOW",
+      "PROTOCOL_UNSUPPORTED",
+      "INFRA_ERROR",
+      "UNKNOWN"
+     ]
+    },
+    "detail": {
+     "type": "string",
+     "minLength": 3
+    }
+   },
+   "required": [
+    "axis",
+    "value"
+   ],
+   "additionalProperties": false
+  },
+  "outcome": {
+   "oneOf": [
+    {
+     "$ref": "#/$defs/outcome_persistence"
+    },
+    {
+     "$ref": "#/$defs/outcome_behavior"
+    }
+   ],
+   "description": "união discriminada de desfechos {axis, value}; C12 (persistence) e C22 (behavior)",
+   "x-bo-discriminator": "axis"
+  },
+  "doc_source": {
+   "type": "object",
+   "properties": {
+    "repo": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^[A-Za-z0-9_.\\-]+/[A-Za-z0-9_.\\-]+$"
+    },
+    "tag": {
+     "type": "string",
+     "minLength": 1
+    },
+    "file": {
+     "type": "string",
+     "minLength": 1
+    },
+    "line": {
+     "type": "integer",
+     "minimum": 1
+    },
+    "sentence": {
+     "type": "string",
+     "minLength": 5
+    }
+   },
+   "required": [
+    "repo",
+    "tag",
+    "file",
+    "line",
+    "sentence"
+   ],
+   "additionalProperties": false
+  },
+  "web_citation": {
+   "type": "object",
+   "properties": {
+    "uri": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^https://\\S+$"
+    },
+    "retrieved_at": {
+     "$ref": "#/$defs/datetime"
+    },
+    "section": {
+     "type": "string",
+     "minLength": 1
+    },
+    "sentence": {
+     "type": "string",
+     "minLength": 5
+    }
+   },
+   "required": [
+    "uri",
+    "retrieved_at"
+   ],
+   "additionalProperties": false
+  },
+  "source_license": {
+   "type": "object",
+   "properties": {
+    "uri": {
+     "type": "string",
+     "minLength": 1
+    },
+    "license": {
+     "type": "string",
+     "minLength": 2
+    },
+    "transformation": {
+     "type": "string",
+     "minLength": 3
+    }
+   },
+   "required": [
+    "uri",
+    "license",
+    "transformation"
+   ],
+   "additionalProperties": false
+  },
+  "evidence_item": {
+   "type": "object",
+   "properties": {
+    "level": {
+     "$ref": "#/$defs/evidence_level"
+    },
+    "ref": {
+     "type": "string",
+     "minLength": 1
+    },
+    "doc": {
+     "$ref": "#/$defs/doc_source"
+    },
+    "citation": {
+     "$ref": "#/$defs/web_citation"
+    },
+    "model_id": {
+     "$ref": "#/$defs/model_id"
+    },
+    "note": {
+     "type": "string",
+     "minLength": 3
+    }
+   },
+   "required": [
+    "level"
+   ],
+   "additionalProperties": false,
+   "anyOf": [
+    {
+     "required": [
+      "ref"
+     ]
+    },
+    {
+     "required": [
+      "doc"
+     ]
+    },
+    {
+     "required": [
+      "citation"
+     ]
+    }
+   ],
+   "allOf": [
+    {
+     "if": {
+      "properties": {
+       "level": {
+        "const": "interpreted"
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "model_id"
+      ]
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "level": {
+        "enum": [
+         "published",
+         "derived"
+        ]
+       }
+      }
+     },
+     "then": {
+      "not": {
+       "required": [
+        "model_id"
+       ]
+      }
+     }
+    }
+   ]
+  },
+  "file_ref": {
+   "type": "object",
+   "properties": {
+    "path": {
+     "$ref": "#/$defs/portable_path"
+    },
+    "sha256": {
+     "$ref": "#/$defs/sha256"
+    }
+   },
+   "required": [
+    "path",
+    "sha256"
+   ],
+   "additionalProperties": false
+  },
+  "term": {
+   "oneOf": [
+    {
+     "type": "object",
+     "properties": {
+      "kind": {
+       "const": "literal"
+      },
+      "datatype": {
+       "enum": [
+        "string",
+        "number",
+        "bool",
+        "null",
+        "list",
+        "map"
+       ]
+      },
+      "value": {}
+     },
+     "required": [
+      "kind",
+      "datatype",
+      "value"
+     ],
+     "additionalProperties": false
+    },
+    {
+     "type": "object",
+     "properties": {
+      "kind": {
+       "const": "symbol"
+      },
+      "symbol_id": {
+       "type": "string",
+       "minLength": 1,
+       "pattern": "^SYM-[0-9a-f]{8,16}$"
+      },
+      "name_class": {
+       "enum": [
+        "variable",
+        "local",
+        "module_output",
+        "data_source",
+        "resource_attribute",
+        "count_index",
+        "each_key",
+        "path",
+        "workspace",
+        "unknown"
+       ]
+      },
+      "scope": {
+       "const": "repo"
+      }
+     },
+     "required": [
+      "kind",
+      "symbol_id",
+      "name_class",
+      "scope"
+     ],
+     "additionalProperties": false
+    },
+    {
+     "type": "object",
+     "properties": {
+      "kind": {
+       "const": "expression"
+      },
+      "op": {
+       "type": "string",
+       "minLength": 1,
+       "pattern": "^[A-Za-z_][A-Za-z0-9_]*$|^[-+*/%<>=!&|?:]{1,3}$"
+      },
+      "args": {
+       "type": "array",
+       "items": {
+        "$ref": "#/$defs/term"
+       }
+      }
+     },
+     "required": [
+      "kind",
+      "op",
+      "args"
+     ],
+     "additionalProperties": false
+    },
+    {
+     "type": "object",
+     "properties": {
+      "kind": {
+       "const": "document"
+      },
+      "format": {
+       "enum": [
+        "json",
+        "yaml",
+        "policy_json"
+       ]
+      },
+      "tree": {},
+      "symbolized": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "properties": {
+         "path": {
+          "type": "string",
+          "minLength": 0,
+          "pattern": "^(/[^/]*)*$"
+         },
+         "symbol_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^SYM-[0-9a-f]{8,16}$"
+         },
+         "role": {
+          "enum": [
+           "principal",
+           "identifier",
+           "account",
+           "resource_name"
+          ]
+         }
+        },
+        "required": [
+         "path",
+         "symbol_id",
+         "role"
+        ],
+        "additionalProperties": false
+       }
+      }
+     },
+     "required": [
+      "kind",
+      "format",
+      "tree",
+      "symbolized"
+     ],
+     "additionalProperties": false
+    },
+    {
+     "type": "object",
+     "properties": {
+      "kind": {
+       "const": "reference"
+      },
+      "target_type": {
+       "type": "string",
+       "minLength": 1,
+       "pattern": "^[a-z][a-z0-9_]*$"
+      },
+      "target_address": {
+       "type": "string",
+       "minLength": 1,
+       "pattern": "^(data\\.)?[a-z][a-z0-9_]*\\.SYM-[0-9a-f]{8,16}(\\[[^\\]]+\\])?$"
+      },
+      "attribute": {
+       "type": "string",
+       "minLength": 1,
+       "pattern": "^[A-Za-z0-9_]+(\\.[A-Za-z0-9_]+)*$"
+      }
+     },
+     "required": [
+      "kind",
+      "target_type",
+      "target_address"
+     ],
+     "additionalProperties": false
+    },
+    {
+     "type": "object",
+     "properties": {
+      "kind": {
+       "const": "withheld"
+      },
+      "reason": {
+       "enum": [
+        "secret",
+        "environment",
+        "boot_script",
+        "log",
+        "object_content",
+        "message_content"
+       ]
+      }
+     },
+     "required": [
+      "kind",
+      "reason"
+     ],
+     "additionalProperties": false
+    }
+   ],
+   "description": "termo tipado da configuração simbólica (C06), sem executar HCL"
+  },
+  "module": {
+   "type": "object",
+   "properties": {
+    "id": {
+     "$ref": "#/$defs/stable_id"
+    },
+    "stable_id": {
+     "$ref": "#/$defs/stable_id"
+    },
+    "v2_id": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "v1_id": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "title": {
+     "type": "string",
+     "minLength": 3
+    },
+    "wave": {
+     "type": "integer",
+     "minimum": 0
+    },
+    "phase": {
+     "type": "string",
+     "minLength": 1
+    },
+    "deps": {
+     "type": "array",
+     "items": {
+      "$ref": "#/$defs/stable_id"
+     },
+     "uniqueItems": true
+    },
+    "inputs": {
+     "type": "array",
+     "items": {
+      "$ref": "#/$defs/path_template"
+     }
+    },
+    "outputs": {
+     "type": "array",
+     "items": {
+      "$ref": "#/$defs/path_template"
+     }
+    },
+    "gates": {
+     "type": "array",
+     "items": {
+      "type": "string",
+      "minLength": 3
+     }
+    },
+    "needs_cloud": {
+     "type": "boolean"
+    },
+    "lock": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "effort_h": {
+     "type": "number",
+     "minimum": 0
+    },
+    "wall_h": {
+     "type": "number",
+     "minimum": 0
+    },
+    "priority": {
+     "enum": [
+      "P0",
+      "P1",
+      "P2"
+     ]
+    },
+    "goal": {
+     "type": "string",
+     "minLength": 3
+    },
+    "contracts": {
+     "type": "array",
+     "items": {
+      "$ref": "#/$defs/contract_id"
+     },
+     "uniqueItems": true
+    },
+    "answers": {
+     "type": "array",
+     "items": {
+      "type": "string",
+      "minLength": 1
+     }
+    },
+    "answers_gemini": {
+     "type": "array",
+     "items": {
+      "type": "string",
+      "minLength": 1
+     }
+    },
+    "answers_gpt6": {
+     "type": "array",
+     "items": {
+      "type": "string",
+      "minLength": 1
+     }
+    },
+    "needs_breno": {
+     "type": "string"
+    },
+    "group": {
+     "type": "string",
+     "minLength": 1
+    },
+    "on_critical_path": {
+     "type": "boolean"
+    },
+    "sched_start_h": {
+     "type": "number",
+     "minimum": 0
+    },
+    "sched_end_h": {
+     "type": "number",
+     "minimum": 0
+    },
+    "worktree": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^/\\S+/bo-[a-z0-9-]+$"
+    },
+    "branch": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^bo/[a-z0-9-]+$"
+    },
+    "owns": {
+     "type": "array",
+     "items": {
+      "$ref": "#/$defs/path_template"
+     }
+    },
+    "tmp_dir": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^\\$BO_DATA/tmp/[A-Z0-9-]+$"
+    },
+    "model": {
+     "type": "string",
+     "minLength": 1
+    }
+   },
+   "required": [
+    "id",
+    "stable_id",
+    "wave",
+    "deps",
+    "inputs",
+    "outputs",
+    "gates",
+    "contracts",
+    "worktree",
+    "branch",
+    "owns",
+    "tmp_dir"
+   ],
+   "additionalProperties": false
+  },
+  "module_catalog": {
+   "type": "object",
+   "properties": {
+    "project": {
+     "type": "string",
+     "minLength": 3
+    },
+    "generated_at": {
+     "$ref": "#/$defs/datetime"
+    },
+    "timezone": {
+     "const": "America/Recife"
+    },
+    "plan_version": {
+     "type": "integer",
+     "minimum": 1
+    },
+    "env": {
+     "type": "object",
+     "properties": {},
+     "required": [
+      "BO_REPO",
+      "BO_DATA",
+      "BO_TMP"
+     ]
+    },
+    "index_sets": {
+     "type": "object",
+     "properties": {
+      "provider": {
+       "type": "array",
+       "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9_\\-]+$"
+       },
+       "minItems": 1
+      },
+      "pair": {
+       "type": "array",
+       "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9_\\-]+$"
+       },
+       "minItems": 1
+      },
+      "domain": {
+       "type": "array",
+       "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9_\\-]+$"
+       },
+       "minItems": 1
+      },
+      "slice": {
+       "type": "array",
+       "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9_\\-]+$"
+       },
+       "minItems": 1
+      },
+      "model": {
+       "type": "array",
+       "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9_\\-]+$"
+       },
+       "minItems": 1
+      },
+      "candidate": {
+       "type": "array",
+       "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9_\\-]+$"
+       },
+       "minItems": 1
+      },
+      "probe_type": {
+       "type": "array",
+       "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9_\\-]+$"
+       },
+       "minItems": 1
+      },
+      "control": {
+       "type": "array",
+       "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9_\\-]+$"
+       },
+       "minItems": 1
+      },
+      "lens": {
+       "type": "array",
+       "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9_\\-]+$"
+       },
+       "minItems": 1
+      }
+     },
+     "required": [
+      "provider",
+      "pair",
+      "domain",
+      "slice",
+      "model",
+      "candidate",
+      "probe_type",
+      "control",
+      "lens"
+     ],
+     "additionalProperties": {
+      "type": [
+       "array",
+       "string"
+      ]
+     }
+    },
+    "contracts": {
+     "type": "object",
+     "properties": {},
+     "additionalProperties": {
+      "type": "object",
+      "properties": {
+       "name": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[a-z][a-z0-9_]*$"
+       },
+       "version": {
+        "$ref": "#/$defs/semver"
+       }
+      },
+      "required": [
+       "name",
+       "version"
+      ],
+      "additionalProperties": false
+     },
+     "propertyNames": {
+      "pattern": "^C([01]\\d|2[0-9])$"
+     }
+    },
+    "modules": {
+     "type": "array",
+     "items": {
+      "$ref": "#/$defs/module"
+     },
+     "minItems": 1
+    }
+   },
+   "required": [
+    "timezone",
+    "env",
+    "index_sets",
+    "contracts",
+    "modules"
+   ]
+  }
+ }
+}

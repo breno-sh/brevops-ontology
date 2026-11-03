@@ -1,0 +1,1021 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://w3id.org/brevops/contracts/C09/correspondences.schema.json",
+ "title": "C09 correspondences 3.0.0: alegações de correspondência (SSSOM + EDOAL)",
+ "description": "Colunas SSSOM mais claim_id (imutável), claim_version_id, event_id; semantic_relation (predicado SKOS na direção correta: 'a skos:broadMatch b' = b mais amplo), value_domain_relation orientada, transport_fidelity; guard (gramática tipada do C10); translation_fn; loss_contract; membership_predicate para broad/narrow; grupo como regra sobre subgrafo (bo_group_id, variáveis e argumentos nomeados, ocorrência do bloco); projection por ocorrência; realizações alternativas guardadas (alternative_to + exclusivity); proof; evidence_state (C20); conceitos ou bo:UNGLOSSED. Colunas estruturadas são JSON numa célula. O I/O passa por bo.contracts.sssom (que delega a bo.semantics.sssom_io e preserva as colunas novas): o sssom-py 0.4.22 descarta extensões em silêncio.",
+ "x-bo-contract": {
+  "id": "C09",
+  "name": "correspondences",
+  "version": "3.0.0",
+  "status": "changed_v3",
+  "owner": "CONTRACTS",
+  "files": [
+   {
+    "kind": "correspondences",
+    "file": "*.sssom.tsv",
+    "format": "sssom_tsv",
+    "record": "correspondence",
+    "unit": "row"
+   },
+   {
+    "kind": "correspondences_jsonl",
+    "file": "correspondences.jsonl",
+    "format": "jsonl",
+    "record": "correspondence",
+    "unit": "record",
+    "note": "mesma linha já decodificada (colunas estruturadas como JSON)"
+   },
+   {
+    "kind": "edoal",
+    "file": "*.edoal.ttl",
+    "format": "edoal_ttl",
+    "record": null,
+    "unit": "cell",
+    "note": "subconjunto EDOAL do bo.semantics.edoal (=, <, >), anotações bosx:* com os ids"
+   }
+  ],
+  "semantic_rules": [
+   "C09-SSSOM: cabeçalho com curie_map (todo prefixo usado declarado), mapping_set_id, license e extension_definitions de toda coluna não padrão",
+   "C09-SKOS: semantic_relation = predicate_id (exact↔exactMatch, broad↔broadMatch…)",
+   "C09-GUARD: guarda na gramática tipada (bo.semantics.guards.typecheck)",
+   "C09-IDS: claim_version_id = <claim_id>@n; claim_version_id e event_id únicos no arquivo; supersedes aponta para versão anterior da MESMA alegação",
+   "C09-FN: translation_fn só com funções do núcleo (bo.semantics.transforms) ou do registro do C10",
+   "C09-GROUP: grupo com variáveis nomeadas, ligadas e únicas, argumentos = assinatura, ocorrências ligadas por junção (G-VARS, G-ARITY, G-OCC); bo_group_id da coluna = do grupo",
+   "C09-PROJ: projeção em bloco repetido tem chave de ocorrência que não é posição; extrator roda nos testes; sobreposição declarada (P-OCC, P-EXEC, P-OVERLAP)",
+   "C09-ALT: alternativas são mútuas, do mesmo subject_id, com guarda; ProvenExclusive só se a interseção das guardas é UNSAT; senão Ambiguous (A-EXCL)"
+  ],
+  "producers": [
+   "GOLD-*",
+   "MAP-{pair}-{domain}",
+   "NONEHUNT-{provider}",
+   "PILOT-{slice}-MAP",
+   "RECONCILE"
+  ],
+  "consumers": [],
+  "adopted_from": [
+   "results/SEMANTICS/C09_proposta/correspondence.schema.json"
+  ]
+ },
+ "$defs": {
+  "correspondence": {
+   "type": "object",
+   "title": "C09 3.0.0 (CONTRACTS): alegação de correspondência (linha SSSOM com as colunas próprias já decodificadas)",
+   "required": [
+    "claim_id",
+    "claim_version_id",
+    "event_id",
+    "subject_id",
+    "predicate_id",
+    "object_id",
+    "mapping_justification",
+    "semantic_relation",
+    "value_domain_relation",
+    "transport_fidelity",
+    "guard",
+    "evidence_state",
+    "proof",
+    "subject_concept",
+    "object_concept"
+   ],
+   "properties": {
+    "alternative_to": {
+     "type": "array",
+     "items": {
+      "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/claim_id"
+     },
+     "minItems": 1,
+     "uniqueItems": true
+    },
+    "anchors": {
+     "type": "array"
+    },
+    "author_id": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "author_label": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "basis": {
+     "enum": [
+      "direct",
+      "shared_concept",
+      "composition",
+      "inverse"
+     ]
+    },
+    "bo_group_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^GRP-[A-Za-z0-9_\\-]+$"
+    },
+    "cardinality_scope": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "claim_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/claim_id"
+    },
+    "claim_version_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/claim_version_id"
+    },
+    "comment": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "confidence": {
+     "type": "number",
+     "minimum": 0,
+     "maximum": 1
+    },
+    "creator_id": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "creator_label": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "curation_rule": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "curation_rule_text": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "event_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/event_id"
+    },
+    "evidence_state": {
+     "enum": [
+      "UNRESOLVED",
+      "STRUCTURALLY_VALID",
+      "DOC_SUPPORTED",
+      "PERSISTENCE_VERIFIED",
+      "OBSERVATION_TESTED"
+     ]
+    },
+    "exclusivity": {
+     "enum": [
+      "ProvenExclusive",
+      "Ambiguous"
+     ]
+    },
+    "fixed_default": {
+     "properties": {
+      "evidence": {
+       "required": [
+        "date",
+        "source"
+       ],
+       "type": "object"
+      },
+      "kind": {
+       "enum": [
+        "fixed",
+        "default"
+       ]
+      }
+     },
+     "required": [
+      "kind",
+      "value",
+      "context",
+      "evidence"
+     ],
+     "type": "object"
+    },
+    "group": {
+     "$ref": "#/$defs/group"
+    },
+    "guard": {
+     "$ref": "https://w3id.org/brevops/contracts/C10/transforms.schema.json#/$defs/guard"
+    },
+    "inverse_of": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/claim_id"
+    },
+    "issue_tracker_item": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "license": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "loss_contract": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "kind": {
+        "enum": [
+         "rounding",
+         "saturation",
+         "absence",
+         "sentinel",
+         "context_dependence",
+         "not_expressible",
+         "semantic"
+        ]
+       }
+      },
+      "required": [
+       "kind"
+      ]
+     }
+    },
+    "mapping_cardinality": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "mapping_date": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "mapping_justification": {
+     "pattern": "^semapv:",
+     "type": "string"
+    },
+    "mapping_provider": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "mapping_source": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "mapping_tool": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "mapping_tool_id": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "mapping_tool_version": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "match_string": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "membership_predicate": {
+     "properties": {
+      "expr": {
+       "properties": {
+        "op": {
+         "enum": [
+          "in",
+          "eq",
+          "range",
+          "and",
+          "or",
+          "not",
+          "field"
+         ]
+        }
+       },
+       "type": "object"
+      },
+      "subset": {
+       "enum": [
+        "subject",
+        "object"
+       ]
+      },
+      "tests": {
+       "required": [
+        "members",
+        "non_members"
+       ],
+       "type": "object"
+      }
+     },
+     "required": [
+      "subset",
+      "expr",
+      "tests"
+     ],
+     "type": "object"
+    },
+    "object_category": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "object_concept": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/concept_id"
+    },
+    "object_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^[A-Za-z][A-Za-z0-9_.\\-]*:\\S+$"
+    },
+    "object_label": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "object_match_field": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "object_preprocessing": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "object_source": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "object_source_version": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "object_type": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "object_value_type": {
+     "$ref": "#/$defs/value_type"
+    },
+    "other": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "predicate_id": {
+     "enum": [
+      "skos:exactMatch",
+      "skos:closeMatch",
+      "skos:broadMatch",
+      "skos:narrowMatch",
+      "skos:relatedMatch"
+     ]
+    },
+    "predicate_label": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "predicate_modifier": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "predicate_type": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "preserved_observations": {
+     "items": {
+      "type": "string"
+     },
+     "type": "array"
+    },
+    "projection": {
+     "type": "array",
+     "items": {
+      "$ref": "#/$defs/projection"
+     },
+     "minItems": 1
+    },
+    "proof": {
+     "properties": {
+      "evidence": {
+       "type": "array"
+      },
+      "tests": {
+       "type": "array"
+      },
+      "type": {
+       "type": "string"
+      }
+     },
+     "required": [
+      "type"
+     ],
+     "type": "object"
+    },
+    "publication_date": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "record_id": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "review_date": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "reviewer_agreement": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "reviewer_id": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "reviewer_label": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "see_also": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "semantic_relation": {
+     "enum": [
+      "exact",
+      "close",
+      "broad",
+      "narrow",
+      "related"
+     ]
+    },
+    "similarity_measure": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "similarity_score": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "subject_category": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "subject_concept": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/concept_id"
+    },
+    "subject_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^[A-Za-z][A-Za-z0-9_.\\-]*:\\S+$"
+    },
+    "subject_label": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "subject_match_field": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "subject_preprocessing": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "subject_source": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "subject_source_version": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "subject_type": {
+     "type": [
+      "string",
+      "number"
+     ]
+    },
+    "subject_value_type": {
+     "$ref": "#/$defs/value_type"
+    },
+    "supersedes": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/claim_version_id"
+    },
+    "translation_fn": {
+     "oneOf": [
+      {
+       "type": "null"
+      },
+      {
+       "type": "object",
+       "properties": {
+        "name": {
+         "type": "string",
+         "minLength": 1,
+         "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "params": {
+         "type": "object"
+        }
+       },
+       "required": [
+        "name"
+       ],
+       "additionalProperties": false
+      },
+      {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "properties": {
+         "name": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9_]*$"
+         },
+         "params": {
+          "type": "object"
+         }
+        },
+        "required": [
+         "name"
+        ],
+        "additionalProperties": false
+       },
+       "minItems": 1
+      }
+     ]
+    },
+    "transport_fidelity": {
+     "enum": [
+      "lossless",
+      "declared_loss",
+      "partial",
+      "none"
+     ]
+    },
+    "value_domain_relation": {
+     "properties": {
+      "orientation": {
+       "const": "subject_to_object"
+      },
+      "relation": {
+       "enum": [
+        "equal",
+        "subset",
+        "superset",
+        "overlap",
+        "disjoint",
+        "unknown"
+       ]
+      }
+     },
+     "required": [
+      "relation",
+      "orientation"
+     ],
+     "type": "object"
+    }
+   },
+   "additionalProperties": false,
+   "allOf": [
+    {
+     "if": {
+      "required": [
+       "group"
+      ]
+     },
+     "then": {
+      "required": [
+       "bo_group_id"
+      ]
+     }
+    },
+    {
+     "if": {
+      "required": [
+       "alternative_to"
+      ]
+     },
+     "then": {
+      "required": [
+       "exclusivity",
+       "guard"
+      ]
+     }
+    }
+   ]
+  },
+  "value_type": {
+   "type": "object",
+   "properties": {
+    "datatype": {
+     "enum": [
+      "integer",
+      "decimal",
+      "boolean",
+      "string",
+      "enum",
+      "duration",
+      "tuple"
+     ]
+    },
+    "quantity_kind": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/quantity_kind"
+    },
+    "unit": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/unit_qudt"
+    },
+    "rate_window": {
+     "anyOf": [
+      {
+       "type": "null"
+      },
+      {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/xsd_duration"
+      }
+     ]
+    },
+    "byte_convention": {
+     "enum": [
+      "SI",
+      "IEC",
+      null
+     ]
+    },
+    "enum": {
+     "type": "array"
+    },
+    "range": {
+     "type": "object"
+    },
+    "step": {
+     "type": [
+      "string",
+      "integer"
+     ]
+    },
+    "sentinels": {
+     "type": "object"
+    },
+    "components": {
+     "type": "array"
+    },
+    "required": {
+     "type": "boolean"
+    }
+   },
+   "required": [
+    "datatype"
+   ],
+   "additionalProperties": false
+  },
+  "projection": {
+   "type": "object",
+   "properties": {
+    "projection_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^PRJ-[A-Za-z0-9_\\-]+$"
+    },
+    "field": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^[a-z][a-z0-9_]*:\\S+$"
+    },
+    "occurrence": {
+     "type": "object",
+     "properties": {
+      "scope": {
+       "enum": [
+        "resource",
+        "block"
+       ]
+      },
+      "key_fields": {
+       "type": "array",
+       "items": {
+        "type": "string",
+        "minLength": 1,
+        "not": {
+         "enum": [
+          "index",
+          "position",
+          "ordinal"
+         ]
+        }
+       },
+       "uniqueItems": true
+      }
+     },
+     "required": [
+      "scope"
+     ],
+     "additionalProperties": false,
+     "allOf": [
+      {
+       "if": {
+        "properties": {
+         "scope": {
+          "const": "block"
+         }
+        }
+       },
+       "then": {
+        "required": [
+         "key_fields"
+        ],
+        "properties": {
+         "key_fields": {
+          "minItems": 1
+         }
+        }
+       }
+      }
+     ]
+    },
+    "extractor": {
+     "type": "object",
+     "properties": {
+      "name": {
+       "type": "string",
+       "minLength": 1,
+       "pattern": "^[a-z][a-z0-9_]*$"
+      },
+      "component": {
+       "type": "string",
+       "minLength": 1,
+       "pattern": "^[a-z][a-z0-9_]*$"
+      },
+      "params": {
+       "type": "object"
+      }
+     },
+     "required": [
+      "name"
+     ],
+     "additionalProperties": false
+    },
+    "concept": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/concept_id"
+    },
+    "type": {
+     "$ref": "#/$defs/value_type"
+    },
+    "overlaps": {
+     "type": "array",
+     "items": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^PRJ-[A-Za-z0-9_\\-]+$"
+     },
+     "uniqueItems": true
+    },
+    "tests": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "input": {},
+       "expected": {}
+      },
+      "required": [
+       "input",
+       "expected"
+      ],
+      "additionalProperties": false
+     }
+    }
+   },
+   "required": [
+    "projection_id",
+    "field",
+    "occurrence",
+    "extractor",
+    "concept",
+    "type",
+    "tests"
+   ],
+   "additionalProperties": false
+  },
+  "group": {
+   "type": "object",
+   "properties": {
+    "bo_group_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^GRP-[A-Za-z0-9_\\-]+$"
+    },
+    "cardinality": {
+     "enum": [
+      "1:1",
+      "1:N",
+      "N:1",
+      "N:M"
+     ]
+    },
+    "variables": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "name": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^\\?[a-z][a-z0-9_]*$"
+       },
+       "side": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/side"
+       },
+       "field": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[a-z][a-z0-9_]*:\\S+$"
+       },
+       "occurrence": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^\\?[a-z][a-z0-9_]*$"
+       }
+      },
+      "required": [
+       "name",
+       "side",
+       "field",
+       "occurrence"
+      ],
+      "additionalProperties": false
+     },
+     "minItems": 2
+    },
+    "occurrence_vars": {
+     "type": "array",
+     "items": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^\\?[a-z][a-z0-9_]*$"
+     },
+     "minItems": 1,
+     "uniqueItems": true
+    },
+    "joins": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "left": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^\\?[a-z][a-z0-9_]*$"
+       },
+       "right": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^\\?[a-z][a-z0-9_]*$"
+       },
+       "via": {
+        "enum": [
+         "facet_of",
+         "component_of",
+         "reference",
+         "attachment",
+         "same_block"
+        ]
+       }
+      },
+      "required": [
+       "left",
+       "right",
+       "via"
+      ],
+      "additionalProperties": false
+     }
+    },
+    "steps": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "name": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[a-z][a-z0-9_]*$"
+       },
+       "params": {
+        "type": "object"
+       },
+       "inputs": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": {
+         "type": "string",
+         "minLength": 1,
+         "pattern": "^\\?[a-z][a-z0-9_]*$"
+        },
+        "minProperties": 1
+       },
+       "outputs": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": {
+         "type": "string",
+         "minLength": 1,
+         "pattern": "^\\?[a-z][a-z0-9_]*$"
+        },
+        "minProperties": 1
+       }
+      },
+      "required": [
+       "name",
+       "inputs",
+       "outputs"
+      ],
+      "additionalProperties": false
+     },
+     "minItems": 1
+    }
+   },
+   "required": [
+    "bo_group_id",
+    "cardinality",
+    "variables",
+    "occurrence_vars",
+    "joins",
+    "steps"
+   ],
+   "additionalProperties": false,
+   "description": "grupo como regra sobre subgrafo: variáveis nomeadas por lado e ocorrência, argumentos nomeados"
+  }
+ }
+}

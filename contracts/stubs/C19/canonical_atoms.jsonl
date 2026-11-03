@@ -1,0 +1,2 @@
+{"atom_id": "aws:aws_db_instance:backup_retention_period", "path_in_unit": "backup_retention_period", "role": "CONFIG", "unit_id": "CU-aws-db-instance"}
+{"atom_id": "aws:aws_security_group:ingress.from_port", "path_in_unit": "from_port", "unit_id": "CU-aws-sg-rule-block"}

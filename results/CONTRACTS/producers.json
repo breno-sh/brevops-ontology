@@ -1,0 +1,189 @@
+{
+ "schema": "bo.contracts_producers/1",
+ "module": "CONTRACTS",
+ "generated_at": "2026-11-03T01:13:38-03:00",
+ "checked": 20,
+ "ok": 20,
+ "files": [
+  {
+   "alias": "commitments",
+   "file": "requirements/commitments.jsonl",
+   "kind": "C24:commitments",
+   "why": "REQUIREMENTS G1 (gate adiado)",
+   "items": 90,
+   "ok": true,
+   "errors": []
+  },
+  {
+   "alias": "requirements",
+   "file": "requirements/requirements.jsonl",
+   "kind": "C24:requirements",
+   "why": "gates/REQUIREMENTS.sh",
+   "items": 26,
+   "ok": true,
+   "errors": []
+  },
+  {
+   "alias": "cq_spec",
+   "file": "requirements/cq_spec.jsonl",
+   "kind": "C24:cq_spec",
+   "why": "gates/REQUIREMENTS.sh",
+   "items": 29,
+   "ok": true,
+   "errors": []
+  },
+  {
+   "alias": "realizations",
+   "file": "results/ONTPAT/C14_proposta/realizations.example.jsonl",
+   "kind": "C14:realizations",
+   "why": "gates/ONTPAT.sh",
+   "items": 3,
+   "ok": true,
+   "errors": []
+  },
+  {
+   "alias": "C10_composition_table",
+   "file": "semantics/composition_table.json",
+   "kind": "C10:composition_table",
+   "why": "gates/SEMANTICS.sh",
+   "items": 1,
+   "ok": true,
+   "errors": []
+  },
+  {
+   "alias": "correspondences",
+   "file": "results/SEMANTICS/C09_proposta/examples.sssom.tsv",
+   "kind": "C09:correspondences",
+   "why": "C09 (proposta do SEMANTICS)",
+   "items": 20,
+   "ok": true,
+   "errors": []
+  },
+  {
+   "alias": "manifest_receipt",
+   "file": "results/REPO/summary.json",
+   "kind": "C17:summary",
+   "why": "gates/REPO.sh",
+   "items": 1,
+   "ok": true,
+   "errors": []
+  },
+  {
+   "alias": "manifest_receipt",
+   "file": "results/LIT/summary.json",
+   "kind": "C17:summary",
+   "why": "gates/LIT.sh",
+   "items": 1,
+   "ok": true,
+   "errors": []
+  },
+  {
+   "alias": "manifest_receipt",
+   "file": "results/ONTPAT/summary.json",
+   "kind": "C17:summary",
+   "why": "C17",
+   "items": 1,
+   "ok": true,
+   "errors": []
+  },
+  {
+   "alias": "manifest_receipt",
+   "file": "results/REQUIREMENTS/summary.json",
+   "kind": "C17:summary",
+   "why": "C17",
+   "items": 1,
+   "ok": true,
+   "errors": []
+  },
+  {
+   "alias": "manifest_receipt",
+   "file": "results/SEMANTICS/summary.json",
+   "kind": "C17:summary",
+   "why": "C17",
+   "items": 1,
+   "ok": true,
+   "errors": []
+  },
+  {
+   "alias": "C17_manifest",
+   "file": "results/REPO/MANIFEST.sha256",
+   "kind": "C17:manifest",
+   "why": "C17",
+   "items": 34,
+   "ok": true,
+   "errors": []
+  },
+  {
+   "alias": "C17_manifest",
+   "file": "results/LIT/MANIFEST.sha256",
+   "kind": "C17:manifest",
+   "why": "C17",
+   "items": 5,
+   "ok": true,
+   "errors": []
+  },
+  {
+   "alias": "C17_manifest",
+   "file": "results/ONTPAT/MANIFEST.sha256",
+   "kind": "C17:manifest",
+   "why": "C17",
+   "items": 22,
+   "ok": true,
+   "errors": []
+  },
+  {
+   "alias": "C17_manifest",
+   "file": "results/REQUIREMENTS/MANIFEST.sha256",
+   "kind": "C17:manifest",
+   "why": "C17",
+   "items": 10,
+   "ok": true,
+   "errors": []
+  },
+  {
+   "alias": "C17_manifest",
+   "file": "results/SEMANTICS/MANIFEST.sha256",
+   "kind": "C17:manifest",
+   "why": "C17",
+   "items": 18,
+   "ok": true,
+   "errors": []
+  },
+  {
+   "alias": "C14_ttl",
+   "file": "ontology/patterns/bo-patterns.ttl",
+   "kind": "C14:ttl",
+   "why": "C14 (fecho de imports)",
+   "items": 1,
+   "ok": true,
+   "errors": []
+  },
+  {
+   "alias": "C14_ttl",
+   "file": "ontology/patterns/descriptor-pattern.ttl",
+   "kind": "C14:ttl",
+   "why": "C14",
+   "items": 1,
+   "ok": true,
+   "errors": []
+  },
+  {
+   "alias": "C14_ttl",
+   "file": "ontology/patterns/example-abox.ttl",
+   "kind": "C14:ttl",
+   "why": "C14 (fecho de imports)",
+   "items": 1,
+   "ok": true,
+   "errors": []
+  },
+  {
+   "alias": "C14_ttl",
+   "file": "shapes/patterns.shacl.ttl",
+   "kind": "C14:ttl",
+   "why": "C14",
+   "items": 1,
+   "ok": true,
+   "errors": []
+  }
+ ]
+}

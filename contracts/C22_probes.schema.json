@@ -1,0 +1,408 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://w3id.org/brevops/contracts/C22/probes.schema.json",
+ "title": "C22 probes 3.0.0: tipos de sonda, observações e julgamentos pareados",
+ "description": "Tipo: pré-condições, controle negativo, repetição, tolerância, polling, janela e margem sobre o TTL, limite de custo, suporte validado. Observação local: pair_case_id, side, timestamp, protocol_version, contagens. Julgamento pareado (só o PROBE-JOIN): união discriminada do C00 com axis = behavior.",
+ "x-bo-contract": {
+  "id": "C22",
+  "name": "probes",
+  "version": "3.0.0",
+  "status": "changed_v3",
+  "owner": "CONTRACTS",
+  "files": [
+   {
+    "kind": "probe_types",
+    "file": "probe_types.yaml",
+    "format": "yaml",
+    "record": "probe_types",
+    "unit": "document"
+   },
+   {
+    "kind": "observations",
+    "file": "observations.jsonl",
+    "format": "jsonl",
+    "record": "observation",
+    "unit": "record"
+   },
+   {
+    "kind": "pair_judgements",
+    "file": "pair_judgements.jsonl",
+    "format": "jsonl",
+    "record": "pair_judgement",
+    "unit": "record"
+   }
+  ],
+  "semantic_rules": [
+   "C22-UNION: outcome do julgamento é a união do C00 com axis = behavior",
+   "C22-COUNTS: observed + not_observed + errors = attempts",
+   "C22-PAIR: as duas observações citadas são do mesmo pair_case_id, lados A e B, mesmo protocolo",
+   "C22-JOIN: só o PROBE-JOIN julga (judged_by)"
+  ],
+  "producers": [
+   "PREREG",
+   "PROBE-JOIN",
+   "PROBE-{provider}",
+   "PROBEKIT"
+  ],
+  "consumers": [],
+  "adopted_from": []
+ },
+ "$defs": {
+  "probe_type": {
+   "type": "object",
+   "properties": {
+    "probe_type": {
+     "enum": [
+      "object_versioning",
+      "object_lifecycle",
+      "item_ttl",
+      "queue_retention",
+      "rate_limit",
+      "log_retention"
+     ]
+    },
+    "preconditions": {
+     "type": "array",
+     "items": {
+      "type": "string",
+      "minLength": 5
+     },
+     "minItems": 1
+    },
+    "negative_control": {
+     "type": "object",
+     "properties": {
+      "description": {
+       "type": "string",
+       "minLength": 5
+      },
+      "expected": {
+       "type": "string",
+       "minLength": 3
+      }
+     },
+     "required": [
+      "description",
+      "expected"
+     ],
+     "additionalProperties": false
+    },
+    "repetitions": {
+     "type": "integer",
+     "minimum": 1
+    },
+    "tolerance": {
+     "type": "object",
+     "properties": {
+      "kind": {
+       "enum": [
+        "absolute",
+        "relative",
+        "exact"
+       ]
+      },
+      "value": {
+       "type": "number",
+       "minimum": 0
+      }
+     },
+     "required": [
+      "kind",
+      "value"
+     ],
+     "additionalProperties": false
+    },
+    "polling": {
+     "type": "object",
+     "properties": {
+      "interval": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/xsd_duration"
+      },
+      "max_wait": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/xsd_duration"
+      }
+     },
+     "required": [
+      "interval",
+      "max_wait"
+     ],
+     "additionalProperties": false
+    },
+    "window": {
+     "type": "object",
+     "properties": {
+      "duration": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/xsd_duration"
+      },
+      "margin_over_ttl": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/xsd_duration"
+      }
+     },
+     "required": [
+      "duration",
+      "margin_over_ttl"
+     ],
+     "additionalProperties": false
+    },
+    "cost_limit": {
+     "type": "object",
+     "properties": {
+      "amount": {
+       "type": "number",
+       "minimum": 0
+      },
+      "currency": {
+       "const": "USD"
+      }
+     },
+     "required": [
+      "amount",
+      "currency"
+     ],
+     "additionalProperties": false
+    },
+    "validated_support": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "provider": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/provider"
+       },
+       "status": {
+        "enum": [
+         "validated",
+         "unsupported",
+         "unknown"
+        ]
+       },
+       "evidence": {
+        "type": "array",
+        "items": {
+         "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/evidence_item"
+        }
+       }
+      },
+      "required": [
+       "provider",
+       "status",
+       "evidence"
+      ],
+      "additionalProperties": false
+     },
+     "minItems": 1
+    }
+   },
+   "required": [
+    "probe_type",
+    "preconditions",
+    "negative_control",
+    "repetitions",
+    "tolerance",
+    "polling",
+    "window",
+    "cost_limit",
+    "validated_support"
+   ],
+   "additionalProperties": false
+  },
+  "probe_types": {
+   "type": "object",
+   "properties": {
+    "schema": {
+     "const": "bo.probe_types/1"
+    },
+    "contract": {
+     "const": "C22"
+    },
+    "contract_version": {
+     "const": "3.0.0"
+    },
+    "module": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/stable_id"
+    },
+    "generated_at": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/datetime"
+    },
+    "protocol_version": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/semver"
+    },
+    "probe_types": {
+     "type": "array",
+     "items": {
+      "$ref": "#/$defs/probe_type"
+     },
+     "minItems": 1
+    }
+   },
+   "required": [
+    "schema",
+    "contract",
+    "contract_version",
+    "module",
+    "generated_at",
+    "protocol_version",
+    "probe_types"
+   ],
+   "additionalProperties": false
+  },
+  "observation": {
+   "type": "object",
+   "properties": {
+    "observation_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^OBS-[A-Za-z0-9_\\-]+$"
+    },
+    "pair_case_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^PC-[A-Za-z0-9_\\-]+$"
+    },
+    "side": {
+     "enum": [
+      "A",
+      "B"
+     ]
+    },
+    "provider": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/provider"
+    },
+    "probe_type": {
+     "type": "string",
+     "minLength": 3
+    },
+    "timestamp": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/datetime"
+    },
+    "protocol_version": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/semver"
+    },
+    "counts": {
+     "type": "object",
+     "properties": {
+      "attempts": {
+       "type": "integer",
+       "minimum": 0
+      },
+      "observed": {
+       "type": "integer",
+       "minimum": 0
+      },
+      "not_observed": {
+       "type": "integer",
+       "minimum": 0
+      },
+      "errors": {
+       "type": "integer",
+       "minimum": 0
+      }
+     },
+     "required": [
+      "attempts",
+      "observed",
+      "not_observed",
+      "errors"
+     ],
+     "additionalProperties": false
+    },
+    "negative_control_ok": {
+     "type": "boolean"
+    }
+   },
+   "required": [
+    "observation_id",
+    "pair_case_id",
+    "side",
+    "provider",
+    "probe_type",
+    "timestamp",
+    "protocol_version",
+    "counts",
+    "negative_control_ok"
+   ],
+   "additionalProperties": false,
+   "description": "observação local de um lado: nunca traz julgamento de comportamento (isso é do PROBE-JOIN)"
+  },
+  "pair_judgement": {
+   "type": "object",
+   "properties": {
+    "judgement_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^PJ-[A-Za-z0-9_\\-]+$"
+    },
+    "pair_case_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^PC-[A-Za-z0-9_\\-]+$"
+    },
+    "case_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^CASE-[A-Za-z0-9_\\-]+$"
+    },
+    "group_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^(GRP|G)-[A-Za-z0-9_\\-]+$"
+    },
+    "observations": {
+     "type": "object",
+     "properties": {
+      "A": {
+       "type": "string",
+       "minLength": 1,
+       "pattern": "^OBS-[A-Za-z0-9_\\-]+$"
+      },
+      "B": {
+       "type": "string",
+       "minLength": 1,
+       "pattern": "^OBS-[A-Za-z0-9_\\-]+$"
+      }
+     },
+     "required": [
+      "A",
+      "B"
+     ],
+     "additionalProperties": false
+    },
+    "outcome": {
+     "allOf": [
+      {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/outcome"
+      },
+      {
+       "properties": {
+        "axis": {
+         "const": "behavior"
+        }
+       }
+      }
+     ]
+    },
+    "protocol_version": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/semver"
+    },
+    "judged_by": {
+     "const": "PROBE-JOIN"
+    },
+    "judged_at": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/datetime"
+    }
+   },
+   "required": [
+    "judgement_id",
+    "pair_case_id",
+    "case_id",
+    "group_id",
+    "observations",
+    "outcome",
+    "protocol_version",
+    "judged_by",
+    "judged_at"
+   ],
+   "additionalProperties": false
+  }
+ }
+}

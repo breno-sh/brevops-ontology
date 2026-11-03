@@ -1,0 +1,256 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://w3id.org/brevops/contracts/C25/service_evidence.schema.json",
+ "title": "C25 service_evidence 1.0.0: evidência de API e docs ligada ao pin",
+ "description": "Fato de API/docs ligado ao pin: recurso de API, identidade, chave de importação, controlador de ciclo de vida, dono, alcance, estado de conexão, efeito, precedência, suporte a tag/TTL; nível (publicado | derivado | interpretado) e citação. Citação publicada separada de inferência; desconhecido explícito.",
+ "x-bo-contract": {
+  "id": "C25",
+  "name": "service_evidence",
+  "version": "1.0.0",
+  "status": "new_v3",
+  "owner": "CONTRACTS",
+  "files": [
+   {
+    "kind": "service_evidence",
+    "file": "service_evidence.jsonl",
+    "format": "jsonl",
+    "record": "service_evidence",
+    "unit": "record"
+   }
+  ],
+  "semantic_rules": [
+   "C25-LEVEL: publicado cita a sentença; derivado aponta de quais fatos; interpretado tem model_id",
+   "C25-DERIVED: derived_from cita evidence_id do mesmo arquivo",
+   "C25-UNIQ: evidence_id único"
+  ],
+  "producers": [
+   "SERVICE-EVIDENCE"
+  ],
+  "consumers": [],
+  "adopted_from": []
+ },
+ "$defs": {
+  "service_evidence": {
+   "type": "object",
+   "properties": {
+    "evidence_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^SE-[A-Za-z0-9_\\-]+$"
+    },
+    "provider": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/provider"
+    },
+    "pin": {
+     "type": "object",
+     "properties": {
+      "provider_version": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/semver"
+      },
+      "api_version": {
+       "type": "string",
+       "minLength": 1
+      }
+     },
+     "required": [
+      "provider_version"
+     ],
+     "additionalProperties": false
+    },
+    "api_resource": {
+     "type": "object",
+     "properties": {
+      "service": {
+       "type": "string",
+       "minLength": 1
+      },
+      "resource": {
+       "type": "string",
+       "minLength": 1
+      }
+     },
+     "required": [
+      "service",
+      "resource"
+     ],
+     "additionalProperties": false
+    },
+    "terraform_resource_type": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/resource_type"
+    },
+    "fact_kind": {
+     "enum": [
+      "identity",
+      "import_key",
+      "lifecycle_controller",
+      "owner",
+      "effective_scope",
+      "connection_state",
+      "effect",
+      "precedence",
+      "tag_support",
+      "ttl_support"
+     ]
+    },
+    "status": {
+     "enum": [
+      "stated",
+      "unknown"
+     ]
+    },
+    "value": {},
+    "unknown_reason": {
+     "enum": [
+      "not_documented",
+      "ambiguous",
+      "contradictory",
+      "out_of_pin"
+     ]
+    },
+    "level": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/evidence_level"
+    },
+    "model_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/model_id"
+    },
+    "citation": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/web_citation"
+    },
+    "doc": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/doc_source"
+    },
+    "derived_from": {
+     "type": "array",
+     "items": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^SE-[A-Za-z0-9_\\-]+$"
+     },
+     "minItems": 1
+    }
+   },
+   "required": [
+    "evidence_id",
+    "provider",
+    "pin",
+    "api_resource",
+    "fact_kind",
+    "status",
+    "level"
+   ],
+   "additionalProperties": false,
+   "allOf": [
+    {
+     "if": {
+      "properties": {
+       "status": {
+        "const": "stated"
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "value"
+      ]
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "status": {
+        "const": "unknown"
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "unknown_reason"
+      ],
+      "not": {
+       "required": [
+        "value"
+       ]
+      }
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "level": {
+        "const": "published"
+       }
+      }
+     },
+     "then": {
+      "anyOf": [
+       {
+        "required": [
+         "citation"
+        ],
+        "properties": {
+         "citation": {
+          "required": [
+           "sentence"
+          ]
+         }
+        }
+       },
+       {
+        "required": [
+         "doc"
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "level": {
+        "const": "derived"
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "derived_from"
+      ]
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "level": {
+        "const": "interpreted"
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "model_id"
+      ]
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "level": {
+        "enum": [
+         "published",
+         "derived"
+        ]
+       }
+      }
+     },
+     "then": {
+      "not": {
+       "required": [
+        "model_id"
+       ]
+      }
+     }
+    }
+   ]
+  }
+ }
+}

@@ -1,0 +1,220 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://w3id.org/brevops/contracts/C03/docs_facts.schema.json",
+ "title": "C03 docs_facts 3.0.0: fatos de documentação por atributo",
+ "description": "Fato por atributo com source{repo, tag, file, line, sentence}, extraction_method e evidence_level (published | derived | interpreted, com model_id quando interpretado); default com data; unknown explícito (status=unknown com motivo, nunca valor inventado).",
+ "x-bo-contract": {
+  "id": "C03",
+  "name": "docs_facts",
+  "version": "3.0.0",
+  "status": "changed_v3",
+  "owner": "CONTRACTS",
+  "files": [
+   {
+    "kind": "docs_facts",
+    "file": "docs_facts.jsonl",
+    "format": "jsonl",
+    "record": "fact",
+    "unit": "record"
+   }
+  ],
+  "semantic_rules": [
+   "C03-UNK: status=unknown não tem value; stated tem value e source",
+   "C03-DEFAULT: default declarado tem as_of (data)",
+   "C03-MODEL: interpreted exige model_id; extraction_method=model só com interpreted",
+   "C03-UNIQ: fact_id único"
+  ],
+  "producers": [
+   "DOCS-{provider}"
+  ],
+  "consumers": [],
+  "adopted_from": []
+ },
+ "$defs": {
+  "fact": {
+   "type": "object",
+   "properties": {
+    "fact_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^DF-[A-Za-z0-9][A-Za-z0-9_.:\\-]*$"
+    },
+    "atom_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/atom_id"
+    },
+    "provider_version": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/semver"
+    },
+    "fact_kind": {
+     "enum": [
+      "description",
+      "default",
+      "allowed_values",
+      "range",
+      "unit",
+      "format",
+      "deprecation",
+      "required_when",
+      "conflicts_with",
+      "forces_replacement",
+      "example",
+      "behavior"
+     ]
+    },
+    "status": {
+     "enum": [
+      "stated",
+      "unknown"
+     ]
+    },
+    "value": {},
+    "unknown_reason": {
+     "enum": [
+      "not_documented",
+      "ambiguous",
+      "contradictory",
+      "out_of_pin"
+     ]
+    },
+    "as_of": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/date"
+    },
+    "source": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/doc_source"
+    },
+    "extraction_method": {
+     "enum": [
+      "parser",
+      "regex",
+      "table",
+      "manual",
+      "model"
+     ]
+    },
+    "evidence_level": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/evidence_level"
+    },
+    "model_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/model_id"
+    }
+   },
+   "required": [
+    "fact_id",
+    "atom_id",
+    "provider_version",
+    "fact_kind",
+    "status",
+    "extraction_method",
+    "evidence_level"
+   ],
+   "additionalProperties": false,
+   "allOf": [
+    {
+     "if": {
+      "properties": {
+       "status": {
+        "const": "stated"
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "value",
+       "source"
+      ],
+      "not": {
+       "required": [
+        "unknown_reason"
+       ]
+      }
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "status": {
+        "const": "unknown"
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "unknown_reason"
+      ],
+      "not": {
+       "required": [
+        "value"
+       ]
+      }
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "fact_kind": {
+        "const": "default"
+       },
+       "status": {
+        "const": "stated"
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "as_of"
+      ]
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "evidence_level": {
+        "const": "interpreted"
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "model_id"
+      ]
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "evidence_level": {
+        "enum": [
+         "published",
+         "derived"
+        ]
+       }
+      }
+     },
+     "then": {
+      "not": {
+       "required": [
+        "model_id"
+       ]
+      }
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "extraction_method": {
+        "const": "model"
+       }
+      }
+     },
+     "then": {
+      "properties": {
+       "evidence_level": {
+        "const": "interpreted"
+       }
+      }
+     }
+    }
+   ]
+  }
+ }
+}

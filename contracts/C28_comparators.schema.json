@@ -1,0 +1,417 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://w3id.org/brevops/contracts/C28/comparators.schema.json",
+ "title": "C28 comparators 1.0.0: catálogo de comparadores e justiça do head-to-head",
+ "description": "Comparador: versão, fonte, escopo nativo, artefato (sim | não | só documental), tarefa nativa, decisão; eixo (nativo | representação | tradução); orçamento de adaptação; família Kalinin; NOT_APPLICABLE ≠ 0.",
+ "x-bo-contract": {
+  "id": "C28",
+  "name": "comparators",
+  "version": "1.0.0",
+  "status": "new_v3",
+  "owner": "CONTRACTS",
+  "files": [
+   {
+    "kind": "comparators",
+    "file": "comparators.yaml",
+    "format": "yaml",
+    "record": "comparators",
+    "unit": "document"
+   },
+   {
+    "kind": "h2h_fairness",
+    "file": "h2h_fairness.yaml",
+    "format": "yaml",
+    "record": "h2h_fairness",
+    "unit": "document"
+   }
+  ],
+  "semantic_rules": [
+   "C28-NA: eixo fora de 'axes' só tem valor NOT_APPLICABLE (nunca 0); NOT_APPLICABLE diz o porquê",
+   "C28-ARTIFACT: sem artefato (no/doc_only), nenhum número no eixo de tradução",
+   "C28-BUDGET: orçamento igual para todos (budget_hours = per_comparator), mesmo universo e mesmas CQs",
+   "C28-UNIQ: comparator_id único"
+  ],
+  "producers": [
+   "BENCH-CONTRACT",
+   "PREREG"
+  ],
+  "consumers": [
+   "BASELINE-ADAPT",
+   "HEAD2HEAD"
+  ],
+  "adopted_from": []
+ },
+ "$defs": {
+  "metric": {
+   "type": "object",
+   "properties": {
+    "axis": {
+     "enum": [
+      "native",
+      "representation",
+      "translation"
+     ]
+    },
+    "name": {
+     "type": "string",
+     "minLength": 2
+    },
+    "value": {
+     "oneOf": [
+      {
+       "type": "number"
+      },
+      {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/marker"
+      }
+     ],
+     "description": "número | NOT_APPLICABLE | UNKNOWN (NOT_APPLICABLE ≠ 0)"
+    },
+    "reason": {
+     "type": "string",
+     "minLength": 5
+    }
+   },
+   "required": [
+    "axis",
+    "name",
+    "value"
+   ],
+   "additionalProperties": false,
+   "allOf": [
+    {
+     "if": {
+      "properties": {
+       "value": {
+        "const": "NOT_APPLICABLE"
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "reason"
+      ]
+     }
+    }
+   ]
+  },
+  "comparator": {
+   "type": "object",
+   "properties": {
+    "comparator_id": {
+     "enum": [
+      "cpg",
+      "certgraph",
+      "devops-infra",
+      "fixinventory",
+      "cartography",
+      "steampipe",
+      "cloudquery",
+      "mosaic",
+      "cso",
+      "cocoon",
+      "tosca-edmm",
+      "kalinin"
+     ]
+    },
+    "version": {
+     "type": "string",
+     "minLength": 1
+    },
+    "source": {
+     "type": "object",
+     "properties": {
+      "uri": {
+       "type": "string",
+       "minLength": 1,
+       "pattern": "^https://\\S+$"
+      },
+      "kind": {
+       "enum": [
+        "paper",
+        "repo",
+        "both"
+       ]
+      }
+     },
+     "required": [
+      "uri",
+      "kind"
+     ],
+     "additionalProperties": false
+    },
+    "native_scope": {
+     "type": "string",
+     "minLength": 5
+    },
+    "artifact": {
+     "enum": [
+      "yes",
+      "no",
+      "doc_only"
+     ]
+    },
+    "native_task": {
+     "type": "string",
+     "minLength": 5
+    },
+    "decision": {
+     "enum": [
+      "include",
+      "exclude",
+      "adapt"
+     ]
+    },
+    "decision_reason": {
+     "type": "string",
+     "minLength": 10
+    },
+    "axes": {
+     "type": "array",
+     "items": {
+      "enum": [
+       "native",
+       "representation",
+       "translation"
+      ]
+     },
+     "minItems": 1,
+     "uniqueItems": true
+    },
+    "adaptation_budget": {
+     "type": "object",
+     "properties": {
+      "hours": {
+       "type": "number",
+       "minimum": 0
+      },
+      "unit": {
+       "const": "agent_hours"
+      }
+     },
+     "required": [
+      "hours",
+      "unit"
+     ],
+     "additionalProperties": false
+    },
+    "kalinin_family": {
+     "type": "boolean"
+    },
+    "metrics": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "axis": {
+        "enum": [
+         "native",
+         "representation",
+         "translation"
+        ]
+       },
+       "name": {
+        "type": "string",
+        "minLength": 2
+       },
+       "value": {
+        "oneOf": [
+         {
+          "type": "number"
+         },
+         {
+          "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/marker"
+         }
+        ],
+        "description": "número | NOT_APPLICABLE | UNKNOWN (NOT_APPLICABLE ≠ 0)"
+       },
+       "reason": {
+        "type": "string",
+        "minLength": 5
+       }
+      },
+      "required": [
+       "axis",
+       "name",
+       "value"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+       {
+        "if": {
+         "properties": {
+          "value": {
+           "const": "NOT_APPLICABLE"
+          }
+         }
+        },
+        "then": {
+         "required": [
+          "reason"
+         ]
+        }
+       }
+      ]
+     }
+    }
+   },
+   "required": [
+    "comparator_id",
+    "version",
+    "source",
+    "native_scope",
+    "artifact",
+    "native_task",
+    "decision",
+    "decision_reason",
+    "axes",
+    "adaptation_budget",
+    "kalinin_family",
+    "metrics"
+   ],
+   "additionalProperties": false
+  },
+  "comparators": {
+   "type": "object",
+   "properties": {
+    "schema": {
+     "const": "bo.comparators/1"
+    },
+    "contract": {
+     "const": "C28"
+    },
+    "contract_version": {
+     "const": "1.0.0"
+    },
+    "module": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/stable_id"
+    },
+    "generated_at": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/datetime"
+    },
+    "comparators": {
+     "type": "array",
+     "items": {
+      "$ref": "#/$defs/comparator"
+     },
+     "minItems": 1
+    }
+   },
+   "required": [
+    "schema",
+    "contract",
+    "contract_version",
+    "module",
+    "generated_at",
+    "comparators"
+   ],
+   "additionalProperties": false
+  },
+  "h2h_fairness": {
+   "type": "object",
+   "properties": {
+    "schema": {
+     "const": "bo.h2h_fairness/1"
+    },
+    "contract": {
+     "const": "C28"
+    },
+    "contract_version": {
+     "const": "1.0.0"
+    },
+    "module": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/stable_id"
+    },
+    "generated_at": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/datetime"
+    },
+    "universe_ref": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/file_ref"
+    },
+    "cq_ref": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/file_ref"
+    },
+    "budget": {
+     "type": "object",
+     "properties": {
+      "unit": {
+       "const": "agent_hours"
+      },
+      "per_comparator": {
+       "type": "number",
+       "minimum": 0
+      }
+     },
+     "required": [
+      "unit",
+      "per_comparator"
+     ],
+     "additionalProperties": false
+    },
+    "comparators": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "comparator_id": {
+        "enum": [
+         "cpg",
+         "certgraph",
+         "devops-infra",
+         "fixinventory",
+         "cartography",
+         "steampipe",
+         "cloudquery",
+         "mosaic",
+         "cso",
+         "cocoon",
+         "tosca-edmm",
+         "kalinin"
+        ]
+       },
+       "budget_hours": {
+        "type": "number",
+        "minimum": 0
+       },
+       "same_universe": {
+        "type": "boolean"
+       },
+       "same_cqs": {
+        "type": "boolean"
+       }
+      },
+      "required": [
+       "comparator_id",
+       "budget_hours",
+       "same_universe",
+       "same_cqs"
+      ],
+      "additionalProperties": false
+     },
+     "minItems": 1
+    },
+    "rules": {
+     "type": "array",
+     "items": {
+      "type": "string",
+      "minLength": 10
+     },
+     "minItems": 1
+    }
+   },
+   "required": [
+    "schema",
+    "contract",
+    "contract_version",
+    "module",
+    "generated_at",
+    "universe_ref",
+    "cq_ref",
+    "budget",
+    "comparators",
+    "rules"
+   ],
+   "additionalProperties": false
+  }
+ }
+}

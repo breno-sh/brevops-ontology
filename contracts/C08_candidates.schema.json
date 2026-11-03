@@ -1,0 +1,268 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://w3id.org/brevops/contracts/C08/candidates.schema.json",
+ "title": "C08 candidates 3.0.0: candidatos como subgrafos",
+ "description": "Candidato como subgrafo (nós, arestas de referência/anexação, facetas cruzadas), conceito do glossário, features; sem campo de ouro.",
+ "x-bo-contract": {
+  "id": "C08",
+  "name": "candidates",
+  "version": "3.0.0",
+  "status": "changed_v3",
+  "owner": "CONTRACTS",
+  "files": [
+   {
+    "kind": "candidates",
+    "file": "candidates.jsonl",
+    "format": "jsonl",
+    "record": "candidate",
+    "unit": "record"
+   }
+  ],
+  "semantic_rules": [
+   "C08-EDGES: arestas e facetas cruzadas apontam para nós do mesmo subgrafo",
+   "C08-PAIR: os provedores dos lados são os do par (AWS=aws, GCP=google, AZ=azurerm, OCI=oci)",
+   "C08-NOGOLD: nenhum campo de ouro (gold, truth, label, is_match, expected…), nem em features",
+   "C08-UNIQ: candidate_id único"
+  ],
+  "producers": [
+   "CAND",
+   "PILOT-{slice}-GLOSS"
+  ],
+  "consumers": [],
+  "adopted_from": []
+ },
+ "$defs": {
+  "candidate": {
+   "type": "object",
+   "properties": {
+    "candidate_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^CAND-[A-Z]+-[A-Z]+-[0-9]{4,}$"
+    },
+    "pair": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/pair"
+    },
+    "domain": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/domain"
+    },
+    "subject_provider": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/provider"
+    },
+    "object_provider": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/provider"
+    },
+    "subject": {
+     "type": "object",
+     "properties": {
+      "nodes": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "properties": {
+         "node_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^n[0-9]+$"
+         },
+         "kind": {
+          "enum": [
+           "atom",
+           "unit"
+          ]
+         },
+         "ref": {
+          "type": "string",
+          "minLength": 3
+         },
+         "role": {
+          "type": "string",
+          "minLength": 2
+         }
+        },
+        "required": [
+         "node_id",
+         "kind",
+         "ref"
+        ],
+        "additionalProperties": false
+       },
+       "minItems": 1
+      },
+      "edges": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "properties": {
+         "from": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^n[0-9]+$"
+         },
+         "to": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^n[0-9]+$"
+         },
+         "kind": {
+          "enum": [
+           "reference",
+           "attachment",
+           "facet_of",
+           "component_of"
+          ]
+         }
+        },
+        "required": [
+         "from",
+         "to",
+         "kind"
+        ],
+        "additionalProperties": false
+       }
+      },
+      "cross_facets": {
+       "type": "array",
+       "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^n[0-9]+$"
+       }
+      }
+     },
+     "required": [
+      "nodes",
+      "edges",
+      "cross_facets"
+     ],
+     "additionalProperties": false
+    },
+    "object": {
+     "type": "object",
+     "properties": {
+      "nodes": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "properties": {
+         "node_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^n[0-9]+$"
+         },
+         "kind": {
+          "enum": [
+           "atom",
+           "unit"
+          ]
+         },
+         "ref": {
+          "type": "string",
+          "minLength": 3
+         },
+         "role": {
+          "type": "string",
+          "minLength": 2
+         }
+        },
+        "required": [
+         "node_id",
+         "kind",
+         "ref"
+        ],
+        "additionalProperties": false
+       },
+       "minItems": 1
+      },
+      "edges": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "properties": {
+         "from": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^n[0-9]+$"
+         },
+         "to": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^n[0-9]+$"
+         },
+         "kind": {
+          "enum": [
+           "reference",
+           "attachment",
+           "facet_of",
+           "component_of"
+          ]
+         }
+        },
+        "required": [
+         "from",
+         "to",
+         "kind"
+        ],
+        "additionalProperties": false
+       }
+      },
+      "cross_facets": {
+       "type": "array",
+       "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^n[0-9]+$"
+       }
+      }
+     },
+     "required": [
+      "nodes",
+      "edges",
+      "cross_facets"
+     ],
+     "additionalProperties": false
+    },
+    "concept": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/concept_id"
+    },
+    "features": {
+     "type": "object",
+     "properties": {},
+     "additionalProperties": {
+      "type": [
+       "number",
+       "string",
+       "boolean"
+      ]
+     },
+     "propertyNames": {
+      "not": {
+       "pattern": "(?i)(gold|truth|^label$|is_match|^expected|^answer$|^correct)"
+      }
+     }
+    },
+    "generated_by": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/stable_id"
+    }
+   },
+   "required": [
+    "candidate_id",
+    "pair",
+    "domain",
+    "subject_provider",
+    "object_provider",
+    "subject",
+    "object",
+    "concept",
+    "features",
+    "generated_by"
+   ],
+   "additionalProperties": false,
+   "propertyNames": {
+    "not": {
+     "pattern": "(?i)(gold|truth|^label$|is_match|^expected|^answer$|^correct)"
+    }
+   }
+  }
+ }
+}

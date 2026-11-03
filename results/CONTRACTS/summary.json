@@ -1,0 +1,52 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "CONTRACTS",
+ "generated_at": "2026-11-03T01:13:48-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/CONTRACTS.txt",
+  "brief_sha256": "7231b959b1034a6be0853a98d2dd62f9def6c6ddcc105703aaac44102a01fa6c",
+  "params": {
+   "effort": "maximo",
+   "modo": "unlazy",
+   "onda": "4",
+   "fase": "F1",
+   "jsonschema": "4.26.0",
+   "draft": "2020-12",
+   "generator": "python -I -m bo.contracts.build"
+  },
+  "inputs": [
+   {
+    "path": "$BO_REPO/CONVENTIONS.html",
+    "kind": "file",
+    "sha256": "f1b9344f41fb0782c08397cb784a34666854fa7def5335423f1c0764ebad9a4b"
+   },
+   {
+    "path": "$BO_REPO/semantics/SEMANTICS.html",
+    "kind": "file",
+    "sha256": "3d679f40e26b13f7d98da835faa84e74fe9bcdbe7f6cecb507ed590287e409e5"
+   }
+  ],
+  "recorded_at": "2026-11-03T01:13:48-03:00"
+ },
+ "sources": [
+  {
+   "uri": "https://json-schema.org/draft/2020-12/schema",
+   "license": "BSD-3-Clause (metaschema JSON Schema)",
+   "transformation": "draft usado pelos 30 schemas; nenhum arquivo baixado"
+  },
+  {
+   "uri": "https://w3id.org/sssom/",
+   "license": "CC0 (SSSOM)",
+   "transformation": "lista de slots padrão do sssom_schema 0.15 copiada para spec_b.SSSOM_SLOTS"
+  },
+  {
+   "uri": "$BO_REPO/results/{REQUIREMENTS,ONTPAT,SEMANTICS}/C*_proposta",
+   "license": "interno (propostas mergeadas em bo/base)",
+   "transformation": "copiadas sem mudança para src/bo/contracts/adopted/ e incorporadas aos schemas C09, C10, C14 e C24"
+  }
+ ],
+ "notes": "Contratos C00-C29 v3: 30 JSON Schema, validador único, 62 stubs, mutação, união de desfechos e ids de alegação"
+}

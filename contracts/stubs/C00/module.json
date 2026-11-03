@@ -1,0 +1,25 @@
+{
+ "id": "EXAMPLE-MOD",
+ "stable_id": "EXAMPLE-MOD",
+ "wave": 0,
+ "deps": [],
+ "inputs": [
+  "$BO_REPO/CONVENTIONS.html"
+ ],
+ "outputs": [
+  "$BO_REPO/results/EXAMPLE-MOD/"
+ ],
+ "gates": [
+  "python -I -m bo.contracts.validate --all-stubs"
+ ],
+ "contracts": [
+  "C00"
+ ],
+ "worktree": "/srv/lanes/bo-example-mod",
+ "branch": "bo/example-mod",
+ "owns": [
+  "$BO_REPO/results/EXAMPLE-MOD/",
+  "$BO_DATA/EXAMPLE-MOD/"
+ ],
+ "tmp_dir": "$BO_DATA/tmp/EXAMPLE-MOD"
+}

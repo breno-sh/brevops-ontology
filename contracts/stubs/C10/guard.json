@@ -1,0 +1,11 @@
+{
+ "all": [
+  {
+   "term": "object.edition",
+   "op": "edition_in",
+   "value": [
+    "standard"
+   ]
+  }
+ ]
+}
