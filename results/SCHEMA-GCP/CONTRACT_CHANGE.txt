@@ -31,12 +31,13 @@ lacuna da biblioteca. Nenhum contrato C01/C02/C17 está errado; as saídas confe
    b) secret_assignment em atoms.jsonl, linha do átomo google:google_ces_app_version:snapshot: o tf_type cty
       é um objeto com um campo chamado private_key cujo tipo cty é string (nome de campo do schema e tipo,
       nenhum valor). Qualquer serialização JSON do C01 casa com a regex.
-   G7 fica ABANDON com este motivo; G4 (make gate, que roda G3 e G7) fica ABANDON por consequência.
-   Mudança proposta ao REPO (uma das duas para a): (a1) o privacy_lint aceita, em vez de varrer, um arquivo
+   Atualização 07:32: o [COORD] 9f0cd52 corrigiu o b (tipo cty ignorado) e passou a varrer texto grande linha
+   a linha; depois do rebase o G7 reprova só pelo a (1 achado: o binário, que não é texto).
+   G7 fica ABANDON com o motivo a; G4 (make gate, que roda G3 e G7) fica ABANDON por consequência.
+   Mudança proposta ao REPO para a (uma das duas): (a1) o privacy_lint aceita, em vez de varrer, um arquivo
    cujo sha256 está num lock/manifesto de pacote assinado conferido (aqui: h1 do plugin_cache = h1 do
    terraform.lock.hcl derivado do SHA256SUMS fixado no pins.json); (a2) o catálogo tira plugin_cache/ do
-   caminho varrido do G7 dos SCHEMA-*. Para b: a regra secret_assignment não casa quando o valor é um tipo
-   primitivo do cty ("string", "number", "bool", "dynamic").
+   caminho varrido do G7 dos SCHEMA-*.
    O mesmo vale para SCHEMA-AWS, SCHEMA-AZURE e SCHEMA-OCI (todos guardam o binário em plugin_cache/).
 
 3. Lacuna da biblioteca (dono: SCHEMALIB), sem bloqueio
