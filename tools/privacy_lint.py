@@ -7,7 +7,7 @@ objeto ou mensagem; nem como hash).
   privacy_lint.py --staged                 varre o que está no índice do git (hook de pre-commit)
   privacy_lint.py --selftest               IDs falsos plantados têm de reprovar; arquivo limpo tem de passar
 
---strict: binário também é varrido; arquivo grande ou ilegível reprova.
+--strict: binário também é varrido; arquivo grande, ilegível ou caminho ausente reprova.
 Listas privadas fora do repositório: ~/.config/bo/gcp_projects.txt e ~/.config/bo/private_terms.txt
 (ou BO_PRIVACY_PROJECTS / BO_PRIVACY_TERMS). O valor achado nunca é impresso inteiro.
 """
@@ -97,10 +97,15 @@ def selftest() -> int:
         # CLI de ponta a ponta: diretório sujo reprova, limpo passa, ausente passa com nota
         me = str(Path(__file__).resolve())
         r_bad = subprocess.run([sys.executable, "-I", me, "--strict", str(bad)], capture_output=True, text=True)
-        r_good = subprocess.run([sys.executable, "-I", me, "--strict", str(good), str(root / "nao-existe")],
-                                capture_output=True, text=True)
+        r_good = subprocess.run([sys.executable, "-I", me, "--strict", str(good)], capture_output=True, text=True)
+        r_abs_strict = subprocess.run([sys.executable, "-I", me, "--strict", str(good), str(root / "nao-existe")],
+                                      capture_output=True, text=True)
+        r_abs = subprocess.run([sys.executable, "-I", me, str(good), str(root / "nao-existe")],
+                               capture_output=True, text=True)
         ck.expect("CLI reprova diretório com plantados", r_bad.returncode == 1)
-        ck.expect("CLI aceita diretório limpo e caminho ausente", r_good.returncode == 0, r_good.stdout[-300:])
+        ck.expect("CLI aceita diretório limpo", r_good.returncode == 0, r_good.stdout[-300:])
+        ck.expect("--strict reprova caminho ausente (sem passe por vacuidade)", r_abs_strict.returncode == 1)
+        ck.expect("sem --strict, caminho ausente vira nota", r_abs.returncode == 0 and "nota" in r_abs.stdout)
         ck.expect("saída da CLI não contém nenhum valor plantado",
                   not any(t.strip().split()[-1] in r_bad.stdout for _, t in planted().values() if len(t) > 8))
     finally:

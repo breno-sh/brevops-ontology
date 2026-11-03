@@ -151,7 +151,11 @@ def scan_paths(paths: list[Path], strict: bool = False, lists=None) -> tuple[lis
     for root in paths:
         root = Path(root)
         if not root.exists():
-            notes.append(f"caminho ausente (nada a varrer): {root}")
+            if strict:
+                # estrito: caminho prometido que não existe não passa por vacuidade
+                findings.append(Finding("caminho_ausente", str(root), 0, "não existe; --strict exige o caminho"))
+            else:
+                notes.append(f"caminho ausente (nada a varrer): {root}")
             continue
         files = [root] if root.is_file() else sorted(p for p in root.rglob("*") if p.is_file())
         for f in files:

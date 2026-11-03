@@ -156,7 +156,7 @@ tools/bo-lane check-sandbox &lt;ID&gt;      tools/bo-lane refresh &lt;ID&gt;    
 <code>cost_estimate.json</code>, chaves e tokens, e conteúdo Withheld — UserData, variáveis de ambiente, logs, corpo de objeto ou
 mensagem — inclusive como hash. Listas privadas, fora do repositório e opcionais (ausência vira nota):
 <code>~/.config/bo/gcp_projects.txt</code> (ids de projeto) e <code>~/.config/bo/private_terms.txt</code> (nomes e valores da empresa).
-<code>--strict</code> também varre binário e reprova arquivo grande ou ilegível. O valor achado nunca é impresso inteiro.</p>
+<code>--strict</code> também varre binário e reprova arquivo grande, ilegível ou caminho ausente (nada passa por vacuidade). O valor achado nunca é impresso inteiro.</p>
 
 <h2 id="integ">10. Integração cruzada</h2>
 <p><code>make integration</code> roda cada <code>tests/integration/*/</code> com pytest (versão fixada). <code>core/</code> (REPO) confere a fiação do
