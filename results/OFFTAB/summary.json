@@ -1,0 +1,546 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "OFFTAB",
+ "generated_at": "2026-11-03T01:43:45-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/OFFTAB.txt",
+  "brief_sha256": "5567dcb5a39397e504dfedae8f044ec97559a1b626b42faa98a3392b375b4be8",
+  "params": {
+   "effort": "maximo",
+   "modo": "unlazy",
+   "onda": "5",
+   "fase": "F1",
+   "nuvem": "nao",
+   "google_rows": "223",
+   "microsoft_rows": "205",
+   "oracle_rows": "160",
+   "relacao": "skos:relatedMatch"
+  },
+  "inputs": [
+   {
+    "path": "/Users/breno/doutorado/pesquisa/superficie/reports/ontologia_neutra/tabelas_oficiais",
+    "kind": "dir",
+    "sha256": "2570f08ee66ceaea7f42f6035f43866ecb33973cf4302438bdfdb7d0d5b253ce"
+   },
+   {
+    "path": "/Users/breno/doutorado/pesquisa/superficie/reports/ontologia_neutra/bakeoff/downloads/azure-aws-comparison",
+    "kind": "dir",
+    "sha256": "1625b3068a92bcd40a3441ebde124d5878b186bc9c0e4ed41fdb848c32921e92"
+   },
+   {
+    "path": "/Users/breno/doutorado/pesquisa/superficie/reports/ontologia_neutra/bakeoff/downloads/gcloud-comparison",
+    "kind": "dir",
+    "sha256": "ad7b6cb778d712230659e9002ed2e18f11c97c4c763b6edb79ad9dd3dd49477d"
+   },
+   {
+    "path": "$BO_DATA/downloads/oci-service-comparison",
+    "kind": "dir",
+    "sha256": "b701ecd1c8aaa8840513bdced11e47dfc939e3f1d80b7d1c708e455b2da02317"
+   }
+  ],
+  "recorded_at": "2026-11-03T01:41:19-03:00"
+ },
+ "sources": [
+  {
+   "uri": "https://cloud.google.com/docs/get-started/aws-azure-gcp-service-comparison",
+   "license": "CC BY 4.0 (conteúdo da documentação do Google Cloud)",
+   "transformation": "HTML de 2026-10-28 reparseado com html.parser; 223 linhas idênticas ao CSV de tabelas_oficiais; células separadas em menções"
+  },
+  {
+   "uri": "https://learn.microsoft.com/en-us/azure/architecture/aws-professional/",
+   "license": "CC BY 4.0 (MicrosoftDocs/architecture-center)",
+   "transformation": "12 páginas de 2026-10-28 reparseadas; 205 linhas idênticas ao CSV + 30 de suplemento (lado Microsoft service)"
+  },
+  {
+   "uri": "https://www.oracle.com/cloud/service-comparison/",
+   "license": "Oracle Terms of Use (sem licença aberta; só nomes de serviço e categoria extraídos)",
+   "transformation": "baixado em 2026-11-03; JSON embutido no mapping-bundle.js lido como texto, nunca executado; 160 linhas, buildDate 2024-10-31"
+  }
+ ],
+ "results": [
+  {
+   "metric_id": "M-OFFTAB-ROW-GOOGLE-NO-AWS",
+   "name": "linhas da tabela google sem contraparte AWS",
+   "reading": "complete_unit",
+   "axis": "representability",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.179372,
+    "upper": 0.179372,
+    "est": 0.179372,
+    "n": 223
+   },
+   "frame": {
+    "ref": {
+     "path": "$BO_DATA/OFFTAB/table_rows.jsonl",
+     "sha256": "b53177ff82c028eb59ca0ca4e4affa40a3f5edd873dfcaea8f11c15b5e570c2e"
+    },
+    "description": "censo das linhas main da tabela google em table_rows.jsonl (sem incerteza amostral)"
+   },
+   "inclusion": {
+    "rule_id": "INC-OFFTAB-ROW-GOOGLE",
+    "text": "linha main da tabela google; conta se a coluna aws não nomeia serviço (vazia, ausência explícita ou prosa)"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   }
+  },
+  {
+   "metric_id": "M-OFFTAB-ROW-GOOGLE-NO-AZURE",
+   "name": "linhas da tabela google sem contraparte Azure",
+   "reading": "complete_unit",
+   "axis": "representability",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.152466,
+    "upper": 0.152466,
+    "est": 0.152466,
+    "n": 223
+   },
+   "frame": {
+    "ref": {
+     "path": "$BO_DATA/OFFTAB/table_rows.jsonl",
+     "sha256": "b53177ff82c028eb59ca0ca4e4affa40a3f5edd873dfcaea8f11c15b5e570c2e"
+    },
+    "description": "censo das linhas main da tabela google em table_rows.jsonl (sem incerteza amostral)"
+   },
+   "inclusion": {
+    "rule_id": "INC-OFFTAB-ROW-GOOGLE",
+    "text": "linha main da tabela google; conta se a coluna azure não nomeia serviço (vazia, ausência explícita ou prosa)"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   }
+  },
+  {
+   "metric_id": "M-OFFTAB-ROW-ORACLE-NO-AWS",
+   "name": "linhas da tabela oracle sem contraparte AWS",
+   "reading": "complete_unit",
+   "axis": "representability",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.08125,
+    "upper": 0.08125,
+    "est": 0.08125,
+    "n": 160
+   },
+   "frame": {
+    "ref": {
+     "path": "$BO_DATA/OFFTAB/table_rows.jsonl",
+     "sha256": "b53177ff82c028eb59ca0ca4e4affa40a3f5edd873dfcaea8f11c15b5e570c2e"
+    },
+    "description": "censo das linhas main da tabela oracle em table_rows.jsonl (sem incerteza amostral)"
+   },
+   "inclusion": {
+    "rule_id": "INC-OFFTAB-ROW-ORACLE",
+    "text": "linha main da tabela oracle; conta se a coluna aws não nomeia serviço (vazia, ausência explícita ou prosa)"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   }
+  },
+  {
+   "metric_id": "M-OFFTAB-ROW-ORACLE-NO-AZURE",
+   "name": "linhas da tabela oracle sem contraparte Azure",
+   "reading": "complete_unit",
+   "axis": "representability",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.16875,
+    "upper": 0.16875,
+    "est": 0.16875,
+    "n": 160
+   },
+   "frame": {
+    "ref": {
+     "path": "$BO_DATA/OFFTAB/table_rows.jsonl",
+     "sha256": "b53177ff82c028eb59ca0ca4e4affa40a3f5edd873dfcaea8f11c15b5e570c2e"
+    },
+    "description": "censo das linhas main da tabela oracle em table_rows.jsonl (sem incerteza amostral)"
+   },
+   "inclusion": {
+    "rule_id": "INC-OFFTAB-ROW-ORACLE",
+    "text": "linha main da tabela oracle; conta se a coluna azure não nomeia serviço (vazia, ausência explícita ou prosa)"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   }
+  },
+  {
+   "metric_id": "M-OFFTAB-ROW-ORACLE-NO-GCP",
+   "name": "linhas da tabela oracle sem contraparte Google Cloud",
+   "reading": "complete_unit",
+   "axis": "representability",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.2,
+    "upper": 0.2,
+    "est": 0.2,
+    "n": 160
+   },
+   "frame": {
+    "ref": {
+     "path": "$BO_DATA/OFFTAB/table_rows.jsonl",
+     "sha256": "b53177ff82c028eb59ca0ca4e4affa40a3f5edd873dfcaea8f11c15b5e570c2e"
+    },
+    "description": "censo das linhas main da tabela oracle em table_rows.jsonl (sem incerteza amostral)"
+   },
+   "inclusion": {
+    "rule_id": "INC-OFFTAB-ROW-ORACLE",
+    "text": "linha main da tabela oracle; conta se a coluna gcp não nomeia serviço (vazia, ausência explícita ou prosa)"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   }
+  },
+  {
+   "metric_id": "M-OFFTAB-ROW-MICROSOFT-NO-AZURE",
+   "name": "linhas da tabela microsoft sem contraparte Azure",
+   "reading": "complete_unit",
+   "axis": "representability",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.029268,
+    "upper": 0.029268,
+    "est": 0.029268,
+    "n": 205
+   },
+   "frame": {
+    "ref": {
+     "path": "$BO_DATA/OFFTAB/table_rows.jsonl",
+     "sha256": "b53177ff82c028eb59ca0ca4e4affa40a3f5edd873dfcaea8f11c15b5e570c2e"
+    },
+    "description": "censo das linhas main da tabela microsoft em table_rows.jsonl (sem incerteza amostral)"
+   },
+   "inclusion": {
+    "rule_id": "INC-OFFTAB-ROW-MICROSOFT",
+    "text": "linha main da tabela microsoft; conta se a coluna azure não nomeia serviço (vazia, ausência explícita ou prosa)"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   }
+  },
+  {
+   "metric_id": "M-OFFTAB-ROW-MICROSOFT-NO-AWS",
+   "name": "linhas da tabela microsoft sem contraparte AWS",
+   "reading": "complete_unit",
+   "axis": "representability",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.004878,
+    "upper": 0.004878,
+    "est": 0.004878,
+    "n": 205
+   },
+   "frame": {
+    "ref": {
+     "path": "$BO_DATA/OFFTAB/table_rows.jsonl",
+     "sha256": "b53177ff82c028eb59ca0ca4e4affa40a3f5edd873dfcaea8f11c15b5e570c2e"
+    },
+    "description": "censo das linhas main da tabela microsoft em table_rows.jsonl (sem incerteza amostral)"
+   },
+   "inclusion": {
+    "rule_id": "INC-OFFTAB-ROW-MICROSOFT",
+    "text": "linha main da tabela microsoft; conta se a coluna aws não nomeia serviço (vazia, ausência explícita ou prosa)"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   }
+  },
+  {
+   "metric_id": "M-OFFTAB-REACH-AWS-AZURE",
+   "name": "serviços AWS que dividem linha com algum serviço Azure",
+   "reading": "graph",
+   "axis": "representability",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.938429,
+    "upper": 0.938429,
+    "est": 0.938429,
+    "n": 471
+   },
+   "frame": {
+    "ref": {
+     "path": "$BO_DATA/OFFTAB/table_rows.jsonl",
+     "sha256": "b53177ff82c028eb59ca0ca4e4affa40a3f5edd873dfcaea8f11c15b5e570c2e"
+    },
+    "description": "ids distintos de aws nas tabelas main com colunas aws e azure e pivô diferente de azure (censo; id = slug do rótulo)"
+   },
+   "inclusion": {
+    "rule_id": "INC-OFFTAB-REACH-AWS-AZURE",
+    "text": "serviço aws em tabela que tem coluna azure; conta se divide linha com menção de azure"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   }
+  },
+  {
+   "metric_id": "M-OFFTAB-REACH-AWS-GCP",
+   "name": "serviços AWS que dividem linha com algum serviço Google Cloud",
+   "reading": "graph",
+   "axis": "representability",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.901186,
+    "upper": 0.901186,
+    "est": 0.901186,
+    "n": 253
+   },
+   "frame": {
+    "ref": {
+     "path": "$BO_DATA/OFFTAB/table_rows.jsonl",
+     "sha256": "b53177ff82c028eb59ca0ca4e4affa40a3f5edd873dfcaea8f11c15b5e570c2e"
+    },
+    "description": "ids distintos de aws nas tabelas main com colunas aws e gcp e pivô diferente de gcp (censo; id = slug do rótulo)"
+   },
+   "inclusion": {
+    "rule_id": "INC-OFFTAB-REACH-AWS-GCP",
+    "text": "serviço aws em tabela que tem coluna gcp; conta se divide linha com menção de gcp"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   }
+  },
+  {
+   "metric_id": "M-OFFTAB-REACH-AZURE-AWS",
+   "name": "serviços Azure que dividem linha com algum serviço AWS",
+   "reading": "graph",
+   "axis": "representability",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.957187,
+    "upper": 0.957187,
+    "est": 0.957187,
+    "n": 327
+   },
+   "frame": {
+    "ref": {
+     "path": "$BO_DATA/OFFTAB/table_rows.jsonl",
+     "sha256": "b53177ff82c028eb59ca0ca4e4affa40a3f5edd873dfcaea8f11c15b5e570c2e"
+    },
+    "description": "ids distintos de azure nas tabelas main com colunas azure e aws e pivô diferente de aws (censo; id = slug do rótulo)"
+   },
+   "inclusion": {
+    "rule_id": "INC-OFFTAB-REACH-AZURE-AWS",
+    "text": "serviço azure em tabela que tem coluna aws; conta se divide linha com menção de aws"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   }
+  },
+  {
+   "metric_id": "M-OFFTAB-REACH-AZURE-GCP",
+   "name": "serviços Azure que dividem linha com algum serviço Google Cloud",
+   "reading": "graph",
+   "axis": "representability",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.915842,
+    "upper": 0.915842,
+    "est": 0.915842,
+    "n": 202
+   },
+   "frame": {
+    "ref": {
+     "path": "$BO_DATA/OFFTAB/table_rows.jsonl",
+     "sha256": "b53177ff82c028eb59ca0ca4e4affa40a3f5edd873dfcaea8f11c15b5e570c2e"
+    },
+    "description": "ids distintos de azure nas tabelas main com colunas azure e gcp e pivô diferente de gcp (censo; id = slug do rótulo)"
+   },
+   "inclusion": {
+    "rule_id": "INC-OFFTAB-REACH-AZURE-GCP",
+    "text": "serviço azure em tabela que tem coluna gcp; conta se divide linha com menção de gcp"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   }
+  },
+  {
+   "metric_id": "M-OFFTAB-REACH-GCP-AWS",
+   "name": "serviços Google Cloud que dividem linha com algum serviço AWS",
+   "reading": "graph",
+   "axis": "representability",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.902299,
+    "upper": 0.902299,
+    "est": 0.902299,
+    "n": 348
+   },
+   "frame": {
+    "ref": {
+     "path": "$BO_DATA/OFFTAB/table_rows.jsonl",
+     "sha256": "b53177ff82c028eb59ca0ca4e4affa40a3f5edd873dfcaea8f11c15b5e570c2e"
+    },
+    "description": "ids distintos de gcp nas tabelas main com colunas gcp e aws e pivô diferente de aws (censo; id = slug do rótulo)"
+   },
+   "inclusion": {
+    "rule_id": "INC-OFFTAB-REACH-GCP-AWS",
+    "text": "serviço gcp em tabela que tem coluna aws; conta se divide linha com menção de aws"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   }
+  },
+  {
+   "metric_id": "M-OFFTAB-REACH-GCP-AZURE",
+   "name": "serviços Google Cloud que dividem linha com algum serviço Azure",
+   "reading": "graph",
+   "axis": "representability",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.913793,
+    "upper": 0.913793,
+    "est": 0.913793,
+    "n": 348
+   },
+   "frame": {
+    "ref": {
+     "path": "$BO_DATA/OFFTAB/table_rows.jsonl",
+     "sha256": "b53177ff82c028eb59ca0ca4e4affa40a3f5edd873dfcaea8f11c15b5e570c2e"
+    },
+    "description": "ids distintos de gcp nas tabelas main com colunas gcp e azure e pivô diferente de azure (censo; id = slug do rótulo)"
+   },
+   "inclusion": {
+    "rule_id": "INC-OFFTAB-REACH-GCP-AZURE",
+    "text": "serviço gcp em tabela que tem coluna azure; conta se divide linha com menção de azure"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   }
+  },
+  {
+   "metric_id": "M-OFFTAB-REACH-OCI-AWS",
+   "name": "serviços OCI que dividem linha com algum serviço AWS",
+   "reading": "graph",
+   "axis": "representability",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.931034,
+    "upper": 0.931034,
+    "est": 0.931034,
+    "n": 203
+   },
+   "frame": {
+    "ref": {
+     "path": "$BO_DATA/OFFTAB/table_rows.jsonl",
+     "sha256": "b53177ff82c028eb59ca0ca4e4affa40a3f5edd873dfcaea8f11c15b5e570c2e"
+    },
+    "description": "ids distintos de oci nas tabelas main com colunas oci e aws e pivô diferente de aws (censo; id = slug do rótulo)"
+   },
+   "inclusion": {
+    "rule_id": "INC-OFFTAB-REACH-OCI-AWS",
+    "text": "serviço oci em tabela que tem coluna aws; conta se divide linha com menção de aws"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   }
+  },
+  {
+   "metric_id": "M-OFFTAB-REACH-OCI-AZURE",
+   "name": "serviços OCI que dividem linha com algum serviço Azure",
+   "reading": "graph",
+   "axis": "representability",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.876847,
+    "upper": 0.876847,
+    "est": 0.876847,
+    "n": 203
+   },
+   "frame": {
+    "ref": {
+     "path": "$BO_DATA/OFFTAB/table_rows.jsonl",
+     "sha256": "b53177ff82c028eb59ca0ca4e4affa40a3f5edd873dfcaea8f11c15b5e570c2e"
+    },
+    "description": "ids distintos de oci nas tabelas main com colunas oci e azure e pivô diferente de azure (censo; id = slug do rótulo)"
+   },
+   "inclusion": {
+    "rule_id": "INC-OFFTAB-REACH-OCI-AZURE",
+    "text": "serviço oci em tabela que tem coluna azure; conta se divide linha com menção de azure"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   }
+  },
+  {
+   "metric_id": "M-OFFTAB-REACH-OCI-GCP",
+   "name": "serviços OCI que dividem linha com algum serviço Google Cloud",
+   "reading": "graph",
+   "axis": "representability",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.857143,
+    "upper": 0.857143,
+    "est": 0.857143,
+    "n": 203
+   },
+   "frame": {
+    "ref": {
+     "path": "$BO_DATA/OFFTAB/table_rows.jsonl",
+     "sha256": "b53177ff82c028eb59ca0ca4e4affa40a3f5edd873dfcaea8f11c15b5e570c2e"
+    },
+    "description": "ids distintos de oci nas tabelas main com colunas oci e gcp e pivô diferente de gcp (censo; id = slug do rótulo)"
+   },
+   "inclusion": {
+    "rule_id": "INC-OFFTAB-REACH-OCI-GCP",
+    "text": "serviço oci em tabela que tem coluna gcp; conta se divide linha com menção de gcp"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   }
+  }
+ ],
+ "notes": "OFFTAB (só auditoria; não define universo nem classes). Tabelas: Google 223 linhas (pivô GCP), Microsoft 205 (pivô AWS) + 30 linhas de suplemento fora das 205 (lado 'Microsoft service'), Oracle 160 (pivô OCI; JSON embutido no pacote da página, buildDate 2024-10-31T14:36:03.799819). 2029 alegações skos:relatedMatch sem transporte. Leitura: Google Cloud: alcance para AWS 0.902, menor que o alcance para Azure 0.914; Azure: alcance para AWS 0.957, maior que o alcance para Google Cloud 0.916; OCI: alcance para AWS 0.931, maior que o alcance para Azure 0.877, Google Cloud 0.857; google: 40 de 223 linhas (0.179) sem serviço AWS (invisíveis a um recorte que parte do catálogo AWS); oracle: 13 de 160 linhas (0.081) sem serviço AWS (invisíveis a um recorte que parte do catálogo AWS); microsoft (pivô AWS): 6 de 205 linhas sem Azure e 1 sem AWS (causas: Azure {'explicit_none': 6}, AWS {'explicit_none': 1})."
+}
