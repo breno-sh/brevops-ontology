@@ -1,5 +1,5 @@
 PINS -> CONTRACTS: mudança proposta no C13 3.0.0 e no validador único
-Gravado em 2026-11-03T01:42:08-03:00 (America/Recife) pelo módulo PINS, branch bo/pins, base 755f655.
+Gravado em 2026-11-03T01:42:08-03:00, revisto em 2026-11-03T01:48:00-03:00 (America/Recife), módulo PINS, branch bo/pins, base 26cf52f.
 Dono do que muda: CONTRACTS (contracts/C13_versions.schema.json, src/bo/contracts/catalog.py). O PINS não
 edita nada disso; parou antes do merge em bo/base.
 
@@ -65,3 +65,29 @@ FORA DO PINS, só para o CONTRACTS saber (não bloqueia o PINS)
 Estado do PINS: implementação, instantâneo do Registry e saídas prontos e conferidos na branch bo/pins
 (bo.pins.check: tudo OK). Falta só o G1 (e o G3, que roda o G1, e o G10, o merge). Depois da mudança A,
 basta rodar de novo o gate-check do PINS e fazer o merge; nenhuma saída do PINS muda.
+
+MUDANÇA A JÁ TESTADA (numa cópia de bo/base 26cf52f em $BO_DATA/tmp/PINS/contracts-fix, sem tocar no repositório)
+--- a/src/bo/contracts/catalog.py
++++ b/src/bo/contracts/catalog.py
+@@ -98,6 +98,14 @@
+     kinds = file_kinds(sch)
+     a = _norm(alias)
+     by_kind = [k for k in kinds if _norm(k.kind) == a or _norm(f"{k.cid}_{k.kind}") == a]
++    named = [c for c, n in NAMES.items() if a == _norm(n)]
++    if by_kind and named and path is not None:
++        # alias = nome do contrato E tipo homônimo (ex.: versions): escolhe pelo nome do arquivo entre os tipos do
++        # contrato; o tipo homônimo só vale quando nenhum padrão de arquivo do contrato casa
++        sib = [k for k in kinds if k.cid == named[0]]
++        for k in sib:
++            if fnmatch.fnmatchcase(path.name, k.file) or fnmatch.fnmatchcase("/".join(path.parts[-2:]), k.file):
++                return k
+     if by_kind:
+         if len(by_kind) == 1:
+             return by_kind[0]
+  Com o diff: "validate versions" -> C13:pins para pins.json, C13:versions para versions.json, C13:events para
+  events.jsonl (os 3 stubs passam); tests/contracts: 27 passed. Dos 122 gates do modulos.json que chamam o
+  validador, só 2 mudam de tipo, e os 2 eram o mesmo defeito:
+    PINS           versions $BO_REPO/universe/pins.json                 C13:versions -> C13:pins
+    GLOSSARY-AUDIT glossary $BO_DATA/GLOSSARY-AUDIT/glossary_audit.jsonl  C20:glossary -> C20:glossary_audit
+  Merge do PINS depois da mudança (nada no PINS muda):
+    tools/lock.sh with merge-base --owner PINS --wait 600 -- bash -c 'git -C /Users/breno/doutorado/pesquisa-lanes/bo-pins rebase bo/base && make -C /Users/breno/doutorado/pesquisa-lanes/bo-pins gate ID=PINS && git -C /Users/breno/doutorado/brevops-ontology merge --ff-only bo/pins'
