@@ -126,11 +126,13 @@ class Written:
     kind: str              # resource | data
     field: str             # caminho do C26
     hcl_path: str          # caminho com ocorrências: a[0].b.c
-    origin: str            # carried | synthesized | default_declared
+    origin: str            # carried | synthesized | default_declared | derived_name
     marked: bool
     term_kind: str
     expr: str
-    source: str            # plan | binding:<chave> | withheld:<motivo>
+    source: str            # plan | binding:<chave> | withheld:<motivo> | derived_name
+    node_id: str = ""
+    derived_value: str | None = None   # só para origin derived_name: o nome já montado do template
 
 
 @dataclass
@@ -244,6 +246,17 @@ class PlanCtx:
                 out.add(t["symbol_id"])
         return out
 
+    def ancestors(self, order: int) -> set:
+        """Passos de que o passo depende, direta ou indiretamente (C26-TARGET)."""
+        seen, todo = set(), list(self.steps[order]["depends_on"])
+        while todo:
+            o = todo.pop()
+            if o in seen or o not in self.steps:
+                continue
+            seen.add(o)
+            todo += self.steps[o]["depends_on"]
+        return seen
+
     def resolve_reference(self, step: dict, term: dict) -> str:
         m = ADDR.match(term["target_address"])
         if not m:
@@ -253,20 +266,25 @@ class PlanCtx:
             raise TermError("UNSUPPORTED_TERM", "referência com índice (count/for_each) não é renderizada")
         if rtype != term["target_type"]:
             raise TermError("UNSUPPORTED_TERM", f"target_type {term['target_type']} difere do endereço {rtype}")
-        if self.graph is None:
-            raise TermError("NO_GRAPH_IR", "referência por símbolo sem o graph_ir irmão para resolver o nó")
-        cands = [o for o, s in self.steps.items()
-                 if s["resource_type"] == rtype and (self.kind_of(s) == "data") == is_data and sym in self.step_symbols(s)]
+        if term.get("target_node"):
+            # C00 3.0.1: a referência pode citar o nó do grafo direto
+            cands = [o for o, s in self.steps.items() if s["node_id"] == term["target_node"]
+                     and s["resource_type"] == rtype and (self.kind_of(s) == "data") == is_data]
+        else:
+            if self.graph is None:
+                raise TermError("NO_GRAPH_IR", "referência por símbolo sem o graph_ir irmão para resolver o nó")
+            cands = [o for o, s in self.steps.items() if s["resource_type"] == rtype
+                     and (self.kind_of(s) == "data") == is_data and sym in self.step_symbols(s)]
         cands = [o for o in cands if o != step["order"]]
         if not cands:
             raise TermError("REFERENCE_UNRESOLVED",
-                            f"nenhum passo do plano cria {rtype} com o símbolo do endereço (alvo fora do plano)")
+                            f"nenhum passo do plano cria {rtype} com o nó ou símbolo do endereço (alvo fora do plano)")
         if len(cands) > 1:
             raise TermError("AMBIGUOUS_TARGET", f"{len(cands)} passos casam com {term['target_address']}")
         tgt = self.steps[cands[0]]
-        if tgt["order"] not in step["depends_on"]:
+        if tgt["order"] not in self.ancestors(step["order"]):
             raise TermError("REFERENCE_NOT_IN_DEPENDS_ON",
-                            f"passo {step['order']} referencia o passo {tgt['order']} sem declarar a dependência")
+                            f"passo {step['order']} referencia o passo {tgt['order']} sem depender dele")
         attr = term.get("attribute")
         if not attr:
             raise TermError("REFERENCE_UNRESOLVED", "referência sem atributo: o renderizador não escolhe um (ex. id)")
@@ -344,6 +362,27 @@ def _term(ctx, step, value, term, typ, where, pr, label, top=False):
         src = "plan" if sources <= {"plan"} else "+".join(sorted(sources))
         return expr, src
     raise TermError("UNSUPPORTED_TERM", f"{where}: termo {k!r}")
+
+
+def derived_value(ctx: PlanCtx, step: dict, dn: dict) -> dict:
+    """derived_name com field (C26 1.1.0) vira um valor literal do passo, origem 'derived_name', marcado.
+
+    Cada {tN} do template é trocado pelo termo tN do graph_ir: literal entra como texto; qualquer outro termo
+    (símbolo, referência) é desconhecido -> UNKNOWN_SYMBOLIC_INPUT. Nada é inventado para preencher o nome.
+    """
+    out = dn["template"]
+    for tid in dn["from_terms"]:
+        t = ctx.terms.get(tid)
+        if t is None:
+            raise TermError("NO_GRAPH_IR", f"derived_name cita {tid} sem graph_ir com esse termo")
+        if t["kind"] != "literal" or not isinstance(t["value"], (str, int)) or isinstance(t["value"], bool):
+            raise TermError("UNKNOWN_SYMBOLIC_INPUT",
+                            f"derived_name: termo {tid} ({t['kind']}) só existe depois da criação ou não é texto")
+        out = out.replace("{" + tid + "}", str(t["value"]))
+    if "{" in out or "}" in out:
+        raise TermError("UNKNOWN_SYMBOLIC_INPUT", "derived_name com marcador sem termo em from_terms")
+    return {"field": dn["field"], "term": {"kind": "literal", "datatype": "string", "value": out},
+            "origin": "derived_name", "marked": True}
 
 
 # ------------------------------------------------------------------------------------------- árvore do passo
@@ -488,16 +527,22 @@ def render_plan(plan: dict, graph: dict | None, bindings: dict, tpl: Templates,
                                        f"escolha {ch['choice_id']} sem seleção: {ch['reason']}"))
         for loss in step["losses"]:
             pr.losses.append({"order": step["order"], **loss})
-        if step.get("derived_name"):
-            pr.notes.append(f"passo {step['order']}: derived_name não é escrito (o C26 não diz a que campo ele se "
-                            f"liga); o nome tem de vir num valor do plano")
+        dn = step.get("derived_name")
+        if dn and not dn.get("field"):
+            pr.notes.append(f"passo {step['order']}: derived_name sem field (C26 1.1.0) não vai para o HCL")
         if not table.has(kind, rtype):
             pr.issues.append(Issue("RESOURCE_TYPE_NOT_IN_PIN", step["order"], step["node_id"], None,
                                    f"{kind} {rtype} não existe no oci {PROVIDER_VERSION}"))
             continue
         block = table.block(kind, rtype)
         root = Node()
-        for v in step["values"]:
+        values = list(step["values"])
+        if dn and dn.get("field"):
+            try:
+                values.append(derived_value(ctx, step, dn))
+            except TermError as e:
+                pr.issues.append(Issue(e.code, step["order"], step["node_id"], dn["field"], e.detail))
+        for v in values:
             fpath = v["field"]
             try:
                 toks, attr = S.resolve(block, fpath)
@@ -514,8 +559,10 @@ def render_plan(plan: dict, graph: dict | None, bindings: dict, tpl: Templates,
                 continue
             try:
                 expr, source = term_expr(ctx, step, v, typ, f"passo {step['order']} {fpath}", pr, label)
+                derived = v["origin"] == "derived_name"
                 w = Written(label, rtype, kind, fpath, _hcl_path(toks), v["origin"], v["marked"],
-                            v["term"]["kind"], expr, source)
+                            v["term"]["kind"], expr, "derived_name" if derived else source, step["node_id"],
+                            v["term"]["value"] if derived else None)
                 _insert(root, toks, Leaf(expr, w), fpath, _explicit_flags(toks, fpath))
             except TermError as e:
                 pr.issues.append(Issue(e.code, step["order"], step["node_id"], fpath, e.detail))
@@ -663,6 +710,8 @@ def render(plan_path: Path, out: Path, graph_path: Path | None = None, bindings_
     plan_path = Path(plan_path)
     if graph_path is None and (plan_path.parent / "graph_ir.jsonl").exists():
         graph_path = plan_path.parent / "graph_ir.jsonl"
+    if bindings_path is None and (plan_path.parent / "bindings.json").exists():
+        bindings_path = plan_path.parent / "bindings.json"     # irmão explícito, como o graph_ir do C26
     errs = validate_input(plan_path, graph_path)
     if errs:
         raise ValueError("entrada fora do C26: " + "; ".join(errs[:5]))
@@ -693,6 +742,12 @@ def render(plan_path: Path, out: Path, graph_path: Path | None = None, bindings_
         "provider": PROVIDER, "provider_version": PROVIDER_VERSION, "schema_sha256": SCHEMA_SHA256,
         "schema_table_sha256": sha256_file(SCHEMA_TABLE),
         "templates_sha256": {n: sha256_file(tdir / n) for n in ("root_template.json", "context_bindings.json")},
+        "bindings": {"file": bindings_path.name if bindings_path else None,
+                     "synthetic": bool(bindings_path and json.loads(bindings_path.read_text(encoding="utf-8"))
+                                       .get("synthetic") is True),
+                     "used_keys": sorted({w.source.split(":", 1)[1] for p in renders for w in p.written
+                                          if w.source.startswith("binding:")}),
+                     "values_written": False},
         "input": {"plan_sha256": sha256_file(plan_path),
                   "graph_ir_sha256": sha256_file(graph_path) if graph_path else None,
                   "bindings_sha256": sha256_file(bindings_path) if bindings_path else None},

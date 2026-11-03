@@ -48,3 +48,26 @@ RESOLUÇÃO (2026-11-03T07:29-03:00)
   plano é NOT_APPLICABLE para o oci e o fmt -check confere só o main.tf da raiz (bloco terraform com as versões
   fixadas). O HCL de recurso do OCI é conferido pelo G3 (no_silent_insert: 2 planos completos e 43 mutações) e pelo
   gates/HARNESS-OCI.sh (fmt -check e terraform validate offline no oci 9.11.0). A opção A continua recomendada.
+
+ADENDO (2026-11-03T17:38:43-03:00) — emenda 2 do CONTRACTS (3c2141f): stubs C26 por provedor
+  Adotado neste módulo: reference.target_node (C00 3.0.1) resolve a referência pelo nó, com a dependência
+  conferida de forma direta ou indireta (C26-TARGET); derived_name.field (C26 1.1.0) vira valor marcado de origem
+  derived_name, montado só de termos literais (símbolo no template = UNKNOWN_SYMBOLIC_INPUT); node_id nos campos
+  do readback (C12 3.1.0). O PROBLEMA 3 acima acabou com o derived_name.field.
+
+  ACHADO (resultado, não ajuste): o plano oci do stub novo (LP-OCI-NET-0001, cópia do exemplo deste módulo)
+  sai UNKNOWN_INPUT no G2, só com UNKNOWN_SYMBOLIC_INPUT: compartment_id e a tag de execução são símbolos de
+  contexto, e o stub não traz o bindings.json que liga símbolo a chave de contexto. O renderizador não inventa o
+  compartment, então o fmt do G2 confere só a raiz. A regra C26-STUB ("cada um renderizável no pin") não vale para
+  o oci sem esse arquivo.
+  Mudança proposta ao CONTRACTS (escolher uma):
+    A) acrescentar contracts/stubs/C26/bindings.json (formato bo.harness.oci.bindings/1, igual a
+       deploy/fixtures/oci/_templates/examples/bindings.json). O render já lê o bindings.json irmão do plano, como
+       lê o graph_ir.jsonl irmão; com ele o plano oci do stub sai RENDERED, fmt -check e validate verdes (teste
+       test_c26_stub_other_providers_not_applicable_oci_needs_binding);
+    B) C26 1.2.0: um campo de contexto por termo símbolo no graph_ir (ex. terms[].context_key, com as chaves do
+       context_bindings.json), para que a ligação seja do contrato e valha para os 4 provedores.
+
+  Bloqueio fora do módulo: consume_check reprova em manifestos_transitivos ("TRANSFORMS: entrada $BO_REPO/contracts
+  mudou depois que TRANSFORMS a consumiu") desde a emenda 2. O livro deste módulo foi refeito (--reset) depois de
+  refazer o trabalho sobre os stubs novos; o do TRANSFORMS é do coordenador.

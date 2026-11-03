@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "HARNESS-OCI",
- "generated_at": "2026-11-03T07:27:12-03:00",
+ "generated_at": "2026-11-03T17:38:28-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/HARNESS-OCI.txt",
@@ -14,17 +14,17 @@
    "schema_sha256": "ae0101e5473f7adfd65993dfc335c99285df2bc88ed97fe74c712fb704f55237",
    "terraform": "1.15.8",
    "cloud": "nenhuma",
-   "recordings": "sinteticas"
+   "recordings": "sinteticas",
+   "contracts": "C26-1.1.0,C12-3.1.0,C00-3.0.1"
   },
   "inputs": [
    {
     "path": "$BO_REPO/contracts/stubs",
     "kind": "dir",
-    "sha256": "6d24a5ce7306bc53d657c96122bc0c8ee7c0057d2b7b543b77507bc30be8abb6",
-    "sha256_before_plan_regen_oci_bindings": "83834d95cee77815c0364a2354c4170cef924c61ca43de28a494460c718b1ff8"
+    "sha256": "6d24a5ce7306bc53d657c96122bc0c8ee7c0057d2b7b543b77507bc30be8abb6"
    }
   ],
-  "recorded_at": "2026-11-03T07:27:12-03:00"
+  "recorded_at": "2026-11-03T17:38:28-03:00"
  },
  "sources": [
   {
@@ -33,5 +33,5 @@
    "transformation": "terraform providers schema -json num sandbox sem credenciais (D1); só a estrutura vira src/bo/harness/oci/data/oci-9.11.0.schema_table.jsonl"
   }
  ],
- "notes": "Harness OCI offline: render C26->HCL sem inserção, no_silent_insert, executor com respostas gravadas sintéticas. Nenhuma chamada de nuvem."
+ "notes": "Harness OCI offline: render C26->HCL sem inserção, no_silent_insert, executor com respostas gravadas sintéticas. Nenhuma chamada de nuvem. Refeito sobre a emenda 2 do CONTRACTS (3c2141f)."
 }

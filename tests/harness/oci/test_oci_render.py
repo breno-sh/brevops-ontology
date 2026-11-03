@@ -68,13 +68,75 @@ def test_unbound_symbol_is_unknown_symbolic_input(tmp_out, example_plans):
     assert codes(res, "LP-OCI-NET-0001") == ["UNKNOWN_SYMBOLIC_INPUT"]
 
 
-def test_other_provider_is_not_applicable_and_c26_stub_renders_nothing(tmp_out):
+def test_c26_stub_other_providers_not_applicable_oci_needs_binding(tmp_out):
     stub = REPO / "contracts" / "stubs" / "C26" / "lowering_plan.jsonl"
     res = R.render(stub, tmp_out / "out")
-    assert statuses(res) == {"LP-0001": "NOT_APPLICABLE"}
+    st = statuses(res)
+    oci = [p for p, s in st.items() if res.renders[[x.plan_id for x in res.renders].index(p)].target_provider == "oci"]
+    assert all(s == "NOT_APPLICABLE" for p, s in st.items() if p not in oci)
+    assert len(oci) == 1
+    # sem binding de contexto, o compartment do stub é símbolo: UNKNOWN_INPUT, nunca um default
+    assert st[oci[0]] == "UNKNOWN_INPUT" and codes(res, oci[0]) == ["UNKNOWN_SYMBOLIC_INPUT"]
     assert R.main([str(stub), "--out", str(tmp_out / "cli")]) == 0
     assert sorted(p.name for p in (tmp_out / "cli").iterdir()) == ["main.tf", "render_report.json"]
     assert SB.fmt_check(tmp_out / "cli").rc == 0
+    # o mesmo stub com um bindings.json irmão (entrada explícita) renderiza e passa no fmt e no validate
+    d = tmp_out / "stub_with_bindings"
+    d.mkdir()
+    for n in ("lowering_plan.jsonl", "graph_ir.jsonl"):
+        (d / n).write_text((stub.parent / n).read_text())
+    (d / "bindings.json").write_text((EX / "bindings.json").read_text())
+    res2 = R.render(d / "lowering_plan.jsonl", tmp_out / "out2")
+    assert statuses(res2)[oci[0]] == "RENDERED"
+    assert SB.fmt_check(tmp_out / "out2").rc == 0
+    i, v = SB.init_validate(tmp_out / "out2")
+    assert i.rc == 0 and json.loads(v.out)["valid"]
+
+
+def test_reference_by_target_node_and_transitive_dependency(tmp_out, example_plans):
+    def by_node(s):
+        for v in s["values"]:
+            if v["field"] == "network_security_group_id":
+                v["term"]["target_node"] = "r3"
+                v["term"]["target_address"] = "oci_core_network_security_group.SYM-00000000deadbeef"
+    pf, bf = write_plan(tmp_out / "a", [mutate(example_plans["LP-OCI-NET-0001"], 4, by_node)], graph=False)
+    res = R.render(pf, tmp_out / "oa", bindings_path=bf)
+    assert res.renders[0].status == "UNKNOWN_INPUT"       # sem graph_ir as outras referências não resolvem
+    assert ("REFERENCE_UNRESOLVED", "network_security_group_id") not in \
+        {(i.code, i.field) for i in res.renders[0].issues}
+
+    def via_vcn(s):                     # passo 4 referencia o VCN (passo 1) dependendo só do passo 3
+        s["values"].append({"field": "description", "term": {"kind": "reference", "target_type": "oci_core_vcn",
+                            "target_address": "oci_core_vcn.SYM-0a1b2c3d4e5f0001", "attribute": "display_name"},
+                            "origin": "carried", "marked": False})
+    pf, bf = write_plan(tmp_out / "b", [mutate(example_plans["LP-OCI-NET-0001"], 4, via_vcn)])
+    res = R.render(pf, tmp_out / "ob", bindings_path=bf)
+    assert res.renders[0].status == "RENDERED"
+
+
+def test_derived_name_with_field(tmp_out, example_plans):
+    def lit_name(s):
+        s["derived_name"]["field"] = "display_name"
+        s["values"] = [v for v in s["values"] if v["field"] != "display_name"]
+    plan = mutate(example_plans["LP-OCI-NET-0001"], 1, lit_name)
+    for st in plan["steps"]:            # referências ao VCN pelo nó (C00 3.0.1), não pelo símbolo do nome
+        for v in st["values"]:
+            if v["term"]["kind"] == "reference" and v["term"]["target_type"] == "oci_core_vcn":
+                v["term"]["target_node"] = "r1"
+    d = tmp_out / "a"
+    pf, bf = write_plan(d, [plan])
+    # termo t1 do exemplo é símbolo: o nome derivado não pode ser montado
+    res = R.render(pf, tmp_out / "oa", bindings_path=bf)
+    assert codes(res, "LP-OCI-NET-0001") == ["UNKNOWN_SYMBOLIC_INPUT"]
+    g = [json.loads(x) for x in (d / "graph_ir.jsonl").read_text().splitlines()]
+    g[0]["terms"][0]["term"] = {"kind": "literal", "datatype": "string", "value": "net0001"}
+    (d / "graph_ir.jsonl").write_text("".join(json.dumps(x) + "\n" for x in g))
+    res = R.render(pf, tmp_out / "ob", bindings_path=bf)
+    assert res.renders[0].status == "RENDERED"
+    assert 'display_name   = "bo-net0001-vcn"' in (tmp_out / "ob" / "lp_oci_net_0001" / "main.tf").read_text()
+    from bo.harness.oci import no_silent_insert as NSI
+    rep = NSI.run_corpus([(pf, bf)], tmp_out / "w")
+    assert rep["violations"] == [] and rep["rendered_checked"] == 1
 
 
 def test_unresolved_choice_and_open_closure(tmp_out, example_plans):

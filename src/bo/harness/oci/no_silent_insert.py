@@ -150,7 +150,24 @@ def _value_ok(exp, got) -> bool:
     return False
 
 
-def check_rendered(out: Path, plan: dict, pr_report: dict, bindings: dict, tpl: R.Templates) -> list[str]:
+def _derived(step: dict, graph: dict | None):
+    """Nome derivado esperado (C26 1.1.0), montado aqui de forma independente do renderizador."""
+    dn = step.get("derived_name") or {}
+    if not dn.get("field"):
+        return None
+    terms = {t["term_id"]: t["term"] for t in (graph or {}).get("terms", [])}
+    out = dn["template"]
+    for tid in dn["from_terms"]:
+        t = terms.get(tid) or {}
+        if t.get("kind") != "literal":
+            return ("unrenderable", None)
+        out = out.replace("{%s}" % tid, str(t["value"]))
+    return {"field": dn["field"], "term": {"kind": "literal", "datatype": "string", "value": out},
+            "origin": "derived_name", "marked": True}
+
+
+def check_rendered(out: Path, plan: dict, pr_report: dict, bindings: dict, tpl: R.Templates,
+                   graph: dict | None = None) -> list[str]:
     import hcl2
     v: list[str] = []
     mod = pr_report["module"]
@@ -186,7 +203,13 @@ def check_rendered(out: Path, plan: dict, pr_report: dict, bindings: dict, tpl: 
             continue
         flat = flatten(got_blocks[key])
         claimed = {}
-        for val in step["values"]:
+        vals = list(step["values"])
+        dv = _derived(step, graph)
+        if isinstance(dv, tuple):
+            v.append(f"{plan['plan_id']} passo {step['order']}: nome derivado com termo não literal num plano RENDERED")
+        elif dv is not None:
+            vals.append(dv)
+        for val in vals:
             hits = [h for h in flat if _match(val["field"], h)]
             if len(hits) != 1:
                 v.append(f"{plan['plan_id']} passo {step['order']}: {val['field']} casa com {len(hits)} folha(s) "
@@ -325,6 +348,8 @@ def run_corpus(plan_files: list[tuple[Path, Path | None]], work: Path) -> dict:
            "mutations": {"total": 0, "as_expected": 0, "failed": []}}
     for k, (pf, bf) in enumerate(plan_files):
         out = work / f"corpus_{k}"
+        if bf is None and (pf.parent / "bindings.json").exists():
+            bf = pf.parent / "bindings.json"
         rr = R.render(pf, out, bindings_path=bf)
         bindings = R.load_bindings(bf)
         plans = {p["plan_id"]: p for p in R.load_jsonl(pf)}
@@ -336,7 +361,10 @@ def run_corpus(plan_files: list[tuple[Path, Path | None]], work: Path) -> dict:
                 if (out / R.module_name(pr["plan_id"])).exists():
                     rep["violations"].append(f"{pr['plan_id']}: {pr['status']} com HCL escrito")
                 continue
-            rep["violations"] += check_rendered(out, plans[pr["plan_id"]], pr, bindings, tpl)
+            graphs = {g["graph_id"]: g for g in R.load_jsonl(pf.parent / "graph_ir.jsonl")} \
+                if (pf.parent / "graph_ir.jsonl").exists() else {}
+            rep["violations"] += check_rendered(out, plans[pr["plan_id"]], pr, bindings, tpl,
+                                                graphs.get(plans[pr["plan_id"]]["graph_id"]))
             rep["rendered_checked"] += 1
             # mutações deste plano
             graph = pf.parent / "graph_ir.jsonl"
@@ -373,8 +401,7 @@ def default_corpus() -> list[tuple[Path, Path | None]]:
     out = []
     for p in (stubs / "lowering_plan.jsonl", stubs / "C26" / "lowering_plan.jsonl"):
         if p.exists():
-            b = p.parent / "bindings.json"
-            out.append((p, b if b.exists() else None))
+            out.append((p, None))
     ex = templates_dir() / "examples"
     out.append((ex / "lowering_plan.jsonl", ex / "bindings.json"))
     return out

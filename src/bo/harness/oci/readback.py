@@ -41,6 +41,7 @@ class FieldRead:
     path: str
     origin: str
     state: str                  # read | absent | not_read | withheld
+    node_id: str | None = None  # nó do plano (C12 3.1.0)
     value: object = None        # redigido; só quando state == read
     rule_id: str | None = None
     expected: object = None     # redigido; nunca gravado em C12 (fica no relatório interno de comparação)
@@ -50,6 +51,8 @@ class FieldRead:
 
     def c12(self) -> dict:
         d = {"path": self.path, "state": self.state}
+        if self.node_id:
+            d["node_id"] = self.node_id
         if self.state == "read":
             d["value"] = self.value
         if self.state == "withheld":
@@ -146,8 +149,10 @@ def _literal_leaves_under(writtens: list[dict], vidx: dict, order: int, prefix_t
         want = list(prefix_tokens) + [(name, index)]
         if bpath[:len(want)] != want:
             continue
-        v = vidx[(order, w["field"])]
-        if v["term"]["kind"] == "literal":
+        v = vidx.get((order, w["field"]))
+        if v is None and w["origin"] == "derived_name":
+            v = {"term": {"kind": "literal", "value": w["derived_value"]}}
+        if v is not None and v["term"]["kind"] == "literal":
             rel = toks[len(want):] if all(t.kind == "block" for t in toks[:len(want)]) else None
             if rel is not None:
                 out[tuple((t.kind, t.name, t.index) for t in rel)] = v["term"]["value"]
@@ -193,8 +198,12 @@ def project(state: dict, report_plan: dict, plan: dict, red: Redactor, table: S.
         order = w["_order"]
         addr = ("data." if w["kind"] == "data" else "") + f"{w['resource_type']}.{w['label']}"
         path = f"{addr}.{w['hcl_path']}"
-        vterm = vidx[(order, w["field"])]
-        fr = FieldRead(path, w["origin"], "not_read",
+        if w["origin"] == "derived_name":
+            vterm = {"term": {"kind": "literal", "datatype": "string", "value": w["derived_value"]},
+                     "origin": "derived_name"}
+        else:
+            vterm = vidx[(order, w["field"])]
+        fr = FieldRead(path, w["origin"], "not_read", node_id=w.get("node_id") or None,
                        structural=vterm["term"]["kind"] in ("reference", "symbol"))
         attr: S.Attr = w["_attr"]
         res = by_addr.get(addr)
