@@ -1,13 +1,13 @@
 {
  "$schema": "https://json-schema.org/draft/2020-12/schema",
  "$id": "https://w3id.org/brevops/contracts/C03/docs_facts.schema.json",
- "title": "C03 docs_facts 3.0.0: fatos de documentação por atributo",
+ "title": "C03 docs_facts 3.1.0: fatos de documentação por atributo e por tipo",
  "description": "Fato por atributo com source{repo, tag, file, line, sentence}, extraction_method e evidence_level (published | derived | interpreted, com model_id quando interpretado); default com data; unknown explícito (status=unknown com motivo, nunca valor inventado).",
  "x-bo-contract": {
   "id": "C03",
   "name": "docs_facts",
-  "version": "3.0.0",
-  "status": "changed_v3",
+  "version": "3.1.0",
+  "status": "amended",
   "owner": "CONTRACTS",
   "files": [
    {
@@ -16,13 +16,26 @@
     "format": "jsonl",
     "record": "fact",
     "unit": "record"
+   },
+   {
+    "kind": "type_subcategory",
+    "file": "type_subcategory.jsonl",
+    "format": "jsonl",
+    "record": "type_fact",
+    "unit": "record",
+    "note": "fatos do TIPO (subcategoria, ID de importação, título, apelido): um registro por tipo"
    }
   ],
   "semantic_rules": [
    "C03-UNK: status=unknown não tem value; stated tem value e source",
    "C03-DEFAULT: default declarado tem as_of (data)",
    "C03-MODEL: interpreted exige model_id; extraction_method=model só com interpreted",
-   "C03-UNIQ: fact_id único"
+   "C03-UNIQ: fact_id único",
+   "C03-APPLIES: applies_to só em fato derived, átomos do mesmo provider:tipo e sem repetir atom_id",
+   "C03-TS-UNIQ: type_id único (por kind) e = provider:resource_type",
+   "C03-TS-UNK: bloco unknown sem valor nem formato de ID; stated com fonte (source ou statements)",
+   "C03-TS-IMPORT: import só em recurso (kind resource ou ausente); data source não tem import",
+   "C03-TS-REDACT: nenhum texto gravado com GUID depois de /subscriptions/ (use {subscriptionId})"
   ],
   "producers": [
    "DOCS-{provider}"
@@ -58,7 +71,8 @@
       "conflicts_with",
       "forces_replacement",
       "example",
-      "behavior"
+      "behavior",
+      "applicable_when"
      ]
     },
     "status": {
@@ -96,6 +110,15 @@
     },
     "model_id": {
      "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/model_id"
+    },
+    "applies_to": {
+     "type": "array",
+     "items": {
+      "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/atom_id"
+     },
+     "minItems": 1,
+     "uniqueItems": true,
+     "description": "outras ocorrências (bloco repetido do schema) a que o mesmo fato se aplica; só em fato derived (emenda 3.1.0)"
     }
    },
    "required": [
@@ -109,6 +132,20 @@
    ],
    "additionalProperties": false,
    "allOf": [
+    {
+     "if": {
+      "required": [
+       "applies_to"
+      ]
+     },
+     "then": {
+      "properties": {
+       "evidence_level": {
+        "const": "derived"
+       }
+      }
+     }
+    },
     {
      "if": {
       "properties": {
@@ -211,6 +248,399 @@
        "evidence_level": {
         "const": "interpreted"
        }
+      }
+     }
+    }
+   ]
+  },
+  "type_fact": {
+   "type": "object",
+   "properties": {
+    "type_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^[a-z][a-z0-9_]*:[a-z][a-z0-9_]*$"
+    },
+    "provider": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/provider"
+    },
+    "provider_version": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/semver"
+    },
+    "resource_type": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/resource_type"
+    },
+    "kind": {
+     "enum": [
+      "resource",
+      "data_source"
+     ],
+     "description": "ausente = resource"
+    },
+    "in_schema": {
+     "type": "boolean"
+    },
+    "doc_file": {
+     "anyOf": [
+      {
+       "type": "null"
+      },
+      {
+       "type": "string",
+       "minLength": 1
+      }
+     ]
+    },
+    "doc_pages": {
+     "type": "array",
+     "items": {
+      "type": "string",
+      "minLength": 1
+     }
+    },
+    "title": {
+     "type": "object",
+     "properties": {
+      "text": {
+       "type": "string",
+       "minLength": 1
+      },
+      "line": {
+       "type": "integer",
+       "minimum": 1
+      }
+     },
+     "required": [
+      "text",
+      "line"
+     ],
+     "additionalProperties": false
+    },
+    "page_title": {
+     "type": "string",
+     "minLength": 1
+    },
+    "aliases": {
+     "type": "array",
+     "items": {
+      "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/resource_type"
+     },
+     "uniqueItems": true
+    },
+    "documented_as_alias_of": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/resource_type"
+    },
+    "alias_of": {
+     "type": "object",
+     "properties": {
+      "type_id": {
+       "type": "string",
+       "minLength": 1,
+       "pattern": "^[a-z][a-z0-9_]*:[a-z][a-z0-9_]*$"
+      },
+      "evidence_level": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/evidence_level"
+      },
+      "source": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/doc_source"
+      }
+     },
+     "required": [
+      "type_id",
+      "evidence_level"
+     ],
+     "additionalProperties": false
+    },
+    "subcategory": {
+     "$ref": "#/$defs/type_status"
+    },
+    "import": {
+     "$ref": "#/$defs/type_status"
+    }
+   },
+   "required": [
+    "type_id",
+    "provider",
+    "provider_version",
+    "resource_type",
+    "subcategory"
+   ],
+   "additionalProperties": false,
+   "allOf": [
+    {
+     "if": {
+      "properties": {
+       "kind": {
+        "const": "data_source"
+       }
+      },
+      "required": [
+       "kind"
+      ]
+     },
+     "then": {
+      "not": {
+       "required": [
+        "import"
+       ]
+      }
+     }
+    }
+   ],
+   "description": "fato do TIPO (não do átomo): subcategoria e ID de importação (emenda C03 3.1.0)"
+  },
+  "type_status": {
+   "type": "object",
+   "properties": {
+    "status": {
+     "enum": [
+      "stated",
+      "unknown"
+     ]
+    },
+    "value": {
+     "anyOf": [
+      {
+       "type": "string",
+       "minLength": 1
+      },
+      {
+       "type": "array",
+       "items": {
+        "type": "string",
+        "minLength": 1
+       },
+       "minItems": 1
+      }
+     ]
+    },
+    "unknown_reason": {
+     "enum": [
+      "not_documented",
+      "ambiguous",
+      "contradictory",
+      "out_of_pin",
+      "not_supported"
+     ]
+    },
+    "source": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/doc_source"
+    },
+    "statement": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/doc_source"
+    },
+    "key_sentence": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/doc_source"
+    },
+    "statements": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "line": {
+        "type": "integer",
+        "minimum": 1
+       },
+       "sentence": {
+        "type": "string",
+        "minLength": 5
+       }
+      },
+      "required": [
+       "line",
+       "sentence"
+      ],
+      "additionalProperties": false
+     },
+     "minItems": 1
+    },
+    "other_lines": {
+     "type": "array",
+     "items": {
+      "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/doc_source"
+     }
+    },
+    "supported": {
+     "type": "boolean"
+    },
+    "id_format": {
+     "type": "string",
+     "minLength": 1
+    },
+    "id_is_plain_id": {
+     "type": "boolean"
+    },
+    "id_attributes": {
+     "type": "array",
+     "items": {
+      "type": "string",
+      "minLength": 1
+     }
+    },
+    "id_text": {
+     "type": "array",
+     "items": {
+      "type": "string",
+      "minLength": 1
+     }
+    },
+    "separators": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "placeholders": {
+     "type": "array",
+     "items": {
+      "type": "string",
+      "minLength": 1
+     }
+    },
+    "identity": {
+     "type": "object",
+     "properties": {
+      "required": {
+       "type": "array",
+       "items": {
+        "type": "string",
+        "minLength": 1
+       }
+      },
+      "optional": {
+       "type": "array",
+       "items": {
+        "type": "string",
+        "minLength": 1
+       }
+      }
+     },
+     "required": [
+      "required",
+      "optional"
+     ],
+     "additionalProperties": false
+    },
+    "methods": {
+     "type": "array",
+     "items": {
+      "enum": [
+       "import_block_identity",
+       "import_block_id",
+       "terraform_import_cli"
+      ]
+     },
+     "uniqueItems": true
+    },
+    "extraction_method": {
+     "enum": [
+      "parser",
+      "regex",
+      "table",
+      "manual",
+      "model"
+     ]
+    },
+    "evidence_level": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/evidence_level"
+    },
+    "model_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/model_id"
+    }
+   },
+   "required": [
+    "status",
+    "extraction_method",
+    "evidence_level"
+   ],
+   "additionalProperties": false,
+   "allOf": [
+    {
+     "if": {
+      "properties": {
+       "status": {
+        "const": "stated"
+       }
+      }
+     },
+     "then": {
+      "anyOf": [
+       {
+        "required": [
+         "source"
+        ]
+       },
+       {
+        "required": [
+         "statements"
+        ]
+       }
+      ],
+      "not": {
+       "required": [
+        "unknown_reason"
+       ]
+      }
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "status": {
+        "const": "unknown"
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "unknown_reason"
+      ],
+      "not": {
+       "anyOf": [
+        {
+         "required": [
+          "value"
+         ]
+        },
+        {
+         "required": [
+          "id_format"
+         ]
+        }
+       ]
+      }
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "evidence_level": {
+        "const": "interpreted"
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "model_id"
+      ]
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "evidence_level": {
+        "enum": [
+         "published",
+         "derived"
+        ]
+       }
+      }
+     },
+     "then": {
+      "not": {
+       "required": [
+        "model_id"
+       ]
       }
      }
     }

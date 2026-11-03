@@ -276,6 +276,8 @@ def c11() -> dict:
 # ------------------------------------------------------------------------------------------------- C12
 def c12() -> dict:
     field = obj({"path": string(r"^[A-Za-z0-9_]+(\.[A-Za-z0-9_]+|\[[0-9]+\])*$"),
+                 "node_id": string(r"^[rc][0-9]+$", description="nó do graph_ir/plano (C26) dono do campo, quando o "
+                                                                  "caso tem vários recursos (emenda 3.1.0)"),
                  "state": enum("read", "absent", "not_read", "withheld"), "value": {},
                  "redaction": obj({"rule_id": c00("rule_id"), "at_source": const(True)}, ["rule_id", "at_source"])},
                 ["path", "state"],
@@ -299,7 +301,7 @@ def c12() -> dict:
              ["outcome_id", "case_id", "group_id", "claim_id", "side", "outcome", "evidence_state_before",
               "evidence_state_after", "rule_id", "decided_at"])
     return contract_schema(
-        "C12", "readback_outcomes", "3.0.0", "leitura e desfecho de persistência", status="changed_v3",
+        "C12", "readback_outcomes", "3.1.0", "leitura e desfecho de persistência", status="amended",
         description="Leitura com redação na origem; desfecho como união discriminada {axis: persistence, value: "
                     "PERSISTED | ALTERED | REJECTED_BY_API | NOT_READABLE | INFRA_ERROR | UNKNOWN}, a mesma do C22 "
                     "(C00 #/$defs/outcome); case_id e group_id; estado de evidência antes e depois.",
@@ -310,7 +312,9 @@ def c12() -> dict:
         rules=["C12-UNION: outcome é a união do C00 com axis = persistence",
                "C12-LADDER: o estado de evidência só sobe com PERSISTED; com os demais desfechos after <= before",
                "C12-READ: desfecho PERSISTED/ALTERED exige readback_id (a leitura que o sustenta)",
-               "C12-WITHHELD: campo withheld não tem valor (nem hash)"])
+               "C12-WITHHELD: campo withheld não tem valor (nem hash)",
+               "C12-NODE: (node_id, path) único no registro; sem node_id o caminho é do único recurso do caso "
+               "(o prefixo '<nó>.' no path continua aceito)"])
 
 
 # ------------------------------------------------------------------------------------------------- C13

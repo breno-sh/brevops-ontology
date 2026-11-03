@@ -78,7 +78,10 @@ def c00_defs() -> dict:
               ["kind", "format", "tree", "symbolized"])
     ref = obj({"kind": const("reference"), "target_type": string(P_RESOURCE_TYPE),
                "target_address": string(r"^(data\.)?[a-z][a-z0-9_]*\.SYM-[0-9a-f]{8,16}(\[[^\]]+\])?$"),
-               "attribute": string(r"^[A-Za-z0-9_]+(\.[A-Za-z0-9_]+)*$")}, ["kind", "target_type", "target_address"])
+               "attribute": string(r"^[A-Za-z0-9_]+(\.[A-Za-z0-9_]+)*$"),
+               "target_node": string(r"^[rc][0-9]+$", description="nó do graph_ir (C26) que a referência aponta; "
+                                                                     "opcional (emenda C00 3.0.1)")},
+              ["kind", "target_type", "target_address"])
     wh = obj({"kind": const("withheld"), "reason": enum(*WITHHELD_REASONS)}, ["kind", "reason"])
     return {
         "stable_id": string(P_STABLE_ID, description="ID do módulo = stable_id (não depende da onda)"),
@@ -128,7 +131,9 @@ def c00_defs() -> dict:
                     "description": "união discriminada de desfechos {axis, value}; C12 (persistence) e C22 (behavior)",
                     "x-bo-discriminator": "axis"},
         "doc_source": obj({"repo": string(r"^[A-Za-z0-9_.\-]+/[A-Za-z0-9_.\-]+$"), "tag": text(1),
-                           "file": text(1), "line": integer(1), "sentence": text(5)},
+                           "file": text(1), "line": integer(1), "sentence": text(5),
+                           "redacted": boolean(description="a frase passou pela redação do privacy_lint antes de ser "
+                                                           "gravada; file:line continua exato (emenda C00 3.0.1)")},
                           ["repo", "tag", "file", "line", "sentence"]),
         "web_citation": obj({"uri": string(r"^https://\S+$"), "retrieved_at": local("datetime"),
                              "section": text(1), "sentence": text(5)}, ["uri", "retrieved_at"]),
@@ -195,7 +200,7 @@ def c00_spec() -> dict:
         "modules": arr(local("module"), 1)},
         ["timezone", "env", "index_sets", "contracts", "modules"], extra=True)
     return contract_schema(
-        "C00", "conventions", "3.0.0", "convenções e definições comuns", status="changed_v3",
+        "C00", "conventions", "3.0.1", "convenções e definições comuns", status="amended",
         description="ID = stable_id; onda calculada do DAG; código em $BO_REPO/src/bo/<pacote>/; dados em "
                     "$BO_DATA/<ID>/; temporário em $BO_TMP=$BO_DATA/tmp/<ID> (nunca /tmp); caminhos só com índices "
                     "declarados em index_sets; datas ISO-8601 com fuso America/Recife. $defs comuns a todos os contratos.",
@@ -262,7 +267,7 @@ def c02() -> dict:
 
 # ------------------------------------------------------------------------------------------------- C03
 FACT_KINDS = ("description", "default", "allowed_values", "range", "unit", "format", "deprecation", "required_when",
-              "conflicts_with", "forces_replacement", "example", "behavior")
+              "conflicts_with", "forces_replacement", "example", "behavior", "applicable_when")
 
 
 def c03() -> dict:
@@ -272,9 +277,13 @@ def c03() -> dict:
         "value": {}, "unknown_reason": enum("not_documented", "ambiguous", "contradictory", "out_of_pin"),
         "as_of": c00("date"), "source": c00("doc_source"),
         "extraction_method": enum("parser", "regex", "table", "manual", "model"),
-        "evidence_level": c00("evidence_level"), "model_id": c00("model_id")},
+        "evidence_level": c00("evidence_level"), "model_id": c00("model_id"),
+        "applies_to": arr(c00("atom_id"), 1, unique=True,
+                          description="outras ocorrências (bloco repetido do schema) a que o mesmo fato se aplica; "
+                                      "só em fato derived (emenda 3.1.0)")},
         ["fact_id", "atom_id", "provider_version", "fact_kind", "status", "extraction_method", "evidence_level"],
         allOf=[
+            {"if": {"required": ["applies_to"]}, "then": {"properties": {"evidence_level": const("derived")}}},
             {"if": {"properties": {"status": const("stated")}}, "then": {"required": ["value", "source"],
                                                                         "not": {"required": ["unknown_reason"]}}},
             {"if": {"properties": {"status": const("unknown")}}, "then": {"required": ["unknown_reason"],
@@ -287,16 +296,69 @@ def c03() -> dict:
             {"if": {"properties": {"extraction_method": const("model")}},
              "then": {"properties": {"evidence_level": const("interpreted")}}}])
     return contract_schema(
-        "C03", "docs_facts", "3.0.0", "fatos de documentação por atributo", status="changed_v3",
+        "C03", "docs_facts", "3.1.0", "fatos de documentação por atributo e por tipo", status="amended",
         description="Fato por atributo com source{repo, tag, file, line, sentence}, extraction_method e evidence_level "
                     "(published | derived | interpreted, com model_id quando interpretado); default com data; unknown "
                     "explícito (status=unknown com motivo, nunca valor inventado).",
-        files=[file_kind("docs_facts", "docs_facts.jsonl", "jsonl", "fact", "record")], defs={"fact": fact},
+        files=[file_kind("docs_facts", "docs_facts.jsonl", "jsonl", "fact", "record"),
+               file_kind("type_subcategory", "type_subcategory.jsonl", "jsonl", "type_fact", "record",
+                         "fatos do TIPO (subcategoria, ID de importação, título, apelido): um registro por tipo")],
+        defs={"fact": fact, "type_fact": type_fact(), "type_status": type_status()},
         producers=["DOCS-{provider}"],
         rules=["C03-UNK: status=unknown não tem value; stated tem value e source",
                "C03-DEFAULT: default declarado tem as_of (data)",
                "C03-MODEL: interpreted exige model_id; extraction_method=model só com interpreted",
-               "C03-UNIQ: fact_id único"])
+               "C03-UNIQ: fact_id único",
+               "C03-APPLIES: applies_to só em fato derived, átomos do mesmo provider:tipo e sem repetir atom_id",
+               "C03-TS-UNIQ: type_id único (por kind) e = provider:resource_type",
+               "C03-TS-UNK: bloco unknown sem valor nem formato de ID; stated com fonte (source ou statements)",
+               "C03-TS-IMPORT: import só em recurso (kind resource ou ausente); data source não tem import",
+               "C03-TS-REDACT: nenhum texto gravado com GUID depois de /subscriptions/ (use {subscriptionId})"])
+
+
+def type_status() -> dict:
+    """Bloco stated|unknown de um fato do tipo (subcategoria ou importação). Superconjunto dos campos que os quatro
+    DOCS-* extraem; o que cada um não extrai fica ausente."""
+    stmt = obj({"line": integer(1), "sentence": text(5)}, ["line", "sentence"])
+    return obj({
+        "status": enum("stated", "unknown"), "value": {"anyOf": [text(1), arr(text(1), 1)]},
+        "unknown_reason": enum("not_documented", "ambiguous", "contradictory", "out_of_pin", "not_supported"),
+        "source": c00("doc_source"), "statement": c00("doc_source"), "key_sentence": c00("doc_source"),
+        "statements": arr(stmt, 1), "other_lines": arr(c00("doc_source")),
+        "supported": boolean(), "id_format": text(1), "id_is_plain_id": boolean(),
+        "id_attributes": arr(text(1)), "id_text": arr(text(1)), "separators": arr({"type": "string"}),
+        "placeholders": arr(text(1)), "identity": obj({"required": arr(text(1)), "optional": arr(text(1))},
+                                                       ["required", "optional"]),
+        "methods": arr(enum("import_block_identity", "import_block_id", "terraform_import_cli"), unique=True),
+        "extraction_method": enum("parser", "regex", "table", "manual", "model"),
+        "evidence_level": c00("evidence_level"), "model_id": c00("model_id")},
+        ["status", "extraction_method", "evidence_level"],
+        allOf=[{"if": {"properties": {"status": const("stated")}},
+                "then": {"anyOf": [{"required": ["source"]}, {"required": ["statements"]}],
+                         "not": {"required": ["unknown_reason"]}}},
+               {"if": {"properties": {"status": const("unknown")}},
+                "then": {"required": ["unknown_reason"],
+                         "not": {"anyOf": [{"required": ["value"]}, {"required": ["id_format"]}]}}},
+               {"if": {"properties": {"evidence_level": const("interpreted")}}, "then": {"required": ["model_id"]}},
+               {"if": {"properties": {"evidence_level": {"enum": ["published", "derived"]}}},
+                "then": {"not": {"required": ["model_id"]}}}])
+
+
+def type_fact() -> dict:
+    return obj({
+        "type_id": string(r"^[a-z][a-z0-9_]*:[a-z][a-z0-9_]*$"), "provider": c00("provider"),
+        "provider_version": c00("semver"), "resource_type": c00("resource_type"),
+        "kind": enum("resource", "data_source", description="ausente = resource"), "in_schema": boolean(),
+        "doc_file": nullable(text(1)), "doc_pages": arr(text(1)),
+        "title": obj({"text": text(1), "line": integer(1)}, ["text", "line"]), "page_title": text(1),
+        "aliases": arr(c00("resource_type"), unique=True), "documented_as_alias_of": c00("resource_type"),
+        "alias_of": obj({"type_id": string(r"^[a-z][a-z0-9_]*:[a-z][a-z0-9_]*$"), "evidence_level": c00("evidence_level"),
+                         "source": c00("doc_source")}, ["type_id", "evidence_level"]),
+        "subcategory": local("type_status"), "import": local("type_status")},
+        ["type_id", "provider", "provider_version", "resource_type", "subcategory"],
+        allOf=[{"if": {"properties": {"kind": const("data_source")}, "required": ["kind"]},
+                "then": {"not": {"required": ["import"]}}}],
+        description="fato do TIPO (não do átomo): subcategoria e ID de importação (emenda C03 3.1.0)")
 
 
 # ------------------------------------------------------------------------------------------------- C04

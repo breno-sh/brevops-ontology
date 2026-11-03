@@ -17,7 +17,10 @@ METRIC_ID = string(r"^M-[A-Za-z0-9_\-]+$")
 # ------------------------------------------------------------------------------------------------- C15
 def c15() -> dict:
     cov = obj({"lower": number(minimum=0, maximum=1), "upper": number(minimum=0, maximum=1),
-               "est": nullable(number(minimum=0, maximum=1)), "n": integer(0)}, ["lower", "upper", "est", "n"])
+               "est": nullable(number(minimum=0, maximum=1)), "n": integer(0),
+               "n_known": integer(0, description="unidades com desfecho conhecido; est = sucessos/n_known, nulo se "
+                                                 "n_known = 0 (emenda 3.1.0)")},
+              ["lower", "upper", "est", "n"])
     metric = obj({
         "metric_id": METRIC_ID, "name": text(3), "reading": enum(*READINGS), "axis": enum(*AXES),
         "quantifier": enum(*QUANTIFIERS), "operational_coverage": cov,
@@ -34,11 +37,11 @@ def c15() -> dict:
     audit = obj({"n_absences": integer(0), "n_audited": integer(0), "method": text(5), "ref": c00("file_ref")},
                 ["n_absences", "n_audited", "method"],
                 description="ausências como auditoria separada (não entram no numerador nem no denominador)")
-    hp, hr = header("bo.result/1", "C15", "3.0.0", module=True)
+    hp, hr = header("bo.result/1", "C15", "3.1.0", module=True)
     res = obj({**hp, "metrics": arr(local("metric"), 1), "absence_audit": audit, "notes": text(1),
                "data": obj({}, extra=True, propertyNames={"not": {"pattern": P_OLDTERM}})},
               hr + ["metrics"], propertyNames={"not": {"pattern": P_OLDTERM}})
-    sp, sr = header("bo.metrics_spec/1", "C15", "3.0.0", module=True)
+    sp, sr = header("bo.metrics_spec/1", "C15", "3.1.0", module=True)
     spec_item = obj({"metric_id": METRIC_ID, "definition": text(10), "reading": enum(*READINGS),
                      "axis": enum(*AXES), "quantifier": enum(*QUANTIFIERS), "frame": text(5), "inclusion": text(5),
                      "weights": enum("uniform", "frame", "inverse_probability", "custom"),
@@ -50,7 +53,7 @@ def c15() -> dict:
                       {"required": ["results"]}],
             "description": "summary.json (C17) que carrega métricas C15 no bloco results"}
     return contract_schema(
-        "C15", "results", "3.0.0", "resultados e especificação de métricas", status="changed_v3",
+        "C15", "results", "3.1.0", "resultados e especificação de métricas", status="amended",
         description="operational_coverage{lower, upper, est, n} por leitura (field | decision | graph | complete_unit) e "
                     "por eixo (representability | transportability | operational | persistence | behavior); quantifier "
                     "(existential | universal | observed_fraction); frame, inclusion, weights; incerteza conjunta; "
@@ -61,7 +64,7 @@ def c15() -> dict:
                file_kind("result", "*.json", "json", "result", "document")],
         defs={"metric": metric, "result": res, "metrics_spec": spec, "summary_results": summ},
         producers=["(quase todos: results/<ID>/*.json)"], consumers=["STATS", "MATRIX", "METRICSLIB"],
-        rules=["C15-BOUNDS: lower <= est <= upper (est nulo só com n = 0)",
+        rules=["C15-BOUNDS: lower <= est <= upper; est nulo se e só se n = 0 ou n_known = 0; n_known <= n",
                "C15-OLDTERM: nenhuma chave com o termo antigo da v2",
                "C15-CORR: correlated_with só cita metric_id do mesmo documento",
                "C15-UNIQ: metric_id único"])
@@ -193,6 +196,10 @@ def c18() -> dict:
 # ------------------------------------------------------------------------------------------------- C19
 def c19() -> dict:
     ctl = obj({"kind": enum("self", "parent", "provider", "external", "UNKNOWN"), "ref": text(1)}, ["kind"])
+    owner = obj({"kind": enum("self", "parent", "provider", "external", "UNKNOWN"), "ref": text(1),
+                 "refs": arr(c00("unit_id"), 2, unique=True,
+                             description="faceta com vários donos: todos os donos; ref, se presente, é um deles "
+                                         "(emenda 3.1.0)")}, ["kind"])
     unit = obj({
         "unit_id": c00("unit_id"), "provider": c00("provider"),
         "kind": enum("ENTITY", "COMPONENT", "FACET", "BINDING", "UNKNOWN"),
@@ -204,7 +211,9 @@ def c19() -> dict:
         "identity": obj({"evidence": arr(c00("evidence_item")), "key_fields": arr(text(1), unique=True),
                          "anonymous": boolean(), "occurrence_key": arr(text(1), unique=True)},
                         ["evidence", "key_fields", "anonymous", "occurrence_key"]),
-        "lifecycle_controller": ctl, "owner": ctl,
+        "lifecycle_controller": ctl, "owner": owner,
+        "endpoints": arr(obj({"role": string(r"^[a-z][a-z0-9_]*$"), "unit_id": c00("unit_id")}, ["role", "unit_id"]),
+                         2, description="pontas do vínculo (BINDING): a identidade é a tupla das pontas (emenda 3.1.0)"),
         "effective_scope": obj({"kind": enum("self", "parent", "container", "global", "UNKNOWN"), "ref": text(1)},
                                ["kind"]),
         "evidence": arr(c00("evidence_item")), "rule_applied": c00("rule_id"),
@@ -222,7 +231,7 @@ def c19() -> dict:
                 "role": enum("CONFIG", "IDENTIFIER", "NAME", "TAG", "REFERENCE", "TIMESTAMP", "SECRET")},
                ["atom_id", "unit_id", "path_in_unit"])
     return contract_schema(
-        "C19", "canonical_units", "3.0.0", "unidades e átomos canônicos", status="changed_v3",
+        "C19", "canonical_units", "3.1.0", "unidades e átomos canônicos", status="amended",
         description="Unidade: kind (ENTITY | COMPONENT | FACET | BINDING | UNKNOWN), identity{evidência, campos-chave, "
                     "anonymous, occurrence_key}, lifecycle_controller, owner, effective_scope, evidence[], rule_applied, "
                     "missing_evidence[]; ligação unidade canônica ↔ recurso/bloco Terraform ↔ recurso de API. Sem "
@@ -234,7 +243,10 @@ def c19() -> dict:
         rules=["C19-UNKNOWN: kind = UNKNOWN ⇔ missing_evidence não vazio",
                "C19-ANON: componente anônimo (bloco sem identidade) tem occurrence_key",
                "C19-LINK: canonical_atoms citam unit_id do canonical_units irmão",
-               "C19-UNIQ: unit_id único; atom_id em uma unidade só"])
+               "C19-UNIQ: unit_id único; atom_id em uma unidade só",
+               "C19-ENDPOINTS: endpoints só em BINDING (ou UNKNOWN), papéis distintos, nenhuma ponta é a própria unidade",
+               "C19-OWNERS: owner.refs com 2+ donos distintos; owner.ref, se presente, está em refs; a unidade não é "
+               "dona de si em refs"])
 
 
 # ------------------------------------------------------------------------------------------------- C20

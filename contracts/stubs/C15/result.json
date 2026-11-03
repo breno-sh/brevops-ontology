@@ -1,7 +1,7 @@
 {
  "schema": "bo.result/1",
  "contract": "C15",
- "contract_version": "3.0.0",
+ "contract_version": "3.1.0",
  "module": "MATRIX",
  "generated_at": "2026-11-03T08:00:00-03:00",
  "metrics": [
@@ -50,6 +50,37 @@
     "upper": 1.0,
     "est": null,
     "n": 0
+   },
+   "frame": {
+    "ref": {
+     "path": "$BO_DATA/UNIVERSE/universe.json",
+     "sha256": "327a7380d2cc7cf09ed5820e1ecdb8abe585d696b5b5526986dfebe70acec59e"
+    },
+    "description": "unidades do universo U no pin"
+   },
+   "inclusion": {
+    "rule_id": "INC-FIELD-01",
+    "text": "átomo configurável com evidência"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   }
+  },
+  {
+   "metric_id": "M-PERS-DIR",
+   "name": "persistência numa direção",
+   "reading": "field",
+   "axis": "persistence",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.0,
+    "upper": 1.0,
+    "est": null,
+    "n": 1,
+    "n_known": 0
    },
    "frame": {
     "ref": {

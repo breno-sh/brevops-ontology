@@ -1,13 +1,13 @@
 {
  "$schema": "https://json-schema.org/draft/2020-12/schema",
  "$id": "https://w3id.org/brevops/contracts/C19/canonical_units.schema.json",
- "title": "C19 canonical_units 3.0.0: unidades e átomos canônicos",
+ "title": "C19 canonical_units 3.1.0: unidades e átomos canônicos",
  "description": "Unidade: kind (ENTITY | COMPONENT | FACET | BINDING | UNKNOWN), identity{evidência, campos-chave, anonymous, occurrence_key}, lifecycle_controller, owner, effective_scope, evidence[], rule_applied, missing_evidence[]; ligação unidade canônica ↔ recurso/bloco Terraform ↔ recurso de API. Sem evidência, UNKNOWN (nunca 'entidade' por omissão); nada depende de quantos elementos o bloco aceita.",
  "x-bo-contract": {
   "id": "C19",
   "name": "canonical_units",
-  "version": "3.0.0",
-  "status": "changed_v3",
+  "version": "3.1.0",
+  "status": "amended",
   "owner": "CONTRACTS",
   "files": [
    {
@@ -29,7 +29,9 @@
    "C19-UNKNOWN: kind = UNKNOWN ⇔ missing_evidence não vazio",
    "C19-ANON: componente anônimo (bloco sem identidade) tem occurrence_key",
    "C19-LINK: canonical_atoms citam unit_id do canonical_units irmão",
-   "C19-UNIQ: unit_id único; atom_id em uma unidade só"
+   "C19-UNIQ: unit_id único; atom_id em uma unidade só",
+   "C19-ENDPOINTS: endpoints só em BINDING (ou UNKNOWN), papéis distintos, nenhuma ponta é a própria unidade",
+   "C19-OWNERS: owner.refs com 2+ donos distintos; owner.ref, se presente, está em refs; a unidade não é dona de si em refs"
   ],
   "producers": [
    "DECOMPOSE",
@@ -181,12 +183,44 @@
       "ref": {
        "type": "string",
        "minLength": 1
+      },
+      "refs": {
+       "type": "array",
+       "items": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/unit_id"
+       },
+       "minItems": 2,
+       "uniqueItems": true,
+       "description": "faceta com vários donos: todos os donos; ref, se presente, é um deles (emenda 3.1.0)"
       }
      },
      "required": [
       "kind"
      ],
      "additionalProperties": false
+    },
+    "endpoints": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "role": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[a-z][a-z0-9_]*$"
+       },
+       "unit_id": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/unit_id"
+       }
+      },
+      "required": [
+       "role",
+       "unit_id"
+      ],
+      "additionalProperties": false
+     },
+     "minItems": 2,
+     "description": "pontas do vínculo (BINDING): a identidade é a tupla das pontas (emenda 3.1.0)"
     },
     "effective_scope": {
      "type": "object",

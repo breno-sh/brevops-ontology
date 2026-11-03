@@ -8,6 +8,7 @@
   "C01/atoms.jsonl": "C01:atoms",
   "C02/types.jsonl": "C02:types",
   "C03/docs_facts.jsonl": "C03:docs_facts",
+  "C03/type_subcategory.jsonl": "C03:type_subcategory",
   "C04/roles.jsonl": "C04:roles",
   "C05/value_space.jsonl": "C05:value_space",
   "C06/resources.parquet": "C06:resources",

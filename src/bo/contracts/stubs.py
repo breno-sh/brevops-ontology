@@ -113,7 +113,62 @@ def c03() -> dict:
     f2 = {"fact_id": "DF-aws-0002", "atom_id": "aws:aws_db_instance:backup_retention_period",
           "provider_version": "6.0.0", "fact_kind": "unit", "status": "unknown", "unknown_reason": "not_documented",
           "extraction_method": "model", "evidence_level": "interpreted", "model_id": "claude-opus-5-5"}
-    return {"C03/docs_facts.jsonl": jsonl([f1, f2])}
+    f3 = {"fact_id": "DF-aws-0003", "atom_id": "aws:aws_wafv2_rule_group:rule.statement.and_statement.statement.byte_match_statement.search_string",
+          "provider_version": "6.0.0", "fact_kind": "description", "status": "stated",
+          "value": "texto procurado na requisição",
+          "source": {**EV_DOC["doc"], "file": "website/docs/r/wafv2_rule_group.html.markdown", "line": 410,
+                     "redacted": False},
+          "extraction_method": "parser", "evidence_level": "derived",
+          "applies_to": ["aws:aws_wafv2_rule_group:rule.statement.or_statement.statement.byte_match_statement.search_string"]}
+    f4 = {"fact_id": "DF-oci-0001", "atom_id": "oci:oci_core_instance:launch_options.network_type",
+          "provider_version": "9.11.0", "fact_kind": "applicable_when", "status": "stated",
+          "value": {"applicable_when": {"source_type": "image"}},
+          "source": {"repo": "oracle/terraform-provider-oci", "tag": "v9.11.0", "file": "website/docs/r/core_instance.html.markdown",
+                     "line": 88, "sentence": "frase sintética: aplicável quando a origem é imagem"},
+          "extraction_method": "regex", "evidence_level": "published"}
+    ts_src = lambda line, sent: {"repo": "hashicorp/terraform-provider-azurerm", "tag": "v5.12.0",  # noqa: E731
+                                 "file": "website/docs/r/storage_account.html.markdown", "line": line, "sentence": sent}
+    t1 = {"type_id": "azurerm:azurerm_storage_account", "provider": "azurerm", "provider_version": "5.12.0",
+          "resource_type": "azurerm_storage_account", "kind": "resource", "in_schema": True,
+          "doc_file": "website/docs/r/storage_account.html.markdown",
+          "title": {"text": "azurerm_storage_account", "line": 9},
+          "subcategory": {"status": "stated", "value": "Storage", "source": ts_src(2, 'subcategory: "Storage"'),
+                          "extraction_method": "parser", "evidence_level": "published"},
+          "import": {"status": "stated", "supported": True,
+                     "value": ["/subscriptions/{subscriptionId}/resourceGroups/{rg}/providers/Microsoft.Storage/storageAccounts/{name}"],
+                     "key_sentence": ts_src(400, "Storage Accounts can be imported using the `resource id`, e.g."),
+                     "source": ts_src(403, "terraform import azurerm_storage_account.example /subscriptions/{subscriptionId}/..."),
+                     "methods": ["terraform_import_cli"], "extraction_method": "regex", "evidence_level": "published"}}
+    t2 = {"type_id": "aws:aws_alb", "provider": "aws", "provider_version": "6.0.0", "resource_type": "aws_alb",
+          "kind": "resource", "in_schema": True, "doc_file": None,
+          "alias_of": {"type_id": "aws:aws_lb", "evidence_level": "derived"},
+          "subcategory": {"status": "unknown", "unknown_reason": "not_documented", "extraction_method": "parser",
+                          "evidence_level": "published"},
+          "import": {"status": "stated", "supported": True, "id_attributes": ["arn"], "id_text": ["the `arn`"],
+                     "identity": {"required": ["arn"], "optional": []}, "methods": ["import_block_id"],
+                     "statements": [{"line": 120, "sentence": "frase sintética: importe usando o `arn`."}],
+                     "extraction_method": "regex", "evidence_level": "published"}}
+    t3 = {"type_id": "oci:oci_core_vcns", "provider": "oci", "provider_version": "9.11.0", "resource_type": "oci_core_vcns",
+          "kind": "data_source", "doc_file": "website/docs/d/core_vcns.html.markdown",
+          "subcategory": {"status": "stated", "value": "Core",
+                          "source": {"repo": "oracle/terraform-provider-oci", "tag": "v9.11.0",
+                                     "file": "website/docs/d/core_vcns.html.markdown", "line": 2,
+                                     "sentence": 'subcategory: "Core"'},
+                          "extraction_method": "parser", "evidence_level": "published"}}
+    t4 = {"type_id": "google:google_storage_bucket", "provider": "google", "provider_version": "8.9.0",
+          "resource_type": "google_storage_bucket", "doc_pages": ["website/docs/r/storage_bucket.html.markdown"],
+          "subcategory": {"status": "stated", "value": "Cloud Storage",
+                          "source": {"repo": "hashicorp/terraform-provider-google", "tag": "v8.9.0",
+                                     "file": "website/docs/r/storage_bucket.html.markdown", "line": 2,
+                                     "sentence": 'subcategory: "Cloud Storage"'},
+                          "extraction_method": "parser", "evidence_level": "published"},
+          "import": {"status": "stated", "id_format": "{{project}}/{{name}}", "id_is_plain_id": False,
+                     "placeholders": ["project", "name"],
+                     "source": {"repo": "hashicorp/terraform-provider-google", "tag": "v8.9.0",
+                                "file": "website/docs/r/storage_bucket.html.markdown", "line": 300,
+                                "sentence": "frase sintética: {{project}}/{{name}}"},
+                     "extraction_method": "parser", "evidence_level": "published"}}
+    return {"C03/docs_facts.jsonl": jsonl([f1, f2, f3, f4]), "C03/type_subcategory.jsonl": jsonl([t1, t2, t3, t4])}
 
 
 def c04() -> dict:
@@ -393,7 +448,7 @@ def c11() -> dict:
          "claim_version_id": "CLM-EX-01@2",
          "stratum": {"pair": "AWSGCP", "domain": "DB", "cardinality": "1:1", "relation": "exact", "direction": "forward"},
          "frame_ref": {"path": "$BO_DATA/DEPSAMPLE/frame.jsonl", "sha256": H("frame")}, "weight": 12.5,
-         "origin": "sample", "side": "object", "lowering_plan": {"plan_id": "LP-0001", "graph_id": "GIR-0001"},
+         "origin": "sample", "side": "object", "lowering_plan": {"plan_id": "LP-HG-BUCKET", "graph_id": "GIR-HG-BUCKET"},
          "values": [{"var": "pa:backup_retention_days", "term": {"kind": "literal", "datatype": "number", "value": 7}}],
          "comparator": {"name": "exact"}, "cost_class": "low"}
     c2 = {**copy.deepcopy(c), "case_id": "CASE-CQ-0001", "origin": "cq", "cq_id": "CQ-CVO-04",
@@ -407,7 +462,9 @@ def c12() -> dict:
           "fields": [{"path": "settings.backup_configuration.retained_backups", "state": "read", "value": 7},
                      {"path": "root_password", "state": "withheld",
                       "redaction": {"rule_id": "REDACT-SECRET-01", "at_source": True}},
-                     {"path": "settings.insights_config", "state": "not_read"}]}
+                     {"path": "settings.insights_config", "state": "not_read"},
+                     {"path": "network", "node_id": "r1", "state": "read", "value": "default"},
+                     {"path": "network", "node_id": "r2", "state": "read", "value": "default"}]}
     oc = {"outcome_id": "OUT-0001", "case_id": "CASE-AWSGCP-DB-0001", "group_id": "G-AWSGCP-DB-0001",
           "claim_id": "CLM-EX-01", "side": "object", "outcome": {"axis": "persistence", "value": "PERSISTED"},
           "evidence_state_before": "DOC_SUPPORTED", "evidence_state_after": "PERSISTENCE_VERIFIED",
@@ -541,6 +598,10 @@ METRIC = {"metric_id": "M-OPCOV-FIELD", "name": "cobertura operacional por campo
 METRIC2 = {**copy.deepcopy(METRIC), "metric_id": "M-PERS-FIELD", "name": "persistência por campo",
            "axis": "persistence", "operational_coverage": {"lower": 0.0, "upper": 1.0, "est": None, "n": 0},
            "joint_uncertainty": {"method": "none"}}
+METRIC3 = {**copy.deepcopy(METRIC), "metric_id": "M-PERS-DIR", "name": "persistência numa direção",
+           "axis": "persistence", "operational_coverage": {"lower": 0.0, "upper": 1.0, "est": None, "n": 1,
+                                                           "n_known": 0},
+           "joint_uncertainty": {"method": "none"}}
 
 
 def c15() -> dict:
@@ -549,7 +610,7 @@ def c15() -> dict:
                          "reading": "field", "axis": "operational", "quantifier": "observed_fraction",
                          "frame": "universo U", "inclusion": "INC-FIELD-01", "weights": "uniform",
                          "uncertainty": "bootstrap"}]}
-    res = {**hdr("bo.result/1", "C15", "3.0.0", "MATRIX"), "metrics": [METRIC, METRIC2],
+    res = {**hdr("bo.result/1", "C15", "3.1.0", "MATRIX"), "metrics": [METRIC, METRIC2, METRIC3],
            "absence_audit": {"n_absences": 14, "n_audited": 14, "method": "NONEHUNT dirigido por par"},
            "data": {"pairs": 6}}
     summ = {**hdr("bo.summary/1", "C17", "3.0.0", "CAND"), "agent_provenance": AP, "sources": [SRC],
@@ -633,7 +694,23 @@ def c19() -> dict:
               "path_in_unit": "backup_retention_period", "role": "CONFIG"},
              {"atom_id": "aws:aws_security_group:ingress.from_port", "unit_id": "CU-aws-sg-rule-block",
               "path_in_unit": "from_port"}]
-    return {"C19/canonical_units.jsonl": jsonl([u1, u2, u3]), "C19/canonical_atoms.jsonl": jsonl(atoms)}
+    u4 = {"unit_id": "CU-aws-route-table-assoc", "provider": "aws", "kind": "BINDING",
+          "layers": {"terraform": {"resource_type": "aws_route_table_association"}, "domain_unit": "associação de rota"},
+          "identity": {"evidence": [EV_REF], "key_fields": ["subnet_id", "route_table_id"], "anonymous": False,
+                       "occurrence_key": []},
+          "endpoints": [{"role": "subnet", "unit_id": "CU-aws-subnet"}, {"role": "route_table", "unit_id": "CU-aws-route-table"}],
+          "lifecycle_controller": {"kind": "self"}, "owner": {"kind": "self"}, "effective_scope": {"kind": "parent",
+                                                                                                   "ref": "CU-aws-subnet"},
+          "evidence": [EV_REF], "rule_applied": "GRAIN-BINDING-01", "missing_evidence": []}
+    u5 = {"unit_id": "CU-aws-peering-options", "provider": "aws", "kind": "FACET",
+          "layers": {"terraform": {"resource_type": "aws_vpc_peering_connection_options"}, "domain_unit": "opções do peering"},
+          "identity": {"evidence": [EV_REF], "key_fields": ["vpc_peering_connection_id"], "anonymous": False,
+                       "occurrence_key": []},
+          "lifecycle_controller": {"kind": "parent", "ref": "CU-aws-vpc-peering"},
+          "owner": {"kind": "parent", "ref": "CU-aws-vpc-peering", "refs": ["CU-aws-vpc-peering", "CU-aws-vpc"]},
+          "effective_scope": {"kind": "parent", "ref": "CU-aws-vpc-peering"}, "evidence": [EV_REF],
+          "rule_applied": "GRAIN-G3-FACET", "missing_evidence": []}
+    return {"C19/canonical_units.jsonl": jsonl([u1, u2, u3, u4, u5]), "C19/canonical_atoms.jsonl": jsonl(atoms)}
 
 
 def c20() -> dict:
@@ -746,35 +823,11 @@ def c25() -> dict:
 
 
 def c26() -> dict:
-    g = {"graph_id": "GIR-0001", "case_id": "CASE-AWSGCP-DB-0001", "source_provider": "aws",
-         "terms": [{"term_id": "t1", "term": {"kind": "symbol", "symbol_id": SYM1, "name_class": "variable",
-                                              "scope": "repo"}},
-                   {"term_id": "t2", "term": {"kind": "literal", "datatype": "number", "value": 7}}],
-         "resources": [{"node_id": "r1", "class_iri": "x:DatabaseInstance", "unit_id": "CU-aws-db-instance"},
-                       {"node_id": "r2", "class_iri": "x:Network"}],
-         "components": [{"node_id": "c1", "of": "r1", "class_iri": "x:BackupConfiguration",
-                         "occurrence_key": ["settings"]}],
-         "references": [{"from": "r1", "to": "r2", "property_iri": "x:inNetwork", "kind": "reference"}],
-         "preconditions": [{"precondition_id": "PRE-0001", "guard": {"all": EDITION_STD}, "applies_to": ["r1"]}],
-         "contexts": [{"key": "region", "value": None, "state": "symbolic"},
-                      {"key": "edition", "value": "standard", "state": "known"}]}
-    p = {"plan_id": "LP-0001", "graph_id": "GIR-0001", "target_provider": "google",
-         "steps": [{"order": 1, "action": "create", "node_id": "r2", "resource_type": "google_compute_network",
-                    "derived_name": {"template": "bo-{t1}-net", "from_terms": ["t1"]}, "typed_choices": [],
-                    "values": [{"field": "auto_create_subnetworks", "term": {"kind": "literal", "datatype": "bool",
-                                                                             "value": False},
-                                "origin": "synthesized", "marked": True}],
-                    "losses": [], "symbolic_unknowns": [{"term_id": "t1", "reason": "nome só existe depois da criação"}],
-                    "depends_on": []},
-                   {"order": 2, "action": "create", "node_id": "r1", "resource_type": "google_sql_database_instance",
-                    "typed_choices": [{"choice_id": "CH-0001", "options": ["r_ver_b", "r_ver_b2"], "selected": "r_ver_b",
-                                       "guard": {"all": EDITION_STD}, "reason": "edição standard no contexto"}],
-                    "values": [{"field": "settings.backup_configuration.retained_backups", "term": g["terms"][1]["term"],
-                                "origin": "carried", "marked": False}],
-                    "losses": [{"code": "DEFAULT_NOT_CARRIED", "field": "settings.backup_configuration.start_time"}],
-                    "symbolic_unknowns": [], "depends_on": [1]}],
-         "dependency_closure": {"closed": True, "missing": []}}
-    return {"C26/graph_ir.jsonl": jsonl([g]), "C26/lowering_plan.jsonl": jsonl([p])}
+    """Um plano mínimo por provedor (aws, google, azurerm, oci), cada um com o graph_ir irmão; copiados das fixtures
+    dos HARNESS-* (adopted/C26_plans_stub.json): renderizam no pin do PINS, então o gate de render de cada
+    HARNESS acha exatamente UM plano do seu provedor (emenda C26 1.1.0)."""
+    d = adopted("C26_plans_stub")
+    return {"C26/graph_ir.jsonl": jsonl(d["graph_irs"]), "C26/lowering_plan.jsonl": jsonl(d["lowering_plans"])}
 
 
 def c27() -> dict:
@@ -863,6 +916,7 @@ def all_stubs() -> dict:
 KIND_OF = {  # caminho do stub -> "Cnn:tipo"
     "C00/module.json": "C00:module", "C00/modulos.json": "C00:module_catalog",
     "C01/atoms.jsonl": "C01:atoms", "C02/types.jsonl": "C02:types", "C03/docs_facts.jsonl": "C03:docs_facts",
+    "C03/type_subcategory.jsonl": "C03:type_subcategory",
     "C04/roles.jsonl": "C04:roles", "C05/value_space.jsonl": "C05:value_space",
     "C06/symbolic_config.jsonl": "C06:symbolic_config", "C06/resources.parquet": "C06:resources",
     "C06/usage.jsonl": "C06:usage", "C07/universe.json": "C07:universe", "C08/candidates.jsonl": "C08:candidates",

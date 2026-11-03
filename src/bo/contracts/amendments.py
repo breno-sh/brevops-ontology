@@ -28,6 +28,28 @@ AMENDMENTS = [
     {"contract": "C18", "from": "2.0.0", "to": "2.0.1", "at": "2026-11-03T02:10:00-03:00", "requested_by": "CONTRACTS",
      "source": "varredura dos gates do modulos.json",
      "change": "numbers casa com numbers*.json (numbers_supp.json do STATS-SUPP); o .tex irmão é o de mesmo nome-base"},
+    # ---- emenda 2 (2026-11-03, pedidos dos HARNESS-*, DOCS-*, GRAIN e METRICSLIB)
+    {"contract": "C00", "from": "3.0.0", "to": "3.0.1", "at": "2026-11-03T08:00:00-03:00",
+     "requested_by": "HARNESS-AZURE, DOCS-AZURE", "source": "results/{HARNESS-AZURE,DOCS-AZURE}/CONTRACT_CHANGE.txt",
+     "change": "term.reference.target_node e doc_source.redacted, ambos opcionais"},
+    {"contract": "C03", "from": "3.0.0", "to": "3.1.0", "at": "2026-11-03T08:00:00-03:00",
+     "requested_by": "DOCS-AWS, DOCS-GCP, DOCS-AZURE, DOCS-OCI",
+     "source": "results/DOCS-*/CONTRACT_CHANGE.txt (bo/base e lanes bo-docs-*)",
+     "change": "tipo type_subcategory (type_subcategory.jsonl, registro type_fact: subcategoria e importação por tipo); "
+               "fact_kind applicable_when; applies_to opcional em fato derived (blocos repetidos)"},
+    {"contract": "C12", "from": "3.0.0", "to": "3.1.0", "at": "2026-11-03T08:00:00-03:00",
+     "requested_by": "HARNESS-GCP, HARNESS-AWS, HARNESS-AZURE", "source": "results/HARNESS-GCP/CONTRACT_CHANGE.txt",
+     "change": "readback.fields[].node_id opcional; unicidade por (node_id, path)"},
+    {"contract": "C15", "from": "3.0.0", "to": "3.1.0", "at": "2026-11-03T08:00:00-03:00", "requested_by": "METRICSLIB",
+     "source": "results/METRICSLIB/CONTRACT_CHANGE.txt",
+     "change": "operational_coverage.n_known opcional; est nulo também com n > 0 e n_known = 0"},
+    {"contract": "C19", "from": "3.0.0", "to": "3.1.0", "at": "2026-11-03T08:00:00-03:00", "requested_by": "GRAIN",
+     "source": "src/bo/grain/schema.py (to_c19: pontas em identity.evidence por falta de campo)",
+     "change": "endpoints (pontas do vínculo) e owner.refs (faceta com vários donos), opcionais"},
+    {"contract": "C26", "from": "1.0.0", "to": "1.1.0", "at": "2026-11-03T08:00:00-03:00",
+     "requested_by": "HARNESS-AWS, HARNESS-GCP, HARNESS-AZURE, HARNESS-OCI",
+     "source": "results/HARNESS-*/CONTRACT_CHANGE.txt",
+     "change": "derived_name.field opcional; regra C26-TARGET; stub com um plano renderizável por provedor"},
 ]
 
 

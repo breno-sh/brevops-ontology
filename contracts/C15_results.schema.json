@@ -1,13 +1,13 @@
 {
  "$schema": "https://json-schema.org/draft/2020-12/schema",
  "$id": "https://w3id.org/brevops/contracts/C15/results.schema.json",
- "title": "C15 results 3.0.0: resultados e especificação de métricas",
+ "title": "C15 results 3.1.0: resultados e especificação de métricas",
  "description": "operational_coverage{lower, upper, est, n} por leitura (field | decision | graph | complete_unit) e por eixo (representability | transportability | operational | persistence | behavior); quantifier (existential | universal | observed_fraction); frame, inclusion, weights; incerteza conjunta; ausências como auditoria separada; o campo da v2 com o termo antigo saiu (nenhuma chave com ele).",
  "x-bo-contract": {
   "id": "C15",
   "name": "results",
-  "version": "3.0.0",
-  "status": "changed_v3",
+  "version": "3.1.0",
+  "status": "amended",
   "owner": "CONTRACTS",
   "files": [
    {
@@ -34,7 +34,7 @@
    }
   ],
   "semantic_rules": [
-   "C15-BOUNDS: lower <= est <= upper (est nulo só com n = 0)",
+   "C15-BOUNDS: lower <= est <= upper; est nulo se e só se n = 0 ou n_known = 0; n_known <= n",
    "C15-OLDTERM: nenhuma chave com o termo antigo da v2",
    "C15-CORR: correlated_with só cita metric_id do mesmo documento",
    "C15-UNIQ: metric_id único"
@@ -114,6 +114,11 @@
       "n": {
        "type": "integer",
        "minimum": 0
+      },
+      "n_known": {
+       "type": "integer",
+       "minimum": 0,
+       "description": "unidades com desfecho conhecido; est = sucessos/n_known, nulo se n_known = 0 (emenda 3.1.0)"
       }
      },
      "required": [
@@ -256,7 +261,10 @@
      "const": "C15"
     },
     "contract_version": {
-     "const": "3.0.0"
+     "enum": [
+      "3.0.0",
+      "3.1.0"
+     ]
     },
     "module": {
      "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/stable_id"
@@ -337,7 +345,10 @@
      "const": "C15"
     },
     "contract_version": {
-     "const": "3.0.0"
+     "enum": [
+      "3.0.0",
+      "3.1.0"
+     ]
     },
     "module": {
      "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/stable_id"

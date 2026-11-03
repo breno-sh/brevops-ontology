@@ -1,0 +1,1207 @@
+{
+ "graph_irs": [
+  {
+   "case_id": "CASE-HAWS-NET-01",
+   "components": [],
+   "contexts": [
+    {
+     "key": "region",
+     "state": "symbolic",
+     "value": null
+    }
+   ],
+   "graph_id": "GIR-AWS-NET-01",
+   "preconditions": [],
+   "references": [
+    {
+     "from": "r2",
+     "kind": "reference",
+     "property_iri": "x:inNetwork",
+     "to": "r1"
+    }
+   ],
+   "resources": [
+    {
+     "class_iri": "x:Network",
+     "node_id": "r1"
+    },
+    {
+     "class_iri": "x:Subnetwork",
+     "node_id": "r2"
+    }
+   ],
+   "source_provider": "google",
+   "terms": [
+    {
+     "term": {
+      "kind": "symbol",
+      "name_class": "variable",
+      "scope": "repo",
+      "symbol_id": "SYM-a1b2c3d4e5f60718"
+     },
+     "term_id": "t1"
+    }
+   ]
+  },
+  {
+   "case_id": "CASE-HG-BUCKET",
+   "components": [],
+   "contexts": [
+    {
+     "key": "region",
+     "state": "known",
+     "value": "us-central1"
+    }
+   ],
+   "graph_id": "GIR-HG-BUCKET",
+   "preconditions": [],
+   "references": [],
+   "resources": [
+    {
+     "class_iri": "x:ObjectStore",
+     "node_id": "r1"
+    }
+   ],
+   "source_provider": "aws",
+   "terms": [
+    {
+     "term": {
+      "kind": "symbol",
+      "name_class": "variable",
+      "scope": "repo",
+      "symbol_id": "SYM-5e6f708192a3"
+     },
+     "term_id": "t1"
+    }
+   ]
+  },
+  {
+   "case_id": "CASE-AZREF-STO-0001",
+   "components": [
+    {
+     "class_iri": "x:Versioning",
+     "node_id": "c1",
+     "occurrence_key": [
+      "blob_properties"
+     ],
+     "of": "r2"
+    }
+   ],
+   "contexts": [
+    {
+     "key": "region",
+     "state": "known",
+     "value": "brazilsouth"
+    }
+   ],
+   "graph_id": "GIR-AZREF-0001",
+   "preconditions": [],
+   "references": [
+    {
+     "from": "r4",
+     "kind": "reference",
+     "property_iri": "x:inNetwork",
+     "to": "r3"
+    },
+    {
+     "from": "r2",
+     "kind": "reference",
+     "property_iri": "x:containedIn",
+     "to": "r1"
+    }
+   ],
+   "resources": [
+    {
+     "class_iri": "x:ResourceContainer",
+     "node_id": "r1"
+    },
+    {
+     "class_iri": "x:ObjectStore",
+     "node_id": "r2"
+    },
+    {
+     "class_iri": "x:Network",
+     "node_id": "r3"
+    },
+    {
+     "class_iri": "x:Subnet",
+     "node_id": "r4"
+    }
+   ],
+   "source_provider": "aws",
+   "terms": [
+    {
+     "term": {
+      "kind": "symbol",
+      "name_class": "variable",
+      "scope": "repo",
+      "symbol_id": "SYM-a1b2c3d4e5f60718"
+     },
+     "term_id": "t1"
+    },
+    {
+     "term": {
+      "datatype": "number",
+      "kind": "literal",
+      "value": 7
+     },
+     "term_id": "t2"
+    }
+   ]
+  },
+  {
+   "case_id": "CASE-AWSOCI-NET-0001",
+   "components": [
+    {
+     "class_iri": "bo:TrafficRule",
+     "node_id": "c1",
+     "occurrence_key": [
+      "ingress",
+      "0"
+     ],
+     "of": "r3"
+    }
+   ],
+   "contexts": [
+    {
+     "key": "region",
+     "state": "symbolic",
+     "value": null
+    },
+    {
+     "key": "synthetic_account",
+     "state": "symbolic",
+     "value": null
+    }
+   ],
+   "graph_id": "GIR-OCI-NET-0001",
+   "preconditions": [],
+   "references": [
+    {
+     "from": "r2",
+     "kind": "reference",
+     "property_iri": "bo:inNetwork",
+     "to": "r1"
+    },
+    {
+     "from": "r3",
+     "kind": "reference",
+     "property_iri": "bo:inNetwork",
+     "to": "r1"
+    },
+    {
+     "from": "c1",
+     "kind": "attachment",
+     "property_iri": "bo:ruleOf",
+     "to": "r3"
+    }
+   ],
+   "resources": [
+    {
+     "class_iri": "bo:Network",
+     "node_id": "r1"
+    },
+    {
+     "class_iri": "bo:TrafficRuleSet",
+     "node_id": "r2"
+    },
+    {
+     "class_iri": "bo:TrafficRuleSet",
+     "node_id": "r3"
+    }
+   ],
+   "source_provider": "aws",
+   "terms": [
+    {
+     "term": {
+      "kind": "symbol",
+      "name_class": "resource_attribute",
+      "scope": "repo",
+      "symbol_id": "SYM-0a1b2c3d4e5f0001"
+     },
+     "term_id": "t1"
+    },
+    {
+     "term": {
+      "kind": "symbol",
+      "name_class": "resource_attribute",
+      "scope": "repo",
+      "symbol_id": "SYM-0a1b2c3d4e5f0002"
+     },
+     "term_id": "t2"
+    },
+    {
+     "term": {
+      "kind": "symbol",
+      "name_class": "variable",
+      "scope": "repo",
+      "symbol_id": "SYM-c0a1000000000001"
+     },
+     "term_id": "t3"
+    },
+    {
+     "term": {
+      "kind": "symbol",
+      "name_class": "variable",
+      "scope": "repo",
+      "symbol_id": "SYM-c0a1000000000003"
+     },
+     "term_id": "t4"
+    }
+   ]
+  }
+ ],
+ "lowering_plans": [
+  {
+   "dependency_closure": {
+    "closed": true,
+    "missing": []
+   },
+   "graph_id": "GIR-AWS-NET-01",
+   "plan_id": "LP-AWS-NET-01",
+   "steps": [
+    {
+     "action": "create",
+     "depends_on": [],
+     "derived_name": {
+      "from_terms": [
+       "t1"
+      ],
+      "template": "bo-{t1}-net"
+     },
+     "losses": [],
+     "node_id": "r1",
+     "order": 1,
+     "resource_type": "aws_vpc",
+     "symbolic_unknowns": [
+      {
+       "reason": "nome só existe depois da criação",
+       "term_id": "t1"
+      }
+     ],
+     "typed_choices": [],
+     "values": [
+      {
+       "field": "cidr_block",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "datatype": "string",
+        "kind": "literal",
+        "value": "10.42.0.0/16"
+       }
+      },
+      {
+       "field": "enable_dns_hostnames",
+       "marked": true,
+       "origin": "synthesized",
+       "term": {
+        "datatype": "bool",
+        "kind": "literal",
+        "value": true
+       }
+      }
+     ]
+    },
+    {
+     "action": "create",
+     "depends_on": [
+      1
+     ],
+     "losses": [],
+     "node_id": "r2",
+     "order": 2,
+     "resource_type": "aws_subnet",
+     "symbolic_unknowns": [],
+     "typed_choices": [],
+     "values": [
+      {
+       "field": "vpc_id",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "attribute": "id",
+        "kind": "reference",
+        "target_address": "aws_vpc.SYM-a1b2c3d4e5f60718",
+        "target_type": "aws_vpc"
+       }
+      },
+      {
+       "field": "cidr_block",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "datatype": "string",
+        "kind": "literal",
+        "value": "10.42.1.0/24"
+       }
+      }
+     ]
+    }
+   ],
+   "target_provider": "aws"
+  },
+  {
+   "dependency_closure": {
+    "closed": true,
+    "missing": []
+   },
+   "graph_id": "GIR-HG-BUCKET",
+   "plan_id": "LP-HG-BUCKET",
+   "steps": [
+    {
+     "action": "create",
+     "depends_on": [],
+     "derived_name": {
+      "from_terms": [
+       "t1"
+      ],
+      "template": "bo-{t1}-bucket"
+     },
+     "losses": [
+      {
+       "code": "UNIT_ROUNDED",
+       "detail": "retenção em dias arredondada",
+       "field": "retention_policy.retention_period"
+      }
+     ],
+     "node_id": "r1",
+     "order": 1,
+     "resource_type": "google_storage_bucket",
+     "symbolic_unknowns": [],
+     "typed_choices": [],
+     "values": [
+      {
+       "field": "location",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "datatype": "string",
+        "kind": "literal",
+        "value": "US-CENTRAL1"
+       }
+      },
+      {
+       "field": "force_destroy",
+       "marked": true,
+       "origin": "synthesized",
+       "term": {
+        "datatype": "bool",
+        "kind": "literal",
+        "value": true
+       }
+      },
+      {
+       "field": "uniform_bucket_level_access",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "datatype": "bool",
+        "kind": "literal",
+        "value": true
+       }
+      },
+      {
+       "field": "versioning.enabled",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "datatype": "bool",
+        "kind": "literal",
+        "value": true
+       }
+      },
+      {
+       "field": "labels.bo_case",
+       "marked": true,
+       "origin": "synthesized",
+       "term": {
+        "datatype": "string",
+        "kind": "literal",
+        "value": "hg-bucket"
+       }
+      },
+      {
+       "field": "labels.env",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "datatype": "string",
+        "kind": "literal",
+        "value": "sandbox"
+       }
+      },
+      {
+       "field": "lifecycle_rule.0.action.type",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "datatype": "string",
+        "kind": "literal",
+        "value": "Delete"
+       }
+      },
+      {
+       "field": "lifecycle_rule.0.condition.age",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "datatype": "number",
+        "kind": "literal",
+        "value": 30
+       }
+      },
+      {
+       "field": "lifecycle_rule.1.action",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "datatype": "map",
+        "kind": "literal",
+        "value": {
+         "storage_class": "NEARLINE",
+         "type": "SetStorageClass"
+        }
+       }
+      },
+      {
+       "field": "lifecycle_rule.1.condition.age",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "datatype": "number",
+        "kind": "literal",
+        "value": 10
+       }
+      },
+      {
+       "field": "soft_delete_policy.retention_duration_seconds",
+       "marked": true,
+       "origin": "default_declared",
+       "term": {
+        "datatype": "number",
+        "kind": "literal",
+        "value": 0
+       }
+      }
+     ]
+    }
+   ],
+   "target_provider": "google"
+  },
+  {
+   "dependency_closure": {
+    "closed": true,
+    "missing": []
+   },
+   "graph_id": "GIR-AZREF-0001",
+   "plan_id": "LP-AZREF-0001",
+   "steps": [
+    {
+     "action": "create",
+     "depends_on": [],
+     "derived_name": {
+      "from_terms": [
+       "t1"
+      ],
+      "template": "bo-{t1}-rg"
+     },
+     "losses": [],
+     "node_id": "r1",
+     "order": 1,
+     "resource_type": "azurerm_resource_group",
+     "symbolic_unknowns": [
+      {
+       "reason": "nome do recurso só existe na execução (variável do repositório)",
+       "term_id": "t1"
+      }
+     ],
+     "typed_choices": [],
+     "values": [
+      {
+       "field": "location",
+       "marked": true,
+       "origin": "synthesized",
+       "term": {
+        "datatype": "string",
+        "kind": "literal",
+        "value": "brazilsouth"
+       }
+      }
+     ]
+    },
+    {
+     "action": "create",
+     "depends_on": [
+      1
+     ],
+     "derived_name": {
+      "from_terms": [
+       "t1"
+      ],
+      "template": "bo{t1}st"
+     },
+     "losses": [
+      {
+       "code": "DEFAULT_NOT_CARRIED",
+       "field": "blob_properties.delete_retention_policy.permanent_delete_enabled"
+      }
+     ],
+     "node_id": "r2",
+     "order": 2,
+     "resource_type": "azurerm_storage_account",
+     "symbolic_unknowns": [
+      {
+       "reason": "nome do recurso só existe na execução (variável do repositório)",
+       "term_id": "t1"
+      }
+     ],
+     "typed_choices": [],
+     "values": [
+      {
+       "field": "resource_group_name",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "attribute": "name",
+        "kind": "reference",
+        "target_address": "azurerm_resource_group.SYM-0000aaaa1111bbbb",
+        "target_type": "azurerm_resource_group"
+       }
+      },
+      {
+       "field": "location",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "attribute": "location",
+        "kind": "reference",
+        "target_address": "azurerm_resource_group.SYM-0000aaaa1111bbbb",
+        "target_type": "azurerm_resource_group"
+       }
+      },
+      {
+       "field": "account_tier",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "datatype": "string",
+        "kind": "literal",
+        "value": "Standard"
+       }
+      },
+      {
+       "field": "account_replication_type",
+       "marked": true,
+       "origin": "synthesized",
+       "term": {
+        "datatype": "string",
+        "kind": "literal",
+        "value": "LRS"
+       }
+      },
+      {
+       "field": "min_tls_version",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "datatype": "string",
+        "kind": "literal",
+        "value": "TLS1_2"
+       }
+      },
+      {
+       "field": "blob_properties.versioning_enabled",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "datatype": "bool",
+        "kind": "literal",
+        "value": true
+       }
+      },
+      {
+       "field": "blob_properties.delete_retention_policy.days",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "datatype": "number",
+        "kind": "literal",
+        "value": 7
+       }
+      },
+      {
+       "field": "tags",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "datatype": "map",
+        "kind": "literal",
+        "value": {
+         "env": "test"
+        }
+       }
+      }
+     ]
+    },
+    {
+     "action": "create",
+     "depends_on": [
+      1
+     ],
+     "derived_name": {
+      "from_terms": [
+       "t1"
+      ],
+      "template": "bo-{t1}-vnet"
+     },
+     "losses": [],
+     "node_id": "r3",
+     "order": 3,
+     "resource_type": "azurerm_virtual_network",
+     "symbolic_unknowns": [
+      {
+       "reason": "nome do recurso só existe na execução (variável do repositório)",
+       "term_id": "t1"
+      }
+     ],
+     "typed_choices": [],
+     "values": [
+      {
+       "field": "resource_group_name",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "attribute": "name",
+        "kind": "reference",
+        "target_address": "azurerm_resource_group.SYM-0000aaaa1111bbbb",
+        "target_type": "azurerm_resource_group"
+       }
+      },
+      {
+       "field": "location",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "attribute": "location",
+        "kind": "reference",
+        "target_address": "azurerm_resource_group.SYM-0000aaaa1111bbbb",
+        "target_type": "azurerm_resource_group"
+       }
+      },
+      {
+       "field": "address_space",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "datatype": "list",
+        "kind": "literal",
+        "value": [
+         "10.20.0.0/16"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "action": "create",
+     "depends_on": [
+      1,
+      3
+     ],
+     "derived_name": {
+      "from_terms": [
+       "t1"
+      ],
+      "template": "bo-{t1}-snet"
+     },
+     "losses": [],
+     "node_id": "r4",
+     "order": 4,
+     "resource_type": "azurerm_subnet",
+     "symbolic_unknowns": [
+      {
+       "reason": "nome do recurso só existe na execução (variável do repositório)",
+       "term_id": "t1"
+      }
+     ],
+     "typed_choices": [],
+     "values": [
+      {
+       "field": "resource_group_name",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "attribute": "name",
+        "kind": "reference",
+        "target_address": "azurerm_resource_group.SYM-0000aaaa1111bbbb",
+        "target_type": "azurerm_resource_group"
+       }
+      },
+      {
+       "field": "virtual_network_name",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "attribute": "name",
+        "kind": "reference",
+        "target_address": "azurerm_virtual_network.SYM-0000cccc2222dddd",
+        "target_type": "azurerm_virtual_network"
+       }
+      },
+      {
+       "field": "address_prefixes",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "datatype": "list",
+        "kind": "literal",
+        "value": [
+         "10.20.1.0/24"
+        ]
+       }
+      }
+     ]
+    }
+   ],
+   "target_provider": "azurerm"
+  },
+  {
+   "dependency_closure": {
+    "closed": true,
+    "missing": []
+   },
+   "graph_id": "GIR-OCI-NET-0001",
+   "plan_id": "LP-OCI-NET-0001",
+   "steps": [
+    {
+     "action": "create",
+     "depends_on": [],
+     "derived_name": {
+      "from_terms": [
+       "t1"
+      ],
+      "template": "bo-{t1}-vcn"
+     },
+     "losses": [],
+     "node_id": "r1",
+     "order": 1,
+     "resource_type": "oci_core_vcn",
+     "symbolic_unknowns": [],
+     "typed_choices": [],
+     "values": [
+      {
+       "field": "compartment_id",
+       "marked": true,
+       "origin": "synthesized",
+       "term": {
+        "kind": "symbol",
+        "name_class": "variable",
+        "scope": "repo",
+        "symbol_id": "SYM-c0a1000000000001"
+       }
+      },
+      {
+       "field": "cidr_blocks",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "datatype": "list",
+        "kind": "literal",
+        "value": [
+         "10.0.0.0/16"
+        ]
+       }
+      },
+      {
+       "field": "display_name",
+       "marked": true,
+       "origin": "synthesized",
+       "term": {
+        "datatype": "string",
+        "kind": "literal",
+        "value": "bo-net-0001-vcn"
+       }
+      },
+      {
+       "field": "freeform_tags.bo_run",
+       "marked": true,
+       "origin": "synthesized",
+       "term": {
+        "kind": "symbol",
+        "name_class": "variable",
+        "scope": "repo",
+        "symbol_id": "SYM-c0a1000000000003"
+       }
+      }
+     ]
+    },
+    {
+     "action": "create",
+     "depends_on": [
+      1
+     ],
+     "losses": [
+      {
+       "code": "DENY_NOT_EXPRESSIBLE",
+       "detail": "security list do OCI só tem allow",
+       "field": "ingress_security_rules"
+      }
+     ],
+     "node_id": "r2",
+     "order": 2,
+     "resource_type": "oci_core_security_list",
+     "symbolic_unknowns": [],
+     "typed_choices": [],
+     "values": [
+      {
+       "field": "compartment_id",
+       "marked": true,
+       "origin": "synthesized",
+       "term": {
+        "kind": "symbol",
+        "name_class": "variable",
+        "scope": "repo",
+        "symbol_id": "SYM-c0a1000000000001"
+       }
+      },
+      {
+       "field": "vcn_id",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "attribute": "id",
+        "kind": "reference",
+        "target_address": "oci_core_vcn.SYM-0a1b2c3d4e5f0001",
+        "target_type": "oci_core_vcn"
+       }
+      },
+      {
+       "field": "display_name",
+       "marked": true,
+       "origin": "synthesized",
+       "term": {
+        "datatype": "string",
+        "kind": "literal",
+        "value": "bo-net-0001-sl"
+       }
+      },
+      {
+       "field": "ingress_security_rules.0.protocol",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "datatype": "string",
+        "kind": "literal",
+        "value": "6"
+       }
+      },
+      {
+       "field": "ingress_security_rules.0.source",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "datatype": "string",
+        "kind": "literal",
+        "value": "10.0.1.0/24"
+       }
+      },
+      {
+       "field": "ingress_security_rules.0.stateless",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "datatype": "bool",
+        "kind": "literal",
+        "value": false
+       }
+      },
+      {
+       "field": "ingress_security_rules.0.tcp_options.min",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "datatype": "number",
+        "kind": "literal",
+        "value": 22
+       }
+      },
+      {
+       "field": "ingress_security_rules.0.tcp_options.max",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "datatype": "number",
+        "kind": "literal",
+        "value": 22
+       }
+      },
+      {
+       "field": "ingress_security_rules.1.protocol",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "datatype": "string",
+        "kind": "literal",
+        "value": "17"
+       }
+      },
+      {
+       "field": "ingress_security_rules.1.source",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "datatype": "string",
+        "kind": "literal",
+        "value": "10.0.2.0/24"
+       }
+      },
+      {
+       "field": "ingress_security_rules.1.stateless",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "datatype": "bool",
+        "kind": "literal",
+        "value": true
+       }
+      },
+      {
+       "field": "ingress_security_rules.1.udp_options.min",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "datatype": "number",
+        "kind": "literal",
+        "value": 53
+       }
+      },
+      {
+       "field": "ingress_security_rules.1.udp_options.max",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "datatype": "number",
+        "kind": "literal",
+        "value": 53
+       }
+      },
+      {
+       "field": "egress_security_rules.destination",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "datatype": "string",
+        "kind": "literal",
+        "value": "10.0.0.0/16"
+       }
+      },
+      {
+       "field": "egress_security_rules.protocol",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "datatype": "string",
+        "kind": "literal",
+        "value": "all"
+       }
+      }
+     ]
+    },
+    {
+     "action": "create",
+     "depends_on": [
+      1
+     ],
+     "derived_name": {
+      "from_terms": [
+       "t2"
+      ],
+      "template": "bo-{t2}-nsg"
+     },
+     "losses": [],
+     "node_id": "r3",
+     "order": 3,
+     "resource_type": "oci_core_network_security_group",
+     "symbolic_unknowns": [],
+     "typed_choices": [],
+     "values": [
+      {
+       "field": "compartment_id",
+       "marked": true,
+       "origin": "synthesized",
+       "term": {
+        "kind": "symbol",
+        "name_class": "variable",
+        "scope": "repo",
+        "symbol_id": "SYM-c0a1000000000001"
+       }
+      },
+      {
+       "field": "vcn_id",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "attribute": "id",
+        "kind": "reference",
+        "target_address": "oci_core_vcn.SYM-0a1b2c3d4e5f0001",
+        "target_type": "oci_core_vcn"
+       }
+      },
+      {
+       "field": "display_name",
+       "marked": true,
+       "origin": "synthesized",
+       "term": {
+        "datatype": "string",
+        "kind": "literal",
+        "value": "bo-net-0001-nsg"
+       }
+      }
+     ]
+    },
+    {
+     "action": "create",
+     "depends_on": [
+      3
+     ],
+     "losses": [],
+     "node_id": "c1",
+     "order": 4,
+     "resource_type": "oci_core_network_security_group_security_rule",
+     "symbolic_unknowns": [],
+     "typed_choices": [
+      {
+       "choice_id": "CH-OCI-NET-0001",
+       "options": [
+        "oci_core_security_list",
+        "oci_core_network_security_group_security_rule"
+       ],
+       "reason": "regra presa a um grupo, não à sub-rede",
+       "selected": "oci_core_network_security_group_security_rule"
+      }
+     ],
+     "values": [
+      {
+       "field": "network_security_group_id",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "attribute": "id",
+        "kind": "reference",
+        "target_address": "oci_core_network_security_group.SYM-0a1b2c3d4e5f0002",
+        "target_type": "oci_core_network_security_group"
+       }
+      },
+      {
+       "field": "direction",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "datatype": "string",
+        "kind": "literal",
+        "value": "INGRESS"
+       }
+      },
+      {
+       "field": "protocol",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "datatype": "string",
+        "kind": "literal",
+        "value": "6"
+       }
+      },
+      {
+       "field": "source",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "datatype": "string",
+        "kind": "literal",
+        "value": "10.0.3.0/24"
+       }
+      },
+      {
+       "field": "source_type",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "datatype": "string",
+        "kind": "literal",
+        "value": "CIDR_BLOCK"
+       }
+      },
+      {
+       "field": "stateless",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "datatype": "bool",
+        "kind": "literal",
+        "value": false
+       }
+      },
+      {
+       "field": "tcp_options.destination_port_range.min",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "datatype": "number",
+        "kind": "literal",
+        "value": 443
+       }
+      },
+      {
+       "field": "tcp_options.destination_port_range.max",
+       "marked": false,
+       "origin": "carried",
+       "term": {
+        "datatype": "number",
+        "kind": "literal",
+        "value": 443
+       }
+      }
+     ]
+    }
+   ],
+   "target_provider": "oci"
+  }
+ ],
+ "note": "um plano mínimo por provedor, copiado sem mudança das fixtures dos HARNESS-* (renderizam no pin do PINS)",
+ "sources": [
+  {
+   "commit": "e0b89918207d0c4e4f1c839f52039c2754ce1a35",
+   "dir": "tests/harness/aws/fixtures/plans",
+   "lane": "bo-harness-aws",
+   "lowering_plan_sha256": "ebee7561b79557dc0a99378b9349da4b3a75412d21e78f6454adfe3908f0c2c7",
+   "plan_id": "LP-AWS-NET-01",
+   "provider": "aws"
+  },
+  {
+   "commit": "b5a6484af8652afb7e04d45bb937d9df19894fa8",
+   "dir": "deploy/fixtures/google/_templates/plans/bucket",
+   "lane": "bo-harness-gcp",
+   "lowering_plan_sha256": "e72c8d3d2c894addc96180bd2c7709609ca136c31cc522cf3532698c44386574",
+   "plan_id": "LP-HG-BUCKET",
+   "provider": "google"
+  },
+  {
+   "commit": "7d96a06bd6ff82e98398bab88b3330bf9676e91a",
+   "dir": "deploy/fixtures/azurerm/_templates/reference",
+   "lane": "bo-harness-azure",
+   "lowering_plan_sha256": "f9e58b1e600131e8963ae004f3e4df3009bfed019c1958fce4a02ca0f916c3ed",
+   "plan_id": "LP-AZREF-0001",
+   "provider": "azurerm"
+  },
+  {
+   "commit": "90b6743b4c4c710e1dc234c22481a2d2de8a6478",
+   "dir": "deploy/fixtures/oci/_templates/examples",
+   "lane": "bo-harness-oci",
+   "lowering_plan_sha256": "9f295432f4c1ebf5aa6a5d3c3bbf75134afc802e044b9f0b34a5a288aef6d49c",
+   "plan_id": "LP-OCI-NET-0001",
+   "provider": "oci"
+  }
+ ]
+}

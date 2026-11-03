@@ -98,7 +98,10 @@ def c26() -> dict:
     step = obj({
         "order": integer(1), "action": enum("create", "configure", "attach", "reference"),
         "node_id": node, "resource_type": c00("resource_type"),
-        "derived_name": obj({"template": string(r"^[a-z0-9\-_{}]+$"), "from_terms": arr(string(r"^t[0-9]+$"))},
+        "derived_name": obj({"template": string(r"^[a-z0-9\-_{}]+$"), "from_terms": arr(string(r"^t[0-9]+$")),
+                             "field": string(r"^[A-Za-z0-9_]+(\.[A-Za-z0-9_]+)*$",
+                                             description="campo do recurso que recebe o nome derivado; sem ele o "
+                                                         "nome não vai para o HCL (emenda 1.1.0)")},
                             ["template", "from_terms"]),
         "typed_choices": arr(obj({"choice_id": string(r"^CH-[A-Za-z0-9_\-]+$"),
                                   "options": arr(string(r"^[A-Za-z0-9_.:\-]+$"), 2, unique=True),
@@ -122,7 +125,7 @@ def c26() -> dict:
                                                 "else": {"properties": {"missing": {"minItems": 1}}}}])},
              ["plan_id", "graph_id", "target_provider", "steps", "dependency_closure"])
     return contract_schema(
-        "C26", "graph_ir", "1.0.0", "IR de grafo e plano de lowering", status="new_v3",
+        "C26", "graph_ir", "1.1.0", "IR de grafo e plano de lowering", status="amended",
         description="IR de grafo: termos simbólicos, recursos, componentes, referências, pré-condições, contextos; plano "
                     "de criação com ordem, nomes derivados, escolhas tipadas, valores sintetizados (marcados), perdas, "
                     "desconhecidos simbólicos; fechamento de dependências.",
@@ -134,7 +137,11 @@ def c26() -> dict:
                "C26-ORDER: ordens 1..n sem repetição; depends_on só aponta para passos anteriores",
                "C26-SYNTH: valor sintetizado ou default é marcado",
                "C26-TERMS: from_terms e symbolic_unknowns citam termos do graph_ir irmão",
-               "C26-CHOICE: selected é uma das opções (ou nulo com motivo)"])
+               "C26-CHOICE: selected é uma das opções (ou nulo com motivo)",
+               "C26-TARGET: reference.target_node (C00 3.0.1), quando há, é nó do grafo criado por passo anterior "
+               "(de que o passo depende, direta ou indiretamente)",
+               "C26-STUB: o stub tem exatamente um plano por target_provider (aws, google, azurerm, oci), cada um "
+               "renderizável no pin do PINS (gate de render dos HARNESS-*)"])
 
 
 # ------------------------------------------------------------------------------------------------- C27

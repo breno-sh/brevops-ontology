@@ -230,7 +230,37 @@ def r_types(objs, ctx, path):
 
 @rule("C03", "docs_facts")
 def r_docs(objs, ctx, path):
-    return dup([f["fact_id"] for f in objs], "fact_id")
+    errs = dup([f["fact_id"] for f in objs], "fact_id")
+    for i, f in enumerate(objs):
+        at = f.get("applies_to")
+        if not at:
+            continue
+        pre = f["atom_id"].rsplit(":", 1)[0] + ":"
+        if f["atom_id"] in at:
+            errs.append(f"docs_facts[{i + 1}]: applies_to repete o próprio atom_id")
+        bad = [a for a in at if not a.startswith(pre)]
+        if bad:
+            errs.append(f"docs_facts[{i + 1}]: applies_to fora de {pre}: {bad[:3]}")
+    return errs
+
+
+SUB_GUID = re.compile(r"/subscriptions/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-")
+
+
+@rule("C03", "type_subcategory")
+def r_type_facts(objs, ctx, path):
+    errs = dup([(t.get("kind", "resource"), t["type_id"]) for t in objs], "(kind, type_id)")
+    for i, t in enumerate(objs):
+        w = f"type_subcategory[{i + 1}] {t['type_id']}"
+        if t["type_id"] != f"{t['provider']}:{t['resource_type']}":
+            errs.append(f"{w}: type_id != provider:resource_type")
+        for s_ in _walk_values(t):
+            if SUB_GUID.search(s_):
+                errs.append(f"{w}: GUID de assinatura em claro (use /subscriptions/{{subscriptionId}})")
+                break
+        if t.get("alias_of") and t["alias_of"]["type_id"] == t["type_id"]:
+            errs.append(f"{w}: apelido de si mesmo")
+    return errs
 
 
 @rule("C04", "roles")
@@ -649,7 +679,8 @@ def r_cases(objs, ctx, path):
 def r_readback(objs, ctx, path):
     errs = dup([r["readback_id"] for r in objs], "readback_id")
     for i, r in enumerate(objs):
-        errs += [f"readback[{i + 1}]: {e}" for e in dup([f["path"] for f in r["fields"]], "campo")]
+        errs += [f"readback[{i + 1}]: {e}" for e in dup([(f.get("node_id"), f["path"]) for f in r["fields"]],
+                                                         "(node_id, campo)")]
     return errs
 
 
@@ -840,11 +871,15 @@ def _metrics(ms: list, where: str) -> list[str]:
     for m in ms:
         c = m["operational_coverage"]
         w = f"{where} {m['metric_id']}"
+        if "n_known" in c and c["n_known"] > c["n"]:
+            errs.append(f"{w}: n_known > n")
         if c["est"] is None:
-            if c["n"] != 0:
-                errs.append(f"{w}: est nulo com n = {c['n']}")
+            if c["n"] != 0 and c.get("n_known") != 0:
+                errs.append(f"{w}: est nulo com n = {c['n']} e n_known != 0")
             if c["lower"] > c["upper"]:
                 errs.append(f"{w}: lower > upper")
+        elif c.get("n_known") == 0:
+            errs.append(f"{w}: est numérico com n_known = 0 (indefinido)")
         elif not (c["lower"] <= c["est"] <= c["upper"]):
             errs.append(f"{w}: fora de lower <= est <= upper")
         for x in m["joint_uncertainty"].get("correlated_with") or []:
@@ -990,7 +1025,23 @@ def r_numbers_tex(objs, ctx, path):
 # ---------------------------------------------------------------------------------------------------- C19
 @rule("C19", "canonical_units")
 def r_units(objs, ctx, path):
-    return dup([u["unit_id"] for u in objs], "unit_id")
+    errs = dup([u["unit_id"] for u in objs], "unit_id")
+    for i, u in enumerate(objs):
+        w = f"canonical_units[{i + 1}] {u['unit_id']}"
+        ep = u.get("endpoints")
+        if ep:
+            if u["kind"] not in ("BINDING", "UNKNOWN"):
+                errs.append(f"{w}: endpoints em {u['kind']} (só BINDING ou UNKNOWN)")
+            errs += [f"{w}: {e}" for e in dup([e["role"] for e in ep], "papel de ponta")]
+            if any(e["unit_id"] == u["unit_id"] for e in ep):
+                errs.append(f"{w}: a unidade é ponta de si mesma")
+        o = u["owner"]
+        if o.get("refs"):
+            if o.get("ref") and o["ref"] not in o["refs"]:
+                errs.append(f"{w}: owner.ref fora de owner.refs")
+            if u["unit_id"] in o["refs"]:
+                errs.append(f"{w}: a unidade é dona de si em owner.refs")
+    return errs
 
 
 @rule("C19", "canonical_atoms")
@@ -1165,6 +1216,11 @@ def r_plan(objs, ctx, path):
             for d in s["depends_on"]:
                 if d >= s["order"]:
                     errs.append(f"{w}: passo {s['order']} depende de {d}, que não é anterior")
+            prev = _ancestors(p["steps"], s)
+            for v in s["values"]:
+                tn = (v.get("term") or {}).get("target_node")
+                if tn and tn not in prev:
+                    errs.append(f"{w}: passo {s['order']} referencia {tn}, que não é criado por passo de que ele depende")
             for ch in s["typed_choices"]:
                 if ch["selected"] is not None and ch["selected"] not in ch["options"]:
                     errs.append(f"{w}: escolha {ch['choice_id']} selecionou fora das opções")
@@ -1187,6 +1243,19 @@ def r_plan(objs, ctx, path):
 
 
 # ---------------------------------------------------------------------------------------------------- C27
+def _ancestors(steps: list, step: dict) -> set:
+    """Nós criados pelos passos de que este passo depende (fecho transitivo de depends_on)."""
+    by = {s["order"]: s for s in steps}
+    seen, todo = set(), list(step["depends_on"])
+    while todo:
+        o = todo.pop()
+        if o in seen or o not in by:
+            continue
+        seen.add(o)
+        todo += by[o]["depends_on"]
+    return {by[o]["node_id"] for o in seen}
+
+
 @rule("C27", "families")
 def r_families(objs, ctx, path):
     errs = dup([f["family_id"] for f in objs], "family_id")

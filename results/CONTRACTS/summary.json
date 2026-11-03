@@ -16,7 +16,7 @@
    "jsonschema": "4.26.0",
    "draft": "2020-12",
    "generator": "python -I -m bo.contracts.build",
-   "emenda": "2026-11-03 C01 2.1.0, C09 3.0.1, C11 3.0.1, C13 3.1.0, C18 2.0.1"
+   "emenda": "2026-11-03 emenda 1 (C01 2.1.0, C09 3.0.1, C11 3.0.1, C13 3.1.0, C18 2.0.1); emenda 2 (C00 3.0.1, C03 3.1.0, C12 3.1.0, C15 3.1.0, C19 3.1.0, C26 1.1.0)"
   },
   "inputs": [
    {
@@ -55,5 +55,5 @@
    "transformation": "mudança A no catalog.resolve e tipo history_versions no C13"
   }
  ],
- "notes": "Contratos C00-C29 v3 com emenda de 2026-11-03 (resolução por nome de arquivo, history_versions, atom_history, write_only)"
+ "notes": "Contratos C00-C29 v3 com emendas 1 e 2 de 2026-11-03 (stubs C26 por provedor, subcategoria/importação C03, endpoints/refs C19, node_id C12, n_known C15, history_versions C13, write_only C01)"
 }
