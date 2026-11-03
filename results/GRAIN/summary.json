@@ -28,9 +28,10 @@
    {
     "path": "$BO_REPO/contracts",
     "kind": "dir",
-    "sha256": "56c3142efebde6c8f413ef725c449201b2699841fe43676569492b52504ad042",
+    "sha256": "999f2a2f0445b22ddbda929a15ec8e7fe029ef775ed4f3db44e3d0756eca7b31",
     "sha256_before_plan_regen_stubpath": "56c3142efebde6c8f413ef725c449201b2699841fe43676569492b52504ad042",
-    "sha256_before_coord_fix_0303": "4db98dcfb6928333b47738fdfa0e7f08285e00cb7be8325ed9165a1997979510"
+    "sha256_before_coord_fix_0303": "4db98dcfb6928333b47738fdfa0e7f08285e00cb7be8325ed9165a1997979510",
+    "sha256_before_plan_regen_oci_bindings": "56c3142efebde6c8f413ef725c449201b2699841fe43676569492b52504ad042"
    },
    {
     "path": "$BO_REPO/semantics/SEMANTICS.html",
