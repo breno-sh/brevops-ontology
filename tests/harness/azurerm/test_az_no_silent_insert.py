@@ -70,15 +70,17 @@ def test_provider_and_template_changes_are_caught(work):
 def test_gate_run_default_inputs_is_not_vacuous(work):
     rep = N.run(N.default_inputs(), work / "nsi")
     assert rep["ok"], rep["errors"]
-    assert rep["modules_checked"] == 2
-    assert rep["mutants"] == rep["mutants_caught"] >= 14
+    assert rep["modules_checked"] == 3  # 2 da referência + o plano azurerm do stub C26 (emenda 2)
+    assert rep["mutants"] == rep["mutants_caught"] >= 21
     statuses = sorted(p["status"] for f in rep["files"] for p in f["plans"])
-    assert statuses == ["BLOCKED", "RENDERED", "RENDERED", "WRONG_PROVIDER"]
+    assert statuses == ["BLOCKED", "RENDERED", "RENDERED", "RENDERED", "WRONG_PROVIDER", "WRONG_PROVIDER",
+                        "WRONG_PROVIDER"]
 
 
 def test_gate_fails_when_nothing_renders(work):
-    from bo.harness.azurerm._common import repo
-    rep = N.run([repo() / "contracts" / "stubs" / "C26" / "lowering_plan.jsonl"], work / "nsi")
+    from azh_helpers import plan_with, step, write_plan
+    plan, graph = plan_with([step(1, "r1", "google_compute_network", [])], provider="google")
+    rep = N.run([write_plan(work, plan, graph)], work / "nsi")
     assert not rep["ok"]
     assert any("vacuidade" in e for e in rep["errors"])
 

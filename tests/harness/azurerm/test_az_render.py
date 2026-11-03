@@ -215,9 +215,38 @@ def test_writer_matches_terraform_fmt_on_stress_body(work):
 
 
 # ------------------------------------------------------------------------------------------------ CLI e E/S
-def test_cli_exit_codes(work):
+def test_current_c26_stub_renders_and_passes_fmt_check(work):
     stub = repo() / "contracts" / "stubs" / "C26" / "lowering_plan.jsonl"
-    assert R.main([str(stub), "--out", str(work / "a")]) == 4
+    assert R.main([str(stub), "--out", str(work / "a")]) == 0
+    rep = json.loads((work / "a" / "render_report.json").read_text())
+    assert rep["layout"] == "single" and rep["counts"].get("RENDERED") == 1
+    assert (work / "a" / "main.tf").is_file()
+    ok, msg = tf.fmt_check(work / "a")
+    assert ok, msg
+
+
+def test_synthetic_stub_without_plan_exits_2(work):
+    d = work / "stub"
+    d.mkdir()
+    (d / "lowering_plan.jsonl").write_text("")
+    (d / "graph_ir.jsonl").write_text("")
+    assert R.main([str(d / "lowering_plan.jsonl"), "--out", str(work / "a")]) == 2
+    assert not (work / "a").exists() or not list((work / "a").glob("*.tf"))
+
+
+def test_cli_exit_codes(work):
+    only_google = work / "g"
+    only_google.mkdir()
+    stub = repo() / "contracts" / "stubs" / "C26"
+    for name in ("lowering_plan.jsonl", "graph_ir.jsonl"):
+        lines = [ln for ln in (stub / name).read_text().splitlines() if '"google"' in ln or '"source_provider"' in ln]
+        (only_google / name).write_text("\n".join(lines) + "\n")
+    plans = [json.loads(ln) for ln in (only_google / "lowering_plan.jsonl").read_text().splitlines()]
+    assert plans and all(p["target_provider"] == "google" for p in plans)
+    gids = {p["graph_id"] for p in plans}
+    graphs = [ln for ln in (only_google / "graph_ir.jsonl").read_text().splitlines() if json.loads(ln)["graph_id"] in gids]
+    (only_google / "graph_ir.jsonl").write_text("\n".join(graphs) + "\n")
+    assert R.main([str(only_google / "lowering_plan.jsonl"), "--out", str(work / "a")]) == 4
     plan, graph = plan_with([step(1, "r1", "azurerm_resource_group", [], name="bo-{t1}-rg")])
     assert R.main([write_plan(work, plan, graph).as_posix(), "--out", str(work / "b")]) == 5
     assert R.main([str(REF / "lowering_plan.jsonl"), "--out", str(work / "c"), "HARNESS-AZURE"]) == 0

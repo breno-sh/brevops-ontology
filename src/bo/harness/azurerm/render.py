@@ -18,7 +18,8 @@ Caso bloqueado ou inválido não gera HCL.
 
 Saída: com um único plano azurerm, DIR é o módulo raiz (versions.tf, main.tf, render_manifest.json); com vários,
 DIR/<plan_id>/. DIR/render_report.json lista todos os planos lidos e o estado de cada um.
-Saídas: 0 = ao menos um plano renderizado; 2 = erro de entrada; 4 = nenhum plano azurerm; 5 = nenhum renderizado.
+Saídas: 0 = ao menos um plano renderizado; 2 = erro de entrada (inclui arquivo sem nenhum plano); 4 = há planos, mas
+nenhum azurerm; 5 = nenhum renderizado.
 """
 
 from __future__ import annotations
@@ -490,6 +491,8 @@ def render_file(plan_path: Path, out: Path, graph_path: Path | None = None, plan
     tmpl = S.templates_manifest(tdir)
     graphs = load_graphs(plan_path, graph_path)
     plans = read_jsonl(plan_path)
+    if not plans:
+        raise HarnessError(f"{plan_path}: nenhum plano no arquivo (nada a renderizar)")
     if plan_id:
         plans = [p for p in plans if p["plan_id"] == plan_id]
         if not plans:

@@ -1,5 +1,8 @@
 CONTRACT_CHANGE — HARNESS-AZURE
 gravado em: 2026-11-03T07:26-03:00 (America/Recife)
+RESOLVIDO (problema 1) pela emenda 2 do CONTRACTS (513113d, 2026-11-03): o stub C26 traz um plano por provedor,
+com LP-AZREF-0001 para o azurerm, e o gate do catálogo aponta para contracts/stubs/C26/. G2 e G4 voltaram a valer.
+As propostas não bloqueantes abaixo continuam abertas.
 dono do que muda: CONTRACTS (contracts/stubs/, INDEX.json) e o catálogo (modulos.json), não este módulo
 
 PROBLEMA 1 (BLOQUEIA o gate G2 do catálogo, e o G4 por consequência)
