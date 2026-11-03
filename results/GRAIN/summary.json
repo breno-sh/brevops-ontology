@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "GRAIN",
- "generated_at": "2026-11-03T02:02:25-03:00",
+ "generated_at": "2026-11-03T02:03:36-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/GRAIN.txt",
@@ -28,30 +28,20 @@
    {
     "path": "$BO_REPO/contracts",
     "kind": "dir",
-    "sha256": "7cbb2f50b317343547e739f7f2a410bd75b1777fc2d7b425021442a6b8e05ab4"
+    "sha256": "56c3142efebde6c8f413ef725c449201b2699841fe43676569492b52504ad042"
    },
    {
     "path": "$BO_REPO/semantics/SEMANTICS.html",
     "kind": "file",
-    "sha256": "3d679f40e26b13f7d98da835faa84e74fe9bcdbe7f6cecb507ed590287e409e5"
+    "sha256": "28f849eb578fea685935a2499cd13710e8a96b6cd01e4bc34419ae0e51f29596"
    },
    {
     "path": "$BO_REPO/requirements/commitments.jsonl",
     "kind": "file",
     "sha256": "038f73fcebedfbf3b5ff3d23b1ff0758a87e8be2616b141b232628e1a64d1438"
-   },
-   {
-    "path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/PLANO_BREVOPS_ONTOLOGY.html",
-    "kind": "file",
-    "sha256": "28f77288b7dffeb4aadfaefd0bbecbb0c26f2b911073f9309c909b475499e732"
-   },
-   {
-    "path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/revisao_adversarial_plano/REVISAO_PLANO_v2_GPT6_CODEX.txt",
-    "kind": "file",
-    "sha256": "29215fd0eb0fabe1f4a3232958fb5020b6d8fd08f241a2e557e47bb4af8be892"
    }
   ],
-  "recorded_at": "2026-11-03T02:02:25-03:00"
+  "recorded_at": "2026-11-03T02:03:36-03:00"
  },
  "sources": [
   {
@@ -60,5 +50,5 @@
    "transformation": "mundos sintéticos escritos no módulo (provider_a..provider_h), sem dado real"
   }
  ],
- "notes": "Regras de grão provisórias (G0-G4); definitivas só depois do GRAIN-REPRO e do PILOT-EXIT. Sem nuvem, sem download."
+ "notes": "Regras de grão provisórias (G0-G4); definitivas só depois do GRAIN-REPRO e do PILOT-EXIT. Contexto lido: plano v3 (seções 0, 3b, 4, 7-9, 14) e revisão GPT-6 pelo brief. Sem nuvem, sem download."
 }
