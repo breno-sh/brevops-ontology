@@ -1,7 +1,7 @@
 {
  "schema": "bo.pins/1",
  "contract": "C13",
- "contract_version": "3.0.0",
+ "contract_version": "3.1.0",
  "module": "PINS",
  "generated_at": "2026-11-03T01:37:14-03:00",
  "terraform": {

@@ -150,6 +150,9 @@ def check_history(r: Report, ix: B.Index, pins: dict, hist: dict) -> None:
          "data de corte diverge entre config, instantâneo e history_versions.json")
     r.ok(hist.get("index", {}).get("sha256") == snap_sha and hist.get("generated_at") == pins.get("generated_at"),
          "history_versions.json e pins.json do mesmo instantâneo", "history_versions.json de outro instantâneo")
+    errs = validate_c13("C13_history_versions", hist, "history_versions.json")
+    r.ok(not errs, "history_versions.json confere com C13 history_versions (validador único)",
+         "history_versions.json fora do C13: " + "; ".join(errs[:3]))
     hp = {p["provider"]: p for p in hist.get("providers", [])}
     r.ok(sorted(hp) == sorted(config.PROVIDERS), f"history: 4 providers", f"history: providers {sorted(hp)}")
     pin_of = {p["provider"]: p["version"] for p in pins.get("providers", [])}

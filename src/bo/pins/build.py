@@ -20,7 +20,7 @@ from pathlib import Path
 from . import config, semver
 from . import select as S
 
-CONTRACT = {"contract": "C13", "contract_version": "3.0.0"}
+CONTRACT = {"contract": "C13", "contract_version": "3.1.0"}
 
 
 class BuildError(Exception):
@@ -256,8 +256,8 @@ def build(ix: Index | None = None) -> dict[str, bytes]:
                     "fetched_at": snap["fetched_at"]}
     history = {"schema": "bo.history_versions/1", **CONTRACT, "module": config.MODULE, "generated_at": gen,
                "cutoff": cutoff, "window": window, "index": snapshot_ref, "providers": hist_providers,
-               "note": "Cada providers[].versions_doc é um documento C13 versions completo; o envelope com 4 "
-                       "providers não tem tipo próprio no C13 3.0.0 (ver results/PINS/CONTRACT_CHANGE.txt)."}
+               "note": "Tipo C13 history_versions (3.1.0); cada providers[].versions_doc é um documento C13 "
+                       "versions completo, ponto de partida do versions.json de cada HIST."}
     spread = [S.parse_ts(x["legacy_pin"]["published_at"]) for x in sel_providers
               if x["legacy_pin"] and x["legacy_pin"]["published_at"]]
     selection = {

@@ -91,3 +91,7 @@ MUDANÇA A JÁ TESTADA (numa cópia de bo/base 26cf52f em $BO_DATA/tmp/PINS/cont
     GLOSSARY-AUDIT glossary $BO_DATA/GLOSSARY-AUDIT/glossary_audit.jsonl  C20:glossary -> C20:glossary_audit
   Merge do PINS depois da mudança (nada no PINS muda):
     tools/lock.sh with merge-base --owner PINS --wait 600 -- bash -c 'git -C /Users/breno/doutorado/pesquisa-lanes/bo-pins rebase bo/base && make -C /Users/breno/doutorado/pesquisa-lanes/bo-pins gate ID=PINS && git -C /Users/breno/doutorado/brevops-ontology merge --ff-only bo/pins'
+
+RESOLVIDO em 2026-11-03T01:58-03:00: emenda do CONTRACTS em bo/base 3995e6a (tipo escolhido pelo nome do
+arquivo; C13 3.1.0 com history_versions). pins.json e history_versions.json passam a declarar 3.1.0 e passam no
+validador ("validate versions" -> C13:pins; "validate history_versions" -> C13:history_versions).

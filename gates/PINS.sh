@@ -18,8 +18,9 @@ $py -I -B -m bo.pins.build --check
 step "4 providers, mesma data de corte, toda versão com data e sha do índice"
 $py -I -B -m bo.pins.check | tail -1
 
-step "contrato C13: pins.json pelo tipo pins (o alias 'versions' cai no tipo versions; ver CONTRACT_CHANGE.txt)"
-$py -I -B -m bo.contracts.validate C13_pins universe/pins.json | tail -1
+step "contrato C13: pins.json e history_versions.json no validador único"
+$py -I -B -m bo.contracts.validate versions universe/pins.json | tail -1
+$py -I -B -m bo.contracts.validate history_versions universe/history_versions.json | tail -1
 
 step "manifestos: results/PINS e registry_index"
 shasum -a 256 -c results/PINS/MANIFEST.sha256 --quiet
