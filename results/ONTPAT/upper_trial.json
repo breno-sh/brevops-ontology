@@ -1,0 +1,4657 @@
+{
+ "schema": "bo.upper_trial/1",
+ "module": "ONTPAT",
+ "generated_at": "2026-11-02T23:25:48-03:00",
+ "decision_rule": {
+  "version": "1",
+  "written_at": "2026-11-02T23:05:00-03:00",
+  "items": [
+   {
+    "id": "D1",
+    "text": "Elegível só a candidata que, com o seu alinhamento mínimo de melhor esforço, reproduz a resposta esperada de TODOS os compromissos com eixo identidade, tempo ou papel do REQUIREMENTS (16), e do caso extra CMT-CFG-N01, com os axiomas do bo completos."
+   },
+   {
+    "id": "D2",
+    "text": "Elegível só se o fecho bo-patterns + candidata + alinhamento for OWL 2 DL (ROBOT validate-profile), for consistente com o ABox de exemplo e se o alinhamento não exigir punning nem metamodelagem (bo.ontpat.no_punning)."
+   },
+   {
+    "id": "D3",
+    "text": "Entre as elegíveis, ganha a que tem mais PROTEÇÕES PRÓPRIAS: casos cuja resposta esperada continua sendo obtida com os axiomas de exclusão do bo retirados (disjunção de classes e de propriedades, diferença de indivíduos, irreflexividade, assimetria), descontados os que 'nenhuma' também obtém sem eles. Mede o que a ontologia de topo protege sozinha contra um reparo que apague axiomas do bo (F9). Não conta inferências no tradutor."
+   },
+   {
+    "id": "D4",
+    "text": "Empate em D3 (inclusive zero a zero): ganha a de menor custo, nesta ordem: (a) desajustes categoriais declarados no alinhamento; (b) axiomas lógicos no fecho de um caso típico; (c) tempo total do HermiT no teste. 'Nenhuma' disputa como as outras; não é escolhida por não gerar inferência, só se perder em D3 ninguém e custar menos em D4."
+   }
+  ],
+  "ablation": {
+   "predicates": [
+    "owl:disjointWith",
+    "owl:propertyDisjointWith",
+    "owl:differentFrom"
+   ],
+   "types": [
+    "owl:AllDisjointClasses",
+    "owl:AllDifferent",
+    "owl:AllDisjointProperties",
+    "owl:IrreflexiveProperty",
+    "owl:AsymmetricProperty"
+   ],
+   "other": [
+    "owl:disjointUnionOf (substituído por nada: as subclasses já estão declaradas)"
+   ]
+  }
+ },
+ "case_ids": [
+  "CMT-BKT-P03",
+  "CMT-CFG-N02",
+  "CMT-CFG-P01",
+  "CMT-DB-P02",
+  "CMT-ID-N01",
+  "CMT-ID-P01",
+  "CMT-ID-P02",
+  "CMT-ID-U01",
+  "CMT-ID-U02",
+  "CMT-LB-N01",
+  "CMT-LB-P04",
+  "CMT-LC-N01",
+  "CMT-LC-P01",
+  "CMT-NIC-P05",
+  "CMT-TAX-N04",
+  "CMT-TAX-P01"
+ ],
+ "extra_case_ids": [
+  "CMT-CFG-N01"
+ ],
+ "axes_count": {
+  "identity": 8,
+  "time": 8,
+  "role": 5
+ },
+ "toolchain": {
+  "robot": "1.9.11",
+  "hermit": "1.4.5.456",
+  "elk": "0.6.0",
+  "owlapi": "4.5.29"
+ },
+ "inputs": {
+  "$BO_REPO/ontology/patterns/bo-patterns.ttl": "d3aad60e2ff1f24c65c8a1a36a53edc640a7124bd4db9820d829c1a877b56ef4",
+  "$BO_REPO/ontology/patterns/descriptor-pattern.ttl": "c08f41983d2129ad1705035cad93f4a381c7fda03dbe8b5fce95be848c0b7386",
+  "$BO_REPO/ontology/patterns/example-abox.ttl": "b539c12755fd442bd6ccdd147a5ae26b51cbb4fde6e70ef9854bd3fbab2fc0c4",
+  "$BO_REPO/requirements/commitments.jsonl": "038f73fcebedfbf3b5ff3d23b1ff0758a87e8be2616b141b232628e1a64d1438",
+  "$BO_REPO/src/bo/ontpat/trial_spec.py": "88c7f896255230f25a4f34f00887100f3fca3618503a21cfe58d9628aa6f89e7",
+  "$BO_REPO/src/bo/ontpat/java/TrialReasoner.java": "d883667c21d37d067ce917ccc356c23721f90313073f8c9808529a01f8b8da09",
+  "$BO_REPO/ontology/patterns/upper_trial/bfo/cases.ttl": "c750c882d3c91006d53f292c622d5c3a0513dbed45fa419be7a073405011317e",
+  "$BO_REPO/ontology/patterns/upper_trial/dul/cases.ttl": "2254ab748a2b368fb670a0e528d387c50b37e309bb0247fcbf5f929137f1003d",
+  "$BO_REPO/ontology/patterns/upper_trial/gufo/cases.ttl": "50db8617c848fce4aba027135cedc38b1a582f2c83da01999546638b2c39cc46",
+  "$BO_REPO/ontology/patterns/upper_trial/none/cases.ttl": "008eb5e99c14b1585bf3d6e9b7e6254ec4668a41190f741746f0375c4e03e772"
+ },
+ "candidates": {
+  "bfo": {
+   "candidate": "bfo",
+   "label": "BFO 2020 (ISO/IEC 21838-2), release-2024-01-29",
+   "file": "$BO_DATA/downloads/bfo2020/bfo-core.ttl",
+   "file_sha256": "6944e2c96a0d8709dc15ae5364792019e208061eda3f32311af4f3b8d8443a3b",
+   "alignment_axioms": [
+    "bo:Unit rdfs:subClassOf obo:BFO_0000031 .",
+    "bo:ConfigurationDescription rdfs:subClassOf obo:BFO_0000031 .",
+    "bo:ObservedState rdfs:subClassOf obo:BFO_0000031 .",
+    "bo:Observation rdfs:subClassOf obo:BFO_0000015 .",
+    "bo:LifecycleEvent rdfs:subClassOf obo:BFO_0000015 .",
+    "bo:MappingActivity rdfs:subClassOf obo:BFO_0000015 .",
+    "bo:componentOf rdfs:subPropertyOf obo:BFO_0000176 ."
+   ],
+   "misfits": [
+    "recurso de nuvem não é entidade material: alinhado a generically dependent continuant (GDC), concretizado no hardware do provedor",
+    "papel do BFO (BFO_0000023) inere só em continuante independente; recurso alinhado a GDC não porta papel, logo 'membro de pool' fica sem categoria do BFO (eixo papel sem apoio)",
+    "faceta não pode ser qualidade (BFO_0000019), que também exige portador independente: fica GDC, sem distinção categorial de recurso",
+    "vínculo não pode ser qualidade relacional (BFO_0000145) pelo mesmo motivo: fica GDC",
+    "estado observado e descrição viram GDC: o BFO não separa descrição, estado e recurso entre si"
+   ],
+   "cases": {
+    "CMT-BKT-P03": {
+     "axes": [
+      "identity"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "ENTAILED"
+     },
+     "observed": "ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": false,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "kind(c1)=COMPONENT",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        },
+        {
+         "check": "lifecycle_controller(c1)=parent",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        },
+        {
+         "check": "ns1 != c1",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 616,
+       "reason_ms": 374,
+       "variant": "FX-BKT-P03",
+       "mutation": {
+        "label": "contêiner só referencia o namespace (sem parte-todo)",
+        "observed": "NOT_ENTAILED",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-BKT-P03",
+       "pass": false,
+       "checks": [
+        {
+         "check": "kind(c1)=COMPONENT",
+         "observed": "ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "lifecycle_controller(c1)=parent",
+         "observed": "ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "ns1 != c1",
+         "observed": "NOT_ENTAILED",
+         "pass": false
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-NIC-P05": {
+     "axes": [
+      "identity"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "INVARIANT"
+     },
+     "observed": "INVARIANT",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "occ(nic1) igual em A e B",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        },
+        {
+         "check": "occ(nic2) igual em A e B",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        },
+        {
+         "check": "nic1 != nic2",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 632,
+       "reason_ms": 353,
+       "variant": "FX-NIC-P05-ORDER-A+B",
+       "mutation": {
+        "label": "chave de ocorrência com a posição textual",
+        "observed": "NOT_ENTAILED",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-NIC-P05-ORDER-A+B",
+       "pass": true,
+       "checks": [
+        {
+         "check": "occ(nic1) igual em A e B",
+         "observed": "ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "occ(nic2) igual em A e B",
+         "observed": "ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "nic1 != nic2",
+         "observed": "ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-LB-P04": {
+     "axes": [
+      "role",
+      "time"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "ENTAILED"
+     },
+     "observed": "ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "type(vm1)=compute_instance com membro",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        },
+        {
+         "check": "vm1 desempenha o papel",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 620,
+       "reason_ms": 271,
+       "variant": "FX-LB-P04 (membro)"
+      },
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "type(vm1)=compute_instance sem membro",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        },
+        {
+         "check": "vm1 não é inferida membro",
+         "kind": "not_ent",
+         "entailed": "false",
+         "pass": true,
+         "observed": "NOT_ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 619,
+       "reason_ms": 267,
+       "variant": "FX-LB-P04 (depois de sair do pool)",
+       "mutation": {
+        "label": "instância ⊑ membro de pool (erro OntoClean)",
+        "observed": "ENTAILED",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-LB-P04 (membro)",
+       "pass": true,
+       "checks": [
+        {
+         "check": "type(vm1)=compute_instance com membro",
+         "observed": "ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "vm1 desempenha o papel",
+         "observed": "ENTAILED",
+         "pass": true
+        }
+       ]
+      },
+      {
+       "variant": "FX-LB-P04 (depois de sair do pool)",
+       "pass": true,
+       "checks": [
+        {
+         "check": "type(vm1)=compute_instance sem membro",
+         "observed": "ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "vm1 não é inferida membro",
+         "observed": "NOT_ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-LB-N01": {
+     "axes": [
+      "role"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "REJECTED",
+      "code": "INCONSISTENT"
+     },
+     "observed": "REJECTED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "OntoClean reprova instância ⊑ membro de pool",
+         "kind": "oc_reject",
+         "violations": [
+          "ComputeInstance ⊑ BackendMember (rigid sob anti)"
+         ],
+         "observed": "REJECTED",
+         "pass": true
+        },
+        {
+         "check": "vm9 sem pool não é inferida membro",
+         "kind": "not_ent",
+         "entailed": "false",
+         "pass": true,
+         "observed": "NOT_ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 612,
+       "reason_ms": 227,
+       "variant": "FX-LB-N01"
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-LB-N01",
+       "pass": true,
+       "checks": [
+        {
+         "check": "OntoClean reprova instância ⊑ membro de pool",
+         "observed": "REJECTED",
+         "pass": true
+        },
+        {
+         "check": "vm9 sem pool não é inferida membro",
+         "observed": "NOT_ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-DB-P02": {
+     "axes": [
+      "role"
+     ],
+     "extra": false,
+     "expected": {
+      "value": 2
+     },
+     "observed": 2,
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "COUNT db_instance",
+         "kind": "count",
+         "members": [
+          "i1",
+          "i2"
+         ],
+         "observed": 2,
+         "pass": true
+        },
+        {
+         "check": "replica_of(i2,i1) e type(i2)=db_instance",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        },
+        {
+         "check": "i2 desempenha o papel réplica",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 620,
+       "reason_ms": 327,
+       "variant": "FX-DB-P02",
+       "mutation": {
+        "label": "réplica contada como instância à parte com a mesma chave (mesma encarnação)",
+        "observed": "INCONSISTENT",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-DB-P02",
+       "pass": true,
+       "checks": [
+        {
+         "check": "COUNT db_instance",
+         "observed": 2,
+         "pass": true
+        },
+        {
+         "check": "replica_of(i2,i1) e type(i2)=db_instance",
+         "observed": "ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "i2 desempenha o papel réplica",
+         "observed": "ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-TAX-P01": {
+     "axes": [
+      "role"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "ENTAILED"
+     },
+     "observed": "ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "OntoClean aceita membro de pool ⊑ recurso endereçável",
+         "kind": "oc_accept",
+         "violations": [],
+         "observed": "ACCEPTED",
+         "pass": true
+        },
+        {
+         "check": "vm1 membro é recurso endereçável",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 620,
+       "reason_ms": 270,
+       "variant": "FX-TAX-P01"
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-TAX-P01",
+       "pass": true,
+       "checks": [
+        {
+         "check": "OntoClean aceita membro de pool ⊑ recurso endereçável",
+         "observed": "ACCEPTED",
+         "pass": true
+        },
+        {
+         "check": "vm1 membro é recurso endereçável",
+         "observed": "ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-TAX-N04": {
+     "axes": [
+      "role"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "REJECTED",
+      "code": "INCONSISTENT"
+     },
+     "observed": "REJECTED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "OntoClean reprova tópico ⊑ destino de notificação",
+         "kind": "oc_reject",
+         "violations": [
+          "NotificationTopic ⊑ NotificationDestination (rigid sob anti)"
+         ],
+         "observed": "REJECTED",
+         "pass": true
+        },
+        {
+         "check": "t1 notificado é destino",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        },
+        {
+         "check": "t2 não notificado não é destino",
+         "kind": "not_ent",
+         "entailed": "false",
+         "pass": true,
+         "observed": "NOT_ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 627,
+       "reason_ms": 228,
+       "variant": "FX-TAX-N04"
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-TAX-N04",
+       "pass": true,
+       "checks": [
+        {
+         "check": "OntoClean reprova tópico ⊑ destino de notificação",
+         "observed": "REJECTED",
+         "pass": true
+        },
+        {
+         "check": "t1 notificado é destino",
+         "observed": "ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "t2 não notificado não é destino",
+         "observed": "NOT_ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-CFG-P01": {
+     "axes": [
+      "time"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "ENTAILED"
+     },
+     "observed": "ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "desejado e observado divergentes coexistem",
+         "kind": "consistent",
+         "observed": "CONSISTENT",
+         "pass": true
+        },
+        {
+         "check": "drift(c1, versioning) = true",
+         "kind": "ask",
+         "observed": true,
+         "pass": true
+        }
+       ],
+       "pass": true,
+       "axioms": 635,
+       "reason_ms": 224,
+       "variant": "FX-CFG-P01",
+       "mutation": {
+        "label": "valores direto no recurso, com propriedade funcional (sem o modelo S1)",
+        "observed": "INCONSISTENT",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-CFG-P01",
+       "pass": true,
+       "checks": [
+        {
+         "check": "desejado e observado divergentes coexistem",
+         "observed": "CONSISTENT",
+         "pass": true
+        },
+        {
+         "check": "drift(c1, versioning) = true",
+         "observed": true,
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-CFG-N02": {
+     "axes": [
+      "identity",
+      "time"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "NOT_ENTAILED"
+     },
+     "observed": "NOT_ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "NOT c1 != c1' (dois estados, um recurso)",
+         "kind": "not_ent",
+         "entailed": "false",
+         "pass": true,
+         "observed": "NOT_ENTAILED"
+        },
+        {
+         "check": "as duas leituras são o mesmo recurso",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 647,
+       "reason_ms": 262,
+       "variant": "FX-CFG-N02",
+       "mutation": {
+        "label": "instante da leitura como atributo funcional do recurso",
+        "observed": "INCONSISTENT",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-CFG-N02",
+       "pass": true,
+       "checks": [
+        {
+         "check": "NOT c1 != c1' (dois estados, um recurso)",
+         "observed": "NOT_ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "as duas leituras são o mesmo recurso",
+         "observed": "ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-ID-P01": {
+     "axes": [
+      "identity",
+      "time"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "ENTAILED"
+     },
+     "observed": "ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": false,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "after(c1) = c1",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        },
+        {
+         "check": "COUNT config_versions(c1) = 2",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 629,
+       "reason_ms": 329,
+       "variant": "FX-ID-P01",
+       "mutation": {
+        "label": "mudança no lugar registrada com encarnação nova",
+        "observed": "NOT_ENTAILED",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-ID-P01",
+       "pass": false,
+       "checks": [
+        {
+         "check": "after(c1) = c1",
+         "observed": "ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "COUNT config_versions(c1) = 2",
+         "observed": "NOT_ENTAILED",
+         "pass": false
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-ID-P02": {
+     "axes": [
+      "identity",
+      "time"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "ENTAILED"
+     },
+     "observed": "ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "after(c1) = c2 AND c1 != c2 AND ended(c1)",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 624,
+       "reason_ms": 294,
+       "variant": "FX-ID-P02",
+       "mutation": {
+        "label": "chave só com os 5 componentes (sem encarnação)",
+        "observed": "INCONSISTENT",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-ID-P02",
+       "pass": true,
+       "checks": [
+        {
+         "check": "after(c1) = c2 AND c1 != c2 AND ended(c1)",
+         "observed": "ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-ID-N01": {
+     "axes": [
+      "identity"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "NOT_ENTAILED"
+     },
+     "observed": "NOT_ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "NOT c1 = c2",
+         "kind": "not_ent",
+         "entailed": "false",
+         "pass": true,
+         "observed": "NOT_ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 619,
+       "reason_ms": 232,
+       "variant": "FX-ID-N01",
+       "mutation": {
+        "label": "chave sem localização (e sem encarnação)",
+        "observed": "INCONSISTENT",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-ID-N01",
+       "pass": true,
+       "checks": [
+        {
+         "check": "NOT c1 = c2",
+         "observed": "NOT_ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-ID-U01": {
+     "axes": [
+      "identity",
+      "time"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "UNKNOWN",
+      "code": "MISSING_EVIDENCE"
+     },
+     "observed": "UNKNOWN",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "after(c1) = UNKNOWN",
+         "kind": "unknown",
+         "entailed": "false",
+         "negation_entailed": "false",
+         "observed": "UNKNOWN",
+         "pass": true
+        },
+        {
+         "check": "código do desconhecido",
+         "kind": "code",
+         "observed": "MISSING_EVIDENCE",
+         "pass": true
+        }
+       ],
+       "pass": true,
+       "axioms": 625,
+       "reason_ms": 225,
+       "variant": "FX-ID-U01",
+       "mutation": {
+        "label": "evidência de mudança no lugar (mesma encarnação)",
+        "observed": "ENTAILED",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-ID-U01",
+       "pass": true,
+       "checks": [
+        {
+         "check": "after(c1) = UNKNOWN",
+         "observed": "UNKNOWN",
+         "pass": true
+        },
+        {
+         "check": "código do desconhecido",
+         "observed": "MISSING_EVIDENCE",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-ID-U02": {
+     "axes": [
+      "identity"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "UNKNOWN",
+      "code": "INCOMPLETE_READ"
+     },
+     "observed": "UNKNOWN",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "same(c1, c2) = UNKNOWN",
+         "kind": "unknown",
+         "entailed": "false",
+         "negation_entailed": "false",
+         "observed": "UNKNOWN",
+         "pass": true
+        },
+        {
+         "check": "código do desconhecido",
+         "kind": "code",
+         "observed": "INCOMPLETE_READ",
+         "pass": true
+        }
+       ],
+       "pass": true,
+       "axioms": 625,
+       "reason_ms": 236,
+       "variant": "FX-ID-U02",
+       "mutation": {
+        "label": "localização de c2 lida (igual à de c1)",
+        "observed": "ENTAILED",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-ID-U02",
+       "pass": true,
+       "checks": [
+        {
+         "check": "same(c1, c2) = UNKNOWN",
+         "observed": "UNKNOWN",
+         "pass": true
+        },
+        {
+         "check": "código do desconhecido",
+         "observed": "INCOMPLETE_READ",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-LC-P01": {
+     "axes": [
+      "time"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "ENTAILED"
+     },
+     "observed": "ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "delete(ns1) ⇒ ended(c1)",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 618,
+       "reason_ms": 228,
+       "variant": "FX-LC-P01",
+       "mutation": {
+        "label": "contêiner só referencia o namespace",
+        "observed": "NOT_ENTAILED",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-LC-P01",
+       "pass": true,
+       "checks": [
+        {
+         "check": "delete(ns1) ⇒ ended(c1)",
+         "observed": "ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-LC-N01": {
+     "axes": [
+      "time"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "NOT_ENTAILED"
+     },
+     "observed": "NOT_ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "delete(a1) ⇏ ended(p1)",
+         "kind": "not_ent",
+         "entailed": "false",
+         "pass": true,
+         "observed": "NOT_ENTAILED"
+        },
+        {
+         "check": "delete(a1) ⇏ ended(ps1)",
+         "kind": "not_ent",
+         "entailed": "false",
+         "pass": true,
+         "observed": "NOT_ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 632,
+       "reason_ms": 255,
+       "variant": "FX-LC-N01",
+       "mutation": {
+        "label": "principal com ciclo de vida controlado pelo vínculo",
+        "observed": "ENTAILED",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-LC-N01",
+       "pass": true,
+       "checks": [
+        {
+         "check": "delete(a1) ⇏ ended(p1)",
+         "observed": "NOT_ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "delete(a1) ⇏ ended(ps1)",
+         "observed": "NOT_ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-CFG-N01": {
+     "axes": [],
+     "extra": true,
+     "expected": {
+      "value": "REJECTED",
+      "code": "INCONSISTENT"
+     },
+     "observed": "REJECTED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": false,
+     "variants": [
+      {
+       "consistent": false,
+       "checks": [
+        {
+         "check": "x1 descrição e contêiner é inconsistente",
+         "kind": "inconsistent",
+         "observed": "REJECTED",
+         "pass": true
+        }
+       ],
+       "pass": true,
+       "axioms": 607,
+       "reason_ms": 10,
+       "variant": "FX-CFG-N01"
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-CFG-N01",
+       "pass": false,
+       "checks": [
+        {
+         "check": "x1 descrição e contêiner é inconsistente",
+         "observed": "ACCEPTED",
+         "pass": false
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "reproduced": 17,
+   "reproduced_without_bo_exclusions": 14,
+   "mutations_flipped": 13,
+   "mutations_total": 13,
+   "expected_inferences": {
+    "count": 153,
+    "by_class": {
+     "BFO_0000001": 51,
+     "BFO_0000002": 44,
+     "BFO_0000003": 7,
+     "BFO_0000015": 7,
+     "BFO_0000031": 44
+    },
+    "examples": [
+     "CMT-BKT-P03#c1 a BFO_0000002",
+     "CMT-BKT-P03#c1 a BFO_0000001",
+     "CMT-BKT-P03#c1 a BFO_0000031",
+     "CMT-BKT-P03#ns1 a BFO_0000002",
+     "CMT-BKT-P03#ns1 a BFO_0000001",
+     "CMT-BKT-P03#ns1 a BFO_0000031",
+     "CMT-NIC-P05#nic1a a BFO_0000002",
+     "CMT-NIC-P05#nic1a a BFO_0000001"
+    ]
+   },
+   "role_probe": {
+    "label": "papel do BFO portado pelo recurso (vm1 bearer of r1, r1 a role)",
+    "consistent": false
+   },
+   "protective_alignment_exploratory": {
+    "alignment_extra": "bo:Resource rdfs:subClassOf obo:BFO_0000040 .",
+    "misfit": "recurso como entidade material (BFO_0000040): falso para contêiner, namespace, atribuição",
+    "exploratory": true,
+    "cases": {
+     "CMT-CFG-N01": true,
+     "CMT-BKT-P03": false,
+     "CMT-ID-P01": false
+    }
+   },
+   "example_abox_consistent": true,
+   "cost": {
+    "candidate_axioms": 192,
+    "closure_axioms_typical_case": 624,
+    "closure_axioms_example_abox": 1099,
+    "alignment_axioms": 7,
+    "misfits": 5,
+    "hermit_ms_total": 12813,
+    "harness_wall_s": 15.3,
+    "jobs": 58
+   },
+   "profile": {
+    "profile": "OWL 2 DL",
+    "in_profile": true,
+    "violations": 0,
+    "report_head": [
+     "OWL 2 DL Profile Report: [Ontology and imports closure in profile]"
+    ]
+   },
+   "alignment_punning": []
+  },
+  "dul": {
+   "candidate": "dul",
+   "label": "DOLCE+DnS Ultralite 4.2",
+   "file": "$BO_DATA/downloads/dul/DUL.ttl",
+   "file_sha256": "e5f6429596d2c7014730bad85aaaa9c39530235f27f596cd0e7ce85e6bbcba66",
+   "alignment_axioms": [
+    "bo:Resource rdfs:subClassOf dul:Object .",
+    "bo:Facet rdfs:subClassOf dul:Quality .",
+    "bo:facetOf rdfs:subPropertyOf dul:isQualityOf .",
+    "bo:Binding rdfs:subClassOf dul:Situation .",
+    "bo:relates rdfs:subPropertyOf dul:isSettingFor .",
+    "bo:ConfigurationDescription rdfs:subClassOf dul:Description .",
+    "bo:describes rdfs:subPropertyOf dul:describes .",
+    "bo:ObservedState rdfs:subClassOf dul:Situation .",
+    "bo:stateOf rdfs:subPropertyOf dul:isSettingFor .",
+    "bo:Observation rdfs:subClassOf dul:Action .",
+    "bo:LifecycleEvent rdfs:subClassOf dul:Event .",
+    "bo:MappingActivity rdfs:subClassOf dul:Action .",
+    "bo:componentOf rdfs:subPropertyOf dul:isComponentOf ."
+   ],
+   "misfits": [
+    "papel do DUL é indivíduo (dul:Role, um Concept que classifica): a classe antirrígida 'membro de pool' do bo não tem contraparte de classe sem punning; o papel do DUL fica num indivíduo à parte",
+    "vínculo e estado observado caem os dois em dul:Situation: o DUL não os separa",
+    "descrição (dul:Description) é dul:Object, como o recurso: o DUL não separa descrição de recurso"
+   ],
+   "cases": {
+    "CMT-BKT-P03": {
+     "axes": [
+      "identity"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "ENTAILED"
+     },
+     "observed": "ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "kind(c1)=COMPONENT",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        },
+        {
+         "check": "lifecycle_controller(c1)=parent",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        },
+        {
+         "check": "ns1 != c1",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 1038,
+       "reason_ms": 4756,
+       "variant": "FX-BKT-P03",
+       "mutation": {
+        "label": "contêiner só referencia o namespace (sem parte-todo)",
+        "observed": "NOT_ENTAILED",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-BKT-P03",
+       "pass": true,
+       "checks": [
+        {
+         "check": "kind(c1)=COMPONENT",
+         "observed": "ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "lifecycle_controller(c1)=parent",
+         "observed": "ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "ns1 != c1",
+         "observed": "ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-NIC-P05": {
+     "axes": [
+      "identity"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "INVARIANT"
+     },
+     "observed": "INVARIANT",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "occ(nic1) igual em A e B",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        },
+        {
+         "check": "occ(nic2) igual em A e B",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        },
+        {
+         "check": "nic1 != nic2",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 1054,
+       "reason_ms": 4879,
+       "variant": "FX-NIC-P05-ORDER-A+B",
+       "mutation": {
+        "label": "chave de ocorrência com a posição textual",
+        "observed": "NOT_ENTAILED",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-NIC-P05-ORDER-A+B",
+       "pass": true,
+       "checks": [
+        {
+         "check": "occ(nic1) igual em A e B",
+         "observed": "ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "occ(nic2) igual em A e B",
+         "observed": "ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "nic1 != nic2",
+         "observed": "ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-LB-P04": {
+     "axes": [
+      "role",
+      "time"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "ENTAILED"
+     },
+     "observed": "ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "type(vm1)=compute_instance com membro",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        },
+        {
+         "check": "vm1 desempenha o papel",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 1042,
+       "reason_ms": 3888,
+       "variant": "FX-LB-P04 (membro)"
+      },
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "type(vm1)=compute_instance sem membro",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        },
+        {
+         "check": "vm1 não é inferida membro",
+         "kind": "not_ent",
+         "entailed": "false",
+         "pass": true,
+         "observed": "NOT_ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 1041,
+       "reason_ms": 4105,
+       "variant": "FX-LB-P04 (depois de sair do pool)",
+       "mutation": {
+        "label": "instância ⊑ membro de pool (erro OntoClean)",
+        "observed": "ENTAILED",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-LB-P04 (membro)",
+       "pass": true,
+       "checks": [
+        {
+         "check": "type(vm1)=compute_instance com membro",
+         "observed": "ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "vm1 desempenha o papel",
+         "observed": "ENTAILED",
+         "pass": true
+        }
+       ]
+      },
+      {
+       "variant": "FX-LB-P04 (depois de sair do pool)",
+       "pass": true,
+       "checks": [
+        {
+         "check": "type(vm1)=compute_instance sem membro",
+         "observed": "ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "vm1 não é inferida membro",
+         "observed": "NOT_ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-LB-N01": {
+     "axes": [
+      "role"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "REJECTED",
+      "code": "INCONSISTENT"
+     },
+     "observed": "REJECTED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "OntoClean reprova instância ⊑ membro de pool",
+         "kind": "oc_reject",
+         "violations": [
+          "ComputeInstance ⊑ BackendMember (rigid sob anti)"
+         ],
+         "observed": "REJECTED",
+         "pass": true
+        },
+        {
+         "check": "vm9 sem pool não é inferida membro",
+         "kind": "not_ent",
+         "entailed": "false",
+         "pass": true,
+         "observed": "NOT_ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 1034,
+       "reason_ms": 4138,
+       "variant": "FX-LB-N01"
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-LB-N01",
+       "pass": true,
+       "checks": [
+        {
+         "check": "OntoClean reprova instância ⊑ membro de pool",
+         "observed": "REJECTED",
+         "pass": true
+        },
+        {
+         "check": "vm9 sem pool não é inferida membro",
+         "observed": "NOT_ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-DB-P02": {
+     "axes": [
+      "role"
+     ],
+     "extra": false,
+     "expected": {
+      "value": 2
+     },
+     "observed": 2,
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "COUNT db_instance",
+         "kind": "count",
+         "members": [
+          "i1",
+          "i2"
+         ],
+         "observed": 2,
+         "pass": true
+        },
+        {
+         "check": "replica_of(i2,i1) e type(i2)=db_instance",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        },
+        {
+         "check": "i2 desempenha o papel réplica",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 1042,
+       "reason_ms": 4681,
+       "variant": "FX-DB-P02",
+       "mutation": {
+        "label": "réplica contada como instância à parte com a mesma chave (mesma encarnação)",
+        "observed": "INCONSISTENT",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-DB-P02",
+       "pass": true,
+       "checks": [
+        {
+         "check": "COUNT db_instance",
+         "observed": 2,
+         "pass": true
+        },
+        {
+         "check": "replica_of(i2,i1) e type(i2)=db_instance",
+         "observed": "ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "i2 desempenha o papel réplica",
+         "observed": "ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-TAX-P01": {
+     "axes": [
+      "role"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "ENTAILED"
+     },
+     "observed": "ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "OntoClean aceita membro de pool ⊑ recurso endereçável",
+         "kind": "oc_accept",
+         "violations": [],
+         "observed": "ACCEPTED",
+         "pass": true
+        },
+        {
+         "check": "vm1 membro é recurso endereçável",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 1042,
+       "reason_ms": 4405,
+       "variant": "FX-TAX-P01"
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-TAX-P01",
+       "pass": true,
+       "checks": [
+        {
+         "check": "OntoClean aceita membro de pool ⊑ recurso endereçável",
+         "observed": "ACCEPTED",
+         "pass": true
+        },
+        {
+         "check": "vm1 membro é recurso endereçável",
+         "observed": "ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-TAX-N04": {
+     "axes": [
+      "role"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "REJECTED",
+      "code": "INCONSISTENT"
+     },
+     "observed": "REJECTED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "OntoClean reprova tópico ⊑ destino de notificação",
+         "kind": "oc_reject",
+         "violations": [
+          "NotificationTopic ⊑ NotificationDestination (rigid sob anti)"
+         ],
+         "observed": "REJECTED",
+         "pass": true
+        },
+        {
+         "check": "t1 notificado é destino",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        },
+        {
+         "check": "t2 não notificado não é destino",
+         "kind": "not_ent",
+         "entailed": "false",
+         "pass": true,
+         "observed": "NOT_ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 1049,
+       "reason_ms": 4011,
+       "variant": "FX-TAX-N04"
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-TAX-N04",
+       "pass": true,
+       "checks": [
+        {
+         "check": "OntoClean reprova tópico ⊑ destino de notificação",
+         "observed": "REJECTED",
+         "pass": true
+        },
+        {
+         "check": "t1 notificado é destino",
+         "observed": "ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "t2 não notificado não é destino",
+         "observed": "NOT_ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-CFG-P01": {
+     "axes": [
+      "time"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "ENTAILED"
+     },
+     "observed": "ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "desejado e observado divergentes coexistem",
+         "kind": "consistent",
+         "observed": "CONSISTENT",
+         "pass": true
+        },
+        {
+         "check": "drift(c1, versioning) = true",
+         "kind": "ask",
+         "observed": true,
+         "pass": true
+        }
+       ],
+       "pass": true,
+       "axioms": 1057,
+       "reason_ms": 6417,
+       "variant": "FX-CFG-P01",
+       "mutation": {
+        "label": "valores direto no recurso, com propriedade funcional (sem o modelo S1)",
+        "observed": "INCONSISTENT",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-CFG-P01",
+       "pass": true,
+       "checks": [
+        {
+         "check": "desejado e observado divergentes coexistem",
+         "observed": "CONSISTENT",
+         "pass": true
+        },
+        {
+         "check": "drift(c1, versioning) = true",
+         "observed": true,
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-CFG-N02": {
+     "axes": [
+      "identity",
+      "time"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "NOT_ENTAILED"
+     },
+     "observed": "NOT_ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "NOT c1 != c1' (dois estados, um recurso)",
+         "kind": "not_ent",
+         "entailed": "false",
+         "pass": true,
+         "observed": "NOT_ENTAILED"
+        },
+        {
+         "check": "as duas leituras são o mesmo recurso",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 1069,
+       "reason_ms": 7878,
+       "variant": "FX-CFG-N02",
+       "mutation": {
+        "label": "instante da leitura como atributo funcional do recurso",
+        "observed": "INCONSISTENT",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-CFG-N02",
+       "pass": true,
+       "checks": [
+        {
+         "check": "NOT c1 != c1' (dois estados, um recurso)",
+         "observed": "NOT_ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "as duas leituras são o mesmo recurso",
+         "observed": "ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-ID-P01": {
+     "axes": [
+      "identity",
+      "time"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "ENTAILED"
+     },
+     "observed": "ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": false,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "after(c1) = c1",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        },
+        {
+         "check": "COUNT config_versions(c1) = 2",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 1051,
+       "reason_ms": 7048,
+       "variant": "FX-ID-P01",
+       "mutation": {
+        "label": "mudança no lugar registrada com encarnação nova",
+        "observed": "NOT_ENTAILED",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-ID-P01",
+       "pass": false,
+       "checks": [
+        {
+         "check": "after(c1) = c1",
+         "observed": "ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "COUNT config_versions(c1) = 2",
+         "observed": "NOT_ENTAILED",
+         "pass": false
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-ID-P02": {
+     "axes": [
+      "identity",
+      "time"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "ENTAILED"
+     },
+     "observed": "ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "after(c1) = c2 AND c1 != c2 AND ended(c1)",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 1046,
+       "reason_ms": 4454,
+       "variant": "FX-ID-P02",
+       "mutation": {
+        "label": "chave só com os 5 componentes (sem encarnação)",
+        "observed": "INCONSISTENT",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-ID-P02",
+       "pass": true,
+       "checks": [
+        {
+         "check": "after(c1) = c2 AND c1 != c2 AND ended(c1)",
+         "observed": "ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-ID-N01": {
+     "axes": [
+      "identity"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "NOT_ENTAILED"
+     },
+     "observed": "NOT_ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "NOT c1 = c2",
+         "kind": "not_ent",
+         "entailed": "false",
+         "pass": true,
+         "observed": "NOT_ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 1041,
+       "reason_ms": 4337,
+       "variant": "FX-ID-N01",
+       "mutation": {
+        "label": "chave sem localização (e sem encarnação)",
+        "observed": "INCONSISTENT",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-ID-N01",
+       "pass": true,
+       "checks": [
+        {
+         "check": "NOT c1 = c2",
+         "observed": "NOT_ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-ID-U01": {
+     "axes": [
+      "identity",
+      "time"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "UNKNOWN",
+      "code": "MISSING_EVIDENCE"
+     },
+     "observed": "UNKNOWN",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "after(c1) = UNKNOWN",
+         "kind": "unknown",
+         "entailed": "false",
+         "negation_entailed": "false",
+         "observed": "UNKNOWN",
+         "pass": true
+        },
+        {
+         "check": "código do desconhecido",
+         "kind": "code",
+         "observed": "MISSING_EVIDENCE",
+         "pass": true
+        }
+       ],
+       "pass": true,
+       "axioms": 1047,
+       "reason_ms": 4043,
+       "variant": "FX-ID-U01",
+       "mutation": {
+        "label": "evidência de mudança no lugar (mesma encarnação)",
+        "observed": "ENTAILED",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-ID-U01",
+       "pass": true,
+       "checks": [
+        {
+         "check": "after(c1) = UNKNOWN",
+         "observed": "UNKNOWN",
+         "pass": true
+        },
+        {
+         "check": "código do desconhecido",
+         "observed": "MISSING_EVIDENCE",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-ID-U02": {
+     "axes": [
+      "identity"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "UNKNOWN",
+      "code": "INCOMPLETE_READ"
+     },
+     "observed": "UNKNOWN",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "same(c1, c2) = UNKNOWN",
+         "kind": "unknown",
+         "entailed": "false",
+         "negation_entailed": "false",
+         "observed": "UNKNOWN",
+         "pass": true
+        },
+        {
+         "check": "código do desconhecido",
+         "kind": "code",
+         "observed": "INCOMPLETE_READ",
+         "pass": true
+        }
+       ],
+       "pass": true,
+       "axioms": 1047,
+       "reason_ms": 4235,
+       "variant": "FX-ID-U02",
+       "mutation": {
+        "label": "localização de c2 lida (igual à de c1)",
+        "observed": "ENTAILED",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-ID-U02",
+       "pass": true,
+       "checks": [
+        {
+         "check": "same(c1, c2) = UNKNOWN",
+         "observed": "UNKNOWN",
+         "pass": true
+        },
+        {
+         "check": "código do desconhecido",
+         "observed": "INCOMPLETE_READ",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-LC-P01": {
+     "axes": [
+      "time"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "ENTAILED"
+     },
+     "observed": "ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "delete(ns1) ⇒ ended(c1)",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 1040,
+       "reason_ms": 4049,
+       "variant": "FX-LC-P01",
+       "mutation": {
+        "label": "contêiner só referencia o namespace",
+        "observed": "NOT_ENTAILED",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-LC-P01",
+       "pass": true,
+       "checks": [
+        {
+         "check": "delete(ns1) ⇒ ended(c1)",
+         "observed": "ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-LC-N01": {
+     "axes": [
+      "time"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "NOT_ENTAILED"
+     },
+     "observed": "NOT_ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "delete(a1) ⇏ ended(p1)",
+         "kind": "not_ent",
+         "entailed": "false",
+         "pass": true,
+         "observed": "NOT_ENTAILED"
+        },
+        {
+         "check": "delete(a1) ⇏ ended(ps1)",
+         "kind": "not_ent",
+         "entailed": "false",
+         "pass": true,
+         "observed": "NOT_ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 1054,
+       "reason_ms": 6603,
+       "variant": "FX-LC-N01",
+       "mutation": {
+        "label": "principal com ciclo de vida controlado pelo vínculo",
+        "observed": "ENTAILED",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-LC-N01",
+       "pass": true,
+       "checks": [
+        {
+         "check": "delete(a1) ⇏ ended(p1)",
+         "observed": "NOT_ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "delete(a1) ⇏ ended(ps1)",
+         "observed": "NOT_ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-CFG-N01": {
+     "axes": [],
+     "extra": true,
+     "expected": {
+      "value": "REJECTED",
+      "code": "INCONSISTENT"
+     },
+     "observed": "REJECTED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": false,
+     "variants": [
+      {
+       "consistent": false,
+       "checks": [
+        {
+         "check": "x1 descrição e contêiner é inconsistente",
+         "kind": "inconsistent",
+         "observed": "REJECTED",
+         "pass": true
+        }
+       ],
+       "pass": true,
+       "axioms": 1029,
+       "reason_ms": 39,
+       "variant": "FX-CFG-N01"
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-CFG-N01",
+       "pass": false,
+       "checks": [
+        {
+         "check": "x1 descrição e contêiner é inconsistente",
+         "observed": "ACCEPTED",
+         "pass": false
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "reproduced": 17,
+   "reproduced_without_bo_exclusions": 15,
+   "mutations_flipped": 13,
+   "mutations_total": 13,
+   "expected_inferences": {
+    "count": 117,
+    "by_class": {
+     "Action": 3,
+     "Description": 3,
+     "Entity": 57,
+     "Event": 7,
+     "Object": 40,
+     "Situation": 4,
+     "SocialObject": 3
+    },
+    "examples": [
+     "CMT-BKT-P03#c1 a Object",
+     "CMT-BKT-P03#c1 a Entity",
+     "CMT-BKT-P03#ns1 a Object",
+     "CMT-BKT-P03#ns1 a Entity",
+     "CMT-NIC-P05#nic1a a Object",
+     "CMT-NIC-P05#nic1a a Entity",
+     "CMT-NIC-P05#nic1b a Object",
+     "CMT-NIC-P05#nic1b a Entity"
+    ]
+   },
+   "role_probe": {
+    "label": "papel do DUL como Concept que classifica o recurso (vm1 hasRole r1)",
+    "consistent": true
+   },
+   "protective_alignment_exploratory": {
+    "alignment_extra": "bo:Resource rdfs:subClassOf dul:PhysicalObject .",
+    "misfit": "recurso como dul:PhysicalObject ('tem região espacial própria'): falso para recursos lógicos",
+    "exploratory": true,
+    "cases": {
+     "CMT-CFG-N01": true,
+     "CMT-BKT-P03": true,
+     "CMT-ID-P01": false
+    }
+   },
+   "example_abox_consistent": true,
+   "cost": {
+    "candidate_axioms": 608,
+    "closure_axioms_typical_case": 1046,
+    "closure_axioms_example_abox": 1521,
+    "alignment_axioms": 13,
+    "misfits": 3,
+    "hermit_ms_total": 244869,
+    "harness_wall_s": 258.1,
+    "jobs": 58
+   },
+   "profile": {
+    "profile": "OWL 2 DL",
+    "in_profile": true,
+    "violations": 0,
+    "report_head": [
+     "OWL 2 DL Profile Report: [Ontology and imports closure in profile]"
+    ]
+   },
+   "alignment_punning": []
+  },
+  "gufo": {
+   "candidate": "gufo",
+   "label": "gUFO 1.0.0",
+   "file": "$BO_DATA/downloads/gufo/gufo.ttl",
+   "file_sha256": "b234c7a22d738b66dc8fcf735146fdbe828122e2a04bec43c8c9b08f34fd9027",
+   "alignment_axioms": [
+    "bo:Resource rdfs:subClassOf gufo:FunctionalComplex .",
+    "bo:Facet rdfs:subClassOf gufo:IntrinsicMode .",
+    "bo:facetOf rdfs:subPropertyOf gufo:inheresIn .",
+    "bo:Binding rdfs:subClassOf gufo:Relator .",
+    "bo:relates rdfs:subPropertyOf gufo:mediates .",
+    "bo:ConfigurationDescription rdfs:subClassOf gufo:Object .",
+    "bo:ObservedState rdfs:subClassOf gufo:Situation .",
+    "bo:Observation rdfs:subClassOf gufo:Event .",
+    "bo:LifecycleEvent rdfs:subClassOf gufo:Event .",
+    "bo:MappingActivity rdfs:subClassOf gufo:Event .",
+    "bo:createdBy rdfs:subPropertyOf gufo:wasCreatedIn .",
+    "bo:endedBy rdfs:subPropertyOf gufo:wasTerminatedIn .",
+    "bo:componentOf rdfs:subPropertyOf gufo:isComponentOf ."
+   ],
+   "misfits": [
+    "o gUFO não tem objeto de informação: a descrição de configuração fica em gufo:Object genérico, sem disjunção com o recurso",
+    "a checagem de rigidez do gUFO é de nível de tipo (tv:BackendMember a gufo:Role): exige punning, que a regra do projeto proíbe; a rigidez fica na anotação bo:rigidity"
+   ],
+   "cases": {
+    "CMT-BKT-P03": {
+     "axes": [
+      "identity"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "ENTAILED"
+     },
+     "observed": "ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": false,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "kind(c1)=COMPONENT",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        },
+        {
+         "check": "lifecycle_controller(c1)=parent",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        },
+        {
+         "check": "ns1 != c1",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 671,
+       "reason_ms": 322,
+       "variant": "FX-BKT-P03",
+       "mutation": {
+        "label": "contêiner só referencia o namespace (sem parte-todo)",
+        "observed": "NOT_ENTAILED",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-BKT-P03",
+       "pass": false,
+       "checks": [
+        {
+         "check": "kind(c1)=COMPONENT",
+         "observed": "ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "lifecycle_controller(c1)=parent",
+         "observed": "ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "ns1 != c1",
+         "observed": "NOT_ENTAILED",
+         "pass": false
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-NIC-P05": {
+     "axes": [
+      "identity"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "INVARIANT"
+     },
+     "observed": "INVARIANT",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "occ(nic1) igual em A e B",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        },
+        {
+         "check": "occ(nic2) igual em A e B",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        },
+        {
+         "check": "nic1 != nic2",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 687,
+       "reason_ms": 234,
+       "variant": "FX-NIC-P05-ORDER-A+B",
+       "mutation": {
+        "label": "chave de ocorrência com a posição textual",
+        "observed": "NOT_ENTAILED",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-NIC-P05-ORDER-A+B",
+       "pass": true,
+       "checks": [
+        {
+         "check": "occ(nic1) igual em A e B",
+         "observed": "ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "occ(nic2) igual em A e B",
+         "observed": "ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "nic1 != nic2",
+         "observed": "ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-LB-P04": {
+     "axes": [
+      "role",
+      "time"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "ENTAILED"
+     },
+     "observed": "ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "type(vm1)=compute_instance com membro",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        },
+        {
+         "check": "vm1 desempenha o papel",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 675,
+       "reason_ms": 155,
+       "variant": "FX-LB-P04 (membro)"
+      },
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "type(vm1)=compute_instance sem membro",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        },
+        {
+         "check": "vm1 não é inferida membro",
+         "kind": "not_ent",
+         "entailed": "false",
+         "pass": true,
+         "observed": "NOT_ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 674,
+       "reason_ms": 132,
+       "variant": "FX-LB-P04 (depois de sair do pool)",
+       "mutation": {
+        "label": "instância ⊑ membro de pool (erro OntoClean)",
+        "observed": "ENTAILED",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-LB-P04 (membro)",
+       "pass": true,
+       "checks": [
+        {
+         "check": "type(vm1)=compute_instance com membro",
+         "observed": "ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "vm1 desempenha o papel",
+         "observed": "ENTAILED",
+         "pass": true
+        }
+       ]
+      },
+      {
+       "variant": "FX-LB-P04 (depois de sair do pool)",
+       "pass": true,
+       "checks": [
+        {
+         "check": "type(vm1)=compute_instance sem membro",
+         "observed": "ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "vm1 não é inferida membro",
+         "observed": "NOT_ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-LB-N01": {
+     "axes": [
+      "role"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "REJECTED",
+      "code": "INCONSISTENT"
+     },
+     "observed": "REJECTED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "OntoClean reprova instância ⊑ membro de pool",
+         "kind": "oc_reject",
+         "violations": [
+          "ComputeInstance ⊑ BackendMember (rigid sob anti)"
+         ],
+         "observed": "REJECTED",
+         "pass": true
+        },
+        {
+         "check": "vm9 sem pool não é inferida membro",
+         "kind": "not_ent",
+         "entailed": "false",
+         "pass": true,
+         "observed": "NOT_ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 667,
+       "reason_ms": 145,
+       "variant": "FX-LB-N01"
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-LB-N01",
+       "pass": true,
+       "checks": [
+        {
+         "check": "OntoClean reprova instância ⊑ membro de pool",
+         "observed": "REJECTED",
+         "pass": true
+        },
+        {
+         "check": "vm9 sem pool não é inferida membro",
+         "observed": "NOT_ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-DB-P02": {
+     "axes": [
+      "role"
+     ],
+     "extra": false,
+     "expected": {
+      "value": 2
+     },
+     "observed": 2,
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "COUNT db_instance",
+         "kind": "count",
+         "members": [
+          "i1",
+          "i2"
+         ],
+         "observed": 2,
+         "pass": true
+        },
+        {
+         "check": "replica_of(i2,i1) e type(i2)=db_instance",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        },
+        {
+         "check": "i2 desempenha o papel réplica",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 675,
+       "reason_ms": 219,
+       "variant": "FX-DB-P02",
+       "mutation": {
+        "label": "réplica contada como instância à parte com a mesma chave (mesma encarnação)",
+        "observed": "INCONSISTENT",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-DB-P02",
+       "pass": true,
+       "checks": [
+        {
+         "check": "COUNT db_instance",
+         "observed": 2,
+         "pass": true
+        },
+        {
+         "check": "replica_of(i2,i1) e type(i2)=db_instance",
+         "observed": "ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "i2 desempenha o papel réplica",
+         "observed": "ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-TAX-P01": {
+     "axes": [
+      "role"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "ENTAILED"
+     },
+     "observed": "ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "OntoClean aceita membro de pool ⊑ recurso endereçável",
+         "kind": "oc_accept",
+         "violations": [],
+         "observed": "ACCEPTED",
+         "pass": true
+        },
+        {
+         "check": "vm1 membro é recurso endereçável",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 675,
+       "reason_ms": 152,
+       "variant": "FX-TAX-P01"
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-TAX-P01",
+       "pass": true,
+       "checks": [
+        {
+         "check": "OntoClean aceita membro de pool ⊑ recurso endereçável",
+         "observed": "ACCEPTED",
+         "pass": true
+        },
+        {
+         "check": "vm1 membro é recurso endereçável",
+         "observed": "ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-TAX-N04": {
+     "axes": [
+      "role"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "REJECTED",
+      "code": "INCONSISTENT"
+     },
+     "observed": "REJECTED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "OntoClean reprova tópico ⊑ destino de notificação",
+         "kind": "oc_reject",
+         "violations": [
+          "NotificationTopic ⊑ NotificationDestination (rigid sob anti)"
+         ],
+         "observed": "REJECTED",
+         "pass": true
+        },
+        {
+         "check": "t1 notificado é destino",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        },
+        {
+         "check": "t2 não notificado não é destino",
+         "kind": "not_ent",
+         "entailed": "false",
+         "pass": true,
+         "observed": "NOT_ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 682,
+       "reason_ms": 134,
+       "variant": "FX-TAX-N04"
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-TAX-N04",
+       "pass": true,
+       "checks": [
+        {
+         "check": "OntoClean reprova tópico ⊑ destino de notificação",
+         "observed": "REJECTED",
+         "pass": true
+        },
+        {
+         "check": "t1 notificado é destino",
+         "observed": "ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "t2 não notificado não é destino",
+         "observed": "NOT_ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-CFG-P01": {
+     "axes": [
+      "time"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "ENTAILED"
+     },
+     "observed": "ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "desejado e observado divergentes coexistem",
+         "kind": "consistent",
+         "observed": "CONSISTENT",
+         "pass": true
+        },
+        {
+         "check": "drift(c1, versioning) = true",
+         "kind": "ask",
+         "observed": true,
+         "pass": true
+        }
+       ],
+       "pass": true,
+       "axioms": 690,
+       "reason_ms": 122,
+       "variant": "FX-CFG-P01",
+       "mutation": {
+        "label": "valores direto no recurso, com propriedade funcional (sem o modelo S1)",
+        "observed": "INCONSISTENT",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-CFG-P01",
+       "pass": true,
+       "checks": [
+        {
+         "check": "desejado e observado divergentes coexistem",
+         "observed": "CONSISTENT",
+         "pass": true
+        },
+        {
+         "check": "drift(c1, versioning) = true",
+         "observed": true,
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-CFG-N02": {
+     "axes": [
+      "identity",
+      "time"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "NOT_ENTAILED"
+     },
+     "observed": "NOT_ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "NOT c1 != c1' (dois estados, um recurso)",
+         "kind": "not_ent",
+         "entailed": "false",
+         "pass": true,
+         "observed": "NOT_ENTAILED"
+        },
+        {
+         "check": "as duas leituras são o mesmo recurso",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 702,
+       "reason_ms": 178,
+       "variant": "FX-CFG-N02",
+       "mutation": {
+        "label": "instante da leitura como atributo funcional do recurso",
+        "observed": "INCONSISTENT",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-CFG-N02",
+       "pass": true,
+       "checks": [
+        {
+         "check": "NOT c1 != c1' (dois estados, um recurso)",
+         "observed": "NOT_ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "as duas leituras são o mesmo recurso",
+         "observed": "ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-ID-P01": {
+     "axes": [
+      "identity",
+      "time"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "ENTAILED"
+     },
+     "observed": "ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": false,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "after(c1) = c1",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        },
+        {
+         "check": "COUNT config_versions(c1) = 2",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 684,
+       "reason_ms": 199,
+       "variant": "FX-ID-P01",
+       "mutation": {
+        "label": "mudança no lugar registrada com encarnação nova",
+        "observed": "NOT_ENTAILED",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-ID-P01",
+       "pass": false,
+       "checks": [
+        {
+         "check": "after(c1) = c1",
+         "observed": "ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "COUNT config_versions(c1) = 2",
+         "observed": "NOT_ENTAILED",
+         "pass": false
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-ID-P02": {
+     "axes": [
+      "identity",
+      "time"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "ENTAILED"
+     },
+     "observed": "ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "after(c1) = c2 AND c1 != c2 AND ended(c1)",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 679,
+       "reason_ms": 186,
+       "variant": "FX-ID-P02",
+       "mutation": {
+        "label": "chave só com os 5 componentes (sem encarnação)",
+        "observed": "INCONSISTENT",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-ID-P02",
+       "pass": true,
+       "checks": [
+        {
+         "check": "after(c1) = c2 AND c1 != c2 AND ended(c1)",
+         "observed": "ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-ID-N01": {
+     "axes": [
+      "identity"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "NOT_ENTAILED"
+     },
+     "observed": "NOT_ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "NOT c1 = c2",
+         "kind": "not_ent",
+         "entailed": "false",
+         "pass": true,
+         "observed": "NOT_ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 674,
+       "reason_ms": 156,
+       "variant": "FX-ID-N01",
+       "mutation": {
+        "label": "chave sem localização (e sem encarnação)",
+        "observed": "INCONSISTENT",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-ID-N01",
+       "pass": true,
+       "checks": [
+        {
+         "check": "NOT c1 = c2",
+         "observed": "NOT_ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-ID-U01": {
+     "axes": [
+      "identity",
+      "time"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "UNKNOWN",
+      "code": "MISSING_EVIDENCE"
+     },
+     "observed": "UNKNOWN",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "after(c1) = UNKNOWN",
+         "kind": "unknown",
+         "entailed": "false",
+         "negation_entailed": "false",
+         "observed": "UNKNOWN",
+         "pass": true
+        },
+        {
+         "check": "código do desconhecido",
+         "kind": "code",
+         "observed": "MISSING_EVIDENCE",
+         "pass": true
+        }
+       ],
+       "pass": true,
+       "axioms": 680,
+       "reason_ms": 139,
+       "variant": "FX-ID-U01",
+       "mutation": {
+        "label": "evidência de mudança no lugar (mesma encarnação)",
+        "observed": "ENTAILED",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-ID-U01",
+       "pass": true,
+       "checks": [
+        {
+         "check": "after(c1) = UNKNOWN",
+         "observed": "UNKNOWN",
+         "pass": true
+        },
+        {
+         "check": "código do desconhecido",
+         "observed": "MISSING_EVIDENCE",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-ID-U02": {
+     "axes": [
+      "identity"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "UNKNOWN",
+      "code": "INCOMPLETE_READ"
+     },
+     "observed": "UNKNOWN",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "same(c1, c2) = UNKNOWN",
+         "kind": "unknown",
+         "entailed": "false",
+         "negation_entailed": "false",
+         "observed": "UNKNOWN",
+         "pass": true
+        },
+        {
+         "check": "código do desconhecido",
+         "kind": "code",
+         "observed": "INCOMPLETE_READ",
+         "pass": true
+        }
+       ],
+       "pass": true,
+       "axioms": 680,
+       "reason_ms": 146,
+       "variant": "FX-ID-U02",
+       "mutation": {
+        "label": "localização de c2 lida (igual à de c1)",
+        "observed": "ENTAILED",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-ID-U02",
+       "pass": true,
+       "checks": [
+        {
+         "check": "same(c1, c2) = UNKNOWN",
+         "observed": "UNKNOWN",
+         "pass": true
+        },
+        {
+         "check": "código do desconhecido",
+         "observed": "INCOMPLETE_READ",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-LC-P01": {
+     "axes": [
+      "time"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "ENTAILED"
+     },
+     "observed": "ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "delete(ns1) ⇒ ended(c1)",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 673,
+       "reason_ms": 141,
+       "variant": "FX-LC-P01",
+       "mutation": {
+        "label": "contêiner só referencia o namespace",
+        "observed": "NOT_ENTAILED",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-LC-P01",
+       "pass": true,
+       "checks": [
+        {
+         "check": "delete(ns1) ⇒ ended(c1)",
+         "observed": "ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-LC-N01": {
+     "axes": [
+      "time"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "NOT_ENTAILED"
+     },
+     "observed": "NOT_ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "delete(a1) ⇏ ended(p1)",
+         "kind": "not_ent",
+         "entailed": "false",
+         "pass": true,
+         "observed": "NOT_ENTAILED"
+        },
+        {
+         "check": "delete(a1) ⇏ ended(ps1)",
+         "kind": "not_ent",
+         "entailed": "false",
+         "pass": true,
+         "observed": "NOT_ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 687,
+       "reason_ms": 213,
+       "variant": "FX-LC-N01",
+       "mutation": {
+        "label": "principal com ciclo de vida controlado pelo vínculo",
+        "observed": "ENTAILED",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-LC-N01",
+       "pass": true,
+       "checks": [
+        {
+         "check": "delete(a1) ⇏ ended(p1)",
+         "observed": "NOT_ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "delete(a1) ⇏ ended(ps1)",
+         "observed": "NOT_ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-CFG-N01": {
+     "axes": [],
+     "extra": true,
+     "expected": {
+      "value": "REJECTED",
+      "code": "INCONSISTENT"
+     },
+     "observed": "REJECTED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": false,
+     "variants": [
+      {
+       "consistent": false,
+       "checks": [
+        {
+         "check": "x1 descrição e contêiner é inconsistente",
+         "kind": "inconsistent",
+         "observed": "REJECTED",
+         "pass": true
+        }
+       ],
+       "pass": true,
+       "axioms": 662,
+       "reason_ms": 7,
+       "variant": "FX-CFG-N01"
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-CFG-N01",
+       "pass": false,
+       "checks": [
+        {
+         "check": "x1 descrição e contêiner é inconsistente",
+         "observed": "ACCEPTED",
+         "pass": false
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "reproduced": 17,
+   "reproduced_without_bo_exclusions": 14,
+   "mutations_flipped": 13,
+   "mutations_total": 13,
+   "expected_inferences": {
+    "count": 233,
+    "by_class": {
+     "Aspect": 1,
+     "ConcreteIndividual": 51,
+     "Endurant": 41,
+     "Event": 7,
+     "ExtrinsicAspect": 1,
+     "FunctionalComplex": 37,
+     "Individual": 51,
+     "Object": 40,
+     "Relator": 1,
+     "Situation": 3
+    },
+    "examples": [
+     "CMT-BKT-P03#c1 a Individual",
+     "CMT-BKT-P03#c1 a FunctionalComplex",
+     "CMT-BKT-P03#c1 a Endurant",
+     "CMT-BKT-P03#c1 a Object",
+     "CMT-BKT-P03#c1 a ConcreteIndividual",
+     "CMT-BKT-P03#ns1 a Individual",
+     "CMT-BKT-P03#ns1 a FunctionalComplex",
+     "CMT-BKT-P03#ns1 a Endurant"
+    ]
+   },
+   "role_probe": {
+    "label": "tipo de nível de classe do gUFO (tv:BackendMember a gufo:Role)",
+    "consistent": true,
+    "punning": [
+     "https://example.org/bo-trial/vocab#BackendMember"
+    ]
+   },
+   "protective_alignment_exploratory": {
+    "alignment_extra": "bo:ConfigurationDescription rdfs:subClassOf gufo:AbstractIndividual .",
+    "misfit": "descrição versionada e datada como indivíduo abstrato (fora do tempo): contradiz gufo:AbstractIndividual",
+    "exploratory": true,
+    "cases": {
+     "CMT-CFG-N01": true,
+     "CMT-BKT-P03": false,
+     "CMT-ID-P01": false
+    }
+   },
+   "example_abox_consistent": true,
+   "cost": {
+    "candidate_axioms": 241,
+    "closure_axioms_typical_case": 679,
+    "closure_axioms_example_abox": 1154,
+    "alignment_axioms": 13,
+    "misfits": 2,
+    "hermit_ms_total": 7941,
+    "harness_wall_s": 10.9,
+    "jobs": 58
+   },
+   "profile": {
+    "profile": "OWL 2 DL",
+    "in_profile": true,
+    "violations": 0,
+    "report_head": [
+     "OWL 2 DL Profile Report: [Ontology and imports closure in profile]"
+    ]
+   },
+   "alignment_punning": []
+  },
+  "none": {
+   "candidate": "none",
+   "label": "nenhuma ontologia de topo",
+   "file": null,
+   "file_sha256": null,
+   "alignment_axioms": [],
+   "misfits": [],
+   "cases": {
+    "CMT-BKT-P03": {
+     "axes": [
+      "identity"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "ENTAILED"
+     },
+     "observed": "ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": false,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "kind(c1)=COMPONENT",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        },
+        {
+         "check": "lifecycle_controller(c1)=parent",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        },
+        {
+         "check": "ns1 != c1",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 417,
+       "reason_ms": 167,
+       "variant": "FX-BKT-P03",
+       "mutation": {
+        "label": "contêiner só referencia o namespace (sem parte-todo)",
+        "observed": "NOT_ENTAILED",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-BKT-P03",
+       "pass": false,
+       "checks": [
+        {
+         "check": "kind(c1)=COMPONENT",
+         "observed": "ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "lifecycle_controller(c1)=parent",
+         "observed": "ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "ns1 != c1",
+         "observed": "NOT_ENTAILED",
+         "pass": false
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-NIC-P05": {
+     "axes": [
+      "identity"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "INVARIANT"
+     },
+     "observed": "INVARIANT",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "occ(nic1) igual em A e B",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        },
+        {
+         "check": "occ(nic2) igual em A e B",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        },
+        {
+         "check": "nic1 != nic2",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 433,
+       "reason_ms": 112,
+       "variant": "FX-NIC-P05-ORDER-A+B",
+       "mutation": {
+        "label": "chave de ocorrência com a posição textual",
+        "observed": "NOT_ENTAILED",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-NIC-P05-ORDER-A+B",
+       "pass": true,
+       "checks": [
+        {
+         "check": "occ(nic1) igual em A e B",
+         "observed": "ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "occ(nic2) igual em A e B",
+         "observed": "ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "nic1 != nic2",
+         "observed": "ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-LB-P04": {
+     "axes": [
+      "role",
+      "time"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "ENTAILED"
+     },
+     "observed": "ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "type(vm1)=compute_instance com membro",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        },
+        {
+         "check": "vm1 desempenha o papel",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 421,
+       "reason_ms": 72,
+       "variant": "FX-LB-P04 (membro)"
+      },
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "type(vm1)=compute_instance sem membro",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        },
+        {
+         "check": "vm1 não é inferida membro",
+         "kind": "not_ent",
+         "entailed": "false",
+         "pass": true,
+         "observed": "NOT_ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 420,
+       "reason_ms": 71,
+       "variant": "FX-LB-P04 (depois de sair do pool)",
+       "mutation": {
+        "label": "instância ⊑ membro de pool (erro OntoClean)",
+        "observed": "ENTAILED",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-LB-P04 (membro)",
+       "pass": true,
+       "checks": [
+        {
+         "check": "type(vm1)=compute_instance com membro",
+         "observed": "ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "vm1 desempenha o papel",
+         "observed": "ENTAILED",
+         "pass": true
+        }
+       ]
+      },
+      {
+       "variant": "FX-LB-P04 (depois de sair do pool)",
+       "pass": true,
+       "checks": [
+        {
+         "check": "type(vm1)=compute_instance sem membro",
+         "observed": "ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "vm1 não é inferida membro",
+         "observed": "NOT_ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-LB-N01": {
+     "axes": [
+      "role"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "REJECTED",
+      "code": "INCONSISTENT"
+     },
+     "observed": "REJECTED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "OntoClean reprova instância ⊑ membro de pool",
+         "kind": "oc_reject",
+         "violations": [
+          "ComputeInstance ⊑ BackendMember (rigid sob anti)"
+         ],
+         "observed": "REJECTED",
+         "pass": true
+        },
+        {
+         "check": "vm9 sem pool não é inferida membro",
+         "kind": "not_ent",
+         "entailed": "false",
+         "pass": true,
+         "observed": "NOT_ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 413,
+       "reason_ms": 45,
+       "variant": "FX-LB-N01"
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-LB-N01",
+       "pass": true,
+       "checks": [
+        {
+         "check": "OntoClean reprova instância ⊑ membro de pool",
+         "observed": "REJECTED",
+         "pass": true
+        },
+        {
+         "check": "vm9 sem pool não é inferida membro",
+         "observed": "NOT_ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-DB-P02": {
+     "axes": [
+      "role"
+     ],
+     "extra": false,
+     "expected": {
+      "value": 2
+     },
+     "observed": 2,
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "COUNT db_instance",
+         "kind": "count",
+         "members": [
+          "i1",
+          "i2"
+         ],
+         "observed": 2,
+         "pass": true
+        },
+        {
+         "check": "replica_of(i2,i1) e type(i2)=db_instance",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        },
+        {
+         "check": "i2 desempenha o papel réplica",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 421,
+       "reason_ms": 74,
+       "variant": "FX-DB-P02",
+       "mutation": {
+        "label": "réplica contada como instância à parte com a mesma chave (mesma encarnação)",
+        "observed": "INCONSISTENT",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-DB-P02",
+       "pass": true,
+       "checks": [
+        {
+         "check": "COUNT db_instance",
+         "observed": 2,
+         "pass": true
+        },
+        {
+         "check": "replica_of(i2,i1) e type(i2)=db_instance",
+         "observed": "ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "i2 desempenha o papel réplica",
+         "observed": "ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-TAX-P01": {
+     "axes": [
+      "role"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "ENTAILED"
+     },
+     "observed": "ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "OntoClean aceita membro de pool ⊑ recurso endereçável",
+         "kind": "oc_accept",
+         "violations": [],
+         "observed": "ACCEPTED",
+         "pass": true
+        },
+        {
+         "check": "vm1 membro é recurso endereçável",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 421,
+       "reason_ms": 54,
+       "variant": "FX-TAX-P01"
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-TAX-P01",
+       "pass": true,
+       "checks": [
+        {
+         "check": "OntoClean aceita membro de pool ⊑ recurso endereçável",
+         "observed": "ACCEPTED",
+         "pass": true
+        },
+        {
+         "check": "vm1 membro é recurso endereçável",
+         "observed": "ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-TAX-N04": {
+     "axes": [
+      "role"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "REJECTED",
+      "code": "INCONSISTENT"
+     },
+     "observed": "REJECTED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "OntoClean reprova tópico ⊑ destino de notificação",
+         "kind": "oc_reject",
+         "violations": [
+          "NotificationTopic ⊑ NotificationDestination (rigid sob anti)"
+         ],
+         "observed": "REJECTED",
+         "pass": true
+        },
+        {
+         "check": "t1 notificado é destino",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        },
+        {
+         "check": "t2 não notificado não é destino",
+         "kind": "not_ent",
+         "entailed": "false",
+         "pass": true,
+         "observed": "NOT_ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 428,
+       "reason_ms": 57,
+       "variant": "FX-TAX-N04"
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-TAX-N04",
+       "pass": true,
+       "checks": [
+        {
+         "check": "OntoClean reprova tópico ⊑ destino de notificação",
+         "observed": "REJECTED",
+         "pass": true
+        },
+        {
+         "check": "t1 notificado é destino",
+         "observed": "ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "t2 não notificado não é destino",
+         "observed": "NOT_ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-CFG-P01": {
+     "axes": [
+      "time"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "ENTAILED"
+     },
+     "observed": "ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "desejado e observado divergentes coexistem",
+         "kind": "consistent",
+         "observed": "CONSISTENT",
+         "pass": true
+        },
+        {
+         "check": "drift(c1, versioning) = true",
+         "kind": "ask",
+         "observed": true,
+         "pass": true
+        }
+       ],
+       "pass": true,
+       "axioms": 436,
+       "reason_ms": 53,
+       "variant": "FX-CFG-P01",
+       "mutation": {
+        "label": "valores direto no recurso, com propriedade funcional (sem o modelo S1)",
+        "observed": "INCONSISTENT",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-CFG-P01",
+       "pass": true,
+       "checks": [
+        {
+         "check": "desejado e observado divergentes coexistem",
+         "observed": "CONSISTENT",
+         "pass": true
+        },
+        {
+         "check": "drift(c1, versioning) = true",
+         "observed": true,
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-CFG-N02": {
+     "axes": [
+      "identity",
+      "time"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "NOT_ENTAILED"
+     },
+     "observed": "NOT_ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "NOT c1 != c1' (dois estados, um recurso)",
+         "kind": "not_ent",
+         "entailed": "false",
+         "pass": true,
+         "observed": "NOT_ENTAILED"
+        },
+        {
+         "check": "as duas leituras são o mesmo recurso",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 448,
+       "reason_ms": 83,
+       "variant": "FX-CFG-N02",
+       "mutation": {
+        "label": "instante da leitura como atributo funcional do recurso",
+        "observed": "INCONSISTENT",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-CFG-N02",
+       "pass": true,
+       "checks": [
+        {
+         "check": "NOT c1 != c1' (dois estados, um recurso)",
+         "observed": "NOT_ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "as duas leituras são o mesmo recurso",
+         "observed": "ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-ID-P01": {
+     "axes": [
+      "identity",
+      "time"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "ENTAILED"
+     },
+     "observed": "ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": false,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "after(c1) = c1",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        },
+        {
+         "check": "COUNT config_versions(c1) = 2",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 430,
+       "reason_ms": 79,
+       "variant": "FX-ID-P01",
+       "mutation": {
+        "label": "mudança no lugar registrada com encarnação nova",
+        "observed": "NOT_ENTAILED",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-ID-P01",
+       "pass": false,
+       "checks": [
+        {
+         "check": "after(c1) = c1",
+         "observed": "ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "COUNT config_versions(c1) = 2",
+         "observed": "NOT_ENTAILED",
+         "pass": false
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-ID-P02": {
+     "axes": [
+      "identity",
+      "time"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "ENTAILED"
+     },
+     "observed": "ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "after(c1) = c2 AND c1 != c2 AND ended(c1)",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 425,
+       "reason_ms": 57,
+       "variant": "FX-ID-P02",
+       "mutation": {
+        "label": "chave só com os 5 componentes (sem encarnação)",
+        "observed": "INCONSISTENT",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-ID-P02",
+       "pass": true,
+       "checks": [
+        {
+         "check": "after(c1) = c2 AND c1 != c2 AND ended(c1)",
+         "observed": "ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-ID-N01": {
+     "axes": [
+      "identity"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "NOT_ENTAILED"
+     },
+     "observed": "NOT_ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "NOT c1 = c2",
+         "kind": "not_ent",
+         "entailed": "false",
+         "pass": true,
+         "observed": "NOT_ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 420,
+       "reason_ms": 49,
+       "variant": "FX-ID-N01",
+       "mutation": {
+        "label": "chave sem localização (e sem encarnação)",
+        "observed": "INCONSISTENT",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-ID-N01",
+       "pass": true,
+       "checks": [
+        {
+         "check": "NOT c1 = c2",
+         "observed": "NOT_ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-ID-U01": {
+     "axes": [
+      "identity",
+      "time"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "UNKNOWN",
+      "code": "MISSING_EVIDENCE"
+     },
+     "observed": "UNKNOWN",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "after(c1) = UNKNOWN",
+         "kind": "unknown",
+         "entailed": "false",
+         "negation_entailed": "false",
+         "observed": "UNKNOWN",
+         "pass": true
+        },
+        {
+         "check": "código do desconhecido",
+         "kind": "code",
+         "observed": "MISSING_EVIDENCE",
+         "pass": true
+        }
+       ],
+       "pass": true,
+       "axioms": 426,
+       "reason_ms": 53,
+       "variant": "FX-ID-U01",
+       "mutation": {
+        "label": "evidência de mudança no lugar (mesma encarnação)",
+        "observed": "ENTAILED",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-ID-U01",
+       "pass": true,
+       "checks": [
+        {
+         "check": "after(c1) = UNKNOWN",
+         "observed": "UNKNOWN",
+         "pass": true
+        },
+        {
+         "check": "código do desconhecido",
+         "observed": "MISSING_EVIDENCE",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-ID-U02": {
+     "axes": [
+      "identity"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "UNKNOWN",
+      "code": "INCOMPLETE_READ"
+     },
+     "observed": "UNKNOWN",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "same(c1, c2) = UNKNOWN",
+         "kind": "unknown",
+         "entailed": "false",
+         "negation_entailed": "false",
+         "observed": "UNKNOWN",
+         "pass": true
+        },
+        {
+         "check": "código do desconhecido",
+         "kind": "code",
+         "observed": "INCOMPLETE_READ",
+         "pass": true
+        }
+       ],
+       "pass": true,
+       "axioms": 426,
+       "reason_ms": 50,
+       "variant": "FX-ID-U02",
+       "mutation": {
+        "label": "localização de c2 lida (igual à de c1)",
+        "observed": "ENTAILED",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-ID-U02",
+       "pass": true,
+       "checks": [
+        {
+         "check": "same(c1, c2) = UNKNOWN",
+         "observed": "UNKNOWN",
+         "pass": true
+        },
+        {
+         "check": "código do desconhecido",
+         "observed": "INCOMPLETE_READ",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-LC-P01": {
+     "axes": [
+      "time"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "ENTAILED"
+     },
+     "observed": "ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "delete(ns1) ⇒ ended(c1)",
+         "kind": "ent",
+         "entailed": "true",
+         "pass": true,
+         "observed": "ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 419,
+       "reason_ms": 58,
+       "variant": "FX-LC-P01",
+       "mutation": {
+        "label": "contêiner só referencia o namespace",
+        "observed": "NOT_ENTAILED",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-LC-P01",
+       "pass": true,
+       "checks": [
+        {
+         "check": "delete(ns1) ⇒ ended(c1)",
+         "observed": "ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-LC-N01": {
+     "axes": [
+      "time"
+     ],
+     "extra": false,
+     "expected": {
+      "value": "NOT_ENTAILED"
+     },
+     "observed": "NOT_ENTAILED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": true,
+     "variants": [
+      {
+       "consistent": true,
+       "checks": [
+        {
+         "check": "delete(a1) ⇏ ended(p1)",
+         "kind": "not_ent",
+         "entailed": "false",
+         "pass": true,
+         "observed": "NOT_ENTAILED"
+        },
+        {
+         "check": "delete(a1) ⇏ ended(ps1)",
+         "kind": "not_ent",
+         "entailed": "false",
+         "pass": true,
+         "observed": "NOT_ENTAILED"
+        }
+       ],
+       "pass": true,
+       "axioms": 433,
+       "reason_ms": 57,
+       "variant": "FX-LC-N01",
+       "mutation": {
+        "label": "principal com ciclo de vida controlado pelo vínculo",
+        "observed": "ENTAILED",
+        "flipped": true
+       }
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-LC-N01",
+       "pass": true,
+       "checks": [
+        {
+         "check": "delete(a1) ⇏ ended(p1)",
+         "observed": "NOT_ENTAILED",
+         "pass": true
+        },
+        {
+         "check": "delete(a1) ⇏ ended(ps1)",
+         "observed": "NOT_ENTAILED",
+         "pass": true
+        }
+       ]
+      }
+     ]
+    },
+    "CMT-CFG-N01": {
+     "axes": [],
+     "extra": true,
+     "expected": {
+      "value": "REJECTED",
+      "code": "INCONSISTENT"
+     },
+     "observed": "REJECTED",
+     "reproduces": true,
+     "reproduces_without_bo_exclusions": false,
+     "variants": [
+      {
+       "consistent": false,
+       "checks": [
+        {
+         "check": "x1 descrição e contêiner é inconsistente",
+         "kind": "inconsistent",
+         "observed": "REJECTED",
+         "pass": true
+        }
+       ],
+       "pass": true,
+       "axioms": 408,
+       "reason_ms": 5,
+       "variant": "FX-CFG-N01"
+      }
+     ],
+     "ablated_variants": [
+      {
+       "variant": "FX-CFG-N01",
+       "pass": false,
+       "checks": [
+        {
+         "check": "x1 descrição e contêiner é inconsistente",
+         "observed": "ACCEPTED",
+         "pass": false
+        }
+       ]
+      }
+     ]
+    }
+   },
+   "reproduced": 17,
+   "reproduced_without_bo_exclusions": 14,
+   "mutations_flipped": 13,
+   "mutations_total": 13,
+   "expected_inferences": {
+    "count": 0,
+    "by_class": {},
+    "examples": []
+   },
+   "role_probe": null,
+   "protective_alignment_exploratory": null,
+   "example_abox_consistent": true,
+   "cost": {
+    "candidate_axioms": 0,
+    "closure_axioms_typical_case": 425,
+    "closure_axioms_example_abox": 900,
+    "alignment_axioms": 0,
+    "misfits": 0,
+    "hermit_ms_total": 3085,
+    "harness_wall_s": 5.0,
+    "jobs": 56
+   },
+   "profile": {
+    "profile": "OWL 2 DL",
+    "in_profile": true,
+    "violations": 0,
+    "report_head": [
+     "OWL 2 DL Profile Report: [Ontology and imports closure in profile]"
+    ]
+   },
+   "alignment_punning": []
+  }
+ },
+ "decision": {
+  "rule_version": "1",
+  "rows": {
+   "bfo": {
+    "D1_reproduz_todos": true,
+    "D2_dl_consistente_sem_punning": true,
+    "D3_protecoes_proprias": [],
+    "D4_custo": [
+     5,
+     624,
+     12813
+    ]
+   },
+   "dul": {
+    "D1_reproduz_todos": true,
+    "D2_dl_consistente_sem_punning": true,
+    "D3_protecoes_proprias": [
+     "CMT-BKT-P03"
+    ],
+    "D4_custo": [
+     3,
+     1046,
+     244869
+    ]
+   },
+   "gufo": {
+    "D1_reproduz_todos": true,
+    "D2_dl_consistente_sem_punning": true,
+    "D3_protecoes_proprias": [],
+    "D4_custo": [
+     2,
+     679,
+     7941
+    ]
+   },
+   "none": {
+    "D1_reproduz_todos": true,
+    "D2_dl_consistente_sem_punning": true,
+    "D3_protecoes_proprias": [],
+    "D4_custo": [
+     0,
+     425,
+     3085
+    ]
+   }
+  },
+  "eligible": [
+   "bfo",
+   "dul",
+   "gufo",
+   "none"
+  ],
+  "tied_after_D3": [
+   "dul"
+  ],
+  "chosen": "dul",
+  "decided_at_step": "D3",
+  "why": "elegíveis em D1/D2: bfo, dul, gufo, none; maior número de proteções próprias (D3) = 1 (dul); decidido em D3"
+ }
+}

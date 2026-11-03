@@ -1,0 +1,36 @@
+{
+ "schema": "bo.ontpat.profile/1",
+ "toolchain": {
+  "robot": "1.9.11",
+  "hermit": "1.4.5.456",
+  "elk": "0.6.0",
+  "owlapi": "4.5.29"
+ },
+ "closure": {
+  "files": [
+   "$BO_REPO/ontology/patterns/bo-patterns.ttl",
+   "$BO_REPO/ontology/patterns/descriptor-pattern.ttl"
+  ],
+  "in_profile": true,
+  "report": [
+   "OWL 2 DL Profile Report: [Ontology and imports closure in profile]"
+  ],
+  "hermit_consistent_coherent": true,
+  "elk_runs_but_is_not_complete_for_dl": {
+   "exit": 0,
+   "note": "ELK ignora o que está fora do EL (uniões, inversas, cardinalidades, chaves, oneOf): saída só indicativa; decisão de consistência é do HermiT"
+  }
+ },
+ "example_abox_hermit_consistent_coherent": true,
+ "prov_o": {
+  "file": "$BO_DATA/downloads/prov-o/prov-o.ttl",
+  "sha256": "7d203989f67b38bca572253942acc5a1bf24ce3ccfece16f072dcb4be2b79a96",
+  "in_profile": false,
+  "violations": 14,
+  "punned_terms": [
+   "http://www.w3.org/ns/prov#specializationOf",
+   "http://www.w3.org/ns/prov#wasRevisionOf"
+  ],
+  "consequence": "não importado; termos usados declarados em bo-patterns.ttl (MIREOT) só como propriedade de objeto"
+ }
+}

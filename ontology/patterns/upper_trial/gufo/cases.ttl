@@ -15,6 +15,31 @@
 @prefix gufo: <http://purl.org/nemo/gufo#> .
 
 ### alinhamento mínimo (13 axiomas)
+# declarações
+<http://purl.org/nemo/gufo#Event> a owl:Class .
+<http://purl.org/nemo/gufo#FunctionalComplex> a owl:Class .
+<http://purl.org/nemo/gufo#IntrinsicMode> a owl:Class .
+<http://purl.org/nemo/gufo#Object> a owl:Class .
+<http://purl.org/nemo/gufo#Relator> a owl:Class .
+<http://purl.org/nemo/gufo#Situation> a owl:Class .
+<http://purl.org/nemo/gufo#inheresIn> a owl:ObjectProperty .
+<http://purl.org/nemo/gufo#isComponentOf> a owl:ObjectProperty .
+<http://purl.org/nemo/gufo#mediates> a owl:ObjectProperty .
+<http://purl.org/nemo/gufo#wasCreatedIn> a owl:ObjectProperty .
+<http://purl.org/nemo/gufo#wasTerminatedIn> a owl:ObjectProperty .
+<https://w3id.org/brevops/ontology#Binding> a owl:Class .
+<https://w3id.org/brevops/ontology#ConfigurationDescription> a owl:Class .
+<https://w3id.org/brevops/ontology#Facet> a owl:Class .
+<https://w3id.org/brevops/ontology#LifecycleEvent> a owl:Class .
+<https://w3id.org/brevops/ontology#MappingActivity> a owl:Class .
+<https://w3id.org/brevops/ontology#Observation> a owl:Class .
+<https://w3id.org/brevops/ontology#ObservedState> a owl:Class .
+<https://w3id.org/brevops/ontology#Resource> a owl:Class .
+<https://w3id.org/brevops/ontology#componentOf> a owl:ObjectProperty .
+<https://w3id.org/brevops/ontology#createdBy> a owl:ObjectProperty .
+<https://w3id.org/brevops/ontology#endedBy> a owl:ObjectProperty .
+<https://w3id.org/brevops/ontology#facetOf> a owl:ObjectProperty .
+<https://w3id.org/brevops/ontology#relates> a owl:ObjectProperty .
 
 bo:Resource rdfs:subClassOf gufo:FunctionalComplex .
 bo:Facet rdfs:subClassOf gufo:IntrinsicMode .

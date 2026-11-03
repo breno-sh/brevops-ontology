@@ -1,0 +1,101 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "ONTPAT",
+ "generated_at": "2026-11-02T23:25:05-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/ONTPAT.txt",
+  "brief_sha256": "1f7a81bd1affe088332500050227dd25000b1d79f618f68db2eeadc39397a915",
+  "params": {
+   "effort": "maximo",
+   "modo": "unlazy",
+   "onda": "2",
+   "fase": "F1",
+   "reasoner": "HermiT-1.4.5.456",
+   "robot": "1.9.11"
+  },
+  "inputs": [
+   {
+    "path": "/Users/breno/doutorado/pesquisa/superficie/reports/ontologia_neutra/spec/skeleton.ttl",
+    "kind": "file",
+    "sha256": "a2781d1c1d01a8f32dc529f9858375421abd353ce2a41a06067c78920917979a"
+   },
+   {
+    "path": "/Users/breno/doutorado/pesquisa/superficie/reports/ontologia_neutra/revisao_adversarial/R1_engenharia_ontologia.html",
+    "kind": "file",
+    "sha256": "72013f04fbc969c0b2b3f001505c65517e3f7928fa524fd1809e01bad287963e"
+   },
+   {
+    "path": "/Users/breno/doutorado/pesquisa/superficie/reports/composite_mapping_design.md",
+    "kind": "file",
+    "sha256": "3928a0a5d3e8aaf4f7e5681cfd62b596d9a896c78ce50230e1a0945b05e719e1"
+   },
+   {
+    "path": "$BO_REPO/requirements/commitments.jsonl",
+    "kind": "file",
+    "sha256": "038f73fcebedfbf3b5ff3d23b1ff0758a87e8be2616b141b232628e1a64d1438"
+   },
+   {
+    "path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/revisao_adversarial_plano/REVISAO_PLANO_v2_GPT6_CODEX.txt",
+    "kind": "file",
+    "sha256": "29215fd0eb0fabe1f4a3232958fb5020b6d8fd08f241a2e557e47bb4af8be892"
+   },
+   {
+    "path": "$BO_DATA/downloads/bfo2020/bfo-core.ttl",
+    "kind": "file",
+    "sha256": "6944e2c96a0d8709dc15ae5364792019e208061eda3f32311af4f3b8d8443a3b"
+   },
+   {
+    "path": "$BO_DATA/downloads/dul/DUL.ttl",
+    "kind": "file",
+    "sha256": "e5f6429596d2c7014730bad85aaaa9c39530235f27f596cd0e7ce85e6bbcba66"
+   },
+   {
+    "path": "$BO_DATA/downloads/gufo/gufo.ttl",
+    "kind": "file",
+    "sha256": "b234c7a22d738b66dc8fcf735146fdbe828122e2a04bec43c8c9b08f34fd9027"
+   },
+   {
+    "path": "$BO_DATA/downloads/prov-o/prov-o.ttl",
+    "kind": "file",
+    "sha256": "7d203989f67b38bca572253942acc5a1bf24ce3ccfece16f072dcb4be2b79a96"
+   },
+   {
+    "path": "$BO_DATA/downloads/robot/v1.9.11/robot.jar",
+    "kind": "file",
+    "sha256": "53cd275c8e4c0dad1fc2c1c34174876795cd7d6b6926e1444adcbb0cb3c7ab26"
+   }
+  ],
+  "recorded_at": "2026-11-02T23:25:05-03:00"
+ },
+ "sources": [
+  {
+   "uri": "https://raw.githubusercontent.com/BFO-ontology/BFO-2020/release-2024-01-29/src/owl/bfo-core.ttl",
+   "license": "CC BY 4.0",
+   "transformation": "lida como candidata de topo; não redistribuída; alinhamento mínimo em upper_trial/bfo"
+  },
+  {
+   "uri": "http://www.ontologydesignpatterns.org/ont/dul/DUL.owl",
+   "license": "não declarada no arquivo (UNRESOLVED)",
+   "transformation": "lida como candidata de topo; não redistribuída"
+  },
+  {
+   "uri": "https://raw.githubusercontent.com/nemo-ufes/gufo/v1.0.0/gufo.ttl",
+   "license": "CC BY 4.0",
+   "transformation": "lida como candidata de topo; não redistribuída"
+  },
+  {
+   "uri": "https://www.w3.org/ns/prov-o",
+   "license": "W3C Software and Document License",
+   "transformation": "termos usados declarados em bo-patterns.ttl (MIREOT); laudo de perfil em results/ONTPAT/profile"
+  },
+  {
+   "uri": "https://github.com/ontodev/robot/releases/download/v1.9.11/robot.jar",
+   "license": "BSD-3-Clause",
+   "transformation": "ferramenta fixada (D6); HermiT e ELK embutidos"
+  }
+ ],
+ "notes": "padrões, formas, exemplo, decisão de topo e suíte de compromissos; respostas esperadas lidas do REQUIREMENTS"
+}

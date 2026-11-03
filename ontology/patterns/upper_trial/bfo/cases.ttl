@@ -15,6 +15,17 @@
 @prefix gufo: <http://purl.org/nemo/gufo#> .
 
 ### alinhamento mínimo (7 axiomas)
+# declarações
+<http://purl.obolibrary.org/obo/BFO_0000015> a owl:Class .
+<http://purl.obolibrary.org/obo/BFO_0000031> a owl:Class .
+<http://purl.obolibrary.org/obo/BFO_0000176> a owl:ObjectProperty .
+<https://w3id.org/brevops/ontology#ConfigurationDescription> a owl:Class .
+<https://w3id.org/brevops/ontology#LifecycleEvent> a owl:Class .
+<https://w3id.org/brevops/ontology#MappingActivity> a owl:Class .
+<https://w3id.org/brevops/ontology#Observation> a owl:Class .
+<https://w3id.org/brevops/ontology#ObservedState> a owl:Class .
+<https://w3id.org/brevops/ontology#Unit> a owl:Class .
+<https://w3id.org/brevops/ontology#componentOf> a owl:ObjectProperty .
 
 bo:Unit rdfs:subClassOf obo:BFO_0000031 .                 # generically dependent continuant
 bo:ConfigurationDescription rdfs:subClassOf obo:BFO_0000031 .

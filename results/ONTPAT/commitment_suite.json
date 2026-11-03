@@ -1,0 +1,682 @@
+{
+ "schema": "bo.ontpat.commitment_suite/1",
+ "module": "ONTPAT",
+ "consumer_commitments": 43,
+ "missing": [],
+ "summary": {
+  "total": 43,
+  "tested": 37,
+  "pass": 37,
+  "out_of_scope": 6,
+  "extra_tested_not_listing_ontpat": [
+   "CMT-BKT-P03",
+   "CMT-DB-P02"
+  ],
+  "mutations_flipped": 19,
+  "mutations_total": 19
+ },
+ "unknown_codes_in_requirements": [
+  "CONDITION_INDETERMINATE",
+  "INCOMPLETE_READ",
+  "MISSING_EVIDENCE",
+  "OUT_OF_PIN",
+  "TRANSFORM_OUT_OF_DOMAIN",
+  "UNGLOSSED",
+  "UNKNOWN_SYMBOLIC_INPUT",
+  "UNPROVEN"
+ ],
+ "unknown_codes_without_bo_reason": [],
+ "cases": {
+  "CMT-ABS-N01": {
+   "status": "tested",
+   "how": "segredo retido: presença conhecida, valor não gravado, 'não tem segredo' não segue",
+   "expected": "NOT_ENTAILED (WITHHELD)",
+   "pass": true,
+   "checks": [
+    {
+     "check": "i1 não tem segredo",
+     "kind": "not_ent_raw",
+     "observed": "false",
+     "pass": true
+    },
+    {
+     "check": "estado do valor",
+     "kind": "value_code",
+     "observed": "WITHHELD",
+     "pass": true
+    },
+    {
+     "check": "forma: nenhum valor nem hash gravado",
+     "kind": "shacl_conforms",
+     "observed": "CONFORMS",
+     "pass": true
+    }
+   ],
+   "mutation": {
+    "label": "hash do segredo gravado",
+    "observed": [
+     "v1"
+    ],
+    "flipped": true
+   },
+   "ontpat_consumer": true
+  },
+  "CMT-ABS-P01": {
+   "status": "tested",
+   "how": "avaliador de ausência: leitura completa do tipo no escopo",
+   "expected": "ENTAILED",
+   "pass": true,
+   "checks": [
+    {
+     "check": "i1 sem alarme",
+     "kind": "absence",
+     "observed": [
+      "ENTAILED",
+      null
+     ],
+     "pass": true
+    }
+   ],
+   "mutation": {
+    "label": "leitura parcial",
+    "observed": [
+     "UNKNOWN",
+     "INCOMPLETE_READ"
+    ],
+    "flipped": true
+   },
+   "ontpat_consumer": true
+  },
+  "CMT-ABS-U01": {
+   "status": "tested",
+   "how": "avaliador de ausência: leitura parcial dá UNKNOWN com motivo",
+   "expected": "UNKNOWN (INCOMPLETE_READ)",
+   "pass": true,
+   "checks": [
+    {
+     "check": "i1 tem alarme?",
+     "kind": "absence",
+     "observed": [
+      "UNKNOWN",
+      "INCOMPLETE_READ"
+     ],
+     "pass": true
+    }
+   ],
+   "mutation": {
+    "label": "leitura completa",
+    "observed": [
+     "ENTAILED",
+     null
+    ],
+    "flipped": true
+   },
+   "ontpat_consumer": true
+  },
+  "CMT-BKT-P03": {
+   "status": "tested",
+   "how": "teste de topo, candidata 'nenhuma', bo completo (upper_trial.json)",
+   "expected": "ENTAILED",
+   "pass": true,
+   "ontpat_consumer": false
+  },
+  "CMT-CFG-N01": {
+   "status": "tested",
+   "how": "teste de topo, candidata 'nenhuma', bo completo (upper_trial.json)",
+   "expected": "REJECTED (INCONSISTENT)",
+   "pass": true,
+   "ontpat_consumer": true
+  },
+  "CMT-CFG-N02": {
+   "status": "tested",
+   "how": "teste de topo, candidata 'nenhuma', bo completo (upper_trial.json)",
+   "expected": "NOT_ENTAILED",
+   "pass": true,
+   "ontpat_consumer": true
+  },
+  "CMT-CFG-P01": {
+   "status": "tested",
+   "how": "teste de topo, candidata 'nenhuma', bo completo (upper_trial.json)",
+   "expected": "ENTAILED",
+   "pass": true,
+   "ontpat_consumer": true
+  },
+  "CMT-CFG-P02": {
+   "status": "tested",
+   "how": "origem do valor é padrão do provedor e, por consequência, não é 'configurado'",
+   "expected": "ENTAILED",
+   "pass": true,
+   "checks": [
+    {
+     "check": "origem = padrão",
+     "kind": "ent",
+     "observed": "true",
+     "pass": true
+    },
+    {
+     "check": "NOT configurado",
+     "kind": "ent_raw",
+     "observed": "true",
+     "pass": true
+    }
+   ],
+   "mutation": {
+    "label": "valor também marcado configurado",
+    "observed": "inconsistent",
+    "flipped": true
+   },
+   "ontpat_consumer": true
+  },
+  "CMT-CFG-U01": {
+   "status": "tested",
+   "how": "endereço computado na criação: estado desconhecido com motivo, nunca ausente",
+   "expected": "UNKNOWN (UNKNOWN_SYMBOLIC_INPUT)",
+   "pass": true,
+   "checks": [
+    {
+     "check": "não é ausente",
+     "kind": "not_ent",
+     "observed": "false",
+     "pass": true
+    },
+    {
+     "check": "estado e motivo",
+     "kind": "value_code",
+     "observed": "UNKNOWN_SYMBOLIC_INPUT",
+     "pass": true
+    }
+   ],
+   "mutation": {
+    "label": "endereço gravado como ausente",
+    "observed": "inconsistent",
+    "flipped": true
+   },
+   "ontpat_consumer": true
+  },
+  "CMT-DB-P02": {
+   "status": "tested",
+   "how": "teste de topo, candidata 'nenhuma', bo completo (upper_trial.json)",
+   "expected": 2,
+   "pass": true,
+   "ontpat_consumer": false
+  },
+  "CMT-ID-N01": {
+   "status": "tested",
+   "how": "teste de topo, candidata 'nenhuma', bo completo (upper_trial.json)",
+   "expected": "NOT_ENTAILED",
+   "pass": true,
+   "ontpat_consumer": true
+  },
+  "CMT-ID-P01": {
+   "status": "tested",
+   "how": "teste de topo, candidata 'nenhuma', bo completo (upper_trial.json)",
+   "expected": "ENTAILED",
+   "pass": true,
+   "ontpat_consumer": true
+  },
+  "CMT-ID-P02": {
+   "status": "tested",
+   "how": "teste de topo, candidata 'nenhuma', bo completo (upper_trial.json)",
+   "expected": "ENTAILED",
+   "pass": true,
+   "ontpat_consumer": true
+  },
+  "CMT-ID-U01": {
+   "status": "tested",
+   "how": "teste de topo, candidata 'nenhuma', bo completo (upper_trial.json)",
+   "expected": "UNKNOWN (MISSING_EVIDENCE)",
+   "pass": true,
+   "ontpat_consumer": true
+  },
+  "CMT-ID-U02": {
+   "status": "tested",
+   "how": "teste de topo, candidata 'nenhuma', bo completo (upper_trial.json)",
+   "expected": "UNKNOWN (INCOMPLETE_READ)",
+   "pass": true,
+   "ontpat_consumer": true
+  },
+  "CMT-LB-N01": {
+   "status": "tested",
+   "how": "teste de topo, candidata 'nenhuma', bo completo (upper_trial.json)",
+   "expected": "REJECTED (INCONSISTENT)",
+   "pass": true,
+   "ontpat_consumer": true
+  },
+  "CMT-LB-N02": {
+   "status": "out_of_scope",
+   "how": "decide: DOMAIN-CONTRACTS, SHACL. roteamento por caminho só na camada 7 é forma de domínio",
+   "expected": "REJECTED (SHACL_VIOLATION)",
+   "pass": null,
+   "ontpat_consumer": true
+  },
+  "CMT-LB-N03": {
+   "status": "tested",
+   "how": "faceta TLS é do listener (dono), não se propaga ao irmão",
+   "expected": "NOT_ENTAILED",
+   "pass": true,
+   "checks": [
+    {
+     "check": "li2 termina TLS",
+     "kind": "not_ent_raw",
+     "observed": "false",
+     "pass": true
+    }
+   ],
+   "mutation": {
+    "label": "faceta TLS copiada no listener irmão (cópia por dono)",
+    "observed": "true",
+    "flipped": true
+   },
+   "ontpat_consumer": true
+  },
+  "CMT-LB-P01": {
+   "status": "out_of_scope",
+   "how": "decide: DOMAIN-CONTRACTS, AXIOMS. cadeia tipada frontend→listener→regra→pool→membro e terminação TLS são vocabulário do domínio LB",
+   "expected": "ENTAILED",
+   "pass": null,
+   "ontpat_consumer": true
+  },
+  "CMT-LB-P02": {
+   "status": "tested",
+   "how": "nove unidades distintas com grãos misturados (componente, entidade); membros fora da contagem",
+   "expected": 9,
+   "pass": true,
+   "checks": [
+    {
+     "check": "COUNT unidades abaixo do todo",
+     "kind": "count",
+     "observed": 9,
+     "pass": true
+    }
+   ],
+   "mutation": {
+    "label": "as duas regras com a mesma chave de ocorrência",
+    "observed": 8,
+    "flipped": true
+   },
+   "ontpat_consumer": true
+  },
+  "CMT-LB-P03": {
+   "status": "out_of_scope",
+   "how": "decide: GRAIN, DOMAIN-CONTRACTS. invariância entre embalagens depende do procedimento de grão sobre os schemas",
+   "expected": "INVARIANT",
+   "pass": null,
+   "ontpat_consumer": true
+  },
+  "CMT-LB-P04": {
+   "status": "tested",
+   "how": "teste de topo, candidata 'nenhuma', bo completo (upper_trial.json)",
+   "expected": "ENTAILED",
+   "pass": true,
+   "ontpat_consumer": true
+  },
+  "CMT-LB-U01": {
+   "status": "tested",
+   "how": "membro só por endereço: qual instância é o membro nem segue nem é refutado",
+   "expected": "UNKNOWN (UNKNOWN_SYMBOLIC_INPUT)",
+   "pass": true,
+   "checks": [
+    {
+     "check": "vm1 é o membro",
+     "kind": "unknown",
+     "observed": "UNKNOWN",
+     "pass": true
+    },
+    {
+     "check": "motivo",
+     "kind": "marker_code",
+     "observed": "UNKNOWN_SYMBOLIC_INPUT",
+     "pass": true
+    }
+   ],
+   "mutation": {
+    "label": "endereço resolvido para vm1",
+    "observed": "alpha=true,neg=false",
+    "flipped": true
+   },
+   "ontpat_consumer": true
+  },
+  "CMT-LB-U02": {
+   "status": "tested",
+   "how": "pool sem sonda declarada e sem evidência de padrão: 'sem sonda' nem segue nem é refutado",
+   "expected": "UNKNOWN (MISSING_EVIDENCE)",
+   "pass": true,
+   "checks": [
+    {
+     "check": "pool1 sem sonda",
+     "kind": "unknown_raw",
+     "observed": "UNKNOWN",
+     "pass": true
+    },
+    {
+     "check": "motivo",
+     "kind": "marker_code",
+     "observed": "MISSING_EVIDENCE",
+     "pass": true
+    }
+   ],
+   "mutation": {
+    "label": "sonda padrão inventada",
+    "observed": "alpha=false,neg=true",
+    "flipped": true
+   },
+   "ontpat_consumer": true
+  },
+  "CMT-LC-N01": {
+   "status": "tested",
+   "how": "teste de topo, candidata 'nenhuma', bo completo (upper_trial.json)",
+   "expected": "NOT_ENTAILED",
+   "pass": true,
+   "ontpat_consumer": true
+  },
+  "CMT-LC-P01": {
+   "status": "tested",
+   "how": "teste de topo, candidata 'nenhuma', bo completo (upper_trial.json)",
+   "expected": "ENTAILED",
+   "pass": true,
+   "ontpat_consumer": true
+  },
+  "CMT-LC-U01": {
+   "status": "tested",
+   "how": "sem controlador declarado: o fim da configuração com o contêiner nem segue nem é refutado",
+   "expected": "UNKNOWN (MISSING_EVIDENCE)",
+   "pass": true,
+   "checks": [
+    {
+     "check": "s1 encerrada",
+     "kind": "unknown",
+     "observed": "UNKNOWN",
+     "pass": true
+    },
+    {
+     "check": "motivo",
+     "kind": "marker_code",
+     "observed": "MISSING_EVIDENCE",
+     "pass": true
+    }
+   ],
+   "mutation": {
+    "label": "dono declarado (o contêiner)",
+    "observed": "alpha=true,neg=false",
+    "flipped": true
+   },
+   "ontpat_consumer": true
+  },
+  "CMT-NEW-N01": {
+   "status": "out_of_scope",
+   "how": "decide: CLASS, OWL. conceito exclusivo fora do núcleo é regra de módulo (bo-ext) do gerador",
+   "expected": "REJECTED (SHACL_VIOLATION)",
+   "pass": null,
+   "ontpat_consumer": true
+  },
+  "CMT-NEW-P01": {
+   "status": "out_of_scope",
+   "how": "decide: CLASS, GLOSSARY, HOLDOUT. acomodar provedor retirado sem classe nova é propriedade do processo de indução",
+   "expected": "ENTAILED",
+   "pass": null,
+   "ontpat_consumer": true
+  },
+  "CMT-NEW-U01": {
+   "status": "out_of_scope",
+   "how": "decide: GLOSSARY, CLASS. UNGLOSSED é decisão do glossário; o vocabulário de ausência tem o motivo bo:Unglossed (conferido abaixo)",
+   "expected": "UNKNOWN (UNGLOSSED)",
+   "pass": null,
+   "ontpat_consumer": true
+  },
+  "CMT-NIC-N01": {
+   "status": "tested",
+   "how": "disjunção entre instância e interface (tipos rígidos)",
+   "expected": "REJECTED (INCONSISTENT)",
+   "pass": true,
+   "checks": [
+    {
+     "check": "x1 instância e interface",
+     "kind": "inconsistent",
+     "observed": "INCONSISTENT",
+     "pass": true
+    }
+   ],
+   "mutation": {
+    "label": "x1 só instância",
+    "observed": "CONSISTENT",
+    "flipped": true
+   },
+   "ontpat_consumer": true
+  },
+  "CMT-NIC-N02": {
+   "status": "tested",
+   "how": "sub-rede é da interface (não funcional na instância): sem igualdade espúria",
+   "expected": "NOT_ENTAILED",
+   "pass": true,
+   "checks": [
+    {
+     "check": "sa = sb não é consequência",
+     "kind": "not_ent",
+     "observed": "false",
+     "pass": true
+    },
+    {
+     "check": "nic1 = nic2 não é consequência",
+     "kind": "not_ent",
+     "observed": "false",
+     "pass": true
+    }
+   ],
+   "mutation": {
+    "label": "'sub-rede da instância' funcional",
+    "observed": "inconsistent",
+    "flipped": true
+   },
+   "ontpat_consumer": true
+  },
+  "CMT-NIC-N03": {
+   "status": "tested",
+   "how": "interface não é instância",
+   "expected": "NOT_ENTAILED",
+   "pass": true,
+   "checks": [
+    {
+     "check": "nic1 não é instância",
+     "kind": "not_ent",
+     "observed": "false",
+     "pass": true
+    }
+   ],
+   "mutation": {
+    "label": "interface ⊑ instância",
+    "observed": "inconsistent",
+    "flipped": true
+   },
+   "ontpat_consumer": true
+  },
+  "CMT-NIC-P01": {
+   "status": "tested",
+   "how": "bo.ontpat.selftest (HermiT): contagem por consequência e assinatura de relações",
+   "expected": 3,
+   "pass": true,
+   "observed": 3,
+   "ontpat_consumer": true
+  },
+  "CMT-NIC-P02": {
+   "status": "tested",
+   "how": "bo.ontpat.selftest (HermiT): contagem por consequência e assinatura de relações",
+   "expected": 2,
+   "pass": true,
+   "observed": 2,
+   "ontpat_consumer": true
+  },
+  "CMT-NIC-P03": {
+   "status": "tested",
+   "how": "bo.ontpat.selftest (HermiT): contagem por consequência e assinatura de relações",
+   "expected": "INVARIANT",
+   "pass": true,
+   "observed": "INVARIANT",
+   "ontpat_consumer": true
+  },
+  "CMT-NIC-P04": {
+   "status": "tested",
+   "how": "leitura embutida e leitura separada levantadas nos padrões têm a mesma assinatura de relações e a mesma contagem",
+   "expected": "INVARIANT",
+   "pass": true,
+   "checks": [
+    {
+     "check": "mesma interface nas duas leituras",
+     "kind": "ent",
+     "observed": "true",
+     "pass": true
+    },
+    {
+     "check": "mesma anexação nas duas leituras",
+     "kind": "ent",
+     "observed": "true",
+     "pass": true
+    }
+   ],
+   "mutation": {
+    "label": "posição textual na chave local da leitura embutida",
+    "observed": "false",
+    "flipped": true
+   },
+   "ontpat_consumer": true
+  },
+  "CMT-NIC-P05": {
+   "status": "tested",
+   "how": "teste de topo, candidata 'nenhuma', bo completo (upper_trial.json)",
+   "expected": "INVARIANT",
+   "pass": true,
+   "ontpat_consumer": true
+  },
+  "CMT-NIC-U01": {
+   "status": "tested",
+   "how": "anexação de nic2 não lida: 'vm1 tem só uma interface' nem segue nem é refutado; motivo na marca",
+   "expected": "UNKNOWN (INCOMPLETE_READ)",
+   "pass": true,
+   "checks": [
+    {
+     "check": "número de interfaces de vm1 = 1",
+     "kind": "unknown_raw",
+     "observed": "UNKNOWN",
+     "pass": true
+    },
+    {
+     "check": "motivo",
+     "kind": "marker_code",
+     "observed": "INCOMPLETE_READ",
+     "pass": true
+    }
+   ],
+   "mutation": {
+    "label": "anexação de nic2 lida",
+    "observed": "alpha=false,neg=true",
+    "flipped": true
+   },
+   "ontpat_consumer": true
+  },
+  "CMT-NIC-U02": {
+   "status": "tested",
+   "how": "referência de anexação simbólica: a instância de nic3 nem segue nem é refutada",
+   "expected": "UNKNOWN (UNKNOWN_SYMBOLIC_INPUT)",
+   "pass": true,
+   "checks": [
+    {
+     "check": "nic3 anexada a vm1",
+     "kind": "unknown_raw",
+     "observed": "UNKNOWN",
+     "pass": true
+    },
+    {
+     "check": "motivo",
+     "kind": "marker_code",
+     "observed": "UNKNOWN_SYMBOLIC_INPUT",
+     "pass": true
+    }
+   ],
+   "mutation": {
+    "label": "referência resolvida",
+    "observed": "alpha=true,neg=false",
+    "flipped": true
+   },
+   "ontpat_consumer": true
+  },
+  "CMT-TAX-N01": {
+   "status": "tested",
+   "how": "registro e zona disjuntos; pertencer à zona não é ser zona",
+   "expected": "NOT_ENTAILED",
+   "pass": true,
+   "checks": [
+    {
+     "check": "r1 não é zona",
+     "kind": "not_ent",
+     "observed": "false",
+     "pass": true
+    }
+   ],
+   "mutation": {
+    "label": "registro ⊑ zona (erro do esqueleto)",
+    "observed": "inconsistent",
+    "flipped": true
+   },
+   "ontpat_consumer": true
+  },
+  "CMT-TAX-N02": {
+   "status": "tested",
+   "how": "política e host disjuntos de instância; host dedicado não é máquina virtual",
+   "expected": "NOT_ENTAILED",
+   "pass": true,
+   "checks": [
+    {
+     "check": "pp1 não é instância",
+     "kind": "not_ent",
+     "observed": "false",
+     "pass": true
+    },
+    {
+     "check": "h1 não é máquina virtual",
+     "kind": "not_ent",
+     "observed": "false",
+     "pass": true
+    }
+   ],
+   "mutation": {
+    "label": "política ⊑ instância (erro do esqueleto)",
+    "observed": "inconsistent",
+    "flipped": true
+   },
+   "ontpat_consumer": true
+  },
+  "CMT-TAX-N03": {
+   "status": "tested",
+   "how": "com e sem estado disjuntos: a subsunção torna a regra sem estado insatisfatível",
+   "expected": "REJECTED (INCONSISTENT)",
+   "pass": true,
+   "checks": [
+    {
+     "check": "sem estado ⊑ com estado é rejeitada",
+     "kind": "inconsistent",
+     "observed": "INCONSISTENT",
+     "pass": true
+    }
+   ],
+   "mutation": {
+    "label": "sem a subsunção errada",
+    "observed": "CONSISTENT",
+    "flipped": true
+   },
+   "ontpat_consumer": true
+  },
+  "CMT-TAX-N04": {
+   "status": "tested",
+   "how": "teste de topo, candidata 'nenhuma', bo completo (upper_trial.json)",
+   "expected": "REJECTED (INCONSISTENT)",
+   "pass": true,
+   "ontpat_consumer": true
+  },
+  "CMT-TAX-P01": {
+   "status": "tested",
+   "how": "teste de topo, candidata 'nenhuma', bo completo (upper_trial.json)",
+   "expected": "ENTAILED",
+   "pass": true,
+   "ontpat_consumer": true
+  }
+ }
+}

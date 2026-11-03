@@ -1,0 +1,224 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://w3id.org/brevops/contracts/C14/realization_row.schema.json",
+ "title": "C14 realizations.jsonl (proposta do ONTPAT, padrão de descritor)",
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "realization_id",
+  "of",
+  "provider",
+  "realized_by",
+  "lifting_fidelity",
+  "lowering_fidelity",
+  "evidence_state",
+  "derived_from",
+  "generated_by"
+ ],
+ "properties": {
+  "realization_id": {
+   "type": "string",
+   "pattern": "^[A-Za-z0-9_.:-]+$"
+  },
+  "of": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "descriptor_key",
+    "kind",
+    "describes"
+   ],
+   "properties": {
+    "descriptor_key": {
+     "type": "string"
+    },
+    "kind": {
+     "enum": [
+      "class",
+      "property"
+     ]
+    },
+    "describes": {
+     "type": "string",
+     "format": "iri",
+     "description": "IRI da entidade OWL, levado por anotação (bo:describesProperty/describesClass), nunca como indivíduo"
+    }
+   }
+  },
+  "provider": {
+   "type": "string"
+  },
+  "realized_by": {
+   "type": "array",
+   "minItems": 1,
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "artifact_name",
+     "schema"
+    ],
+    "properties": {
+     "artifact_name": {
+      "type": "string"
+     },
+     "artifact_path": {
+      "type": "string"
+     },
+     "schema": {
+      "type": "string"
+     }
+    }
+   }
+  },
+  "lifting_fidelity": {
+   "enum": [
+    "Lossless",
+    "DeclaredLoss",
+    "PartialTransport",
+    "NoTransport"
+   ]
+  },
+  "lowering_fidelity": {
+   "enum": [
+    "Lossless",
+    "DeclaredLoss",
+    "PartialTransport",
+    "NoTransport"
+   ]
+  },
+  "evidence_state": {
+   "enum": [
+    "StructurallyValid",
+    "DocSupported",
+    "PersistenceVerified",
+    "ObservationTested",
+    "Unresolved"
+   ]
+  },
+  "exclusivity": {
+   "enum": [
+    "ProvenExclusive",
+    "Ambiguous"
+   ]
+  },
+  "guards": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  },
+  "alternative_to": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  },
+  "losses": {
+   "type": "array",
+   "items": {
+    "type": "string",
+    "pattern": "^[A-Z][A-Z_]+$"
+   }
+  },
+  "projections": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "from_field",
+     "descriptor_key"
+    ],
+    "properties": {
+     "from_field": {
+      "type": "string"
+     },
+     "descriptor_key": {
+      "type": "string"
+     }
+    }
+   }
+  },
+  "derived_from": {
+   "type": "array",
+   "minItems": 1,
+   "items": {
+    "type": "string"
+   }
+  },
+  "generated_by": {
+   "type": "string"
+  },
+  "attributed_to": {
+   "type": "string"
+  }
+ },
+ "allOf": [
+  {
+   "if": {
+    "anyOf": [
+     {
+      "properties": {
+       "lifting_fidelity": {
+        "enum": [
+         "DeclaredLoss",
+         "PartialTransport"
+        ]
+       }
+      },
+      "required": [
+       "lifting_fidelity"
+      ]
+     },
+     {
+      "properties": {
+       "lowering_fidelity": {
+        "enum": [
+         "DeclaredLoss",
+         "PartialTransport"
+        ]
+       }
+      },
+      "required": [
+       "lowering_fidelity"
+      ]
+     }
+    ]
+   },
+   "then": {
+    "required": [
+     "losses"
+    ],
+    "properties": {
+     "losses": {
+      "minItems": 1
+     }
+    }
+   }
+  },
+  {
+   "if": {
+    "required": [
+     "alternative_to"
+    ],
+    "properties": {
+     "alternative_to": {
+      "minItems": 1
+     }
+    }
+   },
+   "then": {
+    "required": [
+     "guards",
+     "exclusivity"
+    ],
+    "properties": {
+     "guards": {
+      "minItems": 1
+     }
+    }
+   }
+  }
+ ]
+}

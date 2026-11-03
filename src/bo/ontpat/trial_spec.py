@@ -147,6 +147,21 @@ bo:componentOf rdfs:subPropertyOf gufo:isComponentOf .
     "none": {"ttl": "", "misfits": [], "role_probe": None},
 }
 
+# EXPLORATÓRIO (acrescentado depois da primeira execução, 02/11/2026 23:10; NÃO entra na regra D1–D4):
+# alinhamento "protetor" por candidata, a categoria que daria à candidata uma proteção própria contra o erro de
+# categoria S1 (descrição tomada por recurso, CMT-CFG-N01), ao preço de contradizer a definição da própria
+# candidata. Roda só no modo sem exclusões do bo. Serve para mostrar o que a candidata PODERIA proteger e quanto
+# custaria; a decisão continua sobre o alinhamento de melhor esforço.
+PROTECTIVE_ALT = {
+    "bfo": {"ttl": "bo:Resource rdfs:subClassOf obo:BFO_0000040 .\n",
+            "misfit": "recurso como entidade material (BFO_0000040): falso para contêiner, namespace, atribuição"},
+    "dul": {"ttl": "bo:Resource rdfs:subClassOf dul:PhysicalObject .\n",
+            "misfit": "recurso como dul:PhysicalObject ('tem região espacial própria'): falso para recursos lógicos"},
+    "gufo": {"ttl": "bo:ConfigurationDescription rdfs:subClassOf gufo:AbstractIndividual .\n",
+             "misfit": "descrição versionada e datada como indivíduo abstrato (fora do tempo): contradiz gufo:AbstractIndividual"},
+}
+PROTECTIVE_CASES = ("CMT-CFG-N01", "CMT-BKT-P03", "CMT-ID-P01")
+
 # Vocabulário de teste (rótulos de trabalho do REQUIREMENTS levados aos padrões do bo) e contexto comum.
 TRIAL_TBOX = """
 tv:StorageNamespace a owl:Class ; rdfs:subClassOf bo:Resource ; bo:rigidity bo:Rigid .

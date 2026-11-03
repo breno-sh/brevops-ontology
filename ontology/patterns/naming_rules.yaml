@@ -1,0 +1,52 @@
+# BrevOps Ontology, módulo ONTPAT: regras de nome e de IRI. Escrito em 2026-11-02 (America/Recife).
+# Consumidores: NAMING (nomes e definições das classes induzidas), OWL (política de IRI e versões), CLASS, PROP.
+# Conferido por: python -I -m bo.ontpat.naming   # higiene, não validade (PLANO, N6): passar não prova significado
+schema: bo.naming_rules/1
+module: ONTPAT
+
+namespaces:
+  terms: "https://w3id.org/brevops/ontology#"          # um só espaço de termos para todos os módulos (IRI permanente do termo)
+  ontology_iri: "https://w3id.org/brevops/ontology/{module}"
+  version_iri: "https://w3id.org/brevops/ontology/{module}/{semver}"
+  shapes: "https://w3id.org/brevops/shapes/{module}#"
+  examples: "https://example.org/bo-example/"          # ABox de exemplo e vocabulário de exemplo (exv:)
+  tests: "https://example.org/bo-trial/"               # vocabulário (tv:) e casos do teste de topo e da suíte
+  registration: "w3id ainda não registrado; até lá o IRI não é resolvível e não se anuncia como publicado"
+
+iri_policy:
+  permanent: "o IRI de um termo nunca muda nem é reutilizado com outro significado; o módulo onde ele mora pode mudar"
+  hash_namespace: true
+  version_iri_per_release: true
+  deprecation: "owl:deprecated true + dcterms:isReplacedBy (fusão) ou várias dcterms:isReplacedBy (divisão); o ABox migra pelo OWL"
+  opaque_ids: false   # nomes legíveis; o que identifica é o IRI, não o rótulo
+  no_provider_tokens_in_terms: true
+
+classes:
+  local_name: "^[A-Z][A-Za-z0-9]*$"      # UpperCamelCase, substantivo no singular, em inglês
+  label_languages: [pt]                  # rdfs:label @pt obrigatório; @en recomendado
+  definition: "skos:definition @pt obrigatória no núcleo, gênero + diferença ('X é um Y que ...')"
+  rigidity_annotation: "bo:rigidity obrigatória em toda classe bo: (OntoClean corrigido)"
+  no_plural: true
+  no_provider_tokens: true
+
+properties:
+  local_name: "^[a-z][A-Za-z0-9]*$"      # lowerCamelCase
+  object_property_form: "verbo ou relação (componentOf, inLocation, describes, relates); inversa nomeada só se precisar"
+  datatype_property_form: "substantivo (localKey, locationCode)"
+  one_property_per_relation: "nada de duplicata prefixada pela classe (inSubnet, lbInSubnet, functionInSubnet): uma propriedade com domínio em união"
+  domain: "um só rdfs:domain; vários domínios = união (owl:unionOf), nunca vários rdfs:domain (N5)"
+  label_languages: [pt]
+
+individuals:
+  controlled_values: "UpperCamelCase; quando o valor é um código do protocolo, o rdfs:label @en é o código em MAIÚSCULAS (MISSING_EVIDENCE)"
+  descriptors: "desc_<nome local da entidade descrita>; bo:descriptorKey = o nome local"
+  abox: "minúsculas com sublinhado e prefixo de tipo (vm1, nic1, d1, ob1); nunca nome, id de conta, ARN, OCID, e-mail ou valor real"
+  synthetic_keys: "chave de encarnação e chave local de exemplo são sintéticas (inc-0001, vm-a)"
+
+forbidden_tokens:   # palavra inteira, sem diferenciar maiúsculas, em nome local, rótulo e definição do NÚCLEO (bo:)
+  providers: [aws, amazon, gcp, google, azure, azurerm, microsoft, oci, oracle]
+  provider_terms: [ec2, s3, vpc, vnet, vcn, arn, ocid, gke, eks, aks, lambda, dynamodb, cosmosdb, bigquery, cloudwatch, stackdriver, nsg, elb, alb]
+  legacy_suffixes: [Pivot]
+  note: "exemplo e teste podem citar o nome de tipo do schema do provedor dentro de bo:artifactName; o núcleo não"
+
+hygiene_only: true

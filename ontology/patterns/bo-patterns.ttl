@@ -153,11 +153,11 @@ bo:LifecycleEvent a owl:Class ;
     bo:rigidity bo:Rigid .
 
 bo:LifecycleEvent owl:disjointUnionOf ( bo:Creation bo:InPlaceUpdate bo:Replacement bo:Deletion ) .
-bo:Creation a owl:Class ; rdfs:subClassOf bo:LifecycleEvent ; rdfs:label "criação"@pt ; bo:rigidity bo:Rigid .
-bo:InPlaceUpdate a owl:Class ; rdfs:subClassOf bo:LifecycleEvent ; rdfs:label "mudança no lugar"@pt ; bo:rigidity bo:Rigid .
+bo:Creation a owl:Class ; rdfs:subClassOf bo:LifecycleEvent ; rdfs:label "criação"@pt ; skos:definition "Evento que inicia uma encarnação: a partir dele a unidade existe com uma chave de encarnação nova."@pt ; bo:rigidity bo:Rigid .
+bo:InPlaceUpdate a owl:Class ; rdfs:subClassOf bo:LifecycleEvent ; rdfs:label "mudança no lugar"@pt ; skos:definition "Evento que muda atributo mutável sem destruir a unidade: a encarnação e o indivíduo continuam; nasce nova versão de descrição."@pt ; bo:rigidity bo:Rigid .
 bo:Replacement a owl:Class ; rdfs:subClassOf bo:LifecycleEvent ; rdfs:label "substituição"@pt ;
     skos:definition "Destruir e recriar: encerra a encarnação antiga e cria uma nova."@pt ; bo:rigidity bo:Rigid .
-bo:Deletion a owl:Class ; rdfs:subClassOf bo:LifecycleEvent ; rdfs:label "remoção"@pt ; bo:rigidity bo:Rigid .
+bo:Deletion a owl:Class ; rdfs:subClassOf bo:LifecycleEvent ; rdfs:label "remoção"@pt ; skos:definition "Evento que encerra a unidade sem sucessora; propaga-se aos componentes, facetas e vínculos dela."@pt ; bo:rigidity bo:Rigid .
 
 bo:MappingActivity a owl:Class ;
     rdfs:subClassOf prov:Activity ;
@@ -169,7 +169,8 @@ bo:MappingActivity a owl:Class ;
 
 bo:SyntheticAccount a owl:Class ; rdfs:label "conta sintética"@pt , "synthetic account"@en ;
     skos:definition "Contexto de propriedade e cobrança (conta, projeto, assinatura, tenancy) por um nome sintético; nunca o id real."@pt ; bo:rigidity bo:Rigid .
-bo:Provider a owl:Class ; rdfs:label "provedor"@pt , "provider"@en ; bo:rigidity bo:Rigid .
+bo:Provider a owl:Class ; rdfs:label "provedor"@pt , "provider"@en ;
+    skos:definition "Fornecedor de nuvem cujo schema fixado define os tipos de recurso; componente da identidade composta."@pt ; bo:rigidity bo:Rigid .
 bo:Location a owl:Class ; rdfs:label "localização"@pt , "location"@en ;
     skos:definition "Escopo de localização com nível declarado (global, regional, zonal)."@pt ; bo:rigidity bo:Rigid .
 bo:ProviderArtifact a owl:Class ; rdfs:label "artefato de provedor"@pt , "provider artifact"@en ;
@@ -294,12 +295,14 @@ bo:coversKind a owl:ObjectProperty ; rdfs:label "cobre o tipo"@pt ;
     skos:definition "Que tipo de unidade a leitura cobriu (por descritor de classe). Ausência só é derivável sob leitura completa do tipo no escopo."@pt .
 
 bo:DescriptionSource a owl:Class ; rdfs:subClassOf bo:ControlledValue ; rdfs:label "fonte de descrição"@pt ;
+    skos:definition "Vocabulário fechado da origem de uma descrição de configuração: o código ou o registro de estado da ferramenta."@pt ;
     owl:equivalentClass [ a owl:Class ; owl:oneOf ( bo:SourceCode bo:ToolStateRecord ) ] ; bo:rigidity bo:Rigid .
 bo:SourceCode a owl:NamedIndividual , bo:DescriptionSource ; rdfs:label "código"@pt .
 bo:ToolStateRecord a owl:NamedIndividual , bo:DescriptionSource ; rdfs:label "registro de estado da ferramenta"@pt .
 [] a owl:AllDifferent ; owl:distinctMembers ( bo:SourceCode bo:ToolStateRecord ) .
 
 bo:ReadCompleteness a owl:Class ; rdfs:subClassOf bo:ControlledValue ; rdfs:label "completude de leitura"@pt ;
+    skos:definition "Vocabulário fechado da completude de uma observação no escopo e tipo que ela declara cobrir."@pt ;
     owl:equivalentClass [ a owl:Class ; owl:oneOf ( bo:CompleteRead bo:PartialRead ) ] ; bo:rigidity bo:Rigid .
 bo:CompleteRead a owl:NamedIndividual , bo:ReadCompleteness ; rdfs:label "leitura completa"@pt .
 bo:PartialRead a owl:NamedIndividual , bo:ReadCompleteness ; rdfs:label "leitura parcial"@pt .
@@ -346,6 +349,7 @@ bo:markerOf a owl:ObjectProperty , owl:FunctionalProperty ; rdfs:label "marca de
     rdfs:domain bo:UnknownMarker ; rdfs:range bo:Unit .
 
 bo:ValueOrigin a owl:Class ; rdfs:subClassOf bo:ControlledValue ; rdfs:label "origem do valor"@pt ;
+    skos:definition "Vocabulário fechado de onde veio um valor: configurado, inferido, padrão do provedor ou observado."@pt ;
     owl:equivalentClass [ a owl:Class ; owl:oneOf ( bo:Configured bo:Inferred bo:ProviderDefault bo:Observed ) ] ; bo:rigidity bo:Rigid .
 bo:Configured a owl:NamedIndividual , bo:ValueOrigin ; rdfs:label "configurado"@pt ; skos:definition "Declarado explicitamente no código."@pt .
 bo:Inferred a owl:NamedIndividual , bo:ValueOrigin ; rdfs:label "inferido"@pt ; skos:definition "Derivado por regra ou raciocínio a partir de outros valores; cita a regra."@pt .
@@ -354,6 +358,7 @@ bo:Observed a owl:NamedIndividual , bo:ValueOrigin ; rdfs:label "observado"@pt ;
 [] a owl:AllDifferent ; owl:distinctMembers ( bo:Configured bo:Inferred bo:ProviderDefault bo:Observed ) .
 
 bo:ValueState a owl:Class ; rdfs:subClassOf bo:ControlledValue ; rdfs:label "estado do valor"@pt ;
+    skos:definition "Vocabulário fechado do estado epistêmico de um valor: conhecido, desconhecido, ausente, não lido ou retido."@pt ;
     owl:equivalentClass [ a owl:Class ; owl:oneOf ( bo:Known bo:Unknown bo:Absent bo:NotRead bo:Withheld ) ] ; bo:rigidity bo:Rigid .
 bo:Known a owl:NamedIndividual , bo:ValueState ; rdfs:label "conhecido"@pt .
 bo:Unknown a owl:NamedIndividual , bo:ValueState ; rdfs:label "desconhecido"@pt ; skos:definition "Lido, mas sem valor determinável (ex.: conhecido só depois da criação; sem evidência)."@pt .
@@ -363,20 +368,20 @@ bo:Withheld a owl:NamedIndividual , bo:ValueState ; rdfs:label "retido"@pt ; sko
 [] a owl:AllDifferent ; owl:distinctMembers ( bo:Known bo:Unknown bo:Absent bo:NotRead bo:Withheld ) .
 
 bo:UnknownReason a owl:Class ; rdfs:subClassOf bo:ControlledValue ; rdfs:label "motivo de desconhecido"@pt ;
-    owl:equivalentClass [ a owl:Class ; owl:oneOf ( bo:MissingEvidence bo:IncompleteRead bo:KnownAfterApply bo:OutOfPin
-        bo:ConditionIndeterminate bo:Unproven bo:TransformOutOfDomain bo:Unglossed bo:UnknownInput bo:UnresolvedReference ) ] ; bo:rigidity bo:Rigid .
+    skos:definition "Vocabulário fechado dos códigos que acompanham UNKNOWN (os mesmos do REQUIREMENTS)."@pt ;
+    owl:equivalentClass [ a owl:Class ; owl:oneOf ( bo:MissingEvidence bo:IncompleteRead bo:UnknownSymbolicInput bo:OutOfPin
+        bo:ConditionIndeterminate bo:Unproven bo:TransformOutOfDomain bo:Unglossed bo:UnknownInput ) ] ; bo:rigidity bo:Rigid .
 bo:MissingEvidence a owl:NamedIndividual , bo:UnknownReason ; rdfs:label "MISSING_EVIDENCE"@en ; skos:definition "Falta evidência de provedor (ex.: se o atributo é mutável)."@pt .
 bo:IncompleteRead a owl:NamedIndividual , bo:UnknownReason ; rdfs:label "INCOMPLETE_READ"@en ; skos:definition "Parte necessária não foi lida."@pt .
-bo:KnownAfterApply a owl:NamedIndividual , bo:UnknownReason ; rdfs:label "KNOWN_AFTER_APPLY"@en ; skos:definition "Valor computado só depois da criação; lido do código sem estado."@pt .
+bo:UnknownSymbolicInput a owl:NamedIndividual , bo:UnknownReason ; rdfs:label "UNKNOWN_SYMBOLIC_INPUT"@en ; skos:definition "Valor ou referência simbólica lida do código sem estado: computado só depois da criação, ou referência ainda não resolvida para um recurso."@pt .
 bo:OutOfPin a owl:NamedIndividual , bo:UnknownReason ; rdfs:label "OUT_OF_PIN"@en ; skos:definition "Mantido fora dos providers fixados (ex.: diretório externo)."@pt .
 bo:ConditionIndeterminate a owl:NamedIndividual , bo:UnknownReason ; rdfs:label "CONDITION_INDETERMINATE"@en .
 bo:Unproven a owl:NamedIndividual , bo:UnknownReason ; rdfs:label "UNPROVEN"@en ; skos:definition "Correspondência sem prova."@pt .
 bo:TransformOutOfDomain a owl:NamedIndividual , bo:UnknownReason ; rdfs:label "TRANSFORM_OUT_OF_DOMAIN"@en ; skos:definition "Ex.: meses para segundos sem contexto de calendário."@pt .
 bo:Unglossed a owl:NamedIndividual , bo:UnknownReason ; rdfs:label "UNGLOSSED"@en .
-bo:UnknownInput a owl:NamedIndividual , bo:UnknownReason ; rdfs:label "UNKNOWN_INPUT"@en ; skos:definition "Atributo obrigatório no destino sem valor na origem: bloquear, nunca inventar padrão."@pt .
-bo:UnresolvedReference a owl:NamedIndividual , bo:UnknownReason ; rdfs:label "UNRESOLVED_REFERENCE"@en .
-[] a owl:AllDifferent ; owl:distinctMembers ( bo:MissingEvidence bo:IncompleteRead bo:KnownAfterApply bo:OutOfPin
-    bo:ConditionIndeterminate bo:Unproven bo:TransformOutOfDomain bo:Unglossed bo:UnknownInput bo:UnresolvedReference ) .
+bo:UnknownInput a owl:NamedIndividual , bo:UnknownReason ; rdfs:label "UNKNOWN_INPUT"@en ; skos:definition "Atributo obrigatório no destino sem valor na origem: o valor no destino é desconhecido e a tradução bloqueia; nunca inventar padrão."@pt .
+[] a owl:AllDifferent ; owl:distinctMembers ( bo:MissingEvidence bo:IncompleteRead bo:UnknownSymbolicInput bo:OutOfPin
+    bo:ConditionIndeterminate bo:Unproven bo:TransformOutOfDomain bo:Unglossed bo:UnknownInput ) .
 
 #################################################################
 # P10 Unidades por IRI
@@ -386,6 +391,7 @@ bo:UnitOfMeasure a owl:Class ; rdfs:label "unidade de medida"@pt ;
     skos:definition "Indivíduos são IRIs de unidade do QUDT (http://qudt.org/vocab/unit/), usados como indivíduos (nunca como classe), ou os dois marcadores abaixo."@pt ;
     rdfs:seeAlso <http://qudt.org/vocab/unit/> ; bo:rigidity bo:Rigid .
 bo:UnitMarker a owl:Class ; rdfs:subClassOf bo:UnitOfMeasure , bo:ControlledValue ; rdfs:label "marcador de unidade"@pt ;
+    skos:definition "Unidade que não é do QUDT: NOT_APPLICABLE (sem unidade) ou UNKNOWN (unidade não sabida)."@pt ;
     owl:equivalentClass [ a owl:Class ; owl:oneOf ( bo:UnitNotApplicable bo:UnitUnknown ) ] ; bo:rigidity bo:Rigid .
 bo:UnitNotApplicable a owl:NamedIndividual , bo:UnitMarker ; rdfs:label "NOT_APPLICABLE"@en ; skos:definition "A grandeza não tem unidade (booleano, enumeração) ou a carrega no próprio literal (xsd:duration)."@pt .
 bo:UnitUnknown a owl:NamedIndividual , bo:UnitMarker ; rdfs:label "UNKNOWN"@en ; skos:definition "Há unidade, mas não se sabe qual. Não é NOT_APPLICABLE."@pt .
@@ -405,6 +411,7 @@ bo:locationCode a owl:DatatypeProperty , owl:FunctionalProperty ; rdfs:label "c�
 bo:Location owl:hasKey ( bo:ofProvider bo:locationCode ) .
 
 bo:LocationScope a owl:Class ; rdfs:subClassOf bo:ControlledValue ; rdfs:label "nível de localização"@pt ;
+    skos:definition "Vocabulário fechado do nível de uma localização: global, regional ou zonal."@pt ;
     owl:equivalentClass [ a owl:Class ; owl:oneOf ( bo:GlobalScope bo:RegionalScope bo:ZonalScope ) ] ; bo:rigidity bo:Rigid .
 bo:GlobalScope a owl:NamedIndividual , bo:LocationScope ; rdfs:label "global"@pt .
 bo:RegionalScope a owl:NamedIndividual , bo:LocationScope ; rdfs:label "regional"@pt .
@@ -449,7 +456,8 @@ bo:hasProjection a owl:ObjectProperty ; rdfs:label "tem projeção"@pt ; rdfs:do
 bo:Guard a owl:Class ; rdfs:subClassOf bo:NaryRelation ; rdfs:label "guarda"@pt ;
     skos:definition "Condição tipada de contexto (região, edição, versão, valores vizinhos) sob a qual a realização vale."@pt ; bo:rigidity bo:Rigid .
 bo:guardExpression a owl:DatatypeProperty , owl:FunctionalProperty ; rdfs:domain bo:Guard ; rdfs:range xsd:string ; rdfs:label "expressão da guarda"@pt .
-bo:LossRecord a owl:Class ; rdfs:subClassOf bo:NaryRelation ; rdfs:label "registro de perda"@pt ; bo:rigidity bo:Rigid .
+bo:LossRecord a owl:Class ; rdfs:subClassOf bo:NaryRelation ; rdfs:label "registro de perda"@pt ;
+    skos:definition "Nó reificado que declara, com código, o que uma realização não transporta numa direção."@pt ; bo:rigidity bo:Rigid .
 bo:lossCode a owl:DatatypeProperty , owl:FunctionalProperty ; rdfs:domain bo:LossRecord ; rdfs:range xsd:string ; rdfs:label "código de perda"@pt .
 bo:Projection a owl:Class ; rdfs:subClassOf bo:NaryRelation ,
         [ a owl:Restriction ; owl:onProperty bo:of ; owl:someValuesFrom bo:PropertyDescriptor ] ;
@@ -463,6 +471,7 @@ bo:schemaVersion a owl:DatatypeProperty , owl:FunctionalProperty ; rdfs:domain b
 bo:sha256 a owl:DatatypeProperty , owl:FunctionalProperty ; rdfs:domain bo:SchemaSource ; rdfs:range xsd:string ; rdfs:label "sha256"@pt .
 
 bo:TransportFidelity a owl:Class ; rdfs:subClassOf bo:ControlledValue ; rdfs:label "fidelidade de transporte"@pt ;
+    skos:definition "Vocabulário fechado de quanto uma realização transporta numa direção: sem perda, perda declarada, parcial ou nada."@pt ;
     owl:equivalentClass [ a owl:Class ; owl:oneOf ( bo:Lossless bo:DeclaredLoss bo:PartialTransport bo:NoTransport ) ] ; bo:rigidity bo:Rigid .
 bo:Lossless a owl:NamedIndividual , bo:TransportFidelity ; rdfs:label "sem perda"@pt .
 bo:DeclaredLoss a owl:NamedIndividual , bo:TransportFidelity ; rdfs:label "perda declarada"@pt .
@@ -471,6 +480,7 @@ bo:NoTransport a owl:NamedIndividual , bo:TransportFidelity ; rdfs:label "nenhum
 [] a owl:AllDifferent ; owl:distinctMembers ( bo:Lossless bo:DeclaredLoss bo:PartialTransport bo:NoTransport ) .
 
 bo:EvidenceState a owl:Class ; rdfs:subClassOf bo:ControlledValue ; rdfs:label "estado de evidência"@pt ;
+    skos:definition "Vocabulário fechado da escada de evidência (PLANO §9.2) de uma realização."@pt ;
     owl:equivalentClass [ a owl:Class ; owl:oneOf ( bo:StructurallyValid bo:DocSupported bo:PersistenceVerified bo:ObservationTested bo:Unresolved ) ] ; bo:rigidity bo:Rigid .
 bo:StructurallyValid a owl:NamedIndividual , bo:EvidenceState ; rdfs:label "STRUCTURALLY_VALID"@en .
 bo:DocSupported a owl:NamedIndividual , bo:EvidenceState ; rdfs:label "DOC_SUPPORTED"@en .
@@ -480,6 +490,7 @@ bo:Unresolved a owl:NamedIndividual , bo:EvidenceState ; rdfs:label "UNRESOLVED"
 [] a owl:AllDifferent ; owl:distinctMembers ( bo:StructurallyValid bo:DocSupported bo:PersistenceVerified bo:ObservationTested bo:Unresolved ) .
 
 bo:Exclusivity a owl:Class ; rdfs:subClassOf bo:ControlledValue ; rdfs:label "exclusividade"@pt ;
+    skos:definition "Vocabulário fechado de realizações alternativas: exclusividade provada ou AMBIGUOUS."@pt ;
     owl:equivalentClass [ a owl:Class ; owl:oneOf ( bo:ProvenExclusive bo:Ambiguous ) ] ; bo:rigidity bo:Rigid .
 bo:ProvenExclusive a owl:NamedIndividual , bo:Exclusivity ; rdfs:label "exclusividade provada"@pt .
 bo:Ambiguous a owl:NamedIndividual , bo:Exclusivity ; rdfs:label "AMBIGUOUS"@en .

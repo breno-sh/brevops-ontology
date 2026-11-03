@@ -82,7 +82,7 @@ def cases_texts() -> dict[Path, str]:
                  "# results/ONTPAT/upper_trial.json). As consultas e as mutações estão no JSON.\n",
                  S.PREFIXES,
                  f"\n### alinhamento mínimo ({len(alignment_axioms(cand))} axiomas)\n",
-                 al["ttl"] or "# nenhuma: os padrões do bo ficam sem categoria de topo\n"]
+                 alignment_ttl(cand) or "# nenhuma: os padrões do bo ficam sem categoria de topo\n"]
         for i, m in enumerate(al["misfits"], 1):
             parts.append(f"# desajuste {i}: {m}\n")
         parts.append("\n### vocabulário de teste e contexto comum\n" + S.TRIAL_TBOX)
@@ -124,23 +124,15 @@ def _ablate(g: rdflib.Graph) -> rdflib.Graph:
 
 
 def write_inputs(work: Path) -> dict:
-    """Arquivos de trabalho: bo-patterns completo (o próprio), bo-patterns sem exclusões, vocabulário de teste."""
-    pdir = c.patterns_dir()
-    closure, _ = c.load_closure(pdir / c.PATTERNS)
+    """Grafos de trabalho: fecho do bo-patterns completo e sem exclusões; vocabulário de teste idem."""
+    closure, _ = c.load_closure(c.patterns_dir() / c.PATTERNS)
     for t in list(closure.triples((None, OWL.imports, None))):
         closure.remove(t)
-    ab = work / "bo-patterns.ablated.ttl"
-    _ablate(closure).serialize(ab, format="turtle")
-    tv = work / "trial_tbox.ttl"
-    tv.write_text(S.PREFIXES + S.TRIAL_TBOX, encoding="utf-8")
-    tvg = rdflib.Graph().parse(tv, format="turtle")
-    tva = work / "trial_tbox.ablated.ttl"
-    _ablate(tvg).serialize(tva, format="turtle")
-    files = {"full": (pdir / c.PATTERNS, tv), "ablated": (ab, tva)}
-    for cand in c.CANDIDATES:
-        al = work / f"align_{cand}.ttl"
-        al.write_text(S.PREFIXES + S.ALIGNMENTS[cand]["ttl"] + "\n", encoding="utf-8")
-    return files
+    tvg = _ttl_graph(S.PREFIXES + S.TRIAL_TBOX)
+    ab, tva = _ablate(closure), _ablate(tvg)
+    ab.serialize(work / "bo-patterns.ablated.ttl", format="turtle")
+    tva.serialize(work / "trial_tbox.ablated.ttl", format="turtle")
+    return {"full": (closure, tvg), "ablated": (ab, tva)}
 
 
 # ---------------------------------------------------------------- consultas
@@ -227,15 +219,64 @@ class Plan:
         self.jobs[jid]["dump"] = str(p)
 
 
-def plan_candidate(cand: str, work: Path, inputs: dict) -> Plan:
-    pl = Plan(work)
+def _nt(g: rdflib.Graph) -> str:
+    """N-Triples sem cabeçalhos owl:Ontology (vários cabeçalhos num documento só confundem o OWLAPI)."""
+    h = rdflib.Graph()
+    h += g
+    for o in list(h.subjects(RDF.type, OWL.Ontology)):
+        h.remove((o, None, None))
+    return h.serialize(format="nt")
+
+
+def _ttl_graph(text: str) -> rdflib.Graph:
+    return rdflib.Graph().parse(data=text, format="turtle")
+
+
+def alignment_ttl(cand: str, extra: str = "") -> str:
+    """Alinhamento com as declarações explícitas (sem elas o OWLAPI toma a subpropriedade por anotação e o fecho
+    sai do OWL 2 DL: achado da primeira execução, 02/11 23:06)."""
+    body = S.ALIGNMENTS[cand]["ttl"] + extra
+    if not body.strip():
+        return ""
+    g = _ttl_graph(S.PREFIXES + body)
+    decl = set()
+    for s_, p_, o_ in g:
+        k = "owl:Class" if p_ == rdflib.RDFS.subClassOf else "owl:ObjectProperty"
+        decl.add(f"<{s_}> a {k} .")
+        decl.add(f"<{o_}> a {k} .")
+    return "# declarações\n" + "\n".join(sorted(decl)) + "\n" + body
+
+
+def base_parts(cand: str, inputs: dict) -> dict:
     cf = candidate_file(cand)
-    al = work / f"align_{cand}.ttl"
-    if cf:
-        pl.job(f"{cand}__alone", [cf], {"kind": "alone"})
-    pl.job(f"{cand}__example", [c.patterns_dir() / c.EXAMPLE, cf, al], {"kind": "example"})
+    cand_nt = _nt(rdflib.Graph().parse(cf, format="turtle")) if cf else ""
+    al_nt = _nt(_ttl_graph(S.PREFIXES + alignment_ttl(cand))) if alignment_ttl(cand) else ""
+    out = {}
+    for mode, (bo_g, tv_g) in inputs.items():
+        out[mode] = _nt(bo_g) + cand_nt + al_nt + _nt(tv_g)
+    ex, _ = c.load_closure(c.patterns_dir() / c.EXAMPLE)
+    out["example"] = _nt(ex) + cand_nt + al_nt
+    out["candidate"] = cand_nt
+    alt = S.PROTECTIVE_ALT.get(cand)
+    if alt:
+        alt_nt = _nt(_ttl_graph(S.PREFIXES + alignment_ttl(cand, alt["ttl"])))
+        out["protective"] = _nt(inputs["ablated"][0]) + cand_nt + alt_nt + _nt(inputs["ablated"][1])
+    return out
+
+
+def plan_candidate(cand: str, work: Path, inputs: dict) -> Plan:
+    """Cada job é UM documento N-Triples (fecho do bo + candidata + alinhamento + vocabulário + fixture): o
+    analisador RDF do OWLAPI decide o tipo de cada axioma por documento, então tudo tem de estar junto."""
+    pl = Plan(work)
+    base = base_parts(cand, inputs)
+
+    def doc(name: str, *parts: str) -> Path:
+        return pl.file(name + ".nt", "".join(parts))
+
+    if base["candidate"]:
+        pl.job(f"{cand}__alone", [doc(f"alone_{cand}", base["candidate"])], {"kind": "alone"})
+    pl.job(f"{cand}__example", [doc(f"example_{cand}", base["example"])], {"kind": "example"})
     for mode in ("full", "ablated"):
-        bo_file, tv_file = inputs[mode]
         for cid, variants in S.CASES.items():
             for vi, v in enumerate(variants):
                 runs = [("base", None)]
@@ -244,8 +285,8 @@ def plan_candidate(cand: str, work: Path, inputs: dict) -> Plan:
                 for rname, mut in runs:
                     fx, tbox_extra = mutate(v["fixture"], mut)
                     jid = f"{cand}__{mode}__{cid}__{vi}__{rname}"
-                    fx_file = pl.file(f"fx_{jid}.ttl", render(cid, S.PREFIXES + case_header(cid) + fx + "\n" + tbox_extra))
-                    pl.job(jid, [bo_file, cf, al, tv_file, fx_file],
+                    fx_nt = _nt(_ttl_graph(render(cid, S.PREFIXES + case_header(cid) + fx + "\n" + tbox_extra)))
+                    pl.job(jid, [doc(f"job_{jid}", base[mode], fx_nt)],
                            {"kind": "case", "cand": cand, "mode": mode, "case": cid, "variant": vi, "run": rname})
                     need_dump = False
                     for ci, chk in enumerate(v["checks"]):
@@ -266,16 +307,25 @@ def plan_candidate(cand: str, work: Path, inputs: dict) -> Plan:
                     for ci, chk in enumerate(v["checks"]):
                         if chk[0] in ("oc_reject", "oc_accept"):
                             ojid = f"{jid}__oc{ci}"
-                            oc_file = pl.file(f"oc_{ojid}.ttl", render(cid, S.PREFIXES + chk[2]))
-                            pl.job(ojid, [bo_file, cf, al, tv_file, fx_file, oc_file],
-                                   {"kind": "oc", "parent": jid, "check": ci})
+                            oc_nt = _nt(_ttl_graph(render(cid, S.PREFIXES + chk[2]))) if chk[2].strip() else ""
+                            pl.job(ojid, [doc(f"job_{ojid}", base[mode], fx_nt, oc_nt)], {"kind": "oc", "parent": jid, "check": ci})
                             pl.dump(ojid)
+    if "protective" in base:
+        for cid in S.PROTECTIVE_CASES:
+            for vi, v in enumerate(S.CASES[cid]):
+                jid = f"{cand}__protective__{cid}__{vi}__base"
+                fx_nt = _nt(_ttl_graph(render(cid, S.PREFIXES + case_header(cid) + v["fixture"])))
+                pl.job(jid, [doc(f"job_{jid}", base["protective"], fx_nt)],
+                       {"kind": "case", "cand": cand, "mode": "protective", "case": cid, "variant": vi, "run": "base"})
+                for ci, chk in enumerate(v["checks"]):
+                    if chk[0] in ("ent", "not_ent"):
+                        pl.ent(jid, f"{ci}", query_ttl(cid, chk[2]))
     probe = S.ALIGNMENTS[cand].get("role_probe")
     if probe:
         v = S.CASES["CMT-LB-P04"][0]
         jid = f"{cand}__roleprobe"
-        fx_file = pl.file(f"fx_{jid}.ttl", render("CMT-LB-P04", S.PREFIXES + case_header("CMT-LB-P04") + v["fixture"] + probe["ttl"]))
-        pl.job(jid, [inputs["full"][0], cf, al, inputs["full"][1], fx_file], {"kind": "roleprobe"})
+        fx_ttl = render("CMT-LB-P04", S.PREFIXES + case_header("CMT-LB-P04") + v["fixture"] + probe["ttl"])
+        pl.job(jid, [doc(f"job_{jid}", base["full"], _nt(_ttl_graph(fx_ttl)))], {"kind": "roleprobe", "probe_ttl": fx_ttl})
     return pl
 
 
@@ -316,12 +366,7 @@ def read_dump(path: str) -> dict:
 def graph_of(files: list[str]) -> rdflib.Graph:
     g = rdflib.Graph()
     for f in files:
-        p = Path(f)
-        if p.name == c.PATTERNS:
-            cl, _ = c.load_closure(p)
-            g += cl
-        else:
-            g.parse(p, format="turtle")
+        g.parse(f, format="nt" if f.endswith(".nt") else "turtle")
     return g
 
 
@@ -498,6 +543,13 @@ def run_candidate(cand: str, cm: dict, work: Path, inputs: dict) -> dict:
                                   "checks": [{"check": ch["check"], "observed": ch["observed"], "pass": ch["pass"]} for ch in v["checks"]]}
                                  for v in modes["ablated"][cid]["variants"]],
         }
+    protective = None
+    if cand in S.PROTECTIVE_ALT:
+        protective = {"alignment_extra": S.PROTECTIVE_ALT[cand]["ttl"].strip(), "misfit": S.PROTECTIVE_ALT[cand]["misfit"],
+                      "exploratory": True, "cases": {}}
+        for cid in S.PROTECTIVE_CASES:
+            evs = [evaluate_variant(pl, f"{cand}__protective__{cid}__{vi}__base", v, cid, cm[cid]) for vi, v in enumerate(S.CASES[cid])]
+            protective["cases"][cid] = all(e["pass"] for e in evs)
     case_jobs = [J for J in pl.jobs.values() if J.get("kind") == "case" and J["mode"] == "full" and J["run"] == "base"]
     axioms_typical = sorted(J["axioms"] for J in case_jobs)[len(case_jobs) // 2]
     ex = pl.jobs[f"{cand}__example"]
@@ -508,7 +560,8 @@ def run_candidate(cand: str, cm: dict, work: Path, inputs: dict) -> dict:
         probe_res = {"label": probe["label"], "consistent": J["consistent"]}
         if probe["expect"] == "punning":
             from . import no_punning
-            g = graph_of(J["files"][-2:])  # vocabulário de teste + fixture com a sonda
+            g, _ = c.load_closure(c.patterns_dir() / c.PATTERNS)  # fecho + vocabulário de teste + fixture com a sonda
+            g.parse(data=S.PREFIXES + S.TRIAL_TBOX + J["probe_ttl"], format="turtle")
             probe_res["punning"] = [str(x) for x in no_punning.punned(g)]
     return {
         "candidate": cand, "label": S.CANDIDATE_FILES[cand][1],
@@ -523,6 +576,7 @@ def run_candidate(cand: str, cm: dict, work: Path, inputs: dict) -> dict:
         "mutations_total": sum(1 for v in cases.values() for vv in v["variants"] if vv.get("mutation")),
         "expected_inferences": expected_inferences(pl, cand),
         "role_probe": probe_res,
+        "protective_alignment_exploratory": protective,
         "example_abox_consistent": ex["consistent"],
         "cost": {
             "candidate_axioms": pl.jobs.get(f"{cand}__alone", {}).get("axioms", 0),
@@ -530,9 +584,9 @@ def run_candidate(cand: str, cm: dict, work: Path, inputs: dict) -> dict:
             "closure_axioms_example_abox": ex["axioms"],
             "alignment_axioms": len(alignment_axioms(cand)),
             "misfits": len(S.ALIGNMENTS[cand]["misfits"]),
-            "hermit_ms_total": sum(J.get("reason_ms", 0) for J in pl.jobs.values()),
+            "hermit_ms_total": sum(J.get("reason_ms", 0) for J in pl.jobs.values() if J.get("mode") != "protective"),
             "harness_wall_s": round(wall, 1),
-            "jobs": len(pl.jobs),
+            "jobs": sum(1 for J in pl.jobs.values() if J.get("mode") != "protective"),
         },
     }
 
@@ -592,9 +646,11 @@ def run_all() -> dict:
     for cand in c.CANDIDATES:
         c.emit(f"[{c.now()}] candidata {cand}")
         r = run_candidate(cand, cm, work, inputs)
-        files = [c.patterns_dir() / c.PATTERNS] + ([candidate_file(cand)] if candidate_file(cand) else []) + [work / f"align_{cand}.ttl"]
+        alf = work / f"align_{cand}.ttl"
+        alf.write_text(S.PREFIXES + alignment_ttl(cand) + "\n", encoding="utf-8")
+        files = [c.patterns_dir() / c.PATTERNS] + ([candidate_file(cand)] if candidate_file(cand) else []) + [alf]
         r["profile"] = robot.validate_profile(files, cand)
-        ag = rdflib.Graph().parse(work / f"align_{cand}.ttl", format="turtle")
+        ag = rdflib.Graph().parse(alf, format="turtle")
         r["alignment_punning"] = [str(x) for x in no_punning.punned(ag)]
         res[cand] = r
     dec = decide(res)
@@ -691,7 +747,8 @@ def main(argv=None) -> int:
         if not bad:
             doc = c.read_json(c.results_dir() / RESULT)
             c.emit(f"upper_trial ok: 4 candidatas x {len(doc['case_ids'])} casos (+{len(doc['extra_case_ids'])} extra), "
-                   f"decisão {doc['decision']['chosen']} ({doc['decision']['decided_at_step']}), re-execução idêntica")
+                   f"decisão {doc['decision']['chosen']} ({doc['decision']['decided_at_step']})"
+                   + (", re-execução idêntica" if "--no-rerun" not in argv else ", sem re-execução (--no-rerun)"))
         return 1 if bad else 0
     print(__doc__)
     return 2

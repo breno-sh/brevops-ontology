@@ -1,0 +1,139 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Decisão de topo BrevOps</title>
+<style>
+:root{--bg:#fbfaf7;--fg:#1d1f22;--muted:#5d636b;--line:#dcd8cf;--card:#ffffff;--accent:#2b5d8a;
+--pos:#1e6b3a;--neg:#9b2c2c;--unk:#7a5a00;--code:#f1eee7;}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#15171a;--fg:#e6e3dd;--muted:#a3a8ad;
+--line:#33373c;--card:#1d2024;--accent:#8db7de;--pos:#7fc79a;--neg:#ef9a9a;--unk:#e3c46b;--code:#24282d;}}
+:root[data-theme="dark"]{--bg:#15171a;--fg:#e6e3dd;--muted:#a3a8ad;--line:#33373c;--card:#1d2024;--accent:#8db7de;
+--pos:#7fc79a;--neg:#ef9a9a;--unk:#e3c46b;--code:#24282d;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:1100px;margin:0 auto;padding:24px 16px 64px}
+h1{font-size:1.6rem;margin:0 0 4px}h2{font-size:1.25rem;margin:36px 0 8px;border-bottom:1px solid var(--line);padding-bottom:4px}
+h3{font-size:1.05rem;margin:22px 0 6px}
+.meta{color:var(--muted);font-size:.9rem}
+.kpis{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 12px;min-width:120px}
+.kpi b{display:block;font-size:1.3rem}
+table{border-collapse:collapse;width:100%;margin:8px 0;font-size:.88rem}
+th,td{border-bottom:1px solid var(--line);padding:6px 8px;vertical-align:top;text-align:left}
+th{color:var(--muted);font-weight:600}
+.wrap{overflow-x:auto}
+code,.fx{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.8rem}
+.fx{background:var(--code);border-radius:6px;padding:6px 8px;white-space:pre-wrap;word-break:break-word;margin:4px 0}
+.ok{color:var(--pos);font-weight:600}.no{color:var(--neg);font-weight:600}.unk{color:var(--unk);font-weight:600}
+.box{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:8px;padding:10px 14px;margin:12px 0}
+.note{border-left:3px solid var(--accent);padding:4px 10px;color:var(--muted)}
+details{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 12px;margin:8px 0}
+summary{cursor:pointer;font-weight:600}
+</style></head><body><main>
+<h1>Decisão da ontologia de topo</h1>
+<p class="meta">Módulo ONTPAT · S2 · resultado de 2026-11-02T23:25:48-03:00 (America/Recife) · regra de decisão v1 escrita em 2026-11-02T23:05:00-03:00, antes da primeira execução · ROBOT 1.9.11, HermiT 1.4.5.456 · fonte: results/ONTPAT/upper_trial.json</p>
+<div class="box"><b>Decisão: DOLCE+DnS Ultralite 4.2</b> (dul). elegíveis em D1/D2: bfo, dul, gufo, none; maior número de proteções próprias (D3) = 1 (dul); decidido em D3.</div>
+<p>As 4 candidatas foram levadas aos 16 compromissos com eixo de topo do REQUIREMENTS (identidade 8, tempo 8, papel 5) e ao caso extra CMT-CFG-N01, cada um com alinhamento mínimo de melhor esforço. Todas reproduzem as 17 respostas esperadas: as respostas vêm dos padrões do bo, não da ontologia de topo. Só dul protege sozinha algum compromisso com as exclusões do bo retiradas: CMT-BKT-P03. Pela regra escrita antes, isso decide em D3, antes do custo. O custo é real e fica declarado: 3 desajustes, 1046 axiomas lógicos no fecho de um caso típico contra 425 sem ontologia de topo, e 244869 ms de HermiT no teste contra 3085 ms. A margem é de 1 proteção; o Breno pode vetar (D14), e o veto depois do FREEZE0 invalida os dependentes.</p>
+<p class='note'>De onde vem a proteção própria: axiomas de exclusão da própria candidata alcançados pelo alinhamento mínimo: <code>ConfigurationDescription ⊑ Description, disjunta de SocialAgent; Facet ⊑ Quality, disjunta de Abstract; Facet ⊑ Quality, disjunta de Event; Facet ⊑ Quality, disjunta de Object; LifecycleEvent ⊑ Event, disjunta de Abstract; LifecycleEvent ⊑ Event, disjunta de Object; LifecycleEvent ⊑ Event, disjunta de Quality; Resource ⊑ Object, disjunta de Abstract; Resource ⊑ Object, disjunta de Event; Resource ⊑ Object, disjunta de Quality; componentOf ⊑ isComponentOf, que é AsymmetricProperty</code>.</p>
+<h2>Regra (escrita antes de rodar)</h2><table><tr><th>passo</th><th>texto</th></tr>
+<tr><td><b>D1</b></td><td>Elegível só a candidata que, com o seu alinhamento mínimo de melhor esforço, reproduz a resposta esperada de TODOS os compromissos com eixo identidade, tempo ou papel do REQUIREMENTS (16), e do caso extra CMT-CFG-N01, com os axiomas do bo completos.</td></tr>
+<tr><td><b>D2</b></td><td>Elegível só se o fecho bo-patterns + candidata + alinhamento for OWL 2 DL (ROBOT validate-profile), for consistente com o ABox de exemplo e se o alinhamento não exigir punning nem metamodelagem (bo.ontpat.no_punning).</td></tr>
+<tr><td><b>D3</b></td><td>Entre as elegíveis, ganha a que tem mais PROTEÇÕES PRÓPRIAS: casos cuja resposta esperada continua sendo obtida com os axiomas de exclusão do bo retirados (disjunção de classes e de propriedades, diferença de indivíduos, irreflexividade, assimetria), descontados os que &#x27;nenhuma&#x27; também obtém sem eles. Mede o que a ontologia de topo protege sozinha contra um reparo que apague axiomas do bo (F9). Não conta inferências no tradutor.</td></tr>
+<tr><td><b>D4</b></td><td>Empate em D3 (inclusive zero a zero): ganha a de menor custo, nesta ordem: (a) desajustes categoriais declarados no alinhamento; (b) axiomas lógicos no fecho de um caso típico; (c) tempo total do HermiT no teste. &#x27;Nenhuma&#x27; disputa como as outras; não é escolhida por não gerar inferência, só se perder em D3 ninguém e custar menos em D4.</td></tr>
+</table><p class='note'>Axiomas de exclusão retirados no modo D3: owl:disjointWith, owl:propertyDisjointWith, owl:differentFrom, owl:AllDisjointClasses, owl:AllDifferent, owl:AllDisjointProperties, owl:IrreflexiveProperty, owl:AsymmetricProperty; owl:disjointUnionOf (substituído por nada: as subclasses já estão declaradas). Chaves e propriedades funcionais ficam (identificam, não excluem).</p>
+<h2>Resultado por candidata</h2><div class='wrap'><table><tr><th></th><th>bfo</th><th>dul</th><th>gufo</th><th>none</th></tr>
+<tr><td>candidata</td><td>BFO 2020 (ISO/IEC 21838-2), release-2024-01-29</td><td>DOLCE+DnS Ultralite 4.2</td><td>gUFO 1.0.0</td><td>nenhuma ontologia de topo</td></tr>
+<tr><td>D1 reproduz (17)</td><td>17/17 <span class="ok">sim</span></td><td>17/17 <span class="ok">sim</span></td><td>17/17 <span class="ok">sim</span></td><td>17/17 <span class="ok">sim</span></td></tr>
+<tr><td>D2 fecho OWL 2 DL</td><td><span class="ok">sim</span></td><td><span class="ok">sim</span></td><td><span class="ok">sim</span></td><td><span class="ok">sim</span></td></tr>
+<tr><td>D2 consistente com o ABox de exemplo</td><td><span class="ok">sim</span></td><td><span class="ok">sim</span></td><td><span class="ok">sim</span></td><td><span class="ok">sim</span></td></tr>
+<tr><td>D2 alinhamento sem punning</td><td><span class="ok">sim</span></td><td><span class="ok">sim</span></td><td><span class="ok">sim</span></td><td><span class="ok">sim</span></td></tr>
+<tr><td>sem exclusões do bo: reproduz</td><td>14/17</td><td>15/17</td><td>14/17</td><td>14/17</td></tr>
+<tr><td>D3 proteções próprias</td><td>0 </td><td>1 CMT-BKT-P03</td><td>0 </td><td>0 </td></tr>
+<tr><td>D4a desajustes declarados</td><td>5</td><td>3</td><td>2</td><td>0</td></tr>
+<tr><td>D4b axiomas lógicos no fecho (caso típico)</td><td>624</td><td>1046</td><td>679</td><td>425</td></tr>
+<tr><td>D4c HermiT, ms no teste</td><td>12813</td><td>244869</td><td>7941</td><td>3085</td></tr>
+<tr><td>axiomas lógicos da candidata</td><td>192</td><td>608</td><td>241</td><td>0</td></tr>
+<tr><td>axiomas do alinhamento</td><td>7</td><td>13</td><td>13</td><td>0</td></tr>
+<tr><td>fecho com o ABox de exemplo (axiomas)</td><td>1099</td><td>1521</td><td>1154</td><td>900</td></tr>
+<tr><td>tempo de parede do harness (s)</td><td>15.3</td><td>258.1</td><td>10.9</td><td>5.0</td></tr>
+<tr><td>mutações que viraram a resposta</td><td>13/13</td><td>13/13</td><td>13/13</td><td>13/13</td></tr>
+<tr><td>inferências esperadas (tipos da candidata)</td><td>153</td><td>117</td><td>233</td><td>0</td></tr>
+</table></div>
+<h2>Casos de identidade, tempo e papel</h2><p class='meta'>completo / sem exclusões do bo. A resposta esperada vem de requirements/commitments.jsonl; a mutação de cada variante tem de virar a resposta (prova que a consulta não passa por vacuidade).</p><div class='wrap'><table><tr><th>compromisso</th><th>eixos</th><th>esperado</th><th>bfo</th><th>dul</th><th>gufo</th><th>none</th><th>mutação</th></tr>
+<tr><td><code>CMT-BKT-P03</code></td><td>identity</td><td>ENTAILED</td><td><span class="ok">ok</span> / <span class="no">falha</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="no">falha</span></td><td><span class="ok">ok</span> / <span class="no">falha</span></td><td>contêiner só referencia o namespace (sem parte-todo) → NOT_ENTAILED</td></tr>
+<tr><td><code>CMT-CFG-N02</code></td><td>identity, time</td><td>NOT_ENTAILED</td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td>instante da leitura como atributo funcional do recurso → INCONSISTENT</td></tr>
+<tr><td><code>CMT-CFG-P01</code></td><td>time</td><td>ENTAILED</td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td>valores direto no recurso, com propriedade funcional (sem o modelo S1) → INCONSISTENT</td></tr>
+<tr><td><code>CMT-DB-P02</code></td><td>role</td><td>2</td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td>réplica contada como instância à parte com a mesma chave (mesma encarnação) → INCONSISTENT</td></tr>
+<tr><td><code>CMT-ID-N01</code></td><td>identity</td><td>NOT_ENTAILED</td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td>chave sem localização (e sem encarnação) → INCONSISTENT</td></tr>
+<tr><td><code>CMT-ID-P01</code></td><td>identity, time</td><td>ENTAILED</td><td><span class="ok">ok</span> / <span class="no">falha</span></td><td><span class="ok">ok</span> / <span class="no">falha</span></td><td><span class="ok">ok</span> / <span class="no">falha</span></td><td><span class="ok">ok</span> / <span class="no">falha</span></td><td>mudança no lugar registrada com encarnação nova → NOT_ENTAILED</td></tr>
+<tr><td><code>CMT-ID-P02</code></td><td>identity, time</td><td>ENTAILED</td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td>chave só com os 5 componentes (sem encarnação) → INCONSISTENT</td></tr>
+<tr><td><code>CMT-ID-U01</code></td><td>identity, time</td><td>UNKNOWN (MISSING_EVIDENCE)</td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td>evidência de mudança no lugar (mesma encarnação) → ENTAILED</td></tr>
+<tr><td><code>CMT-ID-U02</code></td><td>identity</td><td>UNKNOWN (INCOMPLETE_READ)</td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td>localização de c2 lida (igual à de c1) → ENTAILED</td></tr>
+<tr><td><code>CMT-LB-N01</code></td><td>role</td><td>REJECTED (INCONSISTENT)</td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td>-</td></tr>
+<tr><td><code>CMT-LB-P04</code></td><td>role, time</td><td>ENTAILED</td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td>instância ⊑ membro de pool (erro OntoClean) → ENTAILED</td></tr>
+<tr><td><code>CMT-LC-N01</code></td><td>time</td><td>NOT_ENTAILED</td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td>principal com ciclo de vida controlado pelo vínculo → ENTAILED</td></tr>
+<tr><td><code>CMT-LC-P01</code></td><td>time</td><td>ENTAILED</td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td>contêiner só referencia o namespace → NOT_ENTAILED</td></tr>
+<tr><td><code>CMT-NIC-P05</code></td><td>identity</td><td>INVARIANT</td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td>chave de ocorrência com a posição textual → NOT_ENTAILED</td></tr>
+<tr><td><code>CMT-TAX-N04</code></td><td>role</td><td>REJECTED (INCONSISTENT)</td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td>-</td></tr>
+<tr><td><code>CMT-TAX-P01</code></td><td>role</td><td>ENTAILED</td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td><span class="ok">ok</span> / <span class="ok">ok</span></td><td>-</td></tr>
+<tr><td><code>CMT-CFG-N01</code></td><td>extra</td><td>REJECTED (INCONSISTENT)</td><td><span class="ok">ok</span> / <span class="no">falha</span></td><td><span class="ok">ok</span> / <span class="no">falha</span></td><td><span class="ok">ok</span> / <span class="no">falha</span></td><td><span class="ok">ok</span> / <span class="no">falha</span></td><td>-</td></tr>
+</table></div>
+<h2>Inferências esperadas por candidata</h2><p>O que cada candidata acrescenta às fixtures (tipos da própria candidata inferidos para os indivíduos dos casos). São corretas sob o alinhamento, mas nenhuma decide resposta de compromisso.</p>
+<p><b>bfo</b>: 153 tipos inferidos; por classe: BFO_0000001 51, BFO_0000002 44, BFO_0000031 44, BFO_0000003 7, BFO_0000015 7. Exemplos: <code>CMT-BKT-P03#c1 a BFO_0000002; CMT-BKT-P03#c1 a BFO_0000001; CMT-BKT-P03#c1 a BFO_0000031; CMT-BKT-P03#ns1 a BFO_0000002</code></p>
+<p><b>dul</b>: 117 tipos inferidos; por classe: Entity 57, Object 40, Event 7, Situation 4, Action 3, Description 3, SocialObject 3. Exemplos: <code>CMT-BKT-P03#c1 a Object; CMT-BKT-P03#c1 a Entity; CMT-BKT-P03#ns1 a Object; CMT-BKT-P03#ns1 a Entity</code></p>
+<p><b>gufo</b>: 233 tipos inferidos; por classe: ConcreteIndividual 51, Individual 51, Endurant 41, Object 40, FunctionalComplex 37, Event 7, Situation 3, Aspect 1. Exemplos: <code>CMT-BKT-P03#c1 a Individual; CMT-BKT-P03#c1 a FunctionalComplex; CMT-BKT-P03#c1 a Endurant; CMT-BKT-P03#c1 a Object</code></p>
+<p><b>none</b>: nenhuma (sem ontologia de topo).</p>
+<h2>Alinhamento mínimo e desajustes</h2>
+<details><summary>bfo: 7 axiomas, 5 desajustes</summary>
+<div class='fx'>bo:Unit rdfs:subClassOf obo:BFO_0000031 .
+bo:ConfigurationDescription rdfs:subClassOf obo:BFO_0000031 .
+bo:ObservedState rdfs:subClassOf obo:BFO_0000031 .
+bo:Observation rdfs:subClassOf obo:BFO_0000015 .
+bo:LifecycleEvent rdfs:subClassOf obo:BFO_0000015 .
+bo:MappingActivity rdfs:subClassOf obo:BFO_0000015 .
+bo:componentOf rdfs:subPropertyOf obo:BFO_0000176 .</div>
+<ul><li>recurso de nuvem não é entidade material: alinhado a generically dependent continuant (GDC), concretizado no hardware do provedor</li><li>papel do BFO (BFO_0000023) inere só em continuante independente; recurso alinhado a GDC não porta papel, logo &#x27;membro de pool&#x27; fica sem categoria do BFO (eixo papel sem apoio)</li><li>faceta não pode ser qualidade (BFO_0000019), que também exige portador independente: fica GDC, sem distinção categorial de recurso</li><li>vínculo não pode ser qualidade relacional (BFO_0000145) pelo mesmo motivo: fica GDC</li><li>estado observado e descrição viram GDC: o BFO não separa descrição, estado e recurso entre si</li></ul>
+<p>Sonda do eixo papel: papel do BFO portado pelo recurso (vm1 bearer of r1, r1 a role) → consistente: <span class="no">não</span>.</p>
+<p class='note'>Exploratório (fora da regra, acrescentado depois da primeira execução): com <code>bo:Resource rdfs:subClassOf obo:BFO_0000040 .</code>, sem as exclusões do bo: CMT-CFG-N01 protegido, CMT-BKT-P03 não, CMT-ID-P01 não. Preço: recurso como entidade material (BFO_0000040): falso para contêiner, namespace, atribuição.</p>
+</details>
+<details><summary>dul: 13 axiomas, 3 desajustes</summary>
+<div class='fx'>bo:Resource rdfs:subClassOf dul:Object .
+bo:Facet rdfs:subClassOf dul:Quality .
+bo:facetOf rdfs:subPropertyOf dul:isQualityOf .
+bo:Binding rdfs:subClassOf dul:Situation .
+bo:relates rdfs:subPropertyOf dul:isSettingFor .
+bo:ConfigurationDescription rdfs:subClassOf dul:Description .
+bo:describes rdfs:subPropertyOf dul:describes .
+bo:ObservedState rdfs:subClassOf dul:Situation .
+bo:stateOf rdfs:subPropertyOf dul:isSettingFor .
+bo:Observation rdfs:subClassOf dul:Action .
+bo:LifecycleEvent rdfs:subClassOf dul:Event .
+bo:MappingActivity rdfs:subClassOf dul:Action .
+bo:componentOf rdfs:subPropertyOf dul:isComponentOf .</div>
+<ul><li>papel do DUL é indivíduo (dul:Role, um Concept que classifica): a classe antirrígida &#x27;membro de pool&#x27; do bo não tem contraparte de classe sem punning; o papel do DUL fica num indivíduo à parte</li><li>vínculo e estado observado caem os dois em dul:Situation: o DUL não os separa</li><li>descrição (dul:Description) é dul:Object, como o recurso: o DUL não separa descrição de recurso</li></ul>
+<p>Sonda do eixo papel: papel do DUL como Concept que classifica o recurso (vm1 hasRole r1) → consistente: <span class="ok">sim</span>.</p>
+<p class='note'>Exploratório (fora da regra, acrescentado depois da primeira execução): com <code>bo:Resource rdfs:subClassOf dul:PhysicalObject .</code>, sem as exclusões do bo: CMT-CFG-N01 protegido, CMT-BKT-P03 protegido, CMT-ID-P01 não. Preço: recurso como dul:PhysicalObject (&#x27;tem região espacial própria&#x27;): falso para recursos lógicos.</p>
+</details>
+<details><summary>gufo: 13 axiomas, 2 desajustes</summary>
+<div class='fx'>bo:Resource rdfs:subClassOf gufo:FunctionalComplex .
+bo:Facet rdfs:subClassOf gufo:IntrinsicMode .
+bo:facetOf rdfs:subPropertyOf gufo:inheresIn .
+bo:Binding rdfs:subClassOf gufo:Relator .
+bo:relates rdfs:subPropertyOf gufo:mediates .
+bo:ConfigurationDescription rdfs:subClassOf gufo:Object .
+bo:ObservedState rdfs:subClassOf gufo:Situation .
+bo:Observation rdfs:subClassOf gufo:Event .
+bo:LifecycleEvent rdfs:subClassOf gufo:Event .
+bo:MappingActivity rdfs:subClassOf gufo:Event .
+bo:createdBy rdfs:subPropertyOf gufo:wasCreatedIn .
+bo:endedBy rdfs:subPropertyOf gufo:wasTerminatedIn .
+bo:componentOf rdfs:subPropertyOf gufo:isComponentOf .</div>
+<ul><li>o gUFO não tem objeto de informação: a descrição de configuração fica em gufo:Object genérico, sem disjunção com o recurso</li><li>a checagem de rigidez do gUFO é de nível de tipo (tv:BackendMember a gufo:Role): exige punning, que a regra do projeto proíbe; a rigidez fica na anotação bo:rigidity</li></ul>
+<p>Sonda do eixo papel: tipo de nível de classe do gUFO (tv:BackendMember a gufo:Role) → consistente: <span class="ok">sim</span>; punning: 1 IRI.</p>
+<p class='note'>Exploratório (fora da regra, acrescentado depois da primeira execução): com <code>bo:ConfigurationDescription rdfs:subClassOf gufo:AbstractIndividual .</code>, sem as exclusões do bo: CMT-CFG-N01 protegido, CMT-BKT-P03 não, CMT-ID-P01 não. Preço: descrição versionada e datada como indivíduo abstrato (fora do tempo): contradiz gufo:AbstractIndividual.</p>
+</details>
+<details><summary>none: 0 axiomas, 0 desajustes</summary>
+<p>sem desajuste.</p>
+</details>
+<h2>Como aplicar a decisão</h2><ul><li>O alinhamento mínimo de dul (13 axiomas, acima) vira um módulo próprio (<code>bo-align-dul</code>, gerado pelo OWL), importado pelo núcleo; o perfil OWL 2 DL do trio bo-patterns + dul + alinhamento já foi conferido aqui: em perfil. bo-patterns.ttl continua sem importar a candidata: os padrões não dependem dela, e o teste mostra que todas as respostas saem do bo.</li><li>Arquivo da candidata: <code>$BO_DATA/downloads/dul/DUL.ttl</code>, sha256 <code>e5f6429596d2c701</code>…; a licença do arquivo do DUL não está declarada nele (SOURCE.txt: UNRESOLVED): importar por IRI não redistribui, mas copiar para o repositório exige conferir a licença antes.</li><li>O preço em raciocínio entra no orçamento do TRANSLATOR e do REASONING-PROOF: 244869 ms de HermiT no teste contra 3085 ms sem ontologia de topo.</li><li>As proteções do bo continuam: a da candidata é redundante com elas no modo completo e só pesa se um reparo retirar um axioma de exclusão do bo (F9).</li><li>Reabrir se o custo de raciocínio inviabilizar o TRANSLATOR, se a proteção própria deixar de valer com o vocabulário definitivo (CLASS/OWL), ou por veto do Breno (D14).</li></ul>
+<h2>Limites</h2><ul><li>O alinhamento mínimo de cada candidata foi escrito pelo mesmo agente que escreveu os padrões; os desajustes estão declarados para que outra leitura possa contestá-los.</li><li>Tempos do HermiT dependem da máquina; entram só como desempate (D4c) e são re-medidos a cada execução.</li><li>O teste usa um vocabulário de teste (tv:) com os rótulos de trabalho do REQUIREMENTS; as classes de domínio definitivas vêm do CLASS/OWL. O caso extra não tem eixo de topo; entra porque é o erro de categoria S1 que uma ontologia de topo poderia proteger.</li></ul>
+</main></body></html>

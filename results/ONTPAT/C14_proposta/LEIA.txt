@@ -1,0 +1,12 @@
+Proposta do ONTPAT para a linha de realizations.jsonl do contrato C14 (o C14 é do CONTRACTS).
+Gerada por bo.ontpat.c14 em 2026-11-02 (America/Recife). Cada campo é a leitura de um termo do padrão P7/P8:
+  of.describes       <- bo:of -> descritor -> bo:describesProperty | bo:describesClass (anotação; sem punning)
+  provider           <- bo:onProvider
+  realized_by        <- bo:realizedBy (1:N artefatos, com bo:artifactName, bo:artifactPath, bo:inSchema)
+  lifting_fidelity   <- bo:liftingFidelity   lowering_fidelity <- bo:loweringFidelity (por direção)
+  evidence_state     <- bo:evidenceState (escada §9.2)
+  guards/alternative_to/exclusivity <- bo:hasGuard/bo:guardExpression, bo:alternativeTo, bo:exclusivity
+  losses             <- bo:declaresLoss/bo:lossCode   projections <- bo:hasProjection/bo:fromField
+  derived_from/generated_by/attributed_to <- prov:wasDerivedFrom / prov:wasGeneratedBy / prov:wasAttributedTo
+Sem injetividade: o mesmo descritor pode ter várias realizações por provedor (alternativas guardadas).
+Regras condicionais: perda declarada ou parcial exige 'losses'; alternativa exige guarda e exclusividade.

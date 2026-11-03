@@ -60,6 +60,8 @@ bo:unitKind a owl:AnnotationProperty ;
 
 bo:RigidityValue a owl:Class ;
     rdfs:label "valor de rigidez"@pt ;
+    skos:definition "Vocabulário fechado dos valores da anotação bo:rigidity."@pt ;
+    bo:rigidity bo:Rigid ;
     owl:equivalentClass [ a owl:Class ; owl:oneOf ( bo:Rigid bo:AntiRigid bo:SemiRigid ) ] .
 bo:Rigid a owl:NamedIndividual , bo:RigidityValue ; rdfs:label "rígida"@pt .
 bo:AntiRigid a owl:NamedIndividual , bo:RigidityValue ; rdfs:label "antirrígida"@pt .

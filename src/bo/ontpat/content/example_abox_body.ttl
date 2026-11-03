@@ -231,7 +231,7 @@ unit:GigaBYTE a owl:NamedIndividual , bo:UnitOfMeasure .
 ex:d_nic1 a owl:NamedIndividual , bo:ConfigurationDescription ; bo:describes ex:nic1 ; bo:descriptionSource bo:SourceCode ;
     bo:hasSettingValue ex:v_nic1_addr .
 ex:v_nic1_addr a owl:NamedIndividual , bo:SettingValue , bo:NaryRelation ; bo:of ex:desc_privateAddress ;
-    bo:valueOrigin bo:Configured ; bo:valueState bo:Unknown ; bo:unknownReason bo:KnownAfterApply .
+    bo:valueOrigin bo:Configured ; bo:valueState bo:Unknown ; bo:unknownReason bo:UnknownSymbolicInput .
 ex:ob2 a owl:NamedIndividual , bo:Observation ; prov:startedAtTime "2026-11-02T10:05:00-03:00"^^xsd:dateTime ;
     bo:readCompleteness bo:PartialRead ; bo:coversScope ex:region_a1 .
 ex:o4 a owl:NamedIndividual , bo:ObservedState ; bo:stateOf ex:sec1 ; prov:wasGeneratedBy ex:ob2 ;
