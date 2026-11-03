@@ -1,0 +1,39 @@
+CONTRACT_CHANGE — GOLD-CARTO
+gravado em: 2026-11-03T01:42:06-03:00 (America/Recife)
+tipo: defeito do catálogo (modulos.json), não do C09
+
+PROBLEMA
+O gate do catálogo "python -I -m bo.gold.resolve GOLD-CARTO" chama o pacote $BO_REPO/src/bo/gold/, que não
+está no owns de nenhum módulo (gate_smoke: "dono do pacote: ?"). O mesmo gate aparece em GOLD-LIBCLOUD,
+GOLD-XPLANE e GOLD-MODS; bo.gold.levels e bo.gold.bridge (GOLD-AUDIT) caem no mesmo pacote sem dono.
+Como src/bo/ é pacote de namespace e cada módulo só escreve no próprio pacote, nenhum GOLD-* pode criar
+bo/gold/ sem reprovar o ownership_check. Consequência: G2 (bo.gold.resolve), G4 (gate_smoke) e G3
+(make gate, que roda o smoke antes) não podem passar por nenhum GOLD-*, por mais certo que esteja o ouro.
+
+O QUE JÁ EXISTE NESTE MÓDULO
+A lógica do G2 está pronta e verde dentro do pacote do módulo:
+  python -I -m bo.gold_carto.resolve GOLD-CARTO
+  -> 573 linhas; 748 citações de campo API_FIELD, 49 KWARG_ONLY, 1 FIELD_NOT_IN_SCHEMA, 23 NO_NODE_FIELD;
+     73 linhas UNRESOLVED; saída 0 (todo campo resolve num campo de API registrado ou está marcado).
+Ela também roda dentro de gates/GOLD-CARTO.sh.
+
+MUDANÇA PROPOSTA (escolher uma)
+A) Dar dono a $BO_REPO/src/bo/gold/ (sugestão: GOLD-AUDIT, que já precisa de bo.gold.levels e bo.gold.bridge,
+   ou CONTRACTS) e criar um despachante mínimo:
+     # src/bo/gold/resolve.py
+     import importlib, sys
+     def main(argv=None):
+         argv = list(sys.argv[1:] if argv is None else argv)
+         mid = argv[0]
+         mod = importlib.import_module("bo." + mid.lower().replace("-", "_") + ".resolve")
+         return mod.main([mid])
+     if __name__ == "__main__":
+         sys.exit(main())
+   Contrato do despachante: cada GOLD-<X> expõe bo.gold_<x>.resolve.main([ID]) -> 0/1 (este módulo já expõe).
+   Como o GOLD-AUDIT é da onda 14, o despachante precisa entrar antes (commit [COORD] ou módulo novo).
+B) Trocar, no modulos.json, o gate de cada GOLD-<X> por "python -I -m bo.gold_<x>.resolve <ID>".
+
+ESTADO DOS GATES DESTE MÓDULO ENQUANTO ISSO
+G2, G3 e G4 ficam ABANDON com este motivo em ../execucao/gates/GOLD-CARTO.md (não afrouxados).
+Sem todos os gates verdes, o merge em bo/base NÃO foi feito (G10 também ABANDON): a branch bo/gold-carto
+fica pronta para ff-only depois que o despachante (A) ou a troca do gate (B) entrar.

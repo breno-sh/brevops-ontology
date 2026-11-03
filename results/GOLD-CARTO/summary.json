@@ -1,0 +1,38 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "GOLD-CARTO",
+ "generated_at": "2026-11-03T01:41:45-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/GOLD-CARTO.txt",
+  "brief_sha256": "e6664a4021b357c5c0bb8907f07b2ef518b37375f7867d564ba185d858e7f13d",
+  "params": {
+   "generator": "python -I -m bo.gold_carto.build",
+   "resolver": "python -I -m bo.gold_carto.resolve GOLD-CARTO",
+   "source_commit": "66ead780c590c2db63947286fa8d5131f44697f8",
+   "source_tag": "0.144.0",
+   "providers": "aws,gcp,azure",
+   "network": "github codeload (tarball), github api (data do commit)",
+   "cloud": "none",
+   "execution_of_download": "none"
+  },
+  "inputs": [
+   {
+    "path": "$BO_DATA/downloads/cartography/cartography-66ead780c590c2db63947286fa8d5131f44697f8.tar.gz",
+    "kind": "file",
+    "sha256": "5f97bebfc87ff400cb72a1fc6e582dc332cd56a65215fa2bab3e98dbd4136bd6"
+   }
+  ],
+  "recorded_at": "2026-11-03T01:41:45-03:00"
+ },
+ "sources": [
+  {
+   "uri": "https://github.com/cartography-cncf/cartography/tree/66ead780c590c2db63947286fa8d5131f44697f8",
+   "license": "Apache-2.0",
+   "transformation": "OntologyFieldMapping de aws/gcp/azure lidos estaticamente (ast) e convertidos em C09 3.0.0: âncoras publicadas e pares derivados pela tabela de composição do SEMANTICS; PropertyRef dos esquemas de nó viram o registro de campos de API"
+  }
+ ],
+ "notes": "bo.gold.resolve (gate G2 do catálogo) não tem dono: ver results/GOLD-CARTO/CONTRACT_CHANGE.txt"
+}

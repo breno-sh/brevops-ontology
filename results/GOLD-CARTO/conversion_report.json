@@ -1,0 +1,270 @@
+{
+ "generated_at": "2026-11-03T01:39:59-03:00",
+ "schema": "bo.gold_carto.report/1",
+ "module": "GOLD-CARTO",
+ "source": {
+  "repo": "https://github.com/cartography-cncf/cartography",
+  "tag": "0.144.0",
+  "commit": "66ead780c590c2db63947286fa8d5131f44697f8",
+  "commit_date": "2026-10-28",
+  "tarball": "$BO_DATA/downloads/cartography/cartography-66ead780c590c2db63947286fa8d5131f44697f8.tar.gz",
+  "tarball_sha256": "5f97bebfc87ff400cb72a1fc6e582dc332cd56a65215fa2bab3e98dbd4136bd6",
+  "license": "https://www.apache.org/licenses/LICENSE-2.0",
+  "read_as": "texto (ast.parse), sem import e sem execução"
+ },
+ "scope": {
+  "providers": [
+   "aws",
+   "gcp",
+   "azure"
+  ],
+  "field_mappings_all_modules": 1307,
+  "field_mappings_per_module": {
+   "aibom": 2,
+   "airbyte": 3,
+   "anthropic": 4,
+   "aws": 167,
+   "azure": 60,
+   "bbot": 4,
+   "bigfix": 2,
+   "circleci": 5,
+   "cloudflare": 22,
+   "crowdstrike": 10,
+   "cve": 21,
+   "databricks": 23,
+   "digitalocean": 11,
+   "duo": 16,
+   "gcp": 100,
+   "github": 48,
+   "gitlab": 28,
+   "googleworkspace": 22,
+   "gsuite": 10,
+   "huntress": 16,
+   "jamf": 12,
+   "jira": 5,
+   "jumpcloud": 14,
+   "kandji": 5,
+   "keycloak": 17,
+   "kubernetes": 32,
+   "lastpass": 5,
+   "microsoft": 25,
+   "miradore": 13,
+   "modal": 33,
+   "netlify": 36,
+   "notion": 6,
+   "oci": 8,
+   "okta": 26,
+   "ontology": 5,
+   "openai": 11,
+   "opsgenie": 6,
+   "orca": 12,
+   "pagerduty": 4,
+   "railway": 24,
+   "salesforce": 16,
+   "scaleway": 131,
+   "semgrep": 33,
+   "sentinelone": 8,
+   "sentry": 7,
+   "slack": 14,
+   "snipeit": 5,
+   "snowflake": 62,
+   "socketdev": 6,
+   "spacelift": 6,
+   "subimage": 4,
+   "supabase": 31,
+   "syft": 5,
+   "tailscale": 8,
+   "tenable": 1,
+   "trivy": 15,
+   "ubuntu": 12,
+   "vercel": 10,
+   "wiz": 22,
+   "workos": 16,
+   "zendesk": 10,
+   "zoom": 12
+  },
+  "field_mappings_in_scope": 327,
+  "out_of_scope_note": "só aws, gcp e azure (brief); oci tem 8 OntologyFieldMapping no mesmo commit, fora do escopo deste módulo"
+ },
+ "rules": {
+  "None": {
+   "semantic_relation": "exact",
+   "transport_fidelity": "lossless",
+   "why": "cópia do valor (sem tratamento)"
+  },
+  "mapping": {
+   "semantic_relation": "close",
+   "transport_fidelity": "declared_loss",
+   "why": "enum_map com a tabela publicada; fora da tabela vira NULL"
+  },
+  "invert_boolean": {
+   "semantic_relation": "exact",
+   "transport_fidelity": "lossless",
+   "why": "negação booleana como enum_map {true:false, false:true}"
+  },
+  "to_boolean": {
+   "semantic_relation": "close",
+   "transport_fidelity": "declared_loss",
+   "why": "só a presença de valor passa (não nulo -> true); sem função no núcleo"
+  },
+  "equal_boolean": {
+   "semantic_relation": "close",
+   "transport_fidelity": "declared_loss",
+   "why": "só a igualdade ao valor de extra.value passa; sem função no núcleo"
+  },
+  "or_boolean": {
+   "semantic_relation": "related",
+   "transport_fidelity": "none",
+   "why": "OU de vários campos: combinação N:1 sem função no núcleo"
+  },
+  "nor_boolean": {
+   "semantic_relation": "related",
+   "transport_fidelity": "none",
+   "why": "NOU de vários campos: combinação N:1 sem função no núcleo"
+  },
+  "coalesce": {
+   "semantic_relation": "exact",
+   "transport_fidelity": "lossless",
+   "why": "primeiro não nulo: cada campo realiza sob a guarda de ausência dos anteriores"
+  },
+  "normalize_hostname": {
+   "semantic_relation": "exact",
+   "transport_fidelity": "lossless",
+   "why": "minúsculas, sem espaço e sem ponto final; sem função no núcleo"
+  },
+  "static_value": {
+   "semantic_relation": "related",
+   "transport_fidelity": "none",
+   "why": "valor fixo para todo nó do rótulo (fixed_default); não há campo de origem"
+  }
+ },
+ "field_mappings_in_scope": {
+  "by_provider": {
+   "aws": 167,
+   "azure": 60,
+   "gcp": 100
+  },
+  "by_special_handling": {
+   "None": 262,
+   "coalesce": 1,
+   "equal_boolean": 3,
+   "invert_boolean": 2,
+   "mapping": 29,
+   "normalize_hostname": 3,
+   "static_value": 23,
+   "to_boolean": 4
+  },
+  "by_category": {
+   "aimodels": 14,
+   "apikeys": 9,
+   "blockstorage": 9,
+   "certificates": 5,
+   "cicdpipelines": 2,
+   "computeclusters": 24,
+   "computeinstance": 17,
+   "computepods": 2,
+   "computeservices": 7,
+   "containerregistries": 9,
+   "containers": 20,
+   "cves": 5,
+   "databases": 36,
+   "dnsrecords": 7,
+   "dnszones": 4,
+   "encryptionkeys": 9,
+   "filestorage": 4,
+   "filesystemsnapshots": 1,
+   "firewalls": 6,
+   "functions": 16,
+   "groups": 3,
+   "identityproviders": 6,
+   "images": 7,
+   "loadbalancers": 18,
+   "objectstorage": 12,
+   "publicips": 3,
+   "roles": 10,
+   "secrets": 12,
+   "securityissues": 5,
+   "serviceaccounts": 4,
+   "snapshots": 14,
+   "subnets": 9,
+   "tenants": 9,
+   "useraccounts": 3,
+   "vpcs": 6
+  },
+  "by_registry": {
+   "ontology_node": 3,
+   "semantic_label": 324
+  }
+ },
+ "published_rows": {
+  "total": 328,
+  "by_provider": {
+   "aws": 167,
+   "azure": 60,
+   "gcp": 101
+  },
+  "by_semantic_relation": {
+   "close": 36,
+   "exact": 269,
+   "related": 23
+  },
+  "by_evidence_state": {
+   "STRUCTURALLY_VALID": 287,
+   "UNRESOLVED": 41
+  },
+  "subject_field_resolution": {
+   "API_FIELD": 287,
+   "FIELD_NOT_IN_SCHEMA": 1,
+   "KWARG_ONLY": 17,
+   "NO_NODE_FIELD": 23
+  }
+ },
+ "derived_rows": {
+  "total": 245,
+  "by_pair": {
+   "aws->azure": 84,
+   "aws->gcp": 103,
+   "gcp->azure": 58
+  },
+  "by_semantic_relation": {
+   "close": 6,
+   "exact": 222,
+   "related": 17
+  },
+  "by_evidence_state": {
+   "STRUCTURALLY_VALID": 213,
+   "UNRESOLVED": 32
+  },
+  "derivation": {
+   "pairs_considered": 294,
+   "skipped_fixed_value": 49,
+   "skipped_same_provider": 88,
+   "composed": 228,
+   "fallback_related": 17,
+   "empty_guard": 0,
+   "by_table_row": {
+    "close∘close": 17,
+    "close∘exact": 3,
+    "exact∘close": 3,
+    "exact∘exact": 222
+   },
+   "hub_outcomes": {
+    "UNPROVEN:K-LEGS": 245
+   }
+  }
+ },
+ "api_field_registry": {
+  "node_schemas_entries_all": 13084,
+  "node_labels_all": 1010,
+  "entries_for_cited_labels": 1666,
+  "cited_node_labels": 105,
+  "cited_labels_without_schema": []
+ },
+ "total_rows": 573,
+ "notes": [
+  "Âncoras e derivadas são de API (campos de nó do Cartography), não de Terraform: a ponte API->Terraform é do SERVICE-EVIDENCE e é avaliada no GOLD-AUDIT.",
+  "Estado de evidência máximo aqui é STRUCTURALLY_VALID (campo resolvido no registro do próprio Cartography); nenhuma linha tem testes de valor, logo o árbitro deve dar UNPROVEN às transportadoras.",
+  "Derivadas: relação pela tabela formal (compose com K-LEGS e K-DOMAIN desligados); o resultado do hub sem desligar regras vai em other.hub_outcome.",
+  "Silêncio do Cartography (campo sem mapeamento) não é negativo."
+ ]
+}
