@@ -1,0 +1,11 @@
+Bloqueio de gate: bo.contracts.validate (2026-11-02T22:28:00-03:00, America/Recife)
+
+Os gates G1 (python -I -m bo.contracts.validate commitments ...), G6 (make gate, que roda o gate_smoke antes)
+e G7 (gate_smoke) exigem o módulo bo.contracts.validate. O dono é o CONTRACTS, cujas dependências são REPO e
+SEMANTICS; SEMANTICS depende de REQUIREMENTS e ONTPAT, e ONTPAT depende de REQUIREMENTS. O validador, portanto,
+só pode existir depois deste módulo: é um ciclo de ordem no plano, não um defeito do conteúdo.
+
+Enquanto isso, gates/REQUIREMENTS.sh roda o validador do produtor (bo.requirements.validate) com o schema
+proposto em C24_proposta/ e, assim que bo.contracts.validate existir, passa a rodá-lo também, sem mudança.
+Correção sugerida ao coordenador: tirar G1 dos gates do REQUIREMENTS e pôr no CONTRACTS (validar os C24 já
+publicados) ou no SEMANTIC-REGRESSION; ou reexecutar os gates do REQUIREMENTS depois do merge do CONTRACTS.

@@ -1,0 +1,44 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "REQUIREMENTS",
+ "generated_at": "2026-11-02T22:27:22-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/REQUIREMENTS.txt",
+  "brief_sha256": "08abde05fce383046a1d51fb7979cf785cd0462060d7ec9819ad5319805a677e",
+  "params": {
+   "effort": "maximo",
+   "modo": "unlazy",
+   "onda": "1",
+   "fase": "F1"
+  },
+  "inputs": [
+   {
+    "path": "/Users/breno/doutorado/pesquisa/superficie/reports/ontologia_neutra/revisao_adversarial/R1_engenharia_ontologia.html",
+    "kind": "file",
+    "sha256": "72013f04fbc969c0b2b3f001505c65517e3f7928fa524fd1809e01bad287963e"
+   },
+   {
+    "path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/revisao_adversarial_plano/REVISAO_PLANO_v2_GPT6_CODEX.txt",
+    "kind": "file",
+    "sha256": "29215fd0eb0fabe1f4a3232958fb5020b6d8fd08f241a2e557e47bb4af8be892"
+   }
+  ],
+  "recorded_at": "2026-11-02T22:27:22-03:00"
+ },
+ "sources": [
+  {
+   "uri": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/revisao_adversarial_plano/REVISAO_PLANO_v2_GPT6_CODEX.txt",
+   "license": "interno (revisão do plano)",
+   "transformation": "casos adversariais obrigatórios (F1) e famílias de CQ (S4) reescritos em vocabulário independente; nada copiado"
+  },
+  {
+   "uri": "/Users/breno/doutorado/pesquisa/superficie/reports/ontologia_neutra/revisao_adversarial/R1_engenharia_ontologia.html",
+   "license": "interno (revisão R1)",
+   "transformation": "erros de taxonomia (M3) e armadilhas de mundo aberto e método (M5, M8) viraram compromissos negativos e requisitos; nada copiado"
+  }
+ ],
+ "notes": "requisitos, compromissos e CQs escritos antes de qualquer indução; aterramento por provedor com estado UNRESOLVED; sem dado de nuvem"
+}

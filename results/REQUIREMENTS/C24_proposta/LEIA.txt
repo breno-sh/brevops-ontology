@@ -1,0 +1,18 @@
+Proposta do produtor para o C24 1.0.0 (2026-11-02T22:28:00-03:00, America/Recife)
+
+O REQUIREMENTS é o primeiro produtor do C24 e o CONTRACTS (dono de contracts/C24_requirements.schema.json e do
+bo.contracts.validate) ainda não existe: ele depende de SEMANTICS, que depende deste módulo. Estes três JSON
+Schema (draft 2020-12, um registro por linha de JSONL) descrevem o formato que o REQUIREMENTS publica:
+
+  requirements.schema.json  bo.requirement/1   requisito (area, priority, statement, rationale, answers, consumers)
+  commitments.schema.json   bo.commitment/1    compromisso {positive|negative|unknown}, check {kind, assertion},
+                                               fixtures, expected_answer {value, why, code?}, protects, layer,
+                                               upper_axes, provider_grounding
+  cq_spec.schema.json       bo.cq_spec/1       CQ com family, question, criterion, answer_form, fixtures
+                                               {conforming, nonconforming, incomplete} e closed_world
+
+Regras que o schema não exprime e que o validador do produtor (python -I -m bo.requirements.validate) confere:
+polaridade x checagem; resposta definida exige leitura completa declarada; UNKNOWN exige leitura parcial com
+o que falta; termos de fixture só do vocabulário de requisitos (src/bo/requirements/terms.py); referências
+cruzadas (requisito, compromisso); ids únicos; conforme != não conforme. Sugestão ao CONTRACTS: adotar estes
+schemas como C24 1.0.0 e chamar estas regras como validação semântica, ou registrar emenda versionada.
