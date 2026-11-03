@@ -41,5 +41,10 @@ O QUE JÁ ESTÁ PRONTO NESTE MÓDULO (nada foi afrouxado)
   - render, no_silent_insert, executor offline, redator, testes (G1, G3 verdes na lane);
   - com o stub C26 que existe: render sai 0 (NOT_APPLICABLE) e fmt -check sai 0;
   - com os exemplos OCI: 2 planos RENDERED, fmt -check 0, terraform validate offline válido.
-  Pelo protocolo (merge só com gates verdes), a branch bo/harness-oci fica pronta e só é mergeada quando o
-  caminho do G2 existir.
+
+RESOLUÇÃO (2026-11-03T07:29-03:00)
+  O coordenador aplicou a opção B no catálogo: o G2 passou a usar $BO_REPO/contracts/stubs/C26/lowering_plan.jsonl.
+  O PROBLEMA 1 acabou. O PROBLEMA 2 continua e fica registrado como achado: com o stub atual o G2 sai 0, mas o
+  plano é NOT_APPLICABLE para o oci e o fmt -check confere só o main.tf da raiz (bloco terraform com as versões
+  fixadas). O HCL de recurso do OCI é conferido pelo G3 (no_silent_insert: 2 planos completos e 43 mutações) e pelo
+  gates/HARNESS-OCI.sh (fmt -check e terraform validate offline no oci 9.11.0). A opção A continua recomendada.
