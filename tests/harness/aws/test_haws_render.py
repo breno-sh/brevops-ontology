@@ -87,9 +87,26 @@ def test_render_is_deterministic(rendered, work):
         (out / "render_manifest.json").read_text())["plans"]]
 
 
-def test_cli_stub_without_aws_plan_exits_2(work):
+def test_cli_current_stub_renders_aws_plan_and_passes_fmt(work):
     stub = pins.repo_root() / "contracts" / "stubs" / "C26" / "lowering_plan.jsonl"
-    assert render.main([str(stub), "--out", str(work / "o")]) == 2
+    assert render.main([str(stub), "--out", str(work / "o")]) == 0
+    man = json.loads((work / "o" / "render_manifest.json").read_text())
+    assert man["plans"] and all(e["status"] == "RENDERED" for e in man["plans"])
+    assert all((work / "o" / e["file"]).exists() for e in man["plans"])
+    r = subprocess.run([shutil.which("terraform"), f"-chdir={work / 'o'}", "fmt", "-check"],
+                       capture_output=True, text=True)
+    assert r.returncode == 0, r.stdout + r.stderr
+
+
+def test_cli_synthetic_stub_without_aws_plan_exits_2(work):
+    rows = [json.loads(x) for x in PLANS.read_text().splitlines()]
+    graphs = [json.loads(x) for x in PLANS.with_name("graph_ir.jsonl").read_text().splitlines()]
+    other = [r for r in rows if r["target_provider"] != "aws"]
+    assert other
+    (work / "lowering_plan.jsonl").write_text("".join(json.dumps(r) + "\n" for r in other))
+    gids = {r["graph_id"] for r in other}
+    (work / "graph_ir.jsonl").write_text("".join(json.dumps(g) + "\n" for g in graphs if g["graph_id"] in gids))
+    assert render.main([str(work / "lowering_plan.jsonl"), "--out", str(work / "o")]) == 2
 
 
 def test_cli_missing_input_exits_2(work):

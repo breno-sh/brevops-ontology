@@ -2,7 +2,9 @@ CONTRACT_CHANGE — HARNESS-AWS
 gravado em: 2026-11-03T07:28-03:00, revisto em 2026-11-03T07:35-03:00 (America/Recife)
 dono do que muda: CONTRACTS (contracts/stubs/, C12, C26) e o coordenador (modulos.json, gate do catálogo)
 
-1. BLOQUEANTE para o gate G2 do catálogo (e, por consequência, G4 = make gate)
+1. RESOLVIDO em 2026-11-03 pela emenda 2 do CONTRACTS (513113d: plano aws no stub C26; G2 passa).
+   Texto original mantido abaixo.
+   BLOQUEANTE para o gate G2 do catálogo (e, por consequência, G4 = make gate)
    Gate (texto do catálogo de 2026-11-03T07:29-03:00, já com o caminho por contrato):
      python -I -m bo.harness.aws.render $BO_REPO/contracts/stubs/C26/lowering_plan.jsonl --out $BO_TMP/render \
        && terraform -chdir=$BO_TMP/render fmt -check
