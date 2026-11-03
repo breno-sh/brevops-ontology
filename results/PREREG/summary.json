@@ -43,12 +43,14 @@
    {
     "path": "$BO_REPO/requirements",
     "kind": "dir",
-    "sha256": "b09d2f301174f7e0cdb7c97483a7729aea19b5f5747cdd8a9e98262237d2cc98"
+    "sha256": "13ee2afbd304d714bfd7aaa532bfda3869ec78e2c4b4a075872e3024ff502666",
+    "sha256_before_plan_regen_stubpath": "b09d2f301174f7e0cdb7c97483a7729aea19b5f5747cdd8a9e98262237d2cc98"
    },
    {
     "path": "$BO_REPO/semantics",
     "kind": "dir",
-    "sha256": "3cc3529700453a0296e86afd57ccca7ba55dcf98ab7bfd19e88cc714e4103a49"
+    "sha256": "220cf3af45d104d0137cea299259bece821720d0cf69a926fb11e7e1c8fd49ba",
+    "sha256_before_plan_regen_stubpath": "3cc3529700453a0296e86afd57ccca7ba55dcf98ab7bfd19e88cc714e4103a49"
    },
    {
     "path": "$BO_REPO/lit/RELATED_WORK.html",

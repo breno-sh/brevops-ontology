@@ -22,7 +22,8 @@
    {
     "path": "$BO_DATA/downloads/crossplane",
     "kind": "dir",
-    "sha256": "24a2e5f2ef0101bb328c3e6a97bcf1849c83d82de3a68ca7cea9e18c0c9d8f2b"
+    "sha256": "6133e9dfa26fb92a4949e181f4dde5e1f26e017554ba70528d355d97d9558c5a",
+    "sha256_before_plan_regen_stubpath": "24a2e5f2ef0101bb328c3e6a97bcf1849c83d82de3a68ca7cea9e18c0c9d8f2b"
    }
   ],
   "recorded_at": "2026-11-03T01:55:31-03:00"

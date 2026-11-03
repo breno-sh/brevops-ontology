@@ -40,7 +40,8 @@
    {
     "path": "$BO_DATA/downloads/docs-google/website/docs",
     "kind": "dir",
-    "sha256": "5ab1461786fe6fd69927531f0048249e1022c55df68aa0fb506d6b06d60a0ec2"
+    "sha256": "d77b032c02292b9321eb2e1a1a89d89317131efac9fa8aed8e3909c1988adac0",
+    "sha256_before_plan_regen_stubpath": "5ab1461786fe6fd69927531f0048249e1022c55df68aa0fb506d6b06d60a0ec2"
    }
   ],
   "recorded_at": "2026-11-03T07:21:58-03:00"
