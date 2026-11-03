@@ -1,4 +1,4 @@
-CONTRACT_CHANGE do CQSRC (2026-11-03T01:50-03:00, America/Recife)
+CONTRACT_CHANGE do CQSRC (2026-11-03T01:44-03:00, America/Recife)
 
 O que está errado no que já foi mergeado
   O catálogo (modulos.json e o retrato modules/owners.json, C00 posse) dá ao CQSRC o gate

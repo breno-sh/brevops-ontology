@@ -27,7 +27,7 @@ from pathlib import Path
 from . import align, concepts, extract, fetch, sources
 
 # Hora em que método e catálogo foram fixados (America/Recife); a saída é determinística.
-AUTHORED_AT = "2026-11-03T02:10:00-03:00"
+AUTHORED_AT = "2026-11-03T01:40:00-03:00"
 
 CONTROL_COLS = ["provider", "mod", "benchmark_id", "cis_version", "is_latest", "control_id", "cis_item_id",
                 "title_item_id", "section_id", "section_title", "subsection_id", "subsection_title", "parent_id",
