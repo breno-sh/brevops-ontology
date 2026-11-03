@@ -1,0 +1,56 @@
+CONTRACT_CHANGE — SCHEMA-OCI — 2026-11-03T07:30-03:00 (America/Recife)
+
+Nenhum contrato (C01, C02, C17) está errado para o SCHEMA-OCI: atoms.jsonl (27172) e types.jsonl (1026)
+conferem no bo.contracts.validate. Os três pontos abaixo são de FERRAMENTA e de CRITÉRIO DE GATE, registrados
+aqui porque é o canal que o driver lê. Nenhum comando de gate foi trocado ou afrouxado.
+
+1. tools/privacy_lint.py (dono: REPO) — falso positivo que reprova o G7 (e, por consequência, o G4)
+   Fato: o C01 grava em tf_type o tipo cty do atributo; um objeto aninhado com atributo chamado password sai
+   como ["object", {<password>: <string>, ...}] (aspas omitidas aqui de propósito, para este arquivo não
+   reprovar no mesmo lint). A regra secret_assignment lê a chave password seguida do NOME do tipo cty string
+   como segredo atribuído: 4 achados, linhas 10395 e 10421 do atoms.jsonl, os 4 com o valor literal string
+   (6 letras, o mínimo da regra), sem valor nenhum de segredo. Não há como corrigir no SCHEMA-OCI sem mudar
+   o C01 ou a serialização da biblioteca, o que seria ajustar o dado para passar no lint.
+   Correção proposta (testada numa cópia em $BO_TMP: privacy_lint --selftest 43/43; --strict em
+   $BO_DATA/SCHEMA-OCI sai 0 achado; um valor de 10 caracteres e um de 8 que começa com string, atribuídos a
+   password, continuam pegos): só os nomes de tipo cty exatos (string, number, bool, dynamic) saem da regra.
+
+--- a/src/bo/repo/privacy.py	2026-11-03 07:19:49
++++ b/src/bo/repo/privacy.py	2026-11-03 07:27:36
+@@ -39,7 +39,7 @@
+     ("secret_jwt", re.compile(r"\beyJ[A-Za-z0-9_-]{10,}\.eyJ[A-Za-z0-9_-]{10,}\.")),
+     ("secret_assignment", re.compile(
+         r"(?i)\b(aws_secret_access_key|secret_access_key|client_secret|password|passwd|api[_-]?key|"
+-        r"access[_-]?token|auth[_-]?token|private_key|sas_token)\b[\"']?\s*[:=]\s*+[\"'](?!REDACTED|WITHHELD|<|\$\{)"
++        r"access[_-]?token|auth[_-]?token|private_key|sas_token)\b[\"']?\s*[:=]\s*+[\"'](?!REDACTED|WITHHELD|<|\$\{|(?:string|number|bool|dynamic)[\"'])"
+         r"[^\"'\s]{6,}[\"']")),
+     ("secret_env_line", re.compile(r"^\s*(?:export\s+)?[A-Z0-9_]*(?:SECRET|PASSWORD|TOKEN|API_KEY|ACCESS_KEY)[A-Z0-9_]*="
+                                    r"(?!\s*$|[\"']?\$|[\"']?REDACTED|[\"']?WITHHELD)\S{6,}")),
+
+   Os outros SCHEMA-* vão bater no mesmo ponto (aws/google/azurerm também têm atributos aninhados password).
+
+2. bo.schema.crosscheck (dono: SCHEMALIB) — o critério "nº de tipos = índice do Registry" NÃO fecha no oci 9.11.0
+   Medido: 1026 tipos, 1014 páginas resources/hcl, 997 iguais, 4 aliases de bloco idêntico explicados pela
+   biblioteca, 25 tipos sem página, 17 páginas sem tipo -> FAIL. No oci 9.1.0 (SCHEMALIB) eram 22 e 15: os 22 e
+   os 15 persistem todos; novos: 3 tipos (oci_data_safe_crypto_assessment_management e os dois
+   oci_oci_product_catalog_*) e 2 páginas. É defeito estável da documentação do provider, não do schema.
+   Classificação desta análise ($BO_DATA/SCHEMA-OCI/crosscheck_classificacao.json, título '# ...' lido de cada
+   página da tag v9.11.0; não muda o veredito):
+     7 pares página<->tipo com slug divergente (o título da página nomeia o tipo sem página;
+       ex.: datascience_data_science_private_endpoint documenta oci_datascience_private_endpoint);
+     7 páginas de data source publicadas em resources ('# Data Source: oci_cloud_guard_*');
+     2 páginas de tipo que não existe no schema da versão; 1 página sem título;
+     18 tipos sem nenhuma documentação (ex.: oci_core_default_route_table, oci_datascience_model_artifact_export).
+   Mesmo com as duas causas mecânicas novas que a classificação sugere (título da página; data source em r/),
+   sobram 18 tipos e 3 páginas: o critério de igualdade não fecha no oci por construção. Decisão de plano
+   (trocar o critério para "toda diferença classificada" ou aceitar o ABANDON), não do SCHEMA-OCI.
+
+3. (registro, sem mudança) bo.schema não emite o write_only do C01 2.1.0; o SCHEMA-OCI acrescenta o campo
+   numa passada própria (bo.schema_oci.atoms). No oci 9.11.0 há 0 atributos write_only e 0 nested_type, então
+   o atoms.jsonl sai byte a byte igual ao da biblioteca.
+
+4. (registro, sem mudança) plugin_cache/: o binário assinado (269.524.754 bytes) NÃO é copiado para
+   $BO_DATA/SCHEMA-OCI: passa do TEXT_LIMIT de 50 MB do privacy_lint --strict e é download (regra:
+   $BO_DATA/downloads/<fonte>/). Ele mora no cache de plugin padrão da bo.schema.extract e é fixado por sha256
+   no plugin_cache/provider.json e no MANIFEST.sha256; plugin_cache/ guarda lock (h1 + zh), terraformrc
+   (filesystem_mirror) e README. O terraform validate offline com ele foi provado (bo.schema_oci.offline).

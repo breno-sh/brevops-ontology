@@ -1,0 +1,87 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "SCHEMA-OCI",
+ "generated_at": "2026-11-03T07:30:38-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/SCHEMA-OCI.txt",
+  "brief_sha256": "7a393b9f64ecbb1a2ff9f95f57cf335e7e2bef18f35243ebac301ca65fb4aacd",
+  "params": {
+   "provider": "oci",
+   "provider_version": "9.11.0",
+   "terraform": "1.15.8",
+   "platform": "darwin_arm64",
+   "role": "extractor",
+   "versao_fonte": "universe/pins.json",
+   "ancora_gpg": "7F1079B5E6547DBFCCEFB9A41533A49284137CEB"
+  },
+  "inputs": [
+   {
+    "path": "$BO_REPO/universe/pins.json",
+    "kind": "file",
+    "sha256": "594a4e878ac489b3ed97cdd6344b9945a8fd3a5d22ae4d6f4bfebd264decfe3d"
+   },
+   {
+    "path": "$BO_DATA/downloads/prefetch/oci/9.11.0/terraform-provider-oci_9.11.0_SHA256SUMS",
+    "kind": "file",
+    "sha256": "02b240477f7ac618ea249461b8bf8f4b0be0e2d43fd78a16144b858313633956"
+   },
+   {
+    "path": "$BO_DATA/downloads/prefetch/oci/9.11.0/terraform-provider-oci_9.11.0_SHA256SUMS.sig",
+    "kind": "file",
+    "sha256": "4358514ad78c33191401b187aa85b33993c2847ed4d4f20c61eedb14e48ace87"
+   },
+   {
+    "path": "$BO_DATA/downloads/prefetch/oci/9.11.0/registry-download-darwin_arm64.json",
+    "kind": "file",
+    "sha256": "c66f46a8ee2ce12207e11d71b8286ecd8d795bd9817b60cf1374cea14ad935a3"
+   },
+   {
+    "path": "$BO_DATA/downloads/prefetch/oci/9.11.0/terraform.lock.hcl",
+    "kind": "file",
+    "sha256": "f4a98cb51699b6afd1cbc37a78aad899af0cfc94323bfb6c9265522ba45afda6"
+   },
+   {
+    "path": "$BO_DATA/downloads/prefetch/oci/9.11.0/providers-schema.json",
+    "kind": "file",
+    "sha256": "ae0101e5473f7adfd65993dfc335c99285df2bc88ed97fe74c712fb704f55237"
+   },
+   {
+    "path": "$BO_DATA/downloads/prefetch/oci/9.11.0/docs/r",
+    "kind": "dir",
+    "sha256": "8a8cf59ad40e430229923bde8b69a4c9625bb078087162b02ea3ba776aaf7ef1"
+   },
+   {
+    "path": "$BO_DATA/downloads/registry-docs/oci-9.11.0/index.json",
+    "kind": "file",
+    "sha256": "dc00947f53e7668d749dacaef8ad78e19d026f5a51d9e4a1392dd6614ed2cce2"
+   },
+   {
+    "path": "$BO_DATA/downloads/terraform-provider-oci-9.11.0/terraform-provider-oci_9.11.0_darwin_arm64.zip",
+    "kind": "file",
+    "sha256": "6224e4c94ffd0e6db2f35a7b3183c417305b32497538418576673096a1214868"
+   }
+  ],
+  "recorded_at": "2026-11-03T07:30:38-03:00"
+ },
+ "sources": [
+  {
+   "uri": "https://github.com/oracle/terraform-provider-oci/releases/tag/v9.11.0",
+   "license": "MPL-2.0",
+   "transformation": "zip assinado conferido (GPG + SHA256SUMS + h1); binário executado em sandbox sem credenciais só para providers schema -json e validate; schema -> átomos C01 e tipos C02 pela bo.schema"
+  },
+  {
+   "uri": "https://registry.terraform.io/v1/providers/oracle/oci/9.11.0",
+   "license": "Terraform Registry (metadados públicos)",
+   "transformation": "índice de documentação lido como JSON para o crosscheck"
+  },
+  {
+   "uri": "https://github.com/oracle/terraform-provider-oci/tree/v9.11.0/website/docs/r",
+   "license": "MPL-2.0",
+   "transformation": "título de cada página lido como texto para classificar as diferenças do crosscheck"
+  }
+ ],
+ "notes": "Gates G3 (crosscheck) e G7 (privacy_lint) reprovam por achado registrado em results/SCHEMA-OCI/CONTRACT_CHANGE.txt; G4 reprova por conter os dois. Nada afrouxado."
+}
