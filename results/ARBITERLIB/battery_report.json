@@ -1,0 +1,608 @@
+{
+ "ambiguous_realizations": [
+  {
+   "claims": [
+    "X7-A",
+    "X7-B"
+   ],
+   "detail": "pa:x7.encryption tem duas realizações em pb (X7-A, X7-B) sem prova de exclusividade (interseção SAT)",
+   "rule": "ARB-REAL-MULTI"
+  },
+  {
+   "claims": [
+    "X7B-ANY",
+    "X7B-STD"
+   ],
+   "detail": "pa:x7b.mode tem duas realizações em pb (X7B-ANY, X7B-STD) sem prova de exclusividade (interseção SAT)",
+   "rule": "ARB-REAL-MULTI"
+  }
+ ],
+ "arbiter_sha256": "818b65a6b4d8be52f937f69a3daaa1d1631920a15598ac50c7926a1596128ce6",
+ "by_domain": {
+  "?": {
+   "AMBIGUOUS": 2,
+   "CONTESTED": 16,
+   "OK": 31,
+   "REFUTED_BY_RULE": 17
+  }
+ },
+ "by_rule": {
+  "A-EXCL": 2,
+  "ARB-ALT-MUTUAL": 2,
+  "ARB-ATOM-TYPE": 4,
+  "ARB-G-CONSIST": 2,
+  "ARB-G-DUP": 2,
+  "ARB-G-EXEC": 3,
+  "ARB-K4-REL": 3,
+  "ARB-K4-VALUE": 3,
+  "ARB-OCC-ID": 1,
+  "ARB-PAIR-REL": 2,
+  "ARB-PAIR-VALUE": 4,
+  "ARB-PROJ-DECL": 2,
+  "ARB-REAL-MULTI": 4,
+  "ARB-VERSION": 2,
+  "G-ARITY": 1,
+  "G-OCC": 1,
+  "G-VARS": 1,
+  "P-OVERLAP": 2,
+  "SKOS-DISJ": 2
+ },
+ "declaration_defects": [
+  {
+   "claims": [
+    "X6B-1",
+    "X6B-2"
+   ],
+   "detail": "pa:x6b.field serve a 2 conceitos e 2 uso(s) não declaram projeção",
+   "rule": "ARB-PROJ-DECL"
+  },
+  {
+   "claims": [
+    "X6-LABEL",
+    "X6-NAME"
+   ],
+   "detail": "entre alegações: ['PRJ-X6-LABEL'] e ['PRJ-X6-NAME'] leem ['metric'] de pa:x6.alarm.query sem sobreposição declarada",
+   "rule": "P-OVERLAP"
+  },
+  {
+   "claims": [
+    "X7B-ANY",
+    "X7B-STD"
+   ],
+   "detail": "exclusividade declarada sem prova (guardas se cruzam)",
+   "rule": "A-EXCL"
+  },
+  {
+   "claims": [
+    "X7B-ANY",
+    "X7B-STD"
+   ],
+   "detail": "exclusividade declarada sem prova (guardas se cruzam)",
+   "rule": "A-EXCL"
+  },
+  {
+   "claims": [
+    "X7C-1",
+    "X7C-2"
+   ],
+   "detail": "X7C-2 não lista X7C-1 de volta",
+   "rule": "ARB-ALT-MUTUAL"
+  },
+  {
+   "claims": [
+    "X7B-ANY",
+    "X7B-STD"
+   ],
+   "detail": "pa:x7b.mode: exclusividade declarada, mas as guardas de X7B-ANY e X7B-STD se cruzam",
+   "rule": "A-EXCL"
+  }
+ ],
+ "duplicates": [
+  {
+   "claims": [
+    "DUP-1",
+    "DUP-2"
+   ],
+   "pair": [
+    "pa:dup.size",
+    "pb:dup.size"
+   ]
+  }
+ ],
+ "generated_at": "2026-11-03T17:50:00-03:00",
+ "genuine_conflicts": [
+  {
+   "claims": [
+    "X1-BROAD",
+    "X1-EXACT"
+   ],
+   "detail": "['broad', 'exact'] no mesmo par com guardas compatíveis (SAT)",
+   "rule": "SKOS-DISJ"
+  },
+  {
+   "claims": [
+    "X4-AB",
+    "X4-CB"
+   ],
+   "detail": "pb:x4.size: assinatura diferente em X4-AB e X4-CB",
+   "rule": "ARB-ATOM-TYPE"
+  },
+  {
+   "claims": [
+    "X4R-1",
+    "X4R-2"
+   ],
+   "detail": "pb:x4r.n: domínio diferente em X4R-1 e X4R-2",
+   "rule": "ARB-ATOM-TYPE"
+  },
+  {
+   "claims": [
+    "X5-1",
+    "X5-2"
+   ],
+   "detail": "entrada 'a': X5-1 dá 'p', X5-2 dá 'q' (2 ponto(s))",
+   "rule": "ARB-PAIR-VALUE"
+  },
+  {
+   "claims": [
+    "X5R-B",
+    "X5R-N"
+   ],
+   "detail": "X5R-B broad e X5R-N narrow no mesmo par e sentido (inclusões estritas opostas)",
+   "rule": "ARB-PAIR-REL"
+  },
+  {
+   "claims": [
+    "X5R-B",
+    "X5R-N"
+   ],
+   "detail": "entrada 's2': X5R-B dá 'p', X5R-N dá 'q' (1 ponto(s))",
+   "rule": "ARB-PAIR-VALUE"
+  },
+  {
+   "claims": [
+    "X2-AB",
+    "X2-AC",
+    "X2-BC"
+   ],
+   "composition_used": [
+    "X2-AB",
+    "X2-BC"
+   ],
+   "detail": "entrada 't1': composto dá 'v1', X2-AC dá 'v2' (2 ponto(s))",
+   "rule": "ARB-K4-VALUE"
+  },
+  {
+   "claims": [
+    "X2-AB",
+    "X2-AC",
+    "X2-BC"
+   ],
+   "composition_used": [
+    "X2-AC",
+    "X2-BC~inv"
+   ],
+   "detail": "entrada 't1': composto dá 'u2', X2-AB dá 'u1' (2 ponto(s))",
+   "rule": "ARB-K4-VALUE"
+  },
+  {
+   "claims": [
+    "X2-AB",
+    "X2-AC",
+    "X2-BC"
+   ],
+   "composition_used": [
+    "X2-BC",
+    "X2-AC~inv"
+   ],
+   "detail": "entrada 'u1': composto dá 't2', X2-AB dá 't1' (2 ponto(s))",
+   "rule": "ARB-K4-VALUE"
+  },
+  {
+   "claims": [
+    "X3-AB",
+    "X3-AC",
+    "X3-BC"
+   ],
+   "composition_used": [
+    "X3-AB",
+    "X3-BC"
+   ],
+   "detail": "composto exact (X3-AB∘X3-BC) × direta broad (X3-AC)",
+   "rule": "ARB-K4-REL"
+  },
+  {
+   "claims": [
+    "X3-AB",
+    "X3-AC",
+    "X3-BC"
+   ],
+   "composition_used": [
+    "X3-AC",
+    "X3-BC~inv"
+   ],
+   "detail": "composto broad (X3-AC∘X3-BC~inv) × direta exact (X3-AB)",
+   "rule": "ARB-K4-REL"
+  },
+  {
+   "claims": [
+    "X3-AB",
+    "X3-AC",
+    "X3-BC"
+   ],
+   "composition_used": [
+    "X3-BC",
+    "X3-AC~inv"
+   ],
+   "detail": "composto narrow (X3-BC∘X3-AC~inv) × direta exact (X3-AB)",
+   "rule": "ARB-K4-REL"
+  },
+  {
+   "claims": [
+    "X2-AB",
+    "X2-AC",
+    "X2-BC"
+   ],
+   "composition_used": [
+    "X2-AB~inv",
+    "X2-AC"
+   ],
+   "detail": "entrada 'u1': composto dá 'v2', X2-BC dá 'v1' (2 ponto(s))",
+   "rule": "ARB-K4-VALUE"
+  },
+  {
+   "claims": [
+    "X2-AB",
+    "X2-AC",
+    "X2-BC"
+   ],
+   "composition_used": [
+    "X2-AC~inv",
+    "X2-AB"
+   ],
+   "detail": "entrada 'v2': composto dá 'u1', X2-BC dá 'u2' (2 ponto(s))",
+   "rule": "ARB-K4-VALUE"
+  },
+  {
+   "claims": [
+    "X2-AB",
+    "X2-AC",
+    "X2-BC"
+   ],
+   "composition_used": [
+    "X2-BC~inv",
+    "X2-AB~inv"
+   ],
+   "detail": "entrada 'v1': composto dá 't1', X2-AC dá 't2' (2 ponto(s))",
+   "rule": "ARB-K4-VALUE"
+  },
+  {
+   "claims": [
+    "X3-AB",
+    "X3-AC",
+    "X3-BC"
+   ],
+   "composition_used": [
+    "X3-AB~inv",
+    "X3-AC"
+   ],
+   "detail": "composto broad (X3-AB~inv∘X3-AC) × direta exact (X3-BC)",
+   "rule": "ARB-K4-REL"
+  },
+  {
+   "claims": [
+    "X3-AB",
+    "X3-AC",
+    "X3-BC"
+   ],
+   "composition_used": [
+    "X3-AC~inv",
+    "X3-AB"
+   ],
+   "detail": "composto narrow (X3-AC~inv∘X3-AB) × direta exact (X3-BC)",
+   "rule": "ARB-K4-REL"
+  },
+  {
+   "claims": [
+    "X3-AB",
+    "X3-AC",
+    "X3-BC"
+   ],
+   "composition_used": [
+    "X3-BC~inv",
+    "X3-AB~inv"
+   ],
+   "detail": "composto exact (X3-BC~inv∘X3-AB~inv) × direta narrow (X3-AC)",
+   "rule": "ARB-K4-REL"
+  }
+ ],
+ "inputs": [
+  "battery:mundo"
+ ],
+ "k4": {
+  "attempts": 86,
+  "legs": 46,
+  "outcomes": {
+   "COMPOSED": 74,
+   "UNPROVEN": 12
+  }
+ },
+ "module": "ARBITERLIB",
+ "n_current": 66,
+ "n_lines": 66,
+ "n_superseded": 0,
+ "planted": {
+  "cases": [
+   {
+    "case": "k4_exact_consistente",
+    "expect": {
+     "K4-AB": "OK",
+     "K4-AC": "OK",
+     "K4-AD": "OK",
+     "K4-BC": "OK",
+     "K4-BD": "OK",
+     "K4-CD": "OK"
+    }
+   },
+   {
+    "case": "k4_broad_consistente",
+    "expect": {
+     "K4B-AB": "OK",
+     "K4B-AC": "OK",
+     "K4B-BC": "OK"
+    }
+   },
+   {
+    "case": "grupos_1N_N1_NM_ocorrencias",
+    "expect": {
+     "G-1N": "OK",
+     "G-N1": "OK",
+     "G-NM": "OK",
+     "OCC-DESC": "OK"
+    }
+   },
+   {
+    "case": "campo_varios_conceitos",
+    "expect": {
+     "MC-DLQ": "OK",
+     "MC-MAXRC": "OK",
+     "MC-METRIC": "OK",
+     "MC-OP": "OK",
+     "MC-PD-LABEL": "OK",
+     "MC-PD-NAME": "OK",
+     "MC-THR": "OK"
+    }
+   },
+   {
+    "case": "alternativas_exclusivas",
+    "expect": {
+     "ALT-PREM": "OK",
+     "ALT-STD": "OK"
+    }
+   },
+   {
+    "case": "close_nao_compoe",
+    "expect": {
+     "CC-AB": "OK",
+     "CC-AC": "OK",
+     "CC-BC": "OK"
+    }
+   },
+   {
+    "case": "mesmo_par_guardas_exclusivas",
+    "expect": {
+     "PAIRG-PREM": "OK",
+     "PAIRG-STD": "OK"
+    }
+   },
+   {
+    "case": "fixo_e_duplicata",
+    "expect": {
+     "DUP-1": "OK",
+     "DUP-2": "OK",
+     "FIX-ENC": "OK"
+    }
+   },
+   {
+    "case": "skos_disj",
+    "expect": {
+     "X1-BROAD": "CONTESTED",
+     "X1-EXACT": "CONTESTED"
+    }
+   },
+   {
+    "case": "k4_valor",
+    "expect": {
+     "X2-AB": "CONTESTED",
+     "X2-AC": "CONTESTED",
+     "X2-BC": "CONTESTED"
+    }
+   },
+   {
+    "case": "k4_relacao",
+    "expect": {
+     "X3-AB": "CONTESTED",
+     "X3-AC": "CONTESTED",
+     "X3-BC": "CONTESTED"
+    }
+   },
+   {
+    "case": "tipo_do_atomo",
+    "expect": {
+     "X4-AB": "CONTESTED",
+     "X4-CB": "CONTESTED"
+    }
+   },
+   {
+    "case": "dominio_do_atomo",
+    "expect": {
+     "X4R-1": "CONTESTED",
+     "X4R-2": "CONTESTED"
+    }
+   },
+   {
+    "case": "mesmo_par_valor",
+    "expect": {
+     "X5-1": "CONTESTED",
+     "X5-2": "CONTESTED"
+    }
+   },
+   {
+    "case": "mesmo_par_inclusoes_opostas",
+    "expect": {
+     "X5R-B": "CONTESTED",
+     "X5R-N": "CONTESTED"
+    }
+   },
+   {
+    "case": "sobreposicao_nao_declarada",
+    "expect": {
+     "X6-LABEL": "REFUTED_BY_RULE",
+     "X6-NAME": "REFUTED_BY_RULE"
+    }
+   },
+   {
+    "case": "varios_conceitos_sem_projecao",
+    "expect": {
+     "X6B-1": "REFUTED_BY_RULE",
+     "X6B-2": "REFUTED_BY_RULE"
+    }
+   },
+   {
+    "case": "realizacoes_ambiguas",
+    "expect": {
+     "X7-A": "AMBIGUOUS",
+     "X7-B": "AMBIGUOUS"
+    }
+   },
+   {
+    "case": "exclusividade_sem_prova",
+    "expect": {
+     "X7B-ANY": "REFUTED_BY_RULE",
+     "X7B-STD": "REFUTED_BY_RULE"
+    }
+   },
+   {
+    "case": "alternativa_nao_mutua",
+    "expect": {
+     "X7C-1": "REFUTED_BY_RULE"
+    }
+   },
+   {
+    "case": "grupos_mal_formados",
+    "expect": {
+     "X8-ARITY": "REFUTED_BY_RULE",
+     "X8-DUPOUT": "REFUTED_BY_RULE",
+     "X8-OCC": "REFUTED_BY_RULE",
+     "X8-UNBOUND": "REFUTED_BY_RULE"
+    }
+   },
+   {
+    "case": "grupo_inconsistente",
+    "expect": {
+     "X9-1": "REFUTED_BY_RULE",
+     "X9-2": "REFUTED_BY_RULE"
+    }
+   },
+   {
+    "case": "ocorrencia_nao_identificada",
+    "expect": {
+     "X10-KEYED": "OK",
+     "X10-PLAIN": "REFUTED_BY_RULE"
+    }
+   },
+   {
+    "case": "versao_bifurcada",
+    "expect": {
+     "X11": "REFUTED_BY_RULE"
+    }
+   }
+  ],
+  "met": 64,
+  "n": 64
+ },
+ "schema": "bo.arbiter_report/1",
+ "timezone": "America/Recife",
+ "undecided": [],
+ "unglossed_by_domain": {
+  "?": 48
+ },
+ "unproven_by_domain": {
+  "?": 0
+ },
+ "valid_structure": {
+  "alternatives_proven_exclusive": [
+   "ALT-PREM",
+   "ALT-STD"
+  ],
+  "block_occurrence_fields": [
+   "pa:gnm.rule.description",
+   "pa:gnm.rule.from_port",
+   "pa:gnm.rule.protocol",
+   "pa:gnm.rule.to_port",
+   "pa:x10.rule.cidr",
+   "pb:gnm.allow.description",
+   "pb:gnm.allow.ports",
+   "pb:gnm.allow.protocol"
+  ],
+  "compositions_consistent": 62,
+  "fields_with_several_concepts": [
+   {
+    "concepts": [
+     "concept:alarm_metric",
+     "concept:alarm_operator",
+     "concept:alarm_threshold",
+     "concept:metric_label"
+    ],
+    "field": "pa:mc.alarm.query"
+   },
+   {
+    "concepts": [
+     "concept:dead_letter_target",
+     "concept:max_receive_count"
+    ],
+    "field": "pa:mc.queue.redrive"
+   },
+   {
+    "concepts": [
+     "concept:alarm_metric",
+     "concept:metric_label"
+    ],
+    "field": "pa:x6.alarm.query"
+   }
+  ],
+  "groups_by_cardinality": {
+   "1:N": 1,
+   "N:1": 7,
+   "N:M": 1
+  },
+  "groups_crossing_occurrences": [
+   "G-N1",
+   "X9-2"
+  ],
+  "projected_claims": [
+   "MC-DLQ",
+   "MC-MAXRC",
+   "MC-METRIC",
+   "MC-OP",
+   "MC-PD-LABEL",
+   "MC-PD-NAME",
+   "MC-THR",
+   "OCC-DESC",
+   "X10-KEYED",
+   "X6-LABEL",
+   "X6-NAME"
+  ]
+ },
+ "verdicts": {
+  "AMBIGUOUS": 2,
+  "CONTESTED": 16,
+  "OK": 31,
+  "REFUTED_BY_RULE": 17
+ },
+ "verdicts_composites": {
+  "CONTESTED": 12,
+  "OK": 62,
+  "UNPROVEN": 12
+ }
+}

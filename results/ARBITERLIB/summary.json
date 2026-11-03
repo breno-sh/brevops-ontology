@@ -1,0 +1,48 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "ARBITERLIB",
+ "generated_at": "2026-11-03T17:49:54-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/ARBITERLIB.txt",
+  "brief_sha256": "dd1ddac22884c2dc07f631d875f9a6cea7e8c5ffb1ee46dd85cfe0158cd66496",
+  "params": {
+   "effort_h": "6",
+   "semantics_commit": "f48865f",
+   "base": "3c2141f"
+  },
+  "inputs": [
+   {
+    "path": "$BO_REPO/contracts",
+    "kind": "dir",
+    "sha256": "999f2a2f0445b22ddbda929a15ec8e7fe029ef775ed4f3db44e3d0756eca7b31"
+   },
+   {
+    "path": "$BO_REPO/transforms/transforms.yaml",
+    "kind": "file",
+    "sha256": "93a32350718f56fa8a832943083bfbe47f45681c5ac9dd92252d6564d0540921"
+   },
+   {
+    "path": "$BO_REPO/prereg/PREREG.html",
+    "kind": "file",
+    "sha256": "6eeb9b18a5d9512db88fe0c263413b2a5ff3a0a29259fe315a7d2c4a05a65e73"
+   },
+   {
+    "path": "$BO_REPO/semantics/composition_table.json",
+    "kind": "file",
+    "sha256": "f279876043e13a1d1bcc2e0f645aa761f758681bf7fde1beff3a915c6549c80f"
+   }
+  ],
+  "recorded_at": "2026-11-03T17:49:54-03:00"
+ },
+ "sources": [
+  {
+   "uri": "https://www.w3.org/TR/skos-reference/",
+   "license": "W3C Document License",
+   "transformation": "direção SKOS e disjunção exactMatch/broadMatch/relatedMatch (S46) aplicadas como regra"
+  }
+ ],
+ "notes": "árbitro mecânico v3 (C21); bateria sintética, sem dado real"
+}
