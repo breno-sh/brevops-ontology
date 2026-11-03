@@ -1,0 +1,59 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "DOCS-AWS",
+ "generated_at": "2026-11-03T07:30:11-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/DOCS-AWS.txt",
+  "brief_sha256": "e1a81884f9921571356ee7cd4094dcf9891b28af36ae7d22276d72f795a009d4",
+  "params": {
+   "provider": "aws",
+   "provider_version": "6.71.0",
+   "tag": "v6.71.0",
+   "commit": "d5f4cd8a1d0a8ab528685adba1dfbd4595368e9d",
+   "docs_dirs": "r,d",
+   "leitura": "texto-linha-a-linha-sem-render",
+   "extracao": "parser+regex",
+   "interpretacao": "nenhuma",
+   "resolucao": "R1-R4",
+   "shared_blocks": "menor-profundidade+mapa",
+   "as_of_default": "2026-10-28",
+   "cloud": "none",
+   "network": "github-api-tree-da-tag",
+   "execution_of_download": "none",
+   "modo": "unlazy",
+   "onda": "6",
+   "fase": "F1",
+   "generator": "python -I -m bo.docs_aws.build",
+   "coverage": "python -I -m bo.docs.coverage DOCS-AWS"
+  },
+  "inputs": [
+   {
+    "path": "$BO_REPO/universe/pins.json",
+    "kind": "file",
+    "sha256": "594a4e878ac489b3ed97cdd6344b9945a8fd3a5d22ae4d6f4bfebd264decfe3d"
+   },
+   {
+    "path": "$BO_DATA/downloads/prefetch/aws/6.71.0/MANIFEST.json",
+    "kind": "file",
+    "sha256": "f060d45ed2640966363a245a9fc8fa105fcc3475e82b6220b90c5652de0c0826"
+   }
+  ],
+  "recorded_at": "2026-11-03T07:30:11-03:00"
+ },
+ "sources": [
+  {
+   "uri": "https://github.com/hashicorp/terraform-provider-aws/tree/v6.71.0/website/docs",
+   "license": "MPL-2.0",
+   "transformation": "markdown lido como texto: item de argumento/atributo -> fato C03 por átomo com sentença literal e arquivo:linha; nada copiado além das sentenças citadas"
+  },
+  {
+   "uri": "registry.terraform.io/hashicorp/aws 6.71.0 providers schema -json (pré-busca, sha256 do pin)",
+   "license": "MPL-2.0",
+   "transformation": "atomizado por bo.schema.core para dar o atom_id"
+  }
+ ],
+ "notes": "Fatos de documentação do aws 6.71.0. Números em results/DOCS-AWS/coverage.json; auditoria manual em audit_manual.json (rodada oficial: 59/60 corretos, Wilson 95% 91,1–99,7%; recall não medido). Achados: ForceNew aparece em só 0,65% dos átomos (o schema JSON não o expõe; a doc o declara pouco); 56% dos átomos têm descrição, e o que falta concentra-se em quicksight (37 mil átomos) e wafv2; 35 mil átomos de blocos repetidos estão só no shared_block_map.jsonl (ver CONTRACT_CHANGE.txt, não bloqueante); 6 tipos aws_alb_* são apelidos documentados nas páginas aws_lb_*; 1.042 itens da doc não resolvem num átomo (unresolved.jsonl). Sem modelo na extração (evidence_level só published/derived)."
+}

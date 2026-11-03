@@ -1,0 +1,824 @@
+{
+ "contract": "C15",
+ "contract_version": "3.0.0",
+ "data": {
+  "atoms_configurable": 108266,
+  "atoms_only_via_shared_map": 35242,
+  "atoms_total": 112893,
+  "atoms_with_published": {
+   "allowed_values": 2122,
+   "conflicts_with": 429,
+   "default": 4945,
+   "deprecation": 69,
+   "description": 25169,
+   "forces_replacement": 711,
+   "format": 3265,
+   "range": 803,
+   "required_when": 303,
+   "unit": 670
+  },
+  "atoms_with_stated": {
+   "allowed_values": 24740,
+   "conflicts_with": 478,
+   "default": 7629,
+   "deprecation": 69,
+   "description": 63066,
+   "forces_replacement": 729,
+   "format": 8215,
+   "range": 1796,
+   "required_when": 402,
+   "unit": 1837
+  },
+  "atoms_with_stated_direct": {
+   "allowed_values": 2628,
+   "conflicts_with": 464,
+   "default": 5160,
+   "deprecation": 69,
+   "description": 27826,
+   "forces_replacement": 729,
+   "format": 3599,
+   "range": 905,
+   "required_when": 345,
+   "unit": 812
+  },
+  "facts_by_kind_status_level": {
+   "allowed_values|stated|derived": 542,
+   "allowed_values|stated|published": 2123,
+   "allowed_values|unknown|derived": 46,
+   "allowed_values|unknown|published": 156,
+   "conflicts_with|stated|derived": 87,
+   "conflicts_with|stated|published": 429,
+   "default|stated|derived": 276,
+   "default|stated|published": 4955,
+   "default|unknown|derived": 2,
+   "default|unknown|published": 17,
+   "deprecation|stated|published": 69,
+   "description|stated|derived": 3159,
+   "description|stated|published": 25461,
+   "description|unknown|derived": 49827,
+   "forces_replacement|stated|derived": 20,
+   "forces_replacement|stated|published": 711,
+   "format|stated|derived": 425,
+   "format|stated|published": 3337,
+   "range|stated|derived": 102,
+   "range|stated|published": 833,
+   "range|unknown|published": 5,
+   "required_when|stated|derived": 42,
+   "required_when|stated|published": 303,
+   "unit|stated|derived": 144,
+   "unit|stated|published": 674,
+   "unit|unknown|published": 37
+  },
+  "facts_total": 93782,
+  "parse": {
+   "alias_types": 6,
+   "data_source_docs_not_in_schema": [],
+   "doc_pages_not_in_schema_r": [],
+   "items_total_r": 36500,
+   "pages_d": 684,
+   "pages_r": 1740,
+   "redactions": {
+    "arn": 101,
+    "doze_digitos": 11
+   },
+   "resolution_rules": {
+    "R1": 231,
+    "R2": 16373,
+    "R3": 10620,
+    "R3-shared": 1017,
+    "R4-ctx": 36,
+    "R4-top": 55,
+    "R4-top-ctx": 34,
+    "R4-unique": 272,
+    "ambiguous": 256,
+    "block": 5670,
+    "nested_child": 499,
+    "not_in_schema": 287,
+    "value_list_child": 52
+   },
+   "resources_without_doc": 0,
+   "schema_data_sources": 687,
+   "schema_resources": 1746,
+   "shared_map": {
+    "items": 471,
+    "repeat_atoms": 35242
+   },
+   "unresolved_by_reason": {
+    "ambiguous": 256,
+    "nested_child": 499,
+    "not_in_schema": 287
+   },
+   "unused_flag_tokens_top": {
+    "**Deprecated** Use `x` instead": 2,
+    "Boolean": 17,
+    "Exactly one of `x` or `x` must be set": 2,
+    "Force new": 2,
+    "Forces new": 5,
+    "May be required": 6,
+    "Memcached only": 4,
+    "Number": 11,
+    "Optional when `x` is `x`": 4,
+    "Optional; Default: On-demand price": 3,
+    "Redis only": 9,
+    "String": 11,
+    "VPC only": 5,
+    "`x`": 6,
+    "at least one of `x` or `x`": 11,
+    "boolean": 5,
+    "but required if domain_fqdn is provided": 3,
+    "exactly one of `x`": 3,
+    "if `x` is `x`": 2,
+    "invalid otherwise": 6,
+    "one of `x` or `x`": 2,
+    "or `x` is provided": 2,
+    "regional NAT gateways only": 5,
+    "use `x` instead": 4,
+    "zonal NAT gateways only": 8
+   },
+   "value_list_children": 52
+  },
+  "provider": "aws",
+  "provider_version": "6.71.0",
+  "tag": "v6.71.0",
+  "types_most_atoms_without_description": {
+   "aws_inspector2_filter": 105,
+   "aws_iot_topic_rule": 77,
+   "aws_lexv2models_slot": 164,
+   "aws_quicksight_analysis": 12410,
+   "aws_quicksight_dashboard": 12410,
+   "aws_quicksight_template": 12406,
+   "aws_securityhub_automation_rule": 87,
+   "aws_securityhub_insight": 190,
+   "aws_spot_instance_request": 104,
+   "aws_wafv2_rule_group": 1286,
+   "aws_wafv2_web_acl": 1196,
+   "aws_wafv2_web_acl_rule": 6263
+  }
+ },
+ "generated_at": "2026-11-03T07:29:49-03:00",
+ "metrics": [
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "átomos C01 de resource_schemas do aws 6.71.0",
+    "ref": {
+     "path": "$BO_DATA/downloads/docs-aws/providers-schema.json",
+     "sha256": "ee012f92aeab529dc2abd73c2932261694da877dc116e2320ce7cc986bcdee7e"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-DOCS-AWS-DESCRIPTION",
+    "text": "átomo com pelo menos um fato 'description' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-DOCS-AWS-DESCRIPTION-ALL",
+   "name": "fração de átomos com fato 'description' declarado na documentação",
+   "operational_coverage": {
+    "est": 0.5586351678137705,
+    "lower": 0.5586351678137705,
+    "n": 112893,
+    "upper": 0.5586351678137705
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "átomos C01 de resource_schemas do aws 6.71.0 com required ou optional",
+    "ref": {
+     "path": "$BO_DATA/downloads/docs-aws/providers-schema.json",
+     "sha256": "ee012f92aeab529dc2abd73c2932261694da877dc116e2320ce7cc986bcdee7e"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-DOCS-AWS-DESCRIPTION",
+    "text": "átomo com pelo menos um fato 'description' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-DOCS-AWS-DESCRIPTION-CFG",
+   "name": "fração de átomos com fato 'description' declarado na documentação (só configuráveis)",
+   "operational_coverage": {
+    "est": 0.5433561783015906,
+    "lower": 0.5433561783015906,
+    "n": 108266,
+    "upper": 0.5433561783015906
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "átomos C01 de resource_schemas do aws 6.71.0",
+    "ref": {
+     "path": "$BO_DATA/downloads/docs-aws/providers-schema.json",
+     "sha256": "ee012f92aeab529dc2abd73c2932261694da877dc116e2320ce7cc986bcdee7e"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-DOCS-AWS-ALLOWEDVALUES",
+    "text": "átomo com pelo menos um fato 'allowed_values' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-DOCS-AWS-ALLOWEDVALUES-ALL",
+   "name": "fração de átomos com fato 'allowed_values' declarado na documentação",
+   "operational_coverage": {
+    "est": 0.2191455626123852,
+    "lower": 0.2191455626123852,
+    "n": 112893,
+    "upper": 0.2191455626123852
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "átomos C01 de resource_schemas do aws 6.71.0 com required ou optional",
+    "ref": {
+     "path": "$BO_DATA/downloads/docs-aws/providers-schema.json",
+     "sha256": "ee012f92aeab529dc2abd73c2932261694da877dc116e2320ce7cc986bcdee7e"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-DOCS-AWS-ALLOWEDVALUES",
+    "text": "átomo com pelo menos um fato 'allowed_values' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-DOCS-AWS-ALLOWEDVALUES-CFG",
+   "name": "fração de átomos com fato 'allowed_values' declarado na documentação (só configuráveis)",
+   "operational_coverage": {
+    "est": 0.22799401474147007,
+    "lower": 0.22799401474147007,
+    "n": 108266,
+    "upper": 0.22799401474147007
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "átomos C01 de resource_schemas do aws 6.71.0",
+    "ref": {
+     "path": "$BO_DATA/downloads/docs-aws/providers-schema.json",
+     "sha256": "ee012f92aeab529dc2abd73c2932261694da877dc116e2320ce7cc986bcdee7e"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-DOCS-AWS-UNIT",
+    "text": "átomo com pelo menos um fato 'unit' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-DOCS-AWS-UNIT-ALL",
+   "name": "fração de átomos com fato 'unit' declarado na documentação",
+   "operational_coverage": {
+    "est": 0.016272045210951963,
+    "lower": 0.016272045210951963,
+    "n": 112893,
+    "upper": 0.016272045210951963
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "átomos C01 de resource_schemas do aws 6.71.0 com required ou optional",
+    "ref": {
+     "path": "$BO_DATA/downloads/docs-aws/providers-schema.json",
+     "sha256": "ee012f92aeab529dc2abd73c2932261694da877dc116e2320ce7cc986bcdee7e"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-DOCS-AWS-UNIT",
+    "text": "átomo com pelo menos um fato 'unit' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-DOCS-AWS-UNIT-CFG",
+   "name": "fração de átomos com fato 'unit' declarado na documentação (só configuráveis)",
+   "operational_coverage": {
+    "est": 0.016616481628581457,
+    "lower": 0.016616481628581457,
+    "n": 108266,
+    "upper": 0.016616481628581457
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "átomos C01 de resource_schemas do aws 6.71.0",
+    "ref": {
+     "path": "$BO_DATA/downloads/docs-aws/providers-schema.json",
+     "sha256": "ee012f92aeab529dc2abd73c2932261694da877dc116e2320ce7cc986bcdee7e"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-DOCS-AWS-DEFAULT",
+    "text": "átomo com pelo menos um fato 'default' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-DOCS-AWS-DEFAULT-ALL",
+   "name": "fração de átomos com fato 'default' declarado na documentação",
+   "operational_coverage": {
+    "est": 0.06757726342643033,
+    "lower": 0.06757726342643033,
+    "n": 112893,
+    "upper": 0.06757726342643033
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "átomos C01 de resource_schemas do aws 6.71.0 com required ou optional",
+    "ref": {
+     "path": "$BO_DATA/downloads/docs-aws/providers-schema.json",
+     "sha256": "ee012f92aeab529dc2abd73c2932261694da877dc116e2320ce7cc986bcdee7e"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-DOCS-AWS-DEFAULT",
+    "text": "átomo com pelo menos um fato 'default' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-DOCS-AWS-DEFAULT-CFG",
+   "name": "fração de átomos com fato 'default' declarado na documentação (só configuráveis)",
+   "operational_coverage": {
+    "est": 0.0704376258474498,
+    "lower": 0.0704376258474498,
+    "n": 108266,
+    "upper": 0.0704376258474498
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "átomos C01 de resource_schemas do aws 6.71.0",
+    "ref": {
+     "path": "$BO_DATA/downloads/docs-aws/providers-schema.json",
+     "sha256": "ee012f92aeab529dc2abd73c2932261694da877dc116e2320ce7cc986bcdee7e"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-DOCS-AWS-RANGE",
+    "text": "átomo com pelo menos um fato 'range' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-DOCS-AWS-RANGE-ALL",
+   "name": "fração de átomos com fato 'range' declarado na documentação",
+   "operational_coverage": {
+    "est": 0.015908869460462563,
+    "lower": 0.015908869460462563,
+    "n": 112893,
+    "upper": 0.015908869460462563
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "átomos C01 de resource_schemas do aws 6.71.0 com required ou optional",
+    "ref": {
+     "path": "$BO_DATA/downloads/docs-aws/providers-schema.json",
+     "sha256": "ee012f92aeab529dc2abd73c2932261694da877dc116e2320ce7cc986bcdee7e"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-DOCS-AWS-RANGE",
+    "text": "átomo com pelo menos um fato 'range' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-DOCS-AWS-RANGE-CFG",
+   "name": "fração de átomos com fato 'range' declarado na documentação (só configuráveis)",
+   "operational_coverage": {
+    "est": 0.01658877209835036,
+    "lower": 0.01658877209835036,
+    "n": 108266,
+    "upper": 0.01658877209835036
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "átomos C01 de resource_schemas do aws 6.71.0",
+    "ref": {
+     "path": "$BO_DATA/downloads/docs-aws/providers-schema.json",
+     "sha256": "ee012f92aeab529dc2abd73c2932261694da877dc116e2320ce7cc986bcdee7e"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-DOCS-AWS-FORCESREPLACEMENT",
+    "text": "átomo com pelo menos um fato 'forces_replacement' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-DOCS-AWS-FORCESREPLACEMENT-ALL",
+   "name": "fração de átomos com fato 'forces_replacement' declarado na documentação",
+   "operational_coverage": {
+    "est": 0.006457442002604236,
+    "lower": 0.006457442002604236,
+    "n": 112893,
+    "upper": 0.006457442002604236
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "átomos C01 de resource_schemas do aws 6.71.0 com required ou optional",
+    "ref": {
+     "path": "$BO_DATA/downloads/docs-aws/providers-schema.json",
+     "sha256": "ee012f92aeab529dc2abd73c2932261694da877dc116e2320ce7cc986bcdee7e"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-DOCS-AWS-FORCESREPLACEMENT",
+    "text": "átomo com pelo menos um fato 'forces_replacement' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-DOCS-AWS-FORCESREPLACEMENT-CFG",
+   "name": "fração de átomos com fato 'forces_replacement' declarado na documentação (só configuráveis)",
+   "operational_coverage": {
+    "est": 0.006724179336079656,
+    "lower": 0.006724179336079656,
+    "n": 108266,
+    "upper": 0.006724179336079656
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "átomos C01 de resource_schemas do aws 6.71.0",
+    "ref": {
+     "path": "$BO_DATA/downloads/docs-aws/providers-schema.json",
+     "sha256": "ee012f92aeab529dc2abd73c2932261694da877dc116e2320ce7cc986bcdee7e"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-DOCS-AWS-FORMAT",
+    "text": "átomo com pelo menos um fato 'format' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-DOCS-AWS-FORMAT-ALL",
+   "name": "fração de átomos com fato 'format' declarado na documentação",
+   "operational_coverage": {
+    "est": 0.07276801927488862,
+    "lower": 0.07276801927488862,
+    "n": 112893,
+    "upper": 0.07276801927488862
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "átomos C01 de resource_schemas do aws 6.71.0 com required ou optional",
+    "ref": {
+     "path": "$BO_DATA/downloads/docs-aws/providers-schema.json",
+     "sha256": "ee012f92aeab529dc2abd73c2932261694da877dc116e2320ce7cc986bcdee7e"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-DOCS-AWS-FORMAT",
+    "text": "átomo com pelo menos um fato 'format' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-DOCS-AWS-FORMAT-CFG",
+   "name": "fração de átomos com fato 'format' declarado na documentação (só configuráveis)",
+   "operational_coverage": {
+    "est": 0.0645539689283801,
+    "lower": 0.0645539689283801,
+    "n": 108266,
+    "upper": 0.0645539689283801
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "átomos C01 de resource_schemas do aws 6.71.0",
+    "ref": {
+     "path": "$BO_DATA/downloads/docs-aws/providers-schema.json",
+     "sha256": "ee012f92aeab529dc2abd73c2932261694da877dc116e2320ce7cc986bcdee7e"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-DOCS-AWS-DEPRECATION",
+    "text": "átomo com pelo menos um fato 'deprecation' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-DOCS-AWS-DEPRECATION-ALL",
+   "name": "fração de átomos com fato 'deprecation' declarado na documentação",
+   "operational_coverage": {
+    "est": 0.000611198214238261,
+    "lower": 0.000611198214238261,
+    "n": 112893,
+    "upper": 0.000611198214238261
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "átomos C01 de resource_schemas do aws 6.71.0 com required ou optional",
+    "ref": {
+     "path": "$BO_DATA/downloads/docs-aws/providers-schema.json",
+     "sha256": "ee012f92aeab529dc2abd73c2932261694da877dc116e2320ce7cc986bcdee7e"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-DOCS-AWS-DEPRECATION",
+    "text": "átomo com pelo menos um fato 'deprecation' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-DOCS-AWS-DEPRECATION-CFG",
+   "name": "fração de átomos com fato 'deprecation' declarado na documentação (só configuráveis)",
+   "operational_coverage": {
+    "est": 0.00042487946354349474,
+    "lower": 0.00042487946354349474,
+    "n": 108266,
+    "upper": 0.00042487946354349474
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "átomos C01 de resource_schemas do aws 6.71.0",
+    "ref": {
+     "path": "$BO_DATA/downloads/docs-aws/providers-schema.json",
+     "sha256": "ee012f92aeab529dc2abd73c2932261694da877dc116e2320ce7cc986bcdee7e"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-DOCS-AWS-CONFLICTSWITH",
+    "text": "átomo com pelo menos um fato 'conflicts_with' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-DOCS-AWS-CONFLICTSWITH-ALL",
+   "name": "fração de átomos com fato 'conflicts_with' declarado na documentação",
+   "operational_coverage": {
+    "est": 0.004234097773998388,
+    "lower": 0.004234097773998388,
+    "n": 112893,
+    "upper": 0.004234097773998388
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "átomos C01 de resource_schemas do aws 6.71.0 com required ou optional",
+    "ref": {
+     "path": "$BO_DATA/downloads/docs-aws/providers-schema.json",
+     "sha256": "ee012f92aeab529dc2abd73c2932261694da877dc116e2320ce7cc986bcdee7e"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-DOCS-AWS-CONFLICTSWITH",
+    "text": "átomo com pelo menos um fato 'conflicts_with' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-DOCS-AWS-CONFLICTSWITH-CFG",
+   "name": "fração de átomos com fato 'conflicts_with' declarado na documentação (só configuráveis)",
+   "operational_coverage": {
+    "est": 0.004415051816821532,
+    "lower": 0.004415051816821532,
+    "n": 108266,
+    "upper": 0.004415051816821532
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "átomos C01 de resource_schemas do aws 6.71.0",
+    "ref": {
+     "path": "$BO_DATA/downloads/docs-aws/providers-schema.json",
+     "sha256": "ee012f92aeab529dc2abd73c2932261694da877dc116e2320ce7cc986bcdee7e"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-DOCS-AWS-REQUIREDWHEN",
+    "text": "átomo com pelo menos um fato 'required_when' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-DOCS-AWS-REQUIREDWHEN-ALL",
+   "name": "fração de átomos com fato 'required_when' declarado na documentação",
+   "operational_coverage": {
+    "est": 0.003560893943822912,
+    "lower": 0.003560893943822912,
+    "n": 112893,
+    "upper": 0.003560893943822912
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "átomos C01 de resource_schemas do aws 6.71.0 com required ou optional",
+    "ref": {
+     "path": "$BO_DATA/downloads/docs-aws/providers-schema.json",
+     "sha256": "ee012f92aeab529dc2abd73c2932261694da877dc116e2320ce7cc986bcdee7e"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-DOCS-AWS-REQUIREDWHEN",
+    "text": "átomo com pelo menos um fato 'required_when' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-DOCS-AWS-REQUIREDWHEN-CFG",
+   "name": "fração de átomos com fato 'required_when' declarado na documentação (só configuráveis)",
+   "operational_coverage": {
+    "est": 0.0037130770509670626,
+    "lower": 0.0037130770509670626,
+    "n": 108266,
+    "upper": 0.0037130770509670626
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "tipos de resource_schemas do aws 6.71.0",
+    "ref": {
+     "path": "$BO_DATA/downloads/docs-aws/providers-schema.json",
+     "sha256": "ee012f92aeab529dc2abd73c2932261694da877dc116e2320ce7cc986bcdee7e"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-DOCS-AWS-TYPE-SUBCATEGORY",
+    "text": "tipo com subcategoria de status stated em type_subcategory.jsonl"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-DOCS-AWS-TYPE-SUBCATEGORY",
+   "name": "fração de tipos de recurso com subcategoria declarada",
+   "operational_coverage": {
+    "est": 1.0,
+    "lower": 1.0,
+    "n": 1746,
+    "upper": 1.0
+   },
+   "quantifier": "observed_fraction",
+   "reading": "complete_unit",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "tipos de resource_schemas do aws 6.71.0",
+    "ref": {
+     "path": "$BO_DATA/downloads/docs-aws/providers-schema.json",
+     "sha256": "ee012f92aeab529dc2abd73c2932261694da877dc116e2320ce7cc986bcdee7e"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-DOCS-AWS-TYPE-IMPORT",
+    "text": "tipo com importação de status stated em type_subcategory.jsonl"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-DOCS-AWS-TYPE-IMPORT",
+   "name": "fração de tipos de recurso com importação declarada",
+   "operational_coverage": {
+    "est": 0.9473081328751431,
+    "lower": 0.9473081328751431,
+    "n": 1746,
+    "upper": 0.9473081328751431
+   },
+   "quantifier": "observed_fraction",
+   "reading": "complete_unit",
+   "weights": {
+    "scheme": "uniform"
+   }
+  }
+ ],
+ "module": "DOCS-AWS",
+ "notes": "Censo do que o extrator determinístico achou nas páginas da tag fixada; sem meta e sem intervalo (método none): a incerteza é de recall do extrator, medida à parte pela auditoria manual registrada no summary.json. Ausência de fato não é 'falso'.",
+ "schema": "bo.result/1"
+}

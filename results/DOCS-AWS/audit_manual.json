@@ -1,0 +1,76 @@
+{
+ "module": "DOCS-AWS",
+ "auditor": "agente do módulo (leitura manual, um juiz; sem segundo avaliador)",
+ "recorded_at": "2026-11-03T07:29:12-03:00",
+ "official_round": 3,
+ "official_precision": {
+  "correct": 59,
+  "n": 60,
+  "est": 0.9833,
+  "wilson95": [
+   0.9114,
+   0.9971
+  ]
+ },
+ "note": "Rodadas 1 e 2 guiaram correções do extrator (registradas em fix_after_round); a rodada 3 foi sorteada depois delas, com semente nova. O erro da rodada 3 também foi corrigido depois, então a precisão do arquivo final não é a da rodada 3 exatamente. Recall não foi medido (exigiria rotular páginas inteiras).",
+ "rounds": [
+  {
+   "round": 1,
+   "seed": 20261103,
+   "n": 60,
+   "correct": 58,
+   "strata": "6 fatos stated por fact_kind (10 tipos), amostra aleatória sem reposição",
+   "errors": [
+    {
+     "fact_id": "DF-aws-qimaa5dgfa-allowed_values-1",
+     "fact_kind": "allowed_values",
+     "what": "'Only one of `a` or `b` can be specified' lido como lista de valores (exclusão mútua)"
+    },
+    {
+     "fact_id": "DF-aws-n43img5nxq-range-1",
+     "fact_kind": "range",
+     "what": "'length between 0 and 4096' marcado como faixa de valor, e não de comprimento"
+    }
+   ],
+   "fix_after_round": "ONEOF exige 'must be one of'/'one of the following' e recusa sentença de exclusão mútua; faixa vira 'length' quando a sentença fala em length/characters/long",
+   "checked": "valor x sentença literal x átomo (o item está no bloco certo do schema); arquivo:linha conferido pelo audit provenance"
+  },
+  {
+   "round": 2,
+   "seed": 7,
+   "n": 60,
+   "correct": 58,
+   "strata": "6 fatos stated por fact_kind (10 tipos), amostra aleatória sem reposição",
+   "errors": [
+    {
+     "fact_id": "DF-aws-6wrxoaukoj-deprecation-1",
+     "fact_kind": "deprecation",
+     "what": "'`CLEAN_ROOMS_SQL` (deprecated)' marca um valor, não o atributo"
+    },
+    {
+     "fact_id": "DF-aws-ut5mzns5r3-deprecation-1",
+     "fact_kind": "deprecation",
+     "what": "'SHA-1 hashes have been deprecated' marca um valor, não o atributo"
+    }
+   ],
+   "fix_after_round": "deprecation por texto só quando o sujeito é o atributo (DEPRECATED_SELF), nunca '`valor` (deprecated)'",
+   "checked": "valor x sentença literal x átomo (o item está no bloco certo do schema); arquivo:linha conferido pelo audit provenance"
+  },
+  {
+   "round": 3,
+   "seed": 11,
+   "n": 60,
+   "correct": 59,
+   "strata": "6 fatos stated por fact_kind (10 tipos), amostra aleatória sem reposição",
+   "errors": [
+    {
+     "fact_id": "DF-aws-jaxinwsawe-allowed_values-1",
+     "fact_kind": "allowed_values",
+     "what": "'`add | start`' ficou como um valor só, em vez de dois"
+    }
+   ],
+   "fix_after_round": "crase única com ' | ' é dividida em valores",
+   "checked": "valor x sentença literal x átomo (o item está no bloco certo do schema); arquivo:linha conferido pelo audit provenance"
+  }
+ ]
+}
