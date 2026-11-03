@@ -52,16 +52,18 @@ def skos_axioms(g: rdflib.Graph | None = None) -> dict:
     return out
 
 
-def closure(records: list[dict], ms_id: str = "https://example.org/mapping-set/owl-theory") -> rdflib.Graph:
+def closure(records: list[dict], ms_id: str = "https://example.org/mapping-set/owl-theory",
+            prefixes: dict | None = None) -> rdflib.Graph:
     import owlrl
-    g = hydrate(to_rdf(records, ms_id, extensions=False))
+    g = hydrate(to_rdf(records, ms_id, prefixes=prefixes, extensions=False))
     g += skos_graph()
     owlrl.DeductiveClosure(owlrl.OWLRL_Semantics, axiomatic_triples=False, datatype_axioms=False).expand(g)
     return g
 
 
-def has(g: rdflib.Graph, s: str, p: str, o: str) -> bool:
-    return (expand(s, PREFIXES), expand(p, PREFIXES), expand(o, PREFIXES)) in g
+def has(g: rdflib.Graph, s: str, p: str, o: str, prefixes: dict | None = None) -> bool:
+    px = prefixes or PREFIXES
+    return (expand(s, px), expand(p, px), expand(o, px)) in g
 
 
 def mapping_triples(g: rdflib.Graph) -> set[tuple[str, str, str]]:

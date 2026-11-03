@@ -124,7 +124,130 @@ def checks() -> list[dict]:
     return out
 
 
+class FileError(Exception):
+    """Arquivo ausente, ilegível ou vazio: o gate do mapeador não pode passar por vacuidade."""
+
+
+SKOS_MAPPING = {"skos:exactMatch", "skos:closeMatch", "skos:broadMatch", "skos:narrowMatch", "skos:relatedMatch"}
+INV_PRED = {"skos:broadMatch": "skos:narrowMatch", "skos:narrowMatch": "skos:broadMatch",
+            "skos:exactMatch": "skos:exactMatch", "skos:closeMatch": "skos:closeMatch",
+            "skos:relatedMatch": "skos:relatedMatch"}
+
+
+def load_file(path) -> tuple[dict, list[dict], list[str]]:
+    """Lê o SSSOM pelo leitor do C09 (bo.contracts.sssom). FileError se ausente, ilegível ou sem linhas."""
+    from pathlib import Path
+    from bo.contracts import sssom as CS
+    p = Path(path)
+    if not p.is_file():
+        raise FileError(f"arquivo SSSOM não existe: {p}")
+    try:
+        text = p.read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError) as e:
+        raise FileError(f"arquivo SSSOM ilegível: {p}: {e}")
+    if not text.strip():
+        raise FileError(f"arquivo SSSOM vazio: {p}")
+    try:
+        meta, recs, cols = CS.read_tsv(text)
+    except Exception as e:     # cabeçalho YAML ou TSV malformado
+        raise FileError(f"arquivo SSSOM malformado: {p}: {e}")
+    if not recs:
+        raise FileError(f"arquivo SSSOM sem nenhuma linha de mapeamento: {p}")
+    return meta, recs, cols
+
+
+def file_checks(path) -> list[dict]:
+    """Ida e volta SKOS das linhas de um arquivo do mapeador: TSV -> TSV, TSV -> RDF -> TSV, fecho OWL com os
+    axiomas do W3C (o inverso sai, a direção não se inverte) e orientação do predicado de pertença."""
+    from bo.contracts import sssom as CS
+    meta, recs, cols = load_file(path)
+    px = dict(S.PREFIXES)
+    px.update(meta.get("curie_map") or {})
+    ms = meta.get("mapping_set_id") or "https://example.org/mapping-set/file"
+    out = []
+
+    def check(name, ok, **d):
+        out.append({"check": name, "ok": bool(ok), **d})
+
+    check("rows_read", True, n_rows=len(recs), columns=len(cols))
+    bad_pred = [r.get("claim_id") or r.get("subject_id") for r in recs if r.get("predicate_id") not in SKOS_MAPPING]
+    check("predicates_are_skos_mapping", not bad_pred, offenders=bad_pred[:20])
+    from .claims import check_predicate
+    mism = [r.get("claim_id") for r in recs if r.get("semantic_relation") is not None and check_predicate(Claim(r))]
+    check("semantic_relation_matches_predicate", not mism, offenders=mism[:20])
+    try:
+        _, back, _ = CS.read_tsv(CS.write_tsv(recs, ms, px))
+        check("tsv_roundtrip_equal", back == recs)
+    except Exception as e:
+        check("tsv_roundtrip_equal", False, error=str(e))
+    try:
+        g = S.to_rdf(recs, ms, px)
+        back = S.from_rdf(g, px)
+        key = lambda r: (r.get("claim_id") or "", r["subject_id"], r["object_id"])
+        want = sorted((_fields(r) for r in recs), key=key)
+        check("rdf_roundtrip_equal", sorted((_fields(r) for r in back), key=key) == want)
+    except Exception as e:
+        check("rdf_roundtrip_equal", False, error=str(e))
+        return out
+    try:
+        gc = O.closure(recs, ms, px)
+    except Exception as e:
+        check("owl_closure", False, error=str(e))
+        return out
+    lost, flipped = [], []
+    for r in recs:
+        p = r.get("predicate_id")
+        if p not in INV_PRED:
+            continue
+        s_, o_ = r["subject_id"], r["object_id"]
+        if not O.has(gc, o_, INV_PRED[p], s_, px):
+            lost.append(r.get("claim_id") or s_)
+        if p in ("skos:broadMatch", "skos:narrowMatch"):
+            if not O.has(gc, s_, "skos:broader" if p == "skos:broadMatch" else "skos:narrower", o_, px):
+                lost.append(r.get("claim_id") or s_)
+            same_dir_back = O.has(gc, o_, p, s_, px)
+            reverse_here = any(x["subject_id"] == o_ and x["object_id"] == s_ and x.get("predicate_id") == p for x in recs)
+            if same_dir_back and not reverse_here:
+                flipped.append(r.get("claim_id") or s_)
+    check("owl_inverse_inferred", not lost, offenders=lost[:20])
+    check("owl_direction_not_flipped", not flipped, offenders=flipped[:20])
+    inv_bad = []
+    for r in recs:
+        if r.get("predicate_id") in INV_PRED and r.get("semantic_relation"):
+            i = invert(Claim(r))
+            if not O.has(gc, i["subject_id"], i["predicate_id"], i["object_id"], px):
+                inv_bad.append(r.get("claim_id"))
+    check("executable_inverse_equals_owl_inverse", not inv_bad, offenders=inv_bad[:20])
+    from .vocab import SUBSET_SIDE
+    orient = [r.get("claim_id") for r in recs if r.get("semantic_relation") in SUBSET_SIDE
+              and isinstance(r.get("membership_predicate"), dict)
+              and r["membership_predicate"].get("subset") != SUBSET_SIDE[r["semantic_relation"]]]
+    check("membership_orientation_matches_direction", not orient, offenders=orient[:20])
+    return out
+
+
 def main(argv=None) -> int:
+    import argparse
+    ap = argparse.ArgumentParser(prog="bo.semantics.skos_roundtrip")
+    ap.add_argument("--file", help="SSSOM do C09 a conferir (sem ele: autoteste da teoria)")
+    a = ap.parse_args(sys.argv[1:] if argv is None else argv)
+    if a.file is not None:
+        try:
+            res = file_checks(a.file)
+        except FileError as e:
+            common.emit(f"[{common.now()}] skos_roundtrip --file: FAIL: {e}")
+            return 2
+        except O.SkosSchemaError as e:
+            common.emit(f"FAIL: {e}")
+            return 1
+        for c in res:
+            common.emit(f"  {'OK  ' if c['ok'] else 'FAIL'} {c['check']}"
+                        + (f"  {c.get('offenders') or c.get('error')}" if not c["ok"] else ""))
+        ok = all(c["ok"] for c in res)
+        n_rows = res[0]["n_rows"]
+        common.emit(f"[{common.now()}] skos_roundtrip --file {a.file}: {n_rows} linha(s), "
+                    f"{sum(c['ok'] for c in res)}/{len(res)} -> {'PASS' if ok else 'FAIL'}")
+        return 0 if ok else 1
     try:
         res = checks()
     except O.SkosSchemaError as e:
