@@ -1,0 +1,85 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "LIT",
+ "generated_at": "2026-11-02T22:33:16-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/LIT.txt",
+  "brief_sha256": "f065830ee311144894cf2bcb58ceb29424ae659ba2bdc46671361e1e76642282",
+  "params": {
+   "network": "crossref,doi.org-ra,github-api,wayback,arxiv-api",
+   "cloud": "none",
+   "kalinin_pdf": "leitura-local-sem-copia",
+   "generator": "python -I -m bo.lit.build",
+   "resolver": "python -I -m bo.lit.resolve"
+  },
+  "inputs": [
+   {
+    "path": "/Users/breno/doutorado/tese_organizada/papers/01_icse2027-positioning/artifact",
+    "kind": "dir",
+    "sha256": "8fc20eb879baa83bd6d1349a158b3a71f258708458c8808a22326adbfb42b43a"
+   },
+   {
+    "path": "/Users/breno/doutorado/pesquisa/superficie/reports/ontologia_neutra/revisao_adversarial/R4_novidade_posicionamento.html",
+    "kind": "file",
+    "sha256": "44736befbea74f0b00c581e1a2e8ee58e862b26476aaa477e394269192feb0a5"
+   },
+   {
+    "path": "/Users/breno/doutorado/pesquisa/superficie/reports/ontologia_neutra/downloads/kalinin2026/FICHAMENTO_KALININ2026.txt",
+    "kind": "file",
+    "sha256": "2b8c338840b299ec758e485c58fa9b20daf00028876d6901fc1e0e0037d119b4"
+   },
+   {
+    "path": "/Users/breno/doutorado/pesquisa/superficie/reports/ontologia_neutra/downloads/kalinin2026/pdfs/kalinin2026.pdf",
+    "kind": "file",
+    "sha256": "758b7705ddd4ac05416fa18215df88b88d6165f81253c8f568d0ac5abba6120a"
+   }
+  ],
+  "recorded_at": "2026-11-02T22:33:16-03:00"
+ },
+ "sources": [
+  {
+   "uri": "https://api.crossref.org/works/<doi>",
+   "license": "CC0 (metadados Crossref)",
+   "transformation": "título, ano, autores, volume, páginas e sha256 da resposta em results/LIT/id_resolution.json"
+  },
+  {
+   "uri": "https://doi.org/ra/<doi>",
+   "license": "metadados públicos",
+   "transformation": "agência de registro de cada DOI"
+  },
+  {
+   "uri": "https://api.github.com/repos/<dono>/<repo>/commits/<sha>",
+   "license": "metadados públicos do GitHub",
+   "transformation": "sha e data do commit de cada software citado"
+  },
+  {
+   "uri": "https://web.archive.org/web/<data>/<url>",
+   "license": "Internet Archive (cópia pública)",
+   "transformation": "só status HTTP da cópia arquivada; conteúdo não guardado"
+  },
+  {
+   "uri": "https://export.arxiv.org/api/query",
+   "license": "metadados arXiv",
+   "transformation": "título e DOI publicado do preprint 2007.02135"
+  },
+  {
+   "uri": "https://annals-csis.org/proceedings/2011/",
+   "license": "página pública dos anais FedCSIS",
+   "transformation": "páginas, ISBN e resumo do mOSAIC 2011 conferidos; nada copiado"
+  },
+  {
+   "uri": "local:kalinin2026.pdf (DOI 10.1134/S1054661826700367)",
+   "license": "Pleiades Publishing, todos os direitos reservados; uso local",
+   "transformation": "paráfrase com número de página; PDF não copiado nem redistribuído"
+  },
+  {
+   "uri": "local:R4_novidade_posicionamento.html",
+   "license": "interno (revisão adversarial)",
+   "transformation": "lista de trabalhos e descrições de terceiro, marcadas como tal na matriz"
+  }
+ ],
+ "notes": "Saídas geradas por bo.lit.build a partir de src/bo/lit/data.py e do livro bo.lit.resolve; 2026-11-02 (America/Recife)."
+}

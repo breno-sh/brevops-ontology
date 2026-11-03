@@ -1,0 +1,1938 @@
+{
+ "schema": "bo.lit.id_resolution/1",
+ "module": "LIT",
+ "resolved_at": "2026-11-02T22:30:31-03:00",
+ "bib": "$BO_REPO/lit/related.bib",
+ "bib_sha256": "8ce9e2ea9175092c061e0ca5148507334375952550e5f347c4897a3dea80097e",
+ "sources": {
+  "doi_ra": "https://doi.org/ra/<doi>",
+  "crossref": "https://api.crossref.org/works/<doi>",
+  "github": "https://api.github.com/repos/<dono>/<repo>/commits/<sha>",
+  "arxiv": "https://export.arxiv.org/api/query?id_list=<id>",
+  "wayback": "GET da cópia arquivada"
+ },
+ "note": "Só metadados bibliográficos públicos e sha256 da resposta bruta; a resposta bruta não é guardada.",
+ "records": {
+  "arxiv:2007.02135": {
+   "scheme": "arxiv",
+   "value": "2007.02135",
+   "status": "ok",
+   "http": 200,
+   "title": "Towards Semantic Detection of Smells in Cloud Infrastructure Code",
+   "published_doi": "10.1145/3405962.3405979",
+   "response_sha256": "85e2a86ddd04765b20bd88a87b50c55aa07f44dc52c63902150fe5059ee0eb36",
+   "checked_at": "2026-11-02T22:29:23-03:00"
+  },
+  "commit:github:BFO-ontology/BFO-2020@bd1fb61c5fa4e358fc9690f0d214b1ac63fae594": {
+   "scheme": "commit",
+   "value": "github:BFO-ontology/BFO-2020@bd1fb61c5fa4e358fc9690f0d214b1ac63fae594",
+   "status": "ok",
+   "http": 200,
+   "sha": "bd1fb61c5fa4e358fc9690f0d214b1ac63fae594",
+   "committed_at": "2026-10-06T21:06:01Z",
+   "response_sha256": "883ccf785c0493d84357f91f1c60d5a73cc86a9b8c0d61f1a435c5f51651bf0a",
+   "checked_at": "2026-11-02T22:29:16-03:00"
+  },
+  "commit:github:cartography-cncf/cartography@e978c291082a2b65442ff79ffa4201cce5b11683": {
+   "scheme": "commit",
+   "value": "github:cartography-cncf/cartography@e978c291082a2b65442ff79ffa4201cce5b11683",
+   "status": "ok",
+   "http": 200,
+   "sha": "e978c291082a2b65442ff79ffa4201cce5b11683",
+   "committed_at": "2026-10-29T23:21:44Z",
+   "response_sha256": "a3324a6deed65346cbe56dfa01a8067d965ce2c2f7a7d68a13e4d764f8d7af85",
+   "checked_at": "2026-11-02T22:25:23-03:00"
+  },
+  "commit:github:clouditor/cloud-property-graph@6c7bc074386531bd18ff83e9a2656c1f266839cc": {
+   "scheme": "commit",
+   "value": "github:clouditor/cloud-property-graph@6c7bc074386531bd18ff83e9a2656c1f266839cc",
+   "status": "ok",
+   "http": 200,
+   "sha": "6c7bc074386531bd18ff83e9a2656c1f266839cc",
+   "committed_at": "2023-02-03T08:57:29Z",
+   "response_sha256": "945e417b94d4a89a6c37b5a9bc6da7041f6904ed9d009728afd09c5237c1a38c",
+   "checked_at": "2026-11-02T22:25:19-03:00"
+  },
+  "commit:github:cloudquery/cloudquery@6f152b61c747d3417e2b4e98438ed6256ceb0fa4": {
+   "scheme": "commit",
+   "value": "github:cloudquery/cloudquery@6f152b61c747d3417e2b4e98438ed6256ceb0fa4",
+   "status": "ok",
+   "http": 200,
+   "sha": "6f152b61c747d3417e2b4e98438ed6256ceb0fa4",
+   "committed_at": "2026-11-02T16:15:25Z",
+   "response_sha256": "25effa30ab49292fe627c15dd835b54903be2470d7d1d1aff28b73f51f8f750b",
+   "checked_at": "2026-11-02T22:25:54-03:00"
+  },
+  "commit:github:evidenceontology/evidenceontology@6bbc0730de4f3d04a5a1347946cd231e40fde4bd": {
+   "scheme": "commit",
+   "value": "github:evidenceontology/evidenceontology@6bbc0730de4f3d04a5a1347946cd231e40fde4bd",
+   "status": "ok",
+   "http": 200,
+   "sha": "6bbc0730de4f3d04a5a1347946cd231e40fde4bd",
+   "committed_at": "2026-07-10T20:50:47Z",
+   "response_sha256": "199d14620a05f2d3e49688302daa19cc46f469dede99fdd931448dfc28ff0d6b",
+   "checked_at": "2026-11-02T22:28:56-03:00"
+  },
+  "commit:github:mapping-commons/sssom@9287d104437ad702fa4e74b1ea2b42a879b877ae": {
+   "scheme": "commit",
+   "value": "github:mapping-commons/sssom@9287d104437ad702fa4e74b1ea2b42a879b877ae",
+   "status": "ok",
+   "http": 200,
+   "sha": "9287d104437ad702fa4e74b1ea2b42a879b877ae",
+   "committed_at": "2026-10-09T22:29:28Z",
+   "response_sha256": "72fabfcc971893c02b64f41d24e34674985250b6fd25e56683e51371480641d4",
+   "checked_at": "2026-11-02T22:28:51-03:00"
+  },
+  "commit:github:miranda-zhang/cloud-computing-schema@32e9cc70ec3729a8002272d9eeac4de5478ab4ee": {
+   "scheme": "commit",
+   "value": "github:miranda-zhang/cloud-computing-schema@32e9cc70ec3729a8002272d9eeac4de5478ab4ee",
+   "status": "ok",
+   "http": 200,
+   "sha": "32e9cc70ec3729a8002272d9eeac4de5478ab4ee",
+   "committed_at": "2021-08-04T07:19:24Z",
+   "response_sha256": "71f58610dbaaa5a7bf2648c4c7f10d70599f7cccdf7e62339a73862276e4a380",
+   "checked_at": "2026-11-02T22:28:03-03:00"
+  },
+  "commit:github:nemo-ufes/gufo@fa89632534a72dd0ce82f62051cc52b5417150dd": {
+   "scheme": "commit",
+   "value": "github:nemo-ufes/gufo@fa89632534a72dd0ce82f62051cc52b5417150dd",
+   "status": "ok",
+   "http": 200,
+   "sha": "fa89632534a72dd0ce82f62051cc52b5417150dd",
+   "committed_at": "2026-10-26T13:15:48Z",
+   "response_sha256": "bd04ad77252d6ae98412a6de0ccb6f7287f723cdc59a9bf2a72dbbfc6cdeb5b1",
+   "checked_at": "2026-11-02T22:29:18-03:00"
+  },
+  "commit:github:ocsf/ocsf-schema@14d7761ffcfdd3c7f68c8df9ddd58aae2765a92e": {
+   "scheme": "commit",
+   "value": "github:ocsf/ocsf-schema@14d7761ffcfdd3c7f68c8df9ddd58aae2765a92e",
+   "status": "ok",
+   "http": 200,
+   "sha": "14d7761ffcfdd3c7f68c8df9ddd58aae2765a92e",
+   "committed_at": "2026-10-30T19:03:45Z",
+   "response_sha256": "1532c8a7d2177dbdf837b674c6d0e443d3f101a3627a8c0d44ea4d7cf97bf685",
+   "checked_at": "2026-11-02T22:28:49-03:00"
+  },
+  "commit:github:oeg-upm/devops-infra@3ac3129a81d24c1239bd91c02f705576a0dab22d": {
+   "scheme": "commit",
+   "value": "github:oeg-upm/devops-infra@3ac3129a81d24c1239bd91c02f705576a0dab22d",
+   "status": "ok",
+   "http": 200,
+   "sha": "3ac3129a81d24c1239bd91c02f705576a0dab22d",
+   "committed_at": "2023-02-06T15:03:02Z",
+   "response_sha256": "19f57141a4159a3514287c250f26597b2be2aaeab2791b487b35afef6a0b7e37",
+   "checked_at": "2026-11-02T22:25:22-03:00"
+  },
+  "commit:github:someengineering/fixinventory@211833381fdd07690bc789d30ffc2bd84a67744e": {
+   "scheme": "commit",
+   "value": "github:someengineering/fixinventory@211833381fdd07690bc789d30ffc2bd84a67744e",
+   "status": "ok",
+   "http": 200,
+   "sha": "211833381fdd07690bc789d30ffc2bd84a67744e",
+   "committed_at": "2025-03-28T15:29:51Z",
+   "response_sha256": "9257053ce1b2fd596c27b5b0e492cef7065faec59739d271fb33f6623b5515bf",
+   "checked_at": "2026-11-02T22:25:54-03:00"
+  },
+  "commit:github:turbot/steampipe-plugin-aws@bb6992d4748caab938e2c691be977d6610fc1fab": {
+   "scheme": "commit",
+   "value": "github:turbot/steampipe-plugin-aws@bb6992d4748caab938e2c691be977d6610fc1fab",
+   "status": "ok",
+   "http": 200,
+   "sha": "bb6992d4748caab938e2c691be977d6610fc1fab",
+   "committed_at": "2026-10-26T20:00:50Z",
+   "response_sha256": "6a03d42c8937ee842e71a58149644c5fd4b912941d321c1a9b80a4d6deddb5b4",
+   "checked_at": "2026-11-02T22:26:25-03:00"
+  },
+  "doi:10.1007/978-1-4614-7535-4_22": {
+   "scheme": "doi",
+   "value": "10.1007/978-1-4614-7535-4_22",
+   "ra": "Crossref",
+   "ra_http": 200,
+   "crossref_http": 200,
+   "status": "ok",
+   "response_sha256": "3d53661f15cd1a1320ca9a0b852d41374d97b36411bf240013f134d8728a1de7",
+   "title": "TOSCA: Portable Automated Deployment and Management of Cloud Applications",
+   "container": "Advanced Web Services",
+   "type": "book-chapter",
+   "publisher": "Springer New York",
+   "years": [
+    2013,
+    2014
+   ],
+   "volume": null,
+   "issue": null,
+   "page": "527-549",
+   "authors": [
+    {
+     "family": "Binz",
+     "given": "Tobias"
+    },
+    {
+     "family": "Breitenbücher",
+     "given": "Uwe"
+    },
+    {
+     "family": "Kopp",
+     "given": "Oliver"
+    },
+    {
+     "family": "Leymann",
+     "given": "Frank"
+    }
+   ],
+   "checked_at": "2026-11-02T22:28:04-03:00"
+  },
+  "doi:10.1007/978-3-030-30796-7_21": {
+   "scheme": "doi",
+   "value": "10.1007/978-3-030-30796-7_21",
+   "ra": "Crossref",
+   "ra_http": 200,
+   "crossref_http": 200,
+   "status": "ok",
+   "response_sha256": "e558855f805ea912917bc49a3fb814b4cd997fb129889d4e11c1bd582925a10d",
+   "title": "CoCoOn: Cloud Computing Ontology for IaaS Price and Performance Comparison",
+   "container": "Lecture Notes in Computer Science",
+   "type": "book-chapter",
+   "publisher": "Springer International Publishing",
+   "years": [
+    2019
+   ],
+   "volume": null,
+   "issue": null,
+   "page": "325-341",
+   "authors": [
+    {
+     "family": "Zhang",
+     "given": "Qian"
+    },
+    {
+     "family": "Haller",
+     "given": "Armin"
+    },
+    {
+     "family": "Wang",
+     "given": "Qing"
+    }
+   ],
+   "checked_at": "2026-11-02T22:28:03-03:00"
+  },
+  "doi:10.1007/978-3-030-88361-4_26": {
+   "scheme": "doi",
+   "value": "10.1007/978-3-030-88361-4_26",
+   "ra": "Crossref",
+   "ra_http": 200,
+   "crossref_http": 200,
+   "status": "ok",
+   "response_sha256": "57b205e76ec167f90a8dd8706e8786cf19bcc040e3be5054fb3ace69e9fe8a3b",
+   "title": "A High-Level Ontology Network for ICT Infrastructures",
+   "container": "Lecture Notes in Computer Science",
+   "type": "book-chapter",
+   "publisher": "Springer International Publishing",
+   "years": [
+    2021
+   ],
+   "volume": null,
+   "issue": null,
+   "page": "446-462",
+   "authors": [
+    {
+     "family": "Corcho",
+     "given": "Oscar"
+    },
+    {
+     "family": "Chaves-Fraga",
+     "given": "David"
+    },
+    {
+     "family": "Toledo",
+     "given": "Jhon"
+    },
+    {
+     "family": "Arenas-Guerrero",
+     "given": "Julián"
+    },
+    {
+     "family": "Badenes-Olmedo",
+     "given": "Carlos"
+    },
+    {
+     "family": "Wang",
+     "given": "Mingxue"
+    },
+    {
+     "family": "Peng",
+     "given": "Hu"
+    },
+    {
+     "family": "Burrett",
+     "given": "Nicholas"
+    },
+    {
+     "family": "Mora",
+     "given": "José"
+    },
+    {
+     "family": "Zhang",
+     "given": "Puchao"
+    }
+   ],
+   "checked_at": "2026-11-02T22:25:22-03:00"
+  },
+  "doi:10.1007/978-3-031-78392-0_1": {
+   "scheme": "doi",
+   "value": "10.1007/978-3-031-78392-0_1",
+   "ra": "Crossref",
+   "ra_http": 200,
+   "crossref_http": 200,
+   "status": "ok",
+   "response_sha256": "6f06f70c53ebd5ea6054e3c4c4260b156ccf44506b4e84d25b05d321cfb76a48",
+   "title": "Strategies and Challenges in Cloud-to-Cloud Migration Using Infrastructure as Code",
+   "container": "Lecture Notes in Computer Science",
+   "type": "book-chapter",
+   "publisher": "Springer Nature Switzerland",
+   "years": [
+    2024,
+    2025
+   ],
+   "volume": null,
+   "issue": null,
+   "page": "3-18",
+   "authors": [
+    {
+     "family": "Ketonen",
+     "given": "Teemu"
+    },
+    {
+     "family": "Smolander",
+     "given": "Kari"
+    }
+   ],
+   "checked_at": "2026-11-02T22:29:29-03:00"
+  },
+  "doi:10.1007/978-3-319-11692-1_4": {
+   "scheme": "doi",
+   "value": "10.1007/978-3-319-11692-1_4",
+   "ra": "Crossref",
+   "ra_http": 200,
+   "crossref_http": 200,
+   "status": "ok",
+   "response_sha256": "01df8e5463a20a1cfe15dbb2b7b0346acf0ca11733835b2c7148fa02fb677b77",
+   "title": "Semantic Representation of Cloud Services: A Case Study for Openstack",
+   "container": "Lecture Notes in Computer Science",
+   "type": "book-chapter",
+   "publisher": "Springer International Publishing",
+   "years": [
+    2014
+   ],
+   "volume": null,
+   "issue": null,
+   "page": "39-50",
+   "authors": [
+    {
+     "family": "Di Martino",
+     "given": "Beniamino"
+    },
+    {
+     "family": "Cretella",
+     "given": "Giuseppina"
+    },
+    {
+     "family": "Esposito",
+     "given": "Antonio"
+    },
+    {
+     "family": "Carta",
+     "given": "Graziella"
+    }
+   ],
+   "checked_at": "2026-11-02T22:27:28-03:00"
+  },
+  "doi:10.1007/s00450-019-00412-x": {
+   "scheme": "doi",
+   "value": "10.1007/s00450-019-00412-x",
+   "ra": "Crossref",
+   "ra_http": 200,
+   "crossref_http": 200,
+   "status": "ok",
+   "response_sha256": "4cd24d20f28ea1bdf52477a154ebbe06962ce9f6248002ee0efdfdb896fc5fba",
+   "title": "The essential deployment metamodel: a systematic review of deployment automation technologies",
+   "container": "SICS Software-Intensive Cyber-Physical Systems",
+   "type": "journal-article",
+   "publisher": "Springer Science and Business Media LLC",
+   "years": [
+    2019,
+    2020
+   ],
+   "volume": "35",
+   "issue": "1-2",
+   "page": "63-75",
+   "authors": [
+    {
+     "family": "Wurster",
+     "given": "Michael"
+    },
+    {
+     "family": "Breitenbücher",
+     "given": "Uwe"
+    },
+    {
+     "family": "Falkenthal",
+     "given": "Michael"
+    },
+    {
+     "family": "Krieger",
+     "given": "Christoph"
+    },
+    {
+     "family": "Leymann",
+     "given": "Frank"
+    },
+    {
+     "family": "Saatkamp",
+     "given": "Karoline"
+    },
+    {
+     "family": "Soldani",
+     "given": "Jacopo"
+    }
+   ],
+   "checked_at": "2026-11-02T22:28:46-03:00"
+  },
+  "doi:10.1007/s10009-023-00705-2": {
+   "scheme": "doi",
+   "value": "10.1007/s10009-023-00705-2",
+   "ra": "Crossref",
+   "ra_http": 200,
+   "crossref_http": 200,
+   "status": "ok",
+   "response_sha256": "dab6c0c20a88bcc93ab345a94c8115c9146bd1a0568845bc34ed037fcfb4a428",
+   "title": "Knowledge representation of the state of a cloud-native application",
+   "container": "International Journal on Software Tools for Technology Transfer",
+   "type": "journal-article",
+   "publisher": "Springer Science and Business Media LLC",
+   "years": [
+    2023,
+    2024
+   ],
+   "volume": "26",
+   "issue": "1",
+   "page": "21-32",
+   "authors": [
+    {
+     "family": "Kosińska",
+     "given": "Joanna"
+    },
+    {
+     "family": "Brotoń",
+     "given": "Grzegorz"
+    },
+    {
+     "family": "Tobiasz",
+     "given": "Maciej"
+    }
+   ],
+   "checked_at": "2026-11-02T22:29:01-03:00"
+  },
+  "doi:10.1007/s10270-025-01294-1": {
+   "scheme": "doi",
+   "value": "10.1007/s10270-025-01294-1",
+   "ra": "Crossref",
+   "ra_http": 200,
+   "crossref_http": 200,
+   "status": "ok",
+   "response_sha256": "4aab9a34e8087dd5bcb1660facbbf66bfd4fd27f7450876249e0f0e9bc0b03d9",
+   "title": "A knowledge-based approach for guided development of Infrastructure as Code",
+   "container": "Software and Systems Modeling",
+   "type": "journal-article",
+   "publisher": "Springer Science and Business Media LLC",
+   "years": [
+    2025,
+    2026
+   ],
+   "volume": "25",
+   "issue": "2",
+   "page": "515-548",
+   "authors": [
+    {
+     "family": "Vasileiou",
+     "given": "Zoe"
+    },
+    {
+     "family": "Kumara",
+     "given": "Indika"
+    },
+    {
+     "family": "Meditskos",
+     "given": "Georgios"
+    },
+    {
+     "family": "Tokmakov",
+     "given": "Kamil"
+    },
+    {
+     "family": "Radolović",
+     "given": "Dragan"
+    },
+    {
+     "family": "Cruz",
+     "given": "Jesús Gorroñogoitia"
+    },
+    {
+     "family": "Di Nitto",
+     "given": "Elisabetta"
+    },
+    {
+     "family": "Tamburri",
+     "given": "Damian Andrew"
+    },
+    {
+     "family": "Van Den Heuvel",
+     "given": "Willem-Jan"
+    },
+    {
+     "family": "Vrochidis",
+     "given": "Stefanos"
+    }
+   ],
+   "checked_at": "2026-11-02T22:29:25-03:00"
+  },
+  "doi:10.1016/j.is.2024.102422": {
+   "scheme": "doi",
+   "value": "10.1016/j.is.2024.102422",
+   "ra": "Crossref",
+   "ra_http": 200,
+   "crossref_http": 200,
+   "status": "ok",
+   "response_sha256": "395cd8033a1089f7861515da74f07efe1e8a99653ad7b4a246da1017dfb2184f",
+   "title": "DOML: A new modeling approach to Infrastructure-as-Code",
+   "container": "Information Systems",
+   "type": "journal-article",
+   "publisher": "Elsevier BV",
+   "years": [
+    2024
+   ],
+   "volume": "125",
+   "issue": null,
+   "page": "102422",
+   "authors": [
+    {
+     "family": "Chiari",
+     "given": "Michele"
+    },
+    {
+     "family": "Xiang",
+     "given": "Bin"
+    },
+    {
+     "family": "Canzoneri",
+     "given": "Sergio"
+    },
+    {
+     "family": "Nedeltcheva",
+     "given": "Galia Novakova"
+    },
+    {
+     "family": "Di Nitto",
+     "given": "Elisabetta"
+    },
+    {
+     "family": "Blasi",
+     "given": "Lorenzo"
+    },
+    {
+     "family": "Benedetto",
+     "given": "Debora"
+    },
+    {
+     "family": "Niculut",
+     "given": "Laurentiu"
+    },
+    {
+     "family": "Škof",
+     "given": "Igor"
+    }
+   ],
+   "checked_at": "2026-11-02T22:29:27-03:00"
+  },
+  "doi:10.1093/database/baac035": {
+   "scheme": "doi",
+   "value": "10.1093/database/baac035",
+   "ra": "Crossref",
+   "ra_http": 200,
+   "crossref_http": 200,
+   "status": "ok",
+   "response_sha256": "100d3da1551c0eafd31d2d0ccd52adcfc5b9160d52f730b399f8108588e0c865",
+   "title": "A Simple Standard for Sharing Ontological Mappings (SSSOM)",
+   "container": "Database",
+   "type": "journal-article",
+   "publisher": "Oxford University Press (OUP)",
+   "years": [
+    2022
+   ],
+   "volume": "2022",
+   "issue": null,
+   "page": null,
+   "authors": [
+    {
+     "family": "Matentzoglu",
+     "given": "Nicolas"
+    },
+    {
+     "family": "Balhoff",
+     "given": "James P"
+    },
+    {
+     "family": "Bello",
+     "given": "Susan M"
+    },
+    {
+     "family": "Bizon",
+     "given": "Chris"
+    },
+    {
+     "family": "Brush",
+     "given": "Matthew"
+    },
+    {
+     "family": "Callahan",
+     "given": "Tiffany J"
+    },
+    {
+     "family": "Chute",
+     "given": "Christopher G"
+    },
+    {
+     "family": "Duncan",
+     "given": "William D"
+    },
+    {
+     "family": "Evelo",
+     "given": "Chris T"
+    },
+    {
+     "family": "Gabriel",
+     "given": "Davera"
+    },
+    {
+     "family": "Graybeal",
+     "given": "John"
+    },
+    {
+     "family": "Gray",
+     "given": "Alasdair"
+    },
+    {
+     "family": "Gyori",
+     "given": "Benjamin M"
+    },
+    {
+     "family": "Haendel",
+     "given": "Melissa"
+    },
+    {
+     "family": "Harmse",
+     "given": "Henriette"
+    },
+    {
+     "family": "Harris",
+     "given": "Nomi L"
+    },
+    {
+     "family": "Harrow",
+     "given": "Ian"
+    },
+    {
+     "family": "Hegde",
+     "given": "Harshad B"
+    },
+    {
+     "family": "Hoyt",
+     "given": "Amelia L"
+    },
+    {
+     "family": "Hoyt",
+     "given": "Charles T"
+    },
+    {
+     "family": "Jiao",
+     "given": "Dazhi"
+    },
+    {
+     "family": "Jiménez-Ruiz",
+     "given": "Ernesto"
+    },
+    {
+     "family": "Jupp",
+     "given": "Simon"
+    },
+    {
+     "family": "Kim",
+     "given": "Hyeongsik"
+    },
+    {
+     "family": "Koehler",
+     "given": "Sebastian"
+    },
+    {
+     "family": "Liener",
+     "given": "Thomas"
+    },
+    {
+     "family": "Long",
+     "given": "Qinqin"
+    },
+    {
+     "family": "Malone",
+     "given": "James"
+    },
+    {
+     "family": "McLaughlin",
+     "given": "James A"
+    },
+    {
+     "family": "McMurry",
+     "given": "Julie A"
+    },
+    {
+     "family": "Moxon",
+     "given": "Sierra"
+    },
+    {
+     "family": "Munoz-Torres",
+     "given": "Monica C"
+    },
+    {
+     "family": "Osumi-Sutherland",
+     "given": "David"
+    },
+    {
+     "family": "Overton",
+     "given": "James A"
+    },
+    {
+     "family": "Peters",
+     "given": "Bjoern"
+    },
+    {
+     "family": "Putman",
+     "given": "Tim"
+    },
+    {
+     "family": "Queralt-Rosinach",
+     "given": "Núria"
+    },
+    {
+     "family": "Shefchek",
+     "given": "Kent"
+    },
+    {
+     "family": "Solbrig",
+     "given": "Harold"
+    },
+    {
+     "family": "Thessen",
+     "given": "Anne"
+    },
+    {
+     "family": "Tudorache",
+     "given": "Tania"
+    },
+    {
+     "family": "Vasilevsky",
+     "given": "Nicole"
+    },
+    {
+     "family": "Wagner",
+     "given": "Alex H"
+    },
+    {
+     "family": "Mungall",
+     "given": "Christopher J"
+    }
+   ],
+   "checked_at": "2026-11-02T22:28:51-03:00"
+  },
+  "doi:10.1093/database/baac087": {
+   "scheme": "doi",
+   "value": "10.1093/database/baac087",
+   "ra": "Crossref",
+   "ra_http": 200,
+   "crossref_http": 200,
+   "status": "ok",
+   "response_sha256": "2a003e1866824e3ea2a984a98b8adbaccc5e0db2fa8384d21b06e266c5188700",
+   "title": "Ontology Development Kit: a toolkit for building, maintaining and standardizing biomedical ontologies",
+   "container": "Database",
+   "type": "journal-article",
+   "publisher": "Oxford University Press (OUP)",
+   "years": [
+    2022
+   ],
+   "volume": "2022",
+   "issue": null,
+   "page": null,
+   "authors": [
+    {
+     "family": "Matentzoglu",
+     "given": "Nicolas"
+    },
+    {
+     "family": "Goutte-Gattat",
+     "given": "Damien"
+    },
+    {
+     "family": "Tan",
+     "given": "Shawn Zheng Kai"
+    },
+    {
+     "family": "Balhoff",
+     "given": "James P"
+    },
+    {
+     "family": "Carbon",
+     "given": "Seth"
+    },
+    {
+     "family": "Caron",
+     "given": "Anita R"
+    },
+    {
+     "family": "Duncan",
+     "given": "William D"
+    },
+    {
+     "family": "Flack",
+     "given": "Joe E"
+    },
+    {
+     "family": "Haendel",
+     "given": "Melissa"
+    },
+    {
+     "family": "Harris",
+     "given": "Nomi L"
+    },
+    {
+     "family": "Hogan",
+     "given": "William R"
+    },
+    {
+     "family": "Hoyt",
+     "given": "Charles Tapley"
+    },
+    {
+     "family": "Jackson",
+     "given": "Rebecca C"
+    },
+    {
+     "family": "Kim",
+     "given": "HyeongSik"
+    },
+    {
+     "family": "Kir",
+     "given": "Huseyin"
+    },
+    {
+     "family": "Larralde",
+     "given": "Martin"
+    },
+    {
+     "family": "McMurry",
+     "given": "Julie A"
+    },
+    {
+     "family": "Overton",
+     "given": "James A"
+    },
+    {
+     "family": "Peters",
+     "given": "Bjoern"
+    },
+    {
+     "family": "Pilgrim",
+     "given": "Clare"
+    },
+    {
+     "family": "Stefancsik",
+     "given": "Ray"
+    },
+    {
+     "family": "Robb",
+     "given": "Sofia MC"
+    },
+    {
+     "family": "Toro",
+     "given": "Sabrina"
+    },
+    {
+     "family": "Vasilevsky",
+     "given": "Nicole A"
+    },
+    {
+     "family": "Walls",
+     "given": "Ramona"
+    },
+    {
+     "family": "Mungall",
+     "given": "Christopher J"
+    },
+    {
+     "family": "Osumi-Sutherland",
+     "given": "David"
+    }
+   ],
+   "checked_at": "2026-11-02T22:28:57-03:00"
+  },
+  "doi:10.1093/nar/gky1036": {
+   "scheme": "doi",
+   "value": "10.1093/nar/gky1036",
+   "ra": "Crossref",
+   "ra_http": 200,
+   "crossref_http": 200,
+   "status": "ok",
+   "response_sha256": "c7b232286b2fe489e5fb15417126595afcb9b9822399be3621120346b4f4ac33",
+   "title": "ECO, the Evidence &amp; Conclusion Ontology: community standard for evidence information",
+   "container": "Nucleic Acids Research",
+   "type": "journal-article",
+   "publisher": "Oxford University Press (OUP)",
+   "years": [
+    2018,
+    2019
+   ],
+   "volume": "47",
+   "issue": "D1",
+   "page": "D1186-D1194",
+   "authors": [
+    {
+     "family": "Giglio",
+     "given": "Michelle"
+    },
+    {
+     "family": "Tauber",
+     "given": "Rebecca"
+    },
+    {
+     "family": "Nadendla",
+     "given": "Suvarna"
+    },
+    {
+     "family": "Munro",
+     "given": "James"
+    },
+    {
+     "family": "Olley",
+     "given": "Dustin"
+    },
+    {
+     "family": "Ball",
+     "given": "Shoshannah"
+    },
+    {
+     "family": "Mitraka",
+     "given": "Elvira"
+    },
+    {
+     "family": "Schriml",
+     "given": "Lynn M"
+    },
+    {
+     "family": "Gaudet",
+     "given": "Pascale"
+    },
+    {
+     "family": "Hobbs",
+     "given": "Elizabeth T"
+    },
+    {
+     "family": "Erill",
+     "given": "Ivan"
+    },
+    {
+     "family": "Siegele",
+     "given": "Deborah A"
+    },
+    {
+     "family": "Hu",
+     "given": "James C"
+    },
+    {
+     "family": "Mungall",
+     "given": "Chris"
+    },
+    {
+     "family": "Chibucos",
+     "given": "Marcus C"
+    }
+   ],
+   "checked_at": "2026-11-02T22:28:55-03:00"
+  },
+  "doi:10.1109/cloud.2018.00053": {
+   "scheme": "doi",
+   "value": "10.1109/cloud.2018.00053",
+   "ra": "Crossref",
+   "ra_http": 200,
+   "crossref_http": 200,
+   "status": "ok",
+   "response_sha256": "ece5ce47a125feab5f276632f0c98fbee5738f02c30b2a73399f44e048d5a9f5",
+   "title": "Specifying Semantic Interoperability between Heterogeneous Cloud Resources with the FCLOUDS Formal Language",
+   "container": "2018 IEEE 11th International Conference on Cloud Computing (CLOUD)",
+   "type": "proceedings-article",
+   "publisher": "IEEE",
+   "years": [
+    2018
+   ],
+   "volume": null,
+   "issue": null,
+   "page": "367-374",
+   "authors": [
+    {
+     "family": "Challita",
+     "given": "Stephanie"
+    },
+    {
+     "family": "Zalila",
+     "given": "Faiez"
+    },
+    {
+     "family": "Merle",
+     "given": "Philippe"
+    }
+   ],
+   "checked_at": "2026-11-02T22:29:26-03:00"
+  },
+  "doi:10.1109/cloud53861.2021.00014": {
+   "scheme": "doi",
+   "value": "10.1109/cloud53861.2021.00014",
+   "ra": "Crossref",
+   "ra_http": 200,
+   "crossref_http": 200,
+   "status": "ok",
+   "response_sha256": "c54ed87f73d387896c9d4ae346a2ee48dba7a91907b5f9dffd24a66c700ebf8b",
+   "title": "Cloud Property Graph: Connecting Cloud Security Assessments with Static Code Analysis",
+   "container": "2021 IEEE 14th International Conference on Cloud Computing (CLOUD)",
+   "type": "proceedings-article",
+   "publisher": "IEEE",
+   "years": [
+    2021
+   ],
+   "volume": null,
+   "issue": null,
+   "page": "13-19",
+   "authors": [
+    {
+     "family": "Banse",
+     "given": "Christian"
+    },
+    {
+     "family": "Kunz",
+     "given": "Immanuel"
+    },
+    {
+     "family": "Schneider",
+     "given": "Angelika"
+    },
+    {
+     "family": "Weiss",
+     "given": "Konrad"
+    }
+   ],
+   "checked_at": "2026-11-02T22:25:18-03:00"
+  },
+  "doi:10.1109/saner53432.2022.00057": {
+   "scheme": "doi",
+   "value": "10.1109/saner53432.2022.00057",
+   "ra": "Crossref",
+   "ra_http": 200,
+   "crossref_http": 200,
+   "status": "ok",
+   "response_sha256": "99a1d7401b81d9cb310776153d5d49fc7adcda63f2436982bfec78aa5d0d36ab",
+   "title": "KGSecConfig: A Knowledge Graph Based Approach for Secured Container Orchestrator Configuration",
+   "container": "2022 IEEE International Conference on Software Analysis, Evolution and Reengineering (SANER)",
+   "type": "proceedings-article",
+   "publisher": "IEEE",
+   "years": [
+    2022
+   ],
+   "volume": null,
+   "issue": null,
+   "page": "420-431",
+   "authors": [
+    {
+     "family": "Ul Haque",
+     "given": "Mubin"
+    },
+    {
+     "family": "Kholoosi",
+     "given": "M. Mehdi"
+    },
+    {
+     "family": "Babar",
+     "given": "M. Ali"
+    }
+   ],
+   "checked_at": "2026-11-02T22:29:00-03:00"
+  },
+  "doi:10.1134/s1054661826700367": {
+   "scheme": "doi",
+   "value": "10.1134/s1054661826700367",
+   "ra": "Crossref",
+   "ra_http": 200,
+   "crossref_http": 200,
+   "status": "ok",
+   "response_sha256": "5348f6db4fd7804102a0746e4347a3ce53f155e6c46d33d2f940d9822ade0618",
+   "title": "Toward a Unified Cloud Resource Ontology for Multicloud Security",
+   "container": "Pattern Recognition and Image Analysis",
+   "type": "journal-article",
+   "publisher": "Pleiades Publishing Ltd",
+   "years": [
+    2026
+   ],
+   "volume": "36",
+   "issue": "2",
+   "page": "558-567",
+   "authors": [
+    {
+     "family": "Kalinin",
+     "given": "Nikolai Arkadyevich"
+    },
+    {
+     "family": "Skvortsov",
+     "given": "Nikolay Alekseyevich"
+    }
+   ],
+   "checked_at": "2026-11-02T22:25:17-03:00"
+  },
+  "doi:10.1145/3405962.3405979": {
+   "scheme": "doi",
+   "value": "10.1145/3405962.3405979",
+   "ra": "Crossref",
+   "ra_http": 200,
+   "crossref_http": 200,
+   "status": "ok",
+   "response_sha256": "743de6104de2426180defcd655bf3ddc7378ad463c5820eb16ea663954c00030",
+   "title": "Towards Semantic Detection of Smells in Cloud Infrastructure Code",
+   "container": "Proceedings of the 10th International Conference on Web Intelligence, Mining and Semantics",
+   "type": "proceedings-article",
+   "publisher": "ACM",
+   "years": [
+    2020
+   ],
+   "volume": null,
+   "issue": null,
+   "page": "63-67",
+   "authors": [
+    {
+     "family": "Kumara",
+     "given": "Indika"
+    },
+    {
+     "family": "Vasileiou",
+     "given": "Zoe"
+    },
+    {
+     "family": "Meditskos",
+     "given": "Georgios"
+    },
+    {
+     "family": "Tamburri",
+     "given": "Damian A."
+    },
+    {
+     "family": "Van Den Heuvel",
+     "given": "Willem-Jan"
+    },
+    {
+     "family": "Karakostas",
+     "given": "Anastasios"
+    },
+    {
+     "family": "Vrochidis",
+     "given": "Stefanos"
+    },
+    {
+     "family": "Kompatsiaris",
+     "given": "Ioannis"
+    }
+   ],
+   "checked_at": "2026-11-02T22:29:23-03:00"
+  },
+  "doi:10.1145/3555776.3577600": {
+   "scheme": "doi",
+   "value": "10.1145/3555776.3577600",
+   "ra": "Crossref",
+   "ra_http": 200,
+   "crossref_http": 200,
+   "status": "ok",
+   "response_sha256": "575db11920dca2321a7311a2e50a61ed0cea5b02d638a42845a09ddd05dda779",
+   "title": "A Semantic Evidence-based Approach to Continuous Cloud Service Certification",
+   "container": "Proceedings of the 38th ACM/SIGAPP Symposium on Applied Computing",
+   "type": "proceedings-article",
+   "publisher": "ACM",
+   "years": [
+    2023
+   ],
+   "volume": null,
+   "issue": null,
+   "page": "24-33",
+   "authors": [
+    {
+     "family": "Banse",
+     "given": "Christian"
+    },
+    {
+     "family": "Kunz",
+     "given": "Immanuel"
+    },
+    {
+     "family": "Haas",
+     "given": "Nico"
+    },
+    {
+     "family": "Schneider",
+     "given": "Angelika"
+    }
+   ],
+   "checked_at": "2026-11-02T22:25:20-03:00"
+  },
+  "doi:10.1145/3652620.3687795": {
+   "scheme": "doi",
+   "value": "10.1145/3652620.3687795",
+   "ra": "Crossref",
+   "ra_http": 200,
+   "crossref_http": 200,
+   "status": "ok",
+   "response_sha256": "ab04e6ec06cff070fb6f360c391b947cbfc6086a02b6c7508e081d88a130ed6b",
+   "title": "CertGraph: Towards a Comprehensive Knowledge Graph for Cloud Security Certifications",
+   "container": "Proceedings of the ACM/IEEE 27th International Conference on Model Driven Engineering Languages and Systems",
+   "type": "proceedings-article",
+   "publisher": "ACM",
+   "years": [
+    2024
+   ],
+   "volume": null,
+   "issue": null,
+   "page": "76-77",
+   "authors": [
+    {
+     "family": "Schöberl",
+     "given": "Stefan"
+    },
+    {
+     "family": "Banse",
+     "given": "Christian"
+    },
+    {
+     "family": "Geist",
+     "given": "Verena"
+    },
+    {
+     "family": "Kunz",
+     "given": "Immanuel"
+    },
+    {
+     "family": "Pinzger",
+     "given": "Martin"
+    }
+   ],
+   "checked_at": "2026-11-02T22:25:21-03:00"
+  },
+  "doi:10.1145/3694715.3695974": {
+   "scheme": "doi",
+   "value": "10.1145/3694715.3695974",
+   "ra": "Crossref",
+   "ra_http": 200,
+   "crossref_http": 200,
+   "status": "ok",
+   "response_sha256": "d91a2d451a90d6af0d0c1eadbc1db861d9d07bfc9c8dbcfc01ecc2ed90f48f86",
+   "title": "Unearthing Semantic Checks for Cloud Infrastructure-as-Code Programs",
+   "container": "Proceedings of the ACM SIGOPS 30th Symposium on Operating Systems Principles",
+   "type": "proceedings-article",
+   "publisher": "ACM",
+   "years": [
+    2024
+   ],
+   "volume": null,
+   "issue": null,
+   "page": "574-589",
+   "authors": [
+    {
+     "family": "Qiu",
+     "given": "Yiming"
+    },
+    {
+     "family": "Kon",
+     "given": "Patrick Tser Jern"
+    },
+    {
+     "family": "Beckett",
+     "given": "Ryan"
+    },
+    {
+     "family": "Chen",
+     "given": "Ang"
+    }
+   ],
+   "checked_at": "2026-11-02T22:28:58-03:00"
+  },
+  "doi:10.1145/3786582.3786841": {
+   "scheme": "doi",
+   "value": "10.1145/3786582.3786841",
+   "ra": "Crossref",
+   "ra_http": 200,
+   "crossref_http": 200,
+   "status": "ok",
+   "response_sha256": "58a7b9758a2968d1317d06fc6a7facfa523fe2e33f6ab49620ce487fc0848fcc",
+   "title": "Automating Terraform Code Migration through Provider Evolution Knowledge",
+   "container": "Proceedings of the IEEE/ACM 48th International Conference on Software Engineering",
+   "type": "proceedings-article",
+   "publisher": "ACM",
+   "years": [
+    2026
+   ],
+   "volume": null,
+   "issue": null,
+   "page": "211-215",
+   "authors": [
+    {
+     "family": "Gupta",
+     "given": "Pranjal"
+    },
+    {
+     "family": "Aggarwal",
+     "given": "Pooja"
+    },
+    {
+     "family": "Paulovicks",
+     "given": "Brent"
+    },
+    {
+     "family": "Mohapatra",
+     "given": "Prateeti"
+    },
+    {
+     "family": "Lee",
+     "given": "Rong"
+    },
+    {
+     "family": "Sheinin",
+     "given": "Vadim"
+    }
+   ],
+   "checked_at": "2026-11-02T22:28:59-03:00"
+  },
+  "doi:10.1504/ijwgs.2015.070972": {
+   "scheme": "doi",
+   "value": "10.1504/ijwgs.2015.070972",
+   "ra": "Crossref",
+   "ra_http": 200,
+   "crossref_http": 200,
+   "status": "ok",
+   "response_sha256": "d899f5fcc049c0c5145e91d9732add6599d274c278004e9b5cb405cab0cec181",
+   "title": "An OWL ontology to support cloud portability and interoperability",
+   "container": "International Journal of Web and Grid Services",
+   "type": "journal-article",
+   "publisher": "Inderscience Publishers",
+   "years": [
+    2015
+   ],
+   "volume": "11",
+   "issue": "3",
+   "page": "303",
+   "authors": [
+    {
+     "family": "Martino",
+     "given": "Beniamino Di"
+    },
+    {
+     "family": "Cretella",
+     "given": "Giuseppina"
+    },
+    {
+     "family": "Esposito",
+     "given": "Antonio"
+    },
+    {
+     "family": "Carta",
+     "given": "Graziella"
+    }
+   ],
+   "checked_at": "2026-11-02T22:27:29-03:00"
+  },
+  "doi:10.18517/ijaseit.14.6.19861": {
+   "scheme": "doi",
+   "value": "10.18517/ijaseit.14.6.19861",
+   "ra": "Crossref",
+   "ra_http": 200,
+   "crossref_http": 200,
+   "status": "ok",
+   "response_sha256": "06a536d248c46833831b23b851dbb1f4c2189a183e9828c4ebbdd4bfdb3e24df",
+   "title": "Semantic Interoperability in Multi-Cloud Platforms: A Reference Architecture Utilizing an Ontology-Based Approach",
+   "container": "International Journal on Advanced Science, Engineering and Information Technology",
+   "type": "journal-article",
+   "publisher": "Insight Society",
+   "years": [
+    2024
+   ],
+   "volume": "14",
+   "issue": "6",
+   "page": "1967-1975",
+   "authors": [
+    {
+     "family": "Hamdan",
+     "given": "Norazian M"
+    },
+    {
+     "family": "Admodisastro",
+     "given": "Novia"
+    },
+    {
+     "family": "Osman",
+     "given": "Hafeez Bin"
+    },
+    {
+     "family": "Bin Muhammad",
+     "given": "Muhammad Sufri"
+    }
+   ],
+   "checked_at": "2026-11-02T22:29:28-03:00"
+  },
+  "doi:10.3233/978-1-61499-322-3-66": {
+   "scheme": "doi",
+   "value": "10.3233/978-1-61499-322-3-66",
+   "ra": "Crossref",
+   "ra_http": 200,
+   "crossref_http": 200,
+   "status": "ok",
+   "response_sha256": "656edbd9c8aafaf08b44544603474214e614f11f7967f8b93d8532dec35b6c29",
+   "title": "Semantic Technology for Supporting Software Portability and Interoperability in the Cloud &amp;ndash; Contributions from the mOSAIC Project",
+   "container": "Advances in Parallel Computing",
+   "type": "book-chapter",
+   "publisher": "IOS Press",
+   "years": [
+    2013
+   ],
+   "volume": null,
+   "issue": null,
+   "page": null,
+   "authors": [
+    {
+     "family": "Di Martino Beniamino",
+     "given": ""
+    },
+    {
+     "family": "Cretella Giuseppina",
+     "given": ""
+    }
+   ],
+   "checked_at": "2026-11-02T22:27:28-03:00"
+  },
+  "doi:10.3233/ao-210256": {
+   "scheme": "doi",
+   "value": "10.3233/ao-210256",
+   "ra": "Crossref",
+   "ra_http": 200,
+   "crossref_http": 200,
+   "status": "ok",
+   "response_sha256": "8a8e35af9dd65b89a44710d1aa63419f8c86c194ed2f4b0f56a0ca0278a1af93",
+   "title": "UFO: Unified Foundational Ontology",
+   "container": "Applied Ontology",
+   "type": "journal-article",
+   "publisher": "SAGE Publications",
+   "years": [
+    2022
+   ],
+   "volume": "17",
+   "issue": "1",
+   "page": "167-210",
+   "authors": [
+    {
+     "family": "Guizzardi",
+     "given": "Giancarlo"
+    },
+    {
+     "family": "Botti Benevides",
+     "given": "Alessander"
+    },
+    {
+     "family": "Fonseca",
+     "given": "Claudenir M."
+    },
+    {
+     "family": "Porello",
+     "given": "Daniele"
+    },
+    {
+     "family": "Almeida",
+     "given": "João Paulo A."
+    },
+    {
+     "family": "Prince Sales",
+     "given": "Tiago"
+    }
+   ],
+   "checked_at": "2026-11-02T22:29:18-03:00"
+  },
+  "doi:10.3233/ao-210259": {
+   "scheme": "doi",
+   "value": "10.3233/ao-210259",
+   "ra": "Crossref",
+   "ra_http": 200,
+   "crossref_http": 200,
+   "status": "ok",
+   "response_sha256": "32b9b458982ab69b45eb4dedcae5dc2bf0eacce664cc4bf43789eaee0c656f20",
+   "title": "DOLCE: A descriptive ontology for linguistic and cognitive engineering1",
+   "container": "Applied Ontology",
+   "type": "journal-article",
+   "publisher": "SAGE Publications",
+   "years": [
+    2022
+   ],
+   "volume": "17",
+   "issue": "1",
+   "page": "45-69",
+   "authors": [
+    {
+     "family": "Borgo",
+     "given": "Stefano"
+    },
+    {
+     "family": "Ferrario",
+     "given": "Roberta"
+    },
+    {
+     "family": "Gangemi",
+     "given": "Aldo"
+    },
+    {
+     "family": "Guarino",
+     "given": "Nicola"
+    },
+    {
+     "family": "Masolo",
+     "given": "Claudio"
+    },
+    {
+     "family": "Porello",
+     "given": "Daniele"
+    },
+    {
+     "family": "Sanfilippo",
+     "given": "Emilio M."
+    },
+    {
+     "family": "Vieu",
+     "given": "Laure"
+    }
+   ],
+   "checked_at": "2026-11-02T22:29:17-03:00"
+  },
+  "doi:10.3233/sw-190379": {
+   "scheme": "doi",
+   "value": "10.3233/sw-190379",
+   "ra": "Crossref",
+   "ra_http": 200,
+   "crossref_http": 200,
+   "status": "ok",
+   "response_sha256": "6771b142a18997401778012e9a16c92f21a44f8a634bed86ea5770bb3ea7ceac",
+   "title": "Are we better off with just one ontology on the Web?",
+   "container": "Semantic Web",
+   "type": "journal-article",
+   "publisher": "SAGE Publications",
+   "years": [
+    2020
+   ],
+   "volume": "11",
+   "issue": "1",
+   "page": "87-99",
+   "authors": [
+    {
+     "family": "Haller",
+     "given": "Armin"
+    },
+    {
+     "family": "Polleres",
+     "given": "Axel"
+    }
+   ],
+   "checked_at": "2026-11-02T22:29:02-03:00"
+  },
+  "doi:10.3233/sw-2011-0028": {
+   "scheme": "doi",
+   "value": "10.3233/sw-2011-0028",
+   "ra": "Crossref",
+   "ra_http": 200,
+   "crossref_http": 200,
+   "status": "ok",
+   "response_sha256": "a1540c72a5b5a3dedd163eba7c727116ce1a5cc7617390fcef4177fe97ee8992",
+   "title": "The Alignment API 4.0",
+   "container": "Semantic Web",
+   "type": "journal-article",
+   "publisher": "SAGE Publications",
+   "years": [
+    2011
+   ],
+   "volume": "2",
+   "issue": "1",
+   "page": "3-10",
+   "authors": [
+    {
+     "family": "David",
+     "given": "Jérôme"
+    },
+    {
+     "family": "Euzenat",
+     "given": "Jérôme"
+    },
+    {
+     "family": "Scharffe",
+     "given": "François"
+    },
+    {
+     "family": "Trojahn dos Santos",
+     "given": "Cássia"
+    }
+   ],
+   "checked_at": "2026-11-02T22:28:52-03:00"
+  },
+  "doi:10.3390/fi13120302": {
+   "scheme": "doi",
+   "value": "10.3390/fi13120302",
+   "ra": "Crossref",
+   "ra_http": 200,
+   "crossref_http": 200,
+   "status": "ok",
+   "response_sha256": "18f6b921f516afe766c51d61d8fe574e99b6b3a710af909d01187d1da7316f8f",
+   "title": "Ontologies in Cloud Computing—Review and Future Directions",
+   "container": "Future Internet",
+   "type": "journal-article",
+   "publisher": "MDPI AG",
+   "years": [
+    2021
+   ],
+   "volume": "13",
+   "issue": "12",
+   "page": "302",
+   "authors": [
+    {
+     "family": "Agbaegbu",
+     "given": "JohnBosco"
+    },
+    {
+     "family": "Arogundade",
+     "given": "Oluwasefunmi Tale"
+    },
+    {
+     "family": "Misra",
+     "given": "Sanjay"
+    },
+    {
+     "family": "Damaševičius",
+     "given": "Robertas"
+    }
+   ],
+   "checked_at": "2026-11-02T22:29:30-03:00"
+  },
+  "doi:10.4018/ijswis.392474": {
+   "scheme": "doi",
+   "value": "10.4018/ijswis.392474",
+   "ra": "Crossref",
+   "ra_http": 200,
+   "crossref_http": 200,
+   "status": "ok",
+   "response_sha256": "fe5a410b45f5b8c4cdc28955c46d77742b0a72b41149e2330d8199ceb4453929",
+   "title": "CloudOntoViz",
+   "container": "International Journal on Semantic Web and Information Systems",
+   "type": "journal-article",
+   "publisher": "IGI Global Scientific Publishing",
+   "years": [
+    2025
+   ],
+   "volume": "21",
+   "issue": "1",
+   "page": "1-24",
+   "authors": [
+    {
+     "family": "Di Martino",
+     "given": "Beniamino"
+    },
+    {
+     "family": "Esposito",
+     "given": "Antonio"
+    },
+    {
+     "family": "Fiorentino",
+     "given": "Francesco"
+    }
+   ],
+   "checked_at": "2026-11-02T22:27:30-03:00"
+  },
+  "doi:10.4108/icst.collaboratecom.2012.250650": {
+   "scheme": "doi",
+   "value": "10.4108/icst.collaboratecom.2012.250650",
+   "ra": "Crossref",
+   "ra_http": 200,
+   "crossref_http": 200,
+   "status": "ok",
+   "response_sha256": "1cc5f146b6854a7c17cd2c64efe43ecaf972cc37f0898b343888fd31cbbab0ae",
+   "title": "An Ontology-based System for Cloud Infrastructure Services’ Discovery",
+   "container": "Proceedings of the 8th IEEE International Conference on Collaborative Computing: Networking, Applications and Worksharing",
+   "type": "proceedings-article",
+   "publisher": "IEEE",
+   "years": [
+    2012
+   ],
+   "volume": null,
+   "issue": null,
+   "page": null,
+   "authors": [
+    {
+     "family": "Nepal",
+     "given": "Surya"
+    },
+    {
+     "family": "Zhang",
+     "given": "Miranda"
+    },
+    {
+     "family": "Ranjan",
+     "given": "Rajiv"
+    },
+    {
+     "family": "Haller",
+     "given": "Armin"
+    },
+    {
+     "family": "Georgakopoulos",
+     "given": "Dimitrios"
+    }
+   ],
+   "checked_at": "2026-11-02T22:27:31-03:00"
+  },
+  "doi:10.5753/webmedia.2025.16102": {
+   "scheme": "doi",
+   "value": "10.5753/webmedia.2025.16102",
+   "ra": "Crossref",
+   "ra_http": 200,
+   "crossref_http": 200,
+   "status": "ok",
+   "response_sha256": "dde474fa4671513020dab6db2f9c6ecef9a7d562a9cece3abda9b7ecf6b9dada",
+   "title": "Automating Cloud Infrastructure Provisioning with Semantically-Enriched Large Language Models",
+   "container": "Proceedings of the 31st Brazilian Symposium on Multimedia and the Web (WebMedia 2025)",
+   "type": "proceedings-article",
+   "publisher": "Sociedade Brasileira de Computação - SBC",
+   "years": [
+    2025
+   ],
+   "volume": null,
+   "issue": null,
+   "page": "77-85",
+   "authors": [
+    {
+     "family": "Paulo",
+     "given": "Weslley"
+    },
+    {
+     "family": "Vasconcelos",
+     "given": "Breno"
+    },
+    {
+     "family": "Ferraz",
+     "given": "Carlos"
+    }
+   ],
+   "checked_at": "2026-11-02T22:29:22-03:00"
+  },
+  "doi:10.7551/mitpress/9780262527811.001.0001": {
+   "scheme": "doi",
+   "value": "10.7551/mitpress/9780262527811.001.0001",
+   "ra": "Crossref",
+   "ra_http": 200,
+   "crossref_http": 200,
+   "status": "ok",
+   "response_sha256": "12c67c1254478daf92078b8b98e1d3d73bcf09d0a4d79fe009f47a57193c49ee",
+   "title": "Building Ontologies with Basic Formal Ontology",
+   "container": "",
+   "type": "edited-book",
+   "publisher": "The MIT Press",
+   "years": [
+    2015
+   ],
+   "volume": null,
+   "issue": null,
+   "page": null,
+   "authors": [
+    {
+     "family": "Arp",
+     "given": "Robert"
+    },
+    {
+     "family": "Smith",
+     "given": "Barry"
+    },
+    {
+     "family": "Spear",
+     "given": "Andrew D."
+    }
+   ],
+   "checked_at": "2026-11-02T22:29:03-03:00"
+  },
+  "isbn:9780262527811": {
+   "scheme": "isbn",
+   "value": "978-0-262-52781-1",
+   "status": "ok",
+   "method": "dígito verificador ISBN-13",
+   "checked_at": "2026-11-02T22:29:03-03:00"
+  },
+  "isbn:9788360810224": {
+   "scheme": "isbn",
+   "value": "978-83-60810-22-4",
+   "status": "ok",
+   "method": "dígito verificador ISBN-13",
+   "checked_at": "2026-11-02T22:26:56-03:00"
+  },
+  "std:DMTF DSP0263 2.0.0 (2016-07-27)": {
+   "scheme": "std",
+   "value": "DMTF DSP0263 2.0.0 (2016-07-27)",
+   "status": "ok",
+   "method": "formato; vale só com wayback na mesma entrada",
+   "checked_at": "2026-11-02T22:28:46-03:00"
+  },
+  "std:ISO/IEC 21838-2:2021": {
+   "scheme": "std",
+   "value": "ISO/IEC 21838-2:2021",
+   "status": "ok",
+   "method": "formato; vale só com wayback na mesma entrada",
+   "checked_at": "2026-11-02T22:29:03-03:00"
+  },
+  "std:OASIS TOSCA Simple Profile in YAML 1.3": {
+   "scheme": "std",
+   "value": "OASIS TOSCA Simple Profile in YAML 1.3",
+   "status": "ok",
+   "method": "formato; vale só com wayback na mesma entrada",
+   "checked_at": "2026-11-02T22:28:35-03:00"
+  },
+  "std:OASIS TOSCA Version 2.0 (OASIS Standard, 2025-07-22)": {
+   "scheme": "std",
+   "value": "OASIS TOSCA Version 2.0 (OASIS Standard, 2025-07-22)",
+   "status": "ok",
+   "method": "formato; vale só com wayback na mesma entrada",
+   "checked_at": "2026-11-02T22:28:04-03:00"
+  },
+  "wayback:http://web.archive.org/web/20200219205706/http://alignapi.gforge.inria.fr:80/edoal.html": {
+   "scheme": "wayback",
+   "value": "http://web.archive.org/web/20200219205706/http://alignapi.gforge.inria.fr:80/edoal.html",
+   "status": "ok",
+   "http": 200,
+   "snapshot": "20200219205706",
+   "final_host": "web.archive.org",
+   "checked_at": "2026-11-02T22:28:54-03:00"
+  },
+  "wayback:http://web.archive.org/web/20240620031012/https://annals-csis.org/proceedings/2011/pliks/154.pdf": {
+   "scheme": "wayback",
+   "value": "http://web.archive.org/web/20240620031012/https://annals-csis.org/proceedings/2011/pliks/154.pdf",
+   "status": "ok",
+   "http": 200,
+   "snapshot": "20240620031012",
+   "final_host": "web.archive.org",
+   "checked_at": "2026-11-02T22:30:20-03:00"
+  },
+  "wayback:http://web.archive.org/web/20240810052221/https://ieeexplore.ieee.org/document/6450944": {
+   "scheme": "wayback",
+   "value": "http://web.archive.org/web/20240810052221/https://ieeexplore.ieee.org/document/6450944",
+   "status": "ok",
+   "http": 200,
+   "snapshot": "20240810052221",
+   "final_host": "web.archive.org",
+   "checked_at": "2026-11-02T22:30:26-03:00"
+  },
+  "wayback:http://web.archive.org/web/20260214010110/https://oeg-upm.github.io/devops-infra/index.html": {
+   "scheme": "wayback",
+   "value": "http://web.archive.org/web/20260214010110/https://oeg-upm.github.io/devops-infra/index.html",
+   "status": "ok",
+   "http": 200,
+   "snapshot": "20260214010110",
+   "final_host": "web.archive.org",
+   "checked_at": "2026-11-02T22:25:23-03:00"
+  },
+  "wayback:http://web.archive.org/web/20260520135208/https://github.com/cartography-cncf/cartography/discussions/1579": {
+   "scheme": "wayback",
+   "value": "http://web.archive.org/web/20260520135208/https://github.com/cartography-cncf/cartography/discussions/1579",
+   "status": "ok",
+   "http": 200,
+   "snapshot": "20260520135208",
+   "final_host": "web.archive.org",
+   "checked_at": "2026-11-02T22:29:59-03:00"
+  },
+  "wayback:http://web.archive.org/web/20260804230727/https://www.cloudquery.io/": {
+   "scheme": "wayback",
+   "value": "http://web.archive.org/web/20260804230727/https://www.cloudquery.io/",
+   "status": "ok",
+   "http": 200,
+   "snapshot": "20260804230727",
+   "final_host": "web.archive.org",
+   "checked_at": "2026-11-02T22:30:05-03:00"
+  },
+  "wayback:http://web.archive.org/web/20260909064952/https://steampipe.io/": {
+   "scheme": "wayback",
+   "value": "http://web.archive.org/web/20260909064952/https://steampipe.io/",
+   "status": "ok",
+   "http": 200,
+   "snapshot": "20260909064952",
+   "final_host": "web.archive.org",
+   "checked_at": "2026-11-02T22:30:14-03:00"
+  },
+  "wayback:http://web.archive.org/web/20261009103055/https://docs.oasis-open.org/tosca/TOSCA-Simple-Profile-YAML/v1.3/os/TOSCA-Simple-Profile-YAML-v1.3-os.html": {
+   "scheme": "wayback",
+   "value": "http://web.archive.org/web/20261009103055/https://docs.oasis-open.org/tosca/TOSCA-Simple-Profile-YAML/v1.3/os/TOSCA-Simple-Profile-YAML-v1.3-os.html",
+   "status": "ok",
+   "http": 200,
+   "snapshot": "20261009103055",
+   "final_host": "web.archive.org",
+   "checked_at": "2026-11-02T22:28:45-03:00"
+  },
+  "wayback:http://web.archive.org/web/20261011095918/https://www.dmtf.org/sites/default/files/standards/documents/DSP0263_2.0.0.pdf": {
+   "scheme": "wayback",
+   "value": "http://web.archive.org/web/20261011095918/https://www.dmtf.org/sites/default/files/standards/documents/DSP0263_2.0.0.pdf",
+   "status": "ok",
+   "http": 200,
+   "snapshot": "20261011095918",
+   "final_host": "web.archive.org",
+   "checked_at": "2026-11-02T22:28:49-03:00"
+  },
+  "wayback:http://web.archive.org/web/20261014083059/https://nemo-ufes.github.io/gufo/": {
+   "scheme": "wayback",
+   "value": "http://web.archive.org/web/20261014083059/https://nemo-ufes.github.io/gufo/",
+   "status": "ok",
+   "http": 200,
+   "snapshot": "20261014083059",
+   "final_host": "web.archive.org",
+   "checked_at": "2026-11-02T22:29:21-03:00"
+  },
+  "wayback:http://web.archive.org/web/20261016043138/https://schema.ocsf.io/": {
+   "scheme": "wayback",
+   "value": "http://web.archive.org/web/20261016043138/https://schema.ocsf.io/",
+   "status": "ok",
+   "http": 200,
+   "snapshot": "20261016043138",
+   "final_host": "web.archive.org",
+   "checked_at": "2026-11-02T22:28:50-03:00"
+  },
+  "wayback:http://web.archive.org/web/20261024113947/https://docs.oasis-open.org/tosca/TOSCA/v2.0/TOSCA-v2.0.html": {
+   "scheme": "wayback",
+   "value": "http://web.archive.org/web/20261024113947/https://docs.oasis-open.org/tosca/TOSCA/v2.0/TOSCA-v2.0.html",
+   "status": "ok",
+   "http": 200,
+   "snapshot": "20261024113947",
+   "final_host": "web.archive.org",
+   "checked_at": "2026-11-02T22:30:31-03:00"
+  },
+  "wayback:http://web.archive.org/web/20261025074801/https://www.iso.org/standard/74572.html": {
+   "scheme": "wayback",
+   "value": "http://web.archive.org/web/20261025074801/https://www.iso.org/standard/74572.html",
+   "status": "ok",
+   "http": 200,
+   "snapshot": "20261025074801",
+   "final_host": "web.archive.org",
+   "checked_at": "2026-11-02T22:29:15-03:00"
+  }
+ }
+}

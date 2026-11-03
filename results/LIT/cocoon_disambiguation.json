@@ -1,0 +1,46 @@
+{
+ "schema": "bo.lit.cocoon_disambiguation/1",
+ "module": "LIT",
+ "edited_at": "2026-11-02T23:40:00-03:00",
+ "question": "O PDF de Kalinin e Skvortsov e a revisão R4 citam entradas distintas para o CoCoOn.",
+ "resolution": "São duas obras distintas com o mesmo nome de ontologia: a versão de 2012 (CollaborateCom, Miranda Zhang et al., descoberta de serviços IaaS) é a que Kalinin e Skvortsov citam; a versão de 2019 (ISWC Resources, Qian Zhang, Haller e Wang, comparação de preço e desempenho de IaaS) é a que a R4 cita. As duas entram no related.bib.",
+ "entries": [
+  {
+   "bibkey": "zhang2012cocoon",
+   "authors": [
+    "Zhang, Miranda",
+    "Ranjan, Rajiv",
+    "Haller, Armin",
+    "Georgakopoulos, Dimitrios",
+    "Menzel, Michael",
+    "Nepal, Surya"
+   ],
+   "first_author_given": "Miranda",
+   "year": "2012",
+   "venue": "8th International Conference on Collaborative Computing: Networking, Applications and Worksharing (CollaborateCom 2012)",
+   "venue_short": "CollaborateCom 2012",
+   "pages": "524--530",
+   "doi": "10.4108/icst.collaboratecom.2012.250650",
+   "title": "An Ontology-based System for Cloud Infrastructure Services' Discovery",
+   "cited_by": "Kalinin e Skvortsov 2026, referência [16] (p. 567)",
+   "metadata_note": "authors: o registro ICST no Crossref lista 5 autores (Nepal primeiro, sem Menzel) e não tem páginas; a lista de 6 autores e as páginas 524--530 vêm do IEEE Xplore (documento 6450944), que é a forma citada por Kalinin e Skvortsov"
+  },
+  {
+   "bibkey": "zhang2019cocoon",
+   "authors": [
+    "Zhang, Qian",
+    "Haller, Armin",
+    "Wang, Qing"
+   ],
+   "first_author_given": "Qian",
+   "year": "2019",
+   "venue": "The Semantic Web -- ISWC 2019 (Resources Track)",
+   "venue_short": "ISWC 2019 Resources",
+   "pages": "325--341",
+   "doi": "10.1007/978-3-030-30796-7_21",
+   "title": "CoCoOn: Cloud Computing Ontology for IaaS Price and Performance Comparison",
+   "cited_by": "revisão R4 (28/10/2026), item 12",
+   "metadata_note": ""
+  }
+ ]
+}
