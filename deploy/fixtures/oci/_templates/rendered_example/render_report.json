@@ -1,4 +1,14 @@
 {
+ "bindings": {
+  "file": "bindings.json",
+  "synthetic": false,
+  "used_keys": [
+   "compartment_id",
+   "objectstorage_namespace",
+   "run_tag"
+  ],
+  "values_written": false
+ },
  "counts": {
   "INVALID_PLAN": 0,
   "NOT_APPLICABLE": 0,
@@ -10,7 +20,7 @@
   "lp_oci_sto_0001/main.tf": "d18757701989bc3fa6f03466bd5d01fa87e025b73518576c51d4caf05ae4d2ba",
   "main.tf": "c9d0946fa1a33d4265c6eacb7a4ac7cb3c713842353524b138872cddd83b7897"
  },
- "generated_at": "2026-11-03T17:38:17-03:00",
+ "generated_at": "2026-11-03T17:42:59-03:00",
  "input": {
   "bindings_sha256": "23848d73ece55fd83930470177b13f09aaac35b8188c4bd67d26a8902745d064",
   "graph_ir_sha256": "750f0b8b3f10c819b4141d4c0e488914aab6f7f94715c4e84f739da69ef2edad",

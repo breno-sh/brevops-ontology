@@ -71,3 +71,12 @@ ADENDO (2026-11-03T17:38:43-03:00) — emenda 2 do CONTRACTS (3c2141f): stubs C2
   Bloqueio fora do módulo: consume_check reprova em manifestos_transitivos ("TRANSFORMS: entrada $BO_REPO/contracts
   mudou depois que TRANSFORMS a consumiu") desde a emenda 2. O livro deste módulo foi refeito (--reset) depois de
   refazer o trabalho sobre os stubs novos; o do TRANSFORMS é do coordenador.
+
+RESOLUÇÃO DO ACHADO DO STUB OCI (2026-11-03T17:43:10-03:00)
+  O coordenador mudou o G2 para passar --bindings $BO_REPO/deploy/fixtures/oci/_templates/bindings.synthetic.json.
+  O arquivo existe (posse deste módulo), marcado "synthetic": true. Ele liga símbolo a chave de contexto e NÃO
+  traz valor: o HCL recebe var.bo_ctx_<chave> sem default, o valor só existe no contexto da execução (offline,
+  OCID sintético em memória). Não há OCID no arquivo, nem falso: o privacy_lint reprova qualquer texto com formato
+  de OCID, e o renderizador não precisa do valor para escrever o HCL. O render_report.json registra
+  bindings.synthetic = true, as chaves usadas e values_written = false, e cada atributo ligado sai com origem
+  binding:<chave>. Com isso o plano oci do stub sai RENDERED no G2, com fmt -check e terraform validate verdes.

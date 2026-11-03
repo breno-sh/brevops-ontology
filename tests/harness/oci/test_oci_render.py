@@ -318,3 +318,21 @@ def test_null_on_required_is_missing(tmp_out, example_plans):
     res = R.render(pf, tmp_out / "oa", bindings_path=bf)
     assert res.renders[0].status == "UNKNOWN_INPUT"
     assert [(i.code, i.field) for i in res.renders[0].issues] == [("MISSING_REQUIRED_FIELD", "name")]
+
+
+def test_catalog_g2_with_synthetic_bindings(tmp_out):
+    """G2 do catálogo: stub C26 + bindings.synthetic.json -> o plano oci renderiza; origem registrada."""
+    stub = REPO / "contracts" / "stubs" / "C26" / "lowering_plan.jsonl"
+    b = EX.parent / "bindings.synthetic.json"
+    assert R.main([str(stub), "--bindings", str(b), "--out", str(tmp_out / "g2")]) == 0
+    rep = json.loads((tmp_out / "g2" / R.REPORT_NAME).read_text())
+    oci = [p for p in rep["plans"] if p["target_provider"] == "oci"]
+    assert [p["status"] for p in oci] == ["RENDERED"]
+    assert rep["bindings"]["synthetic"] is True and rep["bindings"]["values_written"] is False
+    srcs = {w["field"]: w["source"] for w in oci[0]["written"] if w["source"].startswith("binding:")}
+    assert srcs and set(srcs.values()) <= {"binding:compartment_id", "binding:run_tag"}
+    tf = (tmp_out / "g2" / oci[0]["module"] / "main.tf").read_text()
+    assert "var.bo_ctx_compartment_id" in tf and "oc" + "id1." not in tf and "default" not in tf
+    assert SB.fmt_check(tmp_out / "g2").rc == 0
+    i, v = SB.init_validate(tmp_out / "g2")
+    assert i.rc == 0 and json.loads(v.out)["valid"]
