@@ -168,6 +168,8 @@ def main(argv=None) -> int:
     ap.add_argument("--controls", default=str(root / "cq" / "cis_controls.csv"))
     ap.add_argument("--cross", default=str(root / "cq" / "cis_cross_provider.csv"))
     ap.add_argument("--no-sources", action="store_true", help="não confere os tarballs (só nos testes)")
+    if argv is not None:  # o despachante bo.cq.src_check pode repassar o stable_id do módulo
+        argv = [x for x in argv if x != "CQSRC"]
     a = ap.parse_args(argv)
     probs = []
     cpath, xpath = Path(a.controls), Path(a.cross)

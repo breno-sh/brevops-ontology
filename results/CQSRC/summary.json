@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "CQSRC",
- "generated_at": "2026-11-03T01:43:36-03:00",
+ "generated_at": "2026-11-03T01:49:36-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/CQSRC.txt",
@@ -39,7 +39,7 @@
     "sha256": "2382b65cbafa4304bd6d7a9857bf3dcceec49a6c06eb6500307fe86403dfc5bb"
    }
   ],
-  "recorded_at": "2026-11-03T01:43:36-03:00"
+  "recorded_at": "2026-11-03T01:49:36-03:00"
  },
  "sources": [
   {
@@ -63,5 +63,5 @@
    "transformation": "idem"
   }
  ],
- "notes": "Alinhamento entre provedores curado pelo agente sobre os títulos da versão CIS mais nova de cada mod; toda linha UNPROVEN. Ver results/CQSRC/CQSRC.html. Gate bo.cq.src_check bloqueado por posse: ver results/CQSRC/CONTRACT_CHANGE.txt."
+ "notes": "Alinhamento entre provedores curado pelo agente sobre os títulos da versão CIS mais nova de cada mod; toda linha UNPROVEN. Ver results/CQSRC/CQSRC.html. O gate bo.cq.src_check chega a bo.cqsrc.src_check pelo despachante do coordenador."
 }

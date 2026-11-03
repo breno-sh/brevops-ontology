@@ -48,3 +48,8 @@ Precedente (2026-11-03T01:45-03:00)
 Outro bloqueio, fora do CQSRC
   consume_check CQSRC reprova desde 01:44: "SEMANTICS: entrada .../PLANO_BREVOPS_ONTOLOGY.html mudou depois
   que SEMANTICS a consumiu". Às 01:31 passava. Precisa de invalidate/refresh do SEMANTICS pelo coordenador.
+
+Resolução (2026-11-03T01:49-03:00)
+  O coordenador resolveu os dois bloqueios: bo.cq.src_check virou despachante do coordenador
+  (src/bo/_dispatch.py, [COORD] ff2aa73) que executa bo.cqsrc.src_check; o consume_check voltou a passar
+  depois das emendas [COORD] 294b956 e 26cf52f. Nenhuma das propostas A/B acima é mais necessária.

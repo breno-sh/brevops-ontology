@@ -205,6 +205,7 @@ class SrcCheck(unittest.TestCase):
 
     def test_published_passes(self):
         self.assertEqual(src_check.main([]), 0)
+        self.assertEqual(src_check.main(["CQSRC"]), 0)  # o despachante bo.cq.src_check pode repassar o ID
 
     def _break_controls(self, col, value, row=1):
         def fn(rows):
