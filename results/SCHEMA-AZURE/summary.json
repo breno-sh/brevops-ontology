@@ -1,0 +1,64 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "SCHEMA-AZURE",
+ "generated_at": "2026-11-03T07:25:23-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/SCHEMA-AZURE.txt",
+  "brief_sha256": "5959a18f08edc1ef4d3eba136e5edf5b99d38d8f596dfd4c9f16c29a891fc0e2",
+  "params": {
+   "provider": "azurerm",
+   "provider_version": "5.12.0",
+   "terraform_cli": "1.15.8",
+   "platform": "darwin_arm64",
+   "library": "bo.schema (SCHEMALIB) build+extract+crosscheck; write_only do C01 2.1.0 em bo.schema_azure.atoms",
+   "sandbox": "env -i, HOME temporário, sandbox-exec; schema/validate sem rede IP; sem credenciais",
+   "network": "registry.terraform.io,releases.hashicorp.com (init e zip assinado; índice de docs do Registry)",
+   "cloud": "none",
+   "generator": "python -I -m bo.schema_azure.pipeline"
+  },
+  "inputs": [
+   {
+    "path": "$BO_REPO/universe/pins.json",
+    "kind": "file",
+    "sha256": "594a4e878ac489b3ed97cdd6344b9945a8fd3a5d22ae4d6f4bfebd264decfe3d"
+   },
+   {
+    "path": "$BO_DATA/downloads/prefetch/azurerm/5.12.0/terraform-provider-azurerm_5.12.0_SHA256SUMS",
+    "kind": "file",
+    "sha256": "496bf13fde1cfa927a585fedfcb14743dd64ee35f9ebab9b8db57499be02c04c"
+   },
+   {
+    "path": "$BO_DATA/downloads/prefetch/azurerm/5.12.0/terraform-provider-azurerm_5.12.0_SHA256SUMS.sig",
+    "kind": "file",
+    "sha256": "08ff2881635e8a181248c2f45fbdaa8542be2ae1e3f9a85df1c0fc89d532be54"
+   },
+   {
+    "path": "$BO_DATA/downloads/prefetch/azurerm/5.12.0/registry-download-darwin_arm64.json",
+    "kind": "file",
+    "sha256": "8709012df4833b2e5e00ebbcb394165c335c40b657497a985be4b47f620347f7"
+   },
+   {
+    "path": "$BO_DATA/downloads/prefetch/azurerm/5.12.0/terraform.lock.hcl",
+    "kind": "file",
+    "sha256": "a69ca2429c0b3df1ddec38336dbe0a60bae70e550c96555ec34a9365b2c51511"
+   }
+  ],
+  "recorded_at": "2026-11-03T07:25:23-03:00"
+ },
+ "sources": [
+  {
+   "uri": "https://releases.hashicorp.com/terraform-provider-azurerm/5.12.0/",
+   "license": "MPL-2.0",
+   "transformation": "zip assinado conferido (SHA256SUMS+GPG); binário executado em sandbox só para providers schema -json e validate"
+  },
+  {
+   "uri": "https://registry.terraform.io/v1/providers/hashicorp/azurerm/5.12.0",
+   "license": "termos do Terraform Registry",
+   "transformation": "índice de docs lido como JSON para o crosscheck de tipos"
+  }
+ ],
+ "notes": "Saídas: 1107 tipos, 23351 átomos (8 write_only), schema sha256 = pins.json; crosscheck 1107=1107."
+}
