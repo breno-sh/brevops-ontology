@@ -72,7 +72,7 @@ def test_flags_are_raw_schema_flags():
 
 def test_nested_type_is_one_atom_with_cty_type():
     a = by_path(widget())
-    assert a["endpoint"]["tf_type"] == ["object", {"host": "string", "port": "number"}]
+    assert a["endpoint"]["tf_type"] == ["object", {"host": "string", "port": "number"}, ["port"]]
     assert a["listeners"]["tf_type"] == ["list", ["object", {"port": "number"}]]
     assert "endpoint.host" not in a and "listeners.port" not in a
     assert core.nested_type_to_cty({"attributes": {"x": {"type": "bool"}}, "nesting_mode": "set"}) == \

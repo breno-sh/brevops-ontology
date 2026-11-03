@@ -8,7 +8,7 @@ Regras (as mesmas para os 4 provedores e para qualquer versão):
     quando o schema os declara; nesting = modo do último bloco ('none' no topo).
   * blocos ('block_types') não são átomos: são contados em counts.blocks e descritos no block_path.
   * atributo com 'nested_type' (protocolo 6) é UM átomo; tf_type é o tipo cty equivalente
-    (single -> ["object", {...}], list/set/map -> [modo, ["object", {...}]]); os filhos não viram átomos,
+    (single -> ["object", {...}(, [opcionais])], list/set/map -> [modo, objeto]); os filhos não viram átomos,
     para que counts.attributes seja o número de entradas 'attributes' do schema (a régua do catálogo).
   * flags required/optional/computed/sensitive/deprecated são os do schema, sem reinterpretação;
     configurable = required ou optional. A régua do C1 (cfg/provider_populated/computed_only) mora em
@@ -80,10 +80,13 @@ def providers(doc: dict) -> dict[str, dict]:
 
 def nested_type_to_cty(nt: dict):
     """Tipo cty equivalente a um atributo 'nested_type' (protocolo 6)."""
-    attrs = {}
+    attrs, optional = {}, []
     for name, a in sorted((nt.get("attributes") or {}).items()):
         attrs[name] = attr_cty(a)
-    obj = ["object", attrs]
+        if a.get("optional"):
+            optional.append(name)
+    # codificação JSON do cty: atributos opcionais do objeto vão num terceiro elemento
+    obj = ["object", attrs, optional] if optional else ["object", attrs]
     mode = nt.get("nesting_mode", "single")
     if mode == "single":
         return obj

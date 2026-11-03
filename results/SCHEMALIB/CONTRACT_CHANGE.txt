@@ -15,7 +15,7 @@ módulos posteriores vão querer, e que o C01 hoje não tem onde guardar (additi
    schema sintético (tests/schema/conftest.py).
 
 2. (só registro, sem mudança) atributo 'nested_type' (protocolo 6) vira UM átomo com tf_type cty equivalente
-   (["object", {...}] ou [modo, ["object", {...}]]); os filhos não viram átomos. Nas 4 versões do catálogo
+   (["object", {...}] ou [modo, objeto], com os opcionais no 3º elemento como o cty codifica); os filhos não viram átomos. Nas 4 versões do catálogo
    não há nenhum (0 em todos), mas versões novas (HIST-*, SCHEMA-POST) podem ter. Se o mapeamento precisar
    dos filhos, a mudança é no C01 (um modo de block_path para atributo aninhado), não na biblioteca.
 
