@@ -16,6 +16,7 @@ from .catalog import Catalog, is_file_input, matches, merged_modules, overlaps
 from .core import BoError
 
 RECEIPT_SCHEMA = "bo.freeze_receipt/1"
+COORDINATOR = "coordenador"
 LEDGER_NAME = "consume_ledger.json"
 
 
@@ -118,11 +119,14 @@ def create(cat: Catalog, name: str, paths: list[str], owner: str, repo: Path,
         if core.ref_exists(repo, "refs/tags/" + tag_name):
             raise BoError(f"tag {tag_name} já existe")
         core.git(repo, "tag", "-a", tag_name, "-m", f"congelamento {name}: digest {rec['digest']}", head)
-    s = st_mod.load(repo, cat)
-    s["freezes"][name] = {"status": "VALID", "receipt": portable(out, repo), "digest": rec["digest"],
-                          "created_at": rec["created_at"], "owner": owner}
-    s["events"].append({"at": rec["created_at"], "freeze": name, "status": "VALID", "reason": "congelado"})
-    st_mod.save(s, repo)
+    if owner == COORDINATOR:
+        # modules/state.json é do REPO/coordenador: módulo dono do próprio comprovante (ex. SPLIT) não o toca;
+        # o comprovante é achado por varredura de freeze/*/ de qualquer jeito.
+        s = st_mod.load(repo, cat)
+        s["freezes"][name] = {"status": "VALID", "receipt": portable(out, repo), "digest": rec["digest"],
+                              "created_at": rec["created_at"], "owner": owner}
+        s["events"].append({"at": rec["created_at"], "freeze": name, "status": "VALID", "reason": "congelado"})
+        st_mod.save(s, repo)
     return out, rec
 
 
@@ -300,7 +304,8 @@ def consume_check(cat: Catalog, mid: str, repo: Path, record: bool = True, reset
         elif old["sha256"] != cur:
             led_probs.append(f"{pp} mudou desde o primeiro consumo ({old['first_seen']})")
     add("livro_de_consumo", not led_probs, "; ".join(led_probs[:20]) if led_probs
-        else f"{len(hits)} entrada(s); {new} registrada(s) agora (primeiro consumo)")
+        else f"{len(hits)} entrada(s); {new} " + ("registrada(s) agora (primeiro consumo)" if record
+                                                     else "nova(s), não gravada(s) (--no-record)"))
     if record and rep["ok"]:
         ledger["updated_at"] = core.now()
         core.write_json(ledger_p, ledger)

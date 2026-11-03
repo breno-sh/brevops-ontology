@@ -5,7 +5,7 @@
   bo-lane exec ID -- CMD ...                       roda CMD sob o perfil sandbox-exec da lane
   bo-lane env ID                                   linhas 'export' (BO_ID, BO_REPO, BO_TMP, ...)
   bo-lane refresh ID                               recalcula o sandbox (caminhos criados depois)
-  bo-lane rm ID [--force]                          remove worktree, tmp e a branch se não tiver commit novo
+  bo-lane rm ID [--force]                          remove worktree e tmp; a branch só some se nunca teve commit [ID]
   bo-lane list | roles
 
 O sandbox é escrito em <worktree>/.claude/settings.json: permissions.deny com o complemento da
@@ -49,7 +49,9 @@ WT_INFRA = ["src/", "tools/", "contracts/", "modules/", "freeze/", "Makefile", "
             "requirements.lock", "CONVENTIONS.html", ".bo/", ".claude/", ".git"]
 TOOLCHAIN = [HOME / ".local/share/mise", HOME / ".local/bin", HOME / ".gitconfig", HOME / ".config/git",
              HOME / ".claude/skills/unlazy", HOME / ".config/bo/gcp_projects.txt",
-             HOME / ".config/bo/private_terms.txt"]
+             HOME / ".config/bo/private_terms.txt", HOME / ".config/mise", HOME / ".local/state/mise",
+             HOME / ".zshrc", HOME / ".zprofile", HOME / ".zshenv", HOME / ".bash_profile", HOME / ".bashrc",
+             HOME / ".profile"]
 SECRETS = [HOME / ".ssh", HOME / ".aws", HOME / ".config/gcloud", HOME / ".azure", HOME / ".oci",
            HOME / "brevops-keys", HOME / ".config/bo/allowlist", HOME / ".netrc", HOME / ".kube",
            HOME / ".docker/config.json", HOME / ".gnupg"]
@@ -217,6 +219,11 @@ def sbpl(allowed: list[Path], secrets: list[Path]) -> str:
     lines = ["(version 1)", "(allow default)", f"(deny file-read* (subpath {q(HOME)}))"]
     for p in allowed:
         lines.append(f"(allow file-read* (subpath {q(p)}))")
+    # ancestrais dos caminhos permitidos: só o nó do diretório (getcwd do bash/git precisa); o conteúdo
+    # dos irmãos continua negado pela regra da HOME
+    anc = sorted({str(x) for p in allowed for x in Path(p).parents if is_within(x, HOME)})
+    for x in anc:
+        lines.append(f"(allow file-read* (literal {q(x)}))")
     lines.append("(allow file-read-metadata)")
     for s in secrets:
         lines.append(f"(deny file-read* (subpath {q(s)}))")
@@ -304,13 +311,26 @@ def write_sandbox(cat, mod, wt: Path, role: str) -> dict:
     return info
 
 
+def lane_is_empty(repo: Path, wt: Path, mod: catalog.Module, base: str) -> bool:
+    """Sem commit fora da base e sem mudança rastreada: recriar não perde nada (ex. DUMMY de um gate interrompido)."""
+    if not (wt / ".git").exists():
+        return False
+    if core.ref_exists(repo, "refs/heads/" + mod.branch) and \
+            core.git(repo, "rev-list", f"{base}..{mod.branch}").split():
+        return False
+    return core.git(wt, "status", "--porcelain").strip() == ""
+
+
 def cmd_new(mid: str, role: str | None, base: str | None) -> int:
     cat, mod, wt = lane_info(mid)
     role = norm_role(role, mid)
     repo = core.bo_repo()
     base = base or core.base_branch()
     if wt.exists():
-        raise BoError(f"worktree já existe: {wt} (bo-lane rm {mid} antes)")
+        if not lane_is_empty(repo, wt, mod, base):
+            raise BoError(f"worktree já existe e tem trabalho: {wt} (commit, ou bo-lane rm {mid} --force)")
+        core.emit(f"  lane {mid} já existia sem trabalho (sem commit novo, limpa): recriada")
+        cmd_rm(mid, force=False)
     if not core.ref_exists(repo, base):
         raise BoError(f"base {base} não existe em {repo}")
     if core.ref_exists(repo, "refs/heads/" + mod.branch):
@@ -429,6 +449,11 @@ def cmd_check(mid: str) -> int:
                                capture_output=True, env=env, cwd=str(wt))
             expect("dentro do sandbox, python -I importa bo.repo da worktree", r.returncode == 0,
                    r.stderr.decode(errors="replace")[-200:])
+            r = subprocess.run([exe, "-f", str(sb), "bash", "-lc", "cd \"$BO_REPO\" && python -I tools/gate_smoke.py "
+                                "--help >/dev/null 2>&1; command -v python >/dev/null && git status --porcelain >/dev/null"],
+                               capture_output=True, env=env, cwd=str(wt))
+            expect("dentro do sandbox, bash -lc acha python e o git funciona na worktree", r.returncode == 0,
+                   r.stderr.decode(errors="replace")[-200:])
     finally:
         for p in planted + inside[:2]:
             p.unlink(missing_ok=True)
@@ -470,11 +495,14 @@ def cmd_rm(mid: str, force: bool) -> int:
     br = "refs/heads/" + mod.branch
     if core.ref_exists(repo, br):
         ahead = core.git(repo, "rev-list", f"{core.base_branch()}..{mod.branch}").split()
-        if not ahead:
+        own = [ln for ln in core.git(repo, "log", mod.branch, "--format=%s").splitlines()
+               if catalog.module_of_subject(ln) == mid]
+        if not ahead and not own:
             core.git(repo, "branch", "-D", mod.branch)
-            core.emit(f"  branch {mod.branch} removida (sem commit fora de {core.base_branch()})")
+            core.emit(f"  branch {mod.branch} removida (nunca teve commit [{mid}])")
         else:
-            core.emit(f"  branch {mod.branch} mantida ({len(ahead)} commit(s) fora de {core.base_branch()})")
+            core.emit(f"  branch {mod.branch} mantida ({len(own)} commit(s) [{mid}], {len(ahead)} fora de "
+                      f"{core.base_branch()}; commit_lint e ownership_check continuam usando)")
     tmp = core.bo_tmp(mid)
     if tmp.exists():
         shutil.rmtree(tmp)

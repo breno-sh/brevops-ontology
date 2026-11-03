@@ -57,6 +57,14 @@ def selftest() -> int:
         ck.expect("tag git bo-freeze-F0 criada", core.ref_exists(repo, "refs/tags/bo-freeze-F0"))
         ck.expect("carimbo OTS desligado aparece explícito", rec.get("ots", {}).get("status") == "DISABLED")
         ck.expect("produtor do artefato identificado", rec.get("artifacts", [{}])[0].get("producers") == ["A"])
+        ck.expect("congelamento do coordenador registrado em state.json",
+                  (core.read_json(repo / "modules" / "state.json") or {}).get("freezes", {}).get("F0", {})
+                  .get("status") == "VALID")
+        r2 = subprocess.run([sys.executable, "-I", str(TOOLS / "freeze.py"), "create", "FB", "--paths",
+                             "$BO_DATA/B/b.txt", "--owner", "B", "--no-ots", "--no-tag",
+                             "--out", str(repo / "freeze" / "FB" / "freeze_receipt.json")], capture_output=True)
+        ck.expect("comprovante de módulo (dono B) não toca modules/state.json", r2.returncode == 0 and
+                  "FB" not in (core.read_json(repo / "modules" / "state.json") or {}).get("freezes", {}))
         rc, out = consume("B")
         ck.expect("consume_check B passa antes da adulteração", rc == 0, out[-300:])
         ck.expect("verify do comprovante íntegro não acha problema", receipts.verify(rec_p, repo) == [])
@@ -68,7 +76,7 @@ def selftest() -> int:
         (data / "A" / "a.txt").write_text("conteúdo ADULTERADO\n", encoding="utf-8")
         rc, out = consume("B")
         ck.expect("consume_check B reprova depois da adulteração", rc != 0)
-        ck.expect("a reprovação cita o comprovante", "comprovantes" in out and "F0" in out, out[-300:])
+        ck.expect("a reprovação cita o comprovante", "FAIL comprovantes" in out and "F0" in out, out[-300:])
         rc, out = consume("C")
         ck.expect("dependente transitivo C também reprova (comprovante no fecho)", rc != 0)
         rc = subprocess.run([sys.executable, "-I", str(TOOLS / "freeze.py"), "verify", "F0"],

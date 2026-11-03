@@ -6,7 +6,8 @@
 Roda cada diretório tests/integration/*/ (core/ é do REPO; domains/ é do DOMAIN-CONTRACTS, com IAM em
 NET/SEC e chaves em STO/SEC/OPS) com pytest (versão do requirements.lock) ou unittest se pytest faltar.
 Teste que depende de domínio ainda não mergeado sai SKIP com motivo; todo SKIP é impresso e
-registrado em $BO_DATA/REPO/integration/last_run.json (e no histórico history.jsonl), nunca silencioso.
+registrado em $BO_DATA/<BO_ID>/integration/last_run.json (padrão REPO; e no histórico history.jsonl),
+nunca silencioso.
 Reprova se algum teste falhar, se nenhum teste for coletado ou se o runner não conseguir rodar.
 """
 import sys
@@ -18,6 +19,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 import argparse  # noqa: E402
 import importlib.util  # noqa: E402
 import json  # noqa: E402
+import os  # noqa: E402
 import subprocess  # noqa: E402
 import xml.etree.ElementTree as ET  # noqa: E402
 
@@ -83,8 +85,9 @@ def main() -> int:
         dirs = [d for d in dirs if d.name == a.only]
     if not dirs:
         raise core.BoError(f"nenhum diretório de teste em {base}")
-    env = core.module_env("REPO", repo)
-    tmp = core.bo_tmp("REPO") / "integration"
+    caller = os.environ.get("BO_ID") or "REPO"  # quem roda (gate de outro módulo grava no próprio BO_DATA)
+    env = core.module_env(caller, repo)
+    tmp = core.bo_tmp(caller) / "integration"
     tmp.mkdir(parents=True, exist_ok=True)
     report = {"at": core.now(), "repo": str(repo),
               "head": core.git(repo, "rev-parse", "--short", "HEAD", check=False).strip(), "dirs": []}
@@ -105,7 +108,7 @@ def main() -> int:
     report["totals"] = tot
     ok = tot["failed"] == 0 and tot["errors"] == 0 and tot["tests"] > 0 and tot["passed"] > 0
     report["ok"] = ok
-    out = core.bo_data() / "REPO" / "integration"
+    out = core.bo_data() / caller / "integration"
     core.write_json(out / "last_run.json", report)
     with open(out / "history.jsonl", "a", encoding="utf-8") as fh:
         fh.write(json.dumps({k: report[k] for k in ("at", "head", "totals", "ok")}, ensure_ascii=False) + "\n")

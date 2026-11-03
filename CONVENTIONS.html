@@ -169,6 +169,7 @@ Teste que depende de domínio ainda não mergeado sai SKIP com motivo; todo SKIP
 <ul>
 <li>O sandbox não impede ler o histórico git (<code>git show</code>): nada de teste ou ouro em texto claro entra no git; a partição de teste fica cifrada em <code>$BO_DATA/SPLIT/</code>.</li>
 <li>As regras da ferramenta Read são um complemento calculado na criação da lane: um diretório criado depois num nível já percorrido não está nelas (o Bash continua negado pela HOME inteira). <code>bo-lane refresh ID</code> recalcula; o <code>check-sandbox</code> avisa.</li>
+<li>No perfil sandbox-exec, os diretórios ancestrais dos caminhos permitidos são legíveis como nó (listar nomes), porque o <code>getcwd</code> do bash e do git precisa; o conteúdo dos irmãos continua negado.</li>
 <li>O carimbo OpenTimestamps depende do cliente <code>ots</code> e de rede; sem eles fica PENDING explícito.</li>
 <li>O privacy_lint é lexical: pega formato, não intenção. Ids de projeto e termos da empresa só com as listas privadas.</li>
 </ul>

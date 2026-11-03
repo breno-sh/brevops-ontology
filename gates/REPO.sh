@@ -44,7 +44,9 @@ from bo.repo import catalog, state
 cat = catalog.load(); st = state.load()
 falta = sorted(set(cat.modules) - set(st["modules"]))
 if falta: sys.exit("state.json sem: " + ", ".join(falta))
-print(f"state.json: {len(st[\"modules\"])} módulos, {sum(v[\"status\"] != \"CURRENT\" for v in st[\"modules\"].values())} fora de CURRENT")
+mods = st["modules"]
+fora = sum(v["status"] != "CURRENT" for v in mods.values())
+print("state.json:", len(mods), "módulos,", fora, "fora de CURRENT")
 '
 
 step "trava (lock.sh selftest)"
