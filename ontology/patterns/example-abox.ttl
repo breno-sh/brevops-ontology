@@ -1,0 +1,558 @@
+# BrevOps Ontology, módulo ONTPAT: ABox de exemplo dos padrões. Gerado por bo.ontpat.build a partir de
+# src/bo/ontpat/content/example_abox_body.ttl; não editar à mão (o gate confere a regeneração idêntica).
+# Tudo sintético: provedores, contas, nomes e chaves de encarnação são inventados.
+
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
+@prefix bo:   <https://w3id.org/brevops/ontology#> .
+@prefix exv:  <https://example.org/bo-example/vocab#> .
+@prefix ex:   <https://example.org/bo-example/abox#> .
+
+<https://example.org/bo-example/abox> a owl:Ontology ;
+    owl:imports <bo-patterns.ttl> ;
+    rdfs:comment "ABox de exemplo dos padrões ONTPAT, com uma extensão de domínio mínima (exv:) só para exercitar os padrões. Não é vocabulário do núcleo."@pt .
+
+#################################################################
+# Extensão de domínio de exemplo (exv:), rótulos de trabalho do REQUIREMENTS
+#################################################################
+
+exv:ComputeInstance a owl:Class ; rdfs:subClassOf bo:IndependentResource ; rdfs:label "instância de computação"@pt ; bo:rigidity bo:Rigid ; bo:unitKind bo:IndependentResource .
+exv:NetworkInterface a owl:Class ; rdfs:subClassOf bo:IndependentResource ; rdfs:label "interface de rede"@pt ; bo:rigidity bo:Rigid ; bo:unitKind bo:IndependentResource .
+exv:Subnet a owl:Class ; rdfs:subClassOf bo:IndependentResource ; rdfs:label "sub-rede"@pt ; bo:rigidity bo:Rigid ; bo:unitKind bo:IndependentResource .
+exv:StorageNamespace a owl:Class ; rdfs:subClassOf bo:IndependentResource ; rdfs:label "namespace de armazenamento"@pt ; bo:rigidity bo:Rigid ; bo:unitKind bo:IndependentResource .
+exv:ObjectContainer a owl:Class ; rdfs:subClassOf bo:Component ; rdfs:label "contêiner de objetos (dentro de namespace)"@pt ; bo:rigidity bo:Rigid ; bo:unitKind bo:Component .
+exv:BackendPool a owl:Class ; rdfs:subClassOf bo:IndependentResource ; rdfs:label "pool de backend"@pt ; bo:rigidity bo:Rigid ; bo:unitKind bo:IndependentResource .
+exv:Principal a owl:Class ; rdfs:subClassOf bo:IndependentResource ; rdfs:label "principal"@pt ; bo:rigidity bo:Rigid ; bo:unitKind bo:IndependentResource .
+exv:PermissionSet a owl:Class ; rdfs:subClassOf bo:IndependentResource ; rdfs:label "conjunto de permissões"@pt ; bo:rigidity bo:Rigid ; bo:unitKind bo:IndependentResource .
+exv:ScopeNode a owl:Class ; rdfs:subClassOf bo:IndependentResource ; rdfs:label "nó de escopo"@pt ; bo:rigidity bo:Rigid ; bo:unitKind bo:IndependentResource .
+exv:VersioningSetting a owl:Class ; rdfs:subClassOf bo:Facet ; rdfs:label "configuração de versionamento"@pt ; bo:rigidity bo:Rigid ; bo:unitKind bo:Facet .
+exv:PublicAccessSetting a owl:Class ; rdfs:subClassOf bo:Facet ; rdfs:label "configuração de acesso público"@pt ; bo:rigidity bo:Rigid ; bo:unitKind bo:Facet .
+exv:SecretHolder a owl:Class ; rdfs:subClassOf bo:IndependentResource ; rdfs:label "guarda de segredo"@pt ; bo:rigidity bo:Rigid ; bo:unitKind bo:IndependentResource .
+[] a owl:AllDisjointClasses ; owl:members ( exv:ComputeInstance exv:NetworkInterface exv:Subnet exv:StorageNamespace exv:BackendPool exv:Principal exv:PermissionSet exv:ScopeNode exv:SecretHolder ) .
+[] a owl:AllDisjointClasses ; owl:members ( exv:VersioningSetting exv:PublicAccessSetting ) .
+
+# P5 vínculo reificado: anexação <interface, instância> com índice; atribuição <principal, conjunto, escopo>
+exv:NicAttachment a owl:Class ; rdfs:subClassOf bo:Binding ; rdfs:label "anexação de interface"@pt ; bo:rigidity bo:Rigid ; bo:unitKind bo:Binding .
+exv:attachesInterface a owl:ObjectProperty , owl:FunctionalProperty ; rdfs:subPropertyOf bo:relates ; rdfs:domain exv:NicAttachment ; rdfs:range exv:NetworkInterface .
+exv:attachesTo a owl:ObjectProperty , owl:FunctionalProperty ; rdfs:subPropertyOf bo:relates ; rdfs:domain exv:NicAttachment ; rdfs:range exv:ComputeInstance .
+exv:deviceIndex a owl:DatatypeProperty , owl:FunctionalProperty ; rdfs:domain exv:NicAttachment ; rdfs:range xsd:nonNegativeInteger .
+exv:NicAttachment owl:hasKey ( exv:attachesInterface exv:attachesTo ) .
+
+exv:Assignment a owl:Class ; rdfs:subClassOf bo:Binding ; rdfs:label "atribuição"@pt ; bo:rigidity bo:Rigid ; bo:unitKind bo:Binding .
+exv:assignsPrincipal a owl:ObjectProperty , owl:FunctionalProperty ; rdfs:subPropertyOf bo:relates ; rdfs:domain exv:Assignment ; rdfs:range exv:Principal .
+exv:assignsSet a owl:ObjectProperty , owl:FunctionalProperty ; rdfs:subPropertyOf bo:relates ; rdfs:domain exv:Assignment ; rdfs:range exv:PermissionSet .
+exv:atScope a owl:ObjectProperty , owl:FunctionalProperty ; rdfs:subPropertyOf bo:relates ; rdfs:domain exv:Assignment ; rdfs:range exv:ScopeNode .
+exv:Assignment owl:hasKey ( exv:assignsPrincipal exv:assignsSet exv:atScope ) .
+[] a owl:AllDisjointClasses ; owl:members ( exv:NicAttachment exv:Assignment ) .
+
+exv:inSubnet a owl:ObjectProperty ; rdfs:subPropertyOf bo:references ; rdfs:domain exv:NetworkInterface ; rdfs:range exv:Subnet .
+
+# P11 papel: classe definida antirrígida SOB tipo rígido (válido); a recíproca seria erro OntoClean
+exv:memberOfPool a owl:ObjectProperty ; rdfs:subPropertyOf bo:references ; rdfs:domain bo:IndependentResource ; rdfs:range exv:BackendPool .
+exv:BackendMember a owl:Class ;
+    owl:equivalentClass [ a owl:Class ; owl:intersectionOf ( bo:IndependentResource [ a owl:Restriction ; owl:onProperty exv:memberOfPool ; owl:someValuesFrom exv:BackendPool ] ) ] ;
+    rdfs:label "membro de pool (papel)"@pt ; bo:rigidity bo:AntiRigid .
+
+# propriedades de configuração do exemplo (citadas por descritor nos valores e realizações)
+exv:versioningStatus a owl:ObjectProperty , owl:FunctionalProperty ; rdfs:domain exv:VersioningSetting ; rdfs:range exv:VersioningStatus .
+exv:VersioningStatus a owl:Class ; owl:equivalentClass [ a owl:Class ; owl:oneOf ( exv:Enabled exv:Suspended ) ] ; bo:rigidity bo:Rigid .
+exv:Enabled a owl:NamedIndividual , exv:VersioningStatus .
+exv:Suspended a owl:NamedIndividual , exv:VersioningStatus .
+[] a owl:AllDifferent ; owl:distinctMembers ( exv:Enabled exv:Suspended ) .
+exv:publicAccessBlocked a owl:DatatypeProperty , owl:FunctionalProperty ; rdfs:domain exv:PublicAccessSetting ; rdfs:range xsd:boolean .
+exv:capacity a owl:DatatypeProperty , owl:FunctionalProperty ; rdfs:domain bo:Resource ; rdfs:range xsd:decimal .
+exv:retentionPeriod a owl:DatatypeProperty , owl:FunctionalProperty ; rdfs:domain bo:Unit ; rdfs:range xsd:duration .
+exv:privateAddress a owl:DatatypeProperty , owl:FunctionalProperty ; rdfs:domain exv:NetworkInterface ; rdfs:range xsd:string .
+exv:secretValue a owl:DatatypeProperty , owl:FunctionalProperty ; rdfs:domain exv:SecretHolder ; rdfs:range xsd:string .
+exv:lifecycleRule a owl:DatatypeProperty ; rdfs:domain bo:Unit ; rdfs:range xsd:string .
+exv:throughput a owl:DatatypeProperty , owl:FunctionalProperty ; rdfs:domain bo:Resource ; rdfs:range xsd:decimal .
+
+#################################################################
+# Descritores (P8): o indivíduo, não o IRI da propriedade, é citado em ABox
+#################################################################
+
+ex:desc_versioningStatus a owl:NamedIndividual , bo:PropertyDescriptor ; bo:descriptorKey "versioningStatus" ; bo:describesProperty exv:versioningStatus .
+ex:desc_publicAccessBlocked a owl:NamedIndividual , bo:PropertyDescriptor ; bo:descriptorKey "publicAccessBlocked" ; bo:describesProperty exv:publicAccessBlocked .
+ex:desc_capacity a owl:NamedIndividual , bo:PropertyDescriptor ; bo:descriptorKey "capacity" ; bo:describesProperty exv:capacity .
+ex:desc_retentionPeriod a owl:NamedIndividual , bo:PropertyDescriptor ; bo:descriptorKey "retentionPeriod" ; bo:describesProperty exv:retentionPeriod .
+ex:desc_privateAddress a owl:NamedIndividual , bo:PropertyDescriptor ; bo:descriptorKey "privateAddress" ; bo:describesProperty exv:privateAddress .
+ex:desc_secretValue a owl:NamedIndividual , bo:PropertyDescriptor ; bo:descriptorKey "secretValue" ; bo:describesProperty exv:secretValue .
+ex:desc_lifecycleRule a owl:NamedIndividual , bo:PropertyDescriptor ; bo:descriptorKey "lifecycleRule" ; bo:describesProperty exv:lifecycleRule .
+ex:desc_throughput a owl:NamedIndividual , bo:PropertyDescriptor ; bo:descriptorKey "throughput" ; bo:describesProperty exv:throughput .
+ex:desc_ComputeInstance a owl:NamedIndividual , bo:ClassDescriptor ; bo:descriptorKey "ComputeInstance" ; bo:describesClass exv:ComputeInstance .
+ex:desc_SecretHolder a owl:NamedIndividual , bo:ClassDescriptor ; bo:descriptorKey "SecretHolder" ; bo:describesClass exv:SecretHolder .
+
+#################################################################
+# Contexto de identidade (P2, P9)
+#################################################################
+
+ex:provider_a a owl:NamedIndividual , bo:Provider ; rdfs:label "provedor A (sintético)"@pt .
+ex:provider_b a owl:NamedIndividual , bo:Provider ; rdfs:label "provedor B (sintético)"@pt .
+[] a owl:AllDifferent ; owl:distinctMembers ( ex:provider_a ex:provider_b ) .
+ex:acct_1 a owl:NamedIndividual , bo:SyntheticAccount ; bo:ofProvider ex:provider_a ; rdfs:label "conta sintética 1"@pt .
+
+ex:global_a a owl:NamedIndividual , bo:Location ; bo:ofProvider ex:provider_a ; bo:locationScope bo:GlobalScope ; bo:locationCode "global" .
+ex:region_a1 a owl:NamedIndividual , bo:Location ; bo:ofProvider ex:provider_a ; bo:locationScope bo:RegionalScope ; bo:locationCode "region-1" ; bo:withinLocation ex:global_a .
+ex:region_a2 a owl:NamedIndividual , bo:Location ; bo:ofProvider ex:provider_a ; bo:locationScope bo:RegionalScope ; bo:locationCode "region-2" ; bo:withinLocation ex:global_a .
+ex:zone_a1x a owl:NamedIndividual , bo:Location ; bo:ofProvider ex:provider_a ; bo:locationScope bo:ZonalScope ; bo:locationCode "region-1x" ; bo:withinLocation ex:region_a1 .
+
+ex:schema_a a owl:NamedIndividual , bo:SchemaSource ; bo:ofProvider ex:provider_a ; bo:schemaVersion "0.0.0-sintetico" ;
+    bo:sha256 "0000000000000000000000000000000000000000000000000000000000000000" .
+ex:schema_b a owl:NamedIndividual , bo:SchemaSource ; bo:ofProvider ex:provider_b ; bo:schemaVersion "0.0.0-sintetico" ;
+    bo:sha256 "1111111111111111111111111111111111111111111111111111111111111111" .
+ex:ptype_instance a owl:NamedIndividual , bo:ProviderType , bo:ProviderArtifact ; bo:ofProvider ex:provider_a ; bo:artifactName "type_a_instance" ; bo:inSchema ex:schema_a .
+ex:ptype_nic a owl:NamedIndividual , bo:ProviderType , bo:ProviderArtifact ; bo:ofProvider ex:provider_a ; bo:artifactName "type_a_nic" ; bo:inSchema ex:schema_a .
+ex:ptype_subnet a owl:NamedIndividual , bo:ProviderType , bo:ProviderArtifact ; bo:ofProvider ex:provider_a ; bo:artifactName "type_a_subnet" ; bo:inSchema ex:schema_a .
+ex:ptype_namespace a owl:NamedIndividual , bo:ProviderType , bo:ProviderArtifact ; bo:ofProvider ex:provider_a ; bo:artifactName "type_a_namespace" ; bo:inSchema ex:schema_a .
+ex:ptype_container a owl:NamedIndividual , bo:ProviderType , bo:ProviderArtifact ; bo:ofProvider ex:provider_a ; bo:artifactName "type_a_container" ; bo:inSchema ex:schema_a .
+ex:ptype_pool a owl:NamedIndividual , bo:ProviderType , bo:ProviderArtifact ; bo:ofProvider ex:provider_a ; bo:artifactName "type_a_pool" ; bo:inSchema ex:schema_a .
+ex:ptype_principal a owl:NamedIndividual , bo:ProviderType , bo:ProviderArtifact ; bo:ofProvider ex:provider_a ; bo:artifactName "type_a_principal" ; bo:inSchema ex:schema_a .
+ex:ptype_permset a owl:NamedIndividual , bo:ProviderType , bo:ProviderArtifact ; bo:ofProvider ex:provider_a ; bo:artifactName "type_a_permission_set" ; bo:inSchema ex:schema_a .
+ex:ptype_scope a owl:NamedIndividual , bo:ProviderType , bo:ProviderArtifact ; bo:ofProvider ex:provider_a ; bo:artifactName "type_a_scope" ; bo:inSchema ex:schema_a .
+ex:ptype_secret a owl:NamedIndividual , bo:ProviderType , bo:ProviderArtifact ; bo:ofProvider ex:provider_a ; bo:artifactName "type_a_secret" ; bo:inSchema ex:schema_a .
+ex:art_b_versioning a owl:NamedIndividual , bo:ProviderArtifact ; bo:ofProvider ex:provider_b ; bo:artifactName "type_b_container" ; bo:artifactPath "versioning.mode" ; bo:inSchema ex:schema_b .
+ex:art_b_lock a owl:NamedIndividual , bo:ProviderArtifact ; bo:ofProvider ex:provider_b ; bo:artifactName "type_b_container" ; bo:artifactPath "retention_lock.enabled" ; bo:inSchema ex:schema_b .
+
+#################################################################
+# Unidades: instância com duas interfaces (P3, P5), namespace e contêiner componente (P3/P4)
+#################################################################
+
+ex:vm1 a owl:NamedIndividual , exv:ComputeInstance , bo:IndependentResource , bo:Resource , bo:Unit ;
+    bo:inAccount ex:acct_1 ; bo:ofProvider ex:provider_a ; bo:inLocation ex:zone_a1x ; bo:hasProviderType ex:ptype_instance ;
+    bo:localKey "vm-a" ; bo:incarnationKey "inc-0001" ; bo:createdBy ex:cr_vm1 .
+ex:sa a owl:NamedIndividual , exv:Subnet , bo:IndependentResource , bo:Resource , bo:Unit ;
+    bo:inAccount ex:acct_1 ; bo:ofProvider ex:provider_a ; bo:inLocation ex:region_a1 ; bo:hasProviderType ex:ptype_subnet ;
+    bo:localKey "subnet-a" ; bo:incarnationKey "inc-0002" .
+ex:nic1 a owl:NamedIndividual , exv:NetworkInterface , bo:IndependentResource , bo:Resource , bo:Unit ;
+    bo:inAccount ex:acct_1 ; bo:ofProvider ex:provider_a ; bo:inLocation ex:zone_a1x ; bo:hasProviderType ex:ptype_nic ;
+    bo:localKey "nic-a0" ; bo:incarnationKey "inc-0003" ; exv:inSubnet ex:sa .
+ex:nic2 a owl:NamedIndividual , exv:NetworkInterface , bo:IndependentResource , bo:Resource , bo:Unit ;
+    bo:inAccount ex:acct_1 ; bo:ofProvider ex:provider_a ; bo:inLocation ex:zone_a1x ; bo:hasProviderType ex:ptype_nic ;
+    bo:localKey "nic-a1" ; bo:incarnationKey "inc-0004" ; exv:inSubnet ex:sa .
+ex:att1 a owl:NamedIndividual , exv:NicAttachment , bo:Binding , bo:Unit ; exv:attachesInterface ex:nic1 ; exv:attachesTo ex:vm1 ; exv:deviceIndex "0"^^xsd:nonNegativeInteger .
+ex:att2 a owl:NamedIndividual , exv:NicAttachment , bo:Binding , bo:Unit ; exv:attachesInterface ex:nic2 ; exv:attachesTo ex:vm1 ; exv:deviceIndex "1"^^xsd:nonNegativeInteger .
+[] a owl:AllDifferent ; owl:distinctMembers ( ex:vm1 ex:sa ex:nic1 ex:nic2 ex:att1 ex:att2 ) .
+
+ex:ns1 a owl:NamedIndividual , exv:StorageNamespace , bo:IndependentResource , bo:Resource , bo:Unit ;
+    bo:inAccount ex:acct_1 ; bo:ofProvider ex:provider_a ; bo:inLocation ex:region_a1 ; bo:hasProviderType ex:ptype_namespace ;
+    bo:localKey "namespace-a" ; bo:incarnationKey "inc-0010" .
+ex:c1 a owl:NamedIndividual , exv:ObjectContainer , bo:Component , bo:Resource , bo:Unit ;
+    bo:inAccount ex:acct_1 ; bo:ofProvider ex:provider_a ; bo:inLocation ex:region_a1 ; bo:hasProviderType ex:ptype_container ;
+    bo:componentOf ex:ns1 ; bo:occurrenceKey "name=data-a" ; bo:incarnationKey "inc-0011" ; bo:textPosition "2"^^xsd:nonNegativeInteger .
+ex:c2 a owl:NamedIndividual , exv:ObjectContainer , bo:Component , bo:Resource , bo:Unit ;
+    bo:inAccount ex:acct_1 ; bo:ofProvider ex:provider_a ; bo:inLocation ex:region_a1 ; bo:hasProviderType ex:ptype_container ;
+    bo:componentOf ex:ns1 ; bo:occurrenceKey "name=data-b" ; bo:incarnationKey "inc-0012" ; bo:textPosition "1"^^xsd:nonNegativeInteger .
+
+# faceta do contêiner (dono = contêiner) e faceta do namespace (dono = namespace, alcance = os dois contêineres)
+ex:f_ver_c1 a owl:NamedIndividual , exv:VersioningSetting , bo:Facet , bo:Unit ; bo:facetOf ex:c1 ; bo:declaredOn ex:c1 ; bo:appliesTo ex:c1 .
+ex:f_pab_ns1 a owl:NamedIndividual , exv:PublicAccessSetting , bo:Facet , bo:Unit ; bo:facetOf ex:ns1 ; bo:declaredOn ex:ns1 ; bo:appliesTo ex:c1 , ex:c2 .
+
+ex:pool1 a owl:NamedIndividual , exv:BackendPool , bo:IndependentResource , bo:Resource , bo:Unit ;
+    bo:inAccount ex:acct_1 ; bo:ofProvider ex:provider_a ; bo:inLocation ex:region_a1 ; bo:hasProviderType ex:ptype_pool ;
+    bo:localKey "pool-a" ; bo:incarnationKey "inc-0020" .
+ex:vm1 exv:memberOfPool ex:pool1 .
+
+# vínculo: atribuição
+ex:p1 a owl:NamedIndividual , exv:Principal , bo:IndependentResource , bo:Resource , bo:Unit ;
+    bo:inAccount ex:acct_1 ; bo:ofProvider ex:provider_a ; bo:inLocation ex:global_a ; bo:hasProviderType ex:ptype_principal ; bo:localKey "principal-a" ; bo:incarnationKey "inc-0030" .
+ex:ps1 a owl:NamedIndividual , exv:PermissionSet , bo:IndependentResource , bo:Resource , bo:Unit ;
+    bo:inAccount ex:acct_1 ; bo:ofProvider ex:provider_a ; bo:inLocation ex:global_a ; bo:hasProviderType ex:ptype_permset ; bo:localKey "readers" ; bo:incarnationKey "inc-0031" .
+ex:scope1 a owl:NamedIndividual , exv:ScopeNode , bo:IndependentResource , bo:Resource , bo:Unit ;
+    bo:inAccount ex:acct_1 ; bo:ofProvider ex:provider_a ; bo:inLocation ex:global_a ; bo:hasProviderType ex:ptype_scope ; bo:localKey "scope-a" ; bo:incarnationKey "inc-0032" .
+ex:asg1 a owl:NamedIndividual , exv:Assignment , bo:Binding , bo:Unit ; exv:assignsPrincipal ex:p1 ; exv:assignsSet ex:ps1 ; exv:atScope ex:scope1 .
+
+# segredo: presença conhecida, valor retido
+ex:sec1 a owl:NamedIndividual , exv:SecretHolder , bo:IndependentResource , bo:Resource , bo:Unit ;
+    bo:inAccount ex:acct_1 ; bo:ofProvider ex:provider_a ; bo:inLocation ex:region_a1 ; bo:hasProviderType ex:ptype_secret ; bo:localKey "secret-a" ; bo:incarnationKey "inc-0040" .
+
+# recurso cuja localização não foi lida: marca de desconhecido no lugar do componente da identidade
+ex:c9 a owl:NamedIndividual , exv:StorageNamespace , bo:IndependentResource , bo:Resource , bo:Unit ;
+    bo:inAccount ex:acct_1 ; bo:ofProvider ex:provider_a ; bo:hasProviderType ex:ptype_namespace ; bo:localKey "namespace-a" .
+ex:m_c9_loc a owl:NamedIndividual , bo:UnknownMarker , bo:NaryRelation ; bo:markerOf ex:c9 ; bo:of bo:desc_inLocation ;
+    bo:valueState bo:NotRead ; bo:unknownReason bo:IncompleteRead .
+ex:m_c9_inc a owl:NamedIndividual , bo:UnknownMarker , bo:NaryRelation ; bo:markerOf ex:c9 ; bo:of bo:desc_incarnationKey ;
+    bo:valueState bo:NotRead ; bo:unknownReason bo:IncompleteRead .
+
+#################################################################
+# P4 ciclo de vida: criação, substituição (encarnação nova) e fim de vida
+#################################################################
+
+ex:cr_vm1 a owl:NamedIndividual , bo:Creation , bo:LifecycleEvent ; prov:startedAtTime "2026-11-01T09:00:00-03:00"^^xsd:dateTime .
+ex:vm0 a owl:NamedIndividual , exv:ComputeInstance , bo:IndependentResource , bo:Resource , bo:Unit , bo:EndedUnit ;
+    bo:inAccount ex:acct_1 ; bo:ofProvider ex:provider_a ; bo:inLocation ex:zone_a1x ; bo:hasProviderType ex:ptype_instance ;
+    bo:localKey "vm-a" ; bo:incarnationKey "inc-0000" ; bo:replacedBy ex:vm1 ; bo:endedBy ex:rep_vm0 .
+ex:rep_vm0 a owl:NamedIndividual , bo:Replacement , bo:LifecycleEvent ; prov:startedAtTime "2026-11-01T08:59:00-03:00"^^xsd:dateTime .
+
+#################################################################
+# P1 modelo S1: desejado x observado x observação, com deriva
+#################################################################
+
+ex:d0 a owl:NamedIndividual , bo:ConfigurationDescription ; bo:describes ex:f_ver_c1 ; bo:descriptionSource bo:SourceCode ;
+    prov:generatedAtTime "2026-10-30T10:00:00-03:00"^^xsd:dateTime ; bo:hasSettingValue ex:v_d0_ver .
+ex:v_d0_ver a owl:NamedIndividual , bo:SettingValue , bo:NaryRelation ; bo:of ex:desc_versioningStatus ; bo:iriValue exv:Suspended ;
+    bo:valueOrigin bo:Configured ; bo:valueState bo:Known .
+
+ex:d1 a owl:NamedIndividual , bo:ConfigurationDescription ; bo:describes ex:f_ver_c1 ; bo:descriptionSource bo:SourceCode ;
+    bo:previousVersion ex:d0 ; prov:generatedAtTime "2026-11-01T10:00:00-03:00"^^xsd:dateTime ;
+    bo:hasSettingValue ex:v_d1_ver , ex:v_d1_ret .
+ex:v_d1_ver a owl:NamedIndividual , bo:SettingValue , bo:NaryRelation ; bo:of ex:desc_versioningStatus ; bo:iriValue exv:Enabled ;
+    bo:valueOrigin bo:Configured ; bo:valueState bo:Known .
+ex:v_d1_ret a owl:NamedIndividual , bo:SettingValue , bo:NaryRelation ; bo:of ex:desc_retentionPeriod ; bo:literalValue "P1M"^^xsd:duration ;
+    bo:hasUnit bo:UnitNotApplicable ; bo:valueOrigin bo:Configured ; bo:valueState bo:Known .
+
+ex:ob1 a owl:NamedIndividual , bo:Observation ; prov:startedAtTime "2026-11-02T10:00:00-03:00"^^xsd:dateTime ;
+    bo:readCompleteness bo:CompleteRead ; bo:coversScope ex:acct_1 ; bo:coversKind ex:desc_SecretHolder .
+ex:o1 a owl:NamedIndividual , bo:ObservedState ; bo:stateOf ex:f_ver_c1 ; prov:wasGeneratedBy ex:ob1 ;
+    bo:hasSettingValue ex:v_o1_ver .
+ex:v_o1_ver a owl:NamedIndividual , bo:SettingValue , bo:NaryRelation ; bo:of ex:desc_versioningStatus ; bo:iriValue exv:Suspended ;
+    bo:valueOrigin bo:Observed ; bo:valueState bo:Known .
+
+# valor que veio do padrão do provedor (não é configurado) e valor inferido
+ex:o2 a owl:NamedIndividual , bo:ObservedState ; bo:stateOf ex:f_pab_ns1 ; prov:wasGeneratedBy ex:ob1 ;
+    bo:hasSettingValue ex:v_o2_pab .
+ex:v_o2_pab a owl:NamedIndividual , bo:SettingValue , bo:NaryRelation ; bo:of ex:desc_publicAccessBlocked ; bo:literalValue true ;
+    bo:hasUnit bo:UnitNotApplicable ; bo:valueOrigin bo:ProviderDefault ; bo:valueState bo:Known .
+ex:o3 a owl:NamedIndividual , bo:ObservedState ; bo:stateOf ex:vm1 ; prov:wasGeneratedBy ex:ob1 ;
+    bo:hasSettingValue ex:v_o3_cap , ex:v_o3_thr , ex:v_o3_rule .
+ex:v_o3_cap a owl:NamedIndividual , bo:SettingValue , bo:NaryRelation ; bo:of ex:desc_capacity ; bo:literalValue "100"^^xsd:decimal ;
+    bo:hasUnit unit:GigaBYTE ; bo:valueOrigin bo:Observed ; bo:valueState bo:Known .
+ex:v_o3_thr a owl:NamedIndividual , bo:SettingValue , bo:NaryRelation ; bo:of ex:desc_throughput ; bo:literalValue "250"^^xsd:decimal ;
+    bo:hasUnit bo:UnitUnknown ; bo:valueOrigin bo:Inferred ; bo:valueState bo:Known .
+# ausência sob leitura completa (ob1 é completa)
+ex:v_o3_rule a owl:NamedIndividual , bo:SettingValue , bo:NaryRelation ; bo:of ex:desc_lifecycleRule ;
+    bo:valueOrigin bo:Observed ; bo:valueState bo:Absent .
+unit:GigaBYTE a owl:NamedIndividual , bo:UnitOfMeasure .
+
+# conhecido só depois da criação (código sem estado), não lido e retido
+ex:d_nic1 a owl:NamedIndividual , bo:ConfigurationDescription ; bo:describes ex:nic1 ; bo:descriptionSource bo:SourceCode ;
+    bo:hasSettingValue ex:v_nic1_addr .
+ex:v_nic1_addr a owl:NamedIndividual , bo:SettingValue , bo:NaryRelation ; bo:of ex:desc_privateAddress ;
+    bo:valueOrigin bo:Configured ; bo:valueState bo:Unknown ; bo:unknownReason bo:KnownAfterApply .
+ex:ob2 a owl:NamedIndividual , bo:Observation ; prov:startedAtTime "2026-11-02T10:05:00-03:00"^^xsd:dateTime ;
+    bo:readCompleteness bo:PartialRead ; bo:coversScope ex:region_a1 .
+ex:o4 a owl:NamedIndividual , bo:ObservedState ; bo:stateOf ex:sec1 ; prov:wasGeneratedBy ex:ob2 ;
+    bo:hasSettingValue ex:v_o4_secret , ex:v_o4_ret .
+ex:v_o4_secret a owl:NamedIndividual , bo:SettingValue , bo:NaryRelation ; bo:of ex:desc_secretValue ;
+    bo:valueOrigin bo:Observed ; bo:valueState bo:Withheld .
+ex:v_o4_ret a owl:NamedIndividual , bo:SettingValue , bo:NaryRelation ; bo:of ex:desc_retentionPeriod ;
+    bo:valueOrigin bo:Observed ; bo:valueState bo:NotRead ; bo:unknownReason bo:IncompleteRead .
+
+#################################################################
+# P7 realização reificada com PROV-O, fidelidade por direção, guarda e alternativa
+#################################################################
+
+ex:agent_mapper a owl:NamedIndividual , prov:Agent ; rdfs:label "mapeador (papel do protocolo)"@pt .
+ex:map_run1 a owl:NamedIndividual , bo:MappingActivity ; prov:startedAtTime "2026-11-02T11:00:00-03:00"^^xsd:dateTime ; prov:used ex:schema_a , ex:schema_b .
+
+ex:r_ci_a a owl:NamedIndividual , bo:Realization , bo:NaryRelation ; bo:of ex:desc_ComputeInstance ; bo:onProvider ex:provider_a ;
+    bo:realizedBy ex:ptype_instance ; bo:liftingFidelity bo:Lossless ; bo:loweringFidelity bo:DeclaredLoss ;
+    bo:declaresLoss ex:loss_r_ci_a ; bo:evidenceState bo:DocSupported ; bo:exclusivity bo:ProvenExclusive ;
+    prov:wasDerivedFrom ex:schema_a ; prov:wasGeneratedBy ex:map_run1 ; prov:wasAttributedTo ex:agent_mapper .
+ex:loss_r_ci_a a owl:NamedIndividual , bo:LossRecord , bo:NaryRelation ; bo:lossCode "DEFAULT_NOT_CARRIED" .
+
+ex:r_ver_b a owl:NamedIndividual , bo:Realization , bo:NaryRelation ; bo:of ex:desc_versioningStatus ; bo:onProvider ex:provider_b ;
+    bo:realizedBy ex:art_b_versioning ; bo:hasProjection ex:proj_ver_b ; bo:liftingFidelity bo:PartialTransport ; bo:loweringFidelity bo:DeclaredLoss ;
+    bo:declaresLoss ex:loss_r_ver_b ; bo:evidenceState bo:DocSupported ; bo:hasGuard ex:g_ver_b ; bo:exclusivity bo:Ambiguous ;
+    bo:alternativeTo ex:r_ver_b2 ;
+    prov:wasDerivedFrom ex:schema_b ; prov:wasGeneratedBy ex:map_run1 ; prov:wasAttributedTo ex:agent_mapper .
+ex:proj_ver_b a owl:NamedIndividual , bo:Projection , bo:NaryRelation ; bo:fromField "versioning.mode" ; bo:of ex:desc_versioningStatus .
+ex:loss_r_ver_b a owl:NamedIndividual , bo:LossRecord , bo:NaryRelation ; bo:lossCode "SUSPENDED_STATE_NOT_EXPRESSIBLE" .
+ex:g_ver_b a owl:NamedIndividual , bo:Guard , bo:NaryRelation ; bo:guardExpression "edition = standard" .
+
+ex:r_ver_b2 a owl:NamedIndividual , bo:Realization , bo:NaryRelation ; bo:of ex:desc_versioningStatus ; bo:onProvider ex:provider_b ;
+    bo:realizedBy ex:art_b_lock ; bo:liftingFidelity bo:NoTransport ; bo:loweringFidelity bo:NoTransport ;
+    bo:evidenceState bo:Unresolved ; bo:hasGuard ex:g_ver_b2 ; bo:exclusivity bo:Ambiguous ;
+    prov:wasDerivedFrom ex:schema_b ; prov:wasGeneratedBy ex:map_run1 ; prov:wasAttributedTo ex:agent_mapper .
+ex:g_ver_b2 a owl:NamedIndividual , bo:Guard , bo:NaryRelation ; bo:guardExpression "edition = premium" .
+
+# ==== contexto TBox para a validação SHACL (gerado por bo.ontpat.build; não editar) ====
+<http://purl.org/dc/terms/created> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#AnnotationProperty> .
+<http://purl.org/dc/terms/license> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#AnnotationProperty> .
+<http://purl.org/dc/terms/title> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#AnnotationProperty> .
+<http://www.w3.org/2000/01/rdf-schema#isDefinedBy> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#AnnotationProperty> .
+<http://www.w3.org/2004/02/skos/core#definition> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#AnnotationProperty> .
+<http://www.w3.org/2004/02/skos/core#example> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#AnnotationProperty> .
+<http://www.w3.org/2004/02/skos/core#scopeNote> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#AnnotationProperty> .
+<http://www.w3.org/ns/prov#Activity> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://www.w3.org/ns/prov#Agent> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://www.w3.org/ns/prov#Entity> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<http://www.w3.org/ns/prov#endedAtTime> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://www.w3.org/ns/prov#generatedAtTime> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://www.w3.org/ns/prov#startedAtTime> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<http://www.w3.org/ns/prov#used> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.w3.org/ns/prov#wasAttributedTo> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.w3.org/ns/prov#wasDerivedFrom> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.w3.org/ns/prov#wasGeneratedBy> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.w3.org/ns/prov#wasInvalidatedBy> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.w3.org/ns/prov#wasRevisionOf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<http://www.w3.org/ns/prov#wasRevisionOf> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.w3.org/ns/prov#wasDerivedFrom> .
+<https://w3id.org/brevops/ontology#Absent> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#Absent> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#ValueState> .
+<https://w3id.org/brevops/ontology#Ambiguous> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#Ambiguous> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#Exclusivity> .
+<https://w3id.org/brevops/ontology#AntiRigid> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#AntiRigid> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#RigidityValue> .
+<https://w3id.org/brevops/ontology#Binding> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#Binding> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://w3id.org/brevops/ontology#Unit> .
+<https://w3id.org/brevops/ontology#ClassDescriptor> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#ClassDescriptor> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://w3id.org/brevops/ontology#Descriptor> .
+<https://w3id.org/brevops/ontology#CompleteRead> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#CompleteRead> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#ReadCompleteness> .
+<https://w3id.org/brevops/ontology#Component> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#Component> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://w3id.org/brevops/ontology#Resource> .
+<https://w3id.org/brevops/ontology#ConditionIndeterminate> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#ConditionIndeterminate> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#UnknownReason> .
+<https://w3id.org/brevops/ontology#ConfigurationDescription> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#ConfigurationDescription> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/ns/prov#Entity> .
+<https://w3id.org/brevops/ontology#Configured> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#Configured> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#ValueOrigin> .
+<https://w3id.org/brevops/ontology#ControlledValue> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#Creation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#Creation> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://w3id.org/brevops/ontology#LifecycleEvent> .
+<https://w3id.org/brevops/ontology#DeclaredLoss> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#DeclaredLoss> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#TransportFidelity> .
+<https://w3id.org/brevops/ontology#Deletion> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#Deletion> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://w3id.org/brevops/ontology#LifecycleEvent> .
+<https://w3id.org/brevops/ontology#DescriptionSource> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#DescriptionSource> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://w3id.org/brevops/ontology#ControlledValue> .
+<https://w3id.org/brevops/ontology#Descriptor> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#DocSupported> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#DocSupported> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#EvidenceState> .
+<https://w3id.org/brevops/ontology#EndedUnit> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#EvidenceState> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#EvidenceState> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://w3id.org/brevops/ontology#ControlledValue> .
+<https://w3id.org/brevops/ontology#Exclusivity> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#Exclusivity> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://w3id.org/brevops/ontology#ControlledValue> .
+<https://w3id.org/brevops/ontology#Facet> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#Facet> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://w3id.org/brevops/ontology#Unit> .
+<https://w3id.org/brevops/ontology#GlobalScope> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#GlobalScope> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#LocationScope> .
+<https://w3id.org/brevops/ontology#Guard> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#Guard> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://w3id.org/brevops/ontology#NaryRelation> .
+<https://w3id.org/brevops/ontology#InPlaceUpdate> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#InPlaceUpdate> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://w3id.org/brevops/ontology#LifecycleEvent> .
+<https://w3id.org/brevops/ontology#IncompleteRead> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#IncompleteRead> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#UnknownReason> .
+<https://w3id.org/brevops/ontology#IndependentResource> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#IndependentResource> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://w3id.org/brevops/ontology#Resource> .
+<https://w3id.org/brevops/ontology#Inferred> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#Inferred> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#ValueOrigin> .
+<https://w3id.org/brevops/ontology#Known> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#Known> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#ValueState> .
+<https://w3id.org/brevops/ontology#KnownAfterApply> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#KnownAfterApply> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#UnknownReason> .
+<https://w3id.org/brevops/ontology#LifecycleEvent> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#LifecycleEvent> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/ns/prov#Activity> .
+<https://w3id.org/brevops/ontology#Location> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#LocationScope> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#LocationScope> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://w3id.org/brevops/ontology#ControlledValue> .
+<https://w3id.org/brevops/ontology#LossRecord> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#LossRecord> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://w3id.org/brevops/ontology#NaryRelation> .
+<https://w3id.org/brevops/ontology#Lossless> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#Lossless> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#TransportFidelity> .
+<https://w3id.org/brevops/ontology#MappingActivity> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#MappingActivity> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/ns/prov#Activity> .
+<https://w3id.org/brevops/ontology#MissingEvidence> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#MissingEvidence> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#UnknownReason> .
+<https://w3id.org/brevops/ontology#NaryRelation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#NoTransport> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#NoTransport> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#TransportFidelity> .
+<https://w3id.org/brevops/ontology#NotRead> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#NotRead> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#ValueState> .
+<https://w3id.org/brevops/ontology#Observation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#Observation> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/ns/prov#Activity> .
+<https://w3id.org/brevops/ontology#ObservationTested> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#ObservationTested> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#EvidenceState> .
+<https://w3id.org/brevops/ontology#Observed> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#Observed> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#ValueOrigin> .
+<https://w3id.org/brevops/ontology#ObservedState> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#ObservedState> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/ns/prov#Entity> .
+<https://w3id.org/brevops/ontology#OutOfPin> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#OutOfPin> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#UnknownReason> .
+<https://w3id.org/brevops/ontology#PartialRead> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#PartialRead> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#ReadCompleteness> .
+<https://w3id.org/brevops/ontology#PartialTransport> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#PartialTransport> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#TransportFidelity> .
+<https://w3id.org/brevops/ontology#PersistenceVerified> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#PersistenceVerified> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#EvidenceState> .
+<https://w3id.org/brevops/ontology#Projection> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#Projection> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://w3id.org/brevops/ontology#NaryRelation> .
+<https://w3id.org/brevops/ontology#PropertyDescriptor> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#PropertyDescriptor> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://w3id.org/brevops/ontology#Descriptor> .
+<https://w3id.org/brevops/ontology#ProvenExclusive> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#ProvenExclusive> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#Exclusivity> .
+<https://w3id.org/brevops/ontology#Provider> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#ProviderArtifact> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#ProviderDefault> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#ProviderDefault> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#ValueOrigin> .
+<https://w3id.org/brevops/ontology#ProviderType> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#ProviderType> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://w3id.org/brevops/ontology#ProviderArtifact> .
+<https://w3id.org/brevops/ontology#ReadCompleteness> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#ReadCompleteness> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://w3id.org/brevops/ontology#ControlledValue> .
+<https://w3id.org/brevops/ontology#Realization> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#Realization> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://w3id.org/brevops/ontology#NaryRelation> .
+<https://w3id.org/brevops/ontology#RegionalScope> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#RegionalScope> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#LocationScope> .
+<https://w3id.org/brevops/ontology#Replacement> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#Replacement> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://w3id.org/brevops/ontology#LifecycleEvent> .
+<https://w3id.org/brevops/ontology#Resource> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#Resource> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://w3id.org/brevops/ontology#Unit> .
+<https://w3id.org/brevops/ontology#Rigid> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#Rigid> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#RigidityValue> .
+<https://w3id.org/brevops/ontology#RigidityValue> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#SchemaSource> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#SchemaSource> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/ns/prov#Entity> .
+<https://w3id.org/brevops/ontology#SemiRigid> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#SemiRigid> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#RigidityValue> .
+<https://w3id.org/brevops/ontology#SettingValue> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#SettingValue> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://w3id.org/brevops/ontology#NaryRelation> .
+<https://w3id.org/brevops/ontology#SourceCode> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#SourceCode> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#DescriptionSource> .
+<https://w3id.org/brevops/ontology#StructurallyValid> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#StructurallyValid> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#EvidenceState> .
+<https://w3id.org/brevops/ontology#SyntheticAccount> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#ToolStateRecord> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#ToolStateRecord> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#DescriptionSource> .
+<https://w3id.org/brevops/ontology#TransformOutOfDomain> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#TransformOutOfDomain> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#UnknownReason> .
+<https://w3id.org/brevops/ontology#TransportFidelity> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#TransportFidelity> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://w3id.org/brevops/ontology#ControlledValue> .
+<https://w3id.org/brevops/ontology#Unglossed> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#Unglossed> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#UnknownReason> .
+<https://w3id.org/brevops/ontology#Unit> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#Unit> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/ns/prov#Entity> .
+<https://w3id.org/brevops/ontology#UnitMarker> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#UnitMarker> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://w3id.org/brevops/ontology#ControlledValue> .
+<https://w3id.org/brevops/ontology#UnitMarker> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://w3id.org/brevops/ontology#UnitOfMeasure> .
+<https://w3id.org/brevops/ontology#UnitNotApplicable> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#UnitNotApplicable> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#UnitMarker> .
+<https://w3id.org/brevops/ontology#UnitOfMeasure> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#UnitUnknown> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#UnitUnknown> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#UnitMarker> .
+<https://w3id.org/brevops/ontology#Unknown> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#Unknown> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#ValueState> .
+<https://w3id.org/brevops/ontology#UnknownInput> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#UnknownInput> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#UnknownReason> .
+<https://w3id.org/brevops/ontology#UnknownMarker> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#UnknownMarker> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://w3id.org/brevops/ontology#NaryRelation> .
+<https://w3id.org/brevops/ontology#UnknownReason> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#UnknownReason> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://w3id.org/brevops/ontology#ControlledValue> .
+<https://w3id.org/brevops/ontology#Unproven> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#Unproven> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#UnknownReason> .
+<https://w3id.org/brevops/ontology#Unresolved> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#Unresolved> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#EvidenceState> .
+<https://w3id.org/brevops/ontology#UnresolvedReference> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#UnresolvedReference> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#UnknownReason> .
+<https://w3id.org/brevops/ontology#ValueOrigin> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#ValueOrigin> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://w3id.org/brevops/ontology#ControlledValue> .
+<https://w3id.org/brevops/ontology#ValueState> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+<https://w3id.org/brevops/ontology#ValueState> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://w3id.org/brevops/ontology#ControlledValue> .
+<https://w3id.org/brevops/ontology#Withheld> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#Withheld> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#ValueState> .
+<https://w3id.org/brevops/ontology#ZonalScope> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#ZonalScope> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#LocationScope> .
+<https://w3id.org/brevops/ontology#alternativeTo> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#appliesTo> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#artifactName> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<https://w3id.org/brevops/ontology#artifactPath> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<https://w3id.org/brevops/ontology#componentOf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#componentOf> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <https://w3id.org/brevops/ontology#lifecycleControlledBy> .
+<https://w3id.org/brevops/ontology#coversKind> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#coversScope> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#createdBy> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#createdBy> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.w3.org/ns/prov#wasGeneratedBy> .
+<https://w3id.org/brevops/ontology#declaredOn> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#declaresLoss> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#desc_componentOf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#desc_componentOf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#PropertyDescriptor> .
+<https://w3id.org/brevops/ontology#desc_componentOf> <https://w3id.org/brevops/ontology#describesProperty> <https://w3id.org/brevops/ontology#componentOf> .
+<https://w3id.org/brevops/ontology#desc_componentOf> <https://w3id.org/brevops/ontology#descriptorKey> "componentOf" .
+<https://w3id.org/brevops/ontology#desc_hasProviderType> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#desc_hasProviderType> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#PropertyDescriptor> .
+<https://w3id.org/brevops/ontology#desc_hasProviderType> <https://w3id.org/brevops/ontology#describesProperty> <https://w3id.org/brevops/ontology#hasProviderType> .
+<https://w3id.org/brevops/ontology#desc_hasProviderType> <https://w3id.org/brevops/ontology#descriptorKey> "hasProviderType" .
+<https://w3id.org/brevops/ontology#desc_inAccount> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#desc_inAccount> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#PropertyDescriptor> .
+<https://w3id.org/brevops/ontology#desc_inAccount> <https://w3id.org/brevops/ontology#describesProperty> <https://w3id.org/brevops/ontology#inAccount> .
+<https://w3id.org/brevops/ontology#desc_inAccount> <https://w3id.org/brevops/ontology#descriptorKey> "inAccount" .
+<https://w3id.org/brevops/ontology#desc_inLocation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#desc_inLocation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#PropertyDescriptor> .
+<https://w3id.org/brevops/ontology#desc_inLocation> <https://w3id.org/brevops/ontology#describesProperty> <https://w3id.org/brevops/ontology#inLocation> .
+<https://w3id.org/brevops/ontology#desc_inLocation> <https://w3id.org/brevops/ontology#descriptorKey> "inLocation" .
+<https://w3id.org/brevops/ontology#desc_incarnationKey> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#desc_incarnationKey> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#PropertyDescriptor> .
+<https://w3id.org/brevops/ontology#desc_incarnationKey> <https://w3id.org/brevops/ontology#describesProperty> <https://w3id.org/brevops/ontology#incarnationKey> .
+<https://w3id.org/brevops/ontology#desc_incarnationKey> <https://w3id.org/brevops/ontology#descriptorKey> "incarnationKey" .
+<https://w3id.org/brevops/ontology#desc_lifecycleControlledBy> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#desc_lifecycleControlledBy> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#PropertyDescriptor> .
+<https://w3id.org/brevops/ontology#desc_lifecycleControlledBy> <https://w3id.org/brevops/ontology#describesProperty> <https://w3id.org/brevops/ontology#lifecycleControlledBy> .
+<https://w3id.org/brevops/ontology#desc_lifecycleControlledBy> <https://w3id.org/brevops/ontology#descriptorKey> "lifecycleControlledBy" .
+<https://w3id.org/brevops/ontology#desc_localKey> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#desc_localKey> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#PropertyDescriptor> .
+<https://w3id.org/brevops/ontology#desc_localKey> <https://w3id.org/brevops/ontology#describesProperty> <https://w3id.org/brevops/ontology#localKey> .
+<https://w3id.org/brevops/ontology#desc_localKey> <https://w3id.org/brevops/ontology#descriptorKey> "localKey" .
+<https://w3id.org/brevops/ontology#desc_occurrenceKey> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#desc_occurrenceKey> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#PropertyDescriptor> .
+<https://w3id.org/brevops/ontology#desc_occurrenceKey> <https://w3id.org/brevops/ontology#describesProperty> <https://w3id.org/brevops/ontology#occurrenceKey> .
+<https://w3id.org/brevops/ontology#desc_occurrenceKey> <https://w3id.org/brevops/ontology#descriptorKey> "occurrenceKey" .
+<https://w3id.org/brevops/ontology#desc_ofProvider> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual> .
+<https://w3id.org/brevops/ontology#desc_ofProvider> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://w3id.org/brevops/ontology#PropertyDescriptor> .
+<https://w3id.org/brevops/ontology#desc_ofProvider> <https://w3id.org/brevops/ontology#describesProperty> <https://w3id.org/brevops/ontology#ofProvider> .
+<https://w3id.org/brevops/ontology#desc_ofProvider> <https://w3id.org/brevops/ontology#descriptorKey> "ofProvider" .
+<https://w3id.org/brevops/ontology#describes> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#describesClass> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#AnnotationProperty> .
+<https://w3id.org/brevops/ontology#describesProperty> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#AnnotationProperty> .
+<https://w3id.org/brevops/ontology#descriptionSource> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#descriptorKey> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<https://w3id.org/brevops/ontology#endedBy> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#endedBy> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.w3.org/ns/prov#wasInvalidatedBy> .
+<https://w3id.org/brevops/ontology#evidenceState> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#exclusivity> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#facetOf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#facetOf> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <https://w3id.org/brevops/ontology#lifecycleControlledBy> .
+<https://w3id.org/brevops/ontology#fromField> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<https://w3id.org/brevops/ontology#guardExpression> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<https://w3id.org/brevops/ontology#hasGuard> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#hasProjection> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#hasProviderType> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#hasSettingValue> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#hasUnit> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#inAccount> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#inLocation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#inSchema> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#incarnationKey> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<https://w3id.org/brevops/ontology#iriValue> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#lifecycleControlledBy> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#liftingFidelity> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#literalValue> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<https://w3id.org/brevops/ontology#localKey> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<https://w3id.org/brevops/ontology#locationCode> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<https://w3id.org/brevops/ontology#locationScope> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#lossCode> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<https://w3id.org/brevops/ontology#loweringFidelity> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#markerOf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#occurrenceKey> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<https://w3id.org/brevops/ontology#of> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#ofProvider> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#onProvider> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#previousVersion> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#previousVersion> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.w3.org/ns/prov#wasRevisionOf> .
+<https://w3id.org/brevops/ontology#readCompleteness> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#realizedBy> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#references> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#relates> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#replacedBy> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#rigidity> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#AnnotationProperty> .
+<https://w3id.org/brevops/ontology#schemaVersion> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<https://w3id.org/brevops/ontology#sha256> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<https://w3id.org/brevops/ontology#stateOf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#textPosition> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#DatatypeProperty> .
+<https://w3id.org/brevops/ontology#unitKind> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#AnnotationProperty> .
+<https://w3id.org/brevops/ontology#unknownReason> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#valueOrigin> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#valueState> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .
+<https://w3id.org/brevops/ontology#withinLocation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty> .

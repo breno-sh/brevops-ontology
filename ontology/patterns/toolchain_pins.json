@@ -1,0 +1,67 @@
+{
+ "schema": "bo.toolchain_pins/1",
+ "module": "ONTPAT",
+ "written_at": "2026-11-02T22:58:23-03:00",
+ "robot": {
+  "version": "1.9.11",
+  "url": "https://github.com/ontodev/robot/releases/download/v1.9.11/robot.jar",
+  "jar_path": "$BO_DATA/downloads/robot/v1.9.11/robot.jar",
+  "jar_sha256": "53cd275c8e4c0dad1fc2c1c34174876795cd7d6b6926e1444adcbb0cb3c7ab26",
+  "launcher": "~/.local/bin/robot (java -jar do jar acima)",
+  "decision": "D6"
+ },
+ "hermit": {
+  "version": "1.4.5.456",
+  "source": "embutido no robot.jar"
+ },
+ "elk": {
+  "version": "0.6.0",
+  "source": "embutido no robot.jar"
+ },
+ "owlapi": {
+  "version": "4.5.29",
+  "source": "embutido no robot.jar"
+ },
+ "robot_core": {
+  "version": "1.9.11"
+ },
+ "java": {
+  "path": "/opt/homebrew/opt/openjdk@17/bin/java",
+  "version": "openjdk version \"17.0.19\" 2026-04-21"
+ },
+ "python": {
+  "rdflib": "7.6.0",
+  "pyshacl": "0.40.2",
+  "owlrl": "7.6.2"
+ },
+ "profile": "OWL 2 DL sobre o fecho de imports",
+ "entailment_regimes": {
+  "owl": "OWL 2 Direct Semantics (OWL 2 DL), checado sobre o fecho de imports pelo ROBOT validate-profile; raciocínio completo com o HermiT embutido no ROBOT; ELK só sobre o fragmento EL extraído e verificado (AXIOMS), nunca sobre o fecho inteiro.",
+  "sparql": "Consultas SPARQL 1.1 com entailment SIMPLES sobre o grafo materializado: triplas asseridas + tipos inferidos pelo HermiT para indivíduos nomeados (e sameAs inferido). Não é o regime OWL 2 Direct Semantics do SPARQL 1.1 Entailment Regimes; o que não foi materializado não é visto. Desigualdade de IRIs em FILTER só vale para valores declarados distintos (owl:AllDifferent).",
+  "shacl": "SHACL Core + SPARQL (pyshacl, inference=none) sobre o grafo de dados tal como dado: só a travessia de rdfs:subClassOf do próprio SHACL. O ABox validado já traz os tipos bo: materializados e o contexto TBox de que as formas dependem.",
+  "unique_name": "Sem suposição de nomes únicos: igualdade só por owl:hasKey/funcionalidade, diferença só por axioma (AllDifferent, irreflexividade, valores funcionais distintos).",
+  "closed_world": "Mundo aberto. Negação e ausência só pelo vocabulário de ausência (bo:Absent sob bo:CompleteRead); o avaliador devolve UNKNOWN quando nem a afirmação nem a negação são consequência."
+ },
+ "external_ontologies": {
+  "bfo": {
+   "path": "$BO_DATA/downloads/bfo2020/bfo-core.ttl",
+   "url": "https://raw.githubusercontent.com/BFO-ontology/BFO-2020/release-2024-01-29/src/owl/bfo-core.ttl",
+   "sha256": "6944e2c96a0d8709dc15ae5364792019e208061eda3f32311af4f3b8d8443a3b"
+  },
+  "dul": {
+   "path": "$BO_DATA/downloads/dul/DUL.ttl",
+   "url": "http://www.ontologydesignpatterns.org/ont/dul/DUL.owl",
+   "sha256": "e5f6429596d2c7014730bad85aaaa9c39530235f27f596cd0e7ce85e6bbcba66"
+  },
+  "gufo": {
+   "path": "$BO_DATA/downloads/gufo/gufo.ttl",
+   "url": "https://raw.githubusercontent.com/nemo-ufes/gufo/v1.0.0/gufo.ttl",
+   "sha256": "b234c7a22d738b66dc8fcf735146fdbe828122e2a04bec43c8c9b08f34fd9027"
+  },
+  "prov_o": {
+   "path": "$BO_DATA/downloads/prov-o/prov-o.ttl",
+   "url": "https://www.w3.org/ns/prov-o",
+   "sha256": "7d203989f67b38bca572253942acc5a1bf24ce3ccfece16f072dcb4be2b79a96"
+  }
+ }
+}

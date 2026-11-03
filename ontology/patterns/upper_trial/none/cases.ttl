@@ -1,0 +1,212 @@
+# BrevOps ONTPAT: teste de ontologia de topo, candidata 'none' (nenhuma ontologia de topo).
+# Gerado por bo.ontpat.build a partir de src/bo/ontpat/trial_spec.py; não editar.
+# Não carregar inteiro como uma ontologia só: cada caso (prefixo k...) é um grafo próprio, levantado
+# junto com bo-patterns.ttl, a candidata, o alinhamento e o vocabulário de teste (resultados em
+# results/ONTPAT/upper_trial.json). As consultas e as mutações estão no JSON.
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix bo:   <https://w3id.org/brevops/ontology#> .
+@prefix tv:   <https://example.org/bo-trial/vocab#> .
+@prefix obo:  <http://purl.obolibrary.org/obo/> .
+@prefix dul:  <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#> .
+@prefix gufo: <http://purl.org/nemo/gufo#> .
+
+### alinhamento mínimo (0 axiomas)
+# nenhuma: os padrões do bo ficam sem categoria de topo
+
+### vocabulário de teste e contexto comum
+
+tv:StorageNamespace a owl:Class ; rdfs:subClassOf bo:Resource ; bo:rigidity bo:Rigid .
+tv:ObjectContainer a owl:Class ; rdfs:subClassOf bo:Resource ; bo:rigidity bo:Rigid .
+tv:AddressableResource a owl:Class ; rdfs:subClassOf bo:IndependentResource ; bo:rigidity bo:Rigid .
+tv:ComputeInstance a owl:Class ; rdfs:subClassOf tv:AddressableResource ; bo:rigidity bo:Rigid .
+tv:NetworkInterface a owl:Class ; rdfs:subClassOf bo:Resource ; bo:rigidity bo:Rigid .
+tv:BackendPool a owl:Class ; rdfs:subClassOf bo:IndependentResource ; bo:rigidity bo:Rigid .
+tv:DbInstance a owl:Class ; rdfs:subClassOf bo:IndependentResource ; bo:rigidity bo:Rigid .
+tv:Principal a owl:Class ; rdfs:subClassOf bo:IndependentResource ; bo:rigidity bo:Rigid .
+tv:PermissionSet a owl:Class ; rdfs:subClassOf bo:IndependentResource ; bo:rigidity bo:Rigid .
+tv:ScopeNode a owl:Class ; rdfs:subClassOf bo:IndependentResource ; bo:rigidity bo:Rigid .
+tv:NotificationTopic a owl:Class ; rdfs:subClassOf bo:IndependentResource ; bo:rigidity bo:Rigid .
+tv:Alarm a owl:Class ; rdfs:subClassOf bo:IndependentResource ; bo:rigidity bo:Rigid .
+[] a owl:AllDisjointClasses ; owl:members ( tv:StorageNamespace tv:ObjectContainer tv:ComputeInstance tv:NetworkInterface
+    tv:BackendPool tv:DbInstance tv:Principal tv:PermissionSet tv:ScopeNode tv:NotificationTopic tv:Alarm ) .
+
+tv:memberOfPool a owl:ObjectProperty ; rdfs:subPropertyOf bo:references ; rdfs:domain bo:IndependentResource ; rdfs:range tv:BackendPool .
+tv:BackendMember a owl:Class ; bo:rigidity bo:AntiRigid ;
+    owl:equivalentClass [ a owl:Class ; owl:intersectionOf ( tv:AddressableResource [ a owl:Restriction ; owl:onProperty tv:memberOfPool ; owl:someValuesFrom tv:BackendPool ] ) ] .
+tv:replicaOf a owl:ObjectProperty , owl:IrreflexiveProperty , owl:AsymmetricProperty ; rdfs:subPropertyOf bo:references ;
+    rdfs:domain tv:DbInstance ; rdfs:range tv:DbInstance .
+tv:Replica a owl:Class ; bo:rigidity bo:AntiRigid ;
+    owl:equivalentClass [ a owl:Class ; owl:intersectionOf ( tv:DbInstance [ a owl:Restriction ; owl:onProperty tv:replicaOf ; owl:someValuesFrom tv:DbInstance ] ) ] .
+tv:notifies a owl:ObjectProperty ; rdfs:subPropertyOf bo:references ; rdfs:domain tv:Alarm ; rdfs:range bo:Unit .
+tv:NotificationDestination a owl:Class ; bo:rigidity bo:AntiRigid ;
+    owl:equivalentClass [ a owl:Class ; owl:intersectionOf ( bo:Unit [ a owl:Restriction ; owl:onProperty [ owl:inverseOf tv:notifies ] ; owl:someValuesFrom tv:Alarm ] ) ] .
+
+tv:Assignment a owl:Class ; rdfs:subClassOf bo:Binding ; bo:rigidity bo:Rigid .
+tv:assignsPrincipal a owl:ObjectProperty , owl:FunctionalProperty ; rdfs:subPropertyOf bo:relates ; rdfs:domain tv:Assignment ; rdfs:range tv:Principal .
+tv:assignsSet a owl:ObjectProperty , owl:FunctionalProperty ; rdfs:subPropertyOf bo:relates ; rdfs:domain tv:Assignment ; rdfs:range tv:PermissionSet .
+tv:atScope a owl:ObjectProperty , owl:FunctionalProperty ; rdfs:subPropertyOf bo:relates ; rdfs:domain tv:Assignment ; rdfs:range tv:ScopeNode .
+tv:Assignment owl:hasKey ( tv:assignsPrincipal tv:assignsSet tv:atScope ) .
+
+tv:versioningStatus a owl:ObjectProperty , owl:FunctionalProperty ; rdfs:range tv:VersioningStatus .
+tv:VersioningStatus a owl:Class ; bo:rigidity bo:Rigid ; owl:equivalentClass [ a owl:Class ; owl:oneOf ( tv:Enabled tv:Disabled ) ] .
+tv:Enabled a owl:NamedIndividual , tv:VersioningStatus .
+tv:Disabled a owl:NamedIndividual , tv:VersioningStatus .
+[] a owl:AllDifferent ; owl:distinctMembers ( tv:Enabled tv:Disabled ) .
+tv:desc_versioning a owl:NamedIndividual , bo:PropertyDescriptor ; bo:descriptorKey "versioningStatus" ; bo:describesProperty tv:versioningStatus .
+
+tv:prov_a a owl:NamedIndividual , bo:Provider .
+tv:acct_a a owl:NamedIndividual , bo:SyntheticAccount ; bo:ofProvider tv:prov_a .
+tv:loc_r1 a owl:NamedIndividual , bo:Location ; bo:ofProvider tv:prov_a ; bo:locationScope bo:RegionalScope ; bo:locationCode "r1" .
+tv:loc_r2 a owl:NamedIndividual , bo:Location ; bo:ofProvider tv:prov_a ; bo:locationScope bo:RegionalScope ; bo:locationCode "r2" .
+tv:pt_container a owl:NamedIndividual , bo:ProviderType ; bo:ofProvider tv:prov_a ; bo:artifactName "type_container" .
+tv:pt_namespace a owl:NamedIndividual , bo:ProviderType ; bo:ofProvider tv:prov_a ; bo:artifactName "type_namespace" .
+tv:pt_instance a owl:NamedIndividual , bo:ProviderType ; bo:ofProvider tv:prov_a ; bo:artifactName "type_instance" .
+
+### CMT-BKT-P03
+@prefix kcmtbktp03: <https://example.org/bo-trial/case/CMT-BKT-P03#> .
+# variante FX-BKT-P03
+
+kcmtbktp03:ns1 a owl:NamedIndividual , tv:StorageNamespace , bo:IndependentResource ; bo:inAccount tv:acct_a ; bo:ofProvider tv:prov_a ; bo:inLocation tv:loc_r1 ; bo:hasProviderType tv:pt_namespace ; bo:localKey "acct_a" ; bo:incarnationKey "inc-ns1" .
+kcmtbktp03:c1 a owl:NamedIndividual , tv:ObjectContainer ; bo:componentOf kcmtbktp03:ns1 ; bo:occurrenceKey "name=data_a" .
+
+### CMT-NIC-P05
+@prefix kcmtnicp05: <https://example.org/bo-trial/case/CMT-NIC-P05#> .
+# variante FX-NIC-P05-ORDER-A+B
+
+kcmtnicp05:vm1 a owl:NamedIndividual , tv:ComputeInstance ; bo:inAccount tv:acct_a ; bo:ofProvider tv:prov_a ; bo:inLocation tv:loc_r1 ; bo:hasProviderType tv:pt_instance ; bo:localKey "vm_a" ; bo:incarnationKey "inc-vm1" .
+kcmtnicp05:nic1a a owl:NamedIndividual , tv:NetworkInterface , bo:Component ; bo:componentOf kcmtnicp05:vm1 ; bo:occurrenceKey "device_index=0" ; bo:textPosition 1 .
+kcmtnicp05:nic2a a owl:NamedIndividual , tv:NetworkInterface , bo:Component ; bo:componentOf kcmtnicp05:vm1 ; bo:occurrenceKey "device_index=1" ; bo:textPosition 2 .
+kcmtnicp05:nic1b a owl:NamedIndividual , tv:NetworkInterface , bo:Component ; bo:componentOf kcmtnicp05:vm1 ; bo:occurrenceKey "device_index=0" ; bo:textPosition 2 .
+kcmtnicp05:nic2b a owl:NamedIndividual , tv:NetworkInterface , bo:Component ; bo:componentOf kcmtnicp05:vm1 ; bo:occurrenceKey "device_index=1" ; bo:textPosition 1 .
+
+### CMT-LB-P04
+@prefix kcmtlbp04: <https://example.org/bo-trial/case/CMT-LB-P04#> .
+# variante FX-LB-P04 (membro)
+
+kcmtlbp04:vm1 a owl:NamedIndividual , tv:ComputeInstance ; bo:inAccount tv:acct_a ; bo:ofProvider tv:prov_a ; bo:inLocation tv:loc_r1 ; bo:hasProviderType tv:pt_instance ; bo:localKey "vm_a" ; bo:incarnationKey "inc-vm1" ; tv:memberOfPool kcmtlbp04:pool1 .
+kcmtlbp04:pool1 a owl:NamedIndividual , tv:BackendPool ; bo:inAccount tv:acct_a ; bo:ofProvider tv:prov_a ; bo:inLocation tv:loc_r1 ; bo:hasProviderType tv:pt_instance ; bo:localKey "pool_a" ; bo:incarnationKey "inc-pool1" .
+# variante FX-LB-P04 (depois de sair do pool)
+
+kcmtlbp04:vm1 a owl:NamedIndividual , tv:ComputeInstance ; bo:inAccount tv:acct_a ; bo:ofProvider tv:prov_a ; bo:inLocation tv:loc_r1 ; bo:hasProviderType tv:pt_instance ; bo:localKey "vm_a" ; bo:incarnationKey "inc-vm1" .
+kcmtlbp04:pool1 a owl:NamedIndividual , tv:BackendPool ; bo:inAccount tv:acct_a ; bo:ofProvider tv:prov_a ; bo:inLocation tv:loc_r1 ; bo:hasProviderType tv:pt_instance ; bo:localKey "pool_a" ; bo:incarnationKey "inc-pool1" .
+
+### CMT-LB-N01
+@prefix kcmtlbn01: <https://example.org/bo-trial/case/CMT-LB-N01#> .
+# variante FX-LB-N01
+
+kcmtlbn01:vm9 a owl:NamedIndividual , tv:ComputeInstance ; bo:inAccount tv:acct_a ; bo:ofProvider tv:prov_a ; bo:inLocation tv:loc_r1 ; bo:hasProviderType tv:pt_instance ; bo:localKey "vm_z" ; bo:incarnationKey "inc-vm9" .
+
+### CMT-DB-P02
+@prefix kcmtdbp02: <https://example.org/bo-trial/case/CMT-DB-P02#> .
+# variante FX-DB-P02
+
+kcmtdbp02:i1 a owl:NamedIndividual , tv:DbInstance ; bo:inAccount tv:acct_a ; bo:ofProvider tv:prov_a ; bo:inLocation tv:loc_r1 ; bo:hasProviderType tv:pt_instance ; bo:localKey "db_1" ; bo:incarnationKey "inc-i1" .
+kcmtdbp02:i2 a owl:NamedIndividual , tv:DbInstance ; bo:inAccount tv:acct_a ; bo:ofProvider tv:prov_a ; bo:inLocation tv:loc_r1 ; bo:hasProviderType tv:pt_instance ; bo:localKey "db_2" ; bo:incarnationKey "inc-i2" ; tv:replicaOf kcmtdbp02:i1 .
+
+### CMT-TAX-P01
+@prefix kcmttaxp01: <https://example.org/bo-trial/case/CMT-TAX-P01#> .
+# variante FX-TAX-P01
+
+kcmttaxp01:vm1 a owl:NamedIndividual , tv:ComputeInstance ; bo:inAccount tv:acct_a ; bo:ofProvider tv:prov_a ; bo:inLocation tv:loc_r1 ; bo:hasProviderType tv:pt_instance ; bo:localKey "vm_a" ; bo:incarnationKey "inc-vm1" ; tv:memberOfPool kcmttaxp01:pool1 .
+kcmttaxp01:pool1 a owl:NamedIndividual , tv:BackendPool ; bo:inAccount tv:acct_a ; bo:ofProvider tv:prov_a ; bo:inLocation tv:loc_r1 ; bo:hasProviderType tv:pt_instance ; bo:localKey "pool_a" ; bo:incarnationKey "inc-pool1" .
+
+### CMT-TAX-N04
+@prefix kcmttaxn04: <https://example.org/bo-trial/case/CMT-TAX-N04#> .
+# variante FX-TAX-N04
+
+kcmttaxn04:t1 a owl:NamedIndividual , tv:NotificationTopic ; bo:inAccount tv:acct_a ; bo:ofProvider tv:prov_a ; bo:inLocation tv:loc_r1 ; bo:hasProviderType tv:pt_instance ; bo:localKey "topic_1" ; bo:incarnationKey "inc-t1" .
+kcmttaxn04:t2 a owl:NamedIndividual , tv:NotificationTopic ; bo:inAccount tv:acct_a ; bo:ofProvider tv:prov_a ; bo:inLocation tv:loc_r1 ; bo:hasProviderType tv:pt_instance ; bo:localKey "topic_2" ; bo:incarnationKey "inc-t2" .
+kcmttaxn04:al1 a owl:NamedIndividual , tv:Alarm ; bo:inAccount tv:acct_a ; bo:ofProvider tv:prov_a ; bo:inLocation tv:loc_r1 ; bo:hasProviderType tv:pt_instance ; bo:localKey "alarm_1" ; bo:incarnationKey "inc-al1" ; tv:notifies kcmttaxn04:t1 .
+
+### CMT-CFG-P01
+@prefix kcmtcfgp01: <https://example.org/bo-trial/case/CMT-CFG-P01#> .
+# variante FX-CFG-P01
+
+kcmtcfgp01:c1 a owl:NamedIndividual , tv:ObjectContainer , bo:IndependentResource ; bo:inAccount tv:acct_a ; bo:ofProvider tv:prov_a ; bo:inLocation tv:loc_r1 ; bo:hasProviderType tv:pt_container ; bo:localKey "data_a" ; bo:incarnationKey "inc-c1" .
+kcmtcfgp01:d1 a owl:NamedIndividual , bo:ConfigurationDescription ; bo:describes kcmtcfgp01:c1 ; bo:descriptionSource bo:SourceCode ; bo:hasSettingValue kcmtcfgp01:v1 .
+kcmtcfgp01:v1 a owl:NamedIndividual , bo:SettingValue ; bo:of tv:desc_versioning ; bo:iriValue tv:Enabled ; bo:valueOrigin bo:Configured ; bo:valueState bo:Known .
+kcmtcfgp01:ob1 a owl:NamedIndividual , bo:Observation ; prov:startedAtTime "2026-11-02T10:00:00-03:00"^^xsd:dateTime ; bo:readCompleteness bo:CompleteRead ; bo:coversScope tv:acct_a .
+kcmtcfgp01:o1 a owl:NamedIndividual , bo:ObservedState ; bo:stateOf kcmtcfgp01:c1 ; prov:wasGeneratedBy kcmtcfgp01:ob1 ; bo:hasSettingValue kcmtcfgp01:v2 .
+kcmtcfgp01:v2 a owl:NamedIndividual , bo:SettingValue ; bo:of tv:desc_versioning ; bo:iriValue tv:Disabled ; bo:valueOrigin bo:Observed ; bo:valueState bo:Known .
+
+### CMT-CFG-N02
+@prefix kcmtcfgn02: <https://example.org/bo-trial/case/CMT-CFG-N02#> .
+# variante FX-CFG-N02
+
+kcmtcfgn02:r1 a owl:NamedIndividual , tv:ObjectContainer , bo:IndependentResource ; bo:inAccount tv:acct_a ; bo:ofProvider tv:prov_a ; bo:inLocation tv:loc_r1 ; bo:hasProviderType tv:pt_container ; bo:localKey "data_a" ; bo:incarnationKey "inc-c1" .
+kcmtcfgn02:r2 a owl:NamedIndividual , tv:ObjectContainer , bo:IndependentResource ; bo:inAccount tv:acct_a ; bo:ofProvider tv:prov_a ; bo:inLocation tv:loc_r1 ; bo:hasProviderType tv:pt_container ; bo:localKey "data_a" ; bo:incarnationKey "inc-c1" .
+kcmtcfgn02:ob1 a owl:NamedIndividual , bo:Observation ; prov:startedAtTime "2026-11-01T10:00:00-03:00"^^xsd:dateTime ; bo:readCompleteness bo:CompleteRead ; bo:coversScope tv:acct_a .
+kcmtcfgn02:ob2 a owl:NamedIndividual , bo:Observation ; prov:startedAtTime "2026-11-02T10:00:00-03:00"^^xsd:dateTime ; bo:readCompleteness bo:CompleteRead ; bo:coversScope tv:acct_a .
+kcmtcfgn02:o1 a owl:NamedIndividual , bo:ObservedState ; bo:stateOf kcmtcfgn02:r1 ; prov:wasGeneratedBy kcmtcfgn02:ob1 ; bo:hasSettingValue kcmtcfgn02:v1 .
+kcmtcfgn02:o2 a owl:NamedIndividual , bo:ObservedState ; bo:stateOf kcmtcfgn02:r2 ; prov:wasGeneratedBy kcmtcfgn02:ob2 ; bo:hasSettingValue kcmtcfgn02:v2 .
+kcmtcfgn02:v1 a owl:NamedIndividual , bo:SettingValue ; bo:of tv:desc_versioning ; bo:iriValue tv:Enabled ; bo:valueOrigin bo:Observed ; bo:valueState bo:Known .
+kcmtcfgn02:v2 a owl:NamedIndividual , bo:SettingValue ; bo:of tv:desc_versioning ; bo:iriValue tv:Disabled ; bo:valueOrigin bo:Observed ; bo:valueState bo:Known .
+
+### CMT-ID-P01
+@prefix kcmtidp01: <https://example.org/bo-trial/case/CMT-ID-P01#> .
+# variante FX-ID-P01
+
+kcmtidp01:c1 a owl:NamedIndividual , tv:ObjectContainer , bo:IndependentResource ; bo:inAccount tv:acct_a ; bo:ofProvider tv:prov_a ; bo:inLocation tv:loc_r1 ; bo:hasProviderType tv:pt_container ; bo:localKey "data_a" ; bo:incarnationKey "inc-c1" .
+kcmtidp01:c1after a owl:NamedIndividual , tv:ObjectContainer , bo:IndependentResource ; bo:inAccount tv:acct_a ; bo:ofProvider tv:prov_a ; bo:inLocation tv:loc_r1 ; bo:hasProviderType tv:pt_container ; bo:localKey "data_a" ; bo:incarnationKey "inc-c1" .
+kcmtidp01:upd a owl:NamedIndividual , bo:InPlaceUpdate .
+kcmtidp01:d1 a owl:NamedIndividual , bo:ConfigurationDescription ; bo:describes kcmtidp01:c1 ; bo:descriptionSource bo:SourceCode .
+kcmtidp01:d2 a owl:NamedIndividual , bo:ConfigurationDescription ; bo:describes kcmtidp01:c1after ; bo:descriptionSource bo:SourceCode ; bo:previousVersion kcmtidp01:d1 .
+
+### CMT-ID-P02
+@prefix kcmtidp02: <https://example.org/bo-trial/case/CMT-ID-P02#> .
+# variante FX-ID-P02
+
+kcmtidp02:c1 a owl:NamedIndividual , tv:ObjectContainer , bo:IndependentResource ; bo:inAccount tv:acct_a ; bo:ofProvider tv:prov_a ; bo:inLocation tv:loc_r1 ; bo:hasProviderType tv:pt_container ; bo:localKey "data_a" ; bo:incarnationKey "inc-c1" ; bo:replacedBy kcmtidp02:c2 ; bo:endedBy kcmtidp02:rep .
+kcmtidp02:c2 a owl:NamedIndividual , tv:ObjectContainer , bo:IndependentResource ; bo:inAccount tv:acct_a ; bo:ofProvider tv:prov_a ; bo:inLocation tv:loc_r1 ; bo:hasProviderType tv:pt_container ; bo:localKey "data_a" ; bo:incarnationKey "inc-c2" .
+kcmtidp02:rep a owl:NamedIndividual , bo:Replacement .
+
+### CMT-ID-N01
+@prefix kcmtidn01: <https://example.org/bo-trial/case/CMT-ID-N01#> .
+# variante FX-ID-N01
+
+kcmtidn01:c1 a owl:NamedIndividual , tv:ObjectContainer , bo:IndependentResource ; bo:inAccount tv:acct_a ; bo:ofProvider tv:prov_a ; bo:inLocation tv:loc_r1 ; bo:hasProviderType tv:pt_container ; bo:localKey "data" .
+kcmtidn01:c2 a owl:NamedIndividual , tv:ObjectContainer , bo:IndependentResource ; bo:inAccount tv:acct_a ; bo:ofProvider tv:prov_a ; bo:inLocation tv:loc_r2 ; bo:hasProviderType tv:pt_container ; bo:localKey "data" .
+
+### CMT-ID-U01
+@prefix kcmtidu01: <https://example.org/bo-trial/case/CMT-ID-U01#> .
+# variante FX-ID-U01
+
+kcmtidu01:c1 a owl:NamedIndividual , tv:ObjectContainer , bo:IndependentResource ; bo:inAccount tv:acct_a ; bo:ofProvider tv:prov_a ; bo:inLocation tv:loc_r1 ; bo:hasProviderType tv:pt_container ; bo:localKey "data_a" ; bo:incarnationKey "inc-c1" .
+kcmtidu01:c1after a owl:NamedIndividual , tv:ObjectContainer , bo:IndependentResource ; bo:inAccount tv:acct_a ; bo:ofProvider tv:prov_a ; bo:inLocation tv:loc_r1 ; bo:hasProviderType tv:pt_container ; bo:localKey "data_a" .
+kcmtidu01:m1 a owl:NamedIndividual , bo:UnknownMarker ; bo:markerOf kcmtidu01:c1after ; bo:of bo:desc_incarnationKey ; bo:valueState bo:Unknown ; bo:unknownReason bo:MissingEvidence .
+
+### CMT-ID-U02
+@prefix kcmtidu02: <https://example.org/bo-trial/case/CMT-ID-U02#> .
+# variante FX-ID-U02
+
+kcmtidu02:c1 a owl:NamedIndividual , tv:ObjectContainer , bo:IndependentResource ; bo:inAccount tv:acct_a ; bo:ofProvider tv:prov_a ; bo:inLocation tv:loc_r1 ; bo:hasProviderType tv:pt_container ; bo:localKey "data" ; bo:incarnationKey "inc-c1" .
+kcmtidu02:c2 a owl:NamedIndividual , tv:ObjectContainer , bo:IndependentResource ; bo:inAccount tv:acct_a ; bo:ofProvider tv:prov_a ; bo:hasProviderType tv:pt_container ; bo:localKey "data" ; bo:incarnationKey "inc-c1" .
+kcmtidu02:m2 a owl:NamedIndividual , bo:UnknownMarker ; bo:markerOf kcmtidu02:c2 ; bo:of bo:desc_inLocation ; bo:valueState bo:NotRead ; bo:unknownReason bo:IncompleteRead .
+
+### CMT-LC-P01
+@prefix kcmtlcp01: <https://example.org/bo-trial/case/CMT-LC-P01#> .
+# variante FX-LC-P01
+
+kcmtlcp01:ns1 a owl:NamedIndividual , tv:StorageNamespace , bo:IndependentResource ; bo:inAccount tv:acct_a ; bo:ofProvider tv:prov_a ; bo:inLocation tv:loc_r1 ; bo:hasProviderType tv:pt_namespace ; bo:localKey "acct_a" ; bo:incarnationKey "inc-ns1" ; bo:endedBy kcmtlcp01:del .
+kcmtlcp01:c1 a owl:NamedIndividual , tv:ObjectContainer ; bo:componentOf kcmtlcp01:ns1 ; bo:occurrenceKey "name=data_a" .
+kcmtlcp01:del a owl:NamedIndividual , bo:Deletion .
+
+### CMT-LC-N01
+@prefix kcmtlcn01: <https://example.org/bo-trial/case/CMT-LC-N01#> .
+# variante FX-LC-N01
+
+kcmtlcn01:p1 a owl:NamedIndividual , tv:Principal ; bo:inAccount tv:acct_a ; bo:ofProvider tv:prov_a ; bo:inLocation tv:loc_r1 ; bo:hasProviderType tv:pt_instance ; bo:localKey "p1" ; bo:incarnationKey "inc-p1" .
+kcmtlcn01:ps1 a owl:NamedIndividual , tv:PermissionSet ; bo:inAccount tv:acct_a ; bo:ofProvider tv:prov_a ; bo:inLocation tv:loc_r1 ; bo:hasProviderType tv:pt_instance ; bo:localKey "ps1" ; bo:incarnationKey "inc-ps1" .
+kcmtlcn01:s1 a owl:NamedIndividual , tv:ScopeNode ; bo:inAccount tv:acct_a ; bo:ofProvider tv:prov_a ; bo:inLocation tv:loc_r1 ; bo:hasProviderType tv:pt_instance ; bo:localKey "s1" ; bo:incarnationKey "inc-s1" .
+kcmtlcn01:a1 a owl:NamedIndividual , tv:Assignment ; tv:assignsPrincipal kcmtlcn01:p1 ; tv:assignsSet kcmtlcn01:ps1 ; tv:atScope kcmtlcn01:s1 ; bo:endedBy kcmtlcn01:del .
+kcmtlcn01:del a owl:NamedIndividual , bo:Deletion .
+
+### CMT-CFG-N01
+@prefix kcmtcfgn01: <https://example.org/bo-trial/case/CMT-CFG-N01#> .
+# variante FX-CFG-N01
+
+kcmtcfgn01:x1 a owl:NamedIndividual , bo:ConfigurationDescription , tv:ObjectContainer .

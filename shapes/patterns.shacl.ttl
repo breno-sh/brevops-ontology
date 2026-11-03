@@ -1,0 +1,340 @@
+# BrevOps Ontology, módulo ONTPAT: formas SHACL dos padrões. Escrito em 2026-11-02 (America/Recife).
+#
+# Regime de entailment declarado (S3): a validação roda sobre o grafo de dados TAL COMO DADO, sem
+# entailment RDFS/OWL (pyshacl inference=none); vale só a travessia de rdfs:subClassOf presente no grafo de
+# dados que o próprio SHACL define para sh:targetClass e sh:class. Por isso o ABox que chega aqui traz os
+# tipos bo: materializados (o ABOX-LIFT materializa com o HermiT antes de validar). Restrições que dependem
+# de anotação (descritor -> propriedade) são SPARQL e leem o TBox que o grafo de dados carregar.
+
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix bo:   <https://w3id.org/brevops/ontology#> .
+@prefix bosh: <https://w3id.org/brevops/shapes/patterns#> .
+
+<https://w3id.org/brevops/shapes/patterns> a owl:Ontology ;
+    owl:versionInfo "0.1.0" ;
+    rdfs:comment "Formas dos padrões ONTPAT (descritor, identidade, parte-todo, S1, valor, realização, localização, unidade)."@pt ;
+    sh:declare [ sh:prefix "bo" ; sh:namespace "https://w3id.org/brevops/ontology#"^^xsd:anyURI ] ,
+               [ sh:prefix "rdf" ; sh:namespace "http://www.w3.org/1999/02/22-rdf-syntax-ns#"^^xsd:anyURI ] ,
+               [ sh:prefix "owl" ; sh:namespace "http://www.w3.org/2002/07/owl#"^^xsd:anyURI ] ,
+               [ sh:prefix "xsd" ; sh:namespace "http://www.w3.org/2001/XMLSchema#"^^xsd:anyURI ] .
+
+### P8 descritor ---------------------------------------------------------------------------
+
+bosh:PropertyDescriptorShape a sh:NodeShape ;
+    sh:targetClass bo:PropertyDescriptor ;
+    sh:nodeKind sh:IRI ;
+    sh:property [ sh:path bo:describesProperty ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ;
+                  sh:message "descritor de propriedade precisa de exatamente um bo:describesProperty (IRI)" ] ;
+    sh:property [ sh:path bo:descriptorKey ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ;
+    sh:sparql [ a sh:SPARQLConstraint ;
+        sh:message "bo:describesProperty tem de apontar para uma propriedade declarada (owl:ObjectProperty ou owl:DatatypeProperty), nunca para indivíduo ou classe" ;
+        sh:prefixes <https://w3id.org/brevops/shapes/patterns> ;
+        sh:select """SELECT $this ?p WHERE {
+            $this bo:describesProperty ?p .
+            FILTER NOT EXISTS { ?p a ?k . FILTER ( ?k IN ( owl:ObjectProperty , owl:DatatypeProperty ) ) }
+        }""" ] ;
+    sh:sparql [ a sh:SPARQLConstraint ;
+        sh:message "o IRI descrito não pode ser usado também como indivíduo (punning)" ;
+        sh:prefixes <https://w3id.org/brevops/shapes/patterns> ;
+        sh:select """SELECT $this ?p WHERE {
+            $this bo:describesProperty ?p .
+            { ?p a owl:NamedIndividual } UNION { ?x bo:of ?p }
+        }""" ] .
+
+bosh:ClassDescriptorShape a sh:NodeShape ;
+    sh:targetClass bo:ClassDescriptor ;
+    sh:nodeKind sh:IRI ;
+    sh:property [ sh:path bo:describesClass ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ] ;
+    sh:property [ sh:path bo:descriptorKey ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ;
+    sh:sparql [ a sh:SPARQLConstraint ;
+        sh:message "bo:describesClass tem de apontar para uma owl:Class declarada que não é indivíduo" ;
+        sh:prefixes <https://w3id.org/brevops/shapes/patterns> ;
+        sh:select """SELECT $this ?c WHERE {
+            $this bo:describesClass ?c .
+            FILTER ( NOT EXISTS { ?c a owl:Class } || EXISTS { ?c a owl:NamedIndividual } )
+        }""" ] .
+
+bosh:OfShape a sh:NodeShape ;
+    sh:targetSubjectsOf bo:of ;
+    sh:property [ sh:path bo:of ; sh:maxCount 1 ; sh:class bo:Descriptor ;
+                  sh:message "bo:of aponta para um único bo:Descriptor (nunca para o IRI da propriedade ou classe)" ] .
+
+### P2 identidade ---------------------------------------------------------------------------
+
+bosh:ResourceShape a sh:NodeShape ;
+    sh:targetClass bo:Resource ;
+    sh:nodeKind sh:IRI ;
+    sh:property [ sh:path bo:hasProviderType ; sh:minCount 1 ; sh:maxCount 1 ; sh:class bo:ProviderType ] ;
+    sh:property [ sh:path bo:incarnationKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ;
+    sh:property [ sh:path bo:inLocation ; sh:maxCount 1 ; sh:class bo:Location ] ;
+    sh:property [ sh:path bo:inAccount ; sh:maxCount 1 ; sh:class bo:SyntheticAccount ] ;
+    sh:property [ sh:path bo:ofProvider ; sh:maxCount 1 ; sh:class bo:Provider ] ;
+    sh:sparql [ a sh:SPARQLConstraint ;
+        sh:message "componente da identidade composta (conta, provedor, localização) nem presente nem marcado desconhecido" ;
+        sh:prefixes <https://w3id.org/brevops/shapes/patterns> ;
+        sh:select """SELECT $this ?p WHERE {
+            { BIND ( bo:inAccount AS ?p ) } UNION { BIND ( bo:ofProvider AS ?p ) } UNION { BIND ( bo:inLocation AS ?p ) }
+            FILTER NOT EXISTS { $this ?p ?v }
+            FILTER NOT EXISTS { ?m bo:markerOf $this ; bo:of ?desc . ?desc bo:describesProperty ?p }
+        }""" ] .
+
+bosh:IndependentResourceShape a sh:NodeShape ;
+    sh:targetClass bo:IndependentResource ;
+    sh:property [ sh:path bo:localKey ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ;
+    sh:property [ sh:path bo:componentOf ; sh:maxCount 0 ; sh:message "entidade independente não é componente" ] .
+
+bosh:ComponentShape a sh:NodeShape ;
+    sh:targetClass bo:Component ;
+    sh:property [ sh:path bo:componentOf ; sh:minCount 1 ; sh:maxCount 1 ; sh:class bo:Resource ] ;
+    sh:property [ sh:path bo:occurrenceKey ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ;
+    sh:sparql [ a sh:SPARQLConstraint ;
+        sh:message "a chave de ocorrência não pode ser só a posição textual" ;
+        sh:prefixes <https://w3id.org/brevops/shapes/patterns> ;
+        sh:select """SELECT $this ?k WHERE { $this bo:occurrenceKey ?k . FILTER ( REGEX(STR(?k), "^(pos|position|text_position|index_in_text)=") ) }""" ] .
+
+bosh:FacetShape a sh:NodeShape ;
+    sh:targetClass bo:Facet ;
+    sh:property [ sh:path bo:facetOf ; sh:minCount 1 ; sh:maxCount 1 ; sh:class bo:Unit ;
+                  sh:message "faceta tem exatamente um dono; com vários donos, vira vínculo" ] ;
+    sh:property [ sh:path bo:appliesTo ; sh:minCount 1 ; sh:class bo:Unit ;
+                  sh:message "faceta declara o alcance efetivo (bo:appliesTo), separado do dono" ] ;
+    sh:property [ sh:path bo:declaredOn ; sh:maxCount 1 ; sh:class bo:Unit ] .
+
+bosh:BindingShape a sh:NodeShape ;
+    sh:targetClass bo:Binding ;
+    sh:sparql [ a sh:SPARQLConstraint ;
+        sh:message "vínculo relaciona pelo menos duas unidades distintas (por subpropriedades de bo:relates)" ;
+        sh:prefixes <https://w3id.org/brevops/shapes/patterns> ;
+        sh:select """SELECT $this WHERE {
+            { SELECT $this (COUNT(DISTINCT ?u) AS ?n) WHERE {
+                OPTIONAL { ?p rdfs:subPropertyOf* bo:relates . $this ?p ?u . }
+              } GROUP BY $this }
+            FILTER (?n < 2)
+        }""" ] .
+
+bosh:EndedShape a sh:NodeShape ;
+    sh:targetSubjectsOf bo:endedBy ;
+    sh:property [ sh:path bo:endedBy ; sh:or ( [ sh:class bo:Deletion ] [ sh:class bo:Replacement ] ) ] .
+
+bosh:ReplacedShape a sh:NodeShape ;
+    sh:targetSubjectsOf bo:replacedBy ;
+    sh:sparql [ a sh:SPARQLConstraint ;
+        sh:message "substituição: a encarnação antiga tem fim de vida e as duas têm chaves de encarnação diferentes" ;
+        sh:prefixes <https://w3id.org/brevops/shapes/patterns> ;
+        sh:select """SELECT $this ?n WHERE {
+            $this bo:replacedBy ?n .
+            FILTER ( NOT EXISTS { $this bo:endedBy ?e }
+                     || EXISTS { $this bo:incarnationKey ?k . ?n bo:incarnationKey ?k } )
+        }""" ] .
+
+### P1 modelo S1 ------------------------------------------------------------------------------
+
+bosh:ConfigurationDescriptionShape a sh:NodeShape ;
+    sh:targetClass bo:ConfigurationDescription ;
+    sh:property [ sh:path bo:describes ; sh:minCount 1 ; sh:maxCount 1 ; sh:class bo:Unit ] ;
+    sh:property [ sh:path bo:descriptionSource ; sh:minCount 1 ; sh:maxCount 1 ; sh:in ( bo:SourceCode bo:ToolStateRecord ) ] ;
+    sh:property [ sh:path bo:previousVersion ; sh:maxCount 1 ; sh:class bo:ConfigurationDescription ] ;
+    sh:property [ sh:path bo:hasSettingValue ; sh:class bo:SettingValue ] .
+
+bosh:ObservedStateShape a sh:NodeShape ;
+    sh:targetClass bo:ObservedState ;
+    sh:property [ sh:path bo:stateOf ; sh:minCount 1 ; sh:maxCount 1 ; sh:class bo:Unit ] ;
+    sh:property [ sh:path prov:wasGeneratedBy ; sh:minCount 1 ; sh:maxCount 1 ; sh:class bo:Observation ] ;
+    sh:property [ sh:path bo:hasSettingValue ; sh:class bo:SettingValue ] .
+
+bosh:ObservationShape a sh:NodeShape ;
+    sh:targetClass bo:Observation ;
+    sh:property [ sh:path prov:startedAtTime ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:dateTime ;
+                  sh:pattern "(Z|[+-][0-9]{2}:[0-9]{2})$" ; sh:message "observação datada com fuso" ] ;
+    sh:property [ sh:path bo:readCompleteness ; sh:minCount 1 ; sh:maxCount 1 ; sh:in ( bo:CompleteRead bo:PartialRead ) ] ;
+    sh:property [ sh:path bo:coversScope ; sh:minCount 1 ] .
+
+bosh:S1SeparationShape a sh:NodeShape ;
+    sh:targetClass bo:ConfigurationDescription , bo:ObservedState , bo:Observation ;
+    sh:not [ sh:or ( [ sh:class bo:Unit ] [ sh:class bo:NaryRelation ] ) ] ;
+    sh:message "descrição, estado observado e observação não são a unidade (S1)" .
+
+### P6 valor, origem, estado, ausência ----------------------------------------------------------
+
+bosh:SettingValueShape a sh:NodeShape ;
+    sh:targetClass bo:SettingValue ;
+    sh:property [ sh:path bo:of ; sh:minCount 1 ; sh:maxCount 1 ; sh:class bo:PropertyDescriptor ] ;
+    sh:property [ sh:path bo:valueOrigin ; sh:minCount 1 ; sh:maxCount 1 ; sh:in ( bo:Configured bo:Inferred bo:ProviderDefault bo:Observed ) ] ;
+    sh:property [ sh:path bo:valueState ; sh:minCount 1 ; sh:maxCount 1 ; sh:in ( bo:Known bo:Unknown bo:Absent bo:NotRead bo:Withheld ) ] ;
+    sh:property [ sh:path [ sh:inversePath bo:hasSettingValue ] ; sh:minCount 1 ; sh:maxCount 1 ;
+                  sh:or ( [ sh:class bo:ConfigurationDescription ] [ sh:class bo:ObservedState ] ) ;
+                  sh:message "valor vive numa descrição ou num estado observado, não direto na unidade" ] ;
+    sh:property [ sh:path bo:hasUnit ; sh:maxCount 1 ; sh:class bo:UnitOfMeasure ] .
+
+bosh:KnownValueShape a sh:NodeShape ;
+    sh:targetClass bo:SettingValue ;
+    sh:sparql [ a sh:SPARQLConstraint ;
+        sh:message "valor conhecido tem exatamente um valor (literal ou indivíduo); os outros estados não têm nenhum" ;
+        sh:prefixes <https://w3id.org/brevops/shapes/patterns> ;
+        sh:select """SELECT $this ?s WHERE {
+            $this bo:valueState ?s .
+            { SELECT $this (COUNT(?v) AS ?n) WHERE { OPTIONAL { { $this bo:literalValue ?v } UNION { $this bo:iriValue ?v } } } GROUP BY $this }
+            FILTER ( (?s = bo:Known && ?n != 1) || (?s != bo:Known && ?n != 0) )
+        }""" ] .
+
+bosh:WithheldShape a sh:NodeShape ;
+    sh:targetClass bo:SettingValue ;
+    sh:sparql [ a sh:SPARQLConstraint ;
+        sh:message "valor retido nunca é gravado, nem como hash, nem por propriedade auxiliar" ;
+        sh:prefixes <https://w3id.org/brevops/shapes/patterns> ;
+        sh:select """SELECT $this ?p WHERE {
+            $this bo:valueState bo:Withheld ; ?p ?o .
+            FILTER ( ?p NOT IN ( rdf:type , bo:of , bo:valueOrigin , bo:valueState , bo:hasUnit , rdfs:label , rdfs:comment ) )
+        }""" ] .
+
+bosh:UnknownNeedsReasonShape a sh:NodeShape ;
+    sh:targetClass bo:SettingValue , bo:UnknownMarker ;
+    sh:sparql [ a sh:SPARQLConstraint ;
+        sh:message "desconhecido ou não lido declara o motivo (bo:unknownReason); conhecido, ausente e retido não declaram" ;
+        sh:prefixes <https://w3id.org/brevops/shapes/patterns> ;
+        sh:select """SELECT $this ?s WHERE {
+            $this bo:valueState ?s .
+            FILTER ( ( ?s IN (bo:Unknown, bo:NotRead) && NOT EXISTS { $this bo:unknownReason ?r } )
+                  || ( ?s IN (bo:Known, bo:Absent, bo:Withheld) && EXISTS { $this bo:unknownReason ?r } ) )
+        }""" ] .
+
+bosh:AbsentNeedsCompleteReadShape a sh:NodeShape ;
+    sh:targetClass bo:SettingValue ;
+    sh:sparql [ a sh:SPARQLConstraint ;
+        sh:message "ausente só sob leitura completa: o valor observado como ausente vem de observação com bo:CompleteRead" ;
+        sh:prefixes <https://w3id.org/brevops/shapes/patterns> ;
+        sh:select """SELECT $this WHERE {
+            $this bo:valueState bo:Absent ; bo:valueOrigin bo:Observed .
+            ?st bo:hasSettingValue $this .
+            FILTER NOT EXISTS { ?st <http://www.w3.org/ns/prov#wasGeneratedBy> ?ob . ?ob bo:readCompleteness bo:CompleteRead }
+        }""" ] .
+
+bosh:DefaultNotConfiguredShape a sh:NodeShape ;
+    sh:targetClass bo:ConfigurationDescription ;
+    sh:sparql [ a sh:SPARQLConstraint ;
+        sh:message "o mesmo descritor não pode ter, na mesma descrição, valor configurado e valor de padrão do provedor" ;
+        sh:prefixes <https://w3id.org/brevops/shapes/patterns> ;
+        sh:select """SELECT $this ?d WHERE {
+            $this bo:hasSettingValue ?a , ?b .
+            ?a bo:of ?d ; bo:valueOrigin bo:Configured .
+            ?b bo:of ?d ; bo:valueOrigin bo:ProviderDefault .
+        }""" ] .
+
+bosh:UnknownMarkerShape a sh:NodeShape ;
+    sh:targetClass bo:UnknownMarker ;
+    sh:property [ sh:path bo:markerOf ; sh:minCount 1 ; sh:maxCount 1 ; sh:class bo:Unit ] ;
+    sh:property [ sh:path bo:of ; sh:minCount 1 ; sh:maxCount 1 ; sh:class bo:PropertyDescriptor ] ;
+    sh:property [ sh:path bo:valueState ; sh:minCount 1 ; sh:maxCount 1 ; sh:in ( bo:Unknown bo:NotRead ) ] .
+
+### P10 unidades ------------------------------------------------------------------------------
+
+bosh:NumericNeedsUnitShape a sh:NodeShape ;
+    sh:targetClass bo:SettingValue ;
+    sh:sparql [ a sh:SPARQLConstraint ;
+        sh:message "valor numérico declara unidade (IRI QUDT, bo:UnitNotApplicable ou bo:UnitUnknown)" ;
+        sh:prefixes <https://w3id.org/brevops/shapes/patterns> ;
+        sh:select """SELECT $this ?v WHERE {
+            $this bo:literalValue ?v .
+            FILTER ( DATATYPE(?v) IN ( xsd:integer, xsd:decimal, xsd:double, xsd:float, xsd:long, xsd:int, xsd:nonNegativeInteger, xsd:positiveInteger ) )
+            FILTER NOT EXISTS { $this bo:hasUnit ?u }
+        }""" ] .
+
+bosh:UnitIriShape a sh:NodeShape ;
+    sh:targetObjectsOf bo:hasUnit ;
+    sh:or ( [ sh:in ( bo:UnitNotApplicable bo:UnitUnknown ) ]
+            [ sh:nodeKind sh:IRI ; sh:pattern "^http://qudt\\.org/vocab/unit/[A-Za-z0-9_\\-]+$" ] ) ;
+    sh:message "unidade é IRI do QUDT (http://qudt.org/vocab/unit/...) ou um dos dois marcadores; nunca string" .
+
+bosh:DurationNoUnitShape a sh:NodeShape ;
+    sh:targetClass bo:SettingValue ;
+    sh:sparql [ a sh:SPARQLConstraint ;
+        sh:message "xsd:duration carrega a própria unidade: hasUnit, se houver, é bo:UnitNotApplicable (meses e anos não viram segundos aqui)" ;
+        sh:prefixes <https://w3id.org/brevops/shapes/patterns> ;
+        sh:select """SELECT $this ?u WHERE {
+            $this bo:literalValue ?v ; bo:hasUnit ?u .
+            FILTER ( DATATYPE(?v) = xsd:duration && ?u != bo:UnitNotApplicable )
+        }""" ] .
+
+### P9 localização ----------------------------------------------------------------------------
+
+bosh:LocationShape a sh:NodeShape ;
+    sh:targetClass bo:Location ;
+    sh:property [ sh:path bo:locationScope ; sh:minCount 1 ; sh:maxCount 1 ; sh:in ( bo:GlobalScope bo:RegionalScope bo:ZonalScope ) ] ;
+    sh:property [ sh:path bo:locationCode ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ;
+    sh:property [ sh:path bo:ofProvider ; sh:minCount 1 ; sh:maxCount 1 ; sh:class bo:Provider ] ;
+    sh:sparql [ a sh:SPARQLConstraint ;
+        sh:message "zona fica dentro de uma região; região dentro do global; global não fica dentro de nada" ;
+        sh:prefixes <https://w3id.org/brevops/shapes/patterns> ;
+        sh:select """SELECT $this ?s WHERE {
+            $this bo:locationScope ?s .
+            OPTIONAL { $this bo:withinLocation ?w . ?w bo:locationScope ?ws }
+            FILTER ( (?s = bo:ZonalScope && (!BOUND(?ws) || ?ws != bo:RegionalScope))
+                  || (?s = bo:RegionalScope && BOUND(?w) && ?ws != bo:GlobalScope)
+                  || (?s = bo:GlobalScope && BOUND(?w)) )
+        }""" ] .
+
+### P7 realização -----------------------------------------------------------------------------
+
+bosh:RealizationShape a sh:NodeShape ;
+    sh:targetClass bo:Realization ;
+    sh:property [ sh:path bo:of ; sh:minCount 1 ; sh:maxCount 1 ; sh:class bo:Descriptor ] ;
+    sh:property [ sh:path bo:onProvider ; sh:minCount 1 ; sh:maxCount 1 ; sh:class bo:Provider ] ;
+    sh:property [ sh:path bo:realizedBy ; sh:minCount 1 ; sh:class bo:ProviderArtifact ] ;
+    sh:property [ sh:path bo:liftingFidelity ; sh:minCount 1 ; sh:maxCount 1 ; sh:in ( bo:Lossless bo:DeclaredLoss bo:PartialTransport bo:NoTransport ) ] ;
+    sh:property [ sh:path bo:loweringFidelity ; sh:minCount 1 ; sh:maxCount 1 ; sh:in ( bo:Lossless bo:DeclaredLoss bo:PartialTransport bo:NoTransport ) ] ;
+    sh:property [ sh:path bo:evidenceState ; sh:minCount 1 ; sh:maxCount 1 ; sh:in ( bo:StructurallyValid bo:DocSupported bo:PersistenceVerified bo:ObservationTested bo:Unresolved ) ] ;
+    sh:property [ sh:path prov:wasDerivedFrom ; sh:minCount 1 ; sh:class bo:SchemaSource ] ;
+    sh:property [ sh:path prov:wasGeneratedBy ; sh:minCount 1 ; sh:maxCount 1 ; sh:class bo:MappingActivity ] ;
+    sh:property [ sh:path bo:exclusivity ; sh:maxCount 1 ; sh:in ( bo:ProvenExclusive bo:Ambiguous ) ] ;
+    sh:sparql [ a sh:SPARQLConstraint ;
+        sh:message "perda declarada numa direção exige ao menos um bo:LossRecord" ;
+        sh:prefixes <https://w3id.org/brevops/shapes/patterns> ;
+        sh:select """SELECT $this WHERE {
+            { $this bo:liftingFidelity ?f } UNION { $this bo:loweringFidelity ?f }
+            FILTER ( ?f IN (bo:DeclaredLoss, bo:PartialTransport) )
+            FILTER NOT EXISTS { $this bo:declaresLoss ?l }
+        }""" ] ;
+    sh:sparql [ a sh:SPARQLConstraint ;
+        sh:message "realização alternativa tem guarda e exclusividade declarada (provada ou AMBIGUOUS)" ;
+        sh:prefixes <https://w3id.org/brevops/shapes/patterns> ;
+        sh:select """SELECT $this WHERE {
+            { $this bo:alternativeTo ?o } UNION { ?o bo:alternativeTo $this }
+            FILTER ( NOT EXISTS { $this bo:hasGuard ?g } || NOT EXISTS { $this bo:exclusivity ?x } )
+        }""" ] ;
+    sh:sparql [ a sh:SPARQLConstraint ;
+        sh:message "sem prova documental, fidelidade sem perda não é admitida (UNPROVEN não transporta)" ;
+        sh:prefixes <https://w3id.org/brevops/shapes/patterns> ;
+        sh:select """SELECT $this WHERE {
+            $this bo:evidenceState ?e .
+            { $this bo:liftingFidelity bo:Lossless } UNION { $this bo:loweringFidelity bo:Lossless }
+            FILTER ( ?e IN (bo:Unresolved, bo:StructurallyValid) )
+        }""" ] .
+
+bosh:GuardShape a sh:NodeShape ;
+    sh:targetClass bo:Guard ;
+    sh:property [ sh:path bo:guardExpression ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] .
+
+bosh:LossRecordShape a sh:NodeShape ;
+    sh:targetClass bo:LossRecord ;
+    sh:property [ sh:path bo:lossCode ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ; sh:pattern "^[A-Z][A-Z_]+$" ] .
+
+bosh:ProjectionShape a sh:NodeShape ;
+    sh:targetClass bo:Projection ;
+    sh:property [ sh:path bo:fromField ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ;
+    sh:property [ sh:path bo:of ; sh:minCount 1 ; sh:maxCount 1 ; sh:class bo:PropertyDescriptor ] .
+
+bosh:ProviderArtifactShape a sh:NodeShape ;
+    sh:targetClass bo:ProviderArtifact ;
+    sh:property [ sh:path bo:artifactName ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ;
+    sh:property [ sh:path bo:inSchema ; sh:minCount 1 ; sh:maxCount 1 ; sh:class bo:SchemaSource ] .
+
+bosh:SchemaSourceShape a sh:NodeShape ;
+    sh:targetClass bo:SchemaSource ;
+    sh:property [ sh:path bo:schemaVersion ; sh:minCount 1 ; sh:maxCount 1 ] ;
+    sh:property [ sh:path bo:sha256 ; sh:minCount 1 ; sh:maxCount 1 ; sh:pattern "^[0-9a-f]{64}$" ] ;
+    sh:property [ sh:path bo:ofProvider ; sh:minCount 1 ; sh:maxCount 1 ; sh:class bo:Provider ] .

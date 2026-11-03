@@ -1,0 +1,102 @@
+# BrevOps Ontology, módulo ONTPAT: padrão de descritor (sem punning, sem metamodelagem).
+# Escrito em 2026-11-02 (America/Recife). Perfil: OWL 2 DL; checado sobre o fecho de imports de bo-patterns.ttl.
+#
+# Problema que este padrão resolve (R1-M5, S1): uma realização ou um valor reificado precisa dizer DE QUAL
+# propriedade OWL ele trata. Escrever o IRI da propriedade como objeto de uma propriedade de objeto
+# (ex.: ?realizacao bo:of bo:versioningStatus) faz do IRI um indivíduo e uma propriedade ao mesmo tempo
+# (punning) e reintroduz a metamodelagem que tirou o esqueleto anterior do OWL 2 DL
+# ("adm:hasRealization rdfs:domain owl:Class").
+#
+# Solução: cada propriedade (ou classe) que precisa ser citada em ABox ganha um INDIVÍDUO descritor,
+# bo:PropertyDescriptor (ou bo:ClassDescriptor). A realização e o valor apontam para o descritor com bo:of
+# (propriedade de objeto comum, entre indivíduos). O descritor liga-se à entidade OWL que ele descreve por
+# ANOTAÇÃO (bo:describesProperty / bo:describesClass), cujo valor é um IRI: valor de anotação não tipa o IRI,
+# logo não há punning. O raciocinador nunca vê a ligação descritor -> propriedade; o SHACL confere que ela
+# existe, é única e aponta para uma propriedade (ou classe) declarada.
+
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix bo:   <https://w3id.org/brevops/ontology#> .
+
+<https://w3id.org/brevops/ontology/patterns/descriptor> a owl:Ontology ;
+    owl:versionIRI <https://w3id.org/brevops/ontology/patterns/descriptor/0.1.0> ;
+    owl:versionInfo "0.1.0" ;
+    dcterms:title "BrevOps: padrão de descritor"@pt ;
+    dcterms:created "2026-11-02"^^xsd:date ;
+    dcterms:license <https://www.apache.org/licenses/LICENSE-2.0> ;
+    rdfs:comment "Indivíduo descritor ligado por anotação à propriedade ou classe OWL que ele descreve. Evita punning e metamodelagem. Importado por bo-patterns.ttl."@pt .
+
+dcterms:title a owl:AnnotationProperty .
+dcterms:created a owl:AnnotationProperty .
+dcterms:license a owl:AnnotationProperty .
+skos:definition a owl:AnnotationProperty .
+skos:example a owl:AnnotationProperty .
+skos:scopeNote a owl:AnnotationProperty .
+
+### Anotações de projeto (valores são IRIs ou literais; nenhuma delas é vista pelo raciocinador)
+
+bo:describesProperty a owl:AnnotationProperty ;
+    rdfs:label "descreve a propriedade"@pt , "describes property"@en ;
+    skos:definition "Liga um bo:PropertyDescriptor ao IRI da propriedade OWL (de objeto ou de dado) que ele representa em ABox. É anotação de propósito: o IRI da propriedade não vira indivíduo."@pt .
+
+bo:describesClass a owl:AnnotationProperty ;
+    rdfs:label "descreve a classe"@pt , "describes class"@en ;
+    skos:definition "Liga um bo:ClassDescriptor ao IRI da classe OWL que ele representa em ABox (ex.: a classe neutra que uma realização realiza)."@pt .
+
+bo:rigidity a owl:AnnotationProperty ;
+    rdfs:label "rigidez (OntoClean)"@pt , "rigidity"@en ;
+    skos:definition "Meta-propriedade OntoClean de uma classe, como anotação: bo:Rigid (toda instância é sempre instância), bo:AntiRigid (toda instância pode deixar de ser, ex. papel) ou bo:SemiRigid. Lida pelo verificador OntoClean (bo.ontpat.ontoclean), nunca pelo raciocinador."@pt ;
+    skos:scopeNote "Regra corrigida: classe rígida subsumida por classe antirrígida é erro (Pessoa ⊑ Estudante); papel subsumido por tipo rígido é válido (Estudante ⊑ Pessoa)."@pt .
+
+bo:unitKind a owl:AnnotationProperty ;
+    rdfs:label "tipo de unidade (grão)"@pt , "unit kind"@en ;
+    skos:definition "Na classe de domínio, o tipo de unidade do grão a que suas instâncias pertencem: bo:IndependentResource, bo:Component, bo:Facet ou bo:Binding. Documenta a decisão do GRAIN; o axioma de subclasse é o que vale para o raciocinador."@pt .
+
+### Valores das anotações acima (indivíduos comuns; usados como valor de anotação, nunca como classe)
+
+bo:RigidityValue a owl:Class ;
+    rdfs:label "valor de rigidez"@pt ;
+    owl:equivalentClass [ a owl:Class ; owl:oneOf ( bo:Rigid bo:AntiRigid bo:SemiRigid ) ] .
+bo:Rigid a owl:NamedIndividual , bo:RigidityValue ; rdfs:label "rígida"@pt .
+bo:AntiRigid a owl:NamedIndividual , bo:RigidityValue ; rdfs:label "antirrígida"@pt .
+bo:SemiRigid a owl:NamedIndividual , bo:RigidityValue ; rdfs:label "semirrígida"@pt .
+[] a owl:AllDifferent ; owl:distinctMembers ( bo:Rigid bo:AntiRigid bo:SemiRigid ) .
+
+### Descritores
+
+bo:Descriptor a owl:Class ;
+    rdfs:label "descritor"@pt , "descriptor"@en ;
+    skos:definition "Indivíduo que representa, em ABox, uma entidade do vocabulário (propriedade ou classe) para que realizações e valores possam citá-la sem punning."@pt ;
+    bo:rigidity bo:Rigid .
+
+bo:PropertyDescriptor a owl:Class ;
+    rdfs:subClassOf bo:Descriptor ;
+    rdfs:label "descritor de propriedade"@pt , "property descriptor"@en ;
+    skos:definition "Descritor de uma propriedade OWL; ligado a ela por bo:describesProperty (anotação)."@pt ;
+    skos:example "bo-ex:desc_versioningStatus bo:describesProperty bo-ex:versioningStatus"@pt ;
+    bo:rigidity bo:Rigid .
+
+bo:ClassDescriptor a owl:Class ;
+    rdfs:subClassOf bo:Descriptor ;
+    rdfs:label "descritor de classe"@pt , "class descriptor"@en ;
+    skos:definition "Descritor de uma classe OWL; ligado a ela por bo:describesClass (anotação)."@pt ;
+    bo:rigidity bo:Rigid .
+
+[] a owl:AllDisjointClasses ; owl:members ( bo:PropertyDescriptor bo:ClassDescriptor ) .
+
+bo:descriptorKey a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:label "chave do descritor"@pt ;
+    rdfs:domain bo:Descriptor ;
+    rdfs:range xsd:string ;
+    skos:definition "Nome curto e estável do descritor (o nome local da entidade descrita). Junto com o tipo, identifica o descritor."@pt .
+
+bo:Descriptor owl:hasKey ( bo:descriptorKey ) .
+
+bo:of a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:label "de (descritor)"@pt , "of (descriptor)"@en ;
+    rdfs:range bo:Descriptor ;
+    skos:definition "Liga um nó reificado (valor, realização, projeção, marca de desconhecido) ao descritor da propriedade ou classe de que ele trata. Funcional: cada nó trata de uma só entidade do vocabulário. O domínio é dado como união em bo-patterns.ttl (nunca vários rdfs:domain)."@pt .
