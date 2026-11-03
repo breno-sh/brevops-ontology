@@ -1,0 +1,128 @@
+{
+ "api_fields": 728,
+ "construction_sites": 407,
+ "driver_modules": 98,
+ "extra_feeds": {
+  "api": 601,
+  "constant": 53,
+  "context": 99,
+  "input": 141,
+  "opaque": 35
+ },
+ "extra_keys": 929,
+ "feeds_core_fields": {
+  "absent": 319,
+  "api": 750,
+  "constant": 386,
+  "context": 111,
+  "input": 394,
+  "opaque": 138
+ },
+ "functions_read": 4232,
+ "interpreter_failures": 0,
+ "normalized_classes": [
+  "compute.KeyPair",
+  "compute.Node",
+  "compute.NodeImage",
+  "compute.NodeImageMember",
+  "compute.NodeLocation",
+  "compute.NodeSize",
+  "compute.StorageVolume",
+  "compute.VolumeSnapshot",
+  "dns.Record",
+  "dns.Zone",
+  "loadbalancer.LoadBalancer",
+  "loadbalancer.Member",
+  "storage.Container",
+  "storage.Object"
+ ],
+ "project_providers_without_driver": [
+  "oci"
+ ],
+ "rows": 899,
+ "rows_by_domain": {
+  "compute": 624,
+  "dns": 173,
+  "loadbalancer": 53,
+  "storage": 49
+ },
+ "rows_by_evidence_state": {
+  "STRUCTURALLY_VALID": 803,
+  "UNRESOLVED": 96
+ },
+ "rows_by_project_provider": {
+  "aws": 57,
+  "azure": 27,
+  "gcp": 35,
+  "other": 780
+ },
+ "rows_by_project_provider_and_relation": {
+  "aws": {
+   "close": 5,
+   "exact": 33,
+   "related": 14,
+   "related/UNRESOLVED": 5
+  },
+  "azure": {
+   "close": 4,
+   "exact": 13,
+   "related": 3,
+   "related/UNRESOLVED": 7
+  },
+  "gcp": {
+   "close": 1,
+   "exact": 26,
+   "related": 7,
+   "related/UNRESOLVED": 1
+  },
+  "other": {
+   "close": 86,
+   "exact": 511,
+   "related": 100,
+   "related/UNRESOLVED": 83
+  }
+ },
+ "rows_by_relation": {
+  "close": 96,
+  "exact": 583,
+  "related": 220
+ },
+ "rows_by_rule": {
+  "R1": 535,
+  "R2": 47,
+  "R3": 33,
+  "R4": 64,
+  "R5": 124,
+  "R6": 96
+ },
+ "rows_by_target": {
+  "compute.KeyPair": 41,
+  "compute.Node": 199,
+  "compute.NodeImage": 83,
+  "compute.NodeImageMember": 4,
+  "compute.NodeLocation": 52,
+  "compute.NodeSize": 126,
+  "compute.StorageVolume": 65,
+  "compute.VolumeSnapshot": 54,
+  "dns.Record": 111,
+  "dns.Zone": 62,
+  "loadbalancer.LoadBalancer": 39,
+  "loadbalancer.Member": 14,
+  "storage.Container": 2,
+  "storage.Object": 47
+ },
+ "semantics_assess_failures": {
+  "EVIDENCE:UNPROVEN": 38,
+  "KIND-UNKNOWN:UNPROVEN": 641
+ },
+ "semantics_assess_verdicts": {
+  "OK": 220,
+  "UNPROVEN": 679
+ },
+ "source": {
+  "py_files": 372,
+  "sdist_sha256": "b65eaa5ac32b28a0f9555e6a223dba39e73b99b682cd849624587ce7bc251661",
+  "tree_digest": "f06aa01fedcb96fb82d020d5215440b602ca9ba3244ac35a965871404a2d63dd",
+  "version": "3.9.1"
+ }
+}

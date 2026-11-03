@@ -1,0 +1,40 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "GOLD-LIBCLOUD",
+ "generated_at": "2026-11-03T01:52:22-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/GOLD-LIBCLOUD.txt",
+  "brief_sha256": "ebebd52c5f61df81cb5250e3a8dccb36885d133f4dbc66b2c7316b8254b3d85c",
+  "params": {
+   "libcloud_version": "3.9.1",
+   "sdist_sha256": "b65eaa5ac32b28a0f9555e6a223dba39e73b99b682cd849624587ce7bc251661",
+   "leitura": "ast-sem-importar",
+   "interpretador": "bo.gold_libcloud.flow",
+   "tool_version": "1.0.0",
+   "max_depth_helpers": "2",
+   "regras": "R1-R6",
+   "dominios": "compute,storage,dns,loadbalancer",
+   "cloud": "none",
+   "network": "pypi-sdist",
+   "execution_of_download": "none",
+   "modo": "unlazy",
+   "onda": "5",
+   "fase": "F1",
+   "generator": "python -I -m bo.gold_libcloud.build",
+   "resolver": "python -I -m bo.gold_libcloud.resolve GOLD-LIBCLOUD"
+  },
+  "inputs": [],
+  "recorded_at": "2026-11-03T01:52:22-03:00"
+ },
+ "sources": [
+  {
+   "uri": "https://files.pythonhosted.org/packages/source/a/apache_libcloud/apache_libcloud-3.9.1.tar.gz",
+   "license": "Apache-2.0",
+   "transformation": "lido com ast (nunca importado): campo da API -> campo normalizado em $BO_DATA/GOLD-LIBCLOUD/libcloud.sssom.tsv; sem cópia de código, só caminho de campo e arquivo:linha"
+  }
+ ],
+ "notes": "Ouro de API do Libcloud 3.9.1 (números em results/GOLD-LIBCLOUD/stats.json). Achados: não há driver OCI; o mapa de estados do EC2 não tem stopped/stopping (cai em UNKNOWN); a maior parte das linhas é de provedores fora do projeto; chaves de extra são do driver e ficam fora do SSSOM (extra_fields.jsonl). Linha resolvida = STRUCTURALLY_VALID; nível publicado/derivado/interpretado é do GOLD-AUDIT; silêncio do Libcloud não é negativo."
+}
