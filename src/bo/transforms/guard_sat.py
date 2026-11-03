@@ -6,8 +6,8 @@
      compatíveis (controle): interseção SAT com testemunha;
   3. composição a->b->c: nó do meio com exigências incompatíveis dá composição vazia;
   4. diferencial: N guardas aleatórias (semente fixa) sobre os sete operadores; typecheck igual nas duas
-     implementações; esta implementação = força bruta em TODAS; divergência com a do SEMANTICS só nas classes
-     documentadas (e cada uma confirmada pela força bruta); classe não documentada reprova.
+     implementações; esta implementação = força bruta = bo.semantics.guards em TODAS (as duas classes de
+     divergência achadas aqui foram corrigidas no SEMANTICS em f48865f; classify só nomeia uma regressão).
 """
 
 from __future__ import annotations
@@ -52,7 +52,9 @@ def _rand_guard(rng: random.Random) -> dict:
             else:
                 g["all"].append(GR.A(term, "edition_in", rng.sample(EDITIONS, rng.randint(1, 2))))
         elif term.endswith(".provider_version"):
-            if r < 0.35:
+            if r < 0.18:
+                tt[term] = rng.choice([GR.INT, GR.BOOL])
+            elif r < 0.35:
                 if rng.random() < 0.5:
                     tt[term] = {"datatype": "enum", "enum": rng.sample(VERSIONS, 2)}
                     if rng.random() < 0.4:
@@ -88,6 +90,9 @@ def _rand_guard(rng: random.Random) -> dict:
             if r < 0.2:
                 tt[term] = GR.STR
                 g["all"].append(GR.A(term, "eq", "ref-a"))
+            elif r < 0.3:
+                tt[term] = rng.choice([GR.TIER, GR.BOOL])
+                g["all"].append(GR.A(term, "refers_to_kind", rng.choice(KINDS)))
             else:
                 g["all"].append(GR.A(term, "refers_to_kind", rng.choice(KINDS)))
     if tt:
@@ -189,8 +194,8 @@ def main(argv=None) -> int:
         key = f"{cls}: TRANSFORMS={m} SEMANTICS={s}"
         stats["divergences"][key] = stats["divergences"].get(key, 0) + 1
         samples.setdefault(key, g)
-        if cls == "não documentada" or m != "UNSAT" or s not in ("SAT", "UNKNOWN"):
-            errs.append(f"divergência não documentada ({key}): {json.dumps(g)}")
+        # desde o f48865f o SEMANTICS corrige as duas classes achadas aqui: qualquer divergência reprova
+        errs.append(f"divergência com bo.semantics.guards ({key}): {json.dumps(g)}")
     rep = C.report("guard_sat", {"ok": not errs, "seed": SEED, "sat_tests": len(gram["sat_tests"]),
                                  "incompatible_pairs": len(GR.INCOMPATIBLE_PAIRS),
                                  "compatible_pairs": len(GR.COMPATIBLE_PAIRS), "compositions": len(GR.COMPOSITIONS),
@@ -203,7 +208,7 @@ def main(argv=None) -> int:
     C.say(f"guard_sat: {len(gram['sat_tests'])} sat_tests iguais nas duas implementações e na força bruta; "
           f"{len(GR.INCOMPATIBLE_PAIRS)} interseções incompatíveis = UNSAT, {len(GR.COMPATIBLE_PAIRS)} controles SAT; "
           f"{len(GR.COMPOSITIONS)} composições; diferencial {stats['typed']} guardas tipadas: TRANSFORMS = força "
-          f"bruta em todas, = SEMANTICS em {stats['agree_all']}, {dv} divergências documentadas "
+          f"bruta em todas, = SEMANTICS em {stats['agree_all']}, {dv} divergências "
           f"({'; '.join(f'{k} ×{v}' for k, v in sorted(stats['divergences'].items())) or 'nenhuma'}) -> OK ({rep})")
     return 0
 

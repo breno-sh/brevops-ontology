@@ -520,6 +520,148 @@
    "expected": "UNSAT"
   },
   {
+   "test_id": "SAT-VERSION-CLOSED-UNIVERSE",
+   "guard": {
+    "all": [
+     {
+      "term": "object.provider_version",
+      "op": "version_range",
+      "value": {
+       "min": "6"
+      }
+     }
+    ],
+    "term_types": {
+     "object.provider_version": {
+      "datatype": "enum",
+      "enum": [
+       "4.9",
+       "5.0"
+      ]
+     }
+    }
+   },
+   "expected": "UNSAT"
+  },
+  {
+   "test_id": "SAT-VERSION-CLOSED-UNIVERSE-OK",
+   "guard": {
+    "all": [
+     {
+      "term": "object.provider_version",
+      "op": "version_range",
+      "value": {
+       "min": "5"
+      }
+     }
+    ],
+    "term_types": {
+     "object.provider_version": {
+      "datatype": "enum",
+      "enum": [
+       "4.9",
+       "5.0"
+      ]
+     }
+    }
+   },
+   "expected": "SAT"
+  },
+  {
+   "test_id": "SAT-VERSION-INTEGER-TERM",
+   "guard": {
+    "all": [
+     {
+      "term": "object.provider_version",
+      "op": "version_range",
+      "value": {
+       "min": "1"
+      }
+     }
+    ],
+    "term_types": {
+     "object.provider_version": {
+      "datatype": "integer"
+     }
+    }
+   },
+   "expected": "UNSAT"
+  },
+  {
+   "test_id": "SAT-KIND-WITH-VALUE",
+   "guard": {
+    "all": [
+     {
+      "term": "object.target",
+      "op": "refers_to_kind",
+      "value": "subnet"
+     },
+     {
+      "term": "object.target",
+      "op": "eq",
+      "value": "ref-a"
+     }
+    ],
+    "term_types": {
+     "object.target": {
+      "datatype": "string"
+     }
+    }
+   },
+   "expected": "UNSAT"
+  },
+  {
+   "test_id": "SAT-KIND-OPEN-WITH-VALUE",
+   "guard": {
+    "all": [
+     {
+      "term": "object.target",
+      "op": "refers_to_kind",
+      "value": "subnet"
+     },
+     {
+      "term": "object.target",
+      "op": "refers_to_kind",
+      "value": "vpc"
+     },
+     {
+      "term": "object.target",
+      "op": "eq",
+      "value": "ref-a"
+     }
+    ],
+    "term_types": {
+     "object.target": {
+      "datatype": "string"
+     }
+    }
+   },
+   "expected": "UNSAT"
+  },
+  {
+   "test_id": "SAT-KIND-CLOSED-UNIVERSE",
+   "guard": {
+    "all": [
+     {
+      "term": "object.target",
+      "op": "refers_to_kind",
+      "value": "subnet"
+     }
+    ],
+    "term_types": {
+     "object.target": {
+      "datatype": "enum",
+      "enum": [
+       "basic",
+       "standard",
+       "premium"
+      ]
+     }
+    }
+   },
+   "expected": "UNSAT"
+  },
+  {
    "test_id": "SAT-UNSAT-DOMINATES",
    "guard": {
     "all": [

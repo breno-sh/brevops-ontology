@@ -179,8 +179,12 @@ def _decide_term(g, term, atoms, disjoint) -> tuple[str, object]:
             return UNSAT, "present false com restrição de valor"
     if presence == {False}:
         return SAT, dict(ABSENT)
-    if kinds and (values is not None or lo is not None or hi is not None):
-        return UNSAT, "referência (refers_to_kind) com restrição de valor escalar no mesmo termo"
+    uni = _universe(g, term)
+    dt = ((g.get("term_types") or {}).get(term) or {}).get("datatype")
+    if kinds and (values is not None or lo is not None or hi is not None or uni is not None):
+        return UNSAT, "referência (refers_to_kind) com restrição de valor escalar ou universo fechado no mesmo termo"
+    if (lo is not None or hi is not None) and dt not in (None, "string", "enum"):
+        return UNSAT, f"faixa de versão sobre termo {dt} (versão é texto)"
     if len(kinds) > 1:
         ks = sorted(kinds)
         dj = {frozenset(p) for p in disjoint}
@@ -189,7 +193,6 @@ def _decide_term(g, term, atoms, disjoint) -> tuple[str, object]:
         return UNKNOWN, f"tipos {ks} sem disjunção declarada (mundo aberto)"
     if kinds:
         return SAT, {"$kind": next(iter(kinds))}
-    uni = _universe(g, term)
     ranged = lo is not None or hi is not None
     if ranged and lo is None and hi == _ZERO:
         return UNSAT, "faixa de versão vazia (abaixo de 0)"

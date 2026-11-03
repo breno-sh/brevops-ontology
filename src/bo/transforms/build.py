@@ -27,12 +27,11 @@ from . import registry as R
 from .examples import run_all
 
 FINDINGS = [
-    "bo.semantics.guards.satisfiable dá SAT (ou UNKNOWN) onde não há valor possível em duas classes de guarda, e esta "
-    "implementação (conferida por força bruta) dá UNSAT: (a) version_range sobre termo de universo fechado "
-    "(enum ou boolean em term_types) sem eq/in, quando nenhum valor do enum cai na faixa; (b) refers_to_kind junto "
-    "com restrição de valor escalar (eq, in, region_in, edition_in, version_range) no mesmo termo. Os sat_tests do "
-    "conditions.grammar.json ficam fora dessas classes (a regra C10-SAT do validador usa a implementação do "
-    "SEMANTICS); o guard_sat mede e classifica cada divergência (ver $BO_DATA/TRANSFORMS/guard_sat.json).",
+    "bo.semantics.guards.satisfiable dava SAT (ou UNKNOWN) onde não há valor possível em duas classes de guarda, "
+    "e esta implementação (conferida por força bruta) dá UNSAT: (a) version_range sobre termo de universo fechado "
+    "(enum ou boolean) ou não textual; (b) refers_to_kind junto com restrição de valor escalar ou universo fechado "
+    "no mesmo termo. Eram 39 de 3998 guardas aleatórias; o SEMANTICS corrigiu em f48865f, os sat_tests passaram a "
+    "incluir as duas classes e o guard_sat agora exige igualdade total (ver $BO_DATA/TRANSFORMS/guard_sat.json).",
     "O C10 não tem variável de tipo: uma escalar polimórfica que preserva a grandeza não se declara com grandeza "
     "concreta. O registro declara por grandeza (unit_convert_time, round_information, ...) e deixa só identity "
     "polimórfica, com grandeza NOT_APPLICABLE como no stub do CONTRACTS; NOT_APPLICABLE ali quer dizer 'não impõe "

@@ -92,16 +92,15 @@ def test_intersect_type_conflict():
         M.intersect(g1, g2)
 
 
-def test_documented_divergences_are_real():
-    """As duas classes em que bo.semantics.guards diz SAT: nenhum valor bem tipado torna a guarda TRUE."""
+def test_former_divergences_now_agree():
+    """As duas classes em que bo.semantics.guards dizia SAT (corrigidas em f48865f): nenhum valor torna TRUE."""
     from bo.semantics import guards as S
     g_a = G(A("object.provider_version", "version_range", {"min": "6"}),
             term_types={"object.provider_version": {"datatype": "enum", "enum": ["4.9", "5.0"]}})
     g_b = G(A("object.target", "refers_to_kind", "subnet"), A("object.target", "eq", "ref-a"),
             term_types={"object.target": GR.STR})
     for g, cls in ((g_a, "version_range_over_closed_universe"), (g_b, "kind_with_scalar_value")):
-        assert S.satisfiable(g)[0] == "SAT"
-        assert M.satisfiable(g)[0] == "UNSAT" == M.brute_force(g)
+        assert S.satisfiable(g)[0] == M.satisfiable(g)[0] == "UNSAT" == M.brute_force(g)
         assert classify(g) == cls
     for v in ("4.9", "5.0", {"$absent": True}):
         assert M.evaluate(g_a, {"object.provider_version": v})[0] == "FALSE"
