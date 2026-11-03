@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "SCHEMALIB",
- "generated_at": "2026-11-03T01:44:08-03:00",
+ "generated_at": "2026-11-03T17:45:57-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/SCHEMALIB.txt",
@@ -16,7 +16,8 @@
    "terraform": "1.15.8",
    "versoes": "aws 5.83.1, azurerm 5.5.0, google 8.2.0, oci 9.1.0 (do catalogo4v2 e dos locks de tfschema4)",
    "regua": "provider_populated = computed, nao required, nome em arn/id/owner_id/region/tags_all",
-   "sandbox": "env -i, HOME temporario, sandbox-exec sem credenciais; schema sem rede IP"
+   "sandbox": "env -i, HOME temporario, sandbox-exec sem credenciais; schema sem rede IP",
+   "pedidos_driver": "so_beta e causas do crosscheck; write_only do C01 2.1.0"
   },
   "inputs": [
    {
@@ -27,9 +28,7 @@
    {
     "path": "/Users/breno/doutorado/pesquisa-lanes/c1-37-icsa/superficie/data/tfschema4",
     "kind": "dir",
-    "sha256": "b316deb417a5fcdafa8e40f621d820a53fb82a0ed7f251898c84fb40c98e0504",
-    "sha256_before_plan_regen_stubpath": "b316deb417a5fcdafa8e40f621d820a53fb82a0ed7f251898c84fb40c98e0504",
-    "sha256_before_coord_fix_0303": "6bf7f693b86bf2287639670fc9cec8a05ca02482a6ec7e828b5d49d7471dd512"
+    "sha256": "b316deb417a5fcdafa8e40f621d820a53fb82a0ed7f251898c84fb40c98e0504"
    },
    {
     "path": "$BO_DATA/downloads/tfschema/aws-5.83.1/schema.json.gz",
@@ -50,9 +49,19 @@
     "path": "$BO_DATA/downloads/tfschema/oci-9.1.0/schema.json.gz",
     "kind": "file",
     "sha256": "5235c9e4477a936e97f29423456d3c88afc7d7e64f54f55869d7b9f5e2827842"
+   },
+   {
+    "path": "/Users/breno/doutorado/brevops-ontology/results/SCHEMA-GCP/CONTRACT_CHANGE.txt",
+    "kind": "file",
+    "sha256": "8f3daf95cc157fb3d93890efdd96235ef5be04cbe8cbf077a09a0d15a77c52c1"
+   },
+   {
+    "path": "/Users/breno/doutorado/brevops-ontology/results/SCHEMA-OCI/CONTRACT_CHANGE.txt",
+    "kind": "file",
+    "sha256": "67c4714081d90f3ae8cef4f58ab847a3a39b449ab502dab0ab00bc0291e88db4"
    }
   ],
-  "recorded_at": "2026-11-03T01:44:08-03:00"
+  "recorded_at": "2026-11-03T17:45:57-03:00"
  },
  "sources": [
   {
@@ -81,5 +90,5 @@
    "transformation": "índice de documentação, só contagem de páginas por tipo (crosscheck)"
   }
  ],
- "notes": "Reprodução do catalogo4v2: 4946/4946 tipos com as 6 contagens iguais (100%), árvore igual em 4946; 158946 átomos C01 e 4946 tipos C02 validados. crosscheck no índice do Registry: aws e azurerm passam, google 8.2.0 e oci 9.1.0 não (ver CONTRACT_CHANGE.txt item 3)."
+ "notes": "Reprodução do catalogo4v2: 4946/4946 tipos com as 6 contagens iguais (100%), árvore igual em 4946; 158946 átomos C01 e 4946 tipos C02 validados. crosscheck com causas conferidas nas versões dos SCHEMA-*: aws 6.71.0, azurerm 5.12.0 e google 8.9.0 PASS; oci 9.11.0 FAIL por 1 página sem título (ver CONTRACT_CHANGE.txt)."
 }

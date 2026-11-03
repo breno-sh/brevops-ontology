@@ -26,3 +26,19 @@ módulos posteriores vão querer, e que o C01 hoje não tem onde guardar (additi
    google 8.2.0 (84 páginas sem tipo no provider google) nem no oci 9.1.0 (22 tipos sem página, 15 páginas
    sem tipo). Detalhe em $BO_DATA/SCHEMALIB/crosscheck_<provedor>-<versão>.json. É achado para os SCHEMA-*,
    não ajuste: o comando não foi afrouxado.
+
+ATUALIZAÇÃO — 2026-11-03 (America/Recife), pedidos do driver depois da emenda 2 do CONTRACTS
+- Item 1 resolvido: o C01 2.1.0 trouxe o campo opcional write_only. A biblioteca grava "write_only": true só
+  quando o schema o marca (e reprova write_only computed ou não configurável); átomo sem write_only sai com os
+  mesmos bytes de antes. Os quatro átomos do stub C01 2.1.0 saem byte a byte da biblioteca (teste).
+- Item 3: o critério do bo.schema.crosscheck mudou de "zero diferenças" para "toda diferença com causa
+  mecânica e conferível, e zero sem causa". Causas (regras em bo.schema.crosscheck.CAUSES): alias_bloco_identico,
+  familia_iam, so_beta (só google, com o schema do google-beta da mesma versão conferido: sha256 do schema, recibo
+  -lockfile=readonly, sha256 do binário e h1 recalculado dentro do lock; o aviso "beta" da doc não conta),
+  nome_divergente (título da página = nome exato de um tipo sem página), data_source_publicado_como_recurso
+  (título "Data Source: X" com X data source do schema), pagina_sem_tipo_no_schema (título nomeia X fora do
+  schema), tipo_sem_documentacao (nenhum slug e nenhum título de recurso o nomeia). Evidência = schema extraído
+  conferido + docs da tag com MANIFEST.json conferido arquivo a arquivo; sem ela, só alias e família IAM valem.
+  Re-medido nas versões fixadas dos SCHEMA-*: aws 6.71.0 PASS, azurerm 5.12.0 PASS, google 8.9.0 PASS (89 so_beta),
+  oci 9.11.0 FAIL com 1 página sem causa (oci_database_migration_agent: a página não tem título '# ...').
+  Não acrescentei regra para esse caso (seria regra sob medida para o número); a decisão é do plano.

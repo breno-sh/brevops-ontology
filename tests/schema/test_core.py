@@ -159,17 +159,45 @@ def test_generated_files_pass_contracts(work):
 
 
 def test_contract_stub_atoms_are_reproduced():
-    """Os dois átomos do stub C01 saem da biblioteca, byte a byte, de um schema que os descreve."""
-    doc = {"format_version": "1.0", "provider_schemas": {"registry.terraform.io/hashicorp/aws": {
-        "resource_schemas": {
-            "aws_db_instance": {"block": {"attributes": {
-                "backup_retention_period": {"type": "number", "optional": True, "computed": True}}}},
-            "aws_s3_bucket_lifecycle_configuration": {"block": {"block_types": {"rule": {
-                "nesting_mode": "list", "min_items": 1, "block": {"block_types": {"expiration": {
-                    "nesting_mode": "list", "max_items": 1,
-                    "block": {"attributes": {"days": {"type": "number", "optional": True}}}}}}}}}},
-        }}}}
-    ps = core.providers(doc)["aws"]
-    got = [json.dumps(a, sort_keys=True) for t in core.iter_types(ps, "aws", "6.0.0") for a in t.atoms]
+    """Os quatro átomos do stub C01 (2.1.0) saem da biblioteca, byte a byte, de schemas que os descrevem."""
+    aws = {"aws_db_instance": {"block": {"attributes": {
+               "backup_retention_period": {"type": "number", "optional": True, "computed": True}}}},
+           "aws_s3_bucket_lifecycle_configuration": {"block": {"block_types": {"rule": {
+               "nesting_mode": "list", "min_items": 1, "block": {"block_types": {"expiration": {
+                   "nesting_mode": "list", "max_items": 1,
+                   "block": {"attributes": {"days": {"type": "number", "optional": True}}}}}}}}}}}
+    google = {"google_sql_user": {"block": {"attributes": {
+        "password_wo": {"type": "string", "optional": True, "sensitive": True, "write_only": True}}}}}
+    azurerm = {"azurerm_example_nested": {"block": {"attributes": {"settings": {"optional": True, "nested_type": {
+        "nesting_mode": "list", "attributes": {"name": {"type": "string", "required": True},
+                                               "size": {"type": "number", "optional": True}}}}}}}}
+    doc = {"format_version": "1.0", "provider_schemas": {
+        "registry.terraform.io/hashicorp/aws": {"resource_schemas": aws},
+        "registry.terraform.io/hashicorp/google": {"resource_schemas": google},
+        "registry.terraform.io/hashicorp/azurerm": {"resource_schemas": azurerm}}}
+    ps = core.providers(doc)
+    got = []
+    for prov, ver in (("aws", "6.0.0"), ("google", "8.2.0"), ("azurerm", "5.5.0")):
+        got += [json.dumps(a, sort_keys=True) for t in core.iter_types(ps[prov], prov, ver) for a in t.atoms]
     stub = (REPO / "contracts" / "stubs" / "C01" / "atoms.jsonl").read_text(encoding="utf-8").splitlines()
     assert got == [json.dumps(json.loads(s), sort_keys=True) for s in stub]
+
+
+def test_write_only_is_optional_field():
+    """write_only só aparece quando verdadeiro; o átomo sem ele não ganha a chave (bytes de antes)."""
+    a = by_path(widget())
+    assert a["bootstrap_value"]["write_only"] is True
+    assert sum("write_only" in x for x in a.values()) == 1
+    assert "write_only" not in a["size_gb"]
+    base = {"type": "string", "optional": True}
+    plain = core.type_schema("provider_a", "1.0.0", "provider_a_x", {"attributes": {"v": dict(base)}}).atoms[0]
+    falsy = core.type_schema("provider_a", "1.0.0", "provider_a_x",
+                             {"attributes": {"v": dict(base, write_only=False)}}).atoms[0]
+    assert json.dumps(plain, sort_keys=True) == json.dumps(falsy, sort_keys=True)
+
+
+@pytest.mark.parametrize("flags", [{"computed": True, "optional": True}, {"computed": True}, {}])
+def test_write_only_requires_configurable_not_computed(flags):
+    with pytest.raises(core.SchemaError):
+        core.type_schema("provider_a", "1.0.0", "provider_a_x",
+                         {"attributes": {"v": {"type": "string", "write_only": True, **flags}}})

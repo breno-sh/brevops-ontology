@@ -11,7 +11,8 @@ Regras (as mesmas para os 4 provedores e para qualquer versão):
     (single -> ["object", {...}(, [opcionais])], list/set/map -> [modo, objeto]); os filhos não viram átomos,
     para que counts.attributes seja o número de entradas 'attributes' do schema (a régua do catálogo).
   * flags required/optional/computed/sensitive/deprecated são os do schema, sem reinterpretação;
-    configurable = required ou optional. A régua do C1 (cfg/provider_populated/computed_only) mora em
+    configurable = required ou optional. write_only (C01 2.1.0) só é gravado quando o schema o marca: o átomo
+    sem ele sai com os mesmos bytes de antes da emenda. A régua do C1 (cfg/provider_populated/computed_only) mora em
     bo.schema.ruler, separada: ela é uma decisão de análise, não um fato do schema.
   * block_sha256 = sha256 do JSON canônico do bloco (chaves ordenadas, separadores ',' ':', UTF-8).
   * max_depth = profundidade máxima de bloco aninhado (bloco de topo = 1; tipo sem blocos = 0).
@@ -157,8 +158,11 @@ def make_atom(provider: str, version: str, rtype: str, path: tuple, bpath: tuple
         raise SchemaError(f"{where}: required e optional ao mesmo tempo")
     if fl["required"] and fl["computed"]:
         raise SchemaError(f"{where}: required e computed ao mesmo tempo")
+    wo = bool(a.get("write_only"))
+    if wo and (fl["computed"] or not (fl["required"] or fl["optional"])):
+        raise SchemaError(f"{where}: write_only exige configurable e não computed (C01-WRITEONLY)")
     p = ".".join(path)
-    return {
+    atom = {
         "atom_id": f"{provider}:{rtype}:{p}",
         "provider": provider,
         "provider_version": version,
@@ -170,6 +174,9 @@ def make_atom(provider: str, version: str, rtype: str, path: tuple, bpath: tuple
         **fl,
         "configurable": fl["required"] or fl["optional"],
     }
+    if wo:      # campo opcional do C01 2.1.0: só aparece quando verdadeiro (átomo sem ele = bytes de antes)
+        atom["write_only"] = True
+    return atom
 
 
 def type_schema(provider: str, version: str, rtype: str, block: dict) -> TypeSchema:
