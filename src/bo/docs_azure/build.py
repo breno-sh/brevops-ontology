@@ -204,7 +204,7 @@ class Facts:
 
 
 def _raw(pg: MD.Page, it: MD.Item) -> str:
-    return " ".join(pg.lines[ln - 1].strip() for ln, _ in it.parts)
+    return " ".join(" ".join(pg.lines[ln - 1].split()) for ln, _ in it.parts)
 
 
 def _clean_desc(it: MD.Item) -> str:

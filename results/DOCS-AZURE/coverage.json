@@ -3,7 +3,7 @@
  "contract": "C15",
  "contract_version": "3.0.0",
  "module": "DOCS-AZURE",
- "generated_at": "2026-11-03T07:20:41-03:00",
+ "generated_at": "2026-11-03T07:25:16-03:00",
  "metrics": [
   {
    "metric_id": "M-DOCAZ-DESC",
@@ -20,7 +20,7 @@
    "frame": {
     "ref": {
      "path": "$BO_DATA/DOCS-AZURE/docs_facts.jsonl",
-     "sha256": "eabb75f5ffcb2f21fd97ad2f0545ac334843c6be742782121f3b4ee24596c1fd"
+     "sha256": "23efd739b2bd9f16a1088c29b4bc1dacaa78bbd4d91cfd7c26bfa38351763ced"
     },
     "description": "todos os átomos (C01) de resource_schemas do azurerm 5.12.0 fixado; censo, não amostra"
    },
@@ -50,7 +50,7 @@
    "frame": {
     "ref": {
      "path": "$BO_DATA/DOCS-AZURE/docs_facts.jsonl",
-     "sha256": "eabb75f5ffcb2f21fd97ad2f0545ac334843c6be742782121f3b4ee24596c1fd"
+     "sha256": "23efd739b2bd9f16a1088c29b4bc1dacaa78bbd4d91cfd7c26bfa38351763ced"
     },
     "description": "todos os átomos (C01) de resource_schemas do azurerm 5.12.0 fixado; censo, não amostra"
    },
@@ -80,7 +80,7 @@
    "frame": {
     "ref": {
      "path": "$BO_DATA/DOCS-AZURE/docs_facts.jsonl",
-     "sha256": "eabb75f5ffcb2f21fd97ad2f0545ac334843c6be742782121f3b4ee24596c1fd"
+     "sha256": "23efd739b2bd9f16a1088c29b4bc1dacaa78bbd4d91cfd7c26bfa38351763ced"
     },
     "description": "todos os átomos (C01) de resource_schemas do azurerm 5.12.0 fixado; censo, não amostra"
    },
