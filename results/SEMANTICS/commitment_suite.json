@@ -1,0 +1,348 @@
+{
+ "inputs": {
+  "commitments": "requirements/commitments.jsonl",
+  "commitments_sha256": "038f73fcebedfbf3b5ff3d23b1ff0758a87e8be2616b141b232628e1a64d1438",
+  "cq_spec": "requirements/cq_spec.jsonl",
+  "cq_spec_sha256": "370bcb7229eedd274f758f3792a570039a4b282416f41a4935bd87426f66ebe1"
+ },
+ "n": 17,
+ "n_reproduces": 17,
+ "rows": [
+  {
+   "expected": {
+    "code": "DECLARED_LOSS",
+    "value": "ENTAILED"
+   },
+   "fixture": "FX-LOSS-P01",
+   "got": {
+    "code": "DECLARED_LOSS",
+    "value": "ENTAILED"
+   },
+   "id": "CMT-LOSS-P01",
+   "reproduces": true,
+   "trace": {
+    "fidelity": "declared_loss",
+    "losses": [
+     {
+      "from": 400,
+      "kind": "saturation",
+      "to": 365
+     }
+    ],
+    "result": "carried",
+    "value": 365
+   }
+  },
+  {
+   "expected": {
+    "code": "UNKNOWN_INPUT",
+    "value": "REJECTED"
+   },
+   "fixture": "FX-LOSS-N01",
+   "got": {
+    "code": "UNKNOWN_INPUT",
+    "value": "REJECTED"
+   },
+   "id": "CMT-LOSS-N01",
+   "reproduces": true,
+   "trace": {
+    "code": "UNKNOWN_INPUT",
+    "result": "blocked",
+    "rule": "T-ABSENCE"
+   }
+  },
+  {
+   "expected": {
+    "code": "RELATED_ONLY",
+    "value": "REJECTED"
+   },
+   "fixture": "FX-LOSS-N02",
+   "got": {
+    "code": "RELATED_ONLY",
+    "value": "REJECTED"
+   },
+   "id": "CMT-LOSS-N02",
+   "reproduces": true,
+   "trace": {
+    "code": "RELATED_ONLY",
+    "result": "blocked",
+    "rule": "T-RELATED"
+   }
+  },
+  {
+   "expected": {
+    "code": "TRANSFORM_OUT_OF_DOMAIN",
+    "value": "UNKNOWN"
+   },
+   "fixture": "FX-LOSS-U01",
+   "got": {
+    "code": "TRANSFORM_OUT_OF_DOMAIN",
+    "value": "UNKNOWN"
+   },
+   "id": "CMT-LOSS-U01",
+   "reproduces": true,
+   "trace": {
+    "code": "TRANSFORM_OUT_OF_DOMAIN",
+    "result": "blocked",
+    "rule": "T-DOMAIN"
+   }
+  },
+  {
+   "expected": {
+    "code": "UNPROVEN",
+    "value": "UNKNOWN"
+   },
+   "fixture": "FX-LOSS-U02",
+   "got": {
+    "code": "UNPROVEN",
+    "value": "UNKNOWN"
+   },
+   "id": "CMT-LOSS-U02",
+   "reproduces": true,
+   "trace": {
+    "code": "UNPROVEN",
+    "failed": [
+     "EVIDENCE"
+    ],
+    "result": "blocked",
+    "rule": "T-UNPROVEN"
+   }
+  },
+  {
+   "expected": {
+    "code": null,
+    "value": "lossless"
+   },
+   "fixture": "FX-LOSS-01-C",
+   "got": {
+    "value": "lossless"
+   },
+   "id": "CQ-LOSS-01/conforming",
+   "reproduces": true,
+   "trace": {
+    "fidelity": "lossless",
+    "losses": [],
+    "result": "carried",
+    "value": 2592000
+   }
+  },
+  {
+   "expected": {
+    "code": null,
+    "value": "declared_loss"
+   },
+   "fixture": "FX-LOSS-01-N",
+   "got": {
+    "value": "declared_loss"
+   },
+   "id": "CQ-LOSS-01/nonconforming",
+   "reproduces": true,
+   "trace": {
+    "fidelity": "declared_loss",
+    "losses": [
+     {
+      "from": 400,
+      "kind": "saturation",
+      "to": 365
+     }
+    ],
+    "result": "carried",
+    "value": 365
+   }
+  },
+  {
+   "expected": {
+    "code": "UNPROVEN",
+    "value": "UNKNOWN"
+   },
+   "fixture": "FX-LOSS-01-I",
+   "got": {
+    "code": "UNPROVEN",
+    "value": "UNKNOWN"
+   },
+   "id": "CQ-LOSS-01/incomplete",
+   "reproduces": true,
+   "trace": {
+    "code": "UNPROVEN",
+    "failed": [
+     "EVIDENCE"
+    ],
+    "result": "blocked",
+    "rule": "T-UNPROVEN"
+   }
+  },
+  {
+   "expected": {
+    "code": null,
+    "value": "carried_as_deny"
+   },
+   "fixture": "FX-LOSS-02-C",
+   "got": {
+    "value": "carried_as_deny"
+   },
+   "id": "CQ-LOSS-02/conforming",
+   "reproduces": true,
+   "trace": {
+    "fidelity": "lossless",
+    "losses": [],
+    "result": "carried",
+    "value": "deny"
+   }
+  },
+  {
+   "expected": {
+    "code": null,
+    "value": "blocked_with_declared_loss"
+   },
+   "fixture": "FX-LOSS-02-N",
+   "got": {
+    "value": "blocked_with_declared_loss"
+   },
+   "id": "CQ-LOSS-02/nonconforming",
+   "reproduces": true,
+   "trace": {
+    "code": "OUT_OF_SUBSET",
+    "losses": [
+     {
+      "kind": "not_expressible",
+      "value": "deny",
+      "why": "destino só exprime permissão"
+     }
+    ],
+    "result": "blocked",
+    "rule": "T-SUBSET"
+   }
+  },
+  {
+   "expected": {
+    "code": "MISSING_EVIDENCE",
+    "value": "UNKNOWN"
+   },
+   "fixture": "FX-LOSS-02-I",
+   "got": {
+    "code": "MISSING_EVIDENCE",
+    "value": "UNKNOWN"
+   },
+   "id": "CQ-LOSS-02/incomplete",
+   "reproduces": true,
+   "trace": {
+    "code": "UNPROVEN",
+    "failed": [
+     "KIND-UNKNOWN"
+    ],
+    "result": "blocked",
+    "rule": "T-UNPROVEN"
+   }
+  },
+  {
+   "expected": {
+    "code": null,
+    "value": true
+   },
+   "fixture": "FX-LOSS-03-C",
+   "got": {
+    "value": true
+   },
+   "id": "CQ-LOSS-03/conforming",
+   "reproduces": true,
+   "trace": {
+    "fidelity": "lossless",
+    "losses": [],
+    "result": "carried",
+    "value": "on"
+   }
+  },
+  {
+   "expected": {
+    "code": null,
+    "value": false
+   },
+   "fixture": "FX-LOSS-03-N",
+   "got": {
+    "value": false
+   },
+   "id": "CQ-LOSS-03/nonconforming",
+   "reproduces": true,
+   "trace": {
+    "code": "UNKNOWN_INPUT",
+    "result": "blocked",
+    "rule": "T-ABSENCE"
+   }
+  },
+  {
+   "expected": {
+    "code": "UNKNOWN_SYMBOLIC_INPUT",
+    "value": "UNKNOWN"
+   },
+   "fixture": "FX-LOSS-03-I",
+   "got": {
+    "code": "UNKNOWN_SYMBOLIC_INPUT",
+    "value": "UNKNOWN"
+   },
+   "id": "CQ-LOSS-03/incomplete",
+   "reproduces": true,
+   "trace": {
+    "code": "UNKNOWN_SYMBOLIC_INPUT",
+    "result": "blocked",
+    "rule": "T-SYMBOLIC"
+   }
+  },
+  {
+   "expected": {
+    "code": null,
+    "value": true
+   },
+   "fixture": "FX-LOSS-04-C",
+   "got": {
+    "value": true
+   },
+   "id": "CQ-LOSS-04/conforming",
+   "reproduces": true,
+   "trace": {
+    "fidelity": "lossless",
+    "losses": [],
+    "result": "carried",
+    "value": 604800
+   }
+  },
+  {
+   "expected": {
+    "code": null,
+    "value": false
+   },
+   "fixture": "FX-LOSS-04-N",
+   "got": {
+    "value": false
+   },
+   "id": "CQ-LOSS-04/nonconforming",
+   "reproduces": true,
+   "trace": {
+    "code": "TRANSFORM_OUT_OF_DOMAIN",
+    "result": "blocked",
+    "rule": "T-DOMAIN"
+   }
+  },
+  {
+   "expected": {
+    "code": "MISSING_EVIDENCE",
+    "value": "UNKNOWN"
+   },
+   "fixture": "FX-LOSS-04-I",
+   "got": {
+    "code": "MISSING_EVIDENCE",
+    "value": "UNKNOWN"
+   },
+   "id": "CQ-LOSS-04/incomplete",
+   "reproduces": true,
+   "trace": {
+    "code": "UNPROVEN",
+    "failed": [
+     "KIND-UNKNOWN"
+    ],
+    "result": "blocked",
+    "rule": "T-UNPROVEN"
+   }
+  }
+ ],
+ "selection": "compromissos com SEMANTICS em consumers; CQs da família loss"
+}

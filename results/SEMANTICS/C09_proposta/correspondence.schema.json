@@ -1,0 +1,501 @@
+{
+ "$defs": {
+  "guard": {
+   "additionalProperties": false,
+   "properties": {
+    "all": {
+     "items": {
+      "additionalProperties": false,
+      "properties": {
+       "op": {
+        "enum": [
+         "eq",
+         "in",
+         "present",
+         "refers_to_kind",
+         "region_in",
+         "edition_in",
+         "version_range"
+        ]
+       },
+       "term": {
+        "pattern": "^(subject|object)\\.[A-Za-z0-9_.\\[\\]]+$",
+        "type": "string"
+       },
+       "value": {}
+      },
+      "required": [
+       "term",
+       "op",
+       "value"
+      ],
+      "type": "object"
+     },
+     "type": "array"
+    },
+    "kind_disjoint": {
+     "items": {
+      "items": {
+       "type": "string"
+      },
+      "maxItems": 2,
+      "minItems": 2,
+      "type": "array"
+     },
+     "type": "array"
+    },
+    "term_types": {
+     "additionalProperties": {
+      "properties": {
+       "datatype": {
+        "enum": [
+         "string",
+         "enum",
+         "boolean",
+         "integer"
+        ]
+       }
+      },
+      "required": [
+       "datatype"
+      ],
+      "type": "object"
+     },
+     "type": "object"
+    }
+   },
+   "required": [
+    "all"
+   ],
+   "title": "Guarda tipada (conjunção de átomos)",
+   "type": "object"
+  }
+ },
+ "$id": "https://w3id.org/brevops/schema/C09/correspondence.schema.json",
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "properties": {
+  "anchors": {
+   "type": "array"
+  },
+  "basis": {
+   "enum": [
+    "direct",
+    "shared_concept",
+    "composition",
+    "inverse"
+   ]
+  },
+  "bo_group_id": {
+   "type": "string"
+  },
+  "claim_id": {
+   "minLength": 1,
+   "type": "string"
+  },
+  "claim_version_id": {
+   "type": "string"
+  },
+  "event_id": {
+   "type": "string"
+  },
+  "evidence_state": {
+   "enum": [
+    "UNRESOLVED",
+    "STRUCTURALLY_VALID",
+    "DOC_SUPPORTED",
+    "PERSISTENCE_VERIFIED",
+    "OBSERVATION_TESTED"
+   ]
+  },
+  "fixed_default": {
+   "properties": {
+    "evidence": {
+     "required": [
+      "date",
+      "source"
+     ],
+     "type": "object"
+    },
+    "kind": {
+     "enum": [
+      "fixed",
+      "default"
+     ]
+    }
+   },
+   "required": [
+    "kind",
+    "value",
+    "context",
+    "evidence"
+   ],
+   "type": "object"
+  },
+  "group": {
+   "type": "object"
+  },
+  "guard": {
+   "$ref": "#/$defs/guard"
+  },
+  "loss_contract": {
+   "items": {
+    "properties": {
+     "kind": {
+      "enum": [
+       "rounding",
+       "saturation",
+       "absence",
+       "sentinel",
+       "context_dependence",
+       "not_expressible",
+       "semantic"
+      ]
+     }
+    },
+    "required": [
+     "kind"
+    ],
+    "type": "object"
+   },
+   "type": "array"
+  },
+  "mapping_justification": {
+   "pattern": "^semapv:",
+   "type": "string"
+  },
+  "membership_predicate": {
+   "properties": {
+    "expr": {
+     "properties": {
+      "op": {
+       "enum": [
+        "in",
+        "eq",
+        "range",
+        "and",
+        "or",
+        "not",
+        "field"
+       ]
+      }
+     },
+     "type": "object"
+    },
+    "subset": {
+     "enum": [
+      "subject",
+      "object"
+     ]
+    },
+    "tests": {
+     "required": [
+      "members",
+      "non_members"
+     ],
+     "type": "object"
+    }
+   },
+   "required": [
+    "subset",
+    "expr",
+    "tests"
+   ],
+   "type": "object"
+  },
+  "object_concept": {
+   "type": "string"
+  },
+  "object_id": {
+   "type": "string"
+  },
+  "object_value_type": {
+   "properties": {
+    "byte_convention": {
+     "enum": [
+      "SI",
+      "IEC",
+      null
+     ]
+    },
+    "components": {
+     "type": "array"
+    },
+    "datatype": {
+     "enum": [
+      "integer",
+      "decimal",
+      "boolean",
+      "string",
+      "enum",
+      "duration",
+      "tuple"
+     ]
+    },
+    "enum": {
+     "type": "array"
+    },
+    "quantity_kind": {
+     "description": "IRI QUDT (quantitykind:...) | NOT_APPLICABLE | UNKNOWN",
+     "type": "string"
+    },
+    "range": {
+     "type": "object"
+    },
+    "rate_window": {
+     "description": "xsd:duration fixa (parte do tipo, N4)",
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "required": {
+     "type": "boolean"
+    },
+    "sentinels": {
+     "type": "object"
+    },
+    "step": {
+     "type": [
+      "string",
+      "integer"
+     ]
+    },
+    "unit": {
+     "description": "IRI QUDT (unit:...) | NOT_APPLICABLE | UNKNOWN",
+     "type": "string"
+    }
+   },
+   "required": [
+    "datatype"
+   ],
+   "type": "object"
+  },
+  "predicate_id": {
+   "enum": [
+    "skos:exactMatch",
+    "skos:closeMatch",
+    "skos:broadMatch",
+    "skos:narrowMatch",
+    "skos:relatedMatch"
+   ]
+  },
+  "preserved_observations": {
+   "items": {
+    "type": "string"
+   },
+   "type": "array"
+  },
+  "projection": {
+   "type": "array"
+  },
+  "proof": {
+   "properties": {
+    "evidence": {
+     "type": "array"
+    },
+    "tests": {
+     "type": "array"
+    },
+    "type": {
+     "type": "string"
+    }
+   },
+   "required": [
+    "type"
+   ],
+   "type": "object"
+  },
+  "semantic_relation": {
+   "enum": [
+    "exact",
+    "close",
+    "broad",
+    "narrow",
+    "related"
+   ]
+  },
+  "subject_concept": {
+   "type": "string"
+  },
+  "subject_id": {
+   "type": "string"
+  },
+  "subject_value_type": {
+   "properties": {
+    "byte_convention": {
+     "enum": [
+      "SI",
+      "IEC",
+      null
+     ]
+    },
+    "components": {
+     "type": "array"
+    },
+    "datatype": {
+     "enum": [
+      "integer",
+      "decimal",
+      "boolean",
+      "string",
+      "enum",
+      "duration",
+      "tuple"
+     ]
+    },
+    "enum": {
+     "type": "array"
+    },
+    "quantity_kind": {
+     "description": "IRI QUDT (quantitykind:...) | NOT_APPLICABLE | UNKNOWN",
+     "type": "string"
+    },
+    "range": {
+     "type": "object"
+    },
+    "rate_window": {
+     "description": "xsd:duration fixa (parte do tipo, N4)",
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "required": {
+     "type": "boolean"
+    },
+    "sentinels": {
+     "type": "object"
+    },
+    "step": {
+     "type": [
+      "string",
+      "integer"
+     ]
+    },
+    "unit": {
+     "description": "IRI QUDT (unit:...) | NOT_APPLICABLE | UNKNOWN",
+     "type": "string"
+    }
+   },
+   "required": [
+    "datatype"
+   ],
+   "type": "object"
+  },
+  "translation_fn": {
+   "oneOf": [
+    {
+     "type": "null"
+    },
+    {
+     "properties": {
+      "name": {
+       "enum": [
+        "duration_to_number",
+        "enum_map",
+        "identity",
+        "join_alarm_query",
+        "join_cidr",
+        "join_port_range",
+        "number_to_duration",
+        "rate_window_convert",
+        "scale",
+        "split_alarm_query",
+        "split_cidr",
+        "split_port_range",
+        "unit_convert"
+       ]
+      },
+      "params": {
+       "type": "object"
+      }
+     },
+     "required": [
+      "name"
+     ],
+     "type": "object"
+    },
+    {
+     "items": {
+      "properties": {
+       "name": {
+        "enum": [
+         "duration_to_number",
+         "enum_map",
+         "identity",
+         "join_alarm_query",
+         "join_cidr",
+         "join_port_range",
+         "number_to_duration",
+         "rate_window_convert",
+         "scale",
+         "split_alarm_query",
+         "split_cidr",
+         "split_port_range",
+         "unit_convert"
+        ]
+       },
+       "params": {
+        "type": "object"
+       }
+      },
+      "required": [
+       "name"
+      ],
+      "type": "object"
+     },
+     "type": "array"
+    }
+   ]
+  },
+  "transport_fidelity": {
+   "enum": [
+    "lossless",
+    "declared_loss",
+    "partial",
+    "none"
+   ]
+  },
+  "value_domain_relation": {
+   "properties": {
+    "orientation": {
+     "const": "subject_to_object"
+    },
+    "relation": {
+     "enum": [
+      "equal",
+      "subset",
+      "superset",
+      "overlap",
+      "disjoint",
+      "unknown"
+     ]
+    }
+   },
+   "required": [
+    "relation",
+    "orientation"
+   ],
+   "type": "object"
+  }
+ },
+ "required": [
+  "claim_id",
+  "claim_version_id",
+  "event_id",
+  "subject_id",
+  "predicate_id",
+  "object_id",
+  "mapping_justification",
+  "semantic_relation",
+  "value_domain_relation",
+  "transport_fidelity",
+  "guard",
+  "evidence_state",
+  "proof",
+  "subject_concept",
+  "object_concept"
+ ],
+ "title": "C09 3.0.0: alegação de correspondência (linha SSSOM com as colunas próprias já decodificadas)",
+ "type": "object"
+}

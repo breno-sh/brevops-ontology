@@ -1,0 +1,580 @@
+{
+ "closure": {
+  "rule": "só pela tabela; exactMatch é transitiva (com guardas satisfazíveis e domínios compatíveis); closeMatch e relatedMatch não; o fecho OWL do SKOS é relatado à parte e não habilita transporte"
+ },
+ "contract": "C10",
+ "contract_version": "3.0.0",
+ "domain": {
+  "rule": "tipo do nó do meio igual (datatype, grandeza, unidade, janela, convenção de byte) e conhecido nas duas pernas, e imagem da ida ∩ domínio da volta ≠ ∅; senão UNPROVEN"
+ },
+ "evidence": {
+  "rule": "a menor das pernas na escada (UNRESOLVED < STRUCTURALLY_VALID < DOC_SUPPORTED < PERSISTENCE_VERIFIED < OBSERVATION_TESTED)"
+ },
+ "guard": {
+  "rule": "conjunção das guardas com os papéis renomeados (sujeito de m1, nó do meio, objeto de m2); UNSAT = composição vazia; UNKNOWN = UNPROVEN; os termos do nó do meio são eliminados existencialmente (exato: os átomos são por termo)"
+ },
+ "module": "SEMANTICS",
+ "reading": "linha (r1, r2) = resultado de m1∘m2 com m1: A->B por r1 e m2: B->C por r2 (aplica m1, depois m2)",
+ "schema": "bo.composition_table/1",
+ "semantic_relation": [
+  {
+   "derivation": "rcc5",
+   "predicate": "skos:exactMatch",
+   "r1": "exact",
+   "r2": "exact",
+   "rcc5": [
+    "equal"
+   ],
+   "result": "exact",
+   "why": "semântica de conjuntos: equal ∘ equal = {equal}"
+  },
+  {
+   "derivation": "policy",
+   "predicate": "skos:closeMatch",
+   "r1": "exact",
+   "r2": "close",
+   "result": "close",
+   "why": "exact preserva o significado; a perda da perna close continua declarada"
+  },
+  {
+   "derivation": "rcc5",
+   "predicate": "skos:broadMatch",
+   "r1": "exact",
+   "r2": "broad",
+   "rcc5": [
+    "subset"
+   ],
+   "result": "broad",
+   "why": "semântica de conjuntos: equal ∘ subset = {subset}"
+  },
+  {
+   "derivation": "rcc5",
+   "predicate": "skos:narrowMatch",
+   "r1": "exact",
+   "r2": "narrow",
+   "rcc5": [
+    "superset"
+   ],
+   "result": "narrow",
+   "why": "semântica de conjuntos: equal ∘ superset = {superset}"
+  },
+  {
+   "derivation": "policy",
+   "predicate": "skos:relatedMatch",
+   "r1": "exact",
+   "r2": "related",
+   "result": "related",
+   "why": "exact substitui o termo sem mudar o significado; related continua sem transporte"
+  },
+  {
+   "derivation": "policy",
+   "predicate": "skos:closeMatch",
+   "r1": "close",
+   "r2": "exact",
+   "result": "close",
+   "why": "idem, na outra ordem"
+  },
+  {
+   "derivation": "policy",
+   "predicate": null,
+   "r1": "close",
+   "r2": "close",
+   "result": null,
+   "why": "closeMatch não é transitiva (SKOS: 'compound errors'): perdas acumulam; não vira exact nem close"
+  },
+  {
+   "derivation": "policy",
+   "predicate": null,
+   "r1": "close",
+   "r2": "broad",
+   "result": null,
+   "why": "inclusão aproximada não é relação do vocabulário: sem prova direta, UNPROVEN"
+  },
+  {
+   "derivation": "policy",
+   "predicate": null,
+   "r1": "close",
+   "r2": "narrow",
+   "result": null,
+   "why": "idem"
+  },
+  {
+   "derivation": "policy",
+   "predicate": null,
+   "r1": "close",
+   "r2": "related",
+   "result": null,
+   "why": "relatedMatch não é transitiva e não compõe com inclusão"
+  },
+  {
+   "derivation": "rcc5",
+   "predicate": "skos:broadMatch",
+   "r1": "broad",
+   "r2": "exact",
+   "rcc5": [
+    "subset"
+   ],
+   "result": "broad",
+   "why": "semântica de conjuntos: subset ∘ equal = {subset}"
+  },
+  {
+   "derivation": "policy",
+   "predicate": null,
+   "r1": "broad",
+   "r2": "close",
+   "result": null,
+   "why": "idem"
+  },
+  {
+   "derivation": "rcc5",
+   "predicate": "skos:broadMatch",
+   "r1": "broad",
+   "r2": "broad",
+   "rcc5": [
+    "subset"
+   ],
+   "result": "broad",
+   "why": "semântica de conjuntos: subset ∘ subset = {subset}"
+  },
+  {
+   "derivation": "rcc5",
+   "predicate": null,
+   "r1": "broad",
+   "r2": "narrow",
+   "rcc5": [
+    "equal",
+    "subset",
+    "superset",
+    "overlap",
+    "disjoint"
+   ],
+   "result": null,
+   "why": "semântica de conjuntos: subset ∘ superset = {equal, subset, superset, overlap, disjoint} (não é uma relação só: nenhuma relação derivável)"
+  },
+  {
+   "derivation": "policy",
+   "predicate": null,
+   "r1": "broad",
+   "r2": "related",
+   "result": null,
+   "why": "relatedMatch não é transitiva e não compõe com inclusão"
+  },
+  {
+   "derivation": "rcc5",
+   "predicate": "skos:narrowMatch",
+   "r1": "narrow",
+   "r2": "exact",
+   "rcc5": [
+    "superset"
+   ],
+   "result": "narrow",
+   "why": "semântica de conjuntos: superset ∘ equal = {superset}"
+  },
+  {
+   "derivation": "policy",
+   "predicate": null,
+   "r1": "narrow",
+   "r2": "close",
+   "result": null,
+   "why": "idem"
+  },
+  {
+   "derivation": "rcc5",
+   "predicate": null,
+   "r1": "narrow",
+   "r2": "broad",
+   "rcc5": [
+    "equal",
+    "subset",
+    "superset",
+    "overlap"
+   ],
+   "result": null,
+   "why": "semântica de conjuntos: superset ∘ subset = {equal, subset, superset, overlap} (não é uma relação só: nenhuma relação derivável)"
+  },
+  {
+   "derivation": "rcc5",
+   "predicate": "skos:narrowMatch",
+   "r1": "narrow",
+   "r2": "narrow",
+   "rcc5": [
+    "superset"
+   ],
+   "result": "narrow",
+   "why": "semântica de conjuntos: superset ∘ superset = {superset}"
+  },
+  {
+   "derivation": "policy",
+   "predicate": null,
+   "r1": "narrow",
+   "r2": "related",
+   "result": null,
+   "why": "relatedMatch não é transitiva e não compõe com inclusão"
+  },
+  {
+   "derivation": "policy",
+   "predicate": "skos:relatedMatch",
+   "r1": "related",
+   "r2": "exact",
+   "result": "related",
+   "why": "idem, na outra ordem"
+  },
+  {
+   "derivation": "policy",
+   "predicate": null,
+   "r1": "related",
+   "r2": "close",
+   "result": null,
+   "why": "relatedMatch não é transitiva e não compõe com inclusão"
+  },
+  {
+   "derivation": "policy",
+   "predicate": null,
+   "r1": "related",
+   "r2": "broad",
+   "result": null,
+   "why": "relatedMatch não é transitiva e não compõe com inclusão"
+  },
+  {
+   "derivation": "policy",
+   "predicate": null,
+   "r1": "related",
+   "r2": "narrow",
+   "result": null,
+   "why": "relatedMatch não é transitiva e não compõe com inclusão"
+  },
+  {
+   "derivation": "policy",
+   "predicate": null,
+   "r1": "related",
+   "r2": "related",
+   "result": null,
+   "why": "relatedMatch não é transitiva e não compõe com inclusão"
+  }
+ ],
+ "transport_fidelity": {
+  "rows": [
+   {
+    "f1": "lossless",
+    "f2": "lossless",
+    "result": "lossless"
+   },
+   {
+    "f1": "lossless",
+    "f2": "declared_loss",
+    "result": "declared_loss"
+   },
+   {
+    "f1": "lossless",
+    "f2": "partial",
+    "result": "partial"
+   },
+   {
+    "f1": "lossless",
+    "f2": "none",
+    "result": "none"
+   },
+   {
+    "f1": "declared_loss",
+    "f2": "lossless",
+    "result": "declared_loss"
+   },
+   {
+    "f1": "declared_loss",
+    "f2": "declared_loss",
+    "result": "declared_loss"
+   },
+   {
+    "f1": "declared_loss",
+    "f2": "partial",
+    "result": "partial"
+   },
+   {
+    "f1": "declared_loss",
+    "f2": "none",
+    "result": "none"
+   },
+   {
+    "f1": "partial",
+    "f2": "lossless",
+    "result": "partial"
+   },
+   {
+    "f1": "partial",
+    "f2": "declared_loss",
+    "result": "partial"
+   },
+   {
+    "f1": "partial",
+    "f2": "partial",
+    "result": "partial"
+   },
+   {
+    "f1": "partial",
+    "f2": "none",
+    "result": "none"
+   },
+   {
+    "f1": "none",
+    "f2": "lossless",
+    "result": "none"
+   },
+   {
+    "f1": "none",
+    "f2": "declared_loss",
+    "result": "none"
+   },
+   {
+    "f1": "none",
+    "f2": "partial",
+    "result": "none"
+   },
+   {
+    "f1": "none",
+    "f2": "none",
+    "result": "none"
+   }
+  ],
+  "rule": "a pior das pernas (lossless < declared_loss < partial < none); recalculada no composto"
+ },
+ "value_domain_relation": {
+  "method": "enumeração exaustiva de todos os conjuntos não vazios num universo de 4 pontos; conferida igual com 5",
+  "orientation": "subject_to_object (A R B, B R C => A ? C)",
+  "rows": [
+   {
+    "possible": [
+     "equal"
+    ],
+    "r1": "equal",
+    "r2": "equal",
+    "result": "equal"
+   },
+   {
+    "possible": [
+     "subset"
+    ],
+    "r1": "equal",
+    "r2": "subset",
+    "result": "subset"
+   },
+   {
+    "possible": [
+     "superset"
+    ],
+    "r1": "equal",
+    "r2": "superset",
+    "result": "superset"
+   },
+   {
+    "possible": [
+     "overlap"
+    ],
+    "r1": "equal",
+    "r2": "overlap",
+    "result": "overlap"
+   },
+   {
+    "possible": [
+     "disjoint"
+    ],
+    "r1": "equal",
+    "r2": "disjoint",
+    "result": "disjoint"
+   },
+   {
+    "possible": [
+     "subset"
+    ],
+    "r1": "subset",
+    "r2": "equal",
+    "result": "subset"
+   },
+   {
+    "possible": [
+     "subset"
+    ],
+    "r1": "subset",
+    "r2": "subset",
+    "result": "subset"
+   },
+   {
+    "possible": [
+     "equal",
+     "subset",
+     "superset",
+     "overlap",
+     "disjoint"
+    ],
+    "r1": "subset",
+    "r2": "superset",
+    "result": "unknown"
+   },
+   {
+    "possible": [
+     "subset",
+     "overlap",
+     "disjoint"
+    ],
+    "r1": "subset",
+    "r2": "overlap",
+    "result": "unknown"
+   },
+   {
+    "possible": [
+     "disjoint"
+    ],
+    "r1": "subset",
+    "r2": "disjoint",
+    "result": "disjoint"
+   },
+   {
+    "possible": [
+     "superset"
+    ],
+    "r1": "superset",
+    "r2": "equal",
+    "result": "superset"
+   },
+   {
+    "possible": [
+     "equal",
+     "subset",
+     "superset",
+     "overlap"
+    ],
+    "r1": "superset",
+    "r2": "subset",
+    "result": "unknown"
+   },
+   {
+    "possible": [
+     "superset"
+    ],
+    "r1": "superset",
+    "r2": "superset",
+    "result": "superset"
+   },
+   {
+    "possible": [
+     "superset",
+     "overlap"
+    ],
+    "r1": "superset",
+    "r2": "overlap",
+    "result": "unknown"
+   },
+   {
+    "possible": [
+     "superset",
+     "overlap",
+     "disjoint"
+    ],
+    "r1": "superset",
+    "r2": "disjoint",
+    "result": "unknown"
+   },
+   {
+    "possible": [
+     "overlap"
+    ],
+    "r1": "overlap",
+    "r2": "equal",
+    "result": "overlap"
+   },
+   {
+    "possible": [
+     "subset",
+     "overlap"
+    ],
+    "r1": "overlap",
+    "r2": "subset",
+    "result": "unknown"
+   },
+   {
+    "possible": [
+     "superset",
+     "overlap",
+     "disjoint"
+    ],
+    "r1": "overlap",
+    "r2": "superset",
+    "result": "unknown"
+   },
+   {
+    "possible": [
+     "equal",
+     "subset",
+     "superset",
+     "overlap",
+     "disjoint"
+    ],
+    "r1": "overlap",
+    "r2": "overlap",
+    "result": "unknown"
+   },
+   {
+    "possible": [
+     "superset",
+     "overlap",
+     "disjoint"
+    ],
+    "r1": "overlap",
+    "r2": "disjoint",
+    "result": "unknown"
+   },
+   {
+    "possible": [
+     "disjoint"
+    ],
+    "r1": "disjoint",
+    "r2": "equal",
+    "result": "disjoint"
+   },
+   {
+    "possible": [
+     "subset",
+     "overlap",
+     "disjoint"
+    ],
+    "r1": "disjoint",
+    "r2": "subset",
+    "result": "unknown"
+   },
+   {
+    "possible": [
+     "disjoint"
+    ],
+    "r1": "disjoint",
+    "r2": "superset",
+    "result": "disjoint"
+   },
+   {
+    "possible": [
+     "subset",
+     "overlap",
+     "disjoint"
+    ],
+    "r1": "disjoint",
+    "r2": "overlap",
+    "result": "unknown"
+   },
+   {
+    "possible": [
+     "equal",
+     "subset",
+     "superset",
+     "overlap",
+     "disjoint"
+    ],
+    "r1": "disjoint",
+    "r2": "disjoint",
+    "result": "unknown"
+   }
+  ],
+  "stable_n4_n5": true,
+  "unknown_rule": "unknown ∘ R = R ∘ unknown = unknown"
+ },
+ "verdict": {
+  "rule": "pernas OK; composição nunca promove: perna UNPROVEN ou REFUTED dá UNPROVEN"
+ }
+}

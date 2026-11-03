@@ -1,0 +1,104 @@
+{
+ "$id": "https://w3id.org/brevops/schema/C10/composition_table.schema.json",
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "properties": {
+  "contract": {
+   "const": "C10"
+  },
+  "schema": {
+   "const": "bo.composition_table/1"
+  },
+  "semantic_relation": {
+   "items": {
+    "properties": {
+     "derivation": {
+      "enum": [
+       "rcc5",
+       "policy"
+      ]
+     },
+     "r1": {
+      "enum": [
+       "exact",
+       "close",
+       "broad",
+       "narrow",
+       "related"
+      ]
+     },
+     "r2": {
+      "enum": [
+       "exact",
+       "close",
+       "broad",
+       "narrow",
+       "related"
+      ]
+     },
+     "result": {
+      "enum": [
+       "exact",
+       "close",
+       "broad",
+       "narrow",
+       "related",
+       null
+      ]
+     }
+    },
+    "required": [
+     "r1",
+     "r2",
+     "result",
+     "derivation",
+     "why"
+    ],
+    "type": "object"
+   },
+   "maxItems": 25,
+   "minItems": 25,
+   "type": "array"
+  },
+  "transport_fidelity": {
+   "properties": {
+    "rows": {
+     "maxItems": 16,
+     "minItems": 16,
+     "type": "array"
+    }
+   },
+   "required": [
+    "rows"
+   ],
+   "type": "object"
+  },
+  "value_domain_relation": {
+   "properties": {
+    "rows": {
+     "maxItems": 25,
+     "minItems": 25,
+     "type": "array"
+    }
+   },
+   "required": [
+    "rows"
+   ],
+   "type": "object"
+  }
+ },
+ "required": [
+  "schema",
+  "contract",
+  "contract_version",
+  "semantic_relation",
+  "value_domain_relation",
+  "transport_fidelity",
+  "guard",
+  "domain",
+  "evidence",
+  "verdict",
+  "closure"
+ ],
+ "title": "C10 3.0.0: tabela formal de composição",
+ "type": "object"
+}

@@ -1,0 +1,98 @@
+{
+ "checks": [
+  {
+   "check": "skos_schema_sha256",
+   "ok": true
+  },
+  {
+   "check": "skos_broader_is_more_general",
+   "ok": true
+  },
+  {
+   "check": "skos_axioms",
+   "ok": true
+  },
+  {
+   "check": "sssom_py_standard_columns_equal",
+   "ok": true
+  },
+  {
+   "check": "sssom_py_extension_slots_report",
+   "ok": true
+  },
+  {
+   "check": "c09_tsv_roundtrip_equal",
+   "ok": true
+  },
+  {
+   "check": "rdf_core_isomorphic_to_sssom_py",
+   "ok": true
+  },
+  {
+   "check": "c09_rdf_roundtrip_equal",
+   "ok": true
+  },
+  {
+   "check": "inferred_b_narrowMatch_a",
+   "ok": true
+  },
+  {
+   "check": "inferred_a_broader_b (b mais geral)",
+   "ok": true
+  },
+  {
+   "check": "not_inferred_b_broadMatch_a",
+   "ok": true
+  },
+  {
+   "check": "not_inferred_a_narrowMatch_b",
+   "ok": true
+  },
+  {
+   "check": "executable_inverse_equals_owl_inverse",
+   "ok": true
+  },
+  {
+   "check": "narrowMatch_inverse_is_broadMatch",
+   "ok": true
+  },
+  {
+   "check": "transport_A_to_B_integral",
+   "ok": true
+  },
+  {
+   "check": "transport_B_to_A_only_subset",
+   "ok": true
+  },
+  {
+   "check": "roundtrip_values_A_B_A",
+   "ok": true
+  },
+  {
+   "check": "claim_assessed_ok",
+   "ok": true
+  },
+  {
+   "check": "v2_inverted_reading_refuted",
+   "ok": true
+  },
+  {
+   "check": "v2_inverted_domain_refuted",
+   "ok": true
+  },
+  {
+   "check": "owl_closeMatch_not_transitive",
+   "ok": true
+  },
+  {
+   "check": "owl_exactMatch_transitive_but_no_transport",
+   "ok": true
+  },
+  {
+   "check": "exact_chain_with_compatible_guards_composes",
+   "ok": true
+  }
+ ],
+ "n": 23,
+ "n_ok": 23
+}

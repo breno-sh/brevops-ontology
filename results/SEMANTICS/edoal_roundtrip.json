@@ -1,0 +1,25 @@
+{
+ "diffs": [],
+ "exported": 16,
+ "reimported": 16,
+ "same": true,
+ "skipped": [
+  {
+   "claim_id": "CLM-CL-01",
+   "why": "close: sem relação EDOAL equivalente"
+  },
+  {
+   "claim_id": "CLM-CL-02",
+   "why": "close: sem relação EDOAL equivalente"
+  },
+  {
+   "claim_id": "CLM-RE-01",
+   "why": "related: sem relação EDOAL equivalente"
+  },
+  {
+   "claim_id": "CLM-TI-01",
+   "why": "close: sem relação EDOAL equivalente"
+  }
+ ],
+ "turtle_bytes": 31255
+}

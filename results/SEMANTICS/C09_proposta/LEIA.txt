@@ -1,0 +1,16 @@
+Proposta do SEMANTICS para o C09 3.0.0 (2026-11-03T00:30:00-03:00, America/Recife)
+
+O CONTRACTS (dono de contracts/C09_*.schema.json e do bo.contracts.validate) vem depois do SEMANTICS. Esta pasta
+descreve o formato que a teoria executa e que o árbitro, os mapeadores e o reconciliador vão produzir:
+
+  correspondence.schema.json  um registro por linha SSSOM, com as colunas próprias já decodificadas (JSON)
+  examples.sssom.tsv          as alegações-exemplo da teoria, no TSV com extension_definitions
+
+Pontos que o CONTRACTS precisa saber:
+  1. subject_type/object_type são slots padrão do SSSOM: o tipo de valor vai em subject_value_type/object_value_type.
+  2. O sssom-py 0.4.22 descarta slots de extensão: o leitor do C09 é bo.semantics.sssom_io (ou outro que os preserve).
+  3. Colunas estruturadas (guard, translation_fn, loss_contract, membership_predicate, proof, ...) são JSON numa célula.
+  4. value_domain_relation = {relation, orientation: subject_to_object}; a relação declarada tem de bater com a
+     calculada (bo.semantics.obligations).
+Regras que o schema não exprime (guarda na gramática, semantic_relation = predicate_id, obrigações de prova) estão
+em python -I -m bo.semantics.validate c09 ARQ [--assess].

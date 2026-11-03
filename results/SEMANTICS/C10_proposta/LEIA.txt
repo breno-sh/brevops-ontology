@@ -1,0 +1,12 @@
+Proposta do SEMANTICS para a parte dele do C10 3.0.0 (2026-11-03T00:30:00-03:00, America/Recife)
+
+  composition_table.schema.json   formato de semantics/composition_table.json (publicado pelo SEMANTICS)
+  guard.schema.json               gramática de guarda tipada (os sete operadores do plano)
+  conditions.grammar.json         proposta ao TRANSFORMS para transforms/conditions.grammar.json
+  transforms_kernel.json          núcleo de funções que a teoria executa (o registro fechado é do TRANSFORMS)
+
+Sugestões ao CONTRACTS e ao TRANSFORMS:
+  1. O C23 não tem código para alegação refutada; o transporte daqui usa REFUTED_BY_RULE.
+  2. Códigos do C24 que vêm de bloqueio: KIND-UNKNOWN -> MISSING_EVIDENCE, falta de prova -> UNPROVEN.
+  3. A semântica da guarda (SAT/UNSAT/UNKNOWN, TRUE/FALSE/INDETERMINATE, eliminação existencial do nó do meio)
+     é a de bo.semantics.guards; o bo.transforms.guard_sat deve dar o mesmo resultado nos mesmos casos.

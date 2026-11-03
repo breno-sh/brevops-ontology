@@ -1,0 +1,135 @@
+{
+ "items": [
+  {
+   "codomain": "o mesmo valor",
+   "domain": "tipo de entrada",
+   "error": "nunca",
+   "inverse": "identity",
+   "kind": "scalar",
+   "loss": "declarada à parte (loss_contract)",
+   "name": "identity",
+   "precondition": "nenhuma"
+  },
+  {
+   "codomain": "número na unidade 'to'",
+   "domain": "número na unidade 'from' (fator fixo)",
+   "error": "OutOfDomain se mês/ano; TypeError se grandezas diferem",
+   "inverse": "unit_convert",
+   "kind": "scalar",
+   "loss": "declarada à parte (loss_contract)",
+   "name": "unit_convert",
+   "precondition": "mesma grandeza; fatores fixos"
+  },
+  {
+   "codomain": "número × factor",
+   "domain": "número",
+   "error": "nunca",
+   "inverse": "scale(1/factor)",
+   "kind": "scalar",
+   "loss": "declarada à parte (loss_contract)",
+   "name": "scale",
+   "precondition": "factor racional > 0"
+  },
+  {
+   "codomain": "número na unidade 'to'",
+   "domain": "xsd:duration sem Y/M (ou com contexto de calendário)",
+   "error": "OutOfDomain (TRANSFORM_OUT_OF_DOMAIN)",
+   "inverse": "number_to_duration",
+   "kind": "scalar",
+   "loss": "declarada à parte (loss_contract)",
+   "name": "duration_to_number",
+   "precondition": "unidade 'to' com fator fixo"
+  },
+  {
+   "codomain": "xsd:duration em dias ou segundos",
+   "domain": "número na unidade 'from'",
+   "error": "OutOfDomain",
+   "inverse": "duration_to_number",
+   "kind": "scalar",
+   "loss": "declarada à parte (loss_contract)",
+   "name": "number_to_duration",
+   "precondition": "segundos inteiros"
+  },
+  {
+   "codomain": "valores da tabela",
+   "domain": "chaves da tabela",
+   "error": "OutOfDomain fora da tabela",
+   "inverse": "enum_map invertida (só se injetiva)",
+   "kind": "scalar",
+   "loss": "declarada à parte (loss_contract)",
+   "name": "enum_map",
+   "precondition": "tabela finita"
+  },
+  {
+   "codomain": "taxa por janela 'to'",
+   "domain": "taxa por janela 'from'",
+   "error": "OutOfDomain",
+   "inverse": "rate_window_convert(to,from)",
+   "kind": "scalar",
+   "loss": "declarada à parte (loss_contract)",
+   "name": "rate_window_convert",
+   "precondition": "janelas fixas"
+  },
+  {
+   "codomain": "{metric, window, statistic, operator, threshold}",
+   "domain": "expressão 'Metrica[Nu].estat() op limiar'",
+   "error": "OutOfDomain fora do subconjunto",
+   "inverse": "join_alarm_query",
+   "kind": "tuple",
+   "loss": "declarada à parte (loss_contract)",
+   "name": "split_alarm_query",
+   "precondition": "subconjunto suportado da linguagem"
+  },
+  {
+   "codomain": "expressão de alarme",
+   "domain": "{metric, window, statistic, operator, threshold}",
+   "error": "OutOfDomain (UNKNOWN_INPUT se faltar componente)",
+   "inverse": "split_alarm_query",
+   "kind": "tuple",
+   "loss": "declarada à parte (loss_contract)",
+   "name": "join_alarm_query",
+   "precondition": "os 5 componentes presentes"
+  },
+  {
+   "codomain": "{from_port, to_port}",
+   "domain": "'p' ou 'p1-p2'",
+   "error": "OutOfDomain",
+   "inverse": "join_port_range",
+   "kind": "tuple",
+   "loss": "declarada à parte (loss_contract)",
+   "name": "split_port_range",
+   "precondition": "0<=p1<=p2<=65535"
+  },
+  {
+   "codomain": "'p' ou 'p1-p2'",
+   "domain": "{from_port, to_port}",
+   "error": "OutOfDomain",
+   "inverse": "split_port_range",
+   "kind": "tuple",
+   "loss": "declarada à parte (loss_contract)",
+   "name": "join_port_range",
+   "precondition": "0<=p1<=p2<=65535"
+  },
+  {
+   "codomain": "{address, prefix_length}",
+   "domain": "CIDR de rede (sem bits de host)",
+   "error": "OutOfDomain",
+   "inverse": "join_cidr",
+   "kind": "tuple",
+   "loss": "declarada à parte (loss_contract)",
+   "name": "split_cidr",
+   "precondition": "rede estrita"
+  },
+  {
+   "codomain": "CIDR",
+   "domain": "{address, prefix_length}",
+   "error": "OutOfDomain",
+   "inverse": "split_cidr",
+   "kind": "tuple",
+   "loss": "declarada à parte (loss_contract)",
+   "name": "join_cidr",
+   "precondition": "rede estrita"
+  }
+ ],
+ "note": "núcleo de referência do SEMANTICS; o registro fechado é do TRANSFORMS"
+}

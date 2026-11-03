@@ -1,0 +1,68 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "SEMANTICS",
+ "generated_at": "2026-11-03T00:32:29-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/SEMANTICS.txt",
+  "brief_sha256": "d63da4394097ee1d9e0aa8e695cb79bd13496bad409c4426b0292f141624169f",
+  "params": {
+   "effort": "maximo",
+   "modo": "unlazy",
+   "onda": "3",
+   "fase": "F1",
+   "sssom_py": "0.4.22",
+   "rdflib": "7.6.0",
+   "owlrl": "7.6.2",
+   "skos_core_rdf_sha256": "e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6"
+  },
+  "inputs": [
+   {
+    "path": "$BO_REPO/requirements",
+    "kind": "dir",
+    "sha256": "b09d2f301174f7e0cdb7c97483a7729aea19b5f5747cdd8a9e98262237d2cc98"
+   },
+   {
+    "path": "$BO_REPO/ontology/patterns/ONTPAT.html",
+    "kind": "file",
+    "sha256": "c0e2b37b55e8ed933201d5f72787cf3c8ac9080e97b6c1e913454b858e5a9369"
+   },
+   {
+    "path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/revisao_adversarial_plano/REVISAO_PLANO_v2_GPT6_CODEX.txt",
+    "kind": "file",
+    "sha256": "29215fd0eb0fabe1f4a3232958fb5020b6d8fd08f241a2e557e47bb4af8be892"
+   },
+   {
+    "path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/PLANO_BREVOPS_ONTOLOGY.html",
+    "kind": "file",
+    "sha256": "12cae53d3db728eabadc2ce7af689b8c62062c48d26ce715ea03a96d4978edb2"
+   },
+   {
+    "path": "$BO_DATA/downloads/skos/skos.rdf",
+    "kind": "file",
+    "sha256": "e79633b8d0564816cee8a99f5c9acf9a0e6fc7257c7209acd684ecad53a89dd6"
+   }
+  ],
+  "recorded_at": "2026-11-03T00:32:29-03:00"
+ },
+ "sources": [
+  {
+   "uri": "https://www.w3.org/2004/02/skos/core.rdf",
+   "license": "W3C Software and Document License",
+   "transformation": "lido com rdflib; axiomas SKOS para o fecho OWL 2 RL do ida e volta"
+  },
+  {
+   "uri": "https://pypi.org/project/sssom/0.4.22/",
+   "license": "MIT",
+   "transformation": "referência independente das colunas padrão do SSSOM e do RDF delas"
+  },
+  {
+   "uri": "Randell, Cui e Cohn, A spatial logic based on regions and connection, KR 1992; Bennett, Spatial reasoning with propositional logics, KR 1994",
+   "license": "citação bibliográfica",
+   "transformation": "linhas da composição RCC5 usadas para conferir a enumeração exaustiva"
+  }
+ ],
+ "notes": "Teoria das correspondências (C09/C10): implementação de referência, tabela de composição calculada, contraexemplos por regra com controle e mutação. Achados: sssom-py descarta slots de extensão; subject_type/object_type colidem com slots padrão do SSSOM."
+}

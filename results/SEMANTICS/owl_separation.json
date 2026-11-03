@@ -1,0 +1,14 @@
+{
+ "composition_outcome": "EMPTY",
+ "composition_relation": null,
+ "composition_rule": "K-GUARD-EMPTY",
+ "ends": [
+  "pa:log_retention_days",
+  "pc:log_retention_seconds"
+ ],
+ "owl_inferred_between_ends": [
+  "skos:closeMatch",
+  "skos:exactMatch",
+  "skos:mappingRelation"
+ ]
+}
