@@ -1,6 +1,7 @@
 CONTRACT_CHANGE — SCHEMA-AWS — 2026-11-03T07:26-03:00 (America/Recife)
 
-BLOQUEANTE para o gate G7 (privacy_lint --strict) e, por arrasto, para o make gate e o merge.
+SITUAÇÃO 2026-11-03T07:31-03:00: itens 1 e 2 APLICADOS pelo coordenador em bo/base (9f0cd52).
+Era BLOQUEANTE para o gate G7 (privacy_lint --strict) e, por arrasto, para o make gate e o merge.
 Mudança proposta no C00 (convenções §9, privacy_lint), dono REPO: src/bo/repo/privacy.py.
 O SCHEMA-AWS parou antes do merge: tudo o mais está pronto e verde na branch bo/schema-aws.
 
