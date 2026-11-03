@@ -207,8 +207,9 @@ linhas da tabela RCC5 da literatura.</p>""")
     A("""<h2 id="proj">9. Projeções por ocorrência, alternativas e grupos (F3)</h2>
 <p>A injetividade sai. Um campo pode alimentar vários conceitos, cada uso com a sua projeção: a consulta de um
 alarme em linguagem de métricas (<code>Metrica[1m].mean() &gt; 80</code>) projeta métrica, janela, estatística,
-operador e limiar, cinco projeções do mesmo campo sem sobreposição. Sobreposição (duas projeções que leem a mesma
-parte) tem de ser declarada. Campo dentro de bloco repetido exige chave de ocorrência por campos de identidade.
+operador e limiar, cinco projeções do mesmo campo sem sobreposição; um documento JSON de política de reenvio dá
+duas decisões (destino e máximo de entregas); o mapa de rótulos é TAG inteiro e a chave Name é NAME. Sobreposição
+(duas projeções que leem a mesma parte, como TAG e NAME) tem de ser declarada. Campo dentro de bloco repetido exige chave de ocorrência por campos de identidade.
 Realizações alternativas do mesmo alvo só são exclusivas com interseção de guardas UNSAT; senão AMBIGUOUS.</p>
 <p>Grupos são regras sobre subgrafos com variáveis nomeadas, ocorrências e passos com argumentos nomeados:</p>""")
     A(table(["grupo", "cardinalidade", "exemplo executado"], ctx["group_rows"]))

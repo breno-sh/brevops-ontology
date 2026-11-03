@@ -210,7 +210,30 @@ def _join_cidr(v, p, ctx):
     return _split_cidr(f"{v['address']}/{v['prefix_length']}", p, ctx) and f"{v['address']}/{v['prefix_length']}"
 
 
+def _json_get(v, p, ctx):
+    """Documento JSON (texto) -> valor de uma chave de topo. Parcial: texto que não é objeto JSON, ou sem a chave."""
+    import json as _json
+    try:
+        d = _json.loads(v) if isinstance(v, str) else v
+    except ValueError:
+        raise OutOfDomain("documento não é JSON")
+    if not isinstance(d, dict) or p.get("key") not in d:
+        raise OutOfDomain(f"documento sem a chave {p.get('key')!r}")
+    return d[p["key"]]
+
+
+def _map_get(v, p, ctx):
+    """Mapa (ex. rótulos) -> valor de uma chave. Parcial: chave ausente."""
+    if not isinstance(v, dict) or p.get("key") not in v:
+        raise OutOfDomain(f"mapa sem a chave {p.get('key')!r}")
+    return v[p["key"]]
+
+
 REGISTRY: dict[str, Spec] = {s.name: s for s in [
+    Spec("json_get", "tuple", "documento JSON (objeto) em texto", "valor da chave de topo 'key'", "objeto JSON com a chave",
+         "OutOfDomain", "nenhuma (o documento inteiro não se reconstrói de uma chave)", _json_get),
+    Spec("map_get", "tuple", "mapa de rótulos", "valor da chave 'key'", "chave presente", "OutOfDomain",
+         "nenhuma", _map_get),
     Spec("identity", "scalar", "tipo de entrada", "o mesmo valor", "nenhuma", "nunca", "identity",
          _identity, lambda p: ("identity", {}), lambda d, p: d),
     Spec("unit_convert", "scalar", "número na unidade 'from' (fator fixo)", "número na unidade 'to'",

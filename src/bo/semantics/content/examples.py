@@ -265,3 +265,24 @@ CIDR_GROUP = {  # N:1 cruzando facetas — endereço (faceta de rede) + prefixo 
 REALIZATIONS_EXCLUSIVE = [
     {"realization_id": "R-STD", "guard": {"all": EDITION_STD}, "exclusivity": "ProvenExclusive"},
     {"realization_id": "R-PREM", "guard": {"all": EDITION_PREM}, "exclusivity": "ProvenExclusive"}]
+
+# documento JSON num campo (política de reenvio): duas decisões, duas projeções, sem sobreposição
+REDRIVE_DOC = '{"deadLetterTargetRef": "queue_dlq", "maxReceiveCount": 5}'
+REDRIVE_PROJECTIONS = [
+    {"projection_id": "PRJ-RD-target", "field": "pa:queue.redrive_policy", "occurrence": {"scope": "resource"},
+     "extractor": {"name": "json_get", "params": {"key": "deadLetterTargetRef"}}, "concept": "concept:dead_letter_target",
+     "type": T("string"), "tests": [{"input": REDRIVE_DOC, "expected": "queue_dlq"}]},
+    {"projection_id": "PRJ-RD-max", "field": "pa:queue.redrive_policy", "occurrence": {"scope": "resource"},
+     "extractor": {"name": "json_get", "params": {"key": "maxReceiveCount"}}, "concept": "concept:max_receive_count",
+     "type": T("integer", quantity_kind="quantitykind:Count", unit="unit:NUM", range={"min": 1, "max": 1000}),
+     "tests": [{"input": REDRIVE_DOC, "expected": 5}]}]
+
+# rótulos: o mapa inteiro é TAG e a chave Name é NAME; as duas leem a mesma parte e declaram a sobreposição
+TAGS = {"Name": "web_a", "env": "dev"}
+TAG_PROJECTIONS = [
+    {"projection_id": "PRJ-TG-all", "field": "pa:instance.tags", "occurrence": {"scope": "resource"},
+     "extractor": {"name": "identity"}, "concept": "concept:tags", "type": T("string"), "overlaps": ["PRJ-TG-name"],
+     "tests": []},
+    {"projection_id": "PRJ-TG-name", "field": "pa:instance.tags", "occurrence": {"scope": "resource"},
+     "extractor": {"name": "map_get", "params": {"key": "Name"}}, "concept": "concept:display_name", "type": T("string"),
+     "overlaps": ["PRJ-TG-all"], "tests": [{"input": TAGS, "expected": "web_a"}]}]

@@ -46,6 +46,8 @@ def _f(rule, outcome, detail):
 def _parts(p) -> set:
     ex = p.get("extractor") or {}
     comp = ex.get("component")
+    if ex.get("name") in ("json_get", "map_get"):
+        return {(ex.get("params") or {}).get("key")}
     if comp is None:
         sig = SIGNATURES.get(ex.get("name"), ((), ("*",)))
         return set(sig[1]) if ex.get("name") in SIGNATURES and ex.get("name") != "identity" else {"*"}

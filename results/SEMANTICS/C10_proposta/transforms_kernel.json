@@ -1,6 +1,26 @@
 {
  "items": [
   {
+   "codomain": "valor da chave de topo 'key'",
+   "domain": "documento JSON (objeto) em texto",
+   "error": "OutOfDomain",
+   "inverse": "nenhuma (o documento inteiro não se reconstrói de uma chave)",
+   "kind": "tuple",
+   "loss": "declarada à parte (loss_contract)",
+   "name": "json_get",
+   "precondition": "objeto JSON com a chave"
+  },
+  {
+   "codomain": "valor da chave 'key'",
+   "domain": "mapa de rótulos",
+   "error": "OutOfDomain",
+   "inverse": "nenhuma",
+   "kind": "tuple",
+   "loss": "declarada à parte (loss_contract)",
+   "name": "map_get",
+   "precondition": "chave presente"
+  },
+  {
    "codomain": "o mesmo valor",
    "domain": "tipo de entrada",
    "error": "nunca",

@@ -86,6 +86,19 @@ def test_one_field_many_concepts_no_injectivity():
         PJ.project_value(E.ALARM_PROJECTIONS, "pa:alarm.query", "Cpu[1m]{dim=\"a\"}.mean() > 1")   # fora do subconjunto
 
 
+def test_json_document_and_tags_projections():
+    assert PJ.check_projections(E.REDRIVE_PROJECTIONS)["verdict"] == "OK"
+    assert PJ.project_value(E.REDRIVE_PROJECTIONS, "pa:queue.redrive_policy", E.REDRIVE_DOC) == {
+        "concept:dead_letter_target": "queue_dlq", "concept:max_receive_count": 5}
+    # o mapa inteiro (TAG) e a chave Name (NAME) leem a mesma parte: sobreposição declarada é aceita ...
+    whole = dict(E.TAG_PROJECTIONS[0], tests=[{"input": "x", "expected": "x"}])
+    assert PJ.check_projections([whole, E.TAG_PROJECTIONS[1]])["verdict"] == "OK"
+    # ... sem a declaração, é refutada; e projeção sem teste fica UNPROVEN
+    und = [dict(whole, overlaps=[]), dict(E.TAG_PROJECTIONS[1], overlaps=[])]
+    assert "P-OVERLAP" in {f["rule"] for f in PJ.check_projections(und)["failures"]}
+    assert PJ.check_projections(E.TAG_PROJECTIONS)["verdict"] == "UNPROVEN"
+
+
 def test_overlap_declared_is_accepted():
     a = E.ALARM_PROJECTIONS[0]
     b = dict(a, projection_id="PRJ-AL-metric-2", concept="concept:alarm_signal", overlaps=[a["projection_id"]])
