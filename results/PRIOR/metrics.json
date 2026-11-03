@@ -1,0 +1,167 @@
+{
+ "edited_at": "2026-11-03T02:10:00-03:00",
+ "module": "PRIOR",
+ "not_applicable": {
+  "cloudquery": "sem camada neutra: toda tabela é de um provedor",
+  "cocoon": "a ontologia não declara termo de provedor (ofertas só no despejo de dados)",
+  "cso": "só documental: sem artefato",
+  "devops-infra": "não declara termo de provedor",
+  "kalinin": "só documental: sem artefato (as classes vêm de exemplos do texto, não de um inventário)",
+  "mosaic": "só documental: sem artefato",
+  "steampipe": "sem camada neutra: toda tabela é de um provedor"
+ },
+ "note": "NOT_APPLICABLE não é zero: o modelo fica fora do denominador",
+ "results": [
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "indivíduos OWL de provedor (aws, google, azurerm, oci) declarados no artefato fixado do modelo cpg; numerador: 26 com vínculo de classe a termo neutro; população = indivíduos de provedor declarados na ontologia (serviços e produtos, não tipos Terraform)",
+    "ref": {
+     "path": "$BO_DATA/PRIOR/cpg/provider_links.sssom.tsv",
+     "sha256": "9495d24f73dc6bfd86d563753089d40e04ab771d4415165c40d4d98c77c48b2c"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-PRIOR-01",
+    "text": "termo cujo provedor é aws, google, azurerm ou oci; vínculo de nível classe publicado pelo próprio modelo a classe neutra que não seja raiz (raiz = sem pai e com filhas neutras); outras plataformas fora"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-PRIOR-LINKED-CPG",
+   "name": "cpg: fração dos indivíduos OWL de provedor com vínculo publicado a termo neutro do modelo abaixo da raiz",
+   "operational_coverage": {
+    "est": 0.764706,
+    "lower": 0.764706,
+    "n": 34,
+    "upper": 0.764706
+   },
+   "quantifier": "observed_fraction",
+   "reading": "complete_unit",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "indivíduos OWL de provedor (aws, google, azurerm, oci) declarados no artefato fixado do modelo certgraph; numerador: 26 com vínculo de classe a termo neutro; população = indivíduos de provedor declarados na ontologia (serviços e produtos, não tipos Terraform)",
+    "ref": {
+     "path": "$BO_DATA/PRIOR/certgraph/provider_links.sssom.tsv",
+     "sha256": "0beff1e6a8e399fbfc4d7e1c30d4526877e5a8b4f9ebf39cae5e23b9573e6522"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-PRIOR-01",
+    "text": "termo cujo provedor é aws, google, azurerm ou oci; vínculo de nível classe publicado pelo próprio modelo a classe neutra que não seja raiz (raiz = sem pai e com filhas neutras); outras plataformas fora"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-PRIOR-LINKED-CERTGRAPH",
+   "name": "certgraph: fração dos indivíduos OWL de provedor com vínculo publicado a termo neutro do modelo abaixo da raiz",
+   "operational_coverage": {
+    "est": 0.764706,
+    "lower": 0.764706,
+    "n": 34,
+    "upper": 0.764706
+   },
+   "quantifier": "observed_fraction",
+   "reading": "complete_unit",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "kinds de recurso de provedor (herdam de BaseResource) (aws, google, azurerm, oci) declarados no artefato fixado do modelo fixinventory; numerador: 178 com vínculo de classe a termo neutro",
+    "ref": {
+     "path": "$BO_DATA/PRIOR/fixinventory/classes.csv",
+     "sha256": "5eb0aed59f207d81c2a3fc92ca9f690457ee21763df46ec24f29664685ab49ff"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-PRIOR-01",
+    "text": "termo cujo provedor é aws, google, azurerm ou oci; vínculo de nível classe publicado pelo próprio modelo a classe neutra que não seja raiz (raiz = sem pai e com filhas neutras); outras plataformas fora"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-PRIOR-LINKED-FIXINVENTORY",
+   "name": "fixinventory: fração dos kinds de recurso de provedor (herdam de BaseResource) com vínculo publicado a termo neutro do modelo abaixo da raiz",
+   "operational_coverage": {
+    "est": 0.337121,
+    "lower": 0.337121,
+    "n": 528,
+    "upper": 0.337121
+   },
+   "quantifier": "observed_fraction",
+   "reading": "complete_unit",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "classes (tipos, nós) de provedor (aws, google, azurerm, oci) declarados no artefato fixado do modelo cartography; numerador: 119 com vínculo de classe a termo neutro; ATENÇÃO: a população só tem os nós que aparecem nos mapeamentos do módulo de ontologia, então 1,0 é por construção e não mede cobertura dos módulos do Cartography",
+    "ref": {
+     "path": "$BO_DATA/PRIOR/cartography/classes.csv",
+     "sha256": "a8dbb62a1cadd01794c783e2fed2ba3e2271bd5b37946c68a2b24b9320d9fc05"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-PRIOR-01",
+    "text": "termo cujo provedor é aws, google, azurerm ou oci; vínculo de nível classe publicado pelo próprio modelo a classe neutra que não seja raiz (raiz = sem pai e com filhas neutras); outras plataformas fora"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-PRIOR-LINKED-CARTOGRAPHY",
+   "name": "cartography: fração dos classes (tipos, nós) de provedor com vínculo publicado a termo neutro do modelo abaixo da raiz",
+   "operational_coverage": {
+    "est": 1.0,
+    "lower": 1.0,
+    "n": 119,
+    "upper": 1.0
+   },
+   "quantifier": "observed_fraction",
+   "reading": "complete_unit",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "classes (tipos, nós) de provedor (aws, google, azurerm, oci) declarados no artefato fixado do modelo tosca-edmm; numerador: 30 com vínculo de classe a termo neutro",
+    "ref": {
+     "path": "$BO_DATA/PRIOR/tosca-edmm/classes.csv",
+     "sha256": "8523226aee6081e1bc8abf0d811322dc3c8b04093693a96c6435d11db43355de"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-PRIOR-01",
+    "text": "termo cujo provedor é aws, google, azurerm ou oci; vínculo de nível classe publicado pelo próprio modelo a classe neutra que não seja raiz (raiz = sem pai e com filhas neutras); outras plataformas fora"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-PRIOR-LINKED-TOSCA_EDMM",
+   "name": "tosca-edmm: fração dos classes (tipos, nós) de provedor com vínculo publicado a termo neutro do modelo abaixo da raiz",
+   "operational_coverage": {
+    "est": 0.652174,
+    "lower": 0.652174,
+    "n": 46,
+    "upper": 0.652174
+   },
+   "quantifier": "observed_fraction",
+   "reading": "complete_unit",
+   "weights": {
+    "scheme": "uniform"
+   }
+  }
+ ],
+ "schema": "bo.prior.metrics/1"
+}

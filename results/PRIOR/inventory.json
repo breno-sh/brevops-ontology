@@ -1,0 +1,661 @@
+{
+ "edited_at": "2026-11-03T02:10:00-03:00",
+ "encoding": {
+  "cartography:OntologyFieldMapping": {
+   "reading": "o campo do nó do módulo alimenta o campo da ontologia",
+   "semantic_relation": "close"
+  },
+  "cartography:OntologyNodeMapping": {
+   "reading": "o nó do módulo recebe o rótulo semântico da ontologia",
+   "semantic_relation": "broad"
+  },
+  "cloudquery:api_doc": {
+   "reading": "a página da tabela aponta para a documentação da operação da API",
+   "semantic_relation": "related"
+  },
+  "edmm:extends": {
+   "reading": "o tipo de componente do provedor estende o tipo genérico",
+   "semantic_relation": "broad"
+  },
+  "fix:mapping": {
+   "reading": "o kind do provedor preenche a propriedade herdada do kind base a partir deste caminho da resposta da API",
+   "semantic_relation": "close"
+  },
+  "owl:ClassAssertion": {
+   "reading": "o indivíduo do provedor é declarado instância da classe do modelo",
+   "semantic_relation": "broad"
+  },
+  "python:inheritance": {
+   "reading": "o kind do provedor herda (direta ou transitivamente) do kind base",
+   "semantic_relation": "broad"
+  },
+  "rdfs:subClassOf": {
+   "reading": "a classe do provedor é declarada subclasse da classe do modelo",
+   "semantic_relation": "broad"
+  },
+  "sssom:NoTermFound": {
+   "reading": "ausência declarada: o modelo não publica vínculo com termos de provedor",
+   "semantic_relation": "related"
+  },
+  "steampipe:hydrate_tag": {
+   "reading": "a tabela é preenchida pela ação de API declarada na etiqueta do List/Get",
+   "semantic_relation": "related"
+  },
+  "text:abstracts_over": {
+   "reading": "o texto do artigo diz que a classe neutra abstrai aquele serviço do provedor",
+   "semantic_relation": "broad"
+  },
+  "text:atomic_class": {
+   "reading": "o texto do artigo diz que o tipo Terraform gera a classe atômica",
+   "semantic_relation": "close"
+  },
+  "text:id_to_object_property": {
+   "reading": "o texto do artigo diz que o atributo identificador vira a object property",
+   "semantic_relation": "related"
+  },
+  "text:property_alignment": {
+   "reading": "o texto do artigo diz que os atributos são alinhados à propriedade generalizada",
+   "semantic_relation": "close"
+  },
+  "text:subclass": {
+   "reading": "o texto do artigo diz que a classe atômica é subclasse da classe neutra",
+   "semantic_relation": "broad"
+  },
+  "tosca:derived_from": {
+   "reading": "o tipo do perfil do provedor deriva do tipo do perfil neutro",
+   "semantic_relation": "broad"
+  }
+ },
+ "models": {
+  "cartography": {
+   "classes": 466,
+   "classes_by_provider": {
+    "aws": 50,
+    "azurerm": 34,
+    "google": 32,
+    "neutral": 47,
+    "oci": 3,
+    "other:aibom": 1,
+    "other:airbyte": 2,
+    "other:anthropic": 2,
+    "other:bbot": 3,
+    "other:bigfix": 1,
+    "other:circleci": 3,
+    "other:cloudflare": 8,
+    "other:crowdstrike": 3,
+    "other:cve": 1,
+    "other:databricks": 14,
+    "other:digitalocean": 4,
+    "other:duo": 4,
+    "other:github": 11,
+    "other:gitlab": 7,
+    "other:googleworkspace": 5,
+    "other:gsuite": 2,
+    "other:huntress": 6,
+    "other:jamf": 2,
+    "other:jira": 2,
+    "other:jumpcloud": 4,
+    "other:kandji": 1,
+    "other:keycloak": 6,
+    "other:kubernetes": 16,
+    "other:lastpass": 1,
+    "other:miradore": 3,
+    "other:modal": 15,
+    "other:netlify": 12,
+    "other:notion": 3,
+    "other:okta": 6,
+    "other:ontology": 1,
+    "other:openai": 5,
+    "other:opsgenie": 3,
+    "other:orca": 3,
+    "other:pagerduty": 2,
+    "other:railway": 10,
+    "other:salesforce": 6,
+    "other:scaleway": 34,
+    "other:semgrep": 5,
+    "other:sentinelone": 3,
+    "other:sentry": 3,
+    "other:slack": 4,
+    "other:snipeit": 2,
+    "other:snowflake": 22,
+    "other:socketdev": 2,
+    "other:spacelift": 3,
+    "other:subimage": 3,
+    "other:supabase": 12,
+    "other:syft": 1,
+    "other:tailscale": 3,
+    "other:tenable": 3,
+    "other:trivy": 2,
+    "other:ubuntu": 1,
+    "other:vercel": 4,
+    "other:wiz": 2,
+    "other:workos": 5,
+    "other:zendesk": 3,
+    "other:zoom": 5
+   },
+   "commit": "e978c291082a2b65442ff79ffa4201cce5b11683",
+   "duplicate_class_ids_dropped": 0,
+   "duplicate_property_ids_dropped": 0,
+   "extractor_counts": {
+    "module_node_fields": 1188,
+    "module_node_labels": 419,
+    "ontology_fields": 214,
+    "semantic_labels_and_canonical_nodes": 47,
+    "unevaluated_entries": 12
+   },
+   "license": "Apache-2.0",
+   "links": 1640,
+   "out_classes": 466,
+   "out_links": 1640,
+   "out_links_by_kind": {
+    "provider_class_to_model_class": 423,
+    "provider_field_to_model_property": 1217
+   },
+   "out_links_by_provider": {
+    "aws": 203,
+    "azurerm": 118,
+    "google": 123,
+    "oci": 10,
+    "other:aibom": 3,
+    "other:airbyte": 5,
+    "other:anthropic": 6,
+    "other:bbot": 6,
+    "other:bigfix": 3,
+    "other:circleci": 7,
+    "other:cloudflare": 23,
+    "other:crowdstrike": 13,
+    "other:cve": 22,
+    "other:databricks": 37,
+    "other:digitalocean": 15,
+    "other:duo": 20,
+    "other:github": 58,
+    "other:gitlab": 34,
+    "other:googleworkspace": 26,
+    "other:gsuite": 12,
+    "other:huntress": 21,
+    "other:jamf": 14,
+    "other:jira": 7,
+    "other:jumpcloud": 18,
+    "other:kandji": 6,
+    "other:keycloak": 23,
+    "other:kubernetes": 45,
+    "other:lastpass": 6,
+    "other:miradore": 16,
+    "other:modal": 42,
+    "other:netlify": 39,
+    "other:notion": 9,
+    "other:okta": 26,
+    "other:ontology": 6,
+    "other:openai": 16,
+    "other:opsgenie": 9,
+    "other:orca": 15,
+    "other:pagerduty": 6,
+    "other:railway": 34,
+    "other:salesforce": 19,
+    "other:scaleway": 158,
+    "other:semgrep": 39,
+    "other:sentinelone": 11,
+    "other:sentry": 10,
+    "other:slack": 18,
+    "other:snipeit": 7,
+    "other:snowflake": 77,
+    "other:socketdev": 8,
+    "other:spacelift": 8,
+    "other:subimage": 7,
+    "other:supabase": 38,
+    "other:syft": 6,
+    "other:tailscale": 11,
+    "other:tenable": 4,
+    "other:trivy": 17,
+    "other:ubuntu": 13,
+    "other:vercel": 12,
+    "other:wiz": 25,
+    "other:workos": 21,
+    "other:zendesk": 13,
+    "other:zoom": 16
+   },
+   "out_links_by_relation": {
+    "broad": 423,
+    "close": 1217
+   },
+   "out_properties": 1402,
+   "privacy_omitted_fields": 0,
+   "privacy_rules": {},
+   "properties": 1402,
+   "status": "artefato"
+  },
+  "certgraph": {
+   "classes": 293,
+   "classes_by_provider": {
+    "neutral": 293
+   },
+   "commit": "2bdcb9254723385db41fa49e376fe8e756d81b55",
+   "duplicate_class_ids_dropped": 0,
+   "duplicate_property_ids_dropped": 0,
+   "extractor_counts": {
+    "declared_classes": 293,
+    "declared_data_properties": 224,
+    "declared_individuals": 54,
+    "declared_object_properties": 34,
+    "provider_individuals": 47,
+    "provider_individuals_by_provider": {
+     "aws": 19,
+     "azurerm": 15,
+     "other:docker": 1,
+     "other:kubernetes": 8,
+     "other:libraries": 4
+    }
+   },
+   "license": "Apache-2.0",
+   "links": 36,
+   "out_classes": 293,
+   "out_links": 36,
+   "out_links_by_kind": {
+    "provider_class_to_model_class": 36
+   },
+   "out_links_by_provider": {
+    "aws": 15,
+    "azurerm": 12,
+    "other:docker": 1,
+    "other:kubernetes": 6,
+    "other:libraries": 2
+   },
+   "out_links_by_relation": {
+    "broad": 36
+   },
+   "out_properties": 258,
+   "privacy_omitted_fields": 0,
+   "privacy_rules": {},
+   "properties": 258,
+   "status": "artefato"
+  },
+  "cloudquery": {
+   "classes": 1162,
+   "classes_by_provider": {
+    "aws": 706,
+    "azurerm": 335,
+    "google": 38,
+    "oci": 83
+   },
+   "commit": "6d350d213594615cb9f06a622a4c6ab0768c67f4",
+   "duplicate_class_ids_dropped": 0,
+   "duplicate_property_ids_dropped": 0,
+   "extractor_counts": {
+    "columns": 16540,
+    "tables": 1162,
+    "tables_aws": 706,
+    "tables_azurerm": 335,
+    "tables_google": 38,
+    "tables_oci": 83,
+    "tables_without_api_doc_url": 90
+   },
+   "license": "MPL-2.0",
+   "links": 1072,
+   "out_classes": 1162,
+   "out_links": 1072,
+   "out_links_by_kind": {
+    "model_term_to_provider_api": 1072
+   },
+   "out_links_by_provider": {
+    "aws": 706,
+    "azurerm": 335,
+    "google": 31
+   },
+   "out_links_by_relation": {
+    "related": 1072
+   },
+   "out_properties": 16540,
+   "privacy_omitted_fields": 0,
+   "privacy_rules": {},
+   "properties": 16540,
+   "status": "artefato"
+  },
+  "cocoon": {
+   "classes": 36,
+   "classes_by_provider": {
+    "neutral": 36
+   },
+   "commit": "32e9cc70ec3729a8002272d9eeac4de5478ab4ee",
+   "duplicate_class_ids_dropped": 0,
+   "duplicate_property_ids_dropped": 0,
+   "extractor_counts": {
+    "classes_in_model_namespace": 36,
+    "properties_in_model_namespace": 33
+   },
+   "license": "MIT",
+   "links": 1,
+   "out_classes": 36,
+   "out_links": 1,
+   "out_links_by_kind": {
+    "absence": 1
+   },
+   "out_links_by_provider": {
+    "n/a": 1
+   },
+   "out_links_by_relation": {
+    "related": 1
+   },
+   "out_properties": 33,
+   "privacy_omitted_fields": 0,
+   "privacy_rules": {},
+   "properties": 33,
+   "status": "artefato"
+  },
+  "cpg": {
+   "classes": 93,
+   "classes_by_provider": {
+    "neutral": 93
+   },
+   "commit": "6c7bc074386531bd18ff83e9a2656c1f266839cc",
+   "duplicate_class_ids_dropped": 0,
+   "duplicate_property_ids_dropped": 0,
+   "extractor_counts": {
+    "declared_classes": 93,
+    "declared_data_properties": 52,
+    "declared_individuals": 51,
+    "declared_object_properties": 18,
+    "provider_individuals": 47,
+    "provider_individuals_by_provider": {
+     "aws": 19,
+     "azurerm": 15,
+     "other:docker": 1,
+     "other:kubernetes": 8,
+     "other:libraries": 4
+    }
+   },
+   "license": "Apache-2.0",
+   "links": 39,
+   "out_classes": 93,
+   "out_links": 39,
+   "out_links_by_kind": {
+    "provider_class_to_model_class": 39
+   },
+   "out_links_by_provider": {
+    "aws": 15,
+    "azurerm": 12,
+    "other:docker": 1,
+    "other:kubernetes": 7,
+    "other:libraries": 4
+   },
+   "out_links_by_relation": {
+    "broad": 39
+   },
+   "out_properties": 70,
+   "privacy_omitted_fields": 0,
+   "privacy_rules": {},
+   "properties": 70,
+   "status": "artefato"
+  },
+  "cso": {
+   "classes": 0,
+   "classes_by_provider": {},
+   "commit": null,
+   "duplicate_class_ids_dropped": 0,
+   "duplicate_property_ids_dropped": 0,
+   "extractor_counts": {},
+   "license": "NOASSERTION",
+   "links": 1,
+   "out_classes": 0,
+   "out_links": 1,
+   "out_links_by_kind": {
+    "absence": 1
+   },
+   "out_links_by_provider": {
+    "n/a": 1
+   },
+   "out_links_by_relation": {
+    "related": 1
+   },
+   "out_properties": 0,
+   "privacy_omitted_fields": 0,
+   "privacy_rules": {},
+   "properties": 0,
+   "status": "só documental"
+  },
+  "devops-infra": {
+   "classes": 75,
+   "classes_by_provider": {
+    "neutral": 75
+   },
+   "commit": "3ac3129a81d24c1239bd91c02f705576a0dab22d",
+   "duplicate_class_ids_dropped": 0,
+   "duplicate_property_ids_dropped": 0,
+   "extractor_counts": {
+    "classes_in_model_namespace": 75,
+    "properties_in_model_namespace": 257
+   },
+   "license": "CC-BY-4.0",
+   "links": 1,
+   "out_classes": 75,
+   "out_links": 1,
+   "out_links_by_kind": {
+    "absence": 1
+   },
+   "out_links_by_provider": {
+    "n/a": 1
+   },
+   "out_links_by_relation": {
+    "related": 1
+   },
+   "out_properties": 257,
+   "privacy_omitted_fields": 0,
+   "privacy_rules": {},
+   "properties": 257,
+   "status": "artefato"
+  },
+  "fixinventory": {
+   "classes": 2699,
+   "classes_by_provider": {
+    "aws": 986,
+    "azurerm": 1048,
+    "google": 596,
+    "neutral": 69
+   },
+   "commit": "211833381fdd07690bc789d30ffc2bd84a67744e",
+   "duplicate_class_ids_dropped": 0,
+   "duplicate_property_ids_dropped": 0,
+   "extractor_counts": {
+    "attributes": 13874,
+    "kinds": 2699,
+    "kinds_base": 69,
+    "mapping_entries_from_S_path": 1631,
+    "mapping_entries_not_S_path": 146,
+    "mapping_entries_on_base_properties": 1777
+   },
+   "license": "Apache-2.0",
+   "links": 2164,
+   "out_classes": 2699,
+   "out_links": 2164,
+   "out_links_by_kind": {
+    "provider_class_to_model_class": 533,
+    "provider_field_to_model_property": 1631
+   },
+   "out_links_by_provider": {
+    "aws": 804,
+    "azurerm": 905,
+    "google": 455
+   },
+   "out_links_by_relation": {
+    "broad": 533,
+    "close": 1631
+   },
+   "out_properties": 13874,
+   "privacy_omitted_fields": 29,
+   "privacy_rules": {
+    "arn": 23,
+    "azure_subscription": 2,
+    "doze_digitos": 22,
+    "email": 8
+   },
+   "properties": 13874,
+   "status": "artefato"
+  },
+  "kalinin": {
+   "classes": 21,
+   "classes_by_provider": {
+    "aws": 2,
+    "azurerm": 1,
+    "google": 1,
+    "neutral": 15,
+    "other:yandex": 2
+   },
+   "commit": null,
+   "duplicate_class_ids_dropped": 0,
+   "duplicate_property_ids_dropped": 0,
+   "extractor_counts": {
+    "artifact": "indisponível",
+    "classes_named_in_text": 21,
+    "links_stated_in_text": 15,
+    "properties_named_in_text": 10
+   },
+   "license": "NOASSERTION",
+   "links": 15,
+   "out_classes": 21,
+   "out_links": 15,
+   "out_links_by_kind": {
+    "provider_class_to_model_class": 10,
+    "provider_field_to_model_property": 5
+   },
+   "out_links_by_provider": {
+    "aws": 6,
+    "azurerm": 5,
+    "google": 2,
+    "other:yandex": 2
+   },
+   "out_links_by_relation": {
+    "broad": 9,
+    "close": 5,
+    "related": 1
+   },
+   "out_properties": 10,
+   "privacy_omitted_fields": 0,
+   "privacy_rules": {},
+   "properties": 10,
+   "status": "só documental"
+  },
+  "mosaic": {
+   "classes": 0,
+   "classes_by_provider": {},
+   "commit": null,
+   "duplicate_class_ids_dropped": 0,
+   "duplicate_property_ids_dropped": 0,
+   "extractor_counts": {},
+   "license": "NOASSERTION",
+   "links": 1,
+   "out_classes": 0,
+   "out_links": 1,
+   "out_links_by_kind": {
+    "absence": 1
+   },
+   "out_links_by_provider": {
+    "n/a": 1
+   },
+   "out_links_by_relation": {
+    "related": 1
+   },
+   "out_properties": 0,
+   "privacy_omitted_fields": 0,
+   "privacy_rules": {},
+   "properties": 0,
+   "status": "só documental"
+  },
+  "steampipe": {
+   "classes": 1056,
+   "classes_by_provider": {
+    "aws": 587,
+    "azurerm": 180,
+    "google": 123,
+    "oci": 166
+   },
+   "commit": "aws@bb6992d4748caab938e2c691be977d6610fc1fab gcp@c9651aefd05e36b946ce80881c6100869210ba97 azure@4d653f90a56343504988f90775b567d91b3e2dd9 oci@ac16c3883401c8a31126e97948aae89adc6d4838",
+   "duplicate_class_ids_dropped": 0,
+   "duplicate_property_ids_dropped": 0,
+   "extractor_counts": {
+    "column_wrappers": {
+     "(nenhum)": 151,
+     "awsAccountColumns": 16,
+     "awsGlobalRegionColumns": 62,
+     "awsRegionalColumns": 441,
+     "azureColumns": 157,
+     "commonColumnsForAllResource": 105,
+     "costExplorerColumns": 1,
+     "monitoringMetricColumns": 27
+    },
+    "columns_declared_in_table_file": 16657,
+    "tables": 1056,
+    "tables_aws": 587,
+    "tables_azurerm": 180,
+    "tables_google": 123,
+    "tables_oci": 166,
+    "tables_without_api_tag": 179
+   },
+   "license": "Apache-2.0",
+   "links": 877,
+   "out_classes": 1056,
+   "out_links": 877,
+   "out_links_by_kind": {
+    "model_term_to_provider_api": 877
+   },
+   "out_links_by_provider": {
+    "aws": 580,
+    "azurerm": 180,
+    "google": 117
+   },
+   "out_links_by_relation": {
+    "related": 877
+   },
+   "out_properties": 16657,
+   "privacy_omitted_fields": 7,
+   "privacy_rules": {
+    "arn": 3,
+    "azure_subscription": 1,
+    "doze_digitos": 8
+   },
+   "properties": 16657,
+   "status": "artefato"
+  },
+  "tosca-edmm": {
+   "classes": 233,
+   "classes_by_provider": {
+    "aws": 20,
+    "azurerm": 17,
+    "google": 9,
+    "neutral": 186,
+    "other:terraform": 1
+   },
+   "commit": "tosca-community-contributions@2669d67991961e6aa7919a885ebc535bdb1bd2c5 edmm@7f550a19155a702474f512e54ff2ddb148c003dd",
+   "duplicate_class_ids_dropped": 0,
+   "duplicate_property_ids_dropped": 0,
+   "extractor_counts": {
+    "edmm_types": 20,
+    "provider_types": 46,
+    "tosca20_spec_normative_type_names": 0,
+    "tosca_types": 213,
+    "unresolved_derived_from": 3
+   },
+   "license": "Apache-2.0",
+   "links": 41,
+   "out_classes": 233,
+   "out_links": 41,
+   "out_links_by_kind": {
+    "provider_class_to_model_class": 41
+   },
+   "out_links_by_provider": {
+    "aws": 17,
+    "azurerm": 15,
+    "google": 9
+   },
+   "out_links_by_relation": {
+    "broad": 41
+   },
+   "out_properties": 276,
+   "privacy_omitted_fields": 0,
+   "privacy_rules": {},
+   "properties": 276,
+   "status": "artefato"
+  }
+ },
+ "module": "PRIOR",
+ "note": "todo vínculo é publicado pelo modelo (ou afirmado no texto, se só documental), transcrito sem prova nossa: evidence_state UNRESOLVED (UNPROVEN); 'a skos:broadMatch b' = b mais amplo",
+ "schema": "bo.prior.inventory/1"
+}
