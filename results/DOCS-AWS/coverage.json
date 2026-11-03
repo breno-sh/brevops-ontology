@@ -78,8 +78,8 @@
    "pages_d": 684,
    "pages_r": 1740,
    "redactions": {
-    "arn": 101,
-    "doze_digitos": 11
+    "arn": 103,
+    "doze_digitos": 13
    },
    "resolution_rules": {
     "R1": 231,
@@ -155,7 +155,7 @@
    "aws_wafv2_web_acl_rule": 6263
   }
  },
- "generated_at": "2026-11-03T07:29:49-03:00",
+ "generated_at": "2026-11-03T07:33:09-03:00",
  "metrics": [
   {
    "axis": "representability",

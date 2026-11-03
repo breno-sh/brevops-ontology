@@ -297,7 +297,7 @@ def import_record(page: mdparse.Page, red: Counter) -> dict:
             tail = re.split(r"\busing\b", sent, maxsplit=1, flags=re.I)[-1]
             if "`terraform import`" in sent or "`import` block" in sent:
                 tail = re.split(r"\busing\b", sent, flags=re.I)[-1]
-            txt = _sentence_tail(tail)
+            txt = redact(_sentence_tail(tail), red)
             if txt and txt not in id_texts:
                 id_texts.append(txt)
             for t in C.TICK.findall(tail):
@@ -319,10 +319,12 @@ def import_record(page: mdparse.Page, red: Counter) -> dict:
                         if x not in seps:
                             seps.append(x)
                 for x in parts:
+                    x = redact(x, red)
                     if x not in id_attrs:
                         id_attrs.append(x)
             for m in SEP.finditer(sent):
                 v = m.group(1) or SEP_WORDS.get(re.sub(r"\s+", " ", (m.group(2) or "").lower()))
+                v = redact(v, red) if v else v
                 if v and v not in seps:
                     seps.append(v)
     identity = {"required": [], "optional": []}
@@ -334,7 +336,7 @@ def import_record(page: mdparse.Page, red: Counter) -> dict:
         lines_before = [s for n, s in page.import_text if n < it.line and s.startswith("####")]
         if lines_before and "optional" in lines_before[-1].lower():
             hdr = "optional"
-        identity[hdr].append(it.name)
+        identity[hdr].append(redact(it.name, red))
     methods = []
     if re.search(r"^\s*identity\s*=\s*\{", code, re.M):
         methods.append("import_block_identity")
