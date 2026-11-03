@@ -1,0 +1,404 @@
+{
+ "broad_inverse": {
+  "object_id": "pa:pa_widget:grade",
+  "predicate_id": "skos:narrowMatch",
+  "semantic_relation": "narrow",
+  "subject_id": "pb:pb_gadget:level"
+ },
+ "broad_roundtrip_values": {
+  "A": [
+   "g_low",
+   "g_top"
+  ],
+  "A_B_A": [
+   "g_low",
+   "g_top"
+  ]
+ },
+ "broad_transport": {
+  "forward": [
+   {
+    "code": null,
+    "in": "g_low",
+    "out": "l3",
+    "result": "carried"
+   },
+   {
+    "code": null,
+    "in": "g_top",
+    "out": "l4",
+    "result": "carried"
+   }
+  ],
+  "inverse": [
+   {
+    "code": "OUT_OF_SUBSET",
+    "in": "l1",
+    "out": null,
+    "result": "blocked"
+   },
+   {
+    "code": "OUT_OF_SUBSET",
+    "in": "l2",
+    "out": null,
+    "result": "blocked"
+   },
+   {
+    "code": null,
+    "in": "l3",
+    "out": "g_low",
+    "result": "carried"
+   },
+   {
+    "code": null,
+    "in": "l4",
+    "out": "g_top",
+    "result": "carried"
+   }
+  ]
+ },
+ "cases": [
+  {
+   "claim_id": "CLM-BRF-EXACT-01",
+   "expected": "OK",
+   "got": {
+    "rules": [],
+    "verdict": "OK"
+   },
+   "key": "EXACT_SAT",
+   "ok": true
+  },
+  {
+   "claim_id": "CLM-BRF-BROAD-01",
+   "expected": "OK",
+   "got": {
+    "rules": [],
+    "verdict": "OK"
+   },
+   "key": "BROAD",
+   "ok": true
+  },
+  {
+   "claim_id": "CLM-BRF-NARROW-01",
+   "expected": "OK",
+   "got": {
+    "rules": [],
+    "verdict": "OK"
+   },
+   "key": "NARROW",
+   "ok": true
+  },
+  {
+   "claim_id": "CLM-BRF-CLOSE-01",
+   "expected": "OK",
+   "got": {
+    "rules": [],
+    "verdict": "OK"
+   },
+   "key": "CLOSE",
+   "ok": true
+  },
+  {
+   "claim_id": "CLM-BRF-RELATED-01",
+   "expected": "OK",
+   "got": {
+    "rules": [],
+    "verdict": "OK"
+   },
+   "key": "RELATED",
+   "ok": true
+  },
+  {
+   "claim_id": "CLM-BRF-NONE-01",
+   "expected": "OK",
+   "got": {
+    "rules": [],
+    "verdict": "OK"
+   },
+   "key": "NONE_ROW",
+   "ok": true
+  },
+  {
+   "claim_id": "CLM-BRF-ALT-STD",
+   "expected": "OK",
+   "got": {
+    "rules": [],
+    "verdict": "OK"
+   },
+   "key": "ALT_STD",
+   "ok": true
+  },
+  {
+   "claim_id": "CLM-BRF-ALT-PREM",
+   "expected": "OK",
+   "got": {
+    "rules": [],
+    "verdict": "OK"
+   },
+   "key": "ALT_PREM",
+   "ok": true
+  },
+  {
+   "claim_id": "CLM-BRF-PROJ-01",
+   "expected": "OK",
+   "got": {
+    "rules": [],
+    "verdict": "OK"
+   },
+   "key": "PROJECTION",
+   "ok": true
+  },
+  {
+   "claim_id": "CLM-BRF-BAD-01",
+   "expected": "UNPROVEN",
+   "got": {
+    "rules": [
+     "BN-PRED"
+    ],
+    "verdict": "UNPROVEN"
+   },
+   "key": "UNPROVEN_NO_PRED",
+   "ok": true
+  },
+  {
+   "claim_id": "CLM-BRF-BAD-02",
+   "expected": "REFUTED_BY_RULE",
+   "got": {
+    "rules": [
+     "SKOS-ORIENT"
+    ],
+    "verdict": "REFUTED_BY_RULE"
+   },
+   "key": "REFUTED_V2",
+   "ok": true
+  },
+  {
+   "claim_id": "CLM-BRF-BAD-03",
+   "expected": "UNPROVEN",
+   "got": {
+    "rules": [
+     "ANCHOR-NOT-PROOF"
+    ],
+    "verdict": "UNPROVEN"
+   },
+   "key": "UNPROVEN_ANCHOR",
+   "ok": true
+  },
+  {
+   "claim_id": "CLM-BRF-BAD-04",
+   "expected": "UNPROVEN",
+   "got": {
+    "rules": [
+     "EVIDENCE"
+    ],
+    "verdict": "UNPROVEN"
+   },
+   "key": "UNPROVEN_READBACK",
+   "ok": true
+  }
+ ],
+ "close_inverse": {
+  "forward": [
+   {
+    "code": null,
+    "in": "medium",
+    "out": "calm",
+    "result": "carried"
+   }
+  ],
+  "inverse": [
+   {
+    "code": "UNPROVEN",
+    "in": "calm",
+    "out": null,
+    "result": "blocked"
+   }
+  ]
+ },
+ "contract_validation": {
+  "claims.jsonl": {
+   "kind": "claims",
+   "rc": 0
+  },
+  "glossary.jsonl": {
+   "kind": "glossary",
+   "rc": 0
+  },
+  "glossary_audit.jsonl": {
+   "kind": "glossary_audit",
+   "rc": 0
+  },
+  "mapper_examples.sssom.tsv": {
+   "kind": "correspondences",
+   "rc": 0
+  },
+  "nonehunt_examples.jsonl": {
+   "kind": "correspondences_jsonl",
+   "rc": 0
+  }
+ },
+ "exact_transport": {
+  "forward": [
+   {
+    "code": null,
+    "in": 30,
+    "out": 30,
+    "result": "carried"
+   },
+   {
+    "code": null,
+    "in": 400,
+    "out": 365,
+    "result": "carried"
+   }
+  ],
+  "inverse": [
+   {
+    "code": null,
+    "in": 200,
+    "out": 200,
+    "result": "carried"
+   }
+  ]
+ },
+ "group": {
+  "rules": [],
+  "runs": [
+   {
+    "expected": {
+     "?color_b": "c1",
+     "?shade_b": "s2"
+    },
+    "got": {
+     "?color_b": "c1",
+     "?shade_b": "s2"
+    },
+    "input": {
+     "?color": "c1",
+     "?shade": "s2"
+    },
+    "ok": true
+   }
+  ],
+  "verdict": "OK"
+ },
+ "hub": {
+  "supported": {
+   "outcome": "COMPOSED",
+   "relation": "exact"
+  },
+  "weak": {
+   "outcome": "UNPROVEN",
+   "relation": null,
+   "verdict": null
+  }
+ },
+ "module": "BRIEFS",
+ "narrow_transport": {
+  "forward": [
+   {
+    "code": "OUT_OF_SUBSET",
+    "in": "v1",
+    "out": null,
+    "result": "blocked"
+   },
+   {
+    "code": null,
+    "in": "v3",
+    "out": "q3",
+    "result": "carried"
+   },
+   {
+    "code": null,
+    "in": "v4",
+    "out": "q4",
+    "result": "carried"
+   }
+  ],
+  "inverse": [
+   {
+    "code": null,
+    "in": "q3",
+    "out": "v3",
+    "result": "carried"
+   },
+   {
+    "code": null,
+    "in": "q4",
+    "out": "v4",
+    "result": "carried"
+   }
+  ]
+ },
+ "projections": {
+  "n": 3,
+  "rules": [],
+  "verdict": "OK"
+ },
+ "related_transport": {
+  "forward": [
+   {
+    "code": "RELATED_ONLY",
+    "in": "x",
+    "out": null,
+    "result": "blocked"
+   }
+  ],
+  "inverse": []
+ },
+ "schema": "bo.briefs_examples/1",
+ "skos_closure": {
+  "a_broader_b": true,
+  "b_narrowMatch_a": true,
+  "not_a_narrowMatch_b": true,
+  "not_b_broadMatch_a": true
+ },
+ "tsv_roundtrip": {
+  "columns": [
+   "subject_id",
+   "predicate_id",
+   "object_id",
+   "mapping_justification",
+   "claim_id",
+   "claim_version_id",
+   "event_id",
+   "semantic_relation",
+   "value_domain_relation",
+   "transport_fidelity",
+   "guard",
+   "translation_fn",
+   "loss_contract",
+   "membership_predicate",
+   "projection",
+   "bo_group_id",
+   "group",
+   "proof",
+   "evidence_state",
+   "basis",
+   "subject_concept",
+   "object_concept",
+   "subject_value_type",
+   "object_value_type",
+   "alternative_to",
+   "exclusivity",
+   "creator_id",
+   "mapping_tool",
+   "curation_rule",
+   "comment"
+  ],
+  "equal": true,
+  "lost_columns": [],
+  "prefixes_declared": [
+   "bo",
+   "bosx",
+   "concept",
+   "pa",
+   "pb",
+   "pc",
+   "semapv",
+   "skos",
+   "sssom"
+  ]
+ },
+ "version": "1.0.0"
+}

@@ -1,0 +1,108 @@
+NÚCLEO COMUM (igual nos cinco briefs; o que vem depois dele é do seu papel)
+
+1. SEPARAÇÃO DE PAPÉIS (§9.1 do plano; vale para todo mundo)
+- Quem define conceito não mapeia. O glossarista escreve conceitos e âncoras átomo→conceito, nunca átomo↔átomo.
+  Mas ancorar átomos de dois provedores no mesmo conceito já é uma ALEGAÇÃO de correspondência: o caminho
+  átomo→conceito←átomo é a composição âncora_a ∘ inversa(âncora_b), passa pela tabela formal de composição e
+  herda as obrigações de prova das duas âncoras (regras ANCHOR-NOT-PROOF e K-HUB do SEMANTICS). Por isso toda
+  âncora é auditada por outro agente (GLOSSARY-AUDIT, achado F4 da revisão GPT-6) e, sem DOC_SUPPORTED nas duas
+  pontas, a correspondência implícita é UNPROVEN. O glossário congelado é vocabulário comum, não prova.
+- Quem mapeia não valida e não cria conceito. O mapeador recebe o pacote fechado (projeção de treino) e o
+  glossário congelado; o que não tem conceito fica bo:UNGLOSSED.
+- Quem arbitra é código congelado antes de qualquer mapeamento, e devolve UNPROVEN quando falta prova. Nenhum
+  LLM (você incluso) decide veredito; κ entre LLMs é confiabilidade, nunca validade.
+- Quem caça erro não mapeou. Descobertas adversariais são contadas e nunca extrapoladas; a taxa de falso NONE
+  sai de uma amostra probabilística feita por outro módulo.
+- Quem avalia não implementou: roda o código congelado com os critérios pré-registrados.
+- Se você já exerceu outro papel na mesma fatia, no mesmo domínio ou no mesmo par×domínio, pare e relate: o
+  trabalho deixa de valer para o estudo.
+
+2. CORRESPONDÊNCIA = RELAÇÃO TIPADA ENTRE CONFIGURAÇÕES; OS TRÊS CAMPOS
+Uma alegação liga um atributo (ou um subgrafo) do lado sujeito a a um do lado objeto b. Ela é a tupla
+⟨a, b, guarda, tradução, contrato de perda, semantic_relation, value_domain_relation, transport_fidelity,
+prova, estado de evidência⟩. Os três campos que a v2 fundia são gravados SEPARADOS e conferidos um contra o
+outro pelo árbitro:
+  semantic_relation      o significado: exact | close | broad | narrow | related. Tem de bater com predicate_id
+                         (exact = skos:exactMatch, close = skos:closeMatch, broad = skos:broadMatch,
+                         narrow = skos:narrowMatch, related = skos:relatedMatch; regra SKOS-PRED).
+  value_domain_relation  os valores admitidos, depois da tradução, na orientação sujeito→objeto:
+                         {"relation": equal | subset | superset | overlap | disjoint | unknown,
+                          "orientation": "subject_to_object"}. O árbitro recalcula pelos domínios declarados
+                         e reprova se não bater (VDR-COMPUTED). unknown nunca sustenta lossless (VDR-UNKNOWN).
+  transport_fidelity     o que a tradução leva na direção a→b: lossless | declared_loss | partial | none.
+                         lossless só com domínio equal ou subset e sem item de perda; declared_loss exige item
+                         no loss_contract; related é sempre none (FID-COHERENT, CLOSE-LOSS, RELATED-NT). A
+                         fidelidade da volta não se escreve: é recalculada.
+Exemplo sintético dos três campos separados (mesmo significado, domínios diferentes, perda declarada):
+{{EX:EXACT_SAT}}
+Leitura: exact (mesmo significado); superset (1..3650 dias só cabe em parte em 1..365); declared_loss (o que
+passa de 365 satura, com perda declarada). Transporte calculado: {{TR:EXACT_SAT}}
+Conversão exata de unidade é exact, nunca close.
+
+3. DIREÇÃO SKOS (corrigida na v3; nunca adivinhe)
+  "a skos:broadMatch b" quer dizer: b é o mais amplo (a ⊂ b).
+  "a skos:narrowMatch b" quer dizer: b é o mais estreito (b ⊂ a).
+Regra de bolso: o predicado qualifica o OBJETO. broadMatch: o objeto é o mais amplo; narrowMatch: o objeto é o
+mais estreito. A tabela da v2 estava invertida; a leitura invertida é REFUTED_BY_RULE (SKOS-ORIENT). A direção
+foi conferida contra o schema SKOS do W3C (broadMatch ⊑ broader, "more general in meaning"; broadMatch
+owl:inverseOf narrowMatch) e o bo.semantics.skos_roundtrip refaz a conferência a cada gate.
+Transporte por direção (A = lado sujeito, B = lado objeto):
+  a skos:exactMatch b    ninguém mais amplo   A→B com a normalização declarada   B→A pela inversa parcial
+  a skos:closeMatch b    ninguém (perda)      A→B se a tradução está definida    B→A só com inversa parcial
+  a skos:broadMatch b    b (a ⊂ b)            A→B por inclusão                   B→A só onde o predicado de
+                                                                                 pertença a a é verdadeiro
+  a skos:narrowMatch b   a (b ⊂ a)            A→B só onde o predicado de         B→A por inclusão
+                                              pertença a b é verdadeiro
+  a skos:relatedMatch b  não se aplica        não transporta (RELATED_ONLY)      não transporta
+  guarda                 verdadeira: segue; falsa: CONDITION_FALSE; indeterminada: CONDITION_INDETERMINATE
+                         (o caso vai para o intervalo entre os limites, nunca para "atravessou")
+  valor fora do subconjunto na direção do lado mais estreito: OUT_OF_SUBSET
+Exemplo de ida e volta (sintético; o bo.briefs.lint reexecuta estas linhas contra o bo.semantics a cada gate).
+Ida, a linha que se grava (pa:pa_widget:grade é o mais estreito; pb:pb_gadget:level, o mais amplo):
+{{EX:BROAD}}
+Volta, calculada pelo código (bo.semantics.claims.invert), nunca gravada como segunda linha:
+  {{INV:BROAD}}
+Valores: {{TR:BROAD}}
+Ida e volta A→B→A devolve os mesmos valores: {{RT:BROAD}}
+RDF com os axiomas SKOS do W3C (fecho OWL 2 RL): {{SKOS:BROAD}}
+O mesmo raciocínio para narrow (pb:pb_gadget:level_policy é o mais estreito):
+{{EX:NARROW}}
+Valores: {{TR:NARROW}}
+Recusado, a leitura invertida da v2 (broad com o objeto como subconjunto):
+{{EX:REFUTED_V2}}
+
+4. PROVA OBRIGATÓRIA; SEM PROVA, UNPROVEN
+Correspondência sem prova é UNPROVEN, e UNPROVEN não transporta na leitura primária. A prova é por tipo:
+  exact          normalização explícita do registro, testes que passam, valor canônico preservado, evidência
+                 citada (EXACT-NORM, EXACT-TESTS, NORM-PRESERVE, KIND-EQ, EVIDENCE)
+  close          declarar o que se perde no loss_contract; nunca lossless (CLOSE-LOSS)
+  broad / narrow predicado de pertença EXECUTÁVEL, com o lado subconjunto e testes de membro e de não membro
+                 (BN-PRED, SKOS-ORIENT, BN-PRED-TESTS)
+  related        nada: não habilita transporte (RELATED-NT)
+  fixed/default  valor, contexto tipado e evidência com data e fonte (FIXED-DATED)
+  todo transporte tipos conhecidos dos dois lados, guarda bem tipada e satisfazível, domínio coerente
+                 (KIND-UNKNOWN, GUARD-TYPE, GUARD-SAT, VDR-*, FID-COHERENT)
+Exemplos que o código recusa (veredito obtido de bo.semantics.obligations, não digitado):
+{{EX:UNPROVEN_NO_PRED}}
+{{EX:UNPROVEN_ANCHOR}}
+{{EX:UNPROVEN_READBACK}}
+Também: unknown == unknown não é prova (KIND-UNKNOWN); NOT_APPLICABLE (não há grandeza) ≠ UNKNOWN (há, mas não
+se sabe qual); janela de taxa e convenção de byte (IEC × SI) fazem parte do tipo; mês e ano não viram segundos
+sem contexto de calendário (TRANSFORM_OUT_OF_DOMAIN); ausência na origem com destino obrigatório é UNKNOWN_INPUT,
+nunca um padrão inventado. Composição só pela tabela formal (semantics/composition_table.json): close∘close e
+broad∘narrow não dão relação, guardas incompatíveis dão composição vazia, a fidelidade do composto é a pior das
+pernas e nenhuma composição promove evidência. O fecho OWL do SKOS (que infere exactMatch transitivo) nunca
+habilita transporte.
+
+5. ESCADA DE EVIDÊNCIA (§9.2)
+  UNRESOLVED < STRUCTURALLY_VALID < DOC_SUPPORTED < PERSISTENCE_VERIFIED < OBSERVATION_TESTED
+  UNRESOLVED            o resto; publicado como hipótese de alinhamento
+  STRUCTURALLY_VALID    bem formado, passa no árbitro; sozinho não sustenta exact
+  DOC_SUPPORTED         há sentença PUBLICADA (documentação na tag fixada, com repo, tag, arquivo e linha) que
+                        sustenta, com contraexemplo procurado; necessário para exact/close transportarem
+  PERSISTENCE_VERIFIED  o deploy confirmou que a API guardou o valor; só depois do deploy, nunca offline
+  OBSERVATION_TESTED    uma sonda observou o efeito sob protocolo, com controle negativo; só depois das sondas
+Leitura de volta é persistência; sonda é observação sob protocolo; nunca escreva "equivalente" sem o eixo.
+Dado publicado é separado de interpretação por modelo: sentença que você deduziu lendo prosa é
+evidence_level interpreted, extraction_method model e model_id claude-opus-5-5, e nunca chega a DOC_SUPPORTED.
+Julgamento de LLM nunca é verdade-terreno.

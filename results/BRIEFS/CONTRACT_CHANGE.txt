@@ -1,0 +1,64 @@
+CONTRACT_CHANGE — BRIEFS — gravado em 2026-11-03T17:45:00-03:00 (America/Recife)
+
+Proposta NÃO bloqueante para o BRIEFS (os briefs são texto e já dizem o que fazer com o contrato vigente), mas
+bloqueante para os consumidores se não for decidida antes dos pilotos: PILOT-*-GLOSS (onda 8) e PILOT-*-MAP (onda 9).
+Dono do que muda: CONTRACTS (contracts/C09_correspondences.schema.json, contracts/C20_glossary.schema.json,
+src/bo/contracts/). O BRIEFS não edita nada disso.
+
+1. C20 3.0.0 não tem onde gravar hierarquia, tipo de valor, semântica de enum nem decisões do glossário
+   Fato: o registro concept tem additionalProperties=false e só concept_id, label, definition, domain,
+   quantity_kind, unit, status, replaced_by e evidence_state. Mas o catálogo pede, para os GLOSSARY-*,
+   "tipo de valor, semântica de enum, broader/narrower", o GLOSSARY-FREEZE tem o gate bo.glossary.acyclic
+   ("broader/narrower sem ciclo") e o GLOSSARY-AUDIT tem bo.glossary.same_kind_distinct ("pares com a mesma
+   grandeza têm decisão registrada"). O artifact_catalog marca $BO_DATA/GLOSSARY-{domain}/decisions.jsonl e
+   $BO_REPO/glossary/decisions.jsonl como C20 3.0.0, mas o C20 não tem tipo de arquivo decisions: o validador não
+   tem como conferir.
+   Mudança proposta (C20 3.1.0):
+   a) novo tipo de arquivo decisions.jsonl, registro decision, igual ao formato provisório que o GLOSSARY_BRIEF
+      manda usar até a emenda (exemplos validados em results/BRIEFS/examples/decisions.jsonl):
+        schema "bo.glossary_decision/1"; decision_id ^GD-[A-Za-z0-9_\-]+$; kind ∈ {broader, value_type,
+        same_kind_distinct, merge, split, exclusive, ungrounded}; concept_id; related_concept (obrigatório em
+        broader, same_kind_distinct, merge, split); value (obrigatório em value_type: {datatype, enum_semantics,
+        rate_window?, byte_convention?}); reason (≥ 10); evidence [{source, sentence, date}]; author (stable_id);
+        recorded_at (datetime -03:00).
+      Regras: C20-DEC-DIR: em broader, concept_id ⊂ related_concept (mesma direção de skos:broader);
+      C20-DEC-REF: concept_id e related_concept existem no glossary.jsonl irmão; C20-DEC-ACYCLIC: broader sem ciclo.
+   b) (alternativa a 'a' para a hierarquia) campo opcional broader: [concept_id] no registro concept. A proposta
+      preferida é 'a', porque mantém o conceito enxuto e põe a justificativa junto da decisão.
+
+2. C09 3.0.1 não tem campo para a ausência tipada (NONE)
+   Fato: o plano pede "a correspondência ... ou a ausência tipada" (MAP-*), o bo.map.exhaustive exige linha para
+   todo átomo, os NONEHUNT-* caçam "ausências" e o C29 define os tipos OUT_OF_PIN, UNSUPPORTED_BY_TRANSLATOR,
+   UNRESOLVED e ausência demonstrada, mas o C09 não diz como uma ausência é gravada.
+   O que o MAPPER_BRIEF manda fazer hoje (válido no C09 3.0.1; exemplo CLM-BRF-NONE-01 passa no validador e no
+   bo.semantics.obligations com veredito OK, sem transporte): object_id sssom:NoTermFound (convenção do SSSOM),
+   predicate_id skos:relatedMatch, semantic_relation related, transport_fidelity none, translation_fn null,
+   value_domain_relation unknown, object_concept bo:UNGLOSSED, proof.type absence, e o tipo em curation_rule:
+   bo:NONE_ABSENCE_DEMONSTRATED | bo:NONE_OUT_OF_PIN | bo:NONE_UNSUPPORTED_BY_TRANSLATOR | bo:NONE_UNRESOLVED.
+   Átomo só com relação related leva o mesmo curation_rule nessa linha. O caçador liga a descoberta à ausência
+   contestada por see_also.
+   Mudança proposta (C09 3.1.0): campo absence {kind: enum dos quatro tipos, searched: [texto], evidence: [...]}
+   e regra C09-NONE: object_id sssom:NoTermFound ⇔ absence presente, com predicate relatedMatch, fidelidade none,
+   translation_fn null e o prefixo sssom no curie_map; campo disputes (claim_id contestado) no lugar do see_also
+   para as descobertas dos NONEHUNT-*. O ARBITERLIB precisa reconhecer a linha NoTermFound como ausência (fora da
+   cobertura), não como alegação related comum.
+
+3. Fiação do catálogo (para o coordenador; sem mudança de contrato)
+   a) VALIDATOR_BRIEF.txt não tem consumidor no catálogo, e o PILOT-EXIT (o avaliador da fase dos pilotos) não o
+      lista como entrada. A lista de leitura de cada papel já inclui o próprio brief ($WT/briefs/<brief>), então o
+      sandbox funciona; mas o consume_check do PILOT-EXIT não confere o brief. Proposta: PILOT-EXIT inputs +=
+      $BO_REPO/briefs/VALIDATOR_BRIEF.txt e deps += BRIEFS.
+   b) O padrão de papel do bo-lane (ROLE_BY_PATTERN) põe RELIAB e PILOT-EXIT como builder. Eles precisam ser
+      lançados com --role mapper e --role evaluator (briefs/read_allowlists.json, launch_role_override). Sem o
+      --role, o RELIAB lê o BO_DATA inteiro, inclusive os mapeamentos que ele deveria replicar às cegas.
+   c) O GOLD-AUDIT cai no papel auditor pelo padrão do bo-lane, mas não segue o AUDITOR_BRIEF (é auditoria do ouro,
+      não do glossário). A lista de leitura do papel auditor serve a ele ($OWNS, $INPUTS e infraestrutura); as
+      proibições de separação de papéis do AUDITOR_BRIEF não se aplicam a ele, e o bo.briefs.allowlists só as
+      confere em quem consome o brief.
+
+4. Achado de verde falso (para o SEMANTICS; não é do BRIEFS)
+   python -I -m bo.semantics.skos_roundtrip ignora os argumentos: main(argv) não lê --file. O gate dos PILOT-*-MAP e
+   dos MAP-* "python -I -m bo.semantics.skos_roundtrip --file <mapeamento>" passa sem ler o arquivo
+   (conferido: --file /nao/existe.tsv sai 0 com 23/23). Proposta: o SEMANTICS aceita --file, lê o TSV por
+   bo.contracts.sssom.read_tsv e roda, para cada linha broad/narrow, a inversa, o fecho SKOS e o transporte no
+   subconjunto; arquivo ausente ou ilegível sai diferente de 0.

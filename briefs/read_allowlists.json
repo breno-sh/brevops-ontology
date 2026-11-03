@@ -1,0 +1,161 @@
+{
+ "evaluator_modules": [
+  "PILOT-EXIT"
+ ],
+ "frozen_at": "2026-11-03T08:00:00-03:00",
+ "launch_role_override": {
+  "PILOT-EXIT": "evaluator",
+  "RELIAB": "mapper"
+ },
+ "module": "BRIEFS",
+ "note": "o bo-lane lê roles.<papel>.read; $OWNS e $INPUTS vêm do catálogo do módulo, $WT é a worktree da lane; a lane soma $BO_DATA/<ID>, $BO_TMP, locks, o git comum, a cadeia de ferramentas e o brief e os gates do módulo. A partição de teste nunca entra em lista nenhuma.",
+ "roles": {
+  "auditor": {
+   "brief": "briefs/AUDITOR_BRIEF.txt",
+   "forbid_patterns": [
+    "^\\$BO_DATA/(GOLD-|PILOT-(NET|STO)-ORACLE|JUDGE|DEP-|PROBE|DEPSAMPLE|DISPUTE-SAMPLE|GOLDEVAL|HOLDOUT|UNSEAL|MATRIX|PAIRWISE|TRANSLATOR)",
+    "^\\$WT/(pilot/|results/(GOLD|JUDGE|GOLDEVAL|PROBE|DEP|MATRIX|HOLDOUT|PILOT-EXIT))",
+    "^\\$BO_DATA/(MAP-|PILOT-(NET|STO)-MAP|CAND|RECONCILE|RELIAB|NONEHUNT-)"
+   ],
+   "read": [
+    "$OWNS",
+    "$INPUTS",
+    "$WT/briefs/AUDITOR_BRIEF.txt",
+    "$WT/src/",
+    "$WT/tools/",
+    "$WT/contracts/",
+    "$WT/modules/",
+    "$WT/freeze/",
+    "$WT/Makefile",
+    "$WT/pyproject.toml",
+    "$WT/requirements.lock",
+    "$WT/CONVENTIONS.html",
+    "$WT/.bo/",
+    "$WT/.claude/",
+    "$WT/.git",
+    "$WT/semantics/",
+    "$WT/grain/",
+    "$WT/ontology/patterns/naming_rules.yaml",
+    "$WT/domain/domain_contracts.yaml",
+    "$BO_DATA/SPLIT/training_projection/",
+    "$BO_DATA/DOCS-*/docs_facts.jsonl",
+    "$BO_DATA/SCHEMA-*/atoms.jsonl"
+   ]
+  },
+  "evaluator": {
+   "brief": "briefs/VALIDATOR_BRIEF.txt",
+   "forbid_patterns": [],
+   "read": [
+    "$OWNS",
+    "$INPUTS",
+    "$WT/briefs/VALIDATOR_BRIEF.txt",
+    "$WT/src/",
+    "$WT/tools/",
+    "$WT/contracts/",
+    "$WT/modules/",
+    "$WT/freeze/",
+    "$WT/Makefile",
+    "$WT/pyproject.toml",
+    "$WT/requirements.lock",
+    "$WT/CONVENTIONS.html",
+    "$WT/.bo/",
+    "$WT/.claude/",
+    "$WT/.git",
+    "$WT/semantics/",
+    "$WT/transforms/",
+    "$WT/prereg/"
+   ]
+  },
+  "glossarist": {
+   "brief": "briefs/GLOSSARY_BRIEF.txt",
+   "forbid_patterns": [
+    "^\\$BO_DATA/(GOLD-|PILOT-(NET|STO)-ORACLE|JUDGE|DEP-|PROBE|DEPSAMPLE|DISPUTE-SAMPLE|GOLDEVAL|HOLDOUT|UNSEAL|MATRIX|PAIRWISE|TRANSLATOR)",
+    "^\\$WT/(pilot/|results/(GOLD|JUDGE|GOLDEVAL|PROBE|DEP|MATRIX|HOLDOUT|PILOT-EXIT))",
+    "^\\$BO_DATA/(MAP-|PILOT-(NET|STO)-MAP|CAND|RECONCILE|RELIAB|NONEHUNT-|GLOSSARY-AUDIT)"
+   ],
+   "read": [
+    "$OWNS",
+    "$INPUTS",
+    "$WT/briefs/GLOSSARY_BRIEF.txt",
+    "$WT/src/",
+    "$WT/tools/",
+    "$WT/contracts/",
+    "$WT/modules/",
+    "$WT/freeze/",
+    "$WT/Makefile",
+    "$WT/pyproject.toml",
+    "$WT/requirements.lock",
+    "$WT/CONVENTIONS.html",
+    "$WT/.bo/",
+    "$WT/.claude/",
+    "$WT/.git",
+    "$WT/grain/",
+    "$WT/ontology/patterns/naming_rules.yaml",
+    "$WT/semantics/SEMANTICS.html"
+   ]
+  },
+  "hunter": {
+   "brief": "briefs/NONEHUNT_BRIEF.txt",
+   "forbid_patterns": [
+    "^\\$BO_DATA/(GOLD-|PILOT-(NET|STO)-ORACLE|JUDGE|DEP-|PROBE|DEPSAMPLE|DISPUTE-SAMPLE|GOLDEVAL|HOLDOUT|UNSEAL|MATRIX|PAIRWISE|TRANSLATOR)",
+    "^\\$WT/(pilot/|results/(GOLD|JUDGE|GOLDEVAL|PROBE|DEP|MATRIX|HOLDOUT|PILOT-EXIT))",
+    "^\\$BO_DATA/(MAP-|PILOT-(NET|STO)-MAP|GLOSSARY-|CAND|RELIAB|NONEHUNT-)"
+   ],
+   "read": [
+    "$OWNS",
+    "$INPUTS",
+    "$WT/briefs/NONEHUNT_BRIEF.txt",
+    "$WT/src/",
+    "$WT/tools/",
+    "$WT/contracts/",
+    "$WT/modules/",
+    "$WT/freeze/",
+    "$WT/Makefile",
+    "$WT/pyproject.toml",
+    "$WT/requirements.lock",
+    "$WT/CONVENTIONS.html",
+    "$WT/.bo/",
+    "$WT/.claude/",
+    "$WT/.git",
+    "$WT/semantics/",
+    "$WT/transforms/",
+    "$WT/arbiter/RULES.html"
+   ]
+  },
+  "mapper": {
+   "brief": "briefs/MAPPER_BRIEF.txt",
+   "forbid_patterns": [
+    "^\\$BO_DATA/(GOLD-|PILOT-(NET|STO)-ORACLE|JUDGE|DEP-|PROBE|DEPSAMPLE|DISPUTE-SAMPLE|GOLDEVAL|HOLDOUT|UNSEAL|MATRIX|PAIRWISE|TRANSLATOR)",
+    "^\\$WT/(pilot/|results/(GOLD|JUDGE|GOLDEVAL|PROBE|DEP|MATRIX|HOLDOUT|PILOT-EXIT))",
+    "^\\$BO_DATA/(MAP-|PILOT-(NET|STO)-MAP|GLOSSARY-|PILOT-(NET|STO)-GLOSS/(glossary|claims)|RELIAB|NONEHUNT-|RECONCILE)"
+   ],
+   "read": [
+    "$OWNS",
+    "$INPUTS",
+    "$WT/briefs/MAPPER_BRIEF.txt",
+    "$WT/src/",
+    "$WT/tools/",
+    "$WT/contracts/",
+    "$WT/modules/",
+    "$WT/freeze/",
+    "$WT/Makefile",
+    "$WT/pyproject.toml",
+    "$WT/requirements.lock",
+    "$WT/CONVENTIONS.html",
+    "$WT/.bo/",
+    "$WT/.claude/",
+    "$WT/.git",
+    "$WT/semantics/",
+    "$WT/transforms/",
+    "$WT/arbiter/RULES.html"
+   ]
+  }
+ },
+ "schema": "bo.read_allowlists/1",
+ "test_partition": [
+  "$BO_DATA/SPLIT/sealed/",
+  "$BO_DATA/SPLIT/holdout_units.json.enc",
+  "$BO_DATA/UNSEAL/"
+ ],
+ "version": "1.0.0"
+}

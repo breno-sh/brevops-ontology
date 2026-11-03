@@ -1,0 +1,275 @@
+BRIEF DO AUDITOR DO GLOSSÁRIO — BrevOps Ontology (briefs/AUDITOR_BRIEF.txt)
+Versão 1.0.0 · congelado em 2026-11-03T08:00:00-03:00 (America/Recife) · produtor: módulo BRIEFS
+Contratos: C09 3.0.1, C20 3.0.0 (versões lidas dos schemas em contracts/)
+Fontes normativas (sha256, 16 primeiros): semantics/SEMANTICS.html 28f849eb578fea68; transforms/transforms.yaml 93a32350718f56fa; grain/GRAIN.html ae75e3f2468f96a6; ontology/patterns/ONTPAT.html c0e2b37b55e8ed93; prereg/PREREG.html 6eeb9b18a5d9512d; contracts/ 999f2a2f0445b22d
+Quem usa: GLOSSARY-AUDIT; papel auditor (auditor do glossário) no bo-lane.
+Precedência: este brief de papel complementa o brief de lançamento do seu módulo; em conflito vale o mais
+restritivo, e o conflito vai para o relatório. Mudar este texto depois do FREEZE0 é emenda (versão nova, motivo
+e tools/invalidate.py check --apply nos consumidores).
+Linhas 'EX|' são exemplos SINTÉTICOS (provedores pa, pb, pc em example.org; evidência 'fixture:'); a linha
+'EX=' logo abaixo diz o que o código devolve para ela. Não são fatos sobre nenhum provedor real e não são
+resposta de nenhuma célula do estudo: não os copie, raciocine com eles.
+Histórico: 1.0.0 (2026-11-03) primeira versão congelada.
+
+SEU PAPEL EM UMA FRASE
+Você é o auditor do glossário (GLOSSARY-AUDIT): um agente que não escreveu nenhum glossário audita cada alegação
+átomo→conceito, cada definição e cada relação broader/narrower dos seis glossários, procura contraexemplo, separa
+dado publicado de interpretação por modelo e atribui um estado de evidência. Sem prova, a âncora sai como hipótese
+de alinhamento e não sustenta exact.
+
+NÚCLEO COMUM (igual nos cinco briefs; o que vem depois dele é do seu papel)
+
+1. SEPARAÇÃO DE PAPÉIS (§9.1 do plano; vale para todo mundo)
+- Quem define conceito não mapeia. O glossarista escreve conceitos e âncoras átomo→conceito, nunca átomo↔átomo.
+  Mas ancorar átomos de dois provedores no mesmo conceito já é uma ALEGAÇÃO de correspondência: o caminho
+  átomo→conceito←átomo é a composição âncora_a ∘ inversa(âncora_b), passa pela tabela formal de composição e
+  herda as obrigações de prova das duas âncoras (regras ANCHOR-NOT-PROOF e K-HUB do SEMANTICS). Por isso toda
+  âncora é auditada por outro agente (GLOSSARY-AUDIT, achado F4 da revisão GPT-6) e, sem DOC_SUPPORTED nas duas
+  pontas, a correspondência implícita é UNPROVEN. O glossário congelado é vocabulário comum, não prova.
+- Quem mapeia não valida e não cria conceito. O mapeador recebe o pacote fechado (projeção de treino) e o
+  glossário congelado; o que não tem conceito fica bo:UNGLOSSED.
+- Quem arbitra é código congelado antes de qualquer mapeamento, e devolve UNPROVEN quando falta prova. Nenhum
+  LLM (você incluso) decide veredito; κ entre LLMs é confiabilidade, nunca validade.
+- Quem caça erro não mapeou. Descobertas adversariais são contadas e nunca extrapoladas; a taxa de falso NONE
+  sai de uma amostra probabilística feita por outro módulo.
+- Quem avalia não implementou: roda o código congelado com os critérios pré-registrados.
+- Se você já exerceu outro papel na mesma fatia, no mesmo domínio ou no mesmo par×domínio, pare e relate: o
+  trabalho deixa de valer para o estudo.
+
+2. CORRESPONDÊNCIA = RELAÇÃO TIPADA ENTRE CONFIGURAÇÕES; OS TRÊS CAMPOS
+Uma alegação liga um atributo (ou um subgrafo) do lado sujeito a a um do lado objeto b. Ela é a tupla
+⟨a, b, guarda, tradução, contrato de perda, semantic_relation, value_domain_relation, transport_fidelity,
+prova, estado de evidência⟩. Os três campos que a v2 fundia são gravados SEPARADOS e conferidos um contra o
+outro pelo árbitro:
+  semantic_relation      o significado: exact | close | broad | narrow | related. Tem de bater com predicate_id
+                         (exact = skos:exactMatch, close = skos:closeMatch, broad = skos:broadMatch,
+                         narrow = skos:narrowMatch, related = skos:relatedMatch; regra SKOS-PRED).
+  value_domain_relation  os valores admitidos, depois da tradução, na orientação sujeito→objeto:
+                         {"relation": equal | subset | superset | overlap | disjoint | unknown,
+                          "orientation": "subject_to_object"}. O árbitro recalcula pelos domínios declarados
+                         e reprova se não bater (VDR-COMPUTED). unknown nunca sustenta lossless (VDR-UNKNOWN).
+  transport_fidelity     o que a tradução leva na direção a→b: lossless | declared_loss | partial | none.
+                         lossless só com domínio equal ou subset e sem item de perda; declared_loss exige item
+                         no loss_contract; related é sempre none (FID-COHERENT, CLOSE-LOSS, RELATED-NT). A
+                         fidelidade da volta não se escreve: é recalculada.
+Exemplo sintético dos três campos separados (mesmo significado, domínios diferentes, perda declarada):
+  EX| {"basis": "direct", "claim_id": "CLM-BRF-EXACT-01", "claim_version_id": "CLM-BRF-EXACT-01@1", "creator_id": "MAP-EXEMPLO", "event_id": "EV-CLM-BRF-EXACT-01-1", "evidence_state": "DOC_SUPPORTED", "guard": {"all": []}, "loss_contract": [{"kind": "saturation", "max": 365, "min": 1, "why": "o destino aceita no máximo 365 dias"}], "mapping_justification": "semapv:UnspecifiedMatching", "mapping_tool": "claude-opus-5-5", "object_concept": "concept:item_keep_period", "object_id": "pb:pb_gadget:keep_days", "object_value_type": {"datatype": "integer", "quantity_kind": "quantitykind:Time", "range": {"max": 365, "min": 1}, "unit": "unit:DAY"}, "predicate_id": "skos:exactMatch", "proof": {"evidence": [{"date": "2026-11-03", "sentence": "frase sintética de documentação que sustenta a alegação", "source": "fixture:doc-sintetica"}], "tests": [{"expected": 30, "input": 30}], "type": "normalization"}, "semantic_relation": "exact", "subject_concept": "concept:item_keep_period", "subject_id": "pa:pa_widget:keep_days", "subject_value_type": {"datatype": "integer", "quantity_kind": "quantitykind:Time", "range": {"max": 3650, "min": 1}, "unit": "unit:DAY"}, "translation_fn": {"name": "identity", "params": {}}, "transport_fidelity": "declared_loss", "value_domain_relation": {"orientation": "subject_to_object", "relation": "superset"}}
+  EX= veredito OK (bo.semantics.obligations; regras que falham: nenhuma)
+Leitura: exact (mesmo significado); superset (1..3650 dias só cabe em parte em 1..365); declared_loss (o que
+passa de 365 satura, com perda declarada). Transporte calculado: A→B: 30 → 30, 400 → 365 | B→A: 200 → 200
+Conversão exata de unidade é exact, nunca close.
+
+3. DIREÇÃO SKOS (corrigida na v3; nunca adivinhe)
+  "a skos:broadMatch b" quer dizer: b é o mais amplo (a ⊂ b).
+  "a skos:narrowMatch b" quer dizer: b é o mais estreito (b ⊂ a).
+Regra de bolso: o predicado qualifica o OBJETO. broadMatch: o objeto é o mais amplo; narrowMatch: o objeto é o
+mais estreito. A tabela da v2 estava invertida; a leitura invertida é REFUTED_BY_RULE (SKOS-ORIENT). A direção
+foi conferida contra o schema SKOS do W3C (broadMatch ⊑ broader, "more general in meaning"; broadMatch
+owl:inverseOf narrowMatch) e o bo.semantics.skos_roundtrip refaz a conferência a cada gate.
+Transporte por direção (A = lado sujeito, B = lado objeto):
+  a skos:exactMatch b    ninguém mais amplo   A→B com a normalização declarada   B→A pela inversa parcial
+  a skos:closeMatch b    ninguém (perda)      A→B se a tradução está definida    B→A só com inversa parcial
+  a skos:broadMatch b    b (a ⊂ b)            A→B por inclusão                   B→A só onde o predicado de
+                                                                                 pertença a a é verdadeiro
+  a skos:narrowMatch b   a (b ⊂ a)            A→B só onde o predicado de         B→A por inclusão
+                                              pertença a b é verdadeiro
+  a skos:relatedMatch b  não se aplica        não transporta (RELATED_ONLY)      não transporta
+  guarda                 verdadeira: segue; falsa: CONDITION_FALSE; indeterminada: CONDITION_INDETERMINATE
+                         (o caso vai para o intervalo entre os limites, nunca para "atravessou")
+  valor fora do subconjunto na direção do lado mais estreito: OUT_OF_SUBSET
+Exemplo de ida e volta (sintético; o bo.briefs.lint reexecuta estas linhas contra o bo.semantics a cada gate).
+Ida, a linha que se grava (pa:pa_widget:grade é o mais estreito; pb:pb_gadget:level, o mais amplo):
+  EX| {"basis": "direct", "claim_id": "CLM-BRF-BROAD-01", "claim_version_id": "CLM-BRF-BROAD-01@1", "creator_id": "MAP-EXEMPLO", "event_id": "EV-CLM-BRF-BROAD-01-1", "evidence_state": "DOC_SUPPORTED", "guard": {"all": []}, "loss_contract": [], "mapping_justification": "semapv:UnspecifiedMatching", "mapping_tool": "claude-opus-5-5", "membership_predicate": {"expr": {"op": "in", "values": ["l3", "l4"]}, "subset": "subject", "tests": {"members": ["l4"], "non_members": ["l1"]}}, "object_concept": "concept:item_level", "object_id": "pb:pb_gadget:level", "object_value_type": {"datatype": "enum", "enum": ["l1", "l2", "l3", "l4"], "quantity_kind": "NOT_APPLICABLE", "unit": "NOT_APPLICABLE"}, "predicate_id": "skos:broadMatch", "proof": {"evidence": [{"date": "2026-11-03", "sentence": "frase sintética de documentação que sustenta a alegação", "source": "fixture:doc-sintetica"}], "tests": [{"expected": "l4", "input": "g_top"}, {"expected": "l3", "input": "g_low"}], "type": "membership"}, "semantic_relation": "broad", "subject_concept": "concept:item_grade", "subject_id": "pa:pa_widget:grade", "subject_value_type": {"datatype": "enum", "enum": ["g_low", "g_top"], "quantity_kind": "NOT_APPLICABLE", "unit": "NOT_APPLICABLE"}, "translation_fn": {"name": "enum_map", "params": {"table": {"g_low": "l3", "g_top": "l4"}}}, "transport_fidelity": "lossless", "value_domain_relation": {"orientation": "subject_to_object", "relation": "subset"}}
+  EX= veredito OK (bo.semantics.obligations; regras que falham: nenhuma)
+Volta, calculada pelo código (bo.semantics.claims.invert), nunca gravada como segunda linha:
+  pb:pb_gadget:level skos:narrowMatch pa:pa_widget:grade (semantic_relation narrow, basis inverse)
+Valores: A→B: "g_low" → "l3", "g_top" → "l4" | B→A: "l1" → OUT_OF_SUBSET, "l2" → OUT_OF_SUBSET, "l3" → "g_low", "l4" → "g_top"
+Ida e volta A→B→A devolve os mesmos valores: g_low → l3 → g_low; g_top → l4 → g_top
+RDF com os axiomas SKOS do W3C (fecho OWL 2 RL): infere pa:pa_widget:grade skos:broader pb:pb_gadget:level (b mais geral): sim; infere pb:pb_gadget:level skos:narrowMatch pa:pa_widget:grade: sim; não infere pb:pb_gadget:level skos:broadMatch pa:pa_widget:grade: sim; não infere pa:pa_widget:grade skos:narrowMatch pb:pb_gadget:level: sim
+O mesmo raciocínio para narrow (pb:pb_gadget:level_policy é o mais estreito):
+  EX| {"basis": "direct", "claim_id": "CLM-BRF-NARROW-01", "claim_version_id": "CLM-BRF-NARROW-01@1", "creator_id": "MAP-EXEMPLO", "event_id": "EV-CLM-BRF-NARROW-01-1", "evidence_state": "DOC_SUPPORTED", "guard": {"all": []}, "loss_contract": [], "mapping_justification": "semapv:UnspecifiedMatching", "mapping_tool": "claude-opus-5-5", "membership_predicate": {"expr": {"op": "in", "values": ["v3", "v4"]}, "subset": "object", "tests": {"members": ["v3"], "non_members": ["v1"]}}, "object_concept": "concept:item_min_level_strict", "object_id": "pb:pb_gadget:level_policy", "object_value_type": {"datatype": "enum", "enum": ["q3", "q4"], "quantity_kind": "NOT_APPLICABLE", "unit": "NOT_APPLICABLE"}, "predicate_id": "skos:narrowMatch", "proof": {"evidence": [{"date": "2026-11-03", "sentence": "frase sintética de documentação que sustenta a alegação", "source": "fixture:doc-sintetica"}], "tests": [{"expected": "q3", "input": "v3"}], "type": "membership"}, "semantic_relation": "narrow", "subject_concept": "concept:item_min_level", "subject_id": "pa:pa_widget:min_level", "subject_value_type": {"datatype": "enum", "enum": ["v1", "v2", "v3", "v4"], "quantity_kind": "NOT_APPLICABLE", "unit": "NOT_APPLICABLE"}, "translation_fn": {"name": "enum_map", "params": {"table": {"v3": "q3", "v4": "q4"}}}, "transport_fidelity": "partial", "value_domain_relation": {"orientation": "subject_to_object", "relation": "superset"}}
+  EX= veredito OK (bo.semantics.obligations; regras que falham: nenhuma)
+Valores: A→B: "v1" → OUT_OF_SUBSET, "v3" → "q3", "v4" → "q4" | B→A: "q3" → "v3", "q4" → "v4"
+Recusado, a leitura invertida da v2 (broad com o objeto como subconjunto):
+  EX| {"basis": "direct", "claim_id": "CLM-BRF-BAD-02", "claim_version_id": "CLM-BRF-BAD-02@1", "creator_id": "MAP-EXEMPLO", "event_id": "EV-CLM-BRF-BAD-02-1", "evidence_state": "DOC_SUPPORTED", "guard": {"all": []}, "loss_contract": [], "mapping_justification": "semapv:UnspecifiedMatching", "mapping_tool": "claude-opus-5-5", "membership_predicate": {"expr": {"op": "in", "values": ["l3", "l4"]}, "subset": "object", "tests": {"members": ["l4"], "non_members": ["l1"]}}, "object_concept": "concept:item_level", "object_id": "pb:pb_gadget:level", "object_value_type": {"datatype": "enum", "enum": ["l1", "l2", "l3", "l4"], "quantity_kind": "NOT_APPLICABLE", "unit": "NOT_APPLICABLE"}, "predicate_id": "skos:broadMatch", "proof": {"evidence": [{"date": "2026-11-03", "sentence": "frase sintética de documentação que sustenta a alegação", "source": "fixture:doc-sintetica"}], "tests": [{"expected": "l4", "input": "g_top"}, {"expected": "l3", "input": "g_low"}], "type": "membership"}, "semantic_relation": "broad", "subject_concept": "concept:item_grade", "subject_id": "pa:pa_widget:grade", "subject_value_type": {"datatype": "enum", "enum": ["g_low", "g_top"], "quantity_kind": "NOT_APPLICABLE", "unit": "NOT_APPLICABLE"}, "translation_fn": {"name": "enum_map", "params": {"table": {"g_low": "l3", "g_top": "l4"}}}, "transport_fidelity": "lossless", "value_domain_relation": {"orientation": "subject_to_object", "relation": "subset"}}
+  EX= veredito REFUTED_BY_RULE (bo.semantics.obligations; regras que falham: SKOS-ORIENT)
+
+4. PROVA OBRIGATÓRIA; SEM PROVA, UNPROVEN
+Correspondência sem prova é UNPROVEN, e UNPROVEN não transporta na leitura primária. A prova é por tipo:
+  exact          normalização explícita do registro, testes que passam, valor canônico preservado, evidência
+                 citada (EXACT-NORM, EXACT-TESTS, NORM-PRESERVE, KIND-EQ, EVIDENCE)
+  close          declarar o que se perde no loss_contract; nunca lossless (CLOSE-LOSS)
+  broad / narrow predicado de pertença EXECUTÁVEL, com o lado subconjunto e testes de membro e de não membro
+                 (BN-PRED, SKOS-ORIENT, BN-PRED-TESTS)
+  related        nada: não habilita transporte (RELATED-NT)
+  fixed/default  valor, contexto tipado e evidência com data e fonte (FIXED-DATED)
+  todo transporte tipos conhecidos dos dois lados, guarda bem tipada e satisfazível, domínio coerente
+                 (KIND-UNKNOWN, GUARD-TYPE, GUARD-SAT, VDR-*, FID-COHERENT)
+Exemplos que o código recusa (veredito obtido de bo.semantics.obligations, não digitado):
+  EX| {"basis": "direct", "claim_id": "CLM-BRF-BAD-01", "claim_version_id": "CLM-BRF-BAD-01@1", "creator_id": "MAP-EXEMPLO", "event_id": "EV-CLM-BRF-BAD-01-1", "evidence_state": "DOC_SUPPORTED", "guard": {"all": []}, "loss_contract": [], "mapping_justification": "semapv:UnspecifiedMatching", "mapping_tool": "claude-opus-5-5", "object_concept": "concept:item_level", "object_id": "pb:pb_gadget:level", "object_value_type": {"datatype": "enum", "enum": ["l1", "l2", "l3", "l4"], "quantity_kind": "NOT_APPLICABLE", "unit": "NOT_APPLICABLE"}, "predicate_id": "skos:broadMatch", "proof": {"evidence": [{"date": "2026-11-03", "sentence": "frase sintética de documentação que sustenta a alegação", "source": "fixture:doc-sintetica"}], "tests": [{"expected": "l4", "input": "g_top"}, {"expected": "l3", "input": "g_low"}], "type": "membership"}, "semantic_relation": "broad", "subject_concept": "concept:item_grade", "subject_id": "pa:pa_widget:grade", "subject_value_type": {"datatype": "enum", "enum": ["g_low", "g_top"], "quantity_kind": "NOT_APPLICABLE", "unit": "NOT_APPLICABLE"}, "translation_fn": {"name": "enum_map", "params": {"table": {"g_low": "l3", "g_top": "l4"}}}, "transport_fidelity": "lossless", "value_domain_relation": {"orientation": "subject_to_object", "relation": "subset"}}
+  EX= veredito UNPROVEN (bo.semantics.obligations; regras que falham: BN-PRED)
+  EX| {"anchors": [{"claim_id": "ANC-BRF-pa-01", "evidence_state": "STRUCTURALLY_VALID"}, {"claim_id": "ANC-BRF-pb-01", "evidence_state": "STRUCTURALLY_VALID"}], "basis": "shared_concept", "claim_id": "CLM-BRF-BAD-03", "claim_version_id": "CLM-BRF-BAD-03@1", "creator_id": "MAP-EXEMPLO", "event_id": "EV-CLM-BRF-BAD-03-1", "evidence_state": "DOC_SUPPORTED", "guard": {"all": []}, "loss_contract": [{"kind": "saturation", "max": 365, "min": 1, "why": "o destino aceita no máximo 365 dias"}], "mapping_justification": "semapv:UnspecifiedMatching", "mapping_tool": "claude-opus-5-5", "object_concept": "concept:item_keep_period", "object_id": "pb:pb_gadget:keep_days", "object_value_type": {"datatype": "integer", "quantity_kind": "quantitykind:Time", "range": {"max": 365, "min": 1}, "unit": "unit:DAY"}, "predicate_id": "skos:exactMatch", "proof": {"evidence": [{"date": "2026-11-03", "sentence": "frase sintética de documentação que sustenta a alegação", "source": "fixture:doc-sintetica"}], "tests": [{"expected": 30, "input": 30}], "type": "normalization"}, "semantic_relation": "exact", "subject_concept": "concept:item_keep_period", "subject_id": "pa:pa_widget:keep_days", "subject_value_type": {"datatype": "integer", "quantity_kind": "quantitykind:Time", "range": {"max": 3650, "min": 1}, "unit": "unit:DAY"}, "translation_fn": {"name": "identity", "params": {}}, "transport_fidelity": "declared_loss", "value_domain_relation": {"orientation": "subject_to_object", "relation": "superset"}}
+  EX= veredito UNPROVEN (bo.semantics.obligations; regras que falham: ANCHOR-NOT-PROOF)
+  EX| {"basis": "direct", "claim_id": "CLM-BRF-BAD-04", "claim_version_id": "CLM-BRF-BAD-04@1", "creator_id": "MAP-EXEMPLO", "event_id": "EV-CLM-BRF-BAD-04-1", "evidence_state": "PERSISTENCE_VERIFIED", "guard": {"all": []}, "loss_contract": [{"kind": "saturation", "max": 365, "min": 1, "why": "o destino aceita no máximo 365 dias"}], "mapping_justification": "semapv:UnspecifiedMatching", "mapping_tool": "claude-opus-5-5", "object_concept": "concept:item_keep_period", "object_id": "pb:pb_gadget:keep_days", "object_value_type": {"datatype": "integer", "quantity_kind": "quantitykind:Time", "range": {"max": 365, "min": 1}, "unit": "unit:DAY"}, "predicate_id": "skos:exactMatch", "proof": {"evidence": [], "tests": [{"expected": 30, "input": 30}], "type": "normalization"}, "semantic_relation": "exact", "subject_concept": "concept:item_keep_period", "subject_id": "pa:pa_widget:keep_days", "subject_value_type": {"datatype": "integer", "quantity_kind": "quantitykind:Time", "range": {"max": 3650, "min": 1}, "unit": "unit:DAY"}, "translation_fn": {"name": "identity", "params": {}}, "transport_fidelity": "declared_loss", "value_domain_relation": {"orientation": "subject_to_object", "relation": "superset"}}
+  EX= veredito UNPROVEN (bo.semantics.obligations; regras que falham: EVIDENCE)
+Também: unknown == unknown não é prova (KIND-UNKNOWN); NOT_APPLICABLE (não há grandeza) ≠ UNKNOWN (há, mas não
+se sabe qual); janela de taxa e convenção de byte (IEC × SI) fazem parte do tipo; mês e ano não viram segundos
+sem contexto de calendário (TRANSFORM_OUT_OF_DOMAIN); ausência na origem com destino obrigatório é UNKNOWN_INPUT,
+nunca um padrão inventado. Composição só pela tabela formal (semantics/composition_table.json): close∘close e
+broad∘narrow não dão relação, guardas incompatíveis dão composição vazia, a fidelidade do composto é a pior das
+pernas e nenhuma composição promove evidência. O fecho OWL do SKOS (que infere exactMatch transitivo) nunca
+habilita transporte.
+
+5. ESCADA DE EVIDÊNCIA (§9.2)
+  UNRESOLVED < STRUCTURALLY_VALID < DOC_SUPPORTED < PERSISTENCE_VERIFIED < OBSERVATION_TESTED
+  UNRESOLVED            o resto; publicado como hipótese de alinhamento
+  STRUCTURALLY_VALID    bem formado, passa no árbitro; sozinho não sustenta exact
+  DOC_SUPPORTED         há sentença PUBLICADA (documentação na tag fixada, com repo, tag, arquivo e linha) que
+                        sustenta, com contraexemplo procurado; necessário para exact/close transportarem
+  PERSISTENCE_VERIFIED  o deploy confirmou que a API guardou o valor; só depois do deploy, nunca offline
+  OBSERVATION_TESTED    uma sonda observou o efeito sob protocolo, com controle negativo; só depois das sondas
+Leitura de volta é persistência; sonda é observação sob protocolo; nunca escreva "equivalente" sem o eixo.
+Dado publicado é separado de interpretação por modelo: sentença que você deduziu lendo prosa é
+evidence_level interpreted, extraction_method model e model_id claude-opus-5-5, e nunca chega a DOC_SUPPORTED.
+Julgamento de LLM nunca é verdade-terreno.
+
+PAPEL: AUDITOR DO GLOSSÁRIO
+A1. POR QUE ESTA AUDITORIA EXISTE (F4)
+Quem define conceito não mapeia, mas ancorar dois átomos no mesmo conceito já é mapear: átomo→conceito←átomo é a
+composição âncora_a ∘ inversa(âncora_b). O árbitro só aceita essa composição como exact quando as duas âncoras são
+DOC_SUPPORTED, e quem dá DOC_SUPPORTED é você. Se você aprova por nome parecido, o estudo inteiro herda o erro:
+glossário errado com a mesma grandeza passa no árbitro, no deploy e na leitura de volta. Calculado com âncoras
+sintéticas: as duas âncoras DOC_SUPPORTED com citação → COMPOSED como exact; uma âncora só STRUCTURALLY_VALID e sem citação → UNPROVEN
+
+A2. AUDITE CADA ALEGAÇÃO ÁTOMO→CONCEITO (uma linha de glossary_audit.jsonl por checagem)
+Para cada versão de âncora (claims.jsonl dos glossários), registre as checagens do C20 (campo check):
+- evidence_support: a sentença existe na documentação da tag fixada (source: repo, tag, arquivo, linha) e sustenta
+  ESTE conceito, não um vizinho. Confira no fato de documentação; não confie no texto copiado na âncora.
+- counterexample: refaça a busca (query própria, não só a do glossarista) por uso com outro significado; mesma
+  grandeza, conceitos diferentes é o caso típico (esperar depois de escalar × aquecer antes de medir; dias de
+  retenção × número de cópias retidas).
+- indirect_anchor: para cada par de âncoras de provedores diferentes no mesmo conceito, a correspondência implícita:
+  mesma grandeza e unidade compatível, tipo de valor compatível, a definição serve aos dois, e o contraexemplo de um
+  lado não vale no outro. Se uma das âncoras não chega a DOC_SUPPORTED, a correspondência implícita fica UNPROVEN
+  (hipótese de alinhamento).
+- same_quantity_distinction: todo par de conceitos com a mesma grandeza tem decisão registrada (same_kind_distinct
+  ou merge) no decisions.jsonl do domínio; falta de decisão é fail (bo.glossary.same_kind_distinct).
+- no_test_in_train: tudo o que a âncora cita (átomo, unidade, sentença) está na projeção de treino.
+Audite também definições (gênero e diferença, sem token de provedor) e hierarquia (concept_id ⊂ related_concept em
+kind broader, sem ciclo, sem papel antirrígido acima de tipo rígido), registrando no note da checagem
+correspondente.
+
+A3. RESULTADO E ESTADO
+  result pass       + sentença publicada (evidence_level published ou derived) → evidence_state_after DOC_SUPPORTED
+  result unresolved → UNRESOLVED: a âncora é publicada como hipótese de alinhamento
+  result fail       → o estado não sobe; o note diz o que falhou (e, se for o caso, o contraexemplo achado)
+- Sentença com evidence_level interpreted (extraction_method model) nunca chega a DOC_SUPPORTED, por melhor que
+  pareça: precisa de sentença publicada. O model_id da âncora interpretada tem de estar lá.
+- PERSISTENCE_VERIFIED e OBSERVATION_TESTED não são seus: só depois de deploy e sondas, por código.
+- O registro cita a versão auditada (claim_id e claim_version_id que existem no claims.jsonl do glossário) e um
+  event_id novo (EV-AUDIT-<n>); evidence_state_before é o da versão auditada. Quem grava a versão nova da âncora
+  (@n+1, com supersedes e o estado depois) é o GLOSSARY-FREEZE, a partir do seu registro. Você não edita glossário.
+Exemplos sintéticos (C20 glossary_audit):
+  EX| {"at": "2026-11-03T09:00:00-03:00", "audit_id": "GA-BRF-0001", "auditor": "GLOSSARY-AUDIT", "check": "evidence_support", "claim_id": "ANC-BRF-pa-01", "claim_version_id": "ANC-BRF-pa-01@1", "event_id": "EV-AUDIT-BRF-0001", "evidence_state_after": "DOC_SUPPORTED", "evidence_state_before": "STRUCTURALLY_VALID", "note": "sentença publicada na tag fixada sustenta o conceito; contraexemplo procurado e não achado", "result": "pass"}
+  EX= C20 audit
+  EX| {"at": "2026-11-03T09:05:00-03:00", "audit_id": "GA-BRF-0002", "auditor": "GLOSSARY-AUDIT", "check": "indirect_anchor", "claim_id": "ANC-BRF-pb-01", "claim_version_id": "ANC-BRF-pb-01@1", "event_id": "EV-ANC-BRF-pb-01-1", "evidence_state_after": "UNRESOLVED", "evidence_state_before": "STRUCTURALLY_VALID", "note": "âncora interpretada por modelo: a alegação pa_widget:keep_days ↔ pb_gadget:keep_days que ela implica fica como hipótese de alinhamento até haver sentença publicada", "result": "unresolved"}
+  EX= C20 audit
+O que o GLOSSARY-FREEZE grava a partir do primeiro (versão nova, mesmo claim_id):
+  EX| {"atom_id": "pa:pa_widget:keep_days", "claim_id": "ANC-BRF-pa-01", "claim_version_id": "ANC-BRF-pa-01@2", "concept_id": "concept:item_keep_period", "context": "seção de argumentos do tipo sintético", "counterexample_search": {"found": false, "query": "keep days retain hold period", "result": "nenhum uso com outro significado no pacote"}, "event_id": "EV-AUDIT-BRF-0001", "evidence_level": "published", "evidence_state": "DOC_SUPPORTED", "extraction_method": "parser", "recorded_at": "2026-11-03T09:00:00-03:00", "sentence": "frase sintética: dias durante os quais o item é mantido", "source": {"file": "docs/widget.md", "line": 12, "repo": "example-org/provider-a-docs", "sentence": "frase sintética de documentação que sustenta o fato", "tag": "v1.0.0"}, "supersedes": "ANC-BRF-pa-01@1"}
+  EX= C20 anchor_claim
+
+A4. CONFERIR ANTES DO COMMIT
+  python -I -m bo.contracts.validate glossary <seu glossary_audit.jsonl>
+  python -I -m bo.glossary.audit_complete      (toda alegação tem estado, suporte e contraexemplo procurado)
+  python -I -m bo.glossary.same_kind_distinct  (pares com a mesma grandeza têm decisão)
+
+O QUE VOCÊ PODE LER (sandbox do bo-lane; fonte: briefs/read_allowlists.json, papel auditor)
+  $OWNS                                      o que é seu (código, testes, gate, resultados, dados do módulo)
+  $INPUTS                                    as entradas que o seu módulo declara no catálogo (inclui este brief)
+  $WT/briefs/AUDITOR_BRIEF.txt               este brief (também quando o catálogo não o lista como entrada do módulo)
+  $WT/src/                                   código do repositório (bibliotecas congeladas: bo.semantics, bo.contracts, bo.transforms...)
+  $WT/tools/                                 ferramentas comuns (gate_smoke, consume_check, provenance, lock...)
+  $WT/contracts/                             JSON Schema, stubs e regras dos contratos C00-C29
+  $WT/modules/                               retrato do catálogo e estado (STALE/CURRENT)
+  $WT/freeze/                                comprovantes de congelamento (só hashes)
+  $WT/Makefile                               infraestrutura do repositório (Makefile, convenções, lane, git)
+  $WT/pyproject.toml                         infraestrutura do repositório (Makefile, convenções, lane, git)
+  $WT/requirements.lock                      infraestrutura do repositório (Makefile, convenções, lane, git)
+  $WT/CONVENTIONS.html                       infraestrutura do repositório (Makefile, convenções, lane, git)
+  $WT/.bo/                                   infraestrutura do repositório (Makefile, convenções, lane, git)
+  $WT/.claude/                               infraestrutura do repositório (Makefile, convenções, lane, git)
+  $WT/.git                                   infraestrutura do repositório (Makefile, convenções, lane, git)
+  $WT/semantics/                             teoria das correspondências, tabela de composição e contraexemplos (SEMANTICS)
+  $WT/grain/                                 procedimento de grão canônico (mecânico, provisório até o GRAIN-REPRO)
+  $WT/ontology/patterns/naming_rules.yaml    regras de nome: tokens de provedor proibidos em rótulo e definição
+  $WT/domain/domain_contracts.yaml           contratos de domínio: identidade, dono, alcance, unidades de decisão
+  $BO_DATA/SPLIT/training_projection/        projeção de TREINO (o que pode ser citado); nunca a de teste
+  $BO_DATA/DOCS-*/docs_facts.jsonl           fatos de documentação por atributo, com nível (publicado/derivado/interpretado)
+  $BO_DATA/SCHEMA-*/atoms.jsonl              átomos dos schemas fixados (para conferir que o átomo citado existe)
+A lane soma, sempre: $BO_DATA/<ID> e $BO_TMP do seu módulo, $BO_DATA/locks/, o diretório comum do git, a cadeia
+de ferramentas (mise, git, gate-check) e o brief e o arquivo de gates do seu módulo no plano. O resto é negado
+para a ferramenta Read e para o Bash (sandbox-exec). Leitura negada quer dizer que o caminho não é seu: relate,
+não contorne (nada de git show, cópia por outro módulo ou caminho alternativo para ler o que o sandbox nega).
+
+PROIBIDO
+Para todos os papéis:
+- Nuvem: nenhuma conta, credencial, perfil, apply, plan autenticado, CLI de provedor nem leitura de ~/.aws,
+  ~/.config/gcloud, ~/.azure ou ~/.oci. Tudo neste papel é offline.
+- Ler a partição de teste (cifrada ou aberta), o ouro externo, oráculos, fixtures retidas, resultados de
+  avaliação e qualquer saída de outro papel que não esteja na sua lista de leitura.
+- Inventar: transformação, combinador ou operador de guarda fora do registro fechado; átomo que não está no
+  pacote ou no schema fixado; valor padrão; sentença de documentação; citação; grandeza.
+- Escrever fora do seu owns: nada em pacote de família (src/bo/glossary/, src/bo/map/, src/bo/nonehunt/,
+  src/bo/pilot/...), nada em contracts/, semantics/, transforms/, grain/, briefs/, prereg/.
+- Ajustar qualquer coisa para melhorar número, afrouxar ou trocar comando de gate. Achado contra a hipótese é
+  resultado.
+- Gravar id de conta, ARN, OCID, nome de recurso real, id de projeto, e-mail, valor da empresa, segredo,
+  variável de ambiente, UserData, log, conteúdo de objeto ou de mensagem (nem como hash).
+- Commit com atribuição (Co-Authored-By, menção a modelo, IA ou ferramenta), push, remoto, merge na sua branch.
+- Executar ou importar download; Python sem -I; usar /tmp (use $BO_TMP).
+Do seu papel:
+- Editar glossário, âncora ou decisão (você só registra auditoria); auditar glossário que você mesmo escreveu.
+- Atribuir PERSISTENCE_VERIFIED ou OBSERVATION_TESTED; promover sentença interpretada a DOC_SUPPORTED.
+- Aprovar por semelhança de nome ou por "todos os provedores têm algo assim".
+- Ler mapeamentos, candidatos, pacotes de mapeador ou a versão reconciliada.
+- Citar unidade fora da projeção de treino.
+
+COMO RODAR OS SEUS GATES (despachantes de família e pacote próprio)
+Os gates do catálogo chamam comandos de família, como python -I -m bo.glossary.audit_complete. O pacote de família é do
+coordenador e só despacha: o despachante (src/bo/_dispatch.py) descobre o módulo-alvo (o ID nos argumentos,
+senão BO_ID, senão o nome da pasta de $BO_TMP) e executa bo.<seu pacote>.<comando>, em que o seu pacote é o
+primeiro src/bo/<pkg>/ do seu owns (sem ele, o ID em minúsculas com '-' trocado por '_'). Então:
+- implemente cada comando dos seus gates em src/bo/<seu pacote>/<comando>.py com main(argv) -> int
+  (0 = passou; diferente de 0 = reprovou, com o motivo impresso);
+- nunca escreva em src/bo/<família>/: se o despachante disser "ainda não implementa", o que falta é o seu
+  comando, não o despachante;
+- bibliotecas congeladas de outros módulos (bo.semantics, bo.contracts, bo.transforms, bo.arbiter, bo.grain)
+  são importadas, nunca copiadas nem editadas.
+Comandos de família do seu papel: bo.glossary.audit_complete, bo.glossary.same_kind_distinct (viram bo.glossary_audit.<comando>; sem ID nos
+argumentos, o despachante usa BO_ID).
+Rode sempre com o ambiente da lane (source .bo/lane.env) e Python com -I. Antes de começar e de novo no fim:
+python -I $BO_REPO/tools/consume_check.py <ID>; se reprovar, pare e relate (entrada congelada mudou).
+
+PROVENIÊNCIA A PREENCHER (C17; vai para results/<ID>/summary.json, nunca para o commit)
+- model_id: claude-opus-5-5 (padrão do tools/provenance.py; nunca outro modelo, nunca Fable).
+- brief_sha256: o sha256 do brief de lançamento do seu módulo (passado em --brief). O sha deste brief de papel
+  vai em --param role_brief_sha256, copiado da linha AUDITOR_BRIEF.txt de briefs/MANIFEST.sha256.
+- params: --param role=auditor --param role_brief=briefs/AUDITOR_BRIEF.txt --param role_brief_version=1.0.0
+  --param role_brief_sha256=<sha> e mais: --param glossaries=<CMP,NET,STO,DB,SEC,OPS>, --param claims_audited_n=<n>, --param pass_n=<n>,
+  --param fail_n=<n>, --param unresolved_n=<n>, --param interpreted_n=<n>
+- entradas: as do catálogo (o provenance.py grava o sha256 de cada uma); não passe --input para esconder entrada.
+- comando:
+  python -I $BO_REPO/tools/provenance.py record <ID> --brief <brief de lançamento do módulo> \
+    --param role=auditor --param role_brief=briefs/AUDITOR_BRIEF.txt --param role_brief_version=1.0.0 \
+    --param role_brief_sha256=<sha> ...
+  python -I $BO_REPO/tools/provenance.py verify <ID>
+- por registro: auditor = GLOSSARY-AUDIT em todo registro; at com fuso -03:00; note com o motivo de todo fail e unresolved.
+
+NUVEM
+Proibida nesta etapa (decisão do Breno). Nenhum módulo deste papel toca conta de nuvem, nenhum apply, nenhuma
+credencial; se uma tarefa parecer exigir nuvem, pare e relate.
+
+RELATÓRIO FINAL (≤ 10 linhas, com timestamp America/Recife)
+O que foi produzido (caminhos), a saída de cada gate, os números agregados (contagens, não exemplos com nome
+real), os desvios deste brief (com o porquê) e o que o próximo módulo precisa saber. Se algo do contrato estiver
+errado ou faltando, grave results/<ID>/CONTRACT_CHANGE.txt com a mudança proposta e pare.

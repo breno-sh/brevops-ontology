@@ -1,0 +1,69 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "BRIEFS",
+ "generated_at": "2026-11-03T17:42:00-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/BRIEFS.txt",
+  "brief_sha256": "85e2d5b47dce4600573ca8783f9c911218b915cd93742a7a294cae598081e03c",
+  "params": {
+   "effort": "maximo",
+   "modo": "unlazy",
+   "onda": "6",
+   "fase": "F1",
+   "brief_version": "1.0.0",
+   "frozen_at": "2026-11-03T08:00:00-03:00",
+   "examples": "13",
+   "semantics_reference": "bo.semantics.obligations",
+   "c09": "3.0.1",
+   "c20": "3.0.0"
+  },
+  "inputs": [
+   {
+    "path": "$BO_REPO/contracts",
+    "kind": "dir",
+    "sha256": "999f2a2f0445b22ddbda929a15ec8e7fe029ef775ed4f3db44e3d0756eca7b31"
+   },
+   {
+    "path": "$BO_REPO/transforms/transforms.yaml",
+    "kind": "file",
+    "sha256": "93a32350718f56fa8a832943083bfbe47f45681c5ac9dd92252d6564d0540921"
+   },
+   {
+    "path": "$BO_REPO/ontology/patterns/ONTPAT.html",
+    "kind": "file",
+    "sha256": "c0e2b37b55e8ed933201d5f72787cf3c8ac9080e97b6c1e913454b858e5a9369"
+   },
+   {
+    "path": "$BO_REPO/prereg/PREREG.html",
+    "kind": "file",
+    "sha256": "6eeb9b18a5d9512db88fe0c263413b2a5ff3a0a29259fe315a7d2c4a05a65e73"
+   },
+   {
+    "path": "$BO_REPO/grain/GRAIN.html",
+    "kind": "file",
+    "sha256": "ae75e3f2468f96a660415cd305e6b19757e93bf21948310e917360e2d3754b0b"
+   },
+   {
+    "path": "$BO_REPO/semantics/SEMANTICS.html",
+    "kind": "file",
+    "sha256": "28f849eb578fea685935a2499cd13710e8a96b6cd01e4bc34419ae0e51f29596"
+   }
+  ],
+  "recorded_at": "2026-11-03T17:42:00-03:00"
+ },
+ "sources": [
+  {
+   "uri": "https://www.w3.org/TR/skos-reference/",
+   "license": "W3C Document License",
+   "transformation": "direção de broadMatch/narrowMatch citada e conferida pelo bo.semantics (fecho com o core.rdf fixado)"
+  },
+  {
+   "uri": "https://mapping-commons.github.io/sssom/",
+   "license": "CC0-1.0",
+   "transformation": "convenção sssom:NoTermFound e slots padrão (curation_rule, see_also) usados para a ausência tipada"
+  }
+ ]
+}

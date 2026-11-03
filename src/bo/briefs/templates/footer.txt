@@ -1,0 +1,63 @@
+O QUE VOCÊ PODE LER (sandbox do bo-lane; fonte: briefs/read_allowlists.json, papel {{ROLE}})
+{{READ_LIST}}
+A lane soma, sempre: $BO_DATA/<ID> e $BO_TMP do seu módulo, $BO_DATA/locks/, o diretório comum do git, a cadeia
+de ferramentas (mise, git, gate-check) e o brief e o arquivo de gates do seu módulo no plano. O resto é negado
+para a ferramenta Read e para o Bash (sandbox-exec). Leitura negada quer dizer que o caminho não é seu: relate,
+não contorne (nada de git show, cópia por outro módulo ou caminho alternativo para ler o que o sandbox nega).
+
+PROIBIDO
+Para todos os papéis:
+- Nuvem: nenhuma conta, credencial, perfil, apply, plan autenticado, CLI de provedor nem leitura de ~/.aws,
+  ~/.config/gcloud, ~/.azure ou ~/.oci. Tudo neste papel é offline.
+- Ler a partição de teste (cifrada ou aberta), o ouro externo, oráculos, fixtures retidas, resultados de
+  avaliação e qualquer saída de outro papel que não esteja na sua lista de leitura.
+- Inventar: transformação, combinador ou operador de guarda fora do registro fechado; átomo que não está no
+  pacote ou no schema fixado; valor padrão; sentença de documentação; citação; grandeza.
+- Escrever fora do seu owns: nada em pacote de família (src/bo/glossary/, src/bo/map/, src/bo/nonehunt/,
+  src/bo/pilot/...), nada em contracts/, semantics/, transforms/, grain/, briefs/, prereg/.
+- Ajustar qualquer coisa para melhorar número, afrouxar ou trocar comando de gate. Achado contra a hipótese é
+  resultado.
+- Gravar id de conta, ARN, OCID, nome de recurso real, id de projeto, e-mail, valor da empresa, segredo,
+  variável de ambiente, UserData, log, conteúdo de objeto ou de mensagem (nem como hash).
+- Commit com atribuição (Co-Authored-By, menção a modelo, IA ou ferramenta), push, remoto, merge na sua branch.
+- Executar ou importar download; Python sem -I; usar /tmp (use $BO_TMP).
+Do seu papel:
+{{FORBID_ROLE}}
+
+COMO RODAR OS SEUS GATES (despachantes de família e pacote próprio)
+Os gates do catálogo chamam comandos de família, como {{DISPATCH_EXAMPLE}}. O pacote de família é do
+coordenador e só despacha: o despachante (src/bo/_dispatch.py) descobre o módulo-alvo (o ID nos argumentos,
+senão BO_ID, senão o nome da pasta de $BO_TMP) e executa bo.<seu pacote>.<comando>, em que o seu pacote é o
+primeiro src/bo/<pkg>/ do seu owns (sem ele, o ID em minúsculas com '-' trocado por '_'). Então:
+- implemente cada comando dos seus gates em src/bo/<seu pacote>/<comando>.py com main(argv) -> int
+  (0 = passou; diferente de 0 = reprovou, com o motivo impresso);
+- nunca escreva em src/bo/<família>/: se o despachante disser "ainda não implementa", o que falta é o seu
+  comando, não o despachante;
+- bibliotecas congeladas de outros módulos (bo.semantics, bo.contracts, bo.transforms, bo.arbiter, bo.grain)
+  são importadas, nunca copiadas nem editadas.
+Comandos de família do seu papel: {{DISPATCH_CMDS}}
+Rode sempre com o ambiente da lane (source .bo/lane.env) e Python com -I. Antes de começar e de novo no fim:
+python -I $BO_REPO/tools/consume_check.py <ID>; se reprovar, pare e relate (entrada congelada mudou).
+
+PROVENIÊNCIA A PREENCHER (C17; vai para results/<ID>/summary.json, nunca para o commit)
+- model_id: claude-opus-5-5 (padrão do tools/provenance.py; nunca outro modelo, nunca Fable).
+- brief_sha256: o sha256 do brief de lançamento do seu módulo (passado em --brief). O sha deste brief de papel
+  vai em --param role_brief_sha256, copiado da linha {{BRIEF_FILE}} de briefs/MANIFEST.sha256.
+- params: --param role={{ROLE}} --param role_brief=briefs/{{BRIEF_FILE}} --param role_brief_version={{VERSION}}
+  --param role_brief_sha256=<sha> e mais: {{PROV_PARAMS}}
+- entradas: as do catálogo (o provenance.py grava o sha256 de cada uma); não passe --input para esconder entrada.
+- comando:
+  python -I $BO_REPO/tools/provenance.py record <ID> --brief <brief de lançamento do módulo> \
+    --param role={{ROLE}} --param role_brief=briefs/{{BRIEF_FILE}} --param role_brief_version={{VERSION}} \
+    --param role_brief_sha256=<sha> ...
+  python -I $BO_REPO/tools/provenance.py verify <ID>
+- por registro: {{PROV_RECORD}}
+
+NUVEM
+Proibida nesta etapa (decisão do Breno). Nenhum módulo deste papel toca conta de nuvem, nenhum apply, nenhuma
+credencial; se uma tarefa parecer exigir nuvem, pare e relate.
+
+RELATÓRIO FINAL (≤ 10 linhas, com timestamp America/Recife)
+O que foi produzido (caminhos), a saída de cada gate, os números agregados (contagens, não exemplos com nome
+real), os desvios deste brief (com o porquê) e o que o próximo módulo precisa saber. Se algo do contrato estiver
+errado ou faltando, grave results/<ID>/CONTRACT_CHANGE.txt com a mudança proposta e pare.

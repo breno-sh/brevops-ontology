@@ -1,0 +1,90 @@
+# curie_map:
+#   bo: https://w3id.org/brevops/ontology#
+#   bosx: https://w3id.org/brevops/sssom-ext#
+#   concept: https://w3id.org/brevops/glossary#
+#   pa: https://example.org/provider-a/
+#   pb: https://example.org/provider-b/
+#   pc: https://example.org/provider-c/
+#   semapv: https://w3id.org/semapv/vocab/
+#   skos: http://www.w3.org/2004/02/skos/core#
+#   sssom: https://w3id.org/sssom/
+# extension_definitions:
+# - property: bosx:claimId
+#   slot_name: claim_id
+#   type_hint: http://www.w3.org/2001/XMLSchema#string
+# - property: bosx:claimVersionId
+#   slot_name: claim_version_id
+#   type_hint: http://www.w3.org/2001/XMLSchema#string
+# - property: bosx:eventId
+#   slot_name: event_id
+#   type_hint: http://www.w3.org/2001/XMLSchema#string
+# - property: bosx:semanticRelation
+#   slot_name: semantic_relation
+#   type_hint: http://www.w3.org/2001/XMLSchema#string
+# - property: bosx:valueDomainRelation
+#   slot_name: value_domain_relation
+#   type_hint: http://www.w3.org/2001/XMLSchema#string
+# - property: bosx:transportFidelity
+#   slot_name: transport_fidelity
+#   type_hint: http://www.w3.org/2001/XMLSchema#string
+# - property: bosx:guard
+#   slot_name: guard
+#   type_hint: http://www.w3.org/2001/XMLSchema#string
+# - property: bosx:translationFn
+#   slot_name: translation_fn
+#   type_hint: http://www.w3.org/2001/XMLSchema#string
+# - property: bosx:lossContract
+#   slot_name: loss_contract
+#   type_hint: http://www.w3.org/2001/XMLSchema#string
+# - property: bosx:membershipPredicate
+#   slot_name: membership_predicate
+#   type_hint: http://www.w3.org/2001/XMLSchema#string
+# - property: bosx:projection
+#   slot_name: projection
+#   type_hint: http://www.w3.org/2001/XMLSchema#string
+# - property: bosx:boGroupId
+#   slot_name: bo_group_id
+#   type_hint: http://www.w3.org/2001/XMLSchema#string
+# - property: bosx:group
+#   slot_name: group
+#   type_hint: http://www.w3.org/2001/XMLSchema#string
+# - property: bosx:proof
+#   slot_name: proof
+#   type_hint: http://www.w3.org/2001/XMLSchema#string
+# - property: bosx:evidenceState
+#   slot_name: evidence_state
+#   type_hint: http://www.w3.org/2001/XMLSchema#string
+# - property: bosx:basis
+#   slot_name: basis
+#   type_hint: http://www.w3.org/2001/XMLSchema#string
+# - property: bosx:subjectConcept
+#   slot_name: subject_concept
+#   type_hint: http://www.w3.org/2001/XMLSchema#string
+# - property: bosx:objectConcept
+#   slot_name: object_concept
+#   type_hint: http://www.w3.org/2001/XMLSchema#string
+# - property: bosx:subjectValueType
+#   slot_name: subject_value_type
+#   type_hint: http://www.w3.org/2001/XMLSchema#string
+# - property: bosx:objectValueType
+#   slot_name: object_value_type
+#   type_hint: http://www.w3.org/2001/XMLSchema#string
+# - property: bosx:alternativeTo
+#   slot_name: alternative_to
+#   type_hint: http://www.w3.org/2001/XMLSchema#string
+# - property: bosx:exclusivity
+#   slot_name: exclusivity
+#   type_hint: http://www.w3.org/2001/XMLSchema#string
+# license: https://creativecommons.org/publicdomain/zero/1.0/
+# mapping_set_id: https://example.org/mapping-set/briefs-exemplos
+subject_id	predicate_id	object_id	mapping_justification	claim_id	claim_version_id	event_id	semantic_relation	value_domain_relation	transport_fidelity	guard	translation_fn	loss_contract	membership_predicate	projection	bo_group_id	group	proof	evidence_state	basis	subject_concept	object_concept	subject_value_type	object_value_type	alternative_to	exclusivity	creator_id	mapping_tool	curation_rule	comment
+pa:pa_widget:keep_days	skos:exactMatch	pb:pb_gadget:keep_days	semapv:UnspecifiedMatching	CLM-BRF-EXACT-01	CLM-BRF-EXACT-01@1	EV-CLM-BRF-EXACT-01-1	exact	"{""orientation"": ""subject_to_object"", ""relation"": ""superset""}"	declared_loss	"{""all"": []}"	"{""name"": ""identity"", ""params"": {}}"	"[{""kind"": ""saturation"", ""max"": 365, ""min"": 1, ""why"": ""o destino aceita no máximo 365 dias""}]"					"{""evidence"": [{""date"": ""2026-11-03"", ""sentence"": ""frase sintética de documentação que sustenta a alegação"", ""source"": ""fixture:doc-sintetica""}], ""tests"": [{""expected"": 30, ""input"": 30}], ""type"": ""normalization""}"	DOC_SUPPORTED	direct	concept:item_keep_period	concept:item_keep_period	"{""datatype"": ""integer"", ""quantity_kind"": ""quantitykind:Time"", ""range"": {""max"": 3650, ""min"": 1}, ""unit"": ""unit:DAY""}"	"{""datatype"": ""integer"", ""quantity_kind"": ""quantitykind:Time"", ""range"": {""max"": 365, ""min"": 1}, ""unit"": ""unit:DAY""}"			MAP-EXEMPLO	claude-opus-5-5		
+pa:pa_widget:grade	skos:broadMatch	pb:pb_gadget:level	semapv:UnspecifiedMatching	CLM-BRF-BROAD-01	CLM-BRF-BROAD-01@1	EV-CLM-BRF-BROAD-01-1	broad	"{""orientation"": ""subject_to_object"", ""relation"": ""subset""}"	lossless	"{""all"": []}"	"{""name"": ""enum_map"", ""params"": {""table"": {""g_low"": ""l3"", ""g_top"": ""l4""}}}"	[]	"{""expr"": {""op"": ""in"", ""values"": [""l3"", ""l4""]}, ""subset"": ""subject"", ""tests"": {""members"": [""l4""], ""non_members"": [""l1""]}}"				"{""evidence"": [{""date"": ""2026-11-03"", ""sentence"": ""frase sintética de documentação que sustenta a alegação"", ""source"": ""fixture:doc-sintetica""}], ""tests"": [{""expected"": ""l4"", ""input"": ""g_top""}, {""expected"": ""l3"", ""input"": ""g_low""}], ""type"": ""membership""}"	DOC_SUPPORTED	direct	concept:item_grade	concept:item_level	"{""datatype"": ""enum"", ""enum"": [""g_low"", ""g_top""], ""quantity_kind"": ""NOT_APPLICABLE"", ""unit"": ""NOT_APPLICABLE""}"	"{""datatype"": ""enum"", ""enum"": [""l1"", ""l2"", ""l3"", ""l4""], ""quantity_kind"": ""NOT_APPLICABLE"", ""unit"": ""NOT_APPLICABLE""}"			MAP-EXEMPLO	claude-opus-5-5		
+pa:pa_widget:min_level	skos:narrowMatch	pb:pb_gadget:level_policy	semapv:UnspecifiedMatching	CLM-BRF-NARROW-01	CLM-BRF-NARROW-01@1	EV-CLM-BRF-NARROW-01-1	narrow	"{""orientation"": ""subject_to_object"", ""relation"": ""superset""}"	partial	"{""all"": []}"	"{""name"": ""enum_map"", ""params"": {""table"": {""v3"": ""q3"", ""v4"": ""q4""}}}"	[]	"{""expr"": {""op"": ""in"", ""values"": [""v3"", ""v4""]}, ""subset"": ""object"", ""tests"": {""members"": [""v3""], ""non_members"": [""v1""]}}"				"{""evidence"": [{""date"": ""2026-11-03"", ""sentence"": ""frase sintética de documentação que sustenta a alegação"", ""source"": ""fixture:doc-sintetica""}], ""tests"": [{""expected"": ""q3"", ""input"": ""v3""}], ""type"": ""membership""}"	DOC_SUPPORTED	direct	concept:item_min_level	concept:item_min_level_strict	"{""datatype"": ""enum"", ""enum"": [""v1"", ""v2"", ""v3"", ""v4""], ""quantity_kind"": ""NOT_APPLICABLE"", ""unit"": ""NOT_APPLICABLE""}"	"{""datatype"": ""enum"", ""enum"": [""q3"", ""q4""], ""quantity_kind"": ""NOT_APPLICABLE"", ""unit"": ""NOT_APPLICABLE""}"			MAP-EXEMPLO	claude-opus-5-5		
+pa:pa_widget:speed	skos:closeMatch	pb:pb_gadget:pace	semapv:UnspecifiedMatching	CLM-BRF-CLOSE-01	CLM-BRF-CLOSE-01@1	EV-CLM-BRF-CLOSE-01-1	close	"{""orientation"": ""subject_to_object"", ""relation"": ""equal""}"	declared_loss	"{""all"": []}"	"{""name"": ""enum_map"", ""params"": {""table"": {""fast"": ""quick"", ""medium"": ""calm"", ""slow"": ""calm""}}}"	"[{""kind"": ""semantic"", ""values"": [""medium"", ""slow""], ""what"": ""médio e lento caem no mesmo valor""}]"					"{""evidence"": [{""date"": ""2026-11-03"", ""sentence"": ""frase sintética de documentação que sustenta a alegação"", ""source"": ""fixture:doc-sintetica""}], ""tests"": [{""expected"": ""quick"", ""input"": ""fast""}, {""expected"": ""calm"", ""input"": ""slow""}], ""type"": ""declared_loss""}"	DOC_SUPPORTED	direct	concept:item_speed	concept:item_speed	"{""datatype"": ""enum"", ""enum"": [""fast"", ""medium"", ""slow""], ""quantity_kind"": ""NOT_APPLICABLE"", ""unit"": ""NOT_APPLICABLE""}"	"{""datatype"": ""enum"", ""enum"": [""quick"", ""calm""], ""quantity_kind"": ""NOT_APPLICABLE"", ""unit"": ""NOT_APPLICABLE""}"			MAP-EXEMPLO	claude-opus-5-5		
+pa:pa_widget:note	skos:relatedMatch	pb:pb_gadget:label	semapv:UnspecifiedMatching	CLM-BRF-RELATED-01	CLM-BRF-RELATED-01@1	EV-CLM-BRF-RELATED-01-1	related	"{""orientation"": ""subject_to_object"", ""relation"": ""unknown""}"	none	"{""all"": []}"		[]					"{""evidence"": [{""date"": ""2026-11-03"", ""sentence"": ""frase sintética de documentação que sustenta a alegação"", ""source"": ""fixture:doc-sintetica""}], ""tests"": [], ""type"": ""none""}"	DOC_SUPPORTED	direct	concept:item_note	concept:item_label	"{""datatype"": ""string"", ""quantity_kind"": ""NOT_APPLICABLE"", ""unit"": ""NOT_APPLICABLE""}"	"{""datatype"": ""string"", ""quantity_kind"": ""NOT_APPLICABLE"", ""unit"": ""NOT_APPLICABLE""}"			MAP-EXEMPLO	claude-opus-5-5		
+pa:pa_widget:spin_rate	skos:relatedMatch	sssom:NoTermFound	semapv:UnspecifiedMatching	CLM-BRF-NONE-01	CLM-BRF-NONE-01@1	EV-CLM-BRF-NONE-01-1	related	"{""orientation"": ""subject_to_object"", ""relation"": ""unknown""}"	none	"{""all"": []}"		[]					"{""evidence"": [{""date"": ""2026-11-03"", ""sentence"": ""nenhum atributo nem subgrafo do pacote realiza a decisão"", ""source"": ""fixture:pacote-sintetico#pb_gadget""}], ""tests"": [], ""type"": ""absence""}"	STRUCTURALLY_VALID	direct	concept:item_spin_rate	bo:UNGLOSSED	"{""datatype"": ""integer"", ""quantity_kind"": ""quantitykind:Frequency"", ""unit"": ""unit:HZ""}"				MAP-EXEMPLO	claude-opus-5-5	bo:NONE_ABSENCE_DEMONSTRATED	procurados no pacote: atributos do tipo pb_gadget e vizinhos por referência; nenhum realiza a decisão
+pa:pa_widget:mode	skos:exactMatch	pb:pb_gadget:mode	semapv:UnspecifiedMatching	CLM-BRF-ALT-STD	CLM-BRF-ALT-STD@1	EV-CLM-BRF-ALT-STD-1	exact	"{""orientation"": ""subject_to_object"", ""relation"": ""equal""}"	lossless	"{""all"": [{""op"": ""edition_in"", ""term"": ""object.edition"", ""value"": [""standard""]}]}"	"{""name"": ""identity"", ""params"": {}}"	[]					"{""evidence"": [{""date"": ""2026-11-03"", ""sentence"": ""frase sintética de documentação que sustenta a alegação"", ""source"": ""fixture:doc-sintetica""}], ""tests"": [{""expected"": ""on"", ""input"": ""on""}], ""type"": ""normalization""}"	DOC_SUPPORTED	direct	concept:item_mode	concept:item_mode	"{""datatype"": ""enum"", ""enum"": [""on"", ""off""], ""quantity_kind"": ""NOT_APPLICABLE"", ""unit"": ""NOT_APPLICABLE""}"	"{""datatype"": ""enum"", ""enum"": [""on"", ""off""], ""quantity_kind"": ""NOT_APPLICABLE"", ""unit"": ""NOT_APPLICABLE""}"	"[""CLM-BRF-ALT-PREM""]"	ProvenExclusive	MAP-EXEMPLO	claude-opus-5-5		
+pa:pa_widget:mode	skos:exactMatch	pb:pb_gizmo:mode	semapv:UnspecifiedMatching	CLM-BRF-ALT-PREM	CLM-BRF-ALT-PREM@1	EV-CLM-BRF-ALT-PREM-1	exact	"{""orientation"": ""subject_to_object"", ""relation"": ""equal""}"	lossless	"{""all"": [{""op"": ""edition_in"", ""term"": ""object.edition"", ""value"": [""premium""]}]}"	"{""name"": ""identity"", ""params"": {}}"	[]					"{""evidence"": [{""date"": ""2026-11-03"", ""sentence"": ""frase sintética de documentação que sustenta a alegação"", ""source"": ""fixture:doc-sintetica""}], ""tests"": [{""expected"": ""off"", ""input"": ""off""}], ""type"": ""normalization""}"	DOC_SUPPORTED	direct	concept:item_mode	concept:item_mode	"{""datatype"": ""enum"", ""enum"": [""on"", ""off""], ""quantity_kind"": ""NOT_APPLICABLE"", ""unit"": ""NOT_APPLICABLE""}"	"{""datatype"": ""enum"", ""enum"": [""on"", ""off""], ""quantity_kind"": ""NOT_APPLICABLE"", ""unit"": ""NOT_APPLICABLE""}"	"[""CLM-BRF-ALT-STD""]"	ProvenExclusive	MAP-EXEMPLO	claude-opus-5-5		
+pa:pa_widget	skos:exactMatch	pb:pb_gadget	semapv:UnspecifiedMatching	CLM-BRF-GROUP-01	CLM-BRF-GROUP-01@1	EV-CLM-BRF-GROUP-01-1	exact	"{""orientation"": ""subject_to_object"", ""relation"": ""equal""}"	lossless	"{""all"": []}"		[]			GRP-BRF-01	"{""bo_group_id"": ""GRP-BRF-01"", ""cardinality"": ""N:M"", ""joins"": [{""left"": ""?f"", ""right"": ""?w"", ""via"": ""facet_of""}], ""occurrence_vars"": [""?w"", ""?f"", ""?g""], ""steps"": [{""inputs"": {""value"": ""?color""}, ""name"": ""identity"", ""outputs"": {""value"": ""?color_b""}}, {""inputs"": {""value"": ""?shade""}, ""name"": ""identity"", ""outputs"": {""value"": ""?shade_b""}}], ""variables"": [{""field"": ""pa:pa_widget.color"", ""name"": ""?color"", ""occurrence"": ""?w"", ""side"": ""subject""}, {""field"": ""pa:pa_widget.finish.shade"", ""name"": ""?shade"", ""occurrence"": ""?f"", ""side"": ""subject""}, {""field"": ""pb:pb_gadget.look.color"", ""name"": ""?color_b"", ""occurrence"": ""?g"", ""side"": ""object""}, {""field"": ""pb:pb_gadget.look.shade"", ""name"": ""?shade_b"", ""occurrence"": ""?g"", ""side"": ""object""}]}"	"{""evidence"": [{""date"": ""2026-11-03"", ""sentence"": ""frase sintética de documentação que sustenta a alegação"", ""source"": ""fixture:doc-sintetica""}], ""tests"": [{""expected"": {""?color_b"": ""c1"", ""?shade_b"": ""s2""}, ""input"": {""?color"": ""c1"", ""?shade"": ""s2""}}], ""type"": ""group_execution""}"	DOC_SUPPORTED	direct	bo:UNGLOSSED	bo:UNGLOSSED	"{""components"": [{""name"": ""color"", ""type"": {""datatype"": ""string"", ""quantity_kind"": ""NOT_APPLICABLE"", ""unit"": ""NOT_APPLICABLE""}}, {""name"": ""shade"", ""type"": {""datatype"": ""string"", ""quantity_kind"": ""NOT_APPLICABLE"", ""unit"": ""NOT_APPLICABLE""}}], ""datatype"": ""tuple"", ""quantity_kind"": ""NOT_APPLICABLE"", ""unit"": ""NOT_APPLICABLE""}"	"{""components"": [{""name"": ""color"", ""type"": {""datatype"": ""string"", ""quantity_kind"": ""NOT_APPLICABLE"", ""unit"": ""NOT_APPLICABLE""}}, {""name"": ""shade"", ""type"": {""datatype"": ""string"", ""quantity_kind"": ""NOT_APPLICABLE"", ""unit"": ""NOT_APPLICABLE""}}], ""datatype"": ""tuple"", ""quantity_kind"": ""NOT_APPLICABLE"", ""unit"": ""NOT_APPLICABLE""}"			MAP-EXEMPLO	claude-opus-5-5		
+pa:pa_widget:settings_doc	skos:exactMatch	pb:pb_gadget:alpha	semapv:UnspecifiedMatching	CLM-BRF-PROJ-01	CLM-BRF-PROJ-01@1	EV-CLM-BRF-PROJ-01-1	exact	"{""orientation"": ""subject_to_object"", ""relation"": ""unknown""}"	partial	"{""all"": []}"	"{""name"": ""json_get"", ""params"": {""key"": ""alpha""}}"	[]		"[{""concept"": ""concept:item_alpha"", ""extractor"": {""name"": ""json_get"", ""params"": {""key"": ""alpha""}}, ""field"": ""pa:pa_widget.settings_doc"", ""occurrence"": {""scope"": ""resource""}, ""projection_id"": ""PRJ-BRF-alpha"", ""tests"": [{""expected"": ""x1"", ""input"": ""{\""alpha\"": \""x1\"", \""beta\"": 5}""}], ""type"": {""datatype"": ""string""}}, {""concept"": ""concept:item_beta"", ""extractor"": {""name"": ""json_get"", ""params"": {""key"": ""beta""}}, ""field"": ""pa:pa_widget.settings_doc"", ""occurrence"": {""scope"": ""resource""}, ""projection_id"": ""PRJ-BRF-beta"", ""tests"": [{""expected"": 5, ""input"": ""{\""alpha\"": \""x1\"", \""beta\"": 5}""}], ""type"": {""datatype"": ""integer"", ""quantity_kind"": ""quantitykind:Count"", ""range"": {""max"": 100, ""min"": 1}, ""unit"": ""unit:NUM""}}, {""concept"": ""concept:part_size"", ""extractor"": {""name"": ""identity""}, ""field"": ""pa:pa_widget.part.size"", ""occurrence"": {""key_fields"": [""name""], ""scope"": ""block""}, ""projection_id"": ""PRJ-BRF-part"", ""tests"": [{""expected"": 4, ""input"": 4}], ""type"": {""datatype"": ""integer"", ""quantity_kind"": ""quantitykind:Count"", ""range"": {""max"": 64, ""min"": 1}, ""unit"": ""unit:NUM""}}]"			"{""evidence"": [{""date"": ""2026-11-03"", ""sentence"": ""frase sintética de documentação que sustenta a alegação"", ""source"": ""fixture:doc-sintetica""}], ""tests"": [{""expected"": ""x1"", ""input"": {""alpha"": ""x1"", ""beta"": 5}}], ""type"": ""normalization""}"	DOC_SUPPORTED	direct	concept:item_alpha	concept:item_alpha	"{""components"": [{""name"": ""alpha"", ""type"": {""datatype"": ""string"", ""quantity_kind"": ""NOT_APPLICABLE"", ""unit"": ""NOT_APPLICABLE""}}, {""name"": ""beta"", ""type"": {""datatype"": ""integer"", ""quantity_kind"": ""quantitykind:Count"", ""range"": {""max"": 100, ""min"": 1}, ""unit"": ""unit:NUM""}}], ""datatype"": ""tuple"", ""quantity_kind"": ""NOT_APPLICABLE"", ""unit"": ""NOT_APPLICABLE""}"	"{""datatype"": ""string"", ""quantity_kind"": ""NOT_APPLICABLE"", ""unit"": ""NOT_APPLICABLE""}"			MAP-EXEMPLO	claude-opus-5-5		

@@ -1,0 +1,2 @@
+{"concept_id": "concept:item_keep_period", "definition": "intervalo de tempo durante o qual um item é mantido antes de ser descartado", "domain": "OPS", "evidence_state": "STRUCTURALLY_VALID", "label": "período de guarda do item", "quantity_kind": "quantitykind:Time", "status": "active", "unit": "unit:DAY"}
+{"concept_id": "concept:item_grade", "definition": "classificação ordinal de um item por nível de serviço", "domain": "OPS", "evidence_state": "UNRESOLVED", "label": "grau do item", "quantity_kind": "NOT_APPLICABLE", "status": "active", "unit": "NOT_APPLICABLE"}
