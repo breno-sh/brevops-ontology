@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "DOCS-AWS",
- "generated_at": "2026-11-03T07:30:11-03:00",
+ "generated_at": "2026-11-03T17:38:43-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/DOCS-AWS.txt",
@@ -18,7 +18,7 @@
    "extracao": "parser+regex",
    "interpretacao": "nenhuma",
    "resolucao": "R1-R4",
-   "shared_blocks": "menor-profundidade+mapa",
+   "shared_blocks": "todos-os-caminhos(derived)+indice-auxiliar",
    "as_of_default": "2026-10-28",
    "cloud": "none",
    "network": "github-api-tree-da-tag",
@@ -41,7 +41,7 @@
     "sha256": "f060d45ed2640966363a245a9fc8fa105fcc3475e82b6220b90c5652de0c0826"
    }
   ],
-  "recorded_at": "2026-11-03T07:30:11-03:00"
+  "recorded_at": "2026-11-03T17:38:43-03:00"
  },
  "sources": [
   {
@@ -55,5 +55,5 @@
    "transformation": "atomizado por bo.schema.core para dar o atom_id"
   }
  ],
- "notes": "Fatos de documentação do aws 6.71.0. Números em results/DOCS-AWS/coverage.json; auditoria manual em audit_manual.json (rodada oficial: 59/60 corretos, Wilson 95% 91,1–99,7%; recall não medido). Achados: ForceNew aparece em só 0,65% dos átomos (o schema JSON não o expõe; a doc o declara pouco); 56% dos átomos têm descrição, e o que falta concentra-se em quicksight (37 mil átomos) e wafv2; 35 mil átomos de blocos repetidos estão só no shared_block_map.jsonl (ver CONTRACT_CHANGE.txt, não bloqueante); 6 tipos aws_alb_* são apelidos documentados nas páginas aws_lb_*; 1.042 itens da doc não resolvem num átomo (unresolved.jsonl). Sem modelo na extração (evidence_level só published/derived)."
+ "notes": "Fatos de documentação do aws 6.71.0. Números em results/DOCS-AWS/coverage.json; auditoria manual em audit_manual.json (rodada oficial: 59/60 corretos, Wilson 95% 91,1–99,7%; recall não medido). Achados: ForceNew aparece em só 0,65% dos átomos (o schema JSON não o expõe; a doc o declara pouco); 56% dos átomos têm descrição, e o que falta concentra-se em quicksight (37 mil átomos) e wafv2; os 35.242 átomos de blocos repetidos estão em docs_facts.jsonl como derived desde a decisão do coordenador de 03/11 (shared_block_map.jsonl é só índice); 6 tipos aws_alb_* são apelidos documentados nas páginas aws_lb_*; 1.042 itens da doc não resolvem num átomo (unresolved.jsonl). Sem modelo na extração (evidence_level só published/derived)."
 }

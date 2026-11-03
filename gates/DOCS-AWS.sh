@@ -18,9 +18,10 @@ $py -I -B -m pytest tests/docs_aws -q -p no:cacheprovider
 step "regeneração idêntica (\$BO_DATA/DOCS-AWS/* e results/DOCS-AWS/coverage.json saem só do código)"
 $py -I -B -m bo.docs_aws.build --check
 
-step "C03 docs_facts e C15 coverage pelo validador único"
+step "C03 docs_facts, C03 type_subcategory (3.1.0) e C15 coverage pelo validador único"
 $py -I -B -m bo.contracts.validate docs_facts "$BO_DATA/DOCS-AWS/docs_facts.jsonl" | tail -1
 $py -I -B -m bo.contracts.validate result results/DOCS-AWS/coverage.json | tail -1
+$py -I -B -m bo.contracts.validate type_subcategory "$BO_DATA/DOCS-AWS/type_subcategory.jsonl" | tail -1
 
 step "proveniência: toda sentença citada está no arquivo:linha da cópia conferida"
 $py -I -B -m bo.docs_aws.audit provenance

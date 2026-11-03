@@ -3,7 +3,7 @@
  "contract_version": "3.0.0",
  "data": {
   "atoms_configurable": 108266,
-  "atoms_only_via_shared_map": 35242,
+  "atoms_in_repeated_blocks": 35242,
   "atoms_total": 112893,
   "atoms_with_published": {
    "allowed_values": 2122,
@@ -30,46 +30,46 @@
    "unit": 1837
   },
   "atoms_with_stated_direct": {
-   "allowed_values": 2628,
-   "conflicts_with": 464,
-   "default": 5160,
+   "allowed_values": 24740,
+   "conflicts_with": 478,
+   "default": 7629,
    "deprecation": 69,
-   "description": 27826,
+   "description": 63066,
    "forces_replacement": 729,
-   "format": 3599,
-   "range": 905,
-   "required_when": 345,
-   "unit": 812
+   "format": 8215,
+   "range": 1796,
+   "required_when": 402,
+   "unit": 1837
   },
   "facts_by_kind_status_level": {
-   "allowed_values|stated|derived": 542,
+   "allowed_values|stated|derived": 24058,
    "allowed_values|stated|published": 2123,
-   "allowed_values|unknown|derived": 46,
+   "allowed_values|unknown|derived": 163,
    "allowed_values|unknown|published": 156,
-   "conflicts_with|stated|derived": 87,
+   "conflicts_with|stated|derived": 133,
    "conflicts_with|stated|published": 429,
-   "default|stated|derived": 276,
+   "default|stated|derived": 2787,
    "default|stated|published": 4955,
    "default|unknown|derived": 2,
    "default|unknown|published": 17,
    "deprecation|stated|published": 69,
-   "description|stated|derived": 3159,
+   "description|stated|derived": 40161,
    "description|stated|published": 25461,
    "description|unknown|derived": 49827,
    "forces_replacement|stated|derived": 20,
    "forces_replacement|stated|published": 711,
-   "format|stated|derived": 425,
+   "format|stated|derived": 5329,
    "format|stated|published": 3337,
-   "range|stated|derived": 102,
+   "range|stated|derived": 993,
    "range|stated|published": 833,
    "range|unknown|published": 5,
-   "required_when|stated|derived": 42,
+   "required_when|stated|derived": 99,
    "required_when|stated|published": 303,
-   "unit|stated|derived": 144,
+   "unit|stated|derived": 1169,
    "unit|stated|published": 674,
    "unit|unknown|published": 37
   },
-  "facts_total": 93782,
+  "facts_total": 163851,
   "parse": {
    "alias_types": 6,
    "data_source_docs_not_in_schema": [],
@@ -155,7 +155,7 @@
    "aws_wafv2_web_acl_rule": 6263
   }
  },
- "generated_at": "2026-11-03T07:33:09-03:00",
+ "generated_at": "2026-11-03T17:52:22-03:00",
  "metrics": [
   {
    "axis": "representability",
@@ -168,7 +168,7 @@
    },
    "inclusion": {
     "rule_id": "INC-DOCS-AWS-DESCRIPTION",
-    "text": "átomo com pelo menos um fato 'description' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+    "text": "átomo com pelo menos um fato 'description' de status stated (published ou derived) em docs_facts.jsonl"
    },
    "joint_uncertainty": {
     "method": "none"
@@ -198,7 +198,7 @@
    },
    "inclusion": {
     "rule_id": "INC-DOCS-AWS-DESCRIPTION",
-    "text": "átomo com pelo menos um fato 'description' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+    "text": "átomo com pelo menos um fato 'description' de status stated (published ou derived) em docs_facts.jsonl"
    },
    "joint_uncertainty": {
     "method": "none"
@@ -228,7 +228,7 @@
    },
    "inclusion": {
     "rule_id": "INC-DOCS-AWS-ALLOWEDVALUES",
-    "text": "átomo com pelo menos um fato 'allowed_values' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+    "text": "átomo com pelo menos um fato 'allowed_values' de status stated (published ou derived) em docs_facts.jsonl"
    },
    "joint_uncertainty": {
     "method": "none"
@@ -258,7 +258,7 @@
    },
    "inclusion": {
     "rule_id": "INC-DOCS-AWS-ALLOWEDVALUES",
-    "text": "átomo com pelo menos um fato 'allowed_values' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+    "text": "átomo com pelo menos um fato 'allowed_values' de status stated (published ou derived) em docs_facts.jsonl"
    },
    "joint_uncertainty": {
     "method": "none"
@@ -288,7 +288,7 @@
    },
    "inclusion": {
     "rule_id": "INC-DOCS-AWS-UNIT",
-    "text": "átomo com pelo menos um fato 'unit' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+    "text": "átomo com pelo menos um fato 'unit' de status stated (published ou derived) em docs_facts.jsonl"
    },
    "joint_uncertainty": {
     "method": "none"
@@ -318,7 +318,7 @@
    },
    "inclusion": {
     "rule_id": "INC-DOCS-AWS-UNIT",
-    "text": "átomo com pelo menos um fato 'unit' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+    "text": "átomo com pelo menos um fato 'unit' de status stated (published ou derived) em docs_facts.jsonl"
    },
    "joint_uncertainty": {
     "method": "none"
@@ -348,7 +348,7 @@
    },
    "inclusion": {
     "rule_id": "INC-DOCS-AWS-DEFAULT",
-    "text": "átomo com pelo menos um fato 'default' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+    "text": "átomo com pelo menos um fato 'default' de status stated (published ou derived) em docs_facts.jsonl"
    },
    "joint_uncertainty": {
     "method": "none"
@@ -378,7 +378,7 @@
    },
    "inclusion": {
     "rule_id": "INC-DOCS-AWS-DEFAULT",
-    "text": "átomo com pelo menos um fato 'default' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+    "text": "átomo com pelo menos um fato 'default' de status stated (published ou derived) em docs_facts.jsonl"
    },
    "joint_uncertainty": {
     "method": "none"
@@ -408,7 +408,7 @@
    },
    "inclusion": {
     "rule_id": "INC-DOCS-AWS-RANGE",
-    "text": "átomo com pelo menos um fato 'range' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+    "text": "átomo com pelo menos um fato 'range' de status stated (published ou derived) em docs_facts.jsonl"
    },
    "joint_uncertainty": {
     "method": "none"
@@ -438,7 +438,7 @@
    },
    "inclusion": {
     "rule_id": "INC-DOCS-AWS-RANGE",
-    "text": "átomo com pelo menos um fato 'range' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+    "text": "átomo com pelo menos um fato 'range' de status stated (published ou derived) em docs_facts.jsonl"
    },
    "joint_uncertainty": {
     "method": "none"
@@ -468,7 +468,7 @@
    },
    "inclusion": {
     "rule_id": "INC-DOCS-AWS-FORCESREPLACEMENT",
-    "text": "átomo com pelo menos um fato 'forces_replacement' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+    "text": "átomo com pelo menos um fato 'forces_replacement' de status stated (published ou derived) em docs_facts.jsonl"
    },
    "joint_uncertainty": {
     "method": "none"
@@ -498,7 +498,7 @@
    },
    "inclusion": {
     "rule_id": "INC-DOCS-AWS-FORCESREPLACEMENT",
-    "text": "átomo com pelo menos um fato 'forces_replacement' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+    "text": "átomo com pelo menos um fato 'forces_replacement' de status stated (published ou derived) em docs_facts.jsonl"
    },
    "joint_uncertainty": {
     "method": "none"
@@ -528,7 +528,7 @@
    },
    "inclusion": {
     "rule_id": "INC-DOCS-AWS-FORMAT",
-    "text": "átomo com pelo menos um fato 'format' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+    "text": "átomo com pelo menos um fato 'format' de status stated (published ou derived) em docs_facts.jsonl"
    },
    "joint_uncertainty": {
     "method": "none"
@@ -558,7 +558,7 @@
    },
    "inclusion": {
     "rule_id": "INC-DOCS-AWS-FORMAT",
-    "text": "átomo com pelo menos um fato 'format' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+    "text": "átomo com pelo menos um fato 'format' de status stated (published ou derived) em docs_facts.jsonl"
    },
    "joint_uncertainty": {
     "method": "none"
@@ -588,7 +588,7 @@
    },
    "inclusion": {
     "rule_id": "INC-DOCS-AWS-DEPRECATION",
-    "text": "átomo com pelo menos um fato 'deprecation' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+    "text": "átomo com pelo menos um fato 'deprecation' de status stated (published ou derived) em docs_facts.jsonl"
    },
    "joint_uncertainty": {
     "method": "none"
@@ -618,7 +618,7 @@
    },
    "inclusion": {
     "rule_id": "INC-DOCS-AWS-DEPRECATION",
-    "text": "átomo com pelo menos um fato 'deprecation' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+    "text": "átomo com pelo menos um fato 'deprecation' de status stated (published ou derived) em docs_facts.jsonl"
    },
    "joint_uncertainty": {
     "method": "none"
@@ -648,7 +648,7 @@
    },
    "inclusion": {
     "rule_id": "INC-DOCS-AWS-CONFLICTSWITH",
-    "text": "átomo com pelo menos um fato 'conflicts_with' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+    "text": "átomo com pelo menos um fato 'conflicts_with' de status stated (published ou derived) em docs_facts.jsonl"
    },
    "joint_uncertainty": {
     "method": "none"
@@ -678,7 +678,7 @@
    },
    "inclusion": {
     "rule_id": "INC-DOCS-AWS-CONFLICTSWITH",
-    "text": "átomo com pelo menos um fato 'conflicts_with' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+    "text": "átomo com pelo menos um fato 'conflicts_with' de status stated (published ou derived) em docs_facts.jsonl"
    },
    "joint_uncertainty": {
     "method": "none"
@@ -708,7 +708,7 @@
    },
    "inclusion": {
     "rule_id": "INC-DOCS-AWS-REQUIREDWHEN",
-    "text": "átomo com pelo menos um fato 'required_when' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+    "text": "átomo com pelo menos um fato 'required_when' de status stated (published ou derived) em docs_facts.jsonl"
    },
    "joint_uncertainty": {
     "method": "none"
@@ -738,7 +738,7 @@
    },
    "inclusion": {
     "rule_id": "INC-DOCS-AWS-REQUIREDWHEN",
-    "text": "átomo com pelo menos um fato 'required_when' de status stated (published ou derived) em docs_facts.jsonl, ou repetição de bloco cujo item declara esse tipo de fato (shared_block_map.jsonl)"
+    "text": "átomo com pelo menos um fato 'required_when' de status stated (published ou derived) em docs_facts.jsonl"
    },
    "joint_uncertainty": {
     "method": "none"

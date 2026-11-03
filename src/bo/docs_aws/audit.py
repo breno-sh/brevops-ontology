@@ -61,7 +61,7 @@ def provenance() -> int:
     with open(build.out_dir() / "type_subcategory.jsonl", encoding="utf-8") as f:
         for line in f:
             r = json.loads(line)
-            for key in ("subcategory",):
+            for key in ("subcategory", "import"):
                 s = r.get(key, {}).get("source")
                 if s:
                     n += 1

@@ -3,7 +3,7 @@ CONTRACT_CHANGE — DOCS-AWS — 2026-11-03T07:31-03:00 (America/Recife)
 Proposta NÃO bloqueante (mesmo regime do SCHEMALIB). O DOCS-AWS seguiu: docs_facts.jsonl confere no C03 3.0.0
 pelo validador único e a cobertura (C15) também. Ficam três lacunas, nenhuma exige mudar o que já foi gravado.
 
-1. type_subcategory.jsonl está catalogado como C03@3.0.0, mas o C03 só declara o tipo de arquivo docs_facts
+1. (ADOTADO no C03 3.1.0, 513113d; o arquivo valida desde 03/11 17:52) type_subcategory.jsonl estava catalogado como C03@3.0.0, mas o C03 só declara o tipo de arquivo docs_facts
    (x-bo-contract.files tem uma entrada). Não há schema para o arquivo por tipo.
    O que foi gravado (uma linha por tipo, recursos e fontes de dados):
      type_id, provider, provider_version, kind (resource|data_source), resource_type, in_schema, doc_file,
@@ -17,16 +17,11 @@ pelo validador único e a cobertura (C15) também. Ficam três lacunas, nenhuma 
    Proposta: C03 ganha o tipo de arquivo "type_facts" (file type_subcategory.jsonl, record type_fact) com o
    formato acima; os DOCS-{GCP,AZURE,OCI} usam o mesmo. Hoje nenhum gate valida esse arquivo.
 
-2. O ID de importação é fato do TIPO, não do atributo: o enum fact_kind do C03 não tem 'import_id' e o atom_id
+2. (ADOTADO no C03 3.1.0, bloco import de type_fact) O ID de importação é fato do TIPO, não do atributo: o enum fact_kind do C03 não tem 'import_id' e o atom_id
    exige caminho de atributo. Por isso a importação mora no item 1, e não em docs_facts.jsonl.
 
-3. Tamanho: com o bloco descrito uma vez e repetido pelo schema (wafv2: statement aninhado; quicksight; bedrock
-   agentcore), espalhar o fato por todo caminho repetido dava 164 mil fatos e 118 MB, acima do limite de 50 MiB
-   que o privacy_lint --strict impõe por arquivo (TEXT_LIMIT). Feito: os fatos vão para as ocorrências de menor
-   profundidade (evidence_level derived) e as repetições mais fundas ficam em shared_block_map.jsonl
-   (item, canonical[], repeats[], kinds[]); 35.242 átomos estão só no mapa. A cobertura do coverage.json conta
-   o mapa (a repetição herda os tipos de fato do item), e data.atoms_with_stated_direct mostra a conta sem ele.
-   Consumidores (ROLES, SERVICE-EVIDENCE, UNITS, GLOSSARY, NONEHUNT) que leem só docs_facts.jsonl não veem esses
-   35 mil átomos. Proposta (escolher uma): (A) C03 aceita 'applies_to' (lista de atom_id) num fato derived, ou
-   (B) o contrato permite docs_facts em partes (docs_facts.part-NN.jsonl) e o privacy_lint varre por parte, ou
-   (C) os consumidores passam a ler shared_block_map.jsonl. Com (A) ou (B), o build regrava sem perda.
+3. Tamanho (RESOLVIDO em 03/11 pela decisão do coordenador): o privacy_lint de bo/base (9f0cd52) varre texto
+   grande linha a linha, então o limite de 50 MiB por arquivo deixou de valer. docs_facts.jsonl agora traz os
+   fatos de TODOS os átomos, inclusive os 35.242 das repetições de bloco (wafv2, quicksight, bedrock agentcore),
+   com evidence_level derived. shared_block_map.jsonl fica só como índice auxiliar (item, canonical[],
+   repeats[], kinds[]); nenhum consumidor precisa lê-lo.

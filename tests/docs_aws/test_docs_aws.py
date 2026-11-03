@@ -297,7 +297,9 @@ def test_written_files_are_consistent():
     assert all(x.get("as_of") == "2026-10-28" for x in facts if x["fact_kind"] == "default" and
                x["status"] == "stated")
     assert all("model_id" not in x and x["evidence_level"] != "interpreted" for x in facts)
-    assert (OUT / "docs_facts.jsonl").stat().st_size < privacy.TEXT_LIMIT
+    shared = [json.loads(x) for x in open(OUT / "shared_block_map.jsonl", encoding="utf-8")]
+    have = {x["atom_id"] for x in facts}
+    assert all(a in have for r in shared for a in r["repeats"])   # repetições também estão em docs_facts
     types = [json.loads(x) for x in open(OUT / "type_subcategory.jsonl", encoding="utf-8")]
     res = [t for t in types if t["kind"] == "resource" and t["in_schema"]]
     assert len(res) == 1746

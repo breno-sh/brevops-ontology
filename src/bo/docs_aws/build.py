@@ -183,7 +183,7 @@ def _canon(v) -> str:
 
 def consolidate(order: list, version: str, as_of: str, red: Counter, shared: set) -> list[dict]:
     """order = [(atom_id, [(cand, file, item_line, level)])] -> fatos C03, em ordem estável.
-    shared: átomos cobertos só pelo mapa de blocos repetidos (sem unknown not_documented aqui)."""
+    shared: átomos que não recebem unknown not_documented (o build passa vazio: todo átomo está aqui)."""
     facts = []
     for atom_id, cl in order:
         groups = defaultdict(list)
@@ -271,6 +271,11 @@ NO_IMPORT = re.compile(r"\b(?:cannot|can\s*not|can't)\s+be\s+imported\b|\bdoes\s
                        r"\bimport\s+is\s+not\s+supported\b", re.I)
 
 
+def _unknown(reason: str) -> dict:
+    """Bloco de tipo unknown (C03 3.1.0 type_status): a ausência é decidida por regra sobre a página."""
+    return {"status": "unknown", "unknown_reason": reason, "extraction_method": "parser", "evidence_level": "derived"}
+
+
 def _sentence_tail(tail: str) -> str:
     """O que a sentença diz depois do último 'using' (ex.: 'their ARN', 'the `bucket`'), literal e sem ':' final."""
     t = re.sub(r"\.\s*For example:?$|:\s*$|\.$", "", tail.strip()).strip()
@@ -279,7 +284,7 @@ def _sentence_tail(tail: str) -> str:
 
 def import_record(page: mdparse.Page, red: Counter) -> dict:
     if not any(t.strip().lower().startswith("import") for _, t in page.sections):
-        return {"status": "unknown", "unknown_reason": "not_documented"}
+        return _unknown("not_documented")
     text = [(n, s) for n, s in page.import_text if s.strip() and not s.lstrip().startswith(("#", "*", "-"))]
     code = "\n".join(s for _, s in page.import_code)
     sents = []
@@ -348,17 +353,24 @@ def import_record(page: mdparse.Page, red: Counter) -> dict:
         return {"status": "stated", "supported": False, "statements": sents, "extraction_method": "regex",
                 "evidence_level": "published"}
     if not sents and not methods and not identity["required"]:
-        return {"status": "unknown", "unknown_reason": "ambiguous", "statements": []}
-    return {"status": "stated", "supported": True, "id_attributes": id_attrs, "id_text": id_texts,
-            "separators": seps,
-            "identity": identity, "methods": methods, "statements": sents, "extraction_method": "regex",
-            "evidence_level": "published"}
+        return _unknown("ambiguous")
+    out = {"status": "stated", "supported": True, "id_attributes": id_attrs, "id_text": id_texts,
+           "separators": seps, "identity": identity, "methods": methods, "extraction_method": "regex",
+           "evidence_level": "published"}
+    if sents:
+        out["statements"] = sents
+    else:
+        # só o exemplo de código diz como importar: a fonte é a primeira linha dele
+        n, line = next(((n, x) for n, x in page.import_code
+                        if re.search(r"terraform\s+import\s|^\s*(?:identity|id)\s*=", x)), page.import_code[0])
+        out["source"] = src(page.file, n, redact(line.strip(), red))
+    return out
 
 
 def subcategory_record(page: mdparse.Page, red: Counter) -> dict:
     sc = page.frontmatter.get("subcategory")
     if not sc or not sc[0].strip():
-        return {"status": "unknown", "unknown_reason": "not_documented"}
+        return _unknown("not_documented")
     return {"status": "stated", "value": redact(sc[0], red), "extraction_method": "parser",
             "evidence_level": "published",
             "source": src(page.file, sc[1], f'subcategory: "{redact(sc[0], red)}"')}
@@ -424,8 +436,8 @@ def build() -> dict:
             targets = r.paths
             shared_row = None
             if r.rule == "R3-shared":
-                # bloco descrito uma vez e repetido no schema: os fatos vão para as ocorrências de menor
-                # profundidade; as repetições mais fundas vão para o mapa (shared_block_map.jsonl)
+                # bloco descrito uma vez e repetido no schema: os fatos vão para TODOS os caminhos (derived);
+                # shared_block_map.jsonl fica como índice auxiliar (ocorrência de menor profundidade x repetições)
                 depth = min(p.count(".") for p in r.paths)
                 targets = [p for p in r.paths if p.count(".") == depth]
                 repeats = [p for p in r.paths if p.count(".") > depth]
@@ -439,6 +451,7 @@ def build() -> dict:
                                         "repeats": [f"aws:{rtype}:{p}" for p in repeats]})
                     shared_row = shared_rows[-1]
                     shared_atoms.update(f"aws:{rtype}:{p}" for p in repeats)
+                targets = r.paths
             item_kinds = set()
             for p in targets:
                 cands, unused = item_candidates(it, ix.atoms[p]["tf_type"])
@@ -476,6 +489,14 @@ def build() -> dict:
     for dtype, page in pages_d:
         data_docs.add(dtype)
         type_rows.append(_type_row(dtype, "data_source", dtype in ds_schema, page, red))
+    for dtype, page in pages_d:
+        for line, sent, alias, canon in page.aliases:
+            if canon == dtype and alias in ds_schema and alias not in data_docs:
+                data_docs.add(alias)
+                row = _type_row(alias, "data_source", True, page, red)
+                row["alias_of"] = {"type_id": f"aws:{canon}", "evidence_level": "derived",
+                                   "source": src(page.file, line, redact(sent, red))}
+                type_rows.append(row)
     for dtype in sorted(ds_schema - data_docs):
         type_rows.append(_type_row(dtype, "data_source", True, None, red))
     type_rows.sort(key=lambda r: (r["kind"], r["resource_type"], r["doc_file"] or ""))
@@ -483,7 +504,7 @@ def build() -> dict:
     for rtype in sorted(types):
         ts, ix = types[rtype]
         order = [(a["atom_id"], per_type_atoms[rtype].get(a["path"], [])) for a in ts.atoms]
-        facts.extend(consolidate(order, ver, as_of, red, shared_atoms))
+        facts.extend(consolidate(order, ver, as_of, red, set()))
     atoms_meta = {a["atom_id"]: a["configurable"] for t in types.values() for a in t[0].atoms}
     stats = {"pages_r": len(pages_r), "pages_d": len(pages_d), "schema_resources": len(types),
              "schema_data_sources": len(ds_schema), "resources_without_doc": len(set(types) - documented_r),
@@ -526,8 +547,9 @@ def _type_row(rtype: str, kind: str, in_schema: bool, page, red: Counter) -> dic
     row = {"type_id": f"aws:{rtype}", "provider": "aws", "provider_version": source.version(), "kind": kind,
            "resource_type": rtype, "in_schema": in_schema, "doc_file": page.file if page else None}
     if page is None:
-        row["subcategory"] = {"status": "unknown", "unknown_reason": "not_documented"}
-        row["import"] = {"status": "unknown", "unknown_reason": "not_documented"}
+        row["subcategory"] = _unknown("not_documented")
+        if kind == "resource":
+            row["import"] = _unknown("not_documented")
         return row
     row["subcategory"] = subcategory_record(page, red)
     if kind == "resource":
@@ -548,11 +570,8 @@ def coverage_doc(facts: list[dict], types: list[dict], atoms: dict, stats: dict,
             direct[f["fact_kind"]].add(f["atom_id"])
             if f["evidence_level"] == "published":
                 published[f["fact_kind"]].add(f["atom_id"])
-    # expansão pelo mapa de blocos repetidos: a repetição herda os tipos de fato declarados pelo item
-    stated = defaultdict(set, {k: set(v) for k, v in direct.items()})
-    for row in shared:
-        for k in row.get("kinds", []):
-            stated[k].update(row["repeats"])
+    # desde a decisão do coordenador (03/11), as repetições de bloco já estão em docs_facts.jsonl: sem expansão
+    stated = direct
     undoc = Counter(a.split(":")[1] for a in atoms if a not in stated["description"])
     all_ids = set(atoms)
     cfg = {a for a, c in atoms.items() if c}
@@ -576,8 +595,7 @@ def coverage_doc(facts: list[dict], types: list[dict], atoms: dict, stats: dict,
                                          + (" com required ou optional" if fname == "CFG" else "")},
                 "inclusion": {"rule_id": f"INC-DOCS-AWS-{kind.upper().replace('_', '')}",
                               "text": f"átomo com pelo menos um fato '{kind}' de status stated "
-                                      "(published ou derived) em docs_facts.jsonl, ou repetição de bloco "
-                                      "cujo item declara esse tipo de fato (shared_block_map.jsonl)"},
+                                      "(published ou derived) em docs_facts.jsonl"},
                 "weights": {"scheme": "uniform"},
                 "joint_uncertainty": {"method": "none"},
             })
@@ -601,7 +619,7 @@ def coverage_doc(facts: list[dict], types: list[dict], atoms: dict, stats: dict,
         "facts_by_kind_status_level": {f"{k}|{s}|{l}": n for (k, s, l), n in sorted(by_level.items())},
         "atoms_with_stated": {k: len(stated[k]) for k in COVERAGE_KINDS},
         "atoms_with_stated_direct": {k: len(direct[k]) for k in COVERAGE_KINDS},
-        "atoms_only_via_shared_map": len({a for r in shared for a in r["repeats"]}),
+        "atoms_in_repeated_blocks": len({a for r in shared for a in r["repeats"]}),
         "types_most_atoms_without_description": dict(undoc.most_common(12)),
         "atoms_with_published": {k: len(published[k]) for k in COVERAGE_KINDS},
         "parse": stats,
