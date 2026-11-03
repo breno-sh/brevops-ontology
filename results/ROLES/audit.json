@@ -1,0 +1,571 @@
+{
+ "auditor": {
+  "how": "leitura do átomo C01 (configurable, sensitive, tipo) e da descrição C03; julgamento do papel pelo sentido, independente da regra",
+  "level": "interpreted",
+  "model_id": "claude-opus-5-5"
+ },
+ "caveat": "auditoria feita depois de fechar as regras e sem mudar regra por causa dela; amostra pequena (3 por estrato), sem peso por tamanho de estrato: dá ordem de grandeza por papel, não acurácia da população",
+ "generated_at": "2026-11-03T18:03:47-03:00",
+ "items": [
+  {
+   "atom_id": "aws:aws_lexv2models_intent:confirmation_setting.code_hook.post_code_hook_specification.timeout_conditional.default_branch.response.message_group.variation.ssml_message.value",
+   "judgment": "agree",
+   "role": "CONFIG",
+   "rule_id": "ROLE-DEFAULT-CONFIG"
+  },
+  {
+   "atom_id": "aws:aws_quicksight_analysis:definition.sheets.visuals.geospatial_map_visual.chart_configuration.field_wells.geospatial_map_aggregated_field_wells.values.numerical_measure_field.aggregation_function.percentile_aggregation.percentile_value",
+   "judgment": "agree",
+   "role": "CONFIG",
+   "rule_id": "ROLE-DEFAULT-CONFIG"
+  },
+  {
+   "atom_id": "aws:aws_quicksight_analysis:definition.sheets.visuals.insight_visual.insight_configuration.computation.total_aggregation.value.numerical_measure_field.column.column_name",
+   "judgment": "agree",
+   "role": "CONFIG",
+   "rule_id": "ROLE-DEFAULT-CONFIG"
+  },
+  {
+   "atom_id": "azurerm:azurerm_container_app:ingress.ip_security_restriction.name",
+   "judgment": "agree_by_policy",
+   "note": "nome de subobjeto em bloco fica CONFIG por regra declarada (rótulo de regra)",
+   "role": "CONFIG",
+   "rule_id": "ROLE-DEFAULT-CONFIG"
+  },
+  {
+   "atom_id": "azurerm:azurerm_cosmosdb_account:public_network_access_enabled",
+   "judgment": "agree",
+   "role": "CONFIG",
+   "rule_id": "ROLE-DEFAULT-CONFIG"
+  },
+  {
+   "atom_id": "azurerm:azurerm_netapp_volume_bucket_with_server:key_vault.credentials_key_vault_uri",
+   "expected_role": "REFERENCE",
+   "judgment": "disagree",
+   "note": "URI de outro objeto (cofre de chaves); a cauda uri não está em id_tails",
+   "role": "CONFIG",
+   "rule_id": "ROLE-DEFAULT-CONFIG"
+  },
+  {
+   "atom_id": "google:google_os_config_v2_policy_orchestrator:orchestrated_resource.os_policy_assignment_v1_payload.os_policies.resource_groups.resources.exec.enforce.args",
+   "judgment": "agree",
+   "role": "CONFIG",
+   "rule_id": "ROLE-DEFAULT-CONFIG"
+  },
+  {
+   "atom_id": "google:google_cloud_run_v2_job:template.template.volumes.name",
+   "judgment": "agree_by_policy",
+   "note": "nome de subobjeto em bloco fica CONFIG por regra declarada (nome de volume)",
+   "role": "CONFIG",
+   "rule_id": "ROLE-DEFAULT-CONFIG"
+  },
+  {
+   "atom_id": "google:google_biglake_hive_database:timeouts.delete",
+   "judgment": "agree",
+   "role": "CONFIG",
+   "rule_id": "ROLE-DEFAULT-CONFIG"
+  },
+  {
+   "atom_id": "oci:oci_waas_waas_policy:domain",
+   "judgment": "agree",
+   "role": "CONFIG",
+   "rule_id": "ROLE-DEFAULT-CONFIG"
+  },
+  {
+   "atom_id": "oci:oci_datascience_model_artifact_export:timeouts.delete",
+   "judgment": "agree",
+   "role": "CONFIG",
+   "rule_id": "ROLE-DEFAULT-CONFIG"
+  },
+  {
+   "atom_id": "oci:oci_waas_waas_policy:policy_config.load_balancing_method.expiration_time_in_seconds",
+   "judgment": "agree",
+   "role": "CONFIG",
+   "rule_id": "ROLE-DEFAULT-CONFIG"
+  },
+  {
+   "atom_id": "aws:aws_route_table_association:id",
+   "judgment": "agree",
+   "role": "IDENTIFIER",
+   "rule_id": "ROLE-IDENTIFIER-TOP-ID"
+  },
+  {
+   "atom_id": "aws:aws_cloudwatch_log_delivery_source:arn",
+   "judgment": "agree",
+   "role": "IDENTIFIER",
+   "rule_id": "ROLE-IDENTIFIER-SELF"
+  },
+  {
+   "atom_id": "aws:aws_db_option_group:id",
+   "judgment": "agree",
+   "role": "IDENTIFIER",
+   "rule_id": "ROLE-IDENTIFIER-TOP-ID"
+  },
+  {
+   "atom_id": "azurerm:azurerm_service_fabric_managed_cluster:node_type.id",
+   "judgment": "agree",
+   "role": "IDENTIFIER",
+   "rule_id": "ROLE-IDENTIFIER-SELF"
+  },
+  {
+   "atom_id": "azurerm:azurerm_dev_test_windows_virtual_machine:id",
+   "judgment": "agree",
+   "role": "IDENTIFIER",
+   "rule_id": "ROLE-IDENTIFIER-TOP-ID"
+  },
+  {
+   "atom_id": "azurerm:azurerm_monitor_scheduled_query_rules_alert_v2:id",
+   "judgment": "agree",
+   "role": "IDENTIFIER",
+   "rule_id": "ROLE-IDENTIFIER-TOP-ID"
+  },
+  {
+   "atom_id": "google:google_storage_notification:notification_id",
+   "judgment": "agree",
+   "role": "IDENTIFIER",
+   "rule_id": "ROLE-IDENTIFIER-SELF"
+  },
+  {
+   "atom_id": "google:google_compute_ssl_certificate:id",
+   "judgment": "agree",
+   "role": "IDENTIFIER",
+   "rule_id": "ROLE-IDENTIFIER-TOP-ID"
+  },
+  {
+   "atom_id": "google:google_gke_hub_feature_iam_member:id",
+   "judgment": "agree",
+   "role": "IDENTIFIER",
+   "rule_id": "ROLE-IDENTIFIER-TOP-ID"
+  },
+  {
+   "atom_id": "oci:oci_identity_auth_token:id",
+   "judgment": "agree",
+   "role": "IDENTIFIER",
+   "rule_id": "ROLE-IDENTIFIER-TOP-ID"
+  },
+  {
+   "atom_id": "oci:oci_os_management_hub_dynamic_set:id",
+   "judgment": "agree",
+   "role": "IDENTIFIER",
+   "rule_id": "ROLE-IDENTIFIER-TOP-ID"
+  },
+  {
+   "atom_id": "oci:oci_identity_domains_my_support_account:id",
+   "judgment": "agree",
+   "role": "IDENTIFIER",
+   "rule_id": "ROLE-IDENTIFIER-TOP-ID"
+  },
+  {
+   "atom_id": "aws:aws_imagebuilder_container_recipe:name",
+   "judgment": "agree",
+   "role": "NAME",
+   "rule_id": "ROLE-NAME-LEAF"
+  },
+  {
+   "atom_id": "aws:aws_ssmcontacts_contact_channel:name",
+   "judgment": "agree",
+   "role": "NAME",
+   "rule_id": "ROLE-NAME-LEAF"
+  },
+  {
+   "atom_id": "aws:aws_codecatalyst_source_repository:name",
+   "judgment": "agree",
+   "role": "NAME",
+   "rule_id": "ROLE-NAME-LEAF"
+  },
+  {
+   "atom_id": "azurerm:azurerm_linux_web_app:name",
+   "judgment": "agree",
+   "role": "NAME",
+   "rule_id": "ROLE-NAME-LEAF"
+  },
+  {
+   "atom_id": "azurerm:azurerm_data_factory_dataset_cosmosdb_sqlapi:name",
+   "judgment": "agree",
+   "role": "NAME",
+   "rule_id": "ROLE-NAME-LEAF"
+  },
+  {
+   "atom_id": "azurerm:azurerm_api_management_workspace_named_value:display_name",
+   "judgment": "agree",
+   "role": "NAME",
+   "rule_id": "ROLE-NAME-LEAF"
+  },
+  {
+   "atom_id": "google:google_certificate_manager_dns_authorization:name",
+   "judgment": "agree",
+   "role": "NAME",
+   "rule_id": "ROLE-NAME-LEAF"
+  },
+  {
+   "atom_id": "google:google_gkeonprem_bare_metal_node_pool:display_name",
+   "judgment": "agree",
+   "role": "NAME",
+   "rule_id": "ROLE-NAME-LEAF"
+  },
+  {
+   "atom_id": "google:google_database_migration_service_private_connection:display_name",
+   "judgment": "agree",
+   "role": "NAME",
+   "rule_id": "ROLE-NAME-LEAF"
+  },
+  {
+   "atom_id": "oci:oci_media_services_stream_distribution_channel:display_name",
+   "judgment": "agree",
+   "role": "NAME",
+   "rule_id": "ROLE-NAME-LEAF"
+  },
+  {
+   "atom_id": "oci:oci_load_balancer_backendset:name",
+   "judgment": "agree",
+   "role": "NAME",
+   "rule_id": "ROLE-NAME-LEAF"
+  },
+  {
+   "atom_id": "oci:oci_database_data_guard_association:display_name",
+   "judgment": "agree",
+   "role": "NAME",
+   "rule_id": "ROLE-NAME-LEAF"
+  },
+  {
+   "atom_id": "aws:aws_budgets_budget:filter_expression.not.and.tags.key",
+   "expected_role": "CONFIG",
+   "judgment": "disagree",
+   "note": "chave de tag usada como filtro, não tag atribuída ao recurso (ROLE-TAG-BLOCK pega o bloco tags do filtro)",
+   "role": "TAG",
+   "rule_id": "ROLE-TAG-BLOCK"
+  },
+  {
+   "atom_id": "aws:aws_gamelift_game_server_group:tags_all",
+   "judgment": "agree",
+   "role": "TAG",
+   "rule_id": "ROLE-TAG-MAP"
+  },
+  {
+   "atom_id": "aws:aws_emrcontainers_virtual_cluster:tags",
+   "judgment": "agree",
+   "role": "TAG",
+   "rule_id": "ROLE-TAG-MAP"
+  },
+  {
+   "atom_id": "azurerm:azurerm_application_insights_workbook_template:tags",
+   "judgment": "agree",
+   "role": "TAG",
+   "rule_id": "ROLE-TAG-MAP"
+  },
+  {
+   "atom_id": "azurerm:azurerm_batch_account:tags",
+   "judgment": "agree",
+   "role": "TAG",
+   "rule_id": "ROLE-TAG-MAP"
+  },
+  {
+   "atom_id": "azurerm:azurerm_netapp_backup_policy:tags",
+   "judgment": "agree",
+   "role": "TAG",
+   "rule_id": "ROLE-TAG-MAP"
+  },
+  {
+   "atom_id": "google:google_container_node_pool:node_config.labels",
+   "judgment": "agree_by_policy",
+   "note": "labels de nó entram como TAG pela regra; são rótulos chave/valor, mas também afetam agendamento",
+   "role": "TAG",
+   "rule_id": "ROLE-TAG-MAP"
+  },
+  {
+   "atom_id": "google:google_dns_managed_zone:effective_labels",
+   "judgment": "agree",
+   "role": "TAG",
+   "rule_id": "ROLE-TAG-MAP"
+  },
+  {
+   "atom_id": "google:google_healthcare_fhir_store:labels",
+   "judgment": "agree",
+   "role": "TAG",
+   "rule_id": "ROLE-TAG-MAP"
+  },
+  {
+   "atom_id": "oci:oci_data_safe_security_policy_management:freeform_tags",
+   "judgment": "agree",
+   "role": "TAG",
+   "rule_id": "ROLE-TAG-MAP"
+  },
+  {
+   "atom_id": "oci:oci_apm_synthetics_script:freeform_tags",
+   "judgment": "agree",
+   "role": "TAG",
+   "rule_id": "ROLE-TAG-MAP"
+  },
+  {
+   "atom_id": "oci:oci_generative_ai_agent_agent_endpoint:defined_tags",
+   "judgment": "agree",
+   "role": "TAG",
+   "rule_id": "ROLE-TAG-MAP"
+  },
+  {
+   "atom_id": "aws:aws_ec2_client_vpn_authorization_rule:access_group_id",
+   "judgment": "agree",
+   "role": "REFERENCE",
+   "rule_id": "ROLE-REFERENCE-ID-TAIL"
+  },
+  {
+   "atom_id": "aws:aws_quicksight_dashboard:definition.sheets.visuals.insight_visual.insight_configuration.computation.period_over_period.computation_id",
+   "expected_role": "CONFIG",
+   "judgment": "disagree",
+   "note": "id de computação declarado dentro da própria definição (rótulo local), não aponta para outro objeto",
+   "role": "REFERENCE",
+   "rule_id": "ROLE-REFERENCE-ID-TAIL"
+  },
+  {
+   "atom_id": "aws:aws_networkfirewall_tls_inspection_configuration:tls_inspection_configuration.server_certificate_configuration.certificate_authority_arn",
+   "judgment": "agree",
+   "role": "REFERENCE",
+   "rule_id": "ROLE-REFERENCE-ID-TAIL"
+  },
+  {
+   "atom_id": "azurerm:azurerm_linux_virtual_machine_scale_set:network_interface.ip_configuration.load_balancer_inbound_nat_rules_ids",
+   "judgment": "agree",
+   "role": "REFERENCE",
+   "rule_id": "ROLE-REFERENCE-ID-TAIL"
+  },
+  {
+   "atom_id": "azurerm:azurerm_storage_mover_agent:arc_virtual_machine_uuid",
+   "judgment": "agree",
+   "role": "REFERENCE",
+   "rule_id": "ROLE-REFERENCE-ID-TAIL"
+  },
+  {
+   "atom_id": "azurerm:azurerm_windows_function_app_slot:site_config.scm_ip_restriction.virtual_network_subnet_id",
+   "judgment": "agree",
+   "role": "REFERENCE",
+   "rule_id": "ROLE-REFERENCE-ID-TAIL"
+  },
+  {
+   "atom_id": "google:google_compute_instance_template:disk.source_image_encryption_key.kms_key_self_link",
+   "judgment": "agree",
+   "role": "REFERENCE",
+   "rule_id": "ROLE-REFERENCE-ID-TAIL"
+  },
+  {
+   "atom_id": "google:google_gkeonprem_vmware_node_pool:config.vsphere_config.datastore",
+   "judgment": "agree",
+   "role": "REFERENCE",
+   "rule_id": "ROLE-REFERENCE-NOUN-TYPE-DOCS"
+  },
+  {
+   "atom_id": "google:google_apigee_api:latest_revision_id",
+   "judgment": "agree",
+   "role": "REFERENCE",
+   "rule_id": "ROLE-REFERENCE-COMPUTED-ID"
+  },
+  {
+   "atom_id": "oci:oci_redis_redis_cluster:nsg_ids",
+   "judgment": "agree",
+   "role": "REFERENCE",
+   "rule_id": "ROLE-REFERENCE-ID-TAIL"
+  },
+  {
+   "atom_id": "oci:oci_database_database_snapshot_standby:compartment_id",
+   "judgment": "agree",
+   "role": "REFERENCE",
+   "rule_id": "ROLE-REFERENCE-COMPUTED-ID"
+  },
+  {
+   "atom_id": "oci:oci_cloud_bridge_asset:aws_ebs.attachments.volume_key",
+   "judgment": "agree",
+   "role": "REFERENCE",
+   "rule_id": "ROLE-REFERENCE-DOCS-ID-OF"
+  },
+  {
+   "atom_id": "aws:aws_codeartifact_domain:created_time",
+   "judgment": "agree",
+   "role": "TIMESTAMP",
+   "rule_id": "ROLE-TIMESTAMP-NAME"
+  },
+  {
+   "atom_id": "aws:aws_mailmanager_relay:last_modified_timestamp",
+   "judgment": "agree",
+   "role": "TIMESTAMP",
+   "rule_id": "ROLE-TIMESTAMP-NAME"
+  },
+  {
+   "atom_id": "aws:aws_cleanrooms_collaboration:update_time",
+   "judgment": "agree",
+   "role": "TIMESTAMP",
+   "rule_id": "ROLE-TIMESTAMP-NAME"
+  },
+  {
+   "atom_id": "azurerm:azurerm_linux_web_app_slot:backup.schedule.last_execution_time",
+   "judgment": "agree",
+   "role": "TIMESTAMP",
+   "rule_id": "ROLE-TIMESTAMP-NAME"
+  },
+  {
+   "atom_id": "azurerm:azurerm_app_service_managed_certificate:expiration_date",
+   "judgment": "agree",
+   "role": "TIMESTAMP",
+   "rule_id": "ROLE-TIMESTAMP-NAME"
+  },
+  {
+   "atom_id": "azurerm:azurerm_windows_web_app:backup.schedule.last_execution_time",
+   "judgment": "agree",
+   "role": "TIMESTAMP",
+   "rule_id": "ROLE-TIMESTAMP-NAME"
+  },
+  {
+   "atom_id": "google:google_cloudbuildv2_connection:create_time",
+   "judgment": "agree",
+   "role": "TIMESTAMP",
+   "rule_id": "ROLE-TIMESTAMP-NAME"
+  },
+  {
+   "atom_id": "google:google_network_connectivity_spoke:update_time",
+   "judgment": "agree",
+   "role": "TIMESTAMP",
+   "rule_id": "ROLE-TIMESTAMP-NAME"
+  },
+  {
+   "atom_id": "google:google_compute_http_health_check:creation_timestamp",
+   "judgment": "agree",
+   "role": "TIMESTAMP",
+   "rule_id": "ROLE-TIMESTAMP-NAME"
+  },
+  {
+   "atom_id": "oci:oci_data_safe_audit_policy:time_last_retrieved",
+   "judgment": "agree",
+   "role": "TIMESTAMP",
+   "rule_id": "ROLE-TIMESTAMP-NAME-FIRST"
+  },
+  {
+   "atom_id": "oci:oci_os_management_hub_scheduled_job:time_updated",
+   "judgment": "agree",
+   "role": "TIMESTAMP",
+   "rule_id": "ROLE-TIMESTAMP-NAME"
+  },
+  {
+   "atom_id": "oci:oci_database_scheduling_plan:time_created",
+   "judgment": "agree",
+   "role": "TIMESTAMP",
+   "rule_id": "ROLE-TIMESTAMP-NAME"
+  },
+  {
+   "atom_id": "aws:aws_appflow_connector_profile:connector_profile_config.connector_profile_credentials.datadog.api_key",
+   "judgment": "agree",
+   "role": "SECRET",
+   "rule_id": "ROLE-SECRET-NAME"
+  },
+  {
+   "atom_id": "aws:aws_bedrockagentcore_oauth2_credential_provider:oauth2_provider_config.salesforce_oauth2_provider_config.client_id",
+   "judgment": "agree_by_policy",
+   "note": "client_id OAuth não é segredo pelo sentido; o schema marca sensitive e a regra segue o schema",
+   "role": "SECRET",
+   "rule_id": "ROLE-SECRET-SENSITIVE"
+  },
+  {
+   "atom_id": "aws:aws_bedrockagentcore_oauth2_credential_provider:oauth2_provider_config.github_oauth2_provider_config.client_secret",
+   "judgment": "agree",
+   "role": "SECRET",
+   "rule_id": "ROLE-SECRET-SENSITIVE"
+  },
+  {
+   "atom_id": "azurerm:azurerm_orchestrated_virtual_machine_scale_set:os_profile.linux_configuration.admin_password",
+   "judgment": "agree",
+   "role": "SECRET",
+   "rule_id": "ROLE-SECRET-SENSITIVE"
+  },
+  {
+   "atom_id": "azurerm:azurerm_linux_web_app:connection_string.value",
+   "judgment": "agree",
+   "role": "SECRET",
+   "rule_id": "ROLE-SECRET-SENSITIVE"
+  },
+  {
+   "atom_id": "azurerm:azurerm_api_management_workspace_named_value:value",
+   "judgment": "agree",
+   "role": "SECRET",
+   "rule_id": "ROLE-SECRET-SENSITIVE"
+  },
+  {
+   "atom_id": "google:google_compute_backend_bucket_signed_url_key:key_value",
+   "judgment": "agree",
+   "role": "SECRET",
+   "rule_id": "ROLE-SECRET-SENSITIVE"
+  },
+  {
+   "atom_id": "google:google_chronicle_feed:details.workday_settings.authentication.secret",
+   "judgment": "agree",
+   "role": "SECRET",
+   "rule_id": "ROLE-SECRET-SENSITIVE"
+  },
+  {
+   "atom_id": "google:google_oracle_database_goldengate_connection:properties.databricks_connection_properties.password",
+   "judgment": "agree",
+   "role": "SECRET",
+   "rule_id": "ROLE-SECRET-NAME"
+  },
+  {
+   "atom_id": "oci:oci_database_migration_migration:data_transfer_medium_details.secret_access_key",
+   "judgment": "agree",
+   "role": "SECRET",
+   "rule_id": "ROLE-SECRET-SENSITIVE"
+  },
+  {
+   "atom_id": "oci:oci_generative_ai_hosted_application:environment_variables.value",
+   "judgment": "agree",
+   "role": "SECRET",
+   "rule_id": "ROLE-WITHHELD-ENV-BLOCK"
+  },
+  {
+   "atom_id": "oci:oci_identity_domains_smtp_credential:password",
+   "judgment": "agree",
+   "role": "SECRET",
+   "rule_id": "ROLE-SECRET-NAME"
+  }
+ ],
+ "module": "ROLES",
+ "sample": {
+  "design": "aleatório estratificado: até 3 átomos por (papel, provedor), 7 papéis x 4 provedores",
+  "frame": "$BO_DATA/ROLES/roles.jsonl na versão auditada (regras 1.0.0)",
+  "n": 84,
+  "seed": 20261103
+ },
+ "schema": "bo.roles.audit/1",
+ "summary": {
+  "agree_share_strict": 0.9167,
+  "agree_share_with_policy": 0.9643,
+  "by_role": {
+   "CONFIG": {
+    "agree": 9,
+    "agree_by_policy": 2,
+    "disagree": 1
+   },
+   "IDENTIFIER": {
+    "agree": 12
+   },
+   "NAME": {
+    "agree": 12
+   },
+   "REFERENCE": {
+    "agree": 11,
+    "disagree": 1
+   },
+   "SECRET": {
+    "agree": 11,
+    "agree_by_policy": 1
+   },
+   "TAG": {
+    "agree": 10,
+    "agree_by_policy": 1,
+    "disagree": 1
+   },
+   "TIMESTAMP": {
+    "agree": 12
+   }
+  },
+  "judgments": {
+   "agree": 77,
+   "agree_by_policy": 4,
+   "disagree": 3
+  }
+ }
+}

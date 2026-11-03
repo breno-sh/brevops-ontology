@@ -1,0 +1,254 @@
+# Regras do ROLES (dono: ROLES): papel de cada átomo C01 -> C04 roles.jsonl.
+#
+# Uma lista ordenada de regras; vale a PRIMEIRA que casa. A mesma lista, o mesmo léxico e o mesmo código
+# valem para os 4 provedores: nenhuma regra tem escopo por provedor e nenhum texto daqui cita nome de
+# provedor (bo.roles.symmetry confere, e confere também que trocar os rótulos de provedor não muda nenhum
+# papel). O provedor só entra como dado: o prefixo "<provider>_" do resource_type é removido de forma
+# genérica para achar o substantivo do próprio tipo.
+#
+# Papéis (C04 2.0.0):
+# Nome dentro de bloco (ip_configuration.name, single_header.name, subnetwork.name) fica CONFIG: no grão do
+# átomo não dá para separar, por regra mecânica, rótulo de subobjeto, seletor e referência. NAME é só o nome
+# do próprio recurso (topo) ou <próprio tipo>_name|_id escolhido pelo usuário.
+#
+#   SECRET      Withheld: segredo e conteúdo que nunca é gravado (senha, chave, token, user data,
+#               variáveis de ambiente, conteúdo de objeto). Precede tudo, por segurança.
+#   TAG         rótulo chave/valor do usuário (mapa de tags ou labels, bloco tag {key, value}).
+#   IDENTIFIER  identidade do próprio recurso, atribuída pelo provedor (id, arn/self_link/uid do próprio tipo).
+#   TIMESTAMP   carimbo de tempo do ciclo de vida, só leitura (criado/atualizado em).
+#   NAME        nome escolhido pelo usuário para o próprio recurso ou subobjeto.
+#   REFERENCE   aponta para OUTRO objeto (id, arn, nome ou link de outro tipo).
+#   CONFIG      o resto: configuração e estado que não são nenhum dos papéis acima.
+#
+# Condições (todas da regra têm de valer). Vocabulário fechado, implementado em bo/roles/engine.py:
+#   flag: {nome: bool}         sensitive, write_only, configurable, top_level
+#   kind_in: [..]              tipo cty normalizado: string number bool dynamic coll_string coll_other
+#                              map_string map_other object
+#   leaf_in: léxico            folha do caminho (sem o sufixo de write_only) está no léxico
+#   leaf_not_in: léxico        folha fora do léxico
+#   tail_in: léxico            últimas 1..k palavras da folha (separadas por _) formam um termo do léxico
+#   first_token_in: léxico     primeira palavra da folha (só folhas com 2+ palavras)
+#   block_in: léxico           nome do último bloco do caminho
+#   block_tail_in: léxico      últimas palavras do nome do último bloco formam um termo do léxico
+#   type_head_in: léxico       última palavra do tipo de recurso (sem o prefixo do provedor)
+#   stem: [classes]            classe do radical da folha depois de tirar a cauda de id/nome:
+#                              empty (folha = só a cauda), own (radical = sufixo do próprio tipo, desde que
+#                              não seja exatamente o nome de OUTRO tipo do provedor),
+#                              self (radical genérico de identidade, self_stems), type (radical = outro
+#                              tipo do mesmo provedor), other; folha sem cauda de id/nome não tem radical
+#   leaf_is_type: true         a folha (no singular) é o nome de outro tipo do mesmo provedor
+#   leaf_is_own: true          a folha é um sufixo de palavras do próprio tipo (bucket em <x>_bucket)
+#   Léxicos derivados de normalize: id_tails, name_tails e id_or_name_tails (a união).
+#   "Outro tipo" = nome do tipo sem o prefixo do provedor, ou sem a primeira palavra, ou (3+ palavras)
+#   sem uma palavra do meio; o próprio tipo = qualquer sufixo de palavras do nome do tipo.
+#   doc_format_in: classe      algum fato C03 format com status stated cai na classe (format_classes)
+#   doc_desc: padrão           alguma descrição C03 stated casa o padrão (patterns)
+#   doc_format_not_in: classe  nenhum fato C03 format stated cai na classe
+#   doc_desc_names_leaf: padrão  alguma descrição diz "<palavra de id> of|for [the] [até 2 palavras] <folha>"
+#                              ou "<folha> [1 palavra] <palavra de id>", com a folha escrita em palavras
+#
+# A evidência de cada registro cita os fact_id do C03 que dispararam uma condição de documentação.
+
+schema: bo.roles.rules/1
+version: 1.0.0
+contract: C04
+contract_version: 2.0.0
+
+normalize:
+  # folha de atributo write_only: o sufixo abaixo sai antes de olhar o nome (password_wo -> password)
+  write_only_suffix: _wo
+  # caudas que definem o radical (stem) da folha, da mais longa para a mais curta
+  id_tails: [self_link, self_links, ids, id, identifier, identifiers, arn, arns, ocid, ocids, uid, uuid]
+  name_tails: [name_prefix, names, name]
+
+lexicons:
+  # cauda de nome que denota segredo (string, coleção de string ou mapa)
+  secret_tails:
+    - password
+    - passwords
+    - passwd
+    - passphrase
+    - secret
+    - secrets
+    - private_key
+    - private_keys
+    - secret_key
+    - access_key
+    - access_keys
+    - api_key
+    - account_key
+    - primary_key
+    - secondary_key
+    - shared_key
+    - auth_key
+    - client_key
+    - raw_key
+    - sas_token
+    - access_token
+    - refresh_token
+    - auth_token
+    - api_token
+    - bearer_token
+    - token
+    - credential
+    - credentials
+    - connection_string
+    - connection_strings
+    - private_key_pem
+  # conteúdo que roda ou configura a máquina por dentro (user data)
+  userdata_leaves: [user_data, userdata, user_data_base64, custom_data, metadata_startup_script, startup_script]
+  # variáveis de ambiente como atributo
+  env_leaves: [environment_variables, env_vars, env, app_settings]
+  # bloco cujo valor é variável de ambiente
+  env_blocks: [env, environment, environment_variables]
+  env_value_leaves: [value, values, variables]
+  # conteúdo de objeto armazenado (só em tipo cuja última palavra é objeto, blob ou arquivo)
+  content_leaves: [content, content_base64, source_content, sensitive_content]
+  object_heads: [object, blob, file]
+  # conteúdo dentro de bloco cujo nome é segredo (ex.: private_key { content })
+  secret_block_value_leaves: [content, value, data]
+  # rótulos do usuário
+  tag_tails: [tags, labels, tags_all]
+  tag_blocks: [tag, tags, label, labels]
+  tag_kv_leaves: [key, value]
+  # nome escolhido pelo usuário
+  name_leaves: [name, display_name, friendly_name, name_prefix, identifier, identifier_prefix]
+  id_leaf: [id]
+  # caudas que o usuário escolhe (arn, ocid, self_link, uid e uuid são atribuídos pelo provedor)
+  user_chosen_tails: [name, name_prefix, id, identifier]
+  # identidade própria quando o radical é genérico (unique_id, resource_id, self_link)
+  self_stems: [unique, immutable, self]
+  # carimbo de tempo pelo nome
+  time_tails: [time, timestamp, date, datetime, at, created, updated, modified]
+  time_first_tokens: [time]
+
+format_classes:
+  # valores de fato C03 format (string, ou "aspect:<x>" quando o fato é um objeto com aspect)
+  IDENTIFIER: [ARN, OCID, UUID, "aspect:identifier"]
+  TIMESTAMP: [RFC3339, UTC timestamp, "aspect:timestamp"]
+
+patterns:
+  # início da descrição: "(The) ID|ARN|OCID|identifier|self link ... of the|a|an"
+  id_of: '^\W*(?:\S+\s+){0,4}?\(?\b(?:ids?|identifiers?|arns?|ocids?|self[ _-]?links?|uuids?)\b(?:\s*\([^)]*\))?\)?\s+of\s+(?:the|an?)\b'
+  # palavras de nome/id; doc_desc_names_leaf monta com elas "<palavra> of|for (the) <folha>" ou "<folha> <palavra>"
+  id_words: '(?:names?|ids?|identifiers?|arns?|ocids?|self[ _-]?links?|links?|urls?|uris?|e-?mail(?: address)?|resource paths?)'
+  env_mention: '\benvironment[ _-]variables?\b'
+  userdata_mention: '\buser[ _-]?data\b|\bstartup[ _-]script\b|\bcloud-init\b'
+
+rules:
+  - id: ROLE-SECRET-SENSITIVE
+    role: SECRET
+    text: "o schema marca o atributo como sensitive"
+    when: {flag: {sensitive: true}}
+  - id: ROLE-SECRET-NAME
+    role: SECRET
+    text: "a cauda da folha é um termo de segredo e o tipo carrega texto"
+    when: {tail_in: secret_tails, kind_in: [string, dynamic, coll_string, map_string]}
+  - id: ROLE-SECRET-BLOCK-CONTENT
+    role: SECRET
+    text: "conteúdo ou valor dentro de bloco cujo nome termina em termo de segredo"
+    when: {block_tail_in: secret_tails, leaf_in: secret_block_value_leaves, kind_in: [string, dynamic, coll_string, map_string]}
+  - id: ROLE-WITHHELD-USERDATA
+    role: SECRET
+    text: "user data ou script de inicialização pelo nome"
+    when: {leaf_in: userdata_leaves, kind_in: [string, dynamic, map_string]}
+  - id: ROLE-WITHHELD-USERDATA-DOCS
+    role: SECRET
+    text: "a documentação diz que o mapa carrega user data, startup script ou cloud-init"
+    when: {doc_desc: userdata_mention, kind_in: [map_string]}
+  - id: ROLE-WITHHELD-ENV
+    role: SECRET
+    text: "variáveis de ambiente pelo nome"
+    when: {leaf_in: env_leaves, kind_in: [string, dynamic, coll_string, map_string, map_other, coll_other, object]}
+  - id: ROLE-WITHHELD-ENV-BLOCK
+    role: SECRET
+    text: "valor dentro de bloco de variáveis de ambiente"
+    when: {block_in: env_blocks, leaf_in: env_value_leaves, kind_in: [string, dynamic, coll_string, map_string]}
+  - id: ROLE-WITHHELD-ENV-DOCS
+    role: SECRET
+    text: "a documentação diz que o mapa é de variáveis de ambiente"
+    when: {doc_desc: env_mention, kind_in: [map_string, map_other]}
+  - id: ROLE-WITHHELD-OBJECT-CONTENT
+    role: SECRET
+    text: "conteúdo de objeto, blob ou arquivo armazenado"
+    when: {type_head_in: object_heads, leaf_in: content_leaves, kind_in: [string, dynamic]}
+
+  - id: ROLE-TAG-MAP
+    role: TAG
+    text: "mapa cuja cauda é tags ou labels"
+    when: {tail_in: tag_tails, kind_in: [map_string, map_other]}
+  - id: ROLE-TAG-BLOCK
+    role: TAG
+    text: "chave ou valor dentro de bloco tag/tags/label/labels"
+    when: {block_in: tag_blocks, leaf_in: tag_kv_leaves}
+
+  - id: ROLE-IDENTIFIER-TOP-ID
+    role: IDENTIFIER
+    text: "o atributo id do topo do recurso"
+    when: {flag: {top_level: true}, leaf_in: id_leaf}
+  - id: ROLE-TIMESTAMP-NAME
+    role: TIMESTAMP
+    text: "só leitura, com nome de carimbo de tempo"
+    when: {flag: {configurable: false}, tail_in: time_tails, kind_in: [string, number]}
+  - id: ROLE-TIMESTAMP-NAME-FIRST
+    role: TIMESTAMP
+    text: "só leitura, folha começa por time_ (time_created, time_of_x)"
+    when: {flag: {configurable: false}, first_token_in: time_first_tokens, kind_in: [string, number]}
+  - id: ROLE-TIMESTAMP-DOCS
+    role: TIMESTAMP
+    text: "só leitura e a documentação dá formato de carimbo de tempo"
+    when: {flag: {configurable: false}, doc_format_in: TIMESTAMP, kind_in: [string, number]}
+  - id: ROLE-IDENTIFIER-SELF
+    role: IDENTIFIER
+    text: "só leitura, cauda de id e radical vazio, genérico ou do próprio tipo"
+    when: {flag: {configurable: false}, stem: [empty, own, self], tail_in: id_tails, kind_in: [string, number, coll_string]}
+  - id: ROLE-IDENTIFIER-NAME-COMPUTED
+    role: IDENTIFIER
+    text: "só leitura, no topo, nome do próprio recurso atribuído pelo provedor"
+    when: {flag: {configurable: false, top_level: true}, stem: [empty, own], tail_in: name_tails, kind_in: [string]}
+  - id: ROLE-REFERENCE-COMPUTED-ID
+    role: REFERENCE
+    text: "só leitura, cauda de id com radical de outro objeto"
+    when: {flag: {configurable: false}, stem: [type, other], tail_in: id_tails, kind_in: [string, number, coll_string]}
+  - id: ROLE-NAME-LEAF
+    role: NAME
+    text: "configurável, no topo do recurso, folha de nome (name, display_name, identifier...)"
+    when: {flag: {configurable: true, top_level: true}, leaf_in: name_leaves, kind_in: [string]}
+  - id: ROLE-NAME-OWN-NOUN
+    role: NAME
+    text: "configurável, no topo, a folha é o substantivo do próprio tipo e a documentação diz que é o nome dele"
+    when: {flag: {configurable: true, top_level: true}, leaf_is_own: true, doc_desc_names_leaf: id_words, kind_in: [string]}
+  - id: ROLE-NAME-OWN
+    role: NAME
+    text: "configurável, <próprio tipo>_name|_id|_identifier, sem formato de identificador atribuído pelo provedor"
+    when: {flag: {configurable: true}, stem: [own], tail_in: user_chosen_tails, doc_format_not_in: IDENTIFIER, kind_in: [string, number]}
+
+  - id: ROLE-REFERENCE-ID-TAIL
+    role: REFERENCE
+    text: "configurável, cauda de id (id, ids, arn, ocid, self_link...) de outro objeto; id sozinho num bloco fica CONFIG (rótulo ou seletor, ambíguo)"
+    when: {flag: {configurable: true}, stem: [empty, type, other, self], tail_in: id_tails, leaf_not_in: id_leaf, kind_in: [string, number, dynamic, coll_string]}
+  - id: ROLE-REFERENCE-NAME-TAIL-TYPE
+    role: REFERENCE
+    text: "configurável, <outro tipo do provedor>_name"
+    when: {flag: {configurable: true}, stem: [type], tail_in: name_tails, kind_in: [string, coll_string]}
+  - id: ROLE-REFERENCE-NOUN-TYPE-DOCS
+    role: REFERENCE
+    text: "configurável, a folha é o nome de outro tipo do provedor e a documentação diz nome/id/link dessa coisa"
+    when: {flag: {configurable: true}, leaf_is_type: true, doc_desc_names_leaf: id_words, kind_in: [string, coll_string]}
+  - id: ROLE-REFERENCE-DOCS-ID-OF
+    role: REFERENCE
+    text: "configurável, a descrição começa por \"ID/ARN/OCID/identificador/self link de ...\""
+    when: {flag: {configurable: true}, doc_desc: id_of, kind_in: [string, coll_string]}
+  - id: ROLE-REFERENCE-DOCS-FORMAT
+    role: REFERENCE
+    text: "a documentação dá formato de identificador e nenhuma regra de identidade ou nome casou antes"
+    when: {doc_format_in: IDENTIFIER, kind_in: [string, coll_string]}
+
+  - id: ROLE-SECRET-WRITEONLY
+    role: SECRET
+    text: "write_only sem outro papel: aceito e nunca gravado no state, tratado como Withheld"
+    when: {flag: {write_only: true}}
+  - id: ROLE-DEFAULT-CONFIG
+    role: CONFIG
+    text: "nenhuma regra acima casou"
+    when: {}

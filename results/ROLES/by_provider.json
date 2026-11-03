@@ -1,0 +1,1141 @@
+{
+ "contract": "C15",
+ "contract_version": "3.1.0",
+ "data": {
+  "atoms": {
+   "aws": 112893,
+   "azurerm": 23351,
+   "google": 32659,
+   "oci": 27172
+  },
+  "atoms_with_stated_description": {
+   "aws": 63066,
+   "azurerm": 22787,
+   "google": 30472,
+   "oci": 25972
+  },
+  "atoms_with_stated_format": {
+   "aws": 8215,
+   "azurerm": 456,
+   "google": 1505,
+   "oci": 5051
+  },
+  "findings": {
+   "rules_firing_in_fewer_than_all_providers": [
+    "ROLE-SECRET-BLOCK-CONTENT",
+    "ROLE-SECRET-WRITEONLY",
+    "ROLE-TAG-BLOCK",
+    "ROLE-TIMESTAMP-NAME-FIRST",
+    "ROLE-WITHHELD-OBJECT-CONTENT",
+    "ROLE-WITHHELD-USERDATA-DOCS"
+   ],
+   "rules_never_firing": [],
+   "sensitive_atoms_with_id_or_name_tail": {
+    "aws": 36,
+    "azurerm": 24,
+    "google": 5,
+    "oci": 28
+   },
+   "tail_terms_by_provider": {
+    "arn": {
+     "aws": 3129,
+     "azurerm": 2,
+     "google": 18,
+     "oci": 4
+    },
+    "arns": {
+     "aws": 109
+    },
+    "id": {
+     "aws": 5758,
+     "azurerm": 3634,
+     "google": 2776,
+     "oci": 4554
+    },
+    "identifier": {
+     "aws": 2160,
+     "azurerm": 13,
+     "google": 7,
+     "oci": 25
+    },
+    "identifiers": {
+     "aws": 89,
+     "oci": 3
+    },
+    "ids": {
+     "aws": 279,
+     "azurerm": 242,
+     "google": 45,
+     "oci": 200
+    },
+    "name": {
+     "aws": 9373,
+     "azurerm": 3156,
+     "google": 2181,
+     "oci": 1750
+    },
+    "name_prefix": {
+     "aws": 75,
+     "azurerm": 7,
+     "google": 8,
+     "oci": 6
+    },
+    "names": {
+     "aws": 77,
+     "azurerm": 61,
+     "google": 61,
+     "oci": 48
+    },
+    "ocid": {
+     "aws": 4,
+     "azurerm": 2,
+     "google": 8,
+     "oci": 216
+    },
+    "ocids": {
+     "google": 1
+    },
+    "self_link": {
+     "google": 136
+    },
+    "uid": {
+     "aws": 16,
+     "azurerm": 2,
+     "google": 125,
+     "oci": 2
+    },
+    "uuid": {
+     "aws": 6,
+     "azurerm": 2,
+     "google": 7,
+     "oci": 6
+    }
+   },
+   "tail_terms_concentrated_in_one_provider": {
+    "arn": {
+     "provider": "aws",
+     "share": 0.9924,
+     "total": 3153
+    },
+    "arns": {
+     "provider": "aws",
+     "share": 1.0,
+     "total": 109
+    },
+    "identifier": {
+     "provider": "aws",
+     "share": 0.9796,
+     "total": 2205
+    },
+    "identifiers": {
+     "provider": "aws",
+     "share": 0.9674,
+     "total": 92
+    },
+    "self_link": {
+     "provider": "google",
+     "share": 1.0,
+     "total": 136
+    }
+   }
+  },
+  "inputs": [
+   {
+    "atoms": "$BO_DATA/SCHEMA-AWS/atoms.jsonl",
+    "docs": "$BO_DATA/DOCS-AWS/docs_facts.jsonl"
+   },
+   {
+    "atoms": "$BO_DATA/SCHEMA-AZURE/atoms.jsonl",
+    "docs": "$BO_DATA/DOCS-AZURE/docs_facts.jsonl"
+   },
+   {
+    "atoms": "$BO_DATA/SCHEMA-GCP/atoms.jsonl",
+    "docs": "$BO_DATA/DOCS-GCP/docs_facts.jsonl"
+   },
+   {
+    "atoms": "$BO_DATA/SCHEMA-OCI/atoms.jsonl",
+    "docs": "$BO_DATA/DOCS-OCI/docs_facts.jsonl"
+   }
+  ],
+  "provider_version": {
+   "aws": "6.71.0",
+   "azurerm": "5.12.0",
+   "google": "8.9.0",
+   "oci": "9.11.0"
+  },
+  "roles": {
+   "aws": {
+    "CONFIG": 96628,
+    "IDENTIFIER": 2713,
+    "NAME": 983,
+    "REFERENCE": 9964,
+    "SECRET": 383,
+    "TAG": 1843,
+    "TIMESTAMP": 379
+   },
+   "azurerm": {
+    "CONFIG": 16227,
+    "IDENTIFIER": 1182,
+    "NAME": 1050,
+    "REFERENCE": 3668,
+    "SECRET": 786,
+    "TAG": 403,
+    "TIMESTAMP": 35
+   },
+   "google": {
+    "CONFIG": 23830,
+    "IDENTIFIER": 2173,
+    "NAME": 1061,
+    "REFERENCE": 2933,
+    "SECRET": 486,
+    "TAG": 1090,
+    "TIMESTAMP": 1086
+   },
+   "oci": {
+    "CONFIG": 17581,
+    "IDENTIFIER": 1078,
+    "NAME": 674,
+    "REFERENCE": 4267,
+    "SECRET": 277,
+    "TAG": 1828,
+    "TIMESTAMP": 1467
+   }
+  },
+  "roles_decided_with_docs": {
+   "aws": {
+    "NAME": 12,
+    "REFERENCE": 550,
+    "SECRET": 12,
+    "TIMESTAMP": 8
+   },
+   "azurerm": {
+    "NAME": 3,
+    "REFERENCE": 83,
+    "SECRET": 3,
+    "TIMESTAMP": 2
+   },
+   "google": {
+    "NAME": 7,
+    "REFERENCE": 1717,
+    "SECRET": 6,
+    "TIMESTAMP": 3
+   },
+   "oci": {
+    "NAME": 1,
+    "REFERENCE": 392,
+    "SECRET": 8,
+    "TIMESTAMP": 2
+   }
+  },
+  "rule_firings": {
+   "ROLE-DEFAULT-CONFIG": {
+    "aws": 96628,
+    "azurerm": 16227,
+    "google": 23830,
+    "oci": 17581
+   },
+   "ROLE-IDENTIFIER-NAME-COMPUTED": {
+    "aws": 25,
+    "azurerm": 6,
+    "google": 461,
+    "oci": 17
+   },
+   "ROLE-IDENTIFIER-SELF": {
+    "aws": 1215,
+    "azurerm": 69,
+    "google": 320,
+    "oci": 35
+   },
+   "ROLE-IDENTIFIER-TOP-ID": {
+    "aws": 1473,
+    "azurerm": 1107,
+    "google": 1392,
+    "oci": 1026
+   },
+   "ROLE-NAME-LEAF": {
+    "aws": 730,
+    "azurerm": 991,
+    "google": 728,
+    "oci": 625
+   },
+   "ROLE-NAME-OWN": {
+    "aws": 241,
+    "azurerm": 56,
+    "google": 326,
+    "oci": 48
+   },
+   "ROLE-NAME-OWN-NOUN": {
+    "aws": 12,
+    "azurerm": 3,
+    "google": 7,
+    "oci": 1
+   },
+   "ROLE-REFERENCE-COMPUTED-ID": {
+    "aws": 624,
+    "azurerm": 372,
+    "google": 154,
+    "oci": 784
+   },
+   "ROLE-REFERENCE-DOCS-FORMAT": {
+    "aws": 31,
+    "azurerm": 18,
+    "google": 3,
+    "oci": 159
+   },
+   "ROLE-REFERENCE-DOCS-ID-OF": {
+    "aws": 232,
+    "azurerm": 36,
+    "google": 96,
+    "oci": 126
+   },
+   "ROLE-REFERENCE-ID-TAIL": {
+    "aws": 8047,
+    "azurerm": 2264,
+    "google": 854,
+    "oci": 2981
+   },
+   "ROLE-REFERENCE-NAME-TAIL-TYPE": {
+    "aws": 743,
+    "azurerm": 949,
+    "google": 208,
+    "oci": 110
+   },
+   "ROLE-REFERENCE-NOUN-TYPE-DOCS": {
+    "aws": 287,
+    "azurerm": 29,
+    "google": 1618,
+    "oci": 107
+   },
+   "ROLE-SECRET-BLOCK-CONTENT": {
+    "aws": 0,
+    "azurerm": 0,
+    "google": 0,
+    "oci": 3
+   },
+   "ROLE-SECRET-NAME": {
+    "aws": 77,
+    "azurerm": 35,
+    "google": 161,
+    "oci": 59
+   },
+   "ROLE-SECRET-SENSITIVE": {
+    "aws": 266,
+    "azurerm": 718,
+    "google": 272,
+    "oci": 188
+   },
+   "ROLE-SECRET-WRITEONLY": {
+    "aws": 0,
+    "azurerm": 1,
+    "google": 11,
+    "oci": 0
+   },
+   "ROLE-TAG-BLOCK": {
+    "aws": 43,
+    "azurerm": 0,
+    "google": 10,
+    "oci": 102
+   },
+   "ROLE-TAG-MAP": {
+    "aws": 1800,
+    "azurerm": 403,
+    "google": 1080,
+    "oci": 1726
+   },
+   "ROLE-TIMESTAMP-DOCS": {
+    "aws": 8,
+    "azurerm": 2,
+    "google": 3,
+    "oci": 2
+   },
+   "ROLE-TIMESTAMP-NAME": {
+    "aws": 369,
+    "azurerm": 33,
+    "google": 1083,
+    "oci": 1234
+   },
+   "ROLE-TIMESTAMP-NAME-FIRST": {
+    "aws": 2,
+    "azurerm": 0,
+    "google": 0,
+    "oci": 231
+   },
+   "ROLE-WITHHELD-ENV": {
+    "aws": 6,
+    "azurerm": 17,
+    "google": 19,
+    "oci": 14
+   },
+   "ROLE-WITHHELD-ENV-BLOCK": {
+    "aws": 7,
+    "azurerm": 4,
+    "google": 11,
+    "oci": 2
+   },
+   "ROLE-WITHHELD-ENV-DOCS": {
+    "aws": 12,
+    "azurerm": 3,
+    "google": 6,
+    "oci": 4
+   },
+   "ROLE-WITHHELD-OBJECT-CONTENT": {
+    "aws": 4,
+    "azurerm": 2,
+    "google": 0,
+    "oci": 2
+   },
+   "ROLE-WITHHELD-USERDATA": {
+    "aws": 11,
+    "azurerm": 6,
+    "google": 6,
+    "oci": 1
+   },
+   "ROLE-WITHHELD-USERDATA-DOCS": {
+    "aws": 0,
+    "azurerm": 0,
+    "google": 0,
+    "oci": 4
+   }
+  },
+  "rules": {
+   "n_rules": 28,
+   "path": "$BO_REPO/roles/rules.yaml",
+   "sha256": "525f0b9d9887ceaa41f450135e48b2e705c265914fdccdb4a1133f5b1762d95e",
+   "version": "1.0.0"
+  }
+ },
+ "generated_at": "2026-11-03T18:02:01-03:00",
+ "metrics": [
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "todos os átomos C01 do aws 6.71.0 (SCHEMA)"
+   },
+   "inclusion": {
+    "rule_id": "INC-ROLES-01",
+    "text": "átomo cujo papel C04 é CONFIG"
+   },
+   "joint_uncertainty": {
+    "method": "exact"
+   },
+   "metric_id": "M-ROLES-AWS-CONFIG",
+   "name": "fração dos átomos do aws 6.71.0 com papel CONFIG",
+   "operational_coverage": {
+    "est": 0.855926,
+    "lower": 0.855926,
+    "n": 112893,
+    "upper": 0.855926
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "todos os átomos C01 do aws 6.71.0 (SCHEMA)"
+   },
+   "inclusion": {
+    "rule_id": "INC-ROLES-01",
+    "text": "átomo cujo papel C04 é IDENTIFIER"
+   },
+   "joint_uncertainty": {
+    "method": "exact"
+   },
+   "metric_id": "M-ROLES-AWS-IDENTIFIER",
+   "name": "fração dos átomos do aws 6.71.0 com papel IDENTIFIER",
+   "operational_coverage": {
+    "est": 0.024032,
+    "lower": 0.024032,
+    "n": 112893,
+    "upper": 0.024032
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "todos os átomos C01 do aws 6.71.0 (SCHEMA)"
+   },
+   "inclusion": {
+    "rule_id": "INC-ROLES-01",
+    "text": "átomo cujo papel C04 é NAME"
+   },
+   "joint_uncertainty": {
+    "method": "exact"
+   },
+   "metric_id": "M-ROLES-AWS-NAME",
+   "name": "fração dos átomos do aws 6.71.0 com papel NAME",
+   "operational_coverage": {
+    "est": 0.008707,
+    "lower": 0.008707,
+    "n": 112893,
+    "upper": 0.008707
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "todos os átomos C01 do aws 6.71.0 (SCHEMA)"
+   },
+   "inclusion": {
+    "rule_id": "INC-ROLES-01",
+    "text": "átomo cujo papel C04 é TAG"
+   },
+   "joint_uncertainty": {
+    "method": "exact"
+   },
+   "metric_id": "M-ROLES-AWS-TAG",
+   "name": "fração dos átomos do aws 6.71.0 com papel TAG",
+   "operational_coverage": {
+    "est": 0.016325,
+    "lower": 0.016325,
+    "n": 112893,
+    "upper": 0.016325
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "todos os átomos C01 do aws 6.71.0 (SCHEMA)"
+   },
+   "inclusion": {
+    "rule_id": "INC-ROLES-01",
+    "text": "átomo cujo papel C04 é REFERENCE"
+   },
+   "joint_uncertainty": {
+    "method": "exact"
+   },
+   "metric_id": "M-ROLES-AWS-REFERENCE",
+   "name": "fração dos átomos do aws 6.71.0 com papel REFERENCE",
+   "operational_coverage": {
+    "est": 0.088261,
+    "lower": 0.088261,
+    "n": 112893,
+    "upper": 0.088261
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "todos os átomos C01 do aws 6.71.0 (SCHEMA)"
+   },
+   "inclusion": {
+    "rule_id": "INC-ROLES-01",
+    "text": "átomo cujo papel C04 é TIMESTAMP"
+   },
+   "joint_uncertainty": {
+    "method": "exact"
+   },
+   "metric_id": "M-ROLES-AWS-TIMESTAMP",
+   "name": "fração dos átomos do aws 6.71.0 com papel TIMESTAMP",
+   "operational_coverage": {
+    "est": 0.003357,
+    "lower": 0.003357,
+    "n": 112893,
+    "upper": 0.003357
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "todos os átomos C01 do aws 6.71.0 (SCHEMA)"
+   },
+   "inclusion": {
+    "rule_id": "INC-ROLES-01",
+    "text": "átomo cujo papel C04 é SECRET"
+   },
+   "joint_uncertainty": {
+    "method": "exact"
+   },
+   "metric_id": "M-ROLES-AWS-SECRET",
+   "name": "fração dos átomos do aws 6.71.0 com papel SECRET",
+   "operational_coverage": {
+    "est": 0.003393,
+    "lower": 0.003393,
+    "n": 112893,
+    "upper": 0.003393
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "todos os átomos C01 do azurerm 5.12.0 (SCHEMA)"
+   },
+   "inclusion": {
+    "rule_id": "INC-ROLES-01",
+    "text": "átomo cujo papel C04 é CONFIG"
+   },
+   "joint_uncertainty": {
+    "method": "exact"
+   },
+   "metric_id": "M-ROLES-AZURERM-CONFIG",
+   "name": "fração dos átomos do azurerm 5.12.0 com papel CONFIG",
+   "operational_coverage": {
+    "est": 0.694917,
+    "lower": 0.694917,
+    "n": 23351,
+    "upper": 0.694917
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "todos os átomos C01 do azurerm 5.12.0 (SCHEMA)"
+   },
+   "inclusion": {
+    "rule_id": "INC-ROLES-01",
+    "text": "átomo cujo papel C04 é IDENTIFIER"
+   },
+   "joint_uncertainty": {
+    "method": "exact"
+   },
+   "metric_id": "M-ROLES-AZURERM-IDENTIFIER",
+   "name": "fração dos átomos do azurerm 5.12.0 com papel IDENTIFIER",
+   "operational_coverage": {
+    "est": 0.050619,
+    "lower": 0.050619,
+    "n": 23351,
+    "upper": 0.050619
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "todos os átomos C01 do azurerm 5.12.0 (SCHEMA)"
+   },
+   "inclusion": {
+    "rule_id": "INC-ROLES-01",
+    "text": "átomo cujo papel C04 é NAME"
+   },
+   "joint_uncertainty": {
+    "method": "exact"
+   },
+   "metric_id": "M-ROLES-AZURERM-NAME",
+   "name": "fração dos átomos do azurerm 5.12.0 com papel NAME",
+   "operational_coverage": {
+    "est": 0.044966,
+    "lower": 0.044966,
+    "n": 23351,
+    "upper": 0.044966
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "todos os átomos C01 do azurerm 5.12.0 (SCHEMA)"
+   },
+   "inclusion": {
+    "rule_id": "INC-ROLES-01",
+    "text": "átomo cujo papel C04 é TAG"
+   },
+   "joint_uncertainty": {
+    "method": "exact"
+   },
+   "metric_id": "M-ROLES-AZURERM-TAG",
+   "name": "fração dos átomos do azurerm 5.12.0 com papel TAG",
+   "operational_coverage": {
+    "est": 0.017258,
+    "lower": 0.017258,
+    "n": 23351,
+    "upper": 0.017258
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "todos os átomos C01 do azurerm 5.12.0 (SCHEMA)"
+   },
+   "inclusion": {
+    "rule_id": "INC-ROLES-01",
+    "text": "átomo cujo papel C04 é REFERENCE"
+   },
+   "joint_uncertainty": {
+    "method": "exact"
+   },
+   "metric_id": "M-ROLES-AZURERM-REFERENCE",
+   "name": "fração dos átomos do azurerm 5.12.0 com papel REFERENCE",
+   "operational_coverage": {
+    "est": 0.157081,
+    "lower": 0.157081,
+    "n": 23351,
+    "upper": 0.157081
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "todos os átomos C01 do azurerm 5.12.0 (SCHEMA)"
+   },
+   "inclusion": {
+    "rule_id": "INC-ROLES-01",
+    "text": "átomo cujo papel C04 é TIMESTAMP"
+   },
+   "joint_uncertainty": {
+    "method": "exact"
+   },
+   "metric_id": "M-ROLES-AZURERM-TIMESTAMP",
+   "name": "fração dos átomos do azurerm 5.12.0 com papel TIMESTAMP",
+   "operational_coverage": {
+    "est": 0.001499,
+    "lower": 0.001499,
+    "n": 23351,
+    "upper": 0.001499
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "todos os átomos C01 do azurerm 5.12.0 (SCHEMA)"
+   },
+   "inclusion": {
+    "rule_id": "INC-ROLES-01",
+    "text": "átomo cujo papel C04 é SECRET"
+   },
+   "joint_uncertainty": {
+    "method": "exact"
+   },
+   "metric_id": "M-ROLES-AZURERM-SECRET",
+   "name": "fração dos átomos do azurerm 5.12.0 com papel SECRET",
+   "operational_coverage": {
+    "est": 0.03366,
+    "lower": 0.03366,
+    "n": 23351,
+    "upper": 0.03366
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "todos os átomos C01 do google 8.9.0 (SCHEMA)"
+   },
+   "inclusion": {
+    "rule_id": "INC-ROLES-01",
+    "text": "átomo cujo papel C04 é CONFIG"
+   },
+   "joint_uncertainty": {
+    "method": "exact"
+   },
+   "metric_id": "M-ROLES-GOOGLE-CONFIG",
+   "name": "fração dos átomos do google 8.9.0 com papel CONFIG",
+   "operational_coverage": {
+    "est": 0.729661,
+    "lower": 0.729661,
+    "n": 32659,
+    "upper": 0.729661
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "todos os átomos C01 do google 8.9.0 (SCHEMA)"
+   },
+   "inclusion": {
+    "rule_id": "INC-ROLES-01",
+    "text": "átomo cujo papel C04 é IDENTIFIER"
+   },
+   "joint_uncertainty": {
+    "method": "exact"
+   },
+   "metric_id": "M-ROLES-GOOGLE-IDENTIFIER",
+   "name": "fração dos átomos do google 8.9.0 com papel IDENTIFIER",
+   "operational_coverage": {
+    "est": 0.066536,
+    "lower": 0.066536,
+    "n": 32659,
+    "upper": 0.066536
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "todos os átomos C01 do google 8.9.0 (SCHEMA)"
+   },
+   "inclusion": {
+    "rule_id": "INC-ROLES-01",
+    "text": "átomo cujo papel C04 é NAME"
+   },
+   "joint_uncertainty": {
+    "method": "exact"
+   },
+   "metric_id": "M-ROLES-GOOGLE-NAME",
+   "name": "fração dos átomos do google 8.9.0 com papel NAME",
+   "operational_coverage": {
+    "est": 0.032487,
+    "lower": 0.032487,
+    "n": 32659,
+    "upper": 0.032487
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "todos os átomos C01 do google 8.9.0 (SCHEMA)"
+   },
+   "inclusion": {
+    "rule_id": "INC-ROLES-01",
+    "text": "átomo cujo papel C04 é TAG"
+   },
+   "joint_uncertainty": {
+    "method": "exact"
+   },
+   "metric_id": "M-ROLES-GOOGLE-TAG",
+   "name": "fração dos átomos do google 8.9.0 com papel TAG",
+   "operational_coverage": {
+    "est": 0.033375,
+    "lower": 0.033375,
+    "n": 32659,
+    "upper": 0.033375
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "todos os átomos C01 do google 8.9.0 (SCHEMA)"
+   },
+   "inclusion": {
+    "rule_id": "INC-ROLES-01",
+    "text": "átomo cujo papel C04 é REFERENCE"
+   },
+   "joint_uncertainty": {
+    "method": "exact"
+   },
+   "metric_id": "M-ROLES-GOOGLE-REFERENCE",
+   "name": "fração dos átomos do google 8.9.0 com papel REFERENCE",
+   "operational_coverage": {
+    "est": 0.089807,
+    "lower": 0.089807,
+    "n": 32659,
+    "upper": 0.089807
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "todos os átomos C01 do google 8.9.0 (SCHEMA)"
+   },
+   "inclusion": {
+    "rule_id": "INC-ROLES-01",
+    "text": "átomo cujo papel C04 é TIMESTAMP"
+   },
+   "joint_uncertainty": {
+    "method": "exact"
+   },
+   "metric_id": "M-ROLES-GOOGLE-TIMESTAMP",
+   "name": "fração dos átomos do google 8.9.0 com papel TIMESTAMP",
+   "operational_coverage": {
+    "est": 0.033253,
+    "lower": 0.033253,
+    "n": 32659,
+    "upper": 0.033253
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "todos os átomos C01 do google 8.9.0 (SCHEMA)"
+   },
+   "inclusion": {
+    "rule_id": "INC-ROLES-01",
+    "text": "átomo cujo papel C04 é SECRET"
+   },
+   "joint_uncertainty": {
+    "method": "exact"
+   },
+   "metric_id": "M-ROLES-GOOGLE-SECRET",
+   "name": "fração dos átomos do google 8.9.0 com papel SECRET",
+   "operational_coverage": {
+    "est": 0.014881,
+    "lower": 0.014881,
+    "n": 32659,
+    "upper": 0.014881
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "todos os átomos C01 do oci 9.11.0 (SCHEMA)"
+   },
+   "inclusion": {
+    "rule_id": "INC-ROLES-01",
+    "text": "átomo cujo papel C04 é CONFIG"
+   },
+   "joint_uncertainty": {
+    "method": "exact"
+   },
+   "metric_id": "M-ROLES-OCI-CONFIG",
+   "name": "fração dos átomos do oci 9.11.0 com papel CONFIG",
+   "operational_coverage": {
+    "est": 0.647026,
+    "lower": 0.647026,
+    "n": 27172,
+    "upper": 0.647026
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "todos os átomos C01 do oci 9.11.0 (SCHEMA)"
+   },
+   "inclusion": {
+    "rule_id": "INC-ROLES-01",
+    "text": "átomo cujo papel C04 é IDENTIFIER"
+   },
+   "joint_uncertainty": {
+    "method": "exact"
+   },
+   "metric_id": "M-ROLES-OCI-IDENTIFIER",
+   "name": "fração dos átomos do oci 9.11.0 com papel IDENTIFIER",
+   "operational_coverage": {
+    "est": 0.039673,
+    "lower": 0.039673,
+    "n": 27172,
+    "upper": 0.039673
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "todos os átomos C01 do oci 9.11.0 (SCHEMA)"
+   },
+   "inclusion": {
+    "rule_id": "INC-ROLES-01",
+    "text": "átomo cujo papel C04 é NAME"
+   },
+   "joint_uncertainty": {
+    "method": "exact"
+   },
+   "metric_id": "M-ROLES-OCI-NAME",
+   "name": "fração dos átomos do oci 9.11.0 com papel NAME",
+   "operational_coverage": {
+    "est": 0.024805,
+    "lower": 0.024805,
+    "n": 27172,
+    "upper": 0.024805
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "todos os átomos C01 do oci 9.11.0 (SCHEMA)"
+   },
+   "inclusion": {
+    "rule_id": "INC-ROLES-01",
+    "text": "átomo cujo papel C04 é TAG"
+   },
+   "joint_uncertainty": {
+    "method": "exact"
+   },
+   "metric_id": "M-ROLES-OCI-TAG",
+   "name": "fração dos átomos do oci 9.11.0 com papel TAG",
+   "operational_coverage": {
+    "est": 0.067275,
+    "lower": 0.067275,
+    "n": 27172,
+    "upper": 0.067275
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "todos os átomos C01 do oci 9.11.0 (SCHEMA)"
+   },
+   "inclusion": {
+    "rule_id": "INC-ROLES-01",
+    "text": "átomo cujo papel C04 é REFERENCE"
+   },
+   "joint_uncertainty": {
+    "method": "exact"
+   },
+   "metric_id": "M-ROLES-OCI-REFERENCE",
+   "name": "fração dos átomos do oci 9.11.0 com papel REFERENCE",
+   "operational_coverage": {
+    "est": 0.157037,
+    "lower": 0.157037,
+    "n": 27172,
+    "upper": 0.157037
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "todos os átomos C01 do oci 9.11.0 (SCHEMA)"
+   },
+   "inclusion": {
+    "rule_id": "INC-ROLES-01",
+    "text": "átomo cujo papel C04 é TIMESTAMP"
+   },
+   "joint_uncertainty": {
+    "method": "exact"
+   },
+   "metric_id": "M-ROLES-OCI-TIMESTAMP",
+   "name": "fração dos átomos do oci 9.11.0 com papel TIMESTAMP",
+   "operational_coverage": {
+    "est": 0.053989,
+    "lower": 0.053989,
+    "n": 27172,
+    "upper": 0.053989
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "todos os átomos C01 do oci 9.11.0 (SCHEMA)"
+   },
+   "inclusion": {
+    "rule_id": "INC-ROLES-01",
+    "text": "átomo cujo papel C04 é SECRET"
+   },
+   "joint_uncertainty": {
+    "method": "exact"
+   },
+   "metric_id": "M-ROLES-OCI-SECRET",
+   "name": "fração dos átomos do oci 9.11.0 com papel SECRET",
+   "operational_coverage": {
+    "est": 0.010194,
+    "lower": 0.010194,
+    "n": 27172,
+    "upper": 0.010194
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  }
+ ],
+ "module": "ROLES",
+ "notes": "Papel C04 por regra declarada em roles/rules.yaml, primeira que casa, a mesma lista para os 4 provedores. Frações observadas sobre todos os átomos do SCHEMA (sem amostragem, sem meta). rule_firings e findings descrevem onde cada regra disparou; regra que dispara em menos de 4 provedores é achado, não erro.",
+ "schema": "bo.result/1"
+}

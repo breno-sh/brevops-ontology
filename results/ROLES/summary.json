@@ -1,0 +1,80 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "ROLES",
+ "generated_at": "2026-11-03T18:04:28-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/ROLES.txt",
+  "brief_sha256": "a147b751002364cbb51b9c5f6a80a1b250f0a75199a4a9942c7f323888d286a4",
+  "params": {
+   "effort": "maximo",
+   "rules_version": "1.0.0",
+   "audit_seed": "20261103",
+   "doc_fact_kinds": "description,format",
+   "stated_only": "true"
+  },
+  "inputs": [
+   {
+    "path": "$BO_DATA/SCHEMA-AWS/atoms.jsonl",
+    "kind": "file",
+    "sha256": "5c6aba0585cb0e30f26877fd0ed6ba1a471092c792ecfa0b38f22d43d1e862a7"
+   },
+   {
+    "path": "$BO_DATA/DOCS-AWS/docs_facts.jsonl",
+    "kind": "file",
+    "sha256": "0e60c72f0e407cb698731ca109a14c88a844e8923cb1e8797807a96fd8bffa12"
+   },
+   {
+    "path": "$BO_DATA/SCHEMA-GCP/atoms.jsonl",
+    "kind": "file",
+    "sha256": "a00b9d3fb50a717fe3ba17ec0f4b2012f89ee7a3cb65e7ea5f21298afc75e4e1"
+   },
+   {
+    "path": "$BO_DATA/DOCS-GCP/docs_facts.jsonl",
+    "kind": "file",
+    "sha256": "f9a43bef915e80e27f30f694d2fafc2639b072546742cf328baa1f64e7b5c603"
+   },
+   {
+    "path": "$BO_DATA/SCHEMA-AZURE/atoms.jsonl",
+    "kind": "file",
+    "sha256": "3e7a8160b3272bc0652427989d72860cb84cc198dfde1a9ae14405babfbbb915"
+   },
+   {
+    "path": "$BO_DATA/DOCS-AZURE/docs_facts.jsonl",
+    "kind": "file",
+    "sha256": "23efd739b2bd9f16a1088c29b4bc1dacaa78bbd4d91cfd7c26bfa38351763ced"
+   },
+   {
+    "path": "$BO_DATA/SCHEMA-OCI/atoms.jsonl",
+    "kind": "file",
+    "sha256": "99e3dc9d3434e48675fd71eb817145ae63c2159fd041f3c67dd1d308e814287c"
+   },
+   {
+    "path": "$BO_DATA/DOCS-OCI/docs_facts.jsonl",
+    "kind": "file",
+    "sha256": "a016f68e90104e0cd48472e0d2b86f982722ca889be9e9ff9591f61405e2fa34"
+   },
+   {
+    "path": "$BO_REPO/roles/rules.yaml",
+    "kind": "file",
+    "sha256": "525f0b9d9887ceaa41f450135e48b2e705c265914fdccdb4a1133f5b1762d95e"
+   }
+  ],
+  "recorded_at": "2026-11-03T18:04:28-03:00"
+ },
+ "sources": [
+  {
+   "uri": "bo:C01 atoms.jsonl dos SCHEMA-{aws,google,azurerm,oci}",
+   "license": "MPL-2.0 (schemas dos providers)",
+   "transformation": "lidos como dado; papel por regra declarada em roles/rules.yaml"
+  },
+  {
+   "uri": "bo:C03 docs_facts.jsonl dos DOCS-{aws,google,azurerm,oci}",
+   "license": "MPL-2.0 (docs dos providers)",
+   "transformation": "só fatos description e format com status stated; citados por fact_id na evidência"
+  }
+ ],
+ "notes": "Papel C04 de todo átomo C01 dos 4 provedores pela primeira regra que casa em roles/rules.yaml 1.0.0, a mesma lista para todos; sem amostragem e sem meta. Auditoria do agente (interpretada) em results/ROLES/audit.json; simetria em bo.roles.symmetry."
+}
