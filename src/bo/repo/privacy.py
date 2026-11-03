@@ -156,6 +156,26 @@ def scan_large_text(f: Path, lists=None) -> list[Finding]:
     return found
 
 
+def _signed_ok(f: Path, root: Path) -> bool:
+    """True se o sha256 de f aparece num SIGNED.sha256 na pasta de f ou acima dela (até root).
+    O SIGNED.sha256 é escrito pelo módulo que conferiu a assinatura do pacote (formato do sha256sum)."""
+    import hashlib
+    h = hashlib.sha256()
+    with open(f, "rb") as fh:
+        for chunk in iter(lambda: fh.read(1 << 20), b""):
+            h.update(chunk)
+    digest = h.hexdigest()
+    top = root if root.is_dir() else root.parent
+    d = f.parent
+    while True:
+        sf = d / "SIGNED.sha256"
+        if sf.is_file() and any(l.split()[:1] == [digest] for l in sf.read_text().splitlines()):
+            return True
+        if d == top or d == d.parent:
+            return False
+        d = d.parent
+
+
 def scan_paths(paths: list[Path], strict: bool = False, lists=None) -> tuple[list[Finding], int, list[str]]:
     findings, n, notes = [], 0, []
     for root in paths:
@@ -179,6 +199,11 @@ def scan_paths(paths: list[Path], strict: bool = False, lists=None) -> tuple[lis
                         # texto grande (ex.: JSONL de átomos): varrido linha a linha, sem carregar inteiro
                         n += 1
                         findings.extend(scan_large_text(f, lists))
+                        continue
+                    if binary and _signed_ok(f, root):
+                        # binário de pacote assinado e já conferido (ex.: provider Terraform no plugin_cache):
+                        # aceito porque o sha256 está num SIGNED.sha256 da mesma pasta ou de uma pasta acima
+                        notes.append(f"binário assinado aceito: {f}")
                         continue
                     msg = f"arquivo grande demais para varrer: {f}"
                     if strict:
