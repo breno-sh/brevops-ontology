@@ -1,0 +1,22 @@
+[project]
+name = "brevops-ontology"
+version = "0.1.0"
+description = "BrevOps Ontology: ontologia neutra de configuração multi-nuvem (código de pesquisa)"
+requires-python = ">=3.11"
+readme = "CONVENTIONS.html"
+dependencies = []  # versões fixadas em requirements.lock; o REPO só usa a biblioteca padrão
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+namespaces = true   # src/bo/ não tem __init__.py: cada módulo é dono de src/bo/<pacote>/
+
+[tool.bo]
+# Como o pacote resolve sob 'python -I' (que ignora PYTHONPATH): make bootstrap grava
+# brevops_ontology.pth no site-packages; ele acrescenta $BO_REPO/src (ou o repositório principal).
+base_branch = "bo/base"
+timezone = "America/Recife"
+tmp = "$BO_DATA/tmp/<ID>"

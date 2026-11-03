@@ -1,0 +1,38 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "REPO",
+ "generated_at": "2026-11-02T21:47:31-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/REPO.txt",
+  "brief_sha256": "ff9c55f9a84043ef21429c860ed565e75a03715b9e8b03bfbcb16d65a8149195",
+  "params": {
+   "effort": "maximo",
+   "modo": "unlazy",
+   "onda": "0"
+  },
+  "inputs": [
+   {
+    "path": "/Users/breno/doutorado/pesquisa-lanes/c1-37-icsa/superficie/GATES.md",
+    "kind": "file",
+    "sha256": "db23b1a9d8cfc3162857b7ce43b3d1325d644a60a1e705e48a452503d874bf0f"
+   }
+  ],
+  "recorded_at": "2026-11-02T21:47:31-03:00"
+ },
+ "sources": [
+  {
+   "uri": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/modulos.json",
+   "license": "interno (plano do projeto)",
+   "transformation": "retrato em modules/owners.json com valores em dinheiro mascarados"
+  },
+  {
+   "uri": "/Users/breno/doutorado/pesquisa-lanes/c1-37-icsa/superficie/GATES.md",
+   "license": "interno",
+   "transformation": "lido como exemplo do formato de gates; nada copiado"
+  }
+ ],
+ "notes": "infraestrutura do repositório; sem dado de nuvem"
+}

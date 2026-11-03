@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Convenções BrevOps</title>
+<style>
+:root{--bg:#fbfaf7;--fg:#1d1d1b;--muted:#5d5b55;--line:#dedad0;--code:#f1eee6;--accent:#2f5d8a}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#171716;--fg:#e9e6df;--muted:#a8a49a;--line:#34332f;--code:#23221f;--accent:#8fb6dd}}
+:root[data-theme="dark"]{--bg:#171716;--fg:#e9e6df;--muted:#a8a49a;--line:#34332f;--code:#23221f;--accent:#8fb6dd}
+body{background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;margin:0;padding:0 16px}
+main{max-width:920px;margin:0 auto;padding:32px 0 64px}
+h1{font-size:1.7rem;margin:.2em 0}h2{font-size:1.25rem;margin-top:2.2em;border-top:1px solid var(--line);padding-top:1em}
+h3{font-size:1.02rem;margin-top:1.4em}
+p.lead{color:var(--muted)}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;background:var(--code);border-radius:4px}
+code{padding:.1em .3em}pre{padding:12px 14px;overflow-x:auto;line-height:1.45}
+table{border-collapse:collapse;width:100%;font-size:.93em;margin:.6em 0}
+th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:600}
+a{color:var(--accent)}
+.note{border-left:3px solid var(--accent);padding:.2em .9em;color:var(--muted)}
+nav ol{columns:2;color:var(--muted)}
+</style>
+</head>
+<body>
+<main>
+<h1>Convenções do repositório BrevOps Ontology</h1>
+<p class="lead">Contrato C00 (convenções, 3.0.0) e formatos do C17 (MANIFEST.sha256, summary.json,
+freeze_receipt.json, 3.0.0) como o módulo REPO os implementa. Dono: REPO. Fuso de todo carimbo:
+America/Recife. Quando o CONTRACTS publicar os JSON Schema, eles prevalecem; divergência vira
+<code>results/&lt;ID&gt;/CONTRACT_CHANGE.txt</code>.</p>
+
+<nav><ol>
+<li><a href="#amb">Ambiente</a></li><li><a href="#arv">Árvores</a></li><li><a href="#posse">Posse</a></li>
+<li><a href="#commit">Commits</a></li><li><a href="#gates">Gates</a></li><li><a href="#merge">Merge e travas</a></li>
+<li><a href="#c17">Comprovantes (C17)</a></li><li><a href="#sandbox">Sandbox por papel</a></li>
+<li><a href="#priv">Privacidade</a></li><li><a href="#integ">Integração</a></li><li><a href="#lim">Limites conhecidos</a></li>
+</ol></nav>
+
+<h2 id="amb">1. Ambiente (C00)</h2>
+<table>
+<tr><th>Variável</th><th>Valor</th><th>Observação</th></tr>
+<tr><td><code>BO_REPO</code></td><td><code>/Users/breno/doutorado/brevops-ontology</code></td><td>na lane, a worktree (<code>source .bo/lane.env</code>)</td></tr>
+<tr><td><code>BO_DATA</code></td><td><code>/Users/breno/doutorado/brevops-data</code></td><td>fora do git; <code>$BO_DATA/&lt;ID&gt;/</code> é do módulo</td></tr>
+<tr><td><code>BO_TMP</code></td><td><code>$BO_DATA/tmp/&lt;ID&gt;</code></td><td>exclusivo do módulo; o runner também exporta <code>TMPDIR</code>; nunca <code>/tmp</code></td></tr>
+<tr><td><code>BO_ID</code>, <code>BO_ROLE</code></td><td>stable_id, papel</td><td>exportados pelo runner e pelo bo-lane</td></tr>
+<tr><td><code>BO_MODULES</code></td><td>modulos.json do plano</td><td>sem ele, as ferramentas usam o retrato <code>modules/owners.json</code></td></tr>
+<tr><td><code>BO_BASE</code></td><td><code>bo/base</code></td><td>branch base, sem remoto</td></tr>
+</table>
+<ul>
+<li>ID = stable_id; branch <code>bo/&lt;id em minúsculas&gt;</code>; worktree <code>/Users/breno/doutorado/pesquisa-lanes/bo-&lt;id&gt;</code>.</li>
+<li>Código em <code>$BO_REPO/src/bo/&lt;pacote&gt;/</code>. <code>src/bo/</code> não tem <code>__init__.py</code> (pacote de namespace): cada módulo é dono só do próprio pacote.</li>
+<li>Todo Python roda com <code>-I</code>. Como <code>-I</code> ignora <code>PYTHONPATH</code>, o <code>make bootstrap</code> grava <code>brevops_ontology.pth</code> no site-packages do interpretador; ele acrescenta <code>$BO_REPO/src</code> lido do ambiente (sem <code>BO_REPO</code>, o repositório principal). Assim <code>python -I -m bo.x</code> roda o código da worktree quando a lane exporta <code>BO_REPO</code>.</li>
+<li>Caminhos só com os índices declarados em <code>index_sets</code> do modulos.json (<code>{provider}</code>, <code>{pair}</code>, <code>{domain}</code>...); sem reticências; <code>*</code> não cruza <code>/</code>; caminho terminado em <code>/</code> é diretório e cobre a subárvore.</li>
+<li>Datas ISO-8601 com fuso, ex. <code>2026-11-02T21:16:16-03:00</code>.</li>
+<li>Entrada <code>ext:...</code> no catálogo é referência externa sem arquivo: o consume_check registra, mas não confere por hash.</li>
+</ul>
+
+<h2 id="arv">2. Árvores</h2>
+<pre>$BO_REPO/                         $BO_DATA/
+  Makefile  pyproject.toml          &lt;ID&gt;/            dados do módulo (gate_report.json, consume_ledger.json, ...)
+  requirements.lock                 tmp/&lt;ID&gt;/        BO_TMP do módulo
+  CONVENTIONS.html                  tmp/_sandbox_probe/  sondas do check-sandbox
+  tools/      ferramentas comuns    locks/&lt;nome&gt;/    travas (mkdir atômico)
+  src/bo/&lt;pacote&gt;/                  downloads/&lt;fonte&gt;/  dado não confiável, com SOURCE.txt, nunca executado
+  tests/&lt;pacote&gt;/  tests/integration/{core,domains}/
+  gates/&lt;ID&gt;.sh     results/&lt;ID&gt;/   freeze/&lt;nome&gt;/freeze_receipt.json
+  modules/owners.json (retrato do plano)  modules/state.json (estado declarado)</pre>
+
+<h2 id="posse">3. Posse</h2>
+<p>Cada módulo só escreve no seu <code>owns</code>. <code>tools/ownership_check.py &lt;ID&gt;</code> confere os commits do
+módulo (os ainda não mergeados, <code>bo/base..bo/&lt;id&gt;</code>, mais todo commit <code>[ID] ...</code> alcançável, o que
+continua valendo depois do merge e do rebase) e a worktree suja. <code>--all</code> prova que as posses do catálogo são
+disjuntas. Nenhum módulo é dono de <code>.gitignore</code>: os padrões de cache e de lane (<code>__pycache__/</code>,
+<code>.claude/</code>, <code>.bo/</code>, ...) vão em <code>.git/info/exclude</code>, escrito pelo bootstrap e válido para todas as worktrees.</p>
+
+<h2 id="commit">4. Commits</h2>
+<ul>
+<li>Assunto <code>[ID] texto</code> (até 72 caracteres), em português simples. Commit do coordenador: <code>[COORD] ...</code>.</li>
+<li>Proibido: <code>Co-Authored-By</code>, menção a Claude, Anthropic, OpenAI/GPT, Copilot/Codex/Gemini, nomes de modelo, LLM, IA/AI, "gerado com/por", emoji de robô, e-mail <code>noreply@</code>.</li>
+<li>Sem merge na branch do módulo (rebase em <code>bo/base</code>). Sem push; sem remoto.</li>
+<li>Hooks (instalados por <code>make bootstrap</code> no diretório comum do git): <code>pre-commit</code> roda <code>privacy_lint.py --staged</code>; <code>commit-msg</code> roda <code>commit_lint.py --message-file</code>.</li>
+<li>A proveniência do agente vai para <code>results/&lt;ID&gt;/summary.json</code> com <code>tools/provenance.py record</code>, nunca para o commit.</li>
+</ul>
+
+<h2 id="gates">5. Gates</h2>
+<pre>make -C $BO_REPO gate ID=&lt;ID&gt;</pre>
+<ol>
+<li>Ambiente pronto (o <code>.pth</code> do bootstrap existe).</li>
+<li><code>gate_smoke</code>: todo comando de todo gate resolve antes de rodar — executável no PATH, <code>python -I -m bo.*</code> importável com o mesmo interpretador e flags, pacote de terceiro na versão do <code>requirements.lock</code>, script e alvo de make existentes, variável definida, ROBOT na versão de <code>ontology/patterns/toolchain_pins.json</code> (ONTPAT) e Terraform na de <code>universe/pins.json</code> (PINS), e <code>gates/&lt;ID&gt;.sh</code> presente. Se algo não resolve, nada roda (saída 3).</li>
+<li><code>gates/&lt;ID&gt;.sh</code> (do módulo): contratos, manifesto, regeneração idêntica.</li>
+<li>Cada gate do catálogo, em ordem, com <code>BO_REPO</code>, <code>BO_DATA</code>, <code>BO_ID</code>, <code>BO_TMP</code>, <code>TMPDIR</code> e tempo-limite (<code>BO_GATE_TIMEOUT</code>, padrão 1800 s). A linha <code>make -C $BO_REPO gate ID=&lt;ID&gt;</code> do próprio módulo sai SKIP (auto-referência); recursão entre módulos reprova.</li>
+</ol>
+<p>Relatório: <code>$BO_DATA/&lt;ID&gt;/gate_report.json</code>; a cauda de saída de gate reprovado passa pelo privacy_lint antes de ser gravada. Módulo inexistente: mensagem clara e saída 2, sem travar.</p>
+
+<h2 id="merge">6. Merge e travas</h2>
+<pre>tools/lock.sh with merge-base --owner &lt;ID&gt; --wait 600 -- bash -c '
+  git -C $LANE rebase bo/base &amp;&amp; make -C $LANE gate ID=&lt;ID&gt; &amp;&amp;
+  git -C $BO_REPO merge --ff-only bo/&lt;id&gt;'</pre>
+<p>Trava = <code>mkdir</code> atômico em <code>$BO_DATA/locks/&lt;nome&gt;</code> com <code>owner</code> (dono, pid, host, hora). Só o dono solta; trava órfã
+é relatada, nunca quebrada sozinha. Nomes: <code>merge-base</code>, <code>freeze</code>, <code>cleanup-global</code>, <code>cloud-&lt;provedor&gt;</code>,
+<code>probe-&lt;provedor&gt;</code>, <code>cpu-heavy-1</code>, <code>cpu-heavy-2</code>. "Mergeado" é derivado do git: a base contém um commit <code>[ID] ...</code>.</p>
+
+<h2 id="c17">7. Comprovantes, consumo e invalidação (C17)</h2>
+<h3>freeze_receipt.json</h3>
+<pre>{
+ "schema": "bo.freeze_receipt/1", "contract": "C17", "contract_version": "3.0.0",
+ "name": "FREEZE0", "owner": "coordenador", "created_at": "2026-...-03:00", "note": "",
+ "git": {"commit": "&lt;sha do HEAD&gt;", "tag": "bo-freeze-FREEZE0"},
+ "modules": ["produtores e o fecho das deps deles"],
+ "artifacts": [{"path": "$BO_REPO/...", "kind": "file|dir", "sha256": "...", "files": {"rel": "sha"}, "producers": ["ID"]}],
+ "transitive_inputs": [{"path": "$BO_DATA/...", "kind": "...", "sha256": "...", "via": "ID"}],
+ "digest": "sha256 do JSON canônico sem digest e ots",
+ "ots": {"status": "STAMPED|PENDING|DISABLED", "digest": "...", "file": "freeze_receipt.digest.ots", "reason": "..."}
+}</pre>
+<ul>
+<li><code>tools/freeze.py create NOME --paths ...</code> grava o comprovante, cria a tag anotada e registra o congelamento em <code>modules/state.json</code>. Sem o cliente <code>ots</code>, o carimbo fica <code>PENDING</code> explícito; <code>freeze.py stamp NOME</code> tenta de novo. Comprovante é único: emenda = nome novo.</li>
+<li>Caminhos sempre portáteis (<code>$BO_REPO/...</code>, <code>$BO_DATA/...</code>), válidos no repositório principal e em qualquer worktree.</li>
+<li><code>tools/consume_check.py &lt;ID&gt;</code> (ao começar e no gate) reprova se: o módulo ou uma dep transitiva está STALE; uma dep não foi mergeada; uma entrada não existe; um comprovante relevante diverge ou foi editado; um <code>MANIFEST.sha256</code> das deps não bate; uma entrada registrada no <code>summary.json</code> de uma dep mudou; ou uma entrada mudou desde o primeiro consumo (livro <code>$BO_DATA/&lt;ID&gt;/consume_ledger.json</code>; <code>--reset</code> depois de refazer).</li>
+<li><code>tools/invalidate.py check --apply</code> marca STALE os consumidores do artefato mudado (entradas que o cobrem e consumidores do catálogo) e o fecho reverso das deps deles; o produtor não; o congelamento vira BROKEN. <code>clear ID --reason</code> devolve a CURRENT.</li>
+</ul>
+<h3>modules/state.json</h3>
+<pre>{"schema": "bo.state/1", "modules": {"ID": {"status": "CURRENT|STALE|ABANDONED", "since": "...", "reason": "...", "source": "..."}},
+ "freezes": {"NOME": {"status": "VALID|BROKEN", "receipt": "$BO_REPO/freeze/NOME/freeze_receipt.json", "digest": "..."}},
+ "events": [{"at": "...", "module|freeze": "...", "status": "...", "reason": "..."}]}</pre>
+<h3>MANIFEST.sha256</h3>
+<p>Formato do <code>shasum -a 256</code>: <code>&lt;sha256&gt;␣␣&lt;caminho&gt;</code>. O caminho é absoluto, portátil (<code>$BO_REPO/...</code>) ou relativo à pasta do manifesto ou à raiz do repositório (como <code>shasum -c</code> rodado de <code>$BO_REPO</code>).</p>
+<h3>summary.json</h3>
+<pre>{"schema": "bo.summary/1", "contract": "C17", "contract_version": "3.0.0", "module": "ID", "generated_at": "...",
+ "agent_provenance": {"model_id": "claude-opus-5-5", "brief_path": "...", "brief_sha256": "...",
+                      "params": {"k": "v"}, "inputs": [{"path": "...", "kind": "file|dir", "sha256": "..."}], "recorded_at": "..."},
+ "sources": [{"uri": "...", "license": "...", "transformation": "..."}], "notes": "..."}</pre>
+<p>Gravado por <code>tools/provenance.py record ID --brief ARQ [--param k=v] [--source 'uri|licença|transformação']</code>; conferido por <code>provenance.py verify ID</code>.</p>
+
+<h2 id="sandbox">8. Sandbox de leitura por papel</h2>
+<pre>tools/bo-lane new &lt;ID&gt; [--role mapper|glossarist|hunter|auditor|evaluator|extractor|builder]
+tools/bo-lane check-sandbox &lt;ID&gt;      tools/bo-lane refresh &lt;ID&gt;      tools/bo-lane rm &lt;ID&gt;</pre>
+<table>
+<tr><th>Papel</th><th>Lê</th></tr>
+<tr><td>builder, extractor</td><td>worktree, <code>$BO_DATA</code> e o plano inteiros, entradas externas; menos segredos e teste selado</td></tr>
+<tr><td>glossarist, mapper, hunter, auditor, evaluator</td><td>só o pacote: <code>owns</code> e <code>inputs</code> do módulo (na worktree e em <code>$BO_DATA</code>), código (<code>src/</code>, <code>tools/</code>), <code>contracts/</code>, <code>modules/</code>, <code>freeze/</code>, arquivos da raiz, <code>$BO_DATA/&lt;ID&gt;</code>, <code>$BO_TMP</code>, <code>locks/</code>, o próprio brief e gates do plano</td></tr>
+<tr><td>todos</td><td>ferramentas (<code>~/.local/share/mise</code>, <code>~/.gitconfig</code>, gate-check), o diretório comum do git; nunca <code>~/.ssh</code>, <code>~/.aws</code>, <code>~/.config/gcloud</code>, <code>~/.azure</code>, <code>~/.oci</code>, <code>~/brevops-keys</code>, <code>~/.config/bo/allowlist</code>, <code>$BO_DATA/SPLIT/sealed/</code></td></tr>
+</table>
+<p>O papel padrão sai do ID (MAP-* e PILOT-*-MAP = mapper; GLOSSARY-* e PILOT-*-GLOSS = glossarist; NONEHUNT-* = hunter; GLOSSARY-AUDIT e GOLD-AUDIT = auditor; o resto builder). Quando o BRIEFS publicar <code>briefs/read_allowlists.json</code>, ele manda, no formato:</p>
+<pre>{"roles": {"mapper": {"read": ["$OWNS", "$INPUTS", "$WT/src/", "$BO_DATA/CAND/bundles/..."]}}}</pre>
+<p>O bo-lane escreve <code>.claude/settings.json</code> na worktree: <code>permissions.deny</code> com o complemento da lista
+(tudo sob a HOME que não está nem dentro nem a caminho de um caminho permitido; deny vence allow) para a ferramenta Read, e
+<code>sandbox.filesystem.denyRead=[HOME]</code> + <code>allowRead=</code>lista do papel para o Bash, com
+<code>allowUnsandboxedCommands=false</code>. O mesmo conjunto vira <code>.bo/sandbox.sb</code> (sandbox-exec) e o
+<code>check-sandbox</code> prova a negação lendo arquivos-sonda dentro e fora do pacote de verdade.</p>
+
+<h2 id="priv">9. Privacidade</h2>
+<p><code>tools/privacy_lint.py [--strict] CAMINHOS</code> reprova: 12 dígitos seguidos (fora de hash hexadecimal), <code>arn:</code>,
+<code>ocid1.</code>, <code>/subscriptions/&lt;guid&gt;</code>, e-mail (exceto domínios reservados de exemplo), dinheiro fora de
+<code>cost_estimate.json</code>, chaves e tokens, e conteúdo Withheld — UserData, variáveis de ambiente, logs, corpo de objeto ou
+mensagem — inclusive como hash. Listas privadas, fora do repositório e opcionais (ausência vira nota):
+<code>~/.config/bo/gcp_projects.txt</code> (ids de projeto) e <code>~/.config/bo/private_terms.txt</code> (nomes e valores da empresa).
+<code>--strict</code> também varre binário e reprova arquivo grande ou ilegível. O valor achado nunca é impresso inteiro.</p>
+
+<h2 id="integ">10. Integração cruzada</h2>
+<p><code>make integration</code> roda cada <code>tests/integration/*/</code> com pytest (versão fixada). <code>core/</code> (REPO) confere a fiação do
+catálogo, posses, comprovantes e manifestos; <code>domains/</code> (DOMAIN-CONTRACTS) traz os testes de verdade e precisa ter funções
+<code>test_*iam_net*</code>, <code>test_*iam_sec*</code>, <code>test_*keys_sto*</code>, <code>test_*keys_sec*</code> e <code>test_*keys_ops*</code>.
+Teste que depende de domínio ainda não mergeado sai SKIP com motivo; todo SKIP é impresso e gravado em
+<code>$BO_DATA/REPO/integration/last_run.json</code> e <code>history.jsonl</code>. Reprova com falha, erro ou nenhum teste.</p>
+
+<h2 id="lim">11. Limites conhecidos</h2>
+<ul>
+<li>O sandbox não impede ler o histórico git (<code>git show</code>): nada de teste ou ouro em texto claro entra no git; a partição de teste fica cifrada em <code>$BO_DATA/SPLIT/</code>.</li>
+<li>As regras da ferramenta Read são um complemento calculado na criação da lane: um diretório criado depois num nível já percorrido não está nelas (o Bash continua negado pela HOME inteira). <code>bo-lane refresh ID</code> recalcula; o <code>check-sandbox</code> avisa.</li>
+<li>O carimbo OpenTimestamps depende do cliente <code>ots</code> e de rede; sem eles fica PENDING explícito.</li>
+<li>O privacy_lint é lexical: pega formato, não intenção. Ids de projeto e termos da empresa só com as listas privadas.</li>
+</ul>
+</main>
+</body>
+</html>

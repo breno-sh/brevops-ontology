@@ -1,0 +1,5 @@
+#!/bin/bash
+# bo-lane: worktree por módulo com sandbox de leitura por papel (§7.2). Ajuda: bo-lane help
+here="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+py="$(command -v python || command -v python3)" || { echo "bo-lane: python não encontrado" >&2; exit 2; }
+exec "$py" -I -B -c 'import sys; sys.path.insert(0, sys.argv.pop(1) + "/src"); from bo.repo import core; from bo.repo.lane import main; core.run_main(lambda: main(sys.argv[1:]))' "$here" "$@"

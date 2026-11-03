@@ -1,0 +1,26 @@
+# requirements.lock — versões fixadas do BrevOps Ontology (dono: REPO; mudança só por emenda do coordenador).
+# Gerado em 2026-11-02T21:45-03:00 (America/Recife) para Python 3.14.6 (mise).
+# O gate_smoke reprova 'python -m <pacote>' quando a versão instalada difere da fixada aqui.
+#
+# Já instalados no interpretador do projeto (versão conferida com importlib.metadata):
+jsonschema==4.26.0
+PyYAML==6.0.3
+pytest==9.1.1
+pyarrow==24.0.0
+statsmodels==0.14.6
+numpy==2.5.1
+pandas==3.0.5
+scipy==1.18.0
+#
+# Ainda não instalados (decisão D6): versão mais recente publicada no PyPI em 2026-11-02.
+# Quem instalar primeiro (ONTPAT, HCL, STATS) confere a compatibilidade com Python 3.14; se não servir,
+# grava results/<ID>/CONTRACT_CHANGE.txt pedindo a emenda deste arquivo.
+rdflib==7.6.0
+pyshacl==0.40.2
+sssom==0.4.22
+python-hcl2==8.1.4
+lifelines==0.30.3
+#
+# Ferramentas fora do Python (versão fixada em outro arquivo, conferida pelo gate_smoke):
+#   ROBOT  -> ontology/patterns/toolchain_pins.json (ONTPAT; jar oficial com sha256, decisão D6)
+#   Terraform -> universe/pins.json (PINS)

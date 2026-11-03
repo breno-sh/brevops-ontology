@@ -1,0 +1,539 @@
+{
+ "schema": "bo.state/1",
+ "timezone": "America/Recife",
+ "statuses": [
+  "CURRENT",
+  "STALE",
+  "ABANDONED"
+ ],
+ "note": "merged é derivado do git (commit '[ID] ...' em bo/base); aqui fica só o estado declarado.",
+ "modules": {
+  "REPO": {
+   "status": "CURRENT"
+  },
+  "LIT": {
+   "status": "CURRENT"
+  },
+  "REQUIREMENTS": {
+   "status": "CURRENT"
+  },
+  "ONTPAT": {
+   "status": "CURRENT"
+  },
+  "SEMANTICS": {
+   "status": "CURRENT"
+  },
+  "CONTRACTS": {
+   "status": "CURRENT"
+  },
+  "CQSRC": {
+   "status": "CURRENT"
+  },
+  "GOLD-CARTO": {
+   "status": "CURRENT"
+  },
+  "GOLD-LIBCLOUD": {
+   "status": "CURRENT"
+  },
+  "GOLD-XPLANE": {
+   "status": "CURRENT"
+  },
+  "GRAIN": {
+   "status": "CURRENT"
+  },
+  "HCL": {
+   "status": "CURRENT"
+  },
+  "OFFTAB": {
+   "status": "CURRENT"
+  },
+  "PINS": {
+   "status": "CURRENT"
+  },
+  "PREREG": {
+   "status": "CURRENT"
+  },
+  "PRIOR": {
+   "status": "CURRENT"
+  },
+  "SCHEMALIB": {
+   "status": "CURRENT"
+  },
+  "TRANSFORMS": {
+   "status": "CURRENT"
+  },
+  "ARBITERLIB": {
+   "status": "CURRENT"
+  },
+  "BRIEFS": {
+   "status": "CURRENT"
+  },
+  "DOCS-AWS": {
+   "status": "CURRENT"
+  },
+  "DOCS-AZURE": {
+   "status": "CURRENT"
+  },
+  "DOCS-GCP": {
+   "status": "CURRENT"
+  },
+  "DOCS-OCI": {
+   "status": "CURRENT"
+  },
+  "GOLD-MODS": {
+   "status": "CURRENT"
+  },
+  "HARNESS-AWS": {
+   "status": "CURRENT"
+  },
+  "HARNESS-AZURE": {
+   "status": "CURRENT"
+  },
+  "HARNESS-GCP": {
+   "status": "CURRENT"
+  },
+  "HARNESS-OCI": {
+   "status": "CURRENT"
+  },
+  "HIST-AWS": {
+   "status": "CURRENT"
+  },
+  "HIST-AZURE": {
+   "status": "CURRENT"
+  },
+  "HIST-GCP": {
+   "status": "CURRENT"
+  },
+  "HIST-OCI": {
+   "status": "CURRENT"
+  },
+  "METRICSLIB": {
+   "status": "CURRENT"
+  },
+  "SCHEMA-AWS": {
+   "status": "CURRENT"
+  },
+  "SCHEMA-AZURE": {
+   "status": "CURRENT"
+  },
+  "SCHEMA-GCP": {
+   "status": "CURRENT"
+  },
+  "SCHEMA-OCI": {
+   "status": "CURRENT"
+  },
+  "CORPUS-AWS": {
+   "status": "CURRENT"
+  },
+  "CORPUS-AZURE": {
+   "status": "CURRENT"
+  },
+  "CORPUS-GCP": {
+   "status": "CURRENT"
+  },
+  "CORPUS-OCI": {
+   "status": "CURRENT"
+  },
+  "CQFIX": {
+   "status": "CURRENT"
+  },
+  "DRIFT": {
+   "status": "CURRENT"
+  },
+  "ROLES": {
+   "status": "CURRENT"
+  },
+  "SERVICE-EVIDENCE": {
+   "status": "CURRENT"
+  },
+  "UNITS": {
+   "status": "CURRENT"
+  },
+  "PILOT-NET-GLOSS": {
+   "status": "CURRENT"
+  },
+  "PILOT-NET-ORACLE": {
+   "status": "CURRENT"
+  },
+  "PILOT-STO-GLOSS": {
+   "status": "CURRENT"
+  },
+  "PILOT-STO-ORACLE": {
+   "status": "CURRENT"
+  },
+  "SAFETY": {
+   "status": "CURRENT"
+  },
+  "PILOT-NET-MAP": {
+   "status": "CURRENT"
+  },
+  "PILOT-STO-MAP": {
+   "status": "CURRENT"
+  },
+  "PROBEKIT": {
+   "status": "CURRENT"
+  },
+  "PILOT-NET-E2E": {
+   "status": "CURRENT"
+  },
+  "PILOT-STO-E2E": {
+   "status": "CURRENT"
+  },
+  "PILOT-EXIT": {
+   "status": "CURRENT"
+  },
+  "DECOMPOSE": {
+   "status": "CURRENT"
+  },
+  "SMOKE-AWS": {
+   "status": "CURRENT"
+  },
+  "SMOKE-AZURE": {
+   "status": "CURRENT"
+  },
+  "SMOKE-GCP": {
+   "status": "CURRENT"
+  },
+  "SMOKE-OCI": {
+   "status": "CURRENT"
+  },
+  "GRAIN-REPRO": {
+   "status": "CURRENT"
+  },
+  "SPLIT": {
+   "status": "CURRENT"
+  },
+  "DOMAIN-CONTRACTS": {
+   "status": "CURRENT"
+  },
+  "GOLD-AUDIT": {
+   "status": "CURRENT"
+  },
+  "UNIVERSE": {
+   "status": "CURRENT"
+  },
+  "BENCH-CONTRACT": {
+   "status": "CURRENT"
+  },
+  "GLOSSARY-CMP": {
+   "status": "CURRENT"
+  },
+  "GLOSSARY-DB": {
+   "status": "CURRENT"
+  },
+  "GLOSSARY-NET": {
+   "status": "CURRENT"
+  },
+  "GLOSSARY-OPS": {
+   "status": "CURRENT"
+  },
+  "GLOSSARY-SEC": {
+   "status": "CURRENT"
+  },
+  "GLOSSARY-STO": {
+   "status": "CURRENT"
+  },
+  "GLOSSARY-AUDIT": {
+   "status": "CURRENT"
+  },
+  "KALININ-RECON": {
+   "status": "CURRENT"
+  },
+  "BASELINE-ADAPT": {
+   "status": "CURRENT"
+  },
+  "GLOSSARY-FREEZE": {
+   "status": "CURRENT"
+  },
+  "CAND": {
+   "status": "CURRENT"
+  },
+  "MAP-AWSAZ-CMP": {
+   "status": "CURRENT"
+  },
+  "MAP-AWSAZ-DB": {
+   "status": "CURRENT"
+  },
+  "MAP-AWSAZ-NET": {
+   "status": "CURRENT"
+  },
+  "MAP-AWSAZ-OPS": {
+   "status": "CURRENT"
+  },
+  "MAP-AWSAZ-SEC": {
+   "status": "CURRENT"
+  },
+  "MAP-AWSAZ-STO": {
+   "status": "CURRENT"
+  },
+  "MAP-AWSGCP-CMP": {
+   "status": "CURRENT"
+  },
+  "MAP-AWSGCP-DB": {
+   "status": "CURRENT"
+  },
+  "MAP-AWSGCP-NET": {
+   "status": "CURRENT"
+  },
+  "MAP-AWSGCP-OPS": {
+   "status": "CURRENT"
+  },
+  "MAP-AWSGCP-SEC": {
+   "status": "CURRENT"
+  },
+  "MAP-AWSGCP-STO": {
+   "status": "CURRENT"
+  },
+  "MAP-AWSOCI-CMP": {
+   "status": "CURRENT"
+  },
+  "MAP-AWSOCI-DB": {
+   "status": "CURRENT"
+  },
+  "MAP-AWSOCI-NET": {
+   "status": "CURRENT"
+  },
+  "MAP-AWSOCI-OPS": {
+   "status": "CURRENT"
+  },
+  "MAP-AWSOCI-SEC": {
+   "status": "CURRENT"
+  },
+  "MAP-AWSOCI-STO": {
+   "status": "CURRENT"
+  },
+  "MAP-AZOCI-CMP": {
+   "status": "CURRENT"
+  },
+  "MAP-AZOCI-DB": {
+   "status": "CURRENT"
+  },
+  "MAP-AZOCI-NET": {
+   "status": "CURRENT"
+  },
+  "MAP-AZOCI-OPS": {
+   "status": "CURRENT"
+  },
+  "MAP-AZOCI-SEC": {
+   "status": "CURRENT"
+  },
+  "MAP-AZOCI-STO": {
+   "status": "CURRENT"
+  },
+  "MAP-GCPAZ-CMP": {
+   "status": "CURRENT"
+  },
+  "MAP-GCPAZ-DB": {
+   "status": "CURRENT"
+  },
+  "MAP-GCPAZ-NET": {
+   "status": "CURRENT"
+  },
+  "MAP-GCPAZ-OPS": {
+   "status": "CURRENT"
+  },
+  "MAP-GCPAZ-SEC": {
+   "status": "CURRENT"
+  },
+  "MAP-GCPAZ-STO": {
+   "status": "CURRENT"
+  },
+  "MAP-GCPOCI-CMP": {
+   "status": "CURRENT"
+  },
+  "MAP-GCPOCI-DB": {
+   "status": "CURRENT"
+  },
+  "MAP-GCPOCI-NET": {
+   "status": "CURRENT"
+  },
+  "MAP-GCPOCI-OPS": {
+   "status": "CURRENT"
+  },
+  "MAP-GCPOCI-SEC": {
+   "status": "CURRENT"
+  },
+  "MAP-GCPOCI-STO": {
+   "status": "CURRENT"
+  },
+  "RELIAB": {
+   "status": "CURRENT"
+  },
+  "ARBITER": {
+   "status": "CURRENT"
+  },
+  "RECONCILE": {
+   "status": "CURRENT"
+  },
+  "CLASS": {
+   "status": "CURRENT"
+  },
+  "NONEHUNT-AWS": {
+   "status": "CURRENT"
+  },
+  "NONEHUNT-AZURE": {
+   "status": "CURRENT"
+  },
+  "NONEHUNT-GCP": {
+   "status": "CURRENT"
+  },
+  "NONEHUNT-OCI": {
+   "status": "CURRENT"
+  },
+  "PAPER-FRONT": {
+   "status": "CURRENT"
+  },
+  "SCHEMA-POST": {
+   "status": "CURRENT"
+  },
+  "DISPUTE-SAMPLE": {
+   "status": "CURRENT"
+  },
+  "DRIFTMAP": {
+   "status": "CURRENT"
+  },
+  "PROP": {
+   "status": "CURRENT"
+  },
+  "NAMING": {
+   "status": "CURRENT"
+  },
+  "OWL": {
+   "status": "CURRENT"
+  },
+  "AXIOMS": {
+   "status": "CURRENT"
+  },
+  "CQ": {
+   "status": "CURRENT"
+  },
+  "SHACL": {
+   "status": "CURRENT"
+  },
+  "ONTQA": {
+   "status": "CURRENT"
+  },
+  "REPAIR": {
+   "status": "CURRENT"
+  },
+  "SEMANTIC-REGRESSION": {
+   "status": "CURRENT"
+  },
+  "ABOX-LIFT": {
+   "status": "CURRENT"
+  },
+  "UNSEAL": {
+   "status": "CURRENT"
+  },
+  "GRAPH-LOWERING": {
+   "status": "CURRENT"
+  },
+  "HOLDOUT": {
+   "status": "CURRENT"
+  },
+  "PAIRWISE": {
+   "status": "CURRENT"
+  },
+  "TRANSLATOR": {
+   "status": "CURRENT"
+  },
+  "GOLDEVAL": {
+   "status": "CURRENT"
+  },
+  "REASONING-PROOF": {
+   "status": "CURRENT"
+  },
+  "ABLATION": {
+   "status": "CURRENT"
+  },
+  "DEPSAMPLE": {
+   "status": "CURRENT"
+  },
+  "DEP-AWS-A": {
+   "status": "CURRENT"
+  },
+  "DEP-AZURE-A": {
+   "status": "CURRENT"
+  },
+  "DEP-GCP-A": {
+   "status": "CURRENT"
+  },
+  "DEP-OCI-A": {
+   "status": "CURRENT"
+  },
+  "CQRUN": {
+   "status": "CURRENT"
+  },
+  "DEP-AWS-B": {
+   "status": "CURRENT"
+  },
+  "DEP-AZURE-B": {
+   "status": "CURRENT"
+  },
+  "DEP-GCP-B": {
+   "status": "CURRENT"
+  },
+  "DEP-OCI-B": {
+   "status": "CURRENT"
+  },
+  "PROBE-AWS": {
+   "status": "CURRENT"
+  },
+  "PROBE-AZURE": {
+   "status": "CURRENT"
+  },
+  "PROBE-GCP": {
+   "status": "CURRENT"
+  },
+  "PROBE-OCI": {
+   "status": "CURRENT"
+  },
+  "PROBE-JOIN": {
+   "status": "CURRENT"
+  },
+  "JUDGE": {
+   "status": "CURRENT"
+  },
+  "HEAD2HEAD": {
+   "status": "CURRENT"
+  },
+  "MATRIX": {
+   "status": "CURRENT"
+  },
+  "TOOL-ACCURACY": {
+   "status": "CURRENT"
+  },
+  "ASYM": {
+   "status": "CURRENT"
+  },
+  "CATEG": {
+   "status": "CURRENT"
+  },
+  "STATS": {
+   "status": "CURRENT"
+  },
+  "ARTIFACT": {
+   "status": "CURRENT"
+  },
+  "PAPER-RESULTS": {
+   "status": "CURRENT"
+  },
+  "STATS-SUPP": {
+   "status": "CURRENT"
+  },
+  "PAPER-DISC": {
+   "status": "CURRENT"
+  },
+  "REUSE-MAINTENANCE": {
+   "status": "CURRENT"
+  },
+  "ADVREVIEW": {
+   "status": "CURRENT"
+  },
+  "RELEASE-CORRECTED": {
+   "status": "CURRENT"
+  }
+ },
+ "freezes": {},
+ "events": []
+}
