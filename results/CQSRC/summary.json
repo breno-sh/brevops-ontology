@@ -1,0 +1,67 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "CQSRC",
+ "generated_at": "2026-11-03T01:43:36-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/CQSRC.txt",
+  "brief_sha256": "23dfc6243a081486adc9bf96f4f9ec46d9d9f26b66747988baeca21636000b28",
+  "params": {
+   "effort": "maximo",
+   "modo": "unlazy",
+   "onda": "5",
+   "fase": "F1",
+   "escopo_alinhamento": "versao_CIS_Foundations_mais_nova_de_cada_mod",
+   "direcao_skos": "parametros_do_titulo_extensao_conformes",
+   "auditoria_lexical_jaccard": "0.5"
+  },
+  "inputs": [
+   {
+    "path": "$BO_DATA/downloads/steampipe-mods/aws/aws-v1.14.0.tar.gz",
+    "kind": "file",
+    "sha256": "06e506786acee2dd8db94bc76af4d3eb64bb702cf48d7091519253bf534dcd5e"
+   },
+   {
+    "path": "$BO_DATA/downloads/steampipe-mods/gcp/gcp-v1.3.2.tar.gz",
+    "kind": "file",
+    "sha256": "c7006afcf46663f319ad7c1ccd6c9cec43883bcaf3563b8fa0337819d8235308"
+   },
+   {
+    "path": "$BO_DATA/downloads/steampipe-mods/azure/azure-v2.5.3.tar.gz",
+    "kind": "file",
+    "sha256": "826806ce04c9051fb6b2ac000ea1a1b7c9f462ef116213f9d466d78a9e91c201"
+   },
+   {
+    "path": "$BO_DATA/downloads/steampipe-mods/oci/oci-v1.1.0.tar.gz",
+    "kind": "file",
+    "sha256": "2382b65cbafa4304bd6d7a9857bf3dcceec49a6c06eb6500307fe86403dfc5bb"
+   }
+  ],
+  "recorded_at": "2026-11-03T01:43:36-03:00"
+ },
+ "sources": [
+  {
+   "uri": "https://github.com/turbot/steampipe-mod-aws-compliance (tag v1.14.0, commit c652ac6e183e)",
+   "license": "Apache-2.0",
+   "transformation": "blocos benchmark/control das pastas cis_vNNN lidos como texto do tarball; título, número, seção, nível, tipo, serviço, consulta e linha de origem; descrições e SQL não copiados"
+  },
+  {
+   "uri": "https://github.com/turbot/steampipe-mod-gcp-compliance (tag v1.3.2, commit 3ac653021a28)",
+   "license": "Apache-2.0",
+   "transformation": "idem"
+  },
+  {
+   "uri": "https://github.com/turbot/steampipe-mod-azure-compliance (tag v2.5.3, commit f4b9a098d019)",
+   "license": "Apache-2.0",
+   "transformation": "idem"
+  },
+  {
+   "uri": "https://github.com/turbot/steampipe-mod-oci-compliance (tag v1.1.0, commit 1e6cfcb5e267)",
+   "license": "Apache-2.0",
+   "transformation": "idem"
+  }
+ ],
+ "notes": "Alinhamento entre provedores curado pelo agente sobre os títulos da versão CIS mais nova de cada mod; toda linha UNPROVEN. Ver results/CQSRC/CQSRC.html. Gate bo.cq.src_check bloqueado por posse: ver results/CQSRC/CONTRACT_CHANGE.txt."
+}

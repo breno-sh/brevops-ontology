@@ -1,0 +1,41 @@
+CONTRACT_CHANGE do CQSRC (2026-11-03T01:50-03:00, America/Recife)
+
+O que está errado no que já foi mergeado
+  O catálogo (modulos.json e o retrato modules/owners.json, C00 posse) dá ao CQSRC o gate
+      python -I -m bo.cq.src_check  # cada controle tem provedor, seção, título e fonte
+  mas o pacote src/bo/cq/ inteiro é posse do módulo CQ (owns "$BO_REPO/src/bo/cq/"), e o CQSRC só pode
+  escrever em src/bo/cqsrc/. Os dois gates não podem ficar verdes juntos:
+    - para bo.cq.src_check importar, alguém tem de gravar src/bo/cq/src_check.py;
+    - se o CQSRC grava, o ownership_check CQSRC (G6) reprova; se espera o CQ, há impasse: o CQ é da onda 27
+      e depende, pelo fecho, do CQFIX, que depende do CQSRC (cq/cis_cross_provider.csv).
+  O gate_smoke confirma: "módulo bo.cq.src_check não importável ... (dono do pacote: CQ; ainda não
+  mergeado?)". O mesmo defeito atinge o CQFIX (bo.cq.fixture_check) e o CQRUN (bo.cq.run), que também
+  não são donos de src/bo/cq/.
+
+O que já está pronto (nada foi afrouxado)
+  A checagem existe e passa em python -I -m bo.cqsrc.src_check (src/bo/cqsrc/src_check.py, dentro da posse):
+  2271 controles, 152 linhas de alinhamento, 4 fontes, 0 problemas; linha de origem de cada controle
+  conferida no tarball fixado. gates/CQSRC.sh roda ela, os testes e a regeneração idêntica.
+
+Mudança proposta (o coordenador escolhe uma; as duas mantêm src/bo/cq/ sem __init__.py, como pacote de
+namespace, igual a src/bo/)
+  A) preferida — posse por arquivo dentro de bo.cq:
+       CQ     owns: $BO_REPO/src/bo/cq/lint.py, $BO_REPO/src/bo/cq/compiled_from_spec.py e o que mais o CQ
+              precisar, no lugar de $BO_REPO/src/bo/cq/
+       CQSRC  owns += $BO_REPO/src/bo/cq/src_check.py
+       CQFIX  owns += $BO_REPO/src/bo/cq/fixture_check.py
+       CQRUN  owns += $BO_REPO/src/bo/cq/run.py
+     O CQSRC grava então src/bo/cq/src_check.py com só isto:
+       """Gate do CQSRC no espaço bo.cq: delega a bo.cqsrc.src_check."""
+       import sys
+       from bo.cqsrc.src_check import main
+       if __name__ == "__main__":
+           sys.exit(main())
+  B) mínima — trocar o comando do gate no catálogo para
+       python -I -m bo.cqsrc.src_check  # cada controle tem provedor, seção, título e fonte
+     (mesma semântica; o arquivo de gates execucao/gates/CQSRC.md G1 acompanha a troca).
+
+Efeito enquanto a emenda não sai
+  G1 (bo.cq.src_check) reprova por import; G2 (make gate) e G3 (gate_smoke) reprovam por consequência, porque o
+  smoke barra tudo quando um comando não resolve. Os demais gates (G4–G8) e gates/CQSRC.sh passam. Pelo
+  protocolo (merge só com gates verdes), a branch bo/cqsrc fica pronta e NÃO é mergeada em bo/base.

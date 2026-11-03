@@ -1,0 +1,92 @@
+<!doctype html><html lang='pt-BR'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>CQSRC controles CIS</title><style>:root{--bg:#fff;--fg:#1d1d1f;--mut:#5f6368;--line:#d9d9de;--acc:#1f5fa8}@media (prefers-color-scheme:dark){:root{--bg:#141416;--fg:#ececf0;--mut:#a0a0a8;--line:#34343a;--acc:#7fb0ff}}body{background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,sans-serif;max-width:1100px;margin:0 auto;padding:16px}h1{font-size:1.5rem}h2{font-size:1.15rem;margin-top:2rem}table{border-collapse:collapse;width:100%;font-size:13px;display:block;overflow-x:auto}th,td{border-bottom:1px solid var(--line);padding:4px 8px;text-align:left;vertical-align:top}th{color:var(--mut);font-weight:600}code{font-size:12px}.mut{color:var(--mut)}</style></head><body>
+<h1>CQSRC: controles CIS como uma das fontes externas de CQ</h1>
+<p class='mut'>Gerado de forma determinística por <code>python -I -m bo.cqsrc.build</code>; método fixado em 2026-11-03T02:10:00-03:00 (America/Recife).</p>
+<h2>Fontes</h2><table><tr><th>mod</th><th>provedor</th><th>tag</th><th>commit</th><th>versões CIS Foundations</th><th>mais nova</th><th>fora de escopo</th></tr>
+<tr><td>turbot/steampipe-mod-aws-compliance</td><td>aws</td><td>v1.14.0</td><td><code>c652ac6e183e</code></td><td>9</td><td>cis_v600 (v6.0.0)</td><td>cis_compute_service_v100, cis_controls_v8_ig1</td></tr>
+<tr><td>turbot/steampipe-mod-gcp-compliance</td><td>google</td><td>v1.3.2</td><td><code>3ac653021a28</code></td><td>5</td><td>cis_v400 (v4.0.0)</td><td>-</td></tr>
+<tr><td>turbot/steampipe-mod-azure-compliance</td><td>azurerm</td><td>v2.5.3</td><td><code>f4b9a098d019</code></td><td>8</td><td>cis_v500 (v5.0.0)</td><td>-</td></tr>
+<tr><td>turbot/steampipe-mod-oci-compliance</td><td>oci</td><td>v1.1.0</td><td><code>1e6cfcb5e267</code></td><td>4</td><td>cis_v300 (v3.0.0)</td><td>-</td></tr>
+</table><p>Os tarballs são lidos como dado (tarfile, sem extrair; HCL por um leitor mínimo; o SQL das consultas não é lido nem executado). Licença dos mods: Apache-2.0.</p>
+<h2>Números</h2><table><tr><th>medida</th><th>valor</th></tr>
+<tr><td>controles extraídos (todas as versões, 4 mods)</td><td>2271</td></tr>
+<tr><td>controles na versão mais nova: aws</td><td>63 (39 em algum conceito alinhado)</td></tr>
+<tr><td>controles na versão mais nova: google</td><td>84 (23 em algum conceito alinhado)</td></tr>
+<tr><td>controles na versão mais nova: azurerm</td><td>155 (20 em algum conceito alinhado)</td></tr>
+<tr><td>controles na versão mais nova: oci</td><td>54 (33 em algum conceito alinhado)</td></tr>
+<tr><td>conceitos curados</td><td>38 (em 4 provedores: 8; em 3: 9; em 2: 21)</td></tr>
+<tr><td>linhas de alinhamento (pares de controles)</td><td>152</td></tr>
+<tr><td>predicado skos:closeMatch</td><td>44</td></tr>
+<tr><td>predicado skos:broadMatch</td><td>15</td></tr>
+<tr><td>predicado skos:narrowMatch</td><td>7</td></tr>
+<tr><td>predicado skos:relatedMatch</td><td>86</td></tr>
+<tr><td>linhas por par</td><td>AWSGCP 27, AWSAZ 25, AWSOCI 42, GCPAZ 16, GCPOCI 23, AZOCI 19</td></tr>
+<tr><td>linhas com prova</td><td>0 (todas UNPROVEN)</td></tr>
+<tr><td>anomalias da fonte registradas</td><td>10</td></tr></table>
+<h2>Conceitos presentes nos 4 provedores</h2><p>Base para as fixtures do CQFIX (o plano estimava cerca de 10; o número medido é o desta tabela).</p><table><tr><th>conceito</th><th>domínio</th><th>aws</th><th>google</th><th>azurerm</th><th>oci</th></tr>
+<tr><td><b>SEC-MFA-ALL-USERS</b><br><span class='mut'>segundo fator exigido para todas as contas humanas de console</span></td><td>SEC</td><td>2.9</td><td>1.2</td><td>5.1.2, 5.2.4</td><td>1.7</td></tr>
+<tr><td><b>SEC-CREDENTIAL-ROTATION</b><br><span class='mut'>credencial programática de longa duração rotacionada dentro de um prazo</span></td><td>SEC</td><td>2.13</td><td>1.7, 1.15</td><td>9.3.1.2</td><td>1.8, 1.9, 1.10</td></tr>
+<tr><td><b>SEC-KMS-KEY-ROTATION</b><br><span class='mut'>chave de cifra gerida pelo cliente é rotacionada</span></td><td>SEC</td><td>4.6</td><td>1.10</td><td>8.3.9</td><td>4.16</td></tr>
+<tr><td><b>NET-SSH-FROM-ANYWHERE</b><br><span class='mut'>filtro de entrada não abre a porta 22 para qualquer origem</span></td><td>NET</td><td>6.2, 6.3, 6.4</td><td>3.6</td><td>7.2</td><td>2.1, 2.3</td></tr>
+<tr><td><b>NET-RDP-FROM-ANYWHERE</b><br><span class='mut'>filtro de entrada não abre a porta 3389 para qualquer origem</span></td><td>NET</td><td>6.2, 6.3, 6.4</td><td>3.7</td><td>7.1</td><td>2.2, 2.4</td></tr>
+<tr><td><b>NET-FLOW-LOGS</b><br><span class='mut'>registro de fluxo de rede ligado</span></td><td>NET</td><td>4.7</td><td>3.8</td><td>6.1.1.5, 6.1.1.7</td><td>4.13</td></tr>
+<tr><td><b>OPS-ALERT-NETFILTER-CHANGE</b><br><span class='mut'>alerta para mudança em filtro de rede</span></td><td>OPS</td><td>5.10, 5.11</td><td>2.7</td><td>6.1.2.3, 6.1.2.4</td><td>4.10, 4.11</td></tr>
+<tr><td><b>STO-BUCKET-NOT-PUBLIC</b><br><span class='mut'>contêiner de objetos não é acessível ao público</span></td><td>STO</td><td>3.1.4</td><td>5.1</td><td>9.3.8</td><td>5.1.1</td></tr>
+</table><h2>Todos os conceitos</h2><table><tr><th>conceito</th><th>domínio</th><th>aws</th><th>google</th><th>azurerm</th><th>oci</th></tr>
+<tr><td>SEC-MFA-ALL-USERS<br><span class='mut'>segundo fator exigido para todas as contas humanas de console</span></td><td>SEC</td><td>2.9</td><td>1.2</td><td>5.1.2, 5.2.4</td><td>1.7</td></tr>
+<tr><td>SEC-MFA-PRIVILEGED<br><span class='mut'>segundo fator exigido para a conta de topo ou contas administrativas</span></td><td>SEC</td><td>2.4, 2.5</td><td>1.3</td><td>5.2.7</td><td>-</td></tr>
+<tr><td>SEC-PASSWORD-MIN-LENGTH<br><span class='mut'>política de senha com tamanho mínimo</span></td><td>SEC</td><td>2.7</td><td>-</td><td>-</td><td>1.4</td></tr>
+<tr><td>SEC-PASSWORD-REUSE<br><span class='mut'>política de senha impede reutilização</span></td><td>SEC</td><td>2.8</td><td>-</td><td>-</td><td>1.6</td></tr>
+<tr><td>SEC-UNUSED-CREDENTIALS<br><span class='mut'>credencial sem uso por N dias é desativada</span></td><td>SEC</td><td>2.11</td><td>-</td><td>-</td><td>1.16</td></tr>
+<tr><td>SEC-ONE-ACTIVE-USER-KEY<br><span class='mut'>no máximo uma chave programática ativa por usuário</span></td><td>SEC</td><td>2.12</td><td>-</td><td>-</td><td>1.17</td></tr>
+<tr><td>SEC-CREDENTIAL-ROTATION<br><span class='mut'>credencial programática de longa duração rotacionada dentro de um prazo</span></td><td>SEC</td><td>2.13</td><td>1.7, 1.15</td><td>9.3.1.2</td><td>1.8, 1.9, 1.10</td></tr>
+<tr><td>SEC-NO-TOP-PRINCIPAL-KEYS<br><span class='mut'>a conta de topo ou de administração não tem chave programática</span></td><td>SEC</td><td>2.3</td><td>-</td><td>-</td><td>1.12</td></tr>
+<tr><td>SEC-TOP-PRINCIPAL-DAILY-USE<br><span class='mut'>conta de topo ou administrativa não é usada no dia a dia</span></td><td>SEC</td><td>2.6</td><td>-</td><td>5.3.1</td><td>-</td></tr>
+<tr><td>SEC-WORKLOAD-IDENTITY<br><span class='mut'>máquina acessa a nuvem com identidade de carga de trabalho, sem chave embutida</span></td><td>SEC</td><td>2.17</td><td>-</td><td>-</td><td>1.14</td></tr>
+<tr><td>SEC-SECURITY-CONTACT<br><span class='mut'>contato de segurança registrado no provedor</span></td><td>SEC</td><td>2.2</td><td>1.16</td><td>8.1.13</td><td>-</td></tr>
+<tr><td>SEC-KMS-KEY-ROTATION<br><span class='mut'>chave de cifra gerida pelo cliente é rotacionada</span></td><td>SEC</td><td>4.6</td><td>1.10</td><td>8.3.9</td><td>4.16</td></tr>
+<tr><td>SEC-POSTURE-SERVICE<br><span class='mut'>serviço nativo de postura de segurança ligado</span></td><td>SEC</td><td>5.16</td><td>-</td><td>8.1.1.1</td><td>4.14</td></tr>
+<tr><td>NET-SSH-FROM-ANYWHERE<br><span class='mut'>filtro de entrada não abre a porta 22 para qualquer origem</span></td><td>NET</td><td>6.2, 6.3, 6.4</td><td>3.6</td><td>7.2</td><td>2.1, 2.3</td></tr>
+<tr><td>NET-RDP-FROM-ANYWHERE<br><span class='mut'>filtro de entrada não abre a porta 3389 para qualquer origem</span></td><td>NET</td><td>6.2, 6.3, 6.4</td><td>3.7</td><td>7.1</td><td>2.2, 2.4</td></tr>
+<tr><td>NET-DEFAULT-FILTER-DENY<br><span class='mut'>o filtro padrão da rede virtual não deixa passar tráfego</span></td><td>NET</td><td>6.5</td><td>-</td><td>-</td><td>2.5</td></tr>
+<tr><td>NET-FLOW-LOGS<br><span class='mut'>registro de fluxo de rede ligado</span></td><td>NET</td><td>4.7</td><td>3.8</td><td>6.1.1.5, 6.1.1.7</td><td>4.13</td></tr>
+<tr><td>OPS-AUDIT-TRAIL<br><span class='mut'>trilha de auditoria do plano de controle ligada e retida</span></td><td>OPS</td><td>4.1</td><td>2.1</td><td>6.1.1.1</td><td>-</td></tr>
+<tr><td>OPS-AUDIT-LOG-CMK<br><span class='mut'>a trilha de auditoria guardada é cifrada com chave do cliente</span></td><td>OPS</td><td>4.5</td><td>-</td><td>6.1.1.3</td><td>-</td></tr>
+<tr><td>OPS-AUDIT-LOG-TAMPER<br><span class='mut'>a trilha de auditoria guardada resiste a adulteração</span></td><td>OPS</td><td>4.2</td><td>2.3</td><td>-</td><td>-</td></tr>
+<tr><td>OPS-OBJECT-DATA-EVENTS<br><span class='mut'>eventos de dados de objeto (por objeto) registrados no armazenamento de objetos</span></td><td>OPS</td><td>4.8, 4.9</td><td>-</td><td>-</td><td>4.17</td></tr>
+<tr><td>OPS-CONFIG-INVENTORY<br><span class='mut'>inventário/histórico de configuração ligado</span></td><td>OPS</td><td>4.3</td><td>2.13</td><td>-</td><td>-</td></tr>
+<tr><td>OPS-ALERT-NETFILTER-CHANGE<br><span class='mut'>alerta para mudança em filtro de rede</span></td><td>OPS</td><td>5.10, 5.11</td><td>2.7</td><td>6.1.2.3, 6.1.2.4</td><td>4.10, 4.11</td></tr>
+<tr><td>OPS-ALERT-ROUTE-CHANGE<br><span class='mut'>alerta para mudança em tabela de rotas</span></td><td>OPS</td><td>5.13</td><td>2.8</td><td>-</td><td>4.9</td></tr>
+<tr><td>OPS-ALERT-NETWORK-CHANGE<br><span class='mut'>alerta para mudança na rede virtual</span></td><td>OPS</td><td>5.14</td><td>2.9</td><td>-</td><td>4.8</td></tr>
+<tr><td>OPS-ALERT-GATEWAY-CHANGE<br><span class='mut'>alerta para mudança em gateway de rede</span></td><td>OPS</td><td>5.12</td><td>-</td><td>-</td><td>4.12</td></tr>
+<tr><td>OPS-ALERT-AUTHZ-POLICY-CHANGE<br><span class='mut'>alerta para mudança em política ou papel de autorização</span></td><td>OPS</td><td>5.4</td><td>2.6</td><td>-</td><td>4.6</td></tr>
+<tr><td>OPS-ALERT-AUDIT-CONFIG-CHANGE<br><span class='mut'>alerta para mudança na configuração da auditoria</span></td><td>OPS</td><td>5.5</td><td>2.5</td><td>-</td><td>-</td></tr>
+<tr><td>OPS-ALERT-BUCKET-PERMISSION-CHANGE<br><span class='mut'>alerta para mudança na permissão do armazenamento de objetos</span></td><td>OPS</td><td>5.8</td><td>2.10</td><td>-</td><td>-</td></tr>
+<tr><td>STO-BUCKET-NOT-PUBLIC<br><span class='mut'>contêiner de objetos não é acessível ao público</span></td><td>STO</td><td>3.1.4</td><td>5.1</td><td>9.3.8</td><td>5.1.1</td></tr>
+<tr><td>STO-BUCKET-VERSIONING<br><span class='mut'>versionamento de objetos ligado</span></td><td>STO</td><td>-</td><td>-</td><td>9.2.3</td><td>5.1.3</td></tr>
+<tr><td>STO-TRANSPORT-ENCRYPTION<br><span class='mut'>acesso ao armazenamento de objetos só por transporte cifrado</span></td><td>STO</td><td>3.1.1</td><td>-</td><td>9.3.4</td><td>-</td></tr>
+<tr><td>STO-BLOCK-VOLUME-ENCRYPTION<br><span class='mut'>volume de bloco cifrado em repouso</span></td><td>STO</td><td>6.1.1</td><td>4.7</td><td>-</td><td>5.2.1, 5.2.2</td></tr>
+<tr><td>STO-FILE-SYSTEM-ENCRYPTION<br><span class='mut'>sistema de arquivos gerenciado cifrado em repouso</span></td><td>STO</td><td>3.3.1</td><td>-</td><td>-</td><td>5.3.1</td></tr>
+<tr><td>DB-NOT-PUBLIC<br><span class='mut'>instância de banco gerenciado sem ponto de acesso público</span></td><td>DB</td><td>3.2.3</td><td>6.6</td><td>-</td><td>2.8</td></tr>
+<tr><td>CMP-METADATA-LEGACY-OFF<br><span class='mut'>serviço de metadados da instância só na versão com sessão (legado desligado)</span></td><td>CMP</td><td>6.7</td><td>-</td><td>-</td><td>3.1</td></tr>
+<tr><td>CMP-BOOT-INTEGRITY<br><span class='mut'>inicialização verificada da instância</span></td><td>CMP</td><td>-</td><td>4.8</td><td>-</td><td>3.2</td></tr>
+<tr><td>CMP-OS-UPDATES<br><span class='mut'>atualizações do sistema operacional das VMs acompanhadas</span></td><td>CMP</td><td>-</td><td>4.12</td><td>8.1.10</td><td>-</td></tr>
+</table>
+<h2>Método do alinhamento</h2><ul><li>Escopo: só a versão CIS Foundations mais nova de cada mod. Versões antigas ficam em <code>cis_controls.csv</code> (coluna <code>is_latest</code>) e não são alinhadas.</li><li>Pertença a conceito: curada pelo agente a partir dos títulos; cada membro tem uma guarda (regex) que tem de casar com o título extraído, senão a regeneração reprova.</li><li>Direção SKOS só por parâmetros lidos no título (portas, dias, tamanho, eventos, nível de controle da chave). Extensão = configurações conformes; <code>a skos:broadMatch b</code> = b mais amplo. Categoria diferente, parâmetro ausente de um lado ou sinais mistos dão <code>skos:relatedMatch</code>.</li><li>Nenhuma linha tem prova: o título não prova o que a consulta do mod confere e a curadoria não é verificação. Todas saem <code>UNPROVEN</code>, com <code>semapv:ManualMappingCuration</code>.</li><li>Na v3 os CIS são uma fonte entre outras: as CQs além do CIS vêm do REQUIREMENTS (<code>requirements/cq_spec.jsonl</code>).</li></ul>
+<h2>Auditoria lexical</h2><p>Similaridade de Jaccard sobre palavras dos títulos (sem palavras vazias e nomes de provedor). Mediana nos pares curados: 0.125; pares curados com Jaccard 0: 46 de 152. Pares entre provedores com Jaccard &ge; 0.5 que a curadoria NÃO alinhou: 5 (lista completa em <code>$BO_DATA/CQSRC/lexical_audit.json</code>; os 25 primeiros abaixo). Sem revisão: 0.</p><table><tr><th>par</th><th>sujeito</th><th>objeto</th><th>J</th><th>revisão</th></tr>
+<tr><td>AZOCI</td><td>azurerm 2.1.8: Ensure critical data in Azure Databricks is encrypted with customer-managed keys (CMK)</td><td>oci 5.2.1: Ensure Block Volumes are encrypted with Customer Managed Keys (CMK)</td><td>0.5</td><td>objetos diferentes: dados do Databricks x volume de bloco</td></tr>
+<tr><td>GCPAZ</td><td>google 3.6: Ensure That SSH Access Is Restricted From the Internet</td><td>azurerm 7.1: Ensure that RDP access from the Internet is evaluated and restricted</td><td>0.5</td><td>portas disjuntas: 22 x 3389</td></tr>
+<tr><td>GCPAZ</td><td>google 3.6: Ensure That SSH Access Is Restricted From the Internet</td><td>azurerm 7.3: Ensure that UDP access from the Internet is evaluated and restricted</td><td>0.5</td><td>protocolos disjuntos: SSH (TCP 22) x UDP qualquer</td></tr>
+<tr><td>GCPAZ</td><td>google 3.7: Ensure That RDP Access Is Restricted From the Internet</td><td>azurerm 7.2: Ensure that SSH access from the Internet is evaluated and restricted</td><td>0.5</td><td>portas disjuntas: 3389 x 22</td></tr>
+<tr><td>GCPAZ</td><td>google 3.7: Ensure That RDP Access Is Restricted From the Internet</td><td>azurerm 7.3: Ensure that UDP access from the Internet is evaluated and restricted</td><td>0.5</td><td>protocolos disjuntos: RDP (TCP 3389) x UDP qualquer</td></tr>
+</table><h2>Anomalias da fonte</h2><p>Registradas como estão; nada foi corrigido.</p><table><tr><th>mod</th><th>versão</th><th>controle</th><th>anomalia</th></tr>
+<tr><td>aws</td><td>cis_v400</td><td>cis_v400_2_2_1</td><td>tag cis_item_id=2.3.1 difere do número do título=2.2.1</td></tr>
+<tr><td>aws</td><td>cis_v500</td><td>cis_v500_2_2_1</td><td>tag cis_item_id=2.3.1 difere do número do título=2.2.1</td></tr>
+<tr><td>azure</td><td>cis_v200</td><td>cis_v200_5_5</td><td>item CIS realizado como benchmark com checagens externas</td></tr>
+<tr><td>azure</td><td>cis_v210</td><td>cis_v210_5_5</td><td>item CIS realizado como benchmark com checagens externas</td></tr>
+<tr><td>azure</td><td>cis_v300</td><td>cis_v300_3_1_6_1</td><td>tag cis_item_id=3.1.6. difere do número do título=3.1.6.1</td></tr>
+<tr><td>azure</td><td>cis_v300</td><td>cis_v300_6_5</td><td>item CIS realizado como benchmark com checagens externas</td></tr>
+<tr><td>azure</td><td>cis_v400</td><td>cis_v400_2_1_1_2_1</td><td>item CIS realizado como benchmark com checagens externas</td></tr>
+<tr><td>azure</td><td>cis_v400</td><td>cis_v400_2_2_1_1</td><td>item CIS realizado como benchmark com checagens externas</td></tr>
+<tr><td>azure</td><td>cis_v400</td><td>cis_v400_2_2_1_2</td><td>item CIS realizado como benchmark com checagens externas</td></tr>
+<tr><td>azure</td><td>cis_v400</td><td>cis_v400_2_2_2_1</td><td>item CIS realizado como benchmark com checagens externas</td></tr>
+</table></body></html>
