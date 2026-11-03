@@ -1,0 +1,42 @@
+CONTRACT_CHANGE — HARNESS-GCP
+gravado em: 2026-11-03T07:30-03:00 (America/Recife)
+tipo: defeito do catálogo (caminho de stub no comando do gate), não do C26; mais uma proposta não bloqueante no C12
+
+PROBLEMA 1 (bloqueia G2 e, por consequência, G4)
+O gate do catálogo é
+    python -I -m bo.harness.google.render $BO_REPO/contracts/stubs/lowering_plan.jsonl --out $BO_TMP/render
+mas o CONTRACTS publicou o stub em contracts/stubs/C26/lowering_plan.jsonl (contracts/stubs/INDEX.json:
+"C26/lowering_plan.jsonl": "C26:lowering_plan"). Na raiz de contracts/stubs/ só existe complex.sssom.tsv.
+O mesmo caminho errado está nos gates de HARNESS-AWS, HARNESS-AZURE e HARNESS-OCI (4 ocorrências no modulos.json).
+O HARNESS-GCP não é dono de contracts/stubs/ e não pode criar o arquivo; o renderizador também não adivinha
+caminho (procurar o stub em outro lugar seria trocar a entrada do gate em silêncio).
+Com o caminho do stub de verdade, o comando passa:
+    python -I -m bo.harness.google.render $BO_REPO/contracts/stubs/C26/lowering_plan.jsonl --out $BO_TMP/render
+    && terraform -chdir=$BO_TMP/render fmt -check      -> saída 0
+(o plano LP-0001 do stub sai UNKNOWN_INPUT; ver ACHADO abaixo).
+
+MUDANÇA PROPOSTA (escolher uma)
+A) CONTRACTS publica cópias em contracts/stubs/lowering_plan.jsonl e contracts/stubs/graph_ir.jsonl (o par, porque
+   o render lê o graph_ir irmão), como já faz com complex.sssom.tsv, e registra os dois no INDEX.json.
+B) Trocar no modulos.json, nos 4 HARNESS-*, "$BO_REPO/contracts/stubs/lowering_plan.jsonl" por
+   "$BO_REPO/contracts/stubs/C26/lowering_plan.jsonl" (o arquivo de gates execucao/gates/HARNESS-*.md acompanha).
+
+ACHADO (resultado, não ajuste): o stub do C26 não renderiza no google 8.9.0
+  - settings.backup_configuration.retained_backups não existe no schema; o caminho real é
+    settings.backup_configuration.backup_retention_settings.retained_backups (FIELD_NOT_IN_SCHEMA);
+  - google_sql_database_instance exige database_version, que o plano não traz (UNKNOWN_INPUT).
+  O stub é válido no C26 (é stub de contrato, não plano de implantação), e o harness faz exatamente o que o brief
+  pede: o caso falha como UNKNOWN_INPUT e nenhum HCL do plano é escrito. Por isso o G2, mesmo com o caminho
+  corrigido, só confere versions.tf com o fmt; o fmt do HCL de verdade é conferido nas 4 fixtures completas
+  (deploy/fixtures/google/_templates/plans/*) em gates/HARNESS-GCP.sh e nos testes.
+
+PROPOSTA NÃO BLOQUEANTE (C12 readback)
+O readback do C12 tem um registro por caso e campos só com 'path' (único no registro). Num plano 1:N (vários
+recursos), o mesmo campo aparece em mais de um recurso (ex.: 'network' na sub-rede e no firewall) e o registro
+reprova por caminho repetido. O harness hoje prefixa o nó do grafo quando há mais de um recurso
+('r2.network', 'r3.network'), o que cabe na gramática atual. Proposta: campo opcional "node_id" (^[rc][0-9]+$) em
+cada item de fields, com unicidade por (node_id, path); o prefixo deixa de ser necessário.
+
+ESTADO DOS GATES DESTE MÓDULO ENQUANTO ISSO
+G2 e G4 ficam ABANDON com este motivo em ../execucao/gates/HARNESS-GCP.md (comandos não afrouxados). Os demais
+gates e gates/HARNESS-GCP.sh passam. Quando (A) ou (B) entrar, G2 e G4 passam sem mudar nada neste módulo.

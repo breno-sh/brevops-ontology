@@ -1,0 +1,209 @@
+{
+ "after_destroy": {
+  "format_version": "1.0",
+  "terraform_version": "1.15.8",
+  "values": {
+   "root_module": {
+    "resources": []
+   }
+  }
+ },
+ "apply": {
+  "ok": true
+ },
+ "bindings": {
+  "SYM-1a2b3c4d5e6f": "bo-hgnet",
+  "SYM-2b3c4d5e6f70": "bo-hgdb"
+ },
+ "destroy": {
+  "ok": true
+ },
+ "expected_outcome": "NOT_READABLE",
+ "expected_residue": false,
+ "fixture": "net_sql",
+ "note": "Resposta gravada sintética (terraform show -json depois de refresh-only); projeto de exemplo, nada real. O state não traz settings.edition.",
+ "reads": [
+  {
+   "format_version": "1.0",
+   "terraform_version": "1.15.8",
+   "values": {
+    "root_module": {
+     "resources": [
+      {
+       "address": "google_compute_network.lp_hg_netsql_r2",
+       "mode": "managed",
+       "name": "lp_hg_netsql_r2",
+       "provider_name": "registry.terraform.io/hashicorp/google",
+       "schema_version": 0,
+       "sensitive_values": {},
+       "type": "google_compute_network",
+       "values": {
+        "auto_create_subnetworks": false,
+        "mtu": 1460,
+        "name": "bo-hgnet-net",
+        "project": "bo-sandbox-example",
+        "routing_mode": "REGIONAL",
+        "self_link": "https://www.googleapis.com/compute/v1/projects/bo-sandbox-example/global/networks/bo-hgnet-net"
+       }
+      },
+      {
+       "address": "google_sql_database_instance.lp_hg_netsql_r1",
+       "mode": "managed",
+       "name": "lp_hg_netsql_r1",
+       "provider_name": "registry.terraform.io/hashicorp/google",
+       "schema_version": 0,
+       "sensitive_values": {
+        "root_password": true,
+        "settings": [
+         {
+          "backup_configuration": [
+           {
+            "backup_retention_settings": [
+             {}
+            ]
+           }
+          ],
+          "ip_configuration": [
+           {
+            "authorized_networks": []
+           }
+          ]
+         }
+        ]
+       },
+       "type": "google_sql_database_instance",
+       "values": {
+        "connection_name": "bo-sandbox-example:us-central1:bo-hgdb-db",
+        "database_version": "POSTGRES_16",
+        "deletion_protection": false,
+        "name": "bo-hgdb-db",
+        "project": "bo-sandbox-example",
+        "region": "us-central1",
+        "root_password": "<TF_VAR:lp_hg_netsql_r1_secret_root_password>",
+        "settings": [
+         {
+          "availability_type": "ZONAL",
+          "backup_configuration": [
+           {
+            "backup_retention_settings": [
+             {
+              "retained_backups": 7,
+              "retention_unit": "COUNT"
+             }
+            ],
+            "enabled": true,
+            "point_in_time_recovery_enabled": false,
+            "start_time": "03:00",
+            "transaction_log_retention_days": 7
+           }
+          ],
+          "disk_size": 10,
+          "ip_configuration": [
+           {
+            "authorized_networks": [],
+            "ipv4_enabled": false,
+            "ssl_mode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
+           }
+          ],
+          "tier": "db-f1-micro"
+         }
+        ]
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "format_version": "1.0",
+   "terraform_version": "1.15.8",
+   "values": {
+    "root_module": {
+     "resources": [
+      {
+       "address": "google_compute_network.lp_hg_netsql_r2",
+       "mode": "managed",
+       "name": "lp_hg_netsql_r2",
+       "provider_name": "registry.terraform.io/hashicorp/google",
+       "schema_version": 0,
+       "sensitive_values": {},
+       "type": "google_compute_network",
+       "values": {
+        "auto_create_subnetworks": false,
+        "mtu": 1460,
+        "name": "bo-hgnet-net",
+        "project": "bo-sandbox-example",
+        "routing_mode": "REGIONAL",
+        "self_link": "https://www.googleapis.com/compute/v1/projects/bo-sandbox-example/global/networks/bo-hgnet-net"
+       }
+      },
+      {
+       "address": "google_sql_database_instance.lp_hg_netsql_r1",
+       "mode": "managed",
+       "name": "lp_hg_netsql_r1",
+       "provider_name": "registry.terraform.io/hashicorp/google",
+       "schema_version": 0,
+       "sensitive_values": {
+        "root_password": true,
+        "settings": [
+         {
+          "backup_configuration": [
+           {
+            "backup_retention_settings": [
+             {}
+            ]
+           }
+          ],
+          "ip_configuration": [
+           {
+            "authorized_networks": []
+           }
+          ]
+         }
+        ]
+       },
+       "type": "google_sql_database_instance",
+       "values": {
+        "connection_name": "bo-sandbox-example:us-central1:bo-hgdb-db",
+        "database_version": "POSTGRES_16",
+        "deletion_protection": false,
+        "name": "bo-hgdb-db",
+        "project": "bo-sandbox-example",
+        "region": "us-central1",
+        "root_password": "<TF_VAR:lp_hg_netsql_r1_secret_root_password>",
+        "settings": [
+         {
+          "availability_type": "ZONAL",
+          "backup_configuration": [
+           {
+            "backup_retention_settings": [
+             {
+              "retained_backups": 7,
+              "retention_unit": "COUNT"
+             }
+            ],
+            "enabled": true,
+            "point_in_time_recovery_enabled": false,
+            "start_time": "03:00",
+            "transaction_log_retention_days": 7
+           }
+          ],
+          "disk_size": 10,
+          "ip_configuration": [
+           {
+            "authorized_networks": [],
+            "ipv4_enabled": false,
+            "ssl_mode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
+           }
+          ],
+          "tier": "db-f1-micro"
+         }
+        ]
+       }
+      }
+     ]
+    }
+   }
+  }
+ ]
+}

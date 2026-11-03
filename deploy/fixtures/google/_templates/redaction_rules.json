@@ -1,0 +1,20 @@
+{
+ "schema": "bo.harness_google.redaction_rules/1",
+ "module": "HARNESS-GCP",
+ "note": "Redação na origem (S16, C12-WITHHELD). Ordem: a primeira regra que casa vence. 'schema_flags' casa atributo marcado no schema fixado; 'paths' casa o caminho de campo (C26) do tipo, por igualdade ou prefixo seguido de '.'. Campo redigido sai como withheld com rule_id e at_source=true, sem valor e sem hash. No renderizador, literal num campo destes reprova o caso (WITHHELD_LITERAL): o plano nunca carrega esse conteúdo.",
+ "rules": [
+  {"rule_id": "REDACT-SECRET-01", "reason": "secret", "schema_flags": ["sensitive", "write_only"]},
+  {"rule_id": "REDACT-BOOT-01", "reason": "boot_script",
+   "paths": {"google_compute_instance": ["metadata", "metadata_startup_script"]}},
+  {"rule_id": "REDACT-ENV-01", "reason": "environment",
+   "paths": {"google_cloud_run_v2_service": ["template.containers.env"],
+             "google_cloudfunctions2_function": ["build_config.environment_variables",
+                                                 "service_config.environment_variables",
+                                                 "service_config.secret_environment_variables"]}},
+  {"rule_id": "REDACT-OBJECT-01", "reason": "object_content",
+   "paths": {"google_storage_bucket_object": ["content", "source"],
+             "google_secret_manager_secret_version": ["secret_data", "secret_data_wo"]}}
+ ],
+ "process_output": {"rule_id": "REDACT-LOG-01", "reason": "log",
+                    "note": "stdout/stderr do terraform e do gcloud nunca vão para disco; só a classe do erro (api_errors.json) é gravada"}
+}

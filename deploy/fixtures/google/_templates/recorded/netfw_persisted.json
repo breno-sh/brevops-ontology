@@ -1,0 +1,177 @@
+{
+ "after_destroy": {
+  "format_version": "1.0",
+  "terraform_version": "1.15.8",
+  "values": {
+   "root_module": {
+    "resources": []
+   }
+  }
+ },
+ "apply": {
+  "ok": true
+ },
+ "bindings": {
+  "SYM-3c4d5e6f7081": "bo-hgfw",
+  "SYM-4d5e6f708192": "bo-hgsub"
+ },
+ "destroy": {
+  "ok": true
+ },
+ "expected_outcome": "PERSISTED",
+ "expected_residue": false,
+ "fixture": "net_fw",
+ "note": "Resposta gravada sintética (terraform show -json depois de refresh-only); projeto de exemplo, nada real. O bloco set 'allow' volta em outra ordem; source_ranges volta reordenado.",
+ "reads": [
+  {
+   "format_version": "1.0",
+   "terraform_version": "1.15.8",
+   "values": {
+    "root_module": {
+     "resources": [
+      {
+       "address": "google_compute_network.lp_hg_netfw_r1",
+       "mode": "managed",
+       "name": "lp_hg_netfw_r1",
+       "provider_name": "registry.terraform.io/hashicorp/google",
+       "schema_version": 0,
+       "sensitive_values": {},
+       "type": "google_compute_network",
+       "values": {
+        "auto_create_subnetworks": false,
+        "id": "projects/bo-sandbox-example/global/networks/bo-hgfw",
+        "name": "bo-hgfw",
+        "routing_mode": "REGIONAL",
+        "self_link": "https://www.googleapis.com/compute/v1/projects/bo-sandbox-example/global/networks/bo-hgfw"
+       }
+      },
+      {
+       "address": "google_compute_subnetwork.lp_hg_netfw_r2",
+       "mode": "managed",
+       "name": "lp_hg_netfw_r2",
+       "provider_name": "registry.terraform.io/hashicorp/google",
+       "schema_version": 0,
+       "sensitive_values": {},
+       "type": "google_compute_subnetwork",
+       "values": {
+        "ip_cidr_range": "10.20.0.0/24",
+        "name": "bo-hgsub",
+        "network": "https://www.googleapis.com/compute/v1/projects/bo-sandbox-example/global/networks/bo-hgfw",
+        "private_ip_google_access": true
+       }
+      },
+      {
+       "address": "google_compute_firewall.lp_hg_netfw_r3",
+       "mode": "managed",
+       "name": "lp_hg_netfw_r3",
+       "provider_name": "registry.terraform.io/hashicorp/google",
+       "schema_version": 0,
+       "sensitive_values": {},
+       "type": "google_compute_firewall",
+       "values": {
+        "allow": [
+         {
+          "ports": [],
+          "protocol": "icmp"
+         },
+         {
+          "ports": [
+           "22",
+           "443"
+          ],
+          "protocol": "tcp"
+         }
+        ],
+        "deny": [],
+        "description": "regra \"sintética\" ${nada} %{nada}",
+        "direction": "INGRESS",
+        "name": "bo-hgfw-ssh",
+        "network": "https://www.googleapis.com/compute/v1/projects/bo-sandbox-example/global/networks/bo-hgfw",
+        "priority": 900,
+        "source_ranges": [
+         "192.0.2.0/24",
+         "10.20.0.0/24"
+        ]
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "format_version": "1.0",
+   "terraform_version": "1.15.8",
+   "values": {
+    "root_module": {
+     "resources": [
+      {
+       "address": "google_compute_network.lp_hg_netfw_r1",
+       "mode": "managed",
+       "name": "lp_hg_netfw_r1",
+       "provider_name": "registry.terraform.io/hashicorp/google",
+       "schema_version": 0,
+       "sensitive_values": {},
+       "type": "google_compute_network",
+       "values": {
+        "auto_create_subnetworks": false,
+        "id": "projects/bo-sandbox-example/global/networks/bo-hgfw",
+        "name": "bo-hgfw",
+        "routing_mode": "REGIONAL",
+        "self_link": "https://www.googleapis.com/compute/v1/projects/bo-sandbox-example/global/networks/bo-hgfw"
+       }
+      },
+      {
+       "address": "google_compute_subnetwork.lp_hg_netfw_r2",
+       "mode": "managed",
+       "name": "lp_hg_netfw_r2",
+       "provider_name": "registry.terraform.io/hashicorp/google",
+       "schema_version": 0,
+       "sensitive_values": {},
+       "type": "google_compute_subnetwork",
+       "values": {
+        "ip_cidr_range": "10.20.0.0/24",
+        "name": "bo-hgsub",
+        "network": "https://www.googleapis.com/compute/v1/projects/bo-sandbox-example/global/networks/bo-hgfw",
+        "private_ip_google_access": true
+       }
+      },
+      {
+       "address": "google_compute_firewall.lp_hg_netfw_r3",
+       "mode": "managed",
+       "name": "lp_hg_netfw_r3",
+       "provider_name": "registry.terraform.io/hashicorp/google",
+       "schema_version": 0,
+       "sensitive_values": {},
+       "type": "google_compute_firewall",
+       "values": {
+        "allow": [
+         {
+          "ports": [],
+          "protocol": "icmp"
+         },
+         {
+          "ports": [
+           "22",
+           "443"
+          ],
+          "protocol": "tcp"
+         }
+        ],
+        "deny": [],
+        "description": "regra \"sintética\" ${nada} %{nada}",
+        "direction": "INGRESS",
+        "name": "bo-hgfw-ssh",
+        "network": "https://www.googleapis.com/compute/v1/projects/bo-sandbox-example/global/networks/bo-hgfw",
+        "priority": 900,
+        "source_ranges": [
+         "192.0.2.0/24",
+         "10.20.0.0/24"
+        ]
+       }
+      }
+     ]
+    }
+   }
+  }
+ ]
+}

@@ -1,0 +1,37 @@
+{
+ "after_destroy": {
+  "format_version": "1.0",
+  "terraform_version": "1.15.8",
+  "values": {
+   "root_module": {
+    "resources": []
+   }
+  }
+ },
+ "apply": {
+  "ok": false,
+  "output": "Error: Error creating Network: googleapi: Error 429: Quota exceeded for quota metric, rateLimitExceeded"
+ },
+ "bindings": {
+  "SYM-1a2b3c4d5e6f": "bo-hgnet",
+  "SYM-2b3c4d5e6f70": "bo-hgdb"
+ },
+ "destroy": {
+  "ok": true
+ },
+ "expected_outcome": "INFRA_ERROR",
+ "expected_residue": false,
+ "fixture": "net_sql",
+ "note": "Resposta gravada sintética (terraform show -json depois de refresh-only); projeto de exemplo, nada real.",
+ "reads": [
+  {
+   "format_version": "1.0",
+   "terraform_version": "1.15.8",
+   "values": {
+    "root_module": {
+     "resources": []
+    }
+   }
+  }
+ ]
+}

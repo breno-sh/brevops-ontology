@@ -1,0 +1,21 @@
+{
+ "schema": "bo.harness_google.types/1",
+ "module": "HARNESS-GCP",
+ "note": "Tipos que o harness renderiza com o índice compacto: lotes A e B, sondas e fixtures de CQ do Google Cloud (plano §10.1). Tipo fora desta lista só com --schema apontando para o providers-schema.json completo; sem isso o caso falha como UNSUPPORTED_TYPE, nunca é renderizado às cegas.",
+ "resources": [
+  "google_cloud_run_v2_service", "google_cloudfunctions2_function", "google_compute_address",
+  "google_compute_firewall", "google_compute_forwarding_rule", "google_compute_global_address",
+  "google_compute_instance", "google_compute_network", "google_compute_router", "google_compute_router_nat",
+  "google_compute_subnetwork", "google_firestore_database", "google_firestore_field", "google_kms_crypto_key",
+  "google_kms_key_ring", "google_logging_metric", "google_logging_project_bucket_config",
+  "google_logging_project_sink", "google_monitoring_alert_policy", "google_project_iam_member",
+  "google_pubsub_subscription", "google_pubsub_topic", "google_redis_instance", "google_secret_manager_secret",
+  "google_secret_manager_secret_version", "google_service_account", "google_sql_database",
+  "google_sql_database_instance", "google_sql_user", "google_storage_bucket", "google_storage_bucket_iam_member",
+  "google_storage_bucket_object"
+ ],
+ "data_sources": [
+  "google_client_config", "google_compute_network", "google_compute_subnetwork", "google_kms_key_ring",
+  "google_project", "google_storage_bucket"
+ ]
+}

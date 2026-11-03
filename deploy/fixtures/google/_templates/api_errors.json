@@ -1,0 +1,21 @@
+{
+ "schema": "bo.harness_google.api_errors/1",
+ "module": "HARNESS-GCP",
+ "note": "Classificação de falha de apply/leitura em desfecho do C12, sobre a saída do terraform mantida só em memória. A primeira classe que casa vence; o que não casa vira UNKNOWN (nunca se adivinha INFRA_ERROR nem REJECTED_BY_API). Grava-se só class_id e outcome, nunca o texto.",
+ "classes": [
+  {"class_id": "TF-CONFIG", "outcome": "UNKNOWN", "detail": "defeito do HCL renderizado (terraform recusou a configuração antes do provider)",
+   "patterns": ["Error: Missing required argument", "Error: Unsupported argument", "Error: Unsupported block type", "Error: Invalid reference", "Error: Reference to undeclared"]},
+  {"class_id": "PROVIDER-VALIDATION", "outcome": "REJECTED_BY_API", "detail": "rejeitado na validação do provider, antes da chamada à API",
+   "patterns": ["expected .* to be one of", "Error: Invalid value for", "doesn't match regexp", "Conflicting configuration arguments", "ExactlyOne", "\"[a-z_.0-9]+\": one of `"]},
+  {"class_id": "API-400", "outcome": "REJECTED_BY_API", "detail": "a API recusou o pedido (4xx de validação)",
+   "patterns": ["googleapi: Error 400", "googleapi: Error 422", "INVALID_ARGUMENT", "FAILED_PRECONDITION", "Error 400:"]},
+  {"class_id": "INFRA-AUTH", "outcome": "INFRA_ERROR", "detail": "permissão ou credencial da conta sintética",
+   "patterns": ["googleapi: Error 401", "googleapi: Error 403", "PERMISSION_DENIED", "UNAUTHENTICATED", "could not find default credentials"]},
+  {"class_id": "INFRA-QUOTA", "outcome": "INFRA_ERROR", "detail": "quota ou limite de taxa da conta sintética",
+   "patterns": ["googleapi: Error 429", "RESOURCE_EXHAUSTED", "[Qq]uota", "rateLimitExceeded"]},
+  {"class_id": "INFRA-CONFLICT", "outcome": "INFRA_ERROR", "detail": "recurso já existe ou operação concorrente",
+   "patterns": ["googleapi: Error 409", "alreadyExists", "ALREADY_EXISTS", "resourceInUseByAnotherResource"]},
+  {"class_id": "INFRA-SERVER", "outcome": "INFRA_ERROR", "detail": "erro do serviço, rede ou tempo esgotado",
+   "patterns": ["googleapi: Error 5[0-9][0-9]", "UNAVAILABLE", "DEADLINE_EXCEEDED", "context deadline exceeded", "timeout while waiting", "connection reset", "no such host", "i/o timeout"]}
+ ]
+}

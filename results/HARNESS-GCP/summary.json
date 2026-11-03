@@ -1,0 +1,39 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "HARNESS-GCP",
+ "generated_at": "2026-11-03T07:25:36-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/HARNESS-GCP.txt",
+  "brief_sha256": "ff528c813b94a9cfe39086172e8ef9a997ad33151c065f6f7aa3e1be31a47934",
+  "params": {
+   "fase": "F1",
+   "nuvem": "nenhuma",
+   "provider": "google-8.9.0",
+   "terraform": "1.15.8"
+  },
+  "inputs": [
+   {
+    "path": "$BO_REPO/contracts/stubs",
+    "kind": "dir",
+    "sha256": "83834d95cee77815c0364a2354c4170cef924c61ca43de28a494460c718b1ff8"
+   },
+   {
+    "path": "$BO_DATA/downloads/prefetch/google/8.9.0/providers-schema.json",
+    "kind": "file",
+    "sha256": "239c0eae0e0ae9453cfe8cb7690646882f8ac0f9387ba4a67b5168917ecb8345"
+   }
+  ],
+  "recorded_at": "2026-11-03T07:25:36-03:00"
+ },
+ "sources": [
+  {
+   "uri": "https://registry.terraform.io/providers/hashicorp/google/8.9.0",
+   "license": "MPL-2.0",
+   "transformation": "terraform providers schema -json (pré-busca assinada, sem credenciais) -> índice compacto de 32 recursos e 6 data sources em deploy/fixtures/google/_templates/schema_index.json"
+  }
+ ],
+ "notes": "Harness offline: render C26->HCL sem inserção silenciosa, no_silent_insert com parser independente, redator na origem, executor com respostas gravadas. Nenhuma nuvem, nenhum apply, nenhuma credencial."
+}

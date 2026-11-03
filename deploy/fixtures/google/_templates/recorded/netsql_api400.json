@@ -1,0 +1,55 @@
+{
+ "after_destroy": {
+  "format_version": "1.0",
+  "terraform_version": "1.15.8",
+  "values": {
+   "root_module": {
+    "resources": []
+   }
+  }
+ },
+ "apply": {
+  "ok": false,
+  "output": "Error: Error, failed to create instance bo-hgdb-db: googleapi: Error 400: Invalid request: Invalid edition for tier., invalid"
+ },
+ "bindings": {
+  "SYM-1a2b3c4d5e6f": "bo-hgnet",
+  "SYM-2b3c4d5e6f70": "bo-hgdb"
+ },
+ "destroy": {
+  "ok": true
+ },
+ "expected_outcome": "REJECTED_BY_API",
+ "expected_residue": false,
+ "fixture": "net_sql",
+ "note": "Resposta gravada sintética (terraform show -json depois de refresh-only); projeto de exemplo, nada real.",
+ "reads": [
+  {
+   "format_version": "1.0",
+   "terraform_version": "1.15.8",
+   "values": {
+    "root_module": {
+     "resources": [
+      {
+       "address": "google_compute_network.lp_hg_netsql_r2",
+       "mode": "managed",
+       "name": "lp_hg_netsql_r2",
+       "provider_name": "registry.terraform.io/hashicorp/google",
+       "schema_version": 0,
+       "sensitive_values": {},
+       "type": "google_compute_network",
+       "values": {
+        "auto_create_subnetworks": false,
+        "mtu": 1460,
+        "name": "bo-hgnet-net",
+        "project": "bo-sandbox-example",
+        "routing_mode": "REGIONAL",
+        "self_link": "https://www.googleapis.com/compute/v1/projects/bo-sandbox-example/global/networks/bo-hgnet-net"
+       }
+      }
+     ]
+    }
+   }
+  }
+ ]
+}
