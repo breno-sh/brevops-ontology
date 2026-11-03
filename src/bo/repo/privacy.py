@@ -39,7 +39,7 @@ RULES: list[tuple[str, re.Pattern]] = [
     ("secret_jwt", re.compile(r"\beyJ[A-Za-z0-9_-]{10,}\.eyJ[A-Za-z0-9_-]{10,}\.")),
     ("secret_assignment", re.compile(
         r"(?i)\b(aws_secret_access_key|secret_access_key|client_secret|password|passwd|api[_-]?key|"
-        r"access[_-]?token|auth[_-]?token|private_key|sas_token)\b[\"']?\s*[:=]\s*+[\"'](?!REDACTED|WITHHELD|<|\$\{)"
+        r"access[_-]?token|auth[_-]?token|private_key|sas_token)\b[\"']?\s*[:=]\s*+[\"'](?!REDACTED|WITHHELD|<|\$\{|(?:string|number|bool|dynamic)[\"'])"
         r"[^\"'\s]{6,}[\"']")),
     ("secret_env_line", re.compile(r"^\s*(?:export\s+)?[A-Z0-9_]*(?:SECRET|PASSWORD|TOKEN|API_KEY|ACCESS_KEY)[A-Z0-9_]*="
                                    r"(?!\s*$|[\"']?\$|[\"']?REDACTED|[\"']?WITHHELD)\S{6,}")),
@@ -146,6 +146,16 @@ def scan_bytes(b: bytes, fname: str, lists=None, strict: bool = False) -> list[F
     return scan_text(b.decode("utf-8", errors="replace"), fname, lists)
 
 
+def scan_large_text(f: Path, lists=None) -> list[Finding]:
+    found = []
+    with open(f, encoding="utf-8", errors="replace") as fh:
+        for i, line in enumerate(fh, 1):
+            for x in scan_text(line, str(f), lists):
+                x.line = i
+                found.append(x)
+    return found
+
+
 def scan_paths(paths: list[Path], strict: bool = False, lists=None) -> tuple[list[Finding], int, list[str]]:
     findings, n, notes = [], 0, []
     for root in paths:
@@ -163,6 +173,13 @@ def scan_paths(paths: list[Path], strict: bool = False, lists=None) -> tuple[lis
                 continue
             try:
                 if f.stat().st_size > TEXT_LIMIT:
+                    with open(f, "rb") as fh:
+                        binary = is_binary(fh.read(8192))
+                    if not binary:
+                        # texto grande (ex.: JSONL de átomos): varrido linha a linha, sem carregar inteiro
+                        n += 1
+                        findings.extend(scan_large_text(f, lists))
+                        continue
                     msg = f"arquivo grande demais para varrer: {f}"
                     if strict:
                         findings.append(Finding("nao_varrido", str(f), 0, msg))
