@@ -1,0 +1,1027 @@
+{
+ "schema": "bo.metrics_binding/1",
+ "module": "METRICSLIB",
+ "generated_at": "2026-11-03T07:30:00-03:00",
+ "library_version": "3.0.0",
+ "spec_sha256": "7462e43de6cddd29848b3817c0633cd7dca82085c6b955ca5eff8c95f7703f86",
+ "metrics": {
+  "M-ABL-AWSRAW-DEC": {
+   "name": "ablação conjunta: semente só AWS com tipos crus (H6)",
+   "axis": "operational",
+   "reading": "decision",
+   "quantifier": "observed_fraction",
+   "weights": "uniform",
+   "uncertainty": "bootstrap",
+   "kind": "proportion",
+   "directional": true,
+   "only_oci": false,
+   "bounded_codes": [
+    "CONDITION_INDETERMINATE",
+    "INFRA_ERROR",
+    "UNKNOWN_INPUT",
+    "UNKNOWN_SYMBOLIC_INPUT"
+   ],
+   "outcome_table": {
+    "AMBIGUOUS_TARGET": "failure",
+    "CONDITION_FALSE": "failure",
+    "CONDITION_INDETERMINATE": "bounded",
+    "INFRA_ERROR": "bounded",
+    "NO_REALIZATION": "failure",
+    "NO_UNIT": "failure",
+    "OUT_OF_SUBSET": "failure",
+    "REFUTED_BY_RULE": "failure",
+    "RELATED_ONLY": "failure",
+    "REPAIR_EXCLUDED": "failure",
+    "SHACL_VIOLATION": "failure",
+    "TRANSFORM_OUT_OF_DOMAIN": "failure",
+    "UNKNOWN_INPUT": "bounded",
+    "UNKNOWN_SYMBOLIC_INPUT": "bounded",
+    "UNPROVEN": "failure",
+    "carried": "success",
+    "omitted": "failure"
+   }
+  },
+  "M-ABL-NOGUARD-DEC": {
+   "name": "ablação: sem guardas e sem transformações",
+   "axis": "operational",
+   "reading": "decision",
+   "quantifier": "observed_fraction",
+   "weights": "uniform",
+   "uncertainty": "bootstrap",
+   "kind": "proportion",
+   "directional": true,
+   "only_oci": false,
+   "bounded_codes": [
+    "CONDITION_INDETERMINATE",
+    "INFRA_ERROR",
+    "UNKNOWN_INPUT",
+    "UNKNOWN_SYMBOLIC_INPUT"
+   ],
+   "outcome_table": {
+    "AMBIGUOUS_TARGET": "failure",
+    "CONDITION_FALSE": "failure",
+    "CONDITION_INDETERMINATE": "bounded",
+    "INFRA_ERROR": "bounded",
+    "NO_REALIZATION": "failure",
+    "NO_UNIT": "failure",
+    "OUT_OF_SUBSET": "failure",
+    "REFUTED_BY_RULE": "failure",
+    "RELATED_ONLY": "failure",
+    "REPAIR_EXCLUDED": "failure",
+    "SHACL_VIOLATION": "failure",
+    "TRANSFORM_OUT_OF_DOMAIN": "failure",
+    "UNKNOWN_INPUT": "bounded",
+    "UNKNOWN_SYMBOLIC_INPUT": "bounded",
+    "UNPROVEN": "failure",
+    "carried": "success",
+    "omitted": "failure"
+   }
+  },
+  "M-ABL-RAWTYPES-DEC": {
+   "name": "ablação: tipos Terraform crus",
+   "axis": "operational",
+   "reading": "decision",
+   "quantifier": "observed_fraction",
+   "weights": "uniform",
+   "uncertainty": "bootstrap",
+   "kind": "proportion",
+   "directional": true,
+   "only_oci": false,
+   "bounded_codes": [
+    "CONDITION_INDETERMINATE",
+    "INFRA_ERROR",
+    "UNKNOWN_INPUT",
+    "UNKNOWN_SYMBOLIC_INPUT"
+   ],
+   "outcome_table": {
+    "AMBIGUOUS_TARGET": "failure",
+    "CONDITION_FALSE": "failure",
+    "CONDITION_INDETERMINATE": "bounded",
+    "INFRA_ERROR": "bounded",
+    "NO_REALIZATION": "failure",
+    "NO_UNIT": "failure",
+    "OUT_OF_SUBSET": "failure",
+    "REFUTED_BY_RULE": "failure",
+    "RELATED_ONLY": "failure",
+    "REPAIR_EXCLUDED": "failure",
+    "SHACL_VIOLATION": "failure",
+    "TRANSFORM_OUT_OF_DOMAIN": "failure",
+    "UNKNOWN_INPUT": "bounded",
+    "UNKNOWN_SYMBOLIC_INPUT": "bounded",
+    "UNPROVEN": "failure",
+    "carried": "success",
+    "omitted": "failure"
+   }
+  },
+  "M-ABL-SEEDAWS-DEC": {
+   "name": "ablação: semente só AWS",
+   "axis": "operational",
+   "reading": "decision",
+   "quantifier": "observed_fraction",
+   "weights": "uniform",
+   "uncertainty": "bootstrap",
+   "kind": "proportion",
+   "directional": true,
+   "only_oci": false,
+   "bounded_codes": [
+    "CONDITION_INDETERMINATE",
+    "INFRA_ERROR",
+    "UNKNOWN_INPUT",
+    "UNKNOWN_SYMBOLIC_INPUT"
+   ],
+   "outcome_table": {
+    "AMBIGUOUS_TARGET": "failure",
+    "CONDITION_FALSE": "failure",
+    "CONDITION_INDETERMINATE": "bounded",
+    "INFRA_ERROR": "bounded",
+    "NO_REALIZATION": "failure",
+    "NO_UNIT": "failure",
+    "OUT_OF_SUBSET": "failure",
+    "REFUTED_BY_RULE": "failure",
+    "RELATED_ONLY": "failure",
+    "REPAIR_EXCLUDED": "failure",
+    "SHACL_VIOLATION": "failure",
+    "TRANSFORM_OUT_OF_DOMAIN": "failure",
+    "UNKNOWN_INPUT": "bounded",
+    "UNKNOWN_SYMBOLIC_INPUT": "bounded",
+    "UNPROVEN": "failure",
+    "carried": "success",
+    "omitted": "failure"
+   }
+  },
+  "M-ABL-THR-ALT1-DEC": {
+   "name": "ablação: primeiro limiar alternativo de admissão",
+   "axis": "operational",
+   "reading": "decision",
+   "quantifier": "observed_fraction",
+   "weights": "uniform",
+   "uncertainty": "bootstrap",
+   "kind": "proportion",
+   "directional": true,
+   "only_oci": false,
+   "bounded_codes": [
+    "CONDITION_INDETERMINATE",
+    "INFRA_ERROR",
+    "UNKNOWN_INPUT",
+    "UNKNOWN_SYMBOLIC_INPUT"
+   ],
+   "outcome_table": {
+    "AMBIGUOUS_TARGET": "failure",
+    "CONDITION_FALSE": "failure",
+    "CONDITION_INDETERMINATE": "bounded",
+    "INFRA_ERROR": "bounded",
+    "NO_REALIZATION": "failure",
+    "NO_UNIT": "failure",
+    "OUT_OF_SUBSET": "failure",
+    "REFUTED_BY_RULE": "failure",
+    "RELATED_ONLY": "failure",
+    "REPAIR_EXCLUDED": "failure",
+    "SHACL_VIOLATION": "failure",
+    "TRANSFORM_OUT_OF_DOMAIN": "failure",
+    "UNKNOWN_INPUT": "bounded",
+    "UNKNOWN_SYMBOLIC_INPUT": "bounded",
+    "UNPROVEN": "failure",
+    "carried": "success",
+    "omitted": "failure"
+   }
+  },
+  "M-ABL-THR-ALT2-DEC": {
+   "name": "ablação: segundo limiar alternativo de admissão",
+   "axis": "operational",
+   "reading": "decision",
+   "quantifier": "observed_fraction",
+   "weights": "uniform",
+   "uncertainty": "bootstrap",
+   "kind": "proportion",
+   "directional": true,
+   "only_oci": false,
+   "bounded_codes": [
+    "CONDITION_INDETERMINATE",
+    "INFRA_ERROR",
+    "UNKNOWN_INPUT",
+    "UNKNOWN_SYMBOLIC_INPUT"
+   ],
+   "outcome_table": {
+    "AMBIGUOUS_TARGET": "failure",
+    "CONDITION_FALSE": "failure",
+    "CONDITION_INDETERMINATE": "bounded",
+    "INFRA_ERROR": "bounded",
+    "NO_REALIZATION": "failure",
+    "NO_UNIT": "failure",
+    "OUT_OF_SUBSET": "failure",
+    "REFUTED_BY_RULE": "failure",
+    "RELATED_ONLY": "failure",
+    "REPAIR_EXCLUDED": "failure",
+    "SHACL_VIOLATION": "failure",
+    "TRANSFORM_OUT_OF_DOMAIN": "failure",
+    "UNKNOWN_INPUT": "bounded",
+    "UNKNOWN_SYMBOLIC_INPUT": "bounded",
+    "UNPROVEN": "failure",
+    "carried": "success",
+    "omitted": "failure"
+   }
+  },
+  "M-BEHAV-DEC": {
+   "name": "observações coincidentes sob protocolo",
+   "axis": "behavior",
+   "reading": "decision",
+   "quantifier": "observed_fraction",
+   "weights": "inverse_probability",
+   "uncertainty": "wilson",
+   "kind": "proportion",
+   "directional": true,
+   "only_oci": false,
+   "bounded_codes": [
+    "INFRA_ERROR",
+    "NOT_OBSERVED_IN_WINDOW",
+    "PROTOCOL_UNSUPPORTED",
+    "UNKNOWN"
+   ],
+   "outcome_table": {
+    "INFRA_ERROR": "bounded",
+    "NOT_OBSERVED_IN_WINDOW": "bounded",
+    "OBSERVATIONS_DIFFER_UNDER_PROTOCOL": "failure",
+    "OBSERVATIONS_MATCH_UNDER_PROTOCOL": "success",
+    "PROTOCOL_UNSUPPORTED": "bounded",
+    "UNKNOWN": "bounded"
+   }
+  },
+  "M-CQ-ANSWER": {
+   "name": "respostas corretas das CQs congeladas",
+   "axis": "representability",
+   "reading": "graph",
+   "quantifier": "observed_fraction",
+   "weights": "uniform",
+   "uncertainty": "exact",
+   "kind": "proportion",
+   "directional": false,
+   "only_oci": false,
+   "bounded_codes": [
+    "INFRA_ERROR",
+    "TIMEOUT",
+    "UNKNOWN_INPUT",
+    "UNKNOWN_SYMBOLIC_INPUT"
+   ],
+   "outcome_table": {
+    "CORRECT": "success",
+    "INFRA_ERROR": "bounded",
+    "TIMEOUT": "bounded",
+    "UNKNOWN_INPUT": "bounded",
+    "UNKNOWN_SYMBOLIC_INPUT": "bounded",
+    "UNKNOWN_WHEN_DEFINED": "failure",
+    "WRONG": "failure"
+   }
+  },
+  "M-H2H-TRANS-DEC": {
+   "name": "eixo de tradução de cada comparador (orçamento igual)",
+   "axis": "operational",
+   "reading": "decision",
+   "quantifier": "observed_fraction",
+   "weights": "uniform",
+   "uncertainty": "bootstrap",
+   "kind": "proportion",
+   "directional": true,
+   "only_oci": false,
+   "bounded_codes": [
+    "CONDITION_INDETERMINATE",
+    "INFRA_ERROR",
+    "UNKNOWN_INPUT",
+    "UNKNOWN_SYMBOLIC_INPUT"
+   ],
+   "outcome_table": {
+    "AMBIGUOUS_TARGET": "failure",
+    "CONDITION_FALSE": "failure",
+    "CONDITION_INDETERMINATE": "bounded",
+    "INFRA_ERROR": "bounded",
+    "NO_REALIZATION": "failure",
+    "NO_UNIT": "failure",
+    "OUT_OF_SUBSET": "failure",
+    "REFUTED_BY_RULE": "failure",
+    "RELATED_ONLY": "failure",
+    "REPAIR_EXCLUDED": "failure",
+    "SHACL_VIOLATION": "failure",
+    "TRANSFORM_OUT_OF_DOMAIN": "failure",
+    "UNKNOWN_INPUT": "bounded",
+    "UNKNOWN_SYMBOLIC_INPUT": "bounded",
+    "UNPROVEN": "failure",
+    "carried": "success",
+    "omitted": "failure"
+   }
+  },
+  "M-HOLDOUT-REPR-DEC": {
+   "name": "hold-out de unidades: representação às cegas",
+   "axis": "representability",
+   "reading": "decision",
+   "quantifier": "observed_fraction",
+   "weights": "uniform",
+   "uncertainty": "bootstrap",
+   "kind": "proportion",
+   "directional": false,
+   "only_oci": false,
+   "bounded_codes": [
+    "UNKNOWN_INPUT",
+    "UNKNOWN_SYMBOLIC_INPUT"
+   ],
+   "outcome_table": {
+    "NEW_CLASS_REQUIRED": "failure",
+    "NOT_REPRESENTED": "failure",
+    "REPRESENTED": "success",
+    "UNGLOSSED": "failure",
+    "UNKNOWN_INPUT": "bounded",
+    "UNKNOWN_SYMBOLIC_INPUT": "bounded"
+   }
+  },
+  "M-LOPO-OPCOV-DEC": {
+   "name": "cobertura com a ontologia sem OCI (leave-one-provider-out)",
+   "axis": "operational",
+   "reading": "decision",
+   "quantifier": "observed_fraction",
+   "weights": "uniform",
+   "uncertainty": "bootstrap",
+   "kind": "proportion",
+   "directional": true,
+   "only_oci": true,
+   "bounded_codes": [
+    "CONDITION_INDETERMINATE",
+    "INFRA_ERROR",
+    "UNKNOWN_INPUT",
+    "UNKNOWN_SYMBOLIC_INPUT"
+   ],
+   "outcome_table": {
+    "AMBIGUOUS_TARGET": "failure",
+    "CONDITION_FALSE": "failure",
+    "CONDITION_INDETERMINATE": "bounded",
+    "INFRA_ERROR": "bounded",
+    "NO_REALIZATION": "failure",
+    "NO_UNIT": "failure",
+    "OUT_OF_SUBSET": "failure",
+    "REFUTED_BY_RULE": "failure",
+    "RELATED_ONLY": "failure",
+    "REPAIR_EXCLUDED": "failure",
+    "SHACL_VIOLATION": "failure",
+    "TRANSFORM_OUT_OF_DOMAIN": "failure",
+    "UNKNOWN_INPUT": "bounded",
+    "UNKNOWN_SYMBOLIC_INPUT": "bounded",
+    "UNPROVEN": "failure",
+    "carried": "success",
+    "omitted": "failure"
+   }
+  },
+  "M-LOPO-REPR-DEC": {
+   "name": "LOPO: representação da OCI sem OCI",
+   "axis": "representability",
+   "reading": "decision",
+   "quantifier": "observed_fraction",
+   "weights": "uniform",
+   "uncertainty": "bootstrap",
+   "kind": "proportion",
+   "directional": false,
+   "only_oci": true,
+   "bounded_codes": [
+    "UNKNOWN_INPUT",
+    "UNKNOWN_SYMBOLIC_INPUT"
+   ],
+   "outcome_table": {
+    "NEW_CLASS_REQUIRED": "failure",
+    "NOT_REPRESENTED": "failure",
+    "REPRESENTED": "success",
+    "UNGLOSSED": "failure",
+    "UNKNOWN_INPUT": "bounded",
+    "UNKNOWN_SYMBOLIC_INPUT": "bounded"
+   }
+  },
+  "M-OPCOV-DEC": {
+   "name": "cobertura operacional por decisão (principal)",
+   "axis": "operational",
+   "reading": "decision",
+   "quantifier": "observed_fraction",
+   "weights": "uniform",
+   "uncertainty": "bootstrap",
+   "kind": "proportion",
+   "directional": true,
+   "only_oci": false,
+   "bounded_codes": [
+    "CONDITION_INDETERMINATE",
+    "INFRA_ERROR",
+    "UNKNOWN_INPUT",
+    "UNKNOWN_SYMBOLIC_INPUT"
+   ],
+   "outcome_table": {
+    "AMBIGUOUS_TARGET": "failure",
+    "CONDITION_FALSE": "failure",
+    "CONDITION_INDETERMINATE": "bounded",
+    "INFRA_ERROR": "bounded",
+    "NO_REALIZATION": "failure",
+    "NO_UNIT": "failure",
+    "OUT_OF_SUBSET": "failure",
+    "REFUTED_BY_RULE": "failure",
+    "RELATED_ONLY": "failure",
+    "REPAIR_EXCLUDED": "failure",
+    "SHACL_VIOLATION": "failure",
+    "TRANSFORM_OUT_OF_DOMAIN": "failure",
+    "UNKNOWN_INPUT": "bounded",
+    "UNKNOWN_SYMBOLIC_INPUT": "bounded",
+    "UNPROVEN": "failure",
+    "carried": "success",
+    "omitted": "failure"
+   }
+  },
+  "M-OPCOV-DEC-C1": {
+   "name": "cobertura do controle c1 (tabela sem inferência)",
+   "axis": "operational",
+   "reading": "decision",
+   "quantifier": "observed_fraction",
+   "weights": "uniform",
+   "uncertainty": "bootstrap",
+   "kind": "proportion",
+   "directional": true,
+   "only_oci": false,
+   "bounded_codes": [
+    "CONDITION_INDETERMINATE",
+    "INFRA_ERROR",
+    "UNKNOWN_INPUT",
+    "UNKNOWN_SYMBOLIC_INPUT"
+   ],
+   "outcome_table": {
+    "AMBIGUOUS_TARGET": "failure",
+    "CONDITION_FALSE": "failure",
+    "CONDITION_INDETERMINATE": "bounded",
+    "INFRA_ERROR": "bounded",
+    "NO_REALIZATION": "failure",
+    "NO_UNIT": "failure",
+    "OUT_OF_SUBSET": "failure",
+    "REFUTED_BY_RULE": "failure",
+    "RELATED_ONLY": "failure",
+    "REPAIR_EXCLUDED": "failure",
+    "SHACL_VIOLATION": "failure",
+    "TRANSFORM_OUT_OF_DOMAIN": "failure",
+    "UNKNOWN_INPUT": "bounded",
+    "UNKNOWN_SYMBOLIC_INPUT": "bounded",
+    "UNPROVEN": "failure",
+    "carried": "success",
+    "omitted": "failure"
+   }
+  },
+  "M-OPCOV-DEC-C2": {
+   "name": "cobertura do controle c2 (taxonomia e realizações)",
+   "axis": "operational",
+   "reading": "decision",
+   "quantifier": "observed_fraction",
+   "weights": "uniform",
+   "uncertainty": "bootstrap",
+   "kind": "proportion",
+   "directional": true,
+   "only_oci": false,
+   "bounded_codes": [
+    "CONDITION_INDETERMINATE",
+    "INFRA_ERROR",
+    "UNKNOWN_INPUT",
+    "UNKNOWN_SYMBOLIC_INPUT"
+   ],
+   "outcome_table": {
+    "AMBIGUOUS_TARGET": "failure",
+    "CONDITION_FALSE": "failure",
+    "CONDITION_INDETERMINATE": "bounded",
+    "INFRA_ERROR": "bounded",
+    "NO_REALIZATION": "failure",
+    "NO_UNIT": "failure",
+    "OUT_OF_SUBSET": "failure",
+    "REFUTED_BY_RULE": "failure",
+    "RELATED_ONLY": "failure",
+    "REPAIR_EXCLUDED": "failure",
+    "SHACL_VIOLATION": "failure",
+    "TRANSFORM_OUT_OF_DOMAIN": "failure",
+    "UNKNOWN_INPUT": "bounded",
+    "UNKNOWN_SYMBOLIC_INPUT": "bounded",
+    "UNPROVEN": "failure",
+    "carried": "success",
+    "omitted": "failure"
+   }
+  },
+  "M-OPCOV-DEC-COMPLEX": {
+   "name": "fração da cobertura via correspondência complexa",
+   "axis": "operational",
+   "reading": "decision",
+   "quantifier": "observed_fraction",
+   "weights": "uniform",
+   "uncertainty": "bootstrap",
+   "kind": "complex_fraction",
+   "directional": true,
+   "only_oci": false,
+   "bounded_codes": [
+    "CONDITION_INDETERMINATE",
+    "INFRA_ERROR",
+    "UNKNOWN_INPUT",
+    "UNKNOWN_SYMBOLIC_INPUT"
+   ],
+   "outcome_table": {
+    "AMBIGUOUS_TARGET": "failure",
+    "CONDITION_FALSE": "failure",
+    "CONDITION_INDETERMINATE": "bounded",
+    "INFRA_ERROR": "bounded",
+    "NO_REALIZATION": "failure",
+    "NO_UNIT": "failure",
+    "OUT_OF_SUBSET": "failure",
+    "REFUTED_BY_RULE": "failure",
+    "RELATED_ONLY": "failure",
+    "REPAIR_EXCLUDED": "failure",
+    "SHACL_VIOLATION": "failure",
+    "TRANSFORM_OUT_OF_DOMAIN": "failure",
+    "UNKNOWN_INPUT": "bounded",
+    "UNKNOWN_SYMBOLIC_INPUT": "bounded",
+    "UNPROVEN": "failure",
+    "carried": "success",
+    "omitted": "failure"
+   }
+  },
+  "M-OPCOV-DEC-DIRECT": {
+   "name": "cobertura do caminho direto par-a-par",
+   "axis": "operational",
+   "reading": "decision",
+   "quantifier": "observed_fraction",
+   "weights": "uniform",
+   "uncertainty": "bootstrap",
+   "kind": "proportion",
+   "directional": true,
+   "only_oci": false,
+   "bounded_codes": [
+    "CONDITION_INDETERMINATE",
+    "INFRA_ERROR",
+    "UNKNOWN_INPUT",
+    "UNKNOWN_SYMBOLIC_INPUT"
+   ],
+   "outcome_table": {
+    "AMBIGUOUS_TARGET": "failure",
+    "CONDITION_FALSE": "failure",
+    "CONDITION_INDETERMINATE": "bounded",
+    "INFRA_ERROR": "bounded",
+    "NO_REALIZATION": "failure",
+    "NO_UNIT": "failure",
+    "OUT_OF_SUBSET": "failure",
+    "REFUTED_BY_RULE": "failure",
+    "RELATED_ONLY": "failure",
+    "REPAIR_EXCLUDED": "failure",
+    "SHACL_VIOLATION": "failure",
+    "TRANSFORM_OUT_OF_DOMAIN": "failure",
+    "UNKNOWN_INPUT": "bounded",
+    "UNKNOWN_SYMBOLIC_INPUT": "bounded",
+    "UNPROVEN": "failure",
+    "carried": "success",
+    "omitted": "failure"
+   }
+  },
+  "M-OPCOV-FIELD": {
+   "name": "cobertura operacional por campo",
+   "axis": "operational",
+   "reading": "field",
+   "quantifier": "observed_fraction",
+   "weights": "uniform",
+   "uncertainty": "bootstrap",
+   "kind": "proportion",
+   "directional": true,
+   "only_oci": false,
+   "bounded_codes": [
+    "CONDITION_INDETERMINATE",
+    "INFRA_ERROR",
+    "UNKNOWN_INPUT",
+    "UNKNOWN_SYMBOLIC_INPUT"
+   ],
+   "outcome_table": {
+    "AMBIGUOUS_TARGET": "failure",
+    "CONDITION_FALSE": "failure",
+    "CONDITION_INDETERMINATE": "bounded",
+    "INFRA_ERROR": "bounded",
+    "NO_REALIZATION": "failure",
+    "NO_UNIT": "failure",
+    "OUT_OF_SUBSET": "failure",
+    "REFUTED_BY_RULE": "failure",
+    "RELATED_ONLY": "failure",
+    "REPAIR_EXCLUDED": "failure",
+    "SHACL_VIOLATION": "failure",
+    "TRANSFORM_OUT_OF_DOMAIN": "failure",
+    "UNKNOWN_INPUT": "bounded",
+    "UNKNOWN_SYMBOLIC_INPUT": "bounded",
+    "UNPROVEN": "failure",
+    "carried": "success",
+    "omitted": "failure"
+   }
+  },
+  "M-OPCOV-GRAPH": {
+   "name": "cobertura operacional por grafo",
+   "axis": "operational",
+   "reading": "graph",
+   "quantifier": "observed_fraction",
+   "weights": "uniform",
+   "uncertainty": "bootstrap",
+   "kind": "proportion",
+   "directional": true,
+   "only_oci": false,
+   "bounded_codes": [
+    "CONDITION_INDETERMINATE",
+    "INFRA_ERROR",
+    "UNKNOWN_INPUT",
+    "UNKNOWN_SYMBOLIC_INPUT"
+   ],
+   "outcome_table": {
+    "AMBIGUOUS_TARGET": "failure",
+    "CONDITION_FALSE": "failure",
+    "CONDITION_INDETERMINATE": "bounded",
+    "INFRA_ERROR": "bounded",
+    "NO_REALIZATION": "failure",
+    "NO_UNIT": "failure",
+    "OUT_OF_SUBSET": "failure",
+    "REFUTED_BY_RULE": "failure",
+    "REF_DROPPED": "failure",
+    "REF_OTHER_TARGET": "failure",
+    "REF_SAME_TARGET": "success",
+    "RELATED_ONLY": "failure",
+    "REPAIR_EXCLUDED": "failure",
+    "SHACL_VIOLATION": "failure",
+    "TRANSFORM_OUT_OF_DOMAIN": "failure",
+    "UNKNOWN_INPUT": "bounded",
+    "UNKNOWN_SYMBOLIC_INPUT": "bounded",
+    "UNPROVEN": "failure",
+    "carried": "success",
+    "omitted": "failure"
+   }
+  },
+  "M-OPCOV-NAMETAG": {
+   "name": "cobertura operacional de NAME e TAG (leitura própria)",
+   "axis": "operational",
+   "reading": "field",
+   "quantifier": "observed_fraction",
+   "weights": "uniform",
+   "uncertainty": "bootstrap",
+   "kind": "proportion",
+   "directional": true,
+   "only_oci": false,
+   "bounded_codes": [
+    "CONDITION_INDETERMINATE",
+    "INFRA_ERROR",
+    "UNKNOWN_INPUT",
+    "UNKNOWN_SYMBOLIC_INPUT"
+   ],
+   "outcome_table": {
+    "AMBIGUOUS_TARGET": "failure",
+    "CONDITION_FALSE": "failure",
+    "CONDITION_INDETERMINATE": "bounded",
+    "INFRA_ERROR": "bounded",
+    "NO_REALIZATION": "failure",
+    "NO_UNIT": "failure",
+    "OUT_OF_SUBSET": "failure",
+    "REFUTED_BY_RULE": "failure",
+    "RELATED_ONLY": "failure",
+    "REPAIR_EXCLUDED": "failure",
+    "SHACL_VIOLATION": "failure",
+    "TRANSFORM_OUT_OF_DOMAIN": "failure",
+    "UNKNOWN_INPUT": "bounded",
+    "UNKNOWN_SYMBOLIC_INPUT": "bounded",
+    "UNPROVEN": "failure",
+    "carried": "success",
+    "omitted": "failure"
+   }
+  },
+  "M-OPCOV-PERS-DEC": {
+   "name": "leitura combinada: emitida e persistida",
+   "axis": "persistence",
+   "reading": "decision",
+   "quantifier": "observed_fraction",
+   "weights": "frame",
+   "uncertainty": "bootstrap",
+   "kind": "product",
+   "directional": true,
+   "only_oci": false,
+   "bounded_codes": [
+    "CONDITION_INDETERMINATE",
+    "INFRA_ERROR",
+    "NOT_READABLE",
+    "UNKNOWN",
+    "UNKNOWN_INPUT",
+    "UNKNOWN_SYMBOLIC_INPUT"
+   ],
+   "outcome_table": {}
+  },
+  "M-OPCOV-UNIT": {
+   "name": "cobertura operacional por unidade implantável completa",
+   "axis": "operational",
+   "reading": "complete_unit",
+   "quantifier": "observed_fraction",
+   "weights": "uniform",
+   "uncertainty": "bootstrap",
+   "kind": "proportion",
+   "directional": true,
+   "only_oci": false,
+   "bounded_codes": [
+    "CONDITION_INDETERMINATE",
+    "INFRA_ERROR",
+    "UNKNOWN_SYMBOLIC_INPUT"
+   ],
+   "outcome_table": {
+    "AMBIGUOUS_TARGET": "failure",
+    "COMPLETE": "success",
+    "CONDITION_FALSE": "failure",
+    "CONDITION_INDETERMINATE": "bounded",
+    "DEPENDENCY_OPEN": "failure",
+    "INFRA_ERROR": "bounded",
+    "NO_REALIZATION": "failure",
+    "NO_UNIT": "failure",
+    "OUT_OF_SUBSET": "failure",
+    "REFUTED_BY_RULE": "failure",
+    "RELATED_ONLY": "failure",
+    "REPAIR_EXCLUDED": "failure",
+    "REQUIRED_MISSING": "failure",
+    "SHACL_VIOLATION": "failure",
+    "TRANSFORM_OUT_OF_DOMAIN": "failure",
+    "UNKNOWN_INPUT": "failure",
+    "UNKNOWN_SYMBOLIC_INPUT": "bounded",
+    "UNPROVEN": "failure",
+    "VALIDATE_FAILED": "failure",
+    "carried": "success",
+    "omitted": "failure"
+   }
+  },
+  "M-PERS-DEC": {
+   "name": "precisão de persistência",
+   "axis": "persistence",
+   "reading": "decision",
+   "quantifier": "observed_fraction",
+   "weights": "inverse_probability",
+   "uncertainty": "bootstrap",
+   "kind": "proportion",
+   "directional": true,
+   "only_oci": false,
+   "bounded_codes": [
+    "INFRA_ERROR",
+    "NOT_READABLE",
+    "UNKNOWN"
+   ],
+   "outcome_table": {
+    "ALTERED": "failure",
+    "INFRA_ERROR": "bounded",
+    "NOT_READABLE": "bounded",
+    "PERSISTED": "success",
+    "REJECTED_BY_API": "failure",
+    "UNKNOWN": "bounded"
+   }
+  },
+  "M-REPR-DEC": {
+   "name": "representabilidade por decisão",
+   "axis": "representability",
+   "reading": "decision",
+   "quantifier": "observed_fraction",
+   "weights": "uniform",
+   "uncertainty": "bootstrap",
+   "kind": "proportion",
+   "directional": false,
+   "only_oci": false,
+   "bounded_codes": [
+    "UNKNOWN_INPUT",
+    "UNKNOWN_SYMBOLIC_INPUT"
+   ],
+   "outcome_table": {
+    "NEW_CLASS_REQUIRED": "failure",
+    "NOT_REPRESENTED": "failure",
+    "REPRESENTED": "success",
+    "UNGLOSSED": "failure",
+    "UNKNOWN_INPUT": "bounded",
+    "UNKNOWN_SYMBOLIC_INPUT": "bounded"
+   }
+  },
+  "M-TOOL-LLM-DEC": {
+   "name": "acerto do LLM com prompt congelado (suplementar)",
+   "axis": "operational",
+   "reading": "decision",
+   "quantifier": "observed_fraction",
+   "weights": "uniform",
+   "uncertainty": "bootstrap",
+   "kind": "proportion",
+   "directional": true,
+   "only_oci": false,
+   "bounded_codes": [
+    "CONDITION_INDETERMINATE",
+    "INFRA_ERROR",
+    "UNKNOWN_INPUT",
+    "UNKNOWN_SYMBOLIC_INPUT"
+   ],
+   "outcome_table": {
+    "AMBIGUOUS_TARGET": "failure",
+    "CONDITION_FALSE": "failure",
+    "CONDITION_INDETERMINATE": "bounded",
+    "INFRA_ERROR": "bounded",
+    "NO_REALIZATION": "failure",
+    "NO_UNIT": "failure",
+    "OUT_OF_SUBSET": "failure",
+    "REFUTED_BY_RULE": "failure",
+    "RELATED_ONLY": "failure",
+    "REPAIR_EXCLUDED": "failure",
+    "SHACL_VIOLATION": "failure",
+    "TRANSFORM_OUT_OF_DOMAIN": "failure",
+    "UNKNOWN_INPUT": "bounded",
+    "UNKNOWN_SYMBOLIC_INPUT": "bounded",
+    "UNPROVEN": "failure",
+    "carried": "success",
+    "omitted": "failure"
+   }
+  },
+  "M-TRANS-DEC-EXIST": {
+   "name": "transportabilidade existencial por decisão",
+   "axis": "transportability",
+   "reading": "decision",
+   "quantifier": "existential",
+   "weights": "uniform",
+   "uncertainty": "bootstrap",
+   "kind": "proportion",
+   "directional": true,
+   "only_oci": false,
+   "bounded_codes": [
+    "CONDITION_INDETERMINATE"
+   ],
+   "outcome_table": {
+    "AMBIGUOUS": "failure",
+    "CONDITION_FALSE": "failure",
+    "CONDITION_INDETERMINATE": "bounded",
+    "CONTESTED": "failure",
+    "EVIDENCE_BELOW_DOC_SUPPORTED": "failure",
+    "FUNCTION_UNDEFINED": "failure",
+    "KIND_UNKNOWN": "failure",
+    "PREDICATE_FALSE": "failure",
+    "REFUTED_BY_RULE": "failure",
+    "RELATED_ONLY": "failure",
+    "REPAIR_EXCLUDED": "failure",
+    "TRANSPORTS": "success",
+    "UNPROVEN": "failure"
+   }
+  },
+  "M-TRANS-DEC-OBS": {
+   "name": "transportabilidade no uso observado",
+   "axis": "transportability",
+   "reading": "decision",
+   "quantifier": "observed_fraction",
+   "weights": "uniform",
+   "uncertainty": "bootstrap",
+   "kind": "proportion",
+   "directional": true,
+   "only_oci": false,
+   "bounded_codes": [
+    "CONDITION_INDETERMINATE",
+    "UNKNOWN_SYMBOLIC_INPUT"
+   ],
+   "outcome_table": {
+    "AMBIGUOUS": "failure",
+    "CONDITION_FALSE": "failure",
+    "CONDITION_INDETERMINATE": "bounded",
+    "CONTESTED": "failure",
+    "EVIDENCE_BELOW_DOC_SUPPORTED": "failure",
+    "FUNCTION_UNDEFINED": "failure",
+    "KIND_UNKNOWN": "failure",
+    "PREDICATE_FALSE": "failure",
+    "REFUTED_BY_RULE": "failure",
+    "RELATED_ONLY": "failure",
+    "REPAIR_EXCLUDED": "failure",
+    "TRANSPORTS": "success",
+    "UNKNOWN_SYMBOLIC_INPUT": "bounded",
+    "UNPROVEN": "failure"
+   }
+  },
+  "M-TRANS-DEC-UNIV": {
+   "name": "transportabilidade universal por decisão",
+   "axis": "transportability",
+   "reading": "decision",
+   "quantifier": "universal",
+   "weights": "uniform",
+   "uncertainty": "bootstrap",
+   "kind": "proportion",
+   "directional": true,
+   "only_oci": false,
+   "bounded_codes": [
+    "CONDITION_INDETERMINATE"
+   ],
+   "outcome_table": {
+    "AMBIGUOUS": "failure",
+    "CONDITION_FALSE": "failure",
+    "CONDITION_INDETERMINATE": "bounded",
+    "CONTESTED": "failure",
+    "EVIDENCE_BELOW_DOC_SUPPORTED": "failure",
+    "FUNCTION_UNDEFINED": "failure",
+    "KIND_UNKNOWN": "failure",
+    "PREDICATE_FALSE": "failure",
+    "REFUTED_BY_RULE": "failure",
+    "RELATED_ONLY": "failure",
+    "REPAIR_EXCLUDED": "failure",
+    "TRANSPORTS": "success",
+    "UNPROVEN": "failure"
+   }
+  }
+ },
+ "contrasts": {
+  "C-ABL": {
+   "metrics": [
+    "M-OPCOV-DEC",
+    "M-ABL-SEEDAWS-DEC",
+    "M-ABL-THR-ALT1-DEC",
+    "M-ABL-THR-ALT2-DEC",
+    "M-ABL-RAWTYPES-DEC",
+    "M-ABL-NOGUARD-DEC",
+    "M-OPCOV-DEC-C1",
+    "M-OPCOV-DEC-C2"
+   ],
+   "judge": "bo.metrics.contrasts.judge_abl"
+  },
+  "C-BEHAV": {
+   "metrics": [
+    "M-BEHAV-DEC"
+   ],
+   "judge": "bo.metrics.contrasts.judge_behav"
+  },
+  "C-H1": {
+   "metrics": [
+    "M-OPCOV-DEC"
+   ],
+   "judge": "bo.metrics.contrasts.judge_h1"
+  },
+  "C-H2": {
+   "metrics": [
+    "M-OPCOV-DEC"
+   ],
+   "judge": "bo.metrics.contrasts.judge_h2"
+  },
+  "C-H3": {
+   "metrics": [
+    "M-OPCOV-DEC"
+   ],
+   "judge": "bo.metrics.contrasts.judge_h3"
+  },
+  "C-H4": {
+   "metrics": [
+    "M-PERS-DEC"
+   ],
+   "judge": "bo.metrics.contrasts.judge_h4"
+  },
+  "C-H5": {
+   "metrics": [],
+   "judge": "bo.metrics.contrasts.judge_h5"
+  },
+  "C-H6-COV": {
+   "metrics": [
+    "M-OPCOV-DEC",
+    "M-ABL-AWSRAW-DEC"
+   ],
+   "judge": "bo.metrics.contrasts.judge_h6_cov"
+  },
+  "C-H6-GINI": {
+   "metrics": [],
+   "judge": "bo.metrics.contrasts.judge_h6_gini"
+  },
+  "C-H7": {
+   "metrics": [
+    "M-OPCOV-DEC",
+    "M-OPCOV-DEC-DIRECT"
+   ],
+   "judge": "bo.metrics.contrasts.judge_h7"
+  },
+  "C-H8": {
+   "metrics": [
+    "M-OPCOV-DEC-COMPLEX"
+   ],
+   "judge": "bo.metrics.contrasts.judge_h8"
+  },
+  "C-H9": {
+   "metrics": [
+    "M-OPCOV-DEC-C1",
+    "M-OPCOV-DEC-C2",
+    "M-OPCOV-DEC"
+   ],
+   "judge": "bo.metrics.contrasts.judge_h9"
+  },
+  "C-LOPO": {
+   "metrics": [
+    "M-LOPO-OPCOV-DEC",
+    "M-OPCOV-DEC"
+   ],
+   "judge": "bo.metrics.contrasts.judge_lopo"
+  },
+  "C-RQ5-TRANS": {
+   "metrics": [
+    "M-OPCOV-DEC",
+    "M-H2H-TRANS-DEC"
+   ],
+   "judge": "bo.metrics.contrasts.judge_rq5"
+  },
+  "C-TOOL": {
+   "metrics": [
+    "M-OPCOV-DEC",
+    "M-OPCOV-DEC-DIRECT",
+    "M-TOOL-LLM-DEC"
+   ],
+   "judge": "bo.metrics.contrasts.judge_tool"
+  }
+ },
+ "estimands": {
+  "E-ASYM": "models.asymmetry",
+  "E-DRIFT-LAG": "models.turnbull_median",
+  "E-GINI-BALANCE": "models.gini_range",
+  "E-HUBLOSS": "models.paired_contrast(ratio=1) e ratio_*",
+  "E-NONE-FALSE": "models.none_false",
+  "E-OR-AUTH": "models.fixed_effects_logit"
+ }
+}

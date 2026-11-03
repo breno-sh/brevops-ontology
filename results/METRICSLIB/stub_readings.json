@@ -1,0 +1,119 @@
+{
+ "schema": "bo.result/1",
+ "contract": "C15",
+ "contract_version": "3.0.0",
+ "module": "METRICSLIB",
+ "generated_at": "2026-11-03T07:30:00-03:00",
+ "metrics": [
+  {
+   "metric_id": "M-BEHAV-DEC__aws__google",
+   "name": "observações coincidentes sob protocolo (aws->google)",
+   "reading": "decision",
+   "axis": "behavior",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 1.0,
+    "upper": 1.0,
+    "est": 1.0,
+    "n": 1
+   },
+   "frame": {
+    "description": "amostra de sondas do DEPSAMPLE, só tipos com suporte validado (PROBEKIT + SERVICE-EVIDENCE)"
+   },
+   "inclusion": {
+    "rule_id": "INC-PROBE-01",
+    "text": "pares de sonda do DEPSAMPLE com controle negativo válido nos dois lados"
+   },
+   "weights": {
+    "scheme": "inverse_probability"
+   },
+   "joint_uncertainty": {
+    "method": "wilson",
+    "level": 0.95
+   }
+  },
+  {
+   "metric_id": "M-OPCOV-DEC__aws__google",
+   "name": "cobertura operacional por decisão (principal) (aws->google)",
+   "reading": "decision",
+   "axis": "operational",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.5,
+    "upper": 0.5,
+    "est": 0.5,
+    "n": 2
+   },
+   "frame": {
+    "description": "partição de teste do SPLIT, universo U congelado (UNIVERSE), pins do provider congelados"
+   },
+   "inclusion": {
+    "rule_id": "INC-DEC-01",
+    "text": "decisões configuradas em A (marca configured) em unidades canônicas de U(A), papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG); computed, default não escrito e NOT_APPLICABLE fora"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "bootstrap",
+    "level": 0.95
+   }
+  }
+ ],
+ "data": {
+  "library_version": "3.0.0",
+  "spec_sha256": "7462e43de6cddd29848b3817c0633cd7dca82085c6b955ca5eff8c95f7703f86",
+  "denominators": {
+   "fields_INC_FIELD_01": 5,
+   "decisions_INC_DEC_01": 5
+  },
+  "ladder": {
+   "aws->google": {
+    "axes": [
+     {
+      "axis": "operational",
+      "metric_id": "M-OPCOV-DEC",
+      "lower": 0.5,
+      "upper": 0.5,
+      "est": 0.5,
+      "n": 2
+     },
+     {
+      "axis": "persistence",
+      "metric_id": "M-PERS-DEC",
+      "lower": 0.0,
+      "upper": 1.0,
+      "est": null,
+      "n": 1
+     },
+     {
+      "axis": "behavior",
+      "metric_id": "M-BEHAV-DEC",
+      "lower": 1.0,
+      "upper": 1.0,
+      "est": 1.0,
+      "n": 1
+     }
+    ],
+    "inversions": []
+   }
+  },
+  "est_undefined": [
+   {
+    "metric_id": "M-OPCOV-PERS-DEC__aws__google",
+    "lower": 0.0,
+    "upper": 0.5,
+    "n": 2,
+    "reason": "n > 0 e est indefinido: nenhuma unidade com desfecho conhecido na célula (ou num fator da leitura combinada)"
+   },
+   {
+    "metric_id": "M-PERS-DEC__aws__google",
+    "lower": 0.0,
+    "upper": 1.0,
+    "n": 1,
+    "reason": "n > 0 e est indefinido: nenhuma unidade com desfecho conhecido na célula (ou num fator da leitura combinada)"
+   }
+  ]
+ },
+ "notes": "Leituras sobre os stubs dos contratos (C06, C11, C12, C22, C23, C27), sem dado do estudo: só provam que o caminho gera C15 válido. Células com n > 0 e nenhum desfecho conhecido não têm est e ficam em data.est_undefined (lacuna do C15, ver results/METRICSLIB/CONTRACT_CHANGE.txt)."
+}

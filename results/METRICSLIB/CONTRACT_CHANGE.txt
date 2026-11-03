@@ -1,0 +1,30 @@
+CONTRACT_CHANGE — METRICSLIB — 2026-11-03T07:28:56-03:00 (America/Recife)
+
+Contrato: C15 results 3.0.0 (dono: CONTRACTS). Regra afetada: C15-BOUNDS ("lower <= est <= upper (est nulo só com n = 0)").
+
+Problema
+  O pré-registro define est = sucessos ÷ (n − desconhecidas). Uma célula com n > 0 e TODAS as unidades
+  desconhecidas (ex.: o único caso de deploy de uma direção terminou INFRA_ERROR, ou todos NOT_READABLE) tem
+  est = 0/0, indefinido. O C15 só aceita est nulo com n = 0; qualquer número em est seria inventado, e mudar n
+  mudaria o denominador depois do desfecho (proibido no PREREG §3). O próprio stub C11/C12 cai nesse caso
+  (CASE-AWSGCP-DB-0001 termina INFRA_ERROR).
+
+O que a biblioteca faz hoje (sem violar o contrato)
+  bo.metrics.c15.metric_entry levanta ContractGap; entries_for manda a célula inteira (metric_id, lower, upper,
+  n, motivo) para data.est_undefined do documento, que o bo.metrics.bounds_present também confere. Nenhum
+  número é inventado e nenhuma célula some.
+
+Mudança proposta (versão 3.1.0, compatível para trás)
+  1. operational_coverage ganha o campo opcional n_known (inteiro >= 0): unidades com desfecho conhecido.
+  2. C15-BOUNDS passa a: "lower <= est <= upper; est nulo se e só se n = 0 ou n_known = 0; n_known <= n".
+  3. Em src/bo/contracts/rules.py, _metrics():
+       if c["est"] is None:
+           if c["n"] != 0 and c.get("n_known", None) != 0:
+               errs.append(f"{w}: est nulo com n = {c['n']} e n_known != 0")
+       if "n_known" in c and c["n_known"] > c["n"]:
+           errs.append(f"{w}: n_known > n")
+  Com a mudança, a biblioteca grava n_known em toda entrada e as células de data.est_undefined voltam para
+  metrics (uma linha em c15.metric_entry).
+
+Situação: proposta registrada para o CONTRACTS; o METRICSLIB seguiu porque nenhuma saída dele depende da
+mudança (o caminho atual é válido no C15 3.0.0 e não perde informação).
