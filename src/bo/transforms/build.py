@@ -1,0 +1,157 @@
+"""Materializa o TRANSFORMS: python -I -m bo.transforms.build [--check]
+
+Escreve, só a partir de src/bo/transforms:
+  transforms/transforms.yaml            registro fechado (C10 transforms)
+  transforms/conditions.grammar.json    gramática de guarda com os sat_tests (C10 conditions_grammar)
+  results/TRANSFORMS/registro.json      índice do registro (itens, perdas, inversas, exemplos) e achados
+  results/TRANSFORMS/MANIFEST.sha256    hashes (C17) das saídas, do código, dos testes, do gate e do summary.json
+Antes de gravar, confere que cada sat_test dá o esperado nas duas implementações (esta e a do SEMANTICS) e no
+oráculo de força bruta, e que todo exemplo do registro passa.
+--check não grava: sai 1 se algo publicado difere do que o código produz (regeneração idêntica).
+"""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import sys
+from pathlib import Path
+
+import yaml
+
+from . import common as C
+from . import grammar as GR
+from . import guards as M
+from . import registry as R
+from .examples import run_all
+
+FINDINGS = [
+    "bo.semantics.guards.satisfiable dá SAT (ou UNKNOWN) onde não há valor possível em duas classes de guarda, e esta "
+    "implementação (conferida por força bruta) dá UNSAT: (a) version_range sobre termo de universo fechado "
+    "(enum ou boolean em term_types) sem eq/in, quando nenhum valor do enum cai na faixa; (b) refers_to_kind junto "
+    "com restrição de valor escalar (eq, in, region_in, edition_in, version_range) no mesmo termo. Os sat_tests do "
+    "conditions.grammar.json ficam fora dessas classes (a regra C10-SAT do validador usa a implementação do "
+    "SEMANTICS); o guard_sat mede e classifica cada divergência (ver $BO_DATA/TRANSFORMS/guard_sat.json).",
+    "O C10 não tem variável de tipo: uma escalar polimórfica que preserva a grandeza não se declara com grandeza "
+    "concreta. O registro declara por grandeza (unit_convert_time, round_information, ...) e deixa só identity "
+    "polimórfica, com grandeza NOT_APPLICABLE como no stub do CONTRACTS; NOT_APPLICABLE ali quer dizer 'não impõe "
+    "nem muda grandeza', não 'valor sem grandeza'. Sugestão ao CONTRACTS: quantity_kind '$in' (variável) no C10.",
+    "O comparador numeric_tolerance do C11 tem só {name, tolerance}, sem dizer se a tolerância é absoluta ou "
+    "relativa (o C22 tem kind). O registro declara ABSOLUTA, na unidade do expected; tipos de unidade diferentes "
+    "dos dois lados vão por compare_quantity_tolerance. Sugestão ao CONTRACTS: tolerance_kind no C11.",
+    "O C10 combinador não tem params: o que é parâmetro no núcleo do SEMANTICS (key de json_get/map_get) vira porta "
+    "de entrada aqui; json_get e map_get ficam com duas entradas e uma saída.",
+    "xsd:duration segue o espaço de valores do XSD 1.1 (meses, segundos): P0M1D não tem meses e vira 86400 s sem "
+    "contexto; P1M e P1Y sem contexto de calendário são TRANSFORM_OUT_OF_DOMAIN; P1M = P30D é falso (duration_equal).",
+    "Os IRIs de unidade seguem o padrão do C00 e as grandezas do SEMANTICS; a existência de cada IRI no QUDT "
+    "(iri_status = pattern_only) é conferida pelo UNITS, não aqui.",
+    "O núcleo do SEMANTICS tem scale (fator sem unidade) e rate_window_convert sem grandeza; o registro fechado não "
+    "os inclui: unit_convert_<grandeza> e rate_window_convert_<grandeza> cobrem os usos com tipo concreto.",
+]
+
+
+def _yaml_text(doc: dict) -> str:
+    return yaml.safe_dump(doc, sort_keys=False, allow_unicode=True, width=110, default_flow_style=False)
+
+
+def _json_text(obj) -> str:
+    return json.dumps(obj, ensure_ascii=False, indent=1) + "\n"
+
+
+def verify_inputs() -> list[str]:
+    from bo.semantics import guards as S
+    errs = []
+    for tid, g, exp in GR.SAT_TESTS:
+        m, s, b = M.satisfiable(g)[0], S.satisfiable(g)[0], M.brute_force(g)
+        if not m == s == b == exp:
+            errs.append(f"{tid}: esperado {exp}, TRANSFORMS {m}, SEMANTICS {s}, força bruta {b}")
+    bad = [r for r in run_all() if not r["ok"]]
+    errs += [f"exemplo {r['name']}[{r['i']}]: {r['detail']}" for r in bad]
+    return errs
+
+
+def registro() -> dict:
+    items = []
+    for t in R.SCALARS + R.COMBINATORS:
+        items.append({"name": t.name, "kind": t.kind,
+                      "signature": ({"domain": t.domain, "codomain": t.codomain} if t.kind == "scalar" else
+                                    {"inputs": [p[0] for p in t.inputs], "outputs": [p[0] for p in t.outputs]}),
+                      "loss": list(t.loss), "inverse": t.inverse, "partial": t.partial,
+                      "error_codes": [c for c, _ in t.errors],
+                      "examples": {"positive": sum(1 for e in t.examples if e.err is None and not e.roundtrip),
+                                   "roundtrip": sum(1 for e in t.examples if e.roundtrip),
+                                   "error": sum(1 for e in t.examples if e.err)},
+                      **({"c11_comparator": t.c11_name} if getattr(t, "c11_name", None) else {})})
+    return {"schema": "bo.transforms_index/1", "module": "TRANSFORMS", "registry_version": R.REGISTRY_VERSION,
+            "generated_at": R.GENERATED_AT,
+            "counts": {"scalar": len(R.SCALARS), "combinators": len(R.COMBINATORS),
+                       "comparators": sum(1 for c in R.COMBINATORS if c.c11_name),
+                       "examples": sum(len(t.examples) for t in R.REGISTRY.values()),
+                       "sat_tests": len(GR.SAT_TESTS), "incompatible_pairs": len(GR.INCOMPATIBLE_PAIRS),
+                       "compatible_pairs": len(GR.COMPATIBLE_PAIRS), "compositions": len(GR.COMPOSITIONS)},
+            "units": [{"iri": u.iri, "quantity_kind": u.kind, "byte_convention": u.byte_convention,
+                       "fixed_factor": u.factor is not None, "iri_status": "pattern_only"}
+                      for u in __import__("bo.transforms.units", fromlist=["UNITS"]).UNITS.values()],
+            "items": items, "findings": FINDINGS}
+
+
+def _manifest_paths(root: Path) -> list[str]:
+    paths = ["transforms/transforms.yaml", "transforms/conditions.grammar.json", "gates/TRANSFORMS.sh",
+             "results/TRANSFORMS/registro.json"]
+    paths += sorted(str(p.relative_to(root)) for p in (root / "src/bo/transforms").glob("*.py"))
+    paths += sorted(str(p.relative_to(root)) for p in (root / "tests/transforms").glob("*.py"))
+    if (root / "results/TRANSFORMS/summary.json").is_file():
+        paths.append("results/TRANSFORMS/summary.json")
+    return paths
+
+
+def _manifest(root: Path, outputs: dict[str, str]) -> str:
+    lines = []
+    for rel in _manifest_paths(root):
+        b = outputs[rel].encode("utf-8") if rel in outputs else (root / rel).read_bytes()
+        lines.append(f"{hashlib.sha256(b).hexdigest()}  {rel}")
+    return "\n".join(lines) + "\n"
+
+
+def products(root: Path) -> dict[str, str]:
+    out = {"transforms/transforms.yaml": _yaml_text(R.document()),
+           "transforms/conditions.grammar.json": _json_text(GR.document()),
+           "results/TRANSFORMS/registro.json": _json_text(registro())}
+    out["results/TRANSFORMS/MANIFEST.sha256"] = _manifest(root, out)
+    return out
+
+
+def main(argv=None) -> int:
+    ap = argparse.ArgumentParser(prog="bo.transforms.build")
+    ap.add_argument("--check", action="store_true")
+    a = ap.parse_args(argv)
+    root = C.repo()
+    errs = verify_inputs()
+    if errs:
+        for e in errs:
+            print(f"REPROVADO: {e}", file=sys.stderr)
+        return 1
+    prods = products(root)
+    if yaml.safe_load(prods["transforms/transforms.yaml"]) != R.document():
+        print("REPROVADO: o YAML gravado não relê igual ao documento", file=sys.stderr)
+        return 1
+    diff = [rel for rel, txt in prods.items()
+            if not (root / rel).is_file() or (root / rel).read_text(encoding="utf-8") != txt]
+    if a.check:
+        if diff:
+            for rel in diff:
+                print(f"REPROVADO: {rel} difere do que o código produz", file=sys.stderr)
+            return 1
+        C.say(f"build --check: {len(prods)} arquivos idênticos ao que o código produz")
+        return 0
+    for rel, txt in prods.items():
+        p = root / rel
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_text(txt, encoding="utf-8")
+    C.say(f"build: {len(prods)} arquivos gravados ({', '.join(diff) or 'nenhuma mudança'})")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

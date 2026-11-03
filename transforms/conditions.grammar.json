@@ -1,0 +1,555 @@
+{
+ "schema": "bo.conditions_grammar/1",
+ "contract": "C10",
+ "contract_version": "3.0.0",
+ "form": "guarda = {all: [átomo...], term_types?: {termo: {datatype, enum?}}, kind_disjoint?: [[k1, k2]...]}; átomo = ⟨term, op, value⟩, term = '<papel>.<caminho>'; conjunção pura, sem negação nem disjunção; cada átomo restringe só o próprio termo, por isso a decisão é termo a termo",
+ "roles": [
+  "subject",
+  "object"
+ ],
+ "operators": {
+  "eq": "<papel>.<caminho> = valor; o termo declara o tipo em term_types (string | enum | boolean | integer) e o valor é desse tipo (e do enum, se declarado)",
+  "in": "<papel>.<caminho> ∈ lista não vazia de valores do tipo declarado em term_types",
+  "present": "true: o termo tem valor; false: sabidamente ausente (leitura completa); não lido é INDETERMINATE",
+  "refers_to_kind": "o termo é referência para unidade do tipo nomeado; dois tipos no mesmo termo só são incompatíveis se kind_disjoint declara o par (sem isso, UNKNOWN: mundo aberto)",
+  "region_in": "<papel>.region ∈ lista não vazia de regiões",
+  "edition_in": "<papel>.edition ∈ lista não vazia de edições (SKU, nível)",
+  "version_range": "<papel>.provider_version em [min, max_exclusive), versões n(.n){0,3} comparadas numericamente por componente; ao menos um limite; min < max_exclusive"
+ },
+ "satisfiability": "SAT (com testemunha que o evaluate dá TRUE) | UNSAT (termo e porquê) | UNKNOWN; por termo: present true e false juntos = UNSAT; present false com restrição de valor = UNSAT; valores permitidos (eq, in, region_in, edition_in) ∩ universo fechado (boolean, enum) ∩ faixa de versão vazios = UNSAT; faixa de versão vazia = UNSAT; tipos de referência declarados disjuntos = UNSAT; dois tipos de referência sem disjunção declarada = UNKNOWN; UNSAT de um termo domina UNKNOWN de outro; decidível (polinomial: no pior caso quadrático no tamanho das listas de valores de um termo)",
+ "evaluation": "TRUE | FALSE | INDETERMINATE: termo fora do contexto, NOT_READ ou simbólico é INDETERMINATE (nunca FALSE); ABSENT torna FALSE todo operador de valor e decide present; FALSE domina INDETERMINATE",
+ "composition": "a->b com b->c: papéis renomeados (n0 = sujeito, n1 = meio, n2 = objeto), conjunção das duas guardas, satisfatibilidade sobre n0, n1 e n2 (UNSAT = composição vazia), e a guarda composta é a eliminação existencial de n1 (exata: os átomos são por termo)",
+ "schema_ref": "contracts/C10_transforms.schema.json#/$defs/guard",
+ "sat_tests": [
+  {
+   "test_id": "SAT-EMPTY",
+   "guard": {
+    "all": []
+   },
+   "expected": "SAT"
+  },
+  {
+   "test_id": "SAT-EDITION-ONE",
+   "guard": {
+    "all": [
+     {
+      "term": "object.edition",
+      "op": "edition_in",
+      "value": [
+       "standard"
+      ]
+     }
+    ]
+   },
+   "expected": "SAT"
+  },
+  {
+   "test_id": "SAT-EDITION-DISJ",
+   "guard": {
+    "all": [
+     {
+      "term": "object.edition",
+      "op": "edition_in",
+      "value": [
+       "standard"
+      ]
+     },
+     {
+      "term": "object.edition",
+      "op": "edition_in",
+      "value": [
+       "premium"
+      ]
+     }
+    ]
+   },
+   "expected": "UNSAT"
+  },
+  {
+   "test_id": "SAT-KIND-OPEN",
+   "guard": {
+    "all": [
+     {
+      "term": "object.target",
+      "op": "refers_to_kind",
+      "value": "subnet"
+     },
+     {
+      "term": "object.target",
+      "op": "refers_to_kind",
+      "value": "network_interface"
+     }
+    ]
+   },
+   "expected": "UNKNOWN"
+  },
+  {
+   "test_id": "SAT-KIND-DISJOINT",
+   "guard": {
+    "all": [
+     {
+      "term": "object.target",
+      "op": "refers_to_kind",
+      "value": "subnet"
+     },
+     {
+      "term": "object.target",
+      "op": "refers_to_kind",
+      "value": "network_interface"
+     }
+    ],
+    "kind_disjoint": [
+     [
+      "subnet",
+      "network_interface"
+     ]
+    ]
+   },
+   "expected": "UNSAT"
+  },
+  {
+   "test_id": "SAT-KIND-SAME",
+   "guard": {
+    "all": [
+     {
+      "term": "object.target",
+      "op": "refers_to_kind",
+      "value": "subnet"
+     },
+     {
+      "term": "object.target",
+      "op": "refers_to_kind",
+      "value": "subnet"
+     }
+    ]
+   },
+   "expected": "SAT"
+  },
+  {
+   "test_id": "SAT-REGION-OVERLAP",
+   "guard": {
+    "all": [
+     {
+      "term": "object.region",
+      "op": "region_in",
+      "value": [
+       "r-a",
+       "r-b"
+      ]
+     },
+     {
+      "term": "object.region",
+      "op": "region_in",
+      "value": [
+       "r-b",
+       "r-c"
+      ]
+     }
+    ]
+   },
+   "expected": "SAT"
+  },
+  {
+   "test_id": "SAT-REGION-DISJ",
+   "guard": {
+    "all": [
+     {
+      "term": "object.region",
+      "op": "region_in",
+      "value": [
+       "r-a"
+      ]
+     },
+     {
+      "term": "object.region",
+      "op": "region_in",
+      "value": [
+       "r-b"
+      ]
+     }
+    ]
+   },
+   "expected": "UNSAT"
+  },
+  {
+   "test_id": "SAT-TWO-ROLES",
+   "guard": {
+    "all": [
+     {
+      "term": "subject.region",
+      "op": "region_in",
+      "value": [
+       "r-a"
+      ]
+     },
+     {
+      "term": "object.region",
+      "op": "region_in",
+      "value": [
+       "r-b"
+      ]
+     }
+    ]
+   },
+   "expected": "SAT"
+  },
+  {
+   "test_id": "SAT-VERSION-OVERLAP",
+   "guard": {
+    "all": [
+     {
+      "term": "object.provider_version",
+      "op": "version_range",
+      "value": {
+       "min": "5.0",
+       "max_exclusive": "6.0"
+      }
+     },
+     {
+      "term": "object.provider_version",
+      "op": "version_range",
+      "value": {
+       "min": "5.5",
+       "max_exclusive": "7"
+      }
+     }
+    ]
+   },
+   "expected": "SAT"
+  },
+  {
+   "test_id": "SAT-VERSION-DISJ",
+   "guard": {
+    "all": [
+     {
+      "term": "object.provider_version",
+      "op": "version_range",
+      "value": {
+       "min": "4.0",
+       "max_exclusive": "5.0"
+      }
+     },
+     {
+      "term": "object.provider_version",
+      "op": "version_range",
+      "value": {
+       "min": "5.0",
+       "max_exclusive": "6.0"
+      }
+     }
+    ]
+   },
+   "expected": "UNSAT"
+  },
+  {
+   "test_id": "SAT-VERSION-BELOW-ZERO",
+   "guard": {
+    "all": [
+     {
+      "term": "object.provider_version",
+      "op": "version_range",
+      "value": {
+       "max_exclusive": "0"
+      }
+     }
+    ]
+   },
+   "expected": "UNSAT"
+  },
+  {
+   "test_id": "SAT-VERSION-IN",
+   "guard": {
+    "all": [
+     {
+      "term": "object.provider_version",
+      "op": "in",
+      "value": [
+       "4.9",
+       "5.1"
+      ]
+     },
+     {
+      "term": "object.provider_version",
+      "op": "version_range",
+      "value": {
+       "min": "5.0"
+      }
+     }
+    ],
+    "term_types": {
+     "object.provider_version": {
+      "datatype": "string"
+     }
+    }
+   },
+   "expected": "SAT"
+  },
+  {
+   "test_id": "SAT-VERSION-IN-DISJ",
+   "guard": {
+    "all": [
+     {
+      "term": "object.provider_version",
+      "op": "in",
+      "value": [
+       "4.9",
+       "4.10"
+      ]
+     },
+     {
+      "term": "object.provider_version",
+      "op": "version_range",
+      "value": {
+       "min": "5.0"
+      }
+     }
+    ],
+    "term_types": {
+     "object.provider_version": {
+      "datatype": "string"
+     }
+    }
+   },
+   "expected": "UNSAT"
+  },
+  {
+   "test_id": "SAT-PRESENT-ONLY",
+   "guard": {
+    "all": [
+     {
+      "term": "object.kms_key",
+      "op": "present",
+      "value": true
+     }
+    ]
+   },
+   "expected": "SAT"
+  },
+  {
+   "test_id": "SAT-ABSENT-ONLY",
+   "guard": {
+    "all": [
+     {
+      "term": "object.kms_key",
+      "op": "present",
+      "value": false
+     }
+    ]
+   },
+   "expected": "SAT"
+  },
+  {
+   "test_id": "SAT-PRESENT-CONFLICT",
+   "guard": {
+    "all": [
+     {
+      "term": "object.kms_key",
+      "op": "present",
+      "value": true
+     },
+     {
+      "term": "object.kms_key",
+      "op": "present",
+      "value": false
+     }
+    ]
+   },
+   "expected": "UNSAT"
+  },
+  {
+   "test_id": "SAT-ABSENT-WITH-VALUE",
+   "guard": {
+    "all": [
+     {
+      "term": "object.tier",
+      "op": "present",
+      "value": false
+     },
+     {
+      "term": "object.tier",
+      "op": "eq",
+      "value": "standard"
+     }
+    ],
+    "term_types": {
+     "object.tier": {
+      "datatype": "enum",
+      "enum": [
+       "basic",
+       "standard",
+       "premium"
+      ]
+     }
+    }
+   },
+   "expected": "UNSAT"
+  },
+  {
+   "test_id": "SAT-EQ-IN",
+   "guard": {
+    "all": [
+     {
+      "term": "object.name",
+      "op": "eq",
+      "value": "a"
+     },
+     {
+      "term": "object.name",
+      "op": "in",
+      "value": [
+       "a",
+       "b"
+      ]
+     }
+    ],
+    "term_types": {
+     "object.name": {
+      "datatype": "string"
+     }
+    }
+   },
+   "expected": "SAT"
+  },
+  {
+   "test_id": "SAT-EQ-IN-DISJ",
+   "guard": {
+    "all": [
+     {
+      "term": "object.name",
+      "op": "eq",
+      "value": "a"
+     },
+     {
+      "term": "object.name",
+      "op": "in",
+      "value": [
+       "b",
+       "c"
+      ]
+     }
+    ],
+    "term_types": {
+     "object.name": {
+      "datatype": "string"
+     }
+    }
+   },
+   "expected": "UNSAT"
+  },
+  {
+   "test_id": "SAT-BOOL-CONFLICT",
+   "guard": {
+    "all": [
+     {
+      "term": "object.enabled",
+      "op": "eq",
+      "value": true
+     },
+     {
+      "term": "object.enabled",
+      "op": "eq",
+      "value": false
+     }
+    ],
+    "term_types": {
+     "object.enabled": {
+      "datatype": "boolean"
+     }
+    }
+   },
+   "expected": "UNSAT"
+  },
+  {
+   "test_id": "SAT-ENUM-IN",
+   "guard": {
+    "all": [
+     {
+      "term": "object.tier",
+      "op": "in",
+      "value": [
+       "basic",
+       "standard"
+      ]
+     },
+     {
+      "term": "object.tier",
+      "op": "in",
+      "value": [
+       "standard",
+       "premium"
+      ]
+     }
+    ],
+    "term_types": {
+     "object.tier": {
+      "datatype": "enum",
+      "enum": [
+       "basic",
+       "standard",
+       "premium"
+      ]
+     }
+    }
+   },
+   "expected": "SAT"
+  },
+  {
+   "test_id": "SAT-INT-IN-DISJ",
+   "guard": {
+    "all": [
+     {
+      "term": "object.port",
+      "op": "in",
+      "value": [
+       80,
+       443
+      ]
+     },
+     {
+      "term": "object.port",
+      "op": "eq",
+      "value": 22
+     }
+    ],
+    "term_types": {
+     "object.port": {
+      "datatype": "integer"
+     }
+    }
+   },
+   "expected": "UNSAT"
+  },
+  {
+   "test_id": "SAT-UNSAT-DOMINATES",
+   "guard": {
+    "all": [
+     {
+      "term": "object.target",
+      "op": "refers_to_kind",
+      "value": "subnet"
+     },
+     {
+      "term": "object.target",
+      "op": "refers_to_kind",
+      "value": "network_interface"
+     },
+     {
+      "term": "object.region",
+      "op": "region_in",
+      "value": [
+       "r-a"
+      ]
+     },
+     {
+      "term": "object.region",
+      "op": "region_in",
+      "value": [
+       "r-b"
+      ]
+     }
+    ]
+   },
+   "expected": "UNSAT"
+  }
+ ]
+}

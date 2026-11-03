@@ -1,0 +1,59 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "TRANSFORMS",
+ "generated_at": "2026-11-03T01:55:56-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/TRANSFORMS.txt",
+  "brief_sha256": "99f20b1810fbfc3794ca2cb9bd23e4f7cf84557430c20c48d2314817e57d6447",
+  "params": {
+   "effort": "maximo",
+   "modo": "unlazy",
+   "onda": "5",
+   "fase": "F1",
+   "registry_version": "1.0.0",
+   "guard_sat_seed": "20261103",
+   "guard_sat_n": "4000",
+   "pyyaml": "6.0.3",
+   "jsonschema": "4.26.0"
+  },
+  "inputs": [
+   {
+    "path": "$BO_REPO/semantics/SEMANTICS.html",
+    "kind": "file",
+    "sha256": "3d679f40e26b13f7d98da835faa84e74fe9bcdbe7f6cecb507ed590287e409e5"
+   },
+   {
+    "path": "$BO_REPO/contracts",
+    "kind": "dir",
+    "sha256": "7cbb2f50b317343547e739f7f2a410bd75b1777fc2d7b425021442a6b8e05ab4"
+   }
+  ],
+  "recorded_at": "2026-11-03T01:55:56-03:00"
+ },
+ "sources": [
+  {
+   "uri": "https://www.w3.org/TR/xmlschema11-2/#duration",
+   "license": "W3C Document License",
+   "transformation": "espaço de valores (meses, segundos), forma lexical e canônica de xsd:duration e soma de meses com dia fixado (apêndice E), reimplementados"
+  },
+  {
+   "uri": "https://protobuf.dev/reference/protobuf/google.protobuf/#duration",
+   "license": "BSD-3-Clause (protobuf)",
+   "transformation": "forma JSON da google.protobuf.Duration (segundos com até 9 casas e sufixo s) e a faixa, reimplementadas"
+  },
+  {
+   "uri": "https://www.rfc-editor.org/rfc/rfc5952",
+   "license": "IETF Trust (BCP 78)",
+   "transformation": "forma canônica de texto IPv6, via ipaddress da biblioteca padrão"
+  },
+  {
+   "uri": "https://qudt.org/vocab/unit/",
+   "license": "CC BY 4.0",
+   "transformation": "IRIs de unidade e grandeza só como identificadores (padrão do C00); existência conferida pelo UNITS"
+  }
+ ],
+ "notes": "Registro fechado C10: 27 escalares, 17 combinadores (7 comparadores da leitura de volta), gramática de guarda com 24 sat_tests; achados em results/TRANSFORMS/registro.json. Entradas hasheadas = as do catálogo (SEMANTICS.html, contracts/); o plano (§0, §4, §9, §10, §14), o modulos.json e a revisão GPT-6 foram lidos como contexto, sem hash, para não acoplar consumidores a edições do plano."
+}

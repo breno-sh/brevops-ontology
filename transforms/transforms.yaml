@@ -1,0 +1,983 @@
+schema: bo.transforms/1
+contract: C10
+contract_version: 3.0.0
+module: TRANSFORMS
+generated_at: '2026-11-03T02:00:00-03:00'
+scalar:
+- name: identity
+  kind: scalar
+  domain:
+    datatype: any
+    quantity_kind: NOT_APPLICABLE
+    unit: NOT_APPLICABLE
+  codomain:
+    datatype: any
+    quantity_kind: NOT_APPLICABLE
+    unit: NOT_APPLICABLE
+  precondition: 'nenhuma; polimórfica: valor e tipo inteiro (datatype, grandeza, unidade, janela, convenção) passam
+    intactos, inclusive ABSENT e valor simbólico'
+  error: 'UNKNOWN_INPUT: valor não lido (NOT_READ)'
+  loss: nenhuma
+  inverse:
+    name: identity
+    partial: false
+- name: enum_map
+  kind: scalar
+  domain:
+    datatype: enum
+    quantity_kind: NOT_APPLICABLE
+  codomain:
+    datatype: enum
+    quantity_kind: NOT_APPLICABLE
+  precondition: tabela finita texto -> texto, declarada em table; valor ∈ chaves da tabela
+  error: 'TRANSFORM_OUT_OF_DOMAIN: valor fora das chaves da tabela | DECLARATION_ERROR: table vazia ou não texto
+    -> texto | UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido'
+  loss: 'semantic: se a tabela não é injetiva, a origem não se recupera (sem inversa)'
+  inverse:
+    name: enum_map
+    partial: true
+  params:
+    table:
+      type: enum_table
+      required: true
+- name: bool_to_enum
+  kind: scalar
+  domain:
+    datatype: boolean
+    quantity_kind: NOT_APPLICABLE
+  codomain:
+    datatype: enum
+    quantity_kind: NOT_APPLICABLE
+  precondition: booleano; true e false são textos distintos
+  error: 'TRANSFORM_OUT_OF_DOMAIN: valor não booleano (inclusive ''true'' em texto) | DECLARATION_ERROR: true =
+    false, ou não texto | UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda
+    não resolvido'
+  loss: nenhuma (bijeção sobre {true, false})
+  inverse:
+    name: enum_to_bool
+    partial: false
+  params:
+    'true':
+      type: string
+      required: true
+    'false':
+      type: string
+      required: true
+- name: enum_to_bool
+  kind: scalar
+  domain:
+    datatype: enum
+    quantity_kind: NOT_APPLICABLE
+  codomain:
+    datatype: boolean
+    quantity_kind: NOT_APPLICABLE
+  precondition: true e false são listas disjuntas e não vazias de textos; valor ∈ true ∪ false
+  error: 'TRANSFORM_OUT_OF_DOMAIN: valor fora de true ∪ false | DECLARATION_ERROR: listas vazias ou com interseção
+    | UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido'
+  loss: 'semantic: com mais de um texto por lado, qual deles era não se recupera'
+  inverse:
+    name: bool_to_enum
+    partial: true
+  params:
+    'true':
+      type: string_list
+      required: true
+    'false':
+      type: string_list
+      required: true
+- name: normalize_text
+  kind: scalar
+  domain:
+    datatype: string
+    quantity_kind: NOT_APPLICABLE
+  codomain:
+    datatype: string
+    quantity_kind: NOT_APPLICABLE
+  precondition: texto; Unicode NFC, espaço das pontas removido, espaço interno colapsado; case ∈ preserve|lower|upper
+  error: 'TRANSFORM_OUT_OF_DOMAIN: valor não é texto | DECLARATION_ERROR: case fora da lista | UNKNOWN_INPUT: valor
+    não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido'
+  loss: 'not_expressible: espaço extra, forma Unicode e (com case ≠ preserve) a caixa original'
+  inverse:
+    name: identity
+    partial: true
+  params:
+    case:
+      type: enum
+      values:
+      - preserve
+      - lower
+      - upper
+- name: duration_to_number
+  kind: scalar
+  domain:
+    datatype: duration
+    quantity_kind: quantitykind:Time
+  codomain:
+    datatype: number
+    quantity_kind: quantitykind:Time
+  precondition: xsd:duration (XSD 1.1, espaço (meses, segundos)); to = unidade de tempo do registro; meses ≠ 0 para
+    unidade fixa só com contexto de calendário (anchor | seconds_per_month); para unit:MO/unit:YR a duração sem
+    dias/horas vira meses exatos sem contexto
+  error: 'TRANSFORM_OUT_OF_DOMAIN: não é xsd:duration, mês/ano -> segundos sem contexto de calendário (P1M, P1Y),
+    ou dias -> meses sem contexto | DECLARATION_ERROR: to fora das unidades de tempo; contexto de calendário mal
+    formado | UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido'
+  loss: 'context_dependence: com meses, o número depende do calendário declarado (âncora ou convenção); sem meses,
+    exata'
+  inverse:
+    name: number_to_duration
+    partial: true
+  params:
+    to:
+      type: unit
+      quantity_kind: quantitykind:Time
+      required: true
+  context_required:
+  - calendar
+  duration_calendar: with_context
+- name: number_to_duration
+  kind: scalar
+  domain:
+    datatype: number
+    quantity_kind: quantitykind:Time
+  codomain:
+    datatype: duration
+    quantity_kind: quantitykind:Time
+  precondition: 'número na unidade from; saída na forma canônica do XSD 1.1; nunca converte meses em segundos: de
+    unit:MO/unit:YR sai PnM/PnY (inteiro de meses), das demais sai dias/horas/minutos/segundos'
+  error: 'TRANSFORM_OUT_OF_DOMAIN: fração de mês; segundos sem representação decimal finita; não numérico | DECLARATION_ERROR:
+    from fora das unidades de tempo | UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT: valor simbólico
+    ainda não resolvido'
+  loss: nenhuma (no espaço de valores; a forma lexical sai canônica)
+  inverse:
+    name: duration_to_number
+    partial: false
+  params:
+    from:
+      type: unit
+      quantity_kind: quantitykind:Time
+      required: true
+  duration_calendar: forbidden
+- name: seconds_text_to_duration
+  kind: scalar
+  domain:
+    datatype: string
+    quantity_kind: quantitykind:Time
+  codomain:
+    datatype: duration
+    quantity_kind: quantitykind:Time
+  precondition: texto '<segundos>[.<até 9 casas>]s' (google.protobuf.Duration em JSON, ex. '3600s'), |valor| ≤ 315
+    576 000 000 s; saída xsd:duration canônica, sem meses
+  error: 'TRANSFORM_OUT_OF_DOMAIN: outro formato (''1h'', ''3600'', mais de 9 casas) ou fora da faixa | UNKNOWN_INPUT:
+    valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido'
+  loss: 'not_expressible: zeros à direita e ''-0s'' saem na forma canônica (''3600.500s'' volta ''3600.5s'')'
+  inverse:
+    name: duration_to_seconds_text
+    partial: true
+  duration_calendar: forbidden
+- name: duration_to_seconds_text
+  kind: scalar
+  domain:
+    datatype: duration
+    quantity_kind: quantitykind:Time
+  codomain:
+    datatype: string
+    quantity_kind: quantitykind:Time
+  precondition: xsd:duration; meses ≠ 0 só com contexto de calendário; até 9 casas de fração de segundo; saída '<segundos>s'
+    do google.protobuf.Duration
+  error: 'TRANSFORM_OUT_OF_DOMAIN: mês/ano sem contexto de calendário; mais de 9 casas; fora da faixa | DECLARATION_ERROR:
+    contexto de calendário mal formado | UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT: valor
+    simbólico ainda não resolvido'
+  loss: 'context_dependence: com meses, o número de segundos depende do calendário declarado'
+  inverse:
+    name: seconds_text_to_duration
+    partial: true
+  context_required:
+  - calendar
+  duration_calendar: with_context
+- name: unit_convert_time
+  kind: scalar
+  domain:
+    datatype: number
+    quantity_kind: quantitykind:Time
+  codomain:
+    datatype: number
+    quantity_kind: quantitykind:Time
+  precondition: mesma grandeza (quantitykind:Time); from e to ∈ {unit:NanoSEC, unit:MicroSEC, unit:MilliSEC, unit:SEC,
+    unit:MIN, unit:HR, unit:DAY, unit:WK, unit:MO, unit:YR}; valor na unidade from; a janela de taxa, se houver,
+    não muda; resultado exato (racional); mês/ano só com contexto de calendário
+  error: 'TRANSFORM_OUT_OF_DOMAIN: valor não numérico ou ausente | TRANSFORM_OUT_OF_DOMAIN: unit:MO/unit:YR sem
+    contexto de calendário (mês/ano não tem fator fixo de segundos), ou fração de mês com âncora | DECLARATION_ERROR:
+    from/to fora do registro ou de outra grandeza | UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT:
+    valor simbólico ainda não resolvido'
+  loss: nenhuma (exata (racional); arredondar é round_time)
+  inverse:
+    name: unit_convert_time
+    partial: false
+  params:
+    from:
+      type: unit
+      quantity_kind: quantitykind:Time
+      required: true
+    to:
+      type: unit
+      quantity_kind: quantitykind:Time
+      required: true
+  context_required:
+  - calendar
+  duration_calendar: with_context
+- name: unit_convert_information
+  kind: scalar
+  domain:
+    datatype: number
+    quantity_kind: quantitykind:InformationEntropy
+  codomain:
+    datatype: number
+    quantity_kind: quantitykind:InformationEntropy
+  precondition: mesma grandeza (quantitykind:InformationEntropy); from e to ∈ {unit:BIT, unit:KiloBIT, unit:MegaBIT,
+    unit:GigaBIT, unit:BYTE, unit:KiloBYTE, unit:MegaBYTE, unit:GigaBYTE, unit:TeraBYTE, unit:KibiBYTE, unit:MebiBYTE,
+    unit:GibiBYTE, unit:TebiBYTE}; valor na unidade from; a janela de taxa, se houver, não muda; resultado exato
+    (racional)
+  error: 'TRANSFORM_OUT_OF_DOMAIN: valor não numérico ou ausente | DECLARATION_ERROR: from/to fora do registro ou
+    de outra grandeza | UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda
+    não resolvido'
+  loss: nenhuma (exata (racional); arredondar é round_information)
+  inverse:
+    name: unit_convert_information
+    partial: false
+  params:
+    from:
+      type: unit
+      quantity_kind: quantitykind:InformationEntropy
+      required: true
+    to:
+      type: unit
+      quantity_kind: quantitykind:InformationEntropy
+      required: true
+- name: unit_convert_ratio
+  kind: scalar
+  domain:
+    datatype: number
+    quantity_kind: quantitykind:DimensionlessRatio
+  codomain:
+    datatype: number
+    quantity_kind: quantitykind:DimensionlessRatio
+  precondition: mesma grandeza (quantitykind:DimensionlessRatio); from e to ∈ {unit:FRACTION, unit:PERCENT}; valor
+    na unidade from; a janela de taxa, se houver, não muda; resultado exato (racional)
+  error: 'TRANSFORM_OUT_OF_DOMAIN: valor não numérico ou ausente | DECLARATION_ERROR: from/to fora do registro ou
+    de outra grandeza | UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda
+    não resolvido'
+  loss: nenhuma (exata (racional); arredondar é round_ratio)
+  inverse:
+    name: unit_convert_ratio
+    partial: false
+  params:
+    from:
+      type: unit
+      quantity_kind: quantitykind:DimensionlessRatio
+      required: true
+    to:
+      type: unit
+      quantity_kind: quantitykind:DimensionlessRatio
+      required: true
+- name: rate_window_convert_count
+  kind: scalar
+  domain:
+    datatype: number
+    quantity_kind: quantitykind:Count
+  codomain:
+    datatype: number
+    quantity_kind: quantitykind:Count
+  precondition: valor de quantitykind:Count por janela from_window (tipo de unidade inclui a janela); janelas xsd:duration
+    fixas (sem mês/ano) e positivas; statistic ∈ ['sum', 'average'] (total ou média por janela)
+  error: 'TRANSFORM_OUT_OF_DOMAIN: valor não numérico ou ausente | DECLARATION_ERROR: janela com mês/ano ou não
+    positiva; estatística não aditiva (max, min, pNN) | UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT:
+    valor simbólico ainda não resolvido'
+  loss: 'context_dependence: supõe taxa uniforme dentro da janela: a distribuição dentro da janela não se recupera'
+  inverse:
+    name: rate_window_convert_count
+    partial: false
+  params:
+    from_window:
+      type: duration_fixed
+      required: true
+    to_window:
+      type: duration_fixed
+      required: true
+    statistic:
+      type: enum
+      values:
+      - sum
+      - average
+      - maximum
+      - minimum
+      - percentile
+      required: true
+- name: rate_window_convert_information
+  kind: scalar
+  domain:
+    datatype: number
+    quantity_kind: quantitykind:InformationEntropy
+  codomain:
+    datatype: number
+    quantity_kind: quantitykind:InformationEntropy
+  precondition: valor de quantitykind:InformationEntropy por janela from_window (tipo de unidade inclui a janela);
+    janelas xsd:duration fixas (sem mês/ano) e positivas; statistic ∈ ['sum', 'average'] (total ou média por janela)
+  error: 'TRANSFORM_OUT_OF_DOMAIN: valor não numérico ou ausente | DECLARATION_ERROR: janela com mês/ano ou não
+    positiva; estatística não aditiva (max, min, pNN) | UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT:
+    valor simbólico ainda não resolvido'
+  loss: 'context_dependence: supõe taxa uniforme dentro da janela: a distribuição dentro da janela não se recupera'
+  inverse:
+    name: rate_window_convert_information
+    partial: false
+  params:
+    from_window:
+      type: duration_fixed
+      required: true
+    to_window:
+      type: duration_fixed
+      required: true
+    statistic:
+      type: enum
+      values:
+      - sum
+      - average
+      - maximum
+      - minimum
+      - percentile
+      required: true
+- name: round_time
+  kind: scalar
+  domain:
+    datatype: number
+    quantity_kind: quantitykind:Time
+  codomain:
+    datatype: integer
+    quantity_kind: quantitykind:Time
+  precondition: número de quantitykind:Time; unidade e janela não mudam; mode ∈ ['floor', 'ceiling', 'half_even',
+    'half_up', 'exact']
+  error: 'TRANSFORM_OUT_OF_DOMAIN: valor não numérico ou ausente; não inteiro no modo exact | DECLARATION_ERROR:
+    modo fora da lista | UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda
+    não resolvido'
+  loss: 'rounding: a fração descartada não se recupera (no modo exact não há perda)'
+  inverse:
+    name: identity
+    partial: true
+  params:
+    mode:
+      type: enum
+      values:
+      - floor
+      - ceiling
+      - half_even
+      - half_up
+      - exact
+      required: true
+- name: round_information
+  kind: scalar
+  domain:
+    datatype: number
+    quantity_kind: quantitykind:InformationEntropy
+  codomain:
+    datatype: integer
+    quantity_kind: quantitykind:InformationEntropy
+  precondition: número de quantitykind:InformationEntropy; unidade e janela não mudam; mode ∈ ['floor', 'ceiling',
+    'half_even', 'half_up', 'exact']
+  error: 'TRANSFORM_OUT_OF_DOMAIN: valor não numérico ou ausente; não inteiro no modo exact | DECLARATION_ERROR:
+    modo fora da lista | UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda
+    não resolvido'
+  loss: 'rounding: a fração descartada não se recupera (no modo exact não há perda)'
+  inverse:
+    name: identity
+    partial: true
+  params:
+    mode:
+      type: enum
+      values:
+      - floor
+      - ceiling
+      - half_even
+      - half_up
+      - exact
+      required: true
+- name: round_count
+  kind: scalar
+  domain:
+    datatype: number
+    quantity_kind: quantitykind:Count
+  codomain:
+    datatype: integer
+    quantity_kind: quantitykind:Count
+  precondition: número de quantitykind:Count; unidade e janela não mudam; mode ∈ ['floor', 'ceiling', 'half_even',
+    'half_up', 'exact']
+  error: 'TRANSFORM_OUT_OF_DOMAIN: valor não numérico ou ausente; não inteiro no modo exact | DECLARATION_ERROR:
+    modo fora da lista | UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda
+    não resolvido'
+  loss: 'rounding: a fração descartada não se recupera (no modo exact não há perda)'
+  inverse:
+    name: identity
+    partial: true
+  params:
+    mode:
+      type: enum
+      values:
+      - floor
+      - ceiling
+      - half_even
+      - half_up
+      - exact
+      required: true
+- name: round_ratio
+  kind: scalar
+  domain:
+    datatype: number
+    quantity_kind: quantitykind:DimensionlessRatio
+  codomain:
+    datatype: integer
+    quantity_kind: quantitykind:DimensionlessRatio
+  precondition: número de quantitykind:DimensionlessRatio; unidade e janela não mudam; mode ∈ ['floor', 'ceiling',
+    'half_even', 'half_up', 'exact']
+  error: 'TRANSFORM_OUT_OF_DOMAIN: valor não numérico ou ausente; não inteiro no modo exact | DECLARATION_ERROR:
+    modo fora da lista | UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda
+    não resolvido'
+  loss: 'rounding: a fração descartada não se recupera (no modo exact não há perda)'
+  inverse:
+    name: identity
+    partial: true
+  params:
+    mode:
+      type: enum
+      values:
+      - floor
+      - ceiling
+      - half_even
+      - half_up
+      - exact
+      required: true
+- name: clamp_time
+  kind: scalar
+  domain:
+    datatype: number
+    quantity_kind: quantitykind:Time
+  codomain:
+    datatype: number
+    quantity_kind: quantitykind:Time
+  precondition: número de quantitykind:Time; min e/ou max na MESMA unidade do valor; min ≤ max
+  error: 'TRANSFORM_OUT_OF_DOMAIN: valor não numérico ou ausente | DECLARATION_ERROR: sem limite, ou min > max |
+    UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido'
+  loss: 'saturation: valor fora de [min, max] vira o limite; o original não se recupera'
+  inverse:
+    name: identity
+    partial: true
+  params:
+    min:
+      type: number
+    max:
+      type: number
+- name: clamp_information
+  kind: scalar
+  domain:
+    datatype: number
+    quantity_kind: quantitykind:InformationEntropy
+  codomain:
+    datatype: number
+    quantity_kind: quantitykind:InformationEntropy
+  precondition: número de quantitykind:InformationEntropy; min e/ou max na MESMA unidade do valor; min ≤ max
+  error: 'TRANSFORM_OUT_OF_DOMAIN: valor não numérico ou ausente | DECLARATION_ERROR: sem limite, ou min > max |
+    UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido'
+  loss: 'saturation: valor fora de [min, max] vira o limite; o original não se recupera'
+  inverse:
+    name: identity
+    partial: true
+  params:
+    min:
+      type: number
+    max:
+      type: number
+- name: clamp_count
+  kind: scalar
+  domain:
+    datatype: number
+    quantity_kind: quantitykind:Count
+  codomain:
+    datatype: number
+    quantity_kind: quantitykind:Count
+  precondition: número de quantitykind:Count; min e/ou max na MESMA unidade do valor; min ≤ max
+  error: 'TRANSFORM_OUT_OF_DOMAIN: valor não numérico ou ausente | DECLARATION_ERROR: sem limite, ou min > max |
+    UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido'
+  loss: 'saturation: valor fora de [min, max] vira o limite; o original não se recupera'
+  inverse:
+    name: identity
+    partial: true
+  params:
+    min:
+      type: number
+    max:
+      type: number
+- name: clamp_ratio
+  kind: scalar
+  domain:
+    datatype: number
+    quantity_kind: quantitykind:DimensionlessRatio
+  codomain:
+    datatype: number
+    quantity_kind: quantitykind:DimensionlessRatio
+  precondition: número de quantitykind:DimensionlessRatio; min e/ou max na MESMA unidade do valor; min ≤ max
+  error: 'TRANSFORM_OUT_OF_DOMAIN: valor não numérico ou ausente | DECLARATION_ERROR: sem limite, ou min > max |
+    UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido'
+  loss: 'saturation: valor fora de [min, max] vira o limite; o original não se recupera'
+  inverse:
+    name: identity
+    partial: true
+  params:
+    min:
+      type: number
+    max:
+      type: number
+- name: sentinel_map_time
+  kind: scalar
+  domain:
+    datatype: number
+    quantity_kind: quantitykind:Time
+  codomain:
+    datatype: number
+    quantity_kind: quantitykind:Time
+  precondition: table = [{from, to}] com sentinelas (texto, inteiro, booleano ou ABSENT); valor que não é sentinela
+    passa intacto; valor regular igual a uma sentinela de destino é recusado; grandeza quantitykind:Time e unidade
+    não mudam
+  error: 'TRANSFORM_OUT_OF_DOMAIN: valor regular colide com sentinela de destino; ausência sem sentinela | DECLARATION_ERROR:
+    table vazia, mal formada ou com origem repetida | UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT:
+    valor simbólico ainda não resolvido'
+  loss: 'sentinel: o significado da sentinela é declarado na table; nada além dela muda'
+  inverse:
+    name: sentinel_map_time
+    partial: true
+  params:
+    table:
+      type: sentinel_table
+      required: true
+- name: sentinel_map_information
+  kind: scalar
+  domain:
+    datatype: number
+    quantity_kind: quantitykind:InformationEntropy
+  codomain:
+    datatype: number
+    quantity_kind: quantitykind:InformationEntropy
+  precondition: table = [{from, to}] com sentinelas (texto, inteiro, booleano ou ABSENT); valor que não é sentinela
+    passa intacto; valor regular igual a uma sentinela de destino é recusado; grandeza quantitykind:InformationEntropy
+    e unidade não mudam
+  error: 'TRANSFORM_OUT_OF_DOMAIN: valor regular colide com sentinela de destino; ausência sem sentinela | DECLARATION_ERROR:
+    table vazia, mal formada ou com origem repetida | UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT:
+    valor simbólico ainda não resolvido'
+  loss: 'sentinel: o significado da sentinela é declarado na table; nada além dela muda'
+  inverse:
+    name: sentinel_map_information
+    partial: true
+  params:
+    table:
+      type: sentinel_table
+      required: true
+- name: sentinel_map_count
+  kind: scalar
+  domain:
+    datatype: number
+    quantity_kind: quantitykind:Count
+  codomain:
+    datatype: number
+    quantity_kind: quantitykind:Count
+  precondition: table = [{from, to}] com sentinelas (texto, inteiro, booleano ou ABSENT); valor que não é sentinela
+    passa intacto; valor regular igual a uma sentinela de destino é recusado; grandeza quantitykind:Count e unidade
+    não mudam
+  error: 'TRANSFORM_OUT_OF_DOMAIN: valor regular colide com sentinela de destino; ausência sem sentinela | DECLARATION_ERROR:
+    table vazia, mal formada ou com origem repetida | UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT:
+    valor simbólico ainda não resolvido'
+  loss: 'sentinel: o significado da sentinela é declarado na table; nada além dela muda'
+  inverse:
+    name: sentinel_map_count
+    partial: true
+  params:
+    table:
+      type: sentinel_table
+      required: true
+- name: sentinel_map_ratio
+  kind: scalar
+  domain:
+    datatype: number
+    quantity_kind: quantitykind:DimensionlessRatio
+  codomain:
+    datatype: number
+    quantity_kind: quantitykind:DimensionlessRatio
+  precondition: table = [{from, to}] com sentinelas (texto, inteiro, booleano ou ABSENT); valor que não é sentinela
+    passa intacto; valor regular igual a uma sentinela de destino é recusado; grandeza quantitykind:DimensionlessRatio
+    e unidade não mudam
+  error: 'TRANSFORM_OUT_OF_DOMAIN: valor regular colide com sentinela de destino; ausência sem sentinela | DECLARATION_ERROR:
+    table vazia, mal formada ou com origem repetida | UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT:
+    valor simbólico ainda não resolvido'
+  loss: 'sentinel: o significado da sentinela é declarado na table; nada além dela muda'
+  inverse:
+    name: sentinel_map_ratio
+    partial: true
+  params:
+    table:
+      type: sentinel_table
+      required: true
+- name: sentinel_map_value
+  kind: scalar
+  domain:
+    datatype: any
+    quantity_kind: NOT_APPLICABLE
+  codomain:
+    datatype: any
+    quantity_kind: NOT_APPLICABLE
+  precondition: table = [{from, to}] com sentinelas (texto, inteiro, booleano ou ABSENT); valor que não é sentinela
+    passa intacto; valor regular igual a uma sentinela de destino é recusado
+  error: 'TRANSFORM_OUT_OF_DOMAIN: valor regular colide com sentinela de destino; ausência sem sentinela | DECLARATION_ERROR:
+    table vazia, mal formada ou com origem repetida | UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT:
+    valor simbólico ainda não resolvido'
+  loss: 'sentinel: o significado da sentinela é declarado na table; nada além dela muda'
+  inverse:
+    name: sentinel_map_value
+    partial: true
+  params:
+    table:
+      type: sentinel_table
+      required: true
+combinators:
+- name: split_port_range
+  kind: tuple
+  inputs:
+  - name: ports
+    datatype: string
+  outputs:
+  - name: from_port
+    datatype: integer
+  - name: to_port
+    datatype: integer
+  precondition: 'texto ''p'' ou ''p1-p2'' com 0 ≤ p1 ≤ p2 ≤ 65535; portas: ports (''p'' ou ''p1-p2'', 0 ≤ p1 ≤ p2
+    ≤ 65535); from_port (0..65535); to_port (from_port..65535)'
+  error: 'TRANSFORM_OUT_OF_DOMAIN: outro formato, porta > 65535 ou p1 > p2 | UNKNOWN_INPUT: entrada ausente ou não
+    lida | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido'
+  loss: 'not_expressible: ''p-p'' volta ''p'' e zeros à esquerda somem (''080'' volta ''80'')'
+  inverse:
+    name: join_port_range
+    partial: true
+- name: join_port_range
+  kind: tuple
+  inputs:
+  - name: from_port
+    datatype: integer
+  - name: to_port
+    datatype: integer
+  outputs:
+  - name: ports
+    datatype: string
+  precondition: 'from_port e to_port inteiros, 0 ≤ from_port ≤ to_port ≤ 65535; portas: from_port (0..65535); to_port
+    (from_port..65535); ports (''p'' ou ''p1-p2'', 0 ≤ p1 ≤ p2 ≤ 65535)'
+  error: 'TRANSFORM_OUT_OF_DOMAIN: fora da faixa ou from_port > to_port | UNKNOWN_INPUT: componente ausente ou não
+    lido | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido'
+  loss: nenhuma
+  inverse:
+    name: split_port_range
+    partial: false
+- name: split_cidr
+  kind: tuple
+  inputs:
+  - name: cidr
+    datatype: string
+  outputs:
+  - name: address
+    datatype: string
+  - name: prefix_length
+    datatype: integer
+  precondition: 'rede CIDR estrita (sem bits de host), IPv4 ou IPv6; portas: cidr (rede IPv4/IPv6 sem bits de host);
+    address (endereço de rede); prefix_length (0..32 (IPv4) | 0..128 (IPv6))'
+  error: 'TRANSFORM_OUT_OF_DOMAIN: não é CIDR ou tem bits de host | UNKNOWN_INPUT: entrada ausente ou não lida |
+    UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido'
+  loss: 'not_expressible: a forma textual (maiúsculas e compressão IPv6) sai canônica (RFC 5952)'
+  inverse:
+    name: join_cidr
+    partial: true
+- name: join_cidr
+  kind: tuple
+  inputs:
+  - name: address
+    datatype: string
+  - name: prefix_length
+    datatype: integer
+  outputs:
+  - name: cidr
+    datatype: string
+  precondition: 'endereço e prefixo formam rede estrita (monta o CIDR); portas: address (endereço de rede); prefix_length
+    (0..32 (IPv4) | 0..128 (IPv6)); cidr (rede IPv4/IPv6 sem bits de host)'
+  error: 'TRANSFORM_OUT_OF_DOMAIN: endereço inválido, prefixo fora da família ou bits de host | UNKNOWN_INPUT: componente
+    ausente ou não lido | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido'
+  loss: 'not_expressible: o endereço sai na forma canônica (RFC 5952): ''2001:DB8::'' volta ''2001:db8::'''
+  inverse:
+    name: split_cidr
+    partial: true
+- name: split_alarm_query
+  kind: tuple
+  inputs:
+  - name: query
+    datatype: string
+  outputs:
+  - name: metric
+    datatype: string
+  - name: window
+    datatype: duration
+  - name: statistic
+    datatype: enum
+  - name: operator
+    datatype: enum
+  - name: threshold
+    datatype: number
+  precondition: 'subconjunto ''Metrica[Nu].estat() op limiar'' com estat ∈ [''mean'', ''sum'', ''min'', ''max'',
+    ''count'']; dimensões, agrupamento e funções ficam fora; portas: query (''Metrica[Nu].estat() op limiar'', u
+    ∈ s|m|h|d); metric (identificador); window (xsd:duration fixa, canônica); statistic (mean|sum|min|max|count);
+    operator (gt|ge|lt|le|eq|ne); threshold (decimal finito)'
+  error: 'TRANSFORM_OUT_OF_DOMAIN: fora do subconjunto suportado | UNKNOWN_INPUT: entrada ausente ou não lida |
+    UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido'
+  loss: 'not_expressible: espaços, forma do limiar (1.50 -> 1.5) e unidade da janela (60s -> 1m) saem canônicos'
+  inverse:
+    name: join_alarm_query
+    partial: true
+- name: join_alarm_query
+  kind: tuple
+  inputs:
+  - name: metric
+    datatype: string
+  - name: window
+    datatype: duration
+  - name: statistic
+    datatype: enum
+  - name: operator
+    datatype: enum
+  - name: threshold
+    datatype: number
+  outputs:
+  - name: query
+    datatype: string
+  precondition: 'os 5 componentes presentes; janela fixa inteira positiva; portas: metric (identificador); window
+    (xsd:duration fixa, canônica); statistic (mean|sum|min|max|count); operator (gt|ge|lt|le|eq|ne); threshold (decimal
+    finito); query (''Metrica[Nu].estat() op limiar'', u ∈ s|m|h|d)'
+  error: 'TRANSFORM_OUT_OF_DOMAIN: janela com mês, não inteira ou zero; operador ou estatística fora da lista |
+    UNKNOWN_INPUT: componente ausente ou não lido | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido'
+  loss: nenhuma
+  inverse:
+    name: split_alarm_query
+    partial: false
+- name: json_get
+  kind: tuple
+  inputs:
+  - name: document
+    datatype: string
+  - name: key
+    datatype: string
+  outputs:
+  - name: value
+    datatype: any
+  precondition: 'documento JSON (objeto) com a chave de topo; portas: document (texto JSON cujo topo é objeto);
+    key (chave de topo); value (valor JSON da chave)'
+  error: 'TRANSFORM_OUT_OF_DOMAIN: não é JSON, topo não é objeto ou chave ausente | UNKNOWN_INPUT: entrada ausente
+    ou não lida | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido'
+  loss: 'not_expressible: o resto do documento não se reconstrói de uma chave'
+  inverse:
+    name: null
+    partial: false
+- name: map_get
+  kind: tuple
+  inputs:
+  - name: map
+    datatype: tuple
+  - name: key
+    datatype: string
+  outputs:
+  - name: value
+    datatype: any
+  precondition: 'chave presente no mapa; portas: map (objeto (ex. rótulos)); key (chave); value (valor da chave)'
+  error: 'TRANSFORM_OUT_OF_DOMAIN: map não é objeto ou chave ausente | UNKNOWN_INPUT: entrada ausente ou não lida
+    | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido'
+  loss: 'not_expressible: as outras chaves do mapa'
+  inverse:
+    name: null
+    partial: false
+- name: tags_list_to_map
+  kind: tuple
+  inputs:
+  - name: tags
+    datatype: tuple
+  outputs:
+  - name: map
+    datatype: tuple
+  precondition: 'chaves únicas; chave e valor textos; portas: tags (lista de {key, value} ou {Key, Value}, textos);
+    map (objeto texto -> texto)'
+  error: 'TRANSFORM_OUT_OF_DOMAIN: chave repetida, campo fora de {key, value} ou valor não texto | UNKNOWN_INPUT:
+    entrada ausente ou não lida | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido'
+  loss: 'not_expressible: a ordem da lista e a caixa dos nomes de campo (Key/key)'
+  inverse:
+    name: tags_map_to_list
+    partial: true
+- name: tags_map_to_list
+  kind: tuple
+  inputs:
+  - name: map
+    datatype: tuple
+  outputs:
+  - name: tags
+    datatype: tuple
+  precondition: 'objeto texto -> texto; portas: map (objeto texto -> texto); tags (lista de {key, value} ordenada
+    pela chave)'
+  error: 'TRANSFORM_OUT_OF_DOMAIN: valor não texto | UNKNOWN_INPUT: entrada ausente ou não lida | UNKNOWN_SYMBOLIC_INPUT:
+    valor simbólico ainda não resolvido'
+  loss: nenhuma
+  inverse:
+    name: tags_list_to_map
+    partial: false
+- name: compare_exact
+  kind: tuple
+  inputs:
+  - name: expected
+    datatype: any
+  - name: observed
+    datatype: any
+  outputs:
+  - name: match
+    datatype: boolean
+  precondition: 'igualdade de valor JSON: número por valor exato, texto por texto (''1'' ≠ 1), booleano só com booleano,
+    lista na ordem, objeto chave a chave; ABSENT só confere com ABSENT; tolerância 0; portas: expected (valor planejado);
+    observed (valor lido de volta); match (confere sob o comparador)'
+  error: 'UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido
+    | DECLARATION_ERROR: tolerância ausente, negativa ou fora de numeric_tolerance'
+  loss: nenhuma (decide igualdade)
+  inverse:
+    name: null
+    partial: false
+- name: compare_numeric_tolerance
+  kind: tuple
+  inputs:
+  - name: expected
+    datatype: number
+  - name: observed
+    datatype: number
+  - name: tolerance
+    datatype: number
+  outputs:
+  - name: match
+    datatype: boolean
+  precondition: '|observed − expected| ≤ tolerance (absoluta, na unidade do expected, aritmética exata); tolerância
+    obrigatória ≥ 0; mesmo tipo de unidade dos dois lados (para tipos diferentes use compare_quantity_tolerance);
+    portas: expected (valor planejado); observed (valor lido de volta); tolerance (tolerância absoluta declarada,
+    ≥ 0); match (confere sob o comparador)'
+  error: 'TRANSFORM_OUT_OF_DOMAIN: valor fora do tipo do comparador | UNKNOWN_INPUT: valor não lido (NOT_READ) |
+    UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido | DECLARATION_ERROR: tolerância ausente, negativa
+    ou fora de numeric_tolerance'
+  loss: nenhuma (a folga é declarada na tolerância)
+  inverse:
+    name: null
+    partial: false
+- name: compare_set_equal
+  kind: tuple
+  inputs:
+  - name: expected
+    datatype: tuple
+  - name: observed
+    datatype: tuple
+  outputs:
+  - name: match
+    datatype: boolean
+  precondition: 'listas comparadas como conjuntos de valores JSON canônicos; tolerância 0; portas: expected (valor
+    planejado); observed (valor lido de volta); match (confere sob o comparador)'
+  error: 'TRANSFORM_OUT_OF_DOMAIN: valor fora do tipo do comparador | UNKNOWN_INPUT: valor não lido (NOT_READ) |
+    UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido | DECLARATION_ERROR: tolerância ausente, negativa
+    ou fora de numeric_tolerance'
+  loss: 'not_expressible: ordem e repetição não contam'
+  inverse:
+    name: null
+    partial: false
+- name: compare_normalized_string
+  kind: tuple
+  inputs:
+  - name: expected
+    datatype: string
+  - name: observed
+    datatype: string
+  outputs:
+  - name: match
+    datatype: boolean
+  precondition: 'texto em NFC, sem espaço nas pontas, espaço interno colapsado; caixa preservada; tolerância 0;
+    portas: expected (valor planejado); observed (valor lido de volta); match (confere sob o comparador)'
+  error: 'TRANSFORM_OUT_OF_DOMAIN: valor fora do tipo do comparador | UNKNOWN_INPUT: valor não lido (NOT_READ) |
+    UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido | DECLARATION_ERROR: tolerância ausente, negativa
+    ou fora de numeric_tolerance'
+  loss: 'not_expressible: espaço extra e forma Unicode não contam'
+  inverse:
+    name: null
+    partial: false
+- name: compare_duration_equal
+  kind: tuple
+  inputs:
+  - name: expected
+    datatype: duration
+  - name: observed
+    datatype: duration
+  outputs:
+  - name: match
+    datatype: boolean
+  precondition: 'xsd:duration pelo espaço de valores do XSD 1.1 (meses, segundos): P12M = P1Y, PT60M = PT1H, P1M
+    ≠ P30D; com contexto de calendário, segundos na âncora; tolerância 0; portas: expected (valor planejado); observed
+    (valor lido de volta); match (confere sob o comparador)'
+  error: 'TRANSFORM_OUT_OF_DOMAIN: valor fora do tipo do comparador | UNKNOWN_INPUT: valor não lido (NOT_READ) |
+    UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido | DECLARATION_ERROR: tolerância ausente, negativa
+    ou fora de numeric_tolerance'
+  loss: nenhuma
+  inverse:
+    name: null
+    partial: false
+- name: compare_cidr_equal
+  kind: tuple
+  inputs:
+  - name: expected
+    datatype: string
+  - name: observed
+    datatype: string
+  outputs:
+  - name: match
+    datatype: boolean
+  precondition: 'mesma rede (endereço de rede e prefixo), forma textual livre; tolerância 0; portas: expected (valor
+    planejado); observed (valor lido de volta); match (confere sob o comparador)'
+  error: 'TRANSFORM_OUT_OF_DOMAIN: valor fora do tipo do comparador | UNKNOWN_INPUT: valor não lido (NOT_READ) |
+    UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido | DECLARATION_ERROR: tolerância ausente, negativa
+    ou fora de numeric_tolerance'
+  loss: 'not_expressible: a forma textual não conta'
+  inverse:
+    name: null
+    partial: false
+- name: compare_quantity_tolerance
+  kind: tuple
+  inputs:
+  - name: expected
+    datatype: number
+  - name: expected_type
+    datatype: tuple
+  - name: observed
+    datatype: number
+  - name: observed_type
+    datatype: tuple
+  - name: tolerance
+    datatype: number
+  outputs:
+  - name: match
+    datatype: boolean
+  precondition: 'numeric_tolerance com tipo de unidade inteiro dos dois lados (unidade, janela de taxa, convenção
+    de byte): observed convertido para o tipo do expected, depois |observed − expected| ≤ tolerance; portas: expected
+    (valor planejado); expected_type ({unit, rate_window?, byte_convention?}); observed (valor lido de volta); observed_type
+    ({unit, rate_window?, byte_convention?}); tolerance (tolerância absoluta na unidade do expected, ≥ 0); match
+    (confere sob o comparador)'
+  error: 'TRANSFORM_OUT_OF_DOMAIN: valor não numérico, ou unidade de mês/ano sem contexto de calendário | NO_UNIT:
+    unidade ausente, UNKNOWN ou fora do registro | UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT:
+    valor simbólico ainda não resolvido | DECLARATION_ERROR: grandezas diferentes, taxa x quantidade, convenção
+    de byte que contradiz a unidade, tolerância ausente ou negativa'
+  loss: nenhuma (conversão exata; a folga é a tolerância)
+  inverse:
+    name: null
+    partial: false
