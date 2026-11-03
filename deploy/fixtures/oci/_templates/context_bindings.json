@@ -1,0 +1,11 @@
+{
+ "schema": "bo.harness.oci.context_bindings/1",
+ "module": "HARNESS-OCI",
+ "note": "Lista fechada de chaves de contexto da execução. Um termo símbolo do plano só vira HCL se um arquivo de bindings (entrada explícita do render) ligar o symbol_id a uma destas chaves; o valor vem do contexto privado do run na hora do apply e nunca é gravado. Sem binding, o símbolo é UNKNOWN_SYMBOLIC_INPUT e o caso falha como UNKNOWN_INPUT.",
+ "bindings": [
+  {"key": "compartment_id", "type": "string", "graph_context": "synthetic_account", "private": true, "description": "compartment da execução (um por run, criado e apagado pelo kit de segurança)"},
+  {"key": "objectstorage_namespace", "type": "string", "graph_context": "synthetic_account", "private": true, "description": "namespace de Object Storage da tenancy sandbox"},
+  {"key": "availability_domain", "type": "string", "graph_context": "region", "private": true, "description": "domínio de disponibilidade da região da execução"},
+  {"key": "run_tag", "type": "string", "graph_context": "synthetic_account", "private": false, "description": "identificador sintético da execução, usado como tag de propriedade"}
+ ]
+}

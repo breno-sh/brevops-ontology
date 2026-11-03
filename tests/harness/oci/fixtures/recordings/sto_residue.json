@@ -1,0 +1,89 @@
+{
+ "apply": {
+  "ok": true
+ },
+ "destroy": {
+  "ok": true
+ },
+ "expects_vars": [
+  "bo_ctx_compartment_id",
+  "bo_ctx_objectstorage_namespace",
+  "bo_ctx_run_tag",
+  "bo_region"
+ ],
+ "identity": "sandbox-synthetic",
+ "module_sha256": "d18757701989bc3fa6f03466bd5d01fa87e025b73518576c51d4caf05ae4d2ba",
+ "note": "gravação sintética (sem nuvem): state no formato de terraform show -json montado do plano de exemplo",
+ "plan_id": "LP-OCI-STO-0001",
+ "polls": [
+  {
+   "format_version": "1.0",
+   "terraform_version": "1.15.8",
+   "values": {
+    "root_module": {
+     "child_modules": [
+      {
+       "address": "module.lp_oci_sto_0001",
+       "resources": [
+        {
+         "address": "module.lp_oci_sto_0001.oci_objectstorage_bucket.r1",
+         "mode": "managed",
+         "name": "r1",
+         "provider_name": "registry.terraform.io/oracle/oci",
+         "schema_version": 0,
+         "sensitive_values": {},
+         "type": "oci_objectstorage_bucket",
+         "values": {
+          "access_type": "NoPublicAccess",
+          "compartment_id": "@CTX:compartment_id",
+          "etag": "syn-etag-1",
+          "freeform_tags": {
+           "bo_run": "@CTX:run_tag"
+          },
+          "id": "@OCID:oci_objectstorage_bucket:163",
+          "name": "bo-sto-0001",
+          "namespace": "@CTX:objectstorage_namespace",
+          "storage_tier": "Standard",
+          "time_created": "2026-11-03 10:00:00.000 +0000 UTC",
+          "versioning": "Enabled"
+         }
+        },
+        {
+         "address": "module.lp_oci_sto_0001.oci_objectstorage_object_lifecycle_policy.c1",
+         "mode": "managed",
+         "name": "c1",
+         "provider_name": "registry.terraform.io/oracle/oci",
+         "schema_version": 0,
+         "sensitive_values": {},
+         "type": "oci_objectstorage_object_lifecycle_policy",
+         "values": {
+          "bucket": "bo-sto-0001",
+          "id": "@OCID:oci_objectstorage_object_lifecycle_policy:148",
+          "namespace": "@CTX:objectstorage_namespace",
+          "rules": [
+           {
+            "action": "DELETE",
+            "is_enabled": true,
+            "name": "bo-sto-0001-expire",
+            "target": "objects",
+            "time_amount": "30",
+            "time_unit": "DAYS"
+           }
+          ],
+          "time_created": "2026-11-03 10:00:00.000 +0000 UTC"
+         }
+        }
+       ]
+      }
+     ]
+    }
+   }
+  }
+ ],
+ "scenario": "destroy deixa o bucket no state: resíduo",
+ "schema": "bo.harness.oci.recording/1",
+ "state_list_after_destroy": [
+  "module.lp_oci_sto_0001.oci_objectstorage_bucket.r1"
+ ],
+ "synthetic": true
+}

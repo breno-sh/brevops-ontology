@@ -1,0 +1,45 @@
+CONTRACT_CHANGE — HARNESS-OCI
+gravado em: 2026-11-03T07:27:04-03:00 (America/Recife)
+tipo: arquivo de stub ausente no que já foi mergeado (dono: CONTRACTS); afeta igualmente HARNESS-AWS, -AZURE e -GCP
+
+PROBLEMA 1 (bloqueia o G2 do catálogo)
+  O gate do catálogo é
+      python -I -m bo.harness.oci.render $BO_REPO/contracts/stubs/lowering_plan.jsonl --out $BO_TMP/render
+      && terraform -chdir=$BO_TMP/render fmt -check
+  mas $BO_REPO/contracts/stubs/lowering_plan.jsonl não existe em bo/base: o stub do C26 está em
+  contracts/stubs/C26/lowering_plan.jsonl (contracts/stubs/INDEX.json, "C26/lowering_plan.jsonl").
+  Com o caminho do gate, o render sai 2 ("plano não existe") e o G2 reprova; o G4 (make gate) reprova junto.
+  O HARNESS-OCI não pode criar o arquivo: contracts/stubs/ é posse do CONTRACTS.
+
+PROBLEMA 2 (o stub existente torna o G2 vácuo para os 4 harness)
+  O único plano do stub C26 (LP-0001) é para target_provider "google" e, mesmo para o google, não traz os
+  campos obrigatórios do google_sql_database_instance (database_version, settings.tier, ...). Para o harness
+  do OCI ele é NOT_APPLICABLE; para o do google seria UNKNOWN_INPUT. Em nenhum dos 4 o "fmt -check" confere
+  HCL de recurso: passaria por vacuidade.
+
+MUDANÇA PROPOSTA (o CONTRACTS ou o coordenador escolhe)
+  A) preferida — stub de topo, um plano completo por provedor:
+       contracts/stubs/lowering_plan.jsonl   (C26:lowering_plan) com 4 planos, um por target_provider
+                                             (aws, google, azurerm, oci), cada um com os obrigatórios do schema
+                                             do provider fixado em universe/pins.json
+       contracts/stubs/graph_ir.jsonl        (C26:graph_ir) irmão, com os termos e nós citados
+       contracts/stubs/bindings.json         (opcional) ligando os símbolos de contexto (compartment, região...)
+     e a entrada correspondente no contracts/stubs/INDEX.json. Para a linha do oci, os planos de
+     deploy/fixtures/oci/_templates/examples/ (LP-OCI-NET-0001 e LP-OCI-STO-0001, com graph_ir.jsonl e
+     bindings.json) já passam no validador único (C26) e renderizam, com fmt -check e terraform validate
+     (oci 9.11.0, offline) verdes; podem ser copiados como estão.
+  B) mínima — trocar no catálogo o caminho do G2 dos 4 harness para $BO_REPO/contracts/stubs/C26/lowering_plan.jsonl.
+     Resolve o PROBLEMA 1, mas deixa o PROBLEMA 2: no OCI o render sai 0 com o plano NOT_APPLICABLE e o fmt
+     confere só o main.tf da raiz (bloco terraform); seria gate vácuo, e este módulo registraria isso.
+
+PROBLEMA 3 (não bloqueante) — derived_name do C26 sem campo de destino
+  O lowering_step.derived_name tem template e from_terms, mas não diz em que atributo o nome vai. O
+  renderizador não adivinha (seria inserção): o nome só entra no HCL se vier num valor do plano, e o render
+  registra uma nota por passo. Proposta para o C26 1.1.0: derived_name.field (caminho do C26), opcional.
+
+O QUE JÁ ESTÁ PRONTO NESTE MÓDULO (nada foi afrouxado)
+  - render, no_silent_insert, executor offline, redator, testes (G1, G3 verdes na lane);
+  - com o stub C26 que existe: render sai 0 (NOT_APPLICABLE) e fmt -check sai 0;
+  - com os exemplos OCI: 2 planos RENDERED, fmt -check 0, terraform validate offline válido.
+  Pelo protocolo (merge só com gates verdes), a branch bo/harness-oci fica pronta e só é mergeada quando o
+  caminho do G2 existir.

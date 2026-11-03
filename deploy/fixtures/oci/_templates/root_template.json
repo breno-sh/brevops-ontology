@@ -1,0 +1,12 @@
+{
+ "schema": "bo.harness.oci.root_template/1",
+ "module": "HARNESS-OCI",
+ "note": "Encanamento fixo que o renderizador escreve além dos valores do plano. O no_silent_insert confere que o HCL não tem nada fora disto e dos valores do plano.",
+ "terraform": {"required_version": "= 1.15.8"},
+ "required_providers": {"oci": {"source": "oracle/oci", "version": "= 9.11.0"}},
+ "provider": {"name": "oci", "attributes": {"region": "bo_region"}},
+ "root_variables": [
+  {"name": "bo_region", "type": "string", "sensitive": false, "description": "região da execução, dada pelo contexto do run (nunca pelo renderizador)"}
+ ],
+ "variable_prefixes": {"binding": "bo_ctx_", "withheld": "bo_withheld_"}
+}

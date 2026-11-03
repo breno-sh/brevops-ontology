@@ -1,0 +1,291 @@
+{
+ "apply": {
+  "ok": true
+ },
+ "destroy": {
+  "ok": true
+ },
+ "expects_vars": [
+  "bo_ctx_compartment_id",
+  "bo_ctx_run_tag",
+  "bo_region"
+ ],
+ "identity": "sandbox-synthetic",
+ "module_sha256": "9fd3ad3a5c692f57ee980fde1e05ef90d60fe2b7a58af6cbd67c8cf928b44ccb",
+ "note": "gravação sintética (sem nuvem): state no formato de terraform show -json montado do plano de exemplo",
+ "plan_id": "LP-OCI-NET-0001",
+ "polls": [
+  {
+   "format_version": "1.0",
+   "terraform_version": "1.15.8",
+   "values": {
+    "root_module": {
+     "child_modules": [
+      {
+       "address": "module.lp_oci_net_0001",
+       "resources": [
+        {
+         "address": "module.lp_oci_net_0001.oci_core_vcn.r1",
+         "mode": "managed",
+         "name": "r1",
+         "provider_name": "registry.terraform.io/oracle/oci",
+         "schema_version": 0,
+         "sensitive_values": {},
+         "type": "oci_core_vcn",
+         "values": {
+          "cidr_blocks": [
+           "10.0.0.0/16"
+          ],
+          "compartment_id": "@CTX:compartment_id",
+          "display_name": "bo-net-0001-vcn",
+          "freeform_tags": {
+           "bo_run": "@CTX:run_tag"
+          },
+          "id": "@OCID:oci_core_vcn:163",
+          "state": "PROVISIONING",
+          "time_created": "2026-11-03 10:00:00.000 +0000 UTC"
+         }
+        },
+        {
+         "address": "module.lp_oci_net_0001.oci_core_security_list.r2",
+         "mode": "managed",
+         "name": "r2",
+         "provider_name": "registry.terraform.io/oracle/oci",
+         "schema_version": 0,
+         "sensitive_values": {},
+         "type": "oci_core_security_list",
+         "values": {
+          "compartment_id": "@CTX:compartment_id",
+          "display_name": "bo-net-0001-sl",
+          "egress_security_rules": [
+           {
+            "destination": "10.0.0.0/16",
+            "protocol": "all"
+           }
+          ],
+          "id": "@OCID:oci_core_security_list:164",
+          "ingress_security_rules": [
+           {
+            "description": "",
+            "protocol": "6",
+            "source": "10.0.1.0/24",
+            "source_type": "CIDR_BLOCK",
+            "stateless": false,
+            "tcp_options": [
+             {
+              "max": 22,
+              "min": 22
+             }
+            ]
+           },
+           {
+            "description": "",
+            "protocol": "17",
+            "source": "10.0.2.0/24",
+            "source_type": "CIDR_BLOCK",
+            "stateless": true,
+            "udp_options": [
+             {
+              "max": 53,
+              "min": 53
+             }
+            ]
+           }
+          ],
+          "state": "AVAILABLE",
+          "time_created": "2026-11-03 10:00:00.000 +0000 UTC",
+          "vcn_id": "@OCID:oci_core_vcn:163"
+         }
+        },
+        {
+         "address": "module.lp_oci_net_0001.oci_core_network_security_group.r3",
+         "mode": "managed",
+         "name": "r3",
+         "provider_name": "registry.terraform.io/oracle/oci",
+         "schema_version": 0,
+         "sensitive_values": {},
+         "type": "oci_core_network_security_group",
+         "values": {
+          "compartment_id": "@CTX:compartment_id",
+          "display_name": "bo-net-0001-nsg",
+          "id": "@OCID:oci_core_network_security_group:165",
+          "state": "AVAILABLE",
+          "time_created": "2026-11-03 10:00:00.000 +0000 UTC",
+          "vcn_id": "@OCID:oci_core_vcn:163"
+         }
+        },
+        {
+         "address": "module.lp_oci_net_0001.oci_core_network_security_group_security_rule.c1",
+         "mode": "managed",
+         "name": "c1",
+         "provider_name": "registry.terraform.io/oracle/oci",
+         "schema_version": 0,
+         "sensitive_values": {},
+         "type": "oci_core_network_security_group_security_rule",
+         "values": {
+          "direction": "INGRESS",
+          "id": "@OCID:oci_core_network_security_group_security_rule:148",
+          "network_security_group_id": "@OCID:oci_core_network_security_group:165",
+          "protocol": "6",
+          "source": "10.0.3.0/24",
+          "source_type": "CIDR_BLOCK",
+          "stateless": false,
+          "tcp_options": [
+           {
+            "destination_port_range": [
+             {
+              "max": 443,
+              "min": 443
+             }
+            ]
+           }
+          ],
+          "time_created": "2026-11-03 10:00:00.000 +0000 UTC"
+         }
+        }
+       ]
+      }
+     ]
+    }
+   }
+  },
+  {
+   "format_version": "1.0",
+   "terraform_version": "1.15.8",
+   "values": {
+    "root_module": {
+     "child_modules": [
+      {
+       "address": "module.lp_oci_net_0001",
+       "resources": [
+        {
+         "address": "module.lp_oci_net_0001.oci_core_vcn.r1",
+         "mode": "managed",
+         "name": "r1",
+         "provider_name": "registry.terraform.io/oracle/oci",
+         "schema_version": 0,
+         "sensitive_values": {},
+         "type": "oci_core_vcn",
+         "values": {
+          "cidr_blocks": [
+           "10.0.0.0/16"
+          ],
+          "compartment_id": "@CTX:compartment_id",
+          "display_name": "bo-net-0001-vcn",
+          "freeform_tags": {
+           "bo_run": "@CTX:run_tag"
+          },
+          "id": "@OCID:oci_core_vcn:163",
+          "state": "AVAILABLE",
+          "time_created": "2026-11-03 10:00:00.000 +0000 UTC"
+         }
+        },
+        {
+         "address": "module.lp_oci_net_0001.oci_core_security_list.r2",
+         "mode": "managed",
+         "name": "r2",
+         "provider_name": "registry.terraform.io/oracle/oci",
+         "schema_version": 0,
+         "sensitive_values": {},
+         "type": "oci_core_security_list",
+         "values": {
+          "compartment_id": "@CTX:compartment_id",
+          "display_name": "bo-net-0001-sl",
+          "egress_security_rules": [
+           {
+            "destination": "10.0.0.0/16",
+            "protocol": "all"
+           }
+          ],
+          "id": "@OCID:oci_core_security_list:164",
+          "ingress_security_rules": [
+           {
+            "description": "",
+            "protocol": "17",
+            "source": "10.0.2.0/24",
+            "source_type": "CIDR_BLOCK",
+            "stateless": true,
+            "udp_options": [
+             {
+              "max": 53,
+              "min": 53
+             }
+            ]
+           },
+           {
+            "description": "",
+            "protocol": "6",
+            "source": "10.0.1.0/24",
+            "source_type": "CIDR_BLOCK",
+            "stateless": false,
+            "tcp_options": [
+             {
+              "max": 22,
+              "min": 22
+             }
+            ]
+           }
+          ],
+          "state": "AVAILABLE",
+          "time_created": "2026-11-03 10:00:00.000 +0000 UTC",
+          "vcn_id": "@OCID:oci_core_vcn:163"
+         }
+        },
+        {
+         "address": "module.lp_oci_net_0001.oci_core_network_security_group.r3",
+         "mode": "managed",
+         "name": "r3",
+         "provider_name": "registry.terraform.io/oracle/oci",
+         "schema_version": 0,
+         "sensitive_values": {},
+         "type": "oci_core_network_security_group",
+         "values": {
+          "compartment_id": "@CTX:compartment_id",
+          "display_name": "bo-net-0001-nsg",
+          "id": "@OCID:oci_core_network_security_group:165",
+          "state": "AVAILABLE",
+          "time_created": "2026-11-03 10:00:00.000 +0000 UTC",
+          "vcn_id": "@OCID:oci_core_vcn:163"
+         }
+        },
+        {
+         "address": "module.lp_oci_net_0001.oci_core_network_security_group_security_rule.c1",
+         "mode": "managed",
+         "name": "c1",
+         "provider_name": "registry.terraform.io/oracle/oci",
+         "schema_version": 0,
+         "sensitive_values": {},
+         "type": "oci_core_network_security_group_security_rule",
+         "values": {
+          "direction": "INGRESS",
+          "id": "@OCID:oci_core_network_security_group_security_rule:148",
+          "network_security_group_id": "@OCID:oci_core_network_security_group:165",
+          "protocol": "6",
+          "source": "10.0.3.0/24",
+          "source_type": "CIDR_BLOCK",
+          "stateless": false,
+          "tcp_options": [
+           {
+            "destination_port_range": [
+             {
+              "max": 443,
+              "min": 443
+             }
+            ]
+           }
+          ],
+          "time_created": "2026-11-03 10:00:00.000 +0000 UTC"
+         }
+        }
+       ]
+      }
+     ]
+    }
+   }
+  }
+ ],
+ "scenario": "VCN em PROVISIONING na 1ª leitura; regras de entrada em outra ordem",
+ "schema": "bo.harness.oci.recording/1",
+ "state_list_after_destroy": [],
+ "synthetic": true
+}

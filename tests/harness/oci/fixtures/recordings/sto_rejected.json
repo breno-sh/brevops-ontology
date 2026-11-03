@@ -1,0 +1,25 @@
+{
+ "apply": {
+  "code": "InvalidParameter",
+  "ok": false,
+  "status": 400
+ },
+ "destroy": {
+  "ok": true
+ },
+ "expects_vars": [
+  "bo_ctx_compartment_id",
+  "bo_ctx_objectstorage_namespace",
+  "bo_ctx_run_tag",
+  "bo_region"
+ ],
+ "identity": "sandbox-synthetic",
+ "module_sha256": "d18757701989bc3fa6f03466bd5d01fa87e025b73518576c51d4caf05ae4d2ba",
+ "note": "gravação sintética (sem nuvem): state no formato de terraform show -json montado do plano de exemplo",
+ "plan_id": "LP-OCI-STO-0001",
+ "polls": [],
+ "scenario": "API recusa a configuração: REJECTED_BY_API",
+ "schema": "bo.harness.oci.recording/1",
+ "state_list_after_destroy": [],
+ "synthetic": true
+}
