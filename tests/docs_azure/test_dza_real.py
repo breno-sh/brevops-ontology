@@ -41,4 +41,4 @@ def test_type_subcategory_and_import():
     recs = {json.loads(x)["resource_type"]: json.loads(x) for x in open(TYPES, encoding="utf-8")}
     sa = recs["azurerm_storage_account"]
     assert sa["subcategory"]["value"] == "Storage"
-    assert sa["import_id"]["value"][0].startswith("/subscriptions/{subscriptionId}/resourceGroups/")
+    assert sa["import"]["value"][0].startswith("/subscriptions/{subscriptionId}/resourceGroups/")

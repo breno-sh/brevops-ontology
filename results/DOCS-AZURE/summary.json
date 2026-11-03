@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "DOCS-AZURE",
- "generated_at": "2026-11-03T07:23:36-03:00",
+ "generated_at": "2026-11-03T17:46:23-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/DOCS-AZURE.txt",
@@ -16,6 +16,7 @@
    "as_of_defaults": "2026-10-29",
    "escopo": "resource_schemas+r/",
    "atomos": "bo.schema.core",
+   "contrato_C03": "3.1.0",
    "generator": "python -I -m bo.docs_azure.build",
    "coverage": "python -I -m bo.docs.coverage DOCS-AZURE",
    "cloud": "none",
@@ -32,13 +33,13 @@
     "sha256": "594a4e878ac489b3ed97cdd6344b9945a8fd3a5d22ae4d6f4bfebd264decfe3d"
    }
   ],
-  "recorded_at": "2026-11-03T07:23:36-03:00"
+  "recorded_at": "2026-11-03T17:46:23-03:00"
  },
  "sources": [
   {
    "uri": "https://github.com/hashicorp/terraform-provider-azurerm/tree/v5.12.0/website/docs",
    "license": "MPL-2.0",
-   "transformation": "páginas r/*.html.markdown lidas como texto: por item de argumento/atributo, fatos C03 (descrição, default, valores válidos, faixa, unidade, formato, ForceNew, depreciação, conflito, condição, exemplo, nota) com arquivo:linha e frase; front matter e seção Import -> type_subcategory.jsonl; frases redigidas pelas regras do privacy_lint"
+   "transformation": "páginas r/*.html.markdown lidas como texto: por item de argumento/atributo, fatos C03 (descrição, default, valores válidos, faixa, unidade, formato, ForceNew, depreciação, conflito, condição, exemplo, nota) com arquivo:linha e frase; front matter, título e seção Import -> type_subcategory.jsonl (C03 3.1.0); frases redigidas pelas regras do privacy_lint"
   },
   {
    "uri": "registry.terraform.io/hashicorp/azurerm 5.12.0 providers-schema.json",
@@ -46,5 +47,5 @@
    "transformation": "universo de átomos (resource_schemas) pela biblioteca bo.schema.core; sha256 = schema_sha256 do pins.json"
   }
  ],
- "notes": "Fatos por atributo da doc do azurerm 5.12.0 (números em results/DOCS-AZURE/coverage.json e $BO_DATA/DOCS-AZURE/build_report.json). Achados: só ~10% dos átomos têm enum e ~2% unidade na doc; 561 átomos sem item na página (description unknown/not_documented); 586 itens da doc sem átomo no schema. type_subcategory.jsonl e ID de importação sem tipo no C03 (CONTRACT_CHANGE.txt, não bloqueante)."
+ "notes": "Fatos por atributo da doc do azurerm 5.12.0 (números em results/DOCS-AZURE/coverage.json e $BO_DATA/DOCS-AZURE/build_report.json). Achados: só ~10% dos átomos têm enum e ~2% unidade na doc; 561 átomos sem item na página (description unknown/not_documented); 586 itens da doc sem átomo no schema. type_subcategory.jsonl no formato C03 3.1.0 (bloco import); 1102 de 1107 tipos com ID de importação."
 }

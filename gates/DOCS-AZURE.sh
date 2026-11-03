@@ -17,8 +17,9 @@ $py -I -B -m pytest tests/docs_azure -q -p no:cacheprovider
 step "regeneração idêntica (docs_facts, type_subcategory e build_report saem só do código)"
 $py -I -B -m bo.docs_azure.build --check
 
-step "C03 docs_facts e C15 coverage pelo validador único"
+step "C03 docs_facts e type_subcategory (3.1.0) e C15 coverage pelo validador único"
 $py -I -B -m bo.contracts.validate docs_facts "$BO_DATA/DOCS-AZURE/docs_facts.jsonl" | tail -1
+$py -I -B -m bo.contracts.validate type_subcategory "$BO_DATA/DOCS-AZURE/type_subcategory.jsonl" | tail -1
 $py -I -B -m bo.contracts.validate C15 "results/DOCS-AZURE/coverage.json" | tail -1
 
 step "cobertura (relatada, sem meta)"

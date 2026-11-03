@@ -1,5 +1,9 @@
 CONTRACT_CHANGE — DOCS-AZURE — 2026-11-03T07:25-03:00 (America/Recife)
 
+ATUALIZAÇÃO 2026-11-03T17:47-03:00: o item 1 foi resolvido pelo C03 3.1.0 (emenda 2, 513113d): tipo
+type_subcategory com bloco 'import' (no lugar de 'import_id'). O DOCS-AZURE grava nesse formato e o
+arquivo passa no validador. Os itens 2 e 3 continuam só como registro.
+
 Proposta NÃO bloqueante (mesmo tipo da do SCHEMALIB). O DOCS-AZURE seguiu: docs_facts.jsonl confere com o
 C03 3.0.0 no validador único (gate G1). O que falta é lugar no contrato para dois dos fatos que o objetivo do
 módulo pede (ID de importação e subcategoria) e para o arquivo type_subcategory.jsonl, que o catálogo de
@@ -24,8 +28,8 @@ docs_facts.jsonl; validate C03 type_subcategory.jsonl não acha tipo de arquivo)
 
 2. C03 docs_facts: (só registro) a frase de origem passa pelo mesmo conjunto de regras do privacy_lint antes
    de ser gravada. Na doc do azurerm 5.12.0 (contagem de textos gravados alterados, em
-   $BO_DATA/DOCS-AZURE/build_report.json, campo redactions): 2118 com GUID depois de /subscriptions/ (vira
-   {subscriptionId}), 75 com GUID de exemplo de último grupo só de dígitos (vira {guid}), 2 com cadeia de
+   $BO_DATA/DOCS-AZURE/build_report.json, campo redactions): 2132 com GUID depois de /subscriptions/, inclusive malformado
+   (vira {subscriptionId}), 66 com GUID de exemplo de último grupo só de dígitos (vira {guid}), 2 com cadeia de
    conexão, 2 com cabeçalho de chave PEM e 2 com 12 dígitos seguidos (viram [REDIGIDO:<regra>]). A frase
    gravada, portanto, nem sempre é byte a byte a da doc; a linha (file:line) continua exata. Se o C03 quiser
    distinguir, a mudança é um campo opcional source.redacted (bool) no doc_source do C00.

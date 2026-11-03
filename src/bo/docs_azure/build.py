@@ -1,4 +1,4 @@
-"""DOCS-AZURE: páginas r/ do azurerm na tag fixada -> docs_facts.jsonl (C03), type_subcategory.jsonl e coverage.
+"""DOCS-AZURE: páginas r/ do azurerm na tag fixada -> docs_facts.jsonl e type_subcategory.jsonl (C03 3.1.0) e coverage.
 
   python -I -m bo.docs_azure.build            gera $BO_DATA/DOCS-AZURE/{docs_facts,type_subcategory}.jsonl,
                                               build_report.json e results/DOCS-AZURE/coverage.json
@@ -34,7 +34,8 @@ from . import source as SRC
 MODULE = "DOCS-AZURE"
 KEEP_FROM_NOTES = {"forces_replacement", "deprecation", "conflicts_with", "required_when"}
 GUID = re.compile(r"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}")
-SUB_GUID = re.compile(r"(/subscriptions/)" + GUID.pattern, re.I)
+# GUID depois de /subscriptions/, inclusive malformado (a doc tem '00000000-0000-0000-0000-00000000000')
+SUB_GUID = re.compile(r"(/subscriptions/)[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F-]*[0-9a-fA-F]", re.I)
 GUID_DIGITS = re.compile(r"\b[0-9a-fA-F]{4,8}(?:-[0-9a-fA-F]{4}){1,3}-\d{12}\b")   # inclui GUIDs malformados
 NOTE_HEAD = re.compile(r"^\*\*\s*(?:Note|NOTE|Warning|WARNING|Important|IMPORTANT)\s*:?\s*\*\*\s*:?\s*")
 
@@ -285,18 +286,21 @@ def page_facts(pg: MD.Page, ti: TypeIndex, facts: Facts, stats: Counter, documen
 
 
 def type_record(pg: MD.Page | None, rtype: str, meta: dict, red: Redactor, in_schema: bool) -> dict:
+    """Registro C03 3.1.0 type_subcategory (type_fact): subcategoria e import do tipo."""
     rec = {"type_id": f"{SRC.PROVIDER}:{rtype}", "provider": SRC.PROVIDER, "provider_version": meta["version"],
-           "resource_type": rtype, "in_schema": in_schema}
+           "resource_type": rtype, "kind": "resource", "in_schema": in_schema}
     src = lambda ln, s: {"repo": meta["repo"], "tag": meta["tag"], "file": pg.file, "line": ln,  # noqa: E731
                          "sentence": red.text(s)}
     if pg is None:
         rec["doc_file"] = None
         rec["subcategory"] = {"status": "unknown", "unknown_reason": "not_documented",
                               "extraction_method": "parser", "evidence_level": "published"}
-        rec["import_id"] = dict(rec["subcategory"], extraction_method="regex")
+        rec["import"] = dict(rec["subcategory"], extraction_method="regex")
         return rec
     rec["doc_file"] = pg.file
-    if "page_title" in pg.front:
+    if pg.h1:
+        rec["title"] = {"text": pg.h1[0], "line": pg.h1[1]}
+    if "page_title" in pg.front and pg.front["page_title"][0].strip():
         rec["page_title"] = pg.front["page_title"][0]
     if "subcategory" in pg.front and pg.front["subcategory"][0].strip():
         v, ln = pg.front["subcategory"]
@@ -312,21 +316,22 @@ def type_record(pg: MD.Page | None, rtype: str, meta: dict, red: Redactor, in_sc
             v = red.text(c.id)
             if v not in vals:
                 vals.append(v)
-        rec["import_id"] = {"status": "stated", "value": vals,
-                            "source": src(cmds[0].line, pg.lines[cmds[0].line - 1].strip()),
-                            "extraction_method": "regex", "evidence_level": "published"}
+        imp = {"status": "stated", "value": vals, "supported": True, "methods": ["terraform_import_cli"],
+               "source": src(cmds[0].line, pg.lines[cmds[0].line - 1].strip()),
+               "extraction_method": "regex", "evidence_level": "published"}
         if len(cmds) > 1:
-            rec["import_id"]["other_lines"] = [c.line for c in cmds[1:]]
+            imp["other_lines"] = [src(c.line, pg.lines[c.line - 1].strip()) for c in cmds[1:]]
         if pg.import_text:
             ln, s = pg.import_text[0]
-            rec["import_id"]["key_sentence"] = src(ln, s)
+            imp["key_sentence"] = src(ln, s)
+        rec["import"] = imp
     elif pg.has_import_section:
         ln, s = pg.import_text[0] if pg.import_text else (pg.import_line, "## Import")
-        rec["import_id"] = {"status": "unknown", "unknown_reason": "ambiguous", "source": src(ln, s),
-                            "extraction_method": "regex", "evidence_level": "published"}
+        rec["import"] = {"status": "unknown", "unknown_reason": "ambiguous", "source": src(ln, s),
+                         "extraction_method": "regex", "evidence_level": "published"}
     else:
-        rec["import_id"] = {"status": "unknown", "unknown_reason": "not_documented",
-                            "extraction_method": "regex", "evidence_level": "published"}
+        rec["import"] = {"status": "unknown", "unknown_reason": "not_documented",
+                         "extraction_method": "regex", "evidence_level": "published"}
     return rec
 
 
@@ -367,7 +372,7 @@ def build(dest: Path) -> dict:
         raise SystemExit("fact_id repetido")
     dest.mkdir(parents=True, exist_ok=True)
     schema_core.write_jsonl(dest / "docs_facts.jsonl", recs)
-    schema_core.write_jsonl(dest / "type_subcategory.jsonl", trecs)
+    schema_core.write_jsonl(dest / "type_subcategory.jsonl", trecs)      # C03 3.1.0 type_subcategory
     for name in ("docs_facts.jsonl", "type_subcategory.jsonl"):
         hits = privacy.scan_text((dest / name).read_text(encoding="utf-8"), name)
         if hits:
@@ -383,7 +388,7 @@ def build(dest: Path) -> dict:
         "parse_stats": dict(sorted(stats.items())),
         "redactions": dict(sorted(red.count.items())),
         "types_with_subcategory": sum(t["subcategory"]["status"] == "stated" for t in trecs),
-        "types_with_import_id": sum(t["import_id"]["status"] == "stated" for t in trecs),
+        "types_with_import": sum(t["import"]["status"] == "stated" for t in trecs),
     }
     (dest / "build_report.json").write_text(json.dumps(report, indent=1, ensure_ascii=False, sort_keys=True) + "\n",
                                             encoding="utf-8")

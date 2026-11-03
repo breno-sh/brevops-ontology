@@ -117,9 +117,9 @@ def test_import_id_redacted_and_subcategory(tmp_path):
     red = B.Redactor()
     rec = B.type_record(pg, "azurerm_thing", META, red, True)
     assert rec["subcategory"]["value"] == "Storage" and rec["subcategory"]["source"]["line"] == 2
-    v = rec["import_id"]["value"][0]
+    v = rec["import"]["value"][0]
     assert v.startswith("/subscriptions/{subscriptionId}/resourceGroups/rg1")
-    assert "12345678-1234" not in rec["import_id"]["source"]["sentence"]
+    assert "12345678-1234" not in rec["import"]["source"]["sentence"]
 
 
 def test_redactor_removes_what_privacy_lint_flags():
@@ -129,3 +129,5 @@ def test_redactor_removes_what_privacy_lint_flags():
     s = red.text(f"id {guid} and acct {D12} and x" + "@" + "corp.com.br")
     assert not privacy.scan_text(s, "x")
     assert "{guid}" in s
+    bad = "/subscriptions/" + "0" * 8 + "-0000-0000-0000-" + "0" * 11 + "/x"     # GUID malformado da doc
+    assert red.text(bad) == "/subscriptions/{subscriptionId}/x"
