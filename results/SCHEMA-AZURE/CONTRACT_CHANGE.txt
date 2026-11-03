@@ -1,0 +1,54 @@
+CONTRACT_CHANGE — SCHEMA-AZURE — 2026-11-03T07:27-03:00 (America/Recife)
+
+BLOQUEANTE para o gate G7 (privacy_lint --strict) e, por arrasto, para o G4 (make gate) e o G11 (merge).
+Mudança proposta no C00 (convenções §9, privacy_lint), dono REPO: src/bo/repo/privacy.py.
+É a mesma do item 2 do results/SCHEMA-AWS/CONTRACT_CHANGE.txt (branch bo/schema-aws), com a evidência do azurerm.
+O SCHEMA-AZURE parou antes do merge: o resto está pronto e verde na branch bo/schema-azure.
+
+1. Falso positivo de secret_assignment em declaração de tipo cty
+   Fato: $BO_DATA/SCHEMA-AZURE/atoms.jsonl (C01, saída obrigatória, 10.529.439 bytes, abaixo do TEXT_LIMIT)
+   tem 14 achados secret_assignment em 14 linhas, e o trecho casado é sempre o mesmo: a chave password
+   com o valor literal string (entre aspas) dentro do tf_type de um atributo cujo tipo é lista/conjunto de objetos com um campo
+   chamado password (ex.: azurerm:azurerm_batch_pool:container_configuration.container_registries).
+   "string" é o TIPO cty do campo, não um valor; o schema do provider não traz valor nenhum. O tf_type é
+   exigido pelo C01 ("tipo cty do schema do provider") na codificação JSON do cty, então não há como
+   gravar diferente sem quebrar o contrato e os consumidores.
+   Proposta: o lookahead negativo da regra também aceita os nomes de tipo primitivo do cty como valor
+   inteiro entre aspas: string, number, bool, dynamic (só o literal exato; valor que só começa com
+   "string" e segue com mais caracteres continua reprovando).
+
+Diff testado (aplica com patch -p1 em $BO_REPO):
+--- a/src/bo/repo/privacy.py
++++ b/src/bo/repo/privacy.py
+@@ -39,7 +39,7 @@
+     ("secret_jwt", re.compile(r"\beyJ[A-Za-z0-9_-]{10,}\.eyJ[A-Za-z0-9_-]{10,}\.")),
+     ("secret_assignment", re.compile(
+         r"(?i)\b(aws_secret_access_key|secret_access_key|client_secret|password|passwd|api[_-]?key|"
+-        r"access[_-]?token|auth[_-]?token|private_key|sas_token)\b[\"']?\s*[:=]\s*+[\"'](?!REDACTED|WITHHELD|<|\$\{)"
++        r"access[_-]?token|auth[_-]?token|private_key|sas_token)\b[\"']?\s*[:=]\s*+[\"'](?!REDACTED|WITHHELD|<|\$\{|(?:string|number|bool|dynamic)[\"'])"
+         r"[^\"'\s]{6,}[\"']")),
+     ("secret_env_line", re.compile(r"^\s*(?:export\s+)?[A-Z0-9_]*(?:SECRET|PASSWORD|TOKEN|API_KEY|ACCESS_KEY)[A-Z0-9_]*="
+                                    r"(?!\s*$|[\"']?\$|[\"']?REDACTED|[\"']?WITHHELD)\S{6,}")),
+
+Testes do diff (cópia em $BO_DATA/tmp/SCHEMA-AZURE/lintpatch, 2026-11-03T07:27 -03:00):
+  * privacy_lint.py --selftest com o diff: 43/43 expectativas cumpridas (os plantados continuam reprovando).
+  * regra sozinha sobre atoms.jsonl: sem o diff 14 achados (todos o literal "string"); com o diff 0.
+  * senha plantada de 10 caracteres que começa com "string" e outra comum: com o diff, 2 achados (as duas).
+  * privacy_lint.py --strict results/SCHEMA-AZURE $BO_DATA/SCHEMA-AZURE com o diff: RESULTADO OK;
+    sem o diff: REPROVADO (14 achados, todos o falso positivo acima).
+
+2. (registro, sem mudança pedida) write_only
+   A bo.schema (SCHEMALIB) ainda grava o C01 2.0.0: não emite write_only. O SCHEMA-AZURE acrescenta o campo
+   numa passada separada (src/bo/schema_azure/atoms.py), lida do mesmo schema pelo mesmo caminho do átomo,
+   sem tocar em outro campo (teste: fora write_only, os átomos são byte a byte os da biblioteca e o
+   types.jsonl é idêntico). azurerm 5.12.0: 8 átomos write_only, todos optional e não computed
+   (C01-WRITEONLY confere). Quando a bo.schema emitir o campo, a passada vira redundante e pode sair.
+
+3. (registro, sem mudança pedida) plugin_cache/ e o binário
+   O binário assinado é download e fica onde a regra dos downloads e o padrão da bo.schema.extract mandam:
+   $BO_DATA/downloads/terraform-registry/plugin-cache/registry.terraform.io/hashicorp/azurerm/5.12.0/darwin_arm64/
+   (zip assinado em $BO_DATA/downloads/terraform-azurerm-5.12.0/, com SOURCE.txt). $BO_DATA/SCHEMA-AZURE/plugin_cache/
+   guarda o lock (h1 + 11 zh), a configuração de instalação offline (filesystem_mirror só do azurerm), o pino
+   (provider.json) e o README; o sha256 do binário está no MANIFEST.sha256 do módulo, então o consume_check
+   dos pilotos confere o binário. Copiar o binário para dentro de $BO_DATA/SCHEMA-AZURE reprovaria o G7
+   (arquivo grande binário no --strict).
