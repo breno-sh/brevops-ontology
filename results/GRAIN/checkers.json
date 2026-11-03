@@ -1,0 +1,36 @@
+{
+ "checkers": {
+  "coverage": {
+   "args": [
+    "--fixtures"
+   ],
+   "output": [
+    "RESULTADO: OK"
+   ],
+   "rc": 0
+  },
+  "permutation": {
+   "args": [
+    "--fixtures",
+    "--rename"
+   ],
+   "output": [
+    "RESULTADO: OK"
+   ],
+   "rc": 0
+  },
+  "relations": {
+   "args": [
+    "--fixtures"
+   ],
+   "output": [
+    "RESULTADO: OK"
+   ],
+   "rc": 0
+  }
+ },
+ "module": "GRAIN",
+ "ok": true,
+ "schema": "bo.grain.checkers/1",
+ "written_at": "2026-11-03T02:30:00-03:00"
+}

@@ -1,0 +1,136 @@
+{
+ "canonical_units_inline": [
+  {
+   "config": {
+    "expiration_days": 365,
+    "prefix": "arch/"
+   },
+   "grain": "COMPONENT",
+   "key": {
+    "rule_name": "r-arch"
+   },
+   "label": "lifecycle rule",
+   "occurrence": "bab2a4aece89f8900cd180aa66cbcfd9939c3223e085f1834bec9c6bf8934b37",
+   "parent": "a2515ab9703a99b01ceea73eb7b3930fd3a7042829fa6cbc44b65dc2838c092a",
+   "rule": "GRAIN-G2-COMPONENT"
+  },
+  {
+   "config": {
+    "expiration_days": 30,
+    "prefix": "tmp/"
+   },
+   "grain": "COMPONENT",
+   "key": {
+    "rule_name": "r-old"
+   },
+   "label": "lifecycle rule",
+   "occurrence": "ca63200752e33f43c1cbd62d827b4af48e2fc3492b74e2d288ebbd9ec7ada802",
+   "parent": "a2515ab9703a99b01ceea73eb7b3930fd3a7042829fa6cbc44b65dc2838c092a",
+   "rule": "GRAIN-G2-COMPONENT"
+  },
+  {
+   "config": {},
+   "grain": "ENTITY",
+   "key": {
+    "bucket_name": "logs-example"
+   },
+   "label": "object container",
+   "occurrence": "a2515ab9703a99b01ceea73eb7b3930fd3a7042829fa6cbc44b65dc2838c092a",
+   "parent": null,
+   "rule": "GRAIN-G4-ENTITY"
+  },
+  {
+   "config": {
+    "algorithm": "aes256"
+   },
+   "grain": "FACET",
+   "key": {},
+   "label": "encryption",
+   "occurrence": "a3308a8f016e85b94497eda12b026a448a33324e1255c88706b4b9cce29f4bbd",
+   "parent": "a2515ab9703a99b01ceea73eb7b3930fd3a7042829fa6cbc44b65dc2838c092a",
+   "rule": "GRAIN-G3-FACET"
+  },
+  {
+   "config": {
+    "block_public": true
+   },
+   "grain": "FACET",
+   "key": {},
+   "label": "public access block",
+   "occurrence": "5ee97d3786ca307e911d806c68934f3300e1643375155107c38fe8d668271844",
+   "parent": "a2515ab9703a99b01ceea73eb7b3930fd3a7042829fa6cbc44b65dc2838c092a",
+   "rule": "GRAIN-G3-FACET"
+  },
+  {
+   "config": {
+    "versioning": true
+   },
+   "grain": "FACET",
+   "key": {},
+   "label": "versioning",
+   "occurrence": "e4a1ca6b2899434d8e3d0649f981280dd09044e1acadd2277880072ae7000e82",
+   "parent": "a2515ab9703a99b01ceea73eb7b3930fd3a7042829fa6cbc44b65dc2838c092a",
+   "rule": "GRAIN-G3-FACET"
+  }
+ ],
+ "content_control_changes": true,
+ "instance_decompositions_equal": true,
+ "module": "GRAIN",
+ "packagings": {
+  "inline": {
+   "instance_units": 6,
+   "schema_candidates": [
+    "a_bucket",
+    "a_bucket.versioning",
+    "a_bucket.lifecycle_rule",
+    "a_bucket.encryption",
+    "a_bucket.public_access"
+   ],
+   "schema_units": 5
+  },
+  "mixed": {
+   "instance_units": 6,
+   "schema_candidates": [
+    "a_bucket",
+    "a_bucket.encryption",
+    "a_bucket_lifecycle_rule",
+    "a_bucket_versioning",
+    "a_bucket_public_access"
+   ],
+   "schema_units": 5
+  },
+  "separate": {
+   "instance_units": 6,
+   "schema_candidates": [
+    "a_bucket",
+    "a_bucket_versioning",
+    "a_bucket_lifecycle.rule",
+    "a_bucket_encryption",
+    "a_bucket_public_access"
+   ],
+   "schema_units": 5
+  },
+  "wrapped": {
+   "instance_units": 6,
+   "schema_candidates": [
+    "a_store",
+    "a_store.settings.versioning",
+    "a_store.settings.lifecycle_rule",
+    "a_store:encryption",
+    "a_store:public_access"
+   ],
+   "schema_units": 5
+  }
+ },
+ "provider": "provider_a",
+ "reorder_invariant": {
+  "inline": true,
+  "mixed": true,
+  "separate": true,
+  "wrapped": true
+ },
+ "reorder_seeds": 25,
+ "schema": "bo.grain.packaging/1",
+ "schema_signatures_equal": true,
+ "written_at": "2026-11-03T02:30:00-03:00"
+}

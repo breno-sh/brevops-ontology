@@ -1,0 +1,91 @@
+{
+ "checks": [
+  {
+   "case": "P1",
+   "detail": {
+    "endpoints": [
+     "instance",
+     "interface"
+    ],
+    "g4_guard_would_accept": true,
+    "naive_v2": "ENTITY",
+    "procedure": [
+     "BINDING",
+     "GRAIN-G1-BINDING",
+     "REF_TUPLE"
+    ]
+   },
+   "ok": true
+  },
+  {
+   "case": "P2",
+   "detail": {
+    "inline": [
+     "7add81c62ebb985fca510289fb2742c30978cdee3d03149b79c561a2f14d4c9c",
+     "f03a18d2e3421a4fb57f0e09efcc42f6581ebca360cfe3c21aa9643e2c2cfaea"
+    ],
+    "separate": [
+     "7add81c62ebb985fca510289fb2742c30978cdee3d03149b79c561a2f14d4c9c",
+     "f03a18d2e3421a4fb57f0e09efcc42f6581ebca360cfe3c21aa9643e2c2cfaea"
+    ]
+   },
+   "ok": true
+  },
+  {
+   "case": "P3",
+   "detail": {
+    "endpoints": [
+     "permission_set",
+     "principal",
+     "scope"
+    ],
+    "naive_v2": "ENTITY",
+    "procedure": [
+     "BINDING",
+     "GRAIN-G1-BINDING"
+    ]
+   },
+   "ok": true
+  },
+  {
+   "case": "P4",
+   "detail": {
+    "g2_before_g1": "COMPONENT",
+    "real_order": "BINDING"
+   },
+   "ok": true
+  },
+  {
+   "case": "P5",
+   "detail": {
+    "without_g1": [
+     "UNKNOWN",
+     "GRAIN-G0-NOMATCH",
+     [
+      "lifecycle_controller"
+     ]
+    ]
+   },
+   "ok": true
+  },
+  {
+   "case": "P6",
+   "detail": {
+    "rule_from_set": [
+     "COMPONENT",
+     "REF_TUPLE_PLUS"
+    ],
+    "versioning_resource": [
+     "FACET",
+     "BORROWED"
+    ]
+   },
+   "ok": true
+  }
+ ],
+ "module": "GRAIN",
+ "ok": true,
+ "rules_version": "0.1.0",
+ "schema": "bo.grain.priority/1",
+ "written_at": "2026-11-03T02:30:00-03:00"
+}

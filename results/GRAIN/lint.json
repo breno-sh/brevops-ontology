@@ -1,0 +1,10 @@
+{
+ "file": "grain/grain_rules.yaml",
+ "hygiene_only": true,
+ "module": "GRAIN",
+ "mutant_failures": [],
+ "mutants": 8,
+ "problems": [],
+ "schema": "bo.grain.lint/1",
+ "written_at": "2026-11-03T02:30:00-03:00"
+}

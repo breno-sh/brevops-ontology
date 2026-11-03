@@ -1,0 +1,27 @@
+{
+ "control_v2_style": {
+  "detected": true,
+  "sample": [
+   "A bucket/contradict:a_bucket.identity -> a_bucket.encryption: virou ENTITY (era FACET)",
+   "C bucket/contradict:a_bucket.identity -> a_bucket.encryption: grão mudou FACET -> ENTITY",
+   "A bucket/contradict:a_bucket.identity -> a_bucket.lifecycle_rule: virou ENTITY (era COMPONENT)",
+   "C bucket/contradict:a_bucket.identity -> a_bucket.lifecycle_rule: grão mudou COMPONENT -> ENTITY",
+   "A bucket/contradict:a_bucket.identity -> a_bucket.public_access: virou ENTITY (era FACET)"
+  ],
+  "violations": 979
+ },
+ "module": "GRAIN",
+ "ok": true,
+ "rules_version": "0.1.0",
+ "schema": "bo.grain.unknown_exit/1",
+ "stats": {
+  "became_unknown": 587,
+  "changed_nodes": 1193,
+  "identity_wipes": 59,
+  "mutants": 805,
+  "named_cases": 4,
+  "worlds": 9
+ },
+ "violations": [],
+ "written_at": "2026-11-03T02:30:00-03:00"
+}

@@ -1,0 +1,332 @@
+{
+ "checks_without_commitment": [],
+ "failed": 0,
+ "n_commitments": 64,
+ "out_of_scope": 42,
+ "reproduced": 22,
+ "rows": [
+  {
+   "commitment_id": "CMT-BKT-P01",
+   "how": "faceta de versionamento embutida e separada: mesmo dono, mesmas ocorrências nas 4 embalagens",
+   "status": "REPRODUCED"
+  },
+  {
+   "commitment_id": "CMT-BKT-P02",
+   "how": "faceta do namespace com alcance = contêineres do namespace, dono = namespace",
+   "status": "REPRODUCED"
+  },
+  {
+   "commitment_id": "CMT-BKT-P03",
+   "how": "contêiner é componente do namespace (G2)",
+   "status": "REPRODUCED"
+  },
+  {
+   "commitment_id": "CMT-BKT-N01",
+   "decided_by": "AXIOMS/OWL (disjunção de tipos)",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-BKT-N02",
+   "decided_by": "PILOT-STO-ORACLE (acesso efetivo)",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-BKT-N03",
+   "how": "unidade declarada com dono divergente da evidência é rejeitada por verify_units",
+   "status": "REPRODUCED"
+  },
+  {
+   "commitment_id": "CMT-BKT-U01",
+   "decided_by": "PILOT-STO-ORACLE (acesso efetivo)",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-BKT-U02",
+   "how": "configuração separada com referência ao contêiner não resolvida: UNKNOWN com owner",
+   "status": "REPRODUCED"
+  },
+  {
+   "commitment_id": "CMT-NIC-P01",
+   "how": "contagens {'inline_1': (2, 1), 'inline_2': (3, 2), 'separate_1': (2, 1), 'separate_2': (3, 2)}",
+   "status": "REPRODUCED"
+  },
+  {
+   "commitment_id": "CMT-NIC-P02",
+   "how": "contagens {'inline_1': (2, 1), 'inline_2': (3, 2), 'separate_1': (2, 1), 'separate_2': (3, 2)}",
+   "status": "REPRODUCED"
+  },
+  {
+   "commitment_id": "CMT-NIC-P03",
+   "how": "1 → 2 interfaces só acrescenta",
+   "status": "REPRODUCED"
+  },
+  {
+   "commitment_id": "CMT-NIC-P04",
+   "how": "embutida == separada (sem a camada Terraform)",
+   "status": "REPRODUCED"
+  },
+  {
+   "commitment_id": "CMT-NIC-P05",
+   "how": "blocos reordenados: mesmas identidades de ocorrência",
+   "status": "REPRODUCED"
+  },
+  {
+   "commitment_id": "CMT-NIC-N01",
+   "decided_by": "AXIOMS/OWL",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-NIC-N02",
+   "decided_by": "AXIOMS/OWL",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-NIC-N03",
+   "how": "interface não conta como instância",
+   "status": "REPRODUCED"
+  },
+  {
+   "commitment_id": "CMT-NIC-U01",
+   "decided_by": "ABOX-LIFT (leitura completa)",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-NIC-U02",
+   "how": "referência simbólica não vira anexação",
+   "status": "REPRODUCED"
+  },
+  {
+   "commitment_id": "CMT-FW-P01",
+   "how": "regra embutida (anônima, por conteúdo) == regra separada; reordenar não muda",
+   "status": "REPRODUCED"
+  },
+  {
+   "commitment_id": "CMT-FW-P02",
+   "decided_by": "PILOT-NET-ORACLE",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-FW-P03",
+   "decided_by": "PILOT-NET-ORACLE",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-FW-P04",
+   "decided_by": "PILOT-NET-ORACLE",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-FW-P05",
+   "decided_by": "PILOT-NET-ORACLE",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-FW-P06",
+   "how": "parte do grão: a ordem textual não muda as unidades (a decisão de acesso é do PILOT-NET)",
+   "status": "REPRODUCED"
+  },
+  {
+   "commitment_id": "CMT-FW-N01",
+   "decided_by": "TRANSLATOR",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-FW-N02",
+   "decided_by": "AXIOMS/OWL",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-FW-N03",
+   "decided_by": "PILOT-NET-ORACLE",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-FW-U01",
+   "decided_by": "PILOT-NET-ORACLE",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-FW-U02",
+   "decided_by": "PILOT-NET-ORACLE",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-FW-U03",
+   "decided_by": "PILOT-NET-ORACLE",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-IAM-P01",
+   "how": "atribuição = vínculo de três pontas, distinto delas",
+   "status": "REPRODUCED"
+  },
+  {
+   "commitment_id": "CMT-IAM-P02",
+   "decided_by": "DOMAIN-CONTRACTS (unidade de decisão)",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-IAM-P03",
+   "decided_by": "DOMAIN-CONTRACTS",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-IAM-P04",
+   "decided_by": "DOMAIN-CONTRACTS",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-IAM-P05",
+   "decided_by": "DOMAIN-CONTRACTS",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-IAM-P06",
+   "decided_by": "DOMAIN-CONTRACTS",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-IAM-N01",
+   "decided_by": "TRANSLATOR",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-IAM-N02",
+   "decided_by": "DOMAIN-CONTRACTS",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-IAM-N03",
+   "decided_by": "AXIOMS/OWL",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-IAM-N04",
+   "decided_by": "DOMAIN-CONTRACTS",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-IAM-U01",
+   "decided_by": "DOMAIN-CONTRACTS",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-IAM-U02",
+   "decided_by": "DOMAIN-CONTRACTS",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-IAM-U03",
+   "decided_by": "DOMAIN-CONTRACTS",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-LB-P01",
+   "decided_by": "DOMAIN-CONTRACTS",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-LB-P02",
+   "how": "nove unidades abaixo do balanceador (frontend, 2 listeners, 2 regras, 2 pools, sonda, certificado)",
+   "status": "REPRODUCED"
+  },
+  {
+   "commitment_id": "CMT-LB-P03",
+   "how": "embutido == separado, inclusive as referências regra → pool (por nome no embutido)",
+   "status": "REPRODUCED"
+  },
+  {
+   "commitment_id": "CMT-LB-P04",
+   "decided_by": "ONTPAT/AXIOMS",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-LB-N01",
+   "decided_by": "ONTPAT",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-LB-N02",
+   "decided_by": "SHACL",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-LB-N03",
+   "decided_by": "AXIOMS",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-LB-U01",
+   "decided_by": "ABOX-LIFT",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-LB-U02",
+   "decided_by": "ABOX-LIFT",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-DB-P01",
+   "decided_by": "DOMAIN-CONTRACTS",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-DB-P02",
+   "decided_by": "AXIOMS",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-DB-P03",
+   "how": "conjunto de parâmetros compartilhado é entidade",
+   "status": "REPRODUCED"
+  },
+  {
+   "commitment_id": "CMT-DB-P04",
+   "how": "retenção = faceta; cópia manual = entidade com ciclo de vida próprio",
+   "status": "REPRODUCED"
+  },
+  {
+   "commitment_id": "CMT-DB-N01",
+   "decided_by": "AXIOMS/OWL",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-DB-N02",
+   "decided_by": "AXIOMS",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-DB-N03",
+   "decided_by": "AXIOMS",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-DB-U01",
+   "decided_by": "ABOX-LIFT",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-DB-U02",
+   "decided_by": "ABOX-LIFT",
+   "status": "OUT_OF_SCOPE"
+  },
+  {
+   "commitment_id": "CMT-LC-P01",
+   "how": "controlador do componente = o pai (o fim desce do pai, ONTPAT P4)",
+   "status": "REPRODUCED"
+  },
+  {
+   "commitment_id": "CMT-LC-N01",
+   "how": "as pontas do vínculo têm ciclo de vida próprio: apagar o vínculo não as encerra",
+   "status": "REPRODUCED"
+  },
+  {
+   "commitment_id": "CMT-LC-U01",
+   "how": "sem controlador de ciclo de vida: UNKNOWN",
+   "status": "REPRODUCED"
+  }
+ ],
+ "schema": "bo.grain.commitment_suite/1",
+ "source": "$BO_REPO/requirements/commitments.jsonl",
+ "written_at": "2026-11-03T02:30:00-03:00"
+}

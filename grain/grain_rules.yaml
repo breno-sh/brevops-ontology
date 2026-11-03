@@ -1,0 +1,179 @@
+# Regras do grão canônico (BrevOps Ontology, módulo GRAIN, contrato de saída C19 3.0.0).
+# Versão PROVISÓRIA: só vira definitiva depois do GRAIN-REPRO (segunda implementação independente, FREEZE-GRAIN)
+# e dos pilotos (PILOT-EXIT). O texto normativo está em grain/GRAIN.html; este arquivo é a parte executável.
+# Nenhuma regra fala de provedor, de prefixo de tipo ou de sufixo de nome: as regras só leem a evidência
+# neutra (seção evidence) e a classe de identidade derivada dela (seção identity_classes). O conhecimento de
+# cada provedor fica nos adaptadores de evidência, fora deste arquivo.
+schema: bo.grain.rules/1
+contract: C19
+contract_version: 3.0.0
+rules_version: 0.1.0
+status: PROVISIONAL
+written_at: "2026-11-03T02:00:00-03:00"
+definitive_after: [GRAIN-REPRO, PILOT-EXIT]
+
+layers:
+  api: operação e recurso da API do serviço (onde nascem identidade, ciclo de vida, dono e alcance)
+  terraform: recurso, bloco aninhado ou grupo de atributos do schema do provider (só embalagem)
+  domain: unidade canônica (ENTITY, COMPONENT, FACET, BINDING ou UNKNOWN), rótulo vindo da camada de API
+
+evidence:
+  # Campos da evidência estruturada de cada candidato. Cada campo é uma lista de alegações (claims) de fontes
+  # distintas; a consolidação dá KNOWN (todas as alegações afirmadas concordam), UNKNOWN (nenhuma afirmada)
+  # ou CONTRADICTORY (duas afirmadas divergem). CONTRADICTORY conta como evidência que falta.
+  identity:
+    meaning: identidade própria na API
+    claim: {status: [present, absent], scope: [independent, within_parent], key_fields: lista, surrogate: bool, anonymous: bool}
+  import_key:
+    meaning: chave de importação (campos que endereçam o objeto para importá-lo)
+    claim: {status: [present, absent], fields: lista}
+  lifecycle_controller:
+    meaning: quem cria e apaga o objeto
+    claim: {kind: [self, parent, provider, external], via: campo de referência ou o pai estrutural}
+  owner:
+    meaning: dono da configuração
+    claim: {kind: [self, parent, provider, external], via: lista de campos de referência ou o pai estrutural}
+  effective_scope:
+    meaning: a que a configuração se aplica de fato
+    claim: {kind: [self, parent, container, global], via: campo de referência ou o pai estrutural}
+  element_name_key:
+    meaning: chave de nome dos elementos de uma coleção (identidade dentro do pai)
+    claim: {status: [present, absent], fields: lista}
+  api_resource:
+    meaning: recurso ou aspecto da API a que o candidato corresponde
+    claim: {status: [resource, aspect, payload], label: rótulo do domínio}
+
+identity_classes:
+  # Derivadas na ordem abaixo; a primeira que vale é a classe. K = chave natural; O = campos próprios de K;
+  # T = unidades distintas apontadas pelas referências de K (o pai estrutural conta como referência quando a
+  # identidade é relativa ao pai).
+  - id: CONTRADICTORY
+    when: identidade, chave de importação ou chave de nome em CONTRADICTORY, ou chaves afirmadas que divergem
+  - id: ABSENT
+    when: identidade, chave de importação e chave de nome todas UNKNOWN; ou só um id opaco (surrogate) sem a chave de importação afirmada (presente ou ausente), porque o id opaco não diz o que o objeto liga; ou bloco aninhado sem o escopo da identidade; ou candidato ligado à carga útil da API do pai sem alegação de identidade (sem ela não se sabe se é transparente ou elemento)
+  - id: UNRESOLVED
+    when: alguma referência de K sem alvo resolvido, ou com alvo decidido UNKNOWN
+  - id: ORPHAN
+    when: O e T vazios
+  - id: BORROWED
+    when: O vazio e uma única unidade em T
+  - id: REF_TUPLE
+    when: O vazio e duas ou mais unidades em T
+  - id: INDEPENDENT
+    when: O não vazio e T vazio
+  - id: WITHIN
+    when: O não vazio e uma única unidade em T
+  - id: REF_TUPLE_PLUS
+    when: O não vazio e duas ou mais unidades em T
+
+predicates:
+  # Vocabulário fechado: o lint reprova qualquer chave de condição fora desta lista.
+  identity_class_in: a classe de identidade derivada está na lista
+  identity_targets_min: número mínimo de unidades distintas em T
+  identity_targets_kind_in: todo alvo de T já decidido com grão nesta lista
+  owner_kind_in: tipo do dono consolidado está na lista
+  owner_targets_count: número de unidades a que o dono resolve
+  owner_targets_kind_in: todo alvo do dono já decidido com grão nesta lista
+  lifecycle_kind_in: tipo do controlador de ciclo de vida está na lista
+  lifecycle_target_consistent: se T não é vazio, o controlador de ciclo de vida é uma das unidades de T
+  lifecycle_target_resolved: o controlador de ciclo de vida resolve a uma unidade decidida
+  api_resource_status_in: estado da ligação com a API está na lista
+
+procedure:
+  # Normalização recursiva de cima para baixo: um candidato só é decidido depois do pai estrutural e dos alvos
+  # das suas referências; ciclo de dependência dá UNKNOWN. Para cada candidato:
+  - step: T0
+    text: blocos e recursos marcados pela evidência como carga útil da API do pai (api_resource=payload, sem identidade própria) são transparentes; os átomos sobem para o pai e os blocos filhos passam a ter como pai estrutural o pai dele
+  - step: T1
+    text: grupos de atributos que a evidência liga a um aspecto da API viram candidatos próprios, como se fossem blocos
+  - step: R
+    text: as regras abaixo são tentadas por prioridade crescente; a primeira cujo match vale decide; se faltar evidência listada em needs, o resultado é UNKNOWN com essa lista e as regras de prioridade menor NÃO são tentadas; se o guard é falso, tenta-se a próxima
+  - step: Z
+    text: se nenhuma regra decide, o resultado é UNKNOWN (GRAIN-G0-NOMATCH) com os campos cujos guards falharam
+
+rules:
+  - id: GRAIN-G0-IDENTITY
+    priority: 0
+    grain: UNKNOWN
+    text: evidência de identidade ausente, contraditória ou com referência não resolvida dá UNKNOWN com a lista do que falta; nunca ENTITY por exclusão
+    match: {identity_class_in: [CONTRADICTORY, ABSENT, UNRESOLVED, ORPHAN]}
+    missing: [identity]
+    also_missing_if_unknown: [lifecycle_controller, owner, effective_scope]
+
+  - id: GRAIN-G1-BINDING
+    priority: 1
+    grain: BINDING
+    text: identidade = tupla de referências a duas ou mais unidades independentes e configuração só sobre a associação (dono = a própria associação); prevalece sobre G4 mesmo quando a embalagem é um recurso separado com chave de importação própria
+    match: {identity_class_in: [REF_TUPLE, REF_TUPLE_PLUS], identity_targets_min: 2}
+    needs: [lifecycle_controller, owner, effective_scope]
+    guard:
+      identity_targets_kind_in: [ENTITY, COMPONENT, BINDING]
+      owner_kind_in: [self]
+    emit: {parent: none, endpoints: identity_targets}
+
+  - id: GRAIN-G2-COMPONENT
+    priority: 2
+    grain: COMPONENT
+    text: identidade própria dentro do pai e ciclo de vida preso ao pai, qualquer que seja a cardinalidade do bloco
+    match: {identity_class_in: [WITHIN, REF_TUPLE, REF_TUPLE_PLUS, INDEPENDENT]}
+    needs: [lifecycle_controller, owner, effective_scope]
+    guard:
+      lifecycle_kind_in: [parent]
+      lifecycle_target_resolved: true
+      lifecycle_target_consistent: true
+    emit: {parent: lifecycle_target}
+
+  - id: GRAIN-G3-FACET
+    priority: 3
+    grain: FACET
+    text: sem identidade própria, configura um aspecto, dono da configuração = o pai, seja bloco, grupo de atributos ou recurso separado; faceta com vários donos fica no vínculo entre eles
+    match: {identity_class_in: [BORROWED]}
+    needs: [lifecycle_controller, owner, effective_scope, api_resource]
+    guard:
+      api_resource_status_in: [aspect]
+      owner_kind_in: [parent]
+      owner_targets_count: 1
+      owner_targets_kind_in: [ENTITY, COMPONENT, BINDING, FACET]
+    multi_owner: {resolve_to: binding_over_owners, else: GRAIN-G0-NOMATCH}
+    emit: {parent: owner_target}
+
+  - id: GRAIN-G4-ENTITY
+    priority: 4
+    grain: ENTITY
+    text: identidade e ciclo de vida independentes de qualquer outra unidade
+    match: {identity_class_in: [INDEPENDENT]}
+    needs: [lifecycle_controller, owner, effective_scope, api_resource]
+    guard:
+      lifecycle_kind_in: [self, provider, external]
+      api_resource_status_in: [resource]
+    emit: {parent: none}
+
+  - id: GRAIN-G0-NOMATCH
+    priority: 5
+    grain: UNKNOWN
+    text: a evidência está completa mas nenhuma regra a aceita (ex. identidade dentro do pai com ciclo de vida próprio); UNKNOWN com os campos cujos guards falharam
+    match: {}
+    missing: from_failed_guards
+
+procedural_outcomes:
+  # Desfechos do procedimento que não são regras de grão, mas aparecem em rule_applied.
+  - id: GRAIN-G0-NEEDS
+    grain: UNKNOWN
+    text: o match de uma regra valeu, mas falta evidência listada em needs (ou o alvo dela não resolve); UNKNOWN com a lista; regras de prioridade menor não são tentadas
+  - id: GRAIN-G0-CYCLE
+    grain: UNKNOWN
+    text: o candidato depende (pai, alvo de referência ou dono) de si mesmo por um ciclo; UNKNOWN com identity
+  - id: GRAIN-G0-DUPLICATE
+    grain: UNKNOWN
+    text: na camada de instância, duas declarações distintas dão a mesma identidade de ocorrência com valores diferentes; as duas viram UNKNOWN com identity
+  - id: GRAIN-T0-PAYLOAD
+    grain: none
+    text: candidato transparente (carga útil da API do pai, sem identidade própria); não vira unidade, seus átomos ficam com o pai efetivo
+
+occurrence_identity:
+  # Identidade de ocorrência (camada de instância): sha256 do JSON canônico de
+  # {grain, label, parent: identidade do pai ou null, endpoints: identidades ordenadas, key: {campo: valor normalizado}}.
+  # A posição textual nunca entra; só entra quando a evidência declara a ordem como campo de identidade.
+  hash: sha256
+  canonical_json: {sort_keys: true, separators: [",", ":"], ensure_ascii: false}
+  normalizers: [str, lower, int, bool, cidr, set_of_str, set_of_lower, set_of_cidr, ordinal]
