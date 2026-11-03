@@ -38,7 +38,7 @@ from .errors import DeclarationError, NoUnit, OutOfDomain, SymbolicInput, Transf
 from .markers import ABSENT, is_absent, is_not_read, is_symbolic
 
 REGISTRY_VERSION = "1.0.0"
-GENERATED_AT = "2026-11-03T02:00:00-03:00"     # data da versão do registro (fixa: a regeneração é idêntica)
+GENERATED_AT = "2026-11-03T01:58:00-03:00"     # data da versão do registro (fixa: a regeneração é idêntica)
 LOSS_KINDS = ("rounding", "saturation", "absence", "sentinel", "context_dependence", "not_expressible", "semantic")
 DATATYPES = ("integer", "decimal", "boolean", "string", "enum", "duration", "tuple", "number", "any")
 _NO = object()

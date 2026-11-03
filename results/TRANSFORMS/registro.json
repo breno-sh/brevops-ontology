@@ -2,7 +2,7 @@
  "schema": "bo.transforms_index/1",
  "module": "TRANSFORMS",
  "registry_version": "1.0.0",
- "generated_at": "2026-11-03T02:00:00-03:00",
+ "generated_at": "2026-11-03T01:58:00-03:00",
  "counts": {
   "scalar": 27,
   "combinators": 17,

@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "TRANSFORMS",
- "generated_at": "2026-11-03T01:55:56-03:00",
+ "generated_at": "2026-11-03T01:58:02-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/TRANSFORMS.txt",
@@ -28,10 +28,10 @@
    {
     "path": "$BO_REPO/contracts",
     "kind": "dir",
-    "sha256": "7cbb2f50b317343547e739f7f2a410bd75b1777fc2d7b425021442a6b8e05ab4"
+    "sha256": "56c3142efebde6c8f413ef725c449201b2699841fe43676569492b52504ad042"
    }
   ],
-  "recorded_at": "2026-11-03T01:55:56-03:00"
+  "recorded_at": "2026-11-03T01:58:02-03:00"
  },
  "sources": [
   {
