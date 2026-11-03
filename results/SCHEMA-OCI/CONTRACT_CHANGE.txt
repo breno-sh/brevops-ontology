@@ -4,7 +4,10 @@ Nenhum contrato (C01, C02, C17) está errado para o SCHEMA-OCI: atoms.jsonl (271
 conferem no bo.contracts.validate. Os três pontos abaixo são de FERRAMENTA e de CRITÉRIO DE GATE, registrados
 aqui porque é o canal que o driver lê. Nenhum comando de gate foi trocado ou afrouxado.
 
-1. tools/privacy_lint.py (dono: REPO) — falso positivo que reprova o G7 (e, por consequência, o G4)
+1. tools/privacy_lint.py (dono: REPO) — falso positivo que reprovava o G7
+   RESOLVIDO em 2026-11-03T07:34-03:00: o coordenador corrigiu a regra em bo/base ([COORD] 9f0cd52, "ignora
+   tipo cty"); depois do rebase, privacy_lint --strict em results/SCHEMA-OCI e $BO_DATA/SCHEMA-OCI sai OK.
+   Registro do que foi achado e da correção que o SCHEMA-OCI tinha proposto:
    Fato: o C01 grava em tf_type o tipo cty do atributo; um objeto aninhado com atributo chamado password sai
    como ["object", {<password>: <string>, ...}] (aspas omitidas aqui de propósito, para este arquivo não
    reprovar no mesmo lint). A regra secret_assignment lê a chave password seguida do NOME do tipo cty string

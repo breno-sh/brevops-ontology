@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "SCHEMA-OCI",
- "generated_at": "2026-11-03T07:30:38-03:00",
+ "generated_at": "2026-11-03T07:34:23-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/SCHEMA-OCI.txt",
@@ -64,7 +64,7 @@
     "sha256": "6224e4c94ffd0e6db2f35a7b3183c417305b32497538418576673096a1214868"
    }
   ],
-  "recorded_at": "2026-11-03T07:30:38-03:00"
+  "recorded_at": "2026-11-03T07:34:23-03:00"
  },
  "sources": [
   {
@@ -83,5 +83,5 @@
    "transformation": "título de cada página lido como texto para classificar as diferenças do crosscheck"
   }
  ],
- "notes": "Gates G3 (crosscheck) e G7 (privacy_lint) reprovam por achado registrado em results/SCHEMA-OCI/CONTRACT_CHANGE.txt; G4 reprova por conter os dois. Nada afrouxado."
+ "notes": "G3 (crosscheck do Registry) reprova por achado da documentação do provider, registrado em results/SCHEMA-OCI/CONTRACT_CHANGE.txt e classificado em $BO_DATA/SCHEMA-OCI/crosscheck_classificacao.json; G4 reprova só por conter o G3. Nada afrouxado. O falso positivo do privacy_lint foi corrigido pelo coordenador (9f0cd52)."
 }
