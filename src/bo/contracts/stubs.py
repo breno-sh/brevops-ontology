@@ -86,7 +86,16 @@ def c01() -> dict:
                          {"block": "expiration", "nesting_mode": "list", "max_items": 1}],
           "tf_type": "number", "nesting": "list", "required": False, "optional": True, "computed": False,
           "sensitive": False, "deprecated": False, "configurable": True}
-    return {"C01/atoms.jsonl": jsonl([a1, a2])}
+    a3 = {"atom_id": "google:google_sql_user:password_wo", "provider": "google", "provider_version": "8.2.0",
+          "resource_type": "google_sql_user", "path": "password_wo", "block_path": [], "tf_type": "string",
+          "nesting": "none", "required": False, "optional": True, "computed": False, "sensitive": True,
+          "deprecated": False, "configurable": True, "write_only": True}
+    a4 = {"atom_id": "azurerm:azurerm_example_nested:settings", "provider": "azurerm", "provider_version": "5.5.0",
+          "resource_type": "azurerm_example_nested", "path": "settings", "block_path": [],
+          "tf_type": ["list", ["object", {"name": "string", "size": "number"}, ["size"]]], "nesting": "none",
+          "required": False, "optional": True, "computed": False, "sensitive": False, "deprecated": False,
+          "configurable": True}
+    return {"C01/atoms.jsonl": jsonl([a1, a2, a3, a4])}
 
 
 def c02() -> dict:
@@ -429,7 +438,42 @@ def c13() -> dict:
             "event_type": "contract_change", "atom_id": "aws:aws_db_instance:backup_retention_period",
             "change": {"field": "computed", "before": False, "after": True},
             "version_interval": {"after": "5.90.0", "until": "6.0.0"}, "evidence": [EV_REF]}]
-    return {"C13/pins.json": dumps(pins), "C13/versions.json": dumps(vers), "C13/events.jsonl": jsonl(evs)}
+    vd_aws = {**hdr("bo.versions/1", "C13", "3.0.0", "PINS"), "provider": "aws",
+              "versions": [{"version": "5.90.0", "released_at": "2026-03-01"},
+                           {"version": "6.0.0", "released_at": "2026-06-18", "schema_sha256": H("aws-schema")}]}
+    sel = lambda v, pub, rel, reasons: {"version": v, "published_at": pub, "released_at": rel, "reasons": reasons,  # noqa: E731
+                                        "index_sha256": H("idx-" + v), "protocols": ["5.0"], "darwin_arm64": True,
+                                        "linux_amd64": True}
+    hist = {**hdr("bo.history_versions/1", "C13", "3.1.0", "PINS"),
+            "cutoff": {"date": "2026-11-02", "timezone": "America/Recife", "end_exclusive": "2026-11-03T00:00:00-03:00",
+                       "rule": "pin = maior versão estável publicada até o corte"},
+            "window": {"start": "2026-01-01", "rule": "estado no fim de cada trimestre e primeira de cada major"},
+            "index": {"path": "$BO_DATA/PINS/registry_index/snapshot.json", "sha256": H("snapshot"), "fetched_at": TS},
+            "providers": [{"provider": "aws", "source": "registry.terraform.io/hashicorp/aws", "pin": "6.0.0",
+                           "index_files": {"registry_v1": {"path": "$BO_DATA/PINS/registry_index/aws_v1.json",
+                                                           "sha256": H("v1")},
+                                           "registry_v2": {"path": "$BO_DATA/PINS/registry_index/aws_v2.json",
+                                                           "sha256": H("v2")}},
+                           "versions_doc": vd_aws,
+                           "selection": [sel("5.90.0", "2026-03-01T15:00:00Z", "2026-03-01", ["quarter_end:2026Q1"]),
+                                         sel("6.0.0", "2026-06-18T20:10:00Z", "2026-06-18",
+                                             ["major_first:6", "cutoff:2026-11-02"])],
+                           "left_truncation": {"at": "2026-01-01T00:00:00-03:00", "version_in_force": "5.80.0",
+                                               "major_in_force": 5, "index_first_version": "0.1.0",
+                                               "index_first_published_at": "2017-07-12T17:43:35Z"}}],
+            "note": "stub"}
+    ah = [{"atom_id": "aws:aws_db_instance:db_name", "provider": "aws", "resource_type": "aws_db_instance",
+           "path": "db_name",
+           "history": [{"version": "5.90.0", "state": "absent"},
+                       {"version": "6.0.0", "state": "present", "tf_type": "string", "required": False,
+                        "optional": True, "computed": True, "force_new": True}],
+           "first_seen": "6.0.0", "last_seen": "6.0.0", "events": ["EV-HIST-aws-0001"]},
+          {"atom_id": "aws:aws_db_instance:name", "provider": "aws", "resource_type": "aws_db_instance", "path": "name",
+           "history": [{"version": "5.90.0", "state": "present", "tf_type": "string", "required": False,
+                        "optional": True, "computed": True}, {"version": "6.0.0", "state": "absent"}],
+           "first_seen": "5.90.0", "last_seen": "5.90.0", "events": ["EV-HIST-aws-0001"]}]
+    return {"C13/pins.json": dumps(pins), "C13/versions.json": dumps(vers), "C13/events.jsonl": jsonl(evs),
+            "C13/history_versions.json": dumps(hist), "C13/atom_history.jsonl": jsonl(ah)}
 
 
 # ------------------------------------------------------------------------------------------------- C14
@@ -828,6 +872,7 @@ KIND_OF = {  # caminho do stub -> "Cnn:tipo"
     "C10/composition_table.json": "C10:composition_table", "C10/guard.json": "C10:guard",
     "C11/cases.jsonl": "C11:cases", "C12/readback.jsonl": "C12:readback", "C12/outcomes.jsonl": "C12:outcomes",
     "C13/pins.json": "C13:pins", "C13/versions.json": "C13:versions", "C13/events.jsonl": "C13:events",
+    "C13/history_versions.json": "C13:history_versions", "C13/atom_history.jsonl": "C13:atom_history",
     "C14/classes.jsonl": "C14:classes", "C14/properties.jsonl": "C14:properties",
     "C14/realizations.jsonl": "C14:realizations", "C14/ontology.ttl": "C14:ttl",
     "C15/metrics_spec.yaml": "C15:metrics_spec", "C15/result.json": "C15:result",

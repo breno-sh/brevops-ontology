@@ -1,13 +1,13 @@
 {
  "$schema": "https://json-schema.org/draft/2020-12/schema",
  "$id": "https://w3id.org/brevops/contracts/C09/correspondences.schema.json",
- "title": "C09 correspondences 3.0.0: alegações de correspondência (SSSOM + EDOAL)",
+ "title": "C09 correspondences 3.0.1: alegações de correspondência (SSSOM + EDOAL)",
  "description": "Colunas SSSOM mais claim_id (imutável), claim_version_id, event_id; semantic_relation (predicado SKOS na direção correta: 'a skos:broadMatch b' = b mais amplo), value_domain_relation orientada, transport_fidelity; guard (gramática tipada do C10); translation_fn; loss_contract; membership_predicate para broad/narrow; grupo como regra sobre subgrafo (bo_group_id, variáveis e argumentos nomeados, ocorrência do bloco); projection por ocorrência; realizações alternativas guardadas (alternative_to + exclusivity); proof; evidence_state (C20); conceitos ou bo:UNGLOSSED. Colunas estruturadas são JSON numa célula. O I/O passa por bo.contracts.sssom (que delega a bo.semantics.sssom_io e preserva as colunas novas): o sssom-py 0.4.22 descarta extensões em silêncio.",
  "x-bo-contract": {
   "id": "C09",
   "name": "correspondences",
-  "version": "3.0.0",
-  "status": "changed_v3",
+  "version": "3.0.1",
+  "status": "amended",
   "owner": "CONTRACTS",
   "files": [
    {
@@ -19,7 +19,7 @@
    },
    {
     "kind": "correspondences_jsonl",
-    "file": "correspondences.jsonl",
+    "file": "*.jsonl",
     "format": "jsonl",
     "record": "correspondence",
     "unit": "record",

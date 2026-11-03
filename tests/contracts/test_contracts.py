@@ -11,7 +11,7 @@ from pathlib import Path
 import jsonschema
 import pytest
 
-from bo.contracts import _base, build, catalog, claim_ids, enum_union, sssom, validate
+from bo.contracts import _base, amendments, build, catalog, claim_ids, enum_union, sssom, sweep, validate
 from bo.semantics import sssom_io
 
 ROOT = _base.repo()
@@ -43,8 +43,9 @@ def test_trinta_contratos_publicados(sch):
 def test_versoes_do_plano(sch):
     cat = json.loads(Path(__import__("os").environ.get("BO_MODULES") or
                           "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/modulos.json").read_text())
+    from bo.contracts.amendments import accepted
     for cid, c in cat["contracts"].items():
-        assert sch[cid]["x-bo-contract"]["version"] == c["version"], cid
+        assert c["version"] in accepted(cid, sch[cid]["x-bo-contract"]["version"]), cid
         assert sch[cid]["x-bo-contract"]["name"] == c["name"], cid
 
 
@@ -190,3 +191,62 @@ def test_not_applicable_nao_e_unknown(sch):
     assert rec["quantity_kind"] == "NOT_APPLICABLE" and v.is_valid(rec)
     rec["unit_qudt"] = "UNKNOWN"
     assert not v.is_valid(rec)
+
+
+# ------------------------------------------------------------------------------- emenda 2026-11-03 (PINS, DRIFT…)
+@pytest.mark.parametrize("name,kind", [("pins.json", "C13:pins"), ("versions.json", "C13:versions"),
+                                       ("events.jsonl", "C13:events")])
+def test_alias_nome_do_contrato_escolhe_pelo_arquivo(name, kind):
+    """'versions' é o nome do C13 E um tipo dele: escolhe pelo nome do arquivo (mudança A do PINS)."""
+    fk = catalog.resolve("versions", ROOT / "contracts/stubs/C13" / name)
+    assert f"{fk.cid}:{fk.kind}" == kind
+    assert validate.validate("versions", ROOT / "contracts/stubs/C13" / name).ok
+
+
+@pytest.mark.parametrize("alias,path,kind", [
+    ("versions", "$BO_REPO/universe/history_versions.json", "C13:history_versions"),
+    ("versions", "$BO_DATA/DRIFT/atom_history.jsonl", "C13:atom_history"),
+    ("versions", "$BO_DATA/HIST-AWS/versions.json", "C13:versions"),
+    ("glossary", "$BO_DATA/GLOSSARY-AUDIT/glossary_audit.jsonl", "C20:glossary_audit"),
+    ("correspondences", "$BO_DATA/NONEHUNT-AWS/disputes.jsonl", "C09:correspondences_jsonl"),
+    ("correspondences", "$BO_DATA/MAP-AWSGCP-NET/mappings.sssom.tsv", "C09:correspondences"),
+    ("cases", "$BO_DATA/DEPSAMPLE/cases_aws.jsonl", "C11:cases"),
+    ("numbers", "$BO_REPO/paper/numbers_supp.json", "C18:numbers"),
+])
+def test_resolucao_dos_gates_do_catalogo(alias, path, kind):
+    fk = catalog.resolve(alias, Path(path))
+    assert f"{fk.cid}:{fk.kind}" == kind
+
+
+def test_varredura_de_todos_os_gates():
+    rep = sweep.sweep()
+    assert rep["gates"] >= 100
+    assert rep["ok"] == rep["gates"], rep["failed"][:3]
+
+
+def test_emendas_aditivas_aceitam_documento_antigo(sch):
+    """Cabeçalho 3.0.0 continua válido no C13 3.1.0 (o PINS gravou 3.0.0); átomo sem write_only continua válido."""
+    for a in amendments.AMENDMENTS:
+        assert sch[a["contract"]]["x-bo-contract"]["version"] == amendments.chain(a["contract"])[-1]
+    reg = catalog.registry(sch)
+    v = jsonschema.Draft202012Validator({"$ref": f"{_base.BASE_URI}C13/versions.schema.json#/$defs/pins"}, registry=reg)
+    doc = json.loads((ROOT / "contracts/stubs/C13/pins.json").read_text())
+    assert doc["contract_version"] == "3.0.0" and v.is_valid(doc)
+    doc["contract_version"] = "3.1.0"
+    assert v.is_valid(doc)
+    doc["contract_version"] = "9.9.9"
+    assert not v.is_valid(doc)
+    atoms = [json.loads(l) for l in (ROOT / "contracts/stubs/C01/atoms.jsonl").read_text().splitlines()]
+    assert "write_only" not in atoms[0] and atoms[2]["write_only"] is True
+    assert validate.validate("atoms", ROOT / "contracts/stubs/C01/atoms.jsonl").ok
+
+
+def test_history_versions_do_pins_se_presente():
+    lane = Path("/Users/breno/doutorado/pesquisa-lanes/bo-pins/universe")
+    for base in (ROOT / "universe", lane):
+        if (base / "history_versions.json").is_file():
+            r = validate.validate("versions", base / "history_versions.json")
+            assert r.kind == "C13:history_versions" and r.ok, r.errors[:5]
+            assert validate.validate("versions", base / "pins.json").ok
+            return
+    pytest.skip("history_versions.json do PINS ainda não publicado")

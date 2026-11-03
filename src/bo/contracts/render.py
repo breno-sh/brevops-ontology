@@ -9,7 +9,8 @@ import json
 from . import catalog
 
 VERSION_DATE = "2026-11-03 (America/Recife)"
-STATUS = {"changed_v3": "mudou na v3 (3.0.0)", "new_v3": "novo na v3 (1.0.0)", "unchanged_v3": "sem mudança (2.0.0)"}
+STATUS = {"changed_v3": "mudou na v3 (3.0.0)", "new_v3": "novo na v3 (1.0.0)", "unchanged_v3": "sem mudança (2.0.0)",
+          "amended": "emenda versionada depois do merge (ver amendments.py)"}
 
 
 def esc(s) -> str:

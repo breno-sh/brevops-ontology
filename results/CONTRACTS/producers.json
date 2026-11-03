@@ -1,9 +1,9 @@
 {
  "schema": "bo.contracts_producers/1",
  "module": "CONTRACTS",
- "generated_at": "2026-11-03T01:13:38-03:00",
- "checked": 20,
- "ok": 20,
+ "generated_at": "2026-11-03T01:55:19-03:00",
+ "checked": 21,
+ "ok": 21,
  "files": [
   {
    "alias": "commitments",
@@ -182,6 +182,15 @@
    "kind": "C14:ttl",
    "why": "C14",
    "items": 1,
+   "ok": true,
+   "errors": []
+  },
+  {
+   "alias": "atoms",
+   "file": "contracts/stubs/C01/atoms.jsonl",
+   "kind": "C01:atoms",
+   "why": "C01 2.1.0 (write_only e nested_type)",
+   "items": 4,
    "ok": true,
    "errors": []
   }

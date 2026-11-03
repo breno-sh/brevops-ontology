@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "CONTRACTS",
- "generated_at": "2026-11-03T01:13:48-03:00",
+ "generated_at": "2026-11-03T01:54:49-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/CONTRACTS.txt",
@@ -15,7 +15,8 @@
    "fase": "F1",
    "jsonschema": "4.26.0",
    "draft": "2020-12",
-   "generator": "python -I -m bo.contracts.build"
+   "generator": "python -I -m bo.contracts.build",
+   "emenda": "2026-11-03 C01 2.1.0, C09 3.0.1, C11 3.0.1, C13 3.1.0, C18 2.0.1"
   },
   "inputs": [
    {
@@ -29,7 +30,7 @@
     "sha256": "3d679f40e26b13f7d98da835faa84e74fe9bcdbe7f6cecb507ed590287e409e5"
    }
   ],
-  "recorded_at": "2026-11-03T01:13:48-03:00"
+  "recorded_at": "2026-11-03T01:54:49-03:00"
  },
  "sources": [
   {
@@ -43,10 +44,15 @@
    "transformation": "lista de slots padrão do sssom_schema 0.15 copiada para spec_b.SSSOM_SLOTS"
   },
   {
-   "uri": "$BO_REPO/results/{REQUIREMENTS,ONTPAT,SEMANTICS}/C*_proposta",
-   "license": "interno (propostas mergeadas em bo/base)",
-   "transformation": "copiadas sem mudança para src/bo/contracts/adopted/ e incorporadas aos schemas C09, C10, C14 e C24"
+   "uri": "$BO_REPO/results/{REQUIREMENTS,ONTPAT,SEMANTICS,SCHEMALIB}/C*",
+   "license": "interno (propostas e CONTRACT_CHANGE mergeados em bo/base)",
+   "transformation": "incorporadas aos schemas C01, C09, C10, C14 e C24"
+  },
+  {
+   "uri": "bo-pins/results/PINS/CONTRACT_CHANGE.txt",
+   "license": "interno (pedido do PINS via coordenador)",
+   "transformation": "mudança A no catalog.resolve e tipo history_versions no C13"
   }
  ],
- "notes": "Contratos C00-C29 v3: 30 JSON Schema, validador único, 62 stubs, mutação, união de desfechos e ids de alegação"
+ "notes": "Contratos C00-C29 v3 com emenda de 2026-11-03 (resolução por nome de arquivo, history_versions, atom_history, write_only)"
 }

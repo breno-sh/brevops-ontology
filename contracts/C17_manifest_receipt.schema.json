@@ -1,13 +1,13 @@
 {
  "$schema": "https://json-schema.org/draft/2020-12/schema",
  "$id": "https://w3id.org/brevops/contracts/C17/manifest_receipt.schema.json",
- "title": "C17 manifest_receipt 3.0.0: MANIFEST.sha256, summary.json e freeze_receipt.json",
+ "title": "C17 manifest_receipt 3.0.1: MANIFEST.sha256, summary.json e freeze_receipt.json",
  "description": "Hashes transitivos das entradas; comprovante de congelamento (dono, hora, tag, carimbo); sources[{uri, licença, transformação}]; agent_provenance{model_id, brief_sha256, params, inputs}. Formato do REPO (CONVENTIONS.html §7), agora com schema.",
  "x-bo-contract": {
   "id": "C17",
   "name": "manifest_receipt",
-  "version": "3.0.0",
-  "status": "changed_v3",
+  "version": "3.0.1",
+  "status": "amended",
   "owner": "CONTRACTS",
   "files": [
    {
@@ -59,7 +59,10 @@
      "const": "C17"
     },
     "contract_version": {
-     "const": "3.0.0"
+     "enum": [
+      "3.0.0",
+      "3.0.1"
+     ]
     },
     "module": {
      "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/stable_id"
@@ -116,7 +119,13 @@
          "kind",
          "sha256"
         ],
-        "additionalProperties": false
+        "additionalProperties": false,
+        "patternProperties": {
+         "^sha256_before_[a-z][a-z0-9_]*$": {
+          "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/sha256"
+         }
+        },
+        "description": "sha256_before_<motivo>: hash anterior registrado quando o coordenador emenda uma entrada (emenda 3.0.1)"
        }
       },
       "recorded_at": {
@@ -169,7 +178,10 @@
      "const": "C17"
     },
     "contract_version": {
-     "const": "3.0.0"
+     "enum": [
+      "3.0.0",
+      "3.0.1"
+     ]
     },
     "name": {
      "type": "string",

@@ -1,25 +1,25 @@
 {
  "$schema": "https://json-schema.org/draft/2020-12/schema",
  "$id": "https://w3id.org/brevops/contracts/C18/numbers.schema.json",
- "title": "C18 numbers 2.0.0: números do artigo",
+ "title": "C18 numbers 2.0.1: números do artigo",
  "description": "Macro → {valor, arquivo, sha, ponteiro}; prefixos distintos para persistência (Pers), observação (Obs) e cobertura (Cov); numbers.tex é gerado de numbers.json e tem de bater com ele.",
  "x-bo-contract": {
   "id": "C18",
   "name": "numbers",
-  "version": "2.0.0",
-  "status": "unchanged_v3",
+  "version": "2.0.1",
+  "status": "amended",
   "owner": "CONTRACTS",
   "files": [
    {
     "kind": "numbers",
-    "file": "numbers.json",
+    "file": "numbers*.json",
     "format": "json",
     "record": "numbers",
     "unit": "document"
    },
    {
     "kind": "numbers_tex",
-    "file": "numbers.tex",
+    "file": "numbers*.tex",
     "format": "tex_macros",
     "record": null,
     "unit": "line",
@@ -28,7 +28,7 @@
   ],
   "semantic_rules": [
    "C18-PREFIX: o prefixo do nome é o da categoria (Pers, Obs, Cov, Num)",
-   "C18-TEX: numbers.tex tem exatamente as macros de numbers.json, com a mesma exibição",
+   "C18-TEX: o .tex de mesmo nome-base (numbers.tex, numbers_supp.tex) tem exatamente as macros do .json, com a mesma exibição",
    "C18-NOLETTERS: nome de macro só com letras (LaTeX)"
   ],
   "producers": [
@@ -94,7 +94,10 @@
      "const": "C18"
     },
     "contract_version": {
-     "const": "2.0.0"
+     "enum": [
+      "2.0.0",
+      "2.0.1"
+     ]
     },
     "module": {
      "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/stable_id"

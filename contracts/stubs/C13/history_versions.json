@@ -1,0 +1,97 @@
+{
+ "schema": "bo.history_versions/1",
+ "contract": "C13",
+ "contract_version": "3.1.0",
+ "module": "PINS",
+ "generated_at": "2026-11-03T08:00:00-03:00",
+ "cutoff": {
+  "date": "2026-11-02",
+  "timezone": "America/Recife",
+  "end_exclusive": "2026-11-03T00:00:00-03:00",
+  "rule": "pin = maior versão estável publicada até o corte"
+ },
+ "window": {
+  "start": "2026-01-01",
+  "rule": "estado no fim de cada trimestre e primeira de cada major"
+ },
+ "index": {
+  "path": "$BO_DATA/PINS/registry_index/snapshot.json",
+  "sha256": "16a0eeb0791b6c92451fd284dd9f599e0a7dbe7f6ebea6e2d2d06c7f74aec112",
+  "fetched_at": "2026-11-03T08:00:00-03:00"
+ },
+ "providers": [
+  {
+   "provider": "aws",
+   "source": "registry.terraform.io/hashicorp/aws",
+   "pin": "6.0.0",
+   "index_files": {
+    "registry_v1": {
+     "path": "$BO_DATA/PINS/registry_index/aws_v1.json",
+     "sha256": "3bfc269594ef649228e9a74bab00f042efc91d5acc6fbee31a382e80d42388fe"
+    },
+    "registry_v2": {
+     "path": "$BO_DATA/PINS/registry_index/aws_v2.json",
+     "sha256": "fb04dcb6970e4c3d1873de51fd5a50d7bb46b3383113602665c350ec40b5f990"
+    }
+   },
+   "versions_doc": {
+    "schema": "bo.versions/1",
+    "contract": "C13",
+    "contract_version": "3.0.0",
+    "module": "PINS",
+    "generated_at": "2026-11-03T08:00:00-03:00",
+    "provider": "aws",
+    "versions": [
+     {
+      "version": "5.90.0",
+      "released_at": "2026-03-01"
+     },
+     {
+      "version": "6.0.0",
+      "released_at": "2026-06-18",
+      "schema_sha256": "05c4859fd6018f42588cdb6f48fb2d4d015a431128f35ed2ba5cffd9ff7d2380"
+     }
+    ]
+   },
+   "selection": [
+    {
+     "version": "5.90.0",
+     "published_at": "2026-03-01T15:00:00Z",
+     "released_at": "2026-03-01",
+     "reasons": [
+      "quarter_end:2026Q1"
+     ],
+     "index_sha256": "4617b8a1a1c53e7414b2568276dd709cec94e8e39f196cbbe7abfbaf64679c3f",
+     "protocols": [
+      "5.0"
+     ],
+     "darwin_arm64": true,
+     "linux_amd64": true
+    },
+    {
+     "version": "6.0.0",
+     "published_at": "2026-06-18T20:10:00Z",
+     "released_at": "2026-06-18",
+     "reasons": [
+      "major_first:6",
+      "cutoff:2026-11-02"
+     ],
+     "index_sha256": "82fe3d4e77fcf4e2c83388e6286122ae8bd484c1f83f4cb160aff6c26de51720",
+     "protocols": [
+      "5.0"
+     ],
+     "darwin_arm64": true,
+     "linux_amd64": true
+    }
+   ],
+   "left_truncation": {
+    "at": "2026-01-01T00:00:00-03:00",
+    "version_in_force": "5.80.0",
+    "major_in_force": 5,
+    "index_first_version": "0.1.0",
+    "index_first_published_at": "2017-07-12T17:43:35Z"
+   }
+  }
+ ],
+ "note": "stub"
+}

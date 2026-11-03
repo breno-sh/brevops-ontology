@@ -119,18 +119,21 @@ def c16() -> dict:
 # ------------------------------------------------------------------------------------------------- C17
 def c17() -> dict:
     inp = obj({"path": text(1), "kind": enum("file", "dir", "missing"), "sha256": c00("sha256")},
-              ["path", "kind", "sha256"])
+              ["path", "kind", "sha256"],
+              patternProperties={r"^sha256_before_[a-z][a-z0-9_]*$": c00("sha256")},
+              description="sha256_before_<motivo>: hash anterior registrado quando o coordenador emenda uma entrada "
+                          "(emenda 3.0.1)")
     ap = obj({"model_id": c00("model_id"), "brief_path": text(1), "brief_sha256": c00("sha256"),
               "params": obj({}, extra={"type": ["string", "number", "boolean"]}), "inputs": arr(inp),
               "recorded_at": c00("datetime")}, ["model_id", "brief_sha256", "params", "inputs"])
-    hp, hr = header("bo.summary/1", "C17", "3.0.0", module=True)
+    hp, hr = header("bo.summary/1", "C17", "3.0.1", module=True)
     summ = obj({**hp, "agent_provenance": ap, "sources": arr(c00("source_license")), "notes": text(1),
                 "results": arr({"$ref": f"{BASE_URI}C15/results.schema.json#/$defs/metric"}, 1)},
                hr + ["agent_provenance", "sources"], extra=True)
     art = obj({"path": c00("portable_path"), "kind": enum("file", "dir"), "sha256": c00("sha256"),
                "files": obj({}, extra=c00("sha256")), "producers": arr(c00("stable_id")),
                "via": c00("stable_id")}, ["path", "kind", "sha256"])
-    rp, rr = header("bo.freeze_receipt/1", "C17", "3.0.0", generated=False)
+    rp, rr = header("bo.freeze_receipt/1", "C17", "3.0.1", generated=False)
     rec = obj({**rp, "name": string(r"^[A-Z][A-Z0-9_\-]*$"), "owner": text(2), "created_at": c00("datetime"),
                "note": {"type": "string"},
                "git": obj({"commit": string(r"^[0-9a-f]{40}$"), "tag": string(r"^bo-freeze-[A-Z][A-Z0-9_\-]*$")},
@@ -145,7 +148,7 @@ def c17() -> dict:
                                   "then": {"required": ["reason"]}}])},
               rr + ["name", "owner", "created_at", "git", "modules", "artifacts", "transitive_inputs", "digest", "ots"])
     return contract_schema(
-        "C17", "manifest_receipt", "3.0.0", "MANIFEST.sha256, summary.json e freeze_receipt.json", status="changed_v3",
+        "C17", "manifest_receipt", "3.0.1", "MANIFEST.sha256, summary.json e freeze_receipt.json", status="amended",
         description="Hashes transitivos das entradas; comprovante de congelamento (dono, hora, tag, carimbo); "
                     "sources[{uri, licença, transformação}]; agent_provenance{model_id, brief_sha256, params, inputs}. "
                     "Formato do REPO (CONVENTIONS.html §7), agora com schema.",
@@ -169,20 +172,21 @@ def c18() -> dict:
     macro = obj({"value": {"type": ["number", "string"]}, "display": text(1), "file": c00("portable_path"),
                  "sha256": c00("sha256"), "pointer": string(r"^(/[^/]*)+$"),
                  "category": enum(*CATEGORY_PREFIX)}, ["value", "display", "file", "sha256", "pointer", "category"])
-    hp, hr = header("bo.numbers/1", "C18", "2.0.0", module=True)
+    hp, hr = header("bo.numbers/1", "C18", "2.0.1", module=True)
     doc = obj({**hp, "macros": obj({}, extra=local("macro"),
                                    propertyNames={"pattern": r"^(Pers|Obs|Cov|Num)[A-Z][A-Za-z]*$"}, minProperties=1)},
               hr + ["macros"])
     return contract_schema(
-        "C18", "numbers", "2.0.0", "números do artigo", status="unchanged_v3",
+        "C18", "numbers", "2.0.1", "números do artigo", status="amended",
         description="Macro → {valor, arquivo, sha, ponteiro}; prefixos distintos para persistência (Pers), observação "
                     "(Obs) e cobertura (Cov); numbers.tex é gerado de numbers.json e tem de bater com ele.",
-        files=[file_kind("numbers", "numbers.json", "json", "numbers", "document"),
-               file_kind("numbers_tex", "numbers.tex", "tex_macros", None, "line",
+        files=[file_kind("numbers", "numbers*.json", "json", "numbers", "document"),
+               file_kind("numbers_tex", "numbers*.tex", "tex_macros", None, "line",
                          "uma linha \\newcommand{\\Nome}{exibição} por macro; comentários com %")],
         defs={"macro": macro, "numbers": doc}, producers=["STATS"], consumers=["PAPER-RESULTS", "ARTIFACT"],
         rules=["C18-PREFIX: o prefixo do nome é o da categoria (Pers, Obs, Cov, Num)",
-               "C18-TEX: numbers.tex tem exatamente as macros de numbers.json, com a mesma exibição",
+               "C18-TEX: o .tex de mesmo nome-base (numbers.tex, numbers_supp.tex) tem exatamente as macros do .json, "
+               "com a mesma exibição",
                "C18-NOLETTERS: nome de macro só com letras (LaTeX)"])
 
 

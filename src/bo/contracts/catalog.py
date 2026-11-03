@@ -92,12 +92,28 @@ def _norm(s: str) -> str:
     return s.strip().lower().replace("-", "_")
 
 
+def _by_filename(cands: list[FileKind], path: Path) -> FileKind | None:
+    """Primeiro tipo (na ordem declarada) cujo padrão casa com o nome do arquivo ou com pasta/nome."""
+    name, rel = path.name, "/".join(path.parts[-2:])
+    for k in cands:
+        if fnmatch.fnmatchcase(name, k.file) or fnmatch.fnmatchcase(rel, k.file):
+            return k
+    return None
+
+
 def resolve(alias: str, path: Path | None = None, sch: dict | None = None) -> FileKind:
     """alias: Cnn | Cnn_<nome> | <nome do contrato> | <tipo de arquivo> | Cnn_<tipo de arquivo>. Contrato com vários
     arquivos: escolhe pelo nome do arquivo (padrão do x-bo-contract), na ordem declarada."""
     kinds = file_kinds(sch)
     a = _norm(alias)
     by_kind = [k for k in kinds if _norm(k.kind) == a or _norm(f"{k.cid}_{k.kind}") == a]
+    named = [c for c, n in NAMES.items() if a == _norm(n)]
+    if by_kind and named and path is not None:
+        # alias = nome do contrato E tipo homônimo (ex.: versions, glossary): escolhe pelo nome do arquivo entre os
+        # tipos do contrato; o tipo homônimo só vale quando nenhum padrão de arquivo do contrato casa (emenda 3.1.0)
+        hit = _by_filename([k for k in kinds if k.cid == named[0]], path)
+        if hit is not None:
+            return hit
     if by_kind:
         if len(by_kind) == 1:
             return by_kind[0]
@@ -114,9 +130,7 @@ def resolve(alias: str, path: Path | None = None, sch: dict | None = None) -> Fi
         return cands[0]
     if path is None:
         raise KeyError(f"{alias}: contrato com vários arquivos ({', '.join(k.kind for k in cands)}); diga o tipo")
-    name = path.name
-    rel = "/".join(path.parts[-2:])
-    for k in cands:
-        if fnmatch.fnmatchcase(name, k.file) or fnmatch.fnmatchcase(rel, k.file):
-            return k
+    hit = _by_filename(cands, path)
+    if hit is not None:
+        return hit
     raise KeyError(f"{alias}: {name} não casa com nenhum arquivo do contrato ({', '.join(k.file for k in cands)})")

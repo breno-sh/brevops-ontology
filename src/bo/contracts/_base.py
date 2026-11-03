@@ -150,7 +150,10 @@ def local(name: str) -> dict:
 
 def header(schema_id: str, cid: str, version: str, *, module=False, generated=True) -> tuple[dict, list]:
     """Cabeçalho de documento (JSON/YAML de topo): schema, contract, contract_version [, module, generated_at]."""
-    props = {"schema": const(schema_id), "contract": const(cid), "contract_version": const(version)}
+    from .amendments import accepted
+    vs = accepted(cid, version)
+    props = {"schema": const(schema_id), "contract": const(cid),
+             "contract_version": const(version) if len(vs) == 1 else enum(*vs)}
     req = ["schema", "contract", "contract_version"]
     if module:
         props["module"] = c00("stable_id")

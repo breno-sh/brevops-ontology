@@ -124,7 +124,7 @@ def c09() -> dict:
     defs = {"correspondence": correspondence(), "value_type": value_type(), "projection": projection(),
             "group": group()}
     return contract_schema(
-        "C09", "correspondences", "3.0.0", "alegações de correspondência (SSSOM + EDOAL)", status="changed_v3",
+        "C09", "correspondences", "3.0.1", "alegações de correspondência (SSSOM + EDOAL)", status="amended",
         description="Colunas SSSOM mais claim_id (imutável), claim_version_id, event_id; semantic_relation (predicado "
                     "SKOS na direção correta: 'a skos:broadMatch b' = b mais amplo), value_domain_relation orientada, "
                     "transport_fidelity; guard (gramática tipada do C10); translation_fn; loss_contract; "
@@ -135,7 +135,7 @@ def c09() -> dict:
                     "bo.semantics.sssom_io e preserva as colunas novas): o sssom-py 0.4.22 descarta extensões em "
                     "silêncio.",
         files=[file_kind("correspondences", "*.sssom.tsv", "sssom_tsv", "correspondence", "row"),
-               file_kind("correspondences_jsonl", "correspondences.jsonl", "jsonl", "correspondence", "record",
+               file_kind("correspondences_jsonl", "*.jsonl", "jsonl", "correspondence", "record",
                          "mesma linha já decodificada (colunas estruturadas como JSON)"),
                file_kind("edoal", "*.edoal.ttl", "edoal_ttl", None, "cell",
                          "subconjunto EDOAL do bo.semantics.edoal (=, <, >), anotações bosx:* com os ids")],
@@ -262,11 +262,11 @@ def c11() -> dict:
                {"if": {"properties": {"comparator": {"properties": {"name": const("numeric_tolerance")}}}},
                 "then": {"properties": {"comparator": {"required": ["tolerance"]}}}}])
     return contract_schema(
-        "C11", "cases", "3.0.0", "casos de implantação", status="changed_v3",
+        "C11", "cases", "3.0.1", "casos de implantação", status="amended",
         description="case_id, group_id, claim_id, estrato (par, domínio, cardinalidade, relação, direção), frame_ref e "
                     "peso, origin (sample | blocked | dispute | cq), lado, plano de lowering (C26) em vez de lista de "
                     "caminhos, valores, comparador, classe de custo.",
-        files=[file_kind("cases", "cases.jsonl", "jsonl", "case", "record")], defs={"case": case},
+        files=[file_kind("cases", "cases*.jsonl", "jsonl", "case", "record")], defs={"case": case},
         producers=["DEPSAMPLE", "DISPUTE-SAMPLE"],
         rules=["C11-UNIQ: case_id único", "C11-CQ: origin=cq exige cq_id",
                "C11-VER: claim_version_id é versão do claim_id do caso",
@@ -315,7 +315,8 @@ def c12() -> dict:
 
 # ------------------------------------------------------------------------------------------------- C13
 def c13() -> dict:
-    hp, hr = header("bo.pins/1", "C13", "3.0.0", module=True)
+    V = "3.1.0"
+    hp, hr = header("bo.pins/1", "C13", V, module=True)
     pins = obj({**hp,
                 "terraform": obj({"version": c00("semver"), "sha256": c00("sha256")}, ["version", "sha256"]),
                 "providers": arr(obj({"provider": c00("provider"),
@@ -324,7 +325,7 @@ def c13() -> dict:
                                       "schema_sha256": c00("sha256")},
                                      ["provider", "source", "version", "schema_sha256"]), 1)},
                hr + ["terraform", "providers"])
-    vp, vr = header("bo.versions/1", "C13", "3.0.0", module=True)
+    vp, vr = header("bo.versions/1", "C13", V, module=True)
     versions = obj({**vp, "provider": c00("provider"),
                     "versions": arr(obj({"version": c00("semver"), "released_at": c00("date"),
                                          "schema_sha256": c00("sha256")}, ["version", "released_at"]), 1)},
@@ -343,17 +344,71 @@ def c13() -> dict:
                     {"if": {"properties": {"event_type": const("rename")}}, "then": {"required": ["from_atom", "to_atom"]}},
                     {"if": {"properties": {"event_type": const("contract_change")}},
                      "then": {"required": ["atom_id", "change"]}}])
+    utc = string(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?Z$", description="carimbo UTC do Registry, como veio")
+    reason = string(r"^(quarter_end:\d{4}Q[1-4]|major_first:\d+|index_first|cutoff:\d{4}-\d{2}-\d{2})$")
+    hhp, hhr = header("bo.history_versions/1", "C13", V, module=True)
+    sel = obj({"version": c00("semver"), "published_at": utc, "released_at": c00("date"), "reasons": arr(reason, 1,
+                                                                                                        unique=True),
+               "index_sha256": c00("sha256"), "protocols": arr(string(r"^\d+\.\d+$"), 1),
+               "darwin_arm64": boolean(), "linux_amd64": boolean()},
+              ["version", "published_at", "released_at", "reasons", "index_sha256", "protocols", "darwin_arm64",
+               "linux_amd64"])
+    hprov = obj({"provider": c00("provider"), "source": string(r"^registry\.terraform\.io/[a-z0-9-]+/[a-z0-9-]+$"),
+                 "pin": c00("semver"),
+                 "index_files": obj({"registry_v1": c00("file_ref"), "registry_v2": c00("file_ref")},
+                                    ["registry_v1", "registry_v2"]),
+                 "versions_doc": local("versions"), "selection": arr(sel, 1),
+                 "left_truncation": obj({"at": c00("datetime"), "version_in_force": nullable(c00("semver")),
+                                         "major_in_force": nullable(integer(0)), "index_first_version": c00("semver"),
+                                         "index_first_published_at": utc},
+                                        ["at", "version_in_force", "major_in_force", "index_first_version",
+                                         "index_first_published_at"])},
+                ["provider", "source", "pin", "index_files", "versions_doc", "selection", "left_truncation"])
+    hist = obj({**hhp,
+                "cutoff": obj({"date": c00("date"), "timezone": const("America/Recife"), "end_exclusive": c00("datetime"),
+                               "rule": text(10)}, ["date", "timezone", "end_exclusive", "rule"]),
+                "window": obj({"start": c00("date"), "rule": text(10)}, ["start", "rule"]),
+                "index": obj({"path": c00("portable_path"), "sha256": c00("sha256"), "fetched_at": c00("datetime")},
+                             ["path", "sha256", "fetched_at"]),
+                "providers": arr(hprov, 1), "note": text(3)},
+               hhr + ["cutoff", "window", "index", "providers"])
+    step = obj({"version": c00("semver"), "state": enum("present", "absent"), "tf_type": {"type": ["string", "array"]},
+                "required": boolean(), "optional": boolean(), "computed": boolean(), "force_new": boolean(),
+                "sensitive": boolean(), "deprecated": boolean(), "write_only": boolean(), "default": {}},
+               ["version", "state"],
+               allOf=[{"if": {"properties": {"state": const("absent")}},
+                       "then": {"not": {"anyOf": [{"required": [k]} for k in
+                                                  ("tf_type", "required", "optional", "computed", "force_new",
+                                                   "default")]}}},
+                      {"if": {"properties": {"state": const("present")}},
+                       "then": {"required": ["tf_type", "required", "optional", "computed"]}}])
+    ah = obj({"atom_id": c00("atom_id"), "provider": c00("provider"), "resource_type": c00("resource_type"),
+              "path": string(r"^[A-Za-z0-9_]+(\.[A-Za-z0-9_]+)*$"), "history": arr(step, 1),
+              "first_seen": nullable(c00("semver")), "last_seen": nullable(c00("semver")),
+              "events": arr(c00("event_id"), unique=True)},
+             ["atom_id", "provider", "resource_type", "path", "history", "first_seen", "last_seen", "events"],
+             description="estado de um átomo em cada versão amostrada (DRIFT); os eventos ficam em events.jsonl")
     return contract_schema(
-        "C13", "versions", "3.0.0", "pins, versões e eventos", status="changed_v3",
+        "C13", "versions", V, "pins, versões e eventos", status="amended",
         description="Pins do Terraform e dos providers; versões por provider; eventos tipados (adição, renome, remoção, "
                     "mudança de contrato) com o intervalo de versão em que podem ter ocorrido.",
         files=[file_kind("pins", "pins.json", "json", "pins", "document"),
                file_kind("versions", "versions.json", "json", "versions", "document"),
-               file_kind("events", "events.jsonl", "jsonl", "event", "record")],
-        defs={"pins": pins, "versions": versions, "event": ev},
+               file_kind("events", "events.jsonl", "jsonl", "event", "record"),
+               file_kind("history_versions", "history_versions.json", "json", "history_versions", "document",
+                         "lista histórica dos 4 providers (PINS); cada versions_doc é um documento versions completo"),
+               file_kind("atom_history", "atom_history.jsonl", "jsonl", "atom_history", "record",
+                         "estado de cada átomo por versão amostrada (DRIFT)")],
+        defs={"pins": pins, "versions": versions, "event": ev, "history_versions": hist, "history_selection": sel,
+              "atom_history": ah},
         producers=["PINS", "HIST-{provider}", "DRIFT", "SCHEMA-POST"],
         rules=["C13-INTERVAL: after < until (ordem semver)", "C13-RENAME: from_atom ≠ to_atom, mesmo provider e tipo",
-               "C13-UNIQ: event_id único; versões únicas e em ordem crescente"])
+               "C13-UNIQ: event_id único; versões únicas e em ordem crescente (também dentro de cada versions_doc)",
+               "C13-HIST-PIN: a última versão de cada versions_doc é o pin do provider (e o pin do pins.json irmão, "
+               "com schema_sha256 igual quando os dois têm)",
+               "C13-HIST-SEL: selection e versions_doc listam as mesmas versões, na mesma ordem e com o mesmo released_at",
+               "C13-ATOMHIST: history em ordem semver sem repetição; first_seen/last_seen = primeira/última versão "
+               "present (nulos se nunca); atom_id = provider:resource_type:path; required e optional se excluem"])
 
 
 # ------------------------------------------------------------------------------------------------- C14

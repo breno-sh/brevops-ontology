@@ -1,7 +1,7 @@
 {
  "schema": "bo.contracts_adoption/1",
  "module": "CONTRACTS",
- "generated_at": "2026-11-03T01:13:38-03:00",
+ "generated_at": "2026-11-03T01:55:19-03:00",
  "adopted": [
   {
    "source": "results/REQUIREMENTS/C24_proposta/requirements.schema.json",
@@ -116,10 +116,69 @@
    "decision": "adotada com acréscimos (references, exclusivity_proof); regra C14-ALT confere alternativas mútuas"
   }
  ],
+ "amendments": [
+  {
+   "contract": "C01",
+   "from": "2.0.0",
+   "to": "2.1.0",
+   "at": "2026-11-03T02:10:00-03:00",
+   "requested_by": "SCHEMALIB",
+   "source": "$BO_REPO/results/SCHEMALIB/CONTRACT_CHANGE.txt",
+   "change": "campo opcional write_only (ausente = false) e regra C01-WRITEONLY; nested_type continua UM átomo com tf_type cty (['object', {...}] ou [modo, objeto, opcionais]), aceito sem mudança"
+  },
+  {
+   "contract": "C09",
+   "from": "3.0.0",
+   "to": "3.0.1",
+   "at": "2026-11-03T02:10:00-03:00",
+   "requested_by": "CONTRACTS",
+   "source": "varredura dos gates do modulos.json",
+   "change": "correspondences_jsonl casa com *.jsonl (os disputes.jsonl dos NONEHUNT-* eram lidos como TSV)"
+  },
+  {
+   "contract": "C11",
+   "from": "3.0.0",
+   "to": "3.0.1",
+   "at": "2026-11-03T02:10:00-03:00",
+   "requested_by": "CONTRACTS",
+   "source": "varredura dos gates do modulos.json",
+   "change": "cases casa com cases*.jsonl (cases_aws.jsonl do DEPSAMPLE)"
+  },
+  {
+   "contract": "C13",
+   "from": "3.0.0",
+   "to": "3.1.0",
+   "at": "2026-11-03T02:10:00-03:00",
+   "requested_by": "PINS, DRIFT",
+   "source": "/Users/breno/doutorado/pesquisa-lanes/bo-pins/results/PINS/CONTRACT_CHANGE.txt",
+   "change": "tipos novos history_versions (universe/history_versions.json, regras C13-HIST-PIN e C13-HIST-SEL) e atom_history ($BO_DATA/DRIFT/atom_history.jsonl, regra C13-ATOMHIST); cabeçalhos aceitam 3.0.0 e 3.1.0"
+  },
+  {
+   "contract": "C17",
+   "from": "3.0.0",
+   "to": "3.0.1",
+   "at": "2026-11-03T02:10:00-03:00",
+   "requested_by": "COORD",
+   "source": "commit [COORD] 294b956 em results/SEMANTICS/summary.json",
+   "change": "entrada de agent_provenance.inputs aceita sha256_before_<motivo> (hash anterior a uma emenda do coordenador); cabeçalhos aceitam 3.0.0 e 3.0.1"
+  },
+  {
+   "contract": "C18",
+   "from": "2.0.0",
+   "to": "2.0.1",
+   "at": "2026-11-03T02:10:00-03:00",
+   "requested_by": "CONTRACTS",
+   "source": "varredura dos gates do modulos.json",
+   "change": "numbers casa com numbers*.json (numbers_supp.json do STATS-SUPP); o .tex irmão é o de mesmo nome-base"
+  }
+ ],
  "findings": [
   "bo.semantics.sssom_io.write_tsv só escreve as colunas que a teoria conhece: alternative_to, exclusivity, supersedes e os slots padrão do SSSOM somem em silêncio. Quem grava C09 3.0.0 usa bo.contracts.sssom.write_tsv.",
   "ontology/patterns/upper_trial/*/cases.ttl não importam bo-patterns.ttl: sozinhos, reprovam no C14 (punning aparente, porque os papéis vêm do fecho); o ONTPAT os confere junto com o fecho, e o validador confere o fecho dos owl:imports locais. Os demais TTL do ONTPAT passam.",
   "modulos.json (catálogo do coordenador) passa no C00: ids, branches, worktrees, tmp_dir, ondas recalculadas do DAG, índices declarados e versões dos 30 contratos iguais às publicadas.",
-  "SEMANTICS examples.sssom.tsv passa no C09 3.0.0 sem mudança (20 alegações)."
+  "SEMANTICS examples.sssom.tsv passa no C09 3.0.0 sem mudança (20 alegações).",
+  "Emenda 2026-11-03: a varredura dos 122 gates 'bo.contracts.validate' do modulos.json achou 9 que resolviam no tipo errado (o tipo homônimo do contrato ou um padrão de nome estreito): PINS (pins.json), DRIFT (atom_history.jsonl, sem tipo), GLOSSARY-AUDIT (glossary_audit.jsonl), NONEHUNT-x4 (disputes.jsonl lido como TSV), DEPSAMPLE (cases_aws.jsonl) e STATS-SUPP (numbers_supp.json). Depois da emenda: 122/122.",
+  "paper/numbers_supp.json (STATS-SUPP) não tem contrato no artifact_catalog, mas o gate o valida como C18: o catálogo do coordenador deveria marcá-lo C18.",
+  "SCHEMALIB: nested_type (protocolo 6) como UM átomo com tf_type cty cabe no C01 sem mudança (tf_type aceita lista; stub C01 tem um); o write_only entra como campo opcional (átomos já gravados continuam válidos)."
  ]
 }

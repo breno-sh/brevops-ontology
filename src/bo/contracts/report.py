@@ -63,6 +63,14 @@ FINDINGS = [
     "modulos.json (catálogo do coordenador) passa no C00: ids, branches, worktrees, tmp_dir, ondas recalculadas do DAG, "
     "índices declarados e versões dos 30 contratos iguais às publicadas.",
     "SEMANTICS examples.sssom.tsv passa no C09 3.0.0 sem mudança (20 alegações).",
+    "Emenda 2026-11-03: a varredura dos 122 gates 'bo.contracts.validate' do modulos.json achou 9 que resolviam no "
+    "tipo errado (o tipo homônimo do contrato ou um padrão de nome estreito): PINS (pins.json), DRIFT "
+    "(atom_history.jsonl, sem tipo), GLOSSARY-AUDIT (glossary_audit.jsonl), NONEHUNT-x4 (disputes.jsonl lido como "
+    "TSV), DEPSAMPLE (cases_aws.jsonl) e STATS-SUPP (numbers_supp.json). Depois da emenda: 122/122.",
+    "paper/numbers_supp.json (STATS-SUPP) não tem contrato no artifact_catalog, mas o gate o valida como C18: "
+    "o catálogo do coordenador deveria marcá-lo C18.",
+    "SCHEMALIB: nested_type (protocolo 6) como UM átomo com tf_type cty cabe no C01 sem mudança (tf_type aceita "
+    "lista; stub C01 tem um); o write_only entra como campo opcional (átomos já gravados continuam válidos).",
 ]
 PRODUCER_FILES = [
     ("commitments", "requirements/commitments.jsonl", "REQUIREMENTS G1 (gate adiado)"),
@@ -85,6 +93,7 @@ PRODUCER_FILES = [
     ("C14_ttl", "ontology/patterns/descriptor-pattern.ttl", "C14"),
     ("C14_ttl", "ontology/patterns/example-abox.ttl", "C14 (fecho de imports)"),
     ("C14_ttl", "shapes/patterns.shacl.ttl", "C14"),
+    ("atoms", "contracts/stubs/C01/atoms.jsonl", "C01 2.1.0 (write_only e nested_type)"),
 ]
 
 
@@ -101,8 +110,9 @@ def adoption() -> dict:
                       "frozen_copy": f"src/bo/contracts/adopted/{name}.json", "frozen_sha256": sha(copy),
                       "drift": (sha(p) != sha(copy)) if p.is_file() else None,
                       "contract": cid, "definition": f"#/$defs/{record}", "change": change})
+    from .amendments import AMENDMENTS
     return {"schema": "bo.contracts_adoption/1", "module": "CONTRACTS", "generated_at": _base.now(),
-            "adopted": items, "suggestions": SUGGESTIONS, "findings": FINDINGS}
+            "adopted": items, "suggestions": SUGGESTIONS, "amendments": AMENDMENTS, "findings": FINDINGS}
 
 
 def producers() -> dict:

@@ -1,18 +1,18 @@
 {
  "$schema": "https://json-schema.org/draft/2020-12/schema",
  "$id": "https://w3id.org/brevops/contracts/C11/cases.schema.json",
- "title": "C11 cases 3.0.0: casos de implantação",
+ "title": "C11 cases 3.0.1: casos de implantação",
  "description": "case_id, group_id, claim_id, estrato (par, domínio, cardinalidade, relação, direção), frame_ref e peso, origin (sample | blocked | dispute | cq), lado, plano de lowering (C26) em vez de lista de caminhos, valores, comparador, classe de custo.",
  "x-bo-contract": {
   "id": "C11",
   "name": "cases",
-  "version": "3.0.0",
-  "status": "changed_v3",
+  "version": "3.0.1",
+  "status": "amended",
   "owner": "CONTRACTS",
   "files": [
    {
     "kind": "cases",
-    "file": "cases.jsonl",
+    "file": "cases*.jsonl",
     "format": "jsonl",
     "record": "case",
     "unit": "record"

@@ -176,8 +176,9 @@ def r_catalog(objs, ctx, path):
         pub = K.schemas()
         for cid, c in (cat.get("contracts") or {}).items():
             if cid in pub:
+                from .amendments import accepted
                 v = pub[cid]["x-bo-contract"]["version"]
-                if c.get("version") != v or c.get("name") != K.NAMES[cid]:
+                if c.get("version") not in accepted(cid, v) or c.get("name") != K.NAMES[cid]:
                     errs.append(f"contracts.{cid}: {c.get('name')} {c.get('version')} != publicado {K.NAMES[cid]} {v}")
     except FileNotFoundError:
         pass
@@ -202,6 +203,8 @@ def r_atoms(objs, ctx, path):
         blocks = [b["block"] for b in a["block_path"]]
         if blocks != segs[:len(blocks)] or len(blocks) >= len(segs):
             errs.append(f"{w}: block_path {blocks} não é prefixo próprio de {a['path']}")
+        if a.get("write_only") and (not a["configurable"] or a["computed"]):
+            errs.append(f"{w}: write_only exige configurable e não computed")
         last = a["block_path"][-1]["nesting_mode"] if a["block_path"] else "none"
         if a["nesting"] != last:
             errs.append(f"{w}: nesting {a['nesting']} != modo do último bloco ({last})")
@@ -686,12 +689,70 @@ def r_events(objs, ctx, path):
     return errs
 
 
+def _versions_doc(doc: dict, where: str = "") -> list[str]:
+    vs = [v["version"] for v in doc["versions"]]
+    errs = [where + e for e in dup(vs, "versão")]
+    if [semver_key(v) for v in vs] != sorted(semver_key(v) for v in vs):
+        errs.append(f"{where}versões fora de ordem crescente")
+    return errs
+
+
 @rule("C13", "versions")
 def r_versions(objs, ctx, path):
-    vs = [v["version"] for v in objs[0]["versions"]]
-    errs = dup(vs, "versão")
-    if [semver_key(v) for v in vs] != sorted(semver_key(v) for v in vs):
-        errs.append("versões fora de ordem crescente")
+    return _versions_doc(objs[0])
+
+
+@rule("C13", "history_versions")
+def r_history(objs, ctx, path):
+    d = objs[0]
+    errs = dup([p["provider"] for p in d["providers"]], "provider")
+    pins = load_sibling(path, "pins.json")
+    pin_by = {p["provider"]: p for p in pins[0]["providers"]} if pins else None
+    for p in d["providers"]:
+        w = f"{p['provider']}: "
+        vd = p["versions_doc"]
+        errs += _versions_doc(vd, w)
+        if vd["provider"] != p["provider"]:
+            errs.append(f"{w}versions_doc é de {vd['provider']}")
+        last = vd["versions"][-1]
+        if last["version"] != p["pin"]:
+            errs.append(f"{w}C13-HIST-PIN: última versão {last['version']} != pin {p['pin']}")
+        if pin_by is not None:
+            q = pin_by.get(p["provider"])
+            if q is None:
+                errs.append(f"{w}C13-HIST-PIN: provider fora do pins.json irmão")
+            else:
+                if q["version"] != p["pin"]:
+                    errs.append(f"{w}C13-HIST-PIN: pin {p['pin']} != pins.json {q['version']}")
+                if q.get("source") != p["source"]:
+                    errs.append(f"{w}C13-HIST-PIN: source diferente do pins.json")
+                if last.get("schema_sha256") and q.get("schema_sha256") and last["schema_sha256"] != q["schema_sha256"]:
+                    errs.append(f"{w}C13-HIST-PIN: schema_sha256 da última versão != pins.json")
+        a = [(v["version"], v["released_at"]) for v in vd["versions"]]
+        b = [(s_["version"], s_["released_at"]) for s_ in p["selection"]]
+        if a != b:
+            errs.append(f"{w}C13-HIST-SEL: selection e versions_doc não listam as mesmas versões/datas na mesma ordem")
+        if semver_key(p["left_truncation"]["index_first_version"]) > semver_key(vd["versions"][0]["version"]):
+            errs.append(f"{w}left_truncation.index_first_version posterior à primeira versão selecionada")
+    return errs
+
+
+@rule("C13", "atom_history")
+def r_atom_history(objs, ctx, path):
+    errs = dup([a["atom_id"] for a in objs], "atom_id")
+    for i, a in enumerate(objs):
+        w = f"atom_history[{i + 1}] {a['atom_id']}: "
+        if a["atom_id"] != f"{a['provider']}:{a['resource_type']}:{a['path']}":
+            errs.append(w + "atom_id != provider:resource_type:path")
+        vs = [h["version"] for h in a["history"]]
+        if len(set(vs)) != len(vs) or [semver_key(v) for v in vs] != sorted(semver_key(v) for v in vs):
+            errs.append(w + "history fora de ordem semver ou com versão repetida")
+        pres = [h["version"] for h in a["history"] if h["state"] == "present"]
+        if a["first_seen"] != (pres[0] if pres else None) or a["last_seen"] != (pres[-1] if pres else None):
+            errs.append(w + f"first_seen/last_seen != primeira/última versão presente ({pres[:1]}, {pres[-1:]})")
+        for h in a["history"]:
+            if h.get("required") and h.get("optional"):
+                errs.append(w + f"{h['version']}: required e optional ao mesmo tempo")
     return errs
 
 
@@ -889,7 +950,7 @@ def r_numbers(objs, ctx, path):
     for name, m in objs[0]["macros"].items():
         if not name.startswith(CATEGORY_PREFIX[m["category"]]):
             errs.append(f"\\{name}: categoria {m['category']} pede prefixo {CATEGORY_PREFIX[m['category']]}")
-    tex = sibling(path, "numbers.tex")
+    tex = sibling(path, path.stem + ".tex")
     if tex is not None:
         errs += _tex_vs_json(fileio._tex(tex)[1]["lines"], objs[0])
     return errs
@@ -916,7 +977,7 @@ def _tex_vs_json(lines: list, doc: dict) -> list[str]:
 
 @rule("C18", "numbers_tex")
 def r_numbers_tex(objs, ctx, path):
-    js = sibling(path, "numbers.json")
+    js = sibling(path, path.stem + ".json")
     errs = []
     for n, l in enumerate(ctx["lines"], 1):
         if l.strip() and not l.lstrip().startswith("%") and not fileio.MACRO.match(l.strip()):

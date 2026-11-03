@@ -25,6 +25,9 @@ step "união discriminada de desfechos (C12 = C22) e ids de alegação"
 $py -I -B -m bo.contracts.enum_union
 $py -I -B -m bo.contracts.claim_ids
 
+step "varredura: todo gate 'bo.contracts.validate <alias> <arquivo>' do catálogo resolve no tipo pretendido"
+$py -I -B -m bo.contracts.sweep | tail -1
+
 step "arquivos publicados pelos produtores no validador único (gates adiados)"
 for k in requirements commitments cq_spec; do
   $py -I -B -m bo.contracts.validate "$k" "requirements/$k.jsonl" | tail -1

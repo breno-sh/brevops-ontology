@@ -1,13 +1,13 @@
 {
  "$schema": "https://json-schema.org/draft/2020-12/schema",
  "$id": "https://w3id.org/brevops/contracts/C13/versions.schema.json",
- "title": "C13 versions 3.0.0: pins, versões e eventos",
+ "title": "C13 versions 3.1.0: pins, versões e eventos",
  "description": "Pins do Terraform e dos providers; versões por provider; eventos tipados (adição, renome, remoção, mudança de contrato) com o intervalo de versão em que podem ter ocorrido.",
  "x-bo-contract": {
   "id": "C13",
   "name": "versions",
-  "version": "3.0.0",
-  "status": "changed_v3",
+  "version": "3.1.0",
+  "status": "amended",
   "owner": "CONTRACTS",
   "files": [
    {
@@ -30,12 +30,31 @@
     "format": "jsonl",
     "record": "event",
     "unit": "record"
+   },
+   {
+    "kind": "history_versions",
+    "file": "history_versions.json",
+    "format": "json",
+    "record": "history_versions",
+    "unit": "document",
+    "note": "lista histórica dos 4 providers (PINS); cada versions_doc é um documento versions completo"
+   },
+   {
+    "kind": "atom_history",
+    "file": "atom_history.jsonl",
+    "format": "jsonl",
+    "record": "atom_history",
+    "unit": "record",
+    "note": "estado de cada átomo por versão amostrada (DRIFT)"
    }
   ],
   "semantic_rules": [
    "C13-INTERVAL: after < until (ordem semver)",
    "C13-RENAME: from_atom ≠ to_atom, mesmo provider e tipo",
-   "C13-UNIQ: event_id único; versões únicas e em ordem crescente"
+   "C13-UNIQ: event_id único; versões únicas e em ordem crescente (também dentro de cada versions_doc)",
+   "C13-HIST-PIN: a última versão de cada versions_doc é o pin do provider (e o pin do pins.json irmão, com schema_sha256 igual quando os dois têm)",
+   "C13-HIST-SEL: selection e versions_doc listam as mesmas versões, na mesma ordem e com o mesmo released_at",
+   "C13-ATOMHIST: history em ordem semver sem repetição; first_seen/last_seen = primeira/última versão present (nulos se nunca); atom_id = provider:resource_type:path; required e optional se excluem"
   ],
   "producers": [
    "DRIFT",
@@ -57,7 +76,10 @@
      "const": "C13"
     },
     "contract_version": {
-     "const": "3.0.0"
+     "enum": [
+      "3.0.0",
+      "3.1.0"
+     ]
     },
     "module": {
      "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/stable_id"
@@ -136,7 +158,10 @@
      "const": "C13"
     },
     "contract_version": {
-     "const": "3.0.0"
+     "enum": [
+      "3.0.0",
+      "3.1.0"
+     ]
     },
     "module": {
      "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/stable_id"
@@ -311,6 +336,491 @@
      }
     }
    ]
+  },
+  "history_versions": {
+   "type": "object",
+   "properties": {
+    "schema": {
+     "const": "bo.history_versions/1"
+    },
+    "contract": {
+     "const": "C13"
+    },
+    "contract_version": {
+     "enum": [
+      "3.0.0",
+      "3.1.0"
+     ]
+    },
+    "module": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/stable_id"
+    },
+    "generated_at": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/datetime"
+    },
+    "cutoff": {
+     "type": "object",
+     "properties": {
+      "date": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/date"
+      },
+      "timezone": {
+       "const": "America/Recife"
+      },
+      "end_exclusive": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/datetime"
+      },
+      "rule": {
+       "type": "string",
+       "minLength": 10
+      }
+     },
+     "required": [
+      "date",
+      "timezone",
+      "end_exclusive",
+      "rule"
+     ],
+     "additionalProperties": false
+    },
+    "window": {
+     "type": "object",
+     "properties": {
+      "start": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/date"
+      },
+      "rule": {
+       "type": "string",
+       "minLength": 10
+      }
+     },
+     "required": [
+      "start",
+      "rule"
+     ],
+     "additionalProperties": false
+    },
+    "index": {
+     "type": "object",
+     "properties": {
+      "path": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/portable_path"
+      },
+      "sha256": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/sha256"
+      },
+      "fetched_at": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/datetime"
+      }
+     },
+     "required": [
+      "path",
+      "sha256",
+      "fetched_at"
+     ],
+     "additionalProperties": false
+    },
+    "providers": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "provider": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/provider"
+       },
+       "source": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^registry\\.terraform\\.io/[a-z0-9-]+/[a-z0-9-]+$"
+       },
+       "pin": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/semver"
+       },
+       "index_files": {
+        "type": "object",
+        "properties": {
+         "registry_v1": {
+          "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/file_ref"
+         },
+         "registry_v2": {
+          "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/file_ref"
+         }
+        },
+        "required": [
+         "registry_v1",
+         "registry_v2"
+        ],
+        "additionalProperties": false
+       },
+       "versions_doc": {
+        "$ref": "#/$defs/versions"
+       },
+       "selection": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "version": {
+           "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/semver"
+          },
+          "published_at": {
+           "type": "string",
+           "minLength": 1,
+           "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?Z$",
+           "description": "carimbo UTC do Registry, como veio"
+          },
+          "released_at": {
+           "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/date"
+          },
+          "reasons": {
+           "type": "array",
+           "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^(quarter_end:\\d{4}Q[1-4]|major_first:\\d+|index_first|cutoff:\\d{4}-\\d{2}-\\d{2})$"
+           },
+           "minItems": 1,
+           "uniqueItems": true
+          },
+          "index_sha256": {
+           "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/sha256"
+          },
+          "protocols": {
+           "type": "array",
+           "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^\\d+\\.\\d+$"
+           },
+           "minItems": 1
+          },
+          "darwin_arm64": {
+           "type": "boolean"
+          },
+          "linux_amd64": {
+           "type": "boolean"
+          }
+         },
+         "required": [
+          "version",
+          "published_at",
+          "released_at",
+          "reasons",
+          "index_sha256",
+          "protocols",
+          "darwin_arm64",
+          "linux_amd64"
+         ],
+         "additionalProperties": false
+        },
+        "minItems": 1
+       },
+       "left_truncation": {
+        "type": "object",
+        "properties": {
+         "at": {
+          "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/datetime"
+         },
+         "version_in_force": {
+          "anyOf": [
+           {
+            "type": "null"
+           },
+           {
+            "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/semver"
+           }
+          ]
+         },
+         "major_in_force": {
+          "anyOf": [
+           {
+            "type": "null"
+           },
+           {
+            "type": "integer",
+            "minimum": 0
+           }
+          ]
+         },
+         "index_first_version": {
+          "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/semver"
+         },
+         "index_first_published_at": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?Z$",
+          "description": "carimbo UTC do Registry, como veio"
+         }
+        },
+        "required": [
+         "at",
+         "version_in_force",
+         "major_in_force",
+         "index_first_version",
+         "index_first_published_at"
+        ],
+        "additionalProperties": false
+       }
+      },
+      "required": [
+       "provider",
+       "source",
+       "pin",
+       "index_files",
+       "versions_doc",
+       "selection",
+       "left_truncation"
+      ],
+      "additionalProperties": false
+     },
+     "minItems": 1
+    },
+    "note": {
+     "type": "string",
+     "minLength": 3
+    }
+   },
+   "required": [
+    "schema",
+    "contract",
+    "contract_version",
+    "module",
+    "generated_at",
+    "cutoff",
+    "window",
+    "index",
+    "providers"
+   ],
+   "additionalProperties": false
+  },
+  "history_selection": {
+   "type": "object",
+   "properties": {
+    "version": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/semver"
+    },
+    "published_at": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?Z$",
+     "description": "carimbo UTC do Registry, como veio"
+    },
+    "released_at": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/date"
+    },
+    "reasons": {
+     "type": "array",
+     "items": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(quarter_end:\\d{4}Q[1-4]|major_first:\\d+|index_first|cutoff:\\d{4}-\\d{2}-\\d{2})$"
+     },
+     "minItems": 1,
+     "uniqueItems": true
+    },
+    "index_sha256": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/sha256"
+    },
+    "protocols": {
+     "type": "array",
+     "items": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^\\d+\\.\\d+$"
+     },
+     "minItems": 1
+    },
+    "darwin_arm64": {
+     "type": "boolean"
+    },
+    "linux_amd64": {
+     "type": "boolean"
+    }
+   },
+   "required": [
+    "version",
+    "published_at",
+    "released_at",
+    "reasons",
+    "index_sha256",
+    "protocols",
+    "darwin_arm64",
+    "linux_amd64"
+   ],
+   "additionalProperties": false
+  },
+  "atom_history": {
+   "type": "object",
+   "properties": {
+    "atom_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/atom_id"
+    },
+    "provider": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/provider"
+    },
+    "resource_type": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/resource_type"
+    },
+    "path": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^[A-Za-z0-9_]+(\\.[A-Za-z0-9_]+)*$"
+    },
+    "history": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "version": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/semver"
+       },
+       "state": {
+        "enum": [
+         "present",
+         "absent"
+        ]
+       },
+       "tf_type": {
+        "type": [
+         "string",
+         "array"
+        ]
+       },
+       "required": {
+        "type": "boolean"
+       },
+       "optional": {
+        "type": "boolean"
+       },
+       "computed": {
+        "type": "boolean"
+       },
+       "force_new": {
+        "type": "boolean"
+       },
+       "sensitive": {
+        "type": "boolean"
+       },
+       "deprecated": {
+        "type": "boolean"
+       },
+       "write_only": {
+        "type": "boolean"
+       },
+       "default": {}
+      },
+      "required": [
+       "version",
+       "state"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+       {
+        "if": {
+         "properties": {
+          "state": {
+           "const": "absent"
+          }
+         }
+        },
+        "then": {
+         "not": {
+          "anyOf": [
+           {
+            "required": [
+             "tf_type"
+            ]
+           },
+           {
+            "required": [
+             "required"
+            ]
+           },
+           {
+            "required": [
+             "optional"
+            ]
+           },
+           {
+            "required": [
+             "computed"
+            ]
+           },
+           {
+            "required": [
+             "force_new"
+            ]
+           },
+           {
+            "required": [
+             "default"
+            ]
+           }
+          ]
+         }
+        }
+       },
+       {
+        "if": {
+         "properties": {
+          "state": {
+           "const": "present"
+          }
+         }
+        },
+        "then": {
+         "required": [
+          "tf_type",
+          "required",
+          "optional",
+          "computed"
+         ]
+        }
+       }
+      ]
+     },
+     "minItems": 1
+    },
+    "first_seen": {
+     "anyOf": [
+      {
+       "type": "null"
+      },
+      {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/semver"
+      }
+     ]
+    },
+    "last_seen": {
+     "anyOf": [
+      {
+       "type": "null"
+      },
+      {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/semver"
+      }
+     ]
+    },
+    "events": {
+     "type": "array",
+     "items": {
+      "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/event_id"
+     },
+     "uniqueItems": true
+    }
+   },
+   "required": [
+    "atom_id",
+    "provider",
+    "resource_type",
+    "path",
+    "history",
+    "first_seen",
+    "last_seen",
+    "events"
+   ],
+   "additionalProperties": false,
+   "description": "estado de um átomo em cada versão amostrada (DRIFT); os eventos ficam em events.jsonl"
   }
  }
 }

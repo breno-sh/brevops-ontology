@@ -222,18 +222,23 @@ def c01() -> dict:
         "tf_type": {"type": ["string", "array"], "description": "tipo cty do schema do provider"},
         "nesting": enum("none", "single", "list", "set", "map", "group"),
         "required": boolean(), "optional": boolean(), "computed": boolean(), "sensitive": boolean(),
-        "deprecated": boolean(), "configurable": boolean()},
+        "deprecated": boolean(), "configurable": boolean(),
+        "write_only": boolean(description="aceito na configuração e nunca gravado no state: sem readback por "
+                                          "construção (ausente = false; emenda 2.1.0)")},
         ["atom_id", "provider", "provider_version", "resource_type", "path", "block_path", "tf_type", "nesting",
          "required", "optional", "computed", "sensitive", "deprecated", "configurable"])
     return contract_schema(
-        "C01", "atoms", "2.0.0", "átomos de atributo", status="unchanged_v3",
+        "C01", "atoms", "2.1.0", "átomos de atributo", status="amended",
         description="Um atributo configurável de um tipo, com o caminho dos blocos aninhados.",
         files=[file_kind("atoms", "atoms.jsonl", "jsonl", "atom", "record")], defs={"atom": atom},
         producers=["SCHEMA-{provider}", "HIST-{provider}", "SCHEMA-POST"],
         rules=["C01-ID: atom_id = provider:resource_type:path",
                "C01-FLAGS: required e optional se excluem; required não é computed; configurable = required ou optional",
                "C01-BLOCKS: os blocos de block_path são o prefixo de path; nesting = modo do último bloco (none no topo)",
-               "C01-UNIQ: atom_id único por (provider_version)"])
+               "C01-UNIQ: atom_id único por (provider_version)",
+               "C01-WRITEONLY: write_only implica configurable e não computed (emenda 2.1.0)",
+               "C01-NESTED: atributo nested_type (protocolo 6) é UM átomo com tf_type cty equivalente "
+               "(['object', {...}] ou [modo, objeto, opcionais]); os filhos não viram átomos"])
 
 
 # ------------------------------------------------------------------------------------------------- C02
