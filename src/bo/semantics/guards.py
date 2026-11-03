@@ -127,6 +127,7 @@ class _Cons:
     present: bool | None = None
     kinds: set | None = None
     universe: set | None = None    # enum declarado (fechado)
+    dtype: str | None = None       # datatype declarado em term_types
 
 
 def _constraints(g: dict) -> dict[str, _Cons]:
@@ -135,6 +136,7 @@ def _constraints(g: dict) -> dict[str, _Cons]:
     for a in g["all"]:
         op, term, v = a["op"], a["term"], a["value"]
         c = cons.setdefault(term, _Cons())
+        c.dtype = (tt.get(term) or {}).get("datatype")
         if term in tt and tt[term].get("datatype") == "boolean":
             c.universe = {True, False}
         elif term in tt and tt[term].get("enum") is not None:
@@ -175,16 +177,25 @@ def satisfiable(g: dict, roles=ROLES) -> tuple[str, dict]:
         has_value_cons = c.allowed is not None or c.lo is not None or c.hi is not None or c.kinds is not None
         if c.present is False and has_value_cons:
             return UNSAT, {"term": term, "why": "present false com restrição de valor"}
-        if c.allowed is not None:
-            vals = c.allowed & c.universe if c.universe is not None else c.allowed
-            if c.lo is not None or c.hi is not None:
+        ranged = c.lo is not None or c.hi is not None
+        if c.kinds and (c.allowed is not None or ranged or c.universe is not None):
+            # um valor é referência OU escalar: refers_to_kind com eq/in/region_in/edition_in/version_range ou com
+            # termo de universo fechado (enum, booleano) no mesmo termo não tem valor possível
+            return UNSAT, {"term": term, "why": "referência e restrição de valor escalar no mesmo termo"}
+        if c.allowed is not None or (ranged and c.universe is not None):
+            vals = c.allowed if c.allowed is not None else set(c.universe)
+            if c.universe is not None:
+                vals = vals & c.universe
+            if ranged:
                 vals = {x for x in vals if _in_ver(x, c.lo, c.hi)}
             if not vals:
-                return UNSAT, {"term": term, "why": "valores permitidos com interseção vazia"}
+                return UNSAT, {"term": term, "why": "nenhum valor do domínio satisfaz as restrições"}
             witness[term] = sorted(vals, key=str)[0]
-        elif c.lo is not None or c.hi is not None:
+        elif ranged:
             if (c.lo is not None and c.hi is not None and c.lo >= c.hi) or (c.lo is None and c.hi == (0, 0, 0, 0)):
                 return UNSAT, {"term": term, "why": "faixa de versão vazia"}
+            if c.dtype not in (None, "string"):
+                return UNSAT, {"term": term, "why": f"faixa de versão sobre termo {c.dtype}"}
             witness[term] = ".".join(str(x) for x in (c.lo or (0, 0, 0, 0)))
         if c.kinds is not None and len(c.kinds) > 1:
             ks = sorted(c.kinds)
@@ -285,8 +296,11 @@ def evaluate(g: dict, ctx: dict) -> tuple[str, list]:
         elif op in ("in", "region_in", "edition_in"):
             ok = x in v
         elif op == "version_range":
-            vv = ver(x)
-            ok = ("min" not in v or vv >= ver(v["min"])) and ("max_exclusive" not in v or vv < ver(v["max_exclusive"]))
+            try:
+                vv = ver(x)
+                ok = ("min" not in v or vv >= ver(v["min"])) and ("max_exclusive" not in v or vv < ver(v["max_exclusive"]))
+            except GuardTypeError:
+                ok = False      # valor que não é versão não está na faixa
         elif op == "refers_to_kind":
             ok = isinstance(x, dict) and x.get("$kind") == v
         else:  # pragma: no cover - typecheck impede

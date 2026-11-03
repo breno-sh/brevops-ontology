@@ -1,0 +1,1692 @@
+{
+ "casos": [
+  {
+   "antes": "SAT",
+   "class": "version_range_over_closed_universe",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "eq",
+      "term": "object.enabled",
+      "value": false
+     },
+     {
+      "op": "eq",
+      "term": "object.enabled",
+      "value": false
+     },
+     {
+      "op": "version_range",
+      "term": "object.provider_version",
+      "value": {
+       "max_exclusive": "7.2.1",
+       "min": "5.10"
+      }
+     },
+     {
+      "op": "present",
+      "term": "object.region",
+      "value": false
+     },
+     {
+      "op": "region_in",
+      "term": "subject.region",
+      "value": [
+       "r-c"
+      ]
+     }
+    ],
+    "term_types": {
+     "object.enabled": {
+      "datatype": "boolean"
+     },
+     "object.provider_version": {
+      "datatype": "enum",
+      "enum": [
+       "5.1",
+       "1.0"
+      ]
+     }
+    }
+   }
+  },
+  {
+   "antes": "SAT",
+   "class": "kind_with_scalar_value",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "region_in",
+      "term": "object.region",
+      "value": [
+       "r-c"
+      ]
+     },
+     {
+      "op": "eq",
+      "term": "object.target",
+      "value": "ref-a"
+     },
+     {
+      "op": "refers_to_kind",
+      "term": "object.target",
+      "value": "vpc"
+     },
+     {
+      "op": "eq",
+      "term": "object.enabled",
+      "value": true
+     },
+     {
+      "op": "edition_in",
+      "term": "object.edition",
+      "value": [
+       "standard",
+       "premium"
+      ]
+     }
+    ],
+    "term_types": {
+     "object.enabled": {
+      "datatype": "boolean"
+     },
+     "object.target": {
+      "datatype": "string"
+     }
+    }
+   }
+  },
+  {
+   "antes": "SAT",
+   "class": "kind_with_scalar_value",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "eq",
+      "term": "object.target",
+      "value": "ref-a"
+     },
+     {
+      "op": "eq",
+      "term": "object.enabled",
+      "value": true
+     },
+     {
+      "op": "present",
+      "term": "subject.region",
+      "value": false
+     },
+     {
+      "op": "refers_to_kind",
+      "term": "object.target",
+      "value": "vpc"
+     }
+    ],
+    "term_types": {
+     "object.enabled": {
+      "datatype": "boolean"
+     },
+     "object.target": {
+      "datatype": "string"
+     }
+    }
+   }
+  },
+  {
+   "antes": "SAT",
+   "class": "kind_with_scalar_value",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "present",
+      "term": "object.name",
+      "value": true
+     },
+     {
+      "op": "present",
+      "term": "object.edition",
+      "value": true
+     },
+     {
+      "op": "eq",
+      "term": "object.target",
+      "value": "ref-a"
+     },
+     {
+      "op": "refers_to_kind",
+      "term": "object.target",
+      "value": "network_interface"
+     },
+     {
+      "op": "version_range",
+      "term": "object.provider_version",
+      "value": {
+       "max_exclusive": "5.10",
+       "min": "4.9"
+      }
+     }
+    ],
+    "term_types": {
+     "object.provider_version": {
+      "datatype": "enum",
+      "enum": [
+       "4.9",
+       "1.0"
+      ]
+     },
+     "object.target": {
+      "datatype": "string"
+     }
+    }
+   }
+  },
+  {
+   "antes": "SAT",
+   "class": "kind_with_scalar_value",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "region_in",
+      "term": "subject.region",
+      "value": [
+       "r-c",
+       "r-b",
+       "r-a"
+      ]
+     },
+     {
+      "op": "eq",
+      "term": "object.target",
+      "value": "ref-a"
+     },
+     {
+      "op": "present",
+      "term": "object.target",
+      "value": true
+     },
+     {
+      "op": "refers_to_kind",
+      "term": "object.target",
+      "value": "vpc"
+     },
+     {
+      "op": "present",
+      "term": "object.port",
+      "value": true
+     }
+    ],
+    "term_types": {
+     "object.target": {
+      "datatype": "string"
+     }
+    }
+   }
+  },
+  {
+   "antes": "UNKNOWN",
+   "class": "kind_with_scalar_value",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "refers_to_kind",
+      "term": "object.target",
+      "value": "vpc"
+     },
+     {
+      "op": "eq",
+      "term": "object.tier",
+      "value": "basic"
+     },
+     {
+      "op": "eq",
+      "term": "object.target",
+      "value": "ref-a"
+     },
+     {
+      "op": "region_in",
+      "term": "object.region",
+      "value": [
+       "r-a",
+       "r-b",
+       "r-c"
+      ]
+     },
+     {
+      "op": "refers_to_kind",
+      "term": "object.target",
+      "value": "subnet"
+     }
+    ],
+    "term_types": {
+     "object.target": {
+      "datatype": "string"
+     },
+     "object.tier": {
+      "datatype": "enum",
+      "enum": [
+       "basic",
+       "standard",
+       "premium"
+      ]
+     }
+    }
+   }
+  },
+  {
+   "antes": "SAT",
+   "class": "kind_with_scalar_value",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "refers_to_kind",
+      "term": "object.target",
+      "value": "vpc"
+     },
+     {
+      "op": "eq",
+      "term": "object.target",
+      "value": "ref-a"
+     }
+    ],
+    "term_types": {
+     "object.target": {
+      "datatype": "string"
+     }
+    }
+   }
+  },
+  {
+   "antes": "SAT",
+   "class": "version_range_over_closed_universe",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "version_range",
+      "term": "object.provider_version",
+      "value": {
+       "max_exclusive": "4.9"
+      }
+     }
+    ],
+    "term_types": {
+     "object.provider_version": {
+      "datatype": "enum",
+      "enum": [
+       "5.0",
+       "5.10"
+      ]
+     }
+    }
+   }
+  },
+  {
+   "antes": "SAT",
+   "class": "kind_with_scalar_value",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "refers_to_kind",
+      "term": "object.target",
+      "value": "vpc"
+     },
+     {
+      "op": "region_in",
+      "term": "subject.region",
+      "value": [
+       "r-a"
+      ]
+     },
+     {
+      "op": "version_range",
+      "term": "object.provider_version",
+      "value": {
+       "max_exclusive": "7.2.1",
+       "min": "0"
+      }
+     },
+     {
+      "op": "eq",
+      "term": "object.target",
+      "value": "ref-a"
+     }
+    ],
+    "term_types": {
+     "object.target": {
+      "datatype": "string"
+     }
+    }
+   }
+  },
+  {
+   "antes": "SAT",
+   "class": "version_range_over_closed_universe",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "eq",
+      "term": "object.enabled",
+      "value": true
+     },
+     {
+      "op": "in",
+      "term": "object.name",
+      "value": [
+       "a",
+       "b"
+      ]
+     },
+     {
+      "op": "version_range",
+      "term": "object.provider_version",
+      "value": {
+       "max_exclusive": "5.1"
+      }
+     },
+     {
+      "op": "eq",
+      "term": "object.enabled",
+      "value": true
+     }
+    ],
+    "term_types": {
+     "object.enabled": {
+      "datatype": "boolean"
+     },
+     "object.name": {
+      "datatype": "string"
+     },
+     "object.provider_version": {
+      "datatype": "enum",
+      "enum": [
+       "6",
+       "5.10"
+      ]
+     }
+    }
+   }
+  },
+  {
+   "antes": "SAT",
+   "class": "kind_with_scalar_value",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "present",
+      "term": "object.region",
+      "value": false
+     },
+     {
+      "op": "refers_to_kind",
+      "term": "object.target",
+      "value": "subnet"
+     },
+     {
+      "op": "eq",
+      "term": "object.target",
+      "value": "ref-a"
+     },
+     {
+      "op": "version_range",
+      "term": "object.provider_version",
+      "value": {
+       "max_exclusive": "6",
+       "min": "5.0"
+      }
+     }
+    ],
+    "term_types": {
+     "object.target": {
+      "datatype": "string"
+     }
+    }
+   }
+  },
+  {
+   "antes": "SAT",
+   "class": "version_range_over_closed_universe",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "eq",
+      "term": "object.port",
+      "value": 443
+     },
+     {
+      "op": "present",
+      "term": "object.tier",
+      "value": false
+     },
+     {
+      "op": "refers_to_kind",
+      "term": "object.target",
+      "value": "subnet"
+     },
+     {
+      "op": "version_range",
+      "term": "object.provider_version",
+      "value": {
+       "max_exclusive": "5.10",
+       "min": "0"
+      }
+     }
+    ],
+    "term_types": {
+     "object.port": {
+      "datatype": "integer"
+     },
+     "object.provider_version": {
+      "datatype": "enum",
+      "enum": [
+       "5.10",
+       "6"
+      ]
+     }
+    }
+   }
+  },
+  {
+   "antes": "SAT",
+   "class": "kind_with_scalar_value",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "eq",
+      "term": "object.tier",
+      "value": "standard"
+     },
+     {
+      "op": "refers_to_kind",
+      "term": "object.target",
+      "value": "vpc"
+     },
+     {
+      "op": "eq",
+      "term": "object.target",
+      "value": "ref-a"
+     }
+    ],
+    "term_types": {
+     "object.target": {
+      "datatype": "string"
+     },
+     "object.tier": {
+      "datatype": "enum",
+      "enum": [
+       "basic",
+       "standard",
+       "premium"
+      ]
+     }
+    }
+   }
+  },
+  {
+   "antes": "SAT",
+   "class": "kind_with_scalar_value",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "eq",
+      "term": "object.target",
+      "value": "ref-a"
+     },
+     {
+      "op": "refers_to_kind",
+      "term": "object.target",
+      "value": "subnet"
+     },
+     {
+      "op": "edition_in",
+      "term": "object.edition",
+      "value": [
+       "basic",
+       "premium"
+      ]
+     },
+     {
+      "op": "version_range",
+      "term": "object.provider_version",
+      "value": {
+       "min": "5.10"
+      }
+     },
+     {
+      "op": "region_in",
+      "term": "object.region",
+      "value": [
+       "r-c",
+       "r-a",
+       "r-b"
+      ]
+     }
+    ],
+    "term_types": {
+     "object.target": {
+      "datatype": "string"
+     }
+    }
+   }
+  },
+  {
+   "antes": "SAT",
+   "class": "kind_with_scalar_value",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "refers_to_kind",
+      "term": "object.target",
+      "value": "vpc"
+     },
+     {
+      "op": "edition_in",
+      "term": "object.edition",
+      "value": [
+       "basic"
+      ]
+     },
+     {
+      "op": "eq",
+      "term": "object.target",
+      "value": "ref-a"
+     }
+    ],
+    "kind_disjoint": [
+     [
+      "network_interface",
+      "subnet"
+     ]
+    ],
+    "term_types": {
+     "object.target": {
+      "datatype": "string"
+     }
+    }
+   }
+  },
+  {
+   "antes": "SAT",
+   "class": "version_range_over_closed_universe",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "version_range",
+      "term": "object.provider_version",
+      "value": {
+       "max_exclusive": "6",
+       "min": "5.1"
+      }
+     },
+     {
+      "op": "region_in",
+      "term": "subject.region",
+      "value": [
+       "r-b"
+      ]
+     }
+    ],
+    "term_types": {
+     "object.provider_version": {
+      "datatype": "enum",
+      "enum": [
+       "1.0",
+       "0"
+      ]
+     }
+    }
+   }
+  },
+  {
+   "antes": "SAT",
+   "class": "kind_with_scalar_value",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "refers_to_kind",
+      "term": "object.target",
+      "value": "subnet"
+     },
+     {
+      "op": "eq",
+      "term": "object.target",
+      "value": "ref-a"
+     },
+     {
+      "op": "edition_in",
+      "term": "object.edition",
+      "value": [
+       "standard"
+      ]
+     },
+     {
+      "op": "eq",
+      "term": "object.enabled",
+      "value": false
+     },
+     {
+      "op": "version_range",
+      "term": "object.provider_version",
+      "value": {
+       "max_exclusive": "7.2.1"
+      }
+     }
+    ],
+    "term_types": {
+     "object.enabled": {
+      "datatype": "boolean"
+     },
+     "object.target": {
+      "datatype": "string"
+     }
+    }
+   }
+  },
+  {
+   "antes": "SAT",
+   "class": "kind_with_scalar_value",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "present",
+      "term": "subject.region",
+      "value": true
+     },
+     {
+      "op": "eq",
+      "term": "object.name",
+      "value": "a"
+     },
+     {
+      "op": "refers_to_kind",
+      "term": "object.target",
+      "value": "subnet"
+     },
+     {
+      "op": "present",
+      "term": "object.edition",
+      "value": true
+     },
+     {
+      "op": "eq",
+      "term": "object.target",
+      "value": "ref-a"
+     }
+    ],
+    "term_types": {
+     "object.name": {
+      "datatype": "string"
+     },
+     "object.target": {
+      "datatype": "string"
+     }
+    }
+   }
+  },
+  {
+   "antes": "SAT",
+   "class": "version_range_over_closed_universe",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "version_range",
+      "term": "object.provider_version",
+      "value": {
+       "max_exclusive": "7.2.1"
+      }
+     },
+     {
+      "op": "version_range",
+      "term": "object.provider_version",
+      "value": {
+       "max_exclusive": "1.0",
+       "min": "0"
+      }
+     }
+    ],
+    "term_types": {
+     "object.provider_version": {
+      "datatype": "enum",
+      "enum": [
+       "7.2.1",
+       "5.10"
+      ]
+     }
+    }
+   }
+  },
+  {
+   "antes": "SAT",
+   "class": "version_range_over_closed_universe",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "refers_to_kind",
+      "term": "object.target",
+      "value": "network_interface"
+     },
+     {
+      "op": "eq",
+      "term": "object.enabled",
+      "value": false
+     },
+     {
+      "op": "version_range",
+      "term": "object.provider_version",
+      "value": {
+       "min": "5.10"
+      }
+     }
+    ],
+    "term_types": {
+     "object.enabled": {
+      "datatype": "boolean"
+     },
+     "object.provider_version": {
+      "datatype": "enum",
+      "enum": [
+       "0",
+       "4.9"
+      ]
+     }
+    }
+   }
+  },
+  {
+   "antes": "SAT",
+   "class": "version_range_over_closed_universe",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "region_in",
+      "term": "subject.region",
+      "value": [
+       "r-b",
+       "r-c"
+      ]
+     },
+     {
+      "op": "refers_to_kind",
+      "term": "object.target",
+      "value": "vpc"
+     },
+     {
+      "op": "version_range",
+      "term": "object.provider_version",
+      "value": {
+       "max_exclusive": "6",
+       "min": "5.1"
+      }
+     }
+    ],
+    "term_types": {
+     "object.provider_version": {
+      "datatype": "enum",
+      "enum": [
+       "6",
+       "1.0"
+      ]
+     }
+    }
+   }
+  },
+  {
+   "antes": "SAT",
+   "class": "version_range_over_closed_universe",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "version_range",
+      "term": "object.provider_version",
+      "value": {
+       "max_exclusive": "6",
+       "min": "5.10"
+      }
+     },
+     {
+      "op": "in",
+      "term": "object.name",
+      "value": [
+       "b",
+       "c"
+      ]
+     }
+    ],
+    "term_types": {
+     "object.name": {
+      "datatype": "string"
+     },
+     "object.provider_version": {
+      "datatype": "enum",
+      "enum": [
+       "5.0",
+       "5.1"
+      ]
+     }
+    }
+   }
+  },
+  {
+   "antes": "SAT",
+   "class": "version_range_over_closed_universe",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "version_range",
+      "term": "object.provider_version",
+      "value": {
+       "max_exclusive": "5.10",
+       "min": "0"
+      }
+     },
+     {
+      "op": "in",
+      "term": "object.port",
+      "value": [
+       22,
+       80
+      ]
+     },
+     {
+      "op": "region_in",
+      "term": "subject.region",
+      "value": [
+       "r-b",
+       "r-c",
+       "r-a"
+      ]
+     },
+     {
+      "op": "in",
+      "term": "object.tier",
+      "value": [
+       "basic"
+      ]
+     },
+     {
+      "op": "region_in",
+      "term": "subject.region",
+      "value": [
+       "r-b"
+      ]
+     }
+    ],
+    "term_types": {
+     "object.port": {
+      "datatype": "integer"
+     },
+     "object.provider_version": {
+      "datatype": "enum",
+      "enum": [
+       "5.10",
+       "7.2.1"
+      ]
+     },
+     "object.tier": {
+      "datatype": "enum",
+      "enum": [
+       "basic",
+       "standard",
+       "premium"
+      ]
+     }
+    }
+   }
+  },
+  {
+   "antes": "SAT",
+   "class": "version_range_over_closed_universe",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "region_in",
+      "term": "subject.region",
+      "value": [
+       "r-b",
+       "r-a"
+      ]
+     },
+     {
+      "op": "region_in",
+      "term": "object.region",
+      "value": [
+       "r-a",
+       "r-c"
+      ]
+     },
+     {
+      "op": "version_range",
+      "term": "object.provider_version",
+      "value": {
+       "max_exclusive": "4.9",
+       "min": "0"
+      }
+     }
+    ],
+    "term_types": {
+     "object.provider_version": {
+      "datatype": "enum",
+      "enum": [
+       "5.0",
+       "6"
+      ]
+     }
+    }
+   }
+  },
+  {
+   "antes": "SAT",
+   "class": "kind_with_scalar_value",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "refers_to_kind",
+      "term": "object.target",
+      "value": "vpc"
+     },
+     {
+      "op": "eq",
+      "term": "object.target",
+      "value": "ref-a"
+     },
+     {
+      "op": "eq",
+      "term": "object.port",
+      "value": 443
+     },
+     {
+      "op": "present",
+      "term": "object.name",
+      "value": true
+     }
+    ],
+    "term_types": {
+     "object.port": {
+      "datatype": "integer"
+     },
+     "object.target": {
+      "datatype": "string"
+     }
+    }
+   }
+  },
+  {
+   "antes": "SAT",
+   "class": "kind_with_scalar_value",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "region_in",
+      "term": "object.region",
+      "value": [
+       "r-a",
+       "r-c",
+       "r-b"
+      ]
+     },
+     {
+      "op": "refers_to_kind",
+      "term": "object.target",
+      "value": "vpc"
+     },
+     {
+      "op": "version_range",
+      "term": "object.provider_version",
+      "value": {
+       "max_exclusive": "5.10"
+      }
+     },
+     {
+      "op": "eq",
+      "term": "object.target",
+      "value": "ref-a"
+     },
+     {
+      "op": "eq",
+      "term": "object.name",
+      "value": "a"
+     }
+    ],
+    "term_types": {
+     "object.name": {
+      "datatype": "string"
+     },
+     "object.target": {
+      "datatype": "string"
+     }
+    }
+   }
+  },
+  {
+   "antes": "SAT",
+   "class": "kind_with_scalar_value",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "eq",
+      "term": "object.enabled",
+      "value": false
+     },
+     {
+      "op": "eq",
+      "term": "object.target",
+      "value": "ref-a"
+     },
+     {
+      "op": "refers_to_kind",
+      "term": "object.target",
+      "value": "subnet"
+     },
+     {
+      "op": "eq",
+      "term": "object.port",
+      "value": 80
+     }
+    ],
+    "kind_disjoint": [
+     [
+      "subnet",
+      "network_interface"
+     ]
+    ],
+    "term_types": {
+     "object.enabled": {
+      "datatype": "boolean"
+     },
+     "object.port": {
+      "datatype": "integer"
+     },
+     "object.target": {
+      "datatype": "string"
+     }
+    }
+   }
+  },
+  {
+   "antes": "SAT",
+   "class": "kind_with_scalar_value",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "in",
+      "term": "object.tier",
+      "value": [
+       "basic"
+      ]
+     },
+     {
+      "op": "edition_in",
+      "term": "object.edition",
+      "value": [
+       "premium"
+      ]
+     },
+     {
+      "op": "eq",
+      "term": "object.target",
+      "value": "ref-a"
+     },
+     {
+      "op": "refers_to_kind",
+      "term": "object.target",
+      "value": "network_interface"
+     },
+     {
+      "op": "region_in",
+      "term": "object.region",
+      "value": [
+       "r-c"
+      ]
+     }
+    ],
+    "term_types": {
+     "object.target": {
+      "datatype": "string"
+     },
+     "object.tier": {
+      "datatype": "enum",
+      "enum": [
+       "basic",
+       "standard",
+       "premium"
+      ]
+     }
+    }
+   }
+  },
+  {
+   "antes": "SAT",
+   "class": "kind_with_scalar_value",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "eq",
+      "term": "object.enabled",
+      "value": true
+     },
+     {
+      "op": "refers_to_kind",
+      "term": "object.target",
+      "value": "vpc"
+     },
+     {
+      "op": "present",
+      "term": "subject.region",
+      "value": true
+     },
+     {
+      "op": "eq",
+      "term": "object.enabled",
+      "value": true
+     },
+     {
+      "op": "eq",
+      "term": "object.target",
+      "value": "ref-a"
+     }
+    ],
+    "kind_disjoint": [
+     [
+      "vpc",
+      "network_interface"
+     ]
+    ],
+    "term_types": {
+     "object.enabled": {
+      "datatype": "boolean"
+     },
+     "object.target": {
+      "datatype": "string"
+     }
+    }
+   }
+  },
+  {
+   "antes": "SAT",
+   "class": "kind_with_scalar_value",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "eq",
+      "term": "object.target",
+      "value": "ref-a"
+     },
+     {
+      "op": "refers_to_kind",
+      "term": "object.target",
+      "value": "network_interface"
+     }
+    ],
+    "term_types": {
+     "object.target": {
+      "datatype": "string"
+     }
+    }
+   }
+  },
+  {
+   "antes": "SAT",
+   "class": "kind_with_scalar_value",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "refers_to_kind",
+      "term": "object.target",
+      "value": "vpc"
+     },
+     {
+      "op": "eq",
+      "term": "object.target",
+      "value": "ref-a"
+     },
+     {
+      "op": "region_in",
+      "term": "object.region",
+      "value": [
+       "r-b",
+       "r-a"
+      ]
+     },
+     {
+      "op": "present",
+      "term": "object.provider_version",
+      "value": false
+     },
+     {
+      "op": "eq",
+      "term": "object.port",
+      "value": 443
+     }
+    ],
+    "kind_disjoint": [
+     [
+      "subnet",
+      "vpc"
+     ]
+    ],
+    "term_types": {
+     "object.port": {
+      "datatype": "integer"
+     },
+     "object.target": {
+      "datatype": "string"
+     }
+    }
+   }
+  },
+  {
+   "antes": "SAT",
+   "class": "version_range_over_closed_universe",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "version_range",
+      "term": "object.provider_version",
+      "value": {
+       "max_exclusive": "1.0",
+       "min": "0"
+      }
+     },
+     {
+      "op": "edition_in",
+      "term": "object.edition",
+      "value": [
+       "basic",
+       "premium"
+      ]
+     }
+    ],
+    "kind_disjoint": [
+     [
+      "vpc",
+      "subnet"
+     ]
+    ],
+    "term_types": {
+     "object.provider_version": {
+      "datatype": "enum",
+      "enum": [
+       "6",
+       "5.10"
+      ]
+     }
+    }
+   }
+  },
+  {
+   "antes": "UNKNOWN",
+   "class": "kind_with_scalar_value",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "present",
+      "term": "object.port",
+      "value": true
+     },
+     {
+      "op": "refers_to_kind",
+      "term": "object.target",
+      "value": "subnet"
+     },
+     {
+      "op": "refers_to_kind",
+      "term": "object.target",
+      "value": "vpc"
+     },
+     {
+      "op": "eq",
+      "term": "object.enabled",
+      "value": true
+     },
+     {
+      "op": "eq",
+      "term": "object.target",
+      "value": "ref-a"
+     }
+    ],
+    "kind_disjoint": [
+     [
+      "network_interface",
+      "subnet"
+     ]
+    ],
+    "term_types": {
+     "object.enabled": {
+      "datatype": "boolean"
+     },
+     "object.target": {
+      "datatype": "string"
+     }
+    }
+   }
+  },
+  {
+   "antes": "SAT",
+   "class": "version_range_over_closed_universe",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "eq",
+      "term": "object.enabled",
+      "value": false
+     },
+     {
+      "op": "version_range",
+      "term": "object.provider_version",
+      "value": {
+       "max_exclusive": "6",
+       "min": "0"
+      }
+     },
+     {
+      "op": "version_range",
+      "term": "object.provider_version",
+      "value": {
+       "max_exclusive": "7.2.1"
+      }
+     },
+     {
+      "op": "version_range",
+      "term": "object.provider_version",
+      "value": {
+       "max_exclusive": "5.0",
+       "min": "4.9"
+      }
+     }
+    ],
+    "term_types": {
+     "object.enabled": {
+      "datatype": "boolean"
+     },
+     "object.provider_version": {
+      "datatype": "enum",
+      "enum": [
+       "5.10",
+       "6"
+      ]
+     }
+    }
+   }
+  },
+  {
+   "antes": "SAT",
+   "class": "version_range_over_closed_universe",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "in",
+      "term": "object.name",
+      "value": [
+       "b",
+       "a"
+      ]
+     },
+     {
+      "op": "version_range",
+      "term": "object.provider_version",
+      "value": {
+       "max_exclusive": "5.10",
+       "min": "5.1"
+      }
+     },
+     {
+      "op": "eq",
+      "term": "object.name",
+      "value": "b"
+     },
+     {
+      "op": "edition_in",
+      "term": "object.edition",
+      "value": [
+       "standard",
+       "premium"
+      ]
+     }
+    ],
+    "term_types": {
+     "object.name": {
+      "datatype": "string"
+     },
+     "object.provider_version": {
+      "datatype": "enum",
+      "enum": [
+       "5.0",
+       "7.2.1"
+      ]
+     }
+    }
+   }
+  },
+  {
+   "antes": "SAT",
+   "class": "version_range_over_closed_universe",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "region_in",
+      "term": "subject.region",
+      "value": [
+       "r-b",
+       "r-a",
+       "r-c"
+      ]
+     },
+     {
+      "op": "region_in",
+      "term": "subject.region",
+      "value": [
+       "r-a",
+       "r-b"
+      ]
+     },
+     {
+      "op": "version_range",
+      "term": "object.provider_version",
+      "value": {
+       "max_exclusive": "4.9",
+       "min": "0"
+      }
+     }
+    ],
+    "kind_disjoint": [
+     [
+      "vpc",
+      "subnet"
+     ]
+    ],
+    "term_types": {
+     "object.provider_version": {
+      "datatype": "enum",
+      "enum": [
+       "5.0",
+       "4.9"
+      ]
+     }
+    }
+   }
+  },
+  {
+   "antes": "SAT",
+   "class": "kind_with_scalar_value",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "eq",
+      "term": "object.target",
+      "value": "ref-a"
+     },
+     {
+      "op": "refers_to_kind",
+      "term": "object.target",
+      "value": "network_interface"
+     }
+    ],
+    "kind_disjoint": [
+     [
+      "network_interface",
+      "subnet"
+     ]
+    ],
+    "term_types": {
+     "object.target": {
+      "datatype": "string"
+     }
+    }
+   }
+  },
+  {
+   "antes": "SAT",
+   "class": "version_range_over_closed_universe",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "version_range",
+      "term": "object.provider_version",
+      "value": {
+       "max_exclusive": "7.2.1",
+       "min": "5.10"
+      }
+     },
+     {
+      "op": "present",
+      "term": "object.edition",
+      "value": true
+     },
+     {
+      "op": "eq",
+      "term": "object.tier",
+      "value": "basic"
+     },
+     {
+      "op": "version_range",
+      "term": "object.provider_version",
+      "value": {
+       "max_exclusive": "6"
+      }
+     }
+    ],
+    "term_types": {
+     "object.provider_version": {
+      "datatype": "enum",
+      "enum": [
+       "1.0",
+       "5.0"
+      ]
+     },
+     "object.tier": {
+      "datatype": "enum",
+      "enum": [
+       "basic",
+       "standard",
+       "premium"
+      ]
+     }
+    }
+   }
+  },
+  {
+   "antes": "SAT",
+   "class": "version_range_over_closed_universe",
+   "expected": "UNSAT",
+   "guard": {
+    "all": [
+     {
+      "op": "version_range",
+      "term": "object.provider_version",
+      "value": {
+       "max_exclusive": "6",
+       "min": "4.9"
+      }
+     },
+     {
+      "op": "eq",
+      "term": "object.name",
+      "value": "a"
+     },
+     {
+      "op": "in",
+      "term": "object.tier",
+      "value": [
+       "basic",
+       "standard",
+       "premium"
+      ]
+     },
+     {
+      "op": "eq",
+      "term": "object.enabled",
+      "value": false
+     },
+     {
+      "op": "version_range",
+      "term": "object.provider_version",
+      "value": {
+       "max_exclusive": "5.1",
+       "min": "5.0"
+      }
+     }
+    ],
+    "term_types": {
+     "object.enabled": {
+      "datatype": "boolean"
+     },
+     "object.name": {
+      "datatype": "string"
+     },
+     "object.provider_version": {
+      "datatype": "enum",
+      "enum": [
+       "6",
+       "4.9"
+      ]
+     },
+     "object.tier": {
+      "datatype": "enum",
+      "enum": [
+       "basic",
+       "standard",
+       "premium"
+      ]
+     }
+    }
+   }
+  }
+ ],
+ "origem": "TRANSFORMS (registro.json, guard_sat): 39 de 3998 guardas aleatórias (semente do guard_sat) em que bo.semantics.guards dava SAT/UNKNOWN e a força bruta prova UNSAT; corrigido em 2026-11-03"
+}

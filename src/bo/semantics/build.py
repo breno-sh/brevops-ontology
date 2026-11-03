@@ -50,6 +50,9 @@ FINDINGS = [
     "composição vazia. A teoria OWL não pode ser usada para transportar.",
     "PERSISTENCE_VERIFIED não promove significado: dias de retenção e contagem de cópias persistem iguais e são "
     "grandezas diferentes (KIND-EQ pega; a leitura de volta não).",
+    "Defeito achado pelo TRANSFORMS e corrigido em 2026-11-03: a satisfatibilidade dava SAT/UNKNOWN em 39 de 3998 "
+    "guardas que a força bruta prova insatisfazíveis (version_range sobre termo de universo fechado; refers_to_kind "
+    "com valor escalar no mesmo termo). Os 39 casos viraram teste de regressão; agora 3998/3998 batem com a força bruta.",
     "O C23 não tem código de bloqueio para alegação refutada; o transporte usa REFUTED_BY_RULE (proposta ao CONTRACTS).",
     "A gramática de guarda do plano (sete operadores, sem negação) só prova exclusividade de alternativas por "
     "interseção UNSAT; complemento ('qualquer edição menos X') não é exprimível, e é preciso listar o enum.",
@@ -196,6 +199,7 @@ def frozen_code(root: Path) -> list[str]:
         for f in sorted((root / base).rglob("*.py")):
             if "__pycache__" not in f.parts:
                 out.append(str(f.relative_to(root)))
+    out += [str(f.relative_to(root)) for f in sorted((root / "tests/semantics/data").glob("*.json"))]
     if (root / "gates/SEMANTICS.sh").is_file():
         out.append("gates/SEMANTICS.sh")
     return out
