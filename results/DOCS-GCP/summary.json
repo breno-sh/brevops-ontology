@@ -1,0 +1,61 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "DOCS-GCP",
+ "generated_at": "2026-11-03T07:21:58-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/DOCS-GCP.txt",
+  "brief_sha256": "8897d9cbd128504dae8e668c2b0f80786fdf2d3ee741e43751bfa5748dc1c091",
+  "params": {
+   "effort": "maximo",
+   "modo": "unlazy",
+   "onda": "6",
+   "fase": "F1",
+   "nuvem": "nao",
+   "provider": "google",
+   "versao": "8.9.0",
+   "tag": "v8.9.0",
+   "commit": "ffc5d7f2c4af44558f1b6a7c66142fac3a7abd80",
+   "paginas": "r/",
+   "amostra_github": "19/19"
+  },
+  "inputs": [
+   {
+    "path": "$BO_REPO/universe/pins.json",
+    "kind": "file",
+    "sha256": "594a4e878ac489b3ed97cdd6344b9945a8fd3a5d22ae4d6f4bfebd264decfe3d"
+   },
+   {
+    "path": "$BO_DATA/downloads/prefetch/google/8.9.0/providers-schema.json",
+    "kind": "file",
+    "sha256": "239c0eae0e0ae9453cfe8cb7690646882f8ac0f9387ba4a67b5168917ecb8345"
+   },
+   {
+    "path": "$BO_DATA/downloads/prefetch/google/8.9.0/MANIFEST.json",
+    "kind": "file",
+    "sha256": "2660793138517df06ffd44ed74bd8e96efb3d79944a2d5ba92056fa49264c6de"
+   },
+   {
+    "path": "$BO_DATA/downloads/docs-google/website/docs",
+    "kind": "dir",
+    "sha256": "5ab1461786fe6fd69927531f0048249e1022c55df68aa0fb506d6b06d60a0ec2"
+   }
+  ],
+  "recorded_at": "2026-11-03T07:21:58-03:00"
+ },
+ "sources": [
+  {
+   "uri": "https://github.com/hashicorp/terraform-provider-google/tree/v8.9.0/website/docs",
+   "license": "MPL-2.0",
+   "transformation": "páginas r/*.html.markdown lidas como texto; analisador e regex declarados em src/bo/docs_gcp; 341 frases com exemplo de e-mail/ARN/12 dígitos mascaradas"
+  },
+  {
+   "uri": "registry.terraform.io/hashicorp/google 8.9.0 (terraform providers schema -json da pré-busca)",
+   "license": "MPL-2.0",
+   "transformation": "átomos C01 via bo.schema.core; sha256 conferido com pins.json"
+  }
+ ],
+ "notes": "Fatos por atributo (C03) da documentação do provider google v8.9.0; cobertura relatada sem meta em coverage.json (C15); proposta não bloqueante em CONTRACT_CHANGE.txt (subcategoria e ID de importação sem lugar próprio no C03)."
+}

@@ -1,0 +1,34 @@
+CONTRACT_CHANGE — DOCS-GCP — 2026-11-03T07:22-03:00 (America/Recife)
+
+Proposta NÃO bloqueante (mesmo tratamento da do SCHEMALIB). Nenhum gate do catálogo depende do que falta: o
+docs_facts.jsonl confere no validador único (C03 3.0.0, 0 erro). O que falta é lugar, no C03, para dois fatos que o
+objetivo do módulo pede e que são do TIPO, não do atributo. Dono do que muda: CONTRACTS. O DOCS-GCP não editou
+contrato nenhum; gravou como abaixo e segue. Vale igual para DOCS-AWS, DOCS-AZURE e DOCS-OCI.
+
+1. type_subcategory.jsonl não tem tipo de arquivo no C03
+   O catálogo de artefatos diz "$BO_DATA/DOCS-*/type_subcategory.jsonl  C03@3.0.0", mas o C03 3.0.0 só tem o tipo
+   docs_facts (registro fact, atom_id obrigatório no formato provider:tipo:caminho). Subcategoria é do tipo de
+   recurso (front matter 'subcategory:' da página), sem caminho de atributo; inventar um átomo falso ('_type') violaria
+   o C01. O DOCS-GCP gravou um registro por tipo do schema, no molde do fato C03 (mesmos nomes de campo):
+     {"type_id": "google:<tipo>", "provider_version": semver, "status": "stated"|"unknown",
+      "subcategory": texto (só stated), "unknown_reason": "not_documented" (só unknown),
+      "doc_pages": [caminho no repositório], "source": doc_source (só stated),
+      "extraction_method": "parser", "evidence_level": "published"}
+   Mudança proposta: tipo novo "type_subcategory" no C03 (file type_subcategory.jsonl, format jsonl, record
+   type_fact, unit record), com as regras C03-UNK e C03-UNIQ (type_id único) aplicadas a ele.
+
+2. ID de importação não tem fact_kind
+   O enum de fact_kind não tem "import_id". O DOCS-GCP gravou o formato de importação como fact_kind "format" no átomo
+   <tipo>:id (o atributo cujo valor é exatamente esse identificador), com value {"aspect": "import_id",
+   "formats": [...], "format_lines": [...]} e a frase que introduz a lista na seção Import como source. Os outros
+   fatos "format" usam value.aspect = regex | timestamp | duration | identifier. Funciona, mas o consumidor
+   (SERVICE-EVIDENCE: "identidade e chave de importação") precisa saber da convenção.
+   Mudança proposta: fact_kind "import_id" (value = lista de formatos) OU registrar a convenção value.aspect no
+   texto do C03. Se o tipo do item 1 entrar, o import_id cabe melhor lá (é do tipo).
+
+3. (só registro) coverage.json é C15 result; nenhum eixo do C15 descreve "cobertura da documentação". Usei
+   axis = representability, reading = field, quantifier = observed_fraction, joint_uncertainty.method = exact
+   (censo: lower = est = upper). Se o CONTRACTS preferir outro eixo, é troca de uma constante em
+   src/bo/docs_gcp/coverage.py.
+
+Estado: todos os gates do catálogo do DOCS-GCP rodam sem depender destas mudanças.

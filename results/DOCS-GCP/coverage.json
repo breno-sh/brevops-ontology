@@ -1,0 +1,207 @@
+{
+ "schema": "bo.result/1",
+ "contract": "C15",
+ "contract_version": "3.0.0",
+ "module": "DOCS-GCP",
+ "generated_at": "2026-11-03T07:23:44-03:00",
+ "metrics": [
+  {
+   "metric_id": "M-DOCS-GCP-DESC",
+   "name": "átomos com descrição na documentação",
+   "reading": "field",
+   "axis": "representability",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.933035,
+    "upper": 0.933035,
+    "est": 0.933035,
+    "n": 32659
+   },
+   "frame": {
+    "ref": {
+     "path": "$BO_DATA/downloads/prefetch/google/8.9.0/providers-schema.json",
+     "sha256": "239c0eae0e0ae9453cfe8cb7690646882f8ac0f9387ba4a67b5168917ecb8345"
+    },
+    "description": "todos os átomos (atributos em toda profundidade) dos 1392 tipos de recurso do schema google 8.9.0 fixado no pins.json"
+   },
+   "inclusion": {
+    "rule_id": "INC-DOCS-ATOM",
+    "text": "átomo com ao menos um fato description stated (extraído de página da tag v8.9.0)"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "exact"
+   }
+  },
+  {
+   "metric_id": "M-DOCS-GCP-ENUM",
+   "name": "átomos com valores válidos (enum) na documentação",
+   "reading": "field",
+   "axis": "representability",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.047858,
+    "upper": 0.047858,
+    "est": 0.047858,
+    "n": 32659
+   },
+   "frame": {
+    "ref": {
+     "path": "$BO_DATA/downloads/prefetch/google/8.9.0/providers-schema.json",
+     "sha256": "239c0eae0e0ae9453cfe8cb7690646882f8ac0f9387ba4a67b5168917ecb8345"
+    },
+    "description": "todos os átomos (atributos em toda profundidade) dos 1392 tipos de recurso do schema google 8.9.0 fixado no pins.json"
+   },
+   "inclusion": {
+    "rule_id": "INC-DOCS-ATOM",
+    "text": "átomo com ao menos um fato allowed_values stated (extraído de página da tag v8.9.0)"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "exact"
+   }
+  },
+  {
+   "metric_id": "M-DOCS-GCP-UNIT",
+   "name": "átomos com unidade na documentação",
+   "reading": "field",
+   "axis": "representability",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.015861,
+    "upper": 0.015861,
+    "est": 0.015861,
+    "n": 32659
+   },
+   "frame": {
+    "ref": {
+     "path": "$BO_DATA/downloads/prefetch/google/8.9.0/providers-schema.json",
+     "sha256": "239c0eae0e0ae9453cfe8cb7690646882f8ac0f9387ba4a67b5168917ecb8345"
+    },
+    "description": "todos os átomos (atributos em toda profundidade) dos 1392 tipos de recurso do schema google 8.9.0 fixado no pins.json"
+   },
+   "inclusion": {
+    "rule_id": "INC-DOCS-ATOM",
+    "text": "átomo com ao menos um fato unit stated (extraído de página da tag v8.9.0)"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "exact"
+   }
+  }
+ ],
+ "notes": "censo dos átomos do schema fixado (sem amostragem; intervalo degenerado, método exact); fato = extração por analisador e regex declarados sobre a documentação da tag; relatado, sem meta; ausência de fato não é prova de ausência na documentação",
+ "data": {
+  "n_atoms": 32659,
+  "n_atoms_configurable": 27438,
+  "n_types": 1392,
+  "n_facts": 44177,
+  "by_kind": {
+   "description": {
+    "atoms": 30472,
+    "frac_all": 0.933035,
+    "atoms_configurable": 25337,
+    "frac_configurable": 0.923427
+   },
+   "default": {
+    "atoms": 4505,
+    "frac_all": 0.137941,
+    "atoms_configurable": 4502,
+    "frac_configurable": 0.164079
+   },
+   "allowed_values": {
+    "atoms": 1563,
+    "frac_all": 0.047858,
+    "atoms_configurable": 1532,
+    "frac_configurable": 0.055835
+   },
+   "range": {
+    "atoms": 850,
+    "frac_all": 0.026027,
+    "atoms_configurable": 849,
+    "frac_configurable": 0.030942
+   },
+   "unit": {
+    "atoms": 518,
+    "frac_all": 0.015861,
+    "atoms_configurable": 465,
+    "frac_configurable": 0.016947
+   },
+   "format": {
+    "atoms": 1957,
+    "frac_all": 0.059922,
+    "atoms_configurable": 1620,
+    "frac_configurable": 0.059042
+   },
+   "forces_replacement": {
+    "atoms": 51,
+    "frac_all": 0.001562,
+    "atoms_configurable": 51,
+    "frac_configurable": 0.001859
+   },
+   "deprecation": {
+    "atoms": 76,
+    "frac_all": 0.002327,
+    "atoms_configurable": 65,
+    "frac_configurable": 0.002369
+   },
+   "conflicts_with": {
+    "atoms": 97,
+    "frac_all": 0.00297,
+    "atoms_configurable": 93,
+    "frac_configurable": 0.003389
+   }
+  },
+  "unknown_facts": {
+   "default:ambiguous": 299,
+   "default:contradictory": 22,
+   "description:not_documented": 2187,
+   "unit:contradictory": 7
+  },
+  "atoms_with_description_enum_and_unit": 11,
+  "stated_atom_ids_outside_schema": 0,
+  "docs": {
+   "repo": "hashicorp/terraform-provider-google",
+   "tag": "v8.9.0"
+  },
+  "pages": 1188,
+  "pages_without_schema_type": 89,
+  "bullets": 38801,
+  "bullet_resolution": {
+   "ATOM": 29077,
+   "BLOCK": 6024,
+   "NOT_IN_SCHEMA": 567,
+   "NO_CONTEXT": 308,
+   "OBJECT_FIELD": 2441,
+   "SUBTEXT": 384
+  },
+  "context_methods": {
+   "AMBIGUOUS": 52,
+   "ANCHOR_PATH": 184,
+   "LINK": 6113,
+   "NAME_PATH": 142,
+   "NAME_UNIQUE": 139,
+   "NO_BLOCK": 179,
+   "TOP": 9842
+  },
+  "contradictions": 29,
+  "redactions": {
+   "dropped": 0,
+   "masked": 341
+  },
+  "flag_required_vs_schema": {
+   "agree": 22629,
+   "doc_required_schema_not": 46,
+   "schema_required_doc_not": 202
+  },
+  "types_with_page": 1392,
+  "types_with_subcategory": 1392,
+  "subcategories": 165
+ }
+}
