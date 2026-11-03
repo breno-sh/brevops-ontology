@@ -1,0 +1,55 @@
+{
+ "at": "2026-11-03T07:22:06-03:00",
+ "checks": [
+  {
+   "check": "manifesto",
+   "detail": "MANIFEST.sha256 confere",
+   "ok": true
+  },
+  {
+   "check": "schema_sha256",
+   "detail": {
+    "gz": "ee012f92aeab529dc2abd73c2932261694da877dc116e2320ce7cc986bcdee7e",
+    "pins": "ee012f92aeab529dc2abd73c2932261694da877dc116e2320ce7cc986bcdee7e",
+    "schema.json.sha256": "ee012f92aeab529dc2abd73c2932261694da877dc116e2320ce7cc986bcdee7e"
+   },
+   "ok": true
+  },
+  {
+   "check": "duas_execucoes",
+   "detail": {
+    "run1": {
+     "atoms": "5c6aba0585cb0e30f26877fd0ed6ba1a471092c792ecfa0b38f22d43d1e862a7",
+     "types": "c69969f40fe4b979ae0e5be0ad3336580d6d45b34e2160e76536ae64b32b6e03"
+    },
+    "run2": {
+     "atoms": "5c6aba0585cb0e30f26877fd0ed6ba1a471092c792ecfa0b38f22d43d1e862a7",
+     "types": "c69969f40fe4b979ae0e5be0ad3336580d6d45b34e2160e76536ae64b32b6e03"
+    }
+   },
+   "ok": true
+  },
+  {
+   "check": "igual_ao_publicado",
+   "detail": {
+    "publicado": {
+     "atoms": "5c6aba0585cb0e30f26877fd0ed6ba1a471092c792ecfa0b38f22d43d1e862a7",
+     "types": "c69969f40fe4b979ae0e5be0ad3336580d6d45b34e2160e76536ae64b32b6e03"
+    }
+   },
+   "ok": true
+  },
+  {
+   "check": "reextracao",
+   "detail": {
+    "binario": "6398918f2884d0e157fbecc3bfa6b9af02b08c60a2ed77cd630858de7cbdddf2",
+    "publicado": "ee012f92aeab529dc2abd73c2932261694da877dc116e2320ce7cc986bcdee7e",
+    "reextraido": "ee012f92aeab529dc2abd73c2932261694da877dc116e2320ce7cc986bcdee7e"
+   },
+   "ok": true
+  }
+ ],
+ "module": "SCHEMA-AWS",
+ "provider_version": "6.71.0",
+ "veredito": "PASS"
+}

@@ -1,0 +1,65 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "SCHEMA-AWS",
+ "generated_at": "2026-11-03T07:25:48-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/SCHEMA-AWS.txt",
+  "brief_sha256": "e9da6d239fdfc16d4e8ff897f60001399c88a3b6f6d899f268a05d200bbe0575",
+  "params": {
+   "onda": "6",
+   "fase": "F1",
+   "modo": "unlazy",
+   "provider": "aws",
+   "versao": "6.71.0",
+   "terraform": "1.15.8",
+   "plataforma": "darwin_arm64",
+   "sandbox": "env -i, HOME temporario, sandbox-exec sem credenciais; schema e validate sem rede IP; init so com o registro",
+   "biblioteca": "bo.schema.extract e bo.schema.build (SCHEMALIB c839609) + passada write_only do C01 2.1.0",
+   "ancora_gpg": "C874011F0AB405110D02105534365D9472D7468F"
+  },
+  "inputs": [
+   {
+    "path": "$BO_REPO/universe/pins.json",
+    "kind": "file",
+    "sha256": "594a4e878ac489b3ed97cdd6344b9945a8fd3a5d22ae4d6f4bfebd264decfe3d"
+   },
+   {
+    "path": "$BO_DATA/downloads/prefetch/aws/6.71.0",
+    "kind": "dir",
+    "sha256": "3f627e8ddb3597601a2f7b2fb671f73498b3482b595c8f75abe5a8b77e57c7ce"
+   },
+   {
+    "path": "$BO_DATA/downloads/terraform-aws-6.71.0/mirror/registry.terraform.io/hashicorp/aws/terraform-provider-aws_6.71.0_darwin_arm64.zip",
+    "kind": "file",
+    "sha256": "885b3290cd48738cbf9ee8a6d47a4452889843f8f53b8cf67fc8c9b16e553721"
+   },
+   {
+    "path": "$BO_DATA/downloads/registry-docs/aws-6.71.0/index.json",
+    "kind": "file",
+    "sha256": "f89800247db8e9c3eeffafb5dd35e156c18b494eadf97c34640ef2fd71683988"
+   }
+  ],
+  "recorded_at": "2026-11-03T07:25:48-03:00"
+ },
+ "sources": [
+  {
+   "uri": "https://registry.terraform.io/providers/hashicorp/aws/6.71.0",
+   "license": "MPL-2.0",
+   "transformation": "pacote assinado conferido (SHA256SUMS+GPG+sha256); terraform providers schema -json em sandbox; atomos C01 e tipos C02"
+  },
+  {
+   "uri": "https://releases.hashicorp.com/terraform-provider-aws/6.71.0/",
+   "license": "MPL-2.0",
+   "transformation": "SHA256SUMS assinado e zip darwin_arm64 (pre-busca), so lidos e desempacotados"
+  },
+  {
+   "uri": "https://registry.terraform.io/v1/providers/hashicorp/aws/6.71.0",
+   "license": "termos do Terraform Registry",
+   "transformation": "indice de documentacao, so contagem de paginas por tipo (crosscheck)"
+  }
+ ],
+ "notes": "aws 6.71.0: 1746 tipos, 112893 atomos (37 write_only), 687 data sources; schema sha256 igual ao pins.json e reproduzido por reextracao; crosscheck 1740 paginas + 6 aliases de bloco identico; G7 bloqueado pelo privacy_lint (ver CONTRACT_CHANGE.txt)"
+}

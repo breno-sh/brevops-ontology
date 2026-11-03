@@ -1,0 +1,45 @@
+{
+ "generated_at": "2026-11-03T07:21:20-03:00",
+ "provider": "aws",
+ "provider_version": "6.71.0",
+ "types": "/Users/breno/doutorado/brevops-data/SCHEMA-AWS/types.jsonl",
+ "index": "/Users/breno/doutorado/brevops-data/downloads/registry-docs/aws-6.71.0/index.json",
+ "tipos_schema": 1746,
+ "paginas_indice": 1740,
+ "iguais": 1740,
+ "explicadas": [
+  {
+   "tipo": "aws_alb",
+   "causa": "alias_bloco_identico",
+   "documentado_como": "aws_lb"
+  },
+  {
+   "tipo": "aws_alb_listener",
+   "causa": "alias_bloco_identico",
+   "documentado_como": "aws_lb_listener"
+  },
+  {
+   "tipo": "aws_alb_listener_certificate",
+   "causa": "alias_bloco_identico",
+   "documentado_como": "aws_lb_listener_certificate"
+  },
+  {
+   "tipo": "aws_alb_listener_rule",
+   "causa": "alias_bloco_identico",
+   "documentado_como": "aws_lb_listener_rule"
+  },
+  {
+   "tipo": "aws_alb_target_group",
+   "causa": "alias_bloco_identico",
+   "documentado_como": "aws_lb_target_group"
+  },
+  {
+   "tipo": "aws_alb_target_group_attachment",
+   "causa": "alias_bloco_identico",
+   "documentado_como": "aws_lb_target_group_attachment"
+  }
+ ],
+ "tipos_sem_pagina": [],
+ "paginas_sem_tipo": [],
+ "veredito": "PASS"
+}
