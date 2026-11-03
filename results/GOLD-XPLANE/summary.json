@@ -1,0 +1,88 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "GOLD-XPLANE",
+ "generated_at": "2026-11-03T01:55:31-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/GOLD-XPLANE.txt",
+  "brief_sha256": "79db0701c184545c23023643eef9329393ef44b5a564163e7c86f05d493a4a8d",
+  "params": {
+   "network": "github-git-https",
+   "cloud": "none",
+   "fetch": "python -I -m bo.gold_xplane.fetch",
+   "generator": "python -I -m bo.gold_xplane.build",
+   "resolver": "python -I -m bo.gold_xplane.resolve GOLD-XPLANE",
+   "level": "DERIVADO",
+   "inclusion": "licença explícita no commit; mesmo XR em >=2 provedores; patch-and-transform (sem executar KCL/CUE/templating)",
+   "provider_pin": "limite inferior da faixa (snippets) ou versão exata do pacote/dependsOn"
+  },
+  "inputs": [
+   {
+    "path": "$BO_DATA/downloads/crossplane",
+    "kind": "dir",
+    "sha256": "24a2e5f2ef0101bb328c3e6a97bcf1849c83d82de3a68ca7cea9e18c0c9d8f2b"
+   }
+  ],
+  "recorded_at": "2026-11-03T01:55:31-03:00"
+ },
+ "sources": [
+  {
+   "uri": "https://github.com/crossplane/crossplane/tree/d10c0f81f81f33c793896a94d29961a74d5e2ecf/docs/snippets/package",
+   "license": "Apache-2.0",
+   "transformation": "patches extraídos como pares de campos (YAML lido com SafeLoader)"
+  },
+  {
+   "uri": "https://github.com/vfarcic/devops-toolkit-crossplane/tree/8d54d4ceae752f652174b33ead7aebd9abd0d1c9/packages",
+   "license": "MIT",
+   "transformation": "patches extraídos como pares de campos"
+  },
+  {
+   "uri": "https://github.com/upbound/platform-ref-multi-k8s/tree/f2df0d8e3c80d598535dcba554466e891ce250d1",
+   "license": "Apache-2.0",
+   "transformation": "patches extraídos e encadeados pelas configurações aninhadas"
+  },
+  {
+   "uri": "https://github.com/upbound/configuration-aws-network/tree/v0.10.0",
+   "license": "Apache-2.0",
+   "transformation": "patches da composição aninhada"
+  },
+  {
+   "uri": "https://github.com/upbound/configuration-aws-eks/tree/v0.8.0",
+   "license": "Apache-2.0",
+   "transformation": "patches da composição aninhada"
+  },
+  {
+   "uri": "https://github.com/upbound/configuration-azure-network/tree/v0.5.0",
+   "license": "Apache-2.0",
+   "transformation": "patches da composição aninhada"
+  },
+  {
+   "uri": "https://github.com/upbound/configuration-azure-aks/tree/v0.4.0",
+   "license": "Apache-2.0",
+   "transformation": "patches da composição aninhada"
+  },
+  {
+   "uri": "https://github.com/upbound/configuration-gcp-network/tree/v0.2.0",
+   "license": "Apache-2.0",
+   "transformation": "patches da composição aninhada"
+  },
+  {
+   "uri": "https://github.com/upbound/configuration-gcp-gke/tree/v0.2.0",
+   "license": "Apache-2.0",
+   "transformation": "patches da composição aninhada"
+  },
+  {
+   "uri": "https://github.com/crossplane-contrib (provider-aws v0.24.1 v0.29.0, provider-gcp v0.20.0 v0.21.0, provider-azure v0.18.1, provider-jet-azure v0.12.0)",
+   "license": "Apache-2.0",
+   "transformation": "CRDs (schema OpenAPI) para resolver campos; tipos Go do jet lidos como texto para a ponte Terraform"
+  },
+  {
+   "uri": "https://github.com/upbound (provider-aws v0.24.0 v0.47.1, provider-gcp v0.30.0 v0.41.1, provider-azure v0.22.0 v0.42.0)",
+   "license": "Apache-2.0",
+   "transformation": "CRDs e tipos Go gerados (tags tf) lidos como texto para resolver campos e a ponte Terraform"
+  }
+ ],
+ "notes": "Ouro DERIVADO de composições Crossplane: linhas P (patch XR->MR) e D/G (pares entre provedores pelo mesmo campo do XR). Patch não prova equivalência: close só com função do núcleo e perda semântica declarada; related quando a cadeia não compõe. Estatísticas em results/GOLD-XPLANE/stats.json; resolução em $BO_DATA/GOLD-XPLANE/resolution.json."
+}

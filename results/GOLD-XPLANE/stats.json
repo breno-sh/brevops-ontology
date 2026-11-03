@@ -1,0 +1,160 @@
+{
+ "schema": "bo.gold_xplane.stats/1",
+ "module": "GOLD-XPLANE",
+ "generated_at": "2026-11-03T01:55:16-03:00",
+ "sources": [
+  {
+   "id": "xp-snippets",
+   "repo": "crossplane/crossplane",
+   "commit": "d10c0f81f81f33c793896a94d29961a74d5e2ecf",
+   "license": "Apache-2.0",
+   "role": "top",
+   "family": "crossplane-docs"
+  },
+  {
+   "id": "dtk",
+   "repo": "vfarcic/devops-toolkit-crossplane",
+   "commit": "8d54d4ceae752f652174b33ead7aebd9abd0d1c9",
+   "license": "MIT",
+   "role": "top",
+   "family": "vfarcic"
+  },
+  {
+   "id": "mk8s",
+   "repo": "upbound/platform-ref-multi-k8s",
+   "commit": "f2df0d8e3c80d598535dcba554466e891ce250d1",
+   "license": "Apache-2.0",
+   "role": "top",
+   "family": "upbound"
+  },
+  {
+   "id": "up-aws-network",
+   "repo": "upbound/configuration-aws-network",
+   "commit": "daea01f7989d2989914cf8a9b9a778b51633f8b1",
+   "license": "Apache-2.0",
+   "role": "nested",
+   "family": "upbound"
+  },
+  {
+   "id": "up-aws-eks",
+   "repo": "upbound/configuration-aws-eks",
+   "commit": "2e1882f21f9986fcb900544d699d9d34119e2863",
+   "license": "Apache-2.0",
+   "role": "nested",
+   "family": "upbound"
+  },
+  {
+   "id": "up-azure-network",
+   "repo": "upbound/configuration-azure-network",
+   "commit": "3f3f7dd9bf2752e56f86ae30278d8999ce6d8e07",
+   "license": "Apache-2.0",
+   "role": "nested",
+   "family": "upbound"
+  },
+  {
+   "id": "up-azure-aks",
+   "repo": "upbound/configuration-azure-aks",
+   "commit": "aa721d20c76509cd43be45be96e9dc60afdc1385",
+   "license": "Apache-2.0",
+   "role": "nested",
+   "family": "upbound"
+  },
+  {
+   "id": "up-gcp-network",
+   "repo": "upbound/configuration-gcp-network",
+   "commit": "95a1da332941274c5a25b1993f0cc3325b2fa51e",
+   "license": "Apache-2.0",
+   "role": "nested",
+   "family": "upbound"
+  },
+  {
+   "id": "up-gcp-gke",
+   "repo": "upbound/configuration-gcp-gke",
+   "commit": "8d148ebf93b65adbae8e997d44b4fd1bbcaca47a",
+   "license": "Apache-2.0",
+   "role": "nested",
+   "family": "upbound"
+  }
+ ],
+ "excluded_sources": [
+  {
+   "repo": "vfarcic/crossplane-sql",
+   "reason": "sem licença no período em que as composições eram YAML (LICENSE adicionado em 2025-04-19, depois da migração para KCL em 2024-09)"
+  },
+  {
+   "repo": "vfarcic/crossplane-kubernetes",
+   "reason": "sem arquivo de licença; desde 2024-05 as composições são KCL"
+  }
+ ],
+ "top_xrs": {
+  "database.example.org/XPostgreSQLInstance": [
+   "vpcpostgresqlinstances.aws.database.example.org",
+   "xpostgresqlinstances.aws.database.example.org",
+   "xpostgresqlinstances.azure.database.example.org",
+   "xpostgresqlinstances.gcp.database.example.org"
+  ],
+  "devopstoolkitseries.com/CompositeCluster": [
+   "cluster-aws",
+   "cluster-azure",
+   "cluster-azure-official",
+   "cluster-civo",
+   "cluster-google",
+   "cluster-google-official"
+  ],
+  "devopstoolkitseries.com/SQL": [
+   "aws-postgresql",
+   "aws-postgresql-official",
+   "azure-postgresql",
+   "azure-postgresql-official",
+   "google-mysql",
+   "google-postgresql",
+   "google-postgresql-official",
+   "local-k8s-postgresql"
+  ],
+  "multik8s.platformref.upbound.io/XCluster": [
+   "xclusters.multik8s.platformref.upbound.io"
+  ]
+ },
+ "compositions_read": 25,
+ "unread_pipeline_steps": 0,
+ "endpoints": 664,
+ "endpoints_in_sssom": 107,
+ "rows": {
+  "D": 100,
+  "G": 27,
+  "P": 86
+ },
+ "rows_by_relation": {
+  "D:close": 79,
+  "D:related": 21,
+  "G:close": 27,
+  "P:close": 82,
+  "P:related": 4
+ },
+ "rows_by_evidence_state": {
+  "STRUCTURALLY_VALID": 187,
+  "UNRESOLVED": 26
+ },
+ "derived_by_provider_pair": {
+  "aws-azurerm": 51,
+  "aws-google": 52,
+  "google-azurerm": 24
+ },
+ "derived_both_sides_terraform": 32,
+ "derived_stats": {
+  "pivots": 19,
+  "realization_pairs": 81,
+  "same_provider_pairs_skipped": 20,
+  "groups": 31,
+  "pairwise_fallback": 10
+ },
+ "row_kinds": {
+  "P": "patch: campo do XR <-> campo do MR",
+  "D": "derivada 1:1 entre provedores",
+  "G": "derivada em grupo (1:N, N:1, N:M) entre provedores"
+ },
+ "level": "DERIVADO em todas as linhas",
+ "resolution": {
+  "sssom_unresolved_rows": 26
+ }
+}
