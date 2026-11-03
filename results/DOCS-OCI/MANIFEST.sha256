@@ -8,5 +8,5 @@
 1ee2cfa06fdadd11ee06f8ac97ed7a02826ef2d3a7c2e550f88264f0f0a80b07  $BO_DATA/DOCS-OCI/type_subcategory.jsonl
 8a12295b9e2b9ab4bd6dd749a12fa6b2b6d2dbfdb818be0dcbb43a4b56a4ea7a  $BO_REPO/results/DOCS-OCI/coverage.json
 f9d69ff6daaf9f8fef5b429c02820dc5a74170f2f95700bed612e4c823b9ff7c  $BO_REPO/results/DOCS-OCI/precision_audit.json
-64002e09facabf755df5f362caa32ab8b7c2b18d949682b3c7ea8c3e9feefa98  $BO_REPO/results/DOCS-OCI/CONTRACT_CHANGE.txt
+967a557704df48d16465e56509cfd15a61866bdb4d101daaacd1bb8be53a3b7c  $BO_REPO/results/DOCS-OCI/CONTRACT_CHANGE.txt
 6be7bddcbede035b233acce489acf3ac51ad7657bd8a0b7af27f7a189de50b6d  $BO_REPO/gates/DOCS-OCI.sh

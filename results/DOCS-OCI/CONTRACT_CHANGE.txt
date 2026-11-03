@@ -260,3 +260,11 @@ TIPO, não do átomo: a subcategoria e o ID de importação. O mesmo vale para D
    - ForceNew do oci não é dito por atributo: "(Updatable)" -> forces_replacement=false (published); sem
      "(Updatable)" e com a nota da página "Any change to a property that does not support update will force the
      destruction and recreation..." -> forces_replacement=true (derived).
+
+4. (registro) os três DOCS que já gravaram propuseram o mesmo tipo de arquivo, com campos diferentes
+   - DOCS-AZURE: type_id, subcategory {...}, import_id {status, value = lista de modelos de ID, ...};
+   - DOCS-GCP: registro "type_fact" plano (status/subcategory/source no topo) e o ID de importação como
+     fact_kind "format" no átomo <tipo>:id, com value.aspect = "import_id";
+   - DOCS-OCI (este): subcategory {...} e import {status, id_format, placeholders, id_is_plain_id, source,
+     statement}, mais kind = resource | data_source.
+   Sugestão ao CONTRACTS: fixar um só formato ao aceitar o item 1; a conversão entre os três é mecânica.
