@@ -1,0 +1,247 @@
+{
+ "contract": "C15",
+ "contract_version": "3.0.0",
+ "data": {
+  "atoms": 27172,
+  "atoms_configurable": 19986,
+  "atoms_with": {
+   "allowed_values": 263,
+   "description": 25972,
+   "unit": 710
+  },
+  "atoms_with_unit_published_only": 570,
+  "d_pages_without_schema_type": 36,
+  "doc_items": {
+   "arguments": 20052,
+   "attributes": 28877,
+   "timeouts": 2941
+  },
+  "doc_items_unmatched": {
+   "bloco_do_schema": 4309,
+   "filho_de_atributo_objeto": 5970,
+   "fora_do_schema": 2322
+  },
+  "doc_items_unmatched_by_section": {
+   "arguments:bloco_do_schema": 2268,
+   "arguments:filho_de_atributo_objeto": 1002,
+   "arguments:fora_do_schema": 825,
+   "attributes:bloco_do_schema": 2041,
+   "attributes:filho_de_atributo_objeto": 4968,
+   "attributes:fora_do_schema": 1485,
+   "timeouts:fora_do_schema": 12
+  },
+  "doc_optional_but_schema_required": 26,
+  "doc_required_but_schema_not_required": 70,
+  "facts": 63555,
+  "facts_by_kind": {
+   "allowed_values": {
+    "stated:published": 400,
+    "unknown:ambiguous": 165
+   },
+   "behavior": {
+    "stated:published": 1826
+   },
+   "conflicts_with": {
+    "stated:derived": 1,
+    "stated:published": 17,
+    "unknown:ambiguous": 1
+   },
+   "default": {
+    "stated:derived": 17,
+    "stated:published": 3254,
+    "unknown:ambiguous": 70,
+    "unknown:contradictory": 7
+   },
+   "deprecation": {
+    "stated:derived": 2,
+    "stated:published": 317
+   },
+   "description": {
+    "stated:derived": 101,
+    "stated:published": 27679,
+    "unknown:not_documented": 1214
+   },
+   "example": {
+    "stated:derived": 89,
+    "stated:published": 4129
+   },
+   "forces_replacement": {
+    "stated:derived": 5333,
+    "stated:published": 9677,
+    "unknown:ambiguous": 2,
+    "unknown:contradictory": 1
+   },
+   "format": {
+    "stated:derived": 17,
+    "stated:published": 7077
+   },
+   "range": {
+    "stated:published": 190
+   },
+   "required_when": {
+    "stated:published": 1257
+   },
+   "unit": {
+    "stated:derived": 140,
+    "stated:published": 570,
+    "unknown:ambiguous": 2
+   }
+  },
+  "pages": {
+   "d": 2441,
+   "r": 1014
+  },
+  "pct_atoms_with": {
+   "allowed_values": 0.97,
+   "description": 95.58,
+   "unit": 2.61
+  },
+  "pct_atoms_with_unit_published_only": 2.1,
+  "pct_configurable_atoms_with": {
+   "allowed_values": 1.27,
+   "description": 95.07,
+   "unit": 2.61
+  },
+  "provider": "oci",
+  "provider_version": "9.11.0",
+  "r_pages_duplicate_type": [],
+  "r_pages_title_differs_from_file": [
+   "website/docs/r/bds_bds_instance_execute_bootstrap_script.html.markdown",
+   "website/docs/r/bds_bds_instance_software_update_action.html.markdown",
+   "website/docs/r/containerengine_cluster_public_api_endpoint_decommission_manager_resource.html.markdown",
+   "website/docs/r/data_safe_unset_user_assessment_baseline_management.html.markdown",
+   "website/docs/r/datascience_data_science_private_endpoint.html.markdown",
+   "website/docs/r/identity_user_capabilities_management.html.markdown",
+   "website/docs/r/oci_database_database_data_patch.html.markdown",
+   "website/docs/r/psa_private_service_acces.html.markdown"
+  ],
+  "r_pages_without_schema_type": [
+   "website/docs/r/capacity_management_internal_occ_capacity_request.html.markdown",
+   "website/docs/r/cloud_guard_adhoc_query_result_content.html.markdown",
+   "website/docs/r/cloud_guard_adhoc_query_results.html.markdown",
+   "website/docs/r/cloud_guard_problem_entities.html.markdown",
+   "website/docs/r/cloud_guard_resource_ports.html.markdown",
+   "website/docs/r/cloud_guard_resource_vulnerabilities.html.markdown",
+   "website/docs/r/cloud_guard_resource_vulnerability.html.markdown",
+   "website/docs/r/cloud_guard_resources.html.markdown",
+   "website/docs/r/database_migration_agent.html.markdown",
+   "website/docs/r/recovery_long_term_backup.html.markdown"
+  ],
+  "redacted_spans": {
+   "azure_subscription": 1,
+   "doze_digitos": 5,
+   "ocid": 491,
+   "secret_assignment": 5,
+   "secret_private_key": 1,
+   "withheld_content": 2
+  },
+  "resource_types": 1026,
+  "resource_types_documented_via_alias": 3,
+  "resource_types_with_page": 1004,
+  "resource_types_without_page": 19,
+  "subcategories": 145,
+  "tag": "v9.11.0",
+  "types_import_plain_id": 666,
+  "types_import_stated": 879,
+  "types_subcategory_stated": {
+   "data_source": 2405,
+   "resource": 1007
+  }
+ },
+ "generated_at": "2026-11-03T07:28:54-03:00",
+ "metrics": [
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "todos os átomos C01 dos 1026 tipos de recurso do oci 9.11.0",
+    "ref": {
+     "path": "$BO_DATA/downloads/prefetch/oci/9.11.0/providers-schema.json",
+     "sha256": "ae0101e5473f7adfd65993dfc335c99285df2bc88ed97fe74c712fb704f55237"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-DOCS-OCI-01",
+    "text": "átomo com ao menos um fato C03 description com status stated"
+   },
+   "joint_uncertainty": {
+    "method": "exact"
+   },
+   "metric_id": "M-DOCS-OCI-DESC",
+   "name": "átomos do oci com descrição na documentação",
+   "operational_coverage": {
+    "est": 0.955837,
+    "lower": 0.955837,
+    "n": 27172,
+    "upper": 0.955837
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "todos os átomos C01 dos 1026 tipos de recurso do oci 9.11.0",
+    "ref": {
+     "path": "$BO_DATA/downloads/prefetch/oci/9.11.0/providers-schema.json",
+     "sha256": "ae0101e5473f7adfd65993dfc335c99285df2bc88ed97fe74c712fb704f55237"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-DOCS-OCI-01",
+    "text": "átomo com ao menos um fato C03 allowed_values com status stated"
+   },
+   "joint_uncertainty": {
+    "method": "exact"
+   },
+   "metric_id": "M-DOCS-OCI-ENUM",
+   "name": "átomos do oci com valores válidos (enum) na documentação",
+   "operational_coverage": {
+    "est": 0.009679,
+    "lower": 0.009679,
+    "n": 27172,
+    "upper": 0.009679
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "todos os átomos C01 dos 1026 tipos de recurso do oci 9.11.0",
+    "ref": {
+     "path": "$BO_DATA/downloads/prefetch/oci/9.11.0/providers-schema.json",
+     "sha256": "ae0101e5473f7adfd65993dfc335c99285df2bc88ed97fe74c712fb704f55237"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-DOCS-OCI-01",
+    "text": "átomo com ao menos um fato C03 unit com status stated"
+   },
+   "joint_uncertainty": {
+    "method": "exact"
+   },
+   "metric_id": "M-DOCS-OCI-UNIT",
+   "name": "átomos do oci com unidade na documentação (publicada ou derivada do nome)",
+   "operational_coverage": {
+    "est": 0.02613,
+    "lower": 0.02613,
+    "n": 27172,
+    "upper": 0.02613
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  }
+ ],
+ "module": "DOCS-OCI",
+ "notes": "Relatado, sem meta. Censo dos átomos (sem amostragem): lower=upper=est. Fatos casados só por caminho exato. 'unit' inclui unidade derivada do sufixo do nome (_in_gbs, ...); a fração só publicada está em data. ForceNew do oci: '(Updatable)' -> forces_replacement=false (published); sem '(Updatable)' e com a nota da página sobre destruição e recriação -> true (derived).",
+ "schema": "bo.result/1"
+}

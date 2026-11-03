@@ -1,0 +1,406 @@
+{
+ "module": "DOCS-OCI",
+ "generated_at": "2026-11-03T07:26:54-03:00",
+ "what": "auditoria de precisão dos fatos stated extraídos por regra (regex/parser), por leitura da sentença de origem e, quando preciso, da página",
+ "auditor": {
+  "kind": "agente",
+  "model_id": "claude-opus-5-5",
+  "note": "julgamento do agente, não ouro humano; serve para dimensionar erro, não como gabarito"
+ },
+ "population": "$BO_DATA/DOCS-OCI/docs_facts.jsonl (status=stated), versão final das regras",
+ "sampling": {
+  "method": "random.Random(20261104).sample, 10 por fact_kind, população ordenada por fact_id",
+  "kinds": [
+   "default",
+   "allowed_values",
+   "range",
+   "unit",
+   "format",
+   "deprecation",
+   "conflicts_with"
+  ]
+ },
+ "verdict_scale": {
+  "correct": "o valor é o que a sentença diz sobre este atributo",
+  "partial": "o valor está na sentença mas o escopo é mais estreito ou mais largo que o atributo",
+  "wrong": "a sentença não sustenta o fato para este atributo"
+ },
+ "round_2_final": {
+  "seed": 20261104,
+  "by_kind": {
+   "default": {
+    "n": 10,
+    "correct": 10,
+    "partial": 0,
+    "wrong": 0
+   },
+   "allowed_values": {
+    "n": 10,
+    "correct": 10,
+    "partial": 0,
+    "wrong": 0
+   },
+   "range": {
+    "n": 10,
+    "correct": 6,
+    "partial": 2,
+    "wrong": 2
+   },
+   "unit": {
+    "n": 10,
+    "correct": 10,
+    "partial": 0,
+    "wrong": 0
+   },
+   "format": {
+    "n": 10,
+    "correct": 10,
+    "partial": 0,
+    "wrong": 0
+   },
+   "deprecation": {
+    "n": 10,
+    "correct": 9,
+    "partial": 0,
+    "wrong": 1
+   },
+   "conflicts_with": {
+    "n": 10,
+    "correct": 10,
+    "partial": 0,
+    "wrong": 0
+   }
+  },
+  "facts": [
+   {
+    "fact_id": "DF-oci:oci_security_attribute_security_attribute_namespace:timeouts.update:default:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_network_load_balancer_backend_set:timeouts.create:default:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_data_safe_subset_data:timeouts.create:default:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_database_pluggable_database_pluggabledatabasemanagements_management:timeouts.update:default:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_datascience_model_group:timeouts.create:default:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_identity_domains_identity_propagation_trust:timeouts.delete:default:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_managed_kafka_kafka_cluster_superusers_management:timeouts.create:default:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_apiaccesscontrol_privileged_api_request:timeouts.update:default:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_database_autonomous_database:is_free_tier:default:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_dbmulticloud_oracle_db_gcp_key_ring:timeouts.update:default:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_ai_document_model:model_sub_type.model_type:allowed_values:2",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_identity_domains_security_question:attribute_sets:allowed_values:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_generative_ai_agent_tool:tool_config.table_and_column_description.input_location_type:allowed_values:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_identity_domains_app_role:attribute_sets:allowed_values:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_identity_domains_identity_proofing_provider_template:attribute_sets:allowed_values:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_log_analytics_namespace_lookups_append_data_management:expect:allowed_values:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_bds_bds_instance_node_backup_configuration:level_type_details.node_type:allowed_values:2",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_datascience_model_deployment:model_deployment_configuration_details.model_configuration_details.scaling_policy.auto_scaling_policies.rules.metric_expression_rule_type:allowed_values:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_database_cloud_database_management:management_type:allowed_values:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_ai_vision_stream_source:stream_source_details.source_type:allowed_values:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_datacc_vm_instance:ntp_servers:range:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_objectstorage_object_lifecycle_policy:rules.object_name_filter.inclusion_patterns:range:2",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_data_safe_crypto_assessment:schedule:range:2",
+    "verdict": "wrong",
+    "reason": "faixa de um componente da expressão de agenda (day-of-month), não do valor do atributo"
+   },
+   {
+    "fact_id": "DF-oci:oci_file_storage_filesystem_snapshot_policy:schedules.lock_duration_details.lock_duration:range:2",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_datascience_model_deployment:model_deployment_configuration_details.environment_configuration_details.environment_variables:range:1",
+    "verdict": "partial",
+    "reason": "mínimo de 2 caracteres vale para a chave do mapa, não para o atributo inteiro"
+   },
+   {
+    "fact_id": "DF-oci:oci_recovery_protected_database:password:range:1",
+    "verdict": "wrong",
+    "reason": "regra de composição da senha (mínimo de 2 maiúsculas...), não faixa de valor nem de tamanho"
+   },
+   {
+    "fact_id": "DF-oci:oci_database_autonomous_database:db_name:range:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_core_instance_configuration:instance_details.options.launch_details.extended_metadata:range:1",
+    "verdict": "partial",
+    "reason": "máximo de 32.000 bytes é da soma de metadata + extendedMetadata, não só deste atributo"
+   },
+   {
+    "fact_id": "DF-oci:oci_database_db_system:maintenance_window_details.custom_action_timeout_in_mins:range:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_ocvp_sddc:esxi_hosts_count:range:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_database_exadb_vm_cluster:node_config.vm_file_system_storage_size_gbs_per_node:unit:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_database_cloud_autonomous_vm_cluster:available_autonomous_data_storage_size_in_tbs:unit:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_core_cross_connect_group:interface_down_timer_value_in_milliseconds:unit:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_waas_waas_policy:waf_config.device_fingerprint_challenge.action_expiration_in_seconds:unit:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_database_migration_migration:initial_load_settings.tablespace_details.extend_size_in_mbs:unit:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_load_balancer_backend_set:health_checker.interval_ms:unit:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_identity_domains_app:urnietfparamsscimschemasoracleidcsextensionkerberos_realm_app.max_renewable_age:unit:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_health_checks_ping_monitor:timeout_in_seconds:unit:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_identity_domains_self_registration_profile:number_of_days_redirect_url_is_valid:unit:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_health_checks_http_monitor:interval_in_seconds:unit:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_database_tools_database_tools_mcp_server:database_tools_connection_id:format:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_fleet_apps_management_catalog_item:compartment_id:format:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_dbmulticloud_oracle_db_aws_key_pool:compartment_id:format:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_database_db_node:id:format:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_core_remote_peering_connection:time_created:format:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_ocvp_sddc:nsx_vtep_vlan_id:format:2",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_datascience_job_run:compartment_id:format:2",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_opensearch_opensearch_cluster_pipeline:id:format:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_data_safe_audit_archive_retrieval:target_id:format:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_core_instance:placement_constraint_details.compute_host_group_id:format:2",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_ocvp_sddc:vsphere_vlan_id:deprecation:2",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_dns_rrset:compartment_id:deprecation:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_containerengine_node_pool:node_image_id:deprecation:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_ocvp_sddc:instance_display_name_prefix:deprecation:2",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_golden_gate_connection:wallet:deprecation:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_ocvp_esxi_host:sddc_id:deprecation:2",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_ocvp_sddc:initial_configuration.initial_cluster_configurations.actual_esxi_hosts_count:deprecation:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_apigateway_deployment:specification.routes.logging_policies.execution_log.is_enabled:deprecation:1",
+    "verdict": "wrong",
+    "reason": "a sentença deprecia uma funcionalidade (bucket legado), não o atributo is_enabled"
+   },
+   {
+    "fact_id": "DF-oci:oci_ocvp_sddc:hcx_on_prem_key:deprecation:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_identity_domains_app:urnietfparamsscimschemasoracleidcsextensionsaml_service_provider_app.group_assertion_attributes.format:deprecation:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_os_management_hub_scheduled_job:managed_compartment_ids:conflicts_with:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_os_management_hub_scheduled_job:dynamic_set_ids:conflicts_with:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_os_management_hub_scheduled_job:dynamic_set_ids:conflicts_with:2",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_database_autonomous_database:cpu_core_count:conflicts_with:2",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_os_management_hub_scheduled_job:lifecycle_stage_ids:conflicts_with:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_metering_computation_query:query_definition.report_query.date_range_name:conflicts_with:2",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_integration_integration_instance:domain_id:conflicts_with:2",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_core_vcn:cidr_blocks:conflicts_with:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_opsi_database_insight:dbm_private_endpoint_id:conflicts_with:1",
+    "verdict": "correct"
+   },
+   {
+    "fact_id": "DF-oci:oci_integration_integration_instance:domain_id:conflicts_with:1",
+    "verdict": "correct"
+   }
+  ]
+ },
+ "round_1_superseded": {
+  "seed": 20261103,
+  "by_kind": {
+   "default": {
+    "n": 10,
+    "correct": 10
+   },
+   "allowed_values": {
+    "n": 10,
+    "correct": 9,
+    "wrong": 1
+   },
+   "range": {
+    "n": 10,
+    "correct": 6,
+    "partial": 2,
+    "wrong": 2
+   },
+   "unit": {
+    "n": 10,
+    "correct": 10
+   },
+   "format": {
+    "n": 10,
+    "correct": 10
+   },
+   "deprecation": {
+    "n": 10,
+    "correct": 10
+   },
+   "conflicts_with": {
+    "n": 10,
+    "correct": 10
+   }
+  },
+  "defects_found": [
+   "valores válidos de outro elemento (\"Supported values for interval\" sob o atributo query) -> agora unknown/ambiguous",
+   "faixa condicional (\"if ... less than or equal to 3\") -> descartada",
+   "faixa de subparte (\"range for <ss> is [0, 59]\") -> descartada",
+   "\"minimum value of X is N\" não reconhecido -> reconhecido"
+  ],
+  "note": "rodada feita antes das correções acima; fact_ids não preservados (listagem truncada). As regras mudaram depois dela, por isso a rodada 2 foi sorteada de novo, com outra semente, sobre os dados finais."
+ },
+ "not_audited": "forces_replacement (a doc só permite derivar; a prova é o código do provider ou o plano), description (texto copiado), required_when/behavior (marcadores lidos pelo parser), example"
+}

@@ -1,0 +1,54 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "DOCS-OCI",
+ "generated_at": "2026-11-03T07:27:43-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/DOCS-OCI.txt",
+  "brief_sha256": "8721fa709fff33835457bfe39db88ecd94c425961faaeb78468e67018fe0e4d1",
+  "params": {
+   "effort": "maximo",
+   "audit_seed": "20261104",
+   "provider": "oci",
+   "version": "9.11.0"
+  },
+  "inputs": [
+   {
+    "path": "$BO_REPO/universe/pins.json",
+    "kind": "file",
+    "sha256": "594a4e878ac489b3ed97cdd6344b9945a8fd3a5d22ae4d6f4bfebd264decfe3d"
+   },
+   {
+    "path": "$BO_DATA/downloads/prefetch/oci/9.11.0/providers-schema.json",
+    "kind": "file",
+    "sha256": "ae0101e5473f7adfd65993dfc335c99285df2bc88ed97fe74c712fb704f55237"
+   },
+   {
+    "path": "$BO_DATA/downloads/prefetch/oci/9.11.0/MANIFEST.json",
+    "kind": "file",
+    "sha256": "3a3bedf5a1e7fd6f48fd23a8f6a103c7f6c28b9be394ac8ef1cfab0ad4d01b9b"
+   },
+   {
+    "path": "$BO_DATA/downloads/docs-oci/MANIFEST.sha256",
+    "kind": "file",
+    "sha256": "42487d1b5e97b3cd3868e0c562a7b14f047d7946cccc7553e878f1fe8b71b301"
+   }
+  ],
+  "recorded_at": "2026-11-03T07:27:43-03:00"
+ },
+ "sources": [
+  {
+   "uri": "https://github.com/oracle/terraform-provider-oci/tree/v9.11.0/website/docs",
+   "license": "MPL-2.0",
+   "transformation": "website/docs/ da tag v9.11.0 (commit 6015ea78c08f) lido como texto; fatos por atributo extraídos por parser e regex com sentença de origem"
+  },
+  {
+   "uri": "https://registry.terraform.io/providers/oracle/oci/9.11.0",
+   "license": "MPL-2.0",
+   "transformation": "schema de terraform providers schema -json (pré-busca, sha256 do pins.json) para os átomos C01"
+  }
+ ],
+ "notes": "Fatos por atributo (C03) e subcategoria/importação por tipo do oci 9.11.0. Auditoria de precisão do agente em results/DOCS-OCI/precision_audit.json. Proposta não bloqueante em CONTRACT_CHANGE.txt."
+}

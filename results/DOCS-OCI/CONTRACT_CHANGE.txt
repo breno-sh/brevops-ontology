@@ -1,0 +1,262 @@
+CONTRACT_CHANGE — DOCS-OCI — gravado em 2026-11-03T07:27:09-03:00 (America/Recife)
+
+Proposta NÃO bloqueante. O DOCS-OCI seguiu: docs_facts.jsonl passa no C03 3.0.0 pelo validador único e nada
+foi afrouxado. O que falta é onde guardar, no contrato, dois fatos que o objetivo do módulo pede e que são do
+TIPO, não do átomo: a subcategoria e o ID de importação. O mesmo vale para DOCS-AWS, DOCS-GCP e DOCS-AZURE.
+
+1. C03: tipo de arquivo novo "type_subcategory"
+   Fato: o catálogo de artefatos do plano diz "$BO_DATA/DOCS-OCI/type_subcategory.jsonl  DOCS-OCI  C03@3.0.0",
+   mas o C03 3.0.0 só define o tipo docs_facts (registro por átomo, atom_id = provider:tipo:caminho, fact_kind
+   sem subcategory nem import_id). A subcategoria vem do front matter da página e o ID de importação da seção
+   Import; nenhum dos dois é de um atributo. Forçar em docs_facts exigiria um átomo inventado.
+   O que o DOCS-OCI gravou: um registro por tipo (recurso e data source), com status stated|unknown e fonte
+   doc_source do C00, conferido por python -I -m bo.docs_oci.typecheck contra o JSON Schema abaixo (o mesmo
+   que está em src/bo/docs_oci/typecheck.py). Resultado no oci 9.11.0: 3457 tipos, 0 erros.
+   Mudança proposta: em C03_docs_facts.schema.json, x-bo-contract.files += 
+     {"kind": "type_subcategory", "file": "type_subcategory.jsonl", "format": "jsonl", "record": "type_subcategory", "unit": "record"}
+   e $defs.type_subcategory = o schema abaixo (sem $schema/title), com a regra
+     C03-TYPE-UNIQ: (kind, resource_type) único; type_id = provider + ":" + resource_type.
+
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "title": "C03 type_subcategory (proposto pelo DOCS-OCI): subcategoria e ID de importação por tipo",
+ "type": "object",
+ "properties": {
+  "type_id": {
+   "type": "string",
+   "pattern": "^[a-z][a-z0-9_]*:[a-z][a-z0-9_]*$"
+  },
+  "provider": {
+   "type": "string",
+   "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "provider_version": {
+   "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/semver"
+  },
+  "resource_type": {
+   "type": "string",
+   "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "kind": {
+   "enum": [
+    "resource",
+    "data_source"
+   ]
+  },
+  "doc_file": {
+   "type": "string",
+   "minLength": 1
+  },
+  "documented_as_alias_of": {
+   "type": "string",
+   "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "aliases": {
+   "type": "array",
+   "items": {
+    "type": "string",
+    "pattern": "^[a-z][a-z0-9_]*$"
+   }
+  },
+  "subcategory": {
+   "allOf": [
+    {
+     "$ref": "#/$defs/status"
+    },
+    {
+     "if": {
+      "properties": {
+       "status": {
+        "const": "stated"
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "value"
+      ]
+     }
+    }
+   ]
+  },
+  "import": {
+   "allOf": [
+    {
+     "$ref": "#/$defs/status"
+    },
+    {
+     "if": {
+      "properties": {
+       "status": {
+        "const": "stated"
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "id_format"
+      ]
+     }
+    }
+   ]
+  }
+ },
+ "required": [
+  "type_id",
+  "provider",
+  "provider_version",
+  "resource_type",
+  "kind",
+  "subcategory"
+ ],
+ "additionalProperties": false,
+ "allOf": [
+  {
+   "if": {
+    "properties": {
+     "kind": {
+      "const": "resource"
+     }
+    }
+   },
+   "then": {
+    "required": [
+     "import"
+    ]
+   },
+   "else": {
+    "not": {
+     "required": [
+      "import"
+     ]
+    }
+   }
+  }
+ ],
+ "$defs": {
+  "status": {
+   "type": "object",
+   "properties": {
+    "status": {
+     "enum": [
+      "stated",
+      "unknown"
+     ]
+    },
+    "value": {
+     "type": "string",
+     "minLength": 1
+    },
+    "unknown_reason": {
+     "enum": [
+      "not_documented",
+      "ambiguous",
+      "contradictory",
+      "out_of_pin"
+     ]
+    },
+    "source": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/doc_source"
+    },
+    "statement": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/doc_source"
+    },
+    "extraction_method": {
+     "enum": [
+      "parser",
+      "regex",
+      "table",
+      "manual",
+      "model"
+     ]
+    },
+    "evidence_level": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/evidence_level"
+    },
+    "id_format": {
+     "type": "string",
+     "minLength": 1
+    },
+    "id_is_plain_id": {
+     "type": "boolean"
+    },
+    "placeholders": {
+     "type": "array",
+     "items": {
+      "type": "string",
+      "minLength": 1
+     }
+    }
+   },
+   "required": [
+    "status",
+    "extraction_method",
+    "evidence_level"
+   ],
+   "additionalProperties": false,
+   "allOf": [
+    {
+     "if": {
+      "properties": {
+       "status": {
+        "const": "stated"
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "source"
+      ],
+      "not": {
+       "required": [
+        "unknown_reason"
+       ]
+      }
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "status": {
+        "const": "unknown"
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "unknown_reason"
+      ],
+      "not": {
+       "anyOf": [
+        {
+         "required": [
+          "value"
+         ]
+        },
+        {
+         "required": [
+          "id_format"
+         ]
+        }
+       ]
+      }
+     }
+    }
+   ]
+  }
+ }
+}
+
+2. (aviso, sem mudança de contrato) tamanho do docs_facts.jsonl e o privacy_lint --strict
+   O privacy_lint reprova em --strict arquivo acima de 50 MB (TEXT_LIMIT). O docs_facts do oci ficou em ~40 MB
+   (63,5 mil fatos, descrições inteiras como valor). Os providers maiores (aws, azurerm) podem passar do limite
+   com o mesmo formato. Opções para o coordenador: aceitar .jsonl acima do limite quando o arquivo é varrido
+   em blocos, ou o C03 permitir dividir docs_facts por subcategoria (docs_facts/<subcategoria>.jsonl).
+
+3. (registro) fatos que a doc do oci dá e o C03 não nomeia
+   - "(Applicable when campo=VALOR)" foi gravado como fact_kind=behavior, value={"applicable_when": {...}}
+     (1826 fatos); "(Required when ...)" foi para required_when. Um fact_kind "applicable_when" deixaria isso
+     explícito.
+   - ForceNew do oci não é dito por atributo: "(Updatable)" -> forces_replacement=false (published); sem
+     "(Updatable)" e com a nota da página "Any change to a property that does not support update will force the
+     destruction and recreation..." -> forces_replacement=true (derived).
