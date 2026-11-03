@@ -281,6 +281,7 @@
    "duplicate_class_ids_dropped": 0,
    "duplicate_property_ids_dropped": 0,
    "extractor_counts": {
+    "child_tables_with_declared_mother": 331,
     "columns": 16540,
     "tables": 1162,
     "tables_aws": 706,
@@ -458,6 +459,7 @@
     "attributes": 13874,
     "kinds": 2699,
     "kinds_base": 69,
+    "kinds_declared_twice_first_kept": 0,
     "mapping_entries_from_S_path": 1631,
     "mapping_entries_not_S_path": 146,
     "mapping_entries_on_base_properties": 1777

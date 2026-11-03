@@ -140,8 +140,10 @@ def extract(model: str, base_file: tuple[str, Path], plugin_files: list[tuple[st
         return [uniq[k] for k in sorted(uniq)]
 
     kinded = [c for c in base + plugins if c.kind]
-    idx = {}
+    idx, dup_kinds = {}, 0
     for c in kinded:
+        if c.kind in idx:
+            dup_kinds += 1
         idx.setdefault(c.kind, c)
     for c in kinded:
         if idx[c.kind] is not c:
@@ -199,7 +201,8 @@ def extract(model: str, base_file: tuple[str, Path], plugin_files: list[tuple[st
     ex.counts = {"kinds": len(ex.classes), "kinds_base": sum(1 for c in ex.classes if not c.provider),
                  "attributes": len(ex.props), "mapping_entries_on_base_properties": n_map,
                  "mapping_entries_from_S_path": n_map_s,
-                 "mapping_entries_not_S_path": n_map - n_map_s}
+                 "mapping_entries_not_S_path": n_map - n_map_s,
+                 "kinds_declared_twice_first_kept": dup_kinds}
     return ex
 
 

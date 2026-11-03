@@ -86,6 +86,7 @@ class TestCloudQuery(Tmp):
     | Name          | Type          |
     | ------------- | ------------- |
     |_cq_id (PK)|`uuid`|
+    |_cq_parent_id|`uuid`|
     |created|`timestamp[us, tz=UTC]`|
     '''
 
@@ -93,10 +94,12 @@ class TestCloudQuery(Tmp):
         p = _w(self.root, "aws_things.md", self.MD)
         ex = x_cloudquery.extract("cloudquery", [("t.md", p, "aws")])
         c = ex.classes[0]
-        self.assertEqual((c.id, c.parents, c.definition), ("cq:aws_things", ["cq:aws_parents"],
+        self.assertEqual((c.id, c.parents, c.definition), ("cq:aws_things", [],
                                                            "This table shows data for Things."))
-        self.assertEqual([x.label for x in ex.props], ["_cq_id", "created"])
-        self.assertNotIn(" ", ex.props[1].range)
+        self.assertEqual([x.label for x in ex.props], ["_cq_id", "_cq_parent_id", "created"])
+        self.assertEqual((ex.props[1].kind, ex.props[1].range), ("object", "cq:aws_parents"),
+                         "dependência de tabela não é subclasse: vira a imagem de _cq_parent_id")
+        self.assertNotIn(" ", ex.props[2].range)
         self.assertTrue(ex.links[0].object.startswith("https://docs.aws.amazon.com/"))
 
 
