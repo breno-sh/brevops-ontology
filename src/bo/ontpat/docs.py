@@ -192,8 +192,9 @@ def upper_decision_html(doc: dict) -> str:
                  "bo-patterns.ttl continua sem importar a candidata: os padrões não dependem dela, e o teste mostra que todas as "
                  "respostas saem do bo.</li>"
                  f"<li>Arquivo da candidata: <code>{E(r['file'] or '-')}</code>, sha256 <code>{E((r['file_sha256'] or '')[:16])}</code>…; "
-                 "a licença do arquivo do DUL não está declarada nele (SOURCE.txt: UNRESOLVED): importar por IRI não redistribui, "
-                 "mas copiar para o repositório exige conferir a licença antes.</li>"
+                 + ("a licença do arquivo do DUL não está declarada nele (SOURCE.txt: UNRESOLVED): importar por IRI não redistribui, "
+                    "mas copiar para o repositório exige conferir a licença antes." if chosen == "dul" else
+                    "copiar o arquivo para o repositório exige conferir a licença dele antes.") + "</li>"
                  f"<li>O preço em raciocínio entra no orçamento do TRANSLATOR e do REASONING-PROOF: {r['cost']['hermit_ms_total']} ms de "
                  f"HermiT no teste contra {cands['none']['cost']['hermit_ms_total']} ms sem ontologia de topo.</li>"
                  "<li>As proteções do bo continuam: a da candidata é redundante com elas no modo completo e só pesa se um reparo "
