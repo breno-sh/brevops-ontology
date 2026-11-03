@@ -1,0 +1,28 @@
+CONTRACT_CHANGE — SCHEMALIB — 2026-11-03T01:45-03:00 (America/Recife)
+
+Proposta NÃO bloqueante. O SCHEMALIB seguiu: o C01 2.0.0 é satisfeito sem perda de contagem (os 158.946
+átomos dos 4 provedores conferem no bo.contracts.validate). O que se perde é uma informação do schema que
+módulos posteriores vão querer, e que o C01 hoje não tem onde guardar (additionalProperties: false).
+
+1. C01 atoms: campo booleano "write_only" (obrigatório, padrão false)
+   Fato: o 'terraform providers schema -json' marca "write_only": true em atributos que o provider aceita na
+   configuração e nunca grava no state (azurerm 5.5.0: 7 atributos; google 8.2.0: 24; aws 5.83.1 e oci 9.1.0: 0;
+   contagem em $BO_DATA/SCHEMALIB/repro_catalogo4v2.json, por_provedor.*.atributos_write_only).
+   Por que importa: atributo write_only não tem readback por construção. Sem o flag, o C12 (readback) e o
+   transporte (C10) vão tratar a ausência de leitura como falha do caso, e não como propriedade do atributo.
+   Regra nova sugerida: C01-WRITEONLY: write_only implica configurable e não computed.
+   Custo para o SCHEMALIB: uma linha em bo.schema.core.FLAGS; os testes já têm um atributo write_only no
+   schema sintético (tests/schema/conftest.py).
+
+2. (só registro, sem mudança) atributo 'nested_type' (protocolo 6) vira UM átomo com tf_type cty equivalente
+   (["object", {...}] ou [modo, ["object", {...}]]); os filhos não viram átomos. Nas 4 versões do catálogo
+   não há nenhum (0 em todos), mas versões novas (HIST-*, SCHEMA-POST) podem ter. Se o mapeamento precisar
+   dos filhos, a mudança é no C01 (um modo de block_path para atributo aninhado), não na biblioteca.
+
+3. (fiação, sem mudança de contrato) os gates do SCHEMA-AWS/-AZURE/-GCP/-OCI chamam
+   'python -I -m bo.schema.crosscheck', mas bo/schema/ é posse do SCHEMALIB: o SCHEMALIB entregou o comando
+   (src/bo/schema/crosscheck.py). Rodado nas versões do catálogo, o critério "nº de tipos = índice do
+   Registry" passa no aws 5.83.1 (6 aliases com bloco idêntico) e no azurerm 5.5.0, e NÃO passa no
+   google 8.2.0 (84 páginas sem tipo no provider google) nem no oci 9.1.0 (22 tipos sem página, 15 páginas
+   sem tipo). Detalhe em $BO_DATA/SCHEMALIB/crosscheck_<provedor>-<versão>.json. É achado para os SCHEMA-*,
+   não ajuste: o comando não foi afrouxado.

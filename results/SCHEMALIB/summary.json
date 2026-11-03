@@ -1,0 +1,83 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "SCHEMALIB",
+ "generated_at": "2026-11-03T01:44:08-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/SCHEMALIB.txt",
+  "brief_sha256": "233a0df54e6825513d306e782a7df0e8191adb24a8aa0dab554f5a450ef72464",
+  "params": {
+   "onda": "5",
+   "fase": "F1",
+   "modo": "unlazy",
+   "limiar_taxa_iguais": "0.995",
+   "terraform": "1.15.8",
+   "versoes": "aws 5.83.1, azurerm 5.5.0, google 8.2.0, oci 9.1.0 (do catalogo4v2 e dos locks de tfschema4)",
+   "regua": "provider_populated = computed, nao required, nome em arn/id/owner_id/region/tags_all",
+   "sandbox": "env -i, HOME temporario, sandbox-exec sem credenciais; schema sem rede IP"
+  },
+  "inputs": [
+   {
+    "path": "/Users/breno/doutorado/pesquisa-lanes/c1-37-icsa/superficie/data/catalogo4v2.jsonl",
+    "kind": "file",
+    "sha256": "ba7d7afdb2c7cef225ca1fd42ab8526afbcd9595557724c957d3fb1b91b4ab97"
+   },
+   {
+    "path": "/Users/breno/doutorado/pesquisa-lanes/c1-37-icsa/superficie/data/tfschema4",
+    "kind": "dir",
+    "sha256": "b316deb417a5fcdafa8e40f621d820a53fb82a0ed7f251898c84fb40c98e0504"
+   },
+   {
+    "path": "$BO_DATA/downloads/tfschema/aws-5.83.1/schema.json.gz",
+    "kind": "file",
+    "sha256": "eaee6353a001debd88a0bb1bc8d6be11c6ffebd5bf2f7e4a3e478f27a9afcd14"
+   },
+   {
+    "path": "$BO_DATA/downloads/tfschema/azurerm-5.5.0/schema.json.gz",
+    "kind": "file",
+    "sha256": "a8605e506d3dceaaecd58d6cb44ddb489aab3f18727c661bebd6a7cc35a75223"
+   },
+   {
+    "path": "$BO_DATA/downloads/tfschema/google-8.2.0/schema.json.gz",
+    "kind": "file",
+    "sha256": "478a57497b90f129d8ec28702fbacb5f751fdd799d0f33948d6a148068a8d584"
+   },
+   {
+    "path": "$BO_DATA/downloads/tfschema/oci-9.1.0/schema.json.gz",
+    "kind": "file",
+    "sha256": "5235c9e4477a936e97f29423456d3c88afc7d7e64f54f55869d7b9f5e2827842"
+   }
+  ],
+  "recorded_at": "2026-11-03T01:44:08-03:00"
+ },
+ "sources": [
+  {
+   "uri": "https://registry.terraform.io/providers/hashicorp/aws/5.83.1",
+   "license": "MPL-2.0",
+   "transformation": "pacote assinado; terraform providers schema -json; átomos C01 e tipos C02"
+  },
+  {
+   "uri": "https://registry.terraform.io/providers/hashicorp/azurerm/5.5.0",
+   "license": "MPL-2.0",
+   "transformation": "idem"
+  },
+  {
+   "uri": "https://registry.terraform.io/providers/hashicorp/google/8.2.0",
+   "license": "MPL-2.0",
+   "transformation": "idem"
+  },
+  {
+   "uri": "https://registry.terraform.io/providers/oracle/oci/9.1.0",
+   "license": "MPL-2.0",
+   "transformation": "idem"
+  },
+  {
+   "uri": "https://registry.terraform.io/v1/providers/{ns}/{nome}/{versao}",
+   "license": "termos do Terraform Registry",
+   "transformation": "índice de documentação, só contagem de páginas por tipo (crosscheck)"
+  }
+ ],
+ "notes": "Reprodução do catalogo4v2: 4946/4946 tipos com as 6 contagens iguais (100%), árvore igual em 4946; 158946 átomos C01 e 4946 tipos C02 validados. crosscheck no índice do Registry: aws e azurerm passam, google 8.2.0 e oci 9.1.0 não (ver CONTRACT_CHANGE.txt item 3)."
+}
