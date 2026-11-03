@@ -52,3 +52,6 @@ Testes do diff (cópia em $BO_DATA/tmp/SCHEMA-AZURE/lintpatch, 2026-11-03T07:27 
    (provider.json) e o README; o sha256 do binário está no MANIFEST.sha256 do módulo, então o consume_check
    dos pilotos confere o binário. Copiar o binário para dentro de $BO_DATA/SCHEMA-AZURE reprovaria o G7
    (arquivo grande binário no --strict).
+
+RESOLVIDO 2026-11-03T07:30-03:00: o coordenador aplicou a mudança em bo/base (9f0cd52, tipo cty ignorado e texto
+grande varrido linha a linha); privacy_lint --strict do SCHEMA-AZURE sai OK; merge feito depois do rebase.
