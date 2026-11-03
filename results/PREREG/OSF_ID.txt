@@ -1,0 +1,3 @@
+PENDING
+# Registro OSF do pré-registro v3 (D4): feito pelo Breno. Troque a primeira linha pelo ID do OSF.
+# prereg/OSF_ID.txt (o caminho do brief) está fora do owns do PREREG; por isso o estado fica aqui.

@@ -1,0 +1,138 @@
+schema: bo.pilot_exit/1
+module: PREREG
+generated_at: '2026-11-03T01:58:00-03:00'
+version: 3.0.0
+slices:
+- sto
+- net
+directions: 12
+attempts_max: 2
+coverage_threshold: 'nenhum: os critérios não têm limiar sobre cobertura (seria ajuste, §9.5); a fração de acerto nas retidas é relatada'
+runner: PILOT-EXIT, agente que não implementou os pilotos, roda o código congelado do E2E nas fixtures RETIDAS
+criteria:
+- id: E1
+  name: caminho completo
+  requirement: as duas fatias rodam nas 12 direções (ou com UNSUPPORTED declarado), com traço C23 por valor e plano de lowering C26, sem nenhuma inserção silenciosa (HCL = plano + valores sintetizados declarados)
+  measures:
+  - direções com saída ou UNSUPPORTED declarado por fatia (esperado 12)
+  - valores sem traço C23 (esperado 0)
+  - atributos no HCL fora do plano e dos sintetizados declarados (esperado 0)
+  pass_rule: directions_covered == 12 and values_without_trace == 0 and silent_insertions == 0
+  evidence:
+  - $BO_REPO/results/PILOT-STO-E2E/
+  - $BO_REPO/results/PILOT-NET-E2E/
+  on_fail: corrigir por emenda versionada e repetir (conta uma tentativa)
+- id: E2
+  name: grão
+  requirement: decomposição igual ao gabarito do oráculo em 100% dos casos obrigatórios da fatia; invariância a reordenação de blocos, à embalagem (inline × standalone; bloco × recurso separado) e a renomeação de provedores
+  measures:
+  - casos obrigatórios com decomposição ≠ gabarito (esperado 0)
+  - variantes de invariância com saída diferente depois de desfazer a variação (esperado 0)
+  pass_rule: grain_mismatches == 0 and invariance_failures == 0
+  evidence:
+  - $BO_DATA/PILOT-STO-ORACLE/sealed/
+  - $BO_DATA/PILOT-NET-ORACLE/sealed/
+  on_fail: emenda da regra de grão (GRAIN) com invalidação dos dependentes
+- id: E3
+  name: correspondências
+  requirement: toda alegação com os três campos (semantic_relation, value_domain_relation, transport_fidelity), guarda e prova; o árbitro devolve UNPROVEN onde falta prova; teste SKOS de ida e volta verde; composição só pela tabela formal
+  measures:
+  - alegações sem algum dos três campos, guarda ou prova (esperado 0)
+  - alegações sem prova com veredito ≠ UNPROVEN (esperado 0)
+  - composições fora da tabela formal (esperado 0)
+  - ida e volta SKOS (esperado verde)
+  pass_rule: claims_incomplete == 0 and unproven_misjudged == 0 and off_table_compositions == 0 and skos_roundtrip_ok
+  evidence:
+  - $BO_REPO/results/PILOT-STO-E2E/
+  - $BO_REPO/results/PILOT-NET-E2E/
+  on_fail: emenda do árbitro (ARBITERLIB) ou do brief do mapeador
+- id: E4
+  name: oráculo
+  requirement: 'nas fixtures retidas: zero perda silenciosa (toda divergência entre oráculo e saída coberta por perda declarada) e zero transporte em caso negativo (todo contraexemplo continua rejeitado); a fração de acerto é relatada, não é limiar'
+  measures:
+  - divergências oráculo × saída sem perda declarada (esperado 0)
+  - contraexemplos transportados (esperado 0)
+  - fração de acerto (relatada, sem limiar)
+  pass_rule: silent_losses == 0 and negatives_carried == 0
+  evidence:
+  - $BO_REPO/results/PILOT-EXIT/exit_report.json
+  on_fail: corrigir o tradutor ou o contrato de perda por emenda; a fração de acerto nunca decide
+- id: E5
+  name: controles
+  requirement: os 3 controles rodaram com a mesma entrada, perda e transformações; as consequências de cada um nas retidas estão contadas e justificadas; a consequência do resultado (inclusive nulo) para H9 está escrita no adendo antes da escala
+  measures:
+  - controles rodados com entrada idêntica (sha da entrada igual nos 3)
+  - consequências contadas por controle e por polaridade
+  - adendo ADDENDUM_PILOTS.html com a linha R-CTRL aplicada
+  pass_rule: controls_same_input and consequences_counted and addendum_written_before_scale
+  evidence:
+  - $BO_REPO/prereg/ADDENDUM_PILOTS.html
+  on_fail: rodar de novo os controles; sem adendo a escala não começa
+- id: E6
+  name: delta de contrato
+  requirement: toda mudança exigida pelos pilotos aplicada como emenda versionada (contrato, regra de grão, brief, árbitro), com os dependentes invalidados automaticamente e o catálogo de artefatos verde
+  measures:
+  - mudanças sem emenda versionada (esperado 0)
+  - dependentes não marcados STALE depois da emenda (esperado 0)
+  - catálogo do gerador verde
+  pass_rule: unversioned_changes == 0 and stale_not_marked == 0 and catalog_ok
+  evidence:
+  - $BO_REPO/freeze/FREEZE-P/freeze_receipt.json
+  on_fail: registrar a emenda e rodar tools/invalidate.py check --apply
+- id: E7
+  name: esforço
+  requirement: esforço real de cada passo gravado e usado para recalibrar o esforço dos módulos de escala e refazer o cronograma
+  measures:
+  - passos sem esforço medido (esperado 0)
+  - cronograma recalculado com o esforço medido
+  pass_rule: steps_without_effort == 0 and schedule_recomputed
+  evidence:
+  - $BO_REPO/results/PILOT-EXIT/effort_calibration.json
+  on_fail: medir e recalcular antes de liberar a escala
+- id: E8
+  name: limite de tentativas
+  requirement: 'se E1–E6 falharem duas vezes, a expansão não começa: o plano volta para revisão (v4) e o Breno é avisado'
+  measures:
+  - tentativas de E1–E6 (máximo 2)
+  pass_rule: attempts <= 2 or (expansion_blocked and plan_returned_v4 and breno_notified)
+  evidence:
+  - $BO_REPO/results/PILOT-EXIT/exit_report.json
+  on_fail: bloquear a expansão (DECOMPOSE, 6 glossários, 36 mapeadores, 16 módulos de nuvem)
+addendum:
+  path: $BO_REPO/prereg/ADDENDUM_PILOTS.html
+  writer: PILOT-EXIT
+  must_contain:
+  - resultado dos 3 controles nas retidas (contagens por polaridade e justificativas)
+  - a linha R-CTRL aplicada e a consequência pré-declarada para H9
+  - cada emenda de E6 com motivo e as duas leituras
+  - esforço medido (E7)
+reasoning_controls_rule:
+  controls:
+  - c1_table
+  - c2_taxonomy
+  - c3_full
+  invariants:
+  - mesma entrada (mesmo C06 e mesmas fixtures), mesma política de perda, mesmas transformações e mesmo lowering nos 3 controles
+  - casos fora da calibração, com resposta esperada independente (compromissos e CQs congelados do REQUIREMENTS)
+  - toda consequência de c3 contada traz justifying_axioms (C23) separados de consulted_metadata
+  - positivos, negativos e desconhecidos contados à parte; efeito de cada família de axioma classificado em transporte, detecção de erro, redundância ou não uso
+  outcomes:
+  - id: R-CTRL-1
+    condition: 'c3 supera c1 E c2 em pelo menos uma família de consequências (C-H9: McNemar exato, p ≤ 0,05/7 contra cada controle, n por família ≥ o de power.json)'
+    consequence: H9 sustentada só nessas famílias; o texto diz 'os axiomas produzem consequências corretas que a tabela e a taxonomia não produzem' restrito a elas
+  - id: R-CTRL-2
+    condition: c3 não supera c2 em nenhuma família, mas c2 supera c1
+    consequence: o efeito é atribuído à taxonomia e às realizações, não aos axiomas; os axiomas são rebaixados a documentação e detecção de erro; H9 refutada
+  - id: R-CTRL-3
+    condition: nenhuma diferença entre os 3 controles com n por família ≥ o necessário
+    consequence: 'resultado nulo publicado como tal: na tradução a ontologia equivale a uma tabela; as contribuições ficam na medição (cobertura, invariância) e o OWL vale como documentação e detecção de erro; H9 refutada'
+  - id: R-CTRL-4
+    condition: n por família abaixo do necessário e nenhuma família significativa
+    consequence: H9 'inconclusiva' (nunca 'nula'); contagens e justificativas descritivas; o papel dos axiomas é rebaixado do mesmo jeito, porque benefício exige evidência positiva
+  - id: R-CTRL-5
+    condition: c3 produz consequência incorreta que c1 ou c2 não produz
+    consequence: 'regressão: relatada como achado contra a hipótese, ligada ao compromisso violado; reparo depois do FREEZE2 não entra na leitura primária'
+  - id: R-CTRL-6
+    condition: c3 rejeita fixture negativa que c1/c2 aceitam, sem mudar transporte
+    consequence: contado como efeito em DETECÇÃO DE ERRO, em linha própria, nunca somado ao transporte
+  pilot_reading: nos pilotos (fixtures retidas, n pequeno) a regra é aplicada só como contagem descritiva e o resultado vai para o adendo antes da escala; a decisão sobre H9 é tomada só na partição de teste, depois do UNSEAL

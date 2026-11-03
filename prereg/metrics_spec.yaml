@@ -1,0 +1,258 @@
+schema: bo.metrics_spec/1
+contract: C15
+contract_version: 3.0.0
+module: PREREG
+generated_at: '2026-11-03T01:58:00-03:00'
+metrics:
+- metric_id: M-REPR-DEC
+  definition: 'Definição: fração das unidades de decisão configuradas em A que o lifting representa como indivíduos e valores da ontologia congelada (FREEZE2), sem bo:UNGLOSSED e sem classe nova | População: unidades de decisão configuradas no provedor de origem A nos repositórios da partição de teste do SPLIT (famílias deduplicadas, forks e cópias juntos), restritas às unidades canônicas do universo U(A); unidades expostas nos pilotos (pilot_exposed) ficam na população, marcadas, com leitura de sensibilidade sem elas (só o hold-out de unidades as exclui) | Direção: não direcional: uma leitura por provedor de origem A (4), repetida na escada das 3 direções que saem de A | Unidade: decisão | Denominador: número de unidades de decisão configuradas em A pela regra de inclusão, fixado no lado de origem antes de rodar o tradutor (o desfecho não muda o denominador); um documento JSON de política conta por decisão, não por linha: uma decisão por declaração normalizada (efeito, principal, ação, recurso, condição), invariante a reserializar, reordenar chaves ou partir listas; NAME e TAG fora; NOT_APPLICABLE fora por regra de inclusão, nunca depois do desfecho | Desconhecido: UNKNOWN_SYMBOLIC_INPUT e UNKNOWN_INPUT no lifting contam como não representadas no limite inferior e como representadas no limite superior; est = representadas ÷ (n − desconhecidas)'
+  reading: decision
+  axis: representability
+  quantifier: observed_fraction
+  frame: partição de teste do SPLIT, universo U congelado (UNIVERSE), pins do provider congelados
+  inclusion: 'INC-DEC-01: decisões configuradas em A (marca configured) em unidades canônicas de U(A), papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG); computed, default não escrito e NOT_APPLICABLE fora'
+  weights: uniform
+  uncertainty: bootstrap
+- metric_id: M-TRANS-DEC-EXIST
+  definition: 'Definição: fração das unidades de decisão configuradas em A com alegação de veredito OK (C21) e estado de evidência DOC_SUPPORTED ou acima que admite transporte A→B pela relação declarada para ALGUM valor do domínio de A (quantificador existencial, nível de schema; broad/narrow contam se o predicado de pertença é satisfazível) | População: unidades de decisão configuradas no provedor de origem A nos repositórios da partição de teste do SPLIT (famílias deduplicadas, forks e cópias juntos), restritas às unidades canônicas do universo U(A); unidades expostas nos pilotos (pilot_exposed) ficam na população, marcadas, com leitura de sensibilidade sem elas (só o hold-out de unidades as exclui) | Direção: por direção ordenada A→B, cada uma das 12 (A ≠ B em aws, google, azurerm, oci), relatada uma a uma; a média das 12 com pesos iguais é leitura secundária | Unidade: decisão | Denominador: número de unidades de decisão configuradas em A pela regra de inclusão, fixado no lado de origem antes de rodar o tradutor (o desfecho não muda o denominador); um documento JSON de política conta por decisão, não por linha: uma decisão por declaração normalizada (efeito, principal, ação, recurso, condição), invariante a reserializar, reordenar chaves ou partir listas; NAME e TAG fora; NOT_APPLICABLE fora por regra de inclusão, nunca depois do desfecho | Desconhecido: guarda CONDITION_INDETERMINATE (satisfatibilidade não decidida) conta como não transportável no limite inferior e como transportável no limite superior; grandeza UNKNOWN é UNPROVEN e não transporta nos dois limites (regra KIND-UNKNOWN do SEMANTICS); UNPROVEN, REFUTED_BY_RULE, CONTESTED, AMBIGUOUS e excluída por reparo não transportam'
+  reading: decision
+  axis: transportability
+  quantifier: existential
+  frame: partição de teste do SPLIT, universo U congelado (UNIVERSE), pins do provider congelados
+  inclusion: 'INC-DEC-01: decisões configuradas em A (marca configured) em unidades canônicas de U(A), papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG); computed, default não escrito e NOT_APPLICABLE fora'
+  weights: uniform
+  uncertainty: bootstrap
+- metric_id: M-TRANS-DEC-UNIV
+  definition: 'Definição: fração das unidades de decisão configuradas em A cuja alegação de veredito OK e DOC_SUPPORTED ou acima transporta A→B TODO valor do domínio de A (quantificador universal, nível de schema; broad conta por inclusão, narrow só se o predicado de pertença é verdadeiro em todo o domínio) | População: unidades de decisão configuradas no provedor de origem A nos repositórios da partição de teste do SPLIT (famílias deduplicadas, forks e cópias juntos), restritas às unidades canônicas do universo U(A); unidades expostas nos pilotos (pilot_exposed) ficam na população, marcadas, com leitura de sensibilidade sem elas (só o hold-out de unidades as exclui) | Direção: por direção ordenada A→B, cada uma das 12 (A ≠ B em aws, google, azurerm, oci), relatada uma a uma; a média das 12 com pesos iguais é leitura secundária | Unidade: decisão | Denominador: número de unidades de decisão configuradas em A pela regra de inclusão, fixado no lado de origem antes de rodar o tradutor (o desfecho não muda o denominador); um documento JSON de política conta por decisão, não por linha: uma decisão por declaração normalizada (efeito, principal, ação, recurso, condição), invariante a reserializar, reordenar chaves ou partir listas; NAME e TAG fora; NOT_APPLICABLE fora por regra de inclusão, nunca depois do desfecho | Desconhecido: guarda CONDITION_INDETERMINATE conta como não transportável no limite inferior e como transportável no limite superior; grandeza UNKNOWN é UNPROVEN e não transporta nos dois limites'
+  reading: decision
+  axis: transportability
+  quantifier: universal
+  frame: partição de teste do SPLIT, universo U congelado (UNIVERSE), pins do provider congelados
+  inclusion: 'INC-DEC-01: decisões configuradas em A (marca configured) em unidades canônicas de U(A), papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG); computed, default não escrito e NOT_APPLICABLE fora'
+  weights: uniform
+  uncertainty: bootstrap
+- metric_id: M-TRANS-DEC-OBS
+  definition: 'Definição: fração dos valores observados no uso (C06, partição de teste) para os quais a relação declarada admite transporte A→B: predicado de pertença verdadeiro (broad/narrow), função parcial definida (exact/close), guarda verdadeira (quantificador de uso) | População: unidades de decisão configuradas no provedor de origem A nos repositórios da partição de teste do SPLIT (famílias deduplicadas, forks e cópias juntos), restritas às unidades canônicas do universo U(A); unidades expostas nos pilotos (pilot_exposed) ficam na população, marcadas, com leitura de sensibilidade sem elas (só o hold-out de unidades as exclui) | Direção: por direção ordenada A→B, cada uma das 12 (A ≠ B em aws, google, azurerm, oci), relatada uma a uma; a média das 12 com pesos iguais é leitura secundária | Unidade: decisão | Denominador: número de unidades de decisão configuradas em A pela regra de inclusão, fixado no lado de origem antes de rodar o tradutor (o desfecho não muda o denominador); um documento JSON de política conta por decisão, não por linha: uma decisão por declaração normalizada (efeito, principal, ação, recurso, condição), invariante a reserializar, reordenar chaves ou partir listas; NAME e TAG fora; NOT_APPLICABLE fora por regra de inclusão, nunca depois do desfecho | Desconhecido: valor simbólico não resolvido (UNKNOWN_SYMBOLIC_INPUT) e guarda CONDITION_INDETERMINATE contam como não transportáveis no limite inferior e como transportáveis no limite superior'
+  reading: decision
+  axis: transportability
+  quantifier: observed_fraction
+  frame: partição de teste do SPLIT, universo U congelado (UNIVERSE), pins do provider congelados
+  inclusion: 'INC-DEC-01: decisões configuradas em A (marca configured) em unidades canônicas de U(A), papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG); computed, default não escrito e NOT_APPLICABLE fora'
+  weights: uniform
+  uncertainty: bootstrap
+- metric_id: M-OPCOV-DEC
+  definition: 'Definição: cobertura operacional do modelo+tradutor no universo U, controle c3 (axiomatização completa): unidades de decisão configuradas em A cujo valor o tradutor real emite em B (C23 result = carried, valor no plano de lowering) ÷ unidades de decisão configuradas em A; calculada rodando o tradutor, nunca lida da tabela de correspondências | População: unidades de decisão configuradas no provedor de origem A nos repositórios da partição de teste do SPLIT (famílias deduplicadas, forks e cópias juntos), restritas às unidades canônicas do universo U(A); unidades expostas nos pilotos (pilot_exposed) ficam na população, marcadas, com leitura de sensibilidade sem elas (só o hold-out de unidades as exclui) | Direção: por direção ordenada A→B, cada uma das 12 (A ≠ B em aws, google, azurerm, oci), relatada uma a uma; a média das 12 com pesos iguais é leitura secundária | Unidade: decisão | Denominador: número de unidades de decisão configuradas em A pela regra de inclusão, fixado no lado de origem antes de rodar o tradutor (o desfecho não muda o denominador); um documento JSON de política conta por decisão, não por linha: uma decisão por declaração normalizada (efeito, principal, ação, recurso, condição), invariante a reserializar, reordenar chaves ou partir listas; NAME e TAG fora; NOT_APPLICABLE fora por regra de inclusão, nunca depois do desfecho | Desconhecido: UNKNOWN_SYMBOLIC_INPUT, UNKNOWN_INPUT, CONDITION_INDETERMINATE e INFRA_ERROR contam como não emitidas no limite inferior e como emitidas no limite superior; est = emitidas ÷ (n − desconhecidas), sempre relatada junto com os dois limites; os demais códigos de bloqueio do C23 (e o resultado omitted) contam como não emitidas nos dois limites'
+  reading: decision
+  axis: operational
+  quantifier: observed_fraction
+  frame: partição de teste do SPLIT, universo U congelado (UNIVERSE), pins do provider congelados
+  inclusion: 'INC-DEC-01: decisões configuradas em A (marca configured) em unidades canônicas de U(A), papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG); computed, default não escrito e NOT_APPLICABLE fora'
+  weights: uniform
+  uncertainty: bootstrap
+- metric_id: M-OPCOV-FIELD
+  definition: 'Definição: átomos de atributo configurados em A cujo valor o tradutor emite em B ÷ átomos de atributo configurados em A (uma ocorrência de bloco = um campo) | População: campos configurados no provedor de origem A nos repositórios da partição de teste do SPLIT (famílias deduplicadas, forks e cópias juntos), restritas às unidades canônicas do universo U(A); unidades expostas nos pilotos (pilot_exposed) ficam na população, marcadas, com leitura de sensibilidade sem elas (só o hold-out de unidades as exclui) | Direção: por direção ordenada A→B, cada uma das 12 (A ≠ B em aws, google, azurerm, oci), relatada uma a uma; a média das 12 com pesos iguais é leitura secundária | Unidade: campo | Denominador: número de campos configurados em A pela regra de inclusão, fixado antes do tradutor; um documento JSON de política é UM campo (não por linha), para a embalagem não mudar o denominador; NAME e TAG fora | Desconhecido: UNKNOWN_SYMBOLIC_INPUT, UNKNOWN_INPUT, CONDITION_INDETERMINATE e INFRA_ERROR contam como não emitidos no limite inferior e como emitidos no limite superior; est = emitidos ÷ (n − desconhecidas), sempre relatada junto com os dois limites; os demais códigos de bloqueio do C23 (e o resultado omitted) contam como não emitidos nos dois limites'
+  reading: field
+  axis: operational
+  quantifier: observed_fraction
+  frame: partição de teste do SPLIT, universo U congelado (UNIVERSE), pins do provider congelados
+  inclusion: 'INC-FIELD-01: campos configurados em A em unidades canônicas de U(A), papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG); computed fora'
+  weights: uniform
+  uncertainty: bootstrap
+- metric_id: M-OPCOV-GRAPH
+  definition: 'Definição: grafos de configuração de A (componente conexo de recursos de um repositório ligados por referência) cujas decisões e referências internas o tradutor emite TODAS em B com o mesmo destino ÷ grafos de A (conservação de relações) | População: grafos de configuração dos repositórios da partição de teste com ao menos uma decisão em U(A) | Direção: por direção ordenada A→B, cada uma das 12 (A ≠ B em aws, google, azurerm, oci), relatada uma a uma; a média das 12 com pesos iguais é leitura secundária | Unidade: grafo | Denominador: número de grafos de A com ao menos uma decisão incluída, fixado antes do tradutor; decisões contadas como na leitura por decisão (JSON de política por decisão, não por linha); NAME e TAG fora | Desconhecido: grafo com alguma decisão ou referência desconhecida (UNKNOWN_SYMBOLIC_INPUT, UNKNOWN_INPUT, CONDITION_INDETERMINATE, INFRA_ERROR) e nenhuma falha definida conta como não emitido no limite inferior e como emitido no limite superior; uma falha definida reprova o grafo nos dois limites'
+  reading: graph
+  axis: operational
+  quantifier: observed_fraction
+  frame: partição de teste do SPLIT, universo U congelado (UNIVERSE), pins do provider congelados
+  inclusion: 'INC-GRAPH-01: grafos com ao menos uma decisão de INC-DEC-01; papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG)'
+  weights: uniform
+  uncertainty: bootstrap
+- metric_id: M-OPCOV-UNIT
+  definition: 'Definição: recursos de A para os quais o tradutor emite em B uma unidade implantável completa (plano de lowering C26 com dependências fechadas, obrigatórios presentes ou sintetizados e declarados, sem UNKNOWN_INPUT, terraform validate offline verde) ÷ recursos de A | População: recursos Terraform de A na partição de teste cujas unidades canônicas estão em U(A) | Direção: por direção ordenada A→B, cada uma das 12 (A ≠ B em aws, google, azurerm, oci), relatada uma a uma; a média das 12 com pesos iguais é leitura secundária | Unidade: unidade implantável completa | Denominador: número de recursos de A incluídos, fixado antes do tradutor; um recurso conta uma vez, qualquer que seja o número de blocos ou de linhas de política | Desconhecido: recurso com UNKNOWN_SYMBOLIC_INPUT, CONDITION_INDETERMINATE ou INFRA_ERROR (inclusive no terraform validate) e nenhuma falha definida conta como não emitido no limite inferior e como emitido no limite superior; UNKNOWN_INPUT em atributo obrigatório do destino é falha definida (a unidade não é completa)'
+  reading: complete_unit
+  axis: operational
+  quantifier: observed_fraction
+  frame: partição de teste do SPLIT, universo U congelado (UNIVERSE), pins do provider congelados
+  inclusion: 'INC-UNIT-01: recursos de A em U(A); papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG) no critério de completude'
+  weights: uniform
+  uncertainty: bootstrap
+- metric_id: M-OPCOV-NAMETAG
+  definition: 'Definição: campos de papel NAME ou TAG (C04) configurados em A cujo valor o tradutor emite em B ÷ campos NAME/TAG configurados em A; separada para não dominar as outras leituras | População: campos de papel NAME ou TAG nos repositórios da partição de teste, em unidades canônicas de U(A) | Direção: por direção ordenada A→B, cada uma das 12 (A ≠ B em aws, google, azurerm, oci), relatada uma a uma; a média das 12 com pesos iguais é leitura secundária | Unidade: campo | Denominador: número de campos NAME/TAG configurados em A, fixado antes do tradutor; um mapa de tags conta uma vez por chave | Desconhecido: UNKNOWN_SYMBOLIC_INPUT, UNKNOWN_INPUT, CONDITION_INDETERMINATE e INFRA_ERROR contam como não emitidos no limite inferior e como emitidos no limite superior; est = emitidos ÷ (n − desconhecidas), sempre relatada junto com os dois limites; os demais códigos de bloqueio do C23 (e o resultado omitted) contam como não emitidos nos dois limites'
+  reading: field
+  axis: operational
+  quantifier: observed_fraction
+  frame: partição de teste do SPLIT, universo U congelado (UNIVERSE), pins do provider congelados
+  inclusion: 'INC-NAMETAG-01: só papéis NAME e TAG (C04); excluídos de todas as outras leituras'
+  weights: uniform
+  uncertainty: bootstrap
+- metric_id: M-OPCOV-DEC-DIRECT
+  definition: 'Definição: como M-OPCOV-DEC, mas pelo tradutor par-a-par do PAIRWISE (só as alegações congeladas, sem ontologia), com a mesma IR de grafo, o mesmo lowering, os mesmos contratos de perda e o mesmo oráculo | População: unidades de decisão configuradas no provedor de origem A nos repositórios da partição de teste do SPLIT (famílias deduplicadas, forks e cópias juntos), restritas às unidades canônicas do universo U(A); unidades expostas nos pilotos (pilot_exposed) ficam na população, marcadas, com leitura de sensibilidade sem elas (só o hold-out de unidades as exclui) | Direção: por direção ordenada A→B, cada uma das 12 (A ≠ B em aws, google, azurerm, oci), relatada uma a uma; a média das 12 com pesos iguais é leitura secundária | Unidade: decisão | Denominador: número de unidades de decisão configuradas em A pela regra de inclusão, fixado no lado de origem antes de rodar o tradutor (o desfecho não muda o denominador); um documento JSON de política conta por decisão, não por linha: uma decisão por declaração normalizada (efeito, principal, ação, recurso, condição), invariante a reserializar, reordenar chaves ou partir listas; NAME e TAG fora; NOT_APPLICABLE fora por regra de inclusão, nunca depois do desfecho | Desconhecido: UNKNOWN_SYMBOLIC_INPUT, UNKNOWN_INPUT, CONDITION_INDETERMINATE e INFRA_ERROR contam como não emitidas no limite inferior e como emitidas no limite superior; est = emitidas ÷ (n − desconhecidas), sempre relatada junto com os dois limites; os demais códigos de bloqueio do C23 (e o resultado omitted) contam como não emitidas nos dois limites'
+  reading: decision
+  axis: operational
+  quantifier: observed_fraction
+  frame: partição de teste do SPLIT, universo U congelado (UNIVERSE), pins do provider congelados
+  inclusion: 'INC-DEC-01: decisões configuradas em A (marca configured) em unidades canônicas de U(A), papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG); computed, default não escrito e NOT_APPLICABLE fora'
+  weights: uniform
+  uncertainty: bootstrap
+- metric_id: M-OPCOV-DEC-C1
+  definition: 'Definição: como M-OPCOV-DEC, com o controle c1: tabela JSON/RDF das correspondências sem inferência; mesma entrada, mesma política de perda, mesmas transformações | População: unidades de decisão configuradas no provedor de origem A nos repositórios da partição de teste do SPLIT (famílias deduplicadas, forks e cópias juntos), restritas às unidades canônicas do universo U(A); unidades expostas nos pilotos (pilot_exposed) ficam na população, marcadas, com leitura de sensibilidade sem elas (só o hold-out de unidades as exclui) | Direção: por direção ordenada A→B, cada uma das 12 (A ≠ B em aws, google, azurerm, oci), relatada uma a uma; a média das 12 com pesos iguais é leitura secundária | Unidade: decisão | Denominador: número de unidades de decisão configuradas em A pela regra de inclusão, fixado no lado de origem antes de rodar o tradutor (o desfecho não muda o denominador); um documento JSON de política conta por decisão, não por linha: uma decisão por declaração normalizada (efeito, principal, ação, recurso, condição), invariante a reserializar, reordenar chaves ou partir listas; NAME e TAG fora; NOT_APPLICABLE fora por regra de inclusão, nunca depois do desfecho | Desconhecido: UNKNOWN_SYMBOLIC_INPUT, UNKNOWN_INPUT, CONDITION_INDETERMINATE e INFRA_ERROR contam como não emitidas no limite inferior e como emitidas no limite superior; est = emitidas ÷ (n − desconhecidas), sempre relatada junto com os dois limites; os demais códigos de bloqueio do C23 (e o resultado omitted) contam como não emitidas nos dois limites'
+  reading: decision
+  axis: operational
+  quantifier: observed_fraction
+  frame: partição de teste do SPLIT, universo U congelado (UNIVERSE), pins do provider congelados
+  inclusion: 'INC-DEC-01: decisões configuradas em A (marca configured) em unidades canônicas de U(A), papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG); computed, default não escrito e NOT_APPLICABLE fora'
+  weights: uniform
+  uncertainty: bootstrap
+- metric_id: M-OPCOV-DEC-C2
+  definition: 'Definição: como M-OPCOV-DEC, com o controle c2: só a taxonomia e as realizações, sem os demais axiomas; mesma entrada, mesma política de perda, mesmas transformações | População: unidades de decisão configuradas no provedor de origem A nos repositórios da partição de teste do SPLIT (famílias deduplicadas, forks e cópias juntos), restritas às unidades canônicas do universo U(A); unidades expostas nos pilotos (pilot_exposed) ficam na população, marcadas, com leitura de sensibilidade sem elas (só o hold-out de unidades as exclui) | Direção: por direção ordenada A→B, cada uma das 12 (A ≠ B em aws, google, azurerm, oci), relatada uma a uma; a média das 12 com pesos iguais é leitura secundária | Unidade: decisão | Denominador: número de unidades de decisão configuradas em A pela regra de inclusão, fixado no lado de origem antes de rodar o tradutor (o desfecho não muda o denominador); um documento JSON de política conta por decisão, não por linha: uma decisão por declaração normalizada (efeito, principal, ação, recurso, condição), invariante a reserializar, reordenar chaves ou partir listas; NAME e TAG fora; NOT_APPLICABLE fora por regra de inclusão, nunca depois do desfecho | Desconhecido: UNKNOWN_SYMBOLIC_INPUT, UNKNOWN_INPUT, CONDITION_INDETERMINATE e INFRA_ERROR contam como não emitidas no limite inferior e como emitidas no limite superior; est = emitidas ÷ (n − desconhecidas), sempre relatada junto com os dois limites; os demais códigos de bloqueio do C23 (e o resultado omitted) contam como não emitidas nos dois limites'
+  reading: decision
+  axis: operational
+  quantifier: observed_fraction
+  frame: partição de teste do SPLIT, universo U congelado (UNIVERSE), pins do provider congelados
+  inclusion: 'INC-DEC-01: decisões configuradas em A (marca configured) em unidades canônicas de U(A), papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG); computed, default não escrito e NOT_APPLICABLE fora'
+  weights: uniform
+  uncertainty: bootstrap
+- metric_id: M-OPCOV-DEC-COMPLEX
+  definition: 'Definição: entre as decisões emitidas em B no limite inferior pelo controle c3, a fração cujo transporte usou correspondência complexa (grupo como regra sobre subgrafo, 1:N, N:M ou guarda condicional; C09 bo_group_id ou guard não vazio) | População: decisões emitidas em B no limite inferior de M-OPCOV-DEC, partição de teste | Direção: por direção ordenada A→B, cada uma das 12 (A ≠ B em aws, google, azurerm, oci), relatada uma a uma; a média das 12 com pesos iguais é leitura secundária | Unidade: decisão | Denominador: número de decisões emitidas no limite inferior de M-OPCOV-DEC (o limite inferior é a base porque a complexidade de uma decisão desconhecida não é observável); JSON de política por decisão, não por linha; NAME e TAG fora | Desconhecido: decisões desconhecidas (UNKNOWN_SYMBOLIC_INPUT, UNKNOWN_INPUT, CONDITION_INDETERMINATE, INFRA_ERROR) ficam fora da base; limite inferior = fração entre as emitidas com todas as desconhecidas tratadas como simples e limite superior = com todas tratadas como complexas e emitidas'
+  reading: decision
+  axis: operational
+  quantifier: observed_fraction
+  frame: partição de teste do SPLIT, universo U congelado (UNIVERSE), pins do provider congelados
+  inclusion: 'INC-DEC-02: decisões de INC-DEC-01 emitidas no limite inferior de M-OPCOV-DEC; papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG)'
+  weights: uniform
+  uncertainty: bootstrap
+- metric_id: M-LOPO-OPCOV-DEC
+  definition: 'Definição: como M-OPCOV-DEC nas 6 direções com OCI, mas com a ontologia reinduzida só com as 18 alegações sem OCI e o glossário sem âncoras OCI, mapeada por um mapeador novo (HOLDOUT) | População: unidades de decisão configuradas no provedor de origem A nos repositórios da partição de teste do SPLIT (famílias deduplicadas, forks e cópias juntos), restritas às unidades canônicas do universo U(A); unidades expostas nos pilotos (pilot_exposed) ficam na população, marcadas, com leitura de sensibilidade sem elas (só o hold-out de unidades as exclui); só origem ou destino OCI | Direção: por direção com OCI (oci→aws, oci→google, oci→azurerm, aws→oci, google→oci, azurerm→oci), uma a uma | Unidade: decisão | Denominador: número de unidades de decisão configuradas em A pela regra de inclusão, fixado no lado de origem antes de rodar o tradutor (o desfecho não muda o denominador); um documento JSON de política conta por decisão, não por linha: uma decisão por declaração normalizada (efeito, principal, ação, recurso, condição), invariante a reserializar, reordenar chaves ou partir listas; NAME e TAG fora; NOT_APPLICABLE fora por regra de inclusão, nunca depois do desfecho | Desconhecido: UNKNOWN_SYMBOLIC_INPUT, UNKNOWN_INPUT, CONDITION_INDETERMINATE e INFRA_ERROR contam como não emitidas no limite inferior e como emitidas no limite superior; est = emitidas ÷ (n − desconhecidas), sempre relatada junto com os dois limites; os demais códigos de bloqueio do C23 (e o resultado omitted) contam como não emitidas nos dois limites'
+  reading: decision
+  axis: operational
+  quantifier: observed_fraction
+  frame: partição de teste do SPLIT, universo U congelado (UNIVERSE), pins do provider congelados
+  inclusion: 'INC-DEC-01: decisões configuradas em A (marca configured) em unidades canônicas de U(A), papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG); computed, default não escrito e NOT_APPLICABLE fora'
+  weights: uniform
+  uncertainty: bootstrap
+- metric_id: M-ABL-SEEDAWS-DEC
+  definition: 'Definição: como M-OPCOV-DEC, com o pipeline completo reconstruído com sementes só da AWS (ABLATION a), no conjunto selado | População: unidades de decisão configuradas no provedor de origem A nos repositórios da partição de teste do SPLIT (famílias deduplicadas, forks e cópias juntos), restritas às unidades canônicas do universo U(A); unidades expostas nos pilotos (pilot_exposed) ficam na população, marcadas, com leitura de sensibilidade sem elas (só o hold-out de unidades as exclui) | Direção: por direção ordenada A→B, cada uma das 12 (A ≠ B em aws, google, azurerm, oci), relatada uma a uma; a média das 12 com pesos iguais é leitura secundária | Unidade: decisão | Denominador: número de unidades de decisão configuradas em A pela regra de inclusão, fixado no lado de origem antes de rodar o tradutor (o desfecho não muda o denominador); um documento JSON de política conta por decisão, não por linha: uma decisão por declaração normalizada (efeito, principal, ação, recurso, condição), invariante a reserializar, reordenar chaves ou partir listas; NAME e TAG fora; NOT_APPLICABLE fora por regra de inclusão, nunca depois do desfecho | Desconhecido: UNKNOWN_SYMBOLIC_INPUT, UNKNOWN_INPUT, CONDITION_INDETERMINATE e INFRA_ERROR contam como não emitidas no limite inferior e como emitidas no limite superior; est = emitidas ÷ (n − desconhecidas), sempre relatada junto com os dois limites; os demais códigos de bloqueio do C23 (e o resultado omitted) contam como não emitidas nos dois limites'
+  reading: decision
+  axis: operational
+  quantifier: observed_fraction
+  frame: partição de teste do SPLIT, universo U congelado (UNIVERSE), pins do provider congelados
+  inclusion: 'INC-DEC-01: decisões configuradas em A (marca configured) em unidades canônicas de U(A), papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG); computed, default não escrito e NOT_APPLICABLE fora'
+  weights: uniform
+  uncertainty: bootstrap
+- metric_id: M-ABL-THR-ALT1-DEC
+  definition: 'Definição: como M-OPCOV-DEC, com o primeiro limiar alternativo de admissão (dos três: 1, 2 ou 3 provedores, o menor dos dois que não é o do pipeline congelado; ABLATION b) | População: unidades de decisão configuradas no provedor de origem A nos repositórios da partição de teste do SPLIT (famílias deduplicadas, forks e cópias juntos), restritas às unidades canônicas do universo U(A); unidades expostas nos pilotos (pilot_exposed) ficam na população, marcadas, com leitura de sensibilidade sem elas (só o hold-out de unidades as exclui) | Direção: por direção ordenada A→B, cada uma das 12 (A ≠ B em aws, google, azurerm, oci), relatada uma a uma; a média das 12 com pesos iguais é leitura secundária | Unidade: decisão | Denominador: número de unidades de decisão configuradas em A pela regra de inclusão, fixado no lado de origem antes de rodar o tradutor (o desfecho não muda o denominador); um documento JSON de política conta por decisão, não por linha: uma decisão por declaração normalizada (efeito, principal, ação, recurso, condição), invariante a reserializar, reordenar chaves ou partir listas; NAME e TAG fora; NOT_APPLICABLE fora por regra de inclusão, nunca depois do desfecho | Desconhecido: UNKNOWN_SYMBOLIC_INPUT, UNKNOWN_INPUT, CONDITION_INDETERMINATE e INFRA_ERROR contam como não emitidas no limite inferior e como emitidas no limite superior; est = emitidas ÷ (n − desconhecidas), sempre relatada junto com os dois limites; os demais códigos de bloqueio do C23 (e o resultado omitted) contam como não emitidas nos dois limites'
+  reading: decision
+  axis: operational
+  quantifier: observed_fraction
+  frame: partição de teste do SPLIT, universo U congelado (UNIVERSE), pins do provider congelados
+  inclusion: 'INC-DEC-01: decisões configuradas em A (marca configured) em unidades canônicas de U(A), papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG); computed, default não escrito e NOT_APPLICABLE fora'
+  weights: uniform
+  uncertainty: bootstrap
+- metric_id: M-ABL-THR-ALT2-DEC
+  definition: 'Definição: como M-OPCOV-DEC, com o segundo limiar alternativo de admissão (o maior dos dois que não é o do pipeline congelado; ABLATION b) | População: unidades de decisão configuradas no provedor de origem A nos repositórios da partição de teste do SPLIT (famílias deduplicadas, forks e cópias juntos), restritas às unidades canônicas do universo U(A); unidades expostas nos pilotos (pilot_exposed) ficam na população, marcadas, com leitura de sensibilidade sem elas (só o hold-out de unidades as exclui) | Direção: por direção ordenada A→B, cada uma das 12 (A ≠ B em aws, google, azurerm, oci), relatada uma a uma; a média das 12 com pesos iguais é leitura secundária | Unidade: decisão | Denominador: número de unidades de decisão configuradas em A pela regra de inclusão, fixado no lado de origem antes de rodar o tradutor (o desfecho não muda o denominador); um documento JSON de política conta por decisão, não por linha: uma decisão por declaração normalizada (efeito, principal, ação, recurso, condição), invariante a reserializar, reordenar chaves ou partir listas; NAME e TAG fora; NOT_APPLICABLE fora por regra de inclusão, nunca depois do desfecho | Desconhecido: UNKNOWN_SYMBOLIC_INPUT, UNKNOWN_INPUT, CONDITION_INDETERMINATE e INFRA_ERROR contam como não emitidas no limite inferior e como emitidas no limite superior; est = emitidas ÷ (n − desconhecidas), sempre relatada junto com os dois limites; os demais códigos de bloqueio do C23 (e o resultado omitted) contam como não emitidas nos dois limites'
+  reading: decision
+  axis: operational
+  quantifier: observed_fraction
+  frame: partição de teste do SPLIT, universo U congelado (UNIVERSE), pins do provider congelados
+  inclusion: 'INC-DEC-01: decisões configuradas em A (marca configured) em unidades canônicas de U(A), papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG); computed, default não escrito e NOT_APPLICABLE fora'
+  weights: uniform
+  uncertainty: bootstrap
+- metric_id: M-ABL-RAWTYPES-DEC
+  definition: 'Definição: como M-OPCOV-DEC, com tipos Terraform crus no lugar do grão canônico (ABLATION c); o denominador continua o das decisões canônicas de A | População: unidades de decisão configuradas no provedor de origem A nos repositórios da partição de teste do SPLIT (famílias deduplicadas, forks e cópias juntos), restritas às unidades canônicas do universo U(A); unidades expostas nos pilotos (pilot_exposed) ficam na população, marcadas, com leitura de sensibilidade sem elas (só o hold-out de unidades as exclui) | Direção: por direção ordenada A→B, cada uma das 12 (A ≠ B em aws, google, azurerm, oci), relatada uma a uma; a média das 12 com pesos iguais é leitura secundária | Unidade: decisão | Denominador: número de unidades de decisão configuradas em A pela regra de inclusão, fixado no lado de origem antes de rodar o tradutor (o desfecho não muda o denominador); um documento JSON de política conta por decisão, não por linha: uma decisão por declaração normalizada (efeito, principal, ação, recurso, condição), invariante a reserializar, reordenar chaves ou partir listas; NAME e TAG fora; NOT_APPLICABLE fora por regra de inclusão, nunca depois do desfecho | Desconhecido: UNKNOWN_SYMBOLIC_INPUT, UNKNOWN_INPUT, CONDITION_INDETERMINATE e INFRA_ERROR contam como não emitidas no limite inferior e como emitidas no limite superior; est = emitidas ÷ (n − desconhecidas), sempre relatada junto com os dois limites; os demais códigos de bloqueio do C23 (e o resultado omitted) contam como não emitidas nos dois limites'
+  reading: decision
+  axis: operational
+  quantifier: observed_fraction
+  frame: partição de teste do SPLIT, universo U congelado (UNIVERSE), pins do provider congelados
+  inclusion: 'INC-DEC-01: decisões configuradas em A (marca configured) em unidades canônicas de U(A), papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG); computed, default não escrito e NOT_APPLICABLE fora'
+  weights: uniform
+  uncertainty: bootstrap
+- metric_id: M-ABL-NOGUARD-DEC
+  definition: 'Definição: como M-OPCOV-DEC, sem guardas e sem transformações, só o predicado (ABLATION d) | População: unidades de decisão configuradas no provedor de origem A nos repositórios da partição de teste do SPLIT (famílias deduplicadas, forks e cópias juntos), restritas às unidades canônicas do universo U(A); unidades expostas nos pilotos (pilot_exposed) ficam na população, marcadas, com leitura de sensibilidade sem elas (só o hold-out de unidades as exclui) | Direção: por direção ordenada A→B, cada uma das 12 (A ≠ B em aws, google, azurerm, oci), relatada uma a uma; a média das 12 com pesos iguais é leitura secundária | Unidade: decisão | Denominador: número de unidades de decisão configuradas em A pela regra de inclusão, fixado no lado de origem antes de rodar o tradutor (o desfecho não muda o denominador); um documento JSON de política conta por decisão, não por linha: uma decisão por declaração normalizada (efeito, principal, ação, recurso, condição), invariante a reserializar, reordenar chaves ou partir listas; NAME e TAG fora; NOT_APPLICABLE fora por regra de inclusão, nunca depois do desfecho | Desconhecido: UNKNOWN_SYMBOLIC_INPUT, UNKNOWN_INPUT, CONDITION_INDETERMINATE e INFRA_ERROR contam como não emitidas no limite inferior e como emitidas no limite superior; est = emitidas ÷ (n − desconhecidas), sempre relatada junto com os dois limites; os demais códigos de bloqueio do C23 (e o resultado omitted) contam como não emitidas nos dois limites'
+  reading: decision
+  axis: operational
+  quantifier: observed_fraction
+  frame: partição de teste do SPLIT, universo U congelado (UNIVERSE), pins do provider congelados
+  inclusion: 'INC-DEC-01: decisões configuradas em A (marca configured) em unidades canônicas de U(A), papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG); computed, default não escrito e NOT_APPLICABLE fora'
+  weights: uniform
+  uncertainty: bootstrap
+- metric_id: M-ABL-AWSRAW-DEC
+  definition: 'Definição: como M-OPCOV-DEC, com semente só AWS E tipos Terraform crus ao mesmo tempo (comparação de H6) | População: unidades de decisão configuradas no provedor de origem A nos repositórios da partição de teste do SPLIT (famílias deduplicadas, forks e cópias juntos), restritas às unidades canônicas do universo U(A); unidades expostas nos pilotos (pilot_exposed) ficam na população, marcadas, com leitura de sensibilidade sem elas (só o hold-out de unidades as exclui) | Direção: por direção ordenada A→B, cada uma das 12 (A ≠ B em aws, google, azurerm, oci), relatada uma a uma; a média das 12 com pesos iguais é leitura secundária | Unidade: decisão | Denominador: número de unidades de decisão configuradas em A pela regra de inclusão, fixado no lado de origem antes de rodar o tradutor (o desfecho não muda o denominador); um documento JSON de política conta por decisão, não por linha: uma decisão por declaração normalizada (efeito, principal, ação, recurso, condição), invariante a reserializar, reordenar chaves ou partir listas; NAME e TAG fora; NOT_APPLICABLE fora por regra de inclusão, nunca depois do desfecho | Desconhecido: UNKNOWN_SYMBOLIC_INPUT, UNKNOWN_INPUT, CONDITION_INDETERMINATE e INFRA_ERROR contam como não emitidas no limite inferior e como emitidas no limite superior; est = emitidas ÷ (n − desconhecidas), sempre relatada junto com os dois limites; os demais códigos de bloqueio do C23 (e o resultado omitted) contam como não emitidas nos dois limites'
+  reading: decision
+  axis: operational
+  quantifier: observed_fraction
+  frame: partição de teste do SPLIT, universo U congelado (UNIVERSE), pins do provider congelados
+  inclusion: 'INC-DEC-01: decisões configuradas em A (marca configured) em unidades canônicas de U(A), papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG); computed, default não escrito e NOT_APPLICABLE fora'
+  weights: uniform
+  uncertainty: bootstrap
+- metric_id: M-H2H-TRANS-DEC
+  definition: 'Definição: como M-OPCOV-DEC, pelo pacote de tradução de cada comparador com artefato, escrito com o orçamento igual do h2h_fairness.yaml, sobre a ABox gerada dos mesmos fatos de origem, sob o mesmo oráculo; Kalinin como faixa da família de reconstruções; sem artefato = NOT_APPLICABLE, nunca 0 | População: unidades de decisão configuradas no provedor de origem A nos repositórios da partição de teste do SPLIT (famílias deduplicadas, forks e cópias juntos), restritas às unidades canônicas do universo U(A); unidades expostas nos pilotos (pilot_exposed) ficam na população, marcadas, com leitura de sensibilidade sem elas (só o hold-out de unidades as exclui) | Direção: por direção ordenada A→B, cada uma das 12 (A ≠ B em aws, google, azurerm, oci), relatada uma a uma; a média das 12 com pesos iguais é leitura secundária; uma leitura por comparador | Unidade: decisão | Denominador: número de unidades de decisão configuradas em A pela regra de inclusão, fixado no lado de origem antes de rodar o tradutor (o desfecho não muda o denominador); um documento JSON de política conta por decisão, não por linha: uma decisão por declaração normalizada (efeito, principal, ação, recurso, condição), invariante a reserializar, reordenar chaves ou partir listas; NAME e TAG fora; NOT_APPLICABLE fora por regra de inclusão, nunca depois do desfecho | Desconhecido: UNKNOWN_SYMBOLIC_INPUT, UNKNOWN_INPUT, CONDITION_INDETERMINATE e INFRA_ERROR contam como não emitidas no limite inferior e como emitidas no limite superior; est = emitidas ÷ (n − desconhecidas), sempre relatada junto com os dois limites; os demais códigos de bloqueio do C23 (e o resultado omitted) contam como não emitidas nos dois limites'
+  reading: decision
+  axis: operational
+  quantifier: observed_fraction
+  frame: partição de teste do SPLIT, universo U congelado (UNIVERSE), pins do provider congelados
+  inclusion: 'INC-DEC-01: decisões configuradas em A (marca configured) em unidades canônicas de U(A), papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG); computed, default não escrito e NOT_APPLICABLE fora'
+  weights: uniform
+  uncertainty: bootstrap
+- metric_id: M-TOOL-LLM-DEC
+  definition: 'Definição: como M-OPCOV-DEC, traduzindo com um LLM de prompt congelado, na amostra de teste do TOOL-ACCURACY (200 decisões por direção, semente SEED-TOOL), sob o mesmo oráculo | População: amostra aleatória simples de 200 decisões por direção da população de M-OPCOV-DEC | Direção: por direção ordenada A→B, cada uma das 12 (A ≠ B em aws, google, azurerm, oci), relatada uma a uma; a média das 12 com pesos iguais é leitura secundária | Unidade: decisão | Denominador: número de unidades de decisão configuradas em A pela regra de inclusão, fixado no lado de origem antes de rodar o tradutor (o desfecho não muda o denominador); um documento JSON de política conta por decisão, não por linha: uma decisão por declaração normalizada (efeito, principal, ação, recurso, condição), invariante a reserializar, reordenar chaves ou partir listas; NAME e TAG fora; NOT_APPLICABLE fora por regra de inclusão, nunca depois do desfecho | Desconhecido: UNKNOWN_SYMBOLIC_INPUT, UNKNOWN_INPUT, CONDITION_INDETERMINATE e INFRA_ERROR contam como não emitidas no limite inferior e como emitidas no limite superior; est = emitidas ÷ (n − desconhecidas), sempre relatada junto com os dois limites; os demais códigos de bloqueio do C23 (e o resultado omitted) contam como não emitidas nos dois limites'
+  reading: decision
+  axis: operational
+  quantifier: observed_fraction
+  frame: amostra do TOOL-ACCURACY sobre a partição de teste
+  inclusion: 'INC-DEC-03: decisões sorteadas de INC-DEC-01 com SEED-TOOL; papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG)'
+  weights: uniform
+  uncertainty: bootstrap
+- metric_id: M-PERS-DEC
+  definition: 'Definição: precisão de persistência π: casos PERSISTED ÷ casos de decisão amostrados e levados a deploy, por estrato par×domínio×cardinalidade×relação×direção, e combinada com os pesos do frame | População: casos de decisão carregados pelo tradutor (lado de destino gerado pela saída do tradutor) no frame do DEPSAMPLE; os bloqueados amostrados vão à auditoria offline, não a deploy | Direção: por direção A→B do caso (destino = lado implantado); estratos não somados entre direções | Unidade: decisão | Denominador: número de casos sorteados e levados a deploy no estrato (todos os desfechos publicados); um documento JSON de política conta por decisão, não por linha | Desconhecido: NOT_READABLE, INFRA_ERROR e UNKNOWN contam como não persistidos no limite inferior e como persistidos no limite superior; ALTERED e REJECTED_BY_API são falha nos dois limites'
+  reading: decision
+  axis: persistence
+  quantifier: observed_fraction
+  frame: frame do DEPSAMPLE (casos carregados e bloqueados, estratos e pesos publicados no congelamento DEPSAMPLE)
+  inclusion: 'INC-CASE-01: casos carregados do DEPSAMPLE (origin = sample) com plano de lowering; papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG)'
+  weights: inverse_probability
+  uncertainty: bootstrap
+- metric_id: M-OPCOV-PERS-DEC
+  definition: 'Definição: fração das unidades de decisão de A que o tradutor emite em B E que a API de B guarda: cobertura operacional × precisão de persistência do estrato, com a incerteza conjunta propagada (bootstrap conjunto por família) | População: unidades de decisão configuradas no provedor de origem A nos repositórios da partição de teste do SPLIT (famílias deduplicadas, forks e cópias juntos), restritas às unidades canônicas do universo U(A); unidades expostas nos pilotos (pilot_exposed) ficam na população, marcadas, com leitura de sensibilidade sem elas (só o hold-out de unidades as exclui) | Direção: por direção ordenada A→B, cada uma das 12 (A ≠ B em aws, google, azurerm, oci), relatada uma a uma; a média das 12 com pesos iguais é leitura secundária | Unidade: decisão | Denominador: número de unidades de decisão configuradas em A pela regra de inclusão, fixado no lado de origem antes de rodar o tradutor (o desfecho não muda o denominador); um documento JSON de política conta por decisão, não por linha: uma decisão por declaração normalizada (efeito, principal, ação, recurso, condição), invariante a reserializar, reordenar chaves ou partir listas; NAME e TAG fora; NOT_APPLICABLE fora por regra de inclusão, nunca depois do desfecho | Desconhecido: limite inferior = limite inferior de M-OPCOV-DEC × limite inferior de M-PERS-DEC (NOT_READABLE, INFRA_ERROR e UNKNOWN como falha); limite superior = produto dos limites superiores'
+  reading: decision
+  axis: persistence
+  quantifier: observed_fraction
+  frame: partição de teste do SPLIT, universo U congelado (UNIVERSE), pins do provider congelados; π do frame do DEPSAMPLE (casos carregados e bloqueados, estratos e pesos publicados no congelamento DEPSAMPLE)
+  inclusion: 'INC-DEC-01: decisões configuradas em A (marca configured) em unidades canônicas de U(A), papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG); computed, default não escrito e NOT_APPLICABLE fora'
+  weights: frame
+  uncertainty: bootstrap
+- metric_id: M-BEHAV-DEC
+  definition: 'Definição: pares de sonda com OBSERVATIONS_MATCH_UNDER_PROTOCOL (PROBE-JOIN) ÷ pares de sonda sorteados, por tipo de sonda; vale só para os casos sondados e não é extrapolado | População: pares de sonda sorteados entre casos carregados de tipos com suporte validado nos dois provedores | Direção: por direção do caso, relatada por tipo de sonda | Unidade: decisão | Denominador: número de pares de sonda sorteados (pair_case_id), um por decisão sondada | Desconhecido: NOT_OBSERVED_IN_WINDOW (censura), PROTOCOL_UNSUPPORTED, INFRA_ERROR e UNKNOWN contam como não coincidentes no limite inferior e como coincidentes no limite superior; DIFFER é falha nos dois'
+  reading: decision
+  axis: behavior
+  quantifier: observed_fraction
+  frame: amostra de sondas do DEPSAMPLE, só tipos com suporte validado (PROBEKIT + SERVICE-EVIDENCE)
+  inclusion: 'INC-PROBE-01: pares de sonda do DEPSAMPLE com controle negativo válido nos dois lados'
+  weights: inverse_probability
+  uncertainty: wilson
+- metric_id: M-HOLDOUT-REPR-DEC
+  definition: 'Definição: fração das decisões das unidades canônicas do hold-out (abertas no UNSEAL) que o mapeador às cegas representa na ontologia congelada sem poder criar classe | População: unidades canônicas sorteadas para hold-out no SPLIT (sem pilot_exposed) | Direção: não direcional: por provedor da unidade | Unidade: decisão | Denominador: número de unidades de decisão configuradas em A pela regra de inclusão, fixado no lado de origem antes de rodar o tradutor (o desfecho não muda o denominador); um documento JSON de política conta por decisão, não por linha: uma decisão por declaração normalizada (efeito, principal, ação, recurso, condição), invariante a reserializar, reordenar chaves ou partir listas; NAME e TAG fora; NOT_APPLICABLE fora por regra de inclusão, nunca depois do desfecho | Desconhecido: UNKNOWN_SYMBOLIC_INPUT e UNKNOWN_INPUT contam como não representadas no limite inferior e como representadas no limite superior'
+  reading: decision
+  axis: representability
+  quantifier: observed_fraction
+  frame: hold-out de unidades do SPLIT
+  inclusion: 'INC-HOLD-01: decisões das unidades do hold-out; papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG)'
+  weights: uniform
+  uncertainty: bootstrap
+- metric_id: M-LOPO-REPR-DEC
+  definition: 'Definição: fração das decisões OCI da partição de teste representáveis na ontologia de 3 provedores (sem OCI) sem classe nova | População: unidades de decisão configuradas no provedor de origem A nos repositórios da partição de teste do SPLIT (famílias deduplicadas, forks e cópias juntos), restritas às unidades canônicas do universo U(A); unidades expostas nos pilotos (pilot_exposed) ficam na população, marcadas, com leitura de sensibilidade sem elas (só o hold-out de unidades as exclui); só A = oci | Direção: não direcional: só provedor oci | Unidade: decisão | Denominador: número de unidades de decisão configuradas em A pela regra de inclusão, fixado no lado de origem antes de rodar o tradutor (o desfecho não muda o denominador); um documento JSON de política conta por decisão, não por linha: uma decisão por declaração normalizada (efeito, principal, ação, recurso, condição), invariante a reserializar, reordenar chaves ou partir listas; NAME e TAG fora; NOT_APPLICABLE fora por regra de inclusão, nunca depois do desfecho | Desconhecido: UNKNOWN_SYMBOLIC_INPUT e UNKNOWN_INPUT contam como não representadas no limite inferior e como representadas no limite superior'
+  reading: decision
+  axis: representability
+  quantifier: observed_fraction
+  frame: partição de teste do SPLIT, universo U congelado (UNIVERSE), pins do provider congelados
+  inclusion: 'INC-DEC-01: decisões configuradas em A (marca configured) em unidades canônicas de U(A), papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG); computed, default não escrito e NOT_APPLICABLE fora'
+  weights: uniform
+  uncertainty: bootstrap
+- metric_id: M-CQ-ANSWER
+  definition: 'Definição: fração das fixtures das CQs congeladas (C24: conforme, não conforme, incompleta) cuja consulta SPARQL sobre a ABox gerada devolve a resposta esperada, inclusive UNKNOWN onde a esperada é UNKNOWN | População: fixtures das 29 CQs do REQUIREMENTS e as fixtures retidas dos pilotos, reexecutadas a cada reparo | Direção: não direcional: por provedor da fixture, quando houver | Unidade: grafo | Denominador: número de fixtures (cada fixture é um grafo pequeno), fixo no REQUIREMENTS; nenhuma é retirada depois | Desconhecido: consulta que não termina ou erro de infraestrutura (INFRA_ERROR) conta como errada no limite inferior e como certa no limite superior; UNKNOWN_INPUT e UNKNOWN_SYMBOLIC_INPUT na ABox idem; resposta UNKNOWN quando a esperada é definida é errada nos dois limites'
+  reading: graph
+  axis: representability
+  quantifier: observed_fraction
+  frame: CQs congeladas do REQUIREMENTS (FREEZE0)
+  inclusion: 'INC-CQ-01: todas as fixtures de cq_spec.jsonl, sem exceção'
+  weights: uniform
+  uncertainty: exact

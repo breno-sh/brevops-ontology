@@ -1,0 +1,210 @@
+schema: bo.probe_types/1
+contract: C22
+contract_version: 3.0.0
+module: PREREG
+generated_at: '2026-11-03T01:58:00-03:00'
+protocol_version: 1.0.0
+probe_types:
+- probe_type: object_versioning
+  preconditions:
+  - bucket ou contêiner novo da execução, com a configuração de versionamento do caso aplicada e lida de volta como PERSISTED
+  - objeto sintético de 1 KiB, sem conteúdo real; gravado 3 vezes com a mesma chave
+  negative_control:
+    description: mesmo protocolo em contêiner com versionamento desligado ou suspenso
+    expected: uma única versão listada da chave
+  repetitions: 3
+  tolerance:
+    kind: exact
+    value: 0
+  polling:
+    interval: PT1M
+    max_wait: PT30M
+  window:
+    duration: PT1H
+    margin_over_ttl: PT30M
+  cost_limit:
+    amount: 0.5
+    currency: USD
+  validated_support:
+  - provider: aws
+    status: unknown
+    evidence: []
+  - provider: google
+    status: unknown
+    evidence: []
+  - provider: azurerm
+    status: unknown
+    evidence: []
+  - provider: oci
+    status: unknown
+    evidence: []
+- probe_type: object_lifecycle
+  preconditions:
+  - regra de ciclo de vida do caso com a menor idade permitida pelo provedor (1 dia onde a unidade é dia), lida de volta como PERSISTED
+  - objetos sintéticos com idade conhecida
+  - supervisor independente com heartbeat ativo (D16); sem ele, o tipo sai da amostra
+  negative_control:
+    description: mesmo protocolo em contêiner sem regra de ciclo de vida
+    expected: objetos continuam presentes no fim da janela
+  repetitions: 3
+  tolerance:
+    kind: exact
+    value: 0
+  polling:
+    interval: PT6H
+    max_wait: PT72H
+  window:
+    duration: PT72H
+    margin_over_ttl: PT48H
+  cost_limit:
+    amount: 1.0
+    currency: USD
+  validated_support:
+  - provider: aws
+    status: unknown
+    evidence: []
+  - provider: google
+    status: unknown
+    evidence: []
+  - provider: azurerm
+    status: unknown
+    evidence: []
+  - provider: oci
+    status: unknown
+    evidence: []
+- probe_type: item_ttl
+  preconditions:
+  - tabela ou coleção com TTL habilitado no atributo declarado, lida de volta como PERSISTED
+  - itens sintéticos com expiração 1 h depois da gravação
+  - supervisor independente com heartbeat ativo (D16); sem ele, o tipo sai da amostra
+  negative_control:
+    description: itens iguais sem o atributo de TTL (ou TTL desligado)
+    expected: itens continuam legíveis no fim da janela
+  repetitions: 3
+  tolerance:
+    kind: exact
+    value: 0
+  polling:
+    interval: PT2H
+    max_wait: PT72H
+  window:
+    duration: PT72H
+    margin_over_ttl: PT71H
+  cost_limit:
+    amount: 1.0
+    currency: USD
+  validated_support:
+  - provider: aws
+    status: unknown
+    evidence: []
+  - provider: google
+    status: unknown
+    evidence: []
+  - provider: azurerm
+    status: unknown
+    evidence: []
+  - provider: oci
+    status: unknown
+    evidence: []
+- probe_type: queue_retention
+  preconditions:
+  - fila com a retenção do caso no menor valor permitido pelo provedor; se o mínimo passa de 24 h, PROTOCOL_UNSUPPORTED antes do sorteio
+  - mensagens sintéticas sem conteúdo real; nenhum consumidor durante a janela
+  - supervisor independente com heartbeat ativo (D16); sem ele, o tipo sai da amostra
+  negative_control:
+    description: mesma fila com retenção maior que a janela
+    expected: mensagens continuam disponíveis no fim da janela
+  repetitions: 3
+  tolerance:
+    kind: exact
+    value: 0
+  polling:
+    interval: PT1H
+    max_wait: PT48H
+  window:
+    duration: PT48H
+    margin_over_ttl: PT24H
+  cost_limit:
+    amount: 0.5
+    currency: USD
+  validated_support:
+  - provider: aws
+    status: unknown
+    evidence: []
+  - provider: google
+    status: unknown
+    evidence: []
+  - provider: azurerm
+    status: unknown
+    evidence: []
+  - provider: oci
+    status: unknown
+    evidence: []
+- probe_type: rate_limit
+  preconditions:
+  - limite de taxa do caso declarado com JANELA (período de renovação), CHAVE (por chave de assinatura, por IP de origem ou total), RAJADA (capacidade do balde) e MECANISMO (balde de fichas ou janela fixa), lidos do SERVICE-EVIDENCE
+  - endpoint sintético sem backend real; uma única chave de cliente por repetição
+  - N = 3 × (rajada + taxa × janela) pedidos enviados numa janela
+  negative_control:
+    description: mesmo protocolo sem limite configurado (ou limite 100 vezes maior)
+    expected: nenhuma resposta de limitação (HTTP 429) na janela
+  repetitions: 3
+  tolerance:
+    kind: relative
+    value: 0.2
+  polling:
+    interval: PT1S
+    max_wait: PT10M
+  window:
+    duration: PT10M
+    margin_over_ttl: PT5M
+  cost_limit:
+    amount: 1.0
+    currency: USD
+  validated_support:
+  - provider: aws
+    status: unknown
+    evidence: []
+  - provider: google
+    status: unknown
+    evidence: []
+  - provider: azurerm
+    status: unknown
+    evidence: []
+  - provider: oci
+    status: unknown
+    evidence: []
+- probe_type: log_retention
+  preconditions:
+  - grupo ou bucket de log com a retenção do caso no menor valor permitido (1 dia onde existe); se o mínimo passa de 3 dias, PROTOCOL_UNSUPPORTED antes do sorteio
+  - eventos sintéticos sem conteúdo real; o conteúdo dos logs nunca é gravado, só contagens e datas
+  - supervisor independente com heartbeat ativo (D16); sem ele, o tipo sai da amostra
+  negative_control:
+    description: mesmo protocolo com retenção maior que a janela
+    expected: eventos continuam consultáveis no fim da janela
+  repetitions: 3
+  tolerance:
+    kind: exact
+    value: 0
+  polling:
+    interval: PT6H
+    max_wait: PT96H
+  window:
+    duration: PT96H
+    margin_over_ttl: PT72H
+  cost_limit:
+    amount: 1.0
+    currency: USD
+  validated_support:
+  - provider: aws
+    status: unknown
+    evidence: []
+  - provider: google
+    status: unknown
+    evidence: []
+  - provider: azurerm
+    status: unknown
+    evidence: []
+  - provider: oci
+    status: unknown
+    evidence: []

@@ -1,0 +1,14 @@
+# SEEDS.txt — sementes pré-registradas do BrevOps v3 (PREREG, 2026-11-03T01:58:00-03:00, America/Recife)
+# Regra: seed = int(sha256(UTF-8('brevops-prereg-v3/' + NOME)).hexdigest(), 16) mod 2147483647. A semente é função do nome, fixado aqui antes de qualquer dado; trocar a semente exige trocar o nome, o que é emenda. Bootstrap: 4000 réplicas; permutação: 10000.
+# Formato: TSV, uma semente por linha: nome<TAB>semente<TAB>consumidor<TAB>para quê
+name	seed	consumer	purpose
+SEED-SPLIT	367401377	SPLIT	atribuição calibração/teste por família deduplicada
+SEED-HOLDOUT-UNITS	932468315	SPLIT	sorteio do hold-out de unidades canônicas (sem pilot_exposed)
+SEED-DEPSAMPLE	1709970281	DEPSAMPLE	sorteio dos casos carregados e bloqueados e ordem de substituição por estrato
+SEED-PROBESAMPLE	553025140	DEPSAMPLE	sorteio da amostra de sondas entre tipos com suporte validado
+SEED-DISPUTE	1549841819	DISPUTE-SAMPLE	amostra probabilística de ausências (taxa de falso NONE)
+SEED-BOOT	1439627611	METRICSLIB	bootstrap por família, repositório e grafo
+SEED-PERM	1752805231	METRICSLIB	testes de permutação (rótulos de direção dentro do par)
+SEED-KALININ	18931064	KALININ-RECON	ordem e desempates da família de reconstruções
+SEED-TOOL	24623858	TOOL-ACCURACY	amostra de 200 decisões por direção e ordem de apresentação ao LLM
+SEED-POWER-SIM	465448621	PREREG	simulação de Monte Carlo que confere o cálculo de poder (tests/prereg)

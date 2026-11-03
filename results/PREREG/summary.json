@@ -1,0 +1,63 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "PREREG",
+ "generated_at": "2026-11-03T01:58:12-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PREREG.txt",
+  "brief_sha256": "01d182d647e9122f0a2721325230c66a7c76c83457bb96a1662f490c49da68ea",
+  "params": {
+   "effort": "maximo",
+   "modo": "unlazy",
+   "onda": "5",
+   "fase": "F1",
+   "alpha": "0.05",
+   "poder_alvo": "0.80",
+   "metodo_poder": "Wald sob a alternativa, critico t por familias, DE aninhado",
+   "simulacao": "beta-binomial, semente SEED-POWER-SIM",
+   "plano_lido": "PLANO_BREVOPS_ONTOLOGY.html secoes 0, 1, 3b, 4, 5.1, 9, 10, 14"
+  },
+  "inputs": [
+   {
+    "path": "/Users/breno/doutorado/pesquisa/superficie/reports/ontologia_neutra/revisao_adversarial/R3_validade_empirica.html",
+    "kind": "file",
+    "sha256": "58620569f9095ea75c197ce4727ae291f8470aae4129129f0c52bb34bbd429d6"
+   },
+   {
+    "path": "/Users/breno/doutorado/pesquisa/superficie/reports/ontologia_neutra/COBERTURA_NEUTRA.html",
+    "kind": "file",
+    "sha256": "e983bd0b9dfb0297f1a157f3d04a9e70a65bffef1c55116d26067ad3bb30d5fa"
+   },
+   {
+    "path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/revisao_adversarial_plano/REVISAO_PLANO_GEMINI_3_8_FLASH.html",
+    "kind": "file",
+    "sha256": "6b984ead51f50c32fc32ff186fcd88593dfd88b50fa83fb21bc3c571c1e8a9f5"
+   },
+   {
+    "path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/revisao_adversarial_plano/REVISAO_PLANO_v2_GPT6_CODEX.txt",
+    "kind": "file",
+    "sha256": "29215fd0eb0fabe1f4a3232958fb5020b6d8fd08f241a2e557e47bb4af8be892"
+   },
+   {
+    "path": "$BO_REPO/requirements",
+    "kind": "dir",
+    "sha256": "b09d2f301174f7e0cdb7c97483a7729aea19b5f5747cdd8a9e98262237d2cc98"
+   },
+   {
+    "path": "$BO_REPO/semantics",
+    "kind": "dir",
+    "sha256": "3cc3529700453a0296e86afd57ccca7ba55dcf98ab7bfd19e88cc714e4103a49"
+   },
+   {
+    "path": "$BO_REPO/lit/RELATED_WORK.html",
+    "kind": "file",
+    "sha256": "d90fd22639d77e90f98d85436bce2ed62dfa7515e808c6f8984885978ddc3c19"
+   }
+  ],
+  "recorded_at": "2026-11-03T01:58:12-03:00"
+ },
+ "sources": [],
+ "notes": "Pre-registro v3 sem dado do estudo; prereg/OSF_ID.txt fora do owns: estado OSF em results/PREREG/OSF_ID.txt (PENDING)"
+}

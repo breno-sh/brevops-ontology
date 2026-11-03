@@ -1,0 +1,2118 @@
+{
+ "schema": "bo.result/1",
+ "contract": "C15",
+ "contract_version": "3.0.0",
+ "module": "PREREG",
+ "generated_at": "2026-11-03T01:58:00-03:00",
+ "metrics": [
+  {
+   "metric_id": "M-OPCOV-DEC",
+   "name": "cobertura operacional do modelo+tradutor no universo U, controle c3 (axiomatização completa): unidades de decisão configuradas em A cujo valor o tradutor real e",
+   "reading": "decision",
+   "axis": "operational",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.0,
+    "upper": 1.0,
+    "est": null,
+    "n": 0
+   },
+   "frame": {
+    "description": "partição de teste do SPLIT, universo U congelado (UNIVERSE), pins do provider congelados"
+   },
+   "inclusion": {
+    "rule_id": "INC-DEC-01",
+    "text": "decisões configuradas em A (marca configured) em unidades canônicas de U(A), papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG); computed, default não escrito e NOT_APPLICABLE fora"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "bootstrap",
+    "level": 0.95,
+    "correlated_with": [
+     "M-ABL-AWSRAW-DEC",
+     "M-ABL-NOGUARD-DEC",
+     "M-ABL-RAWTYPES-DEC",
+     "M-ABL-SEEDAWS-DEC",
+     "M-ABL-THR-ALT1-DEC",
+     "M-ABL-THR-ALT2-DEC",
+     "M-H2H-TRANS-DEC",
+     "M-LOPO-OPCOV-DEC",
+     "M-OPCOV-DEC-C1",
+     "M-OPCOV-DEC-C2",
+     "M-OPCOV-DEC-DIRECT",
+     "M-TOOL-LLM-DEC"
+    ]
+   }
+  },
+  {
+   "metric_id": "M-PERS-DEC",
+   "name": "precisão de persistência π: casos PERSISTED ÷ casos de decisão amostrados e levados a deploy, por estrato par×domínio×cardinalidade×relação×direção, e combinada",
+   "reading": "decision",
+   "axis": "persistence",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.0,
+    "upper": 1.0,
+    "est": null,
+    "n": 0
+   },
+   "frame": {
+    "description": "frame do DEPSAMPLE (casos carregados e bloqueados, estratos e pesos publicados no congelamento DEPSAMPLE)"
+   },
+   "inclusion": {
+    "rule_id": "INC-CASE-01",
+    "text": "casos carregados do DEPSAMPLE (origin = sample) com plano de lowering; papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG)"
+   },
+   "weights": {
+    "scheme": "inverse_probability"
+   },
+   "joint_uncertainty": {
+    "method": "bootstrap",
+    "level": 0.95
+   }
+  },
+  {
+   "metric_id": "M-ABL-AWSRAW-DEC",
+   "name": "como M-OPCOV-DEC, com semente só AWS E tipos Terraform crus ao mesmo tempo (comparação de H6)",
+   "reading": "decision",
+   "axis": "operational",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.0,
+    "upper": 1.0,
+    "est": null,
+    "n": 0
+   },
+   "frame": {
+    "description": "partição de teste do SPLIT, universo U congelado (UNIVERSE), pins do provider congelados"
+   },
+   "inclusion": {
+    "rule_id": "INC-DEC-01",
+    "text": "decisões configuradas em A (marca configured) em unidades canônicas de U(A), papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG); computed, default não escrito e NOT_APPLICABLE fora"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "bootstrap",
+    "level": 0.95,
+    "correlated_with": [
+     "M-OPCOV-DEC"
+    ]
+   }
+  },
+  {
+   "metric_id": "M-OPCOV-DEC-DIRECT",
+   "name": "como M-OPCOV-DEC, mas pelo tradutor par-a-par do PAIRWISE (só as alegações congeladas, sem ontologia), com a mesma IR de grafo, o mesmo lowering, os mesmos cont",
+   "reading": "decision",
+   "axis": "operational",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.0,
+    "upper": 1.0,
+    "est": null,
+    "n": 0
+   },
+   "frame": {
+    "description": "partição de teste do SPLIT, universo U congelado (UNIVERSE), pins do provider congelados"
+   },
+   "inclusion": {
+    "rule_id": "INC-DEC-01",
+    "text": "decisões configuradas em A (marca configured) em unidades canônicas de U(A), papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG); computed, default não escrito e NOT_APPLICABLE fora"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "bootstrap",
+    "level": 0.95,
+    "correlated_with": [
+     "M-OPCOV-DEC",
+     "M-TOOL-LLM-DEC"
+    ]
+   }
+  },
+  {
+   "metric_id": "M-OPCOV-DEC-COMPLEX",
+   "name": "entre as decisões emitidas em B no limite inferior pelo controle c3, a fração cujo transporte usou correspondência complexa (grupo como regra sobre subgrafo, 1:",
+   "reading": "decision",
+   "axis": "operational",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.0,
+    "upper": 1.0,
+    "est": null,
+    "n": 0
+   },
+   "frame": {
+    "description": "partição de teste do SPLIT, universo U congelado (UNIVERSE), pins do provider congelados"
+   },
+   "inclusion": {
+    "rule_id": "INC-DEC-02",
+    "text": "decisões de INC-DEC-01 emitidas no limite inferior de M-OPCOV-DEC; papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG)"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "bootstrap",
+    "level": 0.95
+   }
+  },
+  {
+   "metric_id": "M-OPCOV-DEC-C1",
+   "name": "como M-OPCOV-DEC, com o controle c1: tabela JSON/RDF das correspondências sem inferência; mesma entrada, mesma política de perda, mesmas transformações",
+   "reading": "decision",
+   "axis": "operational",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.0,
+    "upper": 1.0,
+    "est": null,
+    "n": 0
+   },
+   "frame": {
+    "description": "partição de teste do SPLIT, universo U congelado (UNIVERSE), pins do provider congelados"
+   },
+   "inclusion": {
+    "rule_id": "INC-DEC-01",
+    "text": "decisões configuradas em A (marca configured) em unidades canônicas de U(A), papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG); computed, default não escrito e NOT_APPLICABLE fora"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "bootstrap",
+    "level": 0.95,
+    "correlated_with": [
+     "M-ABL-NOGUARD-DEC",
+     "M-ABL-RAWTYPES-DEC",
+     "M-ABL-SEEDAWS-DEC",
+     "M-ABL-THR-ALT1-DEC",
+     "M-ABL-THR-ALT2-DEC",
+     "M-OPCOV-DEC",
+     "M-OPCOV-DEC-C2"
+    ]
+   }
+  },
+  {
+   "metric_id": "M-OPCOV-DEC-C2",
+   "name": "como M-OPCOV-DEC, com o controle c2: só a taxonomia e as realizações, sem os demais axiomas; mesma entrada, mesma política de perda, mesmas transformações",
+   "reading": "decision",
+   "axis": "operational",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.0,
+    "upper": 1.0,
+    "est": null,
+    "n": 0
+   },
+   "frame": {
+    "description": "partição de teste do SPLIT, universo U congelado (UNIVERSE), pins do provider congelados"
+   },
+   "inclusion": {
+    "rule_id": "INC-DEC-01",
+    "text": "decisões configuradas em A (marca configured) em unidades canônicas de U(A), papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG); computed, default não escrito e NOT_APPLICABLE fora"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "bootstrap",
+    "level": 0.95,
+    "correlated_with": [
+     "M-ABL-NOGUARD-DEC",
+     "M-ABL-RAWTYPES-DEC",
+     "M-ABL-SEEDAWS-DEC",
+     "M-ABL-THR-ALT1-DEC",
+     "M-ABL-THR-ALT2-DEC",
+     "M-OPCOV-DEC",
+     "M-OPCOV-DEC-C1"
+    ]
+   }
+  },
+  {
+   "metric_id": "M-LOPO-OPCOV-DEC",
+   "name": "como M-OPCOV-DEC nas 6 direções com OCI, mas com a ontologia reinduzida só com as 18 alegações sem OCI e o glossário sem âncoras OCI, mapeada por um mapeador no",
+   "reading": "decision",
+   "axis": "operational",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.0,
+    "upper": 1.0,
+    "est": null,
+    "n": 0
+   },
+   "frame": {
+    "description": "partição de teste do SPLIT, universo U congelado (UNIVERSE), pins do provider congelados"
+   },
+   "inclusion": {
+    "rule_id": "INC-DEC-01",
+    "text": "decisões configuradas em A (marca configured) em unidades canônicas de U(A), papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG); computed, default não escrito e NOT_APPLICABLE fora"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "bootstrap",
+    "level": 0.95,
+    "correlated_with": [
+     "M-OPCOV-DEC"
+    ]
+   }
+  },
+  {
+   "metric_id": "M-ABL-SEEDAWS-DEC",
+   "name": "como M-OPCOV-DEC, com o pipeline completo reconstruído com sementes só da AWS (ABLATION a), no conjunto selado",
+   "reading": "decision",
+   "axis": "operational",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.0,
+    "upper": 1.0,
+    "est": null,
+    "n": 0
+   },
+   "frame": {
+    "description": "partição de teste do SPLIT, universo U congelado (UNIVERSE), pins do provider congelados"
+   },
+   "inclusion": {
+    "rule_id": "INC-DEC-01",
+    "text": "decisões configuradas em A (marca configured) em unidades canônicas de U(A), papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG); computed, default não escrito e NOT_APPLICABLE fora"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "bootstrap",
+    "level": 0.95,
+    "correlated_with": [
+     "M-ABL-NOGUARD-DEC",
+     "M-ABL-RAWTYPES-DEC",
+     "M-ABL-THR-ALT1-DEC",
+     "M-ABL-THR-ALT2-DEC",
+     "M-OPCOV-DEC",
+     "M-OPCOV-DEC-C1",
+     "M-OPCOV-DEC-C2"
+    ]
+   }
+  },
+  {
+   "metric_id": "M-ABL-THR-ALT1-DEC",
+   "name": "como M-OPCOV-DEC, com o primeiro limiar alternativo de admissão (dos três: 1, 2 ou 3 provedores, o menor dos dois que não é o do pipeline congelado; ABLATION b)",
+   "reading": "decision",
+   "axis": "operational",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.0,
+    "upper": 1.0,
+    "est": null,
+    "n": 0
+   },
+   "frame": {
+    "description": "partição de teste do SPLIT, universo U congelado (UNIVERSE), pins do provider congelados"
+   },
+   "inclusion": {
+    "rule_id": "INC-DEC-01",
+    "text": "decisões configuradas em A (marca configured) em unidades canônicas de U(A), papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG); computed, default não escrito e NOT_APPLICABLE fora"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "bootstrap",
+    "level": 0.95,
+    "correlated_with": [
+     "M-ABL-NOGUARD-DEC",
+     "M-ABL-RAWTYPES-DEC",
+     "M-ABL-SEEDAWS-DEC",
+     "M-ABL-THR-ALT2-DEC",
+     "M-OPCOV-DEC",
+     "M-OPCOV-DEC-C1",
+     "M-OPCOV-DEC-C2"
+    ]
+   }
+  },
+  {
+   "metric_id": "M-ABL-THR-ALT2-DEC",
+   "name": "como M-OPCOV-DEC, com o segundo limiar alternativo de admissão (o maior dos dois que não é o do pipeline congelado; ABLATION b)",
+   "reading": "decision",
+   "axis": "operational",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.0,
+    "upper": 1.0,
+    "est": null,
+    "n": 0
+   },
+   "frame": {
+    "description": "partição de teste do SPLIT, universo U congelado (UNIVERSE), pins do provider congelados"
+   },
+   "inclusion": {
+    "rule_id": "INC-DEC-01",
+    "text": "decisões configuradas em A (marca configured) em unidades canônicas de U(A), papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG); computed, default não escrito e NOT_APPLICABLE fora"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "bootstrap",
+    "level": 0.95,
+    "correlated_with": [
+     "M-ABL-NOGUARD-DEC",
+     "M-ABL-RAWTYPES-DEC",
+     "M-ABL-SEEDAWS-DEC",
+     "M-ABL-THR-ALT1-DEC",
+     "M-OPCOV-DEC",
+     "M-OPCOV-DEC-C1",
+     "M-OPCOV-DEC-C2"
+    ]
+   }
+  },
+  {
+   "metric_id": "M-ABL-RAWTYPES-DEC",
+   "name": "como M-OPCOV-DEC, com tipos Terraform crus no lugar do grão canônico (ABLATION c); o denominador continua o das decisões canônicas de A",
+   "reading": "decision",
+   "axis": "operational",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.0,
+    "upper": 1.0,
+    "est": null,
+    "n": 0
+   },
+   "frame": {
+    "description": "partição de teste do SPLIT, universo U congelado (UNIVERSE), pins do provider congelados"
+   },
+   "inclusion": {
+    "rule_id": "INC-DEC-01",
+    "text": "decisões configuradas em A (marca configured) em unidades canônicas de U(A), papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG); computed, default não escrito e NOT_APPLICABLE fora"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "bootstrap",
+    "level": 0.95,
+    "correlated_with": [
+     "M-ABL-NOGUARD-DEC",
+     "M-ABL-SEEDAWS-DEC",
+     "M-ABL-THR-ALT1-DEC",
+     "M-ABL-THR-ALT2-DEC",
+     "M-OPCOV-DEC",
+     "M-OPCOV-DEC-C1",
+     "M-OPCOV-DEC-C2"
+    ]
+   }
+  },
+  {
+   "metric_id": "M-ABL-NOGUARD-DEC",
+   "name": "como M-OPCOV-DEC, sem guardas e sem transformações, só o predicado (ABLATION d)",
+   "reading": "decision",
+   "axis": "operational",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.0,
+    "upper": 1.0,
+    "est": null,
+    "n": 0
+   },
+   "frame": {
+    "description": "partição de teste do SPLIT, universo U congelado (UNIVERSE), pins do provider congelados"
+   },
+   "inclusion": {
+    "rule_id": "INC-DEC-01",
+    "text": "decisões configuradas em A (marca configured) em unidades canônicas de U(A), papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG); computed, default não escrito e NOT_APPLICABLE fora"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "bootstrap",
+    "level": 0.95,
+    "correlated_with": [
+     "M-ABL-RAWTYPES-DEC",
+     "M-ABL-SEEDAWS-DEC",
+     "M-ABL-THR-ALT1-DEC",
+     "M-ABL-THR-ALT2-DEC",
+     "M-OPCOV-DEC",
+     "M-OPCOV-DEC-C1",
+     "M-OPCOV-DEC-C2"
+    ]
+   }
+  },
+  {
+   "metric_id": "M-H2H-TRANS-DEC",
+   "name": "como M-OPCOV-DEC, pelo pacote de tradução de cada comparador com artefato, escrito com o orçamento igual do h2h_fairness.yaml, sobre a ABox gerada dos mesmos fa",
+   "reading": "decision",
+   "axis": "operational",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.0,
+    "upper": 1.0,
+    "est": null,
+    "n": 0
+   },
+   "frame": {
+    "description": "partição de teste do SPLIT, universo U congelado (UNIVERSE), pins do provider congelados"
+   },
+   "inclusion": {
+    "rule_id": "INC-DEC-01",
+    "text": "decisões configuradas em A (marca configured) em unidades canônicas de U(A), papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG); computed, default não escrito e NOT_APPLICABLE fora"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "bootstrap",
+    "level": 0.95,
+    "correlated_with": [
+     "M-OPCOV-DEC"
+    ]
+   }
+  },
+  {
+   "metric_id": "M-TOOL-LLM-DEC",
+   "name": "como M-OPCOV-DEC, traduzindo com um LLM de prompt congelado, na amostra de teste do TOOL-ACCURACY (200 decisões por direção, semente SEED-TOOL), sob o mesmo orá",
+   "reading": "decision",
+   "axis": "operational",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.0,
+    "upper": 1.0,
+    "est": null,
+    "n": 0
+   },
+   "frame": {
+    "description": "amostra do TOOL-ACCURACY sobre a partição de teste"
+   },
+   "inclusion": {
+    "rule_id": "INC-DEC-03",
+    "text": "decisões sorteadas de INC-DEC-01 com SEED-TOOL; papéis NAME e TAG (C04) fora; eles têm leitura própria (M-OPCOV-NAMETAG)"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "bootstrap",
+    "level": 0.95,
+    "correlated_with": [
+     "M-OPCOV-DEC",
+     "M-OPCOV-DEC-DIRECT"
+    ]
+   }
+  },
+  {
+   "metric_id": "M-BEHAV-DEC",
+   "name": "pares de sonda com OBSERVATIONS_MATCH_UNDER_PROTOCOL (PROBE-JOIN) ÷ pares de sonda sorteados, por tipo de sonda; vale só para os casos sondados e não é extrapol",
+   "reading": "decision",
+   "axis": "behavior",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.0,
+    "upper": 1.0,
+    "est": null,
+    "n": 0
+   },
+   "frame": {
+    "description": "amostra de sondas do DEPSAMPLE, só tipos com suporte validado (PROBEKIT + SERVICE-EVIDENCE)"
+   },
+   "inclusion": {
+    "rule_id": "INC-PROBE-01",
+    "text": "pares de sonda do DEPSAMPLE com controle negativo válido nos dois lados"
+   },
+   "weights": {
+    "scheme": "inverse_probability"
+   },
+   "joint_uncertainty": {
+    "method": "wilson",
+    "level": 0.95
+   }
+  }
+ ],
+ "notes": "Documento de PLANEJAMENTO: nenhum dado do estudo existe; por isso toda métrica traz n = 0, est nulo e limites 0..1. O bloco data guarda o modelo de poder, os contrastes pré-registrados e a grade de sensibilidade. Gerado por prereg/power.py --write.",
+ "data": {
+  "alpha": 0.05,
+  "target_power": 0.8,
+  "confidence_level": 0.95,
+  "cluster_model": {
+   "levels": [
+    "decisão",
+    "grafo",
+    "repositório",
+    "família"
+   ],
+   "rho": {
+    "graph": 0.3,
+    "repository": 0.2,
+    "family": 0.1
+   },
+   "m": {
+    "graph": 3,
+    "repository": 6,
+    "family": 12
+   },
+   "resampling_primary": "família",
+   "resampling_sensitivity": [
+    "repositório",
+    "grafo"
+   ],
+   "source": "hipótese conservadora declarada: não há dado do estudo; o C1 (COBERTURA_NEUTRA, bootstrap por stack) só dá ordem de grandeza e é medida circular (R3-M1). m por direção é hipótese de estrutura e é substituído pela contagem real da partição de teste na reestimação cega"
+  },
+  "deploy_cluster_model": {
+   "rho": {
+    "graph": 0.3,
+    "repository": 0.2,
+    "family": 0.1
+   },
+   "m": {
+    "graph": 1,
+    "repository": 1.5,
+    "family": 2
+   },
+   "weights_cv": 0.5,
+   "source": "hipótese declarada: DEPSAMPLE sorteia poucos casos por família; pesos de estrato com coeficiente de variação 0,5 (efeito de desenho de Kish 1 + CV²)"
+  },
+  "design_effect_formula": "DE = 1 + (m_G-1)·rho_G + (m_R-m_G)·rho_R + (m_F-m_R)·rho_F",
+  "design_effect_census": 2.8,
+  "design_effect_deploy": 1.4375,
+  "sensitivity_grid": {
+   "rho_mult": [
+    0.5,
+    1.0,
+    1.5
+   ],
+   "m_mult": [
+    0.5,
+    1.0,
+    2.0
+   ]
+  },
+  "reestimation": "Reestimação cega, uma vez, pelo STATS, antes do UNSEAL: (1) m_G, m_R, m_F e o número de famílias por direção vêm das CONTAGENS estruturais da partição de teste publicadas pelo SPLIT (nenhum desfecho); (2) rho_G, rho_R, rho_F vêm do tradutor rodado na partição de CALIBRAÇÃO (estimador ANOVA de componentes de variância, truncado em 0); (3) o poder é recalculado com estes valores e com os mesmos valores de planejamento de efeito; contraste 'claimed_conditional' cujo poder recalculado fica abaixo de 0,80 vira 'descriptive' (relatado, não reivindicado). Em contraste replicado (direções, pares, braços), o poder é recalculado por unidade: as unidades sem poder saem descritivas e a regra se aplica às K' restantes com o limiar proporcional, arredondado para cima (todas as K' em H1; ceil(4·K'/6) em H2 e C-LOPO; ceil(10·K'/12) em H7), e a alegação é rotulada 'parcial, K' de K'. Nada mais muda: teste, limiar, margem, alfa e unidade ficam.",
+  "status_semantics": {
+   "claimed": "limite de viabilidade conhecido agora e poder nele >= 0,80",
+   "claimed_conditional": "n necessário calculado; reivindicado só se a contagem real (SPLIT, DEPSAMPLE, REASONING-PROOF) alcançar, conferido pelo STATS antes do UNSEAL",
+   "descriptive": "sem inferência; motivo declarado em planning_source"
+  },
+  "hypotheses": [
+   "H1",
+   "H2",
+   "H3",
+   "H4",
+   "H5",
+   "H6",
+   "H7",
+   "H8",
+   "H9"
+  ],
+  "contrasts": [
+   {
+    "contrast_id": "C-H1",
+    "hypothesis": "H1",
+    "rq": "RQ1",
+    "priority": "P0",
+    "claim": "Cobertura operacional por decisão, no limite superior, abaixo de 0,70 em cada uma das 12 direções.",
+    "metrics": [
+     "M-OPCOV-DEC"
+    ],
+    "bound": "upper",
+    "replication": {
+     "over": "direção A→B",
+     "k": 12,
+     "rule": "teste de interseção-união: H1 só vale se as 12 direções rejeitarem; cada direção é relatada"
+    },
+    "test": "unilateral: limite superior de confiança 95% (bootstrap por família) do limite superior < 0,70",
+    "alpha": 0.05,
+    "sides": 1,
+    "multiplicity": "interseção-união (exige todas): sem ajuste de alfa; o poder conjunto é que é exigido",
+    "fixed_effects": [
+     "direção"
+    ],
+    "model": "one_prop",
+    "planning": {
+     "p0": 0.7,
+     "p1": 0.6
+    },
+    "planning_source": "C1 (COBERTURA_NEUTRA): 40–62% dos valores AWS sem contrapartida e 68–85% de acerto do pipeline nos que têm; produto ≈ 0,3–0,5. Planejamento em 0,60, mais perto do limiar (conservador).",
+    "power_rule": {
+     "kind": "all_of",
+     "k": 12
+    },
+    "feasibility": {
+     "kind": "census",
+     "cap": null,
+     "rule": "n = decisões configuradas em A na partição de teste, por direção (SPLIT)"
+    },
+    "status": "claimed_conditional",
+    "result": {
+     "kind": "normal",
+     "unit_power_target": 0.9816,
+     "n_effective": 335,
+     "design_effect": 2.8,
+     "n_units": 960,
+     "n_families": 80,
+     "families_added_by_t": 1,
+     "unit_power_at_n": 0.982,
+     "overall_power": 0.8042
+    },
+    "sensitivity": [
+     {
+      "rho_mult": 0.5,
+      "m_mult": 0.5,
+      "design_effect": 1.375,
+      "n_units": 474,
+      "n_families": 79
+     },
+     {
+      "rho_mult": 0.5,
+      "m_mult": 1.0,
+      "design_effect": 1.9,
+      "n_units": 660,
+      "n_families": 55
+     },
+     {
+      "rho_mult": 0.5,
+      "m_mult": 2.0,
+      "design_effect": 2.95,
+      "n_units": 1032,
+      "n_families": 43
+     },
+     {
+      "rho_mult": 1.0,
+      "m_mult": 0.5,
+      "design_effect": 1.75,
+      "n_units": 600,
+      "n_families": 100
+     },
+     {
+      "rho_mult": 1.0,
+      "m_mult": 1.0,
+      "design_effect": 2.8,
+      "n_units": 960,
+      "n_families": 80
+     },
+     {
+      "rho_mult": 1.0,
+      "m_mult": 2.0,
+      "design_effect": 4.9,
+      "n_units": 1680,
+      "n_families": 70
+     },
+     {
+      "rho_mult": 1.5,
+      "m_mult": 0.5,
+      "design_effect": 2.125,
+      "n_units": 720,
+      "n_families": 120
+     },
+     {
+      "rho_mult": 1.5,
+      "m_mult": 1.0,
+      "design_effect": 3.7,
+      "n_units": 1260,
+      "n_families": 105
+     },
+     {
+      "rho_mult": 1.5,
+      "m_mult": 2.0,
+      "design_effect": 6.85,
+      "n_units": 2352,
+      "n_families": 98
+     }
+    ]
+   },
+   {
+    "contrast_id": "C-H2",
+    "hypothesis": "H2",
+    "rq": "RQ2",
+    "priority": "P0",
+    "claim": "Em pelo menos 4 dos 6 pares, |cobertura(A→B) − cobertura(B→A)| ≥ 0,05 por decisão, com IC 95% (bootstrap por família e repositório) que exclui zero, nas leituras de limite inferior e superior.",
+    "metrics": [
+     "M-OPCOV-DEC"
+    ],
+    "bound": "both",
+    "replication": {
+     "over": "par",
+     "k": 6,
+     "rule": "contagem: pelo menos 4 de 6 pares"
+    },
+    "test": "bilateral por par: IC 95% da diferença exclui 0 e |estimativa| >= 0,05; mesmo sinal nos dois limites",
+    "alpha": 0.05,
+    "sides": 2,
+    "multiplicity": "regra de contagem 4 de 6; sob nulidade global P(>= 4 falsos) < 1e-4",
+    "fixed_effects": [
+     "par",
+     "direção"
+    ],
+    "model": "asym",
+    "planning": {
+     "delta": 0.1,
+     "p_mean": 0.5,
+     "min_abs": 0.05
+    },
+    "planning_source": "efeito de planejamento = o dobro do mínimo de interesse (0,05) da hipótese; p médio 0,50 maximiza a variância (conservador); sem desconhecidos no planejamento: com eles, exigir o mesmo sinal nos dois limites só torna o critério mais severo",
+    "power_rule": {
+     "kind": "at_least",
+     "k": 4,
+     "n_true": 4,
+     "n_null": 2
+    },
+    "feasibility": {
+     "kind": "census",
+     "cap": null,
+     "rule": "n por direção = decisões configuradas na origem na partição de teste (SPLIT)"
+    },
+    "status": "claimed_conditional",
+    "result": {
+     "kind": "normal",
+     "unit_power_target": 0.9429,
+     "n_effective": 621,
+     "design_effect": 2.8,
+     "n_units": 1752,
+     "n_families": 146,
+     "families_added_by_t": 1,
+     "unit_power_at_n": 0.9432,
+     "overall_power": 0.8008
+    },
+    "sensitivity": [
+     {
+      "rho_mult": 0.5,
+      "m_mult": 0.5,
+      "design_effect": 1.375,
+      "n_units": 864,
+      "n_families": 144
+     },
+     {
+      "rho_mult": 0.5,
+      "m_mult": 1.0,
+      "design_effect": 1.9,
+      "n_units": 1200,
+      "n_families": 100
+     },
+     {
+      "rho_mult": 0.5,
+      "m_mult": 2.0,
+      "design_effect": 2.95,
+      "n_units": 1872,
+      "n_families": 78
+     },
+     {
+      "rho_mult": 1.0,
+      "m_mult": 0.5,
+      "design_effect": 1.75,
+      "n_units": 1098,
+      "n_families": 183
+     },
+     {
+      "rho_mult": 1.0,
+      "m_mult": 1.0,
+      "design_effect": 2.8,
+      "n_units": 1752,
+      "n_families": 146
+     },
+     {
+      "rho_mult": 1.0,
+      "m_mult": 2.0,
+      "design_effect": 4.9,
+      "n_units": 3072,
+      "n_families": 128
+     },
+     {
+      "rho_mult": 1.5,
+      "m_mult": 0.5,
+      "design_effect": 2.125,
+      "n_units": 1326,
+      "n_families": 221
+     },
+     {
+      "rho_mult": 1.5,
+      "m_mult": 1.0,
+      "design_effect": 3.7,
+      "n_units": 2316,
+      "n_families": 193
+     },
+     {
+      "rho_mult": 1.5,
+      "m_mult": 2.0,
+      "design_effect": 6.85,
+      "n_units": 4296,
+      "n_families": 179
+     }
+    ]
+   },
+   {
+    "contrast_id": "C-H3",
+    "hypothesis": "H3",
+    "rq": "RQ3",
+    "priority": "P0",
+    "claim": "Autorização e borda (CDN/WAF) atravessam menos que dimensionamento de compute e storage: razão de chances < 1 no modelo por decisão com efeitos fixos de par e de direção.",
+    "metrics": [
+     "M-OPCOV-DEC"
+    ],
+    "bound": "both",
+    "replication": {
+     "over": "modelo único",
+     "k": 1,
+     "rule": "um coeficiente; leituras de limite inferior e superior"
+    },
+    "test": "unilateral: regressão logística por decisão, efeitos fixos de par e direção, erro-padrão robusto por família; IC 95% superior da razão de chances < 1 nos dois limites",
+    "alpha": 0.05,
+    "sides": 1,
+    "multiplicity": "contraste único; o tipo de perda NÃO entra como preditor (recodifica o desfecho)",
+    "fixed_effects": [
+     "par",
+     "direção",
+     "domínio",
+     "tipo de grão",
+     "papel",
+     "cardinalidade"
+    ],
+    "model": "two_prop",
+    "planning": {
+     "p1": 0.55,
+     "p2": 0.35
+    },
+    "planning_source": "dimensionamento 0,55 contra autorização/borda 0,35 (razão de chances ≈ 0,44); os efeitos fixos de par reduzem a variância e os dois grupos vêm em parte das mesmas famílias (comparação dentro da família): os dois ignorados aqui, como grupos independentes (conservador)",
+    "power_rule": {
+     "kind": "single"
+    },
+    "feasibility": {
+     "kind": "census",
+     "cap": null,
+     "rule": "n por grupo = decisões de autorização+borda e de dimensionamento no teste, 12 direções juntas"
+    },
+    "status": "claimed_conditional",
+    "result": {
+     "kind": "normal",
+     "unit_power_target": 0.8,
+     "n_effective": 74,
+     "design_effect": 2.8,
+     "n_units": 228,
+     "n_families": 19,
+     "families_added_by_t": 1,
+     "unit_power_at_n": 0.8192,
+     "per_group": true,
+     "overall_power": 0.8192
+    },
+    "sensitivity": [
+     {
+      "rho_mult": 0.5,
+      "m_mult": 0.5,
+      "design_effect": 1.375,
+      "n_units": 108,
+      "n_families": 18
+     },
+     {
+      "rho_mult": 0.5,
+      "m_mult": 1.0,
+      "design_effect": 1.9,
+      "n_units": 156,
+      "n_families": 13
+     },
+     {
+      "rho_mult": 0.5,
+      "m_mult": 2.0,
+      "design_effect": 2.95,
+      "n_units": 240,
+      "n_families": 10
+     },
+     {
+      "rho_mult": 1.0,
+      "m_mult": 0.5,
+      "design_effect": 1.75,
+      "n_units": 138,
+      "n_families": 23
+     },
+     {
+      "rho_mult": 1.0,
+      "m_mult": 1.0,
+      "design_effect": 2.8,
+      "n_units": 228,
+      "n_families": 19
+     },
+     {
+      "rho_mult": 1.0,
+      "m_mult": 2.0,
+      "design_effect": 4.9,
+      "n_units": 384,
+      "n_families": 16
+     },
+     {
+      "rho_mult": 1.5,
+      "m_mult": 0.5,
+      "design_effect": 2.125,
+      "n_units": 162,
+      "n_families": 27
+     },
+     {
+      "rho_mult": 1.5,
+      "m_mult": 1.0,
+      "design_effect": 3.7,
+      "n_units": 288,
+      "n_families": 24
+     },
+     {
+      "rho_mult": 1.5,
+      "m_mult": 2.0,
+      "design_effect": 6.85,
+      "n_units": 528,
+      "n_families": 22
+     }
+    ]
+   },
+   {
+    "contrast_id": "C-H4",
+    "hypothesis": "H4",
+    "rq": "RQ1",
+    "priority": "P0",
+    "claim": "A tipagem por evidência superestima a persistência: precisão de persistência combinada (pesos do frame) ≤ 0,90 no limite superior.",
+    "metrics": [
+     "M-PERS-DEC"
+    ],
+    "bound": "upper",
+    "replication": {
+     "over": "leitura combinada",
+     "k": 1,
+     "rule": "um teste; estratos par×domínio×cardinalidade×relação×direção são descritivos"
+    },
+    "test": "unilateral: limite superior de confiança 95% (bootstrap por família, recurso e repositório) < 0,90",
+    "alpha": 0.05,
+    "sides": 1,
+    "multiplicity": "contraste único; estratos sem inferência",
+    "fixed_effects": [],
+    "model": "one_prop_deploy",
+    "planning": {
+     "p0": 0.9,
+     "p1": 0.8
+    },
+    "planning_source": "planejamento 0,80, a 10 pontos do limiar (C1 não mediu persistência)",
+    "power_rule": {
+     "kind": "single"
+    },
+    "feasibility": {
+     "kind": "cap",
+     "cap": 720,
+     "rule": "casos carregados a deploy limitados pelo orçamento D3 (DEPSAMPLE)"
+    },
+    "status": "claimed",
+    "result": {
+     "kind": "normal",
+     "unit_power_target": 0.8,
+     "n_effective": 99,
+     "design_effect": 1.4375,
+     "n_units": 146,
+     "n_families": 73,
+     "families_added_by_t": 1,
+     "unit_power_at_n": 0.801,
+     "overall_power": 0.801,
+     "cap_units": 720,
+     "unit_power_at_cap": 1.0,
+     "overall_power_at_cap": 1.0
+    },
+    "sensitivity": [
+     {
+      "rho_mult": 0.5,
+      "m_mult": 0.5,
+      "design_effect": 1.25,
+      "n_units": 126,
+      "n_families": 126
+     },
+     {
+      "rho_mult": 0.5,
+      "m_mult": 1.0,
+      "design_effect": 1.3438,
+      "n_units": 138,
+      "n_families": 69
+     },
+     {
+      "rho_mult": 0.5,
+      "m_mult": 2.0,
+      "design_effect": 1.625,
+      "n_units": 168,
+      "n_families": 42
+     },
+     {
+      "rho_mult": 1.0,
+      "m_mult": 0.5,
+      "design_effect": 1.25,
+      "n_units": 126,
+      "n_families": 126
+     },
+     {
+      "rho_mult": 1.0,
+      "m_mult": 1.0,
+      "design_effect": 1.4375,
+      "n_units": 146,
+      "n_families": 73
+     },
+     {
+      "rho_mult": 1.0,
+      "m_mult": 2.0,
+      "design_effect": 2.0,
+      "n_units": 208,
+      "n_families": 52
+     },
+     {
+      "rho_mult": 1.5,
+      "m_mult": 0.5,
+      "design_effect": 1.25,
+      "n_units": 126,
+      "n_families": 126
+     },
+     {
+      "rho_mult": 1.5,
+      "m_mult": 1.0,
+      "design_effect": 1.5312,
+      "n_units": 156,
+      "n_families": 78
+     },
+     {
+      "rho_mult": 1.5,
+      "m_mult": 2.0,
+      "design_effect": 2.375,
+      "n_units": 244,
+      "n_families": 61
+     }
+    ]
+   },
+   {
+    "contrast_id": "C-H5",
+    "hypothesis": "H5",
+    "rq": "RQ4",
+    "priority": "P1",
+    "claim": "Mediana do atraso de disponibilidade no provider Terraform > 6 meses.",
+    "metrics": [],
+    "estimands": [
+     "E-DRIFT-LAG"
+    ],
+    "bound": "na",
+    "replication": {
+     "over": "modelo único",
+     "k": 1,
+     "rule": "um teste"
+    },
+    "test": "unilateral: Turnbull (censura intervalar, truncamento à esquerda); limite inferior de confiança 95% da mediana > 6 meses",
+    "alpha": 0.05,
+    "sides": 1,
+    "multiplicity": "suplementar (P1); nenhum P0 depende dele",
+    "fixed_effects": [
+     "provedor de origem",
+     "provedor de destino"
+    ],
+    "model": "survival_median",
+    "planning": {
+     "m0": 6.0,
+     "m1": 9.0,
+     "censor_inflation": 1.5
+    },
+    "planning_source": "mediana de planejamento 9 meses; variância do log da mediana ≈ 1/eventos (exponencial) inflada 1,5× pela censura intervalar trimestral",
+    "power_rule": {
+     "kind": "single"
+    },
+    "feasibility": {
+     "kind": "census",
+     "cap": null,
+     "rule": "eventos = pares conceito×provedor com chegada observada"
+    },
+    "status": "claimed_conditional",
+    "result": {
+     "kind": "events",
+     "unit_power_target": 0.8,
+     "events": 57,
+     "unit_power_at_n": 0.8036,
+     "overall_power": 0.8036
+    },
+    "sensitivity": []
+   },
+   {
+    "contrast_id": "C-H6-COV",
+    "hypothesis": "H6",
+    "rq": "RQ1",
+    "priority": "P0",
+    "claim": "Semente simétrica e grão canônico não baixam a cobertura operacional frente a semente só AWS com tipos crus: não inferioridade com margem 0,02 por decisão.",
+    "metrics": [
+     "M-OPCOV-DEC",
+     "M-ABL-AWSRAW-DEC"
+    ],
+    "bound": "both",
+    "replication": {
+     "over": "12 direções juntas",
+     "k": 1,
+     "rule": "média das 12 direções com pesos iguais"
+    },
+    "test": "unilateral pareado por decisão: limite inferior 95% de (completo − ablado) > −0,02, nos dois limites",
+    "alpha": 0.05,
+    "sides": 1,
+    "multiplicity": "contraste único; a parte de Gini de H6 é descritiva (C-H6-GINI)",
+    "fixed_effects": [
+     "direção"
+    ],
+    "model": "paired_noninf",
+    "planning": {
+     "cells": {
+      "11": 0.5,
+      "10": 0.05,
+      "01": 0.05,
+      "00": 0.4
+     },
+     "ratio": 1.0,
+     "margin": -0.02
+    },
+    "planning_source": "sem diferença verdadeira; discordância de 5% em cada sentido (hipótese conservadora)",
+    "power_rule": {
+     "kind": "single"
+    },
+    "feasibility": {
+     "kind": "census",
+     "cap": null,
+     "rule": "decisões do teste, 12 direções"
+    },
+    "status": "claimed_conditional",
+    "result": {
+     "kind": "normal",
+     "unit_power_target": 0.8,
+     "n_effective": 1546,
+     "design_effect": 2.8,
+     "n_units": 4356,
+     "n_families": 363,
+     "families_added_by_t": 2,
+     "unit_power_at_n": 0.8006,
+     "overall_power": 0.8006
+    },
+    "sensitivity": [
+     {
+      "rho_mult": 0.5,
+      "m_mult": 0.5,
+      "design_effect": 1.375,
+      "n_units": 2136,
+      "n_families": 356
+     },
+     {
+      "rho_mult": 0.5,
+      "m_mult": 1.0,
+      "design_effect": 1.9,
+      "n_units": 2964,
+      "n_families": 247
+     },
+     {
+      "rho_mult": 0.5,
+      "m_mult": 2.0,
+      "design_effect": 2.95,
+      "n_units": 4608,
+      "n_families": 192
+     },
+     {
+      "rho_mult": 1.0,
+      "m_mult": 0.5,
+      "design_effect": 1.75,
+      "n_units": 2718,
+      "n_families": 453
+     },
+     {
+      "rho_mult": 1.0,
+      "m_mult": 1.0,
+      "design_effect": 2.8,
+      "n_units": 4356,
+      "n_families": 363
+     },
+     {
+      "rho_mult": 1.0,
+      "m_mult": 2.0,
+      "design_effect": 4.9,
+      "n_units": 7632,
+      "n_families": 318
+     },
+     {
+      "rho_mult": 1.5,
+      "m_mult": 0.5,
+      "design_effect": 2.125,
+      "n_units": 3300,
+      "n_families": 550
+     },
+     {
+      "rho_mult": 1.5,
+      "m_mult": 1.0,
+      "design_effect": 3.7,
+      "n_units": 5748,
+      "n_families": 479
+     },
+     {
+      "rho_mult": 1.5,
+      "m_mult": 2.0,
+      "design_effect": 6.85,
+      "n_units": 10632,
+      "n_families": 443
+     }
+    ]
+   },
+   {
+    "contrast_id": "C-H6-GINI",
+    "hypothesis": "H6",
+    "rq": "RQ1",
+    "priority": "P0",
+    "claim": "Equilíbrio de contagens entre provedores (Gini das classes realizadas por provedor) menor com semente simétrica e grão canônico do que com semente só AWS e tipos crus.",
+    "metrics": [],
+    "estimands": [
+     "E-GINI-BALANCE"
+    ],
+    "bound": "na",
+    "replication": {
+     "over": "artefato",
+     "k": 1,
+     "rule": "comparação de dois artefatos"
+    },
+    "test": "nenhum: descritivo",
+    "alpha": null,
+    "sides": null,
+    "multiplicity": "não se aplica",
+    "fixed_effects": [],
+    "model": "descriptive",
+    "planning": {},
+    "planning_source": "o Gini é propriedade do artefato construído (4 contagens), não estimativa amostral; rotulado 'equilíbrio de contagens', nunca 'neutralidade'",
+    "power_rule": {
+     "kind": "none"
+    },
+    "feasibility": {
+     "kind": "none",
+     "cap": null,
+     "rule": "não se aplica"
+    },
+    "status": "descriptive",
+    "result": {
+     "kind": "descriptive"
+    },
+    "sensitivity": []
+   },
+   {
+    "contrast_id": "C-H7",
+    "hypothesis": "H7",
+    "rq": "RQ1",
+    "priority": "P0",
+    "claim": "Perda do hub pequena: cobertura pela ontologia ≥ 0,95 × cobertura do caminho direto em pelo menos 10 das 12 direções, sob o mesmo oráculo e lowering.",
+    "metrics": [
+     "M-OPCOV-DEC",
+     "M-OPCOV-DEC-DIRECT"
+    ],
+    "bound": "both",
+    "replication": {
+     "over": "direção A→B",
+     "k": 12,
+     "rule": "contagem: pelo menos 10 de 12 direções"
+    },
+    "test": "unilateral pareado por decisão: limite inferior 95% de (Y_ont − 0,95·Y_dir) > 0, nos dois limites; falha é resultado contra o hub",
+    "alpha": 0.05,
+    "sides": 1,
+    "multiplicity": "regra de contagem 10 de 12",
+    "fixed_effects": [
+     "direção"
+    ],
+    "model": "paired_ratio",
+    "planning": {
+     "cells": {
+      "11": 0.52,
+      "10": 0.03,
+      "01": 0.03,
+      "00": 0.42
+     },
+     "ratio": 0.95,
+     "margin": 0.0
+    },
+    "planning_source": "razão verdadeira 1 (sem perda), cobertura direta 0,55, discordância 3% em cada sentido",
+    "power_rule": {
+     "kind": "at_least",
+     "k": 10,
+     "n_true": 12,
+     "n_null": 0
+    },
+    "feasibility": {
+     "kind": "census",
+     "cap": null,
+     "rule": "decisões do teste por direção"
+    },
+    "status": "claimed_conditional",
+    "result": {
+     "kind": "normal",
+     "unit_power_target": 0.8693,
+     "n_effective": 584,
+     "design_effect": 2.8,
+     "n_units": 1656,
+     "n_families": 138,
+     "families_added_by_t": 1,
+     "unit_power_at_n": 0.8696,
+     "overall_power": 0.801
+    },
+    "sensitivity": [
+     {
+      "rho_mult": 0.5,
+      "m_mult": 0.5,
+      "design_effect": 1.375,
+      "n_units": 816,
+      "n_families": 136
+     },
+     {
+      "rho_mult": 0.5,
+      "m_mult": 1.0,
+      "design_effect": 1.9,
+      "n_units": 1140,
+      "n_families": 95
+     },
+     {
+      "rho_mult": 0.5,
+      "m_mult": 2.0,
+      "design_effect": 2.95,
+      "n_units": 1776,
+      "n_families": 74
+     },
+     {
+      "rho_mult": 1.0,
+      "m_mult": 0.5,
+      "design_effect": 1.75,
+      "n_units": 1032,
+      "n_families": 172
+     },
+     {
+      "rho_mult": 1.0,
+      "m_mult": 1.0,
+      "design_effect": 2.8,
+      "n_units": 1656,
+      "n_families": 138
+     },
+     {
+      "rho_mult": 1.0,
+      "m_mult": 2.0,
+      "design_effect": 4.9,
+      "n_units": 2904,
+      "n_families": 121
+     },
+     {
+      "rho_mult": 1.5,
+      "m_mult": 0.5,
+      "design_effect": 2.125,
+      "n_units": 1254,
+      "n_families": 209
+     },
+     {
+      "rho_mult": 1.5,
+      "m_mult": 1.0,
+      "design_effect": 3.7,
+      "n_units": 2184,
+      "n_families": 182
+     },
+     {
+      "rho_mult": 1.5,
+      "m_mult": 2.0,
+      "design_effect": 6.85,
+      "n_units": 4056,
+      "n_families": 169
+     }
+    ]
+   },
+   {
+    "contrast_id": "C-H8",
+    "hypothesis": "H8",
+    "rq": "RQ1",
+    "priority": "P0",
+    "claim": "Correspondências complexas (grupo sobre subgrafo, 1:N, condicionais) respondem por ≥ 10% da cobertura primária por decisão.",
+    "metrics": [
+     "M-OPCOV-DEC-COMPLEX"
+    ],
+    "bound": "lower",
+    "replication": {
+     "over": "12 direções juntas",
+     "k": 1,
+     "rule": "fração entre as decisões carregadas no limite inferior"
+    },
+    "test": "unilateral: limite inferior de confiança 95% da fração >= 0,10",
+    "alpha": 0.05,
+    "sides": 1,
+    "multiplicity": "contraste único",
+    "fixed_effects": [
+     "direção"
+    ],
+    "model": "one_prop",
+    "planning": {
+     "p0": 0.1,
+     "p1": 0.15
+    },
+    "planning_source": "fração de planejamento 0,15 (meio caminho entre o limiar e o dobro dele)",
+    "power_rule": {
+     "kind": "single"
+    },
+    "feasibility": {
+     "kind": "census",
+     "cap": null,
+     "rule": "decisões carregadas (limite inferior) no teste"
+    },
+    "status": "claimed_conditional",
+    "result": {
+     "kind": "normal",
+     "unit_power_target": 0.8,
+     "n_effective": 316,
+     "design_effect": 2.8,
+     "n_units": 912,
+     "n_families": 76,
+     "families_added_by_t": 2,
+     "unit_power_at_n": 0.8034,
+     "overall_power": 0.8034
+    },
+    "sensitivity": [
+     {
+      "rho_mult": 0.5,
+      "m_mult": 0.5,
+      "design_effect": 1.375,
+      "n_units": 444,
+      "n_families": 74
+     },
+     {
+      "rho_mult": 0.5,
+      "m_mult": 1.0,
+      "design_effect": 1.9,
+      "n_units": 624,
+      "n_families": 52
+     },
+     {
+      "rho_mult": 0.5,
+      "m_mult": 2.0,
+      "design_effect": 2.95,
+      "n_units": 984,
+      "n_families": 41
+     },
+     {
+      "rho_mult": 1.0,
+      "m_mult": 0.5,
+      "design_effect": 1.75,
+      "n_units": 564,
+      "n_families": 94
+     },
+     {
+      "rho_mult": 1.0,
+      "m_mult": 1.0,
+      "design_effect": 2.8,
+      "n_units": 912,
+      "n_families": 76
+     },
+     {
+      "rho_mult": 1.0,
+      "m_mult": 2.0,
+      "design_effect": 4.9,
+      "n_units": 1608,
+      "n_families": 67
+     },
+     {
+      "rho_mult": 1.5,
+      "m_mult": 0.5,
+      "design_effect": 2.125,
+      "n_units": 684,
+      "n_families": 114
+     },
+     {
+      "rho_mult": 1.5,
+      "m_mult": 1.0,
+      "design_effect": 3.7,
+      "n_units": 1188,
+      "n_families": 99
+     },
+     {
+      "rho_mult": 1.5,
+      "m_mult": 2.0,
+      "design_effect": 6.85,
+      "n_units": 2208,
+      "n_families": 92
+     }
+    ]
+   },
+   {
+    "contrast_id": "C-H9",
+    "hypothesis": "H9",
+    "rq": "RQ1",
+    "priority": "P0",
+    "claim": "Fora da calibração, a axiomatização completa (c3) obtém, em pelo menos uma família de consequências, consequências corretas e justificadas que nem a tabela (c1) nem a taxonomia+realizações (c2) obtêm.",
+    "metrics": [
+     "M-OPCOV-DEC-C1",
+     "M-OPCOV-DEC-C2",
+     "M-OPCOV-DEC"
+    ],
+    "bound": "na",
+    "replication": {
+     "over": "família de consequências",
+     "k": 7,
+     "rule": "pelo menos 1 de 7 famílias"
+    },
+    "test": "por família: dois McNemar exatos unilaterais pareados por caso (c3×c2 e c3×c1), os dois com p <= 0,05/7; resposta esperada independente (REQUIREMENTS, CQs congeladas) e justificativa",
+    "alpha": 0.05,
+    "sides": 1,
+    "multiplicity": "Bonferroni nas 7 famílias; interseção-união nos 2 controles",
+    "fixed_effects": [],
+    "model": "sign_exact",
+    "planning": {
+     "p10": 0.3,
+     "p01": 0.02,
+     "families": 7,
+     "fixture_scale_n": 12
+    },
+    "planning_source": "efeito só numa família (cenário menos favorável que ainda torna H9 verdadeira); c2 é o controle que liga (mais perto de c3); n = 12 é a escala das fixtures por família",
+    "power_rule": {
+     "kind": "single"
+    },
+    "feasibility": {
+     "kind": "census",
+     "cap": null,
+     "rule": "casos fora da calibração com resposta esperada independente por família (REASONING-PROOF); abaixo do n necessário H9 sai 'inconclusivo', nunca 'nulo'"
+    },
+    "status": "claimed_conditional",
+    "result": {
+     "kind": "exact",
+     "unit_power_target": 0.8,
+     "alpha_per_test": 0.007143,
+     "n_cases_per_family": 41,
+     "unit_power_at_n": 0.8147,
+     "power_at_fixture_scale": 0.0085,
+     "fixture_scale_n": 12,
+     "overall_power": 0.8147
+    },
+    "sensitivity": []
+   },
+   {
+    "contrast_id": "C-LOPO",
+    "hypothesis": "LOPO",
+    "rq": "RQ1",
+    "priority": "P0",
+    "claim": "Leave-one-provider-out (OCI): a ontologia induzida sem OCI acomoda a OCI com cobertura ≥ 0,90 × a da ontologia de 4 provedores em pelo menos 4 das 6 direções com OCI.",
+    "metrics": [
+     "M-LOPO-OPCOV-DEC",
+     "M-OPCOV-DEC"
+    ],
+    "bound": "both",
+    "replication": {
+     "over": "direção com OCI",
+     "k": 6,
+     "rule": "contagem: pelo menos 4 de 6"
+    },
+    "test": "unilateral pareado por decisão: limite inferior 95% de (Y_3 − 0,90·Y_4) > 0, nos dois limites",
+    "alpha": 0.05,
+    "sides": 1,
+    "multiplicity": "regra de contagem 4 de 6; contaminação do glossário declarada (favorece a acomodação)",
+    "fixed_effects": [
+     "direção"
+    ],
+    "model": "paired_ratio",
+    "planning": {
+     "cells": {
+      "11": 0.45,
+      "10": 0.05,
+      "01": 0.05,
+      "00": 0.45
+     },
+     "ratio": 0.9,
+     "margin": 0.0
+    },
+    "planning_source": "razão verdadeira 1, cobertura 0,50, discordância 5% em cada sentido",
+    "power_rule": {
+     "kind": "at_least",
+     "k": 4,
+     "n_true": 6,
+     "n_null": 0
+    },
+    "feasibility": {
+     "kind": "census",
+     "cap": null,
+     "rule": "decisões OCI do teste por direção (raras no TerraDS)"
+    },
+    "status": "claimed_conditional",
+    "result": {
+     "kind": "normal",
+     "unit_power_target": 0.7314,
+     "n_effective": 190,
+     "design_effect": 2.8,
+     "n_units": 552,
+     "n_families": 46,
+     "families_added_by_t": 1,
+     "unit_power_at_n": 0.7321,
+     "overall_power": 0.8013
+    },
+    "sensitivity": [
+     {
+      "rho_mult": 0.5,
+      "m_mult": 0.5,
+      "design_effect": 1.375,
+      "n_units": 276,
+      "n_families": 46
+     },
+     {
+      "rho_mult": 0.5,
+      "m_mult": 1.0,
+      "design_effect": 1.9,
+      "n_units": 384,
+      "n_families": 32
+     },
+     {
+      "rho_mult": 0.5,
+      "m_mult": 2.0,
+      "design_effect": 2.95,
+      "n_units": 624,
+      "n_families": 26
+     },
+     {
+      "rho_mult": 1.0,
+      "m_mult": 0.5,
+      "design_effect": 1.75,
+      "n_units": 342,
+      "n_families": 57
+     },
+     {
+      "rho_mult": 1.0,
+      "m_mult": 1.0,
+      "design_effect": 2.8,
+      "n_units": 552,
+      "n_families": 46
+     },
+     {
+      "rho_mult": 1.0,
+      "m_mult": 2.0,
+      "design_effect": 4.9,
+      "n_units": 984,
+      "n_families": 41
+     },
+     {
+      "rho_mult": 1.5,
+      "m_mult": 0.5,
+      "design_effect": 2.125,
+      "n_units": 414,
+      "n_families": 69
+     },
+     {
+      "rho_mult": 1.5,
+      "m_mult": 1.0,
+      "design_effect": 3.7,
+      "n_units": 732,
+      "n_families": 61
+     },
+     {
+      "rho_mult": 1.5,
+      "m_mult": 2.0,
+      "design_effect": 6.85,
+      "n_units": 1344,
+      "n_families": 56
+     }
+    ]
+   },
+   {
+    "contrast_id": "C-ABL",
+    "hypothesis": "ABL",
+    "rq": "RQ1",
+    "priority": "P0",
+    "claim": "Ablações (evidência principal, R4-W2): cada braço — semente só AWS, limiar alternativo de admissão (2 braços), tipos crus, sem guardas e transformações, c1 e c2 — muda a cobertura operacional por decisão frente ao pipeline completo; sem efeito e com equivalência ±0,03 o componente é relatado como higiene.",
+    "metrics": [
+     "M-OPCOV-DEC",
+     "M-ABL-SEEDAWS-DEC",
+     "M-ABL-THR-ALT1-DEC",
+     "M-ABL-THR-ALT2-DEC",
+     "M-ABL-RAWTYPES-DEC",
+     "M-ABL-NOGUARD-DEC",
+     "M-OPCOV-DEC-C1",
+     "M-OPCOV-DEC-C2"
+    ],
+    "bound": "both",
+    "replication": {
+     "over": "braço",
+     "k": 7,
+     "rule": "cada braço decide: efeito, equivalência (higiene) ou inconclusivo"
+    },
+    "test": "bilateral pareado por decisão (12 direções juntas): IC da diferença exclui 0 (efeito); TOST com margem ±0,03 (equivalência); nenhum dos dois = inconclusivo",
+    "alpha": 0.05,
+    "sides": 2,
+    "multiplicity": "Holm nos 7 braços (poder calculado no alfa mais severo, 0,05/7)",
+    "fixed_effects": [
+     "direção"
+    ],
+    "model": "paired_diff_holm",
+    "planning": {
+     "cells": {
+      "11": 0.47,
+      "10": 0.06,
+      "01": 0.03,
+      "00": 0.44
+     },
+     "ratio": 1.0,
+     "margin": 0.0,
+     "arms": 7
+    },
+    "planning_source": "diferença verdadeira 0,03 (discordância 6% contra 3%)",
+    "power_rule": {
+     "kind": "single"
+    },
+    "feasibility": {
+     "kind": "census",
+     "cap": null,
+     "rule": "decisões do teste, conjunto selado"
+    },
+    "status": "claimed_conditional",
+    "result": {
+     "kind": "normal",
+     "unit_power_target": 0.8,
+     "n_effective": 1235,
+     "design_effect": 2.8,
+     "n_units": 3516,
+     "n_families": 293,
+     "families_added_by_t": 4,
+     "unit_power_at_n": 0.8015,
+     "overall_power": 0.8015
+    },
+    "sensitivity": [
+     {
+      "rho_mult": 0.5,
+      "m_mult": 0.5,
+      "design_effect": 1.375,
+      "n_units": 1722,
+      "n_families": 287
+     },
+     {
+      "rho_mult": 0.5,
+      "m_mult": 1.0,
+      "design_effect": 1.9,
+      "n_units": 2400,
+      "n_families": 200
+     },
+     {
+      "rho_mult": 0.5,
+      "m_mult": 2.0,
+      "design_effect": 2.95,
+      "n_units": 3744,
+      "n_families": 156
+     },
+     {
+      "rho_mult": 1.0,
+      "m_mult": 0.5,
+      "design_effect": 1.75,
+      "n_units": 2190,
+      "n_families": 365
+     },
+     {
+      "rho_mult": 1.0,
+      "m_mult": 1.0,
+      "design_effect": 2.8,
+      "n_units": 3516,
+      "n_families": 293
+     },
+     {
+      "rho_mult": 1.0,
+      "m_mult": 2.0,
+      "design_effect": 4.9,
+      "n_units": 6168,
+      "n_families": 257
+     },
+     {
+      "rho_mult": 1.5,
+      "m_mult": 0.5,
+      "design_effect": 2.125,
+      "n_units": 2652,
+      "n_families": 442
+     },
+     {
+      "rho_mult": 1.5,
+      "m_mult": 1.0,
+      "design_effect": 3.7,
+      "n_units": 4620,
+      "n_families": 385
+     },
+     {
+      "rho_mult": 1.5,
+      "m_mult": 2.0,
+      "design_effect": 6.85,
+      "n_units": 8568,
+      "n_families": 357
+     }
+    ]
+   },
+   {
+    "contrast_id": "C-RQ5-TRANS",
+    "hypothesis": "RQ5",
+    "rq": "RQ5",
+    "priority": "P0",
+    "claim": "Eixo de tradução com orçamento igual: diferença de cobertura operacional por decisão entre o tradutor pela ontologia e o pacote de tradução de cada comparador com artefato (Kalinin: contra a melhor variante da família, por direção).",
+    "metrics": [
+     "M-OPCOV-DEC",
+     "M-H2H-TRANS-DEC"
+    ],
+    "bound": "both",
+    "replication": {
+     "over": "comparador com eixo de tradução",
+     "k": 12,
+     "rule": "cada comparador relatado; sem artefato = NOT_APPLICABLE, nunca 0"
+    },
+    "test": "bilateral pareado por decisão: IC da diferença exclui 0",
+    "alpha": 0.05,
+    "sides": 2,
+    "multiplicity": "Holm nos comparadores com artefato de tradução (poder no alfa mais severo, 0,05/12)",
+    "fixed_effects": [
+     "direção"
+    ],
+    "model": "paired_diff_holm",
+    "planning": {
+     "cells": {
+      "11": 0.4,
+      "10": 0.1,
+      "01": 0.05,
+      "00": 0.45
+     },
+     "ratio": 1.0,
+     "margin": 0.0,
+     "arms": 12
+    },
+    "planning_source": "diferença 0,05 (discordância 10% contra 5%); escolher a melhor variante Kalinin favorece o baseline",
+    "power_rule": {
+     "kind": "single"
+    },
+    "feasibility": {
+     "kind": "census",
+     "cap": null,
+     "rule": "decisões do teste"
+    },
+    "status": "claimed_conditional",
+    "result": {
+     "kind": "normal",
+     "unit_power_target": 0.8,
+     "n_effective": 811,
+     "design_effect": 2.8,
+     "n_units": 2328,
+     "n_families": 194,
+     "families_added_by_t": 4,
+     "unit_power_at_n": 0.8009,
+     "overall_power": 0.8009
+    },
+    "sensitivity": [
+     {
+      "rho_mult": 0.5,
+      "m_mult": 0.5,
+      "design_effect": 1.375,
+      "n_units": 1146,
+      "n_families": 191
+     },
+     {
+      "rho_mult": 0.5,
+      "m_mult": 1.0,
+      "design_effect": 1.9,
+      "n_units": 1596,
+      "n_families": 133
+     },
+     {
+      "rho_mult": 0.5,
+      "m_mult": 2.0,
+      "design_effect": 2.95,
+      "n_units": 2520,
+      "n_families": 105
+     },
+     {
+      "rho_mult": 1.0,
+      "m_mult": 0.5,
+      "design_effect": 1.75,
+      "n_units": 1446,
+      "n_families": 241
+     },
+     {
+      "rho_mult": 1.0,
+      "m_mult": 1.0,
+      "design_effect": 2.8,
+      "n_units": 2328,
+      "n_families": 194
+     },
+     {
+      "rho_mult": 1.0,
+      "m_mult": 2.0,
+      "design_effect": 4.9,
+      "n_units": 4104,
+      "n_families": 171
+     },
+     {
+      "rho_mult": 1.5,
+      "m_mult": 0.5,
+      "design_effect": 2.125,
+      "n_units": 1752,
+      "n_families": 292
+     },
+     {
+      "rho_mult": 1.5,
+      "m_mult": 1.0,
+      "design_effect": 3.7,
+      "n_units": 3060,
+      "n_families": 255
+     },
+     {
+      "rho_mult": 1.5,
+      "m_mult": 2.0,
+      "design_effect": 6.85,
+      "n_units": 5664,
+      "n_families": 236
+     }
+    ]
+   },
+   {
+    "contrast_id": "C-TOOL",
+    "hypothesis": "TOOL",
+    "rq": "RQ1",
+    "priority": "suplementar",
+    "claim": "Acerto por ferramenta: tradutor pela ontologia × par-a-par × LLM com prompt congelado, por decisão, sob o mesmo oráculo (suplementar).",
+    "metrics": [
+     "M-OPCOV-DEC",
+     "M-OPCOV-DEC-DIRECT",
+     "M-TOOL-LLM-DEC"
+    ],
+    "bound": "both",
+    "replication": {
+     "over": "par de ferramentas",
+     "k": 3,
+     "rule": "três diferenças pareadas"
+    },
+    "test": "bilateral pareado por decisão, reamostragem por família e repositório (McNemar por valor saiu)",
+    "alpha": 0.05,
+    "sides": 2,
+    "multiplicity": "Holm nas 3 diferenças",
+    "fixed_effects": [
+     "direção"
+    ],
+    "model": "paired_diff_holm",
+    "planning": {
+     "cells": {
+      "11": 0.4,
+      "10": 0.1,
+      "01": 0.05,
+      "00": 0.45
+     },
+     "ratio": 1.0,
+     "margin": 0.0,
+     "arms": 3
+    },
+    "planning_source": "diferença 0,05 (discordância 10% contra 5%)",
+    "power_rule": {
+     "kind": "single"
+    },
+    "feasibility": {
+     "kind": "cap",
+     "cap": 2400,
+     "rule": "amostra de teste traduzida pelo LLM limitada a 200 decisões por direção (custo)"
+    },
+    "status": "claimed",
+    "result": {
+     "kind": "normal",
+     "unit_power_target": 0.8,
+     "n_effective": 618,
+     "design_effect": 2.8,
+     "n_units": 1776,
+     "n_families": 148,
+     "families_added_by_t": 3,
+     "unit_power_at_n": 0.802,
+     "overall_power": 0.802,
+     "cap_units": 2400,
+     "unit_power_at_cap": 0.9173,
+     "overall_power_at_cap": 0.9173
+    },
+    "sensitivity": [
+     {
+      "rho_mult": 0.5,
+      "m_mult": 0.5,
+      "design_effect": 1.375,
+      "n_units": 870,
+      "n_families": 145
+     },
+     {
+      "rho_mult": 0.5,
+      "m_mult": 1.0,
+      "design_effect": 1.9,
+      "n_units": 1224,
+      "n_families": 102
+     },
+     {
+      "rho_mult": 0.5,
+      "m_mult": 2.0,
+      "design_effect": 2.95,
+      "n_units": 1920,
+      "n_families": 80
+     },
+     {
+      "rho_mult": 1.0,
+      "m_mult": 0.5,
+      "design_effect": 1.75,
+      "n_units": 1104,
+      "n_families": 184
+     },
+     {
+      "rho_mult": 1.0,
+      "m_mult": 1.0,
+      "design_effect": 2.8,
+      "n_units": 1776,
+      "n_families": 148
+     },
+     {
+      "rho_mult": 1.0,
+      "m_mult": 2.0,
+      "design_effect": 4.9,
+      "n_units": 3120,
+      "n_families": 130
+     },
+     {
+      "rho_mult": 1.5,
+      "m_mult": 0.5,
+      "design_effect": 2.125,
+      "n_units": 1338,
+      "n_families": 223
+     },
+     {
+      "rho_mult": 1.5,
+      "m_mult": 1.0,
+      "design_effect": 3.7,
+      "n_units": 2328,
+      "n_families": 194
+     },
+     {
+      "rho_mult": 1.5,
+      "m_mult": 2.0,
+      "design_effect": 6.85,
+      "n_units": 4320,
+      "n_families": 180
+     }
+    ]
+   },
+   {
+    "contrast_id": "C-BEHAV",
+    "hypothesis": "BEHAV",
+    "rq": "RQ1",
+    "priority": "P0",
+    "claim": "Comportamento: fração de pares de sonda com OBSERVATIONS_MATCH_UNDER_PROTOCOL, por tipo de sonda, com IC de Wilson do tamanho real; vale só para os casos sondados.",
+    "metrics": [
+     "M-BEHAV-DEC"
+    ],
+    "bound": "both",
+    "replication": {
+     "over": "tipo de sonda",
+     "k": 6,
+     "rule": "relatado por tipo"
+    },
+    "test": "nenhum: descritivo (Wilson; 10 em 10 dão limite inferior ≈ 0,72)",
+    "alpha": null,
+    "sides": null,
+    "multiplicity": "não se aplica",
+    "fixed_effects": [],
+    "model": "descriptive",
+    "planning": {
+     "n_per_type": 10
+    },
+    "planning_source": "amostra de sondas pequena por custo e janela; nunca extrapolada",
+    "power_rule": {
+     "kind": "none"
+    },
+    "feasibility": {
+     "kind": "cap",
+     "cap": 60,
+     "rule": "≈10 pares por tipo de sonda com suporte validado"
+    },
+    "status": "descriptive",
+    "result": {
+     "kind": "descriptive"
+    },
+    "sensitivity": []
+   }
+  ]
+ }
+}

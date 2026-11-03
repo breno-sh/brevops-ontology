@@ -1,0 +1,73 @@
+schema: bo.h2h_fairness/1
+contract: C28
+contract_version: 1.0.0
+module: PREREG
+generated_at: '2026-11-03T01:58:00-03:00'
+universe_ref:
+  path: $BO_REPO/prereg/metrics_spec.yaml
+  sha256: 7462e43de6cddd29848b3817c0633cd7dca82085c6b955ca5eff8c95f7703f86
+cq_ref:
+  path: $BO_REPO/requirements/cq_spec.jsonl
+  sha256: 370bcb7229eedd274f758f3792a570039a4b282416f41a4935bd87426f66ebe1
+budget:
+  unit: agent_hours
+  per_comparator: 0.75
+comparators:
+- comparator_id: kalinin
+  budget_hours: 0.75
+  same_universe: true
+  same_cqs: true
+- comparator_id: cpg
+  budget_hours: 0.75
+  same_universe: true
+  same_cqs: true
+- comparator_id: certgraph
+  budget_hours: 0.75
+  same_universe: true
+  same_cqs: true
+- comparator_id: devops-infra
+  budget_hours: 0.75
+  same_universe: true
+  same_cqs: true
+- comparator_id: fixinventory
+  budget_hours: 0.75
+  same_universe: true
+  same_cqs: true
+- comparator_id: cartography
+  budget_hours: 0.75
+  same_universe: true
+  same_cqs: true
+- comparator_id: steampipe
+  budget_hours: 0.75
+  same_universe: true
+  same_cqs: true
+- comparator_id: cloudquery
+  budget_hours: 0.75
+  same_universe: true
+  same_cqs: true
+- comparator_id: mosaic
+  budget_hours: 0.75
+  same_universe: true
+  same_cqs: true
+- comparator_id: cso
+  budget_hours: 0.75
+  same_universe: true
+  same_cqs: true
+- comparator_id: cocoon
+  budget_hours: 0.75
+  same_universe: true
+  same_cqs: true
+- comparator_id: tosca-edmm
+  budget_hours: 0.75
+  same_universe: true
+  same_cqs: true
+rules:
+- mesmo orçamento de adaptação (horas-agente) e o mesmo brief 'melhor esforço a favor do baseline' para todos os comparadores
+- mesmo universo U e mesmas CQs congeladas para todos
+- ABox de cada modelo gerada dos mesmos fatos de origem (grafo factual independente), nunca da ABox normalizada pelo BrevOps
+- 'três comparações separadas: artefato e tarefa nativos; representação no mesmo grafo factual; tradução com orçamento igual'
+- NOT_APPLICABLE nunca vira zero; sem artefato a comparação é documental e não tem número no eixo de tradução
+- 'onde o modelo não diz, o adaptador não inventa: toda realização cita arquivo:linha do próprio modelo'
+- Kalinin entra como família pré-definida de reconstruções e é relatado como faixa; no eixo de tradução compara-se contra a melhor variante por direção (escolha que favorece o baseline)
+- a interface C14 não é imposta ao comparador; o adaptador pode usar o formato nativo do modelo
+- 'critério de novidade escrito antes: conta medir invariância e semântica executável, não preencher mais campos'
