@@ -1,12 +1,12 @@
 {
  "$schema": "https://json-schema.org/draft/2020-12/schema",
  "$id": "https://w3id.org/brevops/contracts/C00/conventions.schema.json",
- "title": "C00 conventions 3.0.1: convenções e definições comuns",
+ "title": "C00 conventions 3.0.2: convenções e definições comuns",
  "description": "ID = stable_id; onda calculada do DAG; código em $BO_REPO/src/bo/<pacote>/; dados em $BO_DATA/<ID>/; temporário em $BO_TMP=$BO_DATA/tmp/<ID> (nunca /tmp); caminhos só com índices declarados em index_sets; datas ISO-8601 com fuso America/Recife. $defs comuns a todos os contratos.",
  "x-bo-contract": {
   "id": "C00",
   "name": "conventions",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "status": "amended",
   "owner": "CONTRACTS",
   "files": [
@@ -301,6 +301,15 @@
     "UNKNOWN_INPUT",
     "REFUTED_BY_RULE"
    ]
+  },
+  "absence_kind": {
+   "enum": [
+    "ABSENCE_DEMONSTRATED",
+    "OUT_OF_PIN",
+    "UNSUPPORTED_BY_TRANSLATOR",
+    "UNRESOLVED"
+   ],
+   "description": "tipo de ausência (C29); C09 3.1.0 grava a ausência tipada com ele"
   },
   "value_mark": {
    "enum": [

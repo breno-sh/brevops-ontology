@@ -50,6 +50,17 @@ AMENDMENTS = [
      "requested_by": "HARNESS-AWS, HARNESS-GCP, HARNESS-AZURE, HARNESS-OCI",
      "source": "results/HARNESS-*/CONTRACT_CHANGE.txt",
      "change": "derived_name.field opcional; regra C26-TARGET; stub com um plano renderizável por provedor"},
+    # ---- emenda 3 (2026-11-03, pedido do BRIEFS, antes dos pilotos de glossário e mapeamento)
+    {"contract": "C00", "from": "3.0.1", "to": "3.0.2", "at": "2026-11-03T18:00:00-03:00", "requested_by": "BRIEFS",
+     "source": "results/BRIEFS/CONTRACT_CHANGE.txt", "change": "absence_kind (os quatro tipos de ausência do C29)"},
+    {"contract": "C09", "from": "3.0.1", "to": "3.1.0", "at": "2026-11-03T18:00:00-03:00", "requested_by": "BRIEFS",
+     "source": "results/BRIEFS/CONTRACT_CHANGE.txt",
+     "change": "ausência tipada: absence {kind, block_code?, searched, evidence} com object_id sssom:NoTermFound; "
+               "disputes; a forma provisória em curation_rule continua aceita"},
+    {"contract": "C20", "from": "3.0.0", "to": "3.1.0", "at": "2026-11-03T18:00:00-03:00", "requested_by": "BRIEFS",
+     "source": "results/BRIEFS/CONTRACT_CHANGE.txt (formato provisório do GLOSSARY_BRIEF)",
+     "change": "tipo decisions (decisions.jsonl, bo.glossary_decision/1) com broader/narrower e regras de direção, "
+               "referência e aciclicidade"},
 ]
 
 

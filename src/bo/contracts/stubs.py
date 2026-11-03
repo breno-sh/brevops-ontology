@@ -310,7 +310,22 @@ def c09_records() -> list[dict]:
                                    "quantity_kind": "NOT_APPLICABLE", "unit": "NOT_APPLICABLE"},
                object_value_type={"datatype": "enum", "enum": ["standard", "nearline", "coldline", "archive"],
                                   "quantity_kind": "NOT_APPLICABLE", "unit": "NOT_APPLICABLE"})
-    return [v1, v2, br]
+    none = claim("CLM-NONE-01", 1, "pa:spin_rate", "related", "sssom:NoTermFound", translation_fn=None,
+                 transport_fidelity="none", loss_contract=[],
+                 value_domain_relation={"relation": "unknown", "orientation": "subject_to_object"},
+                 proof={"type": "absence", "evidence": PROOF["evidence"], "tests": []},
+                 evidence_state="STRUCTURALLY_VALID", subject_concept="concept:backup_retention",
+                 object_concept="bo:UNGLOSSED", object_value_type={"datatype": "integer", "quantity_kind": "UNKNOWN",
+                                                                   "unit": "UNKNOWN"},
+                 absence={"kind": "ABSENCE_DEMONSTRATED", "block_code": "NO_REALIZATION",
+                          "searched": ["atributos do tipo e vizinhos por referência no pin"],
+                          "evidence": [{"date": DAY, "source": "fixture:pacote-sintetico"}]})
+    legacy = {**copy.deepcopy(none), "claim_id": "CLM-NONE-02", "claim_version_id": "CLM-NONE-02@1",
+              "event_id": "EV-CLM-NONE-02-1", "subject_id": "pa:spin_window", "curation_rule": "bo:NONE_OUT_OF_PIN"}
+    legacy.pop("absence")
+    hunt = claim("CLM-HUNT-01", 1, "pa:spin_rate", "close", "pb:rotation_speed", disputes=["CLM-NONE-01"],
+                 evidence_state="STRUCTURALLY_VALID")
+    return [v1, v2, br, none, legacy, hunt]
 
 
 EDITION_STD = [{"term": "object.edition", "op": "edition_in", "value": ["standard"]}]
@@ -395,7 +410,9 @@ def c09() -> dict:
     from .sssom import write_tsv
     recs = c09_records()
     g, _ = edoal.export([recs[1]], uri="https://example.org/alignment/stub")
-    return {"C09/correspondences.sssom.tsv": write_tsv(recs, "https://example.org/mapping-set/contracts-stub"),
+    from bo.semantics.sssom_io import PREFIXES
+    px = {**PREFIXES, "sssom": "https://w3id.org/sssom/"}
+    return {"C09/correspondences.sssom.tsv": write_tsv(recs, "https://example.org/mapping-set/contracts-stub", px),
             "C09/correspondences.jsonl": jsonl(recs),
             "C09/correspondences.edoal.ttl": g.serialize(format="turtle"),
             "complex.sssom.tsv": write_tsv(complex_records(), "https://example.org/mapping-set/contracts-complex")}
@@ -722,6 +739,10 @@ def c20() -> dict:
             "definition": "nível de custo e latência de acesso de um objeto armazenado", "domain": "STO",
             "quantity_kind": "NOT_APPLICABLE", "unit": "NOT_APPLICABLE", "status": "merged",
             "replaced_by": ["concept:storage_class"], "evidence_state": "STRUCTURALLY_VALID"},
+           {"concept_id": "concept:backup_retention_automated", "label": "retenção de backup automático",
+            "definition": "tempo de retenção só das cópias automáticas (não das manuais)", "domain": "DB",
+            "quantity_kind": "quantitykind:Time", "unit": "unit:DAY", "status": "active",
+            "evidence_state": "STRUCTURALLY_VALID"},
            {"concept_id": "concept:monitoring_interval", "label": "intervalo de monitoramento",
             "definition": "período entre duas coletas de métricas aprimoradas", "domain": "OPS",
             "quantity_kind": "UNKNOWN", "status": "active", "evidence_state": "UNRESOLVED"}]
@@ -740,8 +761,20 @@ def c20() -> dict:
            "event_id": "EV-AUDIT-0007", "check": "evidence_support", "result": "pass",
            "evidence_state_before": "STRUCTURALLY_VALID", "evidence_state_after": "DOC_SUPPORTED",
            "auditor": "GLOSSARY-AUDIT", "at": TS2}
+    dh = {"schema": "bo.glossary_decision/1", "author": "GLOSSARY-DB", "recorded_at": TS2,
+          "evidence": [{"source": "fixture:doc-sintetica", "sentence": "frase sintética", "date": DAY}]}
+    decs = [{**dh, "decision_id": "GD-DB-0001", "kind": "broader", "concept_id": "concept:backup_retention_automated",
+             "related_concept": "concept:backup_retention", "reason": "toda retenção automática é retenção de backup"},
+            {**dh, "decision_id": "GD-DB-0002", "kind": "narrower", "concept_id": "concept:backup_retention",
+             "related_concept": "concept:backup_retention_automated", "reason": "a mesma relação lida do lado amplo"},
+            {**dh, "decision_id": "GD-DB-0003", "kind": "value_type", "concept_id": "concept:storage_tier",
+             "value": {"datatype": "enum", "enum_semantics": "ordinal por custo de acesso"},
+             "reason": "tipo de valor e semântica do enum"},
+            {**dh, "decision_id": "GD-DB-0004", "kind": "same_kind_distinct", "concept_id": "concept:backup_retention",
+             "related_concept": "concept:monitoring_interval", "evidence": [],
+             "reason": "mesma grandeza (tempo), significados distintos"}]
     return {"C20/glossary.jsonl": jsonl(con), "C20/claims.jsonl": jsonl([v1, v2]),
-            "C20/glossary_audit.jsonl": jsonl([aud])}
+            "C20/glossary_audit.jsonl": jsonl([aud]), "C20/decisions.jsonl": jsonl(decs)}
 
 
 def c21() -> dict:
@@ -936,6 +969,7 @@ KIND_OF = {  # caminho do stub -> "Cnn:tipo"
     "C18/numbers.json": "C18:numbers", "C18/numbers.tex": "C18:numbers_tex",
     "C19/canonical_units.jsonl": "C19:canonical_units", "C19/canonical_atoms.jsonl": "C19:canonical_atoms",
     "C20/glossary.jsonl": "C20:glossary", "C20/claims.jsonl": "C20:claims", "C20/glossary_audit.jsonl": "C20:glossary_audit",
+    "C20/decisions.jsonl": "C20:decisions",
     "C21/verdicts.jsonl": "C21:verdicts", "C22/probe_types.yaml": "C22:probe_types",
     "C22/observations.jsonl": "C22:observations", "C22/pair_judgements.jsonl": "C22:pair_judgements",
     "C23/translation_trace.jsonl": "C23:translation_trace", "C24/requirements.jsonl": "C24:requirements",

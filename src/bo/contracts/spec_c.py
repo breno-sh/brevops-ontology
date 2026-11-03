@@ -285,21 +285,44 @@ def c20() -> dict:
                  "note": text(3)},
                 ["audit_id", "claim_id", "claim_version_id", "event_id", "check", "result", "evidence_state_before",
                  "evidence_state_after", "auditor", "at"])
+    dec = obj({
+        "schema": const("bo.glossary_decision/1"), "decision_id": string(r"^GD-[A-Za-z0-9_\-]+$"),
+        "kind": enum("broader", "narrower", "value_type", "same_kind_distinct", "merge", "split", "exclusive",
+                     "ungrounded"),
+        "concept_id": c00("concept_id"), "related_concept": c00("concept_id"),
+        "value": obj({"datatype": enum("integer", "decimal", "boolean", "string", "enum", "duration", "tuple"),
+                      "enum_semantics": text(3), "rate_window": nullable(c00("xsd_duration")),
+                      "byte_convention": enum("SI", "IEC", "NOT_APPLICABLE")}, ["datatype"]),
+        "reason": text(10),
+        "evidence": arr(obj({"source": text(3), "sentence": text(3), "date": c00("date")}, ["source", "sentence", "date"])),
+        "author": c00("stable_id"), "recorded_at": c00("datetime")},
+        ["schema", "decision_id", "kind", "concept_id", "reason", "evidence", "author", "recorded_at"],
+        allOf=[{"if": {"properties": {"kind": {"enum": ["broader", "narrower", "same_kind_distinct", "merge", "split"]}}},
+                "then": {"required": ["related_concept"]}},
+               {"if": {"properties": {"kind": const("value_type")}}, "then": {"required": ["value"]},
+                "else": {"not": {"required": ["value"]}}}],
+        description="decisão do glossarista; broader: concept_id é o mais estreito (concept_id skos:broader "
+                    "related_concept); narrower: o inverso (emenda 3.1.0, formato provisório do GLOSSARY_BRIEF)")
     return contract_schema(
-        "C20", "glossary", "3.0.0", "glossário, âncoras como alegações e auditoria", status="changed_v3",
+        "C20", "glossary", "3.1.0", "glossário, âncoras como alegações, auditoria e decisões", status="amended",
         description="Conceito com grandeza (IRI | NOT_APPLICABLE | UNKNOWN); âncora como alegação com sentença, contexto, "
                     "contraexemplo procurado, método de extração e evidence_state (STRUCTURALLY_VALID | DOC_SUPPORTED | "
                     "PERSISTENCE_VERIFIED | OBSERVATION_TESTED | UNRESOLVED).",
         files=[file_kind("glossary", "glossary.jsonl", "jsonl", "concept", "record"),
                file_kind("claims", "claims.jsonl", "jsonl", "anchor_claim", "record"),
-               file_kind("glossary_audit", "glossary_audit.jsonl", "jsonl", "audit", "record")],
-        defs={"concept": concept, "anchor_claim": claim, "audit": audit},
+               file_kind("glossary_audit", "glossary_audit.jsonl", "jsonl", "audit", "record"),
+               file_kind("decisions", "decisions.jsonl", "jsonl", "decision", "record",
+                         "decisões do glossarista: hierarquia (broader/narrower), tipo de valor, distinções…")],
+        defs={"concept": concept, "anchor_claim": claim, "audit": audit, "decision": dec},
         producers=["GLOSSARY-{domain}", "GLOSSARY-AUDIT", "GLOSSARY-FREEZE", "PILOT-{slice}-GLOSS"],
         rules=["C20-IDS: claim_version_id = <claim_id>@n, únicos; event_id único por versão; supersedes = versão "
                "anterior da mesma alegação (claim_id nunca muda entre versões)",
                "C20-NA: grandeza NOT_APPLICABLE não tem unidade; UNKNOWN ≠ NOT_APPLICABLE",
                "C20-AUDIT: a auditoria cita uma versão existente quando claims.jsonl é irmão",
-               "C20-UNIQ: concept_id único"])
+               "C20-UNIQ: concept_id único; decision_id único",
+               "C20-DEC-DIR: broader = concept_id ⊂ related_concept (direção de skos:broader); narrower = o inverso",
+               "C20-DEC-REF: concept_id e related_concept existem no glossary.jsonl irmão (quando há); nunca o mesmo",
+               "C20-DEC-ACYCLIC: a hierarquia (broader e narrower invertido) não tem ciclo"])
 
 
 # ------------------------------------------------------------------------------------------------- C21

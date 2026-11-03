@@ -109,6 +109,12 @@ def correspondence() -> dict:
     props["exclusivity"] = enum(*EXCLUSIVITY)
     props["supersedes"] = c00("claim_version_id")
     props["inverse_of"] = c00("claim_id")
+    props["absence"] = obj({"kind": c00("absence_kind"), "block_code": c00("block_code"),
+                            "searched": arr(text(3), 1), "evidence": arr({"type": "object"})},
+                           ["kind", "searched"],
+                           description="ausência tipada: object_id = sssom:NoTermFound (emenda 3.1.0)")
+    props["disputes"] = arr(c00("claim_id"), 1, unique=True,
+                            description="alegações (ausências) que esta descoberta contesta (NONEHUNT-*)")
     for s in SSSOM_SLOTS:
         props.setdefault(s, {"type": ["string", "number"]})
     props["confidence"] = number(minimum=0, maximum=1)
@@ -124,7 +130,7 @@ def c09() -> dict:
     defs = {"correspondence": correspondence(), "value_type": value_type(), "projection": projection(),
             "group": group()}
     return contract_schema(
-        "C09", "correspondences", "3.0.1", "alegações de correspondência (SSSOM + EDOAL)", status="amended",
+        "C09", "correspondences", "3.1.0", "alegações de correspondência (SSSOM + EDOAL)", status="amended",
         description="Colunas SSSOM mais claim_id (imutável), claim_version_id, event_id; semantic_relation (predicado "
                     "SKOS na direção correta: 'a skos:broadMatch b' = b mais amplo), value_domain_relation orientada, "
                     "transport_fidelity; guard (gramática tipada do C10); translation_fn; loss_contract; "
@@ -153,7 +159,11 @@ def c09() -> dict:
                "C09-PROJ: projeção em bloco repetido tem chave de ocorrência que não é posição; extrator roda nos "
                "testes; sobreposição declarada (P-OCC, P-EXEC, P-OVERLAP)",
                "C09-ALT: alternativas são mútuas, do mesmo subject_id, com guarda; ProvenExclusive só se a interseção "
-               "das guardas é UNSAT; senão Ambiguous (A-EXCL)"])
+               "das guardas é UNSAT; senão Ambiguous (A-EXCL)",
+               "C09-NONE: object_id = sssom:NoTermFound ⇔ ausência tipada (campo absence; a forma provisória "
+               "curation_rule = bo:NONE_<tipo> do MAPPER_BRIEF continua aceita e, com os dois, têm de concordar); a "
+               "linha é skos:relatedMatch, related, fidelidade none, sem translation_fn; disputes só cita outras "
+               "alegações"])
 
 
 # ------------------------------------------------------------------------------------------------- C10

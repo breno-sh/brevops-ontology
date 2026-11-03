@@ -48,6 +48,7 @@
   "C19/canonical_atoms.jsonl": "C19:canonical_atoms",
   "C19/canonical_units.jsonl": "C19:canonical_units",
   "C20/claims.jsonl": "C20:claims",
+  "C20/decisions.jsonl": "C20:decisions",
   "C20/glossary.jsonl": "C20:glossary",
   "C20/glossary_audit.jsonl": "C20:glossary_audit",
   "C21/verdicts.jsonl": "C21:verdicts",

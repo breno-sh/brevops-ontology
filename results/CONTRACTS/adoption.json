@@ -1,7 +1,7 @@
 {
  "schema": "bo.contracts_adoption/1",
  "module": "CONTRACTS",
- "generated_at": "2026-11-03T17:36:40-03:00",
+ "generated_at": "2026-11-03T17:53:44-03:00",
  "adopted": [
   {
    "source": "results/REQUIREMENTS/C24_proposta/requirements.schema.json",
@@ -224,6 +224,33 @@
    "requested_by": "HARNESS-AWS, HARNESS-GCP, HARNESS-AZURE, HARNESS-OCI",
    "source": "results/HARNESS-*/CONTRACT_CHANGE.txt",
    "change": "derived_name.field opcional; regra C26-TARGET; stub com um plano renderizável por provedor"
+  },
+  {
+   "contract": "C00",
+   "from": "3.0.1",
+   "to": "3.0.2",
+   "at": "2026-11-03T18:00:00-03:00",
+   "requested_by": "BRIEFS",
+   "source": "results/BRIEFS/CONTRACT_CHANGE.txt",
+   "change": "absence_kind (os quatro tipos de ausência do C29)"
+  },
+  {
+   "contract": "C09",
+   "from": "3.0.1",
+   "to": "3.1.0",
+   "at": "2026-11-03T18:00:00-03:00",
+   "requested_by": "BRIEFS",
+   "source": "results/BRIEFS/CONTRACT_CHANGE.txt",
+   "change": "ausência tipada: absence {kind, block_code?, searched, evidence} com object_id sssom:NoTermFound; disputes; a forma provisória em curation_rule continua aceita"
+  },
+  {
+   "contract": "C20",
+   "from": "3.0.0",
+   "to": "3.1.0",
+   "at": "2026-11-03T18:00:00-03:00",
+   "requested_by": "BRIEFS",
+   "source": "results/BRIEFS/CONTRACT_CHANGE.txt (formato provisório do GLOSSARY_BRIEF)",
+   "change": "tipo decisions (decisions.jsonl, bo.glossary_decision/1) com broader/narrower e regras de direção, referência e aciclicidade"
   }
  ],
  "findings": [
@@ -236,6 +263,7 @@
   "Emenda 2: o stub C26 tem um plano por provedor, copiado das fixtures dos HARNESS-* (adopted/C26_plans_stub.json). Renderizado em 2026-11-03: aws (2 recursos), google (1), azurerm (4) saem RENDERED com fmt -check 0. O oci sai UNKNOWN_SYMBOLIC_INPUT sem --bindings (compartment_id e tags vêm do contexto privado do run, por desenho do HARNESS-OCI) e RENDERED com --bindings deploy/fixtures/oci/_templates/examples/bindings.json: o gate do HARNESS-OCI precisa passar --bindings (decisão do coordenador/HARNESS-OCI; nenhum plano OCI real renderiza sem).",
   "Emenda 2: type_subcategory.jsonl (C03 3.1.0) num só formato, superconjunto dos blocos subcategory/import. O do DOCS-OCI passa sem mudança; o do DOCS-AZURE precisa renomear import_id para import; o do DOCS-GCP é plano (subcategoria no topo) e precisa converter para o bloco subcategory; o do DOCS-AWS tem blocos import sem extraction_method/evidence_level e alguns interpreted sem model_id.",
   "C01 2.1.0: a biblioteca que grava os átomos (src/bo/schema/, FLAGS em core.py) é posse do SCHEMALIB; ela ainda não grava write_only (campo opcional, os átomos 2.0.0 continuam válidos). Não mexi no código dele.",
+  "Emenda 3: o formato provisório de decisions.jsonl do GLOSSARY_BRIEF entra sem mudança no C20 3.1.0 (com narrower acrescentado); os exemplos de results/BRIEFS/examples/decisions.jsonl passam no schema, mas reprovam na regra C20-DEC-REF proposta pelo próprio BRIEFS: o glossary.jsonl irmão não tem os conceitos citados. A ausência tipada do MAPPER_BRIEF (curation_rule bo:NONE_<tipo>) continua aceita; o mapper_examples.sssom.tsv passa.",
   "SCHEMALIB: nested_type (protocolo 6) como UM átomo com tf_type cty cabe no C01 sem mudança (tf_type aceita lista; stub C01 tem um); o write_only entra como campo opcional (átomos já gravados continuam válidos)."
  ]
 }

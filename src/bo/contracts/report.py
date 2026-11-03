@@ -80,6 +80,10 @@ FINDINGS = [
     "extraction_method/evidence_level e alguns interpreted sem model_id.",
     "C01 2.1.0: a biblioteca que grava os átomos (src/bo/schema/, FLAGS em core.py) é posse do SCHEMALIB; ela ainda "
     "não grava write_only (campo opcional, os átomos 2.0.0 continuam válidos). Não mexi no código dele.",
+    "Emenda 3: o formato provisório de decisions.jsonl do GLOSSARY_BRIEF entra sem mudança no C20 3.1.0 (com "
+    "narrower acrescentado); os exemplos de results/BRIEFS/examples/decisions.jsonl passam no schema, mas reprovam "
+    "na regra C20-DEC-REF proposta pelo próprio BRIEFS: o glossary.jsonl irmão não tem os conceitos citados. A "
+    "ausência tipada do MAPPER_BRIEF (curation_rule bo:NONE_<tipo>) continua aceita; o mapper_examples.sssom.tsv passa.",
     "SCHEMALIB: nested_type (protocolo 6) como UM átomo com tf_type cty cabe no C01 sem mudança (tf_type aceita "
     "lista; stub C01 tem um); o write_only entra como campo opcional (átomos já gravados continuam válidos).",
 ]

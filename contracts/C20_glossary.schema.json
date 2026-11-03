@@ -1,13 +1,13 @@
 {
  "$schema": "https://json-schema.org/draft/2020-12/schema",
  "$id": "https://w3id.org/brevops/contracts/C20/glossary.schema.json",
- "title": "C20 glossary 3.0.0: glossário, âncoras como alegações e auditoria",
+ "title": "C20 glossary 3.1.0: glossário, âncoras como alegações, auditoria e decisões",
  "description": "Conceito com grandeza (IRI | NOT_APPLICABLE | UNKNOWN); âncora como alegação com sentença, contexto, contraexemplo procurado, método de extração e evidence_state (STRUCTURALLY_VALID | DOC_SUPPORTED | PERSISTENCE_VERIFIED | OBSERVATION_TESTED | UNRESOLVED).",
  "x-bo-contract": {
   "id": "C20",
   "name": "glossary",
-  "version": "3.0.0",
-  "status": "changed_v3",
+  "version": "3.1.0",
+  "status": "amended",
   "owner": "CONTRACTS",
   "files": [
    {
@@ -30,13 +30,24 @@
     "format": "jsonl",
     "record": "audit",
     "unit": "record"
+   },
+   {
+    "kind": "decisions",
+    "file": "decisions.jsonl",
+    "format": "jsonl",
+    "record": "decision",
+    "unit": "record",
+    "note": "decisões do glossarista: hierarquia (broader/narrower), tipo de valor, distinções…"
    }
   ],
   "semantic_rules": [
    "C20-IDS: claim_version_id = <claim_id>@n, únicos; event_id único por versão; supersedes = versão anterior da mesma alegação (claim_id nunca muda entre versões)",
    "C20-NA: grandeza NOT_APPLICABLE não tem unidade; UNKNOWN ≠ NOT_APPLICABLE",
    "C20-AUDIT: a auditoria cita uma versão existente quando claims.jsonl é irmão",
-   "C20-UNIQ: concept_id único"
+   "C20-UNIQ: concept_id único; decision_id único",
+   "C20-DEC-DIR: broader = concept_id ⊂ related_concept (direção de skos:broader); narrower = o inverso",
+   "C20-DEC-REF: concept_id e related_concept existem no glossary.jsonl irmão (quando há); nunca o mesmo",
+   "C20-DEC-ACYCLIC: a hierarquia (broader e narrower invertido) não tem ciclo"
   ],
   "producers": [
    "GLOSSARY-AUDIT",
@@ -341,6 +352,168 @@
     "at"
    ],
    "additionalProperties": false
+  },
+  "decision": {
+   "type": "object",
+   "properties": {
+    "schema": {
+     "const": "bo.glossary_decision/1"
+    },
+    "decision_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^GD-[A-Za-z0-9_\\-]+$"
+    },
+    "kind": {
+     "enum": [
+      "broader",
+      "narrower",
+      "value_type",
+      "same_kind_distinct",
+      "merge",
+      "split",
+      "exclusive",
+      "ungrounded"
+     ]
+    },
+    "concept_id": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/concept_id"
+    },
+    "related_concept": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/concept_id"
+    },
+    "value": {
+     "type": "object",
+     "properties": {
+      "datatype": {
+       "enum": [
+        "integer",
+        "decimal",
+        "boolean",
+        "string",
+        "enum",
+        "duration",
+        "tuple"
+       ]
+      },
+      "enum_semantics": {
+       "type": "string",
+       "minLength": 3
+      },
+      "rate_window": {
+       "anyOf": [
+        {
+         "type": "null"
+        },
+        {
+         "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/xsd_duration"
+        }
+       ]
+      },
+      "byte_convention": {
+       "enum": [
+        "SI",
+        "IEC",
+        "NOT_APPLICABLE"
+       ]
+      }
+     },
+     "required": [
+      "datatype"
+     ],
+     "additionalProperties": false
+    },
+    "reason": {
+     "type": "string",
+     "minLength": 10
+    },
+    "evidence": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "source": {
+        "type": "string",
+        "minLength": 3
+       },
+       "sentence": {
+        "type": "string",
+        "minLength": 3
+       },
+       "date": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/date"
+       }
+      },
+      "required": [
+       "source",
+       "sentence",
+       "date"
+      ],
+      "additionalProperties": false
+     }
+    },
+    "author": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/stable_id"
+    },
+    "recorded_at": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/datetime"
+    }
+   },
+   "required": [
+    "schema",
+    "decision_id",
+    "kind",
+    "concept_id",
+    "reason",
+    "evidence",
+    "author",
+    "recorded_at"
+   ],
+   "additionalProperties": false,
+   "allOf": [
+    {
+     "if": {
+      "properties": {
+       "kind": {
+        "enum": [
+         "broader",
+         "narrower",
+         "same_kind_distinct",
+         "merge",
+         "split"
+        ]
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "related_concept"
+      ]
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "kind": {
+        "const": "value_type"
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "value"
+      ]
+     },
+     "else": {
+      "not": {
+       "required": [
+        "value"
+       ]
+      }
+     }
+    }
+   ],
+   "description": "decisão do glossarista; broader: concept_id é o mais estreito (concept_id skos:broader related_concept); narrower: o inverso (emenda 3.1.0, formato provisório do GLOSSARY_BRIEF)"
   }
  }
 }

@@ -275,6 +275,26 @@ def test_c03_tipo_por_arquivo(alias, path, kind):
 
 def test_emenda2_versoes():
     pub = catalog.schemas()
-    for cid, v in {"C00": "3.0.1", "C03": "3.1.0", "C12": "3.1.0", "C15": "3.1.0", "C19": "3.1.0", "C26": "1.1.0"}.items():
+    for cid, v in {"C00": "3.0.2", "C03": "3.1.0", "C12": "3.1.0", "C15": "3.1.0", "C19": "3.1.0", "C26": "1.1.0"}.items():
         assert pub[cid]["x-bo-contract"]["version"] == v
         assert "3.0.0" in amendments.chain(cid) or "1.0.0" in amendments.chain(cid)
+
+
+# ----------------------------------------------------------------------------------- emenda 3 (BRIEFS)
+def test_ausencia_tipada_e_forma_provisoria():
+    recs = sssom.read_tsv((ROOT / "contracts/stubs/C09/correspondences.sssom.tsv").read_text(encoding="utf-8"))[1]
+    nones = [r for r in recs if r["object_id"] == "sssom:NoTermFound"]
+    assert {bool(r.get("absence")) for r in nones} == {True, False}          # nova e provisória (curation_rule)
+    assert validate.validate("correspondences", ROOT / "contracts/stubs/C09/correspondences.sssom.tsv").ok
+
+
+def test_decisoes_do_glossario_formato_do_brief():
+    r = validate.validate("decisions", ROOT / "contracts/stubs/C20/decisions.jsonl")
+    assert r.kind == "C20:decisions" and r.ok, r.errors[:3]
+    ex = ROOT / "results/BRIEFS/examples/decisions.jsonl"
+    if ex.is_file():   # formato do GLOSSARY_BRIEF adotado: o schema aceita os exemplos (só a regra de referência
+        reg = catalog.registry(catalog.schemas())   # ao glossary.jsonl irmão pode reprovar)
+        v = jsonschema.Draft202012Validator({"$ref": f"{_base.BASE_URI}C20/glossary.schema.json#/$defs/decision"},
+                                            registry=reg)
+        for line in ex.read_text(encoding="utf-8").splitlines():
+            assert v.is_valid(json.loads(line))

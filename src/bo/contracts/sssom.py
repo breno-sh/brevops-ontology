@@ -18,8 +18,8 @@ from bo.semantics import sssom_io as SIO
 
 from .spec_b import SSSOM_SLOTS
 
-EXTRA = ("alternative_to", "exclusivity", "supersedes", "inverse_of")
-EXTRA_JSON = ("alternative_to",)
+EXTRA = ("alternative_to", "exclusivity", "supersedes", "inverse_of", "absence", "disputes")
+EXTRA_JSON = ("alternative_to", "absence", "disputes")
 NUMERIC = ("confidence", "similarity_score", "reviewer_agreement")
 CORE = SC.CORE
 EXT = SC.EXT + EXTRA

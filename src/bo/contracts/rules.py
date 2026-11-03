@@ -509,6 +509,7 @@ def check_correspondences(recs: list[dict], meta: dict | None, columns: list | N
                 elif notes is not None:
                     notes.append(f"{w}: projeção {f['rule']} ({f['outcome']}): {f['detail']}")
             errs += [f"{w}: {e}" for e in dup([p["projection_id"] for p in projs], "projection_id")]
+    errs += _absences(recs, where, meta)
     errs += claim_lineage(recs, where)
     # alternativas guardadas (A-EXCL)
     byid = {r.get("claim_id"): r for r in recs}
@@ -537,6 +538,35 @@ def check_correspondences(recs: list[dict], meta: dict | None, columns: list | N
         res = P.check_alternatives([{"realization_id": m["claim_id"], "guard": m.get("guard"),
                                      "exclusivity": m.get("exclusivity")} for m in members])
         errs += [f"{w}: {f['rule']}: {f['detail']}" for f in res["failures"]]
+    return errs
+
+
+NO_TERM = "sssom:NoTermFound"
+LEGACY_NONE = re.compile(r"^bo:NONE_(ABSENCE_DEMONSTRATED|OUT_OF_PIN|UNSUPPORTED_BY_TRANSLATOR|UNRESOLVED)$")
+
+
+def _absences(recs: list[dict], where, meta: dict | None) -> list[str]:
+    errs = []
+    ids = {r.get("claim_id") for r in recs}
+    for i, r in enumerate(recs):
+        w = where(i, r)
+        none = r.get("object_id") == NO_TERM
+        legacy = LEGACY_NONE.match(str(r.get("curation_rule") or ""))
+        ab = r.get("absence")
+        if none and not (ab or legacy):
+            errs.append(f"{w}: sssom:NoTermFound sem ausência tipada (absence ou curation_rule bo:NONE_<tipo>)")
+        if ab and not none:
+            errs.append(f"{w}: absence com object_id {r.get('object_id')!r} (ausência é sssom:NoTermFound)")
+        if ab and legacy and legacy.group(1) != ab["kind"]:
+            errs.append(f"{w}: curation_rule {legacy.group(0)} diverge de absence.kind {ab['kind']}")
+        if none:
+            if r.get("predicate_id") != "skos:relatedMatch" or r.get("semantic_relation") != "related":
+                errs.append(f"{w}: ausência tem de ser skos:relatedMatch / related")
+            if r.get("transport_fidelity") != "none" or r.get("translation_fn"):
+                errs.append(f"{w}: ausência não transporta (fidelidade none, sem translation_fn)")
+        for d in r.get("disputes") or []:
+            if d == r.get("claim_id"):
+                errs.append(f"{w}: disputes cita a própria alegação")
     return errs
 
 
@@ -1069,6 +1099,41 @@ def r_glossary(objs, ctx, path):
 @rule("C20", "claims")
 def r_claims(objs, ctx, path):
     return claim_lineage(objs, W("claims"))
+
+
+@rule("C20", "decisions")
+def r_decisions(objs, ctx, path):
+    errs = dup([d["decision_id"] for d in objs], "decision_id")
+    gl = load_sibling(path, "glossary.jsonl")
+    known = {c["concept_id"] for c in gl} if gl is not None else None
+    edges = defaultdict(set)
+    for i, d in enumerate(objs):
+        w = f"decisions[{i + 1}] {d['decision_id']}"
+        rel = d.get("related_concept")
+        if rel and rel == d["concept_id"]:
+            errs.append(f"{w}: conceito relacionado a si mesmo")
+        if known is not None:
+            for c in (d["concept_id"], rel):
+                if c and c not in known and c != "bo:UNGLOSSED":
+                    errs.append(f"{w}: {c} não está no glossary.jsonl irmão")
+        if d["kind"] == "broader" and rel:
+            edges[d["concept_id"]].add(rel)
+        elif d["kind"] == "narrower" and rel:
+            edges[rel].add(d["concept_id"])
+    state = {}
+
+    def visit(n, stack):
+        state[n] = 1
+        for m in edges.get(n, ()):
+            if state.get(m) == 1:
+                errs.append(f"C20-DEC-ACYCLIC: ciclo na hierarquia: {' -> '.join(stack + [n, m])}")
+            elif m not in state:
+                visit(m, stack + [n])
+        state[n] = 2
+    for n in sorted(edges):
+        if n not in state:
+            visit(n, [])
+    return errs
 
 
 @rule("C20", "glossary_audit")

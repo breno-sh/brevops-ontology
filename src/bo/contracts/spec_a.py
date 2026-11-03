@@ -122,6 +122,8 @@ def c00_defs() -> dict:
         "evidence_state": enum(*EVIDENCE_STATES),
         "verdict": enum(*VERDICTS),
         "block_code": enum(*BLOCK_CODES),
+        "absence_kind": enum("ABSENCE_DEMONSTRATED", "OUT_OF_PIN", "UNSUPPORTED_BY_TRANSLATOR", "UNRESOLVED",
+                             description="tipo de ausência (C29); C09 3.1.0 grava a ausência tipada com ele"),
         "value_mark": enum(*VALUE_MARKS),
         "unknown_mark": enum(*UNKNOWN_MARKS),
         "side": enum("subject", "object"),
@@ -200,7 +202,7 @@ def c00_spec() -> dict:
         "modules": arr(local("module"), 1)},
         ["timezone", "env", "index_sets", "contracts", "modules"], extra=True)
     return contract_schema(
-        "C00", "conventions", "3.0.1", "convenções e definições comuns", status="amended",
+        "C00", "conventions", "3.0.2", "convenções e definições comuns", status="amended",
         description="ID = stable_id; onda calculada do DAG; código em $BO_REPO/src/bo/<pacote>/; dados em "
                     "$BO_DATA/<ID>/; temporário em $BO_TMP=$BO_DATA/tmp/<ID> (nunca /tmp); caminhos só com índices "
                     "declarados em index_sets; datas ISO-8601 com fuso America/Recife. $defs comuns a todos os contratos.",
