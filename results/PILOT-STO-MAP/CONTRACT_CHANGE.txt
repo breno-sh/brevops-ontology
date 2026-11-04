@@ -15,8 +15,8 @@ ATUALIZAÇÃO 2026-11-04T11:50:00-03:00 (America/Recife), base d3fde5d, pacote f
   --check-unproven, sem --out) grava em $BO_DATA/$BO_ID: regrava verdicts.jsonl, cycles.jsonl, arbiter_report.json e
   run_record.json publicados com decided_at = hora do gate (src/bo/arbiter/run.py, out padrão). O que fiz no owns:
   o publicado só muda pelo --promote com instante fixo; o bo.pilot_sto_map.verify (no gates/PILOT-STO-MAP.sh)
-  reprova se o verdicts.jsonl publicado não tem o sha256 do pipeline_report, e o merge restaura o publicado pelo
-  --promote-only na mesma trava, depois do make gate. Proposta: o catálogo passar --out $BO_TMP/arbiter no G3 dos
+  confere mapping e build_record pelo sha256 e o verdicts.jsonl pelo mapa de vereditos (o G3 roda antes do G4 no
+  gate-check e regrava os bytes); o merge restaura os bytes publicados pelo --promote-only na mesma trava. Proposta: o catálogo passar --out $BO_TMP/arbiter no G3 dos
   dois PILOT-*-MAP (ou o bo.arbiter.run usar $BO_TMP como saída padrão quando BO_ID não é ARBITERLIB).
 
 ATUALIZAÇÃO 2026-11-04T10:22:00-03:00 (America/Recife), base 5f0ebb5, pacote do STO-GLOSS 5f0ebb5 (MANIFEST f5f2131d):
