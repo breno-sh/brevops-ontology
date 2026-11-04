@@ -7,7 +7,8 @@ Duas fontes PUBLICADAS, ambas fixadas no pin do provedor (universe/pins.json, C1
   schema  saída de `terraform providers schema -json` do binário assinado do pin (sha256 = schema_sha256 do
           pin), citada por web_citation: uri = pacote assinado publicado, section = "providers-schema sha256 <h>
           <op> <json-pointer>", sentence = JSON canônico do nó (op=node) ou da lista ordenada das chaves do nó
-          (op=keys). Resolver = recalcular a partir do arquivo fixado.
+          (op=keys) ou da forma do bloco aninhado (op=shape: nesting_mode, min/max_items, atributos com
+          flags r/o/c, sub-blocos). Resolver = recalcular a partir do arquivo fixado.
 Nenhuma outra fonte entra: nada de nuvem, nada de página web fora do pin.
 """
 
@@ -187,12 +188,37 @@ def schema_node(provider: str, pointer: str):
     return node
 
 
-SECTION_RX = re.compile(r"^providers-schema sha256 (?P<sha>[0-9a-f]{64}) (?P<op>node|keys) (?P<ptr>/\S+)$")
+SECTION_RX = re.compile(r"^providers-schema sha256 (?P<sha>[0-9a-f]{64}) (?P<op>node|keys|shape) (?P<ptr>/\S+)$")
+
+
+def _flags(a: dict) -> str:
+    return "".join(c for c, k in (("r", "required"), ("o", "optional"), ("c", "computed")) if a.get(k))
+
+
+def block_shape(bt: dict) -> dict:
+    """Projeção de um nó block_types[<nome>] do schema: modo de aninhamento, limites, atributos (r/o/c) e
+    sub-blocos. Op 'shape' da citação de schema."""
+    b = bt.get("block") or {}
+    out = {"nesting_mode": bt.get("nesting_mode"),
+           "attributes": {k: _flags(v) for k, v in sorted((b.get("attributes") or {}).items())},
+           "block_types": sorted((b.get("block_types") or {}).keys())}
+    for k in ("min_items", "max_items"):
+        if k in bt:
+            out[k] = bt[k]
+    return out
+
+
+def project(node, op: str) -> str:
+    if op == "node":
+        return canon(node)
+    if op == "keys":
+        return canon(sorted(node.keys()))
+    return canon(block_shape(node))
 
 
 def schema_cite(provider: str, pointer: str, op: str = "node") -> dict:
     node = schema_node(provider, pointer)
-    sentence = canon(node) if op == "node" else canon(sorted(node.keys()))
+    sentence = project(node, op)
     m = schema_meta(provider)
     return {"uri": m["uri"], "retrieved_at": m["retrieved_at"],
             "section": f"providers-schema sha256 {m['sha256']} {op} {pointer}", "sentence": sentence}
@@ -290,7 +316,7 @@ def resolve_schema(provider: str, cit: dict) -> str | None:
         node = schema_node(provider, m["ptr"])
     except (KeyError, TypeError, IndexError):
         return "ponteiro não existe no schema fixado"
-    want = canon(node) if m["op"] == "node" else canon(sorted(node.keys()))
+    want = project(node, m["op"])
     if want != cit.get("sentence"):
         return "nó do schema difere da frase"
     return None

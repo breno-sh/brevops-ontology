@@ -19,7 +19,7 @@ import collections
 import json
 import sys
 
-from . import common, curated, extract, protocol, rules, sources
+from . import blocks, common, curated, extract, protocol, rules, sources
 
 
 def _protocol_atoms():
@@ -38,7 +38,9 @@ def generate() -> dict:
     _, cur = curated.records(ctxs, bridges)
     recs = []
     for p in common.PROVIDERS:
-        stated = {(r["terraform_resource_type"], r["fact_kind"]) for r in ctxs[p].recs if r["status"] == "stated"}
+        structural = {"block_schema", "block_identity", "block_config_owner", "block_lifecycle"}
+        stated = {(r["terraform_resource_type"], r["fact_kind"]) for r in ctxs[p].recs if r["status"] == "stated"
+                  and r["value"].get("aspect") not in structural}
         dropped = 0
         for r in ctxs[p].recs:
             if r["status"] == "unknown" and (r["terraform_resource_type"], r["fact_kind"]) in stated:
@@ -113,6 +115,12 @@ def evidence_levels(g: dict) -> dict:
             "files": inputs,
             "type_subcategory": {p: st[p]["type_subcategory_variants"] for p in common.PROVIDERS},
             "type_subcategory_reading": sources.__doc__.strip(),
+            "blocks": {"max_depth": blocks.MAX_DEPTH, "facet_regex": blocks.FACET_RX.pattern,
+                       "per_provider": {p: {k: g["stats"][p]["counters"].get(k, 0) for k in
+                                            ("blocos", "blocos_de_faceta", "blocos_abaixo_do_corte",
+                                             "tipos_com_identidade_compartilhada")}
+                                        for p in common.PROVIDERS},
+                       "reading": blocks.__doc__.strip()},
             "notes": [
                 f"DOCS-AWS: docs_facts.jsonl lido com {sources.docs_facts('aws')[1].get('lidos')} fatos (versão "
                 "completa, com os blocos repetidos). O shared_block_map.jsonl também é lido: átomo repetido sem fato "

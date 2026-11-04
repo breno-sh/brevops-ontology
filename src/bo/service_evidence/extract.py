@@ -13,7 +13,7 @@ from __future__ import annotations
 import collections
 import re
 
-from . import common, rules, sources
+from . import blocks, common, rules, sources
 
 UNKNOWN = "UNKNOWN"
 GCP_CONTAINERS = {"projects": "project", "organizations": "organization", "folders": "folder",
@@ -421,7 +421,7 @@ def scope_and_life(ctx: Ctx, T: str, api: dict, page: str | None):
                      "c03_fact_id": f["fact_id"]}
                 if can:
                     v["doc_atom"] = can
-                ctx.add(T, "effective_scope", f"attr:{path}:{sc}", api, "stated", "published", value=v,
+                ctx.add(T, "effective_scope", f"attr:{path}:{sc}", api, "stated", "published", value=with_bp(v, path, depth),
                         doc=doc)
                 got_scope = True
         if rules.leaf(path) == "deletion_policy":
@@ -431,13 +431,20 @@ def scope_and_life(ctx: Ctx, T: str, api: dict, page: str | None):
             if ddoc:
                 v = {"aspect": "deletion_policy", "rule": "R-LIFE-DELETION-POLICY", "attribute": path,
                      "values": vals, "c03_fact_id": desc["fact_id"]}
-                ctx.add(T, "lifecycle_controller", f"attr:{path}", api, "stated", "published", value=v,
+                ctx.add(T, "lifecycle_controller", f"attr:{path}", api, "stated", "published", value=with_bp(v, path, depth),
                         doc=ddoc)
                 got_life = True
     if not got_scope:
         unknown(ctx, T, "effective_scope", api, page)
     if not got_life:
         unknown(ctx, T, "lifecycle_controller", api, page)
+
+
+def with_bp(v: dict, path: str, depth: int) -> dict:
+    """Acrescenta value.block_path (convenção do GRAIN) quando o atributo está dentro de bloco aninhado."""
+    if depth and "." in path:
+        v["block_path"] = ".".join(path.split(".")[:depth])
+    return v
 
 
 def fdoc(f: dict, provider: str) -> dict | None:
@@ -523,11 +530,11 @@ def attributes(ctx: Ctx, T: str, api: dict, page: str | None):
                 v = {"aspect": "expiry_attribute", "rule": "R-TTL-ATTR", "attribute": path,
                      "target": rules.ttl_target(ddoc["sentence"]),
                      "c03_fact_ids": sorted(f["fact_id"] for f in facts), **extra}
-                ctx.add(T, "ttl_support", f"attr:{path}", api, "stated", "published", value=v, doc=ddoc)
+                ctx.add(T, "ttl_support", f"attr:{path}", api, "stated", "published", value=with_bp(v, path, depth), doc=ddoc)
             elif depth == 0 and "." not in path:
                 v = {"aspect": "expiry_attribute", "rule": "R-TTL-ATTR", "attribute": path, "target": UNKNOWN}
                 ptr = common.schema_pointer(p, "resource_schemas", T, "block", "attributes", path)
-                ctx.add(T, "ttl_support", f"attr:{path}", api, "stated", "published", value=v,
+                ctx.add(T, "ttl_support", f"attr:{path}", api, "stated", "published", value=with_bp(v, path, depth),
                         cit=common.schema_cite(p, ptr))
             else:
                 ctx.st["ttl_aninhado_sem_frase"] += 1
@@ -541,7 +548,7 @@ def attributes(ctx: Ctx, T: str, api: dict, page: str | None):
             d = default_of(facts)
             if d:
                 v["default"] = d
-            ctx.add(T, "connection_state", f"attr:{path}", api, "stated", "published", value=v, doc=ddoc)
+            ctx.add(T, "connection_state", f"attr:{path}", api, "stated", "published", value=with_bp(v, path, depth), doc=ddoc)
         if is_eff:
             vals = [x for x in allowed(facts) if rules.EFFECT_VALUES.match(x)]
             av = next((f for f in facts if f["fact_kind"] == "allowed_values"), None)
@@ -552,18 +559,18 @@ def attributes(ctx: Ctx, T: str, api: dict, page: str | None):
                 d = default_of(facts)
                 if d:
                     v["default"] = d
-                ctx.add(T, "effect", f"attr:{path}", api, "stated", "published", value=v, doc=avdoc)
+                ctx.add(T, "effect", f"attr:{path}", api, "stated", "published", value=with_bp(v, path, depth), doc=avdoc)
             elif rules.EFFECT_BLOCK.match(lf) and ddoc:
                 m = rules.EFFECT_BLOCK_DESC.search(ddoc["sentence"])
                 if m:
                     v = {"aspect": "effect_block", "rule": "R-EFFECT-DOC", "attribute": path,
                          "effect": m.group(1).lower(), "c03_fact_id": desc["fact_id"], **extra}
-                    ctx.add(T, "effect", f"attr:{path}", api, "stated", "published", value=v, doc=ddoc)
+                    ctx.add(T, "effect", f"attr:{path}", api, "stated", "published", value=with_bp(v, path, depth), doc=ddoc)
         if is_prec and ddoc:
             s = ddoc["sentence"]
             v = {"aspect": "order_attribute", "rule": "R-PREC-DOC", "attribute": path,
                  "order": rules.prec_order(s), "c03_fact_ids": sorted(f["fact_id"] for f in facts), **extra}
-            ctx.add(T, "precedence", f"attr:{path}", api, "stated", "published", value=v, doc=ddoc)
+            ctx.add(T, "precedence", f"attr:{path}", api, "stated", "published", value=with_bp(v, path, depth), doc=ddoc)
     if not got_ttl:
         unknown(ctx, T, "ttl_support", api, page)
 
@@ -605,6 +612,8 @@ def run(provider: str) -> tuple["Ctx", dict, dict]:
         owner(ctx, T, api, template, tid, sid, id_schema, bridges, page)
         scope_and_life(ctx, T, api, page)
         attributes(ctx, T, api, page)
+        blocks.run(ctx, T, api, ctx.st)
+    blocks.shared_identity(ctx, bridges, ctx.st)
     out_of_pin = sorted(t for t in ts if t not in set(all_types))
     stats = {"types": len(all_types), "types_with_page": sum(1 for t in all_types if pages[t]),
              "types_with_bridge": sum(1 for t in all_types if bridges[t] is not None),

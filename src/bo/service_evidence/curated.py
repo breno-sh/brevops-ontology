@@ -51,10 +51,10 @@ ENTRIES = [
       "range": [0, 65535], "as_of": "2026-10-26"}),
     ("google", "google_compute_firewall", "effect", "allow_block", G + "compute_firewall.html.markdown",
      "The list of ALLOW rules specified by this firewall", "The list of ALLOW rules specified by this firewall.",
-     "published", {"aspect": "effect_block", "rule": "C-PILOT-LITERAL", "attribute": "allow", "effect": "allow"}),
+     "published", {"aspect": "effect_block", "rule": "C-PILOT-LITERAL", "attribute": "allow", "block_path": "allow", "effect": "allow"}),
     ("google", "google_compute_firewall", "effect", "deny_block", G + "compute_firewall.html.markdown",
      "The list of DENY rules specified by this firewall", "The list of DENY rules specified by this firewall.",
-     "published", {"aspect": "effect_block", "rule": "C-PILOT-LITERAL", "attribute": "deny", "effect": "deny"}),
+     "published", {"aspect": "effect_block", "rule": "C-PILOT-LITERAL", "attribute": "deny", "block_path": "deny", "effect": "deny"}),
     ("google", "google_compute_firewall", "effect", "implied_rules", G + "compute_firewall.html.markdown",
      "No manually created network has",
      "No manually created network has automatically created firewall rules except for a default \"allow\" rule "
@@ -68,6 +68,7 @@ ENTRIES = [
      "corresponding stateless rule in the other direction if you need to support bidirectional traffic. For "
      "example, if ingress", None, "interpreted",
      {"aspect": "rule_connection_state", "rule": "I-PILOT-READING", "attribute": "ingress_security_rules.stateless",
+      "block_path": "ingress_security_rules",
       "granularity": "per_rule", "default": "stateful", "as_of": "2026-10-21",
       "stateless_needs_reverse_rule": True,
       "basis": "a frase diz o default (false = stateful) e que regra stateless pede a regra inversa; a "
@@ -77,6 +78,7 @@ ENTRIES = [
      "corresponding stateless rule in the other direction if you need to support bidirectional traffic. For "
      "example, if egress", None, "interpreted",
      {"aspect": "rule_connection_state", "rule": "I-PILOT-READING", "attribute": "egress_security_rules.stateless",
+      "block_path": "egress_security_rules",
       "granularity": "per_rule", "default": "stateful", "as_of": "2026-10-21",
       "stateless_needs_reverse_rule": True,
       "basis": "a frase diz o default (false = stateful) e que regra stateless pede a regra inversa; a "

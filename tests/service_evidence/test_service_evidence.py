@@ -104,3 +104,34 @@ def test_levels_rejects_mutations(mut, expect):
     mut(r)
     levels.check_record(r, {}, bad, cnt)
     assert any(expect in b for b in bad), bad
+
+
+def _out_by_type(types):
+    out = {}
+    with open(common.out_dir() / "service_evidence.jsonl", encoding="utf-8") as f:
+        for line in f:
+            r = json.loads(line)
+            if r.get("terraform_resource_type") in types:
+                out.setdefault(r["terraform_resource_type"], []).append(r)
+    return out
+
+
+def test_block_facts_for_storage_facets():
+    """CC-1 do PILOT-STO-GLOSS: os blocos de faceta têm identidade, dono e ciclo por block_path."""
+    want = {"google_storage_bucket": ["versioning", "lifecycle_rule", "encryption"],
+            "azurerm_storage_account": ["blob_properties", "blob_properties.delete_retention_policy"],
+            "oci_core_security_list": ["ingress_security_rules", "egress_security_rules"]}
+    got = _out_by_type(set(want))
+    for T, bps in want.items():
+        for bp in bps:
+            kinds = {(r["fact_kind"], r["value"]["aspect"]) for r in got[T]
+                     if r["status"] == "stated" and r["value"].get("block_path") == bp}
+            assert {("identity", "block_schema"), ("identity", "block_identity"), ("owner", "block_config_owner"),
+                    ("lifecycle_controller", "block_lifecycle")} <= kinds, (T, bp, kinds)
+
+
+def test_shared_identity_links_separate_facets():
+    got = _out_by_type({"aws_s3_bucket_versioning"})
+    peers = [r["value"]["peers"] for r in got["aws_s3_bucket_versioning"]
+             if r["status"] == "stated" and r["value"].get("aspect") == "shared_identity_key"]
+    assert peers and "aws_s3_bucket" in peers[0]

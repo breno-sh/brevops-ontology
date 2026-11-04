@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "SERVICE-EVIDENCE",
- "generated_at": "2026-11-03T21:03:48-03:00",
+ "generated_at": "2026-11-04T02:20:43-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/SERVICE-EVIDENCE.txt",
@@ -11,7 +11,8 @@
   "params": {
    "effort": "maximo",
    "providers": "aws,google,azurerm,oci",
-   "versions": "6.71.0,8.9.0,5.12.0,9.11.0"
+   "versions": "6.71.0,8.9.0,5.12.0,9.11.0",
+   "block_max_depth": "4"
   },
   "inputs": [
    {
@@ -85,7 +86,7 @@
     "sha256": "594a4e878ac489b3ed97cdd6344b9945a8fd3a5d22ae4d6f4bfebd264decfe3d"
    }
   ],
-  "recorded_at": "2026-11-03T21:03:48-03:00"
+  "recorded_at": "2026-11-04T02:20:43-03:00"
  },
  "sources": [
   {
@@ -111,8 +112,8 @@
   {
    "uri": "https://registry.terraform.io (providers schema -json dos 4 binários assinados do pin)",
    "license": "MPL-2.0",
-   "transformation": "nós de resource_identity_schemas e chaves de atributos citados por ponteiro JSON"
+   "transformation": "nós de resource_identity_schemas, chaves e forma dos blocos citados por ponteiro JSON"
   }
  ],
- "notes": "fatos mecânicos por regra declarada (rules.py); 6 fatos interpretados e a seleção de tipo do protocol_support feitos por claude-opus-5-5"
+ "notes": "fatos mecânicos por regra declarada (rules.py), inclusive por bloco aninhado (block_path); 6 interpretados e a seleção de tipo do protocol_support feitos por claude-opus-5-5"
 }

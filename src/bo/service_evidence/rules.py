@@ -70,6 +70,19 @@ RULES = {
                      "UNKNOWN/not_documented (ausência de frase não é ausência do recurso).",
     "R-ABSENT-NOPAGE": "o tipo está no schema fixado mas não tem página na tag fixada: UNKNOWN/not_documented, citando "
                        "as chaves do bloco do tipo no schema.",
+    # blocos aninhados (blocks.py)
+    "R-BLOCK-SCHEMA": "forma do bloco aninhado no schema fixado (nesting_mode, min/max_items, atributos com flags "
+                      "r/o/c, sub-blocos), citada pelo ponteiro com op=shape.",
+    "R-BLOCK-ID": "schema_identity = present se o bloco tem atributo computed id/arn/self_link/ocid, senão absent "
+                  "(só o schema; nada sobre a API); element_name_candidates = atributos obrigatórios name/key do "
+                  "bloco; max_per_parent = 1 se nesting single ou max_items 1.",
+    "R-BLOCK-OWNER": "o bloco só existe dentro da configuração do pai no schema fixado: a configuração é gravada "
+                     "pelo recurso Terraform do pai (kind parent, via = pai estrutural, camada terraform).",
+    "R-BLOCK-LIFE": "o bloco não tem recurso Terraform próprio: nasce e some com o pai (kind parent, camada "
+                    "terraform); o ciclo do objeto na API não é dito.",
+    "R-ID-SHARED": "tipos cujo resource_identity_schema tem o mesmo conjunto de campos obrigatórios, fora os "
+                   "genéricos (id, name, arn, region, account_id, project, location, zone, subscription_id, "
+                   "resource_group_name, compartment_id), são endereçados pela mesma chave de identidade.",
     # curadoria das fatias dos pilotos (curated.py): C-* publicado (o valor está escrito na frase), I-* interpretado
     "C-PILOT-LITERAL": "fato escolhido à mão numa frase da página fixada; o valor repete o que a frase diz.",
     "C-PILOT-GAP": "tipo das fatias dos pilotos sem frase para este tipo de fato na página fixada: UNKNOWN explícito "

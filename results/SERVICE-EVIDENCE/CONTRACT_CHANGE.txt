@@ -41,3 +41,16 @@ descrita abaixo e em results/SERVICE-EVIDENCE/evidence_levels.json (level_policy
    Formato usado: bo.protocol_support/1 em results/SERVICE-EVIDENCE/protocol_support.schema.json (evidências no
    formato C00 evidence_item). Mudança proposta: incorporar ao C22 (consumido pelo PROBEKIT) ou ao C25 como
    segundo tipo de arquivo.
+
+6. Fato por bloco aninhado (block_path) — acrescentado em 2026-11-04T02:21-03:00, pedido pelo CC-1 do
+   PILOT-STO-GLOSS
+   Fato: o GRAIN decide facetas embutidas por candidato tipo.bloco, mas o C25 1.0.0 não tem campo para o bloco.
+   Convenção usada: value.block_path (blocos separados por ponto, sem o tipo), em todos os fatos de bloco
+   (identity/block_schema, identity/block_identity, owner/block_config_owner, lifecycle_controller/
+   block_lifecycle) e nos fatos de atributo que estão dentro de bloco (attribute_scope, expiry_attribute,
+   rule_state_attribute, effect_*, order_attribute, deletion_policy).
+   Limite: status=unknown proíbe value, então um UNKNOWN de bloco não consegue dizer de qual bloco é; hoje o
+   bloco sem frase simplesmente não tem alegação (para o GRAIN, isso já é UNKNOWN).
+   Mudança proposta: C25 1.1.0 com campo de topo opcional block_path (string, padrão
+   ^[a-z0-9_]+(\.[a-z0-9_]+)*$), permitido também em status=unknown; C25-BLOCK: block_path só com
+   terraform_resource_type.
