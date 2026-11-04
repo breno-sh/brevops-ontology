@@ -282,11 +282,19 @@ def test_observed_rules_on_partial_obs_gaps():
         pytest.skip("OBS-GAPS ainda sem observações")
     fs = {(f["type"], f["block_path"], f["fact_kind"], f["rule"]): f for f in observed.facts(obs, reports)}
     sl = fs.get(("oci_core_security_list", "ingress_security_rules", "identity", "R-OBS-ID"))
-    assert sl and sl["value"]["status"] == "absent" and sl["repetitions"] >= 2 and sl["control"]["result"]
+    assert sl and sl["value"]["has_id"] is False and sl["repetitions"] >= 2 and sl["control"]["result"]
     assert sl["observation_ref"]["path"].startswith("$BO_DATA/OBS-GAPS")
     ng = fs.get(("oci_core_network_security_group_security_rule", None, "identity", "R-OBS-ID"))
-    assert ng and ng["value"]["key_fields"] == ["id"]
+    assert ng and ng["value"]["has_id"] is True and ng["value"]["requires_parent"] is True
     ow = fs.get(("oci_core_network_security_group_security_rule", None, "owner", "R-OBS-OWNER"))
     assert ow and ow["value"]["kind"] == "parent"
     cas = any(k[3] == "R-OBS-CASCADE" for k in fs)
     assert cas == observed._closed(reports, "EXP2-oci-nsg")  # cascata só com o experimento fechado no report
+
+
+def test_r1_r4_consolidation_counts():
+    """R2 resolve as 2 disputas doc x spec da regra de NSG OCI a favor da spec; nada sobrescrito (R1)."""
+    import json as _j
+    d = _j.loads((common.results_dir() / "spec_disputes.json").read_text(encoding="utf-8"))["disputes"]
+    res = [x for x in d if x.get("status") == "resolvida-por-observação"]
+    assert all(x["resolved_to"] in ("spec", "doc") and len(x["sides"]) == 2 and x["observation_id"] for x in res)

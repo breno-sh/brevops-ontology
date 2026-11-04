@@ -98,9 +98,8 @@ def facts(obs: list[dict], reports: dict) -> list[dict]:
         dup = [r for r in _steps(obs, e1, "get_after_duplicate") if r["rc"] == 0]
         accepts_dup = bool(dup) and all(len(x["result"].get("ingress_order", [])) >
                                         len(set(x["result"].get("ingress_order", []))) for x in dup)
-        val = {"status": "absent", "rule": "R-OBS-ID", "layer": "api",
-               "observed": {"any_rule_has_id": False, "accepts_duplicate_rule": accepts_dup,
-                            "list_replaced_whole": True}}
+        val = {"aspect": "item_identity", "has_id": False, "duplicates_accepted": accepts_dup, "replaced_whole": True,
+               "rule": "R-OBS-ID", "layer": "api"}
         for bp in ("ingress_security_rules", "egress_security_rules"):
             emit("oci_core_security_list", bp, "identity", "R-OBS-ID", dict(val), gets + dup,
                  _steps(obs, e1, "update_identical_control"))
@@ -110,8 +109,12 @@ def facts(obs: list[dict], reports: dict) -> list[dict]:
     if lists and all(all("id" in (x.get("keys") or []) for x in r["result"].get("rules", [])) for r in lists) \
             and by_id and all(r["rc"] == 0 for r in by_id):
         emit("oci_core_network_security_group_security_rule", None, "identity", "R-OBS-ID",
-             {"status": "present", "scope": "within_parent", "key_fields": ["id"], "rule": "R-OBS-ID",
-              "layer": "api"}, lists + by_id, _steps(obs, e2, "list_rules_empty_control"))
+             {"aspect": "item_identity", "has_id": True, "requires_parent": True,
+              "parent_attribute": "network_security_group_id", "parent_type": "oci_core_network_security_group",
+              "id_field": "id", "rule": "R-OBS-ID", "layer": "api"},
+             lists + by_id + [r for s_ in ("add_rule_to_nonexistent_nsg", "add_rule_without_nsg_id")
+                              for r in _steps(obs, e2, s_)],
+             _steps(obs, e2, "list_rules_empty_control"))
     refused = [r for s in ("add_rule_to_nonexistent_nsg", "add_rule_without_nsg_id") for r in _steps(obs, e2, s)]
     nocmd = _steps(obs, e2, "cli_has_standalone_rule_command")
     ok_add = _steps(obs, e2, "add_2_rules")
@@ -177,17 +180,24 @@ def facts(obs: list[dict], reports: dict) -> list[dict]:
     return out
 
 
-OBS_PATH = __import__("re").compile(r"^\$BO_DATA/OBS-GAPS/\S+$")  # padrão do C25 1.4.0 (observation_ref.path)
+OBS_PATH = __import__("re").compile(r"^\$BO_DATA/OBS-GAPS(-AZ)?/\S+$")  # padrão do C25 1.5.0 (observation_ref.path)
+
+
+def _side_value(rec: dict):
+    v = rec.get("value") or {}
+    return v.get("kind")
 
 
 def records(ctxs: dict, disputes: list) -> dict:
-    """Grava os fatos observados (C25 1.4.0) e as disputas observado × publicado/derivado (campo disputes do
-    registro e lista spec_disputes.json). Fato cujo caminho de observação o C25 ainda não aceita fica só como
-    candidato (contado em pending)."""
+    """Consolidação R1–R5 do PREREG (b95403a): R1 nunca sobrescreve; R2 disputa já existente entre fatos NÃO
+    observados (publicado ou derivado) é resolvida a favor do lado que a observação reproduz (status
+    resolvida-por-observação, sides, resolved_to, observation_id); R3 observado contra publicado sem disputa
+    prévia abre disputa observed_x_published; R4 campo sem publicado é preenchido. R5: a mesma regra para todos."""
     obs, reports = load()
     fs = facts(obs, reports)
     st = {"observations": len(obs), "facts": len(fs), "accepted_by_c25": c25_accepts_observed(),
-          "reports": sorted(reports), "pending": [], "emitted": 0}
+          "reports": sorted(reports), "pending": [], "emitted": 0,
+          "R1_not_overwritten": 0, "R2_resolved": 0, "R3_opened": 0, "R4_filled": 0}
     if not _closed(reports, "EXP2-oci-nsg"):
         st["pending"].append("R-OBS-CASCADE: experimento EXP2 sem report.json fechado")
     if "OBS-GAPS-AZ" not in reports:
@@ -203,29 +213,57 @@ def records(ctxs: dict, disputes: list) -> dict:
         extra = {k: f[k] for k in ("observation_ref", "run_id", "repetitions", "control", "observed_at")}
         cand.append({"type": f["type"], "block_path": f["block_path"], "fact_kind": f["fact_kind"], "value": v,
                      **extra})
-        contra = [r for r in ctx.recs
-                  if r["terraform_resource_type"] == f["type"] and r["fact_kind"] == f["fact_kind"]
-                  and r.get("block_path") == f["block_path"] and r["status"] == "stated"
-                  and r["level"] in ("published", "derived") and (r.get("value") or {}).get("layer") == "api"
-                  and "kind" in (r.get("value") or {}) and "kind" in v and r["value"]["kind"] != v["kind"]]
-        for r in contra:
-            disputes.append({"provider": p, "terraform_resource_type": f["type"], "fact": f["fact_kind"],
-                             "kind": "observed_x_published" if r["level"] == "published" else "observed_x_derived",
-                             "doc": {"kind": r["value"]["kind"], "rule": r["value"].get("rule")},
-                             "spec": {"kind": v["kind"], "rule": f["rule"], "level": "observed"},
-                             "evidence": [r["evidence_id"]]})
-        if not st["accepted_by_c25"]:
+        if not st["accepted_by_c25"] or not OBS_PATH.match(extra["observation_ref"]["path"]):
+            st["pending"].append(f"{f['type']} {f['rule']}: não aceito pelo C25 ainda")
             continue
-        if not OBS_PATH.match(extra["observation_ref"]["path"]):
-            st["pending"].append(f"{f['type']} {f['rule']}: observation_ref em {extra['observation_ref']['path']} "
-                                 "fora do padrão do C25 1.4.0 ($BO_DATA/OBS-GAPS/)")
-            continue
+        same = [r for r in ctx.recs if r["terraform_resource_type"] == f["type"] and r["fact_kind"] == f["fact_kind"]
+                and r.get("block_path") == f["block_path"] and r["status"] == "stated" and r["level"] != "observed"]
         eid = ctx.add(f["type"], f["fact_kind"], f"obs:{f['rule']}:{f['block_path']}", api, "stated",
                       "observed", value=v)
         ctx.by_id[eid].update(extra)
-        pub = sorted({r["evidence_id"] for r in contra if r["level"] == "published"})
-        if pub:  # o campo disputes do C25 só cita fato PUBLICADO; contra fato derivado a disputa fica na lista
-            ctx.by_id[eid]["disputes"] = pub
         st["emitted"] += 1
+        st["R1_not_overwritten"] += 1
+        prior = [d for d in disputes if d["provider"] == p and d["terraform_resource_type"] == f["type"]
+                 and d["fact"] == f["fact_kind"] and d.get("block_path") == f["block_path"]
+                 and d.get("status") != "resolvida-por-observação" and "observed" not in d.get("kind", "")
+                 and len(d.get("evidence") or []) == 2]
+        ok = None
+        for d in prior:
+            sides = {sd: ctx.by_id.get(e) for sd, e in (("doc", d["evidence"][0]), ("spec", d["evidence"][1]))}
+            if "kind" in v and sides["spec"] and _side_value(sides["spec"]) == v["kind"]:
+                ok = (d, "spec")
+            elif "kind" in v and sides["doc"] and _side_value(sides["doc"]) == v["kind"]:
+                ok = (d, "doc")
+            if ok:
+                break
+        if ok:  # R2
+            d, side = ok
+            d.update({"status": "resolvida-por-observação", "sides": list(d["evidence"]), "resolved_to": side,
+                      "observation_id": eid, "resolved_at": extra["observed_at"]})
+            st["R2_resolved"] += 1
+            continue
+        pub = [r for r in same if r["level"] == "published" and _contradicts(r, v)]
+        if pub:  # R3
+            ctx.by_id[eid]["disputes"] = sorted({r["evidence_id"] for r in pub})
+            disputes.append({"provider": p, "terraform_resource_type": f["type"], "fact": f["fact_kind"],
+                             **({"block_path": f["block_path"]} if f["block_path"] else {}),
+                             "kind": "observed_x_published", "status": "aberta",
+                             "doc": {"value": (pub[0].get("value") or {}).get("kind") or
+                                     (pub[0].get("value") or {}).get("aspect"), "rule": pub[0]["value"].get("rule")},
+                             "spec": {"kind": v.get("kind"), "rule": f["rule"], "level": "observed"},
+                             "evidence": sorted({r["evidence_id"] for r in pub} | {eid})})
+            st["R3_opened"] += 1
+            continue
+        st["R4_filled"] += 1  # R4: nenhum publicado afirma esse campo
     st["candidates"] = cand
     return st
+
+
+def _contradicts(rec: dict, v: dict) -> bool:
+    """O publicado afirma valor do MESMO campo e diferente do observado (kind, ou has_id do item_identity)."""
+    rv = rec.get("value") or {}
+    if "kind" in v and "kind" in rv:
+        return rv["kind"] != v["kind"]
+    if v.get("aspect") == "item_identity" and rv.get("aspect") == "item_identity":
+        return rv.get("has_id") != v.get("has_id")
+    return False

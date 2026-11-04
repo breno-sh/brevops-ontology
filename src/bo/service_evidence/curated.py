@@ -118,6 +118,10 @@ ENTRIES = [
      "* `stateless` - (Optional) A stateless rule allows traffic", None, "published",
      {"aspect": "rule_state_attribute", "rule": "R-CONN-DOC", "attribute": "stateless",
       "mentions": ["stateful", "stateless"], "default": {"value": False, "as_of": "2026-10-21"}}),
+    # cascata de contêiner de namespace (frase publicada da página do grupo de recursos)
+    ("azurerm", "azurerm_resource_group", "lifecycle_controller", "namespace_cascade", Z + "resource_group.html.markdown",
+     "Azure automatically deletes any Resources nested within the Resource Group", None, "published",
+     {"aspect": "namespace_cascade", "rule": "C-PILOT-LITERAL", "cascade": True}),
     # ---------------- armazenamento
     ("aws", "aws_s3_account_public_access_block", "identity", "one_per_account",
      A + "s3_account_public_access_block.html.markdown", "Each AWS account may only have one", None, "published",

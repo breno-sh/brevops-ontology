@@ -239,7 +239,7 @@ def run(ctx, bridges: dict, disputes: list) -> None:
             a, b = singular(A.snake(br["resource"].split("/")[-1])), singular(A.snake(r["resource"].split("/")[-1]))
             if a != b:
                 disputes.append({"provider": p, "terraform_resource_type": T, "fact": "api_bridge",
-                                 "doc": br, "spec": api, "evidence": [bid]})
+                                 "kind": "doc_x_spec", "doc": br, "spec": api, "evidence": [bid]})
         if r["create"]:
             new = {"lifecycle_controller": ("self", "R-LIFE-SPEC"), "owner": ("self", "R-OWN-SPEC")}
             via = []
@@ -266,6 +266,7 @@ def run(ctx, bridges: dict, disputes: list) -> None:
             for d in doc_api.get(T, []):
                 if d["fact_kind"] == kind and d["value"].get("kind") != k:
                     disputes.append({"provider": p, "terraform_resource_type": T, "fact": kind,
+                                     "kind": "doc_x_spec",
                                      "doc": {"kind": d["value"].get("kind"), "rule": d["value"].get("rule")},
                                      "spec": {"kind": k, "rule": rule}, "evidence": [d["evidence_id"], eid]})
 

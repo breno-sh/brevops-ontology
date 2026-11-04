@@ -197,8 +197,10 @@ def render(g: dict) -> dict[str, str]:
     lv = json.dumps(evidence_levels(g), ensure_ascii=False, indent=1, sort_keys=False) + "\n"
     srcs = json.dumps(sources_doc(), ensure_ascii=False, indent=1) + "\n"
     sch = json.dumps(protocol.SCHEMA, ensure_ascii=False, indent=1) + "\n"
-    disp = json.dumps({"schema": "bo.spec_disputes/1", "module": common.MODULE,
-                       "note": "conflito spec x doc registrado, não resolvido: os dois fatos ficam no C25",
+    disp = json.dumps({"schema": "bo.spec_disputes/1", "module": common.MODULE, "contract": "C25",
+                       "contract_version": "1.5.0",
+                       "note": "conflito spec x doc e observado x publicado: os fatos ficam no C25; resolução só por "
+                               "observação (R2 do PREREG)",
                        "disputes": g["disputes"]}, ensure_ascii=False, indent=1) + "\n"
     return {
         str(common.out_dir() / "service_evidence.jsonl"): lines,

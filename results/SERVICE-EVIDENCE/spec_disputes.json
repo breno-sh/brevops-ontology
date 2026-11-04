@@ -1,12 +1,15 @@
 {
  "schema": "bo.spec_disputes/1",
  "module": "SERVICE-EVIDENCE",
- "note": "conflito spec x doc registrado, não resolvido: os dois fatos ficam no C25",
+ "contract": "C25",
+ "contract_version": "1.5.0",
+ "note": "conflito spec x doc e observado x publicado: os fatos ficam no C25; resolução só por observação (R2 do PREREG)",
  "disputes": [
   {
    "provider": "azurerm",
    "terraform_resource_type": "azurerm_app_service_slot_virtual_network_swift_connection",
    "fact": "lifecycle_controller",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-LIFE-API"
@@ -24,6 +27,7 @@
    "provider": "azurerm",
    "terraform_resource_type": "azurerm_app_service_slot_virtual_network_swift_connection",
    "fact": "owner",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-OWN-API"
@@ -41,6 +45,7 @@
    "provider": "azurerm",
    "terraform_resource_type": "azurerm_app_service_virtual_network_swift_connection",
    "fact": "lifecycle_controller",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-LIFE-API"
@@ -58,6 +63,7 @@
    "provider": "azurerm",
    "terraform_resource_type": "azurerm_app_service_virtual_network_swift_connection",
    "fact": "owner",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-OWN-API"
@@ -75,6 +81,7 @@
    "provider": "google",
    "terraform_resource_type": "google_alloydb_backup",
    "fact": "api_bridge",
+   "kind": "doc_x_spec",
    "doc": {
     "service": "alloydb",
     "resource": "projects.locations.backups/create"
@@ -91,6 +98,7 @@
    "provider": "google",
    "terraform_resource_type": "google_alloydb_cluster",
    "fact": "api_bridge",
+   "kind": "doc_x_spec",
    "doc": {
     "service": "alloydb",
     "resource": "projects.locations.clusters/create"
@@ -107,6 +115,7 @@
    "provider": "google",
    "terraform_resource_type": "google_alloydb_instance",
    "fact": "api_bridge",
+   "kind": "doc_x_spec",
    "doc": {
     "service": "alloydb",
     "resource": "projects.locations.clusters.instances/create"
@@ -123,6 +132,7 @@
    "provider": "google",
    "terraform_resource_type": "google_alloydb_user",
    "fact": "api_bridge",
+   "kind": "doc_x_spec",
    "doc": {
     "service": "alloydb",
     "resource": "projects.locations.clusters.users/create"
@@ -139,6 +149,7 @@
    "provider": "google",
    "terraform_resource_type": "google_apigee_dns_zone",
    "fact": "api_bridge",
+   "kind": "doc_x_spec",
    "doc": {
     "service": "apigee",
     "resource": "organizations.dnsZones/create"
@@ -155,6 +166,7 @@
    "provider": "google",
    "terraform_resource_type": "google_apigee_endpoint_attachment",
    "fact": "api_bridge",
+   "kind": "doc_x_spec",
    "doc": {
     "service": "apigee",
     "resource": "organizations.endpointAttachments/create"
@@ -171,6 +183,7 @@
    "provider": "google",
    "terraform_resource_type": "google_apigee_envgroup",
    "fact": "api_bridge",
+   "kind": "doc_x_spec",
    "doc": {
     "service": "apigee",
     "resource": "organizations.envgroups/create"
@@ -187,6 +200,7 @@
    "provider": "google",
    "terraform_resource_type": "google_apigee_instance",
    "fact": "api_bridge",
+   "kind": "doc_x_spec",
    "doc": {
     "service": "apigee",
     "resource": "organizations.instances/create"
@@ -203,6 +217,7 @@
    "provider": "google",
    "terraform_resource_type": "google_apigee_security_action",
    "fact": "api_bridge",
+   "kind": "doc_x_spec",
    "doc": {
     "service": "apigee",
     "resource": "organizations.environments.securityActions/create"
@@ -219,6 +234,7 @@
    "provider": "google",
    "terraform_resource_type": "google_apigee_security_feedback",
    "fact": "api_bridge",
+   "kind": "doc_x_spec",
    "doc": {
     "service": "apigee",
     "resource": "organizations.securityFeedback/create"
@@ -235,6 +251,7 @@
    "provider": "google",
    "terraform_resource_type": "google_apigee_security_monitoring_condition",
    "fact": "api_bridge",
+   "kind": "doc_x_spec",
    "doc": {
     "service": "apigee",
     "resource": "organizations.securityMonitoringConditions/create"
@@ -251,6 +268,7 @@
    "provider": "google",
    "terraform_resource_type": "google_bigquery_datapolicy_data_policy",
    "fact": "api_bridge",
+   "kind": "doc_x_spec",
    "doc": {
     "service": "bigquery",
     "resource": "projects.locations.dataPolicies/create"
@@ -267,6 +285,7 @@
    "provider": "google",
    "terraform_resource_type": "google_bigtable_instance",
    "fact": "api_bridge",
+   "kind": "doc_x_spec",
    "doc": {
     "service": "bigtable",
     "resource": "projects.instances.clusters"
@@ -283,6 +302,7 @@
    "provider": "google",
    "terraform_resource_type": "google_certificate_manager_trust_config",
    "fact": "api_bridge",
+   "kind": "doc_x_spec",
    "doc": {
     "service": "certificate-manager",
     "resource": "projects.locations.trustConfigs/create"
@@ -299,6 +319,7 @@
    "provider": "google",
    "terraform_resource_type": "google_cloud_run_service",
    "fact": "api_bridge",
+   "kind": "doc_x_spec",
    "doc": {
     "service": "run",
     "resource": "namespaces.services"
@@ -315,6 +336,7 @@
    "provider": "google",
    "terraform_resource_type": "google_compute_interconnect_attachment_group",
    "fact": "api_bridge",
+   "kind": "doc_x_spec",
    "doc": {
     "service": "compute",
     "resource": "interconnects"
@@ -331,6 +353,7 @@
    "provider": "google",
    "terraform_resource_type": "google_compute_interconnect_group",
    "fact": "api_bridge",
+   "kind": "doc_x_spec",
    "doc": {
     "service": "compute",
     "resource": "interconnects"
@@ -347,6 +370,7 @@
    "provider": "google",
    "terraform_resource_type": "google_compute_region_health_aggregation_policy",
    "fact": "api_bridge",
+   "kind": "doc_x_spec",
    "doc": {
     "service": "compute",
     "resource": "healthAggregationPolicies"
@@ -363,6 +387,7 @@
    "provider": "google",
    "terraform_resource_type": "google_compute_vpn_gateway",
    "fact": "api_bridge",
+   "kind": "doc_x_spec",
    "doc": {
     "service": "compute",
     "resource": "targetVpnGateways"
@@ -379,6 +404,7 @@
    "provider": "google",
    "terraform_resource_type": "google_dialogflow_generator",
    "fact": "api_bridge",
+   "kind": "doc_x_spec",
    "doc": {
     "service": "dialogflow",
     "resource": "projects.locations.generators"
@@ -395,6 +421,7 @@
    "provider": "google",
    "terraform_resource_type": "google_dialogflow_tool",
    "fact": "api_bridge",
+   "kind": "doc_x_spec",
    "doc": {
     "service": "dialogflow",
     "resource": "projects.locations.tools"
@@ -411,6 +438,7 @@
    "provider": "google",
    "terraform_resource_type": "google_gke_hub_feature",
    "fact": "api_bridge",
+   "kind": "doc_x_spec",
    "doc": {
     "service": "anthos",
     "resource": "projects.locations.features"
@@ -427,6 +455,7 @@
    "provider": "google",
    "terraform_resource_type": "google_logging_metric",
    "fact": "api_bridge",
+   "kind": "doc_x_spec",
    "doc": {
     "service": "logging",
     "resource": "rest/v2/projects.metrics/create"
@@ -443,6 +472,7 @@
    "provider": "google",
    "terraform_resource_type": "google_securityposture_posture",
    "fact": "api_bridge",
+   "kind": "doc_x_spec",
    "doc": {
     "service": "security-command-center",
     "resource": "Posture"
@@ -459,6 +489,7 @@
    "provider": "google",
    "terraform_resource_type": "google_storage_hmac_key",
    "fact": "api_bridge",
+   "kind": "doc_x_spec",
    "doc": {
     "service": "storage",
     "resource": "projects/hmacKeys"
@@ -475,6 +506,7 @@
    "provider": "google",
    "terraform_resource_type": "google_vmwareengine_network_peering",
    "fact": "api_bridge",
+   "kind": "doc_x_spec",
    "doc": {
     "service": "compute",
     "resource": "networks/addPeering"
@@ -491,6 +523,7 @@
    "provider": "google",
    "terraform_resource_type": "google_workstations_workstation_cluster",
    "fact": "api_bridge",
+   "kind": "doc_x_spec",
    "doc": {
     "service": "workstations",
     "resource": "projects.locations.workstationClusters/create"
@@ -507,6 +540,7 @@
    "provider": "google",
    "terraform_resource_type": "google_workstations_workstation_config",
    "fact": "api_bridge",
+   "kind": "doc_x_spec",
    "doc": {
     "service": "workstations",
     "resource": "projects.locations.workstationClusters.workstationConfigs/create"
@@ -523,6 +557,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_bds_auto_scaling_configuration",
    "fact": "lifecycle_controller",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-LIFE-API"
@@ -540,6 +575,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_bds_auto_scaling_configuration",
    "fact": "owner",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-OWN-API"
@@ -557,6 +593,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_containerengine_addon",
    "fact": "lifecycle_controller",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-LIFE-API"
@@ -574,6 +611,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_containerengine_addon",
    "fact": "owner",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-OWN-API"
@@ -591,6 +629,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_core_drg_nat_policy_drg_nat_rule",
    "fact": "lifecycle_controller",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-LIFE-API"
@@ -608,6 +647,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_core_drg_nat_policy_drg_nat_rule",
    "fact": "owner",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-OWN-API"
@@ -625,6 +665,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_core_drg_route_distribution_statement",
    "fact": "lifecycle_controller",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-LIFE-API"
@@ -642,6 +683,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_core_drg_route_distribution_statement",
    "fact": "owner",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-OWN-API"
@@ -659,6 +701,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_core_network_security_group_security_rule",
    "fact": "lifecycle_controller",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-LIFE-API"
@@ -670,30 +713,21 @@
    "evidence": [
     "SE-oci-l7vx4ajpaevy2ecg",
     "SE-oci-ubus4j7ltxpdtqxg"
-   ]
-  },
-  {
-   "provider": "oci",
-   "terraform_resource_type": "oci_core_network_security_group_security_rule",
-   "fact": "lifecycle_controller",
-   "kind": "observed_x_derived",
-   "doc": {
-    "kind": "self",
-    "rule": "R-LIFE-API"
-   },
-   "spec": {
-    "kind": "parent",
-    "rule": "R-OBS-CASCADE",
-    "level": "observed"
-   },
-   "evidence": [
-    "SE-oci-l7vx4ajpaevy2ecg"
-   ]
+   ],
+   "status": "resolvida-por-observação",
+   "sides": [
+    "SE-oci-l7vx4ajpaevy2ecg",
+    "SE-oci-ubus4j7ltxpdtqxg"
+   ],
+   "resolved_to": "spec",
+   "observation_id": "SE-oci-x5i5qewnvgmjhurn",
+   "resolved_at": "2026-11-04T16:18:39-03:00"
   },
   {
    "provider": "oci",
    "terraform_resource_type": "oci_core_network_security_group_security_rule",
    "fact": "owner",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-OWN-API"
@@ -705,30 +739,21 @@
    "evidence": [
     "SE-oci-3uf5jwnkdj6kln7h",
     "SE-oci-zj3vmaqgzxojxf3k"
-   ]
-  },
-  {
-   "provider": "oci",
-   "terraform_resource_type": "oci_core_network_security_group_security_rule",
-   "fact": "owner",
-   "kind": "observed_x_derived",
-   "doc": {
-    "kind": "self",
-    "rule": "R-OWN-API"
-   },
-   "spec": {
-    "kind": "parent",
-    "rule": "R-OBS-OWNER",
-    "level": "observed"
-   },
-   "evidence": [
-    "SE-oci-3uf5jwnkdj6kln7h"
-   ]
+   ],
+   "status": "resolvida-por-observação",
+   "sides": [
+    "SE-oci-3uf5jwnkdj6kln7h",
+    "SE-oci-zj3vmaqgzxojxf3k"
+   ],
+   "resolved_to": "spec",
+   "observation_id": "SE-oci-6nluro6igz6yr6tz",
+   "resolved_at": "2026-11-04T16:18:28-03:00"
   },
   {
    "provider": "oci",
    "terraform_resource_type": "oci_database_autonomous_container_database_dataguard_association",
    "fact": "lifecycle_controller",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-LIFE-API"
@@ -746,6 +771,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_database_autonomous_container_database_dataguard_association",
    "fact": "owner",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-OWN-API"
@@ -763,6 +789,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_database_autonomous_database_wallet",
    "fact": "lifecycle_controller",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-LIFE-API"
@@ -780,6 +807,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_database_autonomous_database_wallet",
    "fact": "owner",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-OWN-API"
@@ -797,6 +825,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_database_cloud_vm_cluster_iorm_config",
    "fact": "lifecycle_controller",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-LIFE-API"
@@ -814,6 +843,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_database_cloud_vm_cluster_iorm_config",
    "fact": "owner",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-OWN-API"
@@ -831,6 +861,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_database_data_guard_association",
    "fact": "lifecycle_controller",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-LIFE-API"
@@ -848,6 +879,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_database_data_guard_association",
    "fact": "owner",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-OWN-API"
@@ -865,6 +897,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_database_exadata_iorm_config",
    "fact": "lifecycle_controller",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-LIFE-API"
@@ -882,6 +915,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_database_exadata_iorm_config",
    "fact": "owner",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-OWN-API"
@@ -899,6 +933,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_datascience_model_provenance",
    "fact": "lifecycle_controller",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-LIFE-API"
@@ -916,6 +951,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_datascience_model_provenance",
    "fact": "owner",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-OWN-API"
@@ -933,6 +969,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_devops_project_repository_setting",
    "fact": "lifecycle_controller",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-LIFE-API"
@@ -950,6 +987,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_devops_project_repository_setting",
    "fact": "owner",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-OWN-API"
@@ -967,6 +1005,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_devops_repository_ref",
    "fact": "lifecycle_controller",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-LIFE-API"
@@ -984,6 +1023,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_devops_repository_ref",
    "fact": "owner",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-OWN-API"
@@ -1001,6 +1041,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_devops_repository_setting",
    "fact": "lifecycle_controller",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-LIFE-API"
@@ -1018,6 +1059,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_devops_repository_setting",
    "fact": "owner",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-OWN-API"
@@ -1035,6 +1077,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_generative_ai_hosted_application_iam",
    "fact": "api_bridge",
+   "kind": "doc_x_spec",
    "doc": {
     "service": "generative-ai",
     "resource": "HostedApplicationsIam"
@@ -1051,6 +1094,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_iot_iot_flow_runtime_flow",
    "fact": "api_bridge",
+   "kind": "doc_x_spec",
    "doc": {
     "service": "iot",
     "resource": "Flow"
@@ -1067,6 +1111,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_iot_iot_flow_runtime_flow",
    "fact": "lifecycle_controller",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-LIFE-API"
@@ -1084,6 +1129,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_iot_iot_flow_runtime_flow",
    "fact": "owner",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-OWN-API"
@@ -1101,6 +1147,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_jms_fleet_advanced_feature_configuration",
    "fact": "lifecycle_controller",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-LIFE-API"
@@ -1118,6 +1165,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_jms_fleet_advanced_feature_configuration",
    "fact": "owner",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-OWN-API"
@@ -1135,6 +1183,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_managed_kafka_kafka_cluster_addon",
    "fact": "lifecycle_controller",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-LIFE-API"
@@ -1152,6 +1201,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_managed_kafka_kafka_cluster_addon",
    "fact": "owner",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-OWN-API"
@@ -1169,6 +1219,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_mysql_heat_wave_cluster",
    "fact": "lifecycle_controller",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-LIFE-API"
@@ -1186,6 +1237,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_mysql_heat_wave_cluster",
    "fact": "owner",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-OWN-API"
@@ -1203,6 +1255,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_objectstorage_object_lifecycle_policy",
    "fact": "lifecycle_controller",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-LIFE-API"
@@ -1220,6 +1273,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_objectstorage_object_lifecycle_policy",
    "fact": "owner",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-OWN-API"
@@ -1237,6 +1291,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_os_management_hub_software_source_manifest",
    "fact": "api_bridge",
+   "kind": "doc_x_spec",
    "doc": {
     "service": "osmh",
     "resource": "Manifest"
@@ -1253,6 +1308,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_os_management_hub_software_source_manifest",
    "fact": "lifecycle_controller",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-LIFE-API"
@@ -1270,6 +1326,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_os_management_hub_software_source_manifest",
    "fact": "owner",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-OWN-API"
@@ -1287,6 +1344,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_waas_protection_rule",
    "fact": "lifecycle_controller",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-LIFE-API"
@@ -1304,6 +1362,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_waas_protection_rule",
    "fact": "owner",
+   "kind": "doc_x_spec",
    "doc": {
     "kind": "self",
     "rule": "R-OWN-API"

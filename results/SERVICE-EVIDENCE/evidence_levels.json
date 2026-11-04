@@ -3,14 +3,14 @@
  "module": "SERVICE-EVIDENCE",
  "contract": "C25",
  "contract_version": "1.0.0",
- "generated_at": "2026-11-04T17:04:20-03:00",
- "records": 200267,
+ "generated_at": "2026-11-04T17:29:12-03:00",
+ "records": 200273,
  "by_level": {
   "derived": 132581,
   "interpreted": 11,
-  "observed": 5,
-  "published": 67670,
-  "status:stated": 194172,
+  "observed": 10,
+  "published": 67671,
+  "status:stated": 194178,
   "status:unknown": 6095
  },
  "by_provider": {
@@ -83,8 +83,10 @@
    "import_key|published|stated": 1102,
    "import_key|published|unknown": 5,
    "lifecycle_controller|derived|stated": 6013,
-   "lifecycle_controller|published|stated": 2412,
+   "lifecycle_controller|observed|stated": 3,
+   "lifecycle_controller|published|stated": 2413,
    "owner|derived|stated": 7053,
+   "owner|observed|stated": 2,
    "owner|published|stated": 353,
    "owner|published|unknown": 4,
    "precedence|published|stated": 77,
@@ -188,7 +190,7 @@
   "missing": []
  },
  "curated": {
-  "published": 15,
+  "published": 16,
   "interpreted": 6,
   "gap_unknown": 31,
   "missing": [],
@@ -198,7 +200,7 @@
    "identidade_associacao": 2
   }
  },
- "spec_disputes": 79,
+ "spec_disputes": 77,
  "observed": {
   "observations": 227,
   "facts": 10,
@@ -207,14 +209,12 @@
    "OBS-GAPS",
    "OBS-GAPS-AZ"
   ],
-  "pending": [
-   "azurerm_network_interface_security_group_association R-OBS-ASSOC-LIFE: observation_ref em $BO_DATA/OBS-GAPS-AZ/observations.jsonl fora do padrão do C25 1.4.0 ($BO_DATA/OBS-GAPS/)",
-   "azurerm_network_interface_security_group_association R-OBS-OWNER: observation_ref em $BO_DATA/OBS-GAPS-AZ/observations.jsonl fora do padrão do C25 1.4.0 ($BO_DATA/OBS-GAPS/)",
-   "azurerm_subnet_network_security_group_association R-OBS-ASSOC-LIFE: observation_ref em $BO_DATA/OBS-GAPS-AZ/observations.jsonl fora do padrão do C25 1.4.0 ($BO_DATA/OBS-GAPS/)",
-   "azurerm_subnet_network_security_group_association R-OBS-OWNER: observation_ref em $BO_DATA/OBS-GAPS-AZ/observations.jsonl fora do padrão do C25 1.4.0 ($BO_DATA/OBS-GAPS/)",
-   "azurerm_network_security_group R-OBS-BLOCK-DELETE: observation_ref em $BO_DATA/OBS-GAPS-AZ/observations.jsonl fora do padrão do C25 1.4.0 ($BO_DATA/OBS-GAPS/)"
-  ],
-  "emitted": 5
+  "pending": [],
+  "emitted": 10,
+  "R1_not_overwritten": 10,
+  "R2_resolved": 2,
+  "R3_opened": 0,
+  "R4_filled": 8
  },
  "spec_coverage": {
   "aws": {
@@ -2232,7 +2232,7 @@
     "tag_support:published:stated": 1107,
     "ttl_support:published:unknown": 990,
     "R-OWN-TOP": 1102,
-    "lifecycle_controller:published:stated": 2412,
+    "lifecycle_controller:published:stated": 2413,
     "lifecycle_controller:derived:stated": 6013,
     "R-LIFE-TF": 1107,
     "identity:published:stated": 5584,
@@ -2284,7 +2284,9 @@
     "R-SCOPE-SELF": 1106,
     "R-SCOPE-DOC_tipo": 1,
     "R-SCOPE-PARENT_api": 1285,
-    "R-SCOPE-PARENT": 2611
+    "R-SCOPE-PARENT": 2611,
+    "lifecycle_controller:observed:stated": 3,
+    "owner:observed:stated": 2
    }
   },
   "oci": {
