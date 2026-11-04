@@ -3,13 +3,13 @@
  "module": "SERVICE-EVIDENCE",
  "contract": "C25",
  "contract_version": "1.0.0",
- "generated_at": "2026-11-04T10:55:33-03:00",
- "records": 199771,
+ "generated_at": "2026-11-04T12:15:43-03:00",
+ "records": 199772,
  "by_level": {
   "derived": 132177,
   "interpreted": 6,
-  "published": 67588,
-  "status:stated": 193674,
+  "published": 67589,
+  "status:stated": 193675,
   "status:unknown": 6097
  },
  "by_provider": {
@@ -94,7 +94,7 @@
    "api_bridge|derived|stated": 632,
    "api_bridge|published|stated": 887,
    "connection_state|interpreted|stated": 3,
-   "connection_state|published|stated": 2,
+   "connection_state|published|stated": 3,
    "effective_scope|derived|stated": 4947,
    "effective_scope|published|stated": 26,
    "effect|published|stated": 3,
@@ -181,7 +181,7 @@
   "missing": []
  },
  "curated": {
-  "published": 14,
+  "published": 15,
   "interpreted": 6,
   "gap_unknown": 31,
   "missing": []
@@ -2295,7 +2295,7 @@
     "import_key:published:unknown": 147,
     "identity:published:unknown": 50,
     "effective_scope:published:stated": 26,
-    "connection_state:published:stated": 2,
+    "connection_state:published:stated": 3,
     "effect:published:stated": 3,
     "connection_state:interpreted:stated": 3,
     "effect:published:unknown": 2,

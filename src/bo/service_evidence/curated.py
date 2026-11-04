@@ -112,6 +112,12 @@ ENTRIES = [
      "* `network_security_group_name` - (Required)", None, "published",
      {"aspect": "attachment_scope", "rule": "R-SCOPE-DOC", "attribute": "network_security_group_name",
       "attach_to": "network security group"}),
+    # item 4 do CONTRACT_CHANGE do PILOT-NET-ORACLE: a linha do NSG OCI publicada pela mesma regra da security list
+    ("oci", "oci_core_network_security_group_security_rule", "connection_state", "stateless_published",
+     O + "core_network_security_group_security_rule.html.markdown",
+     "* `stateless` - (Optional) A stateless rule allows traffic", None, "published",
+     {"aspect": "rule_state_attribute", "rule": "R-CONN-DOC", "attribute": "stateless",
+      "mentions": ["stateful", "stateless"], "default": {"value": False, "as_of": "2026-10-21"}}),
     # ---------------- armazenamento
     ("aws", "aws_s3_account_public_access_block", "identity", "one_per_account",
      A + "s3_account_public_access_block.html.markdown", "Each AWS account may only have one", None, "published",

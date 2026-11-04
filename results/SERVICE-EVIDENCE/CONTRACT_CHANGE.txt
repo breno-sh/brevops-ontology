@@ -64,3 +64,19 @@ descrita abaixo e em results/SERVICE-EVIDENCE/evidence_levels.json (level_policy
    flags r/o/c, sub-blocos); depois disso as citações passam para o campo schema sem mudar a frase.
    Fatos de grão sem aspect (R-OWN-TOP, R-LIFE-TF): value = alegação direta {kind, via} mais rule e layer, que o
    GRAIN não normaliza; se o C25 ganhar um campo rule_id de topo, rule sai de value.
+
+8. Respostas aos pedidos dos pilotos (PILOT-EXIT 1/2) — 2026-11-04T12:20-03:00
+   PILOT-NET-ORACLE item 3 (estado de conexão de SG AWS, firewall GCP e NSG Azure): continua UNKNOWN. Nem a doc
+   fixada do Terraform nem as specs de API fixadas dizem isso (procurado: documentação do modelo Smithy ec2, schema
+   Firewall do Discovery compute v1, definições de virtualNetwork.json do Microsoft.Network 2026-03-01; os únicos
+   "stateful/stateless" do ec2 são do Network Firewall). Achado registrado, não preenchido.
+   PILOT-NET-ORACLE item 4: a linha do stateless do NSG OCI agora também sai PUBLICADA (R-CONN-DOC, mesma frase e
+   mesmo default da security list); o fato interpretado continua ao lado.
+   PILOT-NET-ORACLE item 5 (coleção da prioridade única do NSG Azure): a spec repete a frase da doc ("unique for each
+   rule in the collection"); sem evidência nova, continua ambíguo.
+   PILOT-NET-E2E CC-NET-E2E-2 (a): regras OCI (NSG e security list) já têm dono, ciclo e alcance pela spec
+   (CC-11). Anexação por atributo-lista (vpc_security_group_ids, security_list_ids, nsg_ids) e seleção por rótulo
+   (target_tags) não são recurso nem campo-faceta na spec: são referências de outro tipo, item (b) do mesmo pedido
+   (GRAIN); o SERVICE-EVIDENCE não emite alcance para elas sem fonte.
+   Disputas OCI (regra de NSG, política de ciclo de vida do bucket): continuam disputas; não há evidência nova
+   além da spec do SDK, que já é um dos lados.
