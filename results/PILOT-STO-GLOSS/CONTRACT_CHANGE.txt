@@ -1,4 +1,24 @@
 CONTRACT_CHANGE — PILOT-STO-GLOSS (piloto sto: grão mecânico e glossário da fatia)
+ATUALIZAÇÃO 2026-11-04T08:16:00-03:00 (America/Recife), base 22d72df (SERVICE-EVIDENCE 69fb76e: dono, ciclo e
+alcance na camada de API; GRAIN 0.1.2): os 4 contêineres CONTINUAM UNKNOWN (116/116 unidades UNKNOWN). Não forcei.
+  aws_s3_bucket            G0-IDENTITY, UNRESOLVED, falta identity+lifecycle_controller+owner+effective_scope.
+                           Motivo do adaptador: "chave compartilhada ['bucket'] sem raiz única com ciclo de vida
+                           self entre os pares (0 raiz(es))" — o contêiner e os 8 recursos separados de faceta
+                           têm a mesma chave 'bucket' e nenhum fato de ciclo de vida self na API para o contêiner;
+                           ciclo, dono e alcance do contêiner ainda só chegam da camada Terraform (recusados).
+  azurerm_storage_container G0-IDENTITY, UNRESOLVED, falta identity ("chave compartilhada ... (2 raiz(es))": conta
+                           e contêiner disputam a raiz; "contido em resource sem tipo Terraform").
+  google_storage_bucket    G0-NEEDS, INDEPENDENT, falta só lifecycle_controller ("política de remoção sem valores
+                           documentados"); seria ENTITY com esse fato.
+  oci_objectstorage_bucket G0-IDENTITY, ABSENT, falta identity ("referência compartment_id com alvo ambíguo": dois
+                           tipos Terraform candidatos a alvo).
+  Faltas na fatia: identity 114, lifecycle_controller 111, owner 110, effective_scope 108 (de 116 unidades).
+  Consequência: E2 do PILOT-EXIT (decomposição = gabarito em 100% dos casos obrigatórios) não é atingível com estas
+  entradas; o número de UNKNOWN é resultado. Propostas: (1) regra de raiz para chave compartilhada quando a raiz
+  tem identidade INDEPENDENT e as outras são recursos de faceta com a mesma chave (hoje exige ciclo self que nenhum
+  fato de API dá); (2) ciclo de vida de API para o contêiner (aws, google); (3) desambiguar o alvo de
+  compartment_id pela ponte de API (oci); (4) teste de integração GRAIN×SE na fatia sto.
+
 ATUALIZAÇÃO 2026-11-04T08:01:00-03:00 (America/Recife), base a9af398 (GRAIN 0.1.2 e580e22, SERVICE-EVIDENCE a9af398):
 CC-7 (achado; não forçado): depois das duas emendas, os 4 contêineres AINDA saem UNKNOWN; 116/116 unidades UNKNOWN
   (131 candidatos; 15 transparentes; 44 átomos timeouts.* saem do C19 porque o GRAIN 0.1.2 os põe fora do domínio).
