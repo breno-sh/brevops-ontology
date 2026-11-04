@@ -92,3 +92,7 @@ PILOT-NET-GLOSS ab56277 na forma oficial: MANIFEST.sha256 + value_space.jsonl).
 ADENDO 2026-11-04T14:35:00-03:00 (America/Recife), rodada final antes do PILOT-EXIT 2: bo/base 83f5d59, PILOT-NET-GLOSS
 2b98878, árbitro final 7fc1a85 (ARBITER.sha256 b4cf2f98...). O SE confirmou que não há frase publicada de "só permite"
 nas fontes fixadas: o efeito de aws e oci segue não documentado e os 15 AMBIGUOUS ficam.
+
+ADENDO 2026-11-04T18:47:00-03:00 (America/Recife), rodada final 2/2: bo/base 6c43bb5, PILOT-NET-GLOSS 6c43bb5,
+árbitro recongelado ARBITERLIB 28b9ba0 sobre a emenda 12 do CONTRACTS (cd6a66e); ARBITER.sha256 74c0f33bbaf57020...
+Relatório com vereditos de alegações, ausências e compostos separados (report.json, arbiter.verdicts_separated).

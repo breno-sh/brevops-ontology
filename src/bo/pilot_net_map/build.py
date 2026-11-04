@@ -119,7 +119,11 @@ def verdict_summary(stage: Path, recs: list[dict]) -> dict:
         c[v["verdict"]] += 1
         by_kind[(kind, v["verdict"])] += 1
         rules.update(v["rules"])
+    sep = {"claims": collections.Counter(), "absences": collections.Counter(), "composites": collections.Counter()}
+    for (k, v), n in by_kind.items():
+        sep["absences" if k == "absence" else "composites" if k == "composite" else "claims"][v] += n
     return {"verdicts": dict(sorted(c.items())),
+            "verdicts_separated": {k: dict(sorted(x.items())) for k, x in sep.items()},
             "by_kind": {f"{k}|{v}": n for (k, v), n in sorted(by_kind.items())},
             "rules": dict(sorted(rules.items())),
             "verdict_map_sha256": verdict_map_sha256(vs)}

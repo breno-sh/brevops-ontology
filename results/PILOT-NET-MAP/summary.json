@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "PILOT-NET-MAP",
- "generated_at": "2026-11-04T14:34:54-03:00",
+ "generated_at": "2026-11-04T18:46:39-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-NET-MAP.txt",
@@ -14,19 +14,19 @@
    "role_brief_version": "1.3.1",
    "role_brief_sha256": "751880c609ed7cf5efcf439ba75c2dfd4e6c1f8ec0055023414ecd1f2243d822",
    "slice": "net",
-   "bundle_sha256": "8a4bb4ecce7a80a353357d742f51916f5773dc9899b588b89ca8f621786aab6d",
+   "bundle_sha256": "d4d221a4948f11e51f487e3bed69e581c3a83e90135a04d080e71c32b439417f",
    "rows_n": "639",
    "none_n": "423",
    "groups_n": "15",
    "mapping_set_id": "https://w3id.org/brevops/mapping/PILOT-NET-MAP/1",
-   "base": "83f5d59",
-   "arbiter_sha256": "b4cf2f9826468cf683a881d87769426a60465b458c97a23a2b229749336d7ef9"
+   "base": "6c43bb5",
+   "arbiter_sha256": "74c0f33bbaf57020edca73c1041cd1f30d402be4a07b99dff2645c73f5b6bc14"
   },
   "inputs": [
    {
     "path": "$BO_DATA/PILOT-NET-GLOSS/bundle",
     "kind": "dir",
-    "sha256": "2594f963428707f65b1feea0428a160776eed5a0feb1de4d4598def7149e7c3a"
+    "sha256": "106950b6de8f6af6b91b22dca1ea228d8e74d6f932c7d9eed8e9e84853342efa"
    },
    {
     "path": "$BO_REPO/briefs/MAPPER_BRIEF.txt",
@@ -34,8 +34,8 @@
     "sha256": "751880c609ed7cf5efcf439ba75c2dfd4e6c1f8ec0055023414ecd1f2243d822"
    }
   ],
-  "recorded_at": "2026-11-04T14:34:54-03:00"
+  "recorded_at": "2026-11-04T18:46:39-03:00"
  },
  "sources": [],
- "notes": "rodada final: PILOT-NET-GLOSS 2b98878, árbitro 7fc1a85"
+ "notes": "rodada final 2/2: PILOT-NET-GLOSS 6c43bb5, árbitro 28b9ba0"
 }
