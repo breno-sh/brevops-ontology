@@ -57,7 +57,10 @@ EMENDA 1.1.0 DA BIBLIOTECA — 2026-11-04 (America/Recife), C01 2.2.0 (CONTRACTS
 - Regenerado dos 4 SCHEMA-* (bo.schema.regen_check, $BO_DATA/SCHEMALIB/regen_check.json): 0 átomo publicado some
   ou muda de bytes; types.jsonl idêntico; novos só elementos: AWS 6.71.0 +1204, AZURE 5.12.0 +471,
   GCP 8.9.0 +2549, OCI 9.11.0 +4978; C01 2.2.0 confere.
-- Refresh: os produtores gravam atoms.jsonl a partir de TypeSchema.atoms e só emitem os elementos se trocarem
+- DECISÃO DO COORDENADOR (2026-11-04): mergeia só a biblioteca; all_atoms() e build --elements são opcionais e o
+  padrão continua o atoms.jsonl de antes. Nenhum SCHEMA-*/HIST-* foi regenerado nem trocado: o refresh abaixo é da
+  FASE 2. O regen_check só regenera em $BO_TMP para provar que nenhum átomo publicado mudaria.
+- Refresh (fase 2): os produtores gravam atoms.jsonl a partir de TypeSchema.atoms e só emitem os elementos se trocarem
   para TypeSchema.all_atoms() (SCHEMA-AWS/-AZURE/-GCP/-OCI, HIST-AWS/-AZURE/-GCP/-OCI, SCHEMA-POST);
   depois, os consumidores do atoms.jsonl (inputs/deps no catálogo): ROLES, UNITS, SERVICE-EVIDENCE, CORPUS-*,
   NONEHUNT-*, GLOSSARY-*, GRAIN-REPRO, DECOMPOSE, DRIFTMAP, KALININ-RECON, PILOT-NET-*/PILOT-STO-* (E2E, GLOSS);

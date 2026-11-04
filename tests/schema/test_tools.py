@@ -125,7 +125,7 @@ def test_build_writes_valid_contract_files_deterministically(work):
     s = write_schema(work)
     r1 = build.build(s, "provider_a", None, work / "a1.jsonl", work / "t1.jsonl")
     r2 = build.build(s, "provider_a", "1.0.0", work / "a2.jsonl", work / "t2.jsonl")
-    assert r1 == r2 and (r1["types"], r1["atoms"], r1["provider_version"]) == (2, 25, "1.0.0")
+    assert r1 == r2 and (r1["types"], r1["atoms"], r1["provider_version"]) == (2, 24, "1.0.0")
     assert (work / "a1.jsonl").read_bytes() == (work / "a2.jsonl").read_bytes()
     assert (work / "t1.jsonl").read_bytes() == (work / "t2.jsonl").read_bytes()
     assert V.validate("C01_atoms", work / "a1.jsonl").ok and V.validate("C02_types", work / "t1.jsonl").ok
@@ -187,3 +187,13 @@ def test_crosscheck_cli_offline(work):
     assert crosscheck.main(["--provider", "aws", "--types", str(tpath), "--index", str(idx)]) == 1
     assert crosscheck.main(["--provider", "aws", "--types", str(work / "nada.jsonl")]) == 2
     assert crosscheck.main(["--provider", "aws", "--types", str(tpath), "--index", str(work / "x.json")]) == 2
+
+
+def test_build_elements_are_opt_in(work):
+    s = write_schema(work)
+    plain = build.build(s, "provider_a", None, work / "a.jsonl", work / "t.jsonl")
+    full = build.build(s, "provider_a", None, work / "ae.jsonl", work / "te.jsonl", elements=True)
+    assert (plain["atoms"], full["atoms"], full["element_atoms"]) == (24, 25, 1) and "element_atoms" not in plain
+    base = (work / "a.jsonl").read_text().splitlines()
+    assert [ln for ln in (work / "ae.jsonl").read_text().splitlines() if ln in base] == base
+    assert (work / "t.jsonl").read_bytes() == (work / "te.jsonl").read_bytes()

@@ -32,16 +32,19 @@ def resolve_version(schema: Path, version: str | None) -> str:
     return v
 
 
-def build(schema: Path, provider: str, version: str | None, atoms_out: Path, types_out: Path) -> dict:
+def build(schema: Path, provider: str, version: str | None, atoms_out: Path, types_out: Path,
+          elements: bool = False) -> dict:
+    """elements=False (padrão): o atoms.jsonl de sempre (TypeSchema.atoms). elements=True: também os átomos de
+    elemento de coleção do C01 2.2.0 (TypeSchema.all_atoms()); a troca nos produtores é da fase 2."""
     ver = resolve_version(schema, version)
     ps = core.providers(core.load(schema))
     if provider not in ps:
         raise SystemExit(f"build: o schema não traz o provedor {provider} (traz: {', '.join(ps)})")
     types = list(core.iter_types(ps[provider], provider, ver))
-    na = core.write_jsonl(atoms_out, (a for ts in types for a in ts.all_atoms()))
+    na = core.write_jsonl(atoms_out, (a for ts in types for a in (ts.all_atoms() if elements else ts.atoms)))
     nt = core.write_jsonl(types_out, (core.type_record(ts) for ts in types))
     return {"provider": provider, "provider_version": ver, "types": nt, "atoms": na,
-            "element_atoms": sum(len(v) for ts in types for v in ts.elements.values()),
+            **({"element_atoms": sum(len(v) for ts in types for v in ts.elements.values())} if elements else {}),
             "schema_sha256": core.canonical_sha256(ps[provider])}
 
 
@@ -53,8 +56,9 @@ def main(argv=None) -> int:
     ap.add_argument("--atoms", required=True, type=Path)
     ap.add_argument("--types", required=True, type=Path)
     ap.add_argument("--no-validate", action="store_true")
+    ap.add_argument("--elements", action="store_true", help="inclui os átomos de elemento de coleção (C01 2.2.0)")
     a = ap.parse_args(argv)
-    r = build(a.schema, a.provider, a.version, a.atoms, a.types)
+    r = build(a.schema, a.provider, a.version, a.atoms, a.types, a.elements)
     ok = True
     if not a.no_validate:
         from bo.contracts import validate as V

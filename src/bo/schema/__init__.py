@@ -20,6 +20,9 @@ AMENDMENTS = [
                "e saem em TypeSchema.all_atoms(), logo depois do pai.",
      "bytes": "átomos existentes: mesmos ids e mesmos bytes; atoms.jsonl só ganha linhas de elemento; types.jsonl "
               "(C02) e a régua do C1 não mudam (contam só .atoms)",
-     "refresh": "quem grava atoms.jsonl a partir de TypeSchema.atoms precisa trocar para all_atoms() para emitir os "
-                "elementos (SCHEMA-*, HIST-*); quem consome atoms.jsonl precisa tratar block_path[].kind"},
+     "opt_in": "TypeSchema.atoms intacto; elementos só por TypeSchema.all_atoms() ou bo.schema.build --elements "
+               "(padrão do build: o atoms.jsonl de antes)",
+     "refresh": "FASE 2 (decisão do coordenador, 2026-11-04): SCHEMA-*, HIST-* e SCHEMA-POST trocam para all_atoms(); "
+                "depois os consumidores do atoms.jsonl em cascata. Nada regenerado agora, para não invalidar a cadeia "
+                "antes da tentativa 2 do PILOT-EXIT"},
 ]

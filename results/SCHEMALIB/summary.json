@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "SCHEMALIB",
- "generated_at": "2026-11-04T12:25:43-03:00",
+ "generated_at": "2026-11-04T12:30:40-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/SCHEMALIB.txt",
@@ -19,6 +19,8 @@
    "regua": "provider_populated = computed, nao required, nome em arn/id/owner_id/region/tags_all",
    "sandbox": "env -i, HOME temporario, sandbox-exec sem credenciais; schema sem rede IP",
    "pedidos_driver": "so_beta e causas do crosscheck; write_only do C01 2.1.0; pagina_sem_titulo; elementos de colecao do C01 2.2.0 (CC-NET-1)",
+   "NET-GLOSS_CC-NET-1": "ACEITO e IMPLEMENTADO na biblioteca (C01 2.2.0 + SCHEMALIB 1.1.0; all_atoms() e build --elements opcionais, TypeSchema.atoms intacto); regeneração dos SCHEMA-*/HIST-* e refresh dos consumidores AGENDADOS para a fase 2 (decisão do coordenador, 2026-11-04)",
+   "atoms_publicados_SCHEMA": "inalterados em 2026-11-04: AWS 5c6aba0585cb, AZURE 3e7a8160b327, GCP a00b9d3fb50a, OCI 99e3dc9d3434 (sha256 = MANIFEST de cada módulo)",
    "motivos_lidos": "results/SCHEMA-GCP, SCHEMA-OCI, PILOT-NET-GLOSS CONTRACT_CHANGE.txt e results/CONTRACTS/emenda7.json (citados, não fixados por hash)"
   },
   "inputs": [
@@ -53,7 +55,7 @@
     "sha256": "5235c9e4477a936e97f29423456d3c88afc7d7e64f54f55869d7b9f5e2827842"
    }
   ],
-  "recorded_at": "2026-11-04T12:25:43-03:00"
+  "recorded_at": "2026-11-04T12:30:40-03:00"
  },
  "sources": [
   {
@@ -82,5 +84,5 @@
    "transformation": "índice de documentação, só contagem de páginas por tipo (crosscheck)"
   }
  ],
- "notes": "Reprodução do catalogo4v2: 4946/4946 tipos com as 6 contagens iguais (100%). Biblioteca 1.1.0 (C01 2.2.0): elementos de coleção de objetos; regeneração dos 4 SCHEMA-* sem nenhum átomo publicado alterado (+1204/+471/+2549/+4978 elementos). crosscheck: aws 6.71.0, azurerm 5.12.0, google 8.9.0 e oci 9.11.0 PASS."
+ "notes": "Pedido NET-GLOSS CC-NET-1: aceito e implementado na biblioteca (C01 2.2.0 + SCHEMALIB 1.1.0), elementos opcionais por all_atoms()/build --elements; regeneração dos SCHEMA-*/HIST-* agendada para a fase 2. Nenhum atoms.jsonl publicado de SCHEMA-* mudou (sha256 = MANIFEST). Simulação em BO_TMP: 0 átomo publicado alterado; +1204/+471/+2549/+4978 elementos. Reprodução do catalogo4v2: 4946/4946 (100%). crosscheck: aws 6.71.0, azurerm 5.12.0, google 8.9.0, oci 9.11.0 PASS."
 }
