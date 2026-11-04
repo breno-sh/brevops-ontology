@@ -1,4 +1,4 @@
-# HARNESS-OCI: raiz renderizada; 2 de 2 plano(s) renderizado(s).
+# HARNESS-OCI: raiz renderizada; 4 de 4 plano(s) renderizado(s).
 # Situação de cada plano em render_report.json.
 
 terraform {
@@ -39,4 +39,16 @@ module "lp_oci_sto_0001" {
   bo_ctx_compartment_id          = var.bo_ctx_compartment_id
   bo_ctx_objectstorage_namespace = var.bo_ctx_objectstorage_namespace
   bo_ctx_run_tag                 = var.bo_ctx_run_tag
+}
+
+module "lp_oci_net_0002" {
+  source                = "./lp_oci_net_0002"
+  bo_ctx_compartment_id = var.bo_ctx_compartment_id
+  bo_ctx_run_tag        = var.bo_ctx_run_tag
+}
+
+module "lp_oci_net_0003" {
+  source                = "./lp_oci_net_0003"
+  bo_ctx_compartment_id = var.bo_ctx_compartment_id
+  bo_ctx_run_tag        = var.bo_ctx_run_tag
 }

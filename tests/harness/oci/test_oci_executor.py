@@ -180,3 +180,36 @@ def test_classify_and_parse_errors():
 def test_recordings_are_regenerated_exactly():
     import make_recordings
     assert make_recordings.main(["--check"]) == 0
+
+
+# ------------------------------------------------------------------ termo list (C00 3.1.0) e forma antiga (C26-LIST)
+LST = ("LP-OCI-NET-0002", "GIR-OCI-NET-0002")
+IDX = ("LP-OCI-NET-0003", "GIR-OCI-NET-0003")
+
+
+def test_list_of_references_persisted_with_set_reordered(exec_base):
+    res, _ = run("list_persisted", LST)
+    assert res.outcome == "PERSISTED", res.detail
+    f = next(x for x in res.fields if x.path == "oci_core_subnet.r4.security_list_ids")
+    assert f.state == "read" and f.match is True and f.structural
+
+
+def test_list_missing_item_is_altered(exec_base):
+    res, _ = run("list_altered", LST)
+    assert res.outcome == "ALTERED"
+    assert [f.path for f in res.fields if f.match is False] == ["oci_core_subnet.r4.security_list_ids"]
+
+
+def test_indexed_legacy_list_persisted(exec_base):
+    res, _ = run("list_indexed_persisted", IDX)
+    assert res.outcome == "PERSISTED", res.detail
+    paths = [f.path for f in res.fields if "security_list_ids" in f.path]
+    assert paths == ["oci_core_subnet.r4.security_list_ids[0]", "oci_core_subnet.r4.security_list_ids[1]"]
+    assert V.validate("readback", _dump_readback(exec_base, res)).ok
+
+
+def _dump_readback(base, res):
+    p = Path(base) / "rb_idx.jsonl"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps(res.readback) + "\n", encoding="utf-8")
+    return p

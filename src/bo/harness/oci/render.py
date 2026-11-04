@@ -15,7 +15,9 @@ Saída em DIR (só dentro de $BO_TMP ou da pasta de moldes do módulo):
                         com código, a origem de cada atributo escrito e os sha256 dos arquivos
 
 O que vira HCL, e só isso: cada valor do passo (carried, synthesized ou default_declared, como o plano marca) no
-caminho que ele declara. Campo obrigatório do schema do oci fixado que o plano não traz, escolha sem seleção,
+caminho que ele declara. Termo list (C00 3.1.0) num atributo list/set vira [e1, e2, ...] na ordem dos itens, cada
+item pelas regras do termo escalar; a forma antiga do C26-LIST (attr.0, attr.1 ... num atributo list/set) vira a
+mesma lista na ordem dos índices, que têm de ser 0..n-1 (INDEX_GAP), e misturar as duas é DUPLICATE_FIELD. Campo obrigatório do schema do oci fixado que o plano não traz, escolha sem seleção,
 símbolo sem binding, referência sem alvo no plano, segredo carried e fecho de dependências aberto: o plano sai
 UNKNOWN_INPUT e nenhum HCL dele é escrito. Plano para outro provedor: NOT_APPLICABLE.
 
@@ -345,6 +347,18 @@ def _term(ctx, step, value, term, typ, where, pr, label, top=False):
         pr.variables[name] = Var(name, "string" if typ in (None, "string") else json.dumps(typ), True,
                                  f"withheld:{term['reason']}")
         return hcl.traversal("var", name), f"withheld:{term['reason']}"
+    if k == "list":
+        if typ is not None and not (isinstance(typ, list) and typ[0] in ("list", "set")):
+            raise TermError("TYPE_MISMATCH", f"{where}: termo list num campo {json.dumps(typ)}")
+        et = typ[1] if typ is not None else None
+        rendered, sources = [], set()
+        for j, it in enumerate(term["items"]):
+            if it["kind"] in ("withheld", "document"):
+                raise TermError("UNSUPPORTED_TERM", f"{where}[{j}]: termo {it['kind']} dentro de lista não é renderizado")
+            e, src = _term(ctx, step, value, it, et, f"{where}[{j}]", pr, label)
+            rendered.append(e)
+            sources.add(src)
+        return "[" + ", ".join(rendered) + "]", ("plan" if sources <= {"plan"} else "+".join(sorted(sources)))
     if k == "document":
         if term["symbolized"]:
             raise TermError("UNKNOWN_SYMBOLIC_INPUT", f"{where}: documento com {len(term['symbolized'])} símbolo(s)")
@@ -408,12 +422,30 @@ class Leaf:
     written: Written
 
 
+@dataclass
+class ElemList:
+    """Atributo list/set montado pela forma antiga do C26-LIST (attr.0, attr.1, ...): posição -> Leaf."""
+    items: dict = field(default_factory=dict)
+
+    @property
+    def expr(self) -> str:
+        return "[" + ", ".join(self.items[i].expr for i in sorted(self.items)) + "]"
+
+
 def _insert(node: Node, toks: tuple, leaf: Leaf, field_path: str, segs_explicit: list[bool]) -> None:
     t = toks[0]
     if t.kind == "block":
         node.explicit.setdefault(t.name, set()).add(segs_explicit[0])
         child = node.blocks.setdefault(t.name, {}).setdefault(t.index, Node())
         _insert(child, toks[1:], leaf, field_path, segs_explicit[1:])
+        return
+    if len(toks) == 2 and toks[1].kind == "elem":
+        cur = node.attrs.setdefault(t.name, ElemList())
+        if not isinstance(cur, ElemList):
+            raise TermError("DUPLICATE_FIELD", f"{field_path}: '{t.name}' dado inteiro (termo list) e por índice")
+        if toks[1].index in cur.items:
+            raise TermError("DUPLICATE_FIELD", f"{field_path}: elemento dado mais de uma vez")
+        cur.items[toks[1].index] = leaf
         return
     # atributo, talvez com chaves
     keys = [x.name for x in toks[1:]]
@@ -450,6 +482,10 @@ def _explicit_flags(toks: tuple, field_path: str) -> list[bool]:
     return flags
 
 
+def _attr_expr(v) -> str:
+    return v.expr if isinstance(v, (Leaf, ElemList)) else _map_expr(v)
+
+
 def _map_expr(d: dict) -> str:
     parts = []
     for k in sorted(d):
@@ -459,6 +495,10 @@ def _map_expr(d: dict) -> str:
 
 
 def _check_required(node: Node, block: S.Block, where: str, issues: list, step: dict) -> None:
+    for name, el in node.attrs.items():
+        if isinstance(el, ElemList) and sorted(el.items) != list(range(len(el.items))):
+            issues.append(Issue("INDEX_GAP", step["order"], step["node_id"], f"{where}{name}",
+                                f"elementos {sorted(el.items)} não são 0..{len(el.items) - 1}"))
     for name, a in block.attrs.items():
         if a.required and name not in node.attrs:
             issues.append(Issue("MISSING_REQUIRED_FIELD", step["order"], step["node_id"], f"{where}{name}",
@@ -492,7 +532,7 @@ def _check_required(node: Node, block: S.Block, where: str, issues: list, step: 
 def _emit(node: Node, hb: hcl.Block) -> None:
     for name in sorted(node.attrs):
         v = node.attrs[name]
-        hb.attr(name, v.expr if isinstance(v, Leaf) else _map_expr(v))
+        hb.attr(name, _attr_expr(v))
     for name in sorted(node.blocks):
         for i in sorted(node.blocks[name]):
             _emit(node.blocks[name][i], hb.block(hcl.Block(name)))
@@ -503,6 +543,8 @@ def _hcl_path(toks: tuple) -> str:
     for t in toks:
         if t.kind == "block":
             out.append(f"{t.name}[{t.index}]")
+        elif t.kind == "elem":
+            out[-1] += f"[{t.index}]"
         else:
             out.append(t.name)
     return ".".join(out)
@@ -579,6 +621,10 @@ def render_plan(plan: dict, graph: dict | None, bindings: dict, tpl: Templates,
                 pr.issues.append(Issue("UNSUPPORTED_TERM", step["order"], step["node_id"], fpath, str(e)))
                 continue
             pr.written.append(w)
+            if toks[-1].kind == "elem":
+                note = f"passo {step['order']}: {fpath} na forma indexada; C26-LIST: prefira termo list"
+                if note not in pr.notes:
+                    pr.notes.append(note)
             if attr.deprecated:
                 pr.notes.append(f"passo {step['order']}: {fpath} está marcado deprecated no schema")
         if kind == "resource" and rtype in RT.types():

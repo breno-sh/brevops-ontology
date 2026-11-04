@@ -9,6 +9,10 @@ mutações geradas deles. Três checagens:
   1. Independente do renderizador: o HCL de cada plano RENDERED é lido de volta pelo python-hcl2 (outro parser) e
      achatado em caminhos; cada folha de recurso tem de casar com exatamente um valor do plano (mesmo caminho e mesmo
      valor), e cada valor do plano com exatamente uma folha. Folha sem valor = INSERÇÃO; valor sem folha = PERDA.
+     Termo list (C00 3.1.0) é conferido item a item, na ordem do plano; a forma antiga do C26-LIST (attr.0,
+     attr.1 ...) é juntada aqui, pelo schema, numa lista na ordem dos índices e conferida do mesmo jeito. A ordem
+     vale também para set (security_list_ids, nsg_ids são set no oci 9.11.0): o Terraform não liga para ela, mas
+     o renderizador escreve na ordem do plano, e outra ordem no HCL é divergência do texto.
      A única folha fora do plano aceita é a inserção declarada HI-OCI-01 (bo.harness.oci.run_tag):
      freeform_tags["bo-run"] = var.bo_ctx_run_tag, exatamente nos recursos dos tipos de run_tag.json.
      Fora dos recursos, só o encanamento do molde (root_template.json): bloco terraform com as versões fixadas,
@@ -130,7 +134,7 @@ def _expected(value: dict, plan: dict, bindings: dict, tpl: R.Templates, labels_
         key = bindings.get(t["symbol_id"])
         return ("eq", ("expr", f"var.{tpl.binding_var(key)}")) if key else ("never", None)
     if k == "reference":
-        labs = labels_by_type.get(t["target_type"], [])
+        labs = labels_by_type(t) if callable(labels_by_type) else labels_by_type.get(t["target_type"], [])
         pats = [f"{'data.' if t['target_address'].startswith('data.') else ''}{t['target_type']}.{lab}."
                 f"{t.get('attribute')}" for lab in labs]
         return ("one_of", [("expr", p) for p in pats])
@@ -139,6 +143,8 @@ def _expected(value: dict, plan: dict, bindings: dict, tpl: R.Templates, labels_
     if k == "document":
         fn = "yamlencode(" if t["format"] == "yaml" else "jsonencode("
         return ("prefix", ("expr", fn))
+    if k == "list":
+        return ("list", [_expected({"term": it}, plan, bindings, tpl, labels_by_type) for it in t["items"]])
     return ("any_expr", None)
 
 
@@ -153,7 +159,43 @@ def _value_ok(exp, got) -> bool:
         return isinstance(got, tuple) and got[0] == "expr" and got[1].startswith(e[1])
     if kind == "any_expr":
         return isinstance(got, tuple) and got[0] == "expr"
+    if kind == "list":
+        return isinstance(got, list) and len(got) == len(e) and all(_value_ok(x, g) for x, g in zip(e, got))
     return False
+
+
+def _vars_in(got) -> set:
+    if isinstance(got, tuple) and got[0] == "expr":
+        return set(re.findall(r"\bvar\.([A-Za-z0-9_]+)", got[1]))
+    if isinstance(got, list):
+        return set().union(*[_vars_in(x) for x in got]) if got else set()
+    return set()
+
+
+def _join_indexed(step: dict, vals: list) -> tuple[list, list[str]]:
+    """Forma antiga do C26-LIST: attr.0, attr.1 ... num atributo list/set -> um valor list na ordem dos índices."""
+    kind = "data" if step["action"] == "reference" else "resource"
+    blk = S.table().block(kind, step["resource_type"])
+    groups: dict = {}
+    out, probs = [], []
+    for v in vals:
+        segs = v["field"].split(".")
+        if len(segs) >= 2 and segs[-1].isdigit():
+            try:
+                toks, _ = S.resolve(blk, v["field"])
+            except S.PathError:
+                toks = ()
+            if toks and toks[-1].kind == "elem":
+                groups.setdefault(".".join(segs[:-1]), {})[int(segs[-1])] = v
+                continue
+        out.append(v)
+    for base, items in groups.items():
+        if sorted(items) != list(range(len(items))):
+            probs.append(f"passo {step['order']}: {base} com índices {sorted(items)} num plano RENDERED")
+        first = items[min(items)]
+        out.append({"field": base, "origin": first["origin"], "marked": first["marked"],
+                    "term": {"kind": "list", "items": [items[i]["term"] for i in sorted(items)]}})
+    return out, probs
 
 
 def _derived(step: dict, graph: dict | None):
@@ -188,9 +230,23 @@ def check_rendered(out: Path, plan: dict, pr_report: dict, bindings: dict, tpl: 
         cnt[s["node_id"]] = cnt.get(s["node_id"], 0) + 1
     label = {s["order"]: (s["node_id"] if cnt[s["node_id"]] == 1 else f"{s['node_id']}_s{s['order']}")
              for s in plan["steps"]}
-    labels_by_type: dict = {}
-    for s in plan["steps"]:
-        labels_by_type.setdefault(s["resource_type"], []).append(label[s["order"]])
+    # alvo esperado de cada referência, calculado aqui: pelo nó (target_node, C00 3.0.1) é exatamente um rótulo;
+    # sem nó, os passos do tipo cujo nome derivado cita o símbolo do endereço (como o C26 define)
+    gterms = {x["term_id"]: x["term"] for x in (graph or {}).get("terms", [])}
+
+    def labels_by_type(t):
+        is_data = t["target_address"].startswith("data.")
+        same = [s for s in plan["steps"] if s["resource_type"] == t["target_type"]
+                and (s["action"] == "reference") == is_data]
+        if t.get("target_node"):
+            return [label[s["order"]] for s in same if s["node_id"] == t["target_node"]]
+        if graph is None:
+            return [label[s["order"]] for s in same]   # sem graph_ir: qualquer passo do tipo (mais frouxo)
+        sym = t["target_address"].split(".")[-1].split("[")[0]
+        hit = [label[s["order"]] for s in same
+               if any(gterms.get(x, {}).get("symbol_id") == sym
+                      for x in (s.get("derived_name") or {}).get("from_terms", []))]
+        return hit
     want_blocks = {("data" if s["action"] == "reference" else "resource", s["resource_type"], label[s["order"]]): s
                    for s in plan["steps"]}
     got_blocks = {}
@@ -209,7 +265,8 @@ def check_rendered(out: Path, plan: dict, pr_report: dict, bindings: dict, tpl: 
             continue
         flat = flatten(got_blocks[key])
         claimed = {}
-        vals = list(step["values"])
+        vals, jp = _join_indexed(step, list(step["values"]))
+        v += [f"{plan['plan_id']} {x}" for x in jp]
         dv = _derived(step, graph)
         if isinstance(dv, tuple):
             v.append(f"{plan['plan_id']} passo {step['order']}: nome derivado com termo não literal num plano RENDERED")
@@ -228,9 +285,7 @@ def check_rendered(out: Path, plan: dict, pr_report: dict, bindings: dict, tpl: 
             exp = _expected(val, plan, bindings, tpl, labels_by_type)
             if not _value_ok(exp, flat[h]):
                 v.append(f"{plan['plan_id']} passo {step['order']}: {val['field']} no HCL difere do plano")
-            got = flat[h]
-            if isinstance(got, tuple) and got[0] == "expr":
-                used_vars |= set(re.findall(r"\bvar\.([A-Za-z0-9_]+)", got[1]))
+            used_vars |= _vars_in(flat[h])
         # inserção declarada HI-OCI-01: exatamente nos recursos dos tipos da lista
         th = (RT.ATTRIBUTE, RT.TAG_KEY)
         if key[0] == "resource" and key[1] in RT.types():
@@ -356,6 +411,31 @@ def mutations(plan: dict, bindings: dict) -> list[tuple[str, dict, dict, str]]:
             ms = next(x for x in m["steps"] if x["order"] == s["order"])
             ms["typed_choices"][0]["selected"] = None
             out.append((f"escolha_aberta_{s['node_id']}", m, bindings, "UNKNOWN_INPUT"))
+        for i, val in enumerate(s["values"]):
+            t = val["term"]
+            if t["kind"] == "list" and t["items"]:
+                m = copy.deepcopy(plan)
+                ms = next(x for x in m["steps"] if x["order"] == s["order"])
+                ms["values"][i]["term"]["items"].append({"kind": "withheld", "reason": "secret"})
+                out.append((f"lista_com_retido_{s['node_id']}_{val['field']}", m, bindings, "INVALID_PLAN"))
+                m = copy.deepcopy(plan)
+                ms = next(x for x in m["steps"] if x["order"] == s["order"])
+                ms["values"].append({**copy.deepcopy(val), "field": val["field"] + ".0",
+                                     "term": copy.deepcopy(t["items"][0])})
+                out.append((f"lista_e_indice_{s['node_id']}_{val['field']}", m, bindings, "INVALID_PLAN"))
+                m = copy.deepcopy(plan)
+                ms = next(x for x in m["steps"] if x["order"] == s["order"])
+                tgt = next((x for x in ms["values"] if x["term"]["kind"] == "literal"
+                            and x["term"]["datatype"] == "string"), None)
+                if tgt is not None:
+                    tgt["term"] = copy.deepcopy(t)
+                    out.append((f"lista_em_escalar_{s['node_id']}_{tgt['field']}", m, bindings, "INVALID_PLAN"))
+            segs = val["field"].split(".")
+            if len(segs) >= 2 and segs[-1].isdigit() and segs[-1] != "0":
+                m = copy.deepcopy(plan)
+                ms = next(x for x in m["steps"] if x["order"] == s["order"])
+                ms["values"][i]["field"] = ".".join(segs[:-1] + [str(int(segs[-1]) + 5)])
+                out.append((f"indice_com_buraco_{s['node_id']}_{val['field']}", m, bindings, "INVALID_PLAN"))
         if kind == "resource" and s["resource_type"] in RT.types():
             m = copy.deepcopy(plan)
             ms = next(x for x in m["steps"] if x["order"] == s["order"])
@@ -468,6 +548,49 @@ def hcl_controls(work: Path) -> list[dict]:
     return out
 
 
+LIST_LINE = re.compile(r"^( +)([a-z_]+)( += )\[([^\]\n]+, [^\]\n]+)\]$", re.M)
+
+
+def list_controls(work: Path) -> list[dict]:
+    """Sabotagens de listas com 2+ itens no HCL dos exemplos: item removido, trocado, extra e ordem trocada."""
+    tpl = R.Templates.load()
+    ex = templates_dir() / "examples"
+    base = work / "list_controls_base"
+    rr = R.render(ex / "lowering_plan.jsonl", base, bindings_path=ex / "bindings.json")
+    bindings = R.load_bindings(ex / "bindings.json")
+    plans = {p["plan_id"]: p for p in R.load_jsonl(ex / "lowering_plan.jsonl")}
+    graphs = {g["graph_id"]: g for g in R.load_jsonl(ex / "graph_ir.jsonl")}
+    out = []
+    for pr in rr.report["plans"]:
+        if pr["status"] != "RENDERED":
+            continue
+        f = base / pr["module"] / "main.tf"
+        text = f.read_text(encoding="utf-8")
+        plan, graph = plans[pr["plan_id"]], graphs.get(plans[pr["plan_id"]]["graph_id"])
+        for m in LIST_LINE.finditer(text):
+            items = m.group(4).split(", ")
+            if len(set(items)) < 2:
+                continue
+            head = m.group(1) + m.group(2) + m.group(3)
+
+            def sab(name, new_items, _m=m, _head=head):
+                new = text[:_m.start()] + _head + "[" + ", ".join(new_items) + "]" + text[_m.end():]
+                d = work / f"lst_{R.module_name(pr['plan_id'])}_{len(out)}"
+                if d.exists():
+                    shutil.rmtree(d)
+                shutil.copytree(base, d)
+                (d / pr["module"] / "main.tf").write_text(new, encoding="utf-8")
+                v = check_rendered(d, plan, pr, bindings, tpl, graph)
+                out.append({"control": f"{pr['plan_id']} {_m.group(2)}: {name}",
+                            "caught": new != text and any("difere do plano" in x for x in v), "detail": v[:2]})
+
+            sab("item removido", items[:-1])
+            sab("item trocado", items[:-1] + [items[0]])
+            sab("item extra", items + [items[0]])
+            sab("ordem trocada", list(reversed(items)))
+    return out
+
+
 def _portable(p: Path) -> str:
     p = p.resolve()
     for root, tag in ((repo_root().resolve(), "$BO_REPO"), (tmp_root().resolve(), "$BO_TMP")):
@@ -499,7 +622,7 @@ def main(argv: list[str] | None = None) -> int:
         shutil.rmtree(work)
     work.mkdir(parents=True)
     rep = run_corpus(files, work)
-    rep["hcl_controls"] = hcl_controls(work)
+    rep["hcl_controls"] = hcl_controls(work) + list_controls(work)
     missed = [c["control"] for c in rep["hcl_controls"] if not c["caught"]]
     ok = not rep["violations"] and not rep["mutations"]["failed"] and rep["rendered_checked"] > 0 \
         and rep["mutations"]["total"] > 0 and rep["hcl_controls"] and not missed

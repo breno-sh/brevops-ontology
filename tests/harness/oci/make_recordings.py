@@ -15,6 +15,7 @@ from __future__ import annotations
 import copy
 import json
 import os
+import re
 import sys
 from pathlib import Path
 
@@ -24,9 +25,12 @@ os.environ.setdefault("BO_REPO", str(HERE.parents[2]))
 sys.path.insert(0, str(HERE.parents[2] / "src"))
 
 from bo.harness.oci import render as R  # noqa: E402
+from bo.harness.oci import schema as S  # noqa: E402
 from bo.harness.oci import templates_dir, tmp_root  # noqa: E402
 
 EX = templates_dir() / "examples"
+BINDINGS = R.load_bindings(EX / "bindings.json")
+BLOCKS = {t: set(S.table().block("resource", t).blocks) for t in S.table().types("resource")}
 NOTE = "gravação sintética (sem nuvem): state no formato de terraform show -json montado do plano de exemplo"
 
 
@@ -90,18 +94,18 @@ def state_for(plan_report: dict, plan: dict, lifecycle: dict | None = None) -> d
         step = steps[labels[w["label"]]]
         v = next(x for x in step["values"] if x["field"] == w["field"])
         t = v["term"]
-        if t["kind"] == "literal":
-            val = t["value"]
-        elif t["kind"] == "symbol":
-            val = "@CTX:" + w["source"].split(":", 1)[1]
-        elif t["kind"] == "reference":
-            parts = w["expr"].split(".")
-            tgt = (parts[0], parts[1])
-            val = _ocid_token(*tgt) if parts[2] == "id" else None
-            if val is None:
-                val = ("@REF", tgt, parts[2])
+        if t["kind"] == "list":
+            exprs = w["expr"][1:-1].split(", ") if w["expr"] != "[]" else []
+            val = [_value(it, e, w["source"]) for it, e in zip(t["items"], exprs)]
         else:
-            raise ValueError(f"termo {t['kind']} sem gravação sintética")
+            val = _value(t, w["expr"], w["source"])
+        m = re.fullmatch(r"([a-z_]+)\[([0-9]+)\]", w["hcl_path"])
+        if m and m.group(1) not in BLOCKS.get(w["resource_type"], ()):
+            lst = r.setdefault(m.group(1), [])        # forma antiga do C26-LIST: elemento da lista
+            while len(lst) <= int(m.group(2)):
+                lst.append(None)
+            lst[int(m.group(2))] = val
+            continue
         _set_path(r, _tokens(w["hcl_path"]), val)
     # inserção declarada do harness (HI-OCI-01): a tag de execução volta no state como o provider a guarda
     for ins in plan_report.get("insertions", []):
@@ -114,7 +118,7 @@ def state_for(plan_report: dict, plan: dict, lifecycle: dict | None = None) -> d
     for (rtype, label), vals in sorted(res.items(), key=lambda kv: labels[kv[0][1]]):
         vals = dict(vals)
         vals["time_created"] = "2026-11-03 10:00:00.000 +0000 UTC"
-        if rtype in ("oci_core_vcn", "oci_core_security_list", "oci_core_network_security_group"):
+        if rtype in ("oci_core_vcn", "oci_core_security_list", "oci_core_network_security_group", "oci_core_subnet"):
             vals["state"] = (lifecycle or {}).get(label, "AVAILABLE")
         if rtype == "oci_core_security_list":
             for rule in vals.get("ingress_security_rules", []):
@@ -129,6 +133,19 @@ def state_for(plan_report: dict, plan: dict, lifecycle: dict | None = None) -> d
     return {"format_version": "1.0", "terraform_version": "1.15.8",
             "values": {"root_module": {"child_modules": [
                 {"address": f"module.{plan_report['module']}", "resources": resources}]}}}
+
+
+def _value(t: dict, expr: str, source: str):
+    if t["kind"] == "literal":
+        return t["value"]
+    if t["kind"] == "symbol":
+        return "@CTX:" + BINDINGS[t["symbol_id"]] if t["symbol_id"] in BINDINGS else "@CTX:" + source.split(":", 1)[1]
+    if t["kind"] == "reference":
+        parts = expr.split(".")
+        tgt = (parts[0], parts[1])
+        val = _ocid_token(*tgt) if parts[2] == "id" else None
+        return val if val is not None else ("@REF", tgt, parts[2])
+    raise ValueError(f"termo {t['kind']} sem gravação sintética")
 
 
 def _resolve_refs(obj, res):
@@ -169,6 +186,18 @@ def build_all() -> dict:
     for rule in sl2["ingress_security_rules"]:
         if rule["protocol"] == "17":
             rule["stateless"] = False           # a API devolveu a regra UDP como stateful
+    lst_rep, lst_sha = rend["LP-OCI-NET-0002"]
+    idx_rep, idx_sha = rend["LP-OCI-NET-0003"]
+    lst, idx = plans["LP-OCI-NET-0002"], plans["LP-OCI-NET-0003"]
+    lst_vars = sorted(v["name"] for v in lst_rep["variables"]) + ["bo_region"]
+    idx_vars = sorted(v["name"] for v in idx_rep["variables"]) + ["bo_region"]
+    ok_lst = state_for(lst_rep, lst)
+    # security_list_ids é set no oci 9.11.0: o state devolve em outra ordem e continua igual ao plano
+    sub = ok_lst["values"]["root_module"]["child_modules"][0]["resources"][3]["values"]
+    sub["security_list_ids"].reverse()
+    lst_altered = copy.deepcopy(ok_lst)
+    lst_altered["values"]["root_module"]["child_modules"][0]["resources"][3]["values"]["security_list_ids"].pop()
+    ok_idx = state_for(idx_rep, idx)
     ok_sto = state_for(sto_rep, sto)
     leaky = copy.deepcopy(ok_sto)
     b = leaky["values"]["root_module"]["child_modules"][0]["resources"][0]["values"]
@@ -184,6 +213,12 @@ def build_all() -> dict:
         "net_throttled.json": _rec("LP-OCI-NET-0001", net_sha, [], apply={"ok": False, "status": 429,
                                                                           "code": "TooManyRequests"},
                                    expects=net_vars, scenario="limite de taxa no apply: INFRA_ERROR"),
+        "list_persisted.json": _rec("LP-OCI-NET-0002", lst_sha, [ok_lst], expects=lst_vars,
+                                    scenario="sub-rede com security_list_ids = termo list; o set volta em outra ordem"),
+        "list_altered.json": _rec("LP-OCI-NET-0002", lst_sha, [lst_altered], expects=lst_vars,
+                                  scenario="a sub-rede volta com uma security list a menos: ALTERED"),
+        "list_indexed_persisted.json": _rec("LP-OCI-NET-0003", idx_sha, [ok_idx], expects=idx_vars,
+                                            scenario="forma antiga do C26-LIST (security_list_ids.0, .1): PERSISTED"),
         "sto_persisted.json": _rec("LP-OCI-STO-0001", sto_sha, [leaky], expects=sto_vars,
                                    scenario="bucket e política conferem; campos não planejados com namespace e OCID "
                                             "de chave não podem vazar"),

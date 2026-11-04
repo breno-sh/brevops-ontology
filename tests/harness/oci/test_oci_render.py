@@ -20,7 +20,8 @@ def codes(res, plan_id):
 
 def test_examples_render_and_are_fmt_canonical_and_valid(tmp_out):
     res = R.render(EX / "lowering_plan.jsonl", tmp_out / "out", bindings_path=EX / "bindings.json")
-    assert statuses(res) == {"LP-OCI-NET-0001": "RENDERED", "LP-OCI-STO-0001": "RENDERED"}
+    assert statuses(res) == {"LP-OCI-NET-0001": "RENDERED", "LP-OCI-STO-0001": "RENDERED",
+                             "LP-OCI-NET-0002": "RENDERED", "LP-OCI-NET-0003": "RENDERED"}
     f = SB.fmt_check(tmp_out / "out")
     assert f.rc == 0, f.out + f.err
     init, val = SB.init_validate(tmp_out / "out")
@@ -306,7 +307,7 @@ def test_report_lists_losses_and_derived_name_note(tmp_out):
     net = next(p for p in rep["plans"] if p["plan_id"] == "LP-OCI-NET-0001")
     assert [x["code"] for x in net["losses"]] == ["DENY_NOT_EXPRESSIBLE"]
     assert any("derived_name" in n for n in net["notes"])
-    assert rep["counts"]["RENDERED"] == 2 and len(load_jsonl(EX / "lowering_plan.jsonl")) == 2
+    assert rep["counts"]["RENDERED"] == 4 and len(load_jsonl(EX / "lowering_plan.jsonl")) == 4
 
 
 def test_null_on_required_is_missing(tmp_out, example_plans):
@@ -398,3 +399,74 @@ def test_plano_com_tag_de_execucao_e_recusado_pelo_c26(tmp_out, example_plans):
     pf, bf = write_plan(tmp_out / "in", [plan])
     with pytest.raises(ValueError, match="C26-NOTAG|tag de execução"):
         R.render(pf, tmp_out / "out", bindings_path=bf)
+
+
+# ------------------------------------------------------------------ termo list (C00 3.1.0) e forma antiga (C26-LIST)
+def _subnet(example_plans, name):
+    return next(s for s in example_plans[name]["steps"] if s["resource_type"] == "oci_core_subnet")
+
+
+def test_list_term_of_literals_and_of_references(tmp_out):
+    res = R.render(EX / "lowering_plan.jsonl", tmp_out / "out", bindings_path=EX / "bindings.json")
+    tf = (tmp_out / "out" / "lp_oci_net_0002" / "main.tf").read_text()
+    assert 'cidr_blocks    = ["10.2.0.0/16"]' in tf
+    assert "security_list_ids = [oci_core_security_list.r2.id, oci_core_security_list.r3.id]" in tf
+    p = next(x for x in res.renders if x.plan_id == "LP-OCI-NET-0002")
+    w = next(x for x in p.written if x.field == "security_list_ids")
+    assert w.term_kind == "list" and w.source == "plan" and w.hcl_path == "security_list_ids"
+
+
+def test_indexed_legacy_form_renders_the_same_list_with_note(tmp_out):
+    res = R.render(EX / "lowering_plan.jsonl", tmp_out / "out", bindings_path=EX / "bindings.json")
+    tf = (tmp_out / "out" / "lp_oci_net_0003" / "main.tf").read_text()
+    assert "security_list_ids = [oci_core_security_list.r2.id, oci_core_security_list.r3.id]" in tf
+    p = next(x for x in res.renders if x.plan_id == "LP-OCI-NET-0003")
+    assert any("C26-LIST" in n for n in p.notes)
+    assert sorted(w.hcl_path for w in p.written if w.field.startswith("security_list_ids")) == \
+        ["security_list_ids[0]", "security_list_ids[1]"]
+
+
+def test_pilot_net_e2e_case_single_index_reference_renders(tmp_out, example_plans):
+    """CC-NET-E2E-1: security_list_ids.0 = referência dava KEY_NOT_ALLOWED (INVALID_PLAN); agora RENDERED."""
+    def one(s):
+        s["values"] = [v for v in s["values"] if v["field"] != "security_list_ids.1"]
+    plan = mutate(example_plans["LP-OCI-NET-0003"], 4, one)
+    pf, bf = write_plan(tmp_out / "in", [plan])
+    res = R.render(pf, tmp_out / "out", bindings_path=bf)
+    assert statuses(res) == {"LP-OCI-NET-0003": "RENDERED"}, res.renders[0].issues
+    assert "security_list_ids = [oci_core_security_list.r2.id]" in (tmp_out / "out" / "lp_oci_net_0003" / "main.tf").read_text()
+
+
+@pytest.mark.parametrize("how,code", [
+    ("buraco", "INDEX_GAP"), ("mistura", "DUPLICATE_FIELD"), ("tipo_errado", "TYPE_MISMATCH"),
+    ("item_retido", "UNSUPPORTED_TERM"), ("item_documento", "UNSUPPORTED_TERM")])
+def test_list_defects_are_invalid_and_write_nothing(tmp_out, example_plans, how, code):
+    name = "LP-OCI-NET-0003" if how == "buraco" else "LP-OCI-NET-0002"
+
+    def f(s):
+        vals = s["values"]
+        lst = next((v for v in vals if v["field"] == "security_list_ids"), None)
+        if how == "buraco":
+            next(v for v in vals if v["field"] == "security_list_ids.1")["field"] = "security_list_ids.2"
+        elif how == "mistura":
+            vals.append({**lst, "field": "security_list_ids.0", "term": lst["term"]["items"][0]})
+        elif how == "tipo_errado":
+            next(v for v in vals if v["field"] == "cidr_block")["term"] = lst["term"]
+        elif how == "item_retido":
+            lst["term"]["items"].append({"kind": "withheld", "reason": "secret"})
+        else:
+            lst["term"]["items"].append({"kind": "document", "format": "json", "tree": {"a": 1}, "symbolized": []})
+    plan = mutate(example_plans[name], 4, f)
+    pf, bf = write_plan(tmp_out / "in", [plan])
+    res = R.render(pf, tmp_out / "out", bindings_path=bf)
+    assert statuses(res) == {name: "INVALID_PLAN"}
+    assert code in codes(res, name)
+    assert not (tmp_out / "out" / R.module_name(name)).exists()
+
+
+def test_empty_list_renders_empty(tmp_out, example_plans):
+    def f(s):
+        next(v for v in s["values"] if v["field"] == "security_list_ids")["term"]["items"] = []
+    pf, bf = write_plan(tmp_out / "in", [mutate(example_plans["LP-OCI-NET-0002"], 4, f)])
+    R.render(pf, tmp_out / "out", bindings_path=bf)
+    assert "security_list_ids = []" in (tmp_out / "out" / "lp_oci_net_0002" / "main.tf").read_text()

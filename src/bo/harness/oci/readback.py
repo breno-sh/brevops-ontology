@@ -103,11 +103,26 @@ def _expected(written: dict, vterm: dict, red: Redactor, by_addr: dict):
             v = v.get(a) if isinstance(v, dict) else None
         st, rv = red.value(v)
         return rv if st == "ok" else _NotComparable("alvo da referência retido")
+    if k == "list":
+        # cada item como o termo escalar; a lista toda só compara se todo item compara
+        exprs = written["expr"][1:-1].split(", ") if written["expr"] != "[]" else []
+        out = []
+        for it, e in zip(t["items"], exprs):
+            x = _expected(dict(written, expr=e), {"term": it}, red, by_addr)
+            if isinstance(x, _NotComparable):
+                return x
+            out.append(None if x is ABSENT else x)
+        return out
     if k == "document":
         return {"$document": t["tree"], "format": t["format"]}
     if k == "withheld":
         return _NotComparable("valor retido: não se compara")
     return _NotComparable(f"termo {k} não se compara antes de avaliado")
+
+
+def _structural(t: dict) -> bool:
+    """Referência ou símbolo (também dentro de lista) compara exato, nunca pelo comparador do caso."""
+    return t["kind"] in ("reference", "symbol") or (t["kind"] == "list" and any(_structural(x) for x in t["items"]))
 
 
 def _walk(values, toks, block: S.Block, occ_choice):
@@ -133,6 +148,10 @@ def _walk(values, toks, block: S.Block, occ_choice):
                 return None, False
             prefix.append((t.name, t.index))
             blk = bt.block
+        elif t.kind == "elem":
+            if not isinstance(cur, list) or t.index >= len(cur):
+                return None, False
+            cur = cur[t.index]
         else:
             if not isinstance(cur, dict) or t.name not in cur:
                 return None, False
@@ -204,7 +223,7 @@ def project(state: dict, report_plan: dict, plan: dict, red: Redactor, table: S.
         else:
             vterm = vidx[(order, w["field"])]
         fr = FieldRead(path, w["origin"], "not_read", node_id=w.get("node_id") or None,
-                       structural=vterm["term"]["kind"] in ("reference", "symbol"))
+                       structural=_structural(vterm["term"]))
         attr: S.Attr = w["_attr"]
         res = by_addr.get(addr)
         exp = _expected(w, vterm, red, by_addr)
@@ -250,7 +269,11 @@ def project(state: dict, report_plan: dict, plan: dict, red: Redactor, table: S.
             return [x for x in writtens if (("data." if x["kind"] == "data" else "") +
                                             f"{x['resource_type']}.{x['label']}") == a]
 
-        raw, found = _walk(res.get("values") or {}, w["_toks"], w["_block"], occ_choice)
+        is_set = isinstance(attr.type, list) and attr.type[0] == "set"
+        toks = w["_toks"]
+        set_elem = is_set and toks[-1].kind == "elem"
+        # elemento de set (forma antiga do C26-LIST): set não tem posição; lê o conjunto e procura o item depois
+        raw, found = _walk(res.get("values") or {}, toks[:-1] if set_elem else toks, w["_block"], occ_choice)
         if not found or raw is None:
             fr.state = "absent"
             fr.value = None
@@ -261,6 +284,18 @@ def project(state: dict, report_plan: dict, plan: dict, red: Redactor, table: S.
             fr.state, fr.rule_id = "withheld", rv
             out.append(fr)
             continue
+        if set_elem and isinstance(rv, list):
+            hit = [x for x in rv if fr.expected is not None and CMP.value_equal(x, fr.expected)]
+            if not hit:
+                fr.state, fr.value = "absent", None
+                out.append(fr)
+                continue
+            rv = hit[0]
+        elif is_set and isinstance(rv, list) and isinstance(fr.expected, list):
+            # set não tem ordem: com os mesmos itens, vale a ordem do plano
+            key = lambda x: json.dumps(x, sort_keys=True, default=str)  # noqa: E731
+            if sorted(map(key, rv)) == sorted(map(key, fr.expected)):
+                rv = list(fr.expected)
         fr.state, fr.value = "read", rv
         out.append(fr)
     return out

@@ -2,7 +2,9 @@
 
 Um caminho de valor do C26 (`a.b.c`, só [A-Za-z0-9_] e pontos) é resolvido contra o schema assim:
   - segmento que é atributo do bloco corrente -> atributo; segmentos seguintes só se o tipo do atributo for
-    map (chave livre) ou object (chave tem de ser atributo do objeto);
+    map (chave livre) ou object (chave tem de ser atributo do objeto); num atributo list(T) ou set(T) de
+    elemento simples, um índice só com dígitos como ÚLTIMO segmento é um elemento (forma antiga do C26-LIST,
+    `security_list_ids.0`; o renderizador junta os índices 0..n-1 numa lista);
   - segmento que é bloco aninhado -> bloco; com modo list ou set, o segmento seguinte pode ser um índice de
     ocorrência só com dígitos (0, 1, ...); sem índice, é a ocorrência 0 (um bloco só);
   - qualquer outro segmento -> FIELD_NOT_IN_SCHEMA (o renderizador não adivinha).
@@ -113,15 +115,16 @@ class PathError(ValueError):
 
 @dataclass(frozen=True)
 class Token:
-    kind: str          # block | attr | key
+    kind: str          # block | attr | key | elem
     name: str
-    index: int = 0     # ocorrência do bloco (0 se não repetível)
+    index: int = 0     # ocorrência do bloco (0 se não repetível) ou posição do elemento (elem)
 
 
 def resolve(block: Block, field_path: str) -> tuple[tuple[Token, ...], object]:
     """Resolve um caminho do C26 contra o bloco. Devolve (tokens, alvo) onde alvo é o Attr da folha.
 
     Erros: FIELD_NOT_IN_SCHEMA, FIELD_NOT_CONFIGURABLE, PATH_ENDS_AT_BLOCK, INDEX_NOT_ALLOWED, KEY_NOT_ALLOWED.
+    Elemento de lista/conjunto (forma antiga do C26-LIST) sai como token 'elem' com a posição em index.
     """
     segs = field_path.split(".")
     toks: list[Token] = []
@@ -136,8 +139,12 @@ def resolve(block: Block, field_path: str) -> tuple[tuple[Token, ...], object]:
             toks.append(Token("attr", s))
             rest = segs[i + 1:]
             typ = a.type
-            for k in rest:
-                if isinstance(typ, list) and typ[0] == "map":
+            for j, k in enumerate(rest):
+                if isinstance(typ, list) and typ[0] in ("list", "set") and k.isdigit() and j == len(rest) - 1 \
+                        and not (isinstance(typ[1], list) and typ[1][0] in ("object", "list", "set", "map")):
+                    toks.append(Token("elem", s, int(k)))
+                    typ = typ[1]
+                elif isinstance(typ, list) and typ[0] == "map":
                     toks.append(Token("key", k))
                     typ = typ[1]
                 elif isinstance(typ, list) and typ[0] == "object":
@@ -169,6 +176,9 @@ def leaf_type(attr: Attr, toks: tuple[Token, ...]):
     """Tipo cty do valor na folha (desce por chaves de map/object)."""
     typ = attr.type
     for t in toks:
+        if t.kind == "elem":
+            typ = typ[1]
+            continue
         if t.kind != "key":
             continue
         if isinstance(typ, list) and typ[0] == "map":

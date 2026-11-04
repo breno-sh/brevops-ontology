@@ -1,0 +1,125 @@
+{
+ "apply": {
+  "ok": true
+ },
+ "destroy": {
+  "ok": true
+ },
+ "expects_vars": [
+  "bo_ctx_compartment_id",
+  "bo_ctx_run_tag",
+  "bo_region"
+ ],
+ "identity": "sandbox-synthetic",
+ "module_sha256": "049384b10596ba3b19c9aa047b03af704d9611dd4b91d192c1dd38c98eff4e20",
+ "note": "gravação sintética (sem nuvem): state no formato de terraform show -json montado do plano de exemplo",
+ "plan_id": "LP-OCI-NET-0003",
+ "polls": [
+  {
+   "format_version": "1.0",
+   "terraform_version": "1.15.8",
+   "values": {
+    "root_module": {
+     "child_modules": [
+      {
+       "address": "module.lp_oci_net_0003",
+       "resources": [
+        {
+         "address": "module.lp_oci_net_0003.oci_core_vcn.r1",
+         "mode": "managed",
+         "name": "r1",
+         "provider_name": "registry.terraform.io/oracle/oci",
+         "schema_version": 0,
+         "sensitive_values": {},
+         "type": "oci_core_vcn",
+         "values": {
+          "cidr_blocks": [
+           "10.3.0.0/16"
+          ],
+          "compartment_id": "@CTX:compartment_id",
+          "display_name": "bo-net-0003-vcn",
+          "freeform_tags": {
+           "bo-run": "@CTX:run_tag"
+          },
+          "id": "@OCID:oci_core_vcn:163",
+          "state": "AVAILABLE",
+          "time_created": "2026-11-03 10:00:00.000 +0000 UTC"
+         }
+        },
+        {
+         "address": "module.lp_oci_net_0003.oci_core_security_list.r2",
+         "mode": "managed",
+         "name": "r2",
+         "provider_name": "registry.terraform.io/oracle/oci",
+         "schema_version": 0,
+         "sensitive_values": {},
+         "type": "oci_core_security_list",
+         "values": {
+          "compartment_id": "@CTX:compartment_id",
+          "display_name": "bo-net-0003-sl-a",
+          "freeform_tags": {
+           "bo-run": "@CTX:run_tag"
+          },
+          "id": "@OCID:oci_core_security_list:164",
+          "state": "AVAILABLE",
+          "time_created": "2026-11-03 10:00:00.000 +0000 UTC",
+          "vcn_id": "@OCID:oci_core_vcn:163"
+         }
+        },
+        {
+         "address": "module.lp_oci_net_0003.oci_core_security_list.r3",
+         "mode": "managed",
+         "name": "r3",
+         "provider_name": "registry.terraform.io/oracle/oci",
+         "schema_version": 0,
+         "sensitive_values": {},
+         "type": "oci_core_security_list",
+         "values": {
+          "compartment_id": "@CTX:compartment_id",
+          "display_name": "bo-net-0003-sl-b",
+          "freeform_tags": {
+           "bo-run": "@CTX:run_tag"
+          },
+          "id": "@OCID:oci_core_security_list:165",
+          "state": "AVAILABLE",
+          "time_created": "2026-11-03 10:00:00.000 +0000 UTC",
+          "vcn_id": "@OCID:oci_core_vcn:163"
+         }
+        },
+        {
+         "address": "module.lp_oci_net_0003.oci_core_subnet.r4",
+         "mode": "managed",
+         "name": "r4",
+         "provider_name": "registry.terraform.io/oracle/oci",
+         "schema_version": 0,
+         "sensitive_values": {},
+         "type": "oci_core_subnet",
+         "values": {
+          "cidr_block": "10.3.1.0/24",
+          "compartment_id": "@CTX:compartment_id",
+          "display_name": "bo-net-0003-subnet",
+          "freeform_tags": {
+           "bo-run": "@CTX:run_tag"
+          },
+          "id": "@OCID:oci_core_subnet:166",
+          "security_list_ids": [
+           "@OCID:oci_core_security_list:164",
+           "@OCID:oci_core_security_list:165"
+          ],
+          "state": "AVAILABLE",
+          "time_created": "2026-11-03 10:00:00.000 +0000 UTC",
+          "vcn_id": "@OCID:oci_core_vcn:163"
+         }
+        }
+       ]
+      }
+     ]
+    }
+   }
+  }
+ ],
+ "scenario": "forma antiga do C26-LIST (security_list_ids.0, .1): PERSISTED",
+ "schema": "bo.harness.oci.recording/1",
+ "state_list_after_destroy": [],
+ "synthetic": true
+}
