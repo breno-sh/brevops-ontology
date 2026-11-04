@@ -83,6 +83,8 @@ def selftest() -> int:
 def main() -> int:
     if "--selftest" in sys.argv[1:]:
         return selftest()
+    # o catálogo (gate do PILOT-EXIT) chama `--check`; é o mesmo que o subcomando `check`
+    argv = ["check" if a == "--check" else a for a in sys.argv[1:]]
     ap = argparse.ArgumentParser(prog="invalidate.py")
     sub = ap.add_subparsers(dest="cmd", required=True)
     c = sub.add_parser("check")
@@ -95,7 +97,7 @@ def main() -> int:
     cl.add_argument("module")
     cl.add_argument("--reason", required=True)
     sub.add_parser("status")
-    a = ap.parse_args()
+    a = ap.parse_args(argv)
     repo = core.bo_repo()
     cat = catalog.load(repo)
     if a.cmd == "check":
