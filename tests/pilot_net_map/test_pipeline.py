@@ -131,7 +131,8 @@ def test_fixed_direction_guards_attribute_side(synth):
     assert len(rows) == 1
     g = rows[0]["guard"]["all"]
     assert {"term": "object.direction", "op": "eq", "value": "Inbound"} in g
-    assert {"term": "object.access", "op": "eq", "value": "Allow"} in g      # aws só permite: guarda no efeito
+    # o pacote não documenta o efeito das regras aws: nenhuma guarda de efeito é escrita (sem valor inventado)
+    assert not [x for x in g if x["term"] == "object.access"]
     assert rows[0]["evidence_state"] == "DOC_SUPPORTED"
     assert rows[0]["proof"]["tests"][0]["input"] in ("Tcp", "Udp", "*")      # teste admitido pelo enum do objeto
 

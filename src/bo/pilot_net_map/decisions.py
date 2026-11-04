@@ -25,12 +25,12 @@ Z_EFF = {"allow": "Allow", "deny": "Deny"}
 SHAPES: dict[str, dict] = {
     # aws: regra separada (tipo com atributo type), regras separadas por sentido, blocos embutidos no grupo
     "a_sgr": {"prov": "aws", "rtype": "aws_security_group_rule", "prefix": "", "dir": "attr", "dir_term": "type",
-              "dir_vals": {"in": "ingress"}, "eff": "allow"},
-    "a_vin": {"prov": "aws", "rtype": "aws_vpc_security_group_ingress_rule", "prefix": "", "dir": "in", "eff": "allow"},
-    "a_veg": {"prov": "aws", "rtype": "aws_vpc_security_group_egress_rule", "prefix": "", "dir": "out", "eff": "allow"},
-    "a_sgi": {"prov": "aws", "rtype": "aws_security_group", "prefix": "ingress.", "dir": "in", "eff": "allow",
+              "dir_vals": {"in": "ingress"}, "eff": "unknown"},
+    "a_vin": {"prov": "aws", "rtype": "aws_vpc_security_group_ingress_rule", "prefix": "", "dir": "in", "eff": "unknown"},
+    "a_veg": {"prov": "aws", "rtype": "aws_vpc_security_group_egress_rule", "prefix": "", "dir": "out", "eff": "unknown"},
+    "a_sgi": {"prov": "aws", "rtype": "aws_security_group", "prefix": "ingress.", "dir": "in", "eff": "unknown",
               "block": True},
-    "a_sge": {"prov": "aws", "rtype": "aws_security_group", "prefix": "egress.", "dir": "out", "eff": "allow",
+    "a_sge": {"prov": "aws", "rtype": "aws_security_group", "prefix": "egress.", "dir": "out", "eff": "unknown",
               "block": True},
     "a_set": {"prov": "aws", "rtype": "aws_security_group", "prefix": "", "dir": None, "eff": None},
     "a_att": {"prov": "aws", "rtype": "aws_network_interface_sg_attachment", "prefix": "", "dir": None, "eff": None},
@@ -55,18 +55,19 @@ SHAPES: dict[str, dict] = {
               "dir": None, "eff": None},
     # oci: regra de NSG separada (sentido em texto sem valores no pacote) e blocos da security list
     "o_nsg": {"prov": "oci", "rtype": "oci_core_network_security_group_security_rule", "prefix": "", "dir": "attr",
-              "dir_term": "direction", "dir_vals": None, "eff": "allow"},
+              "dir_term": "direction", "dir_vals": None, "eff": "unknown"},
     "o_sli": {"prov": "oci", "rtype": "oci_core_security_list", "prefix": "ingress_security_rules.", "dir": "in",
-              "eff": "allow", "block": True},
+              "eff": "unknown", "block": True},
     "o_sle": {"prov": "oci", "rtype": "oci_core_security_list", "prefix": "egress_security_rules.", "dir": "out",
-              "eff": "allow", "block": True},
+              "eff": "unknown", "block": True},
     "o_nset": {"prov": "oci", "rtype": "oci_core_network_security_group", "prefix": "", "dir": None, "eff": None},
     "o_sl": {"prov": "oci", "rtype": "oci_core_security_list", "prefix": "", "dir": None, "eff": None},
 }
-# efeito fixo (allow) em aws e oci: notas do glossarista SN-NET-0001 (aws: regras só permitem) e SN-NET-0002
-# (oci: CQFIX, sem negação). O C25 diz effect unknown nesses tipos: por isso nenhuma alegação de efeito fixo
-# (fixed_default) chega a DOC_SUPPORTED; o efeito fixo só restringe emparelhamentos (aws/oci × deny não sai).
-EFFECT_NOTES = {"aws": "SN-NET-0001", "oci": "SN-NET-0002"}
+# efeito em aws e oci: o pacote oficial (PILOT-NET-GLOSS ab56277) não documenta; as notas SN-NET-0001/0002 e os
+# fatos do C25 que diziam "só permitem" saíram do pacote. Efeito "unknown": não restringe emparelhamento (a regra
+# do outro lado pode ser de permitir ou de negar: as duas realizações saem e o árbitro as vê como ambíguas) e
+# não sustenta fixed_default.
+EFFECT_NOTES: dict[str, str] = {}
 
 # --------------------------------------------------------------------------------------------- faixas
 # membro = (forma, caminho dentro da forma[, sentido fixado pelo próprio membro])
@@ -166,10 +167,9 @@ PORT_TEXT = {"dst": [("z_rule", "destination_port_range"), ("z_emb", "destinatio
              "src": [("z_rule", "source_port_range"), ("z_emb", "source_port_range"),
                      ("z_rule", "source_port_ranges"), ("z_emb", "source_port_ranges")]}
 
-# efeito por atributo (azurerm access) contra efeito fixo (oci: sem negação, SN-NET-0002): narrowMatch com valor
-# fixo no destino e predicado de pertença finito. Só no AZOCI (orientação azurerm -> oci); nos pares em que o lado
-# com efeito fixo é o sujeito, o fixed_default não se exprime na orientação canônica (vai como ausência anotada).
-FIXED_EFFECT = [("z_rule", "access", "o_nsg"), ("z_rule", "access", "o_sli"), ("z_rule", "access", "o_sle")]
+# efeito por atributo contra efeito fixo (fixed_default com predicado de pertença): vazio enquanto o pacote não
+# documentar o efeito fixo de aws ou oci.
+FIXED_EFFECT: list[tuple[str, str, str]] = []
 
 # átomos que o pacote declara mas que nenhuma correspondência que transporta alcança: tipo de ausência e porquê.
 # Regra = (provedor do átomo | '*', padrão do átomo, provedor do outro lado | '*', tipo, motivo). Padrão:
@@ -180,11 +180,11 @@ FIXED_EFFECT = [("z_rule", "access", "o_nsg"), ("z_rule", "access", "o_sli"), ("
 ABSENCE_RULES: list[tuple[str, str, str, str, str]] = [
     ("azurerm", "azurerm_network_security_rule:access", "google", "UNSUPPORTED_BY_TRANSLATOR",
      "o efeito no firewall do outro lado é o bloco usado (allow{} ou deny{}); o registro não tem função que escolha bloco"),
-    ("azurerm", "azurerm_network_security_rule:access", "aws", "UNRESOLVED",
-     "o outro lado só tem regras que permitem (nota SN-NET-0001), sem atributo; o fixed_default não se exprime com o "
-     "lado sem atributo como sujeito, e o C25 marca o efeito do tipo como unknown"),
+    ("azurerm", "azurerm_network_security_rule:access", "*", "UNRESOLVED",
+     "o pacote não documenta o efeito das regras do outro lado (nem atributo, nem valor fixo); nada a que ligar o "
+     "permitir/negar"),
     ("azurerm", "azurerm_network_security_group:security_rule.access", "*", "UNRESOLVED",
-     "campo do bloco embutido sem tipo no pacote; o efeito do outro lado é bloco ou fixo"),
+     "campo do bloco embutido sem valores documentados no pacote; o efeito do outro lado é bloco ou não documentado"),
     ("oci", "oci_core_network_security_group_security_rule:direction", "*", "UNRESOLVED",
      "o pacote não documenta os valores do sentido da regra NSG (texto livre): tradução e guarda por sentido não se "
      "escrevem sem inventar valor"),
@@ -224,7 +224,7 @@ ABSENCE_RULES: list[tuple[str, str, str, str, str]] = [
     ("oci", "*:destination_type", "*", "UNRESOLVED",
      "discriminador do tipo de destino (CIDR ou serviço): o outro lado não tem discriminador; valores sem tradução"),
     ("oci", "*:stateless", "*", "ABSENCE_DEMONSTRATED",
-     "o outro lado não tem regra sem estado; o C25 marca o estado da conexão do outro lado como unknown, por isso nem o "
+     "o outro lado não tem regra sem estado e o pacote não documenta o estado da conexão dele, por isso nem o "
      "comportamento fixo se alega"),
     ("aws", "*:self", "*", "ABSENCE_DEMONSTRATED",
      "o próprio grupo como par: o outro lado não tem átomo equivalente na fatia"),

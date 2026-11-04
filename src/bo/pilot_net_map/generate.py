@@ -130,6 +130,8 @@ def guards_for(b: Bundle, ra: dict, rb: dict, with_dir: bool = True) -> list[dic
         _dir_guard(b, ra, rb, base_atoms, tt)
     ea, eb = ra["shape"].get("eff"), rb["shape"].get("eff")
     variants: list[list] = [[]]
+    if "unknown" in (ea, eb):
+        ea = eb = None          # efeito não documentado de um lado: nenhuma guarda de efeito se escreve
     if ea is not None and eb is not None:
         fixed = {"allow", "deny"}
         if ea in fixed and eb in fixed:
@@ -355,6 +357,8 @@ def claim_for(pair, slot, policy, ra, rb, guard, b: Bundle) -> dict:
     projs = [p for p in (projection_for(b, ra), projection_for(b, rb)) if p]
     if projs:
         r["projection"] = projs
+    if "unknown" in (ra["shape"].get("eff"), rb["shape"].get("eff")):
+        notes.append("efeito de um lado não documentado no pacote: sem guarda de efeito")
     r["comment"] = f"faixa {slot}; " + "; ".join(notes) if notes else f"faixa {slot}"
     return r
 

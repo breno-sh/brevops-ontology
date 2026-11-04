@@ -76,3 +76,15 @@ CC-MAP-NET-4 (2026-11-04T11:05:00-03:00, America/Recife): o G3 do catálogo regr
   (a) catálogo: G3 = "python -I -m bo.arbiter.run --frozen --in $BO_DATA/PILOT-NET-MAP/mapping.sssom.tsv
       --check-unproven --out $BO_TMP/arbiter" (o mesmo nos PILOT-*-MAP);
   (b) ARBITERLIB: com --check-unproven e sem --out, gravar em $BO_TMP e não em $BO_DATA.
+
+ADENDO 2026-11-04T13:13:00-03:00 (America/Recife), bo/base e22bf7a (ARBITERLIB cc57c0a, C09 3.2.0,
+PILOT-NET-GLOSS ab56277 na forma oficial: MANIFEST.sha256 + value_space.jsonl).
+  CC-MAP-NET-4 resolvido pelo ARBITERLIB: com --check-unproven e sem --out o árbitro grava em $BO_TMP/arbiter.
+  F-1 resolvido pelo C09 3.2.0: lista/conjunto/mapa de escalar com item_type (key_type no mapa); escalar <-> lista
+      por wrap_list/unwrap_single do registro. Continua de fora: grupo de portas contra faixa em LISTA (join_port_range
+      seguido de wrap_list exige variável intermediária, e a G-VARS pede campo para toda variável).
+  F-6 resolvido pelo C09 3.2.0: ausência do segundo provedor com absence.side = object (subject_id = sssom:NoTermFound).
+  F-5 mudou: o pacote oficial não traz mais as notas SN-NET-0001/0002 nem os fatos do C25; nenhuma decisão ou
+      âncora diz que aws e oci só permitem. O efeito dessas regras passa a "não documentado": não restringe
+      emparelhamento (allow e deny do outro lado saem como realizações que o árbitro vê como ambíguas) e o
+      fixed_default do AZOCI saiu. Proposta ao glossarista: decisão C20 sobre o efeito fixo de aws e oci, com sentença.
