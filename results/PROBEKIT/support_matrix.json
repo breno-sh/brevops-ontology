@@ -1,0 +1,1881 @@
+{
+ "cells": [
+  {
+   "attributes": [
+    "versioning_configuration.status"
+   ],
+   "cell": "object_versioning/aws",
+   "checks": [
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE documented_supported; 1 evidência(s) publicada(s)",
+     "id": "S1",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem requisito de mínimo no protocolo",
+     "id": "S2",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "TTL 0 s; P1–P3 conferem",
+     "id": "S4",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "janela 1 h; máximo 72 h (D12 e tipos)",
+     "id": "S5",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "aws_s3_bucket_versioning na allowlist do SAFETY",
+     "id": "S6",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE cita 6.71.0; pin 6.71.0",
+     "id": "S7",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "template confere (schema, atributos, controle, TTL, plan_guard, custo)",
+     "id": "S8",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "operações e parsers no kit",
+     "id": "S9",
+     "ok": true
+    }
+   ],
+   "drawable": true,
+   "failed": [],
+   "join_outcome_if_drawn": null,
+   "probe_type": "object_versioning",
+   "provider": "aws",
+   "realizing_type": "aws_s3_bucket_versioning",
+   "sku": [
+    {
+     "address": "aws_s3_bucket.probe",
+     "sku": {},
+     "type": "aws_s3_bucket"
+    },
+    {
+     "address": "aws_s3_bucket_public_access_block.probe",
+     "sku": {},
+     "type": "aws_s3_bucket_public_access_block"
+    },
+    {
+     "address": "aws_s3_bucket_versioning.probe[0]",
+     "sku": {},
+     "type": "aws_s3_bucket_versioning"
+    }
+   ],
+   "status": "validated",
+   "template": "$BO_REPO/deploy/probes/object_versioning/aws/_templates/"
+  },
+  {
+   "attributes": [
+    "versioning.enabled"
+   ],
+   "cell": "object_versioning/google",
+   "checks": [
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE documented_supported; 1 evidência(s) publicada(s)",
+     "id": "S1",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem requisito de mínimo no protocolo",
+     "id": "S2",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "TTL 0 s; P1–P3 conferem",
+     "id": "S4",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "janela 1 h; máximo 72 h (D12 e tipos)",
+     "id": "S5",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "google_storage_bucket na allowlist do SAFETY",
+     "id": "S6",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE cita 8.9.0; pin 8.9.0",
+     "id": "S7",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "template confere (schema, atributos, controle, TTL, plan_guard, custo)",
+     "id": "S8",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "operações e parsers no kit",
+     "id": "S9",
+     "ok": true
+    }
+   ],
+   "drawable": true,
+   "failed": [],
+   "join_outcome_if_drawn": null,
+   "probe_type": "object_versioning",
+   "provider": "google",
+   "realizing_type": "google_storage_bucket",
+   "sku": [
+    {
+     "address": "google_storage_bucket.probe",
+     "sku": {
+      "storage_class": "STANDARD"
+     },
+     "type": "google_storage_bucket"
+    }
+   ],
+   "status": "validated",
+   "template": "$BO_REPO/deploy/probes/object_versioning/google/_templates/"
+  },
+  {
+   "attributes": [
+    "blob_properties.versioning_enabled"
+   ],
+   "cell": "object_versioning/azurerm",
+   "checks": [
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE documented_supported; 1 evidência(s) publicada(s)",
+     "id": "S1",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem requisito de mínimo no protocolo",
+     "id": "S2",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "TTL 0 s; P1–P3 conferem",
+     "id": "S4",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "janela 1 h; máximo 72 h (D12 e tipos)",
+     "id": "S5",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "azurerm_storage_account na allowlist do SAFETY",
+     "id": "S6",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE cita 5.12.0; pin 5.12.0",
+     "id": "S7",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "template confere (schema, atributos, controle, TTL, plan_guard, custo)",
+     "id": "S8",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "operações e parsers no kit",
+     "id": "S9",
+     "ok": true
+    }
+   ],
+   "drawable": true,
+   "failed": [],
+   "join_outcome_if_drawn": null,
+   "probe_type": "object_versioning",
+   "provider": "azurerm",
+   "realizing_type": "azurerm_storage_account",
+   "sku": [
+    {
+     "address": "azurerm_resource_group.probe",
+     "sku": {},
+     "type": "azurerm_resource_group"
+    },
+    {
+     "address": "azurerm_storage_account.probe",
+     "sku": {
+      "access_tier": "Hot",
+      "account_kind": "StorageV2",
+      "account_replication_type": "LRS",
+      "account_tier": "Standard"
+     },
+     "type": "azurerm_storage_account"
+    },
+    {
+     "address": "azurerm_storage_container.probe",
+     "sku": {},
+     "type": "azurerm_storage_container"
+    }
+   ],
+   "status": "validated",
+   "template": "$BO_REPO/deploy/probes/object_versioning/azurerm/_templates/"
+  },
+  {
+   "attributes": [
+    "versioning"
+   ],
+   "cell": "object_versioning/oci",
+   "checks": [
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE documented_supported; 1 evidência(s) publicada(s)",
+     "id": "S1",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem requisito de mínimo no protocolo",
+     "id": "S2",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "TTL 0 s; P1–P3 conferem",
+     "id": "S4",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "janela 1 h; máximo 72 h (D12 e tipos)",
+     "id": "S5",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "oci_objectstorage_bucket na allowlist do SAFETY",
+     "id": "S6",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE cita 9.11.0; pin 9.11.0",
+     "id": "S7",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "template confere (schema, atributos, controle, TTL, plan_guard, custo)",
+     "id": "S8",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "operações e parsers no kit",
+     "id": "S9",
+     "ok": true
+    }
+   ],
+   "drawable": true,
+   "failed": [],
+   "join_outcome_if_drawn": null,
+   "probe_type": "object_versioning",
+   "provider": "oci",
+   "realizing_type": "oci_objectstorage_bucket",
+   "sku": [
+    {
+     "address": "oci_objectstorage_bucket.probe",
+     "sku": {
+      "storage_tier": "Standard"
+     },
+     "type": "oci_objectstorage_bucket"
+    }
+   ],
+   "status": "validated",
+   "template": "$BO_REPO/deploy/probes/object_versioning/oci/_templates/"
+  },
+  {
+   "attributes": [
+    "rule.expiration.days"
+   ],
+   "cell": "object_lifecycle/aws",
+   "checks": [
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE documented_supported; 1 evidência(s) publicada(s)",
+     "id": "S1",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "mínimo documentado 86400 s; requisito <= 86400 s",
+     "id": "S2",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "TTL 86400 s; P1–P3 conferem",
+     "id": "S4",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "janela 72 h; máximo 72 h (D12 e tipos)",
+     "id": "S5",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "aws_s3_bucket_lifecycle_configuration na allowlist do SAFETY",
+     "id": "S6",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE cita 6.71.0; pin 6.71.0",
+     "id": "S7",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "template confere (schema, atributos, controle, TTL, plan_guard, custo)",
+     "id": "S8",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "operações e parsers no kit",
+     "id": "S9",
+     "ok": true
+    }
+   ],
+   "drawable": true,
+   "failed": [],
+   "join_outcome_if_drawn": null,
+   "probe_type": "object_lifecycle",
+   "provider": "aws",
+   "realizing_type": "aws_s3_bucket_lifecycle_configuration",
+   "sku": [
+    {
+     "address": "aws_s3_bucket.probe",
+     "sku": {},
+     "type": "aws_s3_bucket"
+    },
+    {
+     "address": "aws_s3_bucket_public_access_block.probe",
+     "sku": {},
+     "type": "aws_s3_bucket_public_access_block"
+    },
+    {
+     "address": "aws_s3_bucket_lifecycle_configuration.probe[0]",
+     "sku": {},
+     "type": "aws_s3_bucket_lifecycle_configuration"
+    }
+   ],
+   "status": "validated",
+   "template": "$BO_REPO/deploy/probes/object_lifecycle/aws/_templates/"
+  },
+  {
+   "attributes": [
+    "lifecycle_rule.condition.age",
+    "lifecycle_rule.action.type"
+   ],
+   "cell": "object_lifecycle/google",
+   "checks": [
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE documented_supported; 1 evidência(s) publicada(s)",
+     "id": "S1",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "mínimo documentado 0 s; requisito <= 86400 s",
+     "id": "S2",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "TTL 86400 s; P1–P3 conferem",
+     "id": "S4",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "janela 72 h; máximo 72 h (D12 e tipos)",
+     "id": "S5",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "google_storage_bucket na allowlist do SAFETY",
+     "id": "S6",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE cita 8.9.0; pin 8.9.0",
+     "id": "S7",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "template confere (schema, atributos, controle, TTL, plan_guard, custo)",
+     "id": "S8",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "operações e parsers no kit",
+     "id": "S9",
+     "ok": true
+    }
+   ],
+   "drawable": true,
+   "failed": [],
+   "join_outcome_if_drawn": null,
+   "probe_type": "object_lifecycle",
+   "provider": "google",
+   "realizing_type": "google_storage_bucket",
+   "sku": [
+    {
+     "address": "google_storage_bucket.probe",
+     "sku": {
+      "storage_class": "STANDARD"
+     },
+     "type": "google_storage_bucket"
+    }
+   ],
+   "status": "validated",
+   "template": "$BO_REPO/deploy/probes/object_lifecycle/google/_templates/"
+  },
+  {
+   "attributes": [
+    "rule.actions.base_blob.delete_after_days_since_creation_greater_than"
+   ],
+   "cell": "object_lifecycle/azurerm",
+   "checks": [
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE documented_supported; 1 evidência(s) publicada(s)",
+     "id": "S1",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "mínimo documentado 0 s; requisito <= 86400 s",
+     "id": "S2",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "TTL 0 s; P1–P3 conferem",
+     "id": "S4",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "janela 72 h; máximo 72 h (D12 e tipos)",
+     "id": "S5",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "azurerm_storage_management_policy fora da allowlist do SAFETY",
+     "id": "S6",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE cita 5.12.0; pin 5.12.0",
+     "id": "S7",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem template no kit",
+     "id": "S8",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem operações de plano de dados no kit",
+     "id": "S9",
+     "ok": false
+    }
+   ],
+   "drawable": false,
+   "failed": [
+    "S6",
+    "S8",
+    "S9"
+   ],
+   "join_outcome_if_drawn": "PROTOCOL_UNSUPPORTED",
+   "probe_type": "object_lifecycle",
+   "provider": "azurerm",
+   "realizing_type": "azurerm_storage_management_policy",
+   "sku": [],
+   "status": "unknown",
+   "template": "$BO_REPO/deploy/probes/object_lifecycle/azurerm/_templates/"
+  },
+  {
+   "attributes": [
+    "rules.time_amount",
+    "rules.time_unit",
+    "rules.action"
+   ],
+   "cell": "object_lifecycle/oci",
+   "checks": [
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE unknown; 1 evidência(s) publicada(s)",
+     "id": "S1",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "mínimo do provedor não documentado; requisito <= 86400 s",
+     "id": "S2",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "TTL 0 s; P1–P3 conferem",
+     "id": "S4",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "janela 72 h; máximo 72 h (D12 e tipos)",
+     "id": "S5",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "oci_objectstorage_object_lifecycle_policy fora da allowlist do SAFETY",
+     "id": "S6",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE cita 9.11.0; pin 9.11.0",
+     "id": "S7",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem template no kit",
+     "id": "S8",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem operações de plano de dados no kit",
+     "id": "S9",
+     "ok": false
+    }
+   ],
+   "drawable": false,
+   "failed": [
+    "S1",
+    "S2",
+    "S6",
+    "S8",
+    "S9"
+   ],
+   "join_outcome_if_drawn": "PROTOCOL_UNSUPPORTED",
+   "probe_type": "object_lifecycle",
+   "provider": "oci",
+   "realizing_type": "oci_objectstorage_object_lifecycle_policy",
+   "sku": [],
+   "status": "unknown",
+   "template": "$BO_REPO/deploy/probes/object_lifecycle/oci/_templates/"
+  },
+  {
+   "attributes": [
+    "ttl.enabled",
+    "ttl.attribute_name"
+   ],
+   "cell": "item_ttl/aws",
+   "checks": [
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE documented_supported; 1 evidência(s) publicada(s)",
+     "id": "S1",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem requisito de mínimo no protocolo",
+     "id": "S2",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "TTL 3600 s; P1–P3 conferem",
+     "id": "S4",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "janela 72 h; máximo 72 h (D12 e tipos)",
+     "id": "S5",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "aws_dynamodb_table na allowlist do SAFETY",
+     "id": "S6",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE cita 6.71.0; pin 6.71.0",
+     "id": "S7",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "template confere (schema, atributos, controle, TTL, plan_guard, custo)",
+     "id": "S8",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "operações e parsers no kit",
+     "id": "S9",
+     "ok": true
+    }
+   ],
+   "drawable": true,
+   "failed": [],
+   "join_outcome_if_drawn": null,
+   "probe_type": "item_ttl",
+   "provider": "aws",
+   "realizing_type": "aws_dynamodb_table",
+   "sku": [
+    {
+     "address": "aws_dynamodb_table.probe",
+     "sku": {
+      "billing_mode": "PAY_PER_REQUEST"
+     },
+     "type": "aws_dynamodb_table"
+    }
+   ],
+   "status": "validated",
+   "template": "$BO_REPO/deploy/probes/item_ttl/aws/_templates/"
+  },
+  {
+   "attributes": [
+    "ttl_config"
+   ],
+   "cell": "item_ttl/google",
+   "checks": [
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE documented_supported; 1 evidência(s) publicada(s)",
+     "id": "S1",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem requisito de mínimo no protocolo",
+     "id": "S2",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "TTL 3600 s; P1–P3 conferem",
+     "id": "S4",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "janela 72 h; máximo 72 h (D12 e tipos)",
+     "id": "S5",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "google_firestore_field na allowlist do SAFETY",
+     "id": "S6",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE cita 8.9.0; pin 8.9.0",
+     "id": "S7",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "template confere (schema, atributos, controle, TTL, plan_guard, custo)",
+     "id": "S8",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "operações e parsers no kit",
+     "id": "S9",
+     "ok": true
+    }
+   ],
+   "drawable": true,
+   "failed": [],
+   "join_outcome_if_drawn": null,
+   "probe_type": "item_ttl",
+   "provider": "google",
+   "realizing_type": "google_firestore_field",
+   "sku": [
+    {
+     "address": "google_firestore_database.probe",
+     "sku": {},
+     "type": "google_firestore_database"
+    },
+    {
+     "address": "google_firestore_field.probe[0]",
+     "sku": {},
+     "type": "google_firestore_field"
+    }
+   ],
+   "status": "validated",
+   "template": "$BO_REPO/deploy/probes/item_ttl/google/_templates/"
+  },
+  {
+   "attributes": [
+    "default_ttl"
+   ],
+   "cell": "item_ttl/azurerm",
+   "checks": [
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE documented_supported; 1 evidência(s) publicada(s)",
+     "id": "S1",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem requisito de mínimo no protocolo",
+     "id": "S2",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "TTL 0 s; P1–P3 conferem",
+     "id": "S4",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "janela 72 h; máximo 72 h (D12 e tipos)",
+     "id": "S5",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "azurerm_cosmosdb_sql_container fora da allowlist do SAFETY",
+     "id": "S6",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE cita 5.12.0; pin 5.12.0",
+     "id": "S7",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem template no kit",
+     "id": "S8",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem operações de plano de dados no kit",
+     "id": "S9",
+     "ok": false
+    }
+   ],
+   "drawable": false,
+   "failed": [
+    "S6",
+    "S8",
+    "S9"
+   ],
+   "join_outcome_if_drawn": "PROTOCOL_UNSUPPORTED",
+   "probe_type": "item_ttl",
+   "provider": "azurerm",
+   "realizing_type": "azurerm_cosmosdb_sql_container",
+   "sku": [],
+   "status": "unknown",
+   "template": "$BO_REPO/deploy/probes/item_ttl/azurerm/_templates/"
+  },
+  {
+   "attributes": [],
+   "cell": "item_ttl/oci",
+   "checks": [
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE unknown; 1 evidência(s) publicada(s)",
+     "id": "S1",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem requisito de mínimo no protocolo",
+     "id": "S2",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "TTL 0 s; P1–P3 conferem",
+     "id": "S4",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "janela 72 h; máximo 72 h (D12 e tipos)",
+     "id": "S5",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "oci_nosql_table na allowlist do SAFETY",
+     "id": "S6",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE cita 9.11.0; pin 9.11.0",
+     "id": "S7",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem template no kit",
+     "id": "S8",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem operações de plano de dados no kit",
+     "id": "S9",
+     "ok": false
+    }
+   ],
+   "drawable": false,
+   "failed": [
+    "S1",
+    "S8",
+    "S9"
+   ],
+   "join_outcome_if_drawn": "PROTOCOL_UNSUPPORTED",
+   "probe_type": "item_ttl",
+   "provider": "oci",
+   "realizing_type": "oci_nosql_table",
+   "sku": [],
+   "status": "unknown",
+   "template": "$BO_REPO/deploy/probes/item_ttl/oci/_templates/"
+  },
+  {
+   "attributes": [
+    "message_retention_seconds"
+   ],
+   "cell": "queue_retention/aws",
+   "checks": [
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE documented_supported; 1 evidência(s) publicada(s)",
+     "id": "S1",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "mínimo documentado 60 s; requisito <= 86400 s",
+     "id": "S2",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "TTL 60 s; P1–P3 conferem",
+     "id": "S4",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "janela 48 h; máximo 72 h (D12 e tipos)",
+     "id": "S5",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "aws_sqs_queue na allowlist do SAFETY",
+     "id": "S6",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE cita 6.71.0; pin 6.71.0",
+     "id": "S7",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "template confere (schema, atributos, controle, TTL, plan_guard, custo)",
+     "id": "S8",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "operações e parsers no kit",
+     "id": "S9",
+     "ok": true
+    }
+   ],
+   "drawable": true,
+   "failed": [],
+   "join_outcome_if_drawn": null,
+   "probe_type": "queue_retention",
+   "provider": "aws",
+   "realizing_type": "aws_sqs_queue",
+   "sku": [
+    {
+     "address": "aws_sqs_queue.probe[0]",
+     "sku": {},
+     "type": "aws_sqs_queue"
+    },
+    {
+     "address": "aws_sqs_queue.probe[1]",
+     "sku": {},
+     "type": "aws_sqs_queue"
+    },
+    {
+     "address": "aws_sqs_queue.probe[2]",
+     "sku": {},
+     "type": "aws_sqs_queue"
+    }
+   ],
+   "status": "validated",
+   "template": "$BO_REPO/deploy/probes/queue_retention/aws/_templates/"
+  },
+  {
+   "attributes": [
+    "message_retention_duration"
+   ],
+   "cell": "queue_retention/google",
+   "checks": [
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE documented_supported; 1 evidência(s) publicada(s)",
+     "id": "S1",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "mínimo documentado 600 s; requisito <= 86400 s",
+     "id": "S2",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "TTL 600 s; P1–P3 conferem",
+     "id": "S4",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "janela 48 h; máximo 72 h (D12 e tipos)",
+     "id": "S5",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "google_pubsub_subscription na allowlist do SAFETY",
+     "id": "S6",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE cita 8.9.0; pin 8.9.0",
+     "id": "S7",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "template confere (schema, atributos, controle, TTL, plan_guard, custo)",
+     "id": "S8",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "operações e parsers no kit",
+     "id": "S9",
+     "ok": true
+    }
+   ],
+   "drawable": true,
+   "failed": [],
+   "join_outcome_if_drawn": null,
+   "probe_type": "queue_retention",
+   "provider": "google",
+   "realizing_type": "google_pubsub_subscription",
+   "sku": [
+    {
+     "address": "google_pubsub_topic.probe[0]",
+     "sku": {},
+     "type": "google_pubsub_topic"
+    },
+    {
+     "address": "google_pubsub_topic.probe[1]",
+     "sku": {},
+     "type": "google_pubsub_topic"
+    },
+    {
+     "address": "google_pubsub_topic.probe[2]",
+     "sku": {},
+     "type": "google_pubsub_topic"
+    },
+    {
+     "address": "google_pubsub_subscription.probe[0]",
+     "sku": {},
+     "type": "google_pubsub_subscription"
+    },
+    {
+     "address": "google_pubsub_subscription.probe[1]",
+     "sku": {},
+     "type": "google_pubsub_subscription"
+    },
+    {
+     "address": "google_pubsub_subscription.probe[2]",
+     "sku": {},
+     "type": "google_pubsub_subscription"
+    }
+   ],
+   "status": "validated",
+   "template": "$BO_REPO/deploy/probes/queue_retention/google/_templates/"
+  },
+  {
+   "attributes": [
+    "default_message_ttl"
+   ],
+   "cell": "queue_retention/azurerm",
+   "checks": [
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE unknown; 1 evidência(s) publicada(s)",
+     "id": "S1",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "mínimo do provedor não documentado; requisito <= 86400 s",
+     "id": "S2",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "TTL 0 s; P1–P3 conferem",
+     "id": "S4",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "janela 48 h; máximo 72 h (D12 e tipos)",
+     "id": "S5",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "azurerm_servicebus_queue na allowlist do SAFETY",
+     "id": "S6",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE cita 5.12.0; pin 5.12.0",
+     "id": "S7",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem template no kit",
+     "id": "S8",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem operações de plano de dados no kit",
+     "id": "S9",
+     "ok": false
+    }
+   ],
+   "drawable": false,
+   "failed": [
+    "S1",
+    "S2",
+    "S8",
+    "S9"
+   ],
+   "join_outcome_if_drawn": "PROTOCOL_UNSUPPORTED",
+   "probe_type": "queue_retention",
+   "provider": "azurerm",
+   "realizing_type": "azurerm_servicebus_queue",
+   "sku": [],
+   "status": "unknown",
+   "template": "$BO_REPO/deploy/probes/queue_retention/azurerm/_templates/"
+  },
+  {
+   "attributes": [
+    "retention_in_seconds"
+   ],
+   "cell": "queue_retention/oci",
+   "checks": [
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE unknown; 1 evidência(s) publicada(s)",
+     "id": "S1",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "mínimo do provedor não documentado; requisito <= 86400 s",
+     "id": "S2",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "TTL 0 s; P1–P3 conferem",
+     "id": "S4",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "janela 48 h; máximo 72 h (D12 e tipos)",
+     "id": "S5",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "oci_queue_queue na allowlist do SAFETY",
+     "id": "S6",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE cita 9.11.0; pin 9.11.0",
+     "id": "S7",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem template no kit",
+     "id": "S8",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem operações de plano de dados no kit",
+     "id": "S9",
+     "ok": false
+    }
+   ],
+   "drawable": false,
+   "failed": [
+    "S1",
+    "S2",
+    "S8",
+    "S9"
+   ],
+   "join_outcome_if_drawn": "PROTOCOL_UNSUPPORTED",
+   "probe_type": "queue_retention",
+   "provider": "oci",
+   "realizing_type": "oci_queue_queue",
+   "sku": [],
+   "status": "unknown",
+   "template": "$BO_REPO/deploy/probes/queue_retention/oci/_templates/"
+  },
+  {
+   "attributes": [
+    "throttle_settings.rate_limit",
+    "throttle_settings.burst_limit"
+   ],
+   "cell": "rate_limit/aws",
+   "checks": [
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE unknown; 2 evidência(s) publicada(s)",
+     "id": "S1",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem requisito de mínimo no protocolo",
+     "id": "S2",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "não declarado(s) no SERVICE-EVIDENCE: window, key",
+     "id": "S3",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "TTL 0 s; P1–P3 conferem",
+     "id": "S4",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "janela 0.166667 h; máximo 72 h (D12 e tipos)",
+     "id": "S5",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "aws_api_gateway_usage_plan fora da allowlist do SAFETY",
+     "id": "S6",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE cita 6.71.0; pin 6.71.0",
+     "id": "S7",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem template no kit",
+     "id": "S8",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem operações de plano de dados no kit",
+     "id": "S9",
+     "ok": false
+    }
+   ],
+   "drawable": false,
+   "failed": [
+    "S1",
+    "S3",
+    "S6",
+    "S8",
+    "S9"
+   ],
+   "join_outcome_if_drawn": "PROTOCOL_UNSUPPORTED",
+   "probe_type": "rate_limit",
+   "provider": "aws",
+   "realizing_type": "aws_api_gateway_usage_plan",
+   "sku": [],
+   "status": "unknown",
+   "template": "$BO_REPO/deploy/probes/rate_limit/aws/_templates/"
+  },
+  {
+   "attributes": [
+    "rule.rate_limit_options.rate_limit_threshold.count",
+    "rule.rate_limit_options.rate_limit_threshold.interval_sec",
+    "rule.rate_limit_options.enforce_on_key_type"
+   ],
+   "cell": "rate_limit/google",
+   "checks": [
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE unknown; 2 evidência(s) publicada(s)",
+     "id": "S1",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem requisito de mínimo no protocolo",
+     "id": "S2",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "não declarado(s) no SERVICE-EVIDENCE: burst, mechanism",
+     "id": "S3",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "TTL 0 s; P1–P3 conferem",
+     "id": "S4",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "janela 0.166667 h; máximo 72 h (D12 e tipos)",
+     "id": "S5",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "google_compute_security_policy fora da allowlist do SAFETY",
+     "id": "S6",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE cita 8.9.0; pin 8.9.0",
+     "id": "S7",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem template no kit",
+     "id": "S8",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem operações de plano de dados no kit",
+     "id": "S9",
+     "ok": false
+    }
+   ],
+   "drawable": false,
+   "failed": [
+    "S1",
+    "S3",
+    "S6",
+    "S8",
+    "S9"
+   ],
+   "join_outcome_if_drawn": "PROTOCOL_UNSUPPORTED",
+   "probe_type": "rate_limit",
+   "provider": "google",
+   "realizing_type": "google_compute_security_policy",
+   "sku": [],
+   "status": "unknown",
+   "template": "$BO_REPO/deploy/probes/rate_limit/google/_templates/"
+  },
+  {
+   "attributes": [
+    "xml_content"
+   ],
+   "cell": "rate_limit/azurerm",
+   "checks": [
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE unknown; 1 evidência(s) publicada(s)",
+     "id": "S1",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem requisito de mínimo no protocolo",
+     "id": "S2",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "não declarado(s) no SERVICE-EVIDENCE: window, key, burst, mechanism",
+     "id": "S3",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "TTL 0 s; P1–P3 conferem",
+     "id": "S4",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "janela 0.166667 h; máximo 72 h (D12 e tipos)",
+     "id": "S5",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "azurerm_api_management_api_policy fora da allowlist do SAFETY",
+     "id": "S6",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE cita 5.12.0; pin 5.12.0",
+     "id": "S7",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem template no kit",
+     "id": "S8",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem operações de plano de dados no kit",
+     "id": "S9",
+     "ok": false
+    }
+   ],
+   "drawable": false,
+   "failed": [
+    "S1",
+    "S3",
+    "S6",
+    "S8",
+    "S9"
+   ],
+   "join_outcome_if_drawn": "PROTOCOL_UNSUPPORTED",
+   "probe_type": "rate_limit",
+   "provider": "azurerm",
+   "realizing_type": "azurerm_api_management_api_policy",
+   "sku": [],
+   "status": "unknown",
+   "template": "$BO_REPO/deploy/probes/rate_limit/azurerm/_templates/"
+  },
+  {
+   "attributes": [
+    "specification.request_policies.rate_limiting.rate_in_requests_per_second",
+    "specification.request_policies.rate_limiting.rate_key"
+   ],
+   "cell": "rate_limit/oci",
+   "checks": [
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE unknown; 2 evidência(s) publicada(s)",
+     "id": "S1",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem requisito de mínimo no protocolo",
+     "id": "S2",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "não declarado(s) no SERVICE-EVIDENCE: burst, mechanism",
+     "id": "S3",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "TTL 0 s; P1–P3 conferem",
+     "id": "S4",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "janela 0.166667 h; máximo 72 h (D12 e tipos)",
+     "id": "S5",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "oci_apigateway_deployment fora da allowlist do SAFETY",
+     "id": "S6",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE cita 9.11.0; pin 9.11.0",
+     "id": "S7",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem template no kit",
+     "id": "S8",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem operações de plano de dados no kit",
+     "id": "S9",
+     "ok": false
+    }
+   ],
+   "drawable": false,
+   "failed": [
+    "S1",
+    "S3",
+    "S6",
+    "S8",
+    "S9"
+   ],
+   "join_outcome_if_drawn": "PROTOCOL_UNSUPPORTED",
+   "probe_type": "rate_limit",
+   "provider": "oci",
+   "realizing_type": "oci_apigateway_deployment",
+   "sku": [],
+   "status": "unknown",
+   "template": "$BO_REPO/deploy/probes/rate_limit/oci/_templates/"
+  },
+  {
+   "attributes": [
+    "retention_in_days"
+   ],
+   "cell": "log_retention/aws",
+   "checks": [
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE documented_supported; 1 evidência(s) publicada(s)",
+     "id": "S1",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "mínimo documentado 86400 s; requisito <= 259200 s",
+     "id": "S2",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "TTL 86400 s; P1–P3 conferem",
+     "id": "S4",
+     "ok": true
+    },
+    {
+     "demonstrated": true,
+     "detail": "janela 96 h; máximo 72 h (D12 e tipos)",
+     "id": "S5",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "aws_cloudwatch_log_group na allowlist do SAFETY",
+     "id": "S6",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE cita 6.71.0; pin 6.71.0",
+     "id": "S7",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem template no kit",
+     "id": "S8",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem operações de plano de dados no kit",
+     "id": "S9",
+     "ok": false
+    }
+   ],
+   "drawable": false,
+   "failed": [
+    "S5",
+    "S8",
+    "S9"
+   ],
+   "join_outcome_if_drawn": "PROTOCOL_UNSUPPORTED",
+   "probe_type": "log_retention",
+   "provider": "aws",
+   "realizing_type": "aws_cloudwatch_log_group",
+   "sku": [],
+   "status": "unsupported",
+   "template": "$BO_REPO/deploy/probes/log_retention/aws/_templates/"
+  },
+  {
+   "attributes": [
+    "retention_days"
+   ],
+   "cell": "log_retention/google",
+   "checks": [
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE documented_supported; 1 evidência(s) publicada(s)",
+     "id": "S1",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "mínimo documentado 86400 s; requisito <= 259200 s",
+     "id": "S2",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "TTL 86400 s; P1–P3 conferem",
+     "id": "S4",
+     "ok": true
+    },
+    {
+     "demonstrated": true,
+     "detail": "janela 96 h; máximo 72 h (D12 e tipos)",
+     "id": "S5",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "google_logging_project_bucket_config fora da allowlist do SAFETY",
+     "id": "S6",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE cita 8.9.0; pin 8.9.0",
+     "id": "S7",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem template no kit",
+     "id": "S8",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem operações de plano de dados no kit",
+     "id": "S9",
+     "ok": false
+    }
+   ],
+   "drawable": false,
+   "failed": [
+    "S5",
+    "S6",
+    "S8",
+    "S9"
+   ],
+   "join_outcome_if_drawn": "PROTOCOL_UNSUPPORTED",
+   "probe_type": "log_retention",
+   "provider": "google",
+   "realizing_type": "google_logging_project_bucket_config",
+   "sku": [],
+   "status": "unsupported",
+   "template": "$BO_REPO/deploy/probes/log_retention/google/_templates/"
+  },
+  {
+   "attributes": [
+    "retention_in_days"
+   ],
+   "cell": "log_retention/azurerm",
+   "checks": [
+    {
+     "demonstrated": true,
+     "detail": "SERVICE-EVIDENCE documented_unsupported; 1 evidência(s) publicada(s)",
+     "id": "S1",
+     "ok": false
+    },
+    {
+     "demonstrated": true,
+     "detail": "mínimo documentado 2592000 s; requisito <= 259200 s",
+     "id": "S2",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "TTL 2592000 s; P2: polling.max_wait (345600 s) < TTL configurado (2592000 s) + margem (259200 s)",
+     "id": "S4",
+     "ok": false
+    },
+    {
+     "demonstrated": true,
+     "detail": "janela 96 h; máximo 72 h (D12 e tipos)",
+     "id": "S5",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "azurerm_log_analytics_workspace na allowlist do SAFETY",
+     "id": "S6",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE cita 5.12.0; pin 5.12.0",
+     "id": "S7",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem template no kit",
+     "id": "S8",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem operações de plano de dados no kit",
+     "id": "S9",
+     "ok": false
+    }
+   ],
+   "drawable": false,
+   "failed": [
+    "S1",
+    "S2",
+    "S4",
+    "S5",
+    "S8",
+    "S9"
+   ],
+   "join_outcome_if_drawn": "PROTOCOL_UNSUPPORTED",
+   "probe_type": "log_retention",
+   "provider": "azurerm",
+   "realizing_type": "azurerm_log_analytics_workspace",
+   "sku": [],
+   "status": "unsupported",
+   "template": "$BO_REPO/deploy/probes/log_retention/azurerm/_templates/"
+  },
+  {
+   "attributes": [
+    "retention_duration"
+   ],
+   "cell": "log_retention/oci",
+   "checks": [
+    {
+     "demonstrated": true,
+     "detail": "SERVICE-EVIDENCE documented_unsupported; 1 evidência(s) publicada(s)",
+     "id": "S1",
+     "ok": false
+    },
+    {
+     "demonstrated": true,
+     "detail": "mínimo documentado 2592000 s; requisito <= 259200 s",
+     "id": "S2",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "TTL 2592000 s; P2: polling.max_wait (345600 s) < TTL configurado (2592000 s) + margem (259200 s)",
+     "id": "S4",
+     "ok": false
+    },
+    {
+     "demonstrated": true,
+     "detail": "janela 96 h; máximo 72 h (D12 e tipos)",
+     "id": "S5",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "oci_logging_log na allowlist do SAFETY",
+     "id": "S6",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "SERVICE-EVIDENCE cita 9.11.0; pin 9.11.0",
+     "id": "S7",
+     "ok": true
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem template no kit",
+     "id": "S8",
+     "ok": false
+    },
+    {
+     "demonstrated": false,
+     "detail": "sem operações de plano de dados no kit",
+     "id": "S9",
+     "ok": false
+    }
+   ],
+   "drawable": false,
+   "failed": [
+    "S1",
+    "S2",
+    "S4",
+    "S5",
+    "S8",
+    "S9"
+   ],
+   "join_outcome_if_drawn": "PROTOCOL_UNSUPPORTED",
+   "probe_type": "log_retention",
+   "provider": "oci",
+   "realizing_type": "oci_logging_log",
+   "sku": [],
+   "status": "unsupported",
+   "template": "$BO_REPO/deploy/probes/log_retention/oci/_templates/"
+  }
+ ],
+ "drawable": [
+  "object_versioning/aws",
+  "object_versioning/google",
+  "object_versioning/azurerm",
+  "object_versioning/oci",
+  "object_lifecycle/aws",
+  "object_lifecycle/google",
+  "item_ttl/aws",
+  "item_ttl/google",
+  "queue_retention/aws",
+  "queue_retention/google"
+ ],
+ "generated_at": "2026-11-04T08:59:07-03:00",
+ "inputs": [
+  {
+   "path": "$BO_REPO/prereg/probe_types.yaml",
+   "sha256": "a218997eda71942414c09a3f3d2de2d4c6c8d94cfa7a7f16145722deb4b20fca"
+  },
+  {
+   "path": "$BO_DATA/SERVICE-EVIDENCE/protocol_support.jsonl",
+   "sha256": "6814028449cb1247f51688ee9ec4d362bafaf876ae06a8097f13c7841a84a42d"
+  },
+  {
+   "path": "$BO_REPO/deploy/safety/allowlist_skus.yaml",
+   "sha256": "da426ef166267ee3fe7a91c704a9e0a23a7b4ffe3f1032e432f5ffd4699bf6ed"
+  },
+  {
+   "path": "$BO_DATA/downloads/prefetch/aws/6.71.0/providers-schema.json",
+   "sha256": "ee012f92aeab529dc2abd73c2932261694da877dc116e2320ce7cc986bcdee7e"
+  },
+  {
+   "path": "$BO_DATA/downloads/prefetch/google/8.9.0/providers-schema.json",
+   "sha256": "239c0eae0e0ae9453cfe8cb7690646882f8ac0f9387ba4a67b5168917ecb8345"
+  },
+  {
+   "path": "$BO_DATA/downloads/prefetch/azurerm/5.12.0/providers-schema.json",
+   "sha256": "d6c6ad1c8347a81c4cdf36abd7d07990046adbc0695691f4ca6d54284bb81cdb"
+  },
+  {
+   "path": "$BO_DATA/downloads/prefetch/oci/9.11.0/providers-schema.json",
+   "sha256": "ae0101e5473f7adfd65993dfc335c99285df2bc88ed97fe74c712fb704f55237"
+  }
+ ],
+ "kit_params": {
+  "confirmations": 2,
+  "heartbeat_every_s": 60,
+  "items_per_repetition": 3,
+  "kit_version": "1.0.0",
+  "max_lost_poll_fraction": 0.5,
+  "object_size_bytes": 1024,
+  "op_retries": 2,
+  "rate_limit_factor": 3,
+  "writes_per_key": 3
+ },
+ "kit_version": "1.0.0",
+ "module": "PROBEKIT",
+ "note": "validação offline (fase 1, sem nuvem): a primeira execução real é do SMOKE, com o GO do Breno; o suporte observado só sobe depois das sondas",
+ "protocol": {
+  "module": "PREREG",
+  "path": "$BO_REPO/prereg/probe_types.yaml",
+  "protocol_version": "1.0.0",
+  "sha256": "a218997eda71942414c09a3f3d2de2d4c6c8d94cfa7a7f16145722deb4b20fca"
+ },
+ "schema": "bo.probekit.support_matrix/1",
+ "summary": {
+  "unknown": 10,
+  "unsupported": 4,
+  "validated": 10
+ }
+}

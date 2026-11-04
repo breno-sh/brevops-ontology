@@ -1,0 +1,159 @@
+{
+ "calls": {},
+ "cell": "*",
+ "parse_errors": {
+  "item_ttl/aws": [
+   {
+    "rc": 0,
+    "stdout": "{\"ScannedCount\": 1}"
+   }
+  ],
+  "object_lifecycle/google": [
+   {
+    "rc": 1,
+    "stderr_tail": "ERROR: (gcloud.storage.objects.list) 403 Forbidden",
+    "stdout": ""
+   }
+  ],
+  "object_versioning/aws": [
+   {
+    "rc": 254,
+    "stdout": ""
+   },
+   {
+    "rc": 0,
+    "stdout": "não é json"
+   }
+  ],
+  "queue_retention/aws": [
+   {
+    "rc": 0,
+    "stdout": "{\"Attributes\": {}}"
+   }
+  ],
+  "queue_retention/google": [
+   {
+    "body": {},
+    "status": 200
+   },
+   {
+    "body": null,
+    "status": 503
+   }
+  ]
+ },
+ "parsers": {
+  "object_lifecycle/aws": [
+   [
+    {
+     "rc": 0,
+     "stdout": "{\"KeyCount\": 2, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}]}"
+    },
+    {
+     "present": 2
+    }
+   ],
+   [
+    {
+     "rc": 0,
+     "stdout": "{\"Name\": \"bo-synthetic\"}"
+    },
+    {
+     "present": 0
+    }
+   ]
+  ],
+  "object_lifecycle/google": [
+   [
+    {
+     "rc": 0,
+     "stdout": "[{\"name\": \"bo-probe/case/r1/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/case/r1/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/case/r1/obj-3\", \"size\": 1024}]"
+    },
+    {
+     "present": 3
+    }
+   ],
+   [
+    {
+     "rc": 0,
+     "stdout": "[]"
+    },
+    {
+     "present": 0
+    }
+   ],
+   [
+    {
+     "rc": 1,
+     "stderr_tail": "ERROR: (gcloud.storage.objects.list) One or more URLs matched no objects.",
+     "stdout": ""
+    },
+    {
+     "present": 0
+    }
+   ]
+  ],
+  "object_versioning/aws": [
+   [
+    {
+     "rc": 0,
+     "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/case/r1/obj\", \"VersionId\": \"v1\", \"IsLatest\": false, \"Size\": 1024}, {\"Key\": \"bo-probe/case/r1/obj\", \"VersionId\": \"v2\", \"IsLatest\": false, \"Size\": 1024}, {\"Key\": \"bo-probe/case/r1/obj\", \"VersionId\": \"v3\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+    },
+    {
+     "versions": 3
+    }
+   ],
+   [
+    {
+     "rc": 0,
+     "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/case/r1/obj-outra\", \"VersionId\": \"v1\", \"IsLatest\": false, \"Size\": 1024}, {\"Key\": \"bo-probe/case/r1/obj-outra\", \"VersionId\": \"v2\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+    },
+    {
+     "versions": 0
+    }
+   ]
+  ],
+  "object_versioning/azurerm": [
+   [
+    {
+     "rc": 0,
+     "stdout": "[{\"name\": \"bo-probe/case/r1/obj\", \"versionId\": \"2026-11-04T12:01:00.0000000Z\", \"isCurrentVersion\": false}, {\"name\": \"bo-probe/case/r1/obj\", \"versionId\": \"2026-11-04T12:02:00.0000000Z\", \"isCurrentVersion\": false}, {\"name\": \"bo-probe/case/r1/obj\", \"versionId\": \"2026-11-04T12:03:00.0000000Z\", \"isCurrentVersion\": true}]"
+    },
+    {
+     "versions": 3
+    }
+   ],
+   [
+    {
+     "rc": 0,
+     "stdout": "[{\"name\": \"bo-probe/case/r1/obj\"}]"
+    },
+    {
+     "versions": 0
+    }
+   ]
+  ],
+  "object_versioning/oci": [
+   [
+    {
+     "rc": 0,
+     "stdout": "{\"data\": {\"items\": [{\"name\": \"bo-probe/case/r1/obj\", \"version-id\": \"v1\", \"size\": 1024}, {\"name\": \"bo-probe/case/r1/obj\", \"version-id\": \"v2\", \"size\": 1024}]}, \"prefixes\": []}"
+    },
+    {
+     "versions": 2
+    }
+   ],
+   [
+    {
+     "rc": 0,
+     "stdout": "{\"data\": []}"
+    },
+    {
+     "versions": 0
+    }
+   ]
+  ]
+ },
+ "schema": "bo.probe_recording/1",
+ "synthetic": true
+}

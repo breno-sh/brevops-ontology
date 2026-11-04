@@ -1,0 +1,873 @@
+{
+ "contract": "C22",
+ "contract_version": "3.0.0",
+ "generated_at": "2026-11-04T08:59:07-03:00",
+ "module": "PROBEKIT",
+ "probe_types": [
+  {
+   "cost_limit": {
+    "amount": 0.5,
+    "currency": "USD"
+   },
+   "negative_control": {
+    "description": "mesmo protocolo em contêiner com versionamento desligado ou suspenso",
+    "expected": "uma única versão listada da chave"
+   },
+   "polling": {
+    "interval": "PT1M",
+    "max_wait": "PT30M"
+   },
+   "preconditions": [
+    "bucket ou contêiner novo da execução, com a configuração de versionamento do caso aplicada e lida de volta como PERSISTED",
+    "objeto sintético de 1 KiB, sem conteúdo real; gravado 3 vezes com a mesma chave"
+   ],
+   "probe_type": "object_versioning",
+   "repetitions": 3,
+   "tolerance": {
+    "kind": "exact",
+    "value": 0
+   },
+   "validated_support": [
+    {
+     "evidence": [
+      {
+       "doc": {
+        "file": "website/docs/r/s3_bucket_versioning.html.markdown",
+        "line": 109,
+        "repo": "hashicorp/terraform-provider-aws",
+        "sentence": "* `status` - (Required) Versioning state of the bucket. Valid values: `Enabled`, `Suspended`, or `Disabled`. `Disabled` should only be used when creating or importing resources that correspond to unversioned S3 buckets.",
+        "tag": "v6.71.0"
+       },
+       "level": "published"
+      },
+      {
+       "level": "interpreted",
+       "model_id": "claude-opus-5-5",
+       "note": "escolha do tipo e dos atributos que realizam a sonda feita pelo modelo; o valor documentado é lido das frases publicadas citadas",
+       "ref": "$BO_DATA/SERVICE-EVIDENCE/protocol_support.jsonl#object_versioning/aws"
+      },
+      {
+       "level": "derived",
+       "note": "validação offline do PROBEKIT 1.0.0 (validated): S1–S9 conferem; SKU: aws_s3_bucket, aws_s3_bucket_public_access_block, aws_s3_bucket_versioning na allowlist do SAFETY; atributos de SKU nenhum na tabela",
+       "ref": "$BO_REPO/results/PROBEKIT/support_matrix.json#object_versioning/aws"
+      }
+     ],
+     "provider": "aws",
+     "status": "validated"
+    },
+    {
+     "evidence": [
+      {
+       "doc": {
+        "file": "website/docs/r/storage_bucket.html.markdown",
+        "line": 333,
+        "repo": "hashicorp/terraform-provider-google",
+        "sentence": "* `enabled` - (Required) While set to `true`, versioning is fully enabled for this bucket.",
+        "tag": "v8.9.0"
+       },
+       "level": "published"
+      },
+      {
+       "level": "interpreted",
+       "model_id": "claude-opus-5-5",
+       "note": "escolha do tipo e dos atributos que realizam a sonda feita pelo modelo; o valor documentado é lido das frases publicadas citadas",
+       "ref": "$BO_DATA/SERVICE-EVIDENCE/protocol_support.jsonl#object_versioning/google"
+      },
+      {
+       "level": "derived",
+       "note": "validação offline do PROBEKIT 1.0.0 (validated): S1–S9 conferem; SKU: google_storage_bucket na allowlist do SAFETY; atributos de SKU {\"google_storage_bucket.storage_class\": \"STANDARD\"}",
+       "ref": "$BO_REPO/results/PROBEKIT/support_matrix.json#object_versioning/google"
+      }
+     ],
+     "provider": "google",
+     "status": "validated"
+    },
+    {
+     "evidence": [
+      {
+       "doc": {
+        "file": "website/docs/r/storage_account.html.markdown",
+        "line": 209,
+        "repo": "hashicorp/terraform-provider-azurerm",
+        "sentence": "* `versioning_enabled` - (Optional) Is versioning enabled? Default to `false`.",
+        "tag": "v5.12.0"
+       },
+       "level": "published"
+      },
+      {
+       "level": "interpreted",
+       "model_id": "claude-opus-5-5",
+       "note": "escolha do tipo e dos atributos que realizam a sonda feita pelo modelo; o valor documentado é lido das frases publicadas citadas",
+       "ref": "$BO_DATA/SERVICE-EVIDENCE/protocol_support.jsonl#object_versioning/azurerm"
+      },
+      {
+       "level": "derived",
+       "note": "validação offline do PROBEKIT 1.0.0 (validated): S1–S9 conferem; SKU: azurerm_resource_group, azurerm_storage_account, azurerm_storage_container na allowlist do SAFETY; atributos de SKU {\"azurerm_storage_account.access_tier\": \"Hot\", \"azurerm_storage_account.account_kind\": \"StorageV2\", \"azurerm_storage_account.account_replication_type\": \"LRS\", \"azurerm_storage_account.account_tier\": \"Standard\"}",
+       "ref": "$BO_REPO/results/PROBEKIT/support_matrix.json#object_versioning/azurerm"
+      }
+     ],
+     "provider": "azurerm",
+     "status": "validated"
+    },
+    {
+     "evidence": [
+      {
+       "doc": {
+        "file": "website/docs/r/objectstorage_bucket.html.markdown",
+        "line": 76,
+        "repo": "oracle/terraform-provider-oci",
+        "sentence": "* `versioning` - (Optional) (Updatable) Set the versioning status on the bucket. By default, a bucket is created with versioning `Disabled`. Use this option to enable versioning during bucket creation. Objects in a version enabled bucket are protected from overwrites and deletions. Previous versions of the same object will be available in the bucket. Allowed Create values: Enabled, Disabled. Allowed Update values: Enabled, Suspended.",
+        "tag": "v9.11.0"
+       },
+       "level": "published"
+      },
+      {
+       "level": "interpreted",
+       "model_id": "claude-opus-5-5",
+       "note": "escolha do tipo e dos atributos que realizam a sonda feita pelo modelo; o valor documentado é lido das frases publicadas citadas",
+       "ref": "$BO_DATA/SERVICE-EVIDENCE/protocol_support.jsonl#object_versioning/oci"
+      },
+      {
+       "level": "derived",
+       "note": "validação offline do PROBEKIT 1.0.0 (validated): S1–S9 conferem; SKU: oci_objectstorage_bucket na allowlist do SAFETY; atributos de SKU {\"oci_objectstorage_bucket.storage_tier\": \"Standard\"}",
+       "ref": "$BO_REPO/results/PROBEKIT/support_matrix.json#object_versioning/oci"
+      }
+     ],
+     "provider": "oci",
+     "status": "validated"
+    }
+   ],
+   "window": {
+    "duration": "PT1H",
+    "margin_over_ttl": "PT30M"
+   }
+  },
+  {
+   "cost_limit": {
+    "amount": 1.0,
+    "currency": "USD"
+   },
+   "negative_control": {
+    "description": "mesmo protocolo em contêiner sem regra de ciclo de vida",
+    "expected": "objetos continuam presentes no fim da janela"
+   },
+   "polling": {
+    "interval": "PT6H",
+    "max_wait": "PT72H"
+   },
+   "preconditions": [
+    "regra de ciclo de vida do caso com a menor idade permitida pelo provedor (1 dia onde a unidade é dia), lida de volta como PERSISTED",
+    "objetos sintéticos com idade conhecida",
+    "supervisor independente com heartbeat ativo (D16); sem ele, o tipo sai da amostra"
+   ],
+   "probe_type": "object_lifecycle",
+   "repetitions": 3,
+   "tolerance": {
+    "kind": "exact",
+    "value": 0
+   },
+   "validated_support": [
+    {
+     "evidence": [
+      {
+       "doc": {
+        "file": "website/docs/r/s3_bucket_lifecycle_configuration.html.markdown",
+        "line": 403,
+        "repo": "hashicorp/terraform-provider-aws",
+        "sentence": "* `days` - (Optional) Lifetime, in days, of the objects that are subject to the rule. The value must be a non-zero positive integer.",
+        "tag": "v6.71.0"
+       },
+       "level": "published"
+      },
+      {
+       "level": "interpreted",
+       "model_id": "claude-opus-5-5",
+       "note": "escolha do tipo e dos atributos que realizam a sonda feita pelo modelo; o valor documentado é lido das frases publicadas citadas",
+       "ref": "$BO_DATA/SERVICE-EVIDENCE/protocol_support.jsonl#object_lifecycle/aws"
+      },
+      {
+       "level": "derived",
+       "note": "validação offline do PROBEKIT 1.0.0 (validated): S1–S9 conferem; SKU: aws_s3_bucket, aws_s3_bucket_lifecycle_configuration, aws_s3_bucket_public_access_block na allowlist do SAFETY; atributos de SKU nenhum na tabela",
+       "ref": "$BO_REPO/results/PROBEKIT/support_matrix.json#object_lifecycle/aws"
+      }
+     ],
+     "provider": "aws",
+     "status": "validated"
+    },
+    {
+     "evidence": [
+      {
+       "doc": {
+        "file": "website/docs/r/storage_bucket.html.markdown",
+        "line": 291,
+        "repo": "hashicorp/terraform-provider-google",
+        "sentence": "* `age` - (Optional) Minimum age of an object in days to satisfy this condition. **Note** To set `0` value of `age`, `send_age_if_zero` should be set `true` otherwise `0` value of `age` field will be ignored.",
+        "tag": "v8.9.0"
+       },
+       "level": "published"
+      },
+      {
+       "level": "interpreted",
+       "model_id": "claude-opus-5-5",
+       "note": "escolha do tipo e dos atributos que realizam a sonda feita pelo modelo; o valor documentado é lido das frases publicadas citadas",
+       "ref": "$BO_DATA/SERVICE-EVIDENCE/protocol_support.jsonl#object_lifecycle/google"
+      },
+      {
+       "level": "derived",
+       "note": "validação offline do PROBEKIT 1.0.0 (validated): S1–S9 conferem; SKU: google_storage_bucket na allowlist do SAFETY; atributos de SKU {\"google_storage_bucket.storage_class\": \"STANDARD\"}",
+       "ref": "$BO_REPO/results/PROBEKIT/support_matrix.json#object_lifecycle/google"
+      }
+     ],
+     "provider": "google",
+     "status": "validated"
+    },
+    {
+     "evidence": [
+      {
+       "doc": {
+        "file": "website/docs/r/storage_management_policy.html.markdown",
+        "line": 150,
+        "repo": "hashicorp/terraform-provider-azurerm",
+        "sentence": "* `delete_after_days_since_creation_greater_than` - (Optional) The age in days after creation to delete the blob. Must be between `0` and `99999`. Defaults to `-1`.",
+        "tag": "v5.12.0"
+       },
+       "level": "published"
+      },
+      {
+       "level": "interpreted",
+       "model_id": "claude-opus-5-5",
+       "note": "escolha do tipo e dos atributos que realizam a sonda feita pelo modelo; o valor documentado é lido das frases publicadas citadas",
+       "ref": "$BO_DATA/SERVICE-EVIDENCE/protocol_support.jsonl#object_lifecycle/azurerm"
+      },
+      {
+       "level": "derived",
+       "note": "validação offline do PROBEKIT 1.0.0 (unknown): falhou S6, S8, S9",
+       "ref": "$BO_REPO/results/PROBEKIT/support_matrix.json#object_lifecycle/azurerm"
+      }
+     ],
+     "provider": "azurerm",
+     "status": "unknown"
+    },
+    {
+     "evidence": [
+      {
+       "doc": {
+        "file": "website/docs/r/objectstorage_object_lifecycle_policy.html.markdown",
+        "line": 74,
+        "repo": "oracle/terraform-provider-oci",
+        "sentence": "* `time_amount` - (Required) (Updatable) Specifies the age of objects to apply the rule to. The timeAmount is interpreted in units defined by the timeUnit parameter, and is calculated in relation to each object's Last-Modified time.",
+        "tag": "v9.11.0"
+       },
+       "level": "published"
+      },
+      {
+       "level": "interpreted",
+       "model_id": "claude-opus-5-5",
+       "note": "escolha do tipo e dos atributos que realizam a sonda feita pelo modelo; o valor documentado é lido das frases publicadas citadas",
+       "ref": "$BO_DATA/SERVICE-EVIDENCE/protocol_support.jsonl#object_lifecycle/oci"
+      },
+      {
+       "level": "derived",
+       "note": "validação offline do PROBEKIT 1.0.0 (unknown): falhou S1, S2, S6, S8, S9",
+       "ref": "$BO_REPO/results/PROBEKIT/support_matrix.json#object_lifecycle/oci"
+      }
+     ],
+     "provider": "oci",
+     "status": "unknown"
+    }
+   ],
+   "window": {
+    "duration": "PT72H",
+    "margin_over_ttl": "PT48H"
+   }
+  },
+  {
+   "cost_limit": {
+    "amount": 1.0,
+    "currency": "USD"
+   },
+   "negative_control": {
+    "description": "itens iguais sem o atributo de TTL (ou TTL desligado)",
+    "expected": "itens continuam legíveis no fim da janela"
+   },
+   "polling": {
+    "interval": "PT2H",
+    "max_wait": "PT72H"
+   },
+   "preconditions": [
+    "tabela ou coleção com TTL habilitado no atributo declarado, lida de volta como PERSISTED",
+    "itens sintéticos com expiração 1 h depois da gravação",
+    "supervisor independente com heartbeat ativo (D16); sem ele, o tipo sai da amostra"
+   ],
+   "probe_type": "item_ttl",
+   "repetitions": 3,
+   "tolerance": {
+    "kind": "exact",
+    "value": 0
+   },
+   "validated_support": [
+    {
+     "evidence": [
+      {
+       "doc": {
+        "file": "website/docs/r/dynamodb_table.html.markdown",
+        "line": 467,
+        "repo": "hashicorp/terraform-provider-aws",
+        "sentence": "* `attribute_name` - (Optional) Name of the table attribute to store the TTL timestamp in.",
+        "tag": "v6.71.0"
+       },
+       "level": "published"
+      },
+      {
+       "level": "interpreted",
+       "model_id": "claude-opus-5-5",
+       "note": "escolha do tipo e dos atributos que realizam a sonda feita pelo modelo; o valor documentado é lido das frases publicadas citadas",
+       "ref": "$BO_DATA/SERVICE-EVIDENCE/protocol_support.jsonl#item_ttl/aws"
+      },
+      {
+       "level": "derived",
+       "note": "validação offline do PROBEKIT 1.0.0 (validated): S1–S9 conferem; SKU: aws_dynamodb_table na allowlist do SAFETY; atributos de SKU {\"aws_dynamodb_table.billing_mode\": \"PAY_PER_REQUEST\"}",
+       "ref": "$BO_REPO/results/PROBEKIT/support_matrix.json#item_ttl/aws"
+      }
+     ],
+     "provider": "aws",
+     "status": "validated"
+    },
+    {
+     "evidence": [
+      {
+       "doc": {
+        "file": "website/docs/r/firestore_field.html.markdown",
+        "line": 382,
+        "repo": "hashicorp/terraform-provider-google",
+        "sentence": "The state of TTL (time-to-live) configuration for documents that have this Field set.",
+        "tag": "v8.9.0"
+       },
+       "level": "published"
+      },
+      {
+       "level": "interpreted",
+       "model_id": "claude-opus-5-5",
+       "note": "escolha do tipo e dos atributos que realizam a sonda feita pelo modelo; o valor documentado é lido das frases publicadas citadas",
+       "ref": "$BO_DATA/SERVICE-EVIDENCE/protocol_support.jsonl#item_ttl/google"
+      },
+      {
+       "level": "derived",
+       "note": "validação offline do PROBEKIT 1.0.0 (validated): S1–S9 conferem; SKU: google_firestore_database, google_firestore_field na allowlist do SAFETY; atributos de SKU nenhum na tabela",
+       "ref": "$BO_REPO/results/PROBEKIT/support_matrix.json#item_ttl/google"
+      }
+     ],
+     "provider": "google",
+     "status": "validated"
+    },
+    {
+     "evidence": [
+      {
+       "doc": {
+        "file": "website/docs/r/cosmosdb_sql_container.html.markdown",
+        "line": 88,
+        "repo": "hashicorp/terraform-provider-azurerm",
+        "sentence": "* `default_ttl` - (Optional) The default time to live of SQL container. If missing, items are not expired automatically. If present and the value is set to `-1`, it is equal to infinity, and items don’t expire by default. If present and the value is set to some number `n` – items will expire `n` seconds after their last modified time.",
+        "tag": "v5.12.0"
+       },
+       "level": "published"
+      },
+      {
+       "level": "interpreted",
+       "model_id": "claude-opus-5-5",
+       "note": "escolha do tipo e dos atributos que realizam a sonda feita pelo modelo; o valor documentado é lido das frases publicadas citadas",
+       "ref": "$BO_DATA/SERVICE-EVIDENCE/protocol_support.jsonl#item_ttl/azurerm"
+      },
+      {
+       "level": "derived",
+       "note": "validação offline do PROBEKIT 1.0.0 (unknown): falhou S6, S8, S9",
+       "ref": "$BO_REPO/results/PROBEKIT/support_matrix.json#item_ttl/azurerm"
+      }
+     ],
+     "provider": "azurerm",
+     "status": "unknown"
+    },
+    {
+     "evidence": [
+      {
+       "doc": {
+        "file": "website/docs/r/nosql_table.html.markdown",
+        "line": 10,
+        "repo": "oracle/terraform-provider-oci",
+        "sentence": "# oci_nosql_table",
+        "tag": "v9.11.0"
+       },
+       "level": "published"
+      },
+      {
+       "level": "interpreted",
+       "model_id": "claude-opus-5-5",
+       "note": "escolha do tipo e dos atributos que realizam a sonda feita pelo modelo; o valor documentado é lido das frases publicadas citadas",
+       "ref": "$BO_DATA/SERVICE-EVIDENCE/protocol_support.jsonl#item_ttl/oci"
+      },
+      {
+       "level": "derived",
+       "note": "validação offline do PROBEKIT 1.0.0 (unknown): falhou S1, S8, S9",
+       "ref": "$BO_REPO/results/PROBEKIT/support_matrix.json#item_ttl/oci"
+      }
+     ],
+     "provider": "oci",
+     "status": "unknown"
+    }
+   ],
+   "window": {
+    "duration": "PT72H",
+    "margin_over_ttl": "PT71H"
+   }
+  },
+  {
+   "cost_limit": {
+    "amount": 0.5,
+    "currency": "USD"
+   },
+   "negative_control": {
+    "description": "mesma fila com retenção maior que a janela",
+    "expected": "mensagens continuam disponíveis no fim da janela"
+   },
+   "polling": {
+    "interval": "PT1H",
+    "max_wait": "PT48H"
+   },
+   "preconditions": [
+    "fila com a retenção do caso no menor valor permitido pelo provedor; se o mínimo passa de 24 h, PROTOCOL_UNSUPPORTED antes do sorteio",
+    "mensagens sintéticas sem conteúdo real; nenhum consumidor durante a janela",
+    "supervisor independente com heartbeat ativo (D16); sem ele, o tipo sai da amostra"
+   ],
+   "probe_type": "queue_retention",
+   "repetitions": 3,
+   "tolerance": {
+    "kind": "exact",
+    "value": 0
+   },
+   "validated_support": [
+    {
+     "evidence": [
+      {
+       "doc": {
+        "file": "website/docs/r/sqs_queue.html.markdown",
+        "line": 116,
+        "repo": "hashicorp/terraform-provider-aws",
+        "sentence": "* `message_retention_seconds` - (Optional) Number of seconds Amazon SQS retains a message. Integer representing seconds, from 60 (1 minute) to 1209600 (14 days). The default for this attribute is 345600 (4 days).",
+        "tag": "v6.71.0"
+       },
+       "level": "published"
+      },
+      {
+       "level": "interpreted",
+       "model_id": "claude-opus-5-5",
+       "note": "escolha do tipo e dos atributos que realizam a sonda feita pelo modelo; o valor documentado é lido das frases publicadas citadas",
+       "ref": "$BO_DATA/SERVICE-EVIDENCE/protocol_support.jsonl#queue_retention/aws"
+      },
+      {
+       "level": "derived",
+       "note": "validação offline do PROBEKIT 1.0.0 (validated): S1–S9 conferem; SKU: aws_sqs_queue na allowlist do SAFETY; atributos de SKU nenhum na tabela",
+       "ref": "$BO_REPO/results/PROBEKIT/support_matrix.json#queue_retention/aws"
+      }
+     ],
+     "provider": "aws",
+     "status": "validated"
+    },
+    {
+     "evidence": [
+      {
+       "doc": {
+        "file": "website/docs/r/pubsub_subscription.html.markdown",
+        "line": 852,
+        "repo": "hashicorp/terraform-provider-google",
+        "sentence": "Cannot be more than 31 days (`\"2678400s\"`) or less than 10 minutes (`\"600s\"`).",
+        "tag": "v8.9.0"
+       },
+       "level": "published"
+      },
+      {
+       "level": "interpreted",
+       "model_id": "claude-opus-5-5",
+       "note": "escolha do tipo e dos atributos que realizam a sonda feita pelo modelo; o valor documentado é lido das frases publicadas citadas",
+       "ref": "$BO_DATA/SERVICE-EVIDENCE/protocol_support.jsonl#queue_retention/google"
+      },
+      {
+       "level": "derived",
+       "note": "validação offline do PROBEKIT 1.0.0 (validated): S1–S9 conferem; SKU: google_pubsub_subscription, google_pubsub_topic na allowlist do SAFETY; atributos de SKU nenhum na tabela",
+       "ref": "$BO_REPO/results/PROBEKIT/support_matrix.json#queue_retention/google"
+      }
+     ],
+     "provider": "google",
+     "status": "validated"
+    },
+    {
+     "evidence": [
+      {
+       "doc": {
+        "file": "website/docs/r/servicebus_queue.html.markdown",
+        "line": 58,
+        "repo": "hashicorp/terraform-provider-azurerm",
+        "sentence": "* `default_message_ttl` - (Optional) The ISO 8601 timespan duration of the TTL of messages sent to this queue. This is the default value used when TTL is not set on message itself.",
+        "tag": "v5.12.0"
+       },
+       "level": "published"
+      },
+      {
+       "level": "interpreted",
+       "model_id": "claude-opus-5-5",
+       "note": "escolha do tipo e dos atributos que realizam a sonda feita pelo modelo; o valor documentado é lido das frases publicadas citadas",
+       "ref": "$BO_DATA/SERVICE-EVIDENCE/protocol_support.jsonl#queue_retention/azurerm"
+      },
+      {
+       "level": "derived",
+       "note": "validação offline do PROBEKIT 1.0.0 (unknown): falhou S1, S2, S8, S9",
+       "ref": "$BO_REPO/results/PROBEKIT/support_matrix.json#queue_retention/azurerm"
+      }
+     ],
+     "provider": "azurerm",
+     "status": "unknown"
+    },
+    {
+     "evidence": [
+      {
+       "doc": {
+        "file": "website/docs/r/queue_queue.html.markdown",
+        "line": 64,
+        "repo": "oracle/terraform-provider-oci",
+        "sentence": "* `retention_in_seconds` - (Optional) The retention period of messages in the queue, in seconds.",
+        "tag": "v9.11.0"
+       },
+       "level": "published"
+      },
+      {
+       "level": "interpreted",
+       "model_id": "claude-opus-5-5",
+       "note": "escolha do tipo e dos atributos que realizam a sonda feita pelo modelo; o valor documentado é lido das frases publicadas citadas",
+       "ref": "$BO_DATA/SERVICE-EVIDENCE/protocol_support.jsonl#queue_retention/oci"
+      },
+      {
+       "level": "derived",
+       "note": "validação offline do PROBEKIT 1.0.0 (unknown): falhou S1, S2, S8, S9",
+       "ref": "$BO_REPO/results/PROBEKIT/support_matrix.json#queue_retention/oci"
+      }
+     ],
+     "provider": "oci",
+     "status": "unknown"
+    }
+   ],
+   "window": {
+    "duration": "PT48H",
+    "margin_over_ttl": "PT24H"
+   }
+  },
+  {
+   "cost_limit": {
+    "amount": 1.0,
+    "currency": "USD"
+   },
+   "negative_control": {
+    "description": "mesmo protocolo sem limite configurado (ou limite 100 vezes maior)",
+    "expected": "nenhuma resposta de limitação (HTTP 429) na janela"
+   },
+   "polling": {
+    "interval": "PT1S",
+    "max_wait": "PT10M"
+   },
+   "preconditions": [
+    "limite de taxa do caso declarado com JANELA (período de renovação), CHAVE (por chave de assinatura, por IP de origem ou total), RAJADA (capacidade do balde) e MECANISMO (balde de fichas ou janela fixa), lidos do SERVICE-EVIDENCE",
+    "endpoint sintético sem backend real; uma única chave de cliente por repetição",
+    "N = 3 × (rajada + taxa × janela) pedidos enviados numa janela"
+   ],
+   "probe_type": "rate_limit",
+   "repetitions": 3,
+   "tolerance": {
+    "kind": "relative",
+    "value": 0.2
+   },
+   "validated_support": [
+    {
+     "evidence": [
+      {
+       "doc": {
+        "file": "website/docs/r/api_gateway_usage_plan.html.markdown",
+        "line": 125,
+        "repo": "hashicorp/terraform-provider-aws",
+        "sentence": "* `rate_limit` - (Optional) API request steady-state rate limit.",
+        "tag": "v6.71.0"
+       },
+       "level": "published"
+      },
+      {
+       "doc": {
+        "file": "website/docs/r/api_gateway_usage_plan.html.markdown",
+        "line": 124,
+        "repo": "hashicorp/terraform-provider-aws",
+        "sentence": "* `burst_limit` - (Optional) API request burst limit, the maximum rate limit over a time ranging from one to a few seconds, depending upon whether the underlying token bucket is at its full capacity.",
+        "tag": "v6.71.0"
+       },
+       "level": "published"
+      },
+      {
+       "level": "interpreted",
+       "model_id": "claude-opus-5-5",
+       "note": "escolha do tipo e dos atributos que realizam a sonda feita pelo modelo; o valor documentado é lido das frases publicadas citadas",
+       "ref": "$BO_DATA/SERVICE-EVIDENCE/protocol_support.jsonl#rate_limit/aws"
+      },
+      {
+       "level": "derived",
+       "note": "validação offline do PROBEKIT 1.0.0 (unknown): falhou S1, S3, S6, S8, S9",
+       "ref": "$BO_REPO/results/PROBEKIT/support_matrix.json#rate_limit/aws"
+      }
+     ],
+     "provider": "aws",
+     "status": "unknown"
+    },
+    {
+     "evidence": [
+      {
+       "doc": {
+        "file": "website/docs/r/compute_security_policy.html.markdown",
+        "line": 599,
+        "repo": "hashicorp/terraform-provider-google",
+        "sentence": "* `interval_sec` - (Required) Interval over which the threshold is computed.",
+        "tag": "v8.9.0"
+       },
+       "level": "published"
+      },
+      {
+       "doc": {
+        "file": "website/docs/r/compute_security_policy.html.markdown",
+        "line": 579,
+        "repo": "hashicorp/terraform-provider-google",
+        "sentence": "* `enforce_on_key_type` - (Optional) Determines the key to enforce the `rate_limit_threshold` on. If not specified, defaults to `ALL`.",
+        "tag": "v8.9.0"
+       },
+       "level": "published"
+      },
+      {
+       "level": "interpreted",
+       "model_id": "claude-opus-5-5",
+       "note": "escolha do tipo e dos atributos que realizam a sonda feita pelo modelo; o valor documentado é lido das frases publicadas citadas",
+       "ref": "$BO_DATA/SERVICE-EVIDENCE/protocol_support.jsonl#rate_limit/google"
+      },
+      {
+       "level": "derived",
+       "note": "validação offline do PROBEKIT 1.0.0 (unknown): falhou S1, S3, S6, S8, S9",
+       "ref": "$BO_REPO/results/PROBEKIT/support_matrix.json#rate_limit/google"
+      }
+     ],
+     "provider": "google",
+     "status": "unknown"
+    },
+    {
+     "evidence": [
+      {
+       "doc": {
+        "file": "website/docs/r/api_management_api_policy.html.markdown",
+        "line": 9,
+        "repo": "hashicorp/terraform-provider-azurerm",
+        "sentence": "# azurerm_api_management_api_policy",
+        "tag": "v5.12.0"
+       },
+       "level": "published"
+      },
+      {
+       "level": "interpreted",
+       "model_id": "claude-opus-5-5",
+       "note": "escolha do tipo e dos atributos que realizam a sonda feita pelo modelo; o valor documentado é lido das frases publicadas citadas",
+       "ref": "$BO_DATA/SERVICE-EVIDENCE/protocol_support.jsonl#rate_limit/azurerm"
+      },
+      {
+       "level": "derived",
+       "note": "validação offline do PROBEKIT 1.0.0 (unknown): falhou S1, S3, S6, S8, S9",
+       "ref": "$BO_REPO/results/PROBEKIT/support_matrix.json#rate_limit/azurerm"
+      }
+     ],
+     "provider": "azurerm",
+     "status": "unknown"
+    },
+    {
+     "evidence": [
+      {
+       "doc": {
+        "file": "website/docs/r/apigateway_deployment.html.markdown",
+        "line": 933,
+        "repo": "oracle/terraform-provider-oci",
+        "sentence": "* `rate_in_requests_per_second` - (Required) (Updatable) The maximum number of requests per second to allow.",
+        "tag": "v9.11.0"
+       },
+       "level": "published"
+      },
+      {
+       "doc": {
+        "file": "website/docs/r/apigateway_deployment.html.markdown",
+        "line": 934,
+        "repo": "oracle/terraform-provider-oci",
+        "sentence": "* `rate_key` - (Required) (Updatable) The key used to group requests together.",
+        "tag": "v9.11.0"
+       },
+       "level": "published"
+      },
+      {
+       "level": "interpreted",
+       "model_id": "claude-opus-5-5",
+       "note": "escolha do tipo e dos atributos que realizam a sonda feita pelo modelo; o valor documentado é lido das frases publicadas citadas",
+       "ref": "$BO_DATA/SERVICE-EVIDENCE/protocol_support.jsonl#rate_limit/oci"
+      },
+      {
+       "level": "derived",
+       "note": "validação offline do PROBEKIT 1.0.0 (unknown): falhou S1, S3, S6, S8, S9",
+       "ref": "$BO_REPO/results/PROBEKIT/support_matrix.json#rate_limit/oci"
+      }
+     ],
+     "provider": "oci",
+     "status": "unknown"
+    }
+   ],
+   "window": {
+    "duration": "PT10M",
+    "margin_over_ttl": "PT5M"
+   }
+  },
+  {
+   "cost_limit": {
+    "amount": 1.0,
+    "currency": "USD"
+   },
+   "negative_control": {
+    "description": "mesmo protocolo com retenção maior que a janela",
+    "expected": "eventos continuam consultáveis no fim da janela"
+   },
+   "polling": {
+    "interval": "PT6H",
+    "max_wait": "PT96H"
+   },
+   "preconditions": [
+    "grupo ou bucket de log com a retenção do caso no menor valor permitido (1 dia onde existe); se o mínimo passa de 3 dias, PROTOCOL_UNSUPPORTED antes do sorteio",
+    "eventos sintéticos sem conteúdo real; o conteúdo dos logs nunca é gravado, só contagens e datas",
+    "supervisor independente com heartbeat ativo (D16); sem ele, o tipo sai da amostra"
+   ],
+   "probe_type": "log_retention",
+   "repetitions": 3,
+   "tolerance": {
+    "kind": "exact",
+    "value": 0
+   },
+   "validated_support": [
+    {
+     "evidence": [
+      {
+       "doc": {
+        "file": "website/docs/r/cloudwatch_log_group.html.markdown",
+        "line": 36,
+        "repo": "hashicorp/terraform-provider-aws",
+        "sentence": "Specifies the number of days you want to retain log events in the specified log group. Possible values are: 1, 3, 5, 7, 14, 30",
+        "tag": "v6.71.0"
+       },
+       "level": "published"
+      },
+      {
+       "level": "interpreted",
+       "model_id": "claude-opus-5-5",
+       "note": "escolha do tipo e dos atributos que realizam a sonda feita pelo modelo; o valor documentado é lido das frases publicadas citadas",
+       "ref": "$BO_DATA/SERVICE-EVIDENCE/protocol_support.jsonl#log_retention/aws"
+      },
+      {
+       "level": "derived",
+       "note": "validação offline do PROBEKIT 1.0.0 (unsupported): falhou S5, S8, S9",
+       "ref": "$BO_REPO/results/PROBEKIT/support_matrix.json#log_retention/aws"
+      }
+     ],
+     "provider": "aws",
+     "status": "unsupported"
+    },
+    {
+     "evidence": [
+      {
+       "doc": {
+        "file": "website/docs/r/logging_project_bucket_config.html.markdown",
+        "line": 140,
+        "repo": "hashicorp/terraform-provider-google",
+        "sentence": "* `retention_days` - (Optional) Logs will be retained by default for this amount of time, after which they will automatically be deleted. The minimum retention period is 1 day. If this value is set to zero at bucket creation time, the default time of 30 days will be used.",
+        "tag": "v8.9.0"
+       },
+       "level": "published"
+      },
+      {
+       "level": "interpreted",
+       "model_id": "claude-opus-5-5",
+       "note": "escolha do tipo e dos atributos que realizam a sonda feita pelo modelo; o valor documentado é lido das frases publicadas citadas",
+       "ref": "$BO_DATA/SERVICE-EVIDENCE/protocol_support.jsonl#log_retention/google"
+      },
+      {
+       "level": "derived",
+       "note": "validação offline do PROBEKIT 1.0.0 (unsupported): falhou S5, S6, S8, S9",
+       "ref": "$BO_REPO/results/PROBEKIT/support_matrix.json#log_retention/google"
+      }
+     ],
+     "provider": "google",
+     "status": "unsupported"
+    },
+    {
+     "evidence": [
+      {
+       "doc": {
+        "file": "website/docs/r/log_analytics_workspace.html.markdown",
+        "line": 54,
+        "repo": "hashicorp/terraform-provider-azurerm",
+        "sentence": "* `retention_in_days` - (Optional) The workspace data retention in days. Possible values are between `30` and `730`.",
+        "tag": "v5.12.0"
+       },
+       "level": "published"
+      },
+      {
+       "level": "interpreted",
+       "model_id": "claude-opus-5-5",
+       "note": "escolha do tipo e dos atributos que realizam a sonda feita pelo modelo; o valor documentado é lido das frases publicadas citadas",
+       "ref": "$BO_DATA/SERVICE-EVIDENCE/protocol_support.jsonl#log_retention/azurerm"
+      },
+      {
+       "level": "derived",
+       "note": "validação offline do PROBEKIT 1.0.0 (unsupported): falhou S1, S2, S4, S5, S8, S9",
+       "ref": "$BO_REPO/results/PROBEKIT/support_matrix.json#log_retention/azurerm"
+      }
+     ],
+     "provider": "azurerm",
+     "status": "unsupported"
+    },
+    {
+     "evidence": [
+      {
+       "doc": {
+        "file": "website/docs/r/logging_log.html.markdown",
+        "line": 72,
+        "repo": "oracle/terraform-provider-oci",
+        "sentence": "* `retention_duration` - (Optional) (Updatable) Log retention duration in 30-day increments (30, 60, 90 and so on until 180).",
+        "tag": "v9.11.0"
+       },
+       "level": "published"
+      },
+      {
+       "level": "interpreted",
+       "model_id": "claude-opus-5-5",
+       "note": "escolha do tipo e dos atributos que realizam a sonda feita pelo modelo; o valor documentado é lido das frases publicadas citadas",
+       "ref": "$BO_DATA/SERVICE-EVIDENCE/protocol_support.jsonl#log_retention/oci"
+      },
+      {
+       "level": "derived",
+       "note": "validação offline do PROBEKIT 1.0.0 (unsupported): falhou S1, S2, S4, S5, S8, S9",
+       "ref": "$BO_REPO/results/PROBEKIT/support_matrix.json#log_retention/oci"
+      }
+     ],
+     "provider": "oci",
+     "status": "unsupported"
+    }
+   ],
+   "window": {
+    "duration": "PT96H",
+    "margin_over_ttl": "PT72H"
+   }
+  }
+ ],
+ "protocol_version": "1.0.0",
+ "schema": "bo.probe_types/1"
+}

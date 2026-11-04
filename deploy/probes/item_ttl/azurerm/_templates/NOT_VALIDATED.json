@@ -1,0 +1,17 @@
+{
+ "cell": "item_ttl/azurerm",
+ "failed": [
+  "S6",
+  "S8",
+  "S9"
+ ],
+ "generated_at": "2026-11-04T08:59:07-03:00",
+ "join_outcome_if_drawn": "PROTOCOL_UNSUPPORTED",
+ "reasons": [
+  "S6: azurerm_cosmosdb_sql_container fora da allowlist do SAFETY",
+  "S8: sem template no kit",
+  "S9: sem operações de plano de dados no kit"
+ ],
+ "schema": "bo.probekit.not_validated/1",
+ "status": "unknown"
+}

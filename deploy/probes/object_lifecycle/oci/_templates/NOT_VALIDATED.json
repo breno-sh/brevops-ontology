@@ -1,0 +1,21 @@
+{
+ "cell": "object_lifecycle/oci",
+ "failed": [
+  "S1",
+  "S2",
+  "S6",
+  "S8",
+  "S9"
+ ],
+ "generated_at": "2026-11-04T08:59:07-03:00",
+ "join_outcome_if_drawn": "PROTOCOL_UNSUPPORTED",
+ "reasons": [
+  "S1: SERVICE-EVIDENCE unknown; 1 evidência(s) publicada(s)",
+  "S2: mínimo do provedor não documentado; requisito <= 86400 s",
+  "S6: oci_objectstorage_object_lifecycle_policy fora da allowlist do SAFETY",
+  "S8: sem template no kit",
+  "S9: sem operações de plano de dados no kit"
+ ],
+ "schema": "bo.probekit.not_validated/1",
+ "status": "unknown"
+}

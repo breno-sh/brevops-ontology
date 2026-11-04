@@ -1,0 +1,4016 @@
+{
+ "calls": {
+  "case/1": {
+   "act": [
+    [
+     {
+      "rc": 0,
+      "stdout": "{\"messageIds\": [\"1\"]}"
+     },
+     {
+      "rc": 0,
+      "stdout": "{\"messageIds\": [\"1\"]}"
+     },
+     {
+      "rc": 0,
+      "stdout": "{\"messageIds\": [\"1\"]}"
+     }
+    ]
+   ],
+   "observe": [
+    {
+     "at_s": 3600,
+     "raw": {
+      "body": {},
+      "status": 200
+     }
+    },
+    {
+     "at_s": 3600,
+     "raw": {
+      "body": {},
+      "status": 200
+     }
+    },
+    {
+     "at_s": 3600,
+     "raw": {
+      "body": {},
+      "status": 200
+     }
+    },
+    {
+     "at_s": 7200,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 10800,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "0"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 14400,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "0"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    }
+   ]
+  },
+  "case/2": {
+   "act": [
+    [
+     {
+      "rc": 0,
+      "stdout": "{\"messageIds\": [\"1\"]}"
+     },
+     {
+      "rc": 0,
+      "stdout": "{\"messageIds\": [\"1\"]}"
+     },
+     {
+      "rc": 0,
+      "stdout": "{\"messageIds\": [\"1\"]}"
+     }
+    ]
+   ],
+   "observe": [
+    {
+     "at_s": 3600,
+     "raw": {
+      "body": {},
+      "status": 200
+     }
+    },
+    {
+     "at_s": 3600,
+     "raw": {
+      "body": {},
+      "status": 200
+     }
+    },
+    {
+     "at_s": 3600,
+     "raw": {
+      "body": {},
+      "status": 200
+     }
+    },
+    {
+     "at_s": 7200,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 10800,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "0"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 14400,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "0"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    }
+   ]
+  },
+  "case/3": {
+   "act": [
+    [
+     {
+      "rc": 0,
+      "stdout": "{\"messageIds\": [\"1\"]}"
+     },
+     {
+      "rc": 0,
+      "stdout": "{\"messageIds\": [\"1\"]}"
+     },
+     {
+      "rc": 0,
+      "stdout": "{\"messageIds\": [\"1\"]}"
+     }
+    ]
+   ],
+   "observe": [
+    {
+     "at_s": 3600,
+     "raw": {
+      "body": {},
+      "status": 200
+     }
+    },
+    {
+     "at_s": 3600,
+     "raw": {
+      "body": {},
+      "status": 200
+     }
+    },
+    {
+     "at_s": 3600,
+     "raw": {
+      "body": {},
+      "status": 200
+     }
+    },
+    {
+     "at_s": 7200,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 10800,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "0"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 14400,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "0"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    }
+   ]
+  },
+  "control/1": {
+   "act": [
+    [
+     {
+      "rc": 0,
+      "stdout": "{\"messageIds\": [\"1\"]}"
+     },
+     {
+      "rc": 0,
+      "stdout": "{\"messageIds\": [\"1\"]}"
+     },
+     {
+      "rc": 0,
+      "stdout": "{\"messageIds\": [\"1\"]}"
+     }
+    ]
+   ],
+   "observe": [
+    {
+     "at_s": 3600,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 7200,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 10800,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 14400,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 18000,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 21600,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 25200,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 28800,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 32400,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 36000,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 39600,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 43200,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 46800,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 50400,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 54000,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 57600,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 61200,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 64800,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 68400,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 72000,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 75600,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 79200,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 82800,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 86400,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 90000,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 93600,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 97200,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 100800,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 104400,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 108000,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 111600,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 115200,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 118800,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 122400,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 126000,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 129600,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 133200,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 136800,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 140400,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 144000,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 147600,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 151200,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 154800,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 158400,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 162000,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 165600,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 169200,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 172800,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    }
+   ]
+  },
+  "control/2": {
+   "act": [
+    [
+     {
+      "rc": 0,
+      "stdout": "{\"messageIds\": [\"1\"]}"
+     },
+     {
+      "rc": 0,
+      "stdout": "{\"messageIds\": [\"1\"]}"
+     },
+     {
+      "rc": 0,
+      "stdout": "{\"messageIds\": [\"1\"]}"
+     }
+    ]
+   ],
+   "observe": [
+    {
+     "at_s": 3600,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 7200,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 10800,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 14400,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 18000,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 21600,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 25200,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 28800,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 32400,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 36000,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 39600,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 43200,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 46800,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 50400,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 54000,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 57600,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 61200,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 64800,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 68400,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 72000,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 75600,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 79200,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 82800,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 86400,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 90000,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 93600,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 97200,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 100800,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 104400,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 108000,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 111600,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 115200,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 118800,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 122400,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 126000,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 129600,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 133200,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 136800,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 140400,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 144000,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 147600,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 151200,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 154800,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 158400,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 162000,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 165600,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 169200,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 172800,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    }
+   ]
+  },
+  "control/3": {
+   "act": [
+    [
+     {
+      "rc": 0,
+      "stdout": "{\"messageIds\": [\"1\"]}"
+     },
+     {
+      "rc": 0,
+      "stdout": "{\"messageIds\": [\"1\"]}"
+     },
+     {
+      "rc": 0,
+      "stdout": "{\"messageIds\": [\"1\"]}"
+     }
+    ]
+   ],
+   "observe": [
+    {
+     "at_s": 3600,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 7200,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 10800,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 14400,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 18000,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 21600,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 25200,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 28800,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 32400,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 36000,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 39600,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 43200,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 46800,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 50400,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 54000,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 57600,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 61200,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 64800,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 68400,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 72000,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 75600,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 79200,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 82800,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 86400,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 90000,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 93600,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 97200,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 100800,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 104400,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 108000,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 111600,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 115200,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 118800,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 122400,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 126000,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 129600,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 133200,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 136800,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 140400,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 144000,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 147600,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 151200,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 154800,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 158400,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 162000,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 165600,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 169200,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    },
+    {
+     "at_s": 172800,
+     "raw": {
+      "body": {
+       "timeSeries": [
+        {
+         "metric": {
+          "type": "pubsub.googleapis.com/subscription/num_undelivered_messages"
+         },
+         "points": [
+          {
+           "interval": {
+            "endTime": "2026-11-04T12:00:00Z"
+           },
+           "value": {
+            "int64Value": "3"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      "status": 200
+     }
+    }
+   ]
+  }
+ },
+ "cell": "queue_retention/google",
+ "note": "série ausente = leitura perdida",
+ "schema": "bo.probe_recording/1",
+ "synthetic": true
+}

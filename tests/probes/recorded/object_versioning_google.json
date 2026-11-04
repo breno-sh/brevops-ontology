@@ -1,0 +1,942 @@
+{
+ "calls": {
+  "case/1": {
+   "act": [
+    {
+     "rc": 0,
+     "stdout": "[]"
+    }
+   ],
+   "observe": [
+    {
+     "at_s": 60,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r1/obj\", \"generation\": \"1001\", \"size\": 1024}, {\"name\": \"bo-probe/case/r1/obj\", \"generation\": \"1002\", \"size\": 1024}, {\"name\": \"bo-probe/case/r1/obj\", \"generation\": \"1003\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 120,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r1/obj\", \"generation\": \"1001\", \"size\": 1024}, {\"name\": \"bo-probe/case/r1/obj\", \"generation\": \"1002\", \"size\": 1024}, {\"name\": \"bo-probe/case/r1/obj\", \"generation\": \"1003\", \"size\": 1024}]"
+     }
+    }
+   ]
+  },
+  "case/2": {
+   "act": [
+    {
+     "rc": 0,
+     "stdout": "[]"
+    }
+   ],
+   "observe": [
+    {
+     "at_s": 60,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 120,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 180,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 240,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 300,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 360,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 420,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 480,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 540,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 600,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 660,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 720,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 780,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 840,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 900,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 960,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1020,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1080,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1140,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1200,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1260,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1320,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1380,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1440,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1500,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1560,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1620,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1680,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1740,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1800,
+     "raw": {
+      "rc": 254,
+      "stdout": ""
+     }
+    },
+    {
+     "at_s": 1800,
+     "raw": {
+      "rc": 254,
+      "stdout": ""
+     }
+    },
+    {
+     "at_s": 1800,
+     "raw": {
+      "rc": 254,
+      "stdout": ""
+     }
+    }
+   ]
+  },
+  "case/3": {
+   "act": [
+    {
+     "rc": 254,
+     "stdout": ""
+    },
+    {
+     "rc": 254,
+     "stdout": ""
+    },
+    {
+     "rc": 254,
+     "stdout": ""
+    }
+   ]
+  },
+  "control/1": {
+   "act": [
+    {
+     "rc": 0,
+     "stdout": "[]"
+    }
+   ],
+   "observe": [
+    {
+     "at_s": 60,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 120,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 180,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 240,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 300,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 360,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 420,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 480,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 540,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 600,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 660,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 720,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 780,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 840,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 900,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 960,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1020,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1080,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1140,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1200,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1260,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1320,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1380,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1440,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1500,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1560,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1620,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1680,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1740,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1800,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    }
+   ]
+  },
+  "control/2": {
+   "act": [
+    {
+     "rc": 0,
+     "stdout": "[]"
+    }
+   ],
+   "observe": [
+    {
+     "at_s": 60,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 120,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 180,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 240,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 300,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 360,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 420,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 480,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 540,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 600,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 660,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 720,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 780,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 840,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 900,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 960,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1020,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1080,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1140,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1200,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1260,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1320,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1380,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1440,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1500,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1560,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1620,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1680,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1740,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1800,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    }
+   ]
+  },
+  "control/3": {
+   "act": [
+    {
+     "rc": 0,
+     "stdout": "[]"
+    }
+   ],
+   "observe": [
+    {
+     "at_s": 60,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 120,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 180,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 240,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 300,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 360,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 420,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 480,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 540,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 600,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 660,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 720,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 780,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 840,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 900,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 960,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1020,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1080,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1140,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1200,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1260,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1320,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1380,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1440,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1500,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1560,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1620,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1680,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1740,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 1800,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj\", \"generation\": \"1001\", \"size\": 1024}]"
+     }
+    }
+   ]
+  }
+ },
+ "cell": "object_versioning/google",
+ "note": "erro de ação e leitura final perdida viram errors",
+ "schema": "bo.probe_recording/1",
+ "synthetic": true
+}

@@ -1,0 +1,782 @@
+{
+ "calls": {
+  "case/1": {
+   "act": [
+    {
+     "rc": 0,
+     "stdout": "{\"VersionId\": \"v\"}"
+    }
+   ],
+   "observe": [
+    {
+     "at_s": 60,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/case/r1/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 120,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/case/r1/obj\", \"VersionId\": \"v1\", \"IsLatest\": false, \"Size\": 1024}, {\"Key\": \"bo-probe/case/r1/obj\", \"VersionId\": \"v2\", \"IsLatest\": false, \"Size\": 1024}, {\"Key\": \"bo-probe/case/r1/obj\", \"VersionId\": \"v3\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 180,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/case/r1/obj\", \"VersionId\": \"v1\", \"IsLatest\": false, \"Size\": 1024}, {\"Key\": \"bo-probe/case/r1/obj\", \"VersionId\": \"v2\", \"IsLatest\": false, \"Size\": 1024}, {\"Key\": \"bo-probe/case/r1/obj\", \"VersionId\": \"v3\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    }
+   ]
+  },
+  "case/2": {
+   "act": [
+    {
+     "rc": 0,
+     "stdout": "{\"VersionId\": \"v\"}"
+    }
+   ],
+   "observe": [
+    {
+     "at_s": 60,
+     "raw": {
+      "rc": 254,
+      "stdout": ""
+     }
+    },
+    {
+     "at_s": 60,
+     "raw": {
+      "rc": 254,
+      "stdout": ""
+     }
+    },
+    {
+     "at_s": 60,
+     "raw": {
+      "rc": 254,
+      "stdout": ""
+     }
+    },
+    {
+     "at_s": 120,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/case/r2/obj\", \"VersionId\": \"v1\", \"IsLatest\": false, \"Size\": 1024}, {\"Key\": \"bo-probe/case/r2/obj\", \"VersionId\": \"v2\", \"IsLatest\": false, \"Size\": 1024}, {\"Key\": \"bo-probe/case/r2/obj\", \"VersionId\": \"v3\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 180,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/case/r2/obj\", \"VersionId\": \"v1\", \"IsLatest\": false, \"Size\": 1024}, {\"Key\": \"bo-probe/case/r2/obj\", \"VersionId\": \"v2\", \"IsLatest\": false, \"Size\": 1024}, {\"Key\": \"bo-probe/case/r2/obj\", \"VersionId\": \"v3\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    }
+   ]
+  },
+  "case/3": {
+   "act": [
+    {
+     "rc": 0,
+     "stdout": "{\"VersionId\": \"v\"}"
+    }
+   ],
+   "observe": [
+    {
+     "at_s": 60,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/case/r3/obj\", \"VersionId\": \"v1\", \"IsLatest\": false, \"Size\": 1024}, {\"Key\": \"bo-probe/case/r3/obj\", \"VersionId\": \"v2\", \"IsLatest\": false, \"Size\": 1024}, {\"Key\": \"bo-probe/case/r3/obj\", \"VersionId\": \"v3\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 120,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/case/r3/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 180,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/case/r3/obj\", \"VersionId\": \"v1\", \"IsLatest\": false, \"Size\": 1024}, {\"Key\": \"bo-probe/case/r3/obj\", \"VersionId\": \"v2\", \"IsLatest\": false, \"Size\": 1024}, {\"Key\": \"bo-probe/case/r3/obj\", \"VersionId\": \"v3\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 240,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/case/r3/obj\", \"VersionId\": \"v1\", \"IsLatest\": false, \"Size\": 1024}, {\"Key\": \"bo-probe/case/r3/obj\", \"VersionId\": \"v2\", \"IsLatest\": false, \"Size\": 1024}, {\"Key\": \"bo-probe/case/r3/obj\", \"VersionId\": \"v3\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    }
+   ]
+  },
+  "control/1": {
+   "act": [
+    {
+     "rc": 0,
+     "stdout": "{\"VersionId\": \"null\"}"
+    }
+   ],
+   "observe": [
+    {
+     "at_s": 60,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r1/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 120,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r1/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 180,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r1/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 240,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r1/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 300,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r1/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 360,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r1/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 420,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r1/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 480,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r1/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 540,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r1/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 600,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r1/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 660,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r1/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 720,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r1/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 780,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r1/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 840,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r1/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 900,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r1/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 960,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r1/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1020,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r1/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1080,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r1/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1140,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r1/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1200,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r1/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1260,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r1/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1320,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r1/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1380,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r1/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1440,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r1/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1500,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r1/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1560,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r1/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1620,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r1/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1680,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r1/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1740,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r1/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1800,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r1/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    }
+   ]
+  },
+  "control/2": {
+   "act": [
+    {
+     "rc": 0,
+     "stdout": "{\"VersionId\": \"null\"}"
+    }
+   ],
+   "observe": [
+    {
+     "at_s": 60,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r2/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 120,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r2/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 180,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r2/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 240,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r2/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 300,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r2/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 360,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r2/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 420,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r2/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 480,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r2/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 540,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r2/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 600,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r2/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 660,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r2/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 720,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r2/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 780,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r2/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 840,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r2/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 900,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r2/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 960,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r2/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1020,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r2/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1080,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r2/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1140,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r2/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1200,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r2/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1260,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r2/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1320,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r2/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1380,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r2/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1440,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r2/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1500,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r2/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1560,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r2/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1620,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r2/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1680,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r2/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1740,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r2/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1800,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r2/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    }
+   ]
+  },
+  "control/3": {
+   "act": [
+    {
+     "rc": 0,
+     "stdout": "{\"VersionId\": \"null\"}"
+    }
+   ],
+   "observe": [
+    {
+     "at_s": 60,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r3/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 120,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r3/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 180,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r3/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 240,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r3/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 300,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r3/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 360,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r3/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 420,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r3/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 480,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r3/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 540,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r3/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 600,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r3/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 660,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r3/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 720,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r3/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 780,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r3/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 840,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r3/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 900,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r3/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 960,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r3/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1020,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r3/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1080,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r3/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1140,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r3/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1200,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r3/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1260,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r3/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1320,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r3/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1380,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r3/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1440,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r3/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1500,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r3/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1560,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r3/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1620,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r3/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1680,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r3/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1740,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r3/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    },
+    {
+     "at_s": 1800,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"Versions\": [{\"Key\": \"bo-probe/control/r3/obj\", \"VersionId\": \"v1\", \"IsLatest\": true, \"Size\": 1024}], \"Name\": \"bo-synthetic\"}"
+     }
+    }
+   ]
+  }
+ },
+ "cell": "object_versioning/aws",
+ "note": "consistência eventual, leitura perdida e oscilação; controle com 1 versão",
+ "schema": "bo.probe_recording/1",
+ "synthetic": true
+}

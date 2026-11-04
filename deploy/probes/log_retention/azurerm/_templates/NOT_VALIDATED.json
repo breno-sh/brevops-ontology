@@ -1,0 +1,23 @@
+{
+ "cell": "log_retention/azurerm",
+ "failed": [
+  "S1",
+  "S2",
+  "S4",
+  "S5",
+  "S8",
+  "S9"
+ ],
+ "generated_at": "2026-11-04T08:59:07-03:00",
+ "join_outcome_if_drawn": "PROTOCOL_UNSUPPORTED",
+ "reasons": [
+  "S1: SERVICE-EVIDENCE documented_unsupported; 1 evidência(s) publicada(s)",
+  "S2: mínimo documentado 2592000 s; requisito <= 259200 s",
+  "S4: TTL 2592000 s; P2: polling.max_wait (345600 s) < TTL configurado (2592000 s) + margem (259200 s)",
+  "S5: janela 96 h; máximo 72 h (D12 e tipos)",
+  "S8: sem template no kit",
+  "S9: sem operações de plano de dados no kit"
+ ],
+ "schema": "bo.probekit.not_validated/1",
+ "status": "unsupported"
+}

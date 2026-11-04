@@ -1,0 +1,966 @@
+{
+ "currency": "USD",
+ "generated_at": "2026-11-04T08:59:08-03:00",
+ "kit_version": "1.0.0",
+ "method": "plan_guard do SAFETY sobre o plano sintético de cada lado; uso por endereço derivado do protocolo (requisições com novas tentativas, 1 KiB por objeto, resposta <= 16384 bytes); horas = janela arredondada para cima",
+ "module": "PROBEKIT",
+ "n_templates": 10,
+ "schema": "bo.probekit.cost_estimate/1",
+ "templates": [
+  {
+   "by_category": {
+    "compute": 0.0,
+    "one_time": 0.0,
+    "requests": 0.000878,
+    "residual": 0.0,
+    "storage": 0.0,
+    "traffic": 0.0
+   },
+   "cell": "item_ttl/aws",
+   "limit": 1.0,
+   "plan_guard_ok": true,
+   "sides": {
+    "case": {
+     "cost": {
+      "by_category": {
+       "compute": 0.0,
+       "one_time": 0.0,
+       "requests": 0.000439,
+       "residual": 0.0,
+       "storage": 0.0,
+       "traffic": 0.0
+      },
+      "currency": "USD",
+      "includes": [
+       "compute",
+       "storage",
+       "traffic",
+       "requests",
+       "one_time",
+       "residual"
+      ],
+      "items": [
+       {
+        "address": "aws_dynamodb_table.probe",
+        "total": 0.000439,
+        "type": "aws_dynamodb_table"
+       }
+      ],
+      "total": 0.000439
+     },
+     "findings": [],
+     "ok": true,
+     "side": "case",
+     "ttl_hours": 72
+    },
+    "control": {
+     "cost": {
+      "by_category": {
+       "compute": 0.0,
+       "one_time": 0.0,
+       "requests": 0.000439,
+       "residual": 0.0,
+       "storage": 0.0,
+       "traffic": 0.0
+      },
+      "currency": "USD",
+      "includes": [
+       "compute",
+       "storage",
+       "traffic",
+       "requests",
+       "one_time",
+       "residual"
+      ],
+      "items": [
+       {
+        "address": "aws_dynamodb_table.probe",
+        "total": 0.000439,
+        "type": "aws_dynamodb_table"
+       }
+      ],
+      "total": 0.000439
+     },
+     "findings": [],
+     "ok": true,
+     "side": "control",
+     "ttl_hours": 72
+    }
+   },
+   "total": 0.000878,
+   "within_limit": true
+  },
+  {
+   "by_category": {
+    "compute": 0.0,
+    "one_time": 0.0,
+    "requests": 0.003596,
+    "residual": 0.0,
+    "storage": 0.0,
+    "traffic": 0.0
+   },
+   "cell": "item_ttl/google",
+   "limit": 1.0,
+   "plan_guard_ok": true,
+   "sides": {
+    "case": {
+     "cost": {
+      "by_category": {
+       "compute": 0.0,
+       "one_time": 0.0,
+       "requests": 0.001798,
+       "residual": 0.0,
+       "storage": 0.0,
+       "traffic": 0.0
+      },
+      "currency": "USD",
+      "includes": [
+       "compute",
+       "storage",
+       "traffic",
+       "requests",
+       "one_time",
+       "residual"
+      ],
+      "items": [
+       {
+        "address": "google_firestore_database.probe",
+        "total": 0.001798,
+        "type": "google_firestore_database"
+       },
+       {
+        "address": "google_firestore_field.probe[0]",
+        "total": 0.0,
+        "type": "google_firestore_field"
+       }
+      ],
+      "total": 0.001798
+     },
+     "findings": [],
+     "ok": true,
+     "side": "case",
+     "ttl_hours": 72
+    },
+    "control": {
+     "cost": {
+      "by_category": {
+       "compute": 0.0,
+       "one_time": 0.0,
+       "requests": 0.001798,
+       "residual": 0.0,
+       "storage": 0.0,
+       "traffic": 0.0
+      },
+      "currency": "USD",
+      "includes": [
+       "compute",
+       "storage",
+       "traffic",
+       "requests",
+       "one_time",
+       "residual"
+      ],
+      "items": [
+       {
+        "address": "google_firestore_database.probe",
+        "total": 0.001798,
+        "type": "google_firestore_database"
+       }
+      ],
+      "total": 0.001798
+     },
+     "findings": [],
+     "ok": true,
+     "side": "control",
+     "ttl_hours": 72
+    }
+   },
+   "total": 0.003596,
+   "within_limit": true
+  },
+  {
+   "by_category": {
+    "compute": 0.0,
+    "one_time": 0.0,
+    "requests": 0.00135,
+    "residual": 0.0,
+    "storage": 0.0,
+    "traffic": 0.00037
+   },
+   "cell": "object_lifecycle/aws",
+   "limit": 1.0,
+   "plan_guard_ok": true,
+   "sides": {
+    "case": {
+     "cost": {
+      "by_category": {
+       "compute": 0.0,
+       "one_time": 0.0,
+       "requests": 0.000675,
+       "residual": 0.0,
+       "storage": 0.0,
+       "traffic": 0.000185
+      },
+      "currency": "USD",
+      "includes": [
+       "compute",
+       "storage",
+       "traffic",
+       "requests",
+       "one_time",
+       "residual"
+      ],
+      "items": [
+       {
+        "address": "aws_s3_bucket.probe",
+        "total": 0.00086,
+        "type": "aws_s3_bucket"
+       },
+       {
+        "address": "aws_s3_bucket_public_access_block.probe",
+        "total": 0.0,
+        "type": "aws_s3_bucket_public_access_block"
+       },
+       {
+        "address": "aws_s3_bucket_lifecycle_configuration.probe[0]",
+        "total": 0.0,
+        "type": "aws_s3_bucket_lifecycle_configuration"
+       }
+      ],
+      "total": 0.00086
+     },
+     "findings": [],
+     "ok": true,
+     "side": "case",
+     "ttl_hours": 72
+    },
+    "control": {
+     "cost": {
+      "by_category": {
+       "compute": 0.0,
+       "one_time": 0.0,
+       "requests": 0.000675,
+       "residual": 0.0,
+       "storage": 0.0,
+       "traffic": 0.000185
+      },
+      "currency": "USD",
+      "includes": [
+       "compute",
+       "storage",
+       "traffic",
+       "requests",
+       "one_time",
+       "residual"
+      ],
+      "items": [
+       {
+        "address": "aws_s3_bucket.probe",
+        "total": 0.00086,
+        "type": "aws_s3_bucket"
+       },
+       {
+        "address": "aws_s3_bucket_public_access_block.probe",
+        "total": 0.0,
+        "type": "aws_s3_bucket_public_access_block"
+       }
+      ],
+      "total": 0.00086
+     },
+     "findings": [],
+     "ok": true,
+     "side": "control",
+     "ttl_hours": 72
+    }
+   },
+   "total": 0.00172,
+   "within_limit": true
+  },
+  {
+   "by_category": {
+    "compute": 0.0,
+    "one_time": 0.0,
+    "requests": 0.00135,
+    "residual": 0.0,
+    "storage": 0.0,
+    "traffic": 0.000494
+   },
+   "cell": "object_lifecycle/google",
+   "limit": 1.0,
+   "plan_guard_ok": true,
+   "sides": {
+    "case": {
+     "cost": {
+      "by_category": {
+       "compute": 0.0,
+       "one_time": 0.0,
+       "requests": 0.000675,
+       "residual": 0.0,
+       "storage": 0.0,
+       "traffic": 0.000247
+      },
+      "currency": "USD",
+      "includes": [
+       "compute",
+       "storage",
+       "traffic",
+       "requests",
+       "one_time",
+       "residual"
+      ],
+      "items": [
+       {
+        "address": "google_storage_bucket.probe",
+        "total": 0.000922,
+        "type": "google_storage_bucket"
+       }
+      ],
+      "total": 0.000922
+     },
+     "findings": [],
+     "ok": true,
+     "side": "case",
+     "ttl_hours": 72
+    },
+    "control": {
+     "cost": {
+      "by_category": {
+       "compute": 0.0,
+       "one_time": 0.0,
+       "requests": 0.000675,
+       "residual": 0.0,
+       "storage": 0.0,
+       "traffic": 0.000247
+      },
+      "currency": "USD",
+      "includes": [
+       "compute",
+       "storage",
+       "traffic",
+       "requests",
+       "one_time",
+       "residual"
+      ],
+      "items": [
+       {
+        "address": "google_storage_bucket.probe",
+        "total": 0.000922,
+        "type": "google_storage_bucket"
+       }
+      ],
+      "total": 0.000922
+     },
+     "findings": [],
+     "ok": true,
+     "side": "control",
+     "ttl_hours": 72
+    }
+   },
+   "total": 0.001844,
+   "within_limit": true
+  },
+  {
+   "by_category": {
+    "compute": 0.0,
+    "one_time": 0.0,
+    "requests": 0.00297,
+    "residual": 0.0,
+    "storage": 0.0,
+    "traffic": 0.000816
+   },
+   "cell": "object_versioning/aws",
+   "limit": 0.5,
+   "plan_guard_ok": true,
+   "sides": {
+    "case": {
+     "cost": {
+      "by_category": {
+       "compute": 0.0,
+       "one_time": 0.0,
+       "requests": 0.001485,
+       "residual": 0.0,
+       "storage": 0.0,
+       "traffic": 0.000408
+      },
+      "currency": "USD",
+      "includes": [
+       "compute",
+       "storage",
+       "traffic",
+       "requests",
+       "one_time",
+       "residual"
+      ],
+      "items": [
+       {
+        "address": "aws_s3_bucket.probe",
+        "total": 0.001893,
+        "type": "aws_s3_bucket"
+       },
+       {
+        "address": "aws_s3_bucket_public_access_block.probe",
+        "total": 0.0,
+        "type": "aws_s3_bucket_public_access_block"
+       },
+       {
+        "address": "aws_s3_bucket_versioning.probe[0]",
+        "total": 0.0,
+        "type": "aws_s3_bucket_versioning"
+       }
+      ],
+      "total": 0.001893
+     },
+     "findings": [],
+     "ok": true,
+     "side": "case",
+     "ttl_hours": 1
+    },
+    "control": {
+     "cost": {
+      "by_category": {
+       "compute": 0.0,
+       "one_time": 0.0,
+       "requests": 0.001485,
+       "residual": 0.0,
+       "storage": 0.0,
+       "traffic": 0.000408
+      },
+      "currency": "USD",
+      "includes": [
+       "compute",
+       "storage",
+       "traffic",
+       "requests",
+       "one_time",
+       "residual"
+      ],
+      "items": [
+       {
+        "address": "aws_s3_bucket.probe",
+        "total": 0.001893,
+        "type": "aws_s3_bucket"
+       },
+       {
+        "address": "aws_s3_bucket_public_access_block.probe",
+        "total": 0.0,
+        "type": "aws_s3_bucket_public_access_block"
+       }
+      ],
+      "total": 0.001893
+     },
+     "findings": [],
+     "ok": true,
+     "side": "control",
+     "ttl_hours": 1
+    }
+   },
+   "total": 0.003786,
+   "within_limit": true
+  },
+  {
+   "by_category": {
+    "compute": 0.0,
+    "one_time": 0.0,
+    "requests": 0.003862,
+    "residual": 0.0,
+    "storage": 0.0,
+    "traffic": 0.000788
+   },
+   "cell": "object_versioning/azurerm",
+   "limit": 0.5,
+   "plan_guard_ok": true,
+   "sides": {
+    "case": {
+     "cost": {
+      "by_category": {
+       "compute": 0.0,
+       "one_time": 0.0,
+       "requests": 0.001931,
+       "residual": 0.0,
+       "storage": 0.0,
+       "traffic": 0.000394
+      },
+      "currency": "USD",
+      "includes": [
+       "compute",
+       "storage",
+       "traffic",
+       "requests",
+       "one_time",
+       "residual"
+      ],
+      "items": [
+       {
+        "address": "azurerm_resource_group.probe",
+        "total": 0.0,
+        "type": "azurerm_resource_group"
+       },
+       {
+        "address": "azurerm_storage_account.probe",
+        "total": 0.002325,
+        "type": "azurerm_storage_account"
+       },
+       {
+        "address": "azurerm_storage_container.probe",
+        "total": 0.0,
+        "type": "azurerm_storage_container"
+       }
+      ],
+      "total": 0.002325
+     },
+     "findings": [],
+     "ok": true,
+     "side": "case",
+     "ttl_hours": 1
+    },
+    "control": {
+     "cost": {
+      "by_category": {
+       "compute": 0.0,
+       "one_time": 0.0,
+       "requests": 0.001931,
+       "residual": 0.0,
+       "storage": 0.0,
+       "traffic": 0.000394
+      },
+      "currency": "USD",
+      "includes": [
+       "compute",
+       "storage",
+       "traffic",
+       "requests",
+       "one_time",
+       "residual"
+      ],
+      "items": [
+       {
+        "address": "azurerm_resource_group.probe",
+        "total": 0.0,
+        "type": "azurerm_resource_group"
+       },
+       {
+        "address": "azurerm_storage_account.probe",
+        "total": 0.002325,
+        "type": "azurerm_storage_account"
+       },
+       {
+        "address": "azurerm_storage_container.probe",
+        "total": 0.0,
+        "type": "azurerm_storage_container"
+       }
+      ],
+      "total": 0.002325
+     },
+     "findings": [],
+     "ok": true,
+     "side": "control",
+     "ttl_hours": 1
+    }
+   },
+   "total": 0.00465,
+   "within_limit": true
+  },
+  {
+   "by_category": {
+    "compute": 0.0,
+    "one_time": 0.0,
+    "requests": 0.00297,
+    "residual": 0.0,
+    "storage": 0.0,
+    "traffic": 0.001088
+   },
+   "cell": "object_versioning/google",
+   "limit": 0.5,
+   "plan_guard_ok": true,
+   "sides": {
+    "case": {
+     "cost": {
+      "by_category": {
+       "compute": 0.0,
+       "one_time": 0.0,
+       "requests": 0.001485,
+       "residual": 0.0,
+       "storage": 0.0,
+       "traffic": 0.000544
+      },
+      "currency": "USD",
+      "includes": [
+       "compute",
+       "storage",
+       "traffic",
+       "requests",
+       "one_time",
+       "residual"
+      ],
+      "items": [
+       {
+        "address": "google_storage_bucket.probe",
+        "total": 0.002029,
+        "type": "google_storage_bucket"
+       }
+      ],
+      "total": 0.002029
+     },
+     "findings": [],
+     "ok": true,
+     "side": "case",
+     "ttl_hours": 1
+    },
+    "control": {
+     "cost": {
+      "by_category": {
+       "compute": 0.0,
+       "one_time": 0.0,
+       "requests": 0.001485,
+       "residual": 0.0,
+       "storage": 0.0,
+       "traffic": 0.000544
+      },
+      "currency": "USD",
+      "includes": [
+       "compute",
+       "storage",
+       "traffic",
+       "requests",
+       "one_time",
+       "residual"
+      ],
+      "items": [
+       {
+        "address": "google_storage_bucket.probe",
+        "total": 0.002029,
+        "type": "google_storage_bucket"
+       }
+      ],
+      "total": 0.002029
+     },
+     "findings": [],
+     "ok": true,
+     "side": "control",
+     "ttl_hours": 1
+    }
+   },
+   "total": 0.004058,
+   "within_limit": true
+  },
+  {
+   "by_category": {
+    "compute": 0.0,
+    "one_time": 0.0,
+    "requests": 0.000202,
+    "residual": 0.0,
+    "storage": 0.0,
+    "traffic": 0.0
+   },
+   "cell": "object_versioning/oci",
+   "limit": 0.5,
+   "plan_guard_ok": true,
+   "sides": {
+    "case": {
+     "cost": {
+      "by_category": {
+       "compute": 0.0,
+       "one_time": 0.0,
+       "requests": 0.000101,
+       "residual": 0.0,
+       "storage": 0.0,
+       "traffic": 0.0
+      },
+      "currency": "USD",
+      "includes": [
+       "compute",
+       "storage",
+       "traffic",
+       "requests",
+       "one_time",
+       "residual"
+      ],
+      "items": [
+       {
+        "address": "oci_objectstorage_bucket.probe",
+        "total": 0.000101,
+        "type": "oci_objectstorage_bucket"
+       }
+      ],
+      "total": 0.000101
+     },
+     "findings": [],
+     "ok": true,
+     "side": "case",
+     "ttl_hours": 1
+    },
+    "control": {
+     "cost": {
+      "by_category": {
+       "compute": 0.0,
+       "one_time": 0.0,
+       "requests": 0.000101,
+       "residual": 0.0,
+       "storage": 0.0,
+       "traffic": 0.0
+      },
+      "currency": "USD",
+      "includes": [
+       "compute",
+       "storage",
+       "traffic",
+       "requests",
+       "one_time",
+       "residual"
+      ],
+      "items": [
+       {
+        "address": "oci_objectstorage_bucket.probe",
+        "total": 0.000101,
+        "type": "oci_objectstorage_bucket"
+       }
+      ],
+      "total": 0.000101
+     },
+     "findings": [],
+     "ok": true,
+     "side": "control",
+     "ttl_hours": 1
+    }
+   },
+   "total": 0.000202,
+   "within_limit": true
+  },
+  {
+   "by_category": {
+    "compute": 0.0,
+    "one_time": 0.0,
+    "requests": 0.000366,
+    "residual": 0.0,
+    "storage": 0.0,
+    "traffic": 0.00126
+   },
+   "cell": "queue_retention/aws",
+   "limit": 0.5,
+   "plan_guard_ok": true,
+   "sides": {
+    "case": {
+     "cost": {
+      "by_category": {
+       "compute": 0.0,
+       "one_time": 0.0,
+       "requests": 0.000183,
+       "residual": 0.0,
+       "storage": 0.0,
+       "traffic": 0.00063
+      },
+      "currency": "USD",
+      "includes": [
+       "compute",
+       "storage",
+       "traffic",
+       "requests",
+       "one_time",
+       "residual"
+      ],
+      "items": [
+       {
+        "address": "aws_sqs_queue.probe[0]",
+        "total": 0.000271,
+        "type": "aws_sqs_queue"
+       },
+       {
+        "address": "aws_sqs_queue.probe[1]",
+        "total": 0.000271,
+        "type": "aws_sqs_queue"
+       },
+       {
+        "address": "aws_sqs_queue.probe[2]",
+        "total": 0.000271,
+        "type": "aws_sqs_queue"
+       }
+      ],
+      "total": 0.000813
+     },
+     "findings": [],
+     "ok": true,
+     "side": "case",
+     "ttl_hours": 48
+    },
+    "control": {
+     "cost": {
+      "by_category": {
+       "compute": 0.0,
+       "one_time": 0.0,
+       "requests": 0.000183,
+       "residual": 0.0,
+       "storage": 0.0,
+       "traffic": 0.00063
+      },
+      "currency": "USD",
+      "includes": [
+       "compute",
+       "storage",
+       "traffic",
+       "requests",
+       "one_time",
+       "residual"
+      ],
+      "items": [
+       {
+        "address": "aws_sqs_queue.probe[0]",
+        "total": 0.000271,
+        "type": "aws_sqs_queue"
+       },
+       {
+        "address": "aws_sqs_queue.probe[1]",
+        "total": 0.000271,
+        "type": "aws_sqs_queue"
+       },
+       {
+        "address": "aws_sqs_queue.probe[2]",
+        "total": 0.000271,
+        "type": "aws_sqs_queue"
+       }
+      ],
+      "total": 0.000813
+     },
+     "findings": [],
+     "ok": true,
+     "side": "control",
+     "ttl_hours": 48
+    }
+   },
+   "total": 0.001626,
+   "within_limit": true
+  },
+  {
+   "by_category": {
+    "compute": 0.0,
+    "one_time": 0.0,
+    "requests": 3.6e-05,
+    "residual": 0.0,
+    "storage": 0.0,
+    "traffic": 0.0
+   },
+   "cell": "queue_retention/google",
+   "limit": 0.5,
+   "plan_guard_ok": true,
+   "sides": {
+    "case": {
+     "cost": {
+      "by_category": {
+       "compute": 0.0,
+       "one_time": 0.0,
+       "requests": 1.8e-05,
+       "residual": 0.0,
+       "storage": 0.0,
+       "traffic": 0.0
+      },
+      "currency": "USD",
+      "includes": [
+       "compute",
+       "storage",
+       "traffic",
+       "requests",
+       "one_time",
+       "residual"
+      ],
+      "items": [
+       {
+        "address": "google_pubsub_topic.probe[0]",
+        "total": 0.0,
+        "type": "google_pubsub_topic"
+       },
+       {
+        "address": "google_pubsub_topic.probe[1]",
+        "total": 0.0,
+        "type": "google_pubsub_topic"
+       },
+       {
+        "address": "google_pubsub_topic.probe[2]",
+        "total": 0.0,
+        "type": "google_pubsub_topic"
+       },
+       {
+        "address": "google_pubsub_subscription.probe[0]",
+        "total": 6e-06,
+        "type": "google_pubsub_subscription"
+       },
+       {
+        "address": "google_pubsub_subscription.probe[1]",
+        "total": 6e-06,
+        "type": "google_pubsub_subscription"
+       },
+       {
+        "address": "google_pubsub_subscription.probe[2]",
+        "total": 6e-06,
+        "type": "google_pubsub_subscription"
+       }
+      ],
+      "total": 1.8e-05
+     },
+     "findings": [],
+     "ok": true,
+     "side": "case",
+     "ttl_hours": 48
+    },
+    "control": {
+     "cost": {
+      "by_category": {
+       "compute": 0.0,
+       "one_time": 0.0,
+       "requests": 1.8e-05,
+       "residual": 0.0,
+       "storage": 0.0,
+       "traffic": 0.0
+      },
+      "currency": "USD",
+      "includes": [
+       "compute",
+       "storage",
+       "traffic",
+       "requests",
+       "one_time",
+       "residual"
+      ],
+      "items": [
+       {
+        "address": "google_pubsub_topic.probe[0]",
+        "total": 0.0,
+        "type": "google_pubsub_topic"
+       },
+       {
+        "address": "google_pubsub_topic.probe[1]",
+        "total": 0.0,
+        "type": "google_pubsub_topic"
+       },
+       {
+        "address": "google_pubsub_topic.probe[2]",
+        "total": 0.0,
+        "type": "google_pubsub_topic"
+       },
+       {
+        "address": "google_pubsub_subscription.probe[0]",
+        "total": 6e-06,
+        "type": "google_pubsub_subscription"
+       },
+       {
+        "address": "google_pubsub_subscription.probe[1]",
+        "total": 6e-06,
+        "type": "google_pubsub_subscription"
+       },
+       {
+        "address": "google_pubsub_subscription.probe[2]",
+        "total": 6e-06,
+        "type": "google_pubsub_subscription"
+       }
+      ],
+      "total": 1.8e-05
+     },
+     "findings": [],
+     "ok": true,
+     "side": "control",
+     "ttl_hours": 48
+    }
+   },
+   "total": 3.6e-05,
+   "within_limit": true
+  }
+ ]
+}

@@ -1,0 +1,45 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "PROBEKIT",
+ "generated_at": "2026-11-04T09:08:52-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PROBEKIT.txt",
+  "brief_sha256": "62403d37ad2b4846b2878f836b353fb71659bbe1a372c28112f1a5036ff1769e",
+  "params": {
+   "effort": "maximo",
+   "cloud": "nenhuma",
+   "providers": "aws,google,azurerm,oci",
+   "kit_version": "1.0.0",
+   "protocol_version": "1.0.0",
+   "backends": "gravado,simulado"
+  },
+  "inputs": [
+   {
+    "path": "$BO_REPO/prereg/probe_types.yaml",
+    "kind": "file",
+    "sha256": "a218997eda71942414c09a3f3d2de2d4c6c8d94cfa7a7f16145722deb4b20fca"
+   },
+   {
+    "path": "$BO_DATA/SERVICE-EVIDENCE/protocol_support.jsonl",
+    "kind": "file",
+    "sha256": "6814028449cb1247f51688ee9ec4d362bafaf876ae06a8097f13c7841a84a42d"
+   },
+   {
+    "path": "$BO_REPO/deploy/safety/allowlist_skus.yaml",
+    "kind": "file",
+    "sha256": "da426ef166267ee3fe7a91c704a9e0a23a7b4ffe3f1032e432f5ffd4699bf6ed"
+   },
+   {
+    "path": "$BO_REPO/universe/pins.json",
+    "kind": "file",
+    "sha256": "594a4e878ac489b3ed97cdd6344b9945a8fd3a5d22ae4d6f4bfebd264decfe3d"
+   }
+  ],
+  "recorded_at": "2026-11-04T09:08:52-03:00"
+ },
+ "sources": [],
+ "notes": "fase 1 offline: nenhuma nuvem, nenhuma credencial, nenhum apply; respostas gravadas sintéticas e simulação; validação de suporte offline (S1–S9); schema dos providers da pré-busca conferido por sha256 contra universe/pins.json"
+}

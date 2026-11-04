@@ -1,0 +1,131 @@
+{
+ "all_observed_and_controls_ok": true,
+ "backend": "simulado (SimBackend, semente 7)",
+ "cells": [
+  {
+   "cell": "object_versioning/aws",
+   "counts": {
+    "attempts": 3,
+    "errors": 0,
+    "not_observed": 0,
+    "observed": 3
+   },
+   "negative_control_ok": true,
+   "polls": 99,
+   "simulated_duration_s": 1800.0
+  },
+  {
+   "cell": "object_versioning/google",
+   "counts": {
+    "attempts": 3,
+    "errors": 0,
+    "not_observed": 0,
+    "observed": 3
+   },
+   "negative_control_ok": true,
+   "polls": 99,
+   "simulated_duration_s": 1800.0
+  },
+  {
+   "cell": "object_versioning/azurerm",
+   "counts": {
+    "attempts": 3,
+    "errors": 0,
+    "not_observed": 0,
+    "observed": 3
+   },
+   "negative_control_ok": true,
+   "polls": 99,
+   "simulated_duration_s": 1800.0
+  },
+  {
+   "cell": "object_versioning/oci",
+   "counts": {
+    "attempts": 3,
+    "errors": 0,
+    "not_observed": 0,
+    "observed": 3
+   },
+   "negative_control_ok": true,
+   "polls": 99,
+   "simulated_duration_s": 1800.0
+  },
+  {
+   "cell": "object_lifecycle/aws",
+   "counts": {
+    "attempts": 3,
+    "errors": 0,
+    "not_observed": 0,
+    "observed": 3
+   },
+   "negative_control_ok": true,
+   "polls": 57,
+   "simulated_duration_s": 259200.0
+  },
+  {
+   "cell": "object_lifecycle/google",
+   "counts": {
+    "attempts": 3,
+    "errors": 0,
+    "not_observed": 0,
+    "observed": 3
+   },
+   "negative_control_ok": true,
+   "polls": 57,
+   "simulated_duration_s": 259200.0
+  },
+  {
+   "cell": "item_ttl/aws",
+   "counts": {
+    "attempts": 3,
+    "errors": 0,
+    "not_observed": 0,
+    "observed": 3
+   },
+   "negative_control_ok": true,
+   "polls": 132,
+   "simulated_duration_s": 259200.0
+  },
+  {
+   "cell": "item_ttl/google",
+   "counts": {
+    "attempts": 3,
+    "errors": 0,
+    "not_observed": 0,
+    "observed": 3
+   },
+   "negative_control_ok": true,
+   "polls": 132,
+   "simulated_duration_s": 259200.0
+  },
+  {
+   "cell": "queue_retention/aws",
+   "counts": {
+    "attempts": 3,
+    "errors": 0,
+    "not_observed": 0,
+    "observed": 3
+   },
+   "negative_control_ok": true,
+   "polls": 160,
+   "simulated_duration_s": 172800.0
+  },
+  {
+   "cell": "queue_retention/google",
+   "counts": {
+    "attempts": 3,
+    "errors": 0,
+    "not_observed": 0,
+    "observed": 3
+   },
+   "negative_control_ok": true,
+   "polls": 162,
+   "simulated_duration_s": 172800.0
+  }
+ ],
+ "generated_at": "2026-11-04T09:08:23-03:00",
+ "kit_version": "1.0.0",
+ "module": "PROBEKIT",
+ "observations": "$BO_DATA/PROBEKIT/selfcheck/observations.jsonl",
+ "schema": "bo.probekit.selfcheck/1"
+}
