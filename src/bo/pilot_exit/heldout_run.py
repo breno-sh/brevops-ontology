@@ -1,0 +1,181 @@
+"""G1: roda o código CONGELADO dos dois E2E nas fixtures RETIDAS; sha do código = sha do E2E.
+
+  python -I -m bo.pilot.heldout_run --slices sto,net        (despacha para bo.pilot_exit.heldout_run)
+      sem execução registrada para este código congelado: executa (uma TENTATIVA do E8) e grava o registro;
+      com execução registrada para o mesmo código e o mesmo selo: só confere (não decifra de novo, não conta
+      tentativa) e sai 0 se o registro, a evidência e o sha do código continuam batendo.
+  --reproduce   executa de novo o MESMO código (reprodução, não é tentativa nova; o registro guarda as duas)
+
+Por fatia: (1) identifica o código congelado (frozen.identify) e para se ele mudou depois da entrega;
+(2) exporta a árvore do commit avaliado para $BO_TMP; (3) decifra as retidas pela VM (unseal) e confere com o
+índice; (4) põe as retidas no leiaute da calibração (materialize); (5) roda os gates do próprio E2E (runner);
+(6) extrai a evidência dos critérios (collect) e (7) apaga a árvore temporária. Grava:
+  results/PILOT-EXIT/heldout_run.json                       registro (shas, comandos, contagens; sem conteúdo)
+  $BO_DATA/PILOT-EXIT/.staging/heldout/<fatia>/evidence.json  evidência por fatia (ids e códigos, sem valores)
+  $BO_DATA/PILOT-EXIT/.staging/heldout/attempts.jsonl         livro das tentativas (E8)
+"""
+from __future__ import annotations
+
+import argparse
+import shutil
+import sys
+import time
+from pathlib import Path
+
+from . import collect, common as C, frozen, materialize, runner, unseal
+
+RECORD = "heldout_run.json"
+
+
+def record_path(root: Path | None = None) -> Path:
+    return C.results_dir(root) / RECORD
+
+
+def attempts_path() -> Path:
+    return C.run_data_dir() / "attempts.jsonl"
+
+
+def key_of(ids: dict, seals: dict) -> str:
+    return C.sha_bytes(C.canon({s: [ids[s]["code_sha256"], seals[s]["ciphertext_sha256"]] for s in sorted(ids)}))
+
+
+def load_attempts() -> list:
+    p = attempts_path()
+    return C.read_jsonl(p) if p.is_file() else []
+
+
+def verify_existing(rec: dict, ids: dict, seals: dict) -> list[str]:
+    errs = []
+    if rec.get("status") != "COMPLETE":
+        errs.append(f"registro com status {rec.get('status')}")
+    if rec.get("key") != key_of(ids, seals):
+        errs.append("registro é de outro código ou outro selo")
+    for s, ev in (rec.get("evidence") or {}).items():
+        p = C.run_data_dir() / s / "evidence.json"
+        if not p.is_file():
+            errs.append(f"evidência ausente: {C.portable(p)}")
+        elif C.sha_file(p) != ev.get("sha256"):
+            errs.append(f"evidência {s} mudou depois da execução")
+    return errs
+
+
+def run_slice(slice_: str, ident: dict, root: Path, workdir: Path, decrypt_argv=C.VM_DECRYPT_ARGV) -> dict:
+    s = C.SLICES[slice_]
+    mid = s["e2e"]
+    t0 = time.monotonic()
+    rdir = workdir / slice_
+    if rdir.exists():
+        shutil.rmtree(rdir)
+    frozen_repo = frozen.export(root, ident["base_head"], rdir / "repo")
+    check = frozen.tree_files(root, ident["base_head"], s["code"])
+    if frozen.digest(check) != ident["code_sha256"]:
+        raise frozen.FrozenError("cópia exportada ≠ sha do código congelado")
+    data_root = runner.overlay(C.data(), rdir / "data", mid)
+    opened = unseal.open_slice(slice_, decrypt_argv=decrypt_argv, root=root)
+    counts = materialize.materialize(slice_, opened["bundle"], frozen_repo)
+    cmds = runner.catalog_gates(mid)
+    res = runner.run_commands(cmds, frozen_repo, data_root, mid, rdir / "logs")
+    ev = collect.collect(slice_, opened["bundle"], frozen_repo, data_root, res, rdir / "logs")
+    del opened["bundle"]
+    return {"slice": slice_, "module": mid, "commands": res, "materialized": counts,
+            "seal": {k: opened[k] for k in ("ciphertext_sha256", "plaintext_sha256", "plaintext_bytes", "n_items")},
+            "evidence": ev, "seconds": round(time.monotonic() - t0, 1)}
+
+
+def main(argv=None) -> int:
+    ap = argparse.ArgumentParser(prog="bo.pilot_exit.heldout_run")
+    ap.add_argument("--slices", default="sto,net")
+    ap.add_argument("--reproduce", action="store_true")
+    ap.add_argument("--verify-only", action="store_true", help="nunca executa: só confere o registro (gate do módulo)")
+    ap.add_argument("--keep-workdir", action="store_true", help="não apaga $BO_TMP/run (só para depurar o avaliador)")
+    ap.add_argument("ids", nargs="*")
+    a = ap.parse_args(argv)
+    root = C.repo()
+    slices = [x for x in a.slices.split(",") if x]
+    if sorted(slices) != ["net", "sto"]:
+        C.say("heldout_run: o critério pede as duas fatias (sto,net)")
+        return 2
+    import yaml
+    crit_p = root / "prereg" / "pilot_exit.yaml"
+    crit = yaml.safe_load(crit_p.read_text(encoding="utf-8"))
+    ids, seals = {}, {}
+    for s in slices:
+        try:
+            ids[s] = frozen.identify(s, root)
+            seals[s] = unseal.check_envelope(s, root)
+        except (frozen.FrozenError, unseal.SealError) as e:
+            C.say(f"heldout_run: {s}: {e}")
+            return 2
+        if not ids[s]["match"]:
+            C.say(f"heldout_run: {s}: código avaliado ≠ código congelado do {ids[s]['module']}: "
+                  + "; ".join(ids[s]["problems"]) + " (V1: pare e relate)")
+            return 2
+    key = key_of(ids, seals)
+    rec = C.read_json(record_path(root))
+    if rec and rec.get("key") == key and not a.reproduce:
+        errs = verify_existing(rec, ids, seals)
+        for e in errs:
+            C.say("heldout_run: " + e)
+        if not errs:
+            C.say(f"heldout_run: execução registrada confere (tentativa {rec['attempt']}, código sto "
+                  f"{ids['sto']['code_sha256'][:12]} net {ids['net']['code_sha256'][:12]}); nada decifrado de novo")
+        return 1 if errs else 0
+    if a.verify_only:
+        C.say("heldout_run: nenhuma execução registrada para este código congelado e este selo" if not rec or
+              rec.get("key") != key else "heldout_run: --verify-only com --reproduce não executa")
+        return 1
+    attempts = load_attempts()
+    keys = []
+    for x in attempts:
+        if x["key"] not in keys:
+            keys.append(x["key"])
+    attempt = keys.index(key) + 1 if key in keys else len(keys) + 1
+    kind = "reproduction" if key in keys else "attempt"
+    if attempt > int(crit.get("attempts_max", 2)):
+        C.say(f"heldout_run: tentativa {attempt} > {crit.get('attempts_max')} (E8): a expansão fica bloqueada; nada roda")
+        return 1
+    started = C.now()
+    workdir = C.tmp() / "run"
+    out = {}
+    try:
+        for s in slices:
+            C.say(f"heldout_run: {s}: rodando {ids[s]['module']} congelado ({ids[s]['code_sha256'][:12]}) nas retidas")
+            out[s] = run_slice(s, ids[s], root, workdir)
+            rcs = [c["rc"] for c in out[s]["commands"]]
+            C.say(f"heldout_run: {s}: {len(rcs)} comando(s), saídas {rcs}, {out[s]['seconds']} s")
+    except (frozen.FrozenError, unseal.SealError, collect.CollectError) as e:
+        C.say(f"heldout_run: falhou: {e}")
+        return 2
+    finally:
+        if not a.keep_workdir and workdir.exists():
+            shutil.rmtree(workdir, ignore_errors=True)
+    stage = C.staging_dir() / "heldout"
+    evid = {}
+    for s in slices:
+        p = stage / s / "evidence.json"
+        C.write_json(p, out[s]["evidence"])
+        evid[s] = {"path": f"$BO_DATA/{C.MODULE}/heldout/{s}/evidence.json", "sha256": C.sha_file(p)}
+    finished = C.now()
+    row = {"key": key, "kind": kind, "attempt": attempt, "started_at": started, "finished_at": finished,
+           "code": {s: ids[s]["code_sha256"] for s in slices}}
+    prev = load_attempts()
+    ap_ = stage / "attempts.jsonl"
+    ap_.parent.mkdir(parents=True, exist_ok=True)
+    ap_.write_text("".join(C.canon(x).decode() + "\n" for x in prev + [row]), encoding="utf-8")
+    record = {"schema": "bo.pilot_exit.heldout_run/1", "module": C.MODULE, "status": "COMPLETE", "key": key,
+              "attempt": attempt, "kind": kind, "started_at": started, "finished_at": finished,
+              "criteria": {"path": "$BO_REPO/prereg/pilot_exit.yaml", "sha256": C.sha_file(crit_p)},
+              "decryption": {"where": "VM Oracle do Breno (D15), pipe ssh; chave privada nunca saiu de lá",
+                             "command": C.REMOTE_DECRYPT},
+              "frozen_code": ids, "seal": {s: dict(seals[s], **out[s]["seal"]) for s in slices},
+              "runs": {s: {k: out[s][k] for k in ("module", "commands", "materialized", "seconds")} for s in slices},
+              "evidence": evid,
+              "isolation": "cópia congelada em $BO_TMP/run; BO_DATA sobreposto; sandbox-exec sem escrita fora de "
+                           "$BO_TMP e sem rede; árvore apagada no fim (texto claro nunca gravado fora dela)"}
+    C.write_json(record_path(root), record)
+    C.say(f"heldout_run: tentativa {attempt} ({kind}) gravada em {C.portable(record_path(root))}")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
