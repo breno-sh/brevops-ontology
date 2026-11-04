@@ -45,6 +45,7 @@ def generate() -> dict:
     for p in common.PROVIDERS:
         prim = grainfacts.api_layer(ctxs[p])  # CC-1d: camada de API só com ponte citada na doc
         specfacts.run(ctxs[p], bridges[p], disputes)  # CC-8: camada de API pela spec do provedor
+        specfacts._after(ctxs[p])  # CC-12: ponte de API no nível de bloco
         spec_own = {r["terraform_resource_type"] for r in ctxs[p].recs
                     if (r.get("value") or {}).get("rule") == "R-LIFE-SPEC"}
         grainfacts.scopes(ctxs[p], prim | spec_own)  # depois da curadoria: R-SCOPE-DOC prevalece

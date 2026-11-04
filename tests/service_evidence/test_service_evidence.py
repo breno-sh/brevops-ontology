@@ -220,3 +220,14 @@ def test_cc11_sg_rules_and_blocks():
             ("effective_scope", "R-SCOPE-SPEC")}
     assert want <= rk("aws_vpc_security_group_ingress_rule") and want <= rk("aws_security_group", "ingress")
     assert ("identity", "R-ID-SPEC") in rk("aws_vpc_security_group_ingress_rule")
+
+
+def test_cc12_block_bridges():
+    got = _out_by_type({"google_storage_bucket", "azurerm_storage_account", "aws_s3_bucket"})
+    def asp(T, bp):
+        return {(r["value"].get("aspect") or r["value"].get("rule")) for r in got[T]
+                if r["status"] == "stated" and r.get("block_path") == bp}
+    assert {"api_resource_bridge", "spec_facet_member"} <= asp("google_storage_bucket", "lifecycle_rule")
+    assert "api_resource_bridge" in asp("google_storage_bucket", "versioning")
+    assert "api_resource_bridge" in asp("azurerm_storage_account", "blob_properties")
+    assert {"api_resource_bridge", "spec_facet_member", "twin_type"} <= asp("aws_s3_bucket", "lifecycle_rule")

@@ -116,11 +116,13 @@ def via_attr(p: str, T: str, r: dict) -> list:
 
 
 COVERAGE: dict = {}
+BRIDGED: dict = {}  # provedor -> [(tipo, chave da spec)] dos casamentos únicos, para o blockspec
 
 
 def run(ctx, bridges: dict, disputes: list) -> None:
     p = ctx.p
     cov = COVERAGE[p] = {"types": 0, "bridged": [], "ambiguous": [], "no_candidate": []}
+    BRIDGED[p] = []
     m = A.model(p)
     doc_api = {}
     for r in ctx.recs:
@@ -196,6 +198,7 @@ def run(ctx, bridges: dict, disputes: list) -> None:
         key = cands[0]
         r = m[key]
         cov["bridged"].append(T)
+        BRIDGED.setdefault(p, []).append((T, key))
         f = r["file"]
         ver = A.SPEC[p]["versions"][r["service"]]
         api = {"service": r["service"], "resource": r["resource"]}
@@ -282,6 +285,11 @@ def _oci_identity(ctx, T: str, r: dict, api: dict, ops: list, bid: str) -> None:
                    "spec_path": r["path"]},
             derived=ops + [bid])
     ctx.st["R-ID-SPEC"] += 1
+
+
+def _after(ctx) -> None:
+    from . import blockspec
+    blockspec.run(ctx)
 
 
 def _camel(b: str) -> str:

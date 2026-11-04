@@ -184,6 +184,12 @@ def project(p: str, f: str, ptr: str) -> dict:
                             if "smithy.api#httpLabel" in (v.get("traits") or {}))
         return {"operation": name.split("#")[1], "method": http.get("method"), "uri": http.get("uri"),
                 "labels": labels}
+    if p in ("google", "azurerm") and (ptr.startswith("/schemas/") or ptr.startswith("/definitions/")):
+        node = load_json(p, f)
+        for part in ptr.split("/")[1:]:
+            node = node[unesc(part)]
+        return {"field": unesc(ptr.split("/")[-1]), "type": node.get("type"), "ref": node.get("$ref"),
+                "items_ref": (node.get("items") or {}).get("$ref")}
     if p == "google":
         node = load_json(p, f)
         for part in ptr.split("/")[1:]:
@@ -309,7 +315,8 @@ def _google():
                     upd = next((f"{base}/methods/{m}" for m in ("patch", "update") if m in ms), None)
                     out[(svc, name)] = {"service": svc, "resource": name, "file": f,
                                         "create": f"{base}/methods/insert", "delete": f"{base}/methods/delete",
-                                        "parent": None, "config": [], "update": upd}
+                                        "parent": None, "config": [], "update": upd,
+                                        "schema": ((ms["insert"].get("request") or {}).get("$ref"))}
                 walk(r.get("resources"), name, base)
         walk(doc.get("resources"), "", "")
     return out
@@ -333,13 +340,17 @@ def _azure():
             types, names = segs[0::2], segs[1::2]
             key = (ns, "/".join(types))
             ptr_put = f"/paths/{esc(path)}/put"
+            body = next((x.get("schema", {}).get("$ref") for x in ops["put"].get("parameters") or []
+                         if x.get("in") == "body"), None)
+            body = body.split("/")[-1] if body and body.startswith("#/definitions/") else None
             if "delete" in ops:
-                out[key] = {"service": ns, "resource": "/".join(types), "file": f, "create": ptr_put,
+                out[key] = {"service": ns, "resource": "/".join(types), "file": f, "create": ptr_put, "schema": body,
                             "delete": f"/paths/{esc(path)}/delete", "parent": None, "config": [],
                             "update": f"/paths/{esc(path)}/patch" if "patch" in ops else ptr_put}
             elif not names[-1].startswith("{") and len(types) > 1:
                 out[key] = {"service": ns, "resource": "/".join(types), "file": f, "create": None, "delete": None,
-                            "parent": "/".join(types[:-1]), "config": [ptr_put], "constant_name": names[-1]}
+                            "parent": "/".join(types[:-1]), "config": [ptr_put], "constant_name": names[-1],
+                            "schema": body}
     return out
 
 
@@ -392,3 +403,114 @@ def _oci():
                                  "parent": par[0], "config": [c[0] for c in cfg], "path": cfg[0][1],
                                  "parent_path": own[par[0]]["delete"][1]}
     return out
+
+
+# ---------------------------------------------------------------- campos do corpo (blocos -> campo da spec)
+
+def lower_camel(seg: str) -> str:
+    t = seg.split("_")
+    return t[0] + "".join(x[:1].upper() + x[1:] for x in t[1:])
+
+
+def field_children(p: str, f: str, ptr: str) -> dict:
+    """{nome: ponteiro} dos campos do nó (objeto, array de objetos, $ref no mesmo arquivo; azure achata
+    properties com x-ms-client-flatten)."""
+    doc = load_json(p, f)
+    node = doc
+    for part in ptr.split("/")[1:]:
+        node = node[unesc(part)]
+    out = {}
+
+    def add(n, base):
+        if n.get("items"):
+            it = n["items"]
+            if it.get("$ref"):
+                return add_ref(it["$ref"])
+            if it.get("properties"):
+                for k in it["properties"]:
+                    out.setdefault(k, f"{base}/items/properties/{esc(k)}")
+            return None
+        if n.get("$ref"):
+            return add_ref(n["$ref"])
+        for k, v in (n.get("properties") or {}).items():
+            if p == "azurerm" and k == "properties" and v.get("x-ms-client-flatten") and v.get("$ref"):
+                add_ref(v["$ref"])
+            else:
+                out.setdefault(k, f"{base}/properties/{esc(k)}")
+        return None
+
+    def add_ref(ref):
+        name = ref.split("/")[-1]
+        root = "schemas" if p == "google" else "definitions"
+        if name in doc.get(root, {}):
+            add(doc[root][name], f"/{root}/{esc(name)}")
+
+    add(node, ptr)
+    return out
+
+
+def find_field(p: str, f: str, schema: str, path: list) -> list | None:
+    """Ponteiros do caminho de campos que o bloco Terraform configura (cada segmento: lowerCamel do nome; ou
+    o 1º termo e depois o resto, como lifecycle_rule -> lifecycle.rule). None se algum segmento não casa."""
+    root = "schemas" if p == "google" else "definitions"
+    if not schema or schema not in load_json(p, f).get(root, {}):
+        return None
+    cur, ptrs = f"/{root}/{esc(schema)}", []
+    for seg in path:
+        kids = field_children(p, f, cur)
+        lc = lower_camel(seg)
+        for cand in (lc, lc + "s"):
+            if cand in kids:
+                cur = kids[cand]
+                ptrs.append(cur)
+                break
+        else:
+            cand = None
+        if cand:
+            continue
+        # um nível intermediário ÚNICO (ex.: management policy: rule -> policy.rules)
+        mids = [(k, kp, ip) for k, kp in kids.items() for c2, ip in field_children(p, f, kp).items()
+                if c2 in (lc, lc + "s")]
+        if len(mids) == 1:
+            ptrs += [mids[0][1], mids[0][2]]
+            cur = mids[0][2]
+            continue
+        toks = seg.split("_")
+        if len(toks) > 1 and toks[0] in kids:
+            inner = field_children(p, f, kids[toks[0]])
+            rest = lower_camel("_".join(toks[1:]))
+            if rest in inner:
+                ptrs += [kids[toks[0]], inner[rest]]
+                cur = inner[rest]
+                continue
+        return None
+    return ptrs
+
+
+def aws_member_path(f: str, shape: str, path: list) -> list | None:
+    """aws: caminho de membros de estrutura que o bloco configura (snake do membro = segmento, ou o singular:
+    Rules -> rule, Grants -> grant). Devolve [(ponteiro do membro, alvo)]."""
+    shapes = load_json("aws", f)["shapes"]
+    cur, out = shape, []
+    for seg in path:
+        st = shapes.get(cur, {})
+        if st.get("type") == "list":
+            cur = st["member"]["target"]
+            st = shapes.get(cur, {})
+        hit = None
+        for mname, mv in (st.get("members") or {}).items():
+            sn = snake(mname)
+            if seg in (sn, sn[:-1] if sn.endswith("s") else sn):
+                hit = (mname, mv["target"])
+                break
+        if not hit:
+            return None
+        out.append((f"/shapes/{esc(cur)}/members/{esc(hit[0])}", hit[1]))
+        cur = hit[1]
+    return out
+
+
+def aws_item_shape(f: str, target: str) -> str:
+    shapes = load_json("aws", f)["shapes"]
+    st = shapes.get(target, {})
+    return st["member"]["target"] if st.get("type") == "list" else target

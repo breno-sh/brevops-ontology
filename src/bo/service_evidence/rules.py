@@ -157,7 +157,22 @@ RULES = {
     "R-OWN-SPEC-BLOCK": "bloco/coleção de topo de um tipo cujo recurso tem create/delete próprios na spec, sem "
                         "faceta própria na spec mas com operação de update/modify/patch do recurso: o bloco é "
                         "configurado por ela; dono, ciclo e alcance = pai, {kind: parent, layer: api}.",
-    "R-ID-SPEC": "aws: regra criada por Authorize e removida por Revoke tem identidade própria quando a estrutura "
+    "R-BRIDGE-SPEC-BLOCK": "bloco ligado ao campo ou sub-recurso da spec que ele configura (google: campo do corpo "
+                           "do insert, lowerCamel do nome ou 1º termo + resto, ex. lifecycle_rule -> lifecycle.rule; "
+                           "azure: <x>_properties -> sub-recurso <x>Services do pai e sub-blocos -> campos do corpo "
+                           "dele; aws: membro de lista do payload de faceta do pai, termos da faceta + membro no "
+                           "singular, ou caminho de membros no tipo-faceta), com um nível intermediário único e "
+                           "plural aceitos. Dono, ciclo e alcance do bloco = pai (R-OWN-SPEC-BLOCK).",
+    "R-FACET-SPEC": "spec_facet_member: a API só aceita os blocos como membros de um objeto-faceta único do pai, "
+                    "gravado por uma operação sobre o pai (aws Put<Faceta> com o payload; google patch/update do "
+                    "recurso com o campo do objeto; azure PUT do recurso/sub-recurso), e o bloco não tem create/"
+                    "delete próprios: {facet, facet_resource, operation, member, single_operation: true}.",
+    "R-TWIN-SPEC": "bloco embutido e bloco do tipo separado que caem no mesmo membro da spec (ex.: aws_s3_bucket"
+                   ".lifecycle_rule e aws_s3_bucket_lifecycle_configuration.rule -> BucketLifecycleConfiguration"
+                   ".Rules) são gêmeos: twin_type com twin e twin_block_path.",
+    "R-ID-SPEC": "item de lista de bloco: a estrutura do item na spec tem membro ID/id (aws) ou id/name "
+                 "(google/azure) -> essa chave (within_parent) se o bloco tem o atributo; sem membro de identidade -> "
+                 "ausente. aws: regra criada por Authorize e removida por Revoke tem identidade própria quando a estrutura "
                  "<Pai>Rule da spec tem o membro <Pai>RuleId (ex.: SecurityGroupRule.SecurityGroupRuleId) e o tipo "
                  "tem o atributo de mesmo nome em snake_case. oci: os parâmetros do caminho do delete_<n> do recurso são a chave de identidade; o último é o "
                  "próprio objeto (…Id -> atributo id; …Name -> name ou <coisa>), os demais casam com atributo de topo "
