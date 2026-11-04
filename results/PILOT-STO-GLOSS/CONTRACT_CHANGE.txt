@@ -1,4 +1,11 @@
 CONTRACT_CHANGE — PILOT-STO-GLOSS (piloto sto: grão mecânico e glossário da fatia)
+ATUALIZAÇÃO 2026-11-04T18:29:00-03:00 (America/Recife), RODADA FINAL antes do PILOT-EXIT 2/2: GRAIN ed1fc66 (0.1.11 +
+teste CC-8), SE 365e6ed (C25 1.5.0), árbitro 4bee77e, CONTRACTS 2e8a651, BRIEFS/PREREG 70b8d10.
+  Grão igual ao da rodada anterior (só mudam as referências de evidência nas unidades): 65/121 decididas;
+  contêineres aws, google, oci ENTITY; azurerm_storage_container UNKNOWN (identity); embalagem aws 3/5.
+  Glossário, âncoras, decisões e candidatos idênticos. Achado de processo: o GRAIN ed1fc66 (18:21) mudou
+  grain/GRAIN.html depois do refresh do BRIEFS (70b8d10, 18:13); o consume_check reprova até novo refresh.
+
 ATUALIZAÇÃO 2026-11-04T14:32:00-03:00 (America/Recife), RODADA FINAL antes do PILOT-EXIT 2/2: GRAIN cbe1f08, SE
 28faee8, árbitro 7fc1a85, CONTRACTS emenda 9, TRANSFORMS 9d17ced, BRIEFS 49293d8. Geração em .staging; troca, commit
 do MANIFEST.sha256 das saídas e ff dentro da trava.

@@ -54,7 +54,7 @@
   "oci_objectstorage_private_endpoint": "acesso de rede, não acesso público ao conteúdo",
   "oci_objectstorage_replication_policy": "replicação: fora das quatro facetas"
  },
- "generated_at": "2026-11-04T14:31:36-03:00",
+ "generated_at": "2026-11-04T18:28:38-03:00",
  "grain": {
   "aws": {
    "atoms": 161,
@@ -310,6 +310,7 @@
       "identity: ['resource_group_name'] referencia contêiner de namespace (cascade_delete_by)",
       "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
       "identity: aspecto spec_field sem tradução na tabela",
+      "identity: namespace resource_group_name (azurerm_resource_group) sem evidência de cascata: sem cascade_delete_by",
       "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
       "identity: resource_identity_schema da camada Terraform substituída pela identidade de API (T56)",
       "import_key: formato de importação sem atributos nomeados",
