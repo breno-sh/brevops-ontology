@@ -151,7 +151,7 @@ def oracle_calib(staging: Path, rep: dict, ev: dict) -> dict:
 
 def _ledger_sha() -> str:
     import hashlib
-    p = Path(__file__).resolve().parents[1] / "pilot_net_e2e" / "effort_ledger.py"
+    p = Path(__file__).resolve().parents[2] / "pilot_net_e2e" / "effort_ledger.py"
     return hashlib.sha256(p.read_bytes()).hexdigest()
 
 
