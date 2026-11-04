@@ -192,6 +192,16 @@ def scan_paths(paths: list[Path], strict: bool = False, lists=None) -> tuple[lis
             if "__pycache__" in f.parts or f.suffix == ".pyc":
                 continue
             try:
+                if f.suffix == ".gz":
+                    # comprimido: varre o conteúdo descomprimido, linha a linha (ruído do gzip não é texto)
+                    import gzip
+                    n += 1
+                    with gzip.open(f, "rt", encoding="utf-8", errors="replace") as gz:
+                        for i, line in enumerate(gz, 1):
+                            for x in scan_text(line, str(f), lists):
+                                x.line = i
+                                findings.append(x)
+                    continue
                 if f.stat().st_size > TEXT_LIMIT:
                     with open(f, "rb") as fh:
                         binary = is_binary(fh.read(8192))

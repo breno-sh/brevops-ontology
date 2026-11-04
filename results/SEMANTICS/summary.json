@@ -39,10 +39,11 @@
    {
     "path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/PLANO_BREVOPS_ONTOLOGY.html",
     "kind": "file",
-    "sha256": "29e4a34a487e0fee4517754dfd01553fa9d1b71977d3702b68656e3d15b9df3b",
+    "sha256": "873c4b043e45633a9baf29de453429a0afb9e88f1049eedd7aab00064438acc3",
     "sha256_before_coord_amendment": "12cae53d3db728eabadc2ce7af689b8c62062c48d26ce715ea03a96d4978edb2",
     "sha256_before_plan_regen_stubpath": "28f77288b7dffeb4aadfaefd0bbecbb0c26f2b911073f9309c909b475499e732",
-    "sha256_before_plan_regen_oci_bindings": "affa5f3e57048f31111dfab9a834ff99eca60f1f04c1f733dda4e8ba45ac0831"
+    "sha256_before_plan_regen_oci_bindings": "affa5f3e57048f31111dfab9a834ff99eca60f1f04c1f733dda4e8ba45ac0831",
+    "sha256_before_coord_pilot_catalog_gz": "29e4a34a487e0fee4517754dfd01553fa9d1b71977d3702b68656e3d15b9df3b"
    },
    {
     "path": "$BO_DATA/downloads/skos/skos.rdf",
