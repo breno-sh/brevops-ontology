@@ -58,3 +58,8 @@ Achados que não bloqueiam (o mapeamento sai, com UNPROVEN honesto onde o pacote
   F-7 o árbitro devolve UNPROVEN (ARB-RELATED-EV) para toda ausência STRUCTURALLY_VALID, inclusive as que o
       exemplo do MAPPER_BRIEF M8 mostra como OK no bo.semantics.obligations: 432 ausências UNPROVEN. É a regra
       congelada; registro para a leitura dos números, não como defeito.
+
+ADENDO 2026-11-04T11:01:00-03:00 (America/Recife), bo/base fe9c60c: os três bloqueios saíram.
+  CC-MAP-NET-1 resolvido pelo ARBITERLIB 52371e8/ddcdae7 (recongelado sobre o SEMANTICS 61d6fae): --frozen confere.
+  CC-MAP-NET-3 resolvido pela rodada final do PILOT-NET-GLOSS (fe9c60c, GRAIN 0.1.8) e pelo PREREG (COORD 5b53dd8).
+  Mapeamento refeito de ponta a ponta sobre o pacote novo; vereditos trocados sob a trava. F-1 a F-7 continuam.

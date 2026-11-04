@@ -32,15 +32,15 @@
    "atoms.jsonl": "b02d7c89df722893061fa2cbb687f85460b7bc5b1ad64d89c352d3368b1d1f61",
    "candidates.jsonl": "e423aa830c6426572ad010d99caf400e7fff8d4efc3155da99b42330e206721b",
    "canonical_atoms.jsonl": "84148889876d60ed3ebc89f0e7e7efbf9aa221b8987e71ffcce3590599e88483",
-   "canonical_units.jsonl": "85d972a55d15ceb62b1579fad7bf91c26016047f81a0a24aef03aaa22afeca22",
+   "canonical_units.jsonl": "a90bb6f5b84388eb76f3f4248f9f49606eb455ffaae2ac0e00a00ec561cba96b",
    "claims.jsonl": "836460240203ea31c07b73c3b7484f08501b01ff06ef8f4986750dacdb864b33",
    "decisions.jsonl": "46d62cf365afc25f4fe7d6b6431b02312bce777efd7e5abb43499560cf01dc89",
    "glossary.jsonl": "86fc782174c1d425fd2f9803e114b2396c1892eb7c2e4bc31d03a35b938b9d0d",
-   "service_evidence.jsonl": "1759899485ca5659b4855ff8fada6cb94c740ccb4b5ab72fd999f44ff27c8e8f",
+   "service_evidence.jsonl": "90ca6914be83e399ba99399390887cb596dcb11f2ef869d6a5dc407c94e054c2",
    "slice_notes.jsonl": "331e0c2a1c49051bc7511d5132ab3df9a0d8a12d63c25c28f6ff67b52cbb93fb"
   },
   "form": "diagnostic",
-  "manifest_sha256": "c3aaf19dd9f5d460c5a4c8f54905e51b47041080740696c38ad3491d09160782",
+  "manifest_sha256": "768a754e6f011fcb79b30e75f3d42fde796dc73360e9ac250afd187682579bc7",
   "official": true,
   "path": "/Users/breno/doutorado/brevops-data/PILOT-NET-GLOSS/bundle"
  },
@@ -50,31 +50,23 @@
  },
  "checks": {
   "arbiter": {
-   "frozen_ok": false,
+   "frozen_ok": true,
    "rc": 0,
    "tail": [
     "check-unproven: 0 OK sem prova mínima; UNPROVEN = 602",
-    "[2026-11-04T10:17:48-03:00] run: 634 alegação(ões) correntes de 1 arquivo(s); {\"AMBIGUOUS\": 7, \"OK\": 25, \"UNPROVEN\": 602}; compostos {\"OK\": 138, \"UNPROVEN\": 12}; -> /Users/breno/doutorado/brevops-data/PILOT-NET-MAP/.staging/verdicts.jsonl"
-   ]
-  },
-  "arbiter_frozen": {
-   "rc": 3,
-   "tail": [
-    "FALHA congelamento: src/bo/semantics/claims.py: sha256 diferente do congelado",
-    "  FALHA congelamento: src/bo/semantics/transforms.py: sha256 diferente do congelado",
-    "[2026-11-04T10:17:47-03:00] run: o código não é o congelado (2 divergência(s)); nada julgado"
+    "[2026-11-04T11:00:33-03:00] run: 634 alegação(ões) correntes de 1 arquivo(s); {\"AMBIGUOUS\": 7, \"OK\": 25, \"UNPROVEN\": 602}; compostos {\"OK\": 138, \"UNPROVEN\": 12}; -> /Users/breno/doutorado/brevops-data/PILOT-NET-MAP/.staging/verdicts.jsonl"
    ]
   },
   "c09_validate": {
    "rc": 0,
    "tail": [
-    "[2026-11-04T10:17:43-03:00] C09:correspondences /Users/breno/doutorado/brevops-data/PILOT-NET-MAP/.staging/mapping.sssom.tsv: 634 item(ns), 0 erro(s) -> OK"
+    "[2026-11-04T11:00:30-03:00] C09:correspondences /Users/breno/doutorado/brevops-data/PILOT-NET-MAP/.staging/mapping.sssom.tsv: 634 item(ns), 0 erro(s) -> OK"
    ]
   },
   "skos_roundtrip": {
    "rc": 0,
    "tail": [
-    "[2026-11-04T10:17:46-03:00] skos_roundtrip --file /Users/breno/doutorado/brevops-data/PILOT-NET-MAP/.staging/mapping.sssom.tsv: 634 linha(s), 9/9 -> PASS"
+    "[2026-11-04T11:00:32-03:00] skos_roundtrip --file /Users/breno/doutorado/brevops-data/PILOT-NET-MAP/.staging/mapping.sssom.tsv: 634 linha(s), 9/9 -> PASS"
    ]
   }
  },
@@ -124,7 +116,7 @@
   "rows_with_projection": 112
  },
  "decisions_log_sha256": "03a82f9955ea97013a0ebdbacbe918b1c7c3316bd3b11caa37dbfd2a630fb2a8",
- "generated_at": "2026-11-04T10:17:48-03:00",
+ "generated_at": "2026-11-04T11:00:33-03:00",
  "mapping_date": "2026-11-04",
  "mapping_set_id": "https://w3id.org/brevops/mapping/PILOT-NET-MAP/1",
  "mapping_sha256": "e29ce0e6d43a3824bac3688be5c657d8fd1b5ddb4ef6c73383edf0ce9c877eb8",
