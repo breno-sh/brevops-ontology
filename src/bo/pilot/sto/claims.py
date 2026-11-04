@@ -143,8 +143,12 @@ class ClaimSet:
         mp, vp = mdir / "mapping.sssom.tsv", mdir / "verdicts.jsonl"
         _, rows = read_sssom(mp)
         ver = read_verdicts(vp)
+        # vereditos pelo MAPA (claim_id -> versão, veredito), não pelo sha do arquivo: o gate do PILOT-STO-MAP
+        # regrava o verdicts.jsonl (carimbos), e o que o tradutor lê é só o veredito vigente de cada alegação
+        vmap = {k: [v.get("claim_version_id"), v.get("verdict")] for k, v in sorted(ver.items())}
         return cls(rows, ver, source={"mapping": C.portable(mp), "mapping_sha256": C.sha256_file(mp),
-                                      "verdicts": C.portable(vp), "verdicts_sha256": C.sha256_file(vp)})
+                                      "verdicts": C.portable(vp), "verdicts_sha256": C.sha256_obj(vmap),
+                                      "verdicts_digest": "sha256 do mapa claim_id -> [claim_version_id, verdict]"})
 
     def concept(self, atom_id: str) -> str:
         return self.concept_of.get(atom_id, UNGLOSSED)

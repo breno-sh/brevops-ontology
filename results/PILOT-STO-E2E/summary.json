@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "PILOT-STO-E2E",
- "generated_at": "2026-11-04T11:52:59-03:00",
+ "generated_at": "2026-11-04T11:55:01-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-STO-E2E.txt",
@@ -14,18 +14,14 @@
    "fixtures": "calib",
    "policy_version": "1.0.0",
    "pipeline_version": "1.0.0",
-   "reasoner": "RL-subset+HermiT-crosscheck"
+   "reasoner": "RL-subset+HermiT-crosscheck",
+   "verdicts_map_sha256": "518225d3607896a86aa7eb1aabf05f7951e7fb46a83313d71fb367818c40d4b9"
   },
   "inputs": [
    {
     "path": "$BO_DATA/PILOT-STO-MAP/mapping.sssom.tsv",
     "kind": "file",
     "sha256": "3ded03742f2af665eb872686b02f74f4b86e4f1f64352c05fdddba36e01a7754"
-   },
-   {
-    "path": "$BO_DATA/PILOT-STO-MAP/verdicts.jsonl",
-    "kind": "file",
-    "sha256": "95e3faee9cb058821391736574e7307838eb87265359af07f10730fcdec658d6"
    },
    {
     "path": "$BO_REPO/pilot/sto/oracle",
@@ -113,7 +109,7 @@
     "sha256": "594a4e878ac489b3ed97cdd6344b9945a8fd3a5d22ae4d6f4bfebd264decfe3d"
    }
   ],
-  "recorded_at": "2026-11-04T11:52:59-03:00"
+  "recorded_at": "2026-11-04T11:55:01-03:00"
  },
  "sources": [
   {
