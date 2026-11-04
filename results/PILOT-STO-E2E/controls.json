@@ -652,16 +652,16 @@
     "lowered_units": 0,
     "scope_losses_declared": 0,
     "unit_blocks": {
-     "AMBIGUOUS_TARGET:T-VERDICT": 13,
+     "AMBIGUOUS_TARGET:T-VERDICT": 22,
      "NO_REALIZATION:T-NO-CORRESPONDENCE": 120,
      "RELATED_ONLY:T-RELATED": 31,
-     "UNPROVEN:T-VERDICT": 17
+     "UNPROVEN:T-VERDICT": 8
     },
     "value_blocks": {
-     "AMBIGUOUS_TARGET": 63,
+     "AMBIGUOUS_TARGET": 85,
      "NO_REALIZATION": 515,
      "RELATED_ONLY": 99,
-     "UNPROVEN": 64
+     "UNPROVEN": 42
     }
    },
    "c2_taxonomy": {
@@ -672,17 +672,17 @@
     "lowered_units": 0,
     "scope_losses_declared": 0,
     "unit_blocks": {
-     "AMBIGUOUS_TARGET:T-VERDICT": 13,
+     "AMBIGUOUS_TARGET:T-VERDICT": 22,
      "NO_REALIZATION:T-NO-CORRESPONDENCE": 120,
      "RELATED_ONLY:T-RELATED": 31,
-     "UNPROVEN:T-VERDICT": 17
+     "UNPROVEN:T-VERDICT": 8
     },
     "value_blocks": {
-     "AMBIGUOUS_TARGET": 63,
+     "AMBIGUOUS_TARGET": 85,
      "NO_REALIZATION": 515,
      "NO_UNIT": 53,
      "RELATED_ONLY": 99,
-     "UNPROVEN": 64
+     "UNPROVEN": 42
     }
    },
    "c3_full": {
@@ -693,17 +693,17 @@
     "lowered_units": 0,
     "scope_losses_declared": 2,
     "unit_blocks": {
-     "AMBIGUOUS_TARGET:T-VERDICT": 13,
+     "AMBIGUOUS_TARGET:T-VERDICT": 22,
      "NO_REALIZATION:T-NO-CORRESPONDENCE": 120,
      "RELATED_ONLY:T-RELATED": 31,
-     "UNPROVEN:T-VERDICT": 17
+     "UNPROVEN:T-VERDICT": 8
     },
     "value_blocks": {
-     "AMBIGUOUS_TARGET": 63,
+     "AMBIGUOUS_TARGET": 85,
      "NO_REALIZATION": 515,
      "NO_UNIT": 24,
      "RELATED_ONLY": 99,
-     "UNPROVEN": 64
+     "UNPROVEN": 42
     }
    }
   },
@@ -878,9 +878,18 @@
    }
   },
   "harness_findings": [
-   "HARNESS-GCP: o renderizador só aceita $BO_TMP com o nome HARNESS-GCP; reuso fora do módulo exige trocar a função de temporário no processo",
-   "HARNESS-GCP: perda (C26 losses) num campo que também é valor carregado é CONFLICTING_VALUES; a perda vai no átomo de origem",
-   "HARNESS-GCP: referência resolvida só por símbolo do nome derivado; contêiner com nome literal transportado não pode ser alvo de referência"
+   {
+    "finding": "HARNESS-GCP só aceitava $BO_TMP com o nome HARNESS-GCP",
+    "status": "corrigido no harness (9082eda); contorno retirado"
+   },
+   {
+    "finding": "HARNESS-GCP recusava perda (C26 losses) em campo que também é valor (CONFLICTING_VALUES)",
+    "status": "corrigido no harness (9082eda); a perda voltou ao campo de destino"
+   },
+   {
+    "finding": "HARNESS-GCP resolvia referência só pelo símbolo do nome derivado",
+    "status": "corrigido no harness (9082eda): resolve por target_node, que o plano já traz"
+   }
   ],
   "same_input": {
    "checks": {
@@ -892,28 +901,28 @@
    },
    "per_control": {
     "c1_table": {
-     "claims_sha256": "f99f5a463dc600b62f997577744157123246fed99e838dcd7fe6239dd3dfc39d",
+     "claims_sha256": "229013d3c9151fa7bea3be48cc253616686bcaad21c639366c3182abb69b10fc",
      "entries": 181,
      "input_sha256": "8f1142c13a362b850df33b569bac87f20ee55d693c01a9190b367fccda672e34",
      "policy_sha256": "dd7afd9a4522bab44a739851a65e571f962415cb4e909956e659a9fdcd122dce",
      "transforms_sha256": "07e2177c39bb68a02fe5f7a60a68da42a6e74d90fc37635445b4225248445e38",
-     "verdicts_sha256": "cab63fc5059b4a4b5b9f8a6bee66472a7e28e91ecb7e64facd64e7a4d5bbb243"
+     "verdicts_sha256": "2544f190ab76a455f9bab2371301ae2fc218826c2ce71790724b26d99d21ca77"
     },
     "c2_taxonomy": {
-     "claims_sha256": "f99f5a463dc600b62f997577744157123246fed99e838dcd7fe6239dd3dfc39d",
+     "claims_sha256": "229013d3c9151fa7bea3be48cc253616686bcaad21c639366c3182abb69b10fc",
      "entries": 181,
      "input_sha256": "8f1142c13a362b850df33b569bac87f20ee55d693c01a9190b367fccda672e34",
      "policy_sha256": "dd7afd9a4522bab44a739851a65e571f962415cb4e909956e659a9fdcd122dce",
      "transforms_sha256": "07e2177c39bb68a02fe5f7a60a68da42a6e74d90fc37635445b4225248445e38",
-     "verdicts_sha256": "cab63fc5059b4a4b5b9f8a6bee66472a7e28e91ecb7e64facd64e7a4d5bbb243"
+     "verdicts_sha256": "2544f190ab76a455f9bab2371301ae2fc218826c2ce71790724b26d99d21ca77"
     },
     "c3_full": {
-     "claims_sha256": "f99f5a463dc600b62f997577744157123246fed99e838dcd7fe6239dd3dfc39d",
+     "claims_sha256": "229013d3c9151fa7bea3be48cc253616686bcaad21c639366c3182abb69b10fc",
      "entries": 181,
      "input_sha256": "8f1142c13a362b850df33b569bac87f20ee55d693c01a9190b367fccda672e34",
      "policy_sha256": "dd7afd9a4522bab44a739851a65e571f962415cb4e909956e659a9fdcd122dce",
      "transforms_sha256": "07e2177c39bb68a02fe5f7a60a68da42a6e74d90fc37635445b4225248445e38",
-     "verdicts_sha256": "cab63fc5059b4a4b5b9f8a6bee66472a7e28e91ecb7e64facd64e7a4d5bbb243"
+     "verdicts_sha256": "2544f190ab76a455f9bab2371301ae2fc218826c2ce71790724b26d99d21ca77"
     }
    },
    "policy": {
@@ -962,7 +971,7 @@
    }
   }
  },
- "generated_at": "2026-11-04T13:12:49-03:00",
+ "generated_at": "2026-11-04T14:42:10-03:00",
  "metrics": [
   {
    "axis": "transportability",

@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "PILOT-STO-E2E",
- "generated_at": "2026-11-04T13:13:51-03:00",
+ "generated_at": "2026-11-04T14:43:34-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-STO-E2E.txt",
@@ -15,13 +15,13 @@
    "policy_version": "1.0.0",
    "pipeline_version": "1.0.0",
    "reasoner": "RL-subset+HermiT-crosscheck",
-   "verdicts_map_sha256": "cab63fc5059b4a4b5b9f8a6bee66472a7e28e91ecb7e64facd64e7a4d5bbb243"
+   "verdicts_map_sha256": "2544f190ab76a455f9bab2371301ae2fc218826c2ce71790724b26d99d21ca77"
   },
   "inputs": [
    {
     "path": "$BO_DATA/PILOT-STO-MAP/mapping.sssom.tsv",
     "kind": "file",
-    "sha256": "f99f5a463dc600b62f997577744157123246fed99e838dcd7fe6239dd3dfc39d"
+    "sha256": "229013d3c9151fa7bea3be48cc253616686bcaad21c639366c3182abb69b10fc"
    },
    {
     "path": "$BO_REPO/pilot/sto/oracle",
@@ -86,12 +86,12 @@
    {
     "path": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl",
     "kind": "file",
-    "sha256": "73047e02fdbe29ef9666b7a5e63773946b85e54c3a76e56b26e9210a5ea2af4a"
+    "sha256": "d77a4f6ab71937a3a2f30729d721231f5ceaec764a15de79599d2653c0b83d9e"
    },
    {
     "path": "$BO_REPO/results/SERVICE-EVIDENCE/spec_disputes.json",
     "kind": "file",
-    "sha256": "4239ea62ba3034337cd59ecf6eccba97eee5c1032bb9709775a145f5e2b19d6f"
+    "sha256": "e913932b1c8f925aa090ef467f86cfd1675f64d45f3dcc47f425817c09eaf90d"
    },
    {
     "path": "$BO_DATA/PILOT-STO-GLOSS/glossary.jsonl",
@@ -109,7 +109,7 @@
     "sha256": "594a4e878ac489b3ed97cdd6344b9945a8fd3a5d22ae4d6f4bfebd264decfe3d"
    }
   ],
-  "recorded_at": "2026-11-04T13:13:51-03:00"
+  "recorded_at": "2026-11-04T14:43:34-03:00"
  },
  "sources": [
   {
