@@ -77,9 +77,8 @@ def test_byte_convention_is_part_of_type():
     assert U.UnitType.of("unit:GigaBYTE").byte_convention == "SI"
     with pytest.raises(DeclarationError):
         U.UnitType.of({"unit": "unit:GigaBYTE", "byte_convention": "IEC"})
-    assert U.UnitType.of({"unit": "unit:BYTE", "byte_convention": "SI"}).byte_convention is None   # vácua (1.5.0)
     with pytest.raises(DeclarationError):
-        U.UnitType.of({"unit": "unit:BYTE", "byte_convention": "ISO"})
+        U.UnitType.of({"unit": "unit:BYTE", "byte_convention": "SI"})
     assert U.convert(1, "unit:GibiBYTE", "unit:GigaBYTE") == Fraction(2**30, 10**9)
     assert U.UnitType.of("unit:GibiBYTE").signature() != U.UnitType.of("unit:GigaBYTE").signature()
 

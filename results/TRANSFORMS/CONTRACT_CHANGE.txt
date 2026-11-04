@@ -1,5 +1,16 @@
-TRANSFORMS -> CONTRACTS (2026-11-04T14:27-03:00, America/Recife)
+TRANSFORMS -> CONTRACTS e coordenador (2026-11-04T14:31-03:00, America/Recife)
 
-Sem pedido aberto. As duas propostas anteriores foram atendidas e adotadas:
-  1. C10 3.1.0, list/set/map com item_type nas portas (emenda 8, 4abc6e3): registro 1.4.0.
-  2. C10 3.2.0, item_type {datatype: any} para porta polimórfica (emenda 9, 2367bcd): registro 1.5.0.
+1. ATENDIDA e adotada: C10 3.1.0, list/set/map com item_type nas portas (emenda 8, 4abc6e3): registro 1.4.0.
+
+2. ADIADA PARA A FASE 2, motivo "árbitro congelado para o PILOT-EXIT 2" (recongelamento 7fc1a85; transforms/ e
+   src/bo/transforms/ estão no fecho de arbiter/ARBITER.sha256):
+   a. adoção do C10 3.2.0 (emenda 9, 2367bcd): portas polimórficas de coleção (wrap_list, unwrap_single,
+      list_to_set, set_to_list, map_list, map_set, map_values, map_get, compare_set_equal) com item_type
+      {datatype: any}; hoje seguem 'tuple', com a coleção na restrição publicada; o documento fica em
+      contract_version 3.1.0, que o C10 3.2.0 aceita;
+   b. alinhamento com bo.units.rules: a grandeza das 26 unidades já é a mesma (AmountOfData desde o registro 1.3.0;
+      bo.units.crosscheck dá 0 divergências). Fica a convenção de byte vácua de unit:BYTE e unit:BIT: o UNITS grava
+      SI (UNITS-BYTE-00) e o registro dá None; UnitType.of recusa a convenção declarada nessas duas, e a fase 2 a
+      aceita como vácua. A conta de "13 unidades" do results/UNITS/CONTRACT_CHANGE.txt é de antes do registro 1.3.0.
+   As duas mudanças foram feitas no commit 8622f61 ([TRANSFORMS] emenda 1.5.0) e desfeitas no commit seguinte,
+   que só recalcula a proveniência para a emenda 9 (contracts/). Reaplicar = reverter o desfazimento na fase 2.

@@ -1,8 +1,8 @@
 schema: bo.transforms/1
 contract: C10
-contract_version: 3.2.0
+contract_version: 3.1.0
 module: TRANSFORMS
-generated_at: '2026-11-04T14:27:00-03:00'
+generated_at: '2026-11-04T12:49:00-03:00'
 scalar:
 - name: identity
   kind: scalar
@@ -795,17 +795,13 @@ combinators:
   kind: tuple
   inputs:
   - name: map
-    datatype: map
-    key_type: string
-    item_type:
-      datatype: any
+    datatype: tuple
   - name: key
     datatype: string
   outputs:
   - name: value
     datatype: any
-  precondition: 'chave presente no mapa; portas: map (objeto (ex. rótulos)); key (chave); value (valor da chave);
-    coleção (C09 3.2.0) por porta: map = map'
+  precondition: 'chave presente no mapa; portas: map (objeto (ex. rótulos)); key (chave); value (valor da chave)'
   error: 'TRANSFORM_OUT_OF_DOMAIN: map não é objeto ou chave ausente | UNKNOWN_INPUT: entrada ausente ou não lida
     | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido'
   loss: 'not_expressible: as outras chaves do mapa'
@@ -920,19 +916,14 @@ combinators:
   kind: tuple
   inputs:
   - name: expected
-    datatype: list
-    item_type:
-      datatype: any
+    datatype: tuple
   - name: observed
-    datatype: list
-    item_type:
-      datatype: any
+    datatype: tuple
   outputs:
   - name: match
     datatype: boolean
   precondition: 'listas comparadas como conjuntos de valores JSON canônicos; tolerância 0; portas: expected (valor
-    planejado); observed (valor lido de volta); match (confere sob o comparador); coleção (C09 3.2.0) por porta:
-    expected = list, observed = list'
+    planejado); observed (valor lido de volta); match (confere sob o comparador)'
   error: 'TRANSFORM_OUT_OF_DOMAIN: valor fora do tipo do comparador | UNKNOWN_INPUT: valor não lido (NOT_READ) |
     UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido | DECLARATION_ERROR: tolerância ausente, negativa
     ou fora de numeric_tolerance'
@@ -1034,9 +1025,7 @@ combinators:
     datatype: any
   outputs:
   - name: list
-    datatype: list
-    item_type:
-      datatype: any
+    datatype: tuple
   precondition: 'qualquer valor; escalar -> lista de um elemento (ex. prefixo escalar -> lista de prefixos); portas:
     value (qualquer valor); list (lista (C09 list) de um elemento); coleção (C09 3.2.0) por porta: list = list'
   error: 'UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido'
@@ -1048,9 +1037,7 @@ combinators:
   kind: tuple
   inputs:
   - name: list
-    datatype: list
-    item_type:
-      datatype: any
+    datatype: tuple
   outputs:
   - name: value
     datatype: any
@@ -1066,14 +1053,10 @@ combinators:
   kind: tuple
   inputs:
   - name: list
-    datatype: list
-    item_type:
-      datatype: any
+    datatype: tuple
   outputs:
   - name: set
-    datatype: set
-    item_type:
-      datatype: any
+    datatype: tuple
   precondition: 'lista de valores JSON; portas: list (lista (C09 list) de valores JSON); set (conjunto (C09 set):
     lista sem repetição em ordem canônica); coleção (C09 3.2.0) por porta: list = list, set = set'
   error: 'TRANSFORM_OUT_OF_DOMAIN: não é lista | UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT:
@@ -1086,14 +1069,10 @@ combinators:
   kind: tuple
   inputs:
   - name: set
-    datatype: set
-    item_type:
-      datatype: any
+    datatype: tuple
   outputs:
   - name: list
-    datatype: list
-    item_type:
-      datatype: any
+    datatype: tuple
   precondition: 'conjunto sem elemento repetido; portas: set (conjunto (C09 set): lista sem repetição, qualquer
     ordem); list (lista (C09 list) na ordem canônica); coleção (C09 3.2.0) por porta: set = set, list = list'
   error: 'TRANSFORM_OUT_OF_DOMAIN: não é lista, ou tem elemento repetido | UNKNOWN_INPUT: valor não lido (NOT_READ)
@@ -1106,18 +1085,14 @@ combinators:
   kind: tuple
   inputs:
   - name: list
-    datatype: list
-    item_type:
-      datatype: any
+    datatype: tuple
   - name: fn
     datatype: string
   - name: params
     datatype: tuple
   outputs:
   - name: list
-    datatype: list
-    item_type:
-      datatype: any
+    datatype: tuple
   precondition: 'aplica a escalar fn (com params) a cada elemento, na ordem; a grandeza do elemento é a da escalar
     (não muda); portas: list (lista (C09 list)); fn (nome de transformação ESCALAR do registro); params (params
     da escalar (objeto)); list (lista do mesmo tamanho e ordem, item_type = saída da escalar); coleção (C09 3.2.0)
@@ -1133,18 +1108,14 @@ combinators:
   kind: tuple
   inputs:
   - name: set
-    datatype: set
-    item_type:
-      datatype: any
+    datatype: tuple
   - name: fn
     datatype: string
   - name: params
     datatype: tuple
   outputs:
   - name: set
-    datatype: set
-    item_type:
-      datatype: any
+    datatype: tuple
   precondition: 'aplica a escalar fn a cada elemento do conjunto; imagens iguais se juntam; portas: set (conjunto
     (C09 set)); fn (nome de transformação ESCALAR do registro); params (params da escalar (objeto)); set (conjunto
     das imagens, ordem canônica); coleção (C09 3.2.0) por porta: set = set'
@@ -1159,20 +1130,14 @@ combinators:
   kind: tuple
   inputs:
   - name: map
-    datatype: map
-    key_type: string
-    item_type:
-      datatype: any
+    datatype: tuple
   - name: fn
     datatype: string
   - name: params
     datatype: tuple
   outputs:
   - name: map
-    datatype: map
-    key_type: string
-    item_type:
-      datatype: any
+    datatype: tuple
   precondition: 'aplica a escalar fn a cada valor do mapa; as chaves não mudam; portas: map (mapa (C09 map) chave
     -> valor); fn (nome de transformação ESCALAR do registro); params (params da escalar (objeto)); map (mesmas
     chaves, valores = saída da escalar); coleção (C09 3.2.0) por porta: map = map'

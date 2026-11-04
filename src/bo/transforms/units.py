@@ -331,16 +331,10 @@ class UnitType:
     def checked(self) -> "UnitType":
         u = unit(self.unit)
         bc = self.byte_convention
-        if bc == NOT_APPLICABLE:
-            bc = None
         if bc is not None:
             if bc not in BYTE_CONVENTIONS:
                 raise DeclarationError(f"convenção de byte {bc!r} (só {BYTE_CONVENTIONS})")
-            if u.byte_convention is None and u.kind == INFO:
-                # BYTE e BIT sem prefixo: fator 1 em SI e IEC; a convenção declarada é vácua (UNITS-BYTE-00 grava
-                # SI; C05 3.1.0 aceita NOT_APPLICABLE) e o tipo fica sem convenção
-                bc = None
-            elif u.byte_convention != bc:
+            if u.byte_convention != bc:
                 raise DeclarationError(f"convenção {bc} contradiz a unidade {u.iri} ({u.byte_convention or 'sem prefixo'})")
         if self.rate_window is not None:
             fixed_window_seconds(self.rate_window)

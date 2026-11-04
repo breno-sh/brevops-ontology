@@ -1,8 +1,8 @@
 {
  "schema": "bo.transforms_amendments/1",
  "module": "TRANSFORMS",
- "registry_version": "1.5.0",
- "generated_at": "2026-11-04T14:27:00-03:00",
+ "registry_version": "1.4.0",
+ "generated_at": "2026-11-04T12:49:00-03:00",
  "amendments": [
   {
    "registry_version": "1.1.0",
@@ -27,12 +27,6 @@
    "commit_subject": "[TRANSFORMS] emenda 1.4.0: portas list/map do C10 3.1.0 (CC-6)",
    "request": "PILOT-STO-MAP CC-6, segunda parte: adoção do C10 3.1.0 (CONTRACTS emenda 8, 4abc6e3), que atendeu a proposta do CONTRACT_CHANGE.txt do TRANSFORMS",
    "change": "documento em contract_version 3.1.0; portas de elemento concreto viram list/map com item_type (tags_list_to_map, tags_map_to_list); portas polimórficas (wrap_list, map_list, list_to_set...) continuam tuple porque o value_type do C09 não tem 'any' para item_type (nova proposta no CONTRACT_CHANGE.txt)"
-  },
-  {
-   "registry_version": "1.5.0",
-   "commit_subject": "[TRANSFORMS] emenda 1.5.0: porta any do C10 3.2.0 e bytes do UNITS",
-   "request": "adoção do C10 3.2.0 (CONTRACTS emenda 9, 2367bcd, item_type any pedido no CONTRACT_CHANGE.txt) e alinhamento com bo.units.rules pedido pelo coordenador (STO-MAP CC-5, continuação)",
-   "change": "portas polimórficas de coleção (wrap_list, unwrap_single, list_to_set, set_to_list, map_list, map_set, map_values, map_get, compare_set_equal) saem list/set/map com item_type {datatype: any}; UnitType aceita a convenção vácua SI/IEC/NOT_APPLICABLE em BYTE e BIT sem prefixo (UNITS-BYTE-00, C05 3.1.0); teste contra bo.units.rules e bo.units.crosscheck (0 divergências)"
   }
  ]
 }
