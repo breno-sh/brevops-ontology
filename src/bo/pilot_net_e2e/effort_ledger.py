@@ -27,7 +27,8 @@ LEDGER = {
         {"step": "segunda passada: guardas C10, traço por valor completo, perfil DL, pista da tabela, defeitos",
          "start": "10:15", "end": "10:29", "agent_hours": 0.23},
         {"step": "integração com o mapeamento real (PILOT-NET-MAP), resultados e rerodada dos gates",
-         "start": None, "end": None, "agent_hours": None},
+         "start": "11:03", "end": "11:15", "agent_hours": 0.20},
     ],
-    "wait": [],
+    "wait": [{"what": "PILOT-NET-MAP em bo/base (rebase sobre GRAIN 0.1.7/0.1.8 e oráculo regerado no meio)",
+              "start": "10:29", "end": "11:03", "hours": 0.57}],
 }
