@@ -248,7 +248,7 @@
    "records": 634,
    "sha256": {
     "mapping": "e29ce0e6d43a3824bac3688be5c657d8fd1b5ddb4ef6c73383edf0ce9c877eb8",
-    "verdicts": "d08bcde461ec6d647f102d1ed3741c8e9d844522a4b9f449e0cc7d1a92524096"
+    "verdicts": "5fd6702b2cb78036938b675bbdb98abed829ed46278bf25a572e28824f855b94"
    },
    "verdicts": "$BO_DATA/PILOT-NET-MAP/verdicts.jsonl"
   },
@@ -256,7 +256,7 @@
    "abox_sha256": "1e2b76b39de46e392b7ae4467a6aa92dc5a85d866a61804e1fa0a85096c45f99",
    "claims_sha256": {
     "mapping": "e29ce0e6d43a3824bac3688be5c657d8fd1b5ddb4ef6c73383edf0ce9c877eb8",
-    "verdicts": "d08bcde461ec6d647f102d1ed3741c8e9d844522a4b9f449e0cc7d1a92524096"
+    "verdicts": "5fd6702b2cb78036938b675bbdb98abed829ed46278bf25a572e28824f855b94"
    },
    "loss_policy_codes_used": {
     "c1_table": [],
@@ -612,7 +612,7 @@
    }
   }
  },
- "generated_at": "2026-11-04T11:04:42-03:00",
+ "generated_at": "2026-11-04T11:07:08-03:00",
  "metrics": [
   {
    "axis": "operational",
