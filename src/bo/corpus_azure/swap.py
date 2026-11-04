@@ -67,18 +67,19 @@ def publish(repo: Path, data: Path) -> None:
 
 def notes(r: dict) -> str:
     c, a, rec, t = r["corpus"], r["atoms"], r["records"], r["types"]
-    s = r["settings_by_class"]
+    s, u = r["settings_by_class"], rec["unattributed_by_cause"]
     return (f"azurerm no TerraDS: {c['n_repos']} repositórios, {c['n_families']} famílias, {c['n_modules']} módulos, "
             f"{c['n_resources']} recursos ({c['n_data_blocks_skipped']} blocos data fora). "
             f"{r['rows']['usage_rows']} linhas usage ({r['rows']['type_rows']} por tipo, {r['rows']['atom_rows']} por "
-            f"átomo). Átomos configuráveis usados: {a['n_configurable_used']}/{a['n_configurable']} "
-            f"({a['configurable_used_share']:.1%}); {a['atoms_for_90pct_settings']} átomos cobrem 90% das "
-            f"configurações. Registros de recurso casados com átomo do schema 5.12.0: {rec['matched_records']}/"
-            f"{rec['resource_records']} ({rec['matched_share']:.1%}); fora: "
-            f"{rec['unmatched_by_category']['attr_not_in_schema']} atributo fora do schema, "
-            f"{rec['unmatched_by_category']['type_not_in_schema']} de {t['n_types_used_not_in_schema']} tipos fora do "
-            f"schema 5.12.0 (ausentes do schema fixado). Classe por recurso x átomo: literal {s['literal']}, simbólico "
-            f"{s['symbolic']}, retido {s['withheld']}. Sem split (é do SPLIT).")
+            f"átomo), contadas pela biblioteca única bo.corpus_oci.counting. Átomos configuráveis usados: "
+            f"{a['n_configurable_used']}/{a['n_configurable']} ({a['configurable_used_share']:.1%}); "
+            f"{a['atoms_for_90pct_settings']} átomos cobrem 90% das configurações. Registros de recurso atribuídos a "
+            f"átomo do schema 5.12.0: {rec['attributed_records']}/{rec['resource_records']} "
+            f"({rec['attributed_share']:.1%}); fora: {u['attr_not_in_schema']} atributo fora do schema, "
+            f"{u['type_not_in_schema']} de {t['n_types_used_not_in_schema']} tipos ausentes do schema 5.12.0, "
+            f"{u['meta_argument']} meta-argumento, {u['dynamic_meta']} meta de dynamic, {u['explicit_null']} null "
+            f"explícito. Classe por recurso x átomo: literal {s['literal']}, simbólico {s['symbolic']}, retido "
+            f"{s['withheld']}. Sem split (é do SPLIT).")
 
 
 def main(argv=None) -> int:

@@ -21,8 +21,10 @@ import subprocess
 import sys
 from collections import Counter, defaultdict
 
+from bo.corpus_oci import counting
+
 from . import MODULE, PROVIDER
-from .build import bo_data, inputs, load_atoms, load_resources, now, sample_pick
+from .build import bo_data, inputs, now, read_resources, sample_pick
 from .swap import FILES, bo_repo, sha256_file
 
 SPLIT_KEYS = ("split", "partition", "fold", "calib", "eval", "holdout", "test")
@@ -36,19 +38,27 @@ def main(argv=None) -> int:  # noqa: C901
     errs: list[str] = []
     info: dict = {}
 
-    atoms = {x["atom_id"]: x for x in load_atoms(inputs()["atoms"])}
-    by_repo, _ = load_resources(inputs()["resources"])
+    atoms = {}
+    with open(inputs()["atoms"], encoding="utf-8") as f:
+        for ln in f:
+            x = json.loads(ln)
+            atoms[x["atom_id"]] = x
+    by_repo = defaultdict(list)
+    for row in read_resources(inputs()["resources"]):
+        if not counting.is_data_address(row["resource_address"]):
+            by_repo[row["repo_id"]].append(row)
     want_type = Counter()
     want_fam = {}
     for rid, rs in by_repo.items():
-        for _, _, rt, fam in rs:
-            want_type[(rid, rt)] += 1
-            want_fam[rid] = fam
+        for row in rs:
+            want_type[(rid, row["resource_type"])] += 1
+            if want_fam.setdefault(rid, row["family_id"]) != row["family_id"]:
+                errs.append(f"repositório {rid} com mais de uma família no parquet")
 
     type_rows: dict[tuple, dict] = {}
     atom_rows: list[dict] = []
     lines_by_repo: dict[str, list] = defaultdict(list)
-    tot = defaultdict(lambda: [0, 0])  # atom -> [n_repos, n_resources_set]
+    tot = defaultdict(lambda: [0, 0])  # atom -> [n_repos, n_set]
     ttot = defaultdict(lambda: [0, 0])  # tipo -> [n_repos, n_resources]
     prev = None
     with open(data / "usage.jsonl", encoding="utf-8") as f:
@@ -105,20 +115,28 @@ def main(argv=None) -> int:  # noqa: C901
             t = json.loads(ln)
             n_tot += 1
             exp = tot.get(t["atom_id"], [0, 0])
-            if [t["n_repos"], t["n_resources_set"]] != exp:
+            if [t["n_repos"], t["n_set"]] != exp:
                 errs.append(f"atom_totals diverge do usage: {t['atom_id']}")
-            if t["n_literal"] + t["n_symbolic"] + t["n_withheld"] != t["n_resources_set"]:
-                errs.append(f"atom_totals: classes não somam n_resources_set em {t['atom_id']}")
-            if t["n_resources_set"] > t["n_resources_of_type"] or t["n_modules"] < (1 if t["n_repos"] else 0) \
-                    or t["n_modules"] > t["n_resources_set"]:
+            if t["n_literal"] + t["n_symbolic"] + t["n_withheld"] != t["n_set"]:
+                errs.append(f"atom_totals: classes não somam n_set em {t['atom_id']}")
+            if t["n_set"] > t["type_n_resources"] or t["n_modules"] < (1 if t["n_repos"] else 0) \
+                    or t["n_modules"] > t["n_set"] or t["n_families"] > t["n_repos"] \
+                    or t["type_n_resources"] != ttot.get(t["resource_type"], [0, 0])[1]:
                 errs.append(f"atom_totals: módulos ou recursos fora dos limites em {t['atom_id']}")
     if n_tot != len(atoms):
         errs.append(f"atom_totals tem {n_tot} átomos, atoms.jsonl {len(atoms)}")
+    n_tt = 0
+    schema_types = {a["resource_type"] for a in atoms.values()}
     with open(data / "type_totals.jsonl", encoding="utf-8") as f:
         for ln in f:
             t = json.loads(ln)
+            n_tt += 1
             if [t["n_repos"], t["n_resources"]] != ttot.get(t["resource_type"], [0, 0]):
                 errs.append(f"type_totals diverge do usage: {t['resource_type']}")
+            if t["in_schema"] != (t["resource_type"] in schema_types):
+                errs.append(f"type_totals.in_schema errado: {t['resource_type']}")
+    if n_tt != len(ttot):
+        errs.append(f"type_totals tem {n_tt} tipos, usage {len(ttot)}")
 
     # 4. relatório, resumo e manifesto
     rep = json.loads((data / "build_report.json").read_text(encoding="utf-8"))
@@ -149,7 +167,7 @@ def main(argv=None) -> int:  # noqa: C901
     tmp = os.environ.get("BO_TMP", str(bo_data() / "tmp" / MODULE))
     out = os.path.join(tmp, f"regen_sample{a.sample_mod}")
     r = subprocess.run([sys.executable, "-I", "-m", "bo.corpus_azure.build", "--sample-mod", str(a.sample_mod),
-                        "--out", out, "--workers", "4"], capture_output=True, text=True)
+                        "--out", out], capture_output=True, text=True)
     if r.returncode != 0:
         errs.append("regeneração da amostra falhou: " + r.stderr[-300:])
     else:
