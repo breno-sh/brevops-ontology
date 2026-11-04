@@ -128,6 +128,10 @@ TABLE = [
      "recursos: cada elemento designa o objeto referenciado e vira ligação (T58); ciclo de vida, dono e alcance pela "
      "R-GRAIN-LISTELEM. Elemento literal ou simbólico não cria ligação (UNKNOWN sem ocorrência); fato do SE no "
      "atributo prevalece; sem o átomo citável, nada. A ponta FACET do vínculo é lida como a unidade dona da faceta"),
+    ("identity", "attachment_attribute", "R-GRAIN-T63",
+     "campo da spec que liga o dono a objetos do tipo binds_to, casado ao atributo pela leitura do modelo: ligação "
+     "por atributo (T58) com alvo tipado; o nível INTERPRETED do fato vai para a citação (com model_id) e não é "
+     "promovido; alvo tipado (T44) igual mantém, diferente deixa o alvo sem tipo com o motivo"),
     ("api_resource", "api_resource_bridge com item_model e field_type list[...] (bloco)", "R-GRAIN-T62",
      "ponte para campo-lista de itens do pai: cada bloco é um item da coleção, não o aspecto do pai (T49 não se "
      "aplica); sem identidade do item (nome ou conteúdo) na evidência, FACET e COMPONENT anônimo não se distinguem: "
@@ -405,7 +409,31 @@ def translate(records: list[dict], candidates: set[str] | None = None, disputes:
                 else:
                     typed[cid][attr] = None
                     reasons[cid].append(f"identity: referência {attr} com alvo ambíguo {tt}")
-                links[cid][attr] = {"kind": "reference", "target": typed[cid][attr], "source": _src(r, rule)}
+                prev = links[cid].get(attr, {})
+                if prev.get("target") and typed[cid][attr] and prev["target"] != typed[cid][attr]:
+                    # T63 x T44 divergentes: alvo sem tipo, independente da ordem dos registros
+                    reasons[cid].append(f"identity: anexação {attr} diverge do alvo tipado")
+                    links[cid][attr] = dict(prev, target=None, why="alvos divergentes")
+                elif not (prev.get("target") and prev["target"] == typed[cid][attr]):
+                    links[cid][attr] = {"kind": "reference", "target": typed[cid][attr], "source": _src(r, rule)}
+            elif a == "attachment_attribute":
+                # T63: campo da spec que liga o dono a objetos do tipo binds_to, casado ao atributo Terraform por
+                # leitura do modelo: ligação por atributo com alvo tipado, nível INTERPRETED (nunca promovido)
+                attr = _rel(v.get("attribute", ""), bp)
+                if not attr or not v.get("binds_to"):
+                    unknown(cid, fld, r, "anexação sem atributo ou sem alvo")
+                else:
+                    src = _src(r, "R-GRAIN-T63", f"{v.get('spec_operation')}/{v.get('spec_field')}")
+                    if r.get("level") == "interpreted":
+                        src = dict(src, level="interpreted", model_id=r.get("model_id") or "UNKNOWN")
+                    prev = links[cid].get(attr, {}).get("target")
+                    if prev and prev != v["binds_to"]:
+                        reasons[cid].append(f"identity: anexação {attr} diverge do alvo tipado ({prev} x "
+                                            f"{v['binds_to']})")
+                        links[cid][attr] = {"kind": "reference", "target": None, "why": "alvos divergentes",
+                                            "source": src}
+                    elif not prev:
+                        links[cid][attr] = {"kind": "reference", "target": v["binds_to"], "source": src}
             elif a == "reference_phrase":
                 reasons[cid].append("identity: reference_phrase é frase da doc; o alvo vem de reference_target")
                 if v.get("attribute"):

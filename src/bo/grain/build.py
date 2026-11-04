@@ -429,7 +429,7 @@ regra viraria FACET (aspecto do pai), o que o objeto da API não sustenta — ca
 ponte não vira aspecto e, sem identidade do item (nome ou conteúdo) na evidência, FACET e COMPONENT anônimo não se
 distinguem; as 11 regras seguem UNKNOWN em api_resource, agora com esse motivo (na instância OCI, 8 ocorrências que a
 T49 daria FACET passam a UNKNOWN; o esquema OCI perde as 2 FACET das regras). Relatório em
-$BO_DATA/GRAIN/listref_sensitivity.json.</li>
+$BO_DATA/GRAIN/listref_sensitivity.json. T63: o aspecto novo do SE <code>attachment_attribute</code> (campo da spec que liga o dono ao alvo, casado ao atributo pela leitura do modelo) vira ligação com alvo tipado; o nível INTERPRETED e o model_id vão para a citação e não são promovidos; com ele a ligação AWS vem do SE e a LISTREF deixa de ser usada ali.</li>
 <li>Emenda 0.1.9 (PILOT-EXIT 1/2: o E2 NET reprovou porque a camada de instância não tinha as regras 0.1.5–0.1.8): a
 instância aplica agora contêiner externo (T51: <code>$ref</code> fora da configuração ou id literal), faceta implícita
 (T57), fora do domínio (T45), bloco repetido de coleção de objetos detectado pela evidência (T2) e o namespace do pai

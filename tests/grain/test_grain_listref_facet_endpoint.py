@@ -135,3 +135,36 @@ def test_t62_list_item_bridge_is_not_an_aspect():
     one = C25Adapter([_rec("SE-c-1", "api_bridge", bridge("Item")), _rec("SE-c-2", "lifecycle_controller", life)])
     g = one.evidence("t_x.items").fact("api_resource")
     assert g.known and g.value["status"] == "aspect"
+
+
+def _att(eid, binds_to, level="interpreted"):
+    r = _rec(eid, "identity", {"aspect": "attachment_attribute", "attribute": "items.ids", "binds_to": binds_to,
+                               "rule": "R-ATTACH-SPEC", "spec_field": "F.ids", "spec_operation": "Op"})
+    r["level"] = level
+    if level == "interpreted":
+        r["model_id"] = "modelo-x"
+    return r
+
+
+def _ref(eid, target):
+    return _rec(eid, "identity", {"aspect": "reference_target", "attribute": "items.ids", "resolved": target,
+                                  "target_types": [target], "references": {"items.ids": target},
+                                  "rule": "R-REF-TARGET"})
+
+
+def test_t63_attachment_attribute_is_typed_link_kept_interpreted():
+    from bo.grain.evidence import C25Adapter
+    lk = C25Adapter([_att("SE-a-1", "t_set")]).evidence("t_x.items").links["ids"]
+    assert lk["target"] == "t_set" and lk["kind"] == "reference"
+    assert lk["source"]["level"] == "interpreted" and lk["source"]["model_id"] == "modelo-x"   # não promovido
+    assert "R-GRAIN-T63" in lk["source"]["note"]
+
+
+def test_t63_divergent_typed_target_is_untyped_in_any_order():
+    from bo.grain.evidence import C25Adapter
+    for recs in ([_att("SE-a-1", "t_set"), _ref("SE-a-2", "t_other")],
+                 [_ref("SE-a-2", "t_other"), _att("SE-a-1", "t_set")]):
+        assert C25Adapter(recs).evidence("t_x.items").links["ids"]["target"] is None
+    for recs in ([_att("SE-a-1", "t_set"), _ref("SE-a-2", "t_set")],
+                 [_ref("SE-a-2", "t_set"), _att("SE-a-1", "t_set")]):
+        assert C25Adapter(recs).evidence("t_x.items").links["ids"]["target"] == "t_set"
