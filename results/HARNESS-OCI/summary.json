@@ -22,8 +22,9 @@
    {
     "path": "$BO_REPO/contracts/stubs",
     "kind": "dir",
-    "sha256": "7ee2eaa73c1e0105f3f62d30492d3401ecf87fef0c55dd0dc0e1a05710289f75",
-    "sha256_before_emenda3_e_skosfix": "6d24a5ce7306bc53d657c96122bc0c8ee7c0057d2b7b543b77507bc30be8abb6"
+    "sha256": "4d3e1ef5cca14555d3688d6275d009582507e823d5df70a688738a39955f75f1",
+    "sha256_before_emenda3_e_skosfix": "6d24a5ce7306bc53d657c96122bc0c8ee7c0057d2b7b543b77507bc30be8abb6",
+    "sha256_before_emendas_4_grain_se": "7ee2eaa73c1e0105f3f62d30492d3401ecf87fef0c55dd0dc0e1a05710289f75"
    }
   ],
   "recorded_at": "2026-11-03T17:42:59-03:00"
