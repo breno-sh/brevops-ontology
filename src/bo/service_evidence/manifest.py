@@ -21,6 +21,7 @@ FILES = [
     "$BO_REPO/results/SERVICE-EVIDENCE/spec_disputes.json",
     "$BO_REPO/results/SERVICE-EVIDENCE/spec_coverage.json",
     "$BO_DATA/downloads/apispec-oci-cc9/SHA256SUMS",
+    "$BO_DATA/downloads/apispec-aws-cc9/SHA256SUMS",
     "$BO_DATA/downloads/apispec-aws/SHA256SUMS",
     "$BO_DATA/downloads/apispec-google/SHA256SUMS",
     "$BO_DATA/downloads/apispec-azurerm/SHA256SUMS",
@@ -39,7 +40,13 @@ def _src(p: str):
     conferir depois do --promote dentro da trava."""
     real = common.real(p)
     st = common.out_dir() / ".staging" / real.name
-    return st if real.parent == common.out_dir() and st.exists() else real
+    if real.parent == common.out_dir() and st.exists():
+        return st
+    if not real.exists() and real.parent.parent.name == "downloads":  # lote de spec ainda em <pasta>.staging
+        alt = real.parent.parent / (real.parent.name + ".staging") / real.name
+        if alt.exists():
+            return alt
+    return real
 
 
 def write() -> int:

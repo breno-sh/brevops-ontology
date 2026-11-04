@@ -134,7 +134,12 @@ RULES = {
                      "nome (ou a ponte da doc) = substantivo do método. Mais de um: candidatos, "
                      "sem fato de camada API. Recurso da spec que casa com mais de um tipo: fica com a ponte só o "
                      "único tipo do grupo que não referencia (R-REF-TARGET, ou atributo REFERENCE de topo chamado "
-                     "<recurso no singular>_id) outro membro; os demais ficam como "
+                     "<recurso no singular>_id) outro membro; na aws, se isso não decide, o único cujo nome inteiro "
+                     "(sem aws_ e s3_/ec2_/vpc_) é o do recurso. aws com todos os serviços: candidatos de mais de um "
+                     "serviço ficam só os da pasta igual ao 1º termo do tipo ou à cabeça da subcategoria; senão os "
+                     "de sdkId/arnNamespace/endpointPrefix iguais; ainda vários: o serviço da maioria (>= 3) dos "
+                     "casamentos únicos da mesma subcategoria; nome: do mais específico (inteiro) ao menos (sem 1 ou "
+                     "2 termos), parando no 1º nível que casa; os demais ficam como "
                      "candidatos.",
     "R-LIFE-SPEC": "o recurso da spec tem create e delete próprios sobre o próprio identificador (aws Create<N> e "
                    "Delete<N>; google insert e delete; azure PUT e DELETE no caminho da instância; oci delete_<n> (ou "

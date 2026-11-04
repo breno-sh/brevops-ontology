@@ -239,6 +239,11 @@ def promote() -> int:
         print("promote: nada em .staging para " + ", ".join(miss))
         return 1
     prev.mkdir(parents=True, exist_ok=True)
+    for d in apispec.CC9_DIRS.values():  # lote de spec baixado em <pasta>.staging: entra junto, na trava
+        src, dst = common.bo_data() / "downloads" / (d + ".staging"), common.bo_data() / "downloads" / d
+        if src.exists() and not dst.exists():
+            os.replace(src, dst)
+            (prev / f"promoted_{d}").write_text("1", encoding="utf-8")
     for f in DATA_FILES:
         cur = common.out_dir() / f
         if cur.exists():
@@ -253,6 +258,11 @@ def rollback() -> int:
     for f in DATA_FILES:
         if (prev / f).exists():
             os.replace(prev / f, common.out_dir() / f)
+    for d in apispec.CC9_DIRS.values():
+        mark = prev / f"promoted_{d}"
+        if mark.exists():
+            os.replace(common.bo_data() / "downloads" / d, common.bo_data() / "downloads" / (d + ".staging"))
+            mark.unlink()
     print(f"[{common.now()}] rollback: definitivo anterior restaurado")
     return 0
 

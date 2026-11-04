@@ -228,6 +228,24 @@ def model(p: str) -> dict:
 
 
 @lru_cache(maxsize=1)
+def aws_service_names() -> dict:
+    """serviço (pasta) -> nomes normalizados (pasta, sdkId, arnNamespace, endpointPrefix) do traço aws.api#service."""
+    out = {}
+    for f, svc in SPEC["aws"]["files"].items():
+        names = {norm(svc)}
+        for v in load_json("aws", f)["shapes"].values():
+            if v.get("type") == "service":
+                t = (v.get("traits") or {}).get("aws.api#service") or {}
+                names |= {norm(t.get(k, "")) for k in ("sdkId", "arnNamespace", "endpointPrefix") if t.get(k)}
+        out[svc] = names
+    return out
+
+
+def norm(s: str) -> str:
+    return re.sub(r"[^a-z0-9]", "", s.lower())
+
+
+@lru_cache(maxsize=1)
 def _aws():
     out = {}
     for f, svc in SPEC["aws"]["files"].items():

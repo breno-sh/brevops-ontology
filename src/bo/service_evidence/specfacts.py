@@ -53,6 +53,29 @@ def candidates(p: str, T: str, bridge: dict | None, m: dict) -> list:
         return []
     suf = T.split("_", 1)[1]
     keys = {suf} | {suf[len(x):] for x in PREFIX[p] if suf.startswith(x)}
+    if p == "aws":
+        toks = suf.split("_")
+        found = []
+        # do nome mais específico para o menos: nome inteiro, depois sem o 1º termo, depois sem os 2 primeiros
+        for level in (keys, {"_".join(toks[1:])} if len(toks) > 1 else set(),
+                      {"_".join(toks[2:])} if len(toks) > 2 else set()):
+            found = sorted(k for k, r in m.items() if level and names_of(p, k, r) & level)
+            if found:
+                break
+        if len(found) <= 1:
+            return found
+        # desempate por serviço: pasta/sdkId/arnNamespace/endpointPrefix = 1º termo do tipo ou cabeça da subcategoria
+        hints = {A.norm(toks[0])}
+        sub = (sources.typesub(p)[0].get(T) or {}).get("subcategory")
+        if sub:
+            hints.add(A.norm(sub["value"].split(" (")[0]))
+            hints.add(A.norm(sub["value"]))
+        exact_dir = [k for k in found if A.norm(k[0]) in hints]  # 1º: pasta do serviço igual à dica
+        if exact_dir:
+            return exact_dir
+        names = A.aws_service_names()
+        same = [k for k in found if names.get(k[0], set()) & hints]  # 2º: sdkId/arnNamespace/endpointPrefix
+        return same if same else found
     if p == "oci":
         tok = suf.split("_", 1)[0]
         mods = [sv for sv in A.SPEC["oci"]["versions"] if suf.startswith(sv + "_")]
@@ -112,6 +135,20 @@ def run(ctx, bridges: dict, disputes: list) -> None:
                 and v.get("resolved"):
             refs.setdefault(r["terraform_resource_type"], set()).add(v["resolved"])
     cand_of = {T: candidates(p, T, bridges.get(T), m) for T in sources.types(p)}
+    if p == "aws":  # 3º desempate: serviço da maioria dos casamentos únicos da mesma subcategoria (>= 3)
+        import collections as _c
+        by_sub = _c.defaultdict(_c.Counter)
+        subcat = {T: ((sources.typesub(p)[0].get(T) or {}).get("subcategory") or {}).get("value") for T in cand_of}
+        for T, cs in cand_of.items():
+            if len(cs) == 1 and subcat[T]:
+                by_sub[subcat[T]][cs[0][0]] += 1
+        for T, cs in cand_of.items():
+            if len(cs) > 1 and subcat[T] and by_sub[subcat[T]]:
+                svc, n = by_sub[subcat[T]].most_common(1)[0]
+                pick = [c for c in cs if c[0] == svc]
+                if n >= 3 and len(pick) == 1:
+                    cand_of[T] = pick
+                    ctx.st["R-BRIDGE-SPEC_por_subcategoria"] += 1
     by_key, shared = {}, set()
     for T, cs in cand_of.items():
         if len(cs) == 1:
@@ -124,6 +161,15 @@ def run(ctx, bridges: dict, disputes: list) -> None:
         idattr = singular(A.snake(key[1].split("/")[-1])) + "_id"
         prim = [T for T in ts if not (refs.get(T, set()) & (set(ts) - {T}))
                 and idattr not in {a for a in sources.references(p).get(T, set()) if "." not in a}]
+        if len(prim) != 1 and p == "aws":
+            # 2º desempate (aws): o único tipo cujo nome inteiro (sem aws_ e sem s3_/ec2_/vpc_) é o nome do recurso
+            def exact(T):
+                suf = T.split("_", 1)[1]
+                full = {suf} | {suf[len(x):] for x in PREFIX[p] if suf.startswith(x)}
+                return bool(names_of(p, key, m[key]) & full)
+            ex = [T for T in (prim or ts) if exact(T)]
+            if len(ex) == 1:
+                prim = ex
         for T in ts:
             if not (len(prim) == 1 and T == prim[0]):
                 shared.add(T)  # casamento não único: fica como candidato
