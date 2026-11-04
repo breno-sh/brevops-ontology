@@ -2913,7 +2913,7 @@
   "oracle_files_sha256": {
    "pilot/net/oracle/ORACLE.html": "f5cc0256e8d4ea7f2f2c5776afdf10db8c1758a8fdff3978d4a8ef8b3721d427",
    "pilot/net/oracle/directions.json": "5ae4bd4939c599a31467014209add4cbbd01d5b599e0f3ef58d3cfc89ccc9e8f",
-   "pilot/net/oracle/disputes.json": "1aec96c163724b1243cecbd1c018a05d36e9e55e473e6f2595d5d711d6dc3686",
+   "pilot/net/oracle/disputes.json": "3d7bad34d80014bfcf3a555918c361cca090bfd5d78dd44bc0f894f3d04eeafd",
    "pilot/net/oracle/documented_examples.json": "2164d957b0a3dcc522353b7323683b29af4fb2504dfc7be849c166f85a04d13d",
    "pilot/net/oracle/expected_answers.schema.json": "1cd279f77c88d0084795c2c3a317cab6b3a40ca6cd44bb7f0aa33699e71449bc",
    "pilot/net/oracle/net_oracle/__init__.py": "5711d062c8ed0be806ffa2da628472645ea76b170c10eadee66633ef6ebbddfb",
@@ -3195,7 +3195,7 @@
    }
   }
  },
- "generated_at": "2026-11-04T14:40:39-03:00",
+ "generated_at": "2026-11-04T14:48:05-03:00",
  "metrics": [
   {
    "axis": "operational",

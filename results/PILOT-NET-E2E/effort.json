@@ -97,19 +97,19 @@
   "machine_seconds": {
    "inputs": 0.033,
    "lift": 0.002,
-   "oracle.c3": 0.252,
+   "oracle.c3": 0.263,
    "owl": 0.003,
    "reason.c1": 0.0,
-   "reason.c2": 0.109,
-   "reason.c3": 0.146,
-   "render.c3": 0.34,
+   "reason.c2": 0.11,
+   "reason.c3": 0.145,
+   "render.c3": 0.341,
    "translate.c1": 0.011,
    "translate.c2": 0.014,
-   "translate.c3": 0.024,
-   "write": 0.049
+   "translate.c3": 0.022,
+   "write": 0.054
   }
  },
- "generated_at": "2026-11-04T14:40:39-03:00",
+ "generated_at": "2026-11-04T14:48:05-03:00",
  "metrics": [
   {
    "axis": "operational",
