@@ -31,14 +31,14 @@
   "files": {
    "candidates.jsonl": "e423aa830c6426572ad010d99caf400e7fff8d4efc3155da99b42330e206721b",
    "canonical_atoms.jsonl": "84148889876d60ed3ebc89f0e7e7efbf9aa221b8987e71ffcce3590599e88483",
-   "canonical_units.jsonl": "285eae67d743efff992f0916df47b9fdca0db31472c620c9c8a6faa5c7da897b",
+   "canonical_units.jsonl": "2668ae0f01e5d2c1de4ee4c8ca43462d6c73505676d7fda6a3ef3ccec1edd0d3",
    "claims.jsonl": "025ebec8b6e720739ef95f7644dac89e2d61e404ac76560a9c1ab839ef58f026",
    "decisions.jsonl": "46d62cf365afc25f4fe7d6b6431b02312bce777efd7e5abb43499560cf01dc89",
    "glossary.jsonl": "70df8523a26a755f1eb03a275d4908bbcaaf4965c0b36ebcd6f64736af5de96e",
    "value_space.jsonl": "841a73822086f0f12be911d866132ef5941caadf86c4b33da5a34028300e1c13"
   },
   "form": "official",
-  "manifest_sha256": "6115a6508f5d40ce79eaeafa7301a3116d3ada6b1cbcc65dba50ba1f9de51a53",
+  "manifest_sha256": "8a4bb4ecce7a80a353357d742f51916f5773dc9899b588b89ca8f621786aab6d",
   "official": true,
   "path": "/Users/breno/doutorado/brevops-data/PILOT-NET-GLOSS/bundle"
  },
@@ -52,19 +52,19 @@
    "rc": 0,
    "tail": [
     "check-unproven: 0 OK sem prova mínima; UNPROVEN = 170",
-    "[2026-11-04T13:12:20-03:00] run: 216 alegação(ões) correntes de 1 arquivo(s); {\"AMBIGUOUS\": 15, \"OK\": 31, \"UNPROVEN\": 170}; compostos {\"OK\": 302, \"UNPROVEN\": 12}; -> /Users/breno/doutorado/brevops-data/PILOT-NET-MAP/.staging/verdicts.jsonl"
+    "[2026-11-04T14:34:53-03:00] run: 216 alegação(ões) correntes de 1 arquivo(s); {\"AMBIGUOUS\": 15, \"OK\": 31, \"UNPROVEN\": 170}; compostos {\"OK\": 302, \"UNPROVEN\": 12}; -> /Users/breno/doutorado/brevops-data/PILOT-NET-MAP/.staging/verdicts.jsonl"
    ]
   },
   "c09_validate": {
    "rc": 0,
    "tail": [
-    "[2026-11-04T13:12:17-03:00] C09:correspondences /Users/breno/doutorado/brevops-data/PILOT-NET-MAP/.staging/mapping.sssom.tsv: 639 item(ns), 0 erro(s) -> OK"
+    "[2026-11-04T14:34:49-03:00] C09:correspondences /Users/breno/doutorado/brevops-data/PILOT-NET-MAP/.staging/mapping.sssom.tsv: 639 item(ns), 0 erro(s) -> OK"
    ]
   },
   "skos_roundtrip": {
    "rc": 0,
    "tail": [
-    "[2026-11-04T13:12:19-03:00] skos_roundtrip --file /Users/breno/doutorado/brevops-data/PILOT-NET-MAP/.staging/mapping.sssom.tsv: 639 linha(s), 9/9 -> PASS"
+    "[2026-11-04T14:34:52-03:00] skos_roundtrip --file /Users/breno/doutorado/brevops-data/PILOT-NET-MAP/.staging/mapping.sssom.tsv: 639 linha(s), 9/9 -> PASS"
    ]
   }
  },
@@ -112,7 +112,7 @@
   "rows_with_projection": 126
  },
  "decisions_log_sha256": "13d127aaec69c85e6b5e782bbe7f381600ac12171374d11af0bbcff3e07968f5",
- "generated_at": "2026-11-04T13:12:20-03:00",
+ "generated_at": "2026-11-04T14:34:53-03:00",
  "mapping_date": "2026-11-04",
  "mapping_set_id": "https://w3id.org/brevops/mapping/PILOT-NET-MAP/1",
  "mapping_sha256": "8b281bd2e0eeb7420d85dcd4989993c9ac5cf7ae5649f4d738ae47baef0b54c1",

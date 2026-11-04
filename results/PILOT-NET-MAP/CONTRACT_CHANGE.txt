@@ -88,3 +88,7 @@ PILOT-NET-GLOSS ab56277 na forma oficial: MANIFEST.sha256 + value_space.jsonl).
       âncora diz que aws e oci só permitem. O efeito dessas regras passa a "não documentado": não restringe
       emparelhamento (allow e deny do outro lado saem como realizações que o árbitro vê como ambíguas) e o
       fixed_default do AZOCI saiu. Proposta ao glossarista: decisão C20 sobre o efeito fixo de aws e oci, com sentença.
+
+ADENDO 2026-11-04T14:35:00-03:00 (America/Recife), rodada final antes do PILOT-EXIT 2: bo/base 83f5d59, PILOT-NET-GLOSS
+2b98878, árbitro final 7fc1a85 (ARBITER.sha256 b4cf2f98...). O SE confirmou que não há frase publicada de "só permite"
+nas fontes fixadas: o efeito de aws e oci segue não documentado e os 15 AMBIGUOUS ficam.
