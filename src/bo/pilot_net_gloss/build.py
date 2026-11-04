@@ -106,52 +106,85 @@ def _se_by_id(se):
     return {r["evidence_id"]: r for r in se}
 
 
-def counterexample(spec: dict, se: list[dict]) -> dict:
-    prov = spec["atom_id"].split(":", 1)[0]
+def counterexample(spec: dict, se: list[dict], docs: list[dict]) -> dict:
+    """Busca mecânica do termo nas sentenças publicadas do provedor (C25 e C03); o julgamento (found, nota) é do
+    glossarista e fica no slice.py."""
+    prov = spec["ref"].split(":", 1)[0]
     rx = re.compile(spec["query"], re.I)
-    hits, types = 0, set()
+    hits, types = set(), set()
     for r in se:
-        if r.get("provider") != prov:
-            continue
         s = (r.get("doc") or {}).get("sentence") or ""
-        if rx.search(s):
-            hits += 1
+        if r.get("provider") == prov and rx.search(s):
+            hits.add(("se", r["evidence_id"]))
             types.add(r.get("terraform_resource_type"))
+    for r in docs:
+        s = (r.get("source") or {}).get("sentence") or ""
+        if r.get("atom_id", "").startswith(prov + ":") and rx.search(s):
+            hits.add(("df", r["fact_id"]))
+            types.add(r["atom_id"].split(":")[1])
     return {"query": spec["query"], "found": bool(spec["found"]),
-            "result": (f"{hits} sentença(s) com o termo em {len(types)} tipo(s) do provedor no SERVICE-EVIDENCE; "
-                       f"{spec['note']}")}
+            "result": (f"{len(hits)} sentença(s) com o termo em {len(types)} tipo(s) do provedor (SERVICE-EVIDENCE e "
+                       f"docs_facts da fatia); {spec['note']}")}
 
 
-def build_claims(se, vs, docs=None) -> list[dict]:
+def description_fact(docs: list[dict], atom_id: str) -> dict | None:
+    """Fato description publicado do átomo, na menor linha (a da seção de argumentos)."""
+    xs = [r for r in docs if r.get("atom_id") == atom_id and r.get("fact_kind") == "description"
+          and r.get("status") == "stated" and (r.get("source") or {}).get("sentence")]
+    return min(xs, key=lambda r: (r["source"]["line"], r["fact_id"])) if xs else None
+
+
+def anchor_ref(a: dict) -> str:
+    return a.get("atom_id") or a.get("block_id") or a.get("type_id")
+
+
+def build_claims(se, vs, docs=None, schema_atoms=None) -> list[dict]:
     by = _se_by_id(se)
-    dby = {r["fact_id"]: r for r in (docs or [])}
+    docs = docs or []
+    c01 = {a["atom_id"] for a in (schema_atoms or [])}
+    blocks = set()
+    for a in schema_atoms or []:
+        bp = [b["block"] for b in a.get("block_path", [])]
+        for i in range(1, len(bp) + 1):
+            blocks.add(f"{a['provider']}:{a['resource_type']}:{'.'.join(bp[:i])}")
     out = []
     for spec in SL.ANCHORS:
-        if spec.get("fact_id"):          # fato de documentação do próprio átomo (C03)
-            f = dby.get(spec["fact_id"])
-            if f is None or f.get("atom_id") != spec["atom_id"]:
-                raise SystemExit(f"{spec['claim_id']}: fato C03 {spec['fact_id']} ausente ou de outro átomo")
-            r = {"level": f.get("evidence_level"), "doc": f.get("source") or {},
-                 "terraform_resource_type": spec["atom_id"].split(":")[1]}
-        else:                            # fato de serviço do tipo do átomo (C25)
-            r = by.get(spec["evidence_id"])
-        if r is None:
-            raise SystemExit(f"{spec['claim_id']}: fato {spec.get('evidence_id')} ausente do SERVICE-EVIDENCE")
-        if spec["atom_id"] not in vs:
-            raise SystemExit(f"{spec['claim_id']}: átomo {spec['atom_id']} fora do value_space")
-        doc = r.get("doc") or {}
-        if not doc.get("sentence") or r["terraform_resource_type"] != spec["atom_id"].split(":")[1]:
-            raise SystemExit(f"{spec['claim_id']}: o fato não traz sentença do tipo do átomo")
-        rec = {"claim_id": spec["claim_id"], "claim_version_id": f"{spec['claim_id']}@1",
-               "event_id": f"EV-{spec['claim_id']}-1", "concept_id": spec["concept_id"], "atom_id": spec["atom_id"],
-               "sentence": doc["sentence"], "context": spec["context"],
-               "source": {k: doc[k] for k in ("repo", "tag", "file", "line", "sentence")},
-               "counterexample_search": counterexample(spec, se),
-               "evidence_state": "STRUCTURALLY_VALID", "recorded_at": SL.RECORDED_AT}
-        if r.get("level") == "interpreted":
-            rec.update(extraction_method="model", evidence_level="interpreted", model_id=SL.MODEL_ID)
+        ref, kind, cid = spec["ref"], spec["kind"], spec["claim_id"]
+        rt = ref.split(":")[1]
+        if rt not in SL.all_types():
+            raise SystemExit(f"{cid}: {ref} fora dos tipos da fatia")
+        if kind == "atom" and ref not in c01:
+            raise SystemExit(f"{cid}: {ref} não é átomo do C01 (SCHEMA-*)")
+        if kind == "block" and ref not in blocks and ref not in c01:   # bloco, ou coleção de objetos (lista)
+            raise SystemExit(f"{cid}: {ref} não é bloco nem coleção do C01 (SCHEMA-*)")
+        if spec["src"] == "C03":
+            f = description_fact(docs, ref)
+            if f is None:
+                raise SystemExit(f"{cid}: sem description publicada do próprio átomo no docs_facts")
+            doc, level, method = f["source"], f.get("evidence_level", "published"), f.get("extraction_method", "parser")
+            if level == "interpreted":
+                method = "model"
         else:
-            rec.update(extraction_method="parser", evidence_level=r["level"])
+            r = by.get(spec["src"])
+            if r is None or r.get("terraform_resource_type") != rt or not (r.get("doc") or {}).get("sentence"):
+                raise SystemExit(f"{cid}: fato {spec['src']} ausente, de outro tipo ou sem sentença")
+            doc = r["doc"]
+            level = r.get("level")
+            method = "model" if level == "interpreted" else "parser"
+        rec = {"claim_id": cid, "claim_version_id": f"{cid}@1", "event_id": f"EV-{cid}-1",
+               "concept_id": spec["concept_id"], "sentence": doc["sentence"], "context": spec["context"],
+               "source": {k: doc[k] for k in ("repo", "tag", "file", "line", "sentence")},
+               "counterexample_search": counterexample(spec, se, docs),
+               "evidence_state": "STRUCTURALLY_VALID", "recorded_at": SL.RECORDED_AT,
+               "extraction_method": method, "evidence_level": "interpreted" if method == "model" else level}
+        if method == "model":
+            rec["model_id"] = SL.MODEL_ID
+        if kind == "atom":
+            rec["atom_id"] = ref
+        else:
+            rec["anchor_kind"] = kind
+            rec["block_id" if kind == "block" else "type_id"] = ref
+            rec["implication"] = spec["implication"]
         out.append(rec)
     return out
 
@@ -210,11 +243,23 @@ def build_notes(se) -> list[dict]:
     return out
 
 
+def _node(ref: str, kind: str) -> dict:
+    if kind == "atom":
+        return {"node_id": "n0", "kind": "atom", "ref": ref}
+    prov, rt, *rest = ref.split(":")
+    return {"node_id": "n0", "kind": "unit", "ref": f"CU-{prov}-{rt}" + (f".{rest[0]}" if rest else ""),
+            "role": f"anchor_{kind}"}
+
+
 def build_candidates(paths_rows) -> list[dict]:
     """Candidatos C08 só onde o glossário já pôs o mesmo conceito nos dois lados de um par (base shared_concept).
     Não é decisão nem correspondência: o mapeador julga; o desfecho do árbitro vai como feature."""
     out, seq = [], {}
     order = {p: i for i, p in enumerate(SL.PROVIDERS)}
+    kinds = {}
+    for row in paths_rows:
+        kinds[row["subject_atom"]] = row["subject_kind"]
+        kinds[row["object_atom"]] = row["object_kind"]
     for row in paths_rows:
         a, b = row["subject_atom"], row["object_atom"]
         pa, pb = hub.provider_of(a), hub.provider_of(b)
@@ -225,8 +270,8 @@ def build_candidates(paths_rows) -> list[dict]:
         seq[code] = seq.get(code, 0) + 1
         out.append({"candidate_id": f"CAND-{code}-{SL.DOMAIN}-{seq[code]:04d}", "pair": code, "domain": SL.DOMAIN,
                     "subject_provider": pair[0], "object_provider": pair[1],
-                    "subject": {"nodes": [{"node_id": "n0", "kind": "atom", "ref": a}], "edges": [], "cross_facets": []},
-                    "object": {"nodes": [{"node_id": "n0", "kind": "atom", "ref": b}], "edges": [], "cross_facets": []},
+                    "subject": {"nodes": [_node(a, kinds[a])], "edges": [], "cross_facets": []},
+                    "object": {"nodes": [_node(b, kinds[b])], "edges": [], "cross_facets": []},
                     "concept": row["concept_id"],
                     "features": {"basis": "shared_concept", "hub_outcome": row["hub_outcome"],
                                  "subject_anchor_state": row["subject_anchor_state"],
@@ -256,7 +301,7 @@ def generate(dst: Path) -> dict:
     inp = inputs()
     se, vs, roles = inp["se"], inp["vs"], inp["roles"]
     g = grain_apply.decompose(se, inp["schema_atoms"], {k: r["role"] for k, r in roles.items()})
-    claims = build_claims(se, vs, inp["docs"])
+    claims = build_claims(se, vs, inp["docs"], inp["schema_atoms"])
     glossary = build_glossary(claims)
     decisions = build_decisions(se)
     rows = hub.evaluate(claims, glossary, decisions, vs)
@@ -321,8 +366,10 @@ def report(res: dict) -> dict:
             "glossary": {"concepts": len(res["glossary"]), "anchors": len(res["claims"]),
                          "concepts_without_anchor": sum(1 for c in res["glossary"] if c["evidence_state"] == "UNRESOLVED"),
                          "model_extracted_anchors": sum(1 for a in res["claims"] if a["extraction_method"] == "model"),
+                         "anchors_by_kind": dict(sorted(collections.Counter(
+                             a.get("anchor_kind", "atom") for a in res["claims"]).items())),
                          "anchors_by_provider": dict(sorted(collections.Counter(
-                             a["atom_id"].split(":")[0] for a in res["claims"]).items())),
+                             anchor_ref(a).split(":")[0] for a in res["claims"]).items())),
                          "decisions": dict(sorted(collections.Counter(d["kind"] for d in res["decisions"]).items()))},
             "anchor_paths": {"n": len(rows), "outcomes": dict(sorted(collections.Counter(
                 r["hub_outcome"] for r in rows).items()))},

@@ -39,7 +39,7 @@ def _world(tmp_path: Path):
                                   "unit_qudt": "NOT_APPLICABLE", "range": {"min": 0, "max": 100}}}
     se = [{"evidence_id": "SE-pa-1", "terraform_resource_type": "pa_rule", "doc": dict(DOC, line=10, sentence=S_A)},
           {"evidence_id": "SE-pb-1", "terraform_resource_type": "pb_rule", "doc": dict(DOC, line=20, sentence=S_B)}]
-    inp = {"se": se, "vs": vs, "docs": [], "roles": {}, "schema_atoms": []}
+    inp = {"se": se, "vs": vs, "docs": [], "roles": {}, "schema_atoms": [], "types": ["pa_rule", "pb_rule"]}
     rows = hub.evaluate(claims, glossary, decisions, vs)
     for n, recs in (("claims.jsonl", claims), ("glossary.jsonl", glossary), ("decisions.jsonl", decisions),
                     ("anchor_paths.jsonl", rows)):
@@ -127,7 +127,8 @@ def test_slice_concepts_hygiene():
     for n, kind, concept, related, *_ in SL.DECISION_SPECS:
         assert concept in ids and (related is None or (related in ids and related != concept))
     for a in SL.ANCHORS:
-        assert a["concept_id"] in ids and a["atom_id"].split(":")[1] in SL.all_types()
+        assert a["concept_id"] in ids and a["ref"].split(":")[1] in SL.all_types()
+        assert (a["kind"] == "atom") == ("implication" not in a)
 
 
 def test_separation_f1_concepts_present():
@@ -136,3 +137,18 @@ def test_separation_f1_concepts_present():
                  "concept:rule_set_attachment", "concept:rule_stateless", "concept:rule_priority",
                  "concept:rule_effect"):
         assert need in ids
+
+
+def test_block_anchor_is_claim_with_implication(tmp_path):
+    inp = _world(tmp_path)
+    blk = dict(_anchor("ANC-pb-0002", "pb:pb_rule:priority", 20, S_B), anchor_kind="block",
+               block_id="pb:pb_rule:deny", implication={"realization": "block_choice", "value": "deny",
+                                                      "rule": "o bloco deny implica efeito negar"})
+    del blk["atom_id"]
+    _rewrite(tmp_path, "claims.jsonl", lambda r: r + [blk])
+    errs, st = anchor_claims.run(tmp_path, dict(inp, types=["pa_rule", "pb_rule"]))
+    assert any(e.startswith("A4") for e in errs)          # caminho novo pa→conceito←bloco não registrado
+    bad = dict(blk, implication={"realization": "block_choice", "value": "deny", "rule": ""})
+    _rewrite(tmp_path, "claims.jsonl", lambda r: r[:-1] + [bad])
+    errs, _ = anchor_claims.run(tmp_path, dict(inp, types=["pa_rule", "pb_rule"]))
+    assert any(e.startswith("A1") and "implicação" in e for e in errs)

@@ -12,8 +12,10 @@ Reprova (saída 1) se:
   A4 algum caminho átomo→conceito←átomo entre provedores diferentes não está registrado em anchor_paths.jsonl, ou
      o registrado diverge do recalculado pelo bo.semantics (hub_claim e obrigações);
   A5 algum caminho transporta (COMPOSED ou veredito OK) sem DOC_SUPPORTED (ou acima) nas duas âncoras;
-  A6 o controle positivo falha: com as mesmas âncoras promovidas em memória a DOC_SUPPORTED, a composição tem de
-     sair COMPOSED exact (senão o UNPROVEN acima poderia vir de outra causa, e o gate provaria a coisa errada).
+  A6 o controle positivo falha: onde os dois lados têm tipo escalar conhecido, com as mesmas âncoras promovidas em
+     memória a DOC_SUPPORTED, a composição tem de sair COMPOSED exact (senão o UNPROVEN acima poderia vir de outra
+     causa); e todo caminho real com tipos conhecidos tem de falhar por ANCHOR-NOT-PROOF (A5),
+     não por acaso; sem tipo conhecido o UNPROVEN vem de KIND-UNKNOWN e o controle não se aplica.
 """
 
 from __future__ import annotations
@@ -54,6 +56,7 @@ def run(d: Path, inp: dict | None = None) -> tuple[list[str], dict]:
     decisions, stored = _load(d / "decisions.jsonl"), _load(d / "anchor_paths.jsonl")
     inp = inp if inp is not None else build.inputs()
     vs = inp["vs"]
+    types = set(inp.get("types") or SL.all_types())
     facts = published_facts(inp)
     cmap = {c["concept_id"]: c for c in glossary}
     for a in claims:
@@ -68,7 +71,7 @@ def run(d: Path, inp: dict | None = None) -> tuple[list[str], dict]:
             if not src:
                 errs.append(f"A1 {cid}: âncora {a.get('evidence_level')} sem fonte")
             else:
-                rt = a["atom_id"].split(":")[1]
+                rt = hub.ref_of(a).split(":")[1]
                 key = (rt, src.get("repo"), src.get("tag"), src.get("file"), src.get("line"))
                 if src.get("sentence") not in facts.get(key, set()) or a.get("sentence") != src.get("sentence"):
                     errs.append(f"A1 {cid}: a sentença não é a de um fato do SERVICE-EVIDENCE do tipo {rt} "
@@ -78,8 +81,11 @@ def run(d: Path, inp: dict | None = None) -> tuple[list[str], dict]:
         if a.get("extraction_method") == "model" and (a.get("evidence_level") != "interpreted"
                                                       or a.get("model_id") != SL.MODEL_ID):
             errs.append(f"A2 {cid}: extração por modelo sem interpreted/{SL.MODEL_ID}")
-        if a.get("atom_id") not in vs:
-            errs.append(f"A1 {cid}: átomo {a.get('atom_id')} fora do value_space da fatia")
+        ref = hub.ref_of(a)
+        if not ref or ref.split(":")[1] not in types:
+            errs.append(f"A1 {cid}: âncora {ref} fora dos tipos da fatia")
+        if a.get("anchor_kind") in ("block", "type") and not (a.get("implication") or {}).get("rule"):
+            errs.append(f"A1 {cid}: âncora de {a['anchor_kind']} sem implicação")
         if a.get("concept_id") not in cmap:
             errs.append(f"A3 {cid}: conceito {a.get('concept_id')} ausente do glossário")
     for c in glossary:
@@ -104,12 +110,17 @@ def run(d: Path, inp: dict | None = None) -> tuple[list[str], dict]:
             errs.append(f"A5 {r['path_id']}: transporta sem DOC_SUPPORTED nas duas âncoras")
     ctrl = hub.evaluate(claims, glossary, decisions, vs, promote="DOC_SUPPORTED")
     for r in ctrl:
-        if r["hub_outcome"] != "COMPOSED" or r["hub_relation"] != "exact":
+        if r["types_known"] and (r["hub_outcome"] != "COMPOSED" or r["hub_relation"] != "exact"):
             errs.append(f"A6 {r['path_id']}: controle positivo não compõe exact ({r['hub_outcome']}, {r['hub_rule']})")
+    for r in rows:
+        if r["types_known"] and "ANCHOR-NOT-PROOF" not in r["shared_concept_failed_rules"] and not (
+                r["subject_anchor_state"] in SUPPORT and r["object_anchor_state"] in SUPPORT):
+            errs.append(f"A5 {r['path_id']}: o UNPROVEN não vem da regra das âncoras (ANCHOR-NOT-PROOF)")
     stats = {"anchors": len(claims), "concepts": len(glossary), "multi_provider_paths": len(pairs),
              "outcomes": sorted({r["hub_outcome"] for r in rows}),
              "control_composed_exact": sum(1 for r in ctrl if r["hub_outcome"] == "COMPOSED"
-                                           and r["hub_relation"] == "exact")}
+                                           and r["hub_relation"] == "exact"),
+             "control_applicable": sum(1 for r in ctrl if r["types_known"])}
     return errs, stats
 
 
@@ -128,7 +139,8 @@ def main(argv=None) -> int:
         print(e)
     print(f"[{build.now()}] anchor_claims {SL.MODULE}: {st['anchors']} âncora(s), {st['concepts']} conceito(s), "
           f"{st['multi_provider_paths']} caminho(s) entre provedores (desfechos {st['outcomes']}), controle "
-          f"positivo {st['control_composed_exact']}/{st['multi_provider_paths']} exact; "
+          f"positivo {st['control_composed_exact']}/{st['control_applicable']} exact (onde o tipo dos dois lados é "
+          f"escalar conhecido); "
           f"{len(errs)} problema(s) -> {'OK' if not errs else 'REPROVADO'}")
     return 0 if not errs else 1
 

@@ -66,3 +66,10 @@ CC-1c (bloqueia qualquer grão decidido na fatia)
   needs, então nenhuma unidade pode sair do UNKNOWN, com ou sem CC-1b. Proposta: o SERVICE-EVIDENCE emite o alcance
   (a regra vale para os membros do conjunto; o conjunto vale para o que está anexado; a anexação vale para a
   interface ou a sub-rede) com sentença, ou o GRAIN declara de que fato o alcance de regra e anexação sai.
+
+ADENDO 2026-11-04T07:40:00-03:00 (America/Recife): CC-NET-2 resolvido pelo C20 3.2.0 (âncora de bloco e de tipo com
+implication: allow{}/deny{} do firewall, ingress/egress do conjunto e os tipos de regra de entrada/saída). CC-NET-4
+resolvido pelo BRIEFS 1.2.0 (docs_facts por átomo). Glossário refeito: 19 conceitos, 52 âncoras (46 átomo, 4 bloco,
+2 tipo), 56 caminhos entre provedores, todos UNPROVEN; controle positivo 48/48 exact onde os dois tipos são
+escalares conhecidos (8 caminhos têm lista de um lado: o bo.semantics não tem tipo lista, KIND-UNKNOWN). Restam
+CC-1b e CC-1c (grão), em correção no GRAIN e no SERVICE-EVIDENCE.

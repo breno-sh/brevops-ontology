@@ -46,6 +46,8 @@ def identity_tests(t: dict | None) -> list[dict]:
         v = t["range"]["min"]
     elif t["datatype"] == "boolean":
         v = True
+    elif t["datatype"] == "string":
+        v = "valor-sintetico"      # amostra sintética: só exercita a identidade num domínio de texto livre
     else:
         return []
     return [{"input": v, "expected": v}]
@@ -60,15 +62,23 @@ def concept_type(concept: dict, decisions: list[dict]) -> dict | None:
     return None
 
 
+def ref_of(a: dict) -> str:
+    return a.get("atom_id") or a.get("block_id") or a.get("type_id")
+
+
 def lift(anchor: dict, concept: dict, decisions: list[dict], vs: dict | None, state: str | None = None) -> dict:
-    """Âncora C20 → alegação átomo→conceito no formato do bo.semantics (sem inventar prova além da citação)."""
-    st = atom_type(vs)
+    """Âncora C20 → alegação átomo→conceito no formato do bo.semantics (sem inventar prova além da citação).
+    Âncora de bloco ou tipo (C20 3.2.0): o lado sujeito é o bloco/tipo e o seu domínio é o valor implicado."""
+    if anchor.get("implication"):
+        st = {"datatype": "enum", "enum": [anchor["implication"]["value"]], "quantity_kind": NA, "unit": NA}
+    else:
+        st = atom_type(vs)
     ot = concept_type(concept, decisions)
     src = anchor.get("source") or {}
     ev = [{"source": f"{src.get('repo')}/{src.get('file')}:{src.get('line')}@{src.get('tag')}",
            "sentence": anchor["sentence"], "date": anchor["recorded_at"][:10]}] if src else []
     c = {"claim_id": anchor["claim_id"], "claim_version_id": anchor["claim_version_id"],
-         "event_id": anchor["event_id"], "subject_id": anchor["atom_id"], "predicate_id": "skos:exactMatch",
+         "event_id": anchor["event_id"], "subject_id": ref_of(anchor), "predicate_id": "skos:exactMatch",
          "object_id": anchor["concept_id"], "mapping_justification": "semapv:ManualMappingCuration",
          "semantic_relation": "exact", "guard": {"all": []}, "translation_fn": {"name": "identity", "params": {}},
          "loss_contract": [], "subject_value_type": st, "object_value_type": ot,
@@ -91,7 +101,7 @@ def shared_concept_claim(a: dict, b: dict, la: dict, lb: dict) -> dict:
     c = copy.deepcopy(la)
     cid = f"HUB-{a['claim_id']}-{b['claim_id']}"
     c.update({"claim_id": cid, "claim_version_id": f"{cid}@1", "event_id": f"EV-{cid}-1",
-              "object_id": b["atom_id"], "object_value_type": lb["subject_value_type"], "basis": "shared_concept",
+              "object_id": ref_of(b), "object_value_type": lb["subject_value_type"], "basis": "shared_concept",
               "anchors": [{"claim_id": a["claim_id"], "evidence_state": a["evidence_state"]},
                           {"claim_id": b["claim_id"], "evidence_state": b["evidence_state"]}],
               "evidence_state": min((a["evidence_state"], b["evidence_state"]), key=OB_RANK.get)})
@@ -124,9 +134,9 @@ def paths(claims: list[dict]) -> list[tuple[dict, dict]]:
         by.setdefault(c["concept_id"], []).append(c)
     out = []
     for cid in sorted(by):
-        xs = sorted(by[cid], key=lambda x: (order.get(provider_of(x["atom_id"]), 9), x["claim_id"]))
+        xs = sorted(by[cid], key=lambda x: (order.get(provider_of(ref_of(x)), 9), x["claim_id"]))
         for a, b in itertools.combinations(xs, 2):
-            if provider_of(a["atom_id"]) != provider_of(b["atom_id"]):
+            if provider_of(ref_of(a)) != provider_of(ref_of(b)):
                 out.append((a, b))
     return out
 
@@ -139,14 +149,16 @@ def evaluate(claims, concepts, decisions, value_space, promote: str | None = Non
     for a, b in paths(claims):
         if promote:
             a, b = dict(a, evidence_state=promote), dict(b, evidence_state=promote)
-        la = lift(a, cmap[a["concept_id"]], decisions, value_space.get(a["atom_id"]))
-        lb = lift(b, cmap[b["concept_id"]], decisions, value_space.get(b["atom_id"]))
+        la = lift(a, cmap[a["concept_id"]], decisions, value_space.get(ref_of(a)))
+        lb = lift(b, cmap[b["concept_id"]], decisions, value_space.get(ref_of(b)))
         r = hub_claim(la, lb)
         sc = shared_concept_claim(a, b, la, lb)
         asmt = OB.assess(sc)
         rows.append({
             "path_id": f"HUB-{a['claim_id']}-{b['claim_id']}", "concept_id": a["concept_id"],
-            "subject_atom": a["atom_id"], "object_atom": b["atom_id"],
+            "subject_atom": ref_of(a), "object_atom": ref_of(b),
+            "subject_kind": a.get("anchor_kind", "atom"), "object_kind": b.get("anchor_kind", "atom"),
+            "types_known": bool(la["subject_value_type"] and lb["subject_value_type"]),
             "subject_anchor": a["claim_version_id"], "object_anchor": b["claim_version_id"],
             "subject_anchor_state": a["evidence_state"], "object_anchor_state": b["evidence_state"],
             "hub_outcome": r["outcome"], "hub_rule": r.get("rule"),
