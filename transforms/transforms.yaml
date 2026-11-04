@@ -2,7 +2,7 @@ schema: bo.transforms/1
 contract: C10
 contract_version: 3.0.0
 module: TRANSFORMS
-generated_at: '2026-11-03T01:58:00-03:00'
+generated_at: '2026-11-04T12:25:00-03:00'
 scalar:
 - name: identity
   kind: scalar
@@ -29,7 +29,8 @@ scalar:
   codomain:
     datatype: enum
     quantity_kind: NOT_APPLICABLE
-  precondition: tabela finita texto -> texto, declarada em table; valor ∈ chaves da tabela
+  precondition: tabela finita texto -> texto, declarada em table; domínio finito = chaves da tabela e imagem = valores,
+    calculáveis por bo.transforms.registry.finite_domain/finite_image
   error: 'TRANSFORM_OUT_OF_DOMAIN: valor fora das chaves da tabela | DECLARATION_ERROR: table vazia ou não texto
     -> texto | UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido'
   loss: 'semantic: se a tabela não é injetiva, a origem não se recupera (sem inversa)'
@@ -40,6 +41,7 @@ scalar:
     table:
       type: enum_table
       required: true
+      part_of: domain_keys_image_values
 - name: bool_to_enum
   kind: scalar
   domain:
@@ -48,7 +50,8 @@ scalar:
   codomain:
     datatype: enum
     quantity_kind: NOT_APPLICABLE
-  precondition: booleano; true e false são textos distintos
+  precondition: booleano; true e false são textos distintos; domínio finito = {true, false} e imagem = {params.true,
+    params.false}, calculáveis por finite_domain/finite_image
   error: 'TRANSFORM_OUT_OF_DOMAIN: valor não booleano (inclusive ''true'' em texto) | DECLARATION_ERROR: true =
     false, ou não texto | UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda
     não resolvido'
@@ -60,9 +63,11 @@ scalar:
     'true':
       type: string
       required: true
+      part_of: image
     'false':
       type: string
       required: true
+      part_of: image
 - name: enum_to_bool
   kind: scalar
   domain:
@@ -71,7 +76,8 @@ scalar:
   codomain:
     datatype: boolean
     quantity_kind: NOT_APPLICABLE
-  precondition: true e false são listas disjuntas e não vazias de textos; valor ∈ true ∪ false
+  precondition: true e false são listas disjuntas e não vazias de textos; domínio finito = true ∪ false (calculável
+    por bo.transforms.registry.finite_domain); imagem ⊆ {true, false}
   error: 'TRANSFORM_OUT_OF_DOMAIN: valor fora de true ∪ false | DECLARATION_ERROR: listas vazias ou com interseção
     | UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido'
   loss: 'semantic: com mais de um texto por lado, qual deles era não se recupera'
@@ -82,9 +88,11 @@ scalar:
     'true':
       type: string_list
       required: true
+      part_of: domain
     'false':
       type: string_list
       required: true
+      part_of: domain
 - name: normalize_text
   kind: scalar
   domain:

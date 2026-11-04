@@ -232,3 +232,44 @@ def test_error_field_roundtrip():
         it = R.to_item(t)
         assert R.parse_error_field(it["error"]) == [tuple(e) for e in t.errors]
         assert R.parse_loss_field(it["loss"]) == list(t.loss)
+
+
+# ------------------------------------------------------------------ emenda 1.1.0: domínio finito (STO-MAP CC-9)
+def test_finite_domain_and_image_enum_to_bool():
+    p = {"true": ["Enabled"], "false": ["Disabled", "Suspended"]}
+    assert R.finite_domain("enum_to_bool", p) == {"Enabled", "Disabled", "Suspended"}
+    assert R.finite_image("enum_to_bool", p) == {True, False}
+    assert R.finite_image("enum_to_bool", p, ["Disabled"]) == {False}
+    with pytest.raises(TransformError):
+        R.finite_image("enum_to_bool", p, ["Paused"])
+    with pytest.raises(DeclarationError):
+        R.finite_domain("enum_to_bool", {"true": ["A"], "false": ["A"]})
+
+
+def test_finite_domain_bijection_both_ways():
+    p = {"true": "Enabled", "false": "Disabled"}
+    assert R.finite_domain("bool_to_enum", p) == {True, False}
+    assert R.finite_image("bool_to_enum", p) == {"Enabled", "Disabled"}
+    inv, ip = R.inverse_of("bool_to_enum", p)
+    assert R.finite_domain(inv, ip) == R.finite_image("bool_to_enum", p)
+    assert R.finite_image(inv, ip) == R.finite_domain("bool_to_enum", p)
+    t = {"gp3": "Premium_LRS", "standard": "Standard_LRS"}
+    assert R.finite_domain("enum_map", {"table": t}) == set(t)
+    assert R.finite_image("enum_map", {"table": t}) == set(t.values())
+
+
+def test_finite_domain_absent_where_not_declared():
+    assert R.finite_domain("identity") is None
+    assert R.finite_domain("unit_convert_time", {"from": "unit:SEC", "to": "unit:MIN"}) is None
+    assert R.finite_image("unit_convert_time", {"from": "unit:SEC", "to": "unit:MIN"}, [60, 120]) == {1, 2}
+    with pytest.raises(DeclarationError):
+        R.finite_image("identity")
+    with pytest.raises(DeclarationError):
+        R.finite_domain("split_cidr")
+
+
+def test_enum_to_bool_domain_declared_in_yaml():
+    doc = yaml.safe_load((ROOT / "transforms/transforms.yaml").read_text(encoding="utf-8"))
+    e2b = next(s for s in doc["scalar"] if s["name"] == "enum_to_bool")
+    assert {k: v["part_of"] for k, v in e2b["params"].items()} == {"true": "domain", "false": "domain"}
+    assert "true ∪ false" in e2b["precondition"]

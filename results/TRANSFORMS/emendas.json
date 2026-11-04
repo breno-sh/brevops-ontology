@@ -1,0 +1,14 @@
+{
+ "schema": "bo.transforms_amendments/1",
+ "module": "TRANSFORMS",
+ "registry_version": "1.1.0",
+ "generated_at": "2026-11-04T12:25:00-03:00",
+ "amendments": [
+  {
+   "registry_version": "1.1.0",
+   "commit_subject": "[TRANSFORMS] emenda 1.1.0: domínio finito de enum_to_bool (CC-9)",
+   "request": "PILOT-STO-MAP CC-9 (results/CONTRACTS/emenda7.json: NÃO É DO CONTRACTS, dono ARBITERLIB, TRANSFORMS)",
+   "change": "finite_domain/finite_image no registro; enum_to_bool declara domínio = true ∪ false, bool_to_enum domínio {true, false} e imagem {params.true, params.false}, enum_map domínio = chaves (part_of nos params e na pré-condição); o ARBITERLIB recongela para usar no VDR"
+  }
+ ]
+}

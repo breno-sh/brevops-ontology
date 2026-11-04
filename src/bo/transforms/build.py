@@ -50,6 +50,16 @@ FINDINGS = [
 ]
 
 
+# emendas versionadas do registro: qual pedido cada commit resolve (o commit é citado pelo assunto, estável no rebase)
+EMENDAS = [
+    {"registry_version": "1.1.0", "commit_subject": "[TRANSFORMS] emenda 1.1.0: domínio finito de enum_to_bool (CC-9)",
+     "request": "PILOT-STO-MAP CC-9 (results/CONTRACTS/emenda7.json: NÃO É DO CONTRACTS, dono ARBITERLIB, TRANSFORMS)",
+     "change": "finite_domain/finite_image no registro; enum_to_bool declara domínio = true ∪ false, bool_to_enum "
+               "domínio {true, false} e imagem {params.true, params.false}, enum_map domínio = chaves (part_of nos "
+               "params e na pré-condição); o ARBITERLIB recongela para usar no VDR"},
+]
+
+
 def _yaml_text(doc: dict) -> str:
     return yaml.safe_dump(doc, sort_keys=False, allow_unicode=True, width=110, default_flow_style=False)
 
@@ -97,7 +107,7 @@ def registro() -> dict:
 
 def _manifest_paths(root: Path) -> list[str]:
     paths = ["transforms/transforms.yaml", "transforms/conditions.grammar.json", "gates/TRANSFORMS.sh",
-             "results/TRANSFORMS/registro.json"]
+             "results/TRANSFORMS/registro.json", "results/TRANSFORMS/emendas.json"]
     paths += sorted(str(p.relative_to(root)) for p in (root / "src/bo/transforms").glob("*.py"))
     paths += sorted(str(p.relative_to(root)) for p in (root / "tests/transforms").glob("*.py"))
     if (root / "results/TRANSFORMS/summary.json").is_file():
@@ -117,6 +127,9 @@ def products(root: Path) -> dict[str, str]:
     out = {"transforms/transforms.yaml": _yaml_text(R.document()),
            "transforms/conditions.grammar.json": _json_text(GR.document()),
            "results/TRANSFORMS/registro.json": _json_text(registro())}
+    out["results/TRANSFORMS/emendas.json"] = _json_text({"schema": "bo.transforms_amendments/1", "module": "TRANSFORMS",
+                                                         "registry_version": R.REGISTRY_VERSION,
+                                                         "generated_at": R.GENERATED_AT, "amendments": EMENDAS})
     out["results/TRANSFORMS/MANIFEST.sha256"] = _manifest(root, out)
     return out
 

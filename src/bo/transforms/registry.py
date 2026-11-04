@@ -37,8 +37,8 @@ from . import units as U
 from .errors import DeclarationError, NoUnit, OutOfDomain, SymbolicInput, TransformError, UnknownInput
 from .markers import ABSENT, is_absent, is_not_read, is_symbolic
 
-REGISTRY_VERSION = "1.0.0"
-GENERATED_AT = "2026-11-03T01:58:00-03:00"     # data da versão do registro (fixa: a regeneração é idêntica)
+REGISTRY_VERSION = "1.1.0"
+GENERATED_AT = "2026-11-04T12:25:00-03:00"     # data da versão do registro (fixa: a regeneração é idêntica)
 LOSS_KINDS = ("rounding", "saturation", "absence", "sentinel", "context_dependence", "not_expressible", "semantic")
 DATATYPES = ("integer", "decimal", "boolean", "string", "enum", "duration", "tuple", "number", "any")
 _NO = object()
@@ -638,12 +638,13 @@ SCALARS: list[Scalar] = [
         passes_symbolic=True, accepts_absent=True),
     Scalar(
         name="enum_map", domain={"datatype": "enum", "quantity_kind": NA}, codomain={"datatype": "enum", "quantity_kind": NA},
-        precondition="tabela finita texto -> texto, declarada em table; valor ∈ chaves da tabela",
+        precondition=("tabela finita texto -> texto, declarada em table; domínio finito = chaves da tabela e imagem = "
+                      "valores, calculáveis por bo.transforms.registry.finite_domain/finite_image"),
         errors=(("TRANSFORM_OUT_OF_DOMAIN", "valor fora das chaves da tabela"),
                 ("DECLARATION_ERROR", "table vazia ou não texto -> texto")),
         loss=("semantic",), loss_text="se a tabela não é injetiva, a origem não se recupera (sem inversa)",
         inverse="enum_map", partial=True, fn=_enum_map, type_out=_enum_type, inv_params=_enum_inv,
-        params={"table": {"type": "enum_table", "required": True}},
+        params={"table": {"type": "enum_table", "required": True, "part_of": "domain_keys_image_values"}},
         examples=(Ex("gp3", {"table": {"gp3": "Premium_LRS", "standard": "Standard_LRS"}}, out="Premium_LRS",
                      roundtrip=True),
                   Ex("io2", {"table": {"gp3": "Premium_LRS"}}, err="TRANSFORM_OUT_OF_DOMAIN"),
@@ -652,12 +653,14 @@ SCALARS: list[Scalar] = [
     Scalar(
         name="bool_to_enum", domain={"datatype": "boolean", "quantity_kind": NA},
         codomain={"datatype": "enum", "quantity_kind": NA},
-        precondition="booleano; true e false são textos distintos", errors=(
+        precondition=("booleano; true e false são textos distintos; domínio finito = {true, false} e imagem = "
+                      "{params.true, params.false}, calculáveis por finite_domain/finite_image"), errors=(
             ("TRANSFORM_OUT_OF_DOMAIN", "valor não booleano (inclusive 'true' em texto)"),
             ("DECLARATION_ERROR", "true = false, ou não texto")),
         loss=(), loss_text="nenhuma (bijeção sobre {true, false})", inverse="enum_to_bool", partial=False,
         fn=_bool_to_enum, type_out=lambda tin, p: (_b2e_params(p, "bool_to_enum"), _type(tin, datatype="enum"))[1],
-        params={"true": {"type": "string", "required": True}, "false": {"type": "string", "required": True}},
+        params={"true": {"type": "string", "required": True, "part_of": "image"},
+                "false": {"type": "string", "required": True, "part_of": "image"}},
         inv_params=lambda p: {"true": [p["true"]], "false": [p["false"]]},
         examples=(Ex(True, {"true": "Enabled", "false": "Disabled"}, out="Enabled", roundtrip=True),
                   Ex(False, {"true": "Enabled", "false": "Disabled"}, out="Disabled", roundtrip=True),
@@ -666,13 +669,15 @@ SCALARS: list[Scalar] = [
     Scalar(
         name="enum_to_bool", domain={"datatype": "enum", "quantity_kind": NA},
         codomain={"datatype": "boolean", "quantity_kind": NA},
-        precondition="true e false são listas disjuntas e não vazias de textos; valor ∈ true ∪ false",
+        precondition=("true e false são listas disjuntas e não vazias de textos; domínio finito = true ∪ false "
+                      "(calculável por bo.transforms.registry.finite_domain); imagem ⊆ {true, false}"),
         errors=(("TRANSFORM_OUT_OF_DOMAIN", "valor fora de true ∪ false"),
                 ("DECLARATION_ERROR", "listas vazias ou com interseção")),
         loss=("semantic",), loss_text="com mais de um texto por lado, qual deles era não se recupera",
         inverse="bool_to_enum", partial=True, fn=_enum_to_bool,
         type_out=lambda tin, p: (_e2b_params(p, "enum_to_bool"), _type(tin, datatype="boolean"))[1],
-        params={"true": {"type": "string_list", "required": True}, "false": {"type": "string_list", "required": True}},
+        params={"true": {"type": "string_list", "required": True, "part_of": "domain"},
+                "false": {"type": "string_list", "required": True, "part_of": "domain"}},
         inv_params=lambda p: {"true": p["true"][0], "false": p["false"][0]},
         examples=(Ex("Enabled", {"true": ["Enabled"], "false": ["Disabled"]}, out=True, roundtrip=True),
                   Ex("Suspended", {"true": ["Enabled"], "false": ["Disabled", "Suspended"]}, out=False),
@@ -1252,6 +1257,43 @@ def inverse_of(name: str, params: dict | None = None):
     return t.inverse, {}
 
 
+# ------------------------------------------------------------------- domínio e imagem finitos (emenda 1.1.0)
+_FINITE = {
+    "enum_map": lambda p: frozenset(_enum_table(p, "enum_map")),
+    "bool_to_enum": lambda p: (_b2e_params(p, "bool_to_enum"), frozenset({True, False}))[1],
+    "enum_to_bool": lambda p: (lambda a, b: frozenset(a) | frozenset(b))(*_e2b_params(p, "enum_to_bool")),
+}
+
+
+def finite_domain(name: str, params: dict | None = None):
+    """Domínio declarado de uma escalar de tabela finita (frozenset), ou None quando o domínio não é finito pela
+    declaração (então o domínio é o do tipo de entrada). Pedido STO-MAP CC-9: o árbitro calcula o domínio e a
+    imagem de enum_to_bool/bool_to_enum/enum_map para a relação de domínios de valores."""
+    t = get(name)
+    if not isinstance(t, Scalar):
+        raise DeclarationError(f"{name} é combinador: o domínio é por porta")
+    p = params or {}
+    _check_params(t.params, p, name)
+    f = _FINITE.get(name)
+    return None if f is None else f(p)
+
+
+def finite_image(name: str, params: dict | None = None, values=None):
+    """Imagem de um conjunto finito de valores pela escalar (frozenset). values=None usa o domínio finito declarado
+    (DECLARATION_ERROR se ele não existe). Valor fora do domínio da função levanta o erro dela (o chamador decide se
+    a transformação é parcial sobre o domínio do tipo)."""
+    p = params or {}
+    if values is None:
+        values = finite_domain(name, p)
+        if values is None:
+            raise DeclarationError(f"{name}: sem domínio finito declarado; passe os valores")
+    out = set()
+    for v in values:
+        r = apply_scalar(name, v, p)
+        out.add(CMP._canon(r) if isinstance(r, (dict, list)) else r)
+    return frozenset(out)
+
+
 def apply_chain(chain, v, ctx: dict | None = None):
     """Cadeia de escalares [{name, params}], da esquerda para a direita."""
     for item in chain_of(chain):
@@ -1378,6 +1420,6 @@ def parse_loss_field(text: str) -> list[str]:
     return [k.strip() for k in kinds.split(",")] if sep else ["<sem tipo>"]
 
 
-__all__ = ["REGISTRY", "SCALARS", "COMBINATORS", "Scalar", "Combinator", "Ex", "apply_scalar", "apply_combinator",
+__all__ = ["finite_domain", "finite_image", "REGISTRY", "SCALARS", "COMBINATORS", "Scalar", "Combinator", "Ex", "apply_scalar", "apply_combinator",
            "apply_chain", "inverse_of", "type_out", "check_chain", "resolve_kernel", "document", "to_item", "get",
            "LOSS_KINDS", "DATATYPES", "parse_error_field", "parse_loss_field", "REGISTRY_VERSION", "GENERATED_AT"]

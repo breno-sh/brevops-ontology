@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "TRANSFORMS",
- "generated_at": "2026-11-03T02:03:46-03:00",
+ "generated_at": "2026-11-04T12:24:25-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/TRANSFORMS.txt",
@@ -28,17 +28,10 @@
    {
     "path": "$BO_REPO/contracts",
     "kind": "dir",
-    "sha256": "53a5c1f1fad4a1af88e30f4669f3a7a5f7e347f66143b69d3d6481459cbfd8fd",
-    "sha256_before_plan_regen_stubpath": "56c3142efebde6c8f413ef725c449201b2699841fe43676569492b52504ad042",
-    "sha256_before_coord_fix_0303": "4db98dcfb6928333b47738fdfa0e7f08285e00cb7be8325ed9165a1997979510",
-    "sha256_before_plan_regen_oci_bindings": "56c3142efebde6c8f413ef725c449201b2699841fe43676569492b52504ad042",
-    "sha256_before_emenda3_e_skosfix": "999f2a2f0445b22ddbda929a15ec8e7fe029ef775ed4f3db44e3d0756eca7b31",
-    "sha256_before_emendas_4_grain_se": "94f3b4e25c5791a1a8bf55b1151804d251b77d719024235d73bafb1492eacee3",
-    "sha256_before_emenda5": "db415bb8ae8f2efc96a8dd7e7d5728413ae086b6f042826335c6702b00325e5b",
-    "sha256_before_emenda6": "3392fd0feb0a735b13ccd8dccc87de2f914502b983bb82c504c829bbe03dd43b"
+    "sha256": "92a1f9456185479b2529ca97d2805fb3176b61eda95dad6882c6c9d09bff14d0"
    }
   ],
-  "recorded_at": "2026-11-03T02:03:46-03:00"
+  "recorded_at": "2026-11-04T12:24:25-03:00"
  },
  "sources": [
   {

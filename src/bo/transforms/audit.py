@@ -96,6 +96,20 @@ def check_item(item: dict, names: set, code_item) -> list[str]:
         ok, why = run_example(t, ex)
         if not ok:
             errs.append(f"{n}[{i}]: {why}")
+    if isinstance(t, R.Scalar) and any(v.get("part_of") in ("domain", "domain_keys_image_values")
+                                       for v in t.params.values()):
+        for i, ex in enumerate(exs):
+            try:
+                dom = R.finite_domain(t.name, ex.params)
+            except TransformError:
+                continue
+            if dom is None:
+                errs.append(f"{n}: declara domínio finito nos params e finite_domain dá None")
+                continue
+            inside = not isinstance(ex.value, dict) and ex.value in dom
+            if (ex.err is None) != inside and ex.err != "DECLARATION_ERROR":
+                errs.append(f"{n}[{i}]: exemplo {'positivo fora' if ex.err is None else 'de erro dentro'} do domínio "
+                            f"finito {sorted(map(str, dom))}")
     if t.inverse is not None:
         rts = [_roundtrips(t, ex) for ex in pos]
         if not t.partial:
