@@ -280,9 +280,12 @@ def test_g4ns_real_azure_namespace_entity_with_cascade(records):
 
 
 def test_g4ns_without_namespace_mark_stays_unknown(records):
-    """Sem a marca de namespace (tira o fato owner/parent do grupo), a mesma unidade segue UNKNOWN."""
+    """Sem a marca de namespace (tira o fato owner/parent do grupo), a mesma unidade segue UNKNOWN. Desde a evidência
+    do SE de 04/11 14h há também identidade de API independente (R-ID-SPEC), que sozinha decide ENTITY: o controle
+    tira as duas, para medir só a marca."""
     recs = [r for r in records if not (r.get("terraform_resource_type") == "azurerm_network_security_group"
-                                       and isinstance(r.get("value"), dict) and r["value"].get("aspect") == "parent")]
+                                       and isinstance(r.get("value"), dict) and (r["value"].get("aspect") == "parent"
+                                       or r["value"].get("rule") == "R-ID-SPEC"))]
     rep = RD.run(slice_types={"azurerm": ["azurerm_network_security_group"]}, records=recs)
     d = rep["providers"]["azurerm"]["_res"].decisions["azurerm_network_security_group"]
     assert d.grain != "ENTITY", (d.grain, d.rule)

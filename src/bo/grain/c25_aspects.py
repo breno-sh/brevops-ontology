@@ -99,7 +99,8 @@ TABLE = [
      "identidade afirmada na camada de API prevalece: resource_identity_schema (T01) e import_formats (T10), que são "
      "da camada Terraform, não são traduzidos para o mesmo candidato (nomes de campo diferentes do mesmo objeto não "
      "viram contradição); T56b: referência tipada num campo da chave de API não vale (é o identificador da "
-     "própria unidade); T56c: o mesmo vale para a identidade de bloco derivada do schema (block_identity)"),
+     "própria unidade), salvo na identidade de API relativa ao pai (scope within_parent: o campo nomeia o contêiner) e "
+     "no campo marcado como contêiner de namespace (T52, emenda 0.1.10); T56c: o mesmo vale para a identidade de bloco derivada do schema (block_identity)"),
     ("identity", "implicit_facet | spec_facet_member (bloco)", "R-GRAIN-T57",
      "FACETA IMPLÍCITA (emenda 0.1.8): fato da spec, no bloco, que diz que a API só aceita os blocos como membros "
      "de um único objeto-faceta do pai, configurado por uma operação única sobre o pai ({facet, facet_resource, "
@@ -641,7 +642,11 @@ def translate(records: list[dict], candidates: set[str] | None = None, disputes:
     # de outro tipo pela frase da doc) não vale para a chave
     for cid in api_identity:
         ent = out.get(cid, {})
-        keyf = {f for c in ent.get("identity", []) for f in (c.get("key_fields") or [])}
+        # identidade de API relativa ao pai (scope within_parent): campos com referência tipada nomeiam o contêiner
+        # (são o pai na chave), não o identificador da unidade; e campo marcado como contêiner de namespace (T52)
+        # continua referência ao contêiner. T56b só vale para os demais campos da identidade independente
+        keyf = {f for c in ent.get("identity", []) if c.get("scope") != "within_parent"
+                for f in (c.get("key_fields") or [])} - set(ns_fields.get(cid, set()))
         fm = ent.get("field_map", {})
         for f in sorted(keyf):
             if fm.get(f, {}).get("ref"):
