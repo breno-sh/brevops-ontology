@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "PILOT-STO-ORACLE",
- "generated_at": "2026-11-04T09:03:03-03:00",
+ "generated_at": "2026-11-04T10:36:42-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-STO-ORACLE.txt",
@@ -15,7 +15,8 @@
    "heldout_items": "304",
    "providers": "aws:6.71.0,google:8.9.0,azurerm:5.12.0,oci:9.11.0",
    "seal": "openssl-cms-aes256-D15",
-   "rules": "79"
+   "rules": "79",
+   "service_evidence_commit": "0a9e580"
   },
   "inputs": [
    {
@@ -31,10 +32,10 @@
    {
     "path": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl",
     "kind": "file",
-    "sha256": "6bc9f724ca4629f9dd73c3921a39919e88fed5f4f3b290a13655ec0b92b05772"
+    "sha256": "645b02308424fa4a574912d1c36375939f2f6124ef3cb6a32d3054c3490ead6d"
    }
   ],
-  "recorded_at": "2026-11-04T09:03:03-03:00"
+  "recorded_at": "2026-11-04T10:36:42-03:00"
  },
  "sources": [
   {
@@ -70,7 +71,7 @@
   {
    "uri": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl",
    "license": "interno (SERVICE-EVIDENCE)",
-   "transformation": "dono, alcance e ciclo de vida citados por evidence_id; gabarito rerodado sobre CC-8 (787ab84)"
+   "transformation": "dono, alcance e ciclo de vida citados por evidence_id; gabarito rerodado sobre 0a9e580 (congelado)"
   },
   {
    "uri": "results/SERVICE-EVIDENCE/spec_disputes.json",

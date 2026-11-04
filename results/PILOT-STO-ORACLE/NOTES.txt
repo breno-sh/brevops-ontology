@@ -1,5 +1,5 @@
 PILOT-STO-ORACLE: notas do oráculo offline do piloto de armazenamento de objeto
-gravado em 2026-11-03T22:00-03:00, revisto em 2026-11-04T09:02:45-03:00 (America/Recife)
+gravado em 2026-11-03T22:00-03:00, revisto em 2026-11-04T10:36:40-03:00 (America/Recife)
 
 O QUE ESTÁ AQUI
 - Avaliador: pilot/sto/oracle/sto_oracle.py (só biblioteca padrão; não importa nada do pipeline). Estado efetivo
@@ -53,6 +53,8 @@ ACHADOS (resultado, não ajuste)
    contêiner é faceta também como recurso separado, e a frase publicada diz que a política é 'aplicada à conta'.
    Na AWS a spec (CC-8) confirma: versionamento, ciclo de vida, bloqueio, política, ACL e propriedade têm dono e
    ciclo de vida = Bucket. Na OCI a política de ciclo de vida está EM DISPUTA (ver revisão CC-8): fica UNKNOWN.
+   Em CC-10 a spec também dá alcance self à managementPolicies (SE-azurerm-gl7vz4cy4ol4gxy3, premissa R-SCOPE-SELF);
+   a tensão continua e a resposta não muda.
 6. S3 newer_noncurrent_versions K equivale a GCS num_newer_versions K+1 (a viva conta como versão mais nova), mas o
    S3 exige noncurrent_days >= 1: contagem pura não se traduz sem atraso.
 
@@ -94,3 +96,15 @@ REVISÃO 2026-11-04 09h (SERVICE-EVIDENCE CC-8, 787ab84: fatos de spec de API e 
   mudou; nenhum veredito das 181 entradas de direção mudou. Oráculo 1.2.0 (regra DEC-DISPUTED).
 - As retidas mudaram de conteúdo (a mesma família de fixture está nelas): novo sorteio, novo selo D15, decifração
   conferida na VM.
+
+REVISÃO FINAL 2026-11-04 10h (SERVICE-EVIDENCE CC-10 767bb22, ce1e590, CC-9 0a9e580; SE congelado até o PILOT-EXIT)
+- Rerodei o gabarito sobre o service_evidence.jsonl de 0a9e580 (sha256 645b0230...). Nenhuma resposta mudou;
+  nenhuma das 304 retidas mudou, então o selo D15 NÃO foi refeito (o mesmo cifrado de 572f1333...).
+- Disputas: 47 no total (spec_disputes.json); na fatia continuam só as duas da política de ciclo de vida OCI (mesmos
+  ids): dono e controlador seguem UNKNOWN com os dois lados.
+- O que a evidência nova confirma sem mudar resposta: alcance pela spec das facetas separadas da AWS = Bucket
+  (versionamento SE-aws-j4wu5bp26vwz7awx, ciclo de vida SE-aws-4yok6rgvgxxndhd7, bloqueio SE-aws-pyqfjm5j42uixwfz,
+  política, ACL e propriedade); alcance da política OCI = o bucket (SE-oci-tioryzb3iqoydw6m, não estava em disputa);
+  identidade OCI pela spec com chave (namespace, nome), escopo independente (SE-oci-algfats24ripxh6m), o que sustenta
+  o contêiner OCI como entidade com chave composta. A criptografia S3 nova (CC-10) fica fora do objetivo do oráculo.
+- Os 19 evidence_id citados nas regras e nestas notas existem no arquivo congelado.
