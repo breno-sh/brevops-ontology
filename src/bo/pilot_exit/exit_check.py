@@ -48,6 +48,14 @@ def load_evidence() -> dict:
     return out
 
 
+VOLATILE = re.compile(r"\[\d{4}-\d\d-\d\dT[\d:]+[-+]\d\d:\d\d\] | in \d+\.\d+s")
+
+
+def stable(tail: dict) -> dict:
+    """Cauda de saída sem carimbo de hora nem duração (o relatório regenera igual)."""
+    return {"rc": tail["rc"], "tail": VOLATILE.sub("", tail["tail"])}
+
+
 def write_if_changed(p: Path, text: str, stamp_re=None) -> None:
     if p.is_file():
         old = p.read_text(encoding="utf-8")
@@ -89,6 +97,8 @@ def main(argv=None) -> int:
     led = AM.ledger(root, cat)
     stale = AM.stale_not_marked(root)
     catok = AM.catalog_ok(root)
+    catok = {"catalog_ok": catok["catalog_ok"], "core_integration": stable(catok["core_integration"]),
+             "contracts_all_stubs": stable(catok["contracts_all_stubs"])}
     eff = RE.build(root / "results", root)
     C.write_json(C.results_dir(root) / "effort_calibration.json", RE.c15(eff))
     for m, r in eff["pilot_modules"].items():
@@ -109,8 +119,7 @@ def main(argv=None) -> int:
                "attempts_max": crit.get("attempts_max"), "controls": controls, "amendments": led,
                "effort": eff, "criteria": first, "decision": "(provisório: E5 e E8 ainda não avaliados)"}
     add_p = root / "prereg" / "ADDENDUM_PILOTS.html"
-    write_if_changed(add_p, AD.render(add_doc, crit["reasoning_controls_rule"]), STAMP)
-    txt = add_p.read_text(encoding="utf-8")
+    txt = AD.render(add_doc, crit["reasoning_controls_rule"])     # o arquivo é gravado uma vez, no fim desta execução
     has_lines = all(f"Fatia {s}: R-CTRL-" in txt for s in C.SLICES)
     ev["addendum"] = {"written_before_scale": bool(has_lines and not started), "path": C.portable(add_p, root),
                       "scale_modules_started": started, "has_r_ctrl_lines": has_lines}

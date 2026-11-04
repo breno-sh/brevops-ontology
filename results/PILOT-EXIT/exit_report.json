@@ -157,11 +157,11 @@
     "catalog_ok": true,
     "contracts_all_stubs": {
      "rc": 0,
-     "tail": "[2026-11-04T12:04:52-03:00] --all-stubs: 68/68 stubs conferem; 67 tipos de arquivo em 30 contratos; 0 problema(s)"
+     "tail": "--all-stubs: 68/68 stubs conferem; 67 tipos de arquivo em 30 contratos; 0 problema(s)"
     },
     "core_integration": {
      "rc": 0,
-     "tail": "8 passed, 6 skipped in 10.21s"
+     "tail": "8 passed, 6 skipped"
     }
    },
    "ledger": {
