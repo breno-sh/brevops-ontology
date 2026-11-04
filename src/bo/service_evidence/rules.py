@@ -130,13 +130,15 @@ RULES = {
     "R-BRIDGE-SPEC": "ponte tipo Terraform <-> recurso da spec só com casamento ÚNICO: aws nome do tipo sem aws_ "
                      "(e sem s3_/ec2_/vpc_) = substantivo da operação em snake_case (faceta: pai_faceta); google "
                      "<serviço>_<coleção no singular>; azure tipos ARM da ponte da doc = tipos do caminho da spec; "
-                     "oci nome sem oci_<serviço>_ (ou ponte da doc) = substantivo do método. Mais de um: candidatos, "
+                     "oci: módulo do SDK cujo nome é o começo do tipo (o mais longo) ou o 1º termo sem _, e o resto do "
+                     "nome (ou a ponte da doc) = substantivo do método. Mais de um: candidatos, "
                      "sem fato de camada API. Recurso da spec que casa com mais de um tipo: fica com a ponte só o "
                      "único tipo do grupo que não referencia (R-REF-TARGET, ou atributo REFERENCE de topo chamado "
                      "<recurso no singular>_id) outro membro; os demais ficam como "
                      "candidatos.",
     "R-LIFE-SPEC": "o recurso da spec tem create e delete próprios sobre o próprio identificador (aws Create<N> e "
-                   "Delete<N>; google insert e delete; azure PUT e DELETE no caminho da instância; oci delete_<n> com "
+                   "Delete<N>; google insert e delete; azure PUT e DELETE no caminho da instância; oci delete_<n> (ou "
+                   "terminate_<n>) com "
                    "caminho terminado em {identificador} e create_<n> ou put_<n>): ciclo de vida próprio na API, {kind: self, layer: api}.",
     "R-OWN-SPEC": "recurso de R-LIFE-SPEC: a configuração está no próprio objeto, {kind: self, layer: api}; faceta "
                   "(sem create/delete próprios e configurada só por operação sobre o identificador do pai: aws "
@@ -145,6 +147,12 @@ RULES = {
                   "que estende o do delete do pai): {kind: parent, layer: api, via: atributo de referência}.",
     "R-LIFE-SPEC-PARENT": "faceta de R-OWN-SPEC: sem create/delete próprios, o objeto nasce e some com o pai na "
                           "API: {kind: parent, layer: api}.",
+    "R-SCOPE-SPEC": "faceta de R-OWN-SPEC (configurada só por operação sobre o identificador do pai): o alcance "
+                    "efetivo é o pai, {kind: parent, layer: api, via: atributo de referência}.",
+    "R-ID-SPEC": "oci: os parâmetros do caminho do delete_<n> do recurso são a chave de identidade; o último é o "
+                 "próprio objeto (…Id -> atributo id; …Name -> name ou <coisa>), os demais casam com atributo de topo "
+                 "de mesmo nome; within_parent se algum dos demais é atributo REFERENCE. Parâmetro sem atributo: "
+                 "nada (UNKNOWN).",
     # curadoria das fatias dos pilotos (curated.py): C-* publicado (o valor está escrito na frase), I-* interpretado
     "C-PILOT-LITERAL": "fato escolhido à mão numa frase da página fixada; o valor repete o que a frase diz.",
     "C-PILOT-GAP": "tipo das fatias dos pilotos sem frase para este tipo de fato na página fixada: UNKNOWN explícito "

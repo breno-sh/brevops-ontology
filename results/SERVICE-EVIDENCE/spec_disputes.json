@@ -69,6 +69,74 @@
   },
   {
    "provider": "oci",
+   "terraform_resource_type": "oci_bds_auto_scaling_configuration",
+   "fact": "lifecycle_controller",
+   "doc": {
+    "kind": "self",
+    "rule": "R-LIFE-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-LIFE-SPEC-PARENT"
+   },
+   "evidence": [
+    "SE-oci-morwrzyjxb36gnyu",
+    "SE-oci-ajonltqbvieul7e6"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_bds_auto_scaling_configuration",
+   "fact": "owner",
+   "doc": {
+    "kind": "self",
+    "rule": "R-OWN-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-OWN-SPEC"
+   },
+   "evidence": [
+    "SE-oci-s3a35dan7gkcudih",
+    "SE-oci-244yfwyiq4hldp5d"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_containerengine_addon",
+   "fact": "lifecycle_controller",
+   "doc": {
+    "kind": "self",
+    "rule": "R-LIFE-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-LIFE-SPEC-PARENT"
+   },
+   "evidence": [
+    "SE-oci-vtc54p2chu67yxlf",
+    "SE-oci-domzuepi5qspc3wc"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_containerengine_addon",
+   "fact": "owner",
+   "doc": {
+    "kind": "self",
+    "rule": "R-OWN-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-OWN-SPEC"
+   },
+   "evidence": [
+    "SE-oci-jbelwcu7ju5pm23a",
+    "SE-oci-ptproarfuxp7ahfr"
+   ]
+  },
+  {
+   "provider": "oci",
    "terraform_resource_type": "oci_core_drg_nat_policy_drg_nat_rule",
    "fact": "lifecycle_controller",
    "doc": {
@@ -171,6 +239,446 @@
   },
   {
    "provider": "oci",
+   "terraform_resource_type": "oci_database_autonomous_container_database_dataguard_association",
+   "fact": "lifecycle_controller",
+   "doc": {
+    "kind": "self",
+    "rule": "R-LIFE-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-LIFE-SPEC-PARENT"
+   },
+   "evidence": [
+    "SE-oci-aglgwhxyf46gtb36",
+    "SE-oci-yy6qc6pfxsy475ho"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_database_autonomous_container_database_dataguard_association",
+   "fact": "owner",
+   "doc": {
+    "kind": "self",
+    "rule": "R-OWN-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-OWN-SPEC"
+   },
+   "evidence": [
+    "SE-oci-dmstpelhmcuq6nxd",
+    "SE-oci-ftpyrqpzsucifo73"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_database_autonomous_database_wallet",
+   "fact": "lifecycle_controller",
+   "doc": {
+    "kind": "self",
+    "rule": "R-LIFE-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-LIFE-SPEC-PARENT"
+   },
+   "evidence": [
+    "SE-oci-4w6urxqbcfwxvdi3",
+    "SE-oci-ckwearf7zl2svk53"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_database_autonomous_database_wallet",
+   "fact": "owner",
+   "doc": {
+    "kind": "self",
+    "rule": "R-OWN-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-OWN-SPEC"
+   },
+   "evidence": [
+    "SE-oci-2o7flf53lffsst4e",
+    "SE-oci-a5xaqyqbjp5e2w3m"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_database_cloud_vm_cluster_iorm_config",
+   "fact": "lifecycle_controller",
+   "doc": {
+    "kind": "self",
+    "rule": "R-LIFE-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-LIFE-SPEC-PARENT"
+   },
+   "evidence": [
+    "SE-oci-ugb6lswvvw2wugjl",
+    "SE-oci-gbo5crozw2eh57lc"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_database_cloud_vm_cluster_iorm_config",
+   "fact": "owner",
+   "doc": {
+    "kind": "self",
+    "rule": "R-OWN-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-OWN-SPEC"
+   },
+   "evidence": [
+    "SE-oci-fhd5p3oq5buwytsr",
+    "SE-oci-yagucxhbpzcd4r6k"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_database_data_guard_association",
+   "fact": "lifecycle_controller",
+   "doc": {
+    "kind": "self",
+    "rule": "R-LIFE-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-LIFE-SPEC-PARENT"
+   },
+   "evidence": [
+    "SE-oci-z5qz3zxhlc3epybl",
+    "SE-oci-qla4lnlac7xewbz6"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_database_data_guard_association",
+   "fact": "owner",
+   "doc": {
+    "kind": "self",
+    "rule": "R-OWN-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-OWN-SPEC"
+   },
+   "evidence": [
+    "SE-oci-qzbqdlqsdxaebmgn",
+    "SE-oci-eks34ua4jjd66uld"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_datascience_model_provenance",
+   "fact": "lifecycle_controller",
+   "doc": {
+    "kind": "self",
+    "rule": "R-LIFE-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-LIFE-SPEC-PARENT"
+   },
+   "evidence": [
+    "SE-oci-4hq7sd3ceg3zbqp5",
+    "SE-oci-o4odvyd2j7ybftqq"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_datascience_model_provenance",
+   "fact": "owner",
+   "doc": {
+    "kind": "self",
+    "rule": "R-OWN-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-OWN-SPEC"
+   },
+   "evidence": [
+    "SE-oci-cnnpz5iuq7aq2m4v",
+    "SE-oci-ytcakandofhcsizs"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_devops_project_repository_setting",
+   "fact": "lifecycle_controller",
+   "doc": {
+    "kind": "self",
+    "rule": "R-LIFE-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-LIFE-SPEC-PARENT"
+   },
+   "evidence": [
+    "SE-oci-jystnnspkghxmyf4",
+    "SE-oci-36b533zjow747m4k"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_devops_project_repository_setting",
+   "fact": "owner",
+   "doc": {
+    "kind": "self",
+    "rule": "R-OWN-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-OWN-SPEC"
+   },
+   "evidence": [
+    "SE-oci-y2rxizinkwsgjqka",
+    "SE-oci-3n3a4dsg3qhxmyam"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_devops_repository_ref",
+   "fact": "lifecycle_controller",
+   "doc": {
+    "kind": "self",
+    "rule": "R-LIFE-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-LIFE-SPEC-PARENT"
+   },
+   "evidence": [
+    "SE-oci-7ukypmw4auxa4mtl",
+    "SE-oci-ffwte6jevlzwvbqb"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_devops_repository_ref",
+   "fact": "owner",
+   "doc": {
+    "kind": "self",
+    "rule": "R-OWN-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-OWN-SPEC"
+   },
+   "evidence": [
+    "SE-oci-cg3oig5miw7scksm",
+    "SE-oci-q5vcnrn7zj5t75b5"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_devops_repository_setting",
+   "fact": "lifecycle_controller",
+   "doc": {
+    "kind": "self",
+    "rule": "R-LIFE-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-LIFE-SPEC-PARENT"
+   },
+   "evidence": [
+    "SE-oci-m7i4c6drt45yf4h6",
+    "SE-oci-r7ntpivdvd4cd53m"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_devops_repository_setting",
+   "fact": "owner",
+   "doc": {
+    "kind": "self",
+    "rule": "R-OWN-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-OWN-SPEC"
+   },
+   "evidence": [
+    "SE-oci-c3jm67g4ost66a43",
+    "SE-oci-37tiyzmptwe3sa4w"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_generative_ai_hosted_application_iam",
+   "fact": "api_bridge",
+   "doc": {
+    "service": "generative-ai",
+    "resource": "HostedApplicationsIam"
+   },
+   "spec": {
+    "service": "generative_ai",
+    "resource": "hosted_application_iam"
+   },
+   "evidence": [
+    "SE-oci-7upi5ovlvvbpzq5a"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_iot_iot_flow_runtime_flow",
+   "fact": "api_bridge",
+   "doc": {
+    "service": "iot",
+    "resource": "Flow"
+   },
+   "spec": {
+    "service": "iot",
+    "resource": "iot_flow_runtime_flows"
+   },
+   "evidence": [
+    "SE-oci-fqvn4wrbph2jec3s"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_iot_iot_flow_runtime_flow",
+   "fact": "lifecycle_controller",
+   "doc": {
+    "kind": "self",
+    "rule": "R-LIFE-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-LIFE-SPEC-PARENT"
+   },
+   "evidence": [
+    "SE-oci-5r2sqn7ghkf4uxrk",
+    "SE-oci-wfbttdwfmkydetyo"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_iot_iot_flow_runtime_flow",
+   "fact": "owner",
+   "doc": {
+    "kind": "self",
+    "rule": "R-OWN-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-OWN-SPEC"
+   },
+   "evidence": [
+    "SE-oci-mayppf32jrqouzna",
+    "SE-oci-4mf66fll62hoinar"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_jms_fleet_advanced_feature_configuration",
+   "fact": "lifecycle_controller",
+   "doc": {
+    "kind": "self",
+    "rule": "R-LIFE-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-LIFE-SPEC-PARENT"
+   },
+   "evidence": [
+    "SE-oci-5tukp6kjvjqqr7n5",
+    "SE-oci-o3f6za4vpvvfn7kv"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_jms_fleet_advanced_feature_configuration",
+   "fact": "owner",
+   "doc": {
+    "kind": "self",
+    "rule": "R-OWN-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-OWN-SPEC"
+   },
+   "evidence": [
+    "SE-oci-rumgt4stx4moxcpx",
+    "SE-oci-a77xwjhhqs5qsivh"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_managed_kafka_kafka_cluster_addon",
+   "fact": "lifecycle_controller",
+   "doc": {
+    "kind": "self",
+    "rule": "R-LIFE-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-LIFE-SPEC-PARENT"
+   },
+   "evidence": [
+    "SE-oci-3b7nvgahdiygqtpg",
+    "SE-oci-foxggxslazqopxbu"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_managed_kafka_kafka_cluster_addon",
+   "fact": "owner",
+   "doc": {
+    "kind": "self",
+    "rule": "R-OWN-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-OWN-SPEC"
+   },
+   "evidence": [
+    "SE-oci-wplgq4ui6ezn7x4i",
+    "SE-oci-lafrnhdzodv6alsm"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_mysql_heat_wave_cluster",
+   "fact": "lifecycle_controller",
+   "doc": {
+    "kind": "self",
+    "rule": "R-LIFE-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-LIFE-SPEC-PARENT"
+   },
+   "evidence": [
+    "SE-oci-wyp2gr3wb4fvy77w",
+    "SE-oci-hgtaq5ghswu6drm6"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_mysql_heat_wave_cluster",
+   "fact": "owner",
+   "doc": {
+    "kind": "self",
+    "rule": "R-OWN-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-OWN-SPEC"
+   },
+   "evidence": [
+    "SE-oci-l7degyexwdegna7k",
+    "SE-oci-hfui3xjlrc62npjv"
+   ]
+  },
+  {
+   "provider": "oci",
    "terraform_resource_type": "oci_objectstorage_object_lifecycle_policy",
    "fact": "lifecycle_controller",
    "doc": {
@@ -201,6 +709,90 @@
    "evidence": [
     "SE-oci-ly3dxhupemtm3r2k",
     "SE-oci-kkzc3zme53bcjzl4"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_os_management_hub_software_source_manifest",
+   "fact": "api_bridge",
+   "doc": {
+    "service": "osmh",
+    "resource": "Manifest"
+   },
+   "spec": {
+    "service": "os_management_hub",
+    "resource": "software_source_manifest"
+   },
+   "evidence": [
+    "SE-oci-lxdjsl5cwkvdtkql"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_os_management_hub_software_source_manifest",
+   "fact": "lifecycle_controller",
+   "doc": {
+    "kind": "self",
+    "rule": "R-LIFE-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-LIFE-SPEC-PARENT"
+   },
+   "evidence": [
+    "SE-oci-552svla4nhdmcxak",
+    "SE-oci-wlh4cclybzm6biyl"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_os_management_hub_software_source_manifest",
+   "fact": "owner",
+   "doc": {
+    "kind": "self",
+    "rule": "R-OWN-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-OWN-SPEC"
+   },
+   "evidence": [
+    "SE-oci-ft7mibl6o5ombvse",
+    "SE-oci-rwlfgc7gybnlitgh"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_waas_protection_rule",
+   "fact": "lifecycle_controller",
+   "doc": {
+    "kind": "self",
+    "rule": "R-LIFE-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-LIFE-SPEC-PARENT"
+   },
+   "evidence": [
+    "SE-oci-24lscxfwkit6b65n",
+    "SE-oci-dnqpdr6rcvl3nnir"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_waas_protection_rule",
+   "fact": "owner",
+   "doc": {
+    "kind": "self",
+    "rule": "R-OWN-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-OWN-SPEC"
+   },
+   "evidence": [
+    "SE-oci-lpr3lzmpp7wgapbx",
+    "SE-oci-gybrgf6cvtvohnae"
    ]
   }
  ]

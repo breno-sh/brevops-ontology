@@ -62,10 +62,17 @@ def main(argv=None) -> int:
         common.schema(p)  # sai se o sha256 do arquivo não for o do pin
     for p in common.PROVIDERS:
         bad += [f"{p}: spec {x} não confere com SHA256SUMS" for x in apispec.sums_ok(p)]
-        txt = (common.bo_data() / "downloads" / f"apispec-{p}" / "SOURCE.txt").read_text(encoding="utf-8")
+        listed = set()
+        for st in apispec.SPEC[p]["sets"]:
+            d = common.bo_data() / "downloads" / st["dir"]
+            if not (d / "SOURCE.txt").exists() or not DATE.match(st["date"]):
+                bad.append(f"{p}: lote {st['dir']} sem SOURCE.txt ou sem data")
+            for line in (d / "SHA256SUMS").read_text(encoding="utf-8").splitlines():
+                h, f = line.split("  ", 1)
+                listed.add((f"{st['dir']}/{f}", h))
         for f in apispec.SPEC[p]["files"]:
-            if apispec.sha(p, f) not in txt:
-                bad.append(f"{p}: sha256 da spec {f} não está no SOURCE.txt")
+            if (f, apispec.sha(p, f)) not in listed:
+                bad.append(f"{p}: spec {f} fora do SHA256SUMS do seu lote")
     bridge_ver = {}
     with open(_data_dir(argv) / "service_evidence.jsonl", encoding="utf-8") as f:
         recs = [json.loads(x) for x in f]

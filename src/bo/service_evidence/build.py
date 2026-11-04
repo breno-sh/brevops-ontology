@@ -115,6 +115,8 @@ def evidence_levels(g: dict) -> dict:
                              "missing": g["protocol_missing"]},
         "curated": g["curated"],
         "spec_disputes": len(g["disputes"]),
+        "spec_coverage": {p: {"types": c["types"], "bridged": len(c["bridged"]), "ambiguous": len(c["ambiguous"]),
+                              "no_candidate": len(c["no_candidate"])} for p, c in specfacts.COVERAGE.items()},
         "spec_sources": {p: {"pin": apispec.SPEC[p]["pin"], "date": apispec.SPEC[p]["date"],
                              "files": {f: apispec.sha(p, f) for f in apispec.SPEC[p]["files"]}}
                          for p in common.PROVIDERS},
@@ -178,6 +180,11 @@ def sources_doc() -> dict:
     return out
 
 
+def _by_prefix(ts: list) -> dict:
+    out = collections.Counter("_".join(t.split("_")[:2]) for t in ts)
+    return dict(sorted(out.items(), key=lambda kv: -kv[1]))
+
+
 def render(g: dict) -> dict[str, str]:
     lines = "".join(common.canon(r) + "\n" for r in g["recs"])
     prot = "".join(common.canon(r) + "\n" for r in g["protocol"])
@@ -194,6 +201,15 @@ def render(g: dict) -> dict[str, str]:
         str(common.results_dir() / "sources.json"): srcs,
         str(common.results_dir() / "protocol_support.schema.json"): sch,
         str(common.results_dir() / "spec_disputes.json"): disp,
+        str(common.results_dir() / "spec_coverage.json"): json.dumps(
+            {"schema": "bo.spec_coverage/1", "module": common.MODULE,
+             "note": "tipo sem candidato = a spec baixada não tem recurso que case pela regra R-BRIDGE-SPEC; não é "
+                     "ausência do recurso na API",
+             "providers": {p: {"spec_files": len(apispec.SPEC[p]["files"]), "sets": apispec.SPEC[p]["sets"],
+                               **{k: (sorted(v) if isinstance(v, list) else v) for k, v in c.items()},
+                               "no_candidate_by_prefix": _by_prefix(c["no_candidate"])}
+                           for p, c in specfacts.COVERAGE.items()}},
+            ensure_ascii=False, indent=1) + "\n",
     }
 
 

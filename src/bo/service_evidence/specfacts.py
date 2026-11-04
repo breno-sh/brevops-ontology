@@ -17,7 +17,6 @@ from . import apispec as A
 from . import sources
 
 PREFIX = {"aws": ("s3_", "ec2_", "vpc_"), "google": (), "azurerm": (), "oci": ()}
-OCI_SVC = {"objectstorage": "objectstorage", "core": "iaas"}  # serviço do nome do tipo oci_<serviço>_ -> spec
 
 
 def singular(s: str) -> str:
@@ -34,6 +33,8 @@ def names_of(p: str, key, r) -> set[str]:
         out = {A.snake(n)}
         if r["parent"] and not n.startswith(r["parent"]):
             out.add(A.snake(r["parent"]) + "_" + A.snake(n))
+        for pl in r.get("payload") or []:  # faceta pelo membro de payload da operação (ServerSideEncryptionConfiguration)
+            out.add(A.snake(r["parent"]) + "_" + A.snake(pl))
         return out
     if p == "google":
         return {f"{r['service']}_{singular(A.snake(n))}"}
@@ -51,12 +52,23 @@ def candidates(p: str, T: str, bridge: dict | None, m: dict) -> list:
     suf = T.split("_", 1)[1]
     keys = {suf} | {suf[len(x):] for x in PREFIX[p] if suf.startswith(x)}
     if p == "oci":
-        svc = OCI_SVC.get(suf.split("_", 1)[0])
-        if not svc:
-            return []
-        keys = {suf.split("_", 1)[1] if "_" in suf else suf}
+        tok = suf.split("_", 1)[0]
+        mods = [sv for sv in A.SPEC["oci"]["versions"] if suf.startswith(sv + "_")]
+        if mods:  # módulo com o nome inteiro no tipo (os_management_hub, data_safe): o mais longo
+            svc = max(mods, key=len)
+            rest = suf[len(svc) + 1:]
+        else:
+            svcs = {sv for sv in A.SPEC["oci"]["versions"] if sv.replace("_", "") == tok}
+            if bridge and bridge.get("service"):
+                svcs |= {sv for sv in A.SPEC["oci"]["versions"]
+                         if sv.replace("_", "") == bridge["service"].replace("-", "").replace("_", "")}
+            if len(svcs) != 1:
+                return []
+            svc = svcs.pop()
+            rest = suf.split("_", 1)[1] if "_" in suf else suf
+        keys = {rest}
         keys |= {k + "s" for k in keys}
-        if bridge and bridge.get("resource") not in (None, "UNKNOWN") and bridge.get("service") == svc:
+        if bridge and bridge.get("resource") not in (None, "UNKNOWN"):
             keys.add(A.snake(bridge["resource"]))
         return sorted(k for k, r in m.items() if k[0] == svc and names_of(p, k, r) & keys)
     return sorted(k for k, r in m.items() if names_of(p, k, r) & keys)
@@ -78,8 +90,12 @@ def via_attr(p: str, T: str, r: dict) -> list:
     return sorted({c for c in cands if c in top})[:1]
 
 
+COVERAGE: dict = {}
+
+
 def run(ctx, bridges: dict, disputes: list) -> None:
     p = ctx.p
+    cov = COVERAGE[p] = {"types": 0, "bridged": [], "ambiguous": [], "no_candidate": []}
     m = A.model(p)
     doc_api = {}
     for r in ctx.recs:
@@ -113,9 +129,12 @@ def run(ctx, bridges: dict, disputes: list) -> None:
     for T in sources.types(p):
         br = bridges.get(T)
         cands = cand_of[T]
+        cov["types"] += 1
         if not cands:
+            cov["no_candidate"].append(T)
             continue
         if len(cands) > 1 or T in shared:
+            cov["ambiguous"].append(T)
             ctx.add(T, "api_bridge", "spec_candidates", br or {"service": "UNKNOWN", "resource": "UNKNOWN"},
                     "stated", "derived",
                     value={"aspect": "spec_bridge_candidates", "rule": "R-BRIDGE-SPEC",
@@ -128,6 +147,7 @@ def run(ctx, bridges: dict, disputes: list) -> None:
             continue
         key = cands[0]
         r = m[key]
+        cov["bridged"].append(T)
         f = r["file"]
         ver = A.SPEC[p]["versions"][r["service"]]
         api = {"service": r["service"], "resource": r["resource"]}
@@ -153,6 +173,10 @@ def run(ctx, bridges: dict, disputes: list) -> None:
         else:
             new = {"lifecycle_controller": ("parent", "R-LIFE-SPEC-PARENT"), "owner": ("parent", "R-OWN-SPEC")}
             via = via_attr(p, T, r)
+        if not r["create"]:
+            new["effective_scope"] = ("parent", "R-SCOPE-SPEC")
+        elif p == "oci" and r.get("path"):
+            _oci_identity(ctx, T, r, api, ops, bid)
         for kind, (k, rule) in new.items():
             v = {"kind": k, "rule": rule, "layer": "api", "spec_resource": f"{r['service']}:{r['resource']}"}
             if k == "parent":
@@ -177,3 +201,31 @@ def _op(ctx, T: str, p: str, r: dict, role: str) -> str:
                           "operation": proj.get("operation") or proj.get("id") or proj.get("operationId")
                           or proj["lines"][0]},
                    cit=A.cite(p, r["file"], ptr))
+
+
+def _oci_identity(ctx, T: str, r: dict, api: dict, ops: list, bid: str) -> None:
+    """R-ID-SPEC (oci): os parâmetros do caminho do delete_<n> são a chave; o último é o próprio objeto (…Id ->
+    atributo id; …Name -> name ou <coisa>), os outros só entram se houver atributo de topo com o mesmo nome."""
+    p = ctx.p
+    top = {path for path, depth, *_ in sources.atoms(p).get(T, []) if not depth and "." not in path}
+    params = [x.strip("{}") for x in r["path"].split("/") if x.startswith("{")]
+    if not params:
+        return
+    keys, unmapped = [], []
+    for i, prm in enumerate(params):
+        sn = A.snake(prm)
+        base = sn[:-5] if sn.endswith("_name") else (sn[:-3] if sn.endswith("_id") else sn)
+        last = i == len(params) - 1
+        opts = (["id"] if sn.endswith("_id") else ["name", base]) if last else [base, sn, base + "_id"]
+        hit = next((o for o in opts if o in top), None)
+        (keys if hit else unmapped).append(hit or prm)
+    if unmapped:
+        ctx.st["R-ID-SPEC_sem_atributo"] += 1
+        return
+    refs = sources.references(p).get(T, set())
+    scope = "within_parent" if any(k in refs for k in keys[:-1]) else "independent"
+    ctx.add(T, "identity", "spec_identity", api, "stated", "derived",
+            value={"status": "present", "scope": scope, "key_fields": keys, "rule": "R-ID-SPEC", "layer": "api",
+                   "spec_path": r["path"]},
+            derived=ops + [bid])
+    ctx.st["R-ID-SPEC"] += 1

@@ -185,14 +185,27 @@ def test_api_layer_only_with_bridge():
 def test_spec_operations_resolve_and_rules():
     from bo.service_evidence import apispec as A
     for p in ("aws", "google", "azurerm", "oci"):
-        assert A.sums_ok(p) == []
+        assert A.sums_ok(p) == ()
     m = A.model("aws")
     assert m[("s3", "BucketVersioning")]["parent"] == "Bucket" and m[("s3", "Bucket")]["create"]
-    c = A.cite("aws", "s3-2006-03-01.json", m[("s3", "BucketVersioning")]["config"][0])
+    c = A.cite("aws", "apispec-aws/s3-2006-03-01.json", m[("s3", "BucketVersioning")]["config"][0])
     assert A.resolve("aws", c) is None and A.resolve("aws", dict(c, sentence=c["sentence"] + " ")) is not None
-    assert A.model("oci")[("objectstorage", "object_lifecycle_policy")]["parent"] == "bucket"
+    assert A.model("oci")[("object_storage", "object_lifecycle_policy")]["parent"] == "bucket"
     got = _out_by_type({"aws_s3_bucket", "aws_s3_bucket_versioning"})
     rules_ = lambda T: {(r["fact_kind"], r["value"].get("rule"), r["value"].get("kind"))  # noqa: E731
                         for r in got[T] if r["status"] == "stated" and not r.get("block_path")}
     assert ("lifecycle_controller", "R-LIFE-SPEC", "self") in rules_("aws_s3_bucket")
     assert ("owner", "R-OWN-SPEC", "parent") in rules_("aws_s3_bucket_versioning")
+
+
+def test_cc10_scope_encryption_oci_identity():
+    got = _out_by_type({"aws_s3_bucket_server_side_encryption_configuration", "aws_s3_bucket_versioning",
+                        "oci_objectstorage_bucket"})
+    def rk(T):
+        return {(r["fact_kind"], r["value"].get("rule")) for r in got[T] if r["status"] == "stated"
+                and not r.get("block_path")}
+    assert ("owner", "R-OWN-SPEC") in rk("aws_s3_bucket_server_side_encryption_configuration")
+    assert ("effective_scope", "R-SCOPE-SPEC") in rk("aws_s3_bucket_versioning")
+    ids = [r["value"]["key_fields"] for r in got["oci_objectstorage_bucket"]
+           if r["status"] == "stated" and r["value"].get("rule") == "R-ID-SPEC"]
+    assert ids == [["namespace", "name"]]

@@ -30,18 +30,21 @@ from functools import lru_cache
 from . import common
 
 RETRIEVED = "2026-11-04T08:36-03:00"
-SPEC = {
-    "aws": {"files": {"s3-2006-03-01.json": "s3", "ec2-2016-11-15.json": "ec2"},
-            "base": "https://raw.githubusercontent.com/aws/api-models-aws/1b9ff13fe6c28ea9774a527e53cda6a3b91369dc/"
-                    "models/{svc}/service/{ver}/{file}",
+CC8 = {
+    "aws": {"dir": "apispec-aws", "files": {"s3-2006-03-01.json": "s3", "ec2-2016-11-15.json": "ec2"},
+            "urls": {"s3-2006-03-01.json": "https://raw.githubusercontent.com/aws/api-models-aws/"
+                     "1b9ff13fe6c28ea9774a527e53cda6a3b91369dc/models/s3/service/2006-03-01/s3-2006-03-01.json",
+                     "ec2-2016-11-15.json": "https://raw.githubusercontent.com/aws/api-models-aws/"
+                     "1b9ff13fe6c28ea9774a527e53cda6a3b91369dc/models/ec2/service/2016-11-15/ec2-2016-11-15.json"},
             "versions": {"s3": "2006-03-01", "ec2": "2016-11-15"},
             "pin": "aws/api-models-aws@1b9ff13fe6c28ea9774a527e53cda6a3b91369dc", "date": "2026-10-30"},
-    "google": {"files": {"storage-v1.json": "storage", "compute-v1.json": "compute"},
+    "google": {"dir": "apispec-google", "files": {"storage-v1.json": "storage", "compute-v1.json": "compute"},
                "urls": {"storage-v1.json": "https://storage.googleapis.com/$discovery/rest?version=v1",
                         "compute-v1.json": "https://compute.googleapis.com/$discovery/rest?version=v1"},
                "versions": {"storage": "v1", "compute": "v1"},
                "pin": "discovery v1 (revision no documento)", "date": "2026-11-04"},
-    "azurerm": {"files": {"storage-2026-09-01-openapi.json": "Microsoft.Storage",
+    "azurerm": {"dir": "apispec-azurerm",
+                "files": {"storage-2026-09-01-openapi.json": "Microsoft.Storage",
                           "network-2026-03-01-virtualNetwork.json": "Microsoft.Network"},
                 "urls": {"storage-2026-09-01-openapi.json":
                          "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/6ad5af824ebf340b4a83889dbdd70572124b57a5/"
@@ -52,20 +55,51 @@ SPEC = {
                          "virtualNetwork.json"},
                 "versions": {"Microsoft.Storage": "2026-09-01", "Microsoft.Network": "2026-03-01"},
                 "pin": "Azure/azure-rest-api-specs@6ad5af824ebf340b4a83889dbdd70572124b57a5", "date": "2026-11-03"},
-    "oci": {"files": {"object_storage_client.py.txt": "objectstorage", "virtual_network_client.py.txt": "iaas"},
+    "oci": {"dir": "apispec-oci", "files": {"object_storage_client.py.txt": "object_storage",
+                                            "virtual_network_client.py.txt": "core"},
             "urls": {"object_storage_client.py.txt":
                      "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/"
                      "src/oci/object_storage/object_storage_client.py",
                      "virtual_network_client.py.txt":
                      "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/"
                      "src/oci/core/virtual_network_client.py"},
-            "versions": {"objectstorage": "sdk@ec1d21a", "iaas": "sdk@ec1d21a"},
+            "versions": {"object_storage": "sdk@ec1d21a", "core": "sdk@ec1d21a"},
             "pin": "oracle/oci-python-sdk@ec1d21a37357b8ab1e86fec7132bc08f3df17782", "date": "2026-11-03"},
 }
+CC9_DIRS = {p: f"apispec-{p}-cc9" for p in ("aws", "google", "azurerm", "oci")}
+
+
+def _build_spec() -> dict:
+    """Junta o lote do CC-8 (pastas apispec-<prov>/) e o do CC-9 (apispec-<prov>-cc9/, FILES.json), sem
+    duplicar o mesmo arquivo de origem. Arquivo = caminho relativo a $BO_DATA/downloads (fid)."""
+    out = {}
+    for p, c in CC8.items():
+        files = {f"{c['dir']}/{f}": svc for f, svc in c["files"].items()}
+        urls = {f"{c['dir']}/{f}": u for f, u in c["urls"].items()}
+        sets = [{"dir": c["dir"], "pin": c["pin"], "date": c["date"]}]
+        versions = dict(c["versions"])
+        fj = common.bo_data() / "downloads" / CC9_DIRS[p] / "FILES.json"
+        if fj.exists():
+            j = json.loads(fj.read_text(encoding="utf-8"))
+            seen = set(urls.values())
+            for rel, meta in sorted(j["files"].items()):
+                if meta["url"] in seen:
+                    continue
+                fid = f"{CC9_DIRS[p]}/{rel}"
+                files[fid], urls[fid] = meta["service"], meta["url"]
+                versions.setdefault(meta["service"], meta.get("version") or j["pin"])
+            sets.append({"dir": CC9_DIRS[p], "pin": j["pin"], "date": j["date"]})
+        out[p] = {"files": files, "urls": urls, "versions": versions, "sets": sets,
+                  "pin": "; ".join(x["pin"] for x in sets), "date": max(x["date"] for x in sets)}
+    return out
+
+
+SPEC = _build_spec()
 SECTION_RX = re.compile(r"^apispec (?P<prov>[a-z]+)/(?P<file>\S+) sha256 (?P<sha>[0-9a-f]{64}) (?P<ptr>\S+)$")
+DL = None
 AWS_VERB = re.compile(r"^(Create|Delete|Put|Get|Update|Modify|Describe|List|Authorize|Revoke|Associate|Disassociate|"
                       r"Attach|Detach|Enable|Disable|Replace|Apply|Restore|Copy|Head)([A-Z].*)$")
-OCI_VERB = re.compile(r"^(create|delete|get|list|update|put|add|remove|change|restore|copy|reencrypt|rename|"
+OCI_VERB = re.compile(r"^(create|delete|terminate|get|list|update|put|add|remove|change|restore|copy|reencrypt|rename|"
                       r"make|abort|commit|head|upload)_(.+)$")
 
 
@@ -73,36 +107,39 @@ def ddir(p: str):
     return common.bo_data() / "downloads" / f"apispec-{p}"
 
 
+def path(f: str):
+    return common.bo_data() / "downloads" / f
+
+
 def url(p: str, f: str) -> str:
-    s = SPEC[p]
-    if p == "aws":
-        svc = s["files"][f]
-        return s["base"].format(svc=svc, ver=s["versions"][svc], file=f)
-    return s["urls"][f]
+    return SPEC[p]["urls"][f]
 
 
-@lru_cache(maxsize=16)
+@lru_cache(maxsize=4096)
 def sha(p: str, f: str) -> str:
-    return hashlib.sha256((ddir(p) / f).read_bytes()).hexdigest()
+    return hashlib.sha256(path(f).read_bytes()).hexdigest()
 
 
-def sums_ok(p: str) -> list[str]:
+@lru_cache(maxsize=8)
+def sums_ok(p: str) -> tuple:
     bad = []
-    for line in (ddir(p) / "SHA256SUMS").read_text(encoding="utf-8").splitlines():
-        h, f = line.split("  ", 1)
-        if sha(p, f) != h:
-            bad.append(f"{p}/{f}")
-    return bad
+    for st in SPEC[p]["sets"]:
+        d = common.bo_data() / "downloads" / st["dir"]
+        for line in (d / "SHA256SUMS").read_text(encoding="utf-8").splitlines():
+            h, f = line.split("  ", 1)
+            if hashlib.sha256((d / f).read_bytes()).hexdigest() != h:
+                bad.append(f"{st['dir']}/{f}")
+    return tuple(bad)
 
 
-@lru_cache(maxsize=16)
+@lru_cache(maxsize=64)
 def load_json(p: str, f: str):
-    return json.loads((ddir(p) / f).read_text(encoding="utf-8"))
+    return json.loads(path(f).read_text(encoding="utf-8"))
 
 
-@lru_cache(maxsize=16)
+@lru_cache(maxsize=512)
 def load_lines(p: str, f: str):
-    return tuple((ddir(p) / f).read_text(encoding="utf-8").splitlines())
+    return tuple(path(f).read_text(encoding="utf-8").splitlines())
 
 
 def snake(s: str) -> str:
@@ -215,8 +252,12 @@ def _aws():
                 pre = sorted((x for x in own if n.startswith(x) and n != x), key=len, reverse=True)
                 par = pre[0] if pre else None
             if par:
+                o0 = shapes[unesc(cfg[0][len("/shapes/"):])]
+                inp = shapes.get((o0.get("input") or {}).get("target", ""), {})
+                payload = [m for m, v in (inp.get("members") or {}).items()
+                           if "smithy.api#httpPayload" in (v.get("traits") or {})]
                 out[(svc, n)] = {"service": svc, "resource": n, "file": f, "create": None, "delete": None,
-                                 "parent": par, "config": cfg, "parent_labels": list(lb)}
+                                 "parent": par, "config": cfg, "parent_labels": list(lb), "payload": payload}
     return out
 
 
@@ -291,7 +332,8 @@ def _oci():
             if rp is None or mt is None:
                 continue
             path = re.search(r'"([^"]+)"', lines[rp]).group(1)
-            ops.setdefault(vm.group(2), {})[vm.group(1)] = (f"L{i + 1},{rp + 1},{mt + 1}", path)
+            verb = "delete" if vm.group(1) == "terminate" else vm.group(1)  # terminate_<n> é o delete da OCI
+            ops.setdefault(vm.group(2), {}).setdefault(verb, (f"L{i + 1},{rp + 1},{mt + 1}", path))
         # próprio: delete_<n> cujo caminho termina num identificador {param}, e create_<n> ou put_<n> (o put que
         # grava o objeto pelo próprio nome, como put_object); delete com último segmento constante é faceta
         own = {n: o for n, o in ops.items() if "delete" in o and ("create" in o or "put" in o)

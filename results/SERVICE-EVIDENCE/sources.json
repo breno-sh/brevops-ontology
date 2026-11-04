@@ -32,11 +32,11 @@
      "ec2": "2016-11-15"
     },
     "files": {
-     "s3-2006-03-01.json": {
+     "apispec-aws/s3-2006-03-01.json": {
       "uri": "https://raw.githubusercontent.com/aws/api-models-aws/1b9ff13fe6c28ea9774a527e53cda6a3b91369dc/models/s3/service/2006-03-01/s3-2006-03-01.json",
       "sha256": "73e4f75747396176053a0fcc910261cf670c7e133c1cebcfffefa703fad3ce68"
      },
-     "ec2-2016-11-15.json": {
+     "apispec-aws/ec2-2016-11-15.json": {
       "uri": "https://raw.githubusercontent.com/aws/api-models-aws/1b9ff13fe6c28ea9774a527e53cda6a3b91369dc/models/ec2/service/2016-11-15/ec2-2016-11-15.json",
       "sha256": "2a61258f48c9769ccd24ad8d0a439593334fbafcf2a82d49677d72a04747f85e"
      }
@@ -74,11 +74,11 @@
      "compute": "v1"
     },
     "files": {
-     "storage-v1.json": {
+     "apispec-google/storage-v1.json": {
       "uri": "https://storage.googleapis.com/$discovery/rest?version=v1",
       "sha256": "0ee35fa148cbf2725ec9e395f53a15e8c4b023a305040dedb2ca5c0996df443c"
      },
-     "compute-v1.json": {
+     "apispec-google/compute-v1.json": {
       "uri": "https://compute.googleapis.com/$discovery/rest?version=v1",
       "sha256": "4966f4a98f01867b4a8629e48749914b118f3b9f0631673a6108ca348a000376"
      }
@@ -116,11 +116,11 @@
      "Microsoft.Network": "2026-03-01"
     },
     "files": {
-     "storage-2026-09-01-openapi.json": {
+     "apispec-azurerm/storage-2026-09-01-openapi.json": {
       "uri": "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/6ad5af824ebf340b4a83889dbdd70572124b57a5/specification/storage/resource-manager/Microsoft.Storage/Storage/stable/2026-09-01/openapi.json",
       "sha256": "9b3aeac07a8682e7adc3055adbde5da2d5cfb3670891856b7733535ce4d0eef0"
      },
-     "network-2026-03-01-virtualNetwork.json": {
+     "apispec-azurerm/network-2026-03-01-virtualNetwork.json": {
       "uri": "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/6ad5af824ebf340b4a83889dbdd70572124b57a5/specification/network/resource-manager/Microsoft.Network/Network/stable/2026-03-01/virtualNetwork.json",
       "sha256": "0bfb316d7cbbecc06ae43c2cf57ed134d456e5b12607f9eab61c1a798d6452c5"
      }
@@ -150,21 +150,1510 @@
     "path": "$BO_DATA/downloads/prefetch/oci/9.11.0/providers-schema.json"
    },
    "apispec": {
-    "pin": "oracle/oci-python-sdk@ec1d21a37357b8ab1e86fec7132bc08f3df17782",
+    "pin": "oracle/oci-python-sdk@ec1d21a37357b8ab1e86fec7132bc08f3df17782; oracle/oci-python-sdk@ec1d21a37357b8ab1e86fec7132bc08f3df17782",
     "date": "2026-11-03",
     "retrieved_at": "2026-11-04T08:36-03:00",
     "versions": {
-     "objectstorage": "sdk@ec1d21a",
-     "iaas": "sdk@ec1d21a"
+     "object_storage": "sdk@ec1d21a",
+     "core": "sdk@ec1d21a",
+     "access_governance_cp": "sdk@ec1d21a",
+     "adm": "sdk@ec1d21a",
+     "ai_data_platform": "sdk@ec1d21a",
+     "ai_document": "sdk@ec1d21a",
+     "ai_language": "sdk@ec1d21a",
+     "ai_speech": "sdk@ec1d21a",
+     "ai_vision": "sdk@ec1d21a",
+     "analytics": "sdk@ec1d21a",
+     "announcements_service": "sdk@ec1d21a",
+     "api_platform": "sdk@ec1d21a",
+     "apiaccesscontrol": "sdk@ec1d21a",
+     "apigateway": "sdk@ec1d21a",
+     "apm_config": "sdk@ec1d21a",
+     "apm_control_plane": "sdk@ec1d21a",
+     "apm_synthetics": "sdk@ec1d21a",
+     "apm_traces": "sdk@ec1d21a",
+     "appmgmt_control": "sdk@ec1d21a",
+     "artifacts": "sdk@ec1d21a",
+     "audit": "sdk@ec1d21a",
+     "auth": "sdk@ec1d21a",
+     "autoscaling": "sdk@ec1d21a",
+     "bastion": "sdk@ec1d21a",
+     "batch": "sdk@ec1d21a",
+     "bds": "sdk@ec1d21a",
+     "blockchain": "sdk@ec1d21a",
+     "budget": "sdk@ec1d21a",
+     "capacity_management": "sdk@ec1d21a",
+     "ccd_offers": "sdk@ec1d21a",
+     "certificates": "sdk@ec1d21a",
+     "certificates_management": "sdk@ec1d21a",
+     "cims": "sdk@ec1d21a",
+     "cloud_bridge": "sdk@ec1d21a",
+     "cloud_guard": "sdk@ec1d21a",
+     "cloud_migrations": "sdk@ec1d21a",
+     "cluster_health": "sdk@ec1d21a",
+     "cluster_placement_groups": "sdk@ec1d21a",
+     "compute_cloud_at_customer": "sdk@ec1d21a",
+     "compute_instance_agent": "sdk@ec1d21a",
+     "container_engine": "sdk@ec1d21a",
+     "container_instances": "sdk@ec1d21a",
+     "container_registry": "sdk@ec1d21a",
+     "costad": "sdk@ec1d21a",
+     "dashboard_service": "sdk@ec1d21a",
+     "data_catalog": "sdk@ec1d21a",
+     "data_flow": "sdk@ec1d21a",
+     "data_integration": "sdk@ec1d21a",
+     "data_labeling_service": "sdk@ec1d21a",
+     "data_labeling_service_dataplane": "sdk@ec1d21a",
+     "data_safe": "sdk@ec1d21a",
+     "data_science": "sdk@ec1d21a",
+     "database": "sdk@ec1d21a",
+     "database_management": "sdk@ec1d21a",
+     "database_migration": "sdk@ec1d21a",
+     "database_tools": "sdk@ec1d21a",
+     "database_tools_runtime": "sdk@ec1d21a",
+     "datacc": "sdk@ec1d21a",
+     "dblm": "sdk@ec1d21a",
+     "dbmulticloud": "sdk@ec1d21a",
+     "ddfs": "sdk@ec1d21a",
+     "delegate_access_control": "sdk@ec1d21a",
+     "demand_signal": "sdk@ec1d21a",
+     "desktops": "sdk@ec1d21a",
+     "devops": "sdk@ec1d21a",
+     "dif": "sdk@ec1d21a",
+     "disaster_recovery": "sdk@ec1d21a",
+     "distributed_database": "sdk@ec1d21a",
+     "dns": "sdk@ec1d21a",
+     "em_warehouse": "sdk@ec1d21a",
+     "email": "sdk@ec1d21a",
+     "email_data_plane": "sdk@ec1d21a",
+     "events": "sdk@ec1d21a",
+     "file_storage": "sdk@ec1d21a",
+     "fleet_apps_management": "sdk@ec1d21a",
+     "fleet_software_update": "sdk@ec1d21a",
+     "functions": "sdk@ec1d21a",
+     "fusion_apps": "sdk@ec1d21a",
+     "gdp": "sdk@ec1d21a",
+     "generative_ai": "sdk@ec1d21a",
+     "generative_ai_agent": "sdk@ec1d21a",
+     "generative_ai_agent_runtime": "sdk@ec1d21a",
+     "generative_ai_data": "sdk@ec1d21a",
+     "generative_ai_inference": "sdk@ec1d21a",
+     "generative_ai_sandbox": "sdk@ec1d21a",
+     "generic_artifacts_content": "sdk@ec1d21a",
+     "golden_gate": "sdk@ec1d21a",
+     "governance_rules_control_plane": "sdk@ec1d21a",
+     "healthchecks": "sdk@ec1d21a",
+     "identity": "sdk@ec1d21a",
+     "identity_data_plane": "sdk@ec1d21a",
+     "identity_domains": "sdk@ec1d21a",
+     "integration": "sdk@ec1d21a",
+     "iot": "sdk@ec1d21a",
+     "jms": "sdk@ec1d21a",
+     "jms_java_downloads": "sdk@ec1d21a",
+     "jms_utils": "sdk@ec1d21a",
+     "key_management": "sdk@ec1d21a",
+     "license_manager": "sdk@ec1d21a",
+     "limits": "sdk@ec1d21a",
+     "limits_increase": "sdk@ec1d21a",
+     "load_balancer": "sdk@ec1d21a",
+     "lockbox": "sdk@ec1d21a",
+     "log_analytics": "sdk@ec1d21a",
+     "logging": "sdk@ec1d21a",
+     "loggingingestion": "sdk@ec1d21a",
+     "loggingsearch": "sdk@ec1d21a",
+     "lustre_file_storage": "sdk@ec1d21a",
+     "managed_kafka": "sdk@ec1d21a",
+     "management_agent": "sdk@ec1d21a",
+     "management_dashboard": "sdk@ec1d21a",
+     "marketplace": "sdk@ec1d21a",
+     "marketplace_private_offer": "sdk@ec1d21a",
+     "marketplace_publisher": "sdk@ec1d21a",
+     "media_services": "sdk@ec1d21a",
+     "mngdmac": "sdk@ec1d21a",
+     "model_deployment": "sdk@ec1d21a",
+     "monitoring": "sdk@ec1d21a",
+     "multicloud": "sdk@ec1d21a",
+     "mysql": "sdk@ec1d21a",
+     "network_firewall": "sdk@ec1d21a",
+     "network_load_balancer": "sdk@ec1d21a",
+     "nosql": "sdk@ec1d21a",
+     "oce": "sdk@ec1d21a",
+     "oci_control_center": "sdk@ec1d21a",
+     "oci_product_catalog": "sdk@ec1d21a",
+     "ocvp": "sdk@ec1d21a",
+     "oda": "sdk@ec1d21a",
+     "onesubscription": "sdk@ec1d21a",
+     "ons": "sdk@ec1d21a",
+     "opa": "sdk@ec1d21a",
+     "opensearch": "sdk@ec1d21a",
+     "operator_access_control": "sdk@ec1d21a",
+     "opsi": "sdk@ec1d21a",
+     "optimizer": "sdk@ec1d21a",
+     "os_management_hub": "sdk@ec1d21a",
+     "osp_gateway": "sdk@ec1d21a",
+     "osub_billing_schedule": "sdk@ec1d21a",
+     "osub_organization_subscription": "sdk@ec1d21a",
+     "osub_subscription": "sdk@ec1d21a",
+     "osub_usage": "sdk@ec1d21a",
+     "psa": "sdk@ec1d21a",
+     "psql": "sdk@ec1d21a",
+     "pss": "sdk@ec1d21a",
+     "queue": "sdk@ec1d21a",
+     "recovery": "sdk@ec1d21a",
+     "redis": "sdk@ec1d21a",
+     "resource_analytics": "sdk@ec1d21a",
+     "resource_manager": "sdk@ec1d21a",
+     "resource_scheduler": "sdk@ec1d21a",
+     "resource_search": "sdk@ec1d21a",
+     "rover": "sdk@ec1d21a",
+     "sch": "sdk@ec1d21a",
+     "secrets": "sdk@ec1d21a",
+     "security_attribute": "sdk@ec1d21a",
+     "self": "sdk@ec1d21a",
+     "service_catalog": "sdk@ec1d21a",
+     "service_manager_proxy": "sdk@ec1d21a",
+     "stack_monitoring": "sdk@ec1d21a",
+     "streaming": "sdk@ec1d21a",
+     "tenant_manager_control_plane": "sdk@ec1d21a",
+     "threat_intelligence": "sdk@ec1d21a",
+     "usage": "sdk@ec1d21a",
+     "usage_api": "sdk@ec1d21a",
+     "vault": "sdk@ec1d21a",
+     "vbs_inst": "sdk@ec1d21a",
+     "visual_builder": "sdk@ec1d21a",
+     "vn_monitoring": "sdk@ec1d21a",
+     "vulnerability_scanning": "sdk@ec1d21a",
+     "waa": "sdk@ec1d21a",
+     "waas": "sdk@ec1d21a",
+     "waf": "sdk@ec1d21a",
+     "wlms": "sdk@ec1d21a",
+     "work_requests": "sdk@ec1d21a",
+     "zpr": "sdk@ec1d21a"
     },
     "files": {
-     "object_storage_client.py.txt": {
+     "apispec-oci/object_storage_client.py.txt": {
       "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/object_storage/object_storage_client.py",
       "sha256": "1075141534c454a0351bc241d42e3ba449500c5e80ca4e5c2da7fa2a453a6d76"
      },
-     "virtual_network_client.py.txt": {
+     "apispec-oci/virtual_network_client.py.txt": {
       "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/core/virtual_network_client.py",
       "sha256": "df728bd2641dde2e893c616b7560888255b144fce27d9bb24cc28e26bd19dab0"
+     },
+     "apispec-oci-cc9/repo/src/oci/access_governance_cp/access_governance_cp_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/access_governance_cp/access_governance_cp_client.py",
+      "sha256": "d02d432a932bcee222cf8e8cf7e64c7e892726413dad066503d9199dc1ea92b1"
+     },
+     "apispec-oci-cc9/repo/src/oci/adm/application_dependency_management_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/adm/application_dependency_management_client.py",
+      "sha256": "82e451f1a19ce3d1fa7198dbd580f2c25fe139b82c665dcb46e8596ec82efbd5"
+     },
+     "apispec-oci-cc9/repo/src/oci/ai_data_platform/ai_data_platform_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/ai_data_platform/ai_data_platform_client.py",
+      "sha256": "4d0b6b6e7e792b823ef8608309b26c4af334cbd5638fd943c7fb0a6b8496e5de"
+     },
+     "apispec-oci-cc9/repo/src/oci/ai_document/ai_service_document_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/ai_document/ai_service_document_client.py",
+      "sha256": "5ac309dfb62432878ed6eb2b4179f00550c1f81987f96e3458b3cca22d9822bb"
+     },
+     "apispec-oci-cc9/repo/src/oci/ai_language/ai_service_language_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/ai_language/ai_service_language_client.py",
+      "sha256": "1f4d65f49803bd10ca3656921d41ffa912a174ed1c7d8bc6b439307ed4c90823"
+     },
+     "apispec-oci-cc9/repo/src/oci/ai_speech/ai_service_speech_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/ai_speech/ai_service_speech_client.py",
+      "sha256": "698a3670c6332b04ede1b18297350f85c7ee8c0c7a9e07459478e06fc9b05adf"
+     },
+     "apispec-oci-cc9/repo/src/oci/ai_vision/ai_service_vision_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/ai_vision/ai_service_vision_client.py",
+      "sha256": "6e9a079f685783941e28cdb4e129d2a46c9aa99114909a1bed8295a842391ee7"
+     },
+     "apispec-oci-cc9/repo/src/oci/analytics/analytics_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/analytics/analytics_client.py",
+      "sha256": "bac341908051bd65d2ea95176fa2a0def68500ce4a7a2d9c76bf54dd4eb193e6"
+     },
+     "apispec-oci-cc9/repo/src/oci/announcements_service/announcement_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/announcements_service/announcement_client.py",
+      "sha256": "a438bae86ceb396cae27d20a7f32b8730c18cc78f2fe26ff7f084b52915e8fbb"
+     },
+     "apispec-oci-cc9/repo/src/oci/announcements_service/announcement_subscription_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/announcements_service/announcement_subscription_client.py",
+      "sha256": "e5fd90988b97276d197013f90b10b8fba28e3584b04e980f0020ec9e64e04deb"
+     },
+     "apispec-oci-cc9/repo/src/oci/announcements_service/announcements_preferences_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/announcements_service/announcements_preferences_client.py",
+      "sha256": "7343127ec43bd7bc4cf2c3025f56542c3ddd300f9b2fd75dbd561e1e9ee4f0f3"
+     },
+     "apispec-oci-cc9/repo/src/oci/announcements_service/service_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/announcements_service/service_client.py",
+      "sha256": "b407f504a53407e8eae217469c8f4aa443bc7dba3ac5f1cacf5fe037b0123410"
+     },
+     "apispec-oci-cc9/repo/src/oci/api_platform/api_platform_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/api_platform/api_platform_client.py",
+      "sha256": "aa5c59e86ee3fc8d43fe3ac98b4d0bd86922033cbe152af050bd98900daccd9f"
+     },
+     "apispec-oci-cc9/repo/src/oci/apiaccesscontrol/api_metadata_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/apiaccesscontrol/api_metadata_client.py",
+      "sha256": "569668e16a9ae64d4492bbb8b8a6124c8205bffb06e6080d7be0f5455b9e03da"
+     },
+     "apispec-oci-cc9/repo/src/oci/apiaccesscontrol/privileged_api_control_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/apiaccesscontrol/privileged_api_control_client.py",
+      "sha256": "b37f35b3670590d450423734b35ec49a040edafe997319cc56e205daecee3d83"
+     },
+     "apispec-oci-cc9/repo/src/oci/apiaccesscontrol/privileged_api_requests_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/apiaccesscontrol/privileged_api_requests_client.py",
+      "sha256": "d2583bc6d52910c000739539760574c48de4ac61c1a3327dbcbcbc0a16e74a7b"
+     },
+     "apispec-oci-cc9/repo/src/oci/apiaccesscontrol/privileged_api_work_request_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/apiaccesscontrol/privileged_api_work_request_client.py",
+      "sha256": "8f39f427def486c797f99ca314cf8689d25a991c1bdd27dc4e132814f3380a91"
+     },
+     "apispec-oci-cc9/repo/src/oci/apigateway/api_gateway_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/apigateway/api_gateway_client.py",
+      "sha256": "a643dce732eca480002fd833b745cdd36c47321e99170d7efcdae80719662f6b"
+     },
+     "apispec-oci-cc9/repo/src/oci/apigateway/deployment_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/apigateway/deployment_client.py",
+      "sha256": "833d2f6a40590c8a959a88382d8c0a25282473db2898a43c8939af08a15ce8c4"
+     },
+     "apispec-oci-cc9/repo/src/oci/apigateway/gateway_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/apigateway/gateway_client.py",
+      "sha256": "b08e315a1ea02c13d80b402f3b9b6f24d6e87209bffe48695ff12499978c5e5e"
+     },
+     "apispec-oci-cc9/repo/src/oci/apigateway/subscribers_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/apigateway/subscribers_client.py",
+      "sha256": "67ffbe37d7c0b007e4a3d0e663f2a2a215978b19122effb4ee567c4ac9008dea"
+     },
+     "apispec-oci-cc9/repo/src/oci/apigateway/usage_plans_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/apigateway/usage_plans_client.py",
+      "sha256": "1567a3086809bb6477d86a287c8fc5c28ec37c14f5899013603f49a88933a993"
+     },
+     "apispec-oci-cc9/repo/src/oci/apigateway/work_requests_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/apigateway/work_requests_client.py",
+      "sha256": "b30aa9734b64188b3a9242a2eaaed929053b8aff23673929c7209e1e961609e5"
+     },
+     "apispec-oci-cc9/repo/src/oci/apm_config/config_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/apm_config/config_client.py",
+      "sha256": "f43ca073b0b2c1ed9713659768e2e87fffe9092eecc23406a3194c970db38bde"
+     },
+     "apispec-oci-cc9/repo/src/oci/apm_control_plane/apm_domain_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/apm_control_plane/apm_domain_client.py",
+      "sha256": "e0f556f0a3b6ea43025eeab0f60de220373c7bbbfb968b629df3241c9c4b6782"
+     },
+     "apispec-oci-cc9/repo/src/oci/apm_synthetics/apm_synthetic_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/apm_synthetics/apm_synthetic_client.py",
+      "sha256": "f6919f3e68cf34b81ba7149cae06d07a277f5a1f41b12b7e1b726dbf8e31cb1b"
+     },
+     "apispec-oci-cc9/repo/src/oci/apm_traces/attributes_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/apm_traces/attributes_client.py",
+      "sha256": "8a70de200c3e42894ed3902cf7060f035f97f79a682d80166e34424590e49ec2"
+     },
+     "apispec-oci-cc9/repo/src/oci/apm_traces/query_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/apm_traces/query_client.py",
+      "sha256": "225d464f6a765749808522edab729175ac7a30209e4872b93278cb0274d6ec34"
+     },
+     "apispec-oci-cc9/repo/src/oci/apm_traces/scheduled_query_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/apm_traces/scheduled_query_client.py",
+      "sha256": "d737ca927cc41537cdef1d99c523719db690f2a904244b699dc26c28c898f422"
+     },
+     "apispec-oci-cc9/repo/src/oci/apm_traces/trace_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/apm_traces/trace_client.py",
+      "sha256": "b483dd1b221b30f9a4ce561a7476a021fc6867f58b57e6f2228893ab33add3ce"
+     },
+     "apispec-oci-cc9/repo/src/oci/appmgmt_control/appmgmt_control_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/appmgmt_control/appmgmt_control_client.py",
+      "sha256": "fe5ea9b20f78bc14ffb5e74e5907d5f6d92d2f7ec98bc0bab92128e5c1891eea"
+     },
+     "apispec-oci-cc9/repo/src/oci/artifacts/artifacts_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/artifacts/artifacts_client.py",
+      "sha256": "b493aa2b268cc3e837d68426c7068abc7c49e8e87a67058e23746caccf04bc6c"
+     },
+     "apispec-oci-cc9/repo/src/oci/audit/audit_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/audit/audit_client.py",
+      "sha256": "ac743f8625803c6cab01200e459658111145cd598b13c0c87d7635e8f7048918"
+     },
+     "apispec-oci-cc9/repo/src/oci/auth/federation_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/auth/federation_client.py",
+      "sha256": "6488788565b87e8edcc4504751e09185854acaa6e821c085147b9ddaf64a3ff6"
+     },
+     "apispec-oci-cc9/repo/src/oci/autoscaling/auto_scaling_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/autoscaling/auto_scaling_client.py",
+      "sha256": "6d68ecdaffd695ebc2c66df5fe2cacdccdd6e94acd7fff135a04c16537b8a4d8"
+     },
+     "apispec-oci-cc9/repo/src/oci/bastion/bastion_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/bastion/bastion_client.py",
+      "sha256": "b5f56ad2590ab9ddfd6418ca242f11cffde0229cb8c7471ed38c521ec5fbc6e5"
+     },
+     "apispec-oci-cc9/repo/src/oci/batch/batch_computing_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/batch/batch_computing_client.py",
+      "sha256": "1e963a46ffe7a2d7de3d1798a3dfb2477fe406bb3bcb51f6fd23c186780822ac"
+     },
+     "apispec-oci-cc9/repo/src/oci/bds/bds_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/bds/bds_client.py",
+      "sha256": "990a2ae49b9b069d1cc3704f56841c29cf2bc2c92bfe2ad93985a17d0e5e0cdc"
+     },
+     "apispec-oci-cc9/repo/src/oci/blockchain/blockchain_platform_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/blockchain/blockchain_platform_client.py",
+      "sha256": "c89e26b5e7ab5239fcfb73f5d0b21f3f1bc2739c3baefcf13896b79a4f841712"
+     },
+     "apispec-oci-cc9/repo/src/oci/budget/budget_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/budget/budget_client.py",
+      "sha256": "63b84eab67478b2badda2ada0c0cf5333f7138f1c231c322eb810275226e2bf3"
+     },
+     "apispec-oci-cc9/repo/src/oci/budget/cost_ad_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/budget/cost_ad_client.py",
+      "sha256": "02b682878b095b0a2121060e92963bc4ea7e9e1add8ebc0a8dcce82b6632ae88"
+     },
+     "apispec-oci-cc9/repo/src/oci/capacity_management/capacity_management_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/capacity_management/capacity_management_client.py",
+      "sha256": "a94830c524f52c71ca5a7589d2599ae99adc46c50c5463a7a2336c30a0ba9586"
+     },
+     "apispec-oci-cc9/repo/src/oci/capacity_management/demand_signal_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/capacity_management/demand_signal_client.py",
+      "sha256": "9c6bc7856cbbe2ec7b7908fcc377d833b9c73fe8a4b6ed4f58a993dfed69e13d"
+     },
+     "apispec-oci-cc9/repo/src/oci/capacity_management/internal_demand_signal_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/capacity_management/internal_demand_signal_client.py",
+      "sha256": "b922423a2f07603ac08d32eae00ce6949aceb7fa5e33daafbdb7ec08ed4d4537"
+     },
+     "apispec-oci-cc9/repo/src/oci/ccd_offers/ccd_commitments_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/ccd_offers/ccd_commitments_client.py",
+      "sha256": "0ad3abeb811071b665fbfca5fd4de197c5a762c546a11e5257379a948753459c"
+     },
+     "apispec-oci-cc9/repo/src/oci/ccd_offers/ccd_offers_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/ccd_offers/ccd_offers_client.py",
+      "sha256": "ace2970bd16325b9b974b95061bee8c6f79cda4e1749098ba3f28203546563d6"
+     },
+     "apispec-oci-cc9/repo/src/oci/certificates/certificates_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/certificates/certificates_client.py",
+      "sha256": "396afb843ac3b0d7ef69ed1864a6f122460464634e01478d1346c07473386e51"
+     },
+     "apispec-oci-cc9/repo/src/oci/certificates_management/certificates_management_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/certificates_management/certificates_management_client.py",
+      "sha256": "34adad1e2c8f2183a3a7d3a6e72c6ebd6af849a93a1c9e2f07bcce885ecc6d6b"
+     },
+     "apispec-oci-cc9/repo/src/oci/cims/incident_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/cims/incident_client.py",
+      "sha256": "d0948eb4672a0d47294a3ed2a22aa9580bb4dde548b8122feedbc82262a55ae4"
+     },
+     "apispec-oci-cc9/repo/src/oci/cloud_bridge/common_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/cloud_bridge/common_client.py",
+      "sha256": "8b96a9cde720bf0e01e98228798473668832c8663e4542e64dfd2916e7d12fc9"
+     },
+     "apispec-oci-cc9/repo/src/oci/cloud_bridge/discovery_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/cloud_bridge/discovery_client.py",
+      "sha256": "66b93d83a87f688c49c83e2a4a1160d249557b63db6cb7e4c3e319e60176c902"
+     },
+     "apispec-oci-cc9/repo/src/oci/cloud_bridge/inventory_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/cloud_bridge/inventory_client.py",
+      "sha256": "f348f43c2a39c922947de4037a536d8f3999d7e6d07886c4860c39cbcee44fe7"
+     },
+     "apispec-oci-cc9/repo/src/oci/cloud_bridge/ocb_agent_svc_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/cloud_bridge/ocb_agent_svc_client.py",
+      "sha256": "076318571cdc0874b861bbf2a9bf6965e9d82fc13943a60b47ac723c40321124"
+     },
+     "apispec-oci-cc9/repo/src/oci/cloud_guard/cloud_guard_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/cloud_guard/cloud_guard_client.py",
+      "sha256": "198200ca81f7710b4f7c86ef75317464047418a7793b7695fda19fb595fcf2f4"
+     },
+     "apispec-oci-cc9/repo/src/oci/cloud_migrations/migration_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/cloud_migrations/migration_client.py",
+      "sha256": "0e8d39550a8ef7be10b2d6f92f94b58fcf8117642945cb485df1e51012ba4754"
+     },
+     "apispec-oci-cc9/repo/src/oci/cluster_health/diagnosis_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/cluster_health/diagnosis_client.py",
+      "sha256": "0096881d408f698f4604bde1337c33a135c6bc42beb87c054ad7e2297e97e357"
+     },
+     "apispec-oci-cc9/repo/src/oci/cluster_placement_groups/cluster_placement_groups_cp_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/cluster_placement_groups/cluster_placement_groups_cp_client.py",
+      "sha256": "221df1d7d3caf8326d1f14bb84b4adb28fd56a5935f9f77c7a1bc6236ec289b7"
+     },
+     "apispec-oci-cc9/repo/src/oci/compute_cloud_at_customer/compute_cloud_at_customer_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/compute_cloud_at_customer/compute_cloud_at_customer_client.py",
+      "sha256": "b098cf4026f462d21be564a6dfba88b39920131f575dfbc9e9969f83e8865f61"
+     },
+     "apispec-oci-cc9/repo/src/oci/compute_instance_agent/compute_instance_agent_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/compute_instance_agent/compute_instance_agent_client.py",
+      "sha256": "124551098d88e1633e986cf7b9fe28ca1bace473d8fd326ce7e1c72671454a8a"
+     },
+     "apispec-oci-cc9/repo/src/oci/compute_instance_agent/plugin_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/compute_instance_agent/plugin_client.py",
+      "sha256": "145e0d2827300f2ba8abacd16e48da73a6271305f4e170e6455bb387767a4777"
+     },
+     "apispec-oci-cc9/repo/src/oci/compute_instance_agent/pluginconfig_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/compute_instance_agent/pluginconfig_client.py",
+      "sha256": "86cfe9a68e6cef3ff999ba664281fb8725f4df41ab7c3d13c98081bb3add84ae"
+     },
+     "apispec-oci-cc9/repo/src/oci/container_engine/container_engine_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/container_engine/container_engine_client.py",
+      "sha256": "946eb753186c606db27bfefda3d5fcfb80fa5c7662a4ec7560ee14f952cfe8a3"
+     },
+     "apispec-oci-cc9/repo/src/oci/container_instances/container_instance_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/container_instances/container_instance_client.py",
+      "sha256": "867163d0bbcc01d074cc3d4519fd846efa218803497b87f11a2ff97aa0e57809"
+     },
+     "apispec-oci-cc9/repo/src/oci/container_registry/container_registry_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/container_registry/container_registry_client.py",
+      "sha256": "13a7f3a4d770a327b1813a42930b5f9aac526b1180d3721ca62921ee27597369"
+     },
+     "apispec-oci-cc9/repo/src/oci/core/blockstorage_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/core/blockstorage_client.py",
+      "sha256": "5cd77edef371a15817421a73881ea8299611f6daa0aeaeffac12396946fee6f1"
+     },
+     "apispec-oci-cc9/repo/src/oci/core/compute_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/core/compute_client.py",
+      "sha256": "b83ee5576555b49db5e0f224260dbb02ef89938a2fc4955a132512b6923219c5"
+     },
+     "apispec-oci-cc9/repo/src/oci/core/compute_management_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/core/compute_management_client.py",
+      "sha256": "66008f5e87dc198f6f3c70b58b74a3e70c3adc851ebb196c18bbc594645fc3d9"
+     },
+     "apispec-oci-cc9/repo/src/oci/costad/cost_ad_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/costad/cost_ad_client.py",
+      "sha256": "a89b758216428d877e50f8e29b02f79b0e9e56459b5aa4bb14dbe641013b76d8"
+     },
+     "apispec-oci-cc9/repo/src/oci/dashboard_service/dashboard_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/dashboard_service/dashboard_client.py",
+      "sha256": "c3e2914a0afe1bf5ffb46bdfbfa43ec42a0bbe99f455f2253517cf7070d0da0b"
+     },
+     "apispec-oci-cc9/repo/src/oci/dashboard_service/dashboard_group_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/dashboard_service/dashboard_group_client.py",
+      "sha256": "cb59d86ad9f9a730bcd594dcfd227f3317a5d29468e6055ad2d3cffb1c7114c5"
+     },
+     "apispec-oci-cc9/repo/src/oci/data_catalog/data_catalog_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/data_catalog/data_catalog_client.py",
+      "sha256": "edaa983da90cad444f84fa52e8944ab2156d27cd99cc828691e49c499f073627"
+     },
+     "apispec-oci-cc9/repo/src/oci/data_flow/data_flow_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/data_flow/data_flow_client.py",
+      "sha256": "f7d885a19116dd07ea8ccb14afcfd9ada40129a1397f6a787b934562fba1a912"
+     },
+     "apispec-oci-cc9/repo/src/oci/data_integration/data_integration_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/data_integration/data_integration_client.py",
+      "sha256": "bdea2f41cebb0c7a2e19d7b8b1866e122a09776f6b44abbacfc4dfa61a9d62b4"
+     },
+     "apispec-oci-cc9/repo/src/oci/data_labeling_service/data_labeling_management_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/data_labeling_service/data_labeling_management_client.py",
+      "sha256": "61c1877dab9b4f9cffe84587f225b863321a8cee7ffc67cd1b95e17115298a91"
+     },
+     "apispec-oci-cc9/repo/src/oci/data_labeling_service_dataplane/data_labeling_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/data_labeling_service_dataplane/data_labeling_client.py",
+      "sha256": "55ab8af7cce3c7beb44bf5db64c6a42f27d8fc2758ae93d43aba7292cd92d028"
+     },
+     "apispec-oci-cc9/repo/src/oci/data_safe/data_safe_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/data_safe/data_safe_client.py",
+      "sha256": "84d2214751b23523a064be46d826809de41cc2fec5279ad28b90c7bc854fcf43"
+     },
+     "apispec-oci-cc9/repo/src/oci/data_science/data_science_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/data_science/data_science_client.py",
+      "sha256": "75afc510cd2fc330644b1679969edade8e8b56b5f21e7c578d1535671f24ac49"
+     },
+     "apispec-oci-cc9/repo/src/oci/database/database_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/database/database_client.py",
+      "sha256": "30ef7cf00be24f6bef8c91fc2358aa1ce1bdd4e998584e7778b600d124483099"
+     },
+     "apispec-oci-cc9/repo/src/oci/database_management/db_management_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/database_management/db_management_client.py",
+      "sha256": "9ee70003ff17ab1c9c21e0e84dc93dec980b3e153fa54565a8b1c2f0bb455934"
+     },
+     "apispec-oci-cc9/repo/src/oci/database_management/diagnosability_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/database_management/diagnosability_client.py",
+      "sha256": "3a9899dd67803b96bf3a09a5b5678aa3d9c7cbbab4d84f88c09e9f3d2d6ad91b"
+     },
+     "apispec-oci-cc9/repo/src/oci/database_management/managed_my_sql_databases_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/database_management/managed_my_sql_databases_client.py",
+      "sha256": "a48962161a95093b1d6c71ccaaeec0f0a1e21b90e6ac30eff26aa0a49fbb3eb0"
+     },
+     "apispec-oci-cc9/repo/src/oci/database_management/perfhub_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/database_management/perfhub_client.py",
+      "sha256": "35d7a619f0422a8fdd57928c68dae510ddea976c93147614cde834e2dbd40d4c"
+     },
+     "apispec-oci-cc9/repo/src/oci/database_management/sql_tuning_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/database_management/sql_tuning_client.py",
+      "sha256": "0dfbf7cac456be8032a2143522fc6da99e1f4480b2fa5efbe1f816207714eaf6"
+     },
+     "apispec-oci-cc9/repo/src/oci/database_migration/database_migration_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/database_migration/database_migration_client.py",
+      "sha256": "72bb90123d1cdbd3749c89c6b3fe4fb0d39b026e2797e3766af6166ea28d4bf0"
+     },
+     "apispec-oci-cc9/repo/src/oci/database_tools/database_tools_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/database_tools/database_tools_client.py",
+      "sha256": "aba7a0198b3d7f98aad232d1f3377ac1f507e434d1beecbfaa34811fcfe356b3"
+     },
+     "apispec-oci-cc9/repo/src/oci/database_tools_runtime/database_tools_runtime_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/database_tools_runtime/database_tools_runtime_client.py",
+      "sha256": "27390651686ad7091f43417238e3038a35eda75d63b03632db00f0feed92907c"
+     },
+     "apispec-oci-cc9/repo/src/oci/datacc/baseinfra_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/datacc/baseinfra_client.py",
+      "sha256": "c97371092d031a6434f5d6ad873119305cbf2ad1c132ee3fe409f533986c784e"
+     },
+     "apispec-oci-cc9/repo/src/oci/dblm/db_life_cycle_management_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/dblm/db_life_cycle_management_client.py",
+      "sha256": "9d7b5f7a4fd12e419556be2a3801dcff20409370bdf4cc4a32fd7abbef39288e"
+     },
+     "apispec-oci-cc9/repo/src/oci/dbmulticloud/db_multicloud_aws_provider_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/dbmulticloud/db_multicloud_aws_provider_client.py",
+      "sha256": "4cc1af2fe87481da6b6c64d88f1369746d1b17f6c229dc89b86632e2f32a7710"
+     },
+     "apispec-oci-cc9/repo/src/oci/dbmulticloud/db_multicloud_gcp_provider_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/dbmulticloud/db_multicloud_gcp_provider_client.py",
+      "sha256": "fb9ecda3dc516beb0f918a51cfb48c894712c2dcbde6007ec1536d73b345b10d"
+     },
+     "apispec-oci-cc9/repo/src/oci/dbmulticloud/multi_cloud_resource_discovery_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/dbmulticloud/multi_cloud_resource_discovery_client.py",
+      "sha256": "86b3c1991695607041c4e29af6775c8c45d723d699b83f94829266fe8579e1a8"
+     },
+     "apispec-oci-cc9/repo/src/oci/dbmulticloud/oracle_db_azure_blob_container_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/dbmulticloud/oracle_db_azure_blob_container_client.py",
+      "sha256": "464235a567edcad4b62b915995337aca6ff961b6768e995e136693c7ff3f71a7"
+     },
+     "apispec-oci-cc9/repo/src/oci/dbmulticloud/oracle_db_azure_blob_mount_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/dbmulticloud/oracle_db_azure_blob_mount_client.py",
+      "sha256": "e7a3232a1c598ac96905d4eaf03822caebdb47d55b94423135c919f1de9cc95b"
+     },
+     "apispec-oci-cc9/repo/src/oci/dbmulticloud/oracle_db_azure_connector_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/dbmulticloud/oracle_db_azure_connector_client.py",
+      "sha256": "f1d8e80b37363785d7270a429941efbc83c5e00470d78353f6f5a0331f9c4ae7"
+     },
+     "apispec-oci-cc9/repo/src/oci/dbmulticloud/oracle_db_azure_key_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/dbmulticloud/oracle_db_azure_key_client.py",
+      "sha256": "91baf7b49bf0d427a81988426d20ceb6012c190731145e337871e1c34d9129de"
+     },
+     "apispec-oci-cc9/repo/src/oci/dbmulticloud/oracle_db_azure_vault_association_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/dbmulticloud/oracle_db_azure_vault_association_client.py",
+      "sha256": "3f5dd6b5c78a127e2e0e2978602d9984b707e3759129564924b77af36361f47f"
+     },
+     "apispec-oci-cc9/repo/src/oci/dbmulticloud/oracle_db_azure_vault_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/dbmulticloud/oracle_db_azure_vault_client.py",
+      "sha256": "f7b7e8281329e1ec50006caf48542f3fba84f78932bd046c489755fe4de59730"
+     },
+     "apispec-oci-cc9/repo/src/oci/dbmulticloud/work_request_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/dbmulticloud/work_request_client.py",
+      "sha256": "d20176fde5cd1bec4c93095e7a2059b66eff38acbd91fdc320d922be38570745"
+     },
+     "apispec-oci-cc9/repo/src/oci/ddfs/instance_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/ddfs/instance_client.py",
+      "sha256": "14086c8402b6dba4f004a1534f677448d55d0378278041a2d2966e8f5b8900b6"
+     },
+     "apispec-oci-cc9/repo/src/oci/delegate_access_control/delegate_access_control_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/delegate_access_control/delegate_access_control_client.py",
+      "sha256": "5cf1d258283100bbb11a829fa8bdb92edb8a045e928a12e3b9d9ff05d9b03c05"
+     },
+     "apispec-oci-cc9/repo/src/oci/delegate_access_control/work_request_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/delegate_access_control/work_request_client.py",
+      "sha256": "5148f9a80eb7c676b57fb4d2ce5cd246acf84c476e666c794f7fd2129890f9b2"
+     },
+     "apispec-oci-cc9/repo/src/oci/demand_signal/occ_demand_signal_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/demand_signal/occ_demand_signal_client.py",
+      "sha256": "0f0e34448c203ea8bfec1ff80fa15e2bb089a68ecce052aad878115850fd795a"
+     },
+     "apispec-oci-cc9/repo/src/oci/demand_signal/occ_metric_alarm_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/demand_signal/occ_metric_alarm_client.py",
+      "sha256": "73d02466a45ea0360e946de14d9ce73c93bfbf15527defdefe32168e77e08b0d"
+     },
+     "apispec-oci-cc9/repo/src/oci/desktops/desktop_service_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/desktops/desktop_service_client.py",
+      "sha256": "bfc2193426838b1a49bbde388d70ac6bcb1c660faa32b72d84aebd9c51fbc452"
+     },
+     "apispec-oci-cc9/repo/src/oci/devops/devops_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/devops/devops_client.py",
+      "sha256": "b6b008391c5e7d5122593ed6f7fa23c1658d6a6cb8bdef078c7a20a956b034ea"
+     },
+     "apispec-oci-cc9/repo/src/oci/dif/stack_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/dif/stack_client.py",
+      "sha256": "11d9610b1d2243dd7a41fe0ec4856bd171898f78f2006b79685bf90642800b74"
+     },
+     "apispec-oci-cc9/repo/src/oci/disaster_recovery/disaster_recovery_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/disaster_recovery/disaster_recovery_client.py",
+      "sha256": "76ad854d77543edd5255ea613ff233727cbdf67b55f3d0a352782eb5488dc067"
+     },
+     "apispec-oci-cc9/repo/src/oci/distributed_database/distributed_autonomous_db_service_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/distributed_database/distributed_autonomous_db_service_client.py",
+      "sha256": "7c10b4c796350d4ad022d2da858e609d5cffbf25ef32779ef873c2302b28d634"
+     },
+     "apispec-oci-cc9/repo/src/oci/distributed_database/distributed_db_private_endpoint_service_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/distributed_database/distributed_db_private_endpoint_service_client.py",
+      "sha256": "e6e93934d1305a16694741a6dce9267cac1a645d0137305c13a788780281134c"
+     },
+     "apispec-oci-cc9/repo/src/oci/distributed_database/distributed_db_service_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/distributed_database/distributed_db_service_client.py",
+      "sha256": "0c05b8b3f6b6323cca6dd8e2e0fc9eda91998ae15435a755c825fe0b30a86388"
+     },
+     "apispec-oci-cc9/repo/src/oci/distributed_database/distributed_db_work_request_service_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/distributed_database/distributed_db_work_request_service_client.py",
+      "sha256": "68df19b808546074413c24b1c2cf619dae0349238414a233fc81566394e84ffe"
+     },
+     "apispec-oci-cc9/repo/src/oci/dns/dns_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/dns/dns_client.py",
+      "sha256": "68fd5d1816134ad88f8b34038899d8df41f80a0136e1bad9666b48b32962c35b"
+     },
+     "apispec-oci-cc9/repo/src/oci/em_warehouse/em_warehouse_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/em_warehouse/em_warehouse_client.py",
+      "sha256": "16ab35e051abc88bf1633cdd0cd4d83c2a38ed8eb4bb35ead7eb0e4fb97a8e16"
+     },
+     "apispec-oci-cc9/repo/src/oci/email/email_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/email/email_client.py",
+      "sha256": "c8cbf5dabb3dedd4d02d68d3723ea8e7aa854002ddea397f1e44a9d0c9413a05"
+     },
+     "apispec-oci-cc9/repo/src/oci/email_data_plane/email_dp_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/email_data_plane/email_dp_client.py",
+      "sha256": "6a29127c999eebd34b617eb5506523de8131566ce3740b69697e2035350a5267"
+     },
+     "apispec-oci-cc9/repo/src/oci/events/events_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/events/events_client.py",
+      "sha256": "605eca0929d472dbb5b77a58d01804f62dec09ca6f903eb49101ea3189deedfa"
+     },
+     "apispec-oci-cc9/repo/src/oci/file_storage/file_storage_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/file_storage/file_storage_client.py",
+      "sha256": "3bac9e9514bb68b016857c49caa6220c9a024f18d0d43471f5d52fa4a8fb6295"
+     },
+     "apispec-oci-cc9/repo/src/oci/fleet_apps_management/fleet_apps_management_admin_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/fleet_apps_management/fleet_apps_management_admin_client.py",
+      "sha256": "fba5bc5a8658a38af8d134807ac4321cc49c50f05b8e7009ba342b3aa4445336"
+     },
+     "apispec-oci-cc9/repo/src/oci/fleet_apps_management/fleet_apps_management_catalog_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/fleet_apps_management/fleet_apps_management_catalog_client.py",
+      "sha256": "390e33e513b003d2267beeab5aacba2917a3a7051936a248f0a9f1f228e12647"
+     },
+     "apispec-oci-cc9/repo/src/oci/fleet_apps_management/fleet_apps_management_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/fleet_apps_management/fleet_apps_management_client.py",
+      "sha256": "43381b5edc090ff31449656f90570d74664bfdbf1d95acaa86b106bc40b26c5e"
+     },
+     "apispec-oci-cc9/repo/src/oci/fleet_apps_management/fleet_apps_management_maintenance_window_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/fleet_apps_management/fleet_apps_management_maintenance_window_client.py",
+      "sha256": "dc17cb54ca66fa2818ec1498334af759a35942677d42677721d75dc449a8e53c"
+     },
+     "apispec-oci-cc9/repo/src/oci/fleet_apps_management/fleet_apps_management_operations_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/fleet_apps_management/fleet_apps_management_operations_client.py",
+      "sha256": "a3e5c79b351ad9cd27a8f1f36529fdbd296479b0084efff5b7f91a0df4f62f7a"
+     },
+     "apispec-oci-cc9/repo/src/oci/fleet_apps_management/fleet_apps_management_provision_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/fleet_apps_management/fleet_apps_management_provision_client.py",
+      "sha256": "872f5696a43158cb03bb8f2c3dbef91d1d0ed900d79c56398734fc0b6f51fa73"
+     },
+     "apispec-oci-cc9/repo/src/oci/fleet_apps_management/fleet_apps_management_runbooks_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/fleet_apps_management/fleet_apps_management_runbooks_client.py",
+      "sha256": "6a2df0cc90e4e4a47fb066e1e05d6629504755f3659eeac28da1fd339b5e2ef4"
+     },
+     "apispec-oci-cc9/repo/src/oci/fleet_apps_management/fleet_apps_management_work_request_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/fleet_apps_management/fleet_apps_management_work_request_client.py",
+      "sha256": "563480c3ca8ef36508c0c878887bd9e18a2704aeaba6e72697bd3313df4d2fab"
+     },
+     "apispec-oci-cc9/repo/src/oci/fleet_software_update/fleet_software_update_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/fleet_software_update/fleet_software_update_client.py",
+      "sha256": "32732fca9b502af8f9ec6befe4ff875296f30ad4d2538421e96826dee3577219"
+     },
+     "apispec-oci-cc9/repo/src/oci/functions/functions_invoke_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/functions/functions_invoke_client.py",
+      "sha256": "483babf011a132aff8743e9e810a697fe15835b0951ceafb56879d9da5c53417"
+     },
+     "apispec-oci-cc9/repo/src/oci/functions/functions_management_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/functions/functions_management_client.py",
+      "sha256": "2e42068e24ba34ad04e36164b185b3c54fe4e99e9ccddf4ec3a84b08f9619da9"
+     },
+     "apispec-oci-cc9/repo/src/oci/functions/work_request_management_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/functions/work_request_management_client.py",
+      "sha256": "2f1f10fff26c56ffe85bf6ccc937cb20dbd52032c98c313cd723610d8ad9e9a0"
+     },
+     "apispec-oci-cc9/repo/src/oci/fusion_apps/fusion_applications_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/fusion_apps/fusion_applications_client.py",
+      "sha256": "21bee98d073d7964b3d8ebc279c55bff4934dc57d0a92e9b3939a01eaaa57c87"
+     },
+     "apispec-oci-cc9/repo/src/oci/gdp/guarded_data_pipeline_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/gdp/guarded_data_pipeline_client.py",
+      "sha256": "aa53a661521e717c7d2ffa6bab30bbbf57a719811c785ba1019f2f6a4e905e57"
+     },
+     "apispec-oci-cc9/repo/src/oci/generative_ai/generative_ai_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/generative_ai/generative_ai_client.py",
+      "sha256": "c4a27b00508f65a1037b39b0bc8ecf0223b16dc21960d0ca1d45d3eee0ddb3e1"
+     },
+     "apispec-oci-cc9/repo/src/oci/generative_ai_agent/generative_ai_agent_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/generative_ai_agent/generative_ai_agent_client.py",
+      "sha256": "535cc06c9375fdc1c34c55c034a29f5d33fc4cbf0432f8c0135b13e1c9b96606"
+     },
+     "apispec-oci-cc9/repo/src/oci/generative_ai_agent_runtime/generative_ai_agent_runtime_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/generative_ai_agent_runtime/generative_ai_agent_runtime_client.py",
+      "sha256": "67a046fe5d919ce4026eaa2f49288c51fc5be7fb72fae80df4a507ffe7337466"
+     },
+     "apispec-oci-cc9/repo/src/oci/generative_ai_data/enrichment_job_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/generative_ai_data/enrichment_job_client.py",
+      "sha256": "7e5a91cdda8bd8087e1550c158b9b8fdaaba79997adb1ed4fdc0f1698dbf17b5"
+     },
+     "apispec-oci-cc9/repo/src/oci/generative_ai_data/generate_sql_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/generative_ai_data/generate_sql_client.py",
+      "sha256": "33380127734d50b85e7d7f590cbdea19e153f6d0f038f7f70c1231dcd9b7d7de"
+     },
+     "apispec-oci-cc9/repo/src/oci/generative_ai_inference/async_generative_ai_inference_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/generative_ai_inference/async_generative_ai_inference_client.py",
+      "sha256": "39a459370493e0ca230f221a85bda712f65dc80e0cc3d8b5f0f447a1ff5f0a0c"
+     },
+     "apispec-oci-cc9/repo/src/oci/generative_ai_inference/generative_ai_inference_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/generative_ai_inference/generative_ai_inference_client.py",
+      "sha256": "913cce73dc4c4b894f55b2ee1ad520026225975c1aac094f5faaa7c5c268065b"
+     },
+     "apispec-oci-cc9/repo/src/oci/generative_ai_sandbox/generative_ai_sandbox_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/generative_ai_sandbox/generative_ai_sandbox_client.py",
+      "sha256": "f8b6b10e8af7e4898649bcd31743a595e9a507167815a079c65a72ccb18e5526"
+     },
+     "apispec-oci-cc9/repo/src/oci/generic_artifacts_content/generic_artifacts_content_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/generic_artifacts_content/generic_artifacts_content_client.py",
+      "sha256": "f4fa9b752e01560ca7e68f683825649343794d1a58f1aa768a0127b7c74b03ed"
+     },
+     "apispec-oci-cc9/repo/src/oci/golden_gate/golden_gate_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/golden_gate/golden_gate_client.py",
+      "sha256": "ef81cfd0479e8ea54adbe43f44e4d2235510ccd371cf05eb1fc591bccc9f355c"
+     },
+     "apispec-oci-cc9/repo/src/oci/governance_rules_control_plane/governance_rule_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/governance_rules_control_plane/governance_rule_client.py",
+      "sha256": "c88c284457daa4b4d13bdb1a8a5359e6e26274b0e89e6256dfc69e0c327296c1"
+     },
+     "apispec-oci-cc9/repo/src/oci/governance_rules_control_plane/work_request_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/governance_rules_control_plane/work_request_client.py",
+      "sha256": "24541814203e21440be05ee2ead4f46c72ef936574d58fd17f3017c7e652fae2"
+     },
+     "apispec-oci-cc9/repo/src/oci/healthchecks/health_checks_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/healthchecks/health_checks_client.py",
+      "sha256": "7619ff2bea2bd4e8ad5a34285a9a435ae5ec9fae79da588b4ed0b8bfa01f879e"
+     },
+     "apispec-oci-cc9/repo/src/oci/identity/identity_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/identity/identity_client.py",
+      "sha256": "a472016e2fb9babb1355ec70ac2c40d55dee24dcb9e3305e53ada13bdd59d227"
+     },
+     "apispec-oci-cc9/repo/src/oci/identity_data_plane/dataplane_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/identity_data_plane/dataplane_client.py",
+      "sha256": "7e26ad52d3a53383d31efef1339a0f7b1ebffad64952c88df340ed3fb5ccb0bb"
+     },
+     "apispec-oci-cc9/repo/src/oci/identity_domains/identity_domains_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/identity_domains/identity_domains_client.py",
+      "sha256": "d9a317024684dac650ac982a3d03c2c76a9acc6d3bf09d1b048ce06e57b4f91a"
+     },
+     "apispec-oci-cc9/repo/src/oci/integration/integration_instance_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/integration/integration_instance_client.py",
+      "sha256": "bdaad59c82e4909432c64d8112c2a1048e1eb1edb95e60dc37ad4ae1d3c7060a"
+     },
+     "apispec-oci-cc9/repo/src/oci/iot/iot_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/iot/iot_client.py",
+      "sha256": "81c6e8159070c81189cff85112a81785db364e959feed5d030ff3a8ba8a57dd9"
+     },
+     "apispec-oci-cc9/repo/src/oci/jms/java_management_service_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/jms/java_management_service_client.py",
+      "sha256": "57a635f198b28003e5dd2c24e1c2dca68d5b2910afd946c9e5e067ddc1fb4ae7"
+     },
+     "apispec-oci-cc9/repo/src/oci/jms_java_downloads/java_download_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/jms_java_downloads/java_download_client.py",
+      "sha256": "59ed29cd87a93102928ecccb7682db90fa6d524800af3e59a1e170419ac5a3c2"
+     },
+     "apispec-oci-cc9/repo/src/oci/jms_utils/jms_utils_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/jms_utils/jms_utils_client.py",
+      "sha256": "6c1c80b8f2e234dc10ae4bf7269e1f1029a248a2df4f311f93c238d94e9a8a9b"
+     },
+     "apispec-oci-cc9/repo/src/oci/key_management/ekm_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/key_management/ekm_client.py",
+      "sha256": "0ba02c0fe3a07465c94426495a883580786661a0486c6307d2f87d7767a45f48"
+     },
+     "apispec-oci-cc9/repo/src/oci/key_management/kms_crypto_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/key_management/kms_crypto_client.py",
+      "sha256": "269f0a195a1473488af497b6010595ec23f2cd704ab1b34d42d5ea562dbf98b9"
+     },
+     "apispec-oci-cc9/repo/src/oci/key_management/kms_hsm_cluster_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/key_management/kms_hsm_cluster_client.py",
+      "sha256": "cb5caadc69d1d1db19e0a25d966fe76f569c58cd160d70a14767d906d7624385"
+     },
+     "apispec-oci-cc9/repo/src/oci/key_management/kms_management_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/key_management/kms_management_client.py",
+      "sha256": "4bdd22f4f6125d94d5e68faa58fae718668a5a1145cb92738ae58623fbe66e1e"
+     },
+     "apispec-oci-cc9/repo/src/oci/key_management/kms_vault_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/key_management/kms_vault_client.py",
+      "sha256": "c7828bd89041230088be4801dba9fa0759f50c4a6520988c7677ae37db9cb2ed"
+     },
+     "apispec-oci-cc9/repo/src/oci/license_manager/license_manager_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/license_manager/license_manager_client.py",
+      "sha256": "b348b8b284b49a2a41df82b40cab4b10b8a28aa06a4e95575883c50df536c8ba"
+     },
+     "apispec-oci-cc9/repo/src/oci/limits/limits_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/limits/limits_client.py",
+      "sha256": "729ef9f092ec49d12a886e5c10fbdfdfdfeb70454ba8e392f6c74c1e32e90c09"
+     },
+     "apispec-oci-cc9/repo/src/oci/limits/quotas_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/limits/quotas_client.py",
+      "sha256": "d80dab0473740cc6f293b6300cb5a1b2ed82105f60e33a72997420b2fb82e99e"
+     },
+     "apispec-oci-cc9/repo/src/oci/limits_increase/limits_increase_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/limits_increase/limits_increase_client.py",
+      "sha256": "9420d965fffa9453f309533c939699f5a631dcf6e41587a16b76f3d08e602967"
+     },
+     "apispec-oci-cc9/repo/src/oci/load_balancer/load_balancer_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/load_balancer/load_balancer_client.py",
+      "sha256": "e4020af603066f564fe85e48205a37260fe379358a83d1e4b64c34856be9d75d"
+     },
+     "apispec-oci-cc9/repo/src/oci/lockbox/lockbox_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/lockbox/lockbox_client.py",
+      "sha256": "c0a48f1a77d56a330a7740fe254c795be7b5770130d7d9a3a5afaae788ad43c3"
+     },
+     "apispec-oci-cc9/repo/src/oci/log_analytics/log_analytics_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/log_analytics/log_analytics_client.py",
+      "sha256": "f917ceaa45b20dbd3140f3aef6f83ffff17dcd9a2ea15451cde7a53d84d334a1"
+     },
+     "apispec-oci-cc9/repo/src/oci/logging/logging_management_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/logging/logging_management_client.py",
+      "sha256": "e4e3337d52fd2536a07e65a010f632d1c7ee8e46e7fc25feabe4ce6adf2a14c0"
+     },
+     "apispec-oci-cc9/repo/src/oci/loggingingestion/logging_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/loggingingestion/logging_client.py",
+      "sha256": "f8a914a8bdc2957b20675004bb218c0500d3099f88371241a3897f870e506752"
+     },
+     "apispec-oci-cc9/repo/src/oci/loggingsearch/log_search_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/loggingsearch/log_search_client.py",
+      "sha256": "e2f05e118ab73a4b7bb9ea782d5b4b125f59d0cc8a5cc9f457efb095531db596"
+     },
+     "apispec-oci-cc9/repo/src/oci/lustre_file_storage/lustre_file_storage_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/lustre_file_storage/lustre_file_storage_client.py",
+      "sha256": "79824cdca198e7b207d04c3bc77291f1df2483ade662f0a72e817248bccfc049"
+     },
+     "apispec-oci-cc9/repo/src/oci/managed_kafka/kafka_cluster_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/managed_kafka/kafka_cluster_client.py",
+      "sha256": "d423bb0a0cec013e8690b8fc5c1f40a820d3ae8bb73aab2a4b75ca5554d510f2"
+     },
+     "apispec-oci-cc9/repo/src/oci/management_agent/management_agent_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/management_agent/management_agent_client.py",
+      "sha256": "0cca93f581a55dbff08c42a086337109d2a2f7c148817daeeface1ed345872bc"
+     },
+     "apispec-oci-cc9/repo/src/oci/management_dashboard/dashx_apis_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/management_dashboard/dashx_apis_client.py",
+      "sha256": "6b19a0eb4d95b4ad2e6f93935c803913751c862fd07dece77d6995f7377007fc"
+     },
+     "apispec-oci-cc9/repo/src/oci/marketplace/account_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/marketplace/account_client.py",
+      "sha256": "2f653deb809ccd862358ce116bcdbfc4046dbcff81e1bce751520ee45846076e"
+     },
+     "apispec-oci-cc9/repo/src/oci/marketplace/marketplace_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/marketplace/marketplace_client.py",
+      "sha256": "cf49aff19a2792088e04745fb2516c071571ecaa9372d1274a37665f5f362d72"
+     },
+     "apispec-oci-cc9/repo/src/oci/marketplace_private_offer/attachment_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/marketplace_private_offer/attachment_client.py",
+      "sha256": "bd37a201a8a3b3d402342e89f6aef70e591d65abd4869a48444cb2da53aa2263"
+     },
+     "apispec-oci-cc9/repo/src/oci/marketplace_private_offer/offer_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/marketplace_private_offer/offer_client.py",
+      "sha256": "b113304730093534692042d762ea1faa9f6be8d0b2545c27df70713fee134f58"
+     },
+     "apispec-oci-cc9/repo/src/oci/marketplace_private_offer/offer_quote_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/marketplace_private_offer/offer_quote_client.py",
+      "sha256": "7ca641a431f1b68b627898af3aa088978a4a5d8eecc43709c5aedfea3b4b9d3c"
+     },
+     "apispec-oci-cc9/repo/src/oci/marketplace_private_offer/quote_attachment_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/marketplace_private_offer/quote_attachment_client.py",
+      "sha256": "1e643155528db4d7e7becede2dd6c31a13b93e647ea1e8ca0da081384e8ce9a8"
+     },
+     "apispec-oci-cc9/repo/src/oci/marketplace_publisher/administrator_artifact_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/marketplace_publisher/administrator_artifact_client.py",
+      "sha256": "3258f0fc080500a36d6d52fccdd127bfe7502d348f9a4049abfeef33b1213ec6"
+     },
+     "apispec-oci-cc9/repo/src/oci/marketplace_publisher/administrator_publisher_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/marketplace_publisher/administrator_publisher_client.py",
+      "sha256": "409a1b9d4dffd0d38a743ea6e6de398869fe425d29771c535b83c0b3566f7bc4"
+     },
+     "apispec-oci-cc9/repo/src/oci/marketplace_publisher/marketplace_administrator_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/marketplace_publisher/marketplace_administrator_client.py",
+      "sha256": "cc2d5be862449c8b5c6af51b1ac480378215eb577377754c9ff5793daec80394"
+     },
+     "apispec-oci-cc9/repo/src/oci/marketplace_publisher/marketplace_publisher_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/marketplace_publisher/marketplace_publisher_client.py",
+      "sha256": "d36e7ec9268c95a5b3e49ddd77d9bc7216b0adc0cedd5da137976572d38d1442"
+     },
+     "apispec-oci-cc9/repo/src/oci/media_services/media_services_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/media_services/media_services_client.py",
+      "sha256": "5c7a420fbfbaf70e256ba6a7c631d7b89a09da6941352555fc7d3230f25215ef"
+     },
+     "apispec-oci-cc9/repo/src/oci/media_services/media_stream_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/media_services/media_stream_client.py",
+      "sha256": "ba86c2f3201b4f91e0d6c6f91bd93c24c803539445b641b39f35616290ba5c6c"
+     },
+     "apispec-oci-cc9/repo/src/oci/mngdmac/mac_device_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/mngdmac/mac_device_client.py",
+      "sha256": "08425685c3a253d4f2e9d1ecae0bbb12abd33f85fbe49e0b0bc0f15c97f983a3"
+     },
+     "apispec-oci-cc9/repo/src/oci/mngdmac/mac_order_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/mngdmac/mac_order_client.py",
+      "sha256": "9a0f15d6d9ea97e82b2469bc7b40bef04049186c07b1b114882d5de9cb5c9afb"
+     },
+     "apispec-oci-cc9/repo/src/oci/model_deployment/model_deployment_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/model_deployment/model_deployment_client.py",
+      "sha256": "bcbac3d58b62979543e7f3ef89ce49254cef78545725904bc4339750ba6436af"
+     },
+     "apispec-oci-cc9/repo/src/oci/monitoring/monitoring_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/monitoring/monitoring_client.py",
+      "sha256": "93b64f0bac53ea0c99fb5a43502ca39918718b1fcfb3a8cdde3b554c5942b0d7"
+     },
+     "apispec-oci-cc9/repo/src/oci/multicloud/metadata_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/multicloud/metadata_client.py",
+      "sha256": "761b62fbe0ddef9d533afab43c20718fae4538bb26729e6425866083313f2ba6"
+     },
+     "apispec-oci-cc9/repo/src/oci/multicloud/multi_clouds_metadata_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/multicloud/multi_clouds_metadata_client.py",
+      "sha256": "0aeeb8a0fe48e6b159537d1cf9f2740f81bfd3300557d8637239aa426c16885f"
+     },
+     "apispec-oci-cc9/repo/src/oci/multicloud/multicloud_alerts_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/multicloud/multicloud_alerts_client.py",
+      "sha256": "d3ced92f5d68de5eb3ca5aae41f98d6937218088ca2e97f7e184b07c66a483bf"
+     },
+     "apispec-oci-cc9/repo/src/oci/multicloud/multicloud_policies_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/multicloud/multicloud_policies_client.py",
+      "sha256": "8d4b26b8834ea99e0baabfc4c67330b88a0848c5cb27b3b61f1e34558ec8996f"
+     },
+     "apispec-oci-cc9/repo/src/oci/multicloud/multicloud_resources_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/multicloud/multicloud_resources_client.py",
+      "sha256": "6ae1ea78aed6df6031e5ba7b0d4c339eb1cc0d1b9d95e445fc0f47c27f75c2e0"
+     },
+     "apispec-oci-cc9/repo/src/oci/multicloud/multicloudsubscriptions_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/multicloud/multicloudsubscriptions_client.py",
+      "sha256": "7b85ad832a0b34d26d2e6a43dc523d05e651e5b8159b2e415a4caafce56c7148"
+     },
+     "apispec-oci-cc9/repo/src/oci/multicloud/omhub_network_anchor_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/multicloud/omhub_network_anchor_client.py",
+      "sha256": "73b6161604e2c2ad10e5293b2e9c9636ae7d6e0b10e214da51923ad7ae283dfb"
+     },
+     "apispec-oci-cc9/repo/src/oci/multicloud/omhub_resource_anchor_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/multicloud/omhub_resource_anchor_client.py",
+      "sha256": "ff1196d5343bc503182304cfc6032e68e0a00ed8c04bc60746f23a3a72c4a5d6"
+     },
+     "apispec-oci-cc9/repo/src/oci/mysql/blue_green_deployments_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/mysql/blue_green_deployments_client.py",
+      "sha256": "0140764aca87ca820e3b4abde655f84ac9e60a56d8a88b027489d2a414049674"
+     },
+     "apispec-oci-cc9/repo/src/oci/mysql/channels_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/mysql/channels_client.py",
+      "sha256": "46a774c12de53b04c58b07985e9835868f0bd197705efd01d8000e01001ba253"
+     },
+     "apispec-oci-cc9/repo/src/oci/mysql/db_backups_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/mysql/db_backups_client.py",
+      "sha256": "c935a7869378a5361a147f593d90934eca0d351d6227e3de518f0994415420f8"
+     },
+     "apispec-oci-cc9/repo/src/oci/mysql/db_system_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/mysql/db_system_client.py",
+      "sha256": "258a87792a8fa1619417d5a86ea192e790e12a34cacfa717df87ae424449c5c8"
+     },
+     "apispec-oci-cc9/repo/src/oci/mysql/mysqlaas_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/mysql/mysqlaas_client.py",
+      "sha256": "8126ff0b13acc3824ba620b81f4bfbed9059f91abc2be14650ac623d498c84e2"
+     },
+     "apispec-oci-cc9/repo/src/oci/mysql/replicas_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/mysql/replicas_client.py",
+      "sha256": "d3bb45e70600b0e179b530f4a2c23b8524516e4017da21d613e9ad9369923fb1"
+     },
+     "apispec-oci-cc9/repo/src/oci/mysql/work_requests_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/mysql/work_requests_client.py",
+      "sha256": "3f2a98ea4099a7b3203e8294a9a8baf5a4379a09733e5cea14687e932ccdb463"
+     },
+     "apispec-oci-cc9/repo/src/oci/network_firewall/network_firewall_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/network_firewall/network_firewall_client.py",
+      "sha256": "2cdb506467da0f7469b8b622783a9430ba4a621d9ff18712dc3689987b7b5418"
+     },
+     "apispec-oci-cc9/repo/src/oci/network_load_balancer/network_load_balancer_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/network_load_balancer/network_load_balancer_client.py",
+      "sha256": "f98cb51efee82877f24a648a6813010268b8a840fcac3cc96bd2179e6c73251c"
+     },
+     "apispec-oci-cc9/repo/src/oci/nosql/nosql_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/nosql/nosql_client.py",
+      "sha256": "8616b7c4fe383e330eaf619ad0e3f1d32eda9d8107d3b0ea5c7b9e2e4a3af75f"
+     },
+     "apispec-oci-cc9/repo/src/oci/oce/oce_instance_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/oce/oce_instance_client.py",
+      "sha256": "41f723b8bd8dcb11a58b67c18b9230596043feeb2ad6d715844cee161e82e566"
+     },
+     "apispec-oci-cc9/repo/src/oci/oci_control_center/occ_metrics_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/oci_control_center/occ_metrics_client.py",
+      "sha256": "f7ca71516a0ce9f74304d3ca54f5a75d7a0b3e048f4e113872bb77430b61ed34"
+     },
+     "apispec-oci-cc9/repo/src/oci/oci_product_catalog/product_admin_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/oci_product_catalog/product_admin_client.py",
+      "sha256": "7c7c40a7d2b9f516b99db69f5b627c458127be37e7980560732b9e86fd8621bf"
+     },
+     "apispec-oci-cc9/repo/src/oci/oci_product_catalog/product_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/oci_product_catalog/product_client.py",
+      "sha256": "ec3ea0e96791eda5d43d74ec8f422163ba81536a5c1d3c77a5a3b54a7f764a85"
+     },
+     "apispec-oci-cc9/repo/src/oci/oci_product_catalog/product_internal_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/oci_product_catalog/product_internal_client.py",
+      "sha256": "a6561810d41f5fce208fef5fa2d77d79293aabc16a56aaf91091b9e5fe3aab8e"
+     },
+     "apispec-oci-cc9/repo/src/oci/ocvp/byol_allocation_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/ocvp/byol_allocation_client.py",
+      "sha256": "e2bfb7a548167b6f599f14d2ff31ebd380575a4f0d50637bd11e26af1ca6b1bf"
+     },
+     "apispec-oci-cc9/repo/src/oci/ocvp/byol_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/ocvp/byol_client.py",
+      "sha256": "7dc5874b84b145318551e5e36961dbd8a456c73bcc5001409951c2fbeede3984"
+     },
+     "apispec-oci-cc9/repo/src/oci/ocvp/cluster_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/ocvp/cluster_client.py",
+      "sha256": "fdf9e0851c04fa445b8eb2cba17c283f940cdffb8995632e60e57bfc3dd4f320"
+     },
+     "apispec-oci-cc9/repo/src/oci/ocvp/datastore_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/ocvp/datastore_client.py",
+      "sha256": "8ee221bbad5dc9e841e4c7dc9eeb7daa440f6d681e5290f98049f931decada14"
+     },
+     "apispec-oci-cc9/repo/src/oci/ocvp/datastore_cluster_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/ocvp/datastore_cluster_client.py",
+      "sha256": "f717fbfcfac85e6b686486f70766dced737ae2a4f610c54ac64b1b30ef9e1a73"
+     },
+     "apispec-oci-cc9/repo/src/oci/ocvp/esxi_host_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/ocvp/esxi_host_client.py",
+      "sha256": "eb785b81c2c0b2e5129bfc6112dbe68da61c38ec9bb4f41c822a03f660dcf988"
+     },
+     "apispec-oci-cc9/repo/src/oci/ocvp/management_appliance_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/ocvp/management_appliance_client.py",
+      "sha256": "76598101c371d5477380e4533d6ecce32cf03639ff5a3955f5280f8b67d13e39"
+     },
+     "apispec-oci-cc9/repo/src/oci/ocvp/sddc_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/ocvp/sddc_client.py",
+      "sha256": "8613c09093c2e717cf5aff4d8bf31a118b43c45697b958f1dc861bd60a20d83f"
+     },
+     "apispec-oci-cc9/repo/src/oci/ocvp/work_request_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/ocvp/work_request_client.py",
+      "sha256": "ef7826ad77bf144d12216f7069601ba7ee75dbd059b49ed63c20f1483aa16004"
+     },
+     "apispec-oci-cc9/repo/src/oci/oda/management_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/oda/management_client.py",
+      "sha256": "589fba096467d9910e8a0790f523e63b4ac85c714b37eb6e2150539fe4e53229"
+     },
+     "apispec-oci-cc9/repo/src/oci/oda/oda_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/oda/oda_client.py",
+      "sha256": "9eb5cb2200cbff5129384be5a56ad6008756c40175a56574893168551ec3175d"
+     },
+     "apispec-oci-cc9/repo/src/oci/oda/odapackage_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/oda/odapackage_client.py",
+      "sha256": "b972a7b032604e64932a4d584d95d011209c0a0377e8c6a9b7d9e889e8b4a673"
+     },
+     "apispec-oci-cc9/repo/src/oci/onesubscription/billing_schedule_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/onesubscription/billing_schedule_client.py",
+      "sha256": "7bd22ad65578662487df2f0703f2e140dff54bdc0932977a119d43729524ed3d"
+     },
+     "apispec-oci-cc9/repo/src/oci/onesubscription/commitment_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/onesubscription/commitment_client.py",
+      "sha256": "a576d597cb38a42751f1417dce32649fd25098fb1fcd3ff5bfaadba9bad6ab9a"
+     },
+     "apispec-oci-cc9/repo/src/oci/onesubscription/computed_usage_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/onesubscription/computed_usage_client.py",
+      "sha256": "ba8630dafc13ab3f4108e020cd4e4ebe595f8e5ad6496ee20b9652619feee356"
+     },
+     "apispec-oci-cc9/repo/src/oci/onesubscription/invoice_summary_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/onesubscription/invoice_summary_client.py",
+      "sha256": "28f316747e3594a144f144b8c5efb3c5231d23f0500ba83a78b01335f44e2123"
+     },
+     "apispec-oci-cc9/repo/src/oci/onesubscription/organization_subscription_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/onesubscription/organization_subscription_client.py",
+      "sha256": "c374d97ca3ceb6be6ace18fac2239b3a5c83e0d50e6aeecd1b15abf63d291f23"
+     },
+     "apispec-oci-cc9/repo/src/oci/onesubscription/ratecard_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/onesubscription/ratecard_client.py",
+      "sha256": "5e191b4a2ce84942cd6ee25b107cf62e2ca8f1d61fb79d3c9e1df083323482a5"
+     },
+     "apispec-oci-cc9/repo/src/oci/onesubscription/subscribed_service_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/onesubscription/subscribed_service_client.py",
+      "sha256": "d6f31923fcd236314269abd3fab3bf48badd25958d0cb71a6ec82598e7b4fc3d"
+     },
+     "apispec-oci-cc9/repo/src/oci/onesubscription/subscription_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/onesubscription/subscription_client.py",
+      "sha256": "7ece5298350a72927e9d5400e0476a1aea5257211a3dbffdb1d7e42b70d35549"
+     },
+     "apispec-oci-cc9/repo/src/oci/ons/notification_control_plane_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/ons/notification_control_plane_client.py",
+      "sha256": "20d078ad10117668a12cceb730344f609d34a9bf9a9340643b4c8aeb9265f48a"
+     },
+     "apispec-oci-cc9/repo/src/oci/ons/notification_data_plane_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/ons/notification_data_plane_client.py",
+      "sha256": "d6fb51d0dd7f467cd795592cf677160d6650ab5958d603106694981f8c788407"
+     },
+     "apispec-oci-cc9/repo/src/oci/opa/opa_instance_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/opa/opa_instance_client.py",
+      "sha256": "76d3f2d927e9dead3a038b37637561ee7ef09a7523e2af43dc99550042518301"
+     },
+     "apispec-oci-cc9/repo/src/oci/opensearch/opensearch_cluster_backup_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/opensearch/opensearch_cluster_backup_client.py",
+      "sha256": "98b3e234abfb26a6f0bf55bbb052817244f0228d82763f3dc27c014fb9ade7ea"
+     },
+     "apispec-oci-cc9/repo/src/oci/opensearch/opensearch_cluster_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/opensearch/opensearch_cluster_client.py",
+      "sha256": "c1dbb7bdf6effa4f0d26aab24aa7052cb51e0391765a793c40efede93ac7d138"
+     },
+     "apispec-oci-cc9/repo/src/oci/opensearch/opensearch_cluster_pipeline_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/opensearch/opensearch_cluster_pipeline_client.py",
+      "sha256": "04b6001b22bd44a3feeb05b4ad581f72a2700ee779f7de0becf6805b6f50be89"
+     },
+     "apispec-oci-cc9/repo/src/oci/operator_access_control/access_requests_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/operator_access_control/access_requests_client.py",
+      "sha256": "61a05d28d82f8aa788109fbc1eb5959bd505796347ca2b9d230edf418ce0588e"
+     },
+     "apispec-oci-cc9/repo/src/oci/operator_access_control/operator_actions_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/operator_access_control/operator_actions_client.py",
+      "sha256": "35157226052b671b414e2651167d28bc161d41d91e6ad95de8db24c46b8793a8"
+     },
+     "apispec-oci-cc9/repo/src/oci/operator_access_control/operator_control_assignment_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/operator_access_control/operator_control_assignment_client.py",
+      "sha256": "c5ee5cc96e80bbab240e0898111a4c123a1f575792fb8f12aa94f695f45004a5"
+     },
+     "apispec-oci-cc9/repo/src/oci/operator_access_control/operator_control_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/operator_access_control/operator_control_client.py",
+      "sha256": "434b67f7897eb1722d2117399e43a09aadca302a71b3bae4addcdfbe00ffb76b"
+     },
+     "apispec-oci-cc9/repo/src/oci/opsi/operations_insights_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/opsi/operations_insights_client.py",
+      "sha256": "ccfcb49d778b3f6004da0bf341618263cce46ee3ec53cee220a61eb3cdfa1d2f"
+     },
+     "apispec-oci-cc9/repo/src/oci/optimizer/optimizer_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/optimizer/optimizer_client.py",
+      "sha256": "92a8e42439e4527498cc4aaf40ba843ee36ecb4cf0df7f0e50fe76859f22ba3c"
+     },
+     "apispec-oci-cc9/repo/src/oci/os_management_hub/dynamic_set_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/os_management_hub/dynamic_set_client.py",
+      "sha256": "e2604fab127e203e297675e2ce88f8287489257464e8ab96fc8745f8dfd80f22"
+     },
+     "apispec-oci-cc9/repo/src/oci/os_management_hub/event_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/os_management_hub/event_client.py",
+      "sha256": "349132208a836424b695970f8e7754ff5c0366a7b82b74be70a7ee42ccfc8281"
+     },
+     "apispec-oci-cc9/repo/src/oci/os_management_hub/lifecycle_environment_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/os_management_hub/lifecycle_environment_client.py",
+      "sha256": "48afbe49244dcce7fb90adbe287e9520c3f0993d5b6ad703dda3526f0957a051"
+     },
+     "apispec-oci-cc9/repo/src/oci/os_management_hub/managed_instance_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/os_management_hub/managed_instance_client.py",
+      "sha256": "095cd93e51971b085329c6bc834e40140aa71432711e4bb5c609412fa0468196"
+     },
+     "apispec-oci-cc9/repo/src/oci/os_management_hub/managed_instance_group_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/os_management_hub/managed_instance_group_client.py",
+      "sha256": "1ea116bd2bf6f159f9cf6962eb28560378eed5de96078d856f31d96b86017576"
+     },
+     "apispec-oci-cc9/repo/src/oci/os_management_hub/management_station_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/os_management_hub/management_station_client.py",
+      "sha256": "ee815051a31d05c55cb98b286534750c088b3ddc33d5c80ef2369e7702979bad"
+     },
+     "apispec-oci-cc9/repo/src/oci/os_management_hub/onboarding_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/os_management_hub/onboarding_client.py",
+      "sha256": "6658af5673e3cda9ab69104723180a35097a545df1a956e39bfe095f2eba3bb0"
+     },
+     "apispec-oci-cc9/repo/src/oci/os_management_hub/reporting_managed_instance_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/os_management_hub/reporting_managed_instance_client.py",
+      "sha256": "5bf9b2eee41a5b3507c31271cba9d822c54617f89cf1c943462738f8c4e8f8d3"
+     },
+     "apispec-oci-cc9/repo/src/oci/os_management_hub/scheduled_job_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/os_management_hub/scheduled_job_client.py",
+      "sha256": "d432a46685e8430c0f2dfe98242bfe47b921ba47c658d5e6ca87a0633964f12a"
+     },
+     "apispec-oci-cc9/repo/src/oci/os_management_hub/software_source_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/os_management_hub/software_source_client.py",
+      "sha256": "3e0335e976e9ca96bf432b975429d1e67ec23d293bfb4b557fce6a04fcd7a21f"
+     },
+     "apispec-oci-cc9/repo/src/oci/os_management_hub/work_request_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/os_management_hub/work_request_client.py",
+      "sha256": "d5d1164e6fe0acbfe06b06a5d6ee4d305a825b9eab48bb7e34823b46c24a4046"
+     },
+     "apispec-oci-cc9/repo/src/oci/osp_gateway/address_rule_service_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/osp_gateway/address_rule_service_client.py",
+      "sha256": "30639b7d02ce6a4867158e1236e1ab54628a0aa2001d9b29f3cdaf57c381d5fc"
+     },
+     "apispec-oci-cc9/repo/src/oci/osp_gateway/address_service_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/osp_gateway/address_service_client.py",
+      "sha256": "71067ae4c08ae6849e420533a6dc04f7583897106a6b13283cc36b496ff25756"
+     },
+     "apispec-oci-cc9/repo/src/oci/osp_gateway/invoice_service_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/osp_gateway/invoice_service_client.py",
+      "sha256": "1e2e30282d26b626d86e5cf8caae4875f13c0cd57c6d7bafd5e31e78dabf14f1"
+     },
+     "apispec-oci-cc9/repo/src/oci/osp_gateway/subscription_service_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/osp_gateway/subscription_service_client.py",
+      "sha256": "f74b71ee4619c101ffed523f6fa284ec781a4ac7ff4950c3174336728bb61fa5"
+     },
+     "apispec-oci-cc9/repo/src/oci/osub_billing_schedule/billing_schedule_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/osub_billing_schedule/billing_schedule_client.py",
+      "sha256": "d3a516c84dc068558887e622e461de6bf3ea1b3f2616246760f987f7880d00fa"
+     },
+     "apispec-oci-cc9/repo/src/oci/osub_organization_subscription/organization_subscription_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/osub_organization_subscription/organization_subscription_client.py",
+      "sha256": "f707f238dec1e6857273b79768be1e52978289102a2afdac823a4ce17ab95994"
+     },
+     "apispec-oci-cc9/repo/src/oci/osub_subscription/commitment_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/osub_subscription/commitment_client.py",
+      "sha256": "0703f589d54424122c84eb5837e3c47257562b7053c30803868e6c4a64c51c0d"
+     },
+     "apispec-oci-cc9/repo/src/oci/osub_subscription/ratecard_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/osub_subscription/ratecard_client.py",
+      "sha256": "25c9cc714e135a8f673a847f70881f7a5936a7244bbef766ed55fb633e720881"
+     },
+     "apispec-oci-cc9/repo/src/oci/osub_subscription/subscription_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/osub_subscription/subscription_client.py",
+      "sha256": "7ac5509cdbb8cbd48a4fd047ee981c7eb5986aa6f46cb696e5f7baeb0376e6a8"
+     },
+     "apispec-oci-cc9/repo/src/oci/osub_usage/computed_usage_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/osub_usage/computed_usage_client.py",
+      "sha256": "43d8b301462ea491920b3e169c878a816b8d5e1157034f6538afb1a0a69e3af1"
+     },
+     "apispec-oci-cc9/repo/src/oci/psa/private_service_access_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/psa/private_service_access_client.py",
+      "sha256": "53aa0db733c469ea6ead89df2c6fee021f3718535911b686b018b448a8e286e8"
+     },
+     "apispec-oci-cc9/repo/src/oci/psql/postgresql_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/psql/postgresql_client.py",
+      "sha256": "eb43ac27ff6e717f6b3181a3779798d373b681765fb122dbea4725a60c29331a"
+     },
+     "apispec-oci-cc9/repo/src/oci/pss/instance_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/pss/instance_client.py",
+      "sha256": "0b09859b0424cefa5bb21051c8c1614896ea02ce206bcbeabbd80720184fb976"
+     },
+     "apispec-oci-cc9/repo/src/oci/queue/queue_admin_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/queue/queue_admin_client.py",
+      "sha256": "f2e5a0bc754541f6ee0c1e72cca578e3be085f1d09942d3d4a4fed0cc1efe017"
+     },
+     "apispec-oci-cc9/repo/src/oci/queue/queue_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/queue/queue_client.py",
+      "sha256": "5856205c977c180d71b4b2c9767a0de50e5898794d2c831fe3db5ed0576dbe5a"
+     },
+     "apispec-oci-cc9/repo/src/oci/recovery/database_recovery_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/recovery/database_recovery_client.py",
+      "sha256": "99da88da1b443392eec98d7e9283dc07a40a5e9a7444780c42eb5a5a70845d37"
+     },
+     "apispec-oci-cc9/repo/src/oci/redis/oci_cache_backup_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/redis/oci_cache_backup_client.py",
+      "sha256": "7ec8e8ba0b7256ae73453c9901236ea9b06142d585e26b52e868f5855dd8d982"
+     },
+     "apispec-oci-cc9/repo/src/oci/redis/oci_cache_config_set_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/redis/oci_cache_config_set_client.py",
+      "sha256": "53f41c86566964805d632a5479ee1b0bacc10df5c61585bb94d097b7edffcd50"
+     },
+     "apispec-oci-cc9/repo/src/oci/redis/oci_cache_default_config_set_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/redis/oci_cache_default_config_set_client.py",
+      "sha256": "555cc89491baf8a8b886c6c1121c7a6f1d90c319370667843e57d404aa1c06ee"
+     },
+     "apispec-oci-cc9/repo/src/oci/redis/oci_cache_engine_options_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/redis/oci_cache_engine_options_client.py",
+      "sha256": "fe953033f6743ed219ea39c4b00d01dfdd3a5565bcf7418335a534d9137eeef3"
+     },
+     "apispec-oci-cc9/repo/src/oci/redis/oci_cache_user_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/redis/oci_cache_user_client.py",
+      "sha256": "b37c2ba12d69d994b8d5beea27ba4cb5bda392e9a75b158693f3d8382376ca00"
+     },
+     "apispec-oci-cc9/repo/src/oci/redis/redis_cluster_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/redis/redis_cluster_client.py",
+      "sha256": "79267cd096e0e736e5a86cc6b5e97a9c8aa16b5c189f1c0322a935296936fc62"
+     },
+     "apispec-oci-cc9/repo/src/oci/redis/redis_identity_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/redis/redis_identity_client.py",
+      "sha256": "e6a11687fcc150b90bee66bfdd501e76ea32505748edaefc5cc525bb99b179f6"
+     },
+     "apispec-oci-cc9/repo/src/oci/resource_analytics/monitored_region_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/resource_analytics/monitored_region_client.py",
+      "sha256": "341e0536748f1c6f200c4257d3e64cd1d873b3952f493392056a6b86046f3818"
+     },
+     "apispec-oci-cc9/repo/src/oci/resource_analytics/resource_analytics_instance_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/resource_analytics/resource_analytics_instance_client.py",
+      "sha256": "50e81f65a81220d3e8ad96ffc4e4dba7e509194aa33bcc75dd7ee784a10c2684"
+     },
+     "apispec-oci-cc9/repo/src/oci/resource_analytics/tenancy_attachment_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/resource_analytics/tenancy_attachment_client.py",
+      "sha256": "fa90ba2e52eeaa8939288af388b99afeaf2a380d393fb8267097f39d1cf4b1ca"
+     },
+     "apispec-oci-cc9/repo/src/oci/resource_manager/resource_manager_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/resource_manager/resource_manager_client.py",
+      "sha256": "24d4893048eb6789a864952b7de453946a1aa5f49f4f18a706015bbfb9963e24"
+     },
+     "apispec-oci-cc9/repo/src/oci/resource_scheduler/schedule_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/resource_scheduler/schedule_client.py",
+      "sha256": "78f9549c65a31895d761f963ba5ae977e82c7c02fd1e50a531f649c422146ee5"
+     },
+     "apispec-oci-cc9/repo/src/oci/resource_search/resource_search_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/resource_search/resource_search_client.py",
+      "sha256": "6c329b40b500dcf948d5f5d86bbe59cce14c3739a1ed26dd37080ac4c761ba51"
+     },
+     "apispec-oci-cc9/repo/src/oci/rover/rover_bundle_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/rover/rover_bundle_client.py",
+      "sha256": "eee181c17a21e14c4744bd4af39d8b65985fad7e42fd1e8bbbbec3662af45a90"
+     },
+     "apispec-oci-cc9/repo/src/oci/rover/rover_cluster_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/rover/rover_cluster_client.py",
+      "sha256": "4d95f1941bd50b18e3d563162b8fdbc509e87133c8f9431543cc442685d5bb28"
+     },
+     "apispec-oci-cc9/repo/src/oci/rover/rover_entitlement_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/rover/rover_entitlement_client.py",
+      "sha256": "331daa70391dffd8741b1034c485791d7744688d1ead6379b87a1f170840d1ba"
+     },
+     "apispec-oci-cc9/repo/src/oci/rover/rover_node_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/rover/rover_node_client.py",
+      "sha256": "c8495198de35eba14ea525c781e7623366dfdf8d69d97eff941339413f465851"
+     },
+     "apispec-oci-cc9/repo/src/oci/rover/shape_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/rover/shape_client.py",
+      "sha256": "d0bb0a50c0319fad473a265bc2d48a6c4f54c6e63f3d6fd640f01885ae7fa778"
+     },
+     "apispec-oci-cc9/repo/src/oci/rover/work_requests_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/rover/work_requests_client.py",
+      "sha256": "87f198aaffe805a53159ff5d755b190c17128ef2d5a9b7395c1fe86fd2de04c8"
+     },
+     "apispec-oci-cc9/repo/src/oci/sch/connector_plugins_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/sch/connector_plugins_client.py",
+      "sha256": "968f2e36220fa30e68b77cf7b5248b2f0de45d44218e5c8793d87ea5b6582e1e"
+     },
+     "apispec-oci-cc9/repo/src/oci/sch/service_connector_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/sch/service_connector_client.py",
+      "sha256": "fd3e5812dee314987e59de5e43f2bcc13d45d8b2a59a78fc57aac37e104ac46a"
+     },
+     "apispec-oci-cc9/repo/src/oci/secrets/secrets_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/secrets/secrets_client.py",
+      "sha256": "c910d26716b2cbf37885f8d51fdc333f6874b0cc62146eb135b139228ed69ef2"
+     },
+     "apispec-oci-cc9/repo/src/oci/security_attribute/security_attribute_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/security_attribute/security_attribute_client.py",
+      "sha256": "10ad3e4cef402f116795c4b3b0fddbb13e70614a717e0b386bd071785f0b3e89"
+     },
+     "apispec-oci-cc9/repo/src/oci/self/partner_integeration_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/self/partner_integeration_client.py",
+      "sha256": "a080bfc503e1f0b043fa389816d350783f7d5ddb63f5927e3e4f8615fb23b9a1"
+     },
+     "apispec-oci-cc9/repo/src/oci/self/subscription_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/self/subscription_client.py",
+      "sha256": "0292961e902cf3861af0381a29420e5e08a1f9644c1007172521ce3246c01310"
+     },
+     "apispec-oci-cc9/repo/src/oci/service_catalog/service_catalog_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/service_catalog/service_catalog_client.py",
+      "sha256": "60f06d82a6778c25540fc9e42c743ef4f9839a33a21de7894f934bf8e650166a"
+     },
+     "apispec-oci-cc9/repo/src/oci/service_manager_proxy/service_manager_proxy_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/service_manager_proxy/service_manager_proxy_client.py",
+      "sha256": "692dfaf2586f3588eab91709e49a8bd99ebb6a0e342c0cbea2f245019dbe5746"
+     },
+     "apispec-oci-cc9/repo/src/oci/stack_monitoring/stack_monitoring_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/stack_monitoring/stack_monitoring_client.py",
+      "sha256": "0ccce0e7d6488cb6178be4938f97d84f345bcf6c3fe685af0b7b4e7f7821a281"
+     },
+     "apispec-oci-cc9/repo/src/oci/streaming/stream_admin_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/streaming/stream_admin_client.py",
+      "sha256": "80c8be468fb193c4d428068e91f226ca34545b8611ef073157c964d411463185"
+     },
+     "apispec-oci-cc9/repo/src/oci/streaming/stream_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/streaming/stream_client.py",
+      "sha256": "edb29dbcc342d03c2aa550e732f6c5b819e1be8c2edb4e77b35cb044350a0703"
+     },
+     "apispec-oci-cc9/repo/src/oci/tenant_manager_control_plane/domain_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/tenant_manager_control_plane/domain_client.py",
+      "sha256": "cdde5e307a6ddd50acb116f6db2b9fa270ff74bcff79931b25c26b6fa8e2574c"
+     },
+     "apispec-oci-cc9/repo/src/oci/tenant_manager_control_plane/domain_governance_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/tenant_manager_control_plane/domain_governance_client.py",
+      "sha256": "651e3a12c0ef58256d460e5bf4c8212fd518f16cdbfa6fbdcb2bb39fc5ab2a34"
+     },
+     "apispec-oci-cc9/repo/src/oci/tenant_manager_control_plane/governance_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/tenant_manager_control_plane/governance_client.py",
+      "sha256": "861d0569097c80103bc7ac6e032b500edbe266935ea335a539b83dfdc58248ad"
+     },
+     "apispec-oci-cc9/repo/src/oci/tenant_manager_control_plane/link_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/tenant_manager_control_plane/link_client.py",
+      "sha256": "3d9c791edfa61d956349996b66eb1a0df4823d680bc48cc3db5bb5f421934c79"
+     },
+     "apispec-oci-cc9/repo/src/oci/tenant_manager_control_plane/link_features_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/tenant_manager_control_plane/link_features_client.py",
+      "sha256": "7c8b82871bb8d2534d725c7ac2840f551a403d4116f6af49346d5719aac976b6"
+     },
+     "apispec-oci-cc9/repo/src/oci/tenant_manager_control_plane/orders_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/tenant_manager_control_plane/orders_client.py",
+      "sha256": "1bfed10992c969e2ecf202d7f2e1dd8642b1bff5b20bd7515300b9adee0df44f"
+     },
+     "apispec-oci-cc9/repo/src/oci/tenant_manager_control_plane/organization_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/tenant_manager_control_plane/organization_client.py",
+      "sha256": "4013ceaa74646c3bc1a005f7e140d641dcd92d48a701ddd31b39774c5110c81c"
+     },
+     "apispec-oci-cc9/repo/src/oci/tenant_manager_control_plane/recipient_invitation_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/tenant_manager_control_plane/recipient_invitation_client.py",
+      "sha256": "322c56892a1c04e11fe9750a205db6e1decbf8e9c0294761cfb59608e65e1575"
+     },
+     "apispec-oci-cc9/repo/src/oci/tenant_manager_control_plane/sender_invitation_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/tenant_manager_control_plane/sender_invitation_client.py",
+      "sha256": "2c31aeb5d5d21ecc6ddb5de4e06865bd10a3a37677a0cc0a5b3b068f10a63749"
+     },
+     "apispec-oci-cc9/repo/src/oci/tenant_manager_control_plane/subscription_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/tenant_manager_control_plane/subscription_client.py",
+      "sha256": "190678d2aa792d7580c9e220d3d931af4c34c63423a5fdaf0ff2583a04dcd127"
+     },
+     "apispec-oci-cc9/repo/src/oci/tenant_manager_control_plane/work_request_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/tenant_manager_control_plane/work_request_client.py",
+      "sha256": "56bd3953ef1a015a21d1b96b2ffa2bbd70c3b93a54d9d5f2c8a5d47e51721d5f"
+     },
+     "apispec-oci-cc9/repo/src/oci/threat_intelligence/threatintel_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/threat_intelligence/threatintel_client.py",
+      "sha256": "083a60f018c89538b9a443c9ceca6d5ba26c0b769752867f4b3701aeda0cd6d4"
+     },
+     "apispec-oci-cc9/repo/src/oci/usage/resources_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/usage/resources_client.py",
+      "sha256": "107591c659932b08eb5d446b11b47dccffff47c98ab479ef22a9d9854ad2191c"
+     },
+     "apispec-oci-cc9/repo/src/oci/usage/rewards_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/usage/rewards_client.py",
+      "sha256": "df67203fb8a597dbcca32b90350a5ed8084135a725a44b8c3249d64d1b96d1b6"
+     },
+     "apispec-oci-cc9/repo/src/oci/usage/usagelimits_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/usage/usagelimits_client.py",
+      "sha256": "32e21c7bd7e4f02dcbf9adea03b0cf62e57fe4b4a6fe779f75449019575732aa"
+     },
+     "apispec-oci-cc9/repo/src/oci/usage_api/usageapi_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/usage_api/usageapi_client.py",
+      "sha256": "307ea0b475e08cec90a91b70c73502051405a1f536d0771e0d3ee80228b28c42"
+     },
+     "apispec-oci-cc9/repo/src/oci/vault/vaults_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/vault/vaults_client.py",
+      "sha256": "b7994ad913e28c5c10631597b44d8b9afba466c7968ba28303aad3bd4d2d5041"
+     },
+     "apispec-oci-cc9/repo/src/oci/vbs_inst/vbs_instance_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/vbs_inst/vbs_instance_client.py",
+      "sha256": "badc46c8ac10ce6314686b1d1b071d03970acd07e0f78be2dd0040fbb474b0e7"
+     },
+     "apispec-oci-cc9/repo/src/oci/visual_builder/vb_instance_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/visual_builder/vb_instance_client.py",
+      "sha256": "c3fc6093481cc7203ffe5774936cc9ff02507d0353532807eced9d463e4d4659"
+     },
+     "apispec-oci-cc9/repo/src/oci/vn_monitoring/vn_monitoring_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/vn_monitoring/vn_monitoring_client.py",
+      "sha256": "ad06e15fa3415f91427b84bbecabae294829f1c580319934c34dd5a701120cd3"
+     },
+     "apispec-oci-cc9/repo/src/oci/vulnerability_scanning/vulnerability_scanning_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/vulnerability_scanning/vulnerability_scanning_client.py",
+      "sha256": "1ce175059f7bdb7730b2458dc006f666466a0c6fe4616c63af26dfb1d978aa8a"
+     },
+     "apispec-oci-cc9/repo/src/oci/waa/waa_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/waa/waa_client.py",
+      "sha256": "4a195f59083b86c97683277260d2ebd84254b7ef1fe831f7114b5698fa411b87"
+     },
+     "apispec-oci-cc9/repo/src/oci/waa/work_request_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/waa/work_request_client.py",
+      "sha256": "0731eb4e249bec76748f48c9e0213ecccb3c5ecba6b46894b3a5b81d8fb763b2"
+     },
+     "apispec-oci-cc9/repo/src/oci/waas/redirect_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/waas/redirect_client.py",
+      "sha256": "2fdc2d3e1cf5fb895dd65868a0625617c25703eaec7b958d016fbb1f71c6ad6f"
+     },
+     "apispec-oci-cc9/repo/src/oci/waas/waas_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/waas/waas_client.py",
+      "sha256": "9c25088494138ab58707313d5ad951400368ef0d9925807259c226f4aca79417"
+     },
+     "apispec-oci-cc9/repo/src/oci/waf/waf_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/waf/waf_client.py",
+      "sha256": "54100ffd3fad5699b97a4564bda747d09441929daac406c5ad4d2fa09b46d67c"
+     },
+     "apispec-oci-cc9/repo/src/oci/wlms/weblogic_management_service_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/wlms/weblogic_management_service_client.py",
+      "sha256": "4cdf5f50551e4bed3886e52aac7cb696ea44ef2f10c61882f757af34b92d4941"
+     },
+     "apispec-oci-cc9/repo/src/oci/wlms/weblogic_management_service_configuration_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/wlms/weblogic_management_service_configuration_client.py",
+      "sha256": "f4b56148acb27e901061c8ee62b948c2d2072bb78a40bd1109e9b7764bf8190a"
+     },
+     "apispec-oci-cc9/repo/src/oci/work_requests/work_request_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/work_requests/work_request_client.py",
+      "sha256": "877ad19bba09ef318c9a41fda13fbc520e8fd0332efc8a5194d9f0ef6130f9bb"
+     },
+     "apispec-oci-cc9/repo/src/oci/zpr/zpr_client.py": {
+      "uri": "https://raw.githubusercontent.com/oracle/oci-python-sdk/ec1d21a37357b8ab1e86fec7132bc08f3df17782/src/oci/zpr/zpr_client.py",
+      "sha256": "f73efa054ba2ec4f90ad9d3b45fff47e5fa0e9e1825fac1bd5859edbf7df6975"
      }
     },
     "source_txt": "$BO_DATA/downloads/apispec-oci/SOURCE.txt"
