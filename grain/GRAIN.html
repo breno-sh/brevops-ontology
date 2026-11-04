@@ -28,7 +28,7 @@ ol li,ul li{margin:3px 0}</style></head><body><main>
 <h1>Procedimento de grão canônico</h1>
 <div class="meta">Módulo GRAIN · contrato de saída C19 3.1.0 · regras 0.1.11
 <b class="unk">PROVISIONAL</b> (definitivas só depois de GRAIN-REPRO, PILOT-EXIT) · escrito em
-2026-11-04T17:15:00-03:00 (America/Recife) · grain_rules.yaml sha256 09d0781d08fb0d22… · responde a R1-M2, R1-M7, R2-W2,
+2026-11-04T18:20:00-03:00 (America/Recife) · grain_rules.yaml sha256 09d0781d08fb0d22… · responde a R1-M2, R1-M7, R2-W2,
 Gemini A3/A6, GPT-6 F1/S1</div>
 <div class="kpis">
 <div class="kpi"><b>8</b>regras (G0–G4, G2-CHILD, G4-NS e G0-NOMATCH)</div>
@@ -225,6 +225,10 @@ vida preso à instância, G1 e G2 aceitam a evidência, e trocar a ordem troca B
 referência <code>by_name</code>; sem ela, o grafo embutido perde relações que o separado tem.</li>
 <li>Emenda 0.1.1 (CC-1): a primeira versão lia uma convenção que o SERVICE-EVIDENCE nunca gravou; os testes
 sintéticos usavam a mesma convenção e não pegaram. Entraram o adaptador por aspecto e testes com o arquivo real.</li>
+<li>Manutenção de teste — 2026-11-04T18:20-03:00 (sem mudança de regra; GRAIN congelado na 0.1.11): o SE publicou os
+fatos OBSERVED (365e6ed) e as 2 disputas de dono e ciclo de vida da regra de NSG OCI ficaram
+<code>resolvida-por-observação</code> a favor da spec. O teste CC-8 exigia CONTRADICTORY para toda disputa; passa a
+exigir CONTRADICTORY só para disputa aberta e o lado reproduzido para disputa resolvida, como a R2 já fazia.</li>
 <li>Emenda 0.1.11 — 2026-11-04T17:15-03:00 (adendo de 04/11 §2, C25 1.4.0, regra de consolidação do PREREG de
 17:05 e revisão adversarial). <b>OBSERVED</b>: o fato <code>observed</code> entra com esse nível na citação (run,
 repetições e controle na nota). <b>Consolidação R1–R5</b> (substitui a proposta anterior "OBSERVED prevalece", que não

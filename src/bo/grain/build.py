@@ -36,7 +36,7 @@ from . import schema as S
 from .common import data_dir, dump_json, dump_jsonl, now, repo, results_dir, rules_path, sha256_file, stamp
 from .evidence import FixtureAdapter
 
-AUTHORED_AT = "2026-11-04T17:15:00-03:00"
+AUTHORED_AT = "2026-11-04T18:20:00-03:00"
 
 
 def _strip(rep: dict) -> dict:
@@ -408,6 +408,10 @@ vida preso à instância, G1 e G2 aceitam a evidência, e trocar a ordem troca B
 referência <code>by_name</code>; sem ela, o grafo embutido perde relações que o separado tem.</li>
 <li>Emenda 0.1.1 (CC-1): a primeira versão lia uma convenção que o SERVICE-EVIDENCE nunca gravou; os testes
 sintéticos usavam a mesma convenção e não pegaram. Entraram o adaptador por aspecto e testes com o arquivo real.</li>
+<li>Manutenção de teste — 2026-11-04T18:20-03:00 (sem mudança de regra; GRAIN congelado na 0.1.11): o SE publicou os
+fatos OBSERVED (365e6ed) e as 2 disputas de dono e ciclo de vida da regra de NSG OCI ficaram
+<code>resolvida-por-observação</code> a favor da spec. O teste CC-8 exigia CONTRADICTORY para toda disputa; passa a
+exigir CONTRADICTORY só para disputa aberta e o lado reproduzido para disputa resolvida, como a R2 já fazia.</li>
 <li>Emenda 0.1.11 — 2026-11-04T17:15-03:00 (adendo de 04/11 §2, C25 1.4.0, regra de consolidação do PREREG de
 17:05 e revisão adversarial). <b>OBSERVED</b>: o fato <code>observed</code> entra com esse nível na citação (run,
 repetições e controle na nota). <b>Consolidação R1–R5</b> (substitui a proposta anterior "OBSERVED prevalece", que não

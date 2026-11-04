@@ -202,7 +202,10 @@ def test_cc1e_attachment_scope():
 
 
 def test_cc8_spec_disputes_are_contradictory(records):
-    """CC-8: as disputas spec × doc do SERVICE-EVIDENCE viram campo CONTRADITÓRIO (nem decisão, nem escolha)."""
+    """CC-8: as disputas spec × doc ABERTAS do SERVICE-EVIDENCE viram campo CONTRADITÓRIO (nem decisão, nem escolha).
+    Disputa com status resolvida-por-observação (R2 do PREREG, 0.1.11) vale o lado reproduzido (manutenção de teste
+    de 04/11 18h: a regra não mudou)."""
+    from bo.grain import c25_aspects as A
     import json as _j
     from bo.grain.common import repo
     p = repo() / "results" / "SERVICE-EVIDENCE" / "spec_disputes.json"
@@ -215,7 +218,11 @@ def test_cc8_spec_disputes_are_contradictory(records):
     for d in disputes:
         fld = "api_resource" if d["fact"] == "api_bridge" else d["fact"]
         ev = C25Adapter(by[(d["provider"], d["terraform_resource_type"])]).evidence(d["terraform_resource_type"])
-        assert ev.fact(fld).state == "CONTRADICTORY", d
+        if d.get("status") == A.RESOLVED:
+            f = ev.fact(fld)
+            assert f.known and f.value["kind"] == d[d["resolved_to"]]["kind"], d
+        else:
+            assert ev.fact(fld).state == "CONTRADICTORY", d
 
 
 def test_cc8_s3_container_and_facet_from_spec(records):
