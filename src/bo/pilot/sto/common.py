@@ -154,8 +154,15 @@ def write_jsonl(p: Path, rows) -> None:
 
 
 def short_id(*parts) -> str:
-    """Id curto e estável (hex) para símbolos e nomes derivados; nunca a partir de dado real."""
-    return sha256_text("|".join(str(p) for p in parts))[:16]
+    """Id curto e estável (hex) para símbolos e nomes derivados; nunca a partir de dado real. Um hex com 12
+    dígitos decimais seguidos pareceria id de conta ao privacy_lint: o sal muda até não haver essa sequência."""
+    import re
+    base = "|".join(str(p) for p in parts)
+    for salt in range(64):
+        h = sha256_text(base if salt == 0 else f"{base}#{salt}")[:16]
+        if not re.search(r"[0-9]{12}", h):
+            return h
+    raise RuntimeError("short_id: sem id sem 12 dígitos seguidos")
 
 
 def provider_of_atom(atom_id: str) -> str:
