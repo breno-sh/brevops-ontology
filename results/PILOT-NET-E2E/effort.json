@@ -76,6 +76,14 @@
      "step": "rerodada sobre o PILOT-NET-MAP 1b8325a, gates e merge"
     }
    ],
+   "steps_final": [
+    {
+     "agent_hours": 0.15,
+     "end": "14:45",
+     "start": "14:30",
+     "step": "rodada final: GRAIN cbe1f08 e PILOT-NET-MAP bd7e770, gates e merge"
+    }
+   ],
    "wait": [
     {
      "end": "11:03",
@@ -87,21 +95,21 @@
   },
   "expected_h": 6,
   "machine_seconds": {
-   "inputs": 0.03,
+   "inputs": 0.033,
    "lift": 0.002,
-   "oracle.c3": 0.234,
+   "oracle.c3": 0.252,
    "owl": 0.003,
    "reason.c1": 0.0,
-   "reason.c2": 0.103,
-   "reason.c3": 0.132,
-   "render.c3": 0.313,
-   "translate.c1": 0.009,
-   "translate.c2": 0.013,
-   "translate.c3": 0.021,
-   "write": 0.045
+   "reason.c2": 0.109,
+   "reason.c3": 0.146,
+   "render.c3": 0.34,
+   "translate.c1": 0.011,
+   "translate.c2": 0.014,
+   "translate.c3": 0.024,
+   "write": 0.049
   }
  },
- "generated_at": "2026-11-04T13:17:27-03:00",
+ "generated_at": "2026-11-04T14:40:39-03:00",
  "metrics": [
   {
    "axis": "operational",
@@ -109,7 +117,7 @@
     "description": "passos do brief do PILOT-NET-E2E (livro de esforço)",
     "ref": {
      "path": "$BO_REPO/src/bo/pilot_net_e2e/effort_ledger.py",
-     "sha256": "302abf1e898f00ba3a53c7b116f77d31f73014a6f4309e8d617f3fb10d996a94"
+     "sha256": "64177a8a77782793eba46b635c26c9081e6896c4606870a25dd5ea543515e265"
     }
    },
    "inclusion": {
