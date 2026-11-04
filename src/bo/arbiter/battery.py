@@ -300,8 +300,8 @@ def conflict_cases() -> list[dict]:
     cases.append({"case": "k4_relacao", "claims": x3, "expect": {c["claim_id"]: "CONTESTED" for c in x3},
                   "rule": "ARB-K4-REL"})
 
-    gib = T("integer", quantity_kind="quantitykind:InformationEntropy", unit="unit:GibiBYTE", range={"min": 1, "max": 64})
-    gb = T("integer", quantity_kind="quantitykind:InformationEntropy", unit="unit:GigaBYTE", range={"min": 1, "max": 64})
+    gib = T("integer", quantity_kind="quantitykind:AmountOfData", unit="unit:GibiBYTE", range={"min": 1, "max": 64})
+    gb = T("integer", quantity_kind="quantitykind:AmountOfData", unit="unit:GigaBYTE", range={"min": 1, "max": 64})
     x4 = [C("X4-AB", "pa:x4.size", "exact", "pb:x4.size", gib, gib, IDN, "equal", "lossless", tests=[{"input": 8, "expected": 8}]),
           C("X4-CB", "pc:x4.size", "exact", "pb:x4.size", gb, gb, IDN, "equal", "lossless", tests=[{"input": 8, "expected": 8}])]
     cases.append({"case": "tipo_do_atomo", "claims": x4, "expect": {"X4-AB": "CONTESTED", "X4-CB": "CONTESTED"},

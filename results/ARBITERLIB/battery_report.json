@@ -18,7 +18,7 @@
    "rule": "ARB-REAL-MULTI"
   }
  ],
- "arbiter_sha256": "03f753de0d7a5b2c82a516afdd291214ee728b32b01b5b9ee5b46a6d4c88bb7a",
+ "arbiter_sha256": "6da994ab3c0d4923f78d6e4357b4d60f7b30b5defd5af5a3b11595c0884f0d15",
  "by_domain": {
   "?": {
    "AMBIGUOUS": 2,
