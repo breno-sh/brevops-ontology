@@ -202,6 +202,28 @@ def scan_paths(paths: list[Path], strict: bool = False, lists=None) -> tuple[lis
                                 x.line = i
                                 findings.append(x)
                     continue
+                if f.suffix == ".parquet":
+                    # tabela colunar: varre os valores decodificados de cada coluna, lote a lote (bytes de
+                    # zstd/snappy formam padrões por acaso; o que importa é o valor gravado)
+                    try:
+                        import pyarrow.parquet as pq
+                    except ImportError:
+                        findings.append(Finding("nao_varrido", str(f), 0, "pyarrow ausente; parquet não varrido"))
+                        continue
+                    n += 1
+                    row = 0
+                    for batch in pq.ParquetFile(f).iter_batches(batch_size=65536):
+                        cols = [c.to_pylist() for c in batch.columns]
+                        for i in range(batch.num_rows):
+                            row += 1
+                            for c in cols:
+                                v = c[i]
+                                if v is None or isinstance(v, (int, float, bool)):
+                                    continue
+                                for x in scan_text(v if isinstance(v, str) else str(v), str(f), lists):
+                                    x.line = row
+                                    findings.append(x)
+                    continue
                 if f.stat().st_size > TEXT_LIMIT:
                     with open(f, "rb") as fh:
                         binary = is_binary(fh.read(8192))
