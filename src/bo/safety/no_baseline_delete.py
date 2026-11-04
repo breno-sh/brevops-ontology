@@ -16,7 +16,8 @@ pela varredura de todas as regiões, removido (a tag prova a posse) e relatado c
 Confere: (a) a lista "inventário menos baseline" é recusada (ownership.delete_candidates); (b) a limpeza apaga só
 o que é nosso e nenhum N1–N7; (c) a varredura classifica N1–N6 como "investigar" e N7 como "baseline", sem apagar;
 (d) com a trava cleanup-global tomada por outro dono, uma segunda limpeza paralela é recusada e não apaga nada.
-Relatório: $BO_REPO/results/SAFETY/no_baseline_delete.json.
+Relatório: $BO_DATA/SAFETY/no_baseline_delete_last.json; results/SAFETY/no_baseline_delete.json só com
+--write-results (o gate compara e reprova se divergir).
 """
 
 from __future__ import annotations
@@ -26,7 +27,8 @@ import sys
 from pathlib import Path
 
 from . import locks, residue, skus
-from .common import PROVIDERS, bo_tmp, now, results_dir, synthetic_name, tag_value, write_json
+from .common import (PROVIDERS, bo_tmp, data_dir, now, publish_result, results_dir, synthetic_name, tag_value,
+                     write_json)
 from .fakecloud import FakeCloud
 from .manifest import Manifest
 from .locks import LockBusy
@@ -141,16 +143,22 @@ def scenario(provider: str, table: dict, res: dict) -> dict:
 
 
 def main(argv=None) -> int:
+    argv = list(sys.argv[1:] if argv is None else argv)
     table = skus.load_table()
     res = residue.load()
     rows = [scenario(p, table, res) for p in PROVIDERS]
     nf = sum(len(r["fails"]) for r in rows)
-    write_json(results_dir() / "no_baseline_delete.json", {
-        "schema": "bo.safety.no_baseline_delete/1", "generated_at": now(), "providers": rows,
+    summary = {
+        "schema": "bo.safety.no_baseline_delete/1", "providers": rows,
         "aliens": ["N1 sem tag noutra região", "N2 tag de outra execução", "N3 prefixo bo- de outro lote",
                    "N4 formato sintético deste lote sem manifesto", "N5 nome nosso noutro tipo",
                    "N6 bo-intent copiado sem bo-run", "N7 já no baseline"],
-        "failed": nf})
+        "failed": nf}
+    write_json(data_dir() / "no_baseline_delete_last.json", {**summary, "measured_at": now()})
+    drift = publish_result(results_dir() / "no_baseline_delete.json", summary, "--write-results" in argv)
+    for d in drift:
+        print("  " + d)
+        nf += 1
     for r in rows:
         print(f"{r['provider']}: nossos apagados {r.get('deleted_ours')}, alheios mantidos {r.get('kept_aliens')}/7, "
               f"baseline recusado {r.get('baseline_diff_refused', False)}, paralela recusada "

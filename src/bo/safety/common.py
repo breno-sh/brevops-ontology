@@ -245,3 +245,21 @@ def synthetic_name(batch_id: str, seq: int) -> str:
 
 def monotonic() -> float:
     return time.monotonic()
+
+
+def publish_result(path: Path, obj: dict, write: bool, stamp_key: str = "measured_at") -> list[str]:
+    """Relatório de gate: com write=True grava (com carimbo); senão compara com o gravado ignorando o carimbo e
+    devolve as diferenças (relatório do repositório nunca muda sozinho num gate)."""
+    path = Path(path)
+    if write:
+        write_json(path, {**obj, stamp_key: now()})
+        return []
+    if not path.exists():
+        return [f"{path.name} ausente (rode com --write-results)"]
+    old = json.loads(path.read_text(encoding="utf-8"))
+    old.pop(stamp_key, None)
+    new = json.loads(json.dumps(obj))
+    if old != new:
+        keys = sorted(k for k in set(old) | set(new) if old.get(k) != new.get(k))
+        return [f"{path.name} difere da medição atual em: {', '.join(keys)}"]
+    return []

@@ -9,7 +9,7 @@
   "N7 já no baseline"
  ],
  "failed": 0,
- "generated_at": "2026-11-04T03:02:59-03:00",
+ "measured_at": "2026-11-04T03:04:31-03:00",
  "providers": [
   {
    "baseline_diff_refused": true,

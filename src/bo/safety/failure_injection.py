@@ -13,7 +13,9 @@ ownership.cleanup, sob a trava cleanup-global e com identidade conferida) tem de
   R5  nenhum recurso de terceiro apagado (todos os alheios, em todas as regiões, continuam lá)
   R6  cópia pública = projeção da privada, e as duas validam no C16 (bo.contracts.validate, regras C16-*)
   R7  created/confirmed só depois de intent e creating, salvo adoção marcada como reconciliada
-Relatórios: $BO_REPO/results/SAFETY/failure_injection.json (resumo) e $BO_DATA/SAFETY/failure_injection_runs.jsonl.
+Relatórios: $BO_DATA/SAFETY/failure_injection_runs.jsonl e failure_injection_last.json (cada execução);
+$BO_REPO/results/SAFETY/failure_injection.json (resumo, só com --write-results; o gate compara e reprova se a
+medição atual diverge do resumo gravado).
 """
 
 from __future__ import annotations
@@ -27,7 +29,7 @@ import sys
 from pathlib import Path
 
 from . import residue, skus
-from .common import PROVIDERS, bo_tmp, data_dir, now, results_dir, tag_value, write_json
+from .common import PROVIDERS, bo_tmp, data_dir, now, publish_result, results_dir, tag_value, write_json
 from .fakecloud import FakeCloud
 from .manifest import RANK, Manifest
 from .ownership import cleanup, complete
@@ -123,13 +125,15 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--provider", action="append", choices=PROVIDERS)
     ap.add_argument("--quick", action="store_true", help="só os modos before (testes)")
+    ap.add_argument("--write-results", action="store_true",
+                    help="regrava results/SAFETY/failure_injection.json (sem isso, o gate só compara)")
     a = ap.parse_args(argv)
     table = skus.load_table()
     res = residue.load()
     base = bo_tmp() / "failure_injection"
     runs_path = data_dir() / "failure_injection_runs.jsonl"
     data_dir().mkdir(parents=True, exist_ok=True)
-    summary = {"schema": "bo.safety.failure_injection/1", "generated_at": now(), "providers": {}}
+    summary = {"schema": "bo.safety.failure_injection/1", "providers": {}}
     all_runs = []
     total_fail = 0
     for p in a.provider or PROVIDERS:
@@ -159,13 +163,17 @@ def main(argv=None) -> int:
     summary["checks"] = ["R1 SIGKILL real", "R2 manifesto legível", "R3 intenções terminais e teardown completo",
                          "R4 só resíduo esperado", "R5 nenhum alheio apagado", "R6 pública = projeção, C16 válido",
                          "R7 ordem do protocolo"]
+    write_json(data_dir() / "failure_injection_last.json", {**summary, "measured_at": now()})
+    drift = []
     if not a.provider and not a.quick:
-        write_json(results_dir() / "failure_injection.json", summary)
+        drift = publish_result(results_dir() / "failure_injection.json", summary, a.write_results)
+        for d in drift:
+            print("  " + d)
     for r in all_runs:
         if r["fails"]:
             print(f"  FALHA {r['provider']} k={r['kill_at']} {r['mode']}: {r['fails'][:3]}")
     print(f"failure_injection: {len(all_runs)} execuções, {total_fail} falha(s) -> {'OK' if not total_fail else 'REPROVADO'}")
-    return 0 if total_fail == 0 else 1
+    return 0 if total_fail == 0 and not drift else 1
 
 
 def _steps(base: Path, provider: str, table: dict) -> dict:
