@@ -33,7 +33,8 @@ def test_binarios_apagados_fica_so_schema_e_hashes():
     assert not list(dl.rglob("*.part"))
     assert not (common.bo_tmp() / "plugin-cache").exists() or not any((common.bo_tmp() / "plugin-cache").iterdir())
     assert not list(common.out_dir().rglob("terraform-provider-*"))
-    for d in (common.out_dir() / "schemas").iterdir():
+    assert not (common.out_dir() / "schemas").exists(), "texto cru do fornecedor fora de downloads/"
+    for d in common.schema_root().iterdir():
         assert sorted(p.name for p in d.iterdir()) == ["SOURCE.txt", "receipt.json", "schema.json.gz",
                                                        "schema.json.sha256", "trust.json"]
 

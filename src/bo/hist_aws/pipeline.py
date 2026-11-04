@@ -222,8 +222,20 @@ def manifest_files(root: Path) -> list[Path]:
                   and p.relative_to(root).parts[0] not in MANIFEST_SKIP_DIRS)
 
 
-def write_manifest(root: Path) -> Path:
-    lines = [f"{common.sha256_file(p)}  {p.relative_to(root).as_posix()}" for p in manifest_files(root)]
+SCHEMA_FILES = ("schema.json.gz", "schema.json.sha256", "receipt.json", "trust.json", "SOURCE.txt")
+
+
+def manifest_entries(root: Path, ext: dict) -> list[tuple[Path, str]]:
+    """(arquivo, caminho no manifesto): as saídas em root (relativo) + os schemas extraídos (portátil)."""
+    out = [(p, p.relative_to(root).as_posix()) for p in manifest_files(root)]
+    for v in sorted((v for v, r in ext["versions"].items() if r.get("status") == "EXTRACTED"),
+                    key=common.semver_key):
+        out += [(common.schema_dir(v) / n, common.portable(common.schema_dir(v) / n)) for n in SCHEMA_FILES]
+    return out
+
+
+def write_manifest(root: Path, ext: dict) -> Path:
+    lines = [f"{common.sha256_file(p)}  {label}" for p, label in manifest_entries(root, ext)]
     mf = root / "MANIFEST.sha256"
     mf.write_text("\n".join(lines) + "\n", encoding="utf-8")
     return mf
@@ -285,7 +297,7 @@ def finalize(hist: common.History, ext: dict) -> dict:
     rdir = common.bo_repo() / "results" / common.MODULE
     rdir.mkdir(parents=True, exist_ok=True)
     (rdir / "report.json").write_text(json.dumps(rep, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
-    write_manifest(out)
+    write_manifest(out, ext)
     return rep
 
 

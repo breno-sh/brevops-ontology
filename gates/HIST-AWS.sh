@@ -30,7 +30,7 @@ n=$(find "$BO_DATA/downloads/hist-aws" "$OUT" "$BO_TMP" \( -name '*.zip' -o -nam
 [ "$n" = "0" ] || { echo "  $n binário(s) do provider ainda no disco"; exit 1; }
 echo "  0 binário(s)"
 
-step "manifesto das saídas (\$BO_DATA/HIST-AWS/MANIFEST.sha256, sem logs voláteis)"
+step "manifesto das saídas (\$BO_DATA/HIST-AWS/MANIFEST.sha256 com os schemas em downloads/hist-aws, sem logs voláteis)"
 $py -I -B -c '
 import sys
 from pathlib import Path
@@ -39,7 +39,7 @@ from bo.hist_aws import common, pipeline
 mf = common.out_dir() / "MANIFEST.sha256"
 p = verify_manifest(mf, common.bo_repo())
 listed = {l.split(None, 1)[1] for l in mf.read_text().splitlines() if l.strip()}
-want = {f.relative_to(common.out_dir()).as_posix() for f in pipeline.manifest_files(common.out_dir())}
+want = {lab for _, lab in pipeline.manifest_entries(common.out_dir(), pipeline.load_extraction())}
 for x in p:
     print("  ", x)
 if listed != want:

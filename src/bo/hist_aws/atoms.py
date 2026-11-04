@@ -1,10 +1,9 @@
 """Átomos C01 (2.1.0) de um schema histórico, pela biblioteca única (bo.schema.build, SCHEMALIB), em .jsonl.gz.
 
-A bo.schema grava os campos do C01 2.0.0. O C01 2.1.0 acrescentou write_only (opcional; ausente = false), que
-a biblioteca ainda não emite: aqui só se acrescenta esse campo, lido do mesmo schema pelo mesmo caminho do
-átomo, nos átomos que o schema marca com "write_only": true. Nenhum outro campo nem contagem muda.
-Versões antigas não têm write_only no schema: nelas o campo simplesmente não aparece.
-A regra C01-WRITEONLY (write_only implica configurable e não computed) é conferida; violação reprova.
+A bo.schema grava o C01 2.1.0 inteiro, inclusive write_only (só quando o schema o marca; a regra C01-WRITEONLY
+é conferida lá): aqui nada é reinterpretado. Versões antigas não têm write_only no schema: o campo não aparece.
+Conferência independente: nº de átomos == nº de entradas 'attributes' do schema cru, nº de tipos == resource_schemas.
+Os tipos (C02) são gerados para contar, mas não são saída do módulo.
 
 Saída determinística: linhas ordenadas por (tipo, caminho) com chaves ordenadas (bo.schema.core.write_jsonl),
 comprimidas com gzip mtime 0, nível 9 e nome interno fixo; regenerar dá os mesmos bytes.
@@ -25,32 +24,12 @@ from . import common
 FLAG_KEYS = ("required", "optional", "computed", "configurable", "sensitive", "deprecated", "write_only")
 
 
-def raw_attribute(block: dict, atom: dict) -> dict:
-    """O atributo do schema cru que gerou o átomo, seguindo block_path e o último nome de path."""
-    b = block
-    for e in atom["block_path"]:
-        b = ((b.get("block_types") or {})[e["block"]]).get("block") or {}
-    name = atom["path"].rsplit(".", 1)[-1]
-    return (b.get("attributes") or {})[name]
-
-
-def write_only_pass(atoms_path: Path, provider_schema: dict) -> int:
-    rs = provider_schema.get("resource_schemas") or {}
-    out, n_wo, bad = [], 0, []
-    with open(atoms_path, encoding="utf-8") as f:
-        for line in f:
-            a = json.loads(line)
-            raw = raw_attribute(rs[a["resource_type"]].get("block") or {}, a)
-            if raw.get("write_only"):
-                if not a["configurable"] or a["computed"]:
-                    bad.append(a["atom_id"])
-                a["write_only"] = True
-                n_wo += 1
-            out.append(a)
-    if bad:
-        raise core.SchemaError(f"C01-WRITEONLY violada em {len(bad)} átomo(s): {bad[:5]}")
-    core.write_jsonl(atoms_path, out)
-    return n_wo
+def count_schema_attributes(provider_schema: dict) -> int:
+    """Nº de entradas 'attributes' em toda a profundidade dos resource_schemas (conferência independente)."""
+    def walk(b: dict) -> int:
+        return len(b.get("attributes") or {}) + sum(walk(bt.get("block") or {})
+                                                     for bt in (b.get("block_types") or {}).values())
+    return sum(walk(s.get("block") or {}) for s in (provider_schema.get("resource_schemas") or {}).values())
 
 
 def gzip_det(src: Path, dest: Path, inner_name: str) -> None:
@@ -83,7 +62,11 @@ def make(schema_gz: Path, version: str, work: Path, dest: Path) -> dict:
     plain, types = work / "atoms.jsonl", work / "types.jsonl"
     r = libbuild.build(schema_gz, common.PROVIDER, version, plain, types)
     ps = core.providers(core.load(schema_gz))[common.PROVIDER]
-    r["write_only"] = write_only_pass(plain, ps)
+    r["write_only"] = flag_totals(plain)["write_only"]
+    n_attr = count_schema_attributes(ps)
+    if n_attr != r["atoms"] or len(ps.get("resource_schemas") or {}) != r["types"]:
+        raise core.SchemaError(f"{version}: {r['atoms']} átomos/{r['types']} tipos != {n_attr} 'attributes'/"
+                               f"{len(ps.get('resource_schemas') or {})} resource_schemas do schema cru")
     r["data_sources"] = len(ps.get("data_source_schemas") or {})
     res = V.validate("C01_atoms", plain)
     if not res.ok:

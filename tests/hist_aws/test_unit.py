@@ -135,7 +135,7 @@ def _hist(versions, pin):
 def _out(work, schema_gz):
     """out/ sintético: 1.0.0 EXTRACTED (pin), 1.1.0 FAILED com motivo."""
     out = work / "out"
-    sdir = out / "schemas" / "aws-1.0.0"
+    sdir = work / "tfschema" / "aws-1.0.0"
     raw = write_schema_gz(sdir / "schema.json.gz", SCHEMA)
     sha = hashlib.sha256(raw).hexdigest()
     (sdir / "schema.json.sha256").write_text(f"{sha}  schema.json\n")
@@ -163,7 +163,7 @@ H = [("1.0.0", "2021-03-25"), ("1.1.0", "2021-06-24")]
 
 def test_check_controle_passa(work, schema_gz):
     out, _, _, pins = _out(work, schema_gz)
-    assert check.check(out, deep=True, hist=_hist(H, "1.0.0"), pins=pins) == []
+    assert check.check(out, deep=True, hist=_hist(H, "1.0.0"), pins=pins, schema_root=work / "tfschema") == []
 
 
 def _mut(out, name, fn):
@@ -183,15 +183,15 @@ def _mut(out, name, fn):
      "schema_sha256 diverge"),
     (lambda o: _mut(o, "extraction.json", lambda d: d["versions"]["1.0.0"].update(atoms=1)), "átomos, registrado"),
     (lambda o: (o / "atoms_1.0.0.jsonl.gz").write_bytes(b"x"), "sha256 de atoms_1.0.0"),
-    (lambda o: _mut(o, "schemas/aws-1.0.0/trust.json", lambda d: d["unpacked"].update(apagado=False)),
+    (lambda o: _mut(o, "../tfschema/aws-1.0.0/trust.json", lambda d: d["unpacked"].update(apagado=False)),
      "não apagado"),
-    (lambda o: _mut(o, "schemas/aws-1.0.0/trust.json", lambda d: d["gpg"].update(primary_fpr="0" * 40)),
+    (lambda o: _mut(o, "../tfschema/aws-1.0.0/trust.json", lambda d: d["gpg"].update(primary_fpr="0" * 40)),
      "VALIDSIG"),
 ])
 def test_check_mutacao_reprova(work, schema_gz, mut, msg):
     out, _, _, pins = _out(work, schema_gz)
     mut(out)
-    errs = check.check(out, deep=True, hist=_hist(H, "1.0.0"), pins=pins)
+    errs = check.check(out, deep=True, hist=_hist(H, "1.0.0"), pins=pins, schema_root=work / "tfschema")
     assert any(msg in e for e in errs), errs
 
 
@@ -199,20 +199,20 @@ def test_check_datas_nao_monotonas_reprova(work, schema_gz):
     out, _, _, pins = _out(work, schema_gz)
     bad = [("1.0.0", "2021-07-01"), ("1.1.0", "2021-06-24")]
     _mut(out, "versions.json", lambda d: (d["versions"][0].update(released_at="2021-07-01")))
-    errs = check.check(out, hist=_hist(bad, "1.0.0"), pins=pins)
+    errs = check.check(out, hist=_hist(bad, "1.0.0"), pins=pins, schema_root=work / "tfschema")
     assert any("datas não monótonas" in e for e in errs), errs
 
 
 def test_check_pin_nao_extraido_reprova(work, schema_gz):
     out, _, _, pins = _out(work, schema_gz)
-    errs = check.check(out, hist=_hist(H, "1.1.0"), pins=pins)
+    errs = check.check(out, hist=_hist(H, "1.1.0"), pins=pins, schema_root=work / "tfschema")
     assert any("pin 1.1.0 não extraído" in e for e in errs), errs
 
 
 def test_check_pin_sha_diverge_reprova(work, schema_gz):
     out, _, _, pins = _out(work, schema_gz)
     pins = common.Pins(pins.terraform_version, SHA_B, "1.0.0", SHA_B, SHA_A)
-    errs = check.check(out, hist=_hist(H, "1.0.0"), pins=pins)
+    errs = check.check(out, hist=_hist(H, "1.0.0"), pins=pins, schema_root=work / "tfschema")
     assert any("pins.json" in e for e in errs), errs
 
 

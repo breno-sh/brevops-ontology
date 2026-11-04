@@ -39,9 +39,17 @@ def out_dir() -> Path:
     return bo_data() / MODULE
 
 
-def schema_dir(version: str) -> Path:
-    """Saída do bo.schema.extract para uma versão (schema.json.gz, schema.json.sha256, receipt.json, SOURCE.txt)."""
-    return out_dir() / "schemas" / f"{NAME}-{version}"
+def schema_root() -> Path:
+    """Schemas extraídos: texto do fornecedor (descrições com exemplos de ARN, de conta e de user_data), ou seja,
+    dado não confiável derivado do download; fica na pasta de downloads do módulo, como o downloads/tfschema/ da
+    SCHEMALIB, e não em $BO_DATA/HIST-AWS. O MANIFEST.sha256 do módulo lista cada arquivo pelo caminho portátil."""
+    return bo_data() / "downloads" / "hist-aws" / "tfschema"
+
+
+def schema_dir(version: str, root: Path | None = None) -> Path:
+    """Saída do bo.schema.extract para uma versão (schema.json.gz, schema.json.sha256, receipt.json, SOURCE.txt,
+    trust.json)."""
+    return (root or schema_root()) / f"{NAME}-{version}"
 
 
 def atoms_path(version: str) -> Path:

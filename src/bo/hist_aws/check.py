@@ -37,7 +37,7 @@ def gz_sha256(p: Path) -> str:
 
 
 def check(out: Path | None = None, deep: bool = False, hist: common.History | None = None,
-          pins: common.Pins | None = None) -> list[str]:
+          pins: common.Pins | None = None, schema_root: Path | None = None) -> list[str]:
     out = out or common.out_dir()
     hist = hist or common.read_history()
     pins = pins or common.read_pins()
@@ -72,7 +72,7 @@ def check(out: Path | None = None, deep: bool = False, hist: common.History | No
             continue
         st = r.get("status")
         if st == "EXTRACTED":
-            sdir = out / "schemas" / f"{common.NAME}-{v}"
+            sdir = common.schema_dir(v, schema_root)
             sf = sdir / "schema.json.sha256"
             if not sf.is_file() or not (sdir / "schema.json.gz").is_file():
                 errs.append(f"{v}: schema extraído ausente em {common.portable(sdir)}")
