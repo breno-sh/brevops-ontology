@@ -81,13 +81,13 @@ def test_types_n4():
     with pytest.raises(TypeError_):
         ValueType.from_dict({"datatype": "integer", "quantity_kind": "quantitykind:Time", "unit": "unit:NUM"})
     with pytest.raises(TypeError_):
-        ValueType.from_dict({"datatype": "integer", "quantity_kind": "quantitykind:InformationEntropy",
+        ValueType.from_dict({"datatype": "integer", "quantity_kind": "quantitykind:AmountOfData",
                              "unit": "unit:GibiBYTE", "byte_convention": "SI"})
     na = ValueType.from_dict({"datatype": "enum", "enum": ["a"]})
     unk = ValueType.from_dict({"datatype": "integer", "quantity_kind": "UNKNOWN", "unit": "UNKNOWN"})
     assert not na.kind_unknown() and unk.kind_unknown()            # NOT_APPLICABLE != UNKNOWN
-    gib = ValueType.from_dict({"datatype": "integer", "quantity_kind": "quantitykind:InformationEntropy", "unit": "unit:GibiBYTE"})
-    gb = ValueType.from_dict({"datatype": "integer", "quantity_kind": "quantitykind:InformationEntropy", "unit": "unit:GigaBYTE"})
+    gib = ValueType.from_dict({"datatype": "integer", "quantity_kind": "quantitykind:AmountOfData", "unit": "unit:GibiBYTE"})
+    gb = ValueType.from_dict({"datatype": "integer", "quantity_kind": "quantitykind:AmountOfData", "unit": "unit:GigaBYTE"})
     assert canonical(gib, 1) != canonical(gb, 1) and gib.byte_convention == "IEC" and gb.byte_convention == "SI"
     rpm = ValueType.from_dict({"datatype": "decimal", "quantity_kind": "quantitykind:Count", "unit": "unit:NUM", "rate_window": "PT1M"})
     rps = ValueType.from_dict({"datatype": "decimal", "quantity_kind": "quantitykind:Count", "unit": "unit:NUM", "rate_window": "PT1S"})

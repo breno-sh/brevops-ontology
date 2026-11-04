@@ -64,6 +64,14 @@ ce("CE-KIND-TUPLE-1", "KIND-TUPLE", "claim", "combinador de tupla cuja saída vi
                          "expected": {"metric": "CpuUtilization", "window": "PT1M", "statistic": "mean",
                                       "operator": "ge", "threshold": 80}}])),
    E.TUPLE_ALARM)
+ce("CE-KIND-COLL-1", "KIND-COLL", "claim",
+   "lista de dias ligada a um número de segundos com conversão escalar (sem combinador de coleção)",
+   mut(E.DAYS_LIST, ("object_value_type", E.SECS(0, 31536000)), ("proof/tests", [{"input": [1], "expected": [86400]}]),
+       ("value_domain_relation/relation", "unknown"), ("transport_fidelity", "partial")),
+   mut(E.DAYS_LIST, ("value_domain_relation/relation", "unknown"), ("transport_fidelity", "partial")), "rule_only",
+   note="sem a regra, o teste de lista não é admitido pelo tipo escalar do destino (EXACT-TESTS segura)")
+ce("CE-KIND-COLL-2", "KIND-COLL", "claim", "lista -> conjunto sem declarar a perda de ordem e de repetição",
+   mut(E.PREFIX_LIST, ("object_value_type", E.T("set", item_type=E.T("string")))), E.PREFIX_LIST)
 ce("CE-UNIT-WINDOW-1", "UNIT-WINDOW", "claim", "taxa por minuto copiada como taxa por segundo (identidade)",
    mut(E.RATE, ("translation_fn", {"name": "identity", "params": {}}), ("proof/tests", [{"input": 60, "expected": 60}]),
        ("value_domain_relation/relation", "superset"), ("transport_fidelity", "partial")),
@@ -234,7 +242,7 @@ ce("CE-K-VDR-1", "K-VDR", "compose",
    cp(VDR_L1, VDR_L2, {"outcome": "COMPOSED"}),
    cp(VDR_L1, mut(VDR_L2, ("value_domain_relation/relation", "superset")), {"outcome": "COMPOSED"}))
 MIB_GIB = E.claim("CLM-KF-03", "pz:disk_size_mib", "exact", "pa:disk_size_gib",
-                  E.T("integer", quantity_kind="quantitykind:InformationEntropy", unit="unit:MebiBYTE",
+                  E.T("integer", quantity_kind="quantitykind:AmountOfData", unit="unit:MebiBYTE",
                       range={"min": 1024, "max": 1048576}, step="1024"),
                   E.EXACT_GIB_GB["subject_value_type"], E.UC("unit:MebiBYTE", "unit:GibiBYTE"), "equal", "lossless",
                   tests=[{"input": 2048, "expected": 2}])

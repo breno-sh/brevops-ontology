@@ -79,8 +79,8 @@ EXACT_SATURATING = claim(
 # bytes: GiB (IEC) -> GB (SI) é conversão exata seguida de arredondamento para cima declarado
 EXACT_GIB_GB = claim(
     "CLM-EX-05", "pa:disk_size_gib", "exact", "pb:disk_size_gb",
-    T("integer", quantity_kind="quantitykind:InformationEntropy", unit="unit:GibiBYTE", range={"min": 1, "max": 1024}),
-    T("integer", quantity_kind="quantitykind:InformationEntropy", unit="unit:GigaBYTE", range={"min": 1, "max": 2000}),
+    T("integer", quantity_kind="quantitykind:AmountOfData", unit="unit:GibiBYTE", range={"min": 1, "max": 1024}),
+    T("integer", quantity_kind="quantitykind:AmountOfData", unit="unit:GigaBYTE", range={"min": 1, "max": 2000}),
     UC("unit:GibiBYTE", "unit:GigaBYTE"), "unknown", "declared_loss",
     loss_contract=[{"kind": "rounding", "granularity": 1, "mode": "ceil", "why": "GB inteiro: arredonda para cima"}],
     tests=[{"input": 1, "expected": "134217728/125000000"}])
@@ -286,3 +286,15 @@ TAG_PROJECTIONS = [
     {"projection_id": "PRJ-TG-name", "field": "pa:instance.tags", "occurrence": {"scope": "resource"},
      "extractor": {"name": "map_get", "params": {"key": "Name"}}, "concept": "concept:display_name", "type": T("string"),
      "overlaps": ["PRJ-TG-all"], "tests": [{"input": TAGS, "expected": "web_a"}]}]
+
+
+# Emenda 2 (CC-6): coleções com tipo do elemento. Lista de prefixos -> lista de prefixos (identidade elemento a
+# elemento) e lista de retenções em dias -> lista em segundos (conversão por elemento).
+PREFIX_LIST = claim(
+    "CLM-CO-01", "pa:lifecycle_rule.prefixes", "exact", "pb:lifecycle_rule.prefix_match",
+    T("list", item_type=T("string")), T("list", item_type=T("string")), {"name": "identity", "params": {}},
+    "unknown", "partial", tests=[{"input": ["logs/", "tmp/"], "expected": ["logs/", "tmp/"]}])
+DAYS_LIST = claim(
+    "CLM-CO-02", "pa:tier_days", "exact", "pb:tier_seconds",
+    T("list", item_type=DAYS(1, 365)), T("list", item_type=SECS(0, 31536000)), UC("unit:DAY", "unit:SEC"),
+    "subset", "lossless", tests=[{"input": [1, 30], "expected": [86400, 2592000]}])

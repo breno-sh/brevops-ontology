@@ -74,6 +74,11 @@ def computed_vdr(c: Claim, ts: ValueType, to: ValueType) -> str:
     finito do sujeito, esses valores ficam sem contraparte (contam como elementos fora do objeto)."""
     if T.kind(c["translation_fn"]) == "tuple":
         return "unknown"
+    if ts.is_collection or to.is_collection:
+        if ts.datatype != to.datatype and not (ts.datatype == "set" and to.datatype == "list"):
+            return "unknown"
+        # coleção do mesmo tipo: a relação é a dos elementos (sem restrição de tamanho declarada)
+        return computed_vdr(c, ts.item, to.item)
     try:
         dom = ts.domain()
         img = T.image(c["translation_fn"], dom)
@@ -177,8 +182,17 @@ def assess(c: Claim | dict, disabled=frozenset()) -> Assessment:
             tkind = T.kind(chain)
         except TypeError_ as e:
             a.fail("EXACT-NORM", "UNPROVEN", f"função fora do núcleo: {e}", dis)
+    if tkind == "scalar" and (ts.is_collection or to.is_collection):
+        if ts.is_collection != to.is_collection:
+            a.fail("KIND-COLL", "REFUTED_BY_RULE",
+                   f"transformação escalar entre coleção e não coleção ({ts.datatype} -> {to.datatype}); "
+                   "exige combinador de coleção (wrap_list/unwrap_single)", dis)
+        elif ts.datatype != to.datatype and not (ts.datatype == "set" and to.datatype == "list") and \
+                not [x for x in c.losses if x.get("kind") in ("not_expressible", "semantic")]:
+            a.fail("KIND-COLL", "REFUTED_BY_RULE",
+                   f"{ts.datatype} -> {to.datatype} sem perda declarada (ordem, repetição ou chave)", dis)
     if tkind == "scalar" and not ts.kind_unknown() and not to.kind_unknown():
-        ok, why = T.preserves_kind(chain, ts, to)
+        ok, why = T.preserves_kind(chain, ts.element(), to.element())
         if not ok:
             a.fail("KIND-EQ", "REFUTED_BY_RULE", f"transformação escalar muda a grandeza: {why}", dis)
         if ts.datatype == "tuple" or to.datatype == "tuple":
@@ -279,7 +293,7 @@ def _run_test(c, chain, t, ts, to, a, dis, tkind):
         a.fail("EXACT-TESTS", "REFUTED_BY_RULE", f"entrada de teste fora do tipo do sujeito: {x!r}", dis)
         return
     try:
-        y = T.apply_chain(T.chain_of(chain), x, t.get("context"))
+        y = T.apply_lifted(T.chain_of(chain), x, ts, to, t.get("context"))
     except (OutOfDomain, TypeError_) as e:
         a.fail("EXACT-TESTS", "REFUTED_BY_RULE", f"normalização falha no teste {x!r}: {e}", dis)
         return
@@ -289,6 +303,12 @@ def _run_test(c, chain, t, ts, to, a, dis, tkind):
     if tkind == "tuple":
         if to.datatype == "tuple" and not to.admits(y):
             a.fail("KIND-TUPLE", "REFUTED_BY_RULE", f"saída {y!r} não respeita os tipos dos componentes", dis)
+        return
+    if ts.is_collection and to.is_collection and ts.datatype == to.datatype and not t.get("lossy"):
+        xs = list(x.values()) if isinstance(x, dict) else list(x)
+        ys = list(y.values()) if isinstance(y, dict) else list(y)
+        for xe, ye in zip(xs, ys):
+            _run_test(c, chain, {"input": xe, "expected": ye}, ts.item, to.item, a, dis, tkind)
         return
     if c.relation in TRANSPORTING and ts.quantity_kind not in ("NOT_APPLICABLE", "UNKNOWN") and not ts.kind_unknown() \
             and not to.kind_unknown() and not t.get("lossy"):

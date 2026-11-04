@@ -1,0 +1,46 @@
+{
+ "emendas": [
+  {
+   "assunto": "[SEMANTICS] corrige UNSAT de guardas com faixa ou referência",
+   "commit": "f48865f",
+   "data": "2026-11-03",
+   "pedido": "TRANSFORMS registro.json: guardas UNSAT dadas como SAT/UNKNOWN",
+   "resolve": "satisfiable: version_range sobre universo fechado; refers_to_kind com valor escalar",
+   "versao": "1.1"
+  },
+  {
+   "assunto": "[SEMANTICS] skos_roundtrip --file lê o arquivo e reprova vazio",
+   "commit": "63cb3ed",
+   "data": "2026-11-03",
+   "pedido": "BRIEFS: skos_roundtrip --file ignorado (falso verde)",
+   "resolve": "--file lê o arquivo pelo bo.contracts.sssom; ausente, ilegível ou vazio sai != 0",
+   "versao": "1.2"
+  },
+  {
+   "assunto": "[SEMANTICS] invert aceita funções do registro fechado (CC-3)",
+   "commit": "61d6fae",
+   "data": "2026-11-04",
+   "pedido": "PILOT-STO-MAP CC-3: invert quebra com enum_to_bool",
+   "resolve": "funções do registro fechado; parcial = não inversível (T-INVERSE, UNPROVEN)",
+   "versao": "1.3"
+  },
+  {
+   "assunto": "[SEMANTICS] emenda 2: coleções e AmountOfData (CC-5, CC-6)",
+   "commit": null,
+   "data": "2026-11-04",
+   "pedido": "PILOT-STO-MAP CC-6 (CONTRACTS emenda 7: C09 3.2.0 list/set/map)",
+   "resolve": "coleções no tipo de valor: grandeza do elemento; cadeia escalar elemento a elemento; regra KIND-COLL",
+   "versao": "2.0"
+  },
+  {
+   "assunto": "[SEMANTICS] emenda 2: coleções e AmountOfData (CC-5, CC-6)",
+   "commit": null,
+   "data": "2026-11-04",
+   "pedido": "PILOT-STO-MAP CC-5 (com o UNITS): grandeza de unit:BYTE",
+   "resolve": "dado = quantitykind:AmountOfData (QUDT 3.5.3, qudt:unitForQuantityKind), não InformationEntropy; unidades do núcleo alinhadas ao bo.units.rules",
+   "versao": "2.0"
+  }
+ ],
+ "module": "SEMANTICS",
+ "nota": "commit null = entra no mesmo merge deste registro; ache o sha pelo assunto"
+}

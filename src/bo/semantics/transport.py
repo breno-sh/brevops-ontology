@@ -89,6 +89,36 @@ def transport(claim: Claim | dict, value, ctx: dict | None = None, direction: st
         return _out(c, direction, "blocked", code="TRANSFORM_OUT_OF_DOMAIN", rule="T-DOMAIN",
                     detail=f"valor {value!r} fora do tipo de origem")
 
+    if ts is not None and to is not None and ts.is_collection and to.is_collection and c.fn \
+            and T.kind(c.fn) == "scalar":
+        return _carry_collection(c, value, ctx, direction, dis, ts, to)
+    return _carry(c, value, ctx, direction, dis)
+
+
+def _carry_collection(c, value, ctx, direction, dis, ts, to):
+    """Coleção -> coleção com cadeia escalar: cada elemento passa pelas mesmas etapas (subconjunto, sentinela,
+    tradução, arredondamento, saturação) com os tipos dos elementos; um elemento bloqueado bloqueia a coleção."""
+    import copy as _copy
+    rec = _copy.deepcopy(c.rec)
+    rec["subject_value_type"], rec["object_value_type"] = ts.item.to_dict(), to.item.to_dict()
+    item = Claim(rec)
+    items = list(value.items()) if isinstance(value, dict) else list(enumerate(value))
+    out, losses = ({} if isinstance(value, dict) else []), []
+    for k, x in items:
+        r = _carry(item, x, ctx, direction, dis)
+        if r["result"] != "carried":
+            return {**r, "claim_id": c.id, "element": k,
+                    "detail": f"elemento {k!r}: {r.get('detail', '')}"}
+        losses += [{**l, "element": k} for l in r.get("losses", [])]
+        if isinstance(out, dict):
+            out[k] = r["value"]
+        else:
+            out.append(r["value"])
+    return _out(c, direction, "carried", value=out, fidelity="declared_loss" if losses else "lossless", losses=losses)
+
+
+def _carry(c, value, ctx, direction, dis):
+    ts, to = c.subject_value_type, c.object_value_type
     losses = []
     # sentinelas: mapeadas pela tabela declarada, nunca pela aritmética
     if ts is not None and ts.is_sentinel(value) and "T-SENTINEL" not in dis:

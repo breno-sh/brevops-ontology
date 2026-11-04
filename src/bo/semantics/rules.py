@@ -27,6 +27,9 @@ _r("KIND-UNKNOWN", "alegação", U, "Grandeza ou unidade UNKNOWN (ou tipo não d
 _r("KIND-EQ", "alegação", R, "Transformação escalar não muda a grandeza (kind_in = kind_out); só vale para escalar.", ["N4"])
 _r("KIND-TUPLE", "alegação", R, "Combinador de tupla exige lado com tipo estruturado e a saída tem de respeitar o tipo de "
    "cada componente; não compara a grandeza do todo com a das partes.", ["N4", "F3"])
+_r("KIND-COLL", "alegação", R, "Coleção (list, set, map; C09 3.2.0): a grandeza é a do elemento; cadeia escalar entre coleções do "
+   "mesmo tipo vale elemento a elemento; entre coleção e escalar exige combinador de coleção; list->set ou map<->list "
+   "exige perda declarada (ordem, repetição, chave). Emenda 2.", ["N4", "F3"])
 _r("UNIT-WINDOW", "alegação", R, "A janela de taxa é parte do tipo: por minuto e por segundo só se igualam com conversão de janela.", ["N4"])
 _r("UNIT-BYTES", "alegação", R, "A convenção de byte é parte do tipo: GiB (IEC) e GB (SI) só se igualam com o fator exato.", ["N4"])
 _r("NORM-PRESERVE", "alegação", R, "A normalização declarada preserva o valor canônico da grandeza nos testes (antes das perdas).", ["F2"])

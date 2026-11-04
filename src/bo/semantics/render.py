@@ -71,6 +71,7 @@ def render(ctx: dict) -> str:
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>Semântica das correspondências</title>
 <style>{CSS}</style></head><body><main>
 <h1>Semântica das correspondências</h1>
+<div class="meta">versão 2.0 da teoria (emenda 2, 2026-11-04)</div>
 <div class="meta">Módulo SEMANTICS · contratos C09 (correspondências) e C10 (guarda, composição) · escrito em {e(ctx['at'])}
 (America/Recife) · conteúdo sha256 {e(ctx['content_sha'][:16])}… · revisão GPT-6 F2, F3, F4, N4 · R1-M6, R2-W1</div>
 <div class="kpis">
@@ -83,7 +84,8 @@ def render(ctx: dict) -> str:
 <nav><a href="#def">definição</a><a href="#campos">três campos</a><a href="#skos">direção SKOS</a><a href="#prova">obrigações</a>
 <a href="#guarda">guardas</a><a href="#perda">tradução e perda</a><a href="#tipos">tipos (N4)</a><a href="#comp">composição</a>
 <a href="#proj">projeções e grupos</a><a href="#owl">OWL × transporte</a><a href="#f4">âncoras (F4)</a>
-<a href="#regras">regras</a><a href="#cmt">compromissos</a><a href="#achados">achados</a><a href="#limites">limites</a></nav>
+<a href="#regras">regras</a><a href="#cmt">compromissos</a><a href="#achados">achados</a><a href="#limites">limites</a>
+<a href="#emendas">emendas</a></nav>
 """)
     A("""<h2>A revisão como lista de conferência</h2>""")
     A(table(["item da revisão", "o que foi feito", "onde se executa"], [
@@ -258,6 +260,19 @@ fixo de <code>bo.semantics.fixtures</code>.</p>""")
     for f in ctx["limits"]:
         A(f"<li>{f}</li>")
     A("</ul>")
+    A("""<h2 id="emendas">16. Emendas versionadas</h2>
+<p>Versão da teoria 2.0 (2026-11-04). A emenda 2 responde ao CC-5 e ao CC-6 do PILOT-STO-MAP (CONTRACTS emenda 7).
+<b>Coleções</b>: o tipo de valor aceita list, set e map com item_type (e key_type no map), como o C09 3.2.0. A
+grandeza de uma coleção é a do elemento, de modo que lista de texto não é mais KIND-UNKNOWN. Cadeia escalar entre
+coleções do mesmo tipo vale elemento a elemento, com perda registrada por elemento. Entre coleção e escalar é
+preciso combinador de coleção (do registro do C10), e list→set exige perda declarada (regra KIND-COLL).
+<b>Grandeza de dado</b>: BYTE, BIT e prefixos passam a quantitykind:AmountOfData, como no UNITS. O QUDT 3.5.3
+(VOCAB_QUDT-UNITS-ALL.ttl, release v3.5.3 de qudt/qudt-public-repo, sha256 em $BO_DATA/downloads/qudt-3.5.3/SOURCE.txt)
+liga essas unidades a AmountOfData e ByteDataVolume por qudt:unitForQuantityKind, e não a InformationEntropy, que a
+versão 1 usava sem conferir. Um teste cruzado compara o núcleo com bo.units.rules e com o arquivo do QUDT.</p>""")
+    A(table(["versão", "data", "pedido", "o que resolve", "commit"],
+            [[e(x["versao"]), e(x["data"]), e(x["pedido"]), e(x["resolve"]),
+              code(x["commit"] or ("neste merge: " + x["assunto"]))] for x in ctx["emendas"]]))
     A("""<h2>Arquivos e contratos</h2>""")
     A(table(["arquivo", "o que é"], [[code(k), e(v)] for k, v in ctx["files"].items()]))
     A("</main></body></html>\n")

@@ -79,6 +79,27 @@ LIMITS = [
     "não torna broader transitiva; o que se transporta segue a nossa, o que se infere em OWL segue a do SKOS.",
 ]
 
+# Emendas versionadas da teoria: cada pedido -> o commit que o resolve (sha já em bo/base, ou o assunto do commit
+# que entra junto com este registro; git log --grep pelo assunto acha o sha).
+EMENDAS = [
+    {"versao": "1.1", "data": "2026-11-03", "pedido": "TRANSFORMS registro.json: guardas UNSAT dadas como SAT/UNKNOWN",
+     "resolve": "satisfiable: version_range sobre universo fechado; refers_to_kind com valor escalar",
+     "commit": "f48865f", "assunto": "[SEMANTICS] corrige UNSAT de guardas com faixa ou referência"},
+    {"versao": "1.2", "data": "2026-11-03", "pedido": "BRIEFS: skos_roundtrip --file ignorado (falso verde)",
+     "resolve": "--file lê o arquivo pelo bo.contracts.sssom; ausente, ilegível ou vazio sai != 0",
+     "commit": "63cb3ed", "assunto": "[SEMANTICS] skos_roundtrip --file lê o arquivo e reprova vazio"},
+    {"versao": "1.3", "data": "2026-11-04", "pedido": "PILOT-STO-MAP CC-3: invert quebra com enum_to_bool",
+     "resolve": "funções do registro fechado; parcial = não inversível (T-INVERSE, UNPROVEN)",
+     "commit": "61d6fae", "assunto": "[SEMANTICS] invert aceita funções do registro fechado (CC-3)"},
+    {"versao": "2.0", "data": "2026-11-04", "pedido": "PILOT-STO-MAP CC-6 (CONTRACTS emenda 7: C09 3.2.0 list/set/map)",
+     "resolve": "coleções no tipo de valor: grandeza do elemento; cadeia escalar elemento a elemento; regra KIND-COLL",
+     "commit": None, "assunto": "[SEMANTICS] emenda 2: coleções e AmountOfData (CC-5, CC-6)"},
+    {"versao": "2.0", "data": "2026-11-04", "pedido": "PILOT-STO-MAP CC-5 (com o UNITS): grandeza de unit:BYTE",
+     "resolve": "dado = quantitykind:AmountOfData (QUDT 3.5.3, qudt:unitForQuantityKind), não InformationEntropy; "
+                "unidades do núcleo alinhadas ao bo.units.rules",
+     "commit": None, "assunto": "[SEMANTICS] emenda 2: coleções e AmountOfData (CC-5, CC-6)"},
+]
+
 C09_LEIA = """Proposta do SEMANTICS para o C09 3.0.0 ({at}, America/Recife)
 
 O CONTRACTS (dono de contracts/C09_*.schema.json e do bo.contracts.validate) vem depois do SEMANTICS. Esta pasta
@@ -168,10 +189,13 @@ def produce() -> dict[str, bytes]:
     rt = rt_checks()
     rts = {"n": len(rt), "n_ok": sum(c["ok"] for c in rt), "checks": [{"check": c["check"], "ok": c["ok"]} for c in rt]}
     files["results/SEMANTICS/skos_roundtrip.json"] = common.dump_json(rts).encode()
+    files["results/SEMANTICS/emendas.json"] = common.dump_json(
+        {"module": "SEMANTICS", "nota": "commit null = entra no mesmo merge deste registro; ache o sha pelo assunto",
+         "emendas": EMENDAS}).encode()
     content_sha = common.sha256_bytes(b"".join(files[k] for k in sorted(files)))
     ctx = {"at": AUTHORED_AT, "content_sha": content_sha, "table": table, "ce_results": results, "suite": st,
            "roundtrip": rts, "separation": sep, "edoal": ed, "example_claim": E.BROAD_ARCHIVE,
-           "group_rows": group_rows(),
+           "group_rows": group_rows(), "emendas": EMENDAS,
            "findings": [f.format(n_rule_only=sum(1 for r in results if r["mutation"] == "rule_only"), n_ce=len(results))
                         for f in FINDINGS], "limits": LIMITS,
            "files": {"semantics/SEMANTICS.html": "esta teoria", "semantics/composition_table.json": "tabela formal (C10)",
@@ -180,7 +204,8 @@ def produce() -> dict[str, bytes]:
                      "src/bo/semantics/": "implementação de referência", "tests/semantics/": "testes (pytest)",
                      "results/SEMANTICS/C09_proposta/": "proposta do C09 ao CONTRACTS",
                      "results/SEMANTICS/C10_proposta/": "proposta da parte do C10 (guarda, tabela, núcleo de funções)",
-                     "results/SEMANTICS/commitment_suite.json": "compromissos e CQs de perda reproduzidos"}}
+                     "results/SEMANTICS/commitment_suite.json": "compromissos e CQs de perda reproduzidos",
+                     "results/SEMANTICS/emendas.json": "emendas versionadas: pedido -> commit"}}
     files["semantics/SEMANTICS.html"] = render(ctx).encode()
     return files
 

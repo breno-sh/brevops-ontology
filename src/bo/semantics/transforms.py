@@ -352,6 +352,17 @@ def chain_of(fn) -> list[dict]:
     return list(fn) if isinstance(fn, list) else [fn]
 
 
+def apply_lifted(chain: list[dict], v, tin, tout, ctx: dict | None = None):
+    """Coleção -> coleção do mesmo tipo com cadeia escalar: aplica elemento a elemento (list/set: cada item;
+    map: cada valor, chave preservada). Fora disso, aplica a cadeia ao valor inteiro."""
+    if tin is not None and tout is not None and tin.is_collection and tout.is_collection \
+            and tin.datatype == tout.datatype and kind(chain) == "scalar":
+        if tin.datatype == "map":
+            return {k: apply_lifted(chain, x, tin.item, tout.item, ctx) for k, x in v.items()}
+        return [apply_lifted(chain, x, tin.item, tout.item, ctx) for x in v]
+    return apply_chain(chain, v, ctx)
+
+
 def inverse_chain(fn) -> list[dict] | None:
     out = []
     for item in reversed(chain_of(fn)):

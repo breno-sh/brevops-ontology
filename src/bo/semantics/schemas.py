@@ -21,7 +21,9 @@ VALUE_TYPE = {
         "rate_window": {"type": ["string", "null"], "description": "xsd:duration fixa (parte do tipo, N4)"},
         "byte_convention": {"enum": ["SI", "IEC", None]},
         "enum": {"type": "array"}, "range": {"type": "object"}, "step": {"type": ["string", "integer"]},
-        "sentinels": {"type": "object"}, "components": {"type": "array"}, "required": {"type": "boolean"}},
+        "sentinels": {"type": "object"}, "components": {"type": "array"}, "required": {"type": "boolean"},
+        "item_type": {"type": "object", "description": "list/set/map: tipo do elemento (emenda 2; C09 3.2.0)"},
+        "key_type": {"enum": ["string", "integer", "enum"], "description": "map: tipo da chave"}},
 }
 
 GUARD = {

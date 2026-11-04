@@ -1,7 +1,7 @@
 {
  "diffs": [],
- "exported": 16,
- "reimported": 16,
+ "exported": 18,
+ "reimported": 18,
  "same": true,
  "skipped": [
   {
@@ -21,5 +21,5 @@
    "why": "close: sem relação EDOAL equivalente"
   }
  ],
- "turtle_bytes": 31255
+ "turtle_bytes": 34841
 }

@@ -18,12 +18,19 @@ from fractions import Fraction
 from .vocab import NOT_APPLICABLE, UNKNOWN
 
 TIME = "quantitykind:Time"
-INFO = "quantitykind:InformationEntropy"
+# Emenda 2 (2026-11-04, CC-5 do PILOT-STO-MAP, alinhada com o UNITS): o QUDT 3.5.3 liga BYTE, BIT e os prefixos a
+# quantitykind:AmountOfData (qudt:unitForQuantityKind; também ByteDataVolume/BitDataVolume), não a
+# InformationEntropy, que a versão 1 deste núcleo usava. Fonte: VOCAB_QUDT-UNITS-ALL.ttl da release v3.5.3
+# (qudt/qudt-public-repo), cópia com sha256 em $BO_DATA/downloads/qudt-3.5.3/SOURCE.txt.
+INFO = "quantitykind:AmountOfData"
 COUNT = "quantitykind:Count"
 RATIO = "quantitykind:DimensionlessRatio"
 
 # unidade -> (grandeza, fator para a unidade base da grandeza ou None se não é fixo, convenção de byte)
 UNITS: dict[str, tuple[str, Fraction | None, str | None]] = {
+    "unit:NanoSEC": (TIME, Fraction(1, 10**9), None),
+    "unit:MicroSEC": (TIME, Fraction(1, 10**6), None),
+    "unit:MilliSEC": (TIME, Fraction(1, 10**3), None),
     "unit:SEC": (TIME, Fraction(1), None),
     "unit:MIN": (TIME, Fraction(60), None),
     "unit:HR": (TIME, Fraction(3600), None),
@@ -31,7 +38,13 @@ UNITS: dict[str, tuple[str, Fraction | None, str | None]] = {
     "unit:WK": (TIME, Fraction(604800), None),
     "unit:MO": (TIME, None, None),      # mês não é número fixo de segundos (CMT-LOSS-U01)
     "unit:YR": (TIME, None, None),      # ano idem
+    "unit:BIT": (INFO, Fraction(1, 8), None),
+    "unit:KiloBIT": (INFO, Fraction(10**3, 8), "SI"),
+    "unit:MegaBIT": (INFO, Fraction(10**6, 8), "SI"),
+    "unit:GigaBIT": (INFO, Fraction(10**9, 8), "SI"),
     "unit:BYTE": (INFO, Fraction(1), None),
+    "unit:TeraBYTE": (INFO, Fraction(10**12), "SI"),
+    "unit:TebiBYTE": (INFO, Fraction(2**40), "IEC"),
     "unit:KiloBYTE": (INFO, Fraction(10**3), "SI"),
     "unit:MegaBYTE": (INFO, Fraction(10**6), "SI"),
     "unit:GigaBYTE": (INFO, Fraction(10**9), "SI"),
@@ -40,8 +53,13 @@ UNITS: dict[str, tuple[str, Fraction | None, str | None]] = {
     "unit:GibiBYTE": (INFO, Fraction(2**30), "IEC"),
     "unit:NUM": (COUNT, Fraction(1), None),
     "unit:PERCENT": (RATIO, Fraction(1, 100), None),
+    "unit:FRACTION": (RATIO, Fraction(1), None),
 }
-DATATYPES = ("integer", "decimal", "boolean", "string", "enum", "duration", "tuple")
+DATATYPES = ("integer", "decimal", "boolean", "string", "enum", "duration", "tuple", "list", "set", "map")
+# Emenda 2 (CC-6 do PILOT-STO-MAP; C09 3.2.0): coleções. A grandeza de uma coleção é a do ELEMENTO (item_type); a
+# coleção em si não tem grandeza (NOT_APPLICABLE). map tem chave escalar (key_type ∈ string|integer|enum).
+COLLECTIONS = ("list", "set", "map")
+KEY_TYPES = ("string", "integer", "enum")
 NUMERIC = ("integer", "decimal")
 
 
@@ -296,6 +314,8 @@ class ValueType:
     step: str | None = None             # passo (inteiros: 1)
     sentinels: tuple = ()               # ((valor, significado), ...)
     components: tuple = ()              # tupla: ((nome, ValueType), ...)
+    item: "ValueType | None" = None     # coleção: tipo do elemento
+    key_type: str | None = None         # map: tipo da chave
     raw: dict = field(default_factory=dict, compare=False, hash=False)
 
     @staticmethod
@@ -330,6 +350,21 @@ class ValueType:
             if rng[0] is not None and rng[1] is not None and rng[0] > rng[1]:
                 raise TypeError_("faixa vazia")
         enum = d.get("enum")
+        item, kt = None, None
+        if dt in COLLECTIONS:
+            if "item_type" not in d:
+                raise TypeError_(f"{dt} exige item_type (C09 3.2.0)")
+            item = ValueType.from_dict(d["item_type"])
+            if qk not in (NOT_APPLICABLE,) or unit not in (NOT_APPLICABLE,):
+                raise TypeError_(f"{dt}: a grandeza fica no item_type, não na coleção")
+            if dt == "map":
+                kt = d.get("key_type")
+                if kt not in KEY_TYPES:
+                    raise TypeError_(f"map exige key_type ∈ {KEY_TYPES}")
+            elif "key_type" in d:
+                raise TypeError_(f"key_type só vale para map, não para {dt}")
+        elif "item_type" in d or "key_type" in d:
+            raise TypeError_(f"item_type/key_type só valem para list, set e map, não para {dt}")
         comps = tuple((c["name"], ValueType.from_dict(c["type"])) for c in d.get("components", []))
         if dt == "tuple" and not comps:
             raise TypeError_("tupla exige componentes tipados (KIND-TUPLE)")
@@ -338,18 +373,29 @@ class ValueType:
         if dt == "integer" and step is None:
             step = "1"
         return ValueType(dt, qk, unit, rw, bc, tuple(enum) if enum is not None else None, rng,
-                         None if step is None else str(step), sent, comps, dict(d))
+                         None if step is None else str(step), sent, comps, item, kt, dict(d))
 
     # -- grandeza conhecida?
     def kind_unknown(self) -> bool:
         if self.datatype == "tuple":
             return any(t.kind_unknown() for _, t in self.components)
+        if self.datatype in COLLECTIONS:
+            return self.item.kind_unknown()
         return self.quantity_kind == UNKNOWN or (self.datatype in NUMERIC and self.unit == UNKNOWN)
 
     def signature(self) -> tuple:
         """O que tem de ser igual para dois lados falarem do mesmo valor (composição: K-DOMAIN)."""
         return (self.datatype, self.quantity_kind, self.unit, self.rate_window, self.byte_convention,
-                tuple((n, t.signature()) for n, t in self.components))
+                tuple((n, t.signature()) for n, t in self.components),
+                self.item.signature() if self.item is not None else None, self.key_type)
+
+    @property
+    def is_collection(self) -> bool:
+        return self.datatype in COLLECTIONS
+
+    def element(self) -> "ValueType":
+        """Tipo que carrega a grandeza: o elemento de uma coleção (recursivo) ou o próprio tipo."""
+        return self.item.element() if self.item is not None else self
 
     def is_sentinel(self, v) -> bool:
         return any(_eqv(v, k) for k, _ in self.sentinels)
@@ -389,6 +435,15 @@ class ValueType:
         if self.datatype == "tuple":
             return isinstance(v, dict) and set(v) == {n for n, _ in self.components} and all(
                 t.admits(v[n]) for n, t in self.components)
+        if self.datatype == "list":
+            return isinstance(v, list) and all(self.item.admits(x) for x in v)
+        if self.datatype == "set":
+            return isinstance(v, list) and all(self.item.admits(x) for x in v) and \
+                len({repr(x) for x in v}) == len(v)
+        if self.datatype == "map":
+            kt = {"string": str, "enum": str, "integer": int}[self.key_type]
+            return isinstance(v, dict) and all(isinstance(k, kt) and not isinstance(k, bool) for k in v) and \
+                all(self.item.admits(x) for x in v.values())
         return False
 
     def unit_factor(self) -> Fraction | None:
