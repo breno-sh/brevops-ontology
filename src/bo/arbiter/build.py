@@ -26,7 +26,7 @@ from .common import dump_json, dump_jsonl, emit, now, repo, sha256_bytes
 from .freeze import MANIFEST, RULES_HTML, frozen_files, manifest_text
 from .rules import ARB_RULES, PRECEDENCE, RULE_ALIASES, RULE_ID_PATTERN, SEM_RULES, published_id
 
-AUTHORED_AT = "2026-11-04T10:25:00-03:00"
+AUTHORED_AT = "2026-11-04T12:30:00-03:00"
 RES = "results/ARBITERLIB"
 
 CONVENTIONS = [
@@ -54,10 +54,23 @@ CONVENTIONS = [
     ("Recongelamento", "2026-11-04: o fecho congelado mudou a montante (emendas 3 a 6 do CONTRACTS: esquemas C00, C09, C20 e "
                        "src/bo/contracts/rules.py, spec_a..d.py, sssom.py) e o árbitro foi recongelado sobre bo/base; "
                        "depois, o SEMANTICS 61d6fae (CC-3: invert aceita função do registro) mudou claims.py e "
-                       "transforms.py do fecho e o árbitro foi recongelado de novo (ARBITER-20261104-2). Comprovante "
-                       "vigente em results/ARBITERLIB/freeze_receipt_ARBITER-20261104-2.json (o anterior, "
-                       "freeze_receipt.json, fica como histórico). Motivo: contrato e referência a montante, "
+                       "transforms.py do fecho e o árbitro foi recongelado de novo (ARBITER-20261104-2); depois da emenda 7 "
+                       "do CONTRACTS e dos merges do SEMANTICS e do TRANSFORMS que ela pediu, recongelado pela "
+                       "terceira vez (ARBITER-20261104-3), com o HEAD de bo/base conferido dentro da trava. Comprovante "
+                       "vigente: results/ARBITERLIB/freeze_receipt_ARBITER-20261104-3.json; os anteriores ficam como "
+                       "histórico. Motivo: contrato e referência a montante, "
                        "não ajuste de resultado (CC-1 do PILOT-STO-MAP)."),
+    ("Ausência", "Linha com sssom:NoTermFound (C09-NONE; C09 3.2.0 com absence.side) tem veredito próprio: OK quando a "
+                 "ausência é bem formada, de tipo provado (ABSENCE_DEMONSTRATED, OUT_OF_PIN, UNSUPPORTED_BY_TRANSLATOR) e "
+                 "com evidência citada; UNPROVEN quando UNRESOLVED ou sem evidência; REFUTED quando mal formada. Não é "
+                 "related (sem ARB-RELATED-EV), não entra nas regras de conjunto nem no K4, e o relatório a conta à parte "
+                 "(n_absences, verdicts_absences, absences_by_kind). CC-7 do PILOT-STO-MAP."),
+    ("Domínio no registro", "Cadeia só do registro do TRANSFORMS com domínio do sujeito finito (enum, booleano, inteiro "
+                            "com faixa curta): a relação de domínios é calculada aplicando o registro a cada valor; "
+                            "vale VDR-COMPUTED e FID-COHERENT como no núcleo, e 'sem perda' deixa de ser UNPROVEN quando "
+                            "o cálculo o prova. CC-9 do PILOT-STO-MAP."),
+    ("Saída da conferência", "bo.arbiter.run com --check-unproven e sem --out grava em $BO_TMP/arbiter, nunca em $BO_DATA "
+                             "(o gate não regrava o dado publicado). CC-MAP-NET-4 do PILOT-NET-MAP."),
     ("Ciclo", "cycle do C21 é a rodada do árbitro (1; com --previous, 1 + a maior já gravada). Os ciclos do grafo K4 "
               "vão em cycles.jsonl (cada tentativa de composição e as diretas conferidas)."),
     ("Compostos", "Todo composto COMPOSED do K4 sai em verdicts.jsonl com claim_id = pernas ligadas por ∘ e "

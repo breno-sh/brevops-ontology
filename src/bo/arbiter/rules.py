@@ -57,6 +57,13 @@ _r("ARB-ANCHOR", "A3", "âncora", U, "Âncora é alegação auditada do C20: res
    "DOC_SUPPORTED: UNPROVEN. Âncora de outro átomo ou outro conceito: REFUTED.", ["F4"])
 _r("ARB-RELATED-EV", "A3", "âncora", U, "related não transporta, mas continua sendo alegação de alinhamento: sem "
    "DOC_SUPPORTED (ou observação) com citação, é hipótese (UNPROVEN), não OK.", ["F4"])
+# ---- ausência tipada (C09-NONE, C09 3.2.0; CC-7 do PILOT-STO-MAP) ----------------------------------------
+_r("ARB-ABSENCE-WF", "A1", "ausência", R, "Ausência tipada bem formada: campo absence; sssom:NoTermFound no lado oposto "
+   "ao de absence.side (padrão subject); skos:relatedMatch/related, fidelidade none, sem translation_fn.", ["F3"])
+_r("ARB-ABSENCE-KIND", "A3", "ausência", U, "Ausência UNRESOLVED (a busca não decidiu) é hipótese, não ausência provada.", ["F4"])
+_r("ARB-ABSENCE-EV", "A3", "ausência", U, "Ausência ABSENCE_DEMONSTRATED, OUT_OF_PIN ou UNSUPPORTED_BY_TRANSLATOR exige "
+   "evidência citada (fonte e sentença) em absence.evidence ou proof.evidence. Ausência não é related: não passa "
+   "pela ARB-RELATED-EV nem entra nas regras de conjunto, no K4 ou na contagem das alegações.", ["F4"])
 # ---- conflitos de conjunto (CONTESTED) e realizações (AMBIGUOUS) ------------------------------------------
 _r("ARB-ATOM-TYPE", "A2", "conjunto", C, "O mesmo átomo (ou parte projetada) tem um só tipo: assinatura (datatype, "
    "grandeza, unidade, janela, byte) e domínio (enum, faixa, passo, sentinelas) iguais em toda alegação cujas guardas "

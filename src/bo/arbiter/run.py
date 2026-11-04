@@ -7,7 +7,8 @@ Uso: python -I -m bo.arbiter.run --in ARQ|GLOB [--in ...] [--glossary DIR] [--at
   --in            alegações C09 (*.sssom.tsv ou *.jsonl); aceita glob (ex. "$BO_DATA/MAP-*-*/mapping.sssom.tsv")
   --glossary      pasta C20 com claims.jsonl (+ glossary_audit.jsonl, glossary.jsonl): âncoras auditadas (F4)
   --atoms         C01 (*.jsonl): campos em bloco repetido
-  --out           pasta de saída (padrão $BO_DATA/$BO_ID): verdicts.jsonl, cycles.jsonl, arbiter_report.json,
+  --out           pasta de saída (padrão $BO_DATA/$BO_ID; com --check-unproven e sem --out, $BO_TMP/arbiter, para a
+                  conferência de gate nunca regravar o dado publicado): verdicts.jsonl, cycles.jsonl, arbiter_report.json,
                   run_record.json (o que entrou, com sha256, para o bo.arbiter.determinism repetir)
   --frozen        confere arbiter/ARBITER.sha256 antes de julgar (saída 3 se o código não é o congelado)
   --check-unproven  segunda conferência, independente do motor: todo OK que transporta tem as provas mínimas do
@@ -102,7 +103,13 @@ def main(argv=None) -> int:
             emit(f"[{now()}] run: o código não é o congelado ({len(bad)} divergência(s)); nada julgado")
             return 3
     mid = os.environ.get("BO_ID") or "ARBITERLIB"
-    out = Path(a.out) if a.out else data_root() / mid
+    if a.out:
+        out = Path(a.out)
+    elif a.check_unproven:
+        # conferência (gate): nunca regrava o dado publicado em $BO_DATA (CC-MAP-NET-4 do PILOT-NET-MAP)
+        out = Path(os.environ.get("BO_TMP") or (data_root() / "tmp" / mid)) / "arbiter"
+    else:
+        out = data_root() / mid
     out.mkdir(parents=True, exist_ok=True)
     vpath = Path(a.verdicts) if a.verdicts else out / "verdicts.jsonl"
     cpath = Path(a.cycles) if a.cycles else out / "cycles.jsonl"

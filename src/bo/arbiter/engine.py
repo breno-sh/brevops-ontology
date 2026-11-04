@@ -128,7 +128,9 @@ def arbitrate(items: list[dict], *, glossary=None, atoms: list[dict] | None = No
             "claim_id": c.cid, "claim_version_id": c.vid, "event_id": _event_id(cycle, c.vid),
             "verdict": v, "rules": rules, "cycle": cycle, "composition_used": used[0] if used else None,
             "arbiter_sha256": sha, "decided_at": decided_at,
-            "detail": _detail(fails, f"obrigações de {c.relation} provadas; nenhuma regra de conjunto ou de ciclo falhou"),
+            "detail": _detail(fails, (f"ausência tipada {(c.rec.get('absence') or {}).get('kind')} bem formada, com busca "
+                                      "registrada e evidência citada; não transporta") if c.form == "absence" else
+                              f"obrigações de {c.relation} provadas; nenhuma regra de conjunto ou de ciclo falhou"),
         })
     for comp in sorted(k4["composites"], key=lambda x: x["claim_id"]):
         vid = f"{comp['claim_id']}@1"
@@ -146,13 +148,20 @@ def arbitrate(items: list[dict], *, glossary=None, atoms: list[dict] | None = No
 
 
 def _report(checked, verdicts, superseded, set_conf, set_diag, k4, items) -> dict:
-    base = {c.cid for c in checked}
+    absent = {c.cid for c in checked if c.form == "absence"}
+    base = {c.cid for c in checked} - absent
     vb = [v for v in verdicts if v["claim_id"] in base]
     by_rule = Counter(r for v in vb for r in v["rules"])
     by_dom: dict[str, Counter] = {}
     unglossed: Counter = Counter()
     vmap = {v["claim_version_id"]: v["verdict"] for v in vb}
+    vmap_all = {v["claim_version_id"]: v["verdict"] for v in verdicts}
+    abs_kind: dict[str, Counter] = {}
     for c in checked:
+        if c.cid in absent:
+            k = (c.rec.get("absence") or {}).get("kind", "?")
+            abs_kind.setdefault(k, Counter())[vmap_all.get(c.vid, "?")] += 1
+            continue
         d = c.item.get("domain") or "?"
         by_dom.setdefault(d, Counter())[vmap.get(c.vid, "?")] += 1
         if CC.UNGLOSSED in (c.rec.get("subject_concept"), c.rec.get("object_concept")):
@@ -174,9 +183,13 @@ def _report(checked, verdicts, superseded, set_conf, set_diag, k4, items) -> dic
     return {
         "schema": "bo.arbiter_report/1", "module": "ARBITERLIB",
         "inputs": sorted({it["source"] for it in items}),
-        "n_lines": len(items), "n_current": len(checked), "n_superseded": len(superseded),
+        "n_lines": len(items), "n_current": len(checked) - len(absent), "n_superseded": len(superseded),
         "verdicts": dict(Counter(v["verdict"] for v in vb)),
-        "verdicts_composites": dict(Counter(v["verdict"] for v in verdicts if v["claim_id"] not in base)),
+        "verdicts_composites": dict(Counter(v["verdict"] for v in verdicts
+                                            if v["claim_id"] not in base and v["claim_id"] not in absent)),
+        "n_absences": len(absent),
+        "verdicts_absences": dict(Counter(v["verdict"] for v in verdicts if v["claim_id"] in absent)),
+        "absences_by_kind": {k: dict(c) for k, c in sorted(abs_kind.items())},
         "by_rule": dict(sorted(by_rule.items())),
         "by_domain": {d: dict(c) for d, c in sorted(by_dom.items())},
         "unglossed_by_domain": dict(sorted(unglossed.items())),

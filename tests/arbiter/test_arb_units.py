@@ -213,3 +213,81 @@ def test_alias_antigo_desliga_a_regra():
     assert "EVIDENCE-DOC" in v_of(judge([r]), "T-1")[0]["rules"]
     for alias in ("EVIDENCE", "EVIDENCE-DOC"):
         assert v_of(judge([r], disabled=frozenset({alias})), "T-1")[0]["verdict"] == "OK"
+
+
+# ------------------------------------------------------------------- ausência tipada (CC-7 do PILOT-STO-MAP)
+def _absence(cid, kind, side="subject", evidence=True, **kw):
+    atom = "pa:t.only_here"
+    r = {"claim_id": cid, "claim_version_id": f"{cid}@1", "event_id": f"EV-{cid}",
+         "subject_id": atom if side == "subject" else "sssom:NoTermFound",
+         "object_id": "sssom:NoTermFound" if side == "subject" else atom,
+         "predicate_id": "skos:relatedMatch", "mapping_justification": "semapv:UnspecifiedMatching",
+         "semantic_relation": "related", "value_domain_relation": {"relation": "unknown", "orientation": "subject_to_object"},
+         "transport_fidelity": "none", "guard": {"all": []}, "evidence_state": "STRUCTURALLY_VALID", "basis": "direct",
+         "proof": {"type": "absence", "evidence": [], "tests": []},
+         "subject_concept": "bo:UNGLOSSED", "object_concept": "bo:UNGLOSSED",
+         "absence": {"kind": kind, "searched": ["átomos do outro provedor no pacote: 0"]}}
+    if side != "subject":
+        r["absence"]["side"] = side
+    if evidence:
+        r["absence"]["evidence"] = [{"source": "fixture:doc-sintetica", "sentence": "o outro provedor não tem o atributo",
+                                     "date": "2026-11-04"}]
+    r.update(kw)
+    return r
+
+
+@pytest.mark.parametrize("rec,verdict,rule", [
+    (_absence("T-AB-OK", "ABSENCE_DEMONSTRATED"), "OK", None),
+    (_absence("T-AB-OBJ", "OUT_OF_PIN", side="object"), "OK", None),
+    (_absence("T-AB-UNRES", "UNRESOLVED"), "UNPROVEN", "ARB-ABSENCE-KIND"),
+    (_absence("T-AB-NOEV", "ABSENCE_DEMONSTRATED", evidence=False), "UNPROVEN", "ARB-ABSENCE-EV"),
+    (_absence("T-AB-SIDE", "ABSENCE_DEMONSTRATED", side="object", subject_id="pa:t.only_here",
+              object_id="sssom:NoTermFound"), "REFUTED_BY_RULE", "ARB-ABSENCE-WF"),
+])
+def test_ausencia_tem_veredito_proprio_e_nao_e_related(rec, verdict, rule):
+    res = judge([rec])
+    v = v_of(res, rec["claim_id"])[0]
+    assert v["verdict"] == verdict and (rule is None or rule in v["rules"]), v
+    assert "ARB-RELATED-EV" not in v["rules"]
+    rep = res["report"]
+    assert rep["n_absences"] == 1 and rep["n_current"] == 0 and rep["verdicts"] == {}
+    assert rep["verdicts_absences"] == {verdict: 1}
+
+
+def test_ausencia_nao_entra_no_conjunto_nem_no_k4():
+    claims, _, _ = B.world()
+    base_ = judge(claims)
+    more = judge(claims + [_absence("T-AB-W1", "ABSENCE_DEMONSTRATED", subject_id="pa:k4.retention"),
+                           _absence("T-AB-W2", "UNRESOLVED", subject_id="pb:k4.retention",
+                                    claim_version_id="T-AB-W2@1", event_id="EV-T-AB-W2")])
+    vm = engine.verdict_map(base_["verdicts"])
+    assert all(engine.verdict_map(more["verdicts"])[k] == v for k, v in vm.items())
+
+
+# ----------------------------------------------------- domínio de função do registro (CC-9 do PILOT-STO-MAP)
+def _e2b(vdr, fid, table_out=None):
+    return B.C("T-E2B", "pa:t.status", "exact", "pb:t.enabled", B.ENUM("Enabled", "Disabled"), B.BOOL,
+               {"name": "enum_to_bool", "params": table_out or {"true": ["Enabled"], "false": ["Disabled"]}}, vdr, fid,
+               tests=[{"input": "Enabled", "expected": True}])
+
+
+def test_bijecao_do_registro_sem_perda_sai_ok():
+    v = v_of(judge([_e2b("equal", "lossless")]), "T-E2B")[0]
+    assert v["verdict"] == "OK", v
+
+
+def test_dominio_do_registro_declarado_errado_refuta():
+    v = v_of(judge([_e2b("subset", "lossless")]), "T-E2B")[0]
+    assert v["verdict"] == "REFUTED_BY_RULE" and "VDR-COMPUTED" in v["rules"], v
+
+
+# --------------------------------------------- --check-unproven sem --out não grava em $BO_DATA (CC-MAP-NET-4)
+def test_check_unproven_sem_out_grava_em_bo_tmp(tsv, monkeypatch):
+    p, d = tsv
+    from bo.arbiter.common import data_root
+    mid = "ARBITERLIB-TESTE-SAIDA"
+    monkeypatch.setenv("BO_ID", mid)
+    monkeypatch.setenv("BO_TMP", str(d / "bo_tmp"))
+    assert run.main(["--check-unproven", "--in", str(p), "--decided-at", DEC]) == 0
+    assert (d / "bo_tmp" / "arbiter" / "verdicts.jsonl").exists()
+    assert not (data_root() / mid).exists()

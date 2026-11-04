@@ -26,6 +26,7 @@ from bo.contracts import validate as CVAL
 from bo.semantics import guards as G
 from bo.semantics import projections as PJ
 from bo.semantics import transforms as ST
+from bo.semantics.claims import Claim as _SClaim, check_predicate as _check_predicate
 from bo.semantics.obligations import assess
 from bo.semantics.valuetypes import OutOfDomain, TypeError_, ValueType
 from bo.transforms import registry as TR
@@ -74,7 +75,7 @@ class Side:
 class Checked:
     item: dict
     failures: list = field(default_factory=list)
-    form: str = "plain"                 # plain | projection | group | invalid
+    form: str = "plain"                 # plain | projection | group | absence | invalid
     eff: dict | None = None             # alegação efetiva (ids internos por parte) para conjunto e K4
     subject: Side | None = None
     object: Side | None = None
@@ -410,6 +411,104 @@ def _anchors(c: Checked, glossary, disabled) -> None:
         c.failures.append(F("ARB-ANCHOR", "REFUTED_BY_RULE", "as âncoras não cobrem sujeito e objeto"))
 
 
+# ------------------------------------------------------------------------------------------------------ ausência
+NO_TERM = "sssom:NoTermFound"
+ABSENCE_PROVEN = ("ABSENCE_DEMONSTRATED", "OUT_OF_PIN", "UNSUPPORTED_BY_TRANSLATOR")
+
+
+def is_absence(rec: dict) -> bool:
+    return bool(rec.get("absence")) or NO_TERM in (rec.get("subject_id"), rec.get("object_id"))
+
+
+def _check_absence(c: Checked, dis) -> None:
+    """Ausência tipada (C09-NONE, C09 3.2.0): veredito próprio, não é related.
+    ARB-ABSENCE-WF   forma: absence presente; sssom:NoTermFound no lado oposto ao de absence.side (padrão subject:
+                     o átomo é o sujeito e o objeto é NoTermFound); relatedMatch/related, fidelidade none, sem
+                     translation_fn.                                                                   -> REFUTED
+    ARB-ABSENCE-KIND kind UNRESOLVED: a busca não decidiu; a ausência é hipótese.                   -> UNPROVEN
+    ARB-ABSENCE-EV   kind provado (ABSENCE_DEMONSTRATED, OUT_OF_PIN, UNSUPPORTED_BY_TRANSLATOR) sem evidência
+                     citada (absence.evidence ou proof.evidence com fonte e sentença).             -> UNPROVEN
+    Sem falha, OK: a ausência está provada como ausência (e não transporta nada)."""
+    rec = c.rec
+    ab = rec.get("absence") or {}
+    side = ab.get("side", "subject")
+    atom_key, none_key = ("subject_id", "object_id") if side == "subject" else ("object_id", "subject_id")
+    wf = []
+    if not ab:
+        wf.append("sssom:NoTermFound sem o campo absence")
+    if rec.get(none_key) != NO_TERM or rec.get(atom_key) == NO_TERM:
+        wf.append(f"absence.side={side}: {none_key} tem de ser sssom:NoTermFound e {atom_key} o átomo")
+    if rec.get("semantic_relation") != "related" or rec.get("predicate_id") != "skos:relatedMatch":
+        wf.append("ausência é skos:relatedMatch/related")
+    if rec.get("transport_fidelity") not in (None, "none"):
+        wf.append(f"ausência com fidelidade {rec.get('transport_fidelity')}")
+    if rec.get("translation_fn") is not None:
+        wf.append("ausência com translation_fn")
+    if wf and "ARB-ABSENCE-WF" not in dis:
+        c.failures.append(F("ARB-ABSENCE-WF", "REFUTED_BY_RULE", "; ".join(wf)))
+    kind = ab.get("kind")
+    if kind not in ABSENCE_PROVEN:
+        if "ARB-ABSENCE-KIND" not in dis:
+            c.failures.append(F("ARB-ABSENCE-KIND", "UNPROVEN",
+                                f"ausência {kind}: a busca registrada não decidiu; fica como hipótese"))
+        return
+    evs = list(ab.get("evidence") or []) + list(((rec.get("proof") or {}).get("evidence")) or [])
+    cited = [e for e in evs if isinstance(e, dict) and e.get("source") and (e.get("sentence") or e.get("observation"))]
+    if not cited and "ARB-ABSENCE-EV" not in dis:
+        c.failures.append(F("ARB-ABSENCE-EV", "UNPROVEN", f"ausência {kind} sem evidência citada (fonte e sentença)"))
+
+
+# ------------------------------------------------------------------------------------- domínio pelo registro
+def registry_vdr(eff: dict) -> str:
+    """Relação de domínios de uma cadeia só do registro do TRANSFORMS, calculada por enumeração exaustiva quando o
+    domínio do sujeito é finito (enum, booleano, inteiro com faixa curta): imagem = registro aplicado a cada valor;
+    valor fora do domínio da função parcial conta como sem contraparte (mesmo ajuste do SEMANTICS)."""
+    from bo.semantics.obligations import PARTIAL_ADJUST
+    from bo.semantics.valuetypes import EnumDomain, NumDomain, relation
+    try:
+        ts = ValueType.from_dict(eff["subject_value_type"])
+        to = ValueType.from_dict(eff["object_value_type"])
+        dom = ts.domain()
+    except (TypeError_, OutOfDomain, ValueError, KeyError, TypeError):
+        return "unknown"
+    if isinstance(dom, EnumDomain):
+        vals = list(dom.values)
+    elif isinstance(dom, NumDomain) and dom.count() is not None and dom.count() <= 4000:
+        vals = list(dom.points())
+    else:
+        return "unknown"
+    img, undefined = set(), 0
+    for v in vals:
+        try:
+            img.add(_reg_apply(eff["translation_fn"], v))
+        except (TransformError, KeyError, TypeError, ValueError):
+            undefined += 1
+    if not img:
+        return "disjoint"
+    try:
+        r = relation(EnumDomain(frozenset(img)), to.domain())
+    except (TypeError_, OutOfDomain, TypeError):
+        return "unknown"
+    return PARTIAL_ADJUST[r] if undefined else r
+
+
+def _registry_domain(c: Checked, eff: dict, dis) -> None:
+    vdr = registry_vdr(eff)
+    c.computed["vdr"] = vdr
+    if vdr == "unknown":
+        return
+    c.failures = [f for f in c.failures if f["rule"] != "VDR-UNKNOWN"]
+    decl = (eff.get("value_domain_relation") or {}).get("relation")
+    fid = eff.get("transport_fidelity")
+    if decl not in (None, "unknown", vdr) and "VDR-COMPUTED" not in dis:
+        c.failures.append(F("VDR-COMPUTED", "REFUTED_BY_RULE",
+                            f"declarada {decl}, calculada {vdr} pelo registro do TRANSFORMS (enumeração do domínio)"))
+    if fid == "lossless" and vdr in ("superset", "overlap", "disjoint") and "FID-COHERENT" not in dis:
+        c.failures.append(F("FID-COHERENT", "REFUTED_BY_RULE", f"sem perda com domínio {vdr}: há valor que não cabe"))
+    if vdr == "disjoint" and fid not in (None, "none") and "FID-COHERENT" not in dis:
+        c.failures.append(F("FID-COHERENT", "REFUTED_BY_RULE", "domínios disjuntos: nenhum valor atravessa"))
+
+
 # ---------------------------------------------------------------------------------------------------- principal
 def _assess_into(c: Checked, rec: dict, drop: tuple, disabled) -> None:
     try:
@@ -466,6 +565,16 @@ def check(item: dict, *, glossary=None, repeated: set | None = None, group_def: 
                 c.failures.append(F("ARB-C09-SCHEMA", "REFUTED_BY_RULE",
                                     f"/{'/'.join(map(str, e.absolute_path))}: {e.message}"))
             return c
+    if is_absence(rec):
+        c.form = "absence"
+        for e in _check_predicate(_SClaim(rec)):
+            c.failures.append(F("SKOS-PRED", "REFUTED_BY_RULE", e))
+        try:
+            G.typecheck(guard_of(c))
+        except G.GuardTypeError as e:
+            c.failures.append(F("GUARD-TYPE", "REFUTED_BY_RULE", str(e)))
+        _check_absence(c, dis)
+        return c
     g = rec.get("group") or group_def
     path, bad = fn_path(rec.get("translation_fn"))
     c.fn_path = path
@@ -510,6 +619,7 @@ def check(item: dict, *, glossary=None, repeated: set | None = None, group_def: 
             _assess_into(c, e2, ("EXACT-NORM",), dis)
             if path == "registry":
                 _registry_checks(c, eff, dis)
+                _registry_domain(c, eff, dis)
         c.eff = eff
     if rec.get("semantic_relation") == "related" and "ARB-RELATED-EV" not in dis:
         evs = ((rec.get("proof") or {}).get("evidence")) or []

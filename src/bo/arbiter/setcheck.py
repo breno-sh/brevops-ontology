@@ -337,7 +337,7 @@ def alternatives(cs: list[Checked], disabled) -> list[dict]:
 def run(cs: list[Checked], disabled=frozenset()) -> tuple[list[dict], dict]:
     dis = frozenset(disabled)
     undecided, duplicates = [], []
-    alive = [c for c in cs if c.verdict != "REFUTED_BY_RULE" and c.form != "invalid"]
+    alive = [c for c in cs if c.verdict != "REFUTED_BY_RULE" and c.form not in ("invalid", "absence")]
     out = []
     out += skos_disjoint(alive, dis)
     out += atom_types(alive, dis, undecided)
