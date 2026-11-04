@@ -1,5 +1,5 @@
 PILOT-STO-ORACLE: notas do oráculo offline do piloto de armazenamento de objeto
-gravado em 2026-11-03T22:00-03:00, revisto em 2026-11-04T14:43:35-03:00 (America/Recife)
+gravado em 2026-11-03T22:00-03:00, revisto em 2026-11-04T18:19:10-03:00 (America/Recife)
 
 O QUE ESTÁ AQUI
 - Avaliador: pilot/sto/oracle/sto_oracle.py (só biblioteca padrão; não importa nada do pipeline). Estado efetivo
@@ -137,3 +137,14 @@ REVISÃO FINAL 2026-11-04 14h, ANTES DO PILOT-EXIT 2/2 (SERVICE-EVIDENCE bdae2ec
 - Nenhuma resposta mudou; as 304 retidas não mudaram e o selo D15 NÃO foi refeito (cifrado 572f1333...).
 - Disputas: 77 no total; na fatia continuam só as duas da política de ciclo de vida OCI (mesmos ids), UNKNOWN com os
   dois lados. Tensão Azure managementPolicies continua registrada.
+
+REVISÃO FINAL 2026-11-04 18h, ANTES DO PILOT-EXIT 2/2 (SERVICE-EVIDENCE 365e6ed, C25 1.5.0; PREREG aa797ca e b95403a)
+- Rerodei o gabarito sobre o service_evidence.jsonl de 365e6ed (sha256 0b5bdd07...). Os 10 fatos de nível OBSERVED
+  são todos de rede (associações e NSG do Azure; regra de NSG e security list da OCI): nenhum é da fatia STO.
+- namespace_cascade do grupo de recursos do Azure (SE-azurerm-q6uwpa4u3za5kha7, frase publicada em
+  resource_group.html.markdown:13): apagar o grupo apaga os recursos aninhados. Não muda resposta: o grupo de
+  recursos não entra nas fixtures (resource_group_name é variável) e a cascata é de um nível acima da conta; continua
+  sem frase de que apagar a conta apaga o contêiner, então o contêiner Azure segue ENTITY com controlador self
+  (CMT-BKT-P03 segue sem realização na evidência).
+- Os 34 evidence_id citados estão presentes com o mesmo valor. Disputas: 77; na fatia só as duas da política OCI.
+- Nenhuma resposta mudou; as 304 retidas não mudaram; selo D15 NÃO refeito (cifrado 572f1333...).
