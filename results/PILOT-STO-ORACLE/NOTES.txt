@@ -1,5 +1,5 @@
 PILOT-STO-ORACLE: notas do oráculo offline do piloto de armazenamento de objeto
-gravado em 2026-11-03T22:00-03:00, revisto em 2026-11-04T12:43:51-03:00 (America/Recife)
+gravado em 2026-11-03T22:00-03:00, revisto em 2026-11-04T14:43:35-03:00 (America/Recife)
 
 O QUE ESTÁ AQUI
 - Avaliador: pilot/sto/oracle/sto_oracle.py (só biblioteca padrão; não importa nada do pipeline). Estado efetivo
@@ -129,3 +129,11 @@ REVISÃO 2026-11-04 12h, TENTATIVA 2 (SERVICE-EVIDENCE iteração 2, 83953b9; SE
   managementPolicies (SE-azurerm-3jyxtpn5toaf2j7s); o gabarito mantém a política como faceta da conta (CMT-BKT-P01).
 - SEMANTICS 2.0 (coleções no tipo de valor, AmountOfData para bytes): o oráculo julga estado efetivo, não tipo de
   valor nem grandeza; nenhuma resposta depende disso.
+
+REVISÃO FINAL 2026-11-04 14h, ANTES DO PILOT-EXIT 2/2 (SERVICE-EVIDENCE bdae2ec e 28faee8)
+- Rerodei o gabarito sobre o service_evidence.jsonl de 28faee8 (sha256 d77a4f6a...). As duas mudanças tratam de
+  security list, anexações, instância AWS/OCI e NIC/associações Azure: fora da fatia STO. Conferi os 34 evidence_id
+  citados nas regras e nestas notas: todos presentes, com o mesmo valor de dono/ciclo de vida/alcance.
+- Nenhuma resposta mudou; as 304 retidas não mudaram e o selo D15 NÃO foi refeito (cifrado 572f1333...).
+- Disputas: 77 no total; na fatia continuam só as duas da política de ciclo de vida OCI (mesmos ids), UNKNOWN com os
+  dois lados. Tensão Azure managementPolicies continua registrada.
