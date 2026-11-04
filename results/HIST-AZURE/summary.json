@@ -1,0 +1,47 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "HIST-AZURE",
+ "generated_at": "2026-11-04T02:21:17-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/HIST-AZURE.txt",
+  "brief_sha256": "b0451e64162e81d66684b402834784709d0ff1329c51eb7bcea79a157f2b2b03",
+  "params": {
+   "provider": "azurerm",
+   "versions": "27",
+   "pin": "5.12.0",
+   "terraform_cli": "1.15.8",
+   "platform": "darwin_arm64",
+   "library": "bo.schema (SCHEMALIB) extract+build, write_only da própria biblioteca",
+   "sandbox": "env -i, HOME temporário em BO_TMP, sandbox-exec; schema sem rede IP; sem credenciais",
+   "network": "registry.terraform.io (metadado e init), releases.hashicorp.com (SHA256SUMS, assinatura, zip)",
+   "trust": "GPG VALIDSIG chave primária C874011F0AB405110D02105534365D9472D7468F; zip == SHA256SUMS; h1 do cache == zip",
+   "binaries": "apagados depois de cada extração; ficam schema, hashes, SHA256SUMS e assinatura",
+   "cloud": "none",
+   "generator": "python -I -m bo.hist_azure.pipeline"
+  },
+  "inputs": [
+   {
+    "path": "$BO_REPO/universe/history_versions.json",
+    "kind": "file",
+    "sha256": "7186bdf94fb5764d84725f8c5560ee2a1cc505a9aa0f5bd02fef720e8fcea146"
+   }
+  ],
+  "recorded_at": "2026-11-04T02:21:17-03:00"
+ },
+ "sources": [
+  {
+   "uri": "https://releases.hashicorp.com/terraform-provider-azurerm/",
+   "license": "MPL-2.0",
+   "transformation": "zip assinado conferido (SHA256SUMS+GPG) de 27 versões; binário executado em sandbox só para providers schema -json e apagado"
+  },
+  {
+   "uri": "https://registry.terraform.io/v1/providers/hashicorp/azurerm/",
+   "license": "termos do Terraform Registry",
+   "transformation": "metadado de download por versão lido como JSON (URLs e chave pública)"
+  }
+ ],
+ "notes": "27 de 27 versões listadas pelo PINS extraídas (2.53.0 a 5.12.0), 0 com motivo; 5.12.0 = schema_sha256 do PINS e átomos byte a byte iguais aos do SCHEMA-AZURE; 3.0.0 e 3.0.2 têm o mesmo schema com binários diferentes; tipos 560 -> 1107, átomos 10404 -> 23351; queda em major: 3.110.0->4.0.0 (1096->1041 tipos) e 4.79.0->5.0.0 (1132->1103); write_only aparece a partir de 4.25.0 (6) até 8 em 5.7.0/5.12.0. Bloqueio: privacy_lint varre bytes comprimidos do .gz (CONTRACT_CHANGE.txt)."
+}

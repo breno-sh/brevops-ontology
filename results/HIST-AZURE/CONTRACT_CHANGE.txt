@@ -1,0 +1,113 @@
+CONTRACT_CHANGE — HIST-AZURE — 2026-11-04T02:21-03:00 (America/Recife)
+
+BLOQUEANTE para o gate G6 (privacy_lint --strict) e, por arrasto, para o G3 (make gate) e o G10 (merge).
+Mudança proposta no C00 (convenções §9, privacy_lint), dono REPO/coordenador: src/bo/repo/privacy.py.
+Vale igual para HIST-AWS, HIST-GCP e HIST-OCI (mesmo contrato de saída atoms_{version}.jsonl.gz).
+O HIST-AZURE parou antes do merge, como manda o brief: o resto está pronto e verde na branch bo/hist-azure.
+
+1. O privacy_lint --strict varre os BYTES COMPRIMIDOS de um .gz (falso positivo e falso negativo)
+   Fato: a saída obrigatória do módulo é $BO_DATA/HIST-AZURE/atoms_{version}.jsonl.gz (C01 em gzip, como o
+   catálogo fixa). O .gz tem \x00 nos primeiros 8 KiB, então o lint o trata como binário e, em --strict,
+   varre as sequências imprimíveis de >= 6 caracteres do dado COMPRIMIDO. Isso é ruído:
+     * falso positivo: atoms_2.53.0.jsonl.gz reprova com "money" porque os bytes comprimidos contêm a
+       letra R, um cifrão e o dígito 8 seguidos (sequência imprimível nº 43 do arquivo, 6 caracteres). O conteúdo descomprimido do
+       mesmo arquivo tem 0 achados. Nos 54 .gz do módulo
+       (27 atoms_<v> e 27 types_<v>) é o único achado: o resto do ruído não casou nenhuma regra por sorte.
+     * falso negativo (pior): um .jsonl.gz com um e-mail real plantado dentro PASSA no lint atual
+       (RESULTADO: OK), porque o texto comprimido não aparece nos bytes.
+   Não há como gravar diferente sem quebrar o contrato (.jsonl.gz é a saída do catálogo) e mudar o nível de
+   compressão até o ruído sumir seria ajustar o dado para passar no gate.
+   Proposta: em scan_paths, arquivo .gz com assinatura gzip (1f 8b) é DESCOMPRIMIDO em fluxo e o conteúdo é
+   varrido linha a linha como texto (mesmas regras, mesma máscara); conteúdo binário dentro do .gz segue a
+   regra do binário; gzip corrompido vira "ilegivel"; conteúdo acima de GZ_LIMIT (4 GiB) vira "nao_varrido"
+   em --strict. Os bytes comprimidos deixam de ser varridos.
+
+Diff testado (aplica com patch -p1 em $BO_REPO):
+--- a/src/bo/repo/privacy.py	2026-11-04 02:14:30
++++ b/src/bo/repo/privacy.py	2026-11-04 02:14:30
+@@ -20,6 +20,7 @@
+ MONEY_OK_FILES = {"cost_estimate.json"}
+ ALLOWED_EMAIL_DOMAINS = re.compile(r"@(example\.(com|org|net)|[a-z0-9-]+\.(example|invalid|test))$", re.I)
+ TEXT_LIMIT = 50 * 1024 * 1024
++GZ_LIMIT = 4 * 1024 * 1024 * 1024    # conteúdo descomprimido máximo de um .gz varrido
+ 
+ HEX_TOKEN = re.compile(r"[0-9A-Fa-f]{32,}")
+ 
+@@ -156,6 +157,54 @@
+     return found
+ 
+ 
++def is_gzip(f: Path) -> bool:
++    with open(f, "rb") as fh:
++        return fh.read(2) == b"\x1f\x8b"
++
++
++def scan_gzip(f: Path, lists=None, strict: bool = False) -> list[Finding]:
++    """.gz: varre o CONTEÚDO descomprimido (o que o arquivo de fato guarda), em fluxo, linha a linha.
++    Os bytes comprimidos não são varridos: as sequências imprimíveis de dado comprimido são ruído (ex.: R, cifrão e
++    um dígito disparam a regra money) e não dizem nada do conteúdo. Conteúdo binário dentro do .gz segue a regra do
++    binário; gzip corrompido é ilegível; conteúdo acima de GZ_LIMIT não é varrido (e reprova em --strict)."""
++    import gzip
++    import zlib
++    found, total, name = [], 0, f"{f} (gz)"
++    try:
++        with gzip.open(f, "rb") as g:
++            head = g.read(8192)
++            if is_binary(head):
++                data = head + g.read(TEXT_LIMIT)
++                if g.read(1):
++                    if strict:
++                        found.append(Finding("nao_varrido", str(f), 0, "conteúdo binário grande demais no .gz"))
++                    return found
++                return scan_bytes(data, name, lists, strict)
++            buf, n, total, eof = head, 0, len(head), False
++            while not eof:
++                chunk = g.read(1 << 20)
++                eof = not chunk
++                total += len(chunk)
++                if total > GZ_LIMIT:
++                    if strict:
++                        found.append(Finding("nao_varrido", str(f), 0, "conteúdo descomprimido acima de GZ_LIMIT"))
++                    return found
++                buf += chunk
++                if eof:
++                    lines, buf = buf.split(b"\n"), b""
++                else:
++                    *lines, buf = buf.split(b"\n")
++                for line in lines:
++                    n += 1
++                    for x in scan_text(line.decode("utf-8", errors="replace"), name, lists):
++                        x.line = n
++                        found.append(x)
++            return found
++    except (OSError, EOFError, zlib.error) as e:
++        found.append(Finding("ilegivel", str(f), 0, f"gzip ilegível: {type(e).__name__}"))
++        return found
++
++
+ def _signed_ok(f: Path, root: Path) -> bool:
+     """True se o sha256 de f aparece num SIGNED.sha256 na pasta de f ou acima dela (até root).
+     O SIGNED.sha256 é escrito pelo módulo que conferiu a assinatura do pacote (formato do sha256sum)."""
+@@ -192,6 +241,11 @@
+             if "__pycache__" in f.parts or f.suffix == ".pyc":
+                 continue
+             try:
++                if f.suffix == ".gz" and is_gzip(f):
++                    # gzip: varre o conteúdo descomprimido, nunca os bytes comprimidos (ruído)
++                    n += 1
++                    findings.extend(scan_gzip(f, lists, strict))
++                    continue
+                 if f.stat().st_size > TEXT_LIMIT:
+                     with open(f, "rb") as fh:
+                         binary = is_binary(fh.read(8192))
+Testes do diff (cópia em $BO_DATA/tmp/HIST-AZURE/contract_change/b, 2026-11-04T02:21-03:00):
+  * patch -p1 < privacy.diff numa cópia limpa de src/ e tools/ de bo/base (af99548): aplica sem fuzz.
+  * privacy_lint.py --selftest com o diff: 43/43 expectativas cumpridas.
+  * --strict $BO_DATA/HIST-AZURE (27 atoms_<v> + 27 types_<v> .gz e o resto): sem o diff REPROVADO (1 achado(s)); com o diff OK.
+  * .jsonl.gz com e-mail real plantado na linha 2: sem o diff OK (falso negativo); com o diff 1 achado email na linha 2, REPROVADO (1 achado(s)).
+  * .gz corrompido: com o diff ilegivel (gzip ilegível: EOFError), REPROVADO (1 achado(s)).
+  * .gz limpo: com o diff OK.
+
+2. (registro, sem mudança pedida) o gate do módulo já varre o conteúdo descomprimido
+   gates/HIST-AZURE.sh descomprime todo atoms_<v>/types_<v> em $BO_TMP/validate/ (para o validador, que lê
+   JSONL) e passa o privacy_lint --strict nesse conteúdo: privacy_lint --strict: 54 arquivo(s) varrido(s) RESULTADO: OK (54 JSONL descomprimidos).
