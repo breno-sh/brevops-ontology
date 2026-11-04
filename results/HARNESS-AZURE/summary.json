@@ -26,13 +26,14 @@
    {
     "path": "$BO_REPO/contracts/stubs",
     "kind": "dir",
-    "sha256": "8b31c1091ba92676bbcacdc364a3df41b6e6a1796fa8f3ecf0e7603a8050e08a",
+    "sha256": "f7ca57f02852b69bed8c2cf8a15d7f2b5ae3ecd862399578a941054d0c304175",
     "sha256_before_emenda3_e_skosfix": "6d24a5ce7306bc53d657c96122bc0c8ee7c0057d2b7b543b77507bc30be8abb6",
     "sha256_before_emendas_4_grain_se": "7ee2eaa73c1e0105f3f62d30492d3401ecf87fef0c55dd0dc0e1a05710289f75",
     "sha256_before_emenda6": "4d3e1ef5cca14555d3688d6275d009582507e823d5df70a688738a39955f75f1",
     "sha256_before_emenda7": "929b124dd416ed592176e821a4983db9caf593ff72e6caea325af00d998fd01a",
     "sha256_before_emenda8": "560f15a7f4069a539046aa0131bf9564df864ed0412aa2eb202e0bc7a3e0b23e",
-    "sha256_before_emenda9": "ff7ec36d2833b6afa01c21770a32cc6829c604f9c19bf870600d4bbfce788d4a"
+    "sha256_before_emenda9": "ff7ec36d2833b6afa01c21770a32cc6829c604f9c19bf870600d4bbfce788d4a",
+    "sha256_before_emenda11": "8b31c1091ba92676bbcacdc364a3df41b6e6a1796fa8f3ecf0e7603a8050e08a"
    }
   ],
   "recorded_at": "2026-11-04T12:47:52-03:00"
