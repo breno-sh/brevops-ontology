@@ -29,6 +29,12 @@ LEDGER = {
         {"step": "integração com o mapeamento real (PILOT-NET-MAP), resultados e rerodada dos gates",
          "start": "11:03", "end": "11:15", "agent_hours": 0.20},
     ],
+    "steps_attempt2": [
+        {"step": "tentativa 2 do PILOT-EXIT: termo list no OCI, traço das referências, vínculos do GRAIN 0.1.9",
+         "start": "13:04", "end": "13:10", "agent_hours": 0.10},
+        {"step": "rerodada sobre o PILOT-NET-MAP 1b8325a, gates e merge", "start": "13:16", "end": "13:25",
+         "agent_hours": 0.15},
+    ],
     "wait": [{"what": "PILOT-NET-MAP em bo/base (rebase sobre GRAIN 0.1.7/0.1.8 e oráculo regerado no meio)",
               "start": "10:29", "end": "11:03", "hours": 0.57}],
 }
