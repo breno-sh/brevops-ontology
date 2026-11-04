@@ -32,6 +32,9 @@ no código do HCL. Nada foi afrouxado; o merge em bo/base NÃO foi feito.
    (b) por tipo depois de alinhar a unidade à da tabela (tipo.nome único por diretório) — sem eu escolher
    depois de ver o número.
 
-3. consume_check (G7) — dono: coordenador/SEMANTICS
-   FAIL manifestos_transitivos: o PLANO_BREVOPS_ONTOLOGY.html mudou depois que o SEMANTICS o consumiu.
-   Não é entrada do HCL; precisa do refresh/invalidate do SEMANTICS.
+3. Estado dos outros gates (2026-11-04T08:10-03:00)
+   G7 consume_check: OK no ambiente da base e da lane (o FAIL de manifestos_transitivos do SEMANTICS sumiu).
+   G11 make integration: REPROVADO por test_manifestos_dos_mergeados: o MANIFEST.sha256 do
+   SERVICE-EVIDENCE não bate com o dado dele em $BO_DATA. Não é do HCL.
+   G1 stats, G3 symbolic_roundtrip, G6 gate_smoke, G9 ownership, G10 commit_lint: OK na lane; no
+   ambiente da base G1/G3/G4 só resolvem depois do merge (o pacote bo.hcl ainda não está em bo/base).
