@@ -39,9 +39,10 @@ FINDINGS = [
     "O comparador numeric_tolerance do C11 tem só {name, tolerance}, sem dizer se a tolerância é absoluta ou "
     "relativa (o C22 tem kind). O registro declara ABSOLUTA, na unidade do expected; tipos de unidade diferentes "
     "dos dois lados vão por compare_quantity_tolerance. Sugestão ao CONTRACTS: tolerance_kind no C11.",
-    "O C10 3.0.0 não tem list/set/map no datatype de porta (o C09 3.2.0 tem, com item_type): os combinadores de "
-    "coleção da emenda 1.2.0 usam porta 'tuple' e declaram a coleção na restrição da porta; proposta de C10 3.1.0 "
-    "em results/TRANSFORMS/CONTRACT_CHANGE.txt (não bloqueia: o tipo exato sai de collection_type_out).",
+    "O C10 3.1.0 (emenda 8 do CONTRACTS) aceita list/set/map com item_type nas portas; o registro 1.4.0 usa onde o "
+    "elemento é concreto (etiquetas). Os combinadores de coleção polimórficos ficam com porta 'tuple' e a coleção na "
+    "restrição, porque o value_type do C09 não tem 'any' para item_type; o tipo exato de cada uso sai de "
+    "collection_type_out (proposta em results/TRANSFORMS/CONTRACT_CHANGE.txt).",
     "O C10 combinador não tem params: o que é parâmetro no núcleo do SEMANTICS (key de json_get/map_get) vira porta "
     "de entrada aqui; json_get e map_get ficam com duas entradas e uma saída.",
     "xsd:duration segue o espaço de valores do XSD 1.1 (meses, segundos): P0M1D não tem meses e vira 86400 s sem "
@@ -76,6 +77,13 @@ EMENDAS = [
      "change": "quantitykind de BIT, BYTE e prefixos = quantitykind:AmountOfData (QUDT 3.5.3, "
                "qudt:unitForQuantityKind), igual a bo.units.rules e ao SEMANTICS (313e4d4); as escalares "
                "*_information mantêm o nome e mudam a grandeza declarada; teste contra bo.units.rules"},
+    {"registry_version": "1.4.0", "commit_subject": "[TRANSFORMS] emenda 1.4.0: portas list/map do C10 3.1.0 (CC-6)",
+     "request": "PILOT-STO-MAP CC-6, segunda parte: adoção do C10 3.1.0 (CONTRACTS emenda 8, 4abc6e3), que atendeu a "
+                "proposta do CONTRACT_CHANGE.txt do TRANSFORMS",
+     "change": "documento em contract_version 3.1.0; portas de elemento concreto viram list/map com item_type "
+               "(tags_list_to_map, tags_map_to_list); portas polimórficas (wrap_list, map_list, list_to_set...) "
+               "continuam tuple porque o value_type do C09 não tem 'any' para item_type (nova proposta no "
+               "CONTRACT_CHANGE.txt)"},
 ]
 
 

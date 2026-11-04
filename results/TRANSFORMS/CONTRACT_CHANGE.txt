@@ -1,16 +1,14 @@
-TRANSFORMS -> CONTRACTS: proposta de C10 3.1.0 (2026-11-04T12:27-03:00, America/Recife)
+TRANSFORMS -> CONTRACTS (2026-11-04T12:49-03:00, America/Recife)
 
-Motivo: pedido PILOT-STO-MAP CC-6 (emenda 7 do CONTRACTS). O C09 3.2.0 aceita value_type list/set/map com
-item_type (e key_type no map), mas o C10 3.0.0 só tem integer|decimal|boolean|string|enum|duration|tuple|number|any
-no datatype das portas de combinador e do domínio/codomínio das escalares.
+1. ATENDIDA: C10 3.1.0 com list/set/map nas portas (proposta de 12:27, adotada na emenda 8 do CONTRACTS, 4abc6e3).
+   O registro 1.4.0 publica em contract_version 3.1.0 e usa list/map com item_type nas portas de elemento concreto
+   (tags_list_to_map e tags_map_to_list).
 
-O que o TRANSFORMS fez sem esperar (registro 1.2.0): os combinadores de coleção (wrap_list, unwrap_single,
-list_to_set, set_to_list, map_list, map_set, map_values) declaram as portas de coleção como 'tuple' e dizem a
-coleção na restrição publicada ('coleção (C09 3.2.0) por porta: list = list'). O tipo exato sai de
-bo.transforms.registry.collection_type_out, no formato value_type do C09 3.2.0. Nada fica bloqueado.
-
-Mudança proposta (não bloqueante):
-  1. $defs.combinator.inputs/outputs.items.datatype: acrescentar list, set, map;
-  2. nas mesmas portas, item_type (e key_type para map) com o mesmo $ref do value_type do C09 3.2.0 e a regra
-     C10-COLL espelhando a C09-COLL;
-  3. quando adotado, o TRANSFORMS troca 'tuple' por list/set/map nas portas (registro 1.3.0), sem mudar código.
+2. NOVA (não bloqueante): 'any' no value_type do C09 para item_type de porta polimórfica.
+   Motivo: wrap_list, unwrap_single, list_to_set, set_to_list, map_list, map_set e map_values valem para elemento de
+   qualquer tipo (o tipo de cada uso sai de bo.transforms.registry.collection_type_out). O C10 tem 'any' no datatype
+   da porta, mas o value_type do C09 (o $ref de item_type) não tem: declarar item_type concreto restringiria a
+   função; por isso essas portas continuam 'tuple', com a coleção dita na restrição publicada.
+   Proposta: datatype 'any' no value_type do C09 (só válido como item_type de porta do C10, nunca em alegação), ou
+   um item_type ausente permitido em porta do C10 quando a porta é polimórfica. Com isso o TRANSFORMS troca 'tuple'
+   por list/set/map nessas portas (registro 1.5.0), sem mudar código de execução.

@@ -1,8 +1,8 @@
 schema: bo.transforms/1
 contract: C10
-contract_version: 3.0.0
+contract_version: 3.1.0
 module: TRANSFORMS
-generated_at: '2026-11-04T12:33:00-03:00'
+generated_at: '2026-11-04T12:49:00-03:00'
 scalar:
 - name: identity
   kind: scalar
@@ -812,10 +812,25 @@ combinators:
   kind: tuple
   inputs:
   - name: tags
-    datatype: tuple
+    datatype: list
+    item_type:
+      datatype: tuple
+      components:
+      - name: key
+        type:
+          datatype: string
+          quantity_kind: NOT_APPLICABLE
+      - name: value
+        type:
+          datatype: string
+          quantity_kind: NOT_APPLICABLE
   outputs:
   - name: map
-    datatype: tuple
+    datatype: map
+    key_type: string
+    item_type:
+      datatype: string
+      quantity_kind: NOT_APPLICABLE
   precondition: 'chaves únicas; chave e valor textos; portas: tags (lista de {key, value} ou {Key, Value}, textos);
     map (objeto texto -> texto)'
   error: 'TRANSFORM_OUT_OF_DOMAIN: chave repetida, campo fora de {key, value} ou valor não texto | UNKNOWN_INPUT:
@@ -828,10 +843,25 @@ combinators:
   kind: tuple
   inputs:
   - name: map
-    datatype: tuple
+    datatype: map
+    key_type: string
+    item_type:
+      datatype: string
+      quantity_kind: NOT_APPLICABLE
   outputs:
   - name: tags
-    datatype: tuple
+    datatype: list
+    item_type:
+      datatype: tuple
+      components:
+      - name: key
+        type:
+          datatype: string
+          quantity_kind: NOT_APPLICABLE
+      - name: value
+        type:
+          datatype: string
+          quantity_kind: NOT_APPLICABLE
   precondition: 'objeto texto -> texto; portas: map (objeto texto -> texto); tags (lista de {key, value} ordenada
     pela chave)'
   error: 'TRANSFORM_OUT_OF_DOMAIN: valor não texto | UNKNOWN_INPUT: entrada ausente ou não lida | UNKNOWN_SYMBOLIC_INPUT:

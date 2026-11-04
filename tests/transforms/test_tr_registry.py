@@ -320,3 +320,16 @@ def test_collection_types_c09_3_2_0():
         R.collection_type_out("list_to_set", {"datatype": "list"})
     with pytest.raises(DeclarationError):
         R.collection_type_out("unwrap_single", {"datatype": "set", "item_type": gib})
+
+
+# ------------------------------------------------------------------ emenda 1.4.0: portas do C10 3.1.0
+def test_c10_3_1_0_collection_ports():
+    doc = R.document()
+    assert doc["contract_version"] == "3.1.0"
+    t = next(c for c in doc["combinators"] if c["name"] == "tags_map_to_list")
+    assert t["inputs"][0] == {"name": "map", "datatype": "map", "key_type": "string",
+                              "item_type": {"datatype": "string", "quantity_kind": "NOT_APPLICABLE"}}
+    assert t["outputs"][0]["datatype"] == "list" and t["outputs"][0]["item_type"]["datatype"] == "tuple"
+    poly = next(c for c in doc["combinators"] if c["name"] == "map_list")
+    assert poly["inputs"][0]["datatype"] == "tuple" and "coleção (C09 3.2.0)" in poly["precondition"]
+    assert "&id" not in (ROOT / "transforms/transforms.yaml").read_text(encoding="utf-8")

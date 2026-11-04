@@ -1,8 +1,8 @@
 {
  "schema": "bo.transforms_index/1",
  "module": "TRANSFORMS",
- "registry_version": "1.3.0",
- "generated_at": "2026-11-04T12:33:00-03:00",
+ "registry_version": "1.4.0",
+ "generated_at": "2026-11-04T12:49:00-03:00",
  "counts": {
   "scalar": 27,
   "combinators": 24,
@@ -1675,7 +1675,7 @@
   "bo.semantics.guards.satisfiable dava SAT (ou UNKNOWN) onde não há valor possível em duas classes de guarda, e esta implementação (conferida por força bruta) dá UNSAT: (a) version_range sobre termo de universo fechado (enum ou boolean) ou não textual; (b) refers_to_kind junto com restrição de valor escalar ou universo fechado no mesmo termo. Eram 39 de 3998 guardas aleatórias; o SEMANTICS corrigiu em f48865f, os sat_tests passaram a incluir as duas classes e o guard_sat agora exige igualdade total (ver $BO_DATA/TRANSFORMS/guard_sat.json).",
   "O C10 não tem variável de tipo: uma escalar polimórfica que preserva a grandeza não se declara com grandeza concreta. O registro declara por grandeza (unit_convert_time, round_information, ...) e deixa só identity polimórfica, com grandeza NOT_APPLICABLE como no stub do CONTRACTS; NOT_APPLICABLE ali quer dizer 'não impõe nem muda grandeza', não 'valor sem grandeza'. Sugestão ao CONTRACTS: quantity_kind '$in' (variável) no C10.",
   "O comparador numeric_tolerance do C11 tem só {name, tolerance}, sem dizer se a tolerância é absoluta ou relativa (o C22 tem kind). O registro declara ABSOLUTA, na unidade do expected; tipos de unidade diferentes dos dois lados vão por compare_quantity_tolerance. Sugestão ao CONTRACTS: tolerance_kind no C11.",
-  "O C10 3.0.0 não tem list/set/map no datatype de porta (o C09 3.2.0 tem, com item_type): os combinadores de coleção da emenda 1.2.0 usam porta 'tuple' e declaram a coleção na restrição da porta; proposta de C10 3.1.0 em results/TRANSFORMS/CONTRACT_CHANGE.txt (não bloqueia: o tipo exato sai de collection_type_out).",
+  "O C10 3.1.0 (emenda 8 do CONTRACTS) aceita list/set/map com item_type nas portas; o registro 1.4.0 usa onde o elemento é concreto (etiquetas). Os combinadores de coleção polimórficos ficam com porta 'tuple' e a coleção na restrição, porque o value_type do C09 não tem 'any' para item_type; o tipo exato de cada uso sai de collection_type_out (proposta em results/TRANSFORMS/CONTRACT_CHANGE.txt).",
   "O C10 combinador não tem params: o que é parâmetro no núcleo do SEMANTICS (key de json_get/map_get) vira porta de entrada aqui; json_get e map_get ficam com duas entradas e uma saída.",
   "xsd:duration segue o espaço de valores do XSD 1.1 (meses, segundos): P0M1D não tem meses e vira 86400 s sem contexto; P1M e P1Y sem contexto de calendário são TRANSFORM_OUT_OF_DOMAIN; P1M = P30D é falso (duration_equal).",
   "BYTE e BIT sem prefixo: o registro dá convenção de byte None (fator 1 em SI e IEC); bo.units.rules grava SI (UNITS-BYTE-00, convenção vácua) e propôs ao CONTRACTS aceitar NOT_APPLICABLE no C05; nos prefixados as duas tabelas concordam (teste test_tr_units_rules).",

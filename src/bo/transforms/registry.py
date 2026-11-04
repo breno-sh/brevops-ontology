@@ -37,10 +37,11 @@ from . import units as U
 from .errors import DeclarationError, NoUnit, OutOfDomain, SymbolicInput, TransformError, UnknownInput
 from .markers import ABSENT, is_absent, is_not_read, is_symbolic
 
-REGISTRY_VERSION = "1.3.0"
-GENERATED_AT = "2026-11-04T12:33:00-03:00"     # data da versão do registro (fixa: a regeneração é idêntica)
+REGISTRY_VERSION = "1.4.0"
+GENERATED_AT = "2026-11-04T12:49:00-03:00"     # data da versão do registro (fixa: a regeneração é idêntica)
 LOSS_KINDS = ("rounding", "saturation", "absence", "sentinel", "context_dependence", "not_expressible", "semantic")
-DATATYPES = ("integer", "decimal", "boolean", "string", "enum", "duration", "tuple", "number", "any")
+DATATYPES = ("integer", "decimal", "boolean", "string", "enum", "duration", "tuple", "number", "any", "list", "set",
+             "map")
 _NO = object()
 
 
@@ -97,6 +98,7 @@ class Combinator:
     kind: str = "tuple"
     collection: tuple = ()        # ((porta, list|set|map), ...): coleção do C09 3.2.0 levada numa porta tuple do C10
     inv_inputs: Callable | None = None   # (entradas, saídas) -> entradas da inversa | None (sem inversa)
+    port_types: tuple = ()        # ((porta, value_type do C09 3.2.0), ...): porta publicada como list/set/map (C10 3.1.0)
 
 
 # ============================================================================================== parâmetros
@@ -927,6 +929,10 @@ def _cmp_quantity(v, ctx):
                                                    v["expected_type"], v["observed_type"])}
 
 
+_TAG_STR = {"datatype": "string", "quantity_kind": "NOT_APPLICABLE"}
+_TAGS_LIST = {"datatype": "list", "item_type": {"datatype": "tuple", "components": [
+    {"name": "key", "type": _TAG_STR}, {"name": "value", "type": _TAG_STR}]}}
+_TAGS_MAP = {"datatype": "map", "key_type": "string", "item_type": _TAG_STR}
 _PORTS_IN = (("ports", "string", "'p' ou 'p1-p2', 0 ≤ p1 ≤ p2 ≤ 65535"),)
 _PORTS_OUT = (("from_port", "integer", "0..65535"), ("to_port", "integer", "from_port..65535"))
 _CIDR_IN = (("cidr", "string", "rede IPv4/IPv6 sem bits de host"),)
@@ -1033,14 +1039,16 @@ COMBINATORS: list[Combinator] = [
                    out={"map": {"a": "1", "env": "prod"}}, roundtrip=True),
                 Ex({"tags": [{"Key": "env", "Value": "prod"}]}, out={"map": {"env": "prod"}}),
                 Ex({"tags": [{"key": "a", "value": "1"}, {"key": "a", "value": "2"}]}, err="TRANSFORM_OUT_OF_DOMAIN"),
-                Ex({"tags": [{"name": "a", "value": "1"}]}, err="TRANSFORM_OUT_OF_DOMAIN"))),
+                Ex({"tags": [{"name": "a", "value": "1"}]}, err="TRANSFORM_OUT_OF_DOMAIN")),
+               port_types=(("tags", _TAGS_LIST), ("map", _TAGS_MAP))),
     Combinator("tags_map_to_list", (("map", "tuple", "objeto texto -> texto"),),
                (("tags", "tuple", "lista de {key, value} ordenada pela chave"),), "objeto texto -> texto",
                (("TRANSFORM_OUT_OF_DOMAIN", "valor não texto"), ("UNKNOWN_INPUT", "entrada ausente ou não lida")),
                (), "nenhuma", "tags_list_to_map", False, _map_to_tags,
                (Ex({"map": {"env": "prod", "a": "1"}}, out={"tags": [{"key": "a", "value": "1"},
                                                                     {"key": "env", "value": "prod"}]}, roundtrip=True),
-                Ex({"map": {"a": 1}}, err="TRANSFORM_OUT_OF_DOMAIN"))),
+                Ex({"map": {"a": 1}}, err="TRANSFORM_OUT_OF_DOMAIN")),
+               port_types=(("map", _TAGS_MAP), ("tags", _TAGS_LIST))),
 ]
 
 _CMP_DOC = {
@@ -1587,6 +1595,15 @@ def _loss_text(t) -> str:
     return t.loss_text if t.loss_text.startswith("nenhuma") else f"nenhuma ({t.loss_text})"
 
 
+def _port(t, name, dt) -> dict:
+    """Porta publicada: list/set/map com item_type (C10 3.1.0) quando o tipo do elemento é concreto; porta polimórfica
+    (elemento de qualquer tipo) fica 'tuple' porque o value_type do C09 não tem 'any' para item_type."""
+    vt = dict(t.port_types).get(name) if isinstance(t, Combinator) else None
+    if vt is None:
+        return {"name": name, "datatype": dt}
+    return {"name": name, **json.loads(json.dumps({k: vt[k] for k in ("datatype", "key_type", "item_type") if k in vt}))}
+
+
 def to_item(t) -> dict:
     if isinstance(t, Scalar):
         d = {"name": t.name, "kind": "scalar", "domain": dict(t.domain), "codomain": dict(t.codomain),
@@ -1600,8 +1617,8 @@ def to_item(t) -> dict:
             d["duration_calendar"] = t.duration_calendar
         return d
     return {"name": t.name, "kind": "tuple",
-            "inputs": [{"name": n, "datatype": dt} for n, dt, _ in t.inputs],
-            "outputs": [{"name": n, "datatype": dt} for n, dt, _ in t.outputs],
+            "inputs": [_port(t, n, dt) for n, dt, _ in t.inputs],
+            "outputs": [_port(t, n, dt) for n, dt, _ in t.outputs],
             "precondition": t.precondition + "; portas: " + "; ".join(
                 f"{n} ({r})" for n, _, r in t.inputs + t.outputs) + (
                 "; coleção (C09 3.2.0) por porta: " + ", ".join(f"{p} = {k}" for p, k in t.collection)
@@ -1611,7 +1628,7 @@ def to_item(t) -> dict:
 
 
 def document() -> dict:
-    return {"schema": "bo.transforms/1", "contract": "C10", "contract_version": "3.0.0", "module": "TRANSFORMS",
+    return {"schema": "bo.transforms/1", "contract": "C10", "contract_version": "3.1.0", "module": "TRANSFORMS",
             "generated_at": GENERATED_AT, "scalar": [to_item(s) for s in SCALARS],
             "combinators": [to_item(c) for c in COMBINATORS]}
 

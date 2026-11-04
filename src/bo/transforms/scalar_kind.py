@@ -39,7 +39,7 @@ def static_checks(doc: dict) -> list[str]:
             if any(p["datatype"] not in R.DATATYPES for p in c[side]):
                 errs.append(f"combinador {c['name']}: {side} com datatype inválido")
         structural = (len(c["inputs"]), len(c["outputs"])) != (1, 1) or any(
-            p["datatype"] == "tuple" for p in c["inputs"] + c["outputs"])
+            p["datatype"] in ("tuple", "list", "set", "map") for p in c["inputs"] + c["outputs"])
         if not structural:
             errs.append(f"combinador {c['name']}: 1 -> 1 sem porta tupla (seria escalar)")
     return errs
@@ -77,6 +77,10 @@ def _runtime_ok(dt: str, v) -> bool:
             return False
     if dt == "tuple":
         return isinstance(v, (dict, list))
+    if dt in ("list", "set"):
+        return isinstance(v, list)
+    if dt == "map":
+        return isinstance(v, dict)
     return False
 
 
