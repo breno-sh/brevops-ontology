@@ -130,6 +130,8 @@ class CandidateEvidence:
     # tipo gêmeo de que o bloco herdou a evidência (T09) e marca de fora do domínio (T45)
     twin: str | None = None
     out_of_domain: str | None = None
+    # o pai estrutural é o pai de caminho da spec (herdado do gêmeo, G2-CHILD)
+    parent_is_path_parent: bool = False
 
     def fact(self, fld: str) -> Fact:
         return consolidate(fld, self.claims.get(fld, []))
@@ -151,7 +153,8 @@ def from_dict(d: dict) -> CandidateEvidence:
                              references=dict(d.get("references", {})),
                              parent_role=d.get("parent_role", "parent"),
                              groups=dict(d.get("groups", {})), roles=dict(d.get("roles", {})),
-                             twin=d.get("twin"), out_of_domain=d.get("out_of_domain"))
+                             twin=d.get("twin"), out_of_domain=d.get("out_of_domain"),
+                             parent_is_path_parent=bool(d.get("parent_is_path_parent")))
 
 
 class FixtureAdapter:

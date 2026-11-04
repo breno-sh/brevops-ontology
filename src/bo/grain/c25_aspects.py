@@ -86,7 +86,12 @@ TABLE = [
     ("owner", "parent (scope_kind resource_group | compartment)", "R-GRAIN-T52",
      "marca de NAMESPACE: a referência tipada ao contêiner (T21) é marcada namespace; qualifica o nome mas não "
      "compõe a unidade (G4-NS) e vira a relação cascade_delete_by. Também o fato explícito namespace_container "
-     "{attribute}. Sem a marca, a contenção segue composição (T21) e a regra G4-NS não se aplica"),
+     "{attribute}. T52b: no filho de um pai de caminho (T54), a referência ao MESMO tipo de contêiner de namespace "
+     "do pai também é namespace. Sem a marca, a contenção segue composição (T21) e a regra G4-NS não se aplica"),
+    ("owner", "parent (composição, tipo de API aninhado)", "R-GRAIN-T54",
+     "marca de PAI DE CAMINHO: contenção que não é namespace, com referência tipada ao pai (T21), cujo tipo de API "
+     "da ponte do candidato está aninhado no parent_api_type (…/pai/filho): a referência é marcada path_parent "
+     "(G2-CHILD); no bloco gêmeo, o pai estrutural herda a marca. Também o fato explícito path_parent {attribute}"),
     ("api_resource", "(pontes equivalentes)", "R-GRAIN-T53",
      "duas pontes que nomeiam o mesmo serviço/recurso só com grafia diferente (caixa, sublinhado, hífen) são uma "
      "alegação só; nomes de fato diferentes continuam CONTRADICTORY (disputa)"),
@@ -199,6 +204,7 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
 
     pending_ids, shared, containers, scopes, twins, timeouts = {}, {}, {}, {}, {}, {}
     ns_fields: dict[str, set] = defaultdict(set)     # cid -> campos de referência ao contêiner de namespace
+    path_fields: dict[str, set] = defaultdict(set)   # cid -> campos de referência ao pai de caminho (T54)
     typed: dict[str, dict] = defaultdict(dict)       # cid -> {campo: tipo alvo ou None} (T44 reference_target)
     for cid, rs in sorted(by_cid.items()):
         rt = cid.split(".")[0]
@@ -274,6 +280,9 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
                 pending_ids[cid] = (r, [f for f in v.get("required", []) if f not in loc_scope])
             elif a == "shared_identity_key":
                 shared[cid] = (r, [f for f in v.get("fields", []) if f not in loc_scope], list(v.get("peers", [])))
+            elif a == "path_parent":
+                if v.get("attribute"):
+                    path_fields[cid].add(_rel(v["attribute"], bp))
             elif a == "namespace_container":
                 # fato explícito: o atributo referencia um contêiner de namespace (T52)
                 if v.get("attribute"):
@@ -405,6 +414,14 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
             key_refs[cid][f] = typed[cid][f] if ok_target(typed[cid][f]) else None
             if r["value"].get("scope_kind") in NAMESPACE_KINDS:
                 ns_fields[cid].add(f)                     # T52: contêiner de namespace, não composição
+            else:
+                # T54: pai de composição como segmento de caminho acima da unidade: o tipo de API da ponte está
+                # aninhado no tipo de API do pai (…/pai/filho)
+                pat = r["value"].get("parent_api_type") or ""
+                for c in out.get(cid, {}).get("api_resource", []):
+                    full = f"{c.get('service')}/{c.get('resource')}"
+                    if pat and c.get("status") == "resource" and full.lower().startswith(pat.lower() + "/"):
+                        path_fields[cid].add(f)
             continue
         key_refs[cid]["$container"] = None
         reasons[cid].append(f"identity: contido em {r['value'].get('scope_kind')} ({types or 'sem tipo Terraform'}) "
@@ -417,6 +434,23 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
             fm[f] = {"path": f, "ref": True}
             if ok_target(tgt):
                 ent.setdefault("references", {})[f] = tgt
+    # T52b: o namespace do pai de caminho também qualifica o filho: a referência da chave do filho ao MESMO tipo de
+    # contêiner de namespace que qualifica o pai é namespace (herança ao longo do caminho)
+    for cid, pfs in list(path_fields.items()):
+        for pf in pfs:
+            ptype = typed.get(cid, {}).get(pf)
+            if not ptype:
+                continue
+            ns_types = {typed.get(ptype, {}).get(g) for g in ns_fields.get(ptype, set())}
+            for f, tt in typed.get(cid, {}).items():
+                if f != pf and tt and tt in ns_types:
+                    ns_fields[cid].add(f)
+                    reasons[cid].append(f"identity: {f} herda do pai de caminho {ptype} a marca de namespace (T52b)")
+    for cid, fs in path_fields.items():
+        fm = out.setdefault(cid, {}).setdefault("field_map", {})
+        for f in fs:
+            fm.setdefault(f, {"path": f, "ref": True})["path_parent"] = True
+        reasons[cid].append(f"identity: {sorted(fs)} referencia o pai de caminho da spec (G2-CHILD)")
     for cid, fs in ns_fields.items():
         fm = out.setdefault(cid, {}).setdefault("field_map", {})
         for f in fs:
@@ -501,6 +535,8 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
                      if m.get("ref") and src_ev.get("references", {}).get(f) == top}
         ent = out.setdefault(cid, {})
         ent["twin"] = twin
+        if any(src_ev.get("field_map", {}).get(f, {}).get("path_parent") for f in to_parent):
+            ent["parent_is_path_parent"] = True
         # a evidência do gêmeo SUBSTITUI a do próprio bloco (fatos block_* são da camada Terraform): sem isso o
         # bloco e o recurso separado divergiriam por construção (E2)
         for fld in ("identity", "import_key", "element_name_key", "api_resource", "lifecycle_controller", "owner",

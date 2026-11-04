@@ -29,6 +29,8 @@ PREDICATES = {
     "lifecycle_target_resolved": "lifecycle_controller",
     "api_resource_status_in": "api_resource",
     "identity_targets_all_namespace": "identity",
+    "identity_composition_targets_min": "identity",
+    "identity_path_parent": "identity",
 }
 NEEDS = ("lifecycle_controller", "owner", "effective_scope", "api_resource")
 RULE_KEYS = {"id", "priority", "grain", "text", "match", "needs", "guard", "emit", "missing",
@@ -156,6 +158,12 @@ def eval_pred(name: str, arg, ctx) -> bool:
     if name == "lifecycle_target_consistent":
         ok = (not ctx.targets) or (ctx.lifecycle_target in ctx.targets)
         return ok == bool(arg)
+    if name == "identity_composition_targets_min":
+        ns = ctx.namespace_fields
+        comp = [t for f, t in ctx.ident.refs.items() if f not in ns]
+        return (len(comp) if ctx.n.by_role else len(set(comp))) >= int(arg)
+    if name == "identity_path_parent":
+        return (ctx.path_parent is not None and bool(ctx.ident.own)) == bool(arg)
     if name == "identity_targets_all_namespace":
         ns = ctx.namespace_fields
         ok = bool(ctx.ident.own) and bool(ctx.ident.refs) and all(f in ns for f in ctx.ident.refs)

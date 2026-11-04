@@ -68,8 +68,10 @@ def relations(res: S.SchemaResult, keep=None) -> tuple[list, list]:
                 errs.append(f"{nid}.{f} -> {t}: relação perdida")
                 continue
             rels.append((lab(nid), how, lab(t)))
+        for tc in d.cascade:
+            rels.append((lab(nid), "cascade_delete_by", lab(tc)))
         for t in d.owner.get("targets") or []:
-            if t != d.parent:
+            if t != d.parent and d.rule != "GRAIN-G2-CHILD":
                 errs.append(f"{nid}: dono {t} diferente do pai {d.parent}")
         if d.grain in ("COMPONENT", "FACET") and d.parent is None:
             errs.append(f"{nid}: {d.grain} sem pai")

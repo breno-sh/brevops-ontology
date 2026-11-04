@@ -64,6 +64,7 @@ class Decision:
     notes: list = field(default_factory=list)
     trace: list = field(default_factory=list)
     cascade: list = field(default_factory=list)       # contêineres de namespace: relação cascade_delete_by
+    own_api_lifecycle: bool = False                    # G2-CHILD: componente com operações próprias na API
 
 
 def _order_missing(xs) -> list:
@@ -155,6 +156,14 @@ class Context:
         self.identity_class = ident.cls
         # campos de referência que a evidência marca como contêiner de namespace (G4-NS)
         self.namespace_fields = {f for f, m in ev.field_map.items() if m.get("ref") and m.get("namespace")}
+        # pai de composição marcado como segmento de caminho acima da unidade (G2-CHILD)
+        pp = {f for f, m in ev.field_map.items() if m.get("ref") and m.get("path_parent")}
+        if ev.parent_is_path_parent:
+            pp.add(PARENT)
+        comp = {f: t for f, t in ident.refs.items() if f not in self.namespace_fields}
+        self.path_parent = None
+        if comp and set(comp) <= pp and len(set(comp.values())) == 1:
+            self.path_parent = next(iter(comp.values()))
         self.targets = sorted(ident.refs.values()) if n.by_role else sorted(set(ident.refs.values()))
         self.lifecycle: Fact = ev.fact("lifecycle_controller")
         self.owner: Fact = ev.fact("owner")
@@ -256,6 +265,8 @@ def decide_node(n: Node, rs: R.RuleSet, decided: dict, bindings: dict) -> Decisi
         if ctx.owner_via_binding:
             d.notes.append("faceta com vários donos: fica no vínculo entre eles")
         d.cascade = sorted({t for f, t in ident.refs.items() if f in ctx.namespace_fields})
+        if d.rule == "GRAIN-G2-CHILD" and ctx.path_parent and ctx.path_parent not in d.cascade:
+            d.cascade = sorted(d.cascade + [ctx.path_parent])
         d.trace = trace
         return d
 
@@ -288,6 +299,9 @@ def decide_node(n: Node, rs: R.RuleSet, decided: dict, bindings: dict) -> Decisi
             d.parent = ctx.lifecycle_target
         elif par == "owner_target":
             d.parent = ctx.owner_targets[0]
+        elif par == "path_parent":
+            d.parent = ctx.path_parent
+            d.own_api_lifecycle = True
         if rule.emit.get("endpoints") == "identity_targets":
             d.endpoints = {(n.ev.parent_role if f == PARENT else f): t for f, t in ident.refs.items()}
         return fill(d)

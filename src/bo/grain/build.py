@@ -36,7 +36,7 @@ from . import schema as S
 from .common import data_dir, dump_json, dump_jsonl, now, repo, results_dir, rules_path, sha256_file, stamp
 from .evidence import FixtureAdapter
 
-AUTHORED_AT = "2026-11-04T10:15:00-03:00"
+AUTHORED_AT = "2026-11-04T10:45:00-03:00"
 
 
 def _strip(rep: dict) -> dict:
@@ -155,7 +155,7 @@ def render(doc: dict, rs: R.RuleSet, reps: dict) -> str:
 {e(AUTHORED_AT)} (America/Recife) · grain_rules.yaml sha256 {rules_sha[:16]}… · responde a R1-M2, R1-M7, R2-W2,
 Gemini A3/A6, GPT-6 F1/S1</div>
 <div class="kpis">
-<div class="kpi"><b>{len(rs.rules)}</b>regras (G0–G4, G4-NS e G0-NOMATCH)</div>
+<div class="kpi"><b>{len(rs.rules)}</b>regras (G0–G4, G2-CHILD, G4-NS e G0-NOMATCH)</div>
 <div class="kpi"><b>{len(R.IDENTITY_CLASSES)}</b>classes de identidade</div>
 <div class="kpi"><b>{len(R.PREDICATES)}</b>predicados (vocabulário fechado)</div>
 <div class="kpi"><b>{'4/4' if pk['instance_decompositions_equal'] and pk['schema_signatures_equal'] else 'NÃO'}</b>embalagens do contêiner com a mesma decomposição</div>
@@ -408,6 +408,18 @@ vida preso à instância, G1 e G2 aceitam a evidência, e trocar a ordem troca B
 referência <code>by_name</code>; sem ela, o grafo embutido perde relações que o separado tem.</li>
 <li>Emenda 0.1.1 (CC-1): a primeira versão lia uma convenção que o SERVICE-EVIDENCE nunca gravou; os testes
 sintéticos usavam a mesma convenção e não pegaram. Entraram o adaptador por aspecto e testes com o arquivo real.</li>
+<li>Emenda 0.1.7 (regra nova G2-CHILD, decisão do coordenador): um sub-recurso com CRUD próprio na API continua
+sendo parte do pai; ter API própria não o torna entidade independente. Justificativa: a identidade dele só existe
+dentro do pai (o caminho da spec o põe abaixo do pai, …/pai/{p}/filho/{f}), o pai o apaga em cascata, e as operações
+próprias só mudam QUEM pode criá-lo e apagá-lo sem mexer no resto do pai, não a quem ele pertence. A regra exige: classe
+WITHIN ou REF_TUPLE_PLUS em que as referências da chave que não são namespace apontam para UM pai marcado pela
+evidência como segmento de caminho acima (T54: o tipo de API da ponte está aninhado no tipo de API do pai de
+contenção; no bloco gêmeo, o pai estrutural herda a marca) e ciclo de vida de API publicado self. Sai COMPONENT do
+pai, com <code>own_api_lifecycle=true</code> e <code>cascade_delete_by</code> apontando o pai (itens de evidência no
+C19). Junto: G1 passa a contar as pontas sem os contêineres de namespace (senão a regra filha virava vínculo entre o
+pai e o grupo de recursos), e T52b leva a marca de namespace do pai ao filho. Controles negativos: a entidade sob
+namespace (G4-NS) continua ENTITY; faceta sem CRUD próprio continua FACET; filho sem ciclo de vida self segue a G2
+comum; sem a marca de caminho, segue UNKNOWN.</li>
 <li>Emenda 0.1.6, ainda: com o SERVICE-EVIDENCE do CC-10 (767bb22), pontes que nomeiam o mesmo recurso com grafia
 diferente (doc "objectstorage/Bucket" e spec "object_storage/bucket") contradiziam-se; T53 as unifica. Blocos que
 herdam do gêmeo (T09) podem sair FACET quando o gêmeo tem ligação de API de aspecto: é evidência herdada, não
