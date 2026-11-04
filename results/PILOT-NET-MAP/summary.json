@@ -1,0 +1,40 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "PILOT-NET-MAP",
+ "generated_at": "2026-11-04T10:17:56-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-NET-MAP.txt",
+  "brief_sha256": "bbe1720d7be2e239e3578f039b1152fece336e59a1b94881cab069cf16dc241c",
+  "params": {
+   "role": "mapper",
+   "role_brief": "briefs/MAPPER_BRIEF.txt",
+   "role_brief_version": "1.2.0",
+   "role_brief_sha256": "65cbcea35653cdaa4e9f272279d86b19dc88c649aeec0de4fff60f17162cd3a9",
+   "slice": "net",
+   "bundle_sha256": "c3aaf19dd9f5d460c5a4c8f54905e51b47041080740696c38ad3491d09160782",
+   "rows_n": "634",
+   "none_n": "432",
+   "groups_n": "15",
+   "mapping_set_id": "https://w3id.org/brevops/mapping/PILOT-NET-MAP/1",
+   "base": "61d6fae"
+  },
+  "inputs": [
+   {
+    "path": "$BO_DATA/PILOT-NET-GLOSS/bundle",
+    "kind": "dir",
+    "sha256": "342fb47a4d56b3e1c2d76739e37f0faa2771858055aec2606de8e12f2f2ec4f4"
+   },
+   {
+    "path": "$BO_REPO/briefs/MAPPER_BRIEF.txt",
+    "kind": "file",
+    "sha256": "65cbcea35653cdaa4e9f272279d86b19dc88c649aeec0de4fff60f17162cd3a9"
+   }
+  ],
+  "recorded_at": "2026-11-04T10:17:56-03:00"
+ },
+ "sources": [],
+ "notes": "pacote oficial do PILOT-NET-GLOSS (bundle.json); vereditos não trocados até o árbitro recongelar sobre o SEMANTICS 61d6fae"
+}

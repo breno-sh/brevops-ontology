@@ -24,6 +24,16 @@ CC-MAP-NET-2 (bloqueia G3 mesmo com o árbitro recongelado): o C21 recusa ids de
   (^[A-Z][A-Z0-9]*(-[A-Z0-9]+)*$); ou (b) SEMANTICS/ARBITERLIB renomeiam EVIDENCE -> EV-CITED e
   SENTINEL -> SENT-MAP (emenda com versão nova e invalidação dos consumidores; os briefs citam EVIDENCE).
 
+ADENDO 2026-11-04T10:20:00-03:00 (America/Recife), bo/base 0024ad9:
+  CC-MAP-NET-2 resolvido pelo ARBITERLIB 35e299f (ids de regra do C21): o árbitro sai rc 0 e o C21 aceita.
+  CC-MAP-NET-1 continua: o recongelamento 35e299f entrou ANTES do SEMANTICS 61d6fae no mesmo minuto, e
+  src/bo/semantics/claims.py e src/bo/semantics/transforms.py (fecho do árbitro) mudaram depois; --frozen sai 3
+  com 2 divergências. Proposta: ARBITERLIB recongela de novo sobre 61d6fae (ou posterior).
+  CC-MAP-NET-3 (G6): consume_check reprova em manifestos_transitivos: o PILOT-NET-GLOSS consumiu
+  $BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl e $BO_REPO/grain/grain_rules.yaml que mudaram depois
+  (SERVICE-EVIDENCE 767bb22/ce1e590, GRAIN 0.1.6); e o PREREG consumiu semantics/ antes do 61d6fae. Precisa o
+  NET-GLOSS rerodar (o GRAIN 0.1.7 anunciado) e o PREREG reconferir; não é do meu owns.
+
 Achados que não bloqueiam (o mapeamento sai, com UNPROVEN honesto onde o pacote não basta):
   F-1 lista e mapa sem datatype no C05/C09: atributos de lista (source_ranges, cidr_blocks, ports,
       *_port_ranges, *_prefixes, *_ids) e de mapa (tags) não têm tipo de valor declarável; as alegações que os
