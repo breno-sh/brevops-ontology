@@ -100,6 +100,35 @@ def sentences(roles: dict[str, dict]) -> dict:
                for t, tab in tabs.items()}}
 
 
+# Embalagens da mesma faceta no mesmo provedor (caso do plano: versionamento embutido × recurso separado).
+# (bloco embutido no contêiner, unidades do recurso separado que carregam o mesmo conteúdo, em ordem de nível)
+PACKAGING = [
+    ("aws", "aws_s3_bucket.versioning", ["aws_s3_bucket_versioning", "aws_s3_bucket_versioning.versioning_configuration"]),
+    ("aws", "aws_s3_bucket.server_side_encryption_configuration",
+     ["aws_s3_bucket_server_side_encryption_configuration"]),
+    ("aws", "aws_s3_bucket.server_side_encryption_configuration.rule",
+     ["aws_s3_bucket_server_side_encryption_configuration.rule"]),
+    ("aws", "aws_s3_bucket.lifecycle_rule", ["aws_s3_bucket_lifecycle_configuration.rule"]),
+    ("aws", "aws_s3_bucket.grant", ["aws_s3_bucket_acl.access_control_policy.grant"]),
+]
+
+
+def packaging(units: list[dict]) -> dict:
+    """E2, parte que o glossarista pode medir sem o gabarito: o grão da faceta embutida é o do recurso separado?"""
+    kind = {u["unit_id"]: (u["kind"], u["rule_applied"]) for u in units}
+    rows, same = [], 0
+    for prov, inline, separate in PACKAGING:
+        a = kind.get(f"CU-{prov}-{inline}", ("ABSENT", None))
+        bs = [kind.get(f"CU-{prov}-{x}", ("ABSENT", None)) for x in separate]
+        ok = a[0] != "UNKNOWN" and a[0] == bs[0][0]
+        same += ok
+        rows.append({"provider": prov, "inline": inline, "inline_grain": a[0], "separate": separate,
+                     "separate_grains": [b[0] for b in bs], "invariant": ok})
+    return {"pairs": len(rows), "invariant": same, "rows": rows,
+            "note": "o casamento com o gabarito do oráculo (E2 inteiro) é do PILOT-STO-E2E/PILOT-EXIT; o glossarista "
+                    "não lê o oráculo"}
+
+
 def build() -> dict:
     roles = C.slice_roles()
     ev = C.slice_evidence()
@@ -107,7 +136,9 @@ def build() -> dict:
     return {"schema": "bo.pilot_findings/2", "module": C.MODULE,
             "slice": {p: sorted(ts) for p, ts in C.SLICE.items()}, "excluded": C.EXCLUDED,
             "slice_types": len(C.slice_types()), "slice_atoms": len(roles), "slice_evidence_records": len(ev),
-            "grain": dec["report"], "c25_shape": shape(ev), "sentences": sentences(roles)}
+            "grain": dec["report"], "decided_units": sum(u["kind"] != "UNKNOWN" for u in dec["units"]),
+            "units": len(dec["units"]), "packaging_invariance": packaging(dec["units"]),
+            "c25_shape": shape(ev), "sentences": sentences(roles)}
 
 
 def main(argv=None) -> int:
@@ -132,6 +163,9 @@ def main(argv=None) -> int:
         c = r["container"]
         print(f"[{rep['generated_at']}] {p}: {r['candidates']} candidatos, grãos {r['grains']}; contêiner "
               f"{c['type']} = {c['grain']} (falta {c.get('missing')})")
+    pk = rep["packaging_invariance"]
+    print(f"unidades decididas: {rep['decided_units']}/{rep['units']}; embalagem invariante: "
+          f"{pk['invariant']}/{pk['pairs']}")
     cf = rep["sentences"]["by_role"].get("CONFIG", {})
     print(f"descrição própria com fonte: {cf.get('with_own_description')}/{cf.get('atoms')} átomos CONFIG")
     print(f"gravado: {path}")

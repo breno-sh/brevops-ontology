@@ -1,4 +1,19 @@
 CONTRACT_CHANGE — PILOT-STO-GLOSS (piloto sto: grão mecânico e glossário da fatia)
+ATUALIZAÇÃO 2026-11-04T10:19:00-03:00 (America/Recife), base com GRAIN c5ab882 (0.1.6), SE 767bb22, BRIEFS 0024ad9:
+  Grão: 17/116 unidades decididas (aws 13, google 2, azurerm 1, oci 1).
+  Contêineres: aws_s3_bucket ENTITY (G4); google_storage_bucket ENTITY (G4); oci_objectstorage_bucket ENTITY (G4);
+  azurerm_storage_container UNKNOWN (G0-IDENTITY, UNRESOLVED, falta identity: "contido em resource sem tipo
+  Terraform sem atributo de referência ao contêiner na identidade"; lifecycle "spec_operation sem tradução na
+  tabela"); a conta azurerm_storage_account sai ENTITY (GRAIN-G4-NS). 3 de 4 contêineres decididos.
+  E2, parte medível pelo glossarista (embalagem na aws, pilot_findings.json packaging_invariance): 2 de 5 pares
+  invariantes. Versionamento embutido FACET = separado FACET; criptografia embutida FACET = separada FACET;
+  a regra de criptografia sai UNKNOWN nas duas embalagens (falta api_resource; UNKNOWN = UNKNOWN não conta);
+  lifecycle_rule embutido COMPONENT × rule do recurso separado UNKNOWN (falta effective_scope e api_resource);
+  grant embutido UNKNOWN × grant da ACL separada UNKNOWN. Entre provedores, as facetas embutidas do google
+  (versioning, encryption, lifecycle_rule, retention_policy) e o blob_properties do azurerm saem UNKNOWN só por
+  api_resource, enquanto as facetas da aws saem FACET: a decomposição ainda não é a mesma entre provedores.
+  O casamento com o gabarito do oráculo (E2 inteiro) é medido pelo PILOT-STO-E2E/PILOT-EXIT, não por mim.
+
 ATUALIZAÇÃO 2026-11-04T09:19:00-03:00 (America/Recife), base com GRAIN a296cd0 (0.1.4) e SERVICE-EVIDENCE 787ab84:
   Decidem agora: aws_s3_bucket ENTITY (G4), aws_s3_bucket.lifecycle_rule COMPONENT (G2, pai = contêiner),
   aws_s3_bucket_public_access_block FACET (G3, dono = contêiner), google_storage_bucket ENTITY (G4),

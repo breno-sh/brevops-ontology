@@ -248,3 +248,16 @@ def test_official_validator_rejects_broken_glossary(pkg):
     f["glossary.jsonl"][0]["quantity_kind"] = "Time"  # não é IRI QUDT nem NOT_APPLICABLE/UNKNOWN
     errs, _ = A.check(write(f), validate=True)
     assert any("validador oficial" in e for e in errs)
+
+
+def test_packaging_invariance_counts_only_decided_equal_grains():
+    u = lambda uid, k: {"unit_id": uid, "kind": k, "rule_applied": "R-X"}  # noqa: E731
+    units = [u("CU-aws-aws_s3_bucket.versioning", "FACET"), u("CU-aws-aws_s3_bucket_versioning", "FACET"),
+             u("CU-aws-aws_s3_bucket.lifecycle_rule", "COMPONENT"),
+             u("CU-aws-aws_s3_bucket_lifecycle_configuration.rule", "UNKNOWN"),
+             u("CU-aws-aws_s3_bucket.grant", "UNKNOWN"), u("CU-aws-aws_s3_bucket_acl.access_control_policy.grant", "UNKNOWN")]
+    r = D.packaging(units)
+    got = {x["inline"]: x["invariant"] for x in r["rows"]}
+    assert got["aws_s3_bucket.versioning"] is True
+    assert got["aws_s3_bucket.lifecycle_rule"] is False
+    assert got["aws_s3_bucket.grant"] is False  # UNKNOWN == UNKNOWN não é invariância
