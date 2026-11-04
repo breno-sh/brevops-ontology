@@ -128,6 +128,10 @@ TABLE = [
      "recursos: cada elemento designa o objeto referenciado e vira ligação (T58); ciclo de vida, dono e alcance pela "
      "R-GRAIN-LISTELEM. Elemento literal ou simbólico não cria ligação (UNKNOWN sem ocorrência); fato do SE no "
      "atributo prevalece; sem o átomo citável, nada. A ponta FACET do vínculo é lida como a unidade dona da faceta"),
+    ("api_resource", "api_resource_bridge com item_model e field_type list[...] (bloco)", "R-GRAIN-T62",
+     "ponte para campo-lista de itens do pai: cada bloco é um item da coleção, não o aspecto do pai (T49 não se "
+     "aplica); sem identidade do item (nome ou conteúdo) na evidência, FACET e COMPONENT anônimo não se distinguem: "
+     "UNKNOWN em api_resource com o motivo"),
     ("api_resource", "(pontes equivalentes)", "R-GRAIN-T53",
      "duas pontes que nomeiam o mesmo recurso só com grafia diferente (caixa, sublinhado, hífen), ainda que o "
      "nome do serviço difira entre a doc e o SDK da spec, são uma alegação só; recursos de fato diferentes "
@@ -297,6 +301,13 @@ def translate(records: list[dict], candidates: set[str] | None = None, disputes:
                 res_ = res_ or (r.get("api_resource") or {}).get("resource")
                 if res_ in (None, "", "UNKNOWN"):
                     unknown(cid, "api_resource", r, "ponte sem recurso de API")
+                elif nested and isinstance(v, dict) and v.get("item_model") and \
+                        str(v.get("field_type") or "").startswith("list["):
+                    # T62: ponte para campo-lista de itens do pai: cada bloco é UM item da coleção, não o aspecto
+                    # (T49 não se aplica); sem identidade do item (nome ou conteúdo) na evidência, FACET e
+                    # COMPONENT anônimo ficam indistintos: UNKNOWN com o motivo (nunca FACET por omissão)
+                    unknown(cid, "api_resource", r, f"ponte para campo-lista de itens ({v.get('field_type')}): o "
+                            "item não é aspecto do pai e a identidade do item não tem evidência (T62)")
                 else:
                     svc = (v.get("service") if isinstance(v, dict) else None) or (r.get("api_resource") or {}).get(
                         "service") or "UNKNOWN"
@@ -408,6 +419,7 @@ def translate(records: list[dict], candidates: set[str] | None = None, disputes:
             elif a == "api_resource_bridge":
                 if v.get("resource") in (None, "", "UNKNOWN"):
                     unknown(cid, "api_resource", r, "ponte sem recurso de API")
+
                 else:
                     put(cid, "api_resource", {"status": "resource", "label": v["resource"], "service": v.get("service")
                                               or "UNKNOWN", "resource": v["resource"], "source": _src(r, rule)})

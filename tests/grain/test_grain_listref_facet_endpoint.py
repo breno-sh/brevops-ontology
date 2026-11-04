@@ -111,3 +111,27 @@ def test_component_endpoint_is_not_lifted():
     lk = _links(oc)
     assert nic and nic[0].grain == "COMPONENT"
     assert len(lk) == 1 and lk[0].grain == "BINDING" and lk[0].endpoints["holder"] == nic[0].occ_id
+
+
+def _rec(eid, kind, value, bp="items"):
+    return {"evidence_id": eid, "provider": "oci", "pin": {"provider_version": "0.0.1"},
+            "api_resource": {"service": "core", "resource": "X"}, "terraform_resource_type": "t_x", "block_path": bp,
+            "fact_kind": kind, "status": "stated", "level": "derived", "derived_from": ["SE-controle"],
+            "value": dict(value, block_path=bp)}
+
+
+def test_t62_list_item_bridge_is_not_an_aspect():
+    """T62: ponte para campo-lista de itens (item_model + list[...]) não vira aspecto pela T49; sem identidade do
+    item, api_resource fica UNKNOWN com o motivo. Controle: ponte para submodelo único segue aspecto (T49)."""
+    from bo.grain.evidence import C25Adapter
+    life = {"kind": "parent", "layer": "api", "rule": "R-OWN-SPEC-BLOCK", "configured_by": "update do pai"}
+
+    def bridge(ft):
+        return {"aspect": "api_resource_bridge", "field_type": ft, "item_model": "Item", "resource": "x.items",
+                "rule": "R-BRIDGE-SPEC-BLOCK", "service": "core"}
+    lst = C25Adapter([_rec("SE-c-1", "api_bridge", bridge("list[Item]")), _rec("SE-c-2", "lifecycle_controller", life)])
+    f = lst.evidence("t_x.items").fact("api_resource")
+    assert not f.known
+    one = C25Adapter([_rec("SE-c-1", "api_bridge", bridge("Item")), _rec("SE-c-2", "lifecycle_controller", life)])
+    g = one.evidence("t_x.items").fact("api_resource")
+    assert g.known and g.value["status"] == "aspect"

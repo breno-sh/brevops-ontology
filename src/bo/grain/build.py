@@ -423,7 +423,13 @@ for UNKNOWN (o dono é ponta e a G1 lê o grão dele). O que falta é evidência
 azurerm sem identidade (a da NIC também sem ciclo de vida e dono de API); regras da security list sem ponte. Com
 esses fatos postos à mão (contrafactual, não é resultado), as 14 anexações AWS por referência e as 2 OCI saem
 BINDING; a AWS por variável simbólica segue UNKNOWN. Sensibilidade: esquema e STO não mudam; na instância NET a
-LISTREF cria 14 ocorrências AWS e 8 azurerm (lista de NICs da VM), todas UNKNOWN pelo dono.</li>
+LISTREF cria 14 ocorrências AWS e 8 azurerm (lista de NICs da VM), todas UNKNOWN pelo dono. A ponte nova do SE para
+as regras da security list OCI aponta um campo-lista de itens (<code>list[IngressSecurityRule]</code>): pela T49 cada
+regra viraria FACET (aspecto do pai), o que o objeto da API não sustenta — cada bloco é UM item da coleção. T62: essa
+ponte não vira aspecto e, sem identidade do item (nome ou conteúdo) na evidência, FACET e COMPONENT anônimo não se
+distinguem; as 11 regras seguem UNKNOWN em api_resource, agora com esse motivo (na instância OCI, 8 ocorrências que a
+T49 daria FACET passam a UNKNOWN; o esquema OCI perde as 2 FACET das regras). Relatório em
+$BO_DATA/GRAIN/listref_sensitivity.json.</li>
 <li>Emenda 0.1.9 (PILOT-EXIT 1/2: o E2 NET reprovou porque a camada de instância não tinha as regras 0.1.5–0.1.8): a
 instância aplica agora contêiner externo (T51: <code>$ref</code> fora da configuração ou id literal), faceta implícita
 (T57), fora do domínio (T45), bloco repetido de coleção de objetos detectado pela evidência (T2) e o namespace do pai

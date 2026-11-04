@@ -202,7 +202,7 @@ amendments:
   - id: GRAIN-A13
     version: 0.1.10
     origin: rodada final antes do PILOT-EXIT 2/2 (anexações por atributo-lista sem ocorrência de vínculo)
-    text: atributo-lista de escalares do dono sem fato do SERVICE-EVIDENCE, cujos elementos são referências a recursos na configuração, vira ligação com citação do átomo do schema (R-GRAIN-LISTREF, derivada; elemento literal ou simbólico não cria ligação; fato do SE no atributo prevalece); ponta FACET do vínculo é lida como a unidade dona da faceta (a faceta não tem identidade própria), para que a lista dentro de um bloco-faceta e a lista no recurso deem o mesmo grão
+    text: atributo-lista de escalares do dono sem fato do SERVICE-EVIDENCE, cujos elementos são referências a recursos na configuração, vira ligação com citação do átomo do schema (R-GRAIN-LISTREF, derivada; elemento literal ou simbólico não cria ligação; fato do SE no atributo prevalece); ponta FACET do vínculo é lida como a unidade dona da faceta (a faceta não tem identidade própria), para que a lista dentro de um bloco-faceta e a lista no recurso deem o mesmo grão; ponte para campo-lista de itens do pai (item_model, list[...]) não vira aspecto pela T49 (cada bloco é um item da coleção) e, sem identidade do item, api_resource fica UNKNOWN com o motivo (T62)
   - id: GRAIN-A12
     version: 0.1.9
     origin: saída dos pilotos 1 de 2 (o grão do tipo divergia do gabarito na camada de instância)
