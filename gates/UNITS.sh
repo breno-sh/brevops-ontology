@@ -27,6 +27,10 @@ step "unidade e grandeza só por IRI QUDT ou marcador; taxa com janela"
 $py -I -B -m bo.units.qudt_iri_only | tail -1
 $py -I -B -m bo.units.rate_window | tail -1
 
+step "decisão de grandeza única (UNITS-QK-01, STO-MAP CC-5): citação do QUDT conferida e arquivo regenerado igual"
+$py -I -B -m bo.units.crosscheck --check
+$py -I -B -m bo.units.crosscheck || echo "(divergência dos outros núcleos é relatada, não é gate do UNITS: dono SEMANTICS/TRANSFORMS)"
+
 step "hashes (MANIFEST C17)"
 $py -I -B -m bo.units.manifest --check
 

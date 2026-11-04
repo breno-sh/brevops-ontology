@@ -54,3 +54,25 @@ TRANSFORMS (C10). Contagens: results/UNITS/coverage.json (recontadas a cada buil
    Gerado com os DOCS-* completos de bo/base (DOCS-AWS republicado: os 35.242 átomos de bloco repetido têm fato
    próprio em docs_facts.jsonl). O shared_block_map.jsonl também é lido (UNITS-SHARED-01), mas nenhuma repetição
    precisou herdar fato (shared_map_repeats_inherited = 0 no build_report).
+
+EMENDA 1 — 2026-11-04 (America/Recife) — grandeza única por unidade (UNITS-QK-01, versão 1.0.0); resolve
+PILOT-STO-MAP CC-5
+  Pedido do coordenador (preparação da tentativa 2 do PILOT-EXIT): o value_space dá unit:BYTE em AmountOfData, o
+  núcleo do SEMANTICS (valuetypes.UNITS) põe BYTE em InformationEntropy, e o árbitro solta 4 REFUTED_BY_RULE
+  (TYPE-WF) nos átomos de tamanho de objeto. A premissa do CC-5 ("QUDT tem BYTE em InformationEntropy") não se
+  sustenta na fonte fixada:
+    VOCAB_QUDT-UNITS-ALL.ttl (QUDT 3.5.3, sha256 5e84f3e1…4418)
+      l.4384 unit:BYTE; l.4415 qudt:unitForQuantityKind quantitykind:AmountOfData;
+      l.4416 qudt:unitForQuantityKind quantitykind:ByteDataVolume
+      l.2528 unit:BIT;  l.2558 qudt:unitForQuantityKind quantitykind:AmountOfData
+    Nenhuma tripla liga BYTE, BIT ou prefixo a InformationEntropy (hasQuantityKind, unitForQuantityKind ou
+    applicableUnit). No 3.5.3 as unidades de InformationEntropy são BAN, ERLANG, HART, NAT e SHANNON.
+  Decisão: uma grandeza por unidade, a que o QUDT afirma; byte e bit em quantitykind:AmountOfData. O lado do UNITS já
+  estava assim: o value_space NÃO muda (mesmo sha256, mesmos 1.055 registros AmountOfData).
+  Registro legível por máquina: results/UNITS/quantity_kind_decision.json (citação, linhas, sha256 e a tabela por
+  unidade). Teste cruzado: python -I -m bo.units.crosscheck (sai 1 enquanto SEMANTICS ou TRANSFORMS divergirem;
+  hoje 20 divergências: 7 unidades no SEMANTICS, 13 no TRANSFORMS).
+  Quem adota (não é posse do UNITS): SEMANTICS (valuetypes.INFO e content), TRANSFORMS (units.INFO e
+  transforms.yaml), CONTRACTS (stub C05). valuetypes.py e transforms/units.py estão no arbiter/ARBITER.sha256:
+  o ARBITERLIB recongela no mesmo merge (regra do CC-1). Proposta de teste para o SEMANTICS: chamar
+  bo.units.crosscheck.compare() e exigir lista vazia.

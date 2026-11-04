@@ -21,6 +21,7 @@ FILES = [
     "$BO_REPO/results/UNITS/coverage.json",
     "$BO_REPO/results/UNITS/iri_status.json",
     "$BO_REPO/results/UNITS/CONTRACT_CHANGE.txt",
+    "$BO_REPO/results/UNITS/quantity_kind_decision.json",
     "$BO_REPO/gates/UNITS.sh",
 ]
 

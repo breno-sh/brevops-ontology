@@ -1,0 +1,388 @@
+{
+ "citation": {
+  "absent": "nenhuma tripla liga unit:BYTE (ou BIT e prefixos) a quantitykind:InformationEntropy, por hasQuantityKind, unitForQuantityKind ou applicableUnit; qudt:hasQuantityKind não aparece no arquivo de grandezas e não liga BYTE no de unidades",
+  "file": "$BO_DATA/downloads/qudt-3.5.3/VOCAB_QUDT-UNITS-ALL.ttl",
+  "sha256": "5e84f3e10ae6a3c535e2e7616dc2affee09dd52bea5229822188730493fd4418",
+  "source": "QUDT 3.5.3, github.com/qudt/qudt-public-repo tag v3.5.3",
+  "statements": [
+   {
+    "line": 4384,
+    "subject": "unit:BYTE"
+   },
+   {
+    "line": 4415,
+    "triple": "unit:BYTE qudt:unitForQuantityKind quantitykind:AmountOfData"
+   },
+   {
+    "line": 4416,
+    "triple": "unit:BYTE qudt:unitForQuantityKind quantitykind:ByteDataVolume"
+   },
+   {
+    "line": 2528,
+    "subject": "unit:BIT"
+   },
+   {
+    "line": 2558,
+    "triple": "unit:BIT qudt:unitForQuantityKind quantitykind:AmountOfData"
+   }
+  ]
+ },
+ "decision": "uma grandeza por unidade, a que o QUDT 3.5.3 afirma; byte e bit: quantitykind:AmountOfData",
+ "module": "UNITS",
+ "owners_to_adopt": {
+  "ARBITERLIB": "valuetypes.py e transforms/units.py estão no ARBITER.sha256: recongelar no mesmo merge (regra do CC-1)",
+  "CONTRACTS": "stub C05 (value_space.jsonl) e src/bo/contracts/stubs.py",
+  "SEMANTICS": "src/bo/semantics/valuetypes.py INFO (e content/examples, counterexamples)",
+  "TRANSFORMS": "src/bo/transforms/units.py INFO e transforms/transforms.yaml"
+ },
+ "resolves": [
+  "PILOT-STO-MAP CC-5"
+ ],
+ "rule": "UNITS-QK-01",
+ "schema": "bo.units.quantity_kind_decision/1",
+ "units": [
+  {
+   "quantity_kind": "quantitykind:AmountOfData",
+   "qudt_links": [
+    "AmountOfData",
+    "BitDataVolume",
+    "DatasetOfBits"
+   ],
+   "qudt_supports": true,
+   "unit": "unit:BIT"
+  },
+  {
+   "quantity_kind": "quantitykind:AmountOfData",
+   "qudt_links": [
+    "AmountOfData",
+    "ByteDataVolume"
+   ],
+   "qudt_supports": true,
+   "unit": "unit:BYTE"
+  },
+  {
+   "quantity_kind": "quantitykind:Time",
+   "qudt_links": [
+    "BiodegredationHalfLife",
+    "FishBiotransformationHalfLife",
+    "HalfLife",
+    "MeanLifetime",
+    "Time"
+   ],
+   "qudt_supports": true,
+   "unit": "unit:DAY"
+  },
+  {
+   "quantity_kind": "quantitykind:DimensionlessRatio",
+   "qudt_links": [
+    "BioconcentrationFactor",
+    "CoefficientOfPerformance",
+    "CompressibilityFactor",
+    "DimensionlessRatio",
+    "DutyCycle",
+    "EccentricityOfOrbit",
+    "Efficiency",
+    "FissionCoreRadiusToHeightRatio",
+    "FrictionCoefficient",
+    "Gain",
+    "HeatCapacityRatio",
+    "IncidenceProportion",
+    "LengthRatio",
+    "MassFraction",
+    "MassRatio",
+    "MoleFraction",
+    "OpeningRatio",
+    "PayloadRatio",
+    "Reflectance",
+    "RelativeAtomicMass",
+    "RelativeMassDefect",
+    "RelativeMolecularMass",
+    "ServiceFactor",
+    "SignalDetectionThreshold",
+    "SpecificHeatsRatio",
+    "SpectralLuminousEfficiency",
+    "SpeedRatio",
+    "StateOfCharge",
+    "ThermalEfficiency",
+    "ThrustCoefficient",
+    "ThrustToWeightRatio",
+    "Transmittance",
+    "VoltageImbalance",
+    "VolumeFlowRatio",
+    "VolumeStrain"
+   ],
+   "qudt_supports": true,
+   "unit": "unit:FRACTION"
+  },
+  {
+   "quantity_kind": "quantitykind:AmountOfData",
+   "qudt_links": [
+    "AmountOfData",
+    "ByteDataVolume"
+   ],
+   "qudt_supports": true,
+   "unit": "unit:GibiBYTE"
+  },
+  {
+   "quantity_kind": "quantitykind:AmountOfData",
+   "qudt_links": [
+    "AmountOfData",
+    "BitDataVolume",
+    "DatasetOfBits"
+   ],
+   "qudt_supports": true,
+   "unit": "unit:GigaBIT"
+  },
+  {
+   "quantity_kind": "quantitykind:AmountOfData",
+   "qudt_links": [
+    "AmountOfData",
+    "ByteDataVolume"
+   ],
+   "qudt_supports": true,
+   "unit": "unit:GigaBYTE"
+  },
+  {
+   "quantity_kind": "quantitykind:Time",
+   "qudt_links": [
+    "HalfLife",
+    "MeanLifetime",
+    "Time"
+   ],
+   "qudt_supports": true,
+   "unit": "unit:HR"
+  },
+  {
+   "quantity_kind": "quantitykind:AmountOfData",
+   "qudt_links": [
+    "AmountOfData",
+    "ByteDataVolume"
+   ],
+   "qudt_supports": true,
+   "unit": "unit:KibiBYTE"
+  },
+  {
+   "quantity_kind": "quantitykind:AmountOfData",
+   "qudt_links": [
+    "AmountOfData",
+    "BitDataVolume",
+    "DatasetOfBits"
+   ],
+   "qudt_supports": true,
+   "unit": "unit:KiloBIT"
+  },
+  {
+   "quantity_kind": "quantitykind:AmountOfData",
+   "qudt_links": [
+    "AmountOfData",
+    "ByteDataVolume"
+   ],
+   "qudt_supports": true,
+   "unit": "unit:KiloBYTE"
+  },
+  {
+   "quantity_kind": "quantitykind:Time",
+   "qudt_links": [
+    "Adaptation",
+    "HalfLife",
+    "MeanLifetime",
+    "Time"
+   ],
+   "qudt_supports": true,
+   "unit": "unit:MIN"
+  },
+  {
+   "quantity_kind": "quantitykind:Time",
+   "qudt_links": [
+    "Time"
+   ],
+   "qudt_supports": true,
+   "unit": "unit:MO"
+  },
+  {
+   "quantity_kind": "quantitykind:AmountOfData",
+   "qudt_links": [
+    "AmountOfData",
+    "ByteDataVolume"
+   ],
+   "qudt_supports": true,
+   "unit": "unit:MebiBYTE"
+  },
+  {
+   "quantity_kind": "quantitykind:AmountOfData",
+   "qudt_links": [
+    "AmountOfData",
+    "BitDataVolume",
+    "DatasetOfBits"
+   ],
+   "qudt_supports": true,
+   "unit": "unit:MegaBIT"
+  },
+  {
+   "quantity_kind": "quantitykind:AmountOfData",
+   "qudt_links": [
+    "AmountOfData",
+    "ByteDataVolume"
+   ],
+   "qudt_supports": true,
+   "unit": "unit:MegaBYTE"
+  },
+  {
+   "quantity_kind": "quantitykind:Time",
+   "qudt_links": [
+    "CarrierLifetime",
+    "InductanceBasedTimeConstant",
+    "ResistanceBasedInductance",
+    "Time"
+   ],
+   "qudt_supports": true,
+   "unit": "unit:MicroSEC"
+  },
+  {
+   "quantity_kind": "quantitykind:Time",
+   "qudt_links": [
+    "ActionTime",
+    "BurnTime",
+    "IgnitionIntervalTime",
+    "InductanceBasedTimeConstant",
+    "RelaxationTime",
+    "ResistanceBasedInductance",
+    "SpecificImpulse",
+    "Time",
+    "WebTime"
+   ],
+   "qudt_supports": true,
+   "unit": "unit:MilliSEC"
+  },
+  {
+   "quantity_kind": "quantitykind:Count",
+   "qudt_links": [
+    "Count",
+    "MassNumber",
+    "NeutronNumber",
+    "NucleonNumber",
+    "NumberOfElectricalPhases",
+    "NumberOfParticles",
+    "Piece",
+    "Population",
+    "Turns"
+   ],
+   "qudt_supports": true,
+   "unit": "unit:NUM"
+  },
+  {
+   "quantity_kind": "quantitykind:Time",
+   "qudt_links": [
+    "CarrierLifetime",
+    "Time"
+   ],
+   "qudt_supports": true,
+   "unit": "unit:NanoSEC"
+  },
+  {
+   "quantity_kind": "quantitykind:DimensionlessRatio",
+   "qudt_links": [
+    "BioconcentrationFactor",
+    "CoefficientOfPerformance",
+    "CompressibilityFactor",
+    "DimensionlessRatio",
+    "DutyCycle",
+    "EccentricityOfOrbit",
+    "Efficiency",
+    "ElectricCurrentImbalance",
+    "Emissivity",
+    "FissionCoreRadiusToHeightRatio",
+    "FrictionCoefficient",
+    "Gain",
+    "HeatCapacityRatio",
+    "IncidenceProportion",
+    "LengthRatio",
+    "LuminousFluxRatio",
+    "MassFraction",
+    "MoleFraction",
+    "OpeningRatio",
+    "PayloadRatio",
+    "PressureRatio",
+    "Prevalence",
+    "Reflectance",
+    "RelativeMassDefect",
+    "RelativeMolecularMass",
+    "ResistanceRatio",
+    "ServiceFactor",
+    "SignalDetectionThreshold",
+    "SpecificHeatsRatio",
+    "SpeedRatio",
+    "StateOfCharge",
+    "ThermalEfficiency",
+    "ThrustToWeightRatio",
+    "TimeRatio",
+    "Transmittance",
+    "VoltageImbalance",
+    "VoltageRatio",
+    "VolumeFlowRatio",
+    "VolumeStrain"
+   ],
+   "qudt_supports": true,
+   "unit": "unit:PERCENT"
+  },
+  {
+   "quantity_kind": "quantitykind:Time",
+   "qudt_links": [
+    "ActionTime",
+    "BurnTime",
+    "CarrierLifetime",
+    "HalfLife",
+    "IgnitionIntervalTime",
+    "InductanceBasedTimeConstant",
+    "MeanLifetime",
+    "Period",
+    "ReactorTimeConstant",
+    "RelaxationTime",
+    "ResistanceBasedInductance",
+    "ReverberationTime",
+    "SpecificImpulse",
+    "Time",
+    "WebTime"
+   ],
+   "qudt_supports": true,
+   "unit": "unit:SEC"
+  },
+  {
+   "quantity_kind": "quantitykind:AmountOfData",
+   "qudt_links": [
+    "AmountOfData",
+    "ByteDataVolume"
+   ],
+   "qudt_supports": true,
+   "unit": "unit:TebiBYTE"
+  },
+  {
+   "quantity_kind": "quantitykind:AmountOfData",
+   "qudt_links": [
+    "AmountOfData",
+    "ByteDataVolume"
+   ],
+   "qudt_supports": true,
+   "unit": "unit:TeraBYTE"
+  },
+  {
+   "quantity_kind": "quantitykind:Time",
+   "qudt_links": [
+    "Time"
+   ],
+   "qudt_supports": true,
+   "unit": "unit:WK"
+  },
+  {
+   "quantity_kind": "quantitykind:Time",
+   "qudt_links": [
+    "HalfLife",
+    "MeanLifetime",
+    "Time"
+   ],
+   "qudt_supports": true,
+   "unit": "unit:YR"
+  }
+ ],
+ "version": "1.0.0"
+}

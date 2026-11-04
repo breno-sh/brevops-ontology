@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "UNITS",
- "generated_at": "2026-11-03T21:01:53-03:00",
+ "generated_at": "2026-11-04T12:22:01-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/UNITS.txt",
@@ -12,7 +12,8 @@
    "qudt_version": "3.5.3",
    "transforms_registry": "bo.transforms.units",
    "byte_si_prefix": "UNKNOWN_sem_convencao",
-   "duration_go_unit": "unit:SEC"
+   "duration_go_unit": "unit:SEC",
+   "quantity_kind_decision": "UNITS-QK-01@1.0.0"
   },
   "inputs": [
    {
@@ -71,7 +72,7 @@
     "sha256": "b246c2f851e3c9353cafddf9640b18b696c410e176b29735218f7a266bcb9888"
    }
   ],
-  "recorded_at": "2026-11-03T21:01:53-03:00"
+  "recorded_at": "2026-11-04T12:22:01-03:00"
  },
  "sources": [
   {
@@ -80,5 +81,5 @@
    "transformation": "vocabulários de unidade e grandeza lidos como RDF para conferir IRI, obsolescência e ligação unidade-grandeza"
   }
  ],
- "notes": "value_space C05 de 196075 átomos; regras declaradas em src/bo/units/rules.py; achados de contrato em results/UNITS/CONTRACT_CHANGE.txt"
+ "notes": "value_space C05 de 196075 átomos; emenda 1 (UNITS-QK-01) resolve PILOT-STO-MAP CC-5: byte e bit em AmountOfData pelo QUDT 3.5.3"
 }
