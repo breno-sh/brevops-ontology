@@ -82,6 +82,9 @@ AMENDMENTS = [
     {"contract": "C25", "from": "1.1.0", "to": "1.2.0", "at": "2026-11-04T09:00:00-03:00",
      "requested_by": "SERVICE-EVIDENCE", "source": "bo-service-evidence/results/SERVICE-EVIDENCE/CONTRACT_CHANGE.txt (5)",
      "change": "tipo protocol_support (protocol_support.jsonl, bo.protocol_support/1)"},
+    {"contract": "C26", "from": "1.1.0", "to": "1.2.0", "at": "2026-11-04T09:30:00-03:00", "requested_by": "COORD",
+     "source": "results/HARNESS-OCI/CONTRACT_CHANGE.txt (ACHADO 4, opção B)",
+     "change": "tag de execução nunca vem no plano (C26-NOTAG); stub sem freeform_tags.bo_run (oci) e labels.bo_case (google)"},
 ]
 
 

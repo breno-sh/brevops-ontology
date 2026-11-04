@@ -391,7 +391,10 @@ SEM: dict[str, list] = {
                                                            {"kind": "reference", "target_type": "aws_subnet",
                                                             "target_address": "aws_subnet.SYM-a1b2c3d4e5f60718",
                                                             "target_node": "r2"}))),
-                          ("campo-do-nome-invalido", S(("set", "0.steps.0.derived_name.field", "Nome Errado")))],
+                          ("campo-do-nome-invalido", S(("set", "0.steps.0.derived_name.field", "Nome Errado"))),
+                          ("tag-de-execucao", S(("fn", lambda r: r[3]["steps"][0]["values"].append(
+                              {"field": "freeform_tags.bo_run", "marked": True, "origin": "synthesized",
+                               "term": {"kind": "literal", "datatype": "string", "value": "run-01"}}))))],
     "C27:split": [("teste-em-claro", S(("set", "0.partitions.test.family_ids", ["F-0a0b0c0d0e0f"]))),
                   ("papel-ve-teste", S(("set", "0.role_projections.mapper.partitions", ["train", "test"]))),
                   ("teste-sem-cifra", S(("set", "0.partitions.test.encrypted.path", "$BO_DATA/SPLIT/test.jsonl")))],

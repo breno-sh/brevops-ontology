@@ -238,15 +238,6 @@
       "symbol_id": "SYM-c0a1000000000001"
      },
      "term_id": "t3"
-    },
-    {
-     "term": {
-      "kind": "symbol",
-      "name_class": "variable",
-      "scope": "repo",
-      "symbol_id": "SYM-c0a1000000000003"
-     },
-     "term_id": "t4"
     }
    ]
   }
@@ -409,16 +400,6 @@
         "datatype": "bool",
         "kind": "literal",
         "value": true
-       }
-      },
-      {
-       "field": "labels.bo_case",
-       "marked": true,
-       "origin": "synthesized",
-       "term": {
-        "datatype": "string",
-        "kind": "literal",
-        "value": "hg-bucket"
        }
       },
       {
@@ -822,17 +803,6 @@
         "kind": "literal",
         "value": "bo-net-0001-vcn"
        }
-      },
-      {
-       "field": "freeform_tags.bo_run",
-       "marked": true,
-       "origin": "synthesized",
-       "term": {
-        "kind": "symbol",
-        "name_class": "variable",
-        "scope": "repo",
-        "symbol_id": "SYM-c0a1000000000003"
-       }
       }
      ]
     },
@@ -1169,7 +1139,7 @@
    "target_provider": "oci"
   }
  ],
- "note": "um plano mínimo por provedor, copiado sem mudança das fixtures dos HARNESS-* (renderizam no pin do PINS)",
+ "note": "um plano mínimo por provedor, copiado sem mudança das fixtures dos HARNESS-* (renderizam no pin do PINS); emenda C26 1.2.0 (decisão do coordenador, ACHADO 4 do HARNESS-OCI, opção B): tirados freeform_tags.bo_run (oci, com o termo t4) e labels.bo_case (google): tag de execução é do harness, nunca do plano",
  "sources": [
   {
    "commit": "e0b89918207d0c4e4f1c839f52039c2754ce1a35",

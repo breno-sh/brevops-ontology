@@ -1348,6 +1348,9 @@ def r_plan(objs, ctx, path):
             for d in s["depends_on"]:
                 if d >= s["order"]:
                     errs.append(f"{w}: passo {s['order']} depende de {d}, que não é anterior")
+            for v in s["values"]:
+                if RUN_TAG.match(v["field"]):
+                    errs.append(f"{w}: passo {s['order']} traz tag de execução {v['field']} (é do harness, não do plano)")
             prev = _ancestors(p["steps"], s)
             for v in s["values"]:
                 tn = (v.get("term") or {}).get("target_node")
@@ -1375,6 +1378,9 @@ def r_plan(objs, ctx, path):
 
 
 # ---------------------------------------------------------------------------------------------------- C27
+RUN_TAG = re.compile(r"^(tags|labels|freeform_tags|defined_tags|tags_all)\.bo_")
+
+
 def _ancestors(steps: list, step: dict) -> set:
     """Nós criados pelos passos de que este passo depende (fecho transitivo de depends_on)."""
     by = {s["order"]: s for s in steps}

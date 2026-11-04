@@ -275,7 +275,7 @@ def test_c03_tipo_por_arquivo(alias, path, kind):
 
 def test_emenda2_versoes():
     pub = catalog.schemas()
-    for cid, v in {"C03": "3.1.0", "C12": "3.1.0", "C15": "3.1.0", "C19": "3.1.0", "C26": "1.1.0"}.items():
+    for cid, v in {"C03": "3.1.0", "C12": "3.1.0", "C15": "3.1.0", "C19": "3.1.0"}.items():
         assert pub[cid]["x-bo-contract"]["version"] == v
         assert "3.0.0" in amendments.chain(cid) or "1.0.0" in amendments.chain(cid)
 
@@ -333,3 +333,9 @@ def test_protocol_support_e_origem_pilot(sch):
     assert validate.validate("C25", ROOT / "contracts/stubs/C25/protocol_support.jsonl").ok
     assert "pilot" in sch["C11"]["$defs"]["case"]["properties"]["origin"]["enum"]
     assert sch["C24"]["x-bo-contract"]["version"] == "1.1.0" and sch["C25"]["x-bo-contract"]["version"] == "1.2.0"
+
+
+def test_plano_sem_tag_de_execucao():
+    lp = [json.loads(l) for l in (ROOT / "contracts/stubs/C26/lowering_plan.jsonl").read_text().splitlines()]
+    fields = [v["field"] for p in lp for st in p["steps"] for v in st["values"]]
+    assert not [f for f in fields if ".bo_" in f]
