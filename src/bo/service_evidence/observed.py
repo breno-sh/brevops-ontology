@@ -119,7 +119,9 @@ def facts(obs: list[dict], reports: dict) -> list[dict]:
         if dele and gone and all(r["rc"] != 0 for r in gone):
             emit("oci_core_network_security_group_security_rule", None, "lifecycle_controller", "R-OBS-CASCADE",
                  {"kind": "parent", "rule": "R-OBS-CASCADE", "layer": "api",
-                  "observed": {"delete_parent_with_rules": "accepted", "rules_after_parent_delete": "unreachable (404)"}},
+                  "observed": {"delete_parent_with_rules": "accepted", "rules_after_parent_delete": "unreachable (404)"},
+                  "caveat": "a OCI devolve o mesmo 404 (NotAuthorizedOrNotFound) para não autorizado e para "
+                            "inexistente; a cascata é inferida de 404 depois do delete do pai, com controle antes"},
                  dele + gone,
                  _steps(obs, e2, "list_before_nsg_delete_control"))
     return out
