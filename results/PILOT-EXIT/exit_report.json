@@ -2,20 +2,30 @@
  "contract": "C15",
  "contract_version": "3.1.0",
  "data": {
-  "attempt": 1,
+  "attempt": 2,
+  "claims_vs_absences": {
+   "net": {
+    "absences": 423,
+    "total": 216
+   },
+   "sto": {
+    "absences": 1483,
+    "total": 110
+   }
+  },
   "criteria": {
    "E1": {
     "name": "caminho completo",
-    "pass": false,
+    "pass": true,
     "pass_rule": "directions_covered == 12 and values_without_trace == 0 and silent_insertions == 0",
     "per_slice": {
      "net": {
       "measures": {
-       "directions_covered": 10,
+       "directions_covered": 12,
        "silent_insertions": 0,
-       "values_without_trace": 57
+       "values_without_trace": 0
       },
-      "pass": false
+      "pass": true
      },
      "sto": {
       "measures": {
@@ -34,7 +44,7 @@
     "per_slice": {
      "net": {
       "measures": {
-       "grain_mismatches": 28,
+       "grain_mismatches": 23,
        "invariance_failures": 0
       },
       "pass": false
@@ -50,7 +60,7 @@
    },
    "E3": {
     "name": "correspondências",
-    "pass": true,
+    "pass": false,
     "pass_rule": "claims_incomplete == 0 and unproven_misjudged == 0 and off_table_compositions == 0 and skos_roundtrip_ok",
     "per_slice": {
      "net": {
@@ -67,9 +77,9 @@
        "claims_incomplete": 0,
        "off_table_compositions": 0,
        "skos_roundtrip_ok": true,
-       "unproven_misjudged": 0
+       "unproven_misjudged": 2
       },
-      "pass": true
+      "pass": false
      }
     }
    },
@@ -108,7 +118,7 @@
     "measures": {
      "catalog_ok": true,
      "stale_not_marked": 0,
-     "unversioned_changes": 27
+     "unversioned_changes": 24
     },
     "name": "delta de contrato",
     "pass": false,
@@ -125,10 +135,10 @@
    },
    "E8": {
     "measures": {
-     "attempts": 1,
+     "attempts": 2,
      "breno_notified": true,
      "expansion_blocked": true,
-     "plan_returned_v4": false
+     "plan_returned_v4": true
     },
     "name": "limite de tentativas",
     "pass": true,
@@ -139,7 +149,7 @@
    "path": "$BO_REPO/prereg/pilot_exit.yaml",
    "sha256": "17132a424cf68a222c3534b154949d3dabb00973cdaf120ea584542301dc4f09"
   },
-  "decision": "SAÍDA REPROVADA (tentativa 1): E1, E2, E6 reprovam; a expansão não começa",
+  "decision": "SAÍDA REPROVADA (tentativa 2): E2, E3, E6 reprovam; a expansão não começa; o plano volta para revisão (v4)",
   "e5": {
    "addendum": {
     "has_r_ctrl_lines": true,
@@ -157,22 +167,23 @@
     "catalog_ok": true,
     "contracts_all_stubs": {
      "rc": 0,
-     "tail": "--all-stubs: 68/68 stubs conferem; 67 tipos de arquivo em 30 contratos; 0 problema(s)"
+     "tail": "--all-stubs: 69/69 stubs conferem; 68 tipos de arquivo em 30 contratos; 0 problema(s)"
     },
     "core_integration": {
      "rc": 0,
      "tail": "8 passed, 6 skipped"
-    }
+    },
+    "where": "bo/base"
    },
    "ledger": {
-    "n_requests": 33,
+    "n_requests": 34,
     "requests": [
      {
       "file": "$BO_REPO/results/PILOT-NET-E2E/CONTRACT_CHANGE.txt",
       "item": "CC-NET-E2E-1",
       "module": "PILOT-NET-E2E",
-      "status": "OPEN",
-      "versioned_by": ""
+      "status": "VERSIONED",
+      "versioned_by": "registro de emendas: C26 1.2.0->1.3.0"
      },
      {
       "file": "$BO_REPO/results/PILOT-NET-E2E/CONTRACT_CHANGE.txt",
@@ -199,8 +210,8 @@
       "file": "$BO_REPO/results/PILOT-NET-GLOSS/CONTRACT_CHANGE.txt",
       "item": "CC-NET-1",
       "module": "PILOT-NET-GLOSS",
-      "status": "OPEN",
-      "versioned_by": ""
+      "status": "VERSIONED",
+      "versioned_by": "registro de emendas: C01 2.1.0->2.2.0"
      },
      {
       "file": "$BO_REPO/results/PILOT-NET-GLOSS/CONTRACT_CHANGE.txt",
@@ -222,6 +233,13 @@
       "module": "PILOT-NET-GLOSS",
       "status": "OPEN",
       "versioned_by": ""
+     },
+     {
+      "file": "$BO_REPO/results/PILOT-NET-GLOSS/CONTRACT_CHANGE.txt",
+      "item": "CC-NET-5",
+      "module": "PILOT-NET-GLOSS",
+      "status": "VERSIONED",
+      "versioned_by": "registro de emendas: C00 3.2.0->3.3.0"
      },
      {
       "file": "$BO_REPO/results/PILOT-NET-MAP/CONTRACT_CHANGE.txt",
@@ -297,8 +315,8 @@
       "file": "$BO_REPO/results/PILOT-STO-GLOSS/CONTRACT_CHANGE.txt",
       "item": "CC-6",
       "module": "PILOT-STO-GLOSS",
-      "status": "OPEN",
-      "versioned_by": ""
+      "status": "VERSIONED",
+      "versioned_by": "pedido marca RESOLVIDO com versão/commit"
      },
      {
       "file": "$BO_REPO/results/PILOT-STO-GLOSS/CONTRACT_CHANGE.txt",
@@ -399,7 +417,7 @@
       "versioned_by": ""
      }
     ],
-    "unversioned_changes": 27
+    "unversioned_changes": 24
    },
    "stale": {
     "missing": [],
@@ -415,24 +433,46 @@
     "MAP": 0.8333,
     "ORACLE": 0.7438
    },
-   "makespan_plan_h": 249.0,
-   "makespan_recalibrated_h": 256.55,
+   "makespan_plan_h": 246.0,
+   "makespan_recalibrated_h": 253.55,
    "steps_without_effort": 0
   },
   "e8": {
-   "attempts": 1,
+   "attempts": 2,
    "breno_notified": true,
    "expansion_blocked": true,
-   "plan_returned_v4": false
+   "plan_returned_v4": true
   },
   "evaluated_code": {
-   "net": "12f2fc0b898dd47d8d76b2a44cf767da650f2f713af25f3dba0d121c3674a191",
-   "sto": "b85f46ff14a5774737f32f9396ddadfd9d0497a42a8b399cbcc5dd0b90f07862"
+   "net": "ef78d0ec2f5d5c18059f1b6bd0d849ca33e17c62acbcd5a4a8abf363b3e1103e",
+   "sto": "106bf40aee2d7f7e381c7b3a5d44a4855f2a5494d30a571a8832cae1b711006e"
+  },
+  "frozen_state": {
+   "ARBITERLIB": "28b9ba0",
+   "CONTRACTS": "cd6a66e",
+   "GRAIN": "c2c58ca",
+   "PILOT-NET-E2E": "83f78c4",
+   "PILOT-NET-GLOSS": "6c43bb5",
+   "PILOT-NET-MAP": "10c4134",
+   "PILOT-NET-ORACLE": "b55e10b",
+   "PILOT-STO-E2E": "aa59957",
+   "PILOT-STO-GLOSS": "bbbff75",
+   "PILOT-STO-MAP": "0af7252",
+   "PILOT-STO-ORACLE": "897bb79",
+   "SEMANTICS": "ea53bcf",
+   "SERVICE-EVIDENCE": "365e6ed",
+   "arbiter/ARBITER.sha256": "74c0f33bbaf57020"
   },
   "passed": false,
+  "prereg_declarations": [
+   "2026-11-04T16:17-0300 COORD, DESVIO DECLARADO (decisão do Breno, 04/11 ~15h): depois do PILOT-EXIT 1/2, três lacunas sem fonte publicada (identidade de regra da security list OCI, dono e cascata da regra do NSG OCI, ciclo de vida da associação NSG↔NIC/subnet no Azure) passam a ser respondidas por evidência OBSERVADA: experimento reprodutível na API real (2 repetições, controle, resíduo zero; só OCI e Azure, recursos gratuitos). Novo nível no C25 (emenda 10). Não muda hipótese, critérios E1–E8, limiares nem o conjunto retido. Conflito OBSERVED × PUBLISHED fica registrado como disputa. Justificativa: o E2 reprovava por falta de informação nas fontes e não por erro do método; a observação distingue os dois casos. Adendo: ADENDO_2026-11-04_OBSERVADO_ALIBABA.html.",
+   "2026-11-04T17:05-0300 COORD, REGRA DE CONSOLIDAÇÃO OBSERVED, escrita ANTES de qualquer fato OBSERVED ser publicado no SERVICE-EVIDENCE (que está segurado até este commit):\n R1. OBSERVED nunca sobrescreve PUBLISHED; o fato publicado continua no arquivo.\n R2. Um OBSERVED com >=2 repetições e controle resolve uma disputa PUBLISHED x PUBLISHED JÁ EXISTENTE a favor do lado que ele reproduz; a disputa continua registrada com o id da observação e passa a ter status 'resolvida-por-observação'.\n R3. Um OBSERVED que contradiz um PUBLISHED sem disputa prévia ABRE disputa nova (OBSERVED x PUBLISHED); nesse caso o GRAIN trata o campo como CONTRADICTORY (sem desempate), exatamente como as demais disputas.\n R4. Um OBSERVED sobre um campo sem nenhum fato PUBLISHED preenche o campo com nível OBSERVED.\n R5. A regra vale para qualquer resultado; não se escolhe por caso.\n Aplicação conhecida antes de publicar: dono e ciclo de vida da regra do NSG OCI eram disputa PUBLISHED(doc) x PUBLISHED(spec); a observação reproduz a spec -> R2. Identidade da regra da security list OCI e ciclo de vida da associação NSG<->NIC/subnet Azure não tinham fato publicado -> R4.",
+   "2026-11-04T17:05-0300 COORD, DECLARAÇÕES DE INTEGRIDADE antes do PILOT-EXIT 2/2 (vindas da revisão adversarial REVISAO_DOC_DECK_FABLE.html):\n D-a. Entre as tentativas 1 e 2, o GRAIN teve as versões 0.1.2 a 0.1.10, os contratos tiveram as emendas 5 a 10 e o árbitro foi recongelado 4 vezes. Tudo foi ajustado olhando só a CALIBRAÇÃO (E2 calib 11/42 -> 26/42). As retidas continuam cifradas fora da máquina (chave D15 na VM) e não foram lidas por nenhum módulo ajustado. O GRAIN, o SE, os contratos e o árbitro são CONGELADOS na versão em bo/base quando o EXIT 2 começar; o hash vai no relatório.\n D-b. As retidas do PILOT-STO-ORACLE foram re-seladas em 04/11, depois que uma resposta do gabarito mudou (política de ciclo de vida OCI -> UNKNOWN, por disputa) e a família de fixtures foi renumerada. A re-selagem foi feita pelo oráculo, que não vê o sistema; o conteúdo novo é o do selo 572f133361bc21d7. Isso fica declarado como desvio.\n D-c. Limitação conhecida: os oráculos leem a mesma SERVICE-EVIDENCE que o GRAIN, então erro de evidência é correlacionado entre sistema e gabarito. Isso é mitigado só nas 3 lacunas cobertas por OBSERVED. Gabarito de fonte independente (conta nova, GOLD-MODS, provedor retido Alibaba) fica para a fase 2.\n D-d. A comparação de OK antes x depois no MAP é incomparável: o veredito próprio de ausência (ARBITERLIB, emenda 9) muda a régua. Os relatórios separam alegações de ausências.",
+   "2026-11-04T17:17-0300 COORD, CORREÇÃO DA R2, também antes de qualquer fato OBSERVED ser publicado (nada foi promovido; o SE parou por esta divergência): a premissa de que dono e ciclo de vida da regra do NSG OCI eram disputa PUBLISHED x PUBLISHED estava errada; no arquivo, os dois lados são DERIVED (doc: R-OWN-API/R-LIFE-API; spec: R-OWN-SPEC/R-LIFE-SPEC-PARENT). Texto corrigido da R2: um OBSERVED com >=2 repetições e controle resolve uma disputa JÁ EXISTENTE entre fatos não observados (PUBLISHED ou DERIVED) a favor do lado que ele reproduz; a disputa continua registrada com o id da observação e status 'resolvida-por-observação'. R1, R3, R4 e R5 ficam como estão. Mudança de escopo: de PUBLISHED x PUBLISHED para (PUBLISHED|DERIVED) x (PUBLISHED|DERIVED); vale para qualquer resultado."
+  ],
   "problems": []
  },
- "generated_at": "2026-11-04T12:04:11-03:00",
+ "generated_at": "2026-11-04T20:52:52-03:00",
  "metrics": [
   {
    "axis": "operational",
@@ -450,11 +490,11 @@
    "metric_id": "M-PILOT-ORACLE-ACC-NET",
    "name": "fração de acerto do pipeline nas retidas (net)",
    "operational_coverage": {
-    "est": 0.1373,
-    "lower": 0.0836,
+    "est": 0.2451,
+    "lower": 0.1719,
     "n": 102,
     "n_known": 102,
-    "upper": 0.2173
+    "upper": 0.3368
    },
    "quantifier": "observed_fraction",
    "reading": "decision",
@@ -478,11 +518,11 @@
    "metric_id": "M-PILOT-DIRS-NET",
    "name": "direções com saída ou UNSUPPORTED declarado (net)",
    "operational_coverage": {
-    "est": 0.8333,
-    "lower": 0.552,
+    "est": 1.0,
+    "lower": 0.7575,
     "n": 12,
     "n_known": 12,
-    "upper": 0.953
+    "upper": 1.0
    },
    "quantifier": "observed_fraction",
    "reading": "decision",

@@ -2,7 +2,7 @@
  "contract": "C15",
  "contract_version": "3.1.0",
  "data": {
-  "as_of_base": "559b0bd2be951863d627d9d1bfe2c0e6e938e8ef",
+  "as_of_base": "aa5995751b89ea6dd19bfe2587fef59e5abe95b8",
   "class_ratio": {
    "E2E": 0.4083,
    "GLOSS": 3.645,
@@ -106,6 +106,22 @@
      {
       "hours": 0.0633,
       "step": "rebase sobre o PILOT-STO-MAP final, corrida de ponta a ponta, gates de novo e merge"
+     },
+     {
+      "hours": 0.135,
+      "step": "tentativa 2 do PILOT-EXIT: espera do PILOT-STO-MAP novo (f08b926)"
+     },
+     {
+      "hours": 0.0633,
+      "step": "tentativa 2: rebase, corrida de ponta a ponta sobre o mapeamento novo, gates e merge"
+     },
+     {
+      "hours": 0.2167,
+      "step": "rodada final: retirada dos contornos do HARNESS-GCP (9082eda), espera do PILOT-STO-MAP final (86cbcb3), corrida de ponta a ponta"
+     },
+     {
+      "hours": 0.265,
+      "step": "rodada final 2/2: espera do PILOT-STO-MAP 0af7252 e corrida de ponta a ponta (oráculo 897bb79, árbitro 4bee77e)"
      }
     ],
     "without_effort": 0
@@ -118,74 +134,74 @@
    "PILOT-NET-E2E": {
     "branch_created": "2026-11-04T09:11:57-03:00",
     "first_delivery": "2026-11-04T11:24:12-03:00",
-    "last_commit": "2026-11-04T11:24:12-03:00",
+    "last_commit": "2026-11-04T18:50:35-03:00",
     "measured_h": 2.2,
     "module": "PILOT-NET-E2E",
-    "n_commits": 14,
-    "rework_span_h": 0.0
+    "n_commits": 24,
+    "rework_span_h": 7.44
    },
    "PILOT-NET-GLOSS": {
     "branch_created": "2026-11-03T22:01:03-03:00",
     "first_delivery": "2026-11-04T09:33:25-03:00",
-    "last_commit": "2026-11-04T10:59:10-03:00",
+    "last_commit": "2026-11-04T18:42:40-03:00",
     "measured_h": 11.54,
     "module": "PILOT-NET-GLOSS",
-    "n_commits": 7,
-    "rework_span_h": 1.43
+    "n_commits": 13,
+    "rework_span_h": 9.15
    },
    "PILOT-NET-MAP": {
     "branch_created": "2026-11-04T09:11:17-03:00",
     "first_delivery": "2026-11-04T11:00:16-03:00",
-    "last_commit": "2026-11-04T11:05:33-03:00",
+    "last_commit": "2026-11-04T18:48:14-03:00",
     "measured_h": 1.82,
     "module": "PILOT-NET-MAP",
-    "n_commits": 4,
-    "rework_span_h": 0.09
+    "n_commits": 8,
+    "rework_span_h": 7.8
    },
    "PILOT-NET-ORACLE": {
     "branch_created": "2026-11-04T02:08:34-03:00",
     "first_delivery": "2026-11-04T03:24:26-03:00",
-    "last_commit": "2026-11-04T10:54:10-03:00",
+    "last_commit": "2026-11-04T18:20:09-03:00",
     "measured_h": 1.26,
     "module": "PILOT-NET-ORACLE",
-    "n_commits": 6,
-    "rework_span_h": 7.5
+    "n_commits": 9,
+    "rework_span_h": 14.93
    },
    "PILOT-STO-E2E": {
     "branch_created": "2026-11-04T09:11:43-03:00",
     "first_delivery": "2026-11-04T11:53:43-03:00",
-    "last_commit": "2026-11-04T11:55:01-03:00",
+    "last_commit": "2026-11-04T18:54:45-03:00",
     "measured_h": 2.7,
     "module": "PILOT-STO-E2E",
-    "n_commits": 7,
-    "rework_span_h": 0.02
+    "n_commits": 11,
+    "rework_span_h": 7.02
    },
    "PILOT-STO-GLOSS": {
     "branch_created": "2026-11-03T22:00:39-03:00",
     "first_delivery": "2026-11-04T08:20:18-03:00",
-    "last_commit": "2026-11-04T11:39:36-03:00",
+    "last_commit": "2026-11-04T18:40:01-03:00",
     "measured_h": 10.33,
     "module": "PILOT-STO-GLOSS",
-    "n_commits": 7,
-    "rework_span_h": 3.32
+    "n_commits": 12,
+    "rework_span_h": 10.33
    },
    "PILOT-STO-MAP": {
     "branch_created": "2026-11-04T08:37:13-03:00",
     "first_delivery": "2026-11-04T11:48:01-03:00",
-    "last_commit": "2026-11-04T11:51:18-03:00",
+    "last_commit": "2026-11-04T18:41:02-03:00",
     "measured_h": 3.18,
     "module": "PILOT-STO-MAP",
-    "n_commits": 9,
-    "rework_span_h": 0.05
+    "n_commits": 14,
+    "rework_span_h": 6.88
    },
    "PILOT-STO-ORACLE": {
     "branch_created": "2026-11-03T22:02:59-03:00",
     "first_delivery": "2026-11-04T02:44:37-03:00",
-    "last_commit": "2026-11-04T10:53:43-03:00",
+    "last_commit": "2026-11-04T18:19:13-03:00",
     "measured_h": 4.69,
     "module": "PILOT-STO-ORACLE",
-    "n_commits": 6,
-    "rework_span_h": 8.15
+    "n_commits": 9,
+    "rework_span_h": 15.58
    }
   },
   "scale_modules": [
@@ -1128,10 +1144,9 @@
   ],
   "schedule": {
    "concurrency_cap": 12,
-   "merged_modules": 57,
+   "merged_modules": 58,
    "plan": {
     "critical_path": [
-     "PILOT-EXIT",
      "DECOMPOSE",
      "GRAIN-REPRO",
      "DOMAIN-CONTRACTS",
@@ -1168,12 +1183,11 @@
      "ADVREVIEW",
      "RELEASE-CORRECTED"
     ],
-    "critical_path_h": 242.0,
-    "makespan_h": 249.0
+    "critical_path_h": 239.0,
+    "makespan_h": 246.0
    },
    "recalibrated": {
     "critical_path": [
-     "PILOT-EXIT",
      "DECOMPOSE",
      "GRAIN-REPRO",
      "DOMAIN-CONTRACTS",
@@ -1209,14 +1223,14 @@
      "ADVREVIEW",
      "RELEASE-CORRECTED"
     ],
-    "critical_path_h": 250.72,
-    "makespan_h": 256.55
+    "critical_path_h": 247.72,
+    "makespan_h": 253.55
    }
   },
   "schedule_recomputed": true,
   "steps_without_effort": 0
  },
- "generated_at": "2026-11-04T11:55:01-03:00",
+ "generated_at": "2026-11-04T18:54:45-03:00",
  "metrics": [
   {
    "axis": "operational",
@@ -1235,9 +1249,9 @@
    "name": "fração dos passos do E2E com esforço medido",
    "operational_coverage": {
     "est": 1.0,
-    "lower": 0.8454,
-    "n": 21,
-    "n_known": 21,
+    "lower": 0.8668,
+    "n": 25,
+    "n_known": 25,
     "upper": 1.0
    },
    "quantifier": "observed_fraction",

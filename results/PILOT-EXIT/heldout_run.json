@@ -1,5 +1,5 @@
 {
- "attempt": 1,
+ "attempt": 2,
  "criteria": {
   "path": "$BO_REPO/prereg/pilot_exit.yaml",
   "sha256": "17132a424cf68a222c3534b154949d3dabb00973cdaf120ea584542301dc4f09"
@@ -11,24 +11,24 @@
  "evidence": {
   "net": {
    "path": "$BO_DATA/PILOT-EXIT/heldout/net/evidence.json",
-   "sha256": "961d77ddd52ed0101088c948d6d56cdf8ac9e8c0791f0d0ad4b09e3ebb7bbc69"
+   "sha256": "7bf95f7e9e1cb941c596293bc540de1e22917a63a8fd96b710d2e2bb3fe01d20"
   },
   "sto": {
    "path": "$BO_DATA/PILOT-EXIT/heldout/sto/evidence.json",
-   "sha256": "b8e54d2a3a057f3929b38912f1c10e3f449fdd46cfb952e52768d9f14a109364"
+   "sha256": "b656434a33256a54e37a5c17246489691ece0cf9b22971c31385c8d0139cc304"
   }
  },
- "finished_at": "2026-11-04T12:04:11-03:00",
+ "finished_at": "2026-11-04T20:52:52-03:00",
  "frozen_code": {
   "net": {
-   "base_head": "559b0bd2be951863d627d9d1bfe2c0e6e938e8ef",
-   "code_sha256": "12f2fc0b898dd47d8d76b2a44cf767da650f2f713af25f3dba0d121c3674a191",
-   "delivery_at": "2026-11-04T11:24:12-03:00",
-   "delivery_commit": "76757dd77c12a8da168706ee7202285134c8525d",
+   "base_head": "aa5995751b89ea6dd19bfe2587fef59e5abe95b8",
+   "code_sha256": "ef78d0ec2f5d5c18059f1b6bd0d849ca33e17c62acbcd5a4a8abf363b3e1103e",
+   "delivery_at": "2026-11-04T18:50:35-03:00",
+   "delivery_commit": "83f78c4774a272b53628860bf9e3eb432c7e9788",
    "files": 29,
    "match": true,
    "module": "PILOT-NET-E2E",
-   "n_delivery_commits": 14,
+   "n_delivery_commits": 24,
    "problems": [],
    "recorded": {
     "manifest_files": 0,
@@ -37,14 +37,14 @@
    "slice": "net"
   },
   "sto": {
-   "base_head": "559b0bd2be951863d627d9d1bfe2c0e6e938e8ef",
-   "code_sha256": "b85f46ff14a5774737f32f9396ddadfd9d0497a42a8b399cbcc5dd0b90f07862",
-   "delivery_at": "2026-11-04T11:55:01-03:00",
-   "delivery_commit": "559b0bd2be951863d627d9d1bfe2c0e6e938e8ef",
+   "base_head": "aa5995751b89ea6dd19bfe2587fef59e5abe95b8",
+   "code_sha256": "106bf40aee2d7f7e381c7b3a5d44a4855f2a5494d30a571a8832cae1b711006e",
+   "delivery_at": "2026-11-04T18:54:45-03:00",
+   "delivery_commit": "aa5995751b89ea6dd19bfe2587fef59e5abe95b8",
    "files": 28,
    "match": true,
    "module": "PILOT-STO-E2E",
-   "n_delivery_commits": 7,
+   "n_delivery_commits": 11,
    "problems": [],
    "recorded": {
     "manifest_files": 0,
@@ -54,7 +54,7 @@
   }
  },
  "isolation": "cópia congelada em $BO_TMP/run; BO_DATA sobreposto; sandbox-exec sem escrita fora de $BO_TMP e sem rede; árvore apagada no fim (texto claro nunca gravado fora dela)",
- "key": "cb23e600169a572cd4d465adf091fffb281a127d1c7f5168714400357dc6ad7c",
+ "key": "bb903e554f2650cecc69c502f4dfcc8caea1382acb6f748963312a2b4d70b2d8",
  "kind": "attempt",
  "module": "PILOT-EXIT",
  "runs": {
@@ -64,31 +64,31 @@
      "cmd": "python -I -m bo.pilot.grain_check --slice net --fixtures /Users/breno/doutorado/brevops-data/tmp/PILOT-EXIT/run/net/repo/pilot/net/fixtures_calib --out /Users/breno/doutorado/brevops-data/tmp/PILOT-EXIT/run/net/out_grain",
      "i": 1,
      "rc": 1,
-     "seconds": 4.0
+     "seconds": 5.1
     },
     {
      "cmd": "python -I -m bo.pilot.run --slice net --controls c1_table,c2_taxonomy,c3_full --fixtures /Users/breno/doutorado/brevops-data/tmp/PILOT-EXIT/run/net/repo/pilot/net/fixtures_calib --out /Users/breno/doutorado/brevops-data/tmp/PILOT-EXIT/run/net/out",
      "i": 2,
      "rc": 0,
-     "seconds": 4.2
+     "seconds": 4.7
     },
     {
      "cmd": "python -I -m bo.pilot.oracle_eval --slice net --set calib --fixtures /Users/breno/doutorado/brevops-data/tmp/PILOT-EXIT/run/net/repo/pilot/net/fixtures_calib --out /Users/breno/doutorado/brevops-data/tmp/PILOT-EXIT/run/net/out",
      "i": 3,
      "rc": 0,
-     "seconds": 1.2
+     "seconds": 1.3
     },
     {
      "cmd": "python -I -m bo.lower.no_silent_insert --slice net --fixtures /Users/breno/doutorado/brevops-data/tmp/PILOT-EXIT/run/net/repo/pilot/net/fixtures_calib --out /Users/breno/doutorado/brevops-data/tmp/PILOT-EXIT/run/net/out",
      "i": 4,
      "rc": 0,
-     "seconds": 0.2
+     "seconds": 0.3
     },
     {
      "cmd": "python -I -m bo.pilot.tf_validate --slice net --plugin-cache $BO_DATA --fixtures /Users/breno/doutorado/brevops-data/tmp/PILOT-EXIT/run/net/repo/pilot/net/fixtures_calib --out /Users/breno/doutorado/brevops-data/tmp/PILOT-EXIT/run/net/out",
      "i": 5,
      "rc": 0,
-     "seconds": 3.0
+     "seconds": 15.9
     }
    ],
    "materialized": {
@@ -97,7 +97,7 @@
     "translations": 24
    },
    "module": "PILOT-NET-E2E",
-   "seconds": 16.8
+   "seconds": 31.6
   },
   "sto": {
    "commands": [
@@ -105,37 +105,37 @@
      "cmd": "python -I -m bo.pilot.grain_check --slice sto",
      "i": 1,
      "rc": 0,
-     "seconds": 3.6
+     "seconds": 4.1
     },
     {
      "cmd": "python -I -m bo.pilot.run --slice sto --controls c1_table,c2_taxonomy,c3_full --fixtures calib",
      "i": 2,
      "rc": 0,
-     "seconds": 4.7
+     "seconds": 5.1
     },
     {
      "cmd": "python -I -m bo.pilot.oracle_eval --slice sto --set calib",
      "i": 3,
      "rc": 0,
-     "seconds": 3.7
+     "seconds": 4.0
     },
     {
      "cmd": "python -I -m bo.lower.no_silent_insert --slice sto",
      "i": 4,
      "rc": 0,
-     "seconds": 7.5
+     "seconds": 8.3
     },
     {
      "cmd": "python -I -m bo.pilot.tf_validate --slice sto --plugin-cache $BO_DATA",
      "i": 5,
      "rc": 0,
-     "seconds": 19.9
+     "seconds": 21.1
     },
     {
      "cmd": "python -I /Users/breno/doutorado/brevops-data/tmp/PILOT-EXIT/run/sto/out/sto_probe.py /Users/breno/doutorado/brevops-data/tmp/PILOT-EXIT/run/sto/out/sto_probe.json",
      "i": 6,
      "rc": 0,
-     "seconds": 3.7
+     "seconds": 4.0
     }
    ],
    "materialized": {
@@ -144,7 +144,7 @@
     "oracle_manifest_lines": 305
    },
    "module": "PILOT-STO-E2E",
-   "seconds": 50.4
+   "seconds": 57.7
   }
  },
  "schema": "bo.pilot_exit.heldout_run/1",
@@ -164,6 +164,6 @@
    "plaintext_sha256": "cb9d9d1187cfe78e5db722b80dc275dfe2b92749c94cdc334395631c2e98fc3b"
   }
  },
- "started_at": "2026-11-04T12:03:03-03:00",
+ "started_at": "2026-11-04T20:51:23-03:00",
  "status": "COMPLETE"
 }

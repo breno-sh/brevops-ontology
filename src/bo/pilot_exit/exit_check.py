@@ -39,6 +39,44 @@ def scale_started(root: Path, cat: dict) -> list[str]:
     return sorted({m for s in subj for m in wait if s.startswith(f"[{m}]")})
 
 
+FROZEN_MODULES = ("PILOT-STO-E2E", "PILOT-STO-MAP", "PILOT-STO-GLOSS", "PILOT-STO-ORACLE", "PILOT-NET-E2E",
+                  "PILOT-NET-MAP", "PILOT-NET-GLOSS", "PILOT-NET-ORACLE", "GRAIN", "SERVICE-EVIDENCE", "ARBITERLIB",
+                  "CONTRACTS", "SEMANTICS")
+DECL_MARKS = ("DESVIO DECLARADO", "REGRA DE CONSOLIDAÇÃO", "DECLARAÇÕES DE INTEGRIDADE", "CORREÇÃO DA R2")
+
+
+def frozen_state(root: Path, base: str) -> dict:
+    """Último commit [ID] de cada módulo de que a avaliação depende, no bo/base da execução."""
+    log = subprocess.run(["git", "-C", str(root), "log", "--format=%h%x09%s", base], capture_output=True,
+                         text=True).stdout.splitlines()
+    out = {}
+    for m in FROZEN_MODULES:
+        for line in log:
+            h, sj = line.split("\t", 1)
+            if sj.startswith(f"[{m}]"):
+                out[m] = h
+                break
+    arb = root / "arbiter" / "ARBITER.sha256"
+    out["arbiter/ARBITER.sha256"] = C.sha_file(arb)[:16] if arb.is_file() else None
+    return out
+
+
+def prereg_declarations(root: Path) -> list[str]:
+    """Declarações do PREREG que valem para esta tentativa (results/PREREG/AMENDMENTS.txt), copiadas como estão."""
+    p = root / "results" / "PREREG" / "AMENDMENTS.txt"
+    if not p.is_file():
+        return []
+    blocks, cur = [], None
+    for line in p.read_text(encoding="utf-8").splitlines():
+        if re.match(r"^\d{4}-\d\d-\d\dT", line):
+            cur = [line] if any(k in line for k in DECL_MARKS) else None
+            if cur is not None:
+                blocks.append(cur)
+        elif cur is not None:
+            cur.append(line)
+    return ["\n".join(b) for b in blocks]
+
+
 def load_evidence() -> dict:
     out = {}
     for s in C.SLICES:
@@ -97,7 +135,7 @@ def main(argv=None) -> int:
     led = AM.ledger(root, cat)
     stale = AM.stale_not_marked(root)
     catok = AM.catalog_ok(root)
-    catok = {"catalog_ok": catok["catalog_ok"], "core_integration": stable(catok["core_integration"]),
+    catok = {"catalog_ok": catok["catalog_ok"], "where": catok["where"], "core_integration": stable(catok["core_integration"]),
              "contracts_all_stubs": stable(catok["contracts_all_stubs"])}
     eff = RE.build(root / "results", root)
     C.write_json(C.results_dir(root) / "effort_calibration.json", RE.c15(eff))
@@ -115,7 +153,12 @@ def main(argv=None) -> int:
         c.setdefault("oracle", C.SLICES[s]["oracle"])
     gen_at = rec.get("finished_at") or C.now()
     started = scale_started(root, cat)
-    add_doc = {"written_at": C.now(), "criteria_sha256": crit_sha, "attempt": attempts,
+    base = (rec.get("frozen_code") or {}).get("sto", {}).get("base_head") or "bo/base"
+    fstate = frozen_state(root, base)
+    decls = prereg_declarations(root)
+    claims_vs_abs = {s: {k: (e.get("claims") or {}).get(k) for k in ("total", "absences")} for s, e in ev_slices.items()}
+    add_doc = {"written_at": C.now(), "frozen_state": fstate, "declarations": decls, "claims_vs_absences": claims_vs_abs,
+               "base": base, "criteria_sha256": crit_sha, "attempt": attempts,
                "attempts_max": crit.get("attempts_max"), "controls": controls, "amendments": led,
                "effort": eff, "criteria": first, "decision": "(provisório: E5 e E8 ainda não avaliados)"}
     add_p = root / "prereg" / "ADDENDUM_PILOTS.html"
@@ -136,7 +179,9 @@ def main(argv=None) -> int:
             f"EXPANSÃO BLOQUEADA — PILOT-EXIT, resultado de {gen_at} (America/Recife)\n"
             f"Tentativa {attempts} de {crit.get('attempts_max')}. Critérios E1–E6 reprovados: {', '.join(e16_fail) or '-'}.\n"
             + (f"Problemas da execução: {'; '.join(problems)}\n" if problems else "")
-            + ("O PLANO VOLTA PARA REVISÃO (v4): E1–E6 falharam duas vezes (E8).\n" if v4 else
+            + ("O PLANO VOLTA PARA REVISÃO (v4): E1–E6 falharam duas vezes (E8).\n"
+               "Caminho de saída: conjunto retido NOVO ou provedor retido (Alibaba); este conjunto retido não é "
+               "reusado em nenhuma tentativa.\n" if v4 else
                "Corrigir por emenda versionada e repetir (conta uma tentativa); a escala não começa.\n")
             + "Aviso ao Breno: este arquivo e o relatório do módulo (o coordenador repassa).\n"
             "Bloqueia: DECOMPOSE, 6 glossários, 36 mapeadores e 16 módulos de nuvem.\n"))
@@ -190,7 +235,8 @@ def main(argv=None) -> int:
                               "makespan_recalibrated_h": eff["schedule"]["recalibrated"]["makespan_h"]},
                        "e5": {"addendum": ev["addendum"],
                               "r_ctrl": {s: (c.get("rule") or {}).get("main") for s, c in controls.items()}},
-                       "e8": ev["attempts"]}}
+                       "e8": ev["attempts"], "frozen_state": fstate, "prereg_declarations": decls,
+                       "claims_vs_absences": claims_vs_abs}}
     C.write_json(C.results_dir(root) / "exit_report.json", report)
     for k, v in final.items():
         C.say(f"exit_check: {k} {v.get('name', '')}: {'PASSA' if v['pass'] else 'REPROVA'}"

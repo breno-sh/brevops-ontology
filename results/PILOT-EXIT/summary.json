@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "PILOT-EXIT",
- "generated_at": "2026-11-04T12:05:16-03:00",
+ "generated_at": "2026-11-04T20:55:28-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-EXIT.txt",
@@ -12,20 +12,21 @@
    "role": "evaluator",
    "role_brief": "briefs/VALIDATOR_BRIEF.txt",
    "role_brief_version": "1.2.0",
-   "role_brief_sha256": "96f307a39e3fb25cdfa4643c137354fbb7ba08fac095952ba121c6de59eb92b1",
-   "evaluated_code_sha256": "sto:b85f46ff14a5774737f32f9396ddadfd9d0497a42a8b399cbcc5dd0b90f07862,net:12f2fc0b898dd47d8d76b2a44cf767da650f2f713af25f3dba0d121c3674a191",
-   "evaluated_commits": "sto:559b0bd,net:76757dd",
+   "role_brief_sha256": "61d6491c4486cc0a482d7d15d6ac463364056645c5d14653198d7e67b8119c72",
+   "evaluated_code_sha256": "sto:106bf40aee2d7f7e381c7b3a5d44a4855f2a5494d30a571a8832cae1b711006e,net:ef78d0ec2f5d5c18059f1b6bd0d849ca33e17c62acbcd5a4a8abf363b3e1103e",
+   "evaluated_commits": "sto:aa59957,net:83f78c4",
    "criteria_sha256": "17132a424cf68a222c3534b154949d3dabb00973cdaf120ea584542301dc4f09",
-   "attempt": "1",
+   "attempt": "2",
    "seeds": "nenhuma",
    "decryption": "VM-Oracle-D15-pipe-ssh",
-   "heldout_items": "sto:304,net:58"
+   "heldout_items": "sto:304,net:58",
+   "seals": "sto:572f133361bc21d7,net:99f53463cbeaeb38"
   },
   "inputs": [
    {
     "path": "$BO_REPO/src/bo/pilot",
     "kind": "dir",
-    "sha256": "f9c4a5467249948318b35f9a96d219a8659909782bb191a91e0a7d45ae2697e6"
+    "sha256": "9183bafc65cda57b0f429b83b3f47002a449bd6860fcd92761d8afbccfd47977"
    },
    {
     "path": "$BO_DATA/PILOT-STO-ORACLE/sealed",
@@ -40,12 +41,12 @@
    {
     "path": "$BO_REPO/results/PILOT-STO-E2E",
     "kind": "dir",
-    "sha256": "76d9ffa107619c901c942ad6d3d0ba337c25dbf055a8c5295116d9596f9357e4"
+    "sha256": "540d84556f990e6eba78c188202c5126716ff2bf9d683c55753b0599cb3b8250"
    },
    {
     "path": "$BO_REPO/results/PILOT-NET-E2E",
     "kind": "dir",
-    "sha256": "93f073f872a50c122ddafe8b2c814e08019db3bd4a8906f2f533e8aed6524889"
+    "sha256": "6aec07274dc410af86ec17aa2d935b49b19119b7b946e814ed023800e2ff3fe3"
    },
    {
     "path": "$BO_REPO/prereg/pilot_exit.yaml",
@@ -53,7 +54,7 @@
     "sha256": "17132a424cf68a222c3534b154949d3dabb00973cdaf120ea584542301dc4f09"
    }
   ],
-  "recorded_at": "2026-11-04T12:05:16-03:00"
+  "recorded_at": "2026-11-04T20:55:28-03:00"
  },
  "sources": [
   {
@@ -70,7 +71,12 @@
    "uri": "$BO_DATA/PILOT-NET-MAP/mapping.sssom.tsv",
    "license": "interno (PILOT-NET-MAP)",
    "transformation": "alegações lidas para E3 (as que o E2E consome)"
+  },
+  {
+   "uri": "results/PREREG/AMENDMENTS.txt",
+   "license": "interno (PREREG/COORD)",
+   "transformation": "declarações copiadas no adendo e no relatório"
   }
  ],
- "notes": "avaliador PILOT-EXIT, tentativa 1: código congelado dos E2E nas retidas decifradas pela VM (D15); E1 e E2 reprovam na fatia net, E6 reprova; expansão bloqueada"
+ "notes": "avaliador PILOT-EXIT, tentativa 2 de 2 (autorizada pelo Breno): E2 (net), E3 (sto) e E6 reprovam; plano volta para revisão v4"
 }

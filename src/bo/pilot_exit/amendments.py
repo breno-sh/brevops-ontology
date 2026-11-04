@@ -94,13 +94,25 @@ def stale_not_marked(root: Path) -> dict:
             "stale_not_marked": len(missing), "missing": missing}
 
 
+MAIN_REPO = Path("/Users/breno/doutorado/brevops-ontology")
+
+
 def catalog_ok(root: Path) -> dict:
-    env = dict(__import__("os").environ, BO_REPO=str(root))
+    """Catálogo do gerador verde, medido no checkout de bo/base (repositório principal), não na lane: os
+    resultados em andamento do próprio avaliador (manifesto ainda não regravado) não podem decidir a medida."""
+    import os
+    main = MAIN_REPO if (MAIN_REPO / ".git").exists() else root
+    head = subprocess.run(["git", "-C", str(main), "rev-parse", "--abbrev-ref", "HEAD"], capture_output=True, text=True).stdout.strip()
+    dirty = subprocess.run(["git", "-C", str(main), "status", "--porcelain"], capture_output=True, text=True).stdout.strip()
+    if main != root and (head != "bo/base" or dirty):
+        main = root
+    root = main
+    env = dict(os.environ, BO_REPO=str(root))
     a = subprocess.run([sys.executable, "-I", "-B", "-m", "pytest", str(root / "tests/integration/core"), "-q",
                         "-p", "no:cacheprovider"], capture_output=True, text=True, env=env, cwd=str(root))
     b = subprocess.run([sys.executable, "-I", "-m", "bo.contracts.validate", "--all-stubs"], capture_output=True,
                        text=True, env=env, cwd=str(root))
     tail = lambda r: (r.stdout.strip().splitlines() or [""])[-1][:200]
-    return {"catalog_ok": a.returncode == 0 and b.returncode == 0,
+    return {"catalog_ok": a.returncode == 0 and b.returncode == 0, "where": "bo/base" if root == MAIN_REPO else "lane",
             "core_integration": {"rc": a.returncode, "tail": tail(a)},
             "contracts_all_stubs": {"rc": b.returncode, "tail": tail(b)}}

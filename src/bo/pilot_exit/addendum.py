@@ -109,7 +109,18 @@ def render(doc: dict, yaml_rule: dict) -> str:
                  f"{e(ef['steps_without_effort'])}. Cronograma: plano {e(ef['schedule']['plan']['makespan_h'])} h, "
                  f"recalibrado {e(ef['schedule']['recalibrated']['makespan_h'])} h (teto de "
                  f"{e(ef['schedule']['concurrency_cap'])} agentes).</p>")
-    parts.append("<h2>5. Resultado dos critérios</h2><table><tr><th>critério</th><th>resultado</th></tr>")
+    parts.append("<h2>5. Estado congelado e declarações do pré-registro</h2>")
+    parts.append(f"<p>bo/base da execução: <code>{e(str(doc.get('base', ''))[:12])}</code>. Último commit de cada módulo "
+                 "de que a avaliação depende:</p><table><tr><th>módulo</th><th>commit</th></tr>"
+                 + "".join(f"<tr><td>{e(k)}</td><td><code>{e(v)}</code></td></tr>"
+                           for k, v in (doc.get("frozen_state") or {}).items()) + "</table>")
+    cva = doc.get("claims_vs_absences") or {}
+    parts.append("<p>Alegações e ausências, sempre separadas (E3 conta só alegações): "
+                 + "; ".join(f"{e(s)}: {e(v.get('total'))} alegações, {e(v.get('absences'))} ausências"
+                             for s, v in sorted(cva.items())) + ".</p>")
+    for d in doc.get("declarations") or []:
+        parts.append(f"<pre style='white-space:pre-wrap'>{e(d)}</pre>")
+    parts.append("<h2>6. Resultado dos critérios</h2><table><tr><th>critério</th><th>resultado</th></tr>")
     for cid, v in sorted(doc["criteria"].items()):
         parts.append(f"<tr><td>{e(cid)} {e(v.get('name', ''))}</td>"
                      f"<td class='{'ok' if v['pass'] else 'bad'}'>{'passa' if v['pass'] else 'reprova'}</td></tr>")
