@@ -5,8 +5,8 @@ Aceita as duas formas que o glossarista produz:
               value_space (MAPPER_BRIEF M11)
   diagnóstico bundle.json (mapa de sha256) + atoms.jsonl (tipo e papel do C01) e service_evidence.jsonl (C25)
 Confere o hash de cada arquivo antes de ler e recusa arquivo fora da lista (o mapeador não procura nada fora
-do pacote). Tipos de valor vêm de value_space.jsonl (C05) ou, sem ele, de atoms.jsonl; árvore (lista, mapa) não
-tem datatype no C05/C09 e fica sem tipo (o árbitro devolve KIND-UNKNOWN). Evidência por átomo: só sentença com
+do pacote). Tipos de valor vêm de value_space.jsonl (C05) ou, sem ele, de atoms.jsonl; lista, conjunto e mapa de escalar
+viram list/set/map do C09 3.2.0; coleção de objetos fica sem tipo. Evidência por átomo: só sentença com
 nível published e fonte na tag fixada (âncoras do glossário, fatos do C25 ou do C05); interpreted nunca entra.
 """
 
@@ -68,8 +68,19 @@ def verify(root: Path) -> dict:
 
 
 def value_type(rec: dict) -> dict | None:
-    """Registro do C05 (ou do C01 com tipo) -> tipo de valor do C09; árvore -> None (sem datatype no C05)."""
+    """Registro do C05 (ou do C01 com tipo) -> tipo de valor do C09 3.2.0. Coleção (lista, conjunto, mapa) com
+    elemento escalar declarado vira list/set/map com item_type (e key_type no mapa); coleção de objetos (bloco
+    repetido sem escalar) fica sem tipo: seus campos são átomos próprios."""
     dt = rec.get("datatype") or {}
+    na = {"quantity_kind": "NOT_APPLICABLE", "unit": "NOT_APPLICABLE"}
+    if dt.get("kind") == "tree":
+        fmt, item = dt.get("format"), dt.get("value_scalar")
+        if fmt not in ("list", "set", "map") or not item:
+            return None
+        t = {"datatype": fmt, "item_type": {"datatype": item, **na}, **na}
+        if fmt == "map":
+            t["key_type"] = dt.get("key_scalar") or "string"
+        return t
     if dt.get("kind") != "scalar":
         return None
     t = {"datatype": dt["scalar"], "quantity_kind": rec.get("quantity_kind", "UNKNOWN"),

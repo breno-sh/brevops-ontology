@@ -19,7 +19,7 @@ NA = "NOT_APPLICABLE"
 
 def _atom(aid, role, scalar=None, tree=False, enum=None, rng=None, qk=NA):
     p, t, path = aid.split(":", 2)
-    dt = {"kind": "tree", "format": "list"} if tree else {"kind": "scalar", "scalar": scalar}
+    dt = {"kind": "tree", "format": "list", "value_scalar": "string"} if tree else {"kind": "scalar", "scalar": scalar}
     r = {"atom_id": aid, "datatype": dt, "path": path, "provider": p, "quantity_kind": qk,
          "resource_type": t, "role": role, "unit": qk if qk in (NA, "UNKNOWN") else "unit:NUM", "unit_id": f"CU-{p}-{t}"}
     if enum:
@@ -107,8 +107,21 @@ def test_extra_file_refused(tmp_path):
         BU.load(root)
 
 
-def test_list_has_no_type(synth):
-    assert synth.types["google:google_compute_firewall:source_ranges"] is None
+def test_list_types_declared(synth):
+    assert synth.types["google:google_compute_firewall:source_ranges"] == {
+        "datatype": "list", "item_type": {"datatype": "string", "quantity_kind": NA, "unit": NA},
+        "quantity_kind": NA, "unit": NA}
+
+
+def test_scalar_to_list_uses_registry(synth):
+    recs, _ = GN.generate(synth)
+    rows = _by(recs, "google:google_compute_firewall:source_ranges", "azurerm:azurerm_network_security_rule:source_address_prefix")
+    assert rows and all(r["translation_fn"]["name"] == "unwrap_single" for r in rows)
+    assert all("not_expressible" in {x["kind"] for x in r["loss_contract"]} for r in rows)
+    assert rows[0]["proof"]["tests"][0] == {"input": ["192.0.2.0/24"], "expected": "192.0.2.0/24"}
+
+
+def test_list_type_value(synth):
     assert synth.types["azurerm:azurerm_network_security_rule:priority"]["range"] == {"min": 100, "max": 4096}
 
 
@@ -127,8 +140,12 @@ def test_undocumented_direction_is_skipped_not_invented(synth):
     recs, st = GN.generate(synth)
     assert not _by(recs, "aws:aws_vpc_security_group_ingress_rule:ip_protocol",
                    "oci:oci_core_network_security_group_security_rule:protocol")
-    absent = [r for r in recs if r["subject_id"] == "oci:oci_core_network_security_group_security_rule:direction"]
+    atom = "oci:oci_core_network_security_group_security_rule:direction"
+    absent = [r for r in recs if r.get("absence") and atom in (r["subject_id"], r["object_id"])]
     assert absent and all(r["absence"]["kind"] == "UNRESOLVED" for r in absent)
+    # oci é sempre o segundo provedor: ausência do lado objeto, na orientação canônica (C09 3.2.0)
+    assert all(r["absence"]["side"] == "object" and r["subject_id"] == NO_TERM and r["object_id"] == atom
+               for r in absent)
     assert st["skipped_pairings"] > 0
 
 
@@ -179,7 +196,8 @@ def test_exhaustive_orientation_and_roundtrip(synth):
     _, back, _ = CS.read_tsv(text)
     assert back == recs
     for r in recs:
-        if r["object_id"] == NO_TERM:
+        if r.get("absence"):
+            assert NO_TERM in (r["subject_id"], r["object_id"])
             assert r["semantic_relation"] == "related" and r["transport_fidelity"] == "none"
             assert "translation_fn" not in r and r["absence"]["searched"]
 

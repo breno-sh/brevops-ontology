@@ -166,6 +166,11 @@ def guards_for(b: Bundle, ra: dict, rb: dict, with_dir: bool = True) -> list[dic
 def sample(t: dict | None, other: dict | None = None, hint: str = ""):
     """Valor de teste admitido pelo sujeito e, quando o objeto declara domínio, também por ele. Endereços usam os
     blocos reservados para documentação (RFC 5737 e RFC 3849); o resto, um texto neutro."""
+    COLL = ("list", "set", "map")
+    if t is not None and t.get("datatype") in COLL:
+        item = sample(dict(t["item_type"], _path=t.get("_path", "")),
+                      (other or {}).get("item_type") if (other or {}).get("datatype") in COLL else other, hint)
+        return {str(item): item} if t["datatype"] == "map" else [item]
     if t is None or (t.get("datatype") == "string" and not t.get("enum")):
         if other and other.get("datatype") == "enum" and other.get("enum") and (t is None or not t.get("enum")):
             return other["enum"][0]
@@ -188,6 +193,10 @@ def sample(t: dict | None, other: dict | None = None, hint: str = ""):
     if dt == "duration":
         return "PT60S"
     return SAMPLE_TEXT
+
+
+def is_coll(t: dict | None) -> bool:
+    return bool(t) and t.get("datatype") in ("list", "set", "map")
 
 
 def vdr_of(rec: dict) -> str:
@@ -279,10 +288,25 @@ def claim_for(pair, slot, policy, ra, rb, guard, b: Bundle) -> dict:
         tests = [{"input": k, "expected": v} for k, v in sorted(table.items())]
         notes.append("sentido por tabela entre os valores documentados no pacote")
     else:
-        r["translation_fn"] = {"name": "identity", "params": {}}
-        s = sample(dict(ta, _path=a) if ta else {"datatype": "string", "_path": a}, to, policy) if policy == "address" \
-            else sample(ta, to)
-        tests = [{"input": s, "expected": s}]
+        ta_s = dict(ta, _path=a) if ta else {"datatype": "string", "_path": a}
+        hint = policy if policy == "address" else ""
+        ca, co = is_coll(ta), is_coll(to)
+        if ta is not None and to is not None and not ca and co and to["datatype"] == "list":
+            item = sample(ta_s, to.get("item_type"), hint)
+            r["translation_fn"] = {"name": "wrap_list", "params": {}}
+            tests = [{"input": item, "expected": [item]}]
+            notes.append("escalar -> lista de um elemento (wrap_list do registro)")
+        elif ta is not None and to is not None and ca and not co and ta["datatype"] == "list":
+            item = sample(dict(ta["item_type"], _path=a), to, hint)
+            r["translation_fn"] = {"name": "unwrap_single", "params": {}}
+            tests = [{"input": [item], "expected": item}]
+            r["loss_contract"] = r["loss_contract"] + [{"kind": "not_expressible", "why":
+                                                        "lista com mais de um elemento não cabe no escalar do destino"}]
+            notes.append("lista -> escalar só com um elemento (unwrap_single do registro)")
+        else:
+            r["translation_fn"] = {"name": "identity", "params": {}}
+            x = sample(ta_s, to, hint)
+            tests = [{"input": x, "expected": x}]
     r["proof"] = {"type": "normalization", "evidence": evs, "tests": tests}
     r["value_domain_relation"] = {"relation": "unknown", "orientation": "subject_to_object"}
     vdr = vdr_of(r)
@@ -295,11 +319,11 @@ def claim_for(pair, slot, policy, ra, rb, guard, b: Bundle) -> dict:
                          "why": "a faixa do destino é mais estreita; fora dela o valor não atravessa"})
         loss.append({"kind": "semantic", "why": "ordinal com o menor prevalecendo nos dois lados, mas o desempate "
                      "difere (num lado a negação prevalece no empate; no outro a prioridade é única na coleção)"})
-        r["loss_contract"] = loss
+        r["loss_contract"] = r["loss_contract"] + loss
         r["transport_fidelity"] = "declared_loss"
         notes.append("prioridade: mesmo papel ordinal; faixas e desempate diferentes (close)")
     elif policy == "address":
-        r["loss_contract"] = [{"kind": "semantic", "why": "cada provedor admite formas próprias além do CIDR literal "
+        r["loss_contract"] = r["loss_contract"] + [{"kind": "semantic", "why": "cada provedor admite formas próprias além do CIDR literal "
                                "(rótulos de serviço, '*', listas, IPv4 e IPv6 separados ou juntos); só o CIDR literal "
                                "atravessa e o predicado de CIDR não se escreve na linguagem fechada"}]
         r["transport_fidelity"] = "declared_loss"
@@ -315,13 +339,15 @@ def claim_for(pair, slot, policy, ra, rb, guard, b: Bundle) -> dict:
                                            key=lambda x: json.dumps(x, sort_keys=True))
                 terms.append(term)
         if terms:
-            r["loss_contract"] = [{"kind": "context_dependence", "terms": sorted(terms),
+            r["loss_contract"] = r["loss_contract"] + [{"kind": "context_dependence", "terms": sorted(terms),
                                    "why": "a referência simbólica só atravessa se o alvo foi traduzido para o tipo da guarda"}]
         r["transport_fidelity"] = "partial"
         notes.append("referência: identidade sobre a referência simbólica, alvo re-resolvido pelo tradutor")
     else:
         if vdr in ("equal", "subset") and policy == "direction":
             r["transport_fidelity"] = "lossless"
+        elif any(x["kind"] == "not_expressible" for x in r["loss_contract"]):
+            r["transport_fidelity"] = "declared_loss"
         else:
             r["transport_fidelity"] = "partial"
         if vdr == "unknown":
@@ -340,6 +366,9 @@ def group_for(pair, kind, rp, rt, subject_is_pair: bool, guard, b: Bundle) -> di
     for x in (a_from, a_to, a_txt):
         if b.types.get(x) is None:
             raise Skip(f"{x}: sem tipo no pacote (componente do grupo não se tipa)")
+    if is_coll(b.types[a_txt]):
+        raise Skip(f"{a_txt}: faixa em lista; o grupo precisaria de join_port_range seguido de wrap_list com variável "
+                   "intermediária, e a G-VARS exige campo para toda variável")
     sp, st = D.SHAPES[ps], D.SHAPES[ts_]
     side_p, side_t = ("subject", "object") if subject_is_pair else ("object", "subject")
     tup = {"datatype": "tuple", "quantity_kind": "NOT_APPLICABLE", "unit": "NOT_APPLICABLE",
@@ -462,25 +491,30 @@ def absence_for(pair, atom: str, other: str, b: Bundle, related_ids: list[str], 
     searched = [f"átomos canônicos de {other} no pacote ({len(b.provider_atoms(other))} átomos; tipos: {', '.join(types)})",
                 f"vizinhos por referência e anexação dos tipos de {other} na fatia"]
     ev = [{"source": f"bundle:canonical_atoms.jsonl#{other}", "sentence": why, "date": D.MAPPING_DATE}]
-    r = _base(pair, atom, NO_TERM, "related", b)
-    r.update(object_concept=UNGLOSSED, translation_fn=None, transport_fidelity="none",
+    obj_side = provider_of(atom) != PAIRS[pair][0]
+    r = _base(pair, NO_TERM, atom, "related", b) if obj_side else _base(pair, atom, NO_TERM, "related", b)
+    absence = {"kind": kind, "searched": searched, "evidence": ev}
+    if obj_side:
+        absence["side"] = "object"
+    r.update(translation_fn=None, transport_fidelity="none",
              value_domain_relation={"relation": "unknown", "orientation": "subject_to_object"},
              evidence_state="STRUCTURALLY_VALID", proof={"type": "absence", "evidence": ev, "tests": []},
-             absence={"kind": kind, "searched": searched, "evidence": ev})
+             absence=absence)
+    if obj_side:
+        r.update(subject_concept=UNGLOSSED, object_concept=b.concept(atom))
+    else:
+        r.update(object_concept=UNGLOSSED)
     t = b.types.get(atom)
     if t is not None:
-        r["subject_value_type"] = t
+        r["object_value_type" if obj_side else "subject_value_type"] = t
     shape = next((sh for sh in D.SHAPES.values() if sh.get("block") and
                   atom.startswith(f"{sh['prov']}:{sh['rtype']}:{sh['prefix']}")), None)
     if shape is not None:
         p = projection_for(b, {"atom": atom, "shape": shape})
         if p:
             r["projection"] = [p]
-    if provider_of(atom) != PAIRS[pair][0]:
-        r["comment"] = (f"ausência do lado objeto do par {pair} (sem contraparte em {other}); a linha de ausência só "
-                        "tem sujeito, por isso o átomo do segundo provedor vai como sujeito")
-    else:
-        r["comment"] = f"ausência no par {pair}"
+    r["comment"] = (f"ausência no par {pair}, lado {'objeto' if obj_side else 'sujeito'} (sem contraparte em "
+                    f"{other})")
     return r
 
 

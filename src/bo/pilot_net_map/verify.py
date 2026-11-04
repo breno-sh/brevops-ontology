@@ -130,8 +130,11 @@ def check_orientation(recs) -> list[str]:
             continue
         P, Q = PAIRS[pair]
         if r.get("absence"):
-            if provider_of(r["subject_id"]) not in (P, Q) or r["object_id"] != NO_TERM:
-                bad.append(f"{r['claim_id']}: ausência fora do par")
+            side = r["absence"].get("side", "subject")
+            atom, other = (r["subject_id"], r["object_id"]) if side == "subject" else (r["object_id"], r["subject_id"])
+            want = P if side == "subject" else Q
+            if provider_of(atom) != want or other != NO_TERM:
+                bad.append(f"{r['claim_id']}: ausência do lado {side} com átomo de {provider_of(atom)} no par {pair}")
             continue
         if provider_of(r["subject_id"]) != P or provider_of(r["object_id"]) != Q:
             bad.append(f"{r['claim_id']}: orientação {provider_of(r['subject_id'])}->{provider_of(r['object_id'])} "
