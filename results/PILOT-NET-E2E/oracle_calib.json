@@ -2253,38 +2253,68 @@
    },
    {
     "case_id": "CASE-NETC-C02-GCP-RET-google-oci-c3",
-    "declared_losses": [],
-    "status": "RENDER_BLOCKED",
-    "undeclarable": [],
-    "verdict": null
+    "declared_losses": [
+     "LOSS-NET-DEFAULT",
+     "LOSS-NET-EFFECT-DENY",
+     "LOSS-NET-UNKNOWN-INPUT"
+    ],
+    "status": "TRANSLATED",
+    "undeclarable": [
+     "LOSS-NET-DEFAULT"
+    ],
+    "verdict": "ACCEPT_WITH_DECLARED_LOSS"
    },
    {
     "case_id": "CASE-NETC-C04-GCP-ALLOW-FIRST-google-oci-c3",
-    "declared_losses": [],
-    "status": "RENDER_BLOCKED",
-    "undeclarable": [],
-    "verdict": null
+    "declared_losses": [
+     "LOSS-NET-DEFAULT",
+     "LOSS-NET-EFFECT-DENY",
+     "LOSS-NET-UNKNOWN-INPUT"
+    ],
+    "status": "TRANSLATED",
+    "undeclarable": [
+     "LOSS-NET-DEFAULT"
+    ],
+    "verdict": "ACCEPT"
    },
    {
     "case_id": "CASE-NETC-C04-GCP-DENY-WINS-SWAP-google-oci-c3",
-    "declared_losses": [],
-    "status": "RENDER_BLOCKED",
-    "undeclarable": [],
-    "verdict": null
+    "declared_losses": [
+     "LOSS-NET-DEFAULT",
+     "LOSS-NET-EFFECT-DENY",
+     "LOSS-NET-UNKNOWN-INPUT"
+    ],
+    "status": "TRANSLATED",
+    "undeclarable": [
+     "LOSS-NET-DEFAULT"
+    ],
+    "verdict": "ACCEPT_WITH_DECLARED_LOSS"
    },
    {
     "case_id": "CASE-NETC-C04-GCP-DENY-WINS-google-oci-c3",
-    "declared_losses": [],
-    "status": "RENDER_BLOCKED",
-    "undeclarable": [],
-    "verdict": null
+    "declared_losses": [
+     "LOSS-NET-DEFAULT",
+     "LOSS-NET-EFFECT-DENY",
+     "LOSS-NET-UNKNOWN-INPUT"
+    ],
+    "status": "TRANSLATED",
+    "undeclarable": [
+     "LOSS-NET-DEFAULT"
+    ],
+    "verdict": "ACCEPT_WITH_DECLARED_LOSS"
    },
    {
     "case_id": "CASE-NETC-C05-GCP-TIE-google-oci-c3",
-    "declared_losses": [],
-    "status": "RENDER_BLOCKED",
-    "undeclarable": [],
-    "verdict": null
+    "declared_losses": [
+     "LOSS-NET-DEFAULT",
+     "LOSS-NET-EFFECT-DENY",
+     "LOSS-NET-UNKNOWN-INPUT"
+    ],
+    "status": "TRANSLATED",
+    "undeclarable": [
+     "LOSS-NET-DEFAULT"
+    ],
+    "verdict": "ACCEPT"
    },
    {
     "case_id": "CASE-NETC-C06-GCP-INGRESS-NOMATCH-google-oci-c3",
@@ -2295,31 +2325,55 @@
    },
    {
     "case_id": "CASE-NETC-C07-GCP-PARTIAL-DENY0-google-oci-c3",
-    "declared_losses": [],
-    "status": "RENDER_BLOCKED",
-    "undeclarable": [],
-    "verdict": null
+    "declared_losses": [
+     "LOSS-NET-DEFAULT",
+     "LOSS-NET-EFFECT-DENY",
+     "LOSS-NET-UNKNOWN-INPUT"
+    ],
+    "status": "TRANSLATED",
+    "undeclarable": [
+     "LOSS-NET-DEFAULT"
+    ],
+    "verdict": "ACCEPT_WITH_DECLARED_LOSS"
    },
    {
     "case_id": "CASE-NETC-C07-GCP-PARTIAL-google-oci-c3",
-    "declared_losses": [],
-    "status": "RENDER_BLOCKED",
-    "undeclarable": [],
-    "verdict": null
+    "declared_losses": [
+     "LOSS-NET-DEFAULT",
+     "LOSS-NET-EFFECT-DENY",
+     "LOSS-NET-UNKNOWN-INPUT"
+    ],
+    "status": "TRANSLATED",
+    "undeclarable": [
+     "LOSS-NET-DEFAULT"
+    ],
+    "verdict": "ACCEPT_WITH_DECLARED_LOSS"
    },
    {
     "case_id": "CASE-NETC-C08-GCP-TAG-google-oci-c3",
-    "declared_losses": [],
-    "status": "RENDER_BLOCKED",
-    "undeclarable": [],
-    "verdict": null
+    "declared_losses": [
+     "LOSS-NET-DEFAULT",
+     "LOSS-NET-EFFECT-DENY",
+     "LOSS-NET-UNKNOWN-INPUT"
+    ],
+    "status": "TRANSLATED",
+    "undeclarable": [
+     "LOSS-NET-DEFAULT"
+    ],
+    "verdict": "ACCEPT"
    },
    {
     "case_id": "CASE-NETC-C08-GCP-UNTAGGED-google-oci-c3",
-    "declared_losses": [],
-    "status": "RENDER_BLOCKED",
-    "undeclarable": [],
-    "verdict": null
+    "declared_losses": [
+     "LOSS-NET-DEFAULT",
+     "LOSS-NET-EFFECT-DENY",
+     "LOSS-NET-UNKNOWN-INPUT"
+    ],
+    "status": "TRANSLATED",
+    "undeclarable": [
+     "LOSS-NET-DEFAULT"
+    ],
+    "verdict": "ACCEPT"
    },
    {
     "case_id": "CASE-NETC-C09-GCP-NOMATCH-google-oci-c3",
@@ -2462,31 +2516,55 @@
    },
    {
     "case_id": "CASE-NETC-C01-AZ-INLINE-azurerm-oci-c3",
-    "declared_losses": [],
-    "status": "RENDER_BLOCKED",
-    "undeclarable": [],
-    "verdict": null
+    "declared_losses": [
+     "LOSS-NET-DEFAULT",
+     "LOSS-NET-EFFECT-DENY",
+     "LOSS-NET-UNKNOWN-INPUT"
+    ],
+    "status": "TRANSLATED",
+    "undeclarable": [
+     "LOSS-NET-DEFAULT"
+    ],
+    "verdict": "ACCEPT"
    },
    {
     "case_id": "CASE-NETC-C01-AZ-SEP-azurerm-oci-c3",
-    "declared_losses": [],
-    "status": "RENDER_BLOCKED",
-    "undeclarable": [],
-    "verdict": null
+    "declared_losses": [
+     "LOSS-NET-DEFAULT",
+     "LOSS-NET-EFFECT-DENY",
+     "LOSS-NET-UNKNOWN-INPUT"
+    ],
+    "status": "TRANSLATED",
+    "undeclarable": [
+     "LOSS-NET-DEFAULT"
+    ],
+    "verdict": "ACCEPT"
    },
    {
     "case_id": "CASE-NETC-C02-AZ-RET-azurerm-oci-c3",
-    "declared_losses": [],
-    "status": "RENDER_BLOCKED",
-    "undeclarable": [],
-    "verdict": null
+    "declared_losses": [
+     "LOSS-NET-DEFAULT",
+     "LOSS-NET-EFFECT-DENY",
+     "LOSS-NET-UNKNOWN-INPUT"
+    ],
+    "status": "TRANSLATED",
+    "undeclarable": [
+     "LOSS-NET-DEFAULT"
+    ],
+    "verdict": "ACCEPT_WITH_DECLARED_LOSS"
    },
    {
     "case_id": "CASE-NETC-C04-AZ-DENY-WINS-azurerm-oci-c3",
-    "declared_losses": [],
-    "status": "RENDER_BLOCKED",
-    "undeclarable": [],
-    "verdict": null
+    "declared_losses": [
+     "LOSS-NET-DEFAULT",
+     "LOSS-NET-EFFECT-DENY",
+     "LOSS-NET-UNKNOWN-INPUT"
+    ],
+    "status": "TRANSLATED",
+    "undeclarable": [
+     "LOSS-NET-DEFAULT"
+    ],
+    "verdict": "ACCEPT_WITH_DECLARED_LOSS"
    },
    {
     "case_id": "CASE-NETC-C04-AZ-NOCATCH-azurerm-oci-c3",
@@ -2497,10 +2575,16 @@
    },
    {
     "case_id": "CASE-NETC-C05-AZ-DUP-DIRS-azurerm-oci-c3",
-    "declared_losses": [],
-    "status": "RENDER_BLOCKED",
-    "undeclarable": [],
-    "verdict": null
+    "declared_losses": [
+     "LOSS-NET-DEFAULT",
+     "LOSS-NET-EFFECT-DENY",
+     "LOSS-NET-UNKNOWN-INPUT"
+    ],
+    "status": "TRANSLATED",
+    "undeclarable": [
+     "LOSS-NET-DEFAULT"
+    ],
+    "verdict": "ACCEPT"
    },
    {
     "case_id": "CASE-NETC-C05-AZ-DUP-azurerm-oci-c3",
@@ -2751,7 +2835,7 @@
     "outcomes": {
      "google->aws": "ACCEPT",
      "google->azurerm": "UNSUPPORTED",
-     "google->oci": "RENDER_BLOCKED"
+     "google->oci": "ACCEPT"
     },
     "transported_when_must_reject": []
    },
@@ -2791,7 +2875,7 @@
     "outcomes": {
      "google->aws": "ACCEPT_WITH_DECLARED_LOSS",
      "google->azurerm": "UNSUPPORTED",
-     "google->oci": "RENDER_BLOCKED"
+     "google->oci": "ACCEPT_WITH_DECLARED_LOSS"
     },
     "transported_when_must_reject": []
    },
@@ -2811,7 +2895,7 @@
     "outcomes": {
      "google->aws": "ACCEPT",
      "google->azurerm": "UNSUPPORTED",
-     "google->oci": "RENDER_BLOCKED"
+     "google->oci": "ACCEPT"
     },
     "transported_when_must_reject": []
    },
@@ -2829,7 +2913,7 @@
   "oracle_files_sha256": {
    "pilot/net/oracle/ORACLE.html": "f5cc0256e8d4ea7f2f2c5776afdf10db8c1758a8fdff3978d4a8ef8b3721d427",
    "pilot/net/oracle/directions.json": "5ae4bd4939c599a31467014209add4cbbd01d5b599e0f3ef58d3cfc89ccc9e8f",
-   "pilot/net/oracle/disputes.json": "4bf60f221b68124a1124634d78f1f23398b0e3536ec6e481d5410a8283824b0e",
+   "pilot/net/oracle/disputes.json": "1aec96c163724b1243cecbd1c018a05d36e9e55e473e6f2595d5d711d6dc3686",
    "pilot/net/oracle/documented_examples.json": "2164d957b0a3dcc522353b7323683b29af4fb2504dfc7be849c166f85a04d13d",
    "pilot/net/oracle/expected_answers.schema.json": "1cd279f77c88d0084795c2c3a317cab6b3a40ca6cd44bb7f0aa33699e71449bc",
    "pilot/net/oracle/net_oracle/__init__.py": "5711d062c8ed0be806ffa2da628472645ea76b170c10eadee66633ef6ebbddfb",
@@ -2840,13 +2924,13 @@
    "pilot/net/oracle/net_oracle/model.py": "1570ebe054d019861a75344bbbca43e81c3cbdcda9aff1e4fbf24a977fe7bacb",
    "pilot/net/oracle/net_oracle/semantics.py": "ad446967b946ab17471a71236d124c5d646003be671366d33ae995831862ab03",
    "pilot/net/oracle/sealed_index.json": "45826019391c70358190c1191e5bfcda25b03114771392691d09becfd0fdf7d8",
-   "pilot/net/oracle/semantics_profile.json": "f24e5f4234f103f88f344f330a3d06988ad596cbf872c1e449c5d407cc7a5e21",
+   "pilot/net/oracle/semantics_profile.json": "8a7dd62376fa3b9e992f89193a5348ea546edc06d78f4b08e51d5d2521c522b5",
    "pilot/net/oracle/tests/conftest.py": "e3ad840bca01544ce70449864a48a9d3989b73e3bb1d519f2c6eae0cb8827b0f",
    "pilot/net/oracle/tests/test_calib.py": "2b293ea6311c95e8bd18ee9b258816eca5853bed735bb321f2af75e73d493a65",
    "pilot/net/oracle/tests/test_commitments.py": "c6dc665464f585f574a03baff68ead42e08e6ee313523f5a04753a86d9d00c47",
    "pilot/net/oracle/tests/test_documented_examples.py": "8c0fb08a00bada42f9ce2fb45c16d4e49656ace08b5aada4c3d876e32c91bd13",
    "pilot/net/oracle/tests/test_judge_rules.py": "5ce385c5150cedb880849289672700981d1cec58c87ead2823c6ae34894b6d26",
-   "pilot/net/oracle/tests/test_profile_readings.py": "fad7e1c2094e66d4a16081ad3728632ccc2c601dc7378389f34341ffd4908bd3"
+   "pilot/net/oracle/tests/test_profile_readings.py": "7e678cd1c5774b9d2c35be6aa7fe77a61927edcd647816fb4d5fbd8133168d29"
   },
   "reference_cases": [
    {
@@ -3106,12 +3190,12 @@
    "c1_table": {},
    "c2_taxonomy": {},
    "c3_full": {
-    "ACCEPT": 12,
-    "ACCEPT_WITH_DECLARED_LOSS": 2
+    "ACCEPT": 19,
+    "ACCEPT_WITH_DECLARED_LOSS": 9
    }
   }
  },
- "generated_at": "2026-11-04T11:08:37-03:00",
+ "generated_at": "2026-11-04T13:17:27-03:00",
  "metrics": [
   {
    "axis": "operational",
@@ -3134,7 +3218,7 @@
    "operational_coverage": {
     "est": 1.0,
     "lower": 1.0,
-    "n": 14,
+    "n": 28,
     "upper": 1.0
    },
    "quantifier": "observed_fraction",
@@ -3164,7 +3248,7 @@
    "operational_coverage": {
     "est": 1.0,
     "lower": 1.0,
-    "n": 14,
+    "n": 28,
     "upper": 1.0
    },
    "quantifier": "observed_fraction",
