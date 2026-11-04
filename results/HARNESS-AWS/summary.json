@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "HARNESS-AWS",
- "generated_at": "2026-11-04T08:20:38-03:00",
+ "generated_at": "2026-11-04T12:53:36-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/HARNESS-AWS.txt",
@@ -13,7 +13,7 @@
    "modo": "unlazy",
    "onda": "6",
    "fase": "F1",
-   "render_version": "1.0.0",
+   "render_version": "1.1.0",
    "protocol_version": "1.0.0",
    "terraform": "1.15.8",
    "provider_aws": "6.71.0",
@@ -25,11 +25,12 @@
    {
     "path": "$BO_REPO/contracts/stubs",
     "kind": "dir",
-    "sha256": "929b124dd416ed592176e821a4983db9caf593ff72e6caea325af00d998fd01a",
+    "sha256": "ff7ec36d2833b6afa01c21770a32cc6829c604f9c19bf870600d4bbfce788d4a",
     "sha256_before_emenda3_e_skosfix": "6d24a5ce7306bc53d657c96122bc0c8ee7c0057d2b7b543b77507bc30be8abb6",
     "sha256_before_emendas_4_grain_se": "7ee2eaa73c1e0105f3f62d30492d3401ecf87fef0c55dd0dc0e1a05710289f75",
     "sha256_before_emenda5": "4d3e1ef5cca14555d3688d6275d009582507e823d5df70a688738a39955f75f1",
-    "sha256_before_emenda6": "9782b476473da02aca51c6ed724625207d0bb54fd76a7c440f0a553e1d27d135"
+    "sha256_before_emenda6": "9782b476473da02aca51c6ed724625207d0bb54fd76a7c440f0a553e1d27d135",
+    "sha256_before_emenda7": "560f15a7f4069a539046aa0131bf9564df864ed0412aa2eb202e0bc7a3e0b23e"
    },
    {
     "path": "$BO_REPO/universe/pins.json",
@@ -42,7 +43,7 @@
     "sha256": "ee012f92aeab529dc2abd73c2932261694da877dc116e2320ce7cc986bcdee7e"
    }
   ],
-  "recorded_at": "2026-11-04T08:20:38-03:00"
+  "recorded_at": "2026-11-04T12:53:36-03:00"
  },
  "sources": [
   {
@@ -61,5 +62,5 @@
    "transformation": "parser independente usado só para reler o HCL no gate no_silent_insert"
   }
  ],
- "notes": "Offline: nenhum apply, nenhuma credencial, nenhuma chamada de API de nuvem. Stub C26 com plano aws desde a emenda 2 do CONTRACTS (513113d). 2026-11-04: teste de recusa da CLI real aceita as duas recusas do executor (sem redator do kit, ou allowlist vazia com o kit do SAFETY presente), cada uma ligada ao estado do kit; nada criado continua provado (CROSS_MODULE_NOTES do SAFETY, item 1). Entradas recalculadas depois da emenda 5 do CONTRACTS (stubs C24 e C25; nada do C26 mudou)."
+ "notes": "Offline: nenhum apply, nenhuma credencial, nenhuma chamada de API de nuvem. Stub C26 com plano aws desde a emenda 2 do CONTRACTS (513113d). 2026-11-04: teste de recusa da CLI real aceita as duas recusas do executor (sem redator do kit, ou allowlist vazia com o kit do SAFETY presente), cada uma ligada ao estado do kit; nada criado continua provado (CROSS_MODULE_NOTES do SAFETY, item 1). Entradas recalculadas depois da emenda 5 do CONTRACTS (stubs C24 e C25; nada do C26 mudou). 2026-11-04: emenda 7 do CONTRACTS (C00 3.1.0 termo list; C26 1.3.0 C26-LIST): termo list em atributo list/set vira [e1, e2, ...] na ordem dos itens (literal, símbolo ou referência; referência pelas mesmas regras do escalar); forma antiga attr.N aceita com nota C26-LIST, índices 0..n-1 sem mistura; no_silent_insert confere o alvo exato de cada referência (inclusive em lista) e pega item removido, trocado, inserido e fora de ordem; fixtures LP-AWS-NET-02 (termo list) e LP-AWS-NET-03 (indexada) validam no terraform offline. Entradas recalculadas de novo antes do merge."
 }

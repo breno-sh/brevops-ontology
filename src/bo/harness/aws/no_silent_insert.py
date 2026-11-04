@@ -10,7 +10,8 @@ do requirements.lock) e comparado com o PLANO (não com o manifesto do renderiza
   ALTERED   valor do HCL diferente do valor do plano (literal, símbolo, segredo, referência ou documento).
 Também confere os modelos (versions/providers/variables) contra a lista declarada e que campo obrigatório
 ausente (UNKNOWN_INPUT) não aparece no HCL. Por fim, roda mutações (atributo plantado, valor trocado, valor
-removido, tag nova no provider, default em variável, recurso extra, obrigatório inventado, locals) e exige que
+removido, tag nova no provider, default em variável, recurso extra, obrigatório inventado, locals; item de
+lista removido, trocado, inserido ou fora de ordem, inclusive na forma indexada antiga) e exige que
 TODAS reprovem. Sai 0 só se os renders limpos passam, há ao menos um RENDERED e um UNKNOWN_INPUT conferidos,
 e toda mutação é pega.
 """
@@ -122,8 +123,20 @@ def check_templates(render_dir: Path, declared: dict) -> list[dict]:
 
 # ------------------------------------------------------------------------------------------ planos
 class _Expect:
-    def __init__(self, plan: dict):
+    def __init__(self, plan: dict, graph: dict | None = None):
         self.plan = plan
+        # alvo esperado de cada referência, calculado aqui (não pelo renderizador): o passo cujo nome derivado usa
+        # o símbolo do endereço; sem ele, o único passo do tipo que o grafo liga ao passo de origem
+        terms = {t["term_id"]: t["term"] for t in (graph or {}).get("terms", [])}
+        self.sym_step: dict[str, list] = {}
+        for st in plan["steps"]:
+            for tid in (st.get("derived_name") or {}).get("from_terms") or []:
+                if (terms.get(tid) or {}).get("kind") == "symbol":
+                    self.sym_step.setdefault(terms[tid]["symbol_id"], []).append(st)
+        self.graph_refs = {}
+        for r in (graph or {}).get("references", []):
+            self.graph_refs.setdefault(r["from"], set()).add(r["to"])
+        self._cur = None
         self.slug = render.slug(plan["plan_id"])
         self.steps = sorted(plan["steps"], key=lambda s: s["order"])
         self.secret_n = 0
@@ -137,13 +150,39 @@ class _Expect:
                 continue
             addr = f"{s['resource_type']}.{render.label(plan['plan_id'], s['node_id'])}"
             self.order[addr] = s["order"]
-            self.values[addr] = {v["field"]: self.expect(v["term"]) for v in s["values"]}
+            self._cur = s
+            self.values[addr] = self.fields(s["values"])
             by_order = {x["order"]: x for x in self.steps}
             self.deps[addr] = [f"{by_order[d]['resource_type']}.{render.label(plan['plan_id'], by_order[d]['node_id'])}"
                                for d in s["depends_on"] if d in by_order and by_order[d]["action"] != "reference"]
 
+    def fields(self, values: list) -> dict:
+        """Campo -> esperado. Termo list vira ('list', [itens]); a forma antiga attr.N (C26-LIST) é agrupada
+        no prefixo, em ordem de índice, e só vale com índices 0..n-1 sem mistura com termo list."""
+        out, idx = {}, {}
+        for v in values:
+            segs = v["field"].split(".")
+            if len(segs) > 1 and segs[-1].isdigit():
+                idx.setdefault(".".join(segs[:-1]), []).append((int(segs[-1]), v["term"]))
+                continue
+            out[v["field"]] = self.expect(v["term"])
+        for prefix, items in idx.items():
+            ks = [k for k, _ in items]
+            if prefix in out or sorted(ks) != list(range(len(ks))) or any(t["kind"] == "list" for _, t in items):
+                out[prefix] = ("unrenderable", "lista indexada inválida (buraco, repetição ou mistura)")
+                continue
+            out[prefix] = self.list_items([t for _, t in sorted(items, key=lambda x: x[0])])
+        return out
+
+    def list_items(self, items: list):
+        if any(t["kind"] not in ("literal", "symbol", "reference") for t in items):
+            return ("unrenderable", "item de lista fora de literal/símbolo/referência")
+        return ("list", [self.expect(t) for t in items])
+
     def expect(self, t: dict):
         k = t["kind"]
+        if k == "list":
+            return self.list_items(t["items"])
         if k == "literal":
             return ("lit", t["value"])
         if k == "symbol":
@@ -158,7 +197,14 @@ class _Expect:
             self.secret_vars.add(name)
             return ("var", name)
         if k == "reference":
-            return ("ref", t["target_type"], t.get("attribute") or "id")
+            sym = t["target_address"].split(".")[-1]
+            cands = [x for x in self.sym_step.get(sym, []) if x["resource_type"] == t["target_type"]]
+            if not cands and self._cur is not None:
+                to = self.graph_refs.get(self._cur["node_id"], set())
+                cands = [x for x in self.plan["steps"] if x["node_id"] in to and x["resource_type"] == t["target_type"]]
+            tgt = f"{t['target_type']}.{render.label(self.plan['plan_id'], cands[0]['node_id'])}" \
+                if len(cands) == 1 else None
+            return ("ref", t["target_type"], t.get("attribute") or "id", tgt)
         if k == "document":
             if t["symbolized"]:
                 return ("unrenderable", "documento simbolizado")
@@ -168,6 +214,17 @@ class _Expect:
 
 def _match(exp, got, ex: _Expect, addr: str) -> str | None:
     kind = exp[0]
+    if kind == "list":
+        # ordem conferida também para set: o HCL é texto e o renderizador mantém a ordem do plano
+        if not isinstance(got, list):
+            return f"{got!r} não é lista"
+        if len(got) != len(exp[1]):
+            return f"lista com {len(got)} item(ns), plano tem {len(exp[1])}"
+        for i, (e, g) in enumerate(zip(exp[1], got)):
+            why = _match(e, g, ex, addr)
+            if why:
+                return f"item {i}: {why}"
+        return None
     if kind == "lit":
         same = got == exp[1] and isinstance(got, bool) == isinstance(exp[1], bool)
         return None if same else f"{got!r} != {exp[1]!r}"
@@ -181,6 +238,8 @@ def _match(exp, got, ex: _Expect, addr: str) -> str | None:
         tgt = f"{m.group(1)}.{m.group(2)}"
         if m.group(1) != exp[1] or (m.group(3) or "") != exp[2]:
             return f"referência {got[1]} não é {exp[1]}.<passo>.{exp[2]}"
+        if exp[3] is not None and tgt != exp[3]:
+            return f"referência aponta {tgt}, o plano aponta {exp[3]}"
         if tgt not in ex.order or ex.order[tgt] >= ex.order[addr]:
             return f"referência {tgt} não é passo anterior deste plano"
         return None
@@ -213,7 +272,7 @@ def _resource_leaves(body: dict, exp_fields: dict) -> dict:
     return out
 
 
-def check_plan(render_dir: Path, plan: dict, entry: dict) -> list[dict]:
+def check_plan(render_dir: Path, plan: dict, entry: dict, graph: dict | None = None) -> list[dict]:
     finds = []
     pid = plan["plan_id"]
     f = render_dir / f"{pid}.tf"
@@ -223,7 +282,7 @@ def check_plan(render_dir: Path, plan: dict, entry: dict) -> list[dict]:
         return finds
     if not f.exists():
         return [{"kind": "DROPPED", "where": f.name, "path": "(arquivo)", "detail": "plano sem HCL"}]
-    ex = _Expect(plan)
+    ex = _Expect(plan, graph)
     doc = parse(f)
     unrendered = {(u["address"], u["field"]) for u in entry["unrendered"]}
     seen_vars = set()
@@ -298,10 +357,12 @@ def check_render(render_dir: Path) -> dict:
     man = json.loads((render_dir / "render_manifest.json").read_text(encoding="utf-8"))
     declared = json.loads((render.templates_dir() / "DECLARED_INSERTIONS.json").read_text(encoding="utf-8"))
     plans = {p["plan_id"]: p for p in render.read_jsonl(Path(man["input"]["plan"]))}
+    gpath = man["input"].get("graph")
+    graphs = {g["graph_id"]: g for g in render.read_jsonl(Path(gpath))} if gpath and Path(gpath).exists() else {}
     finds = check_templates(render_dir, declared)
     expected_files = set(render.TEMPLATE_FILES) | {"render_manifest.json"}
     for e in man["plans"]:
-        finds += check_plan(render_dir, plans[e["plan_id"]], e)
+        finds += check_plan(render_dir, plans[e["plan_id"]], e, graphs.get(plans[e["plan_id"]]["graph_id"]))
         if e["status"] != "INVALID_PLAN":
             expected_files.add(f"{e['plan_id']}.tf")
     for extra in sorted({p.name for p in render_dir.iterdir()} - expected_files):
@@ -336,6 +397,19 @@ MUTATIONS = [
     ("M10 documento alterado", "LP-AWS-SEC-02.tf", 'Service = "ec2.amazonaws.com"', 'Service = "lambda.amazonaws.com"'),
     ("M11 segredo virou literal", "LP-AWS-DB-02.tf", "var.lp_aws_db_02_secret_1", '"fixo-no-codigo"'),
     ("M12 depends_on removido", "LP-AWS-STO-01.tf", "  depends_on = [aws_s3_bucket.lp_aws_sto_01_r1]\n", ""),
+    # termo list (C00 3.1.0) e forma indexada antiga (C26-LIST)
+    ("M13 item de lista removido", "LP-AWS-NET-02.tf",
+     "[aws_subnet.lp_aws_net_02_r2.id, aws_subnet.lp_aws_net_02_r3.id]", "[aws_subnet.lp_aws_net_02_r2.id]"),
+    ("M14 item de lista trocado", "LP-AWS-NET-02.tf",
+     "[aws_subnet.lp_aws_net_02_r2.id, aws_subnet.lp_aws_net_02_r3.id]",
+     "[aws_subnet.lp_aws_net_02_r2.id, aws_subnet.lp_aws_net_02_r2.id]"),
+    ("M15 item de lista inserido", "LP-AWS-NET-02.tf", "[aws_security_group.lp_aws_net_02_r4.id]",
+     '[aws_security_group.lp_aws_net_02_r4.id, "sg-fixo"]'),
+    ("M16 ordem da lista trocada", "LP-AWS-NET-02.tf",
+     "[aws_subnet.lp_aws_net_02_r2.id, aws_subnet.lp_aws_net_02_r3.id]",
+     "[aws_subnet.lp_aws_net_02_r3.id, aws_subnet.lp_aws_net_02_r2.id]"),
+    ("M17 item removido da lista indexada", "LP-AWS-NET-03.tf",
+     "[aws_subnet.lp_aws_net_03_r2.id, aws_subnet.lp_aws_net_03_r3.id]", "[aws_subnet.lp_aws_net_03_r3.id]"),
 ]
 
 

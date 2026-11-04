@@ -29,7 +29,7 @@ from pathlib import Path
 from . import MODULE_ID, PROVIDER, hcl, pins
 from . import schema as sch
 
-RENDER_VERSION = "1.0.0"
+RENDER_VERSION = "1.1.0"
 TEMPLATE_FILES = ("versions.tf", "providers.tf", "variables.tf")
 STATUSES = ("RENDERED", "UNKNOWN_INPUT", "INVALID_PLAN")
 REF_ADDR = re.compile(r"^(data\.)?([a-z][a-z0-9_]*)\.(SYM-[0-9a-f]{8,16})(\[[^\]]+\])?$")
@@ -175,6 +175,49 @@ def term_expr(ctx: _Ctx, step: dict, fieldname: str, t: dict) -> hcl.Expr:
     raise Unrenderable(f"termo de tipo desconhecido {k}", unknown_input=False)
 
 
+# ------------------------------------------------------------------------------- listas (C00 3.1.0, C26 1.3.0)
+LIST_ITEM_KINDS = ("literal", "symbol", "reference")
+_PRIM = {"string": "string", "number": "number", "bool": "bool"}
+
+
+def _collection_elem(t):
+    """Tipo do elemento quando t é list(T) ou set(T); None caso contrário."""
+    if isinstance(t, list) and len(t) == 2 and t[0] in ("list", "set"):
+        return t[1]
+    return None
+
+
+def _attr_exact(block: sch.Block, path: list[str]):
+    """Atributo no fim exato do caminho (blocos no meio), ou None."""
+    cur = block
+    for seg in path[:-1]:
+        if seg not in cur.blocks:
+            return None
+        cur = cur.blocks[seg].block
+    return cur.attributes.get(path[-1]) if path else None
+
+
+def item_expr(ctx: "_Ctx", step: dict, fieldname: str, t: dict, elem) -> hcl.Expr:
+    """Um item de lista: só literal, símbolo ou referência; o literal tem de ter o tipo do elemento."""
+    if t["kind"] not in LIST_ITEM_KINDS:
+        raise Unrenderable(f"item {t['kind']} em {fieldname}: dentro de lista o harness só renderiza literal, "
+                           "símbolo ou referência", unknown_input=False)
+    if t["kind"] == "literal" and elem in _PRIM and t["datatype"] != _PRIM[elem]:
+        raise Unrenderable(f"item literal {t['datatype']} em {fieldname}, elemento do schema é {elem}",
+                           unknown_input=False)
+    return term_expr(ctx, step, fieldname, t)
+
+
+def list_expr(ctx: "_Ctx", step: dict, fieldname: str, t: dict, block: sch.Block) -> hcl.Expr:
+    """Termo list -> [e1, e2, ...] na ordem dos itens, num atributo list(T) ou set(T)."""
+    a = _attr_exact(block, fieldname.split("."))
+    elem = _collection_elem(a.type) if a is not None else None
+    if elem is None:
+        raise Unrenderable(f"termo list em {fieldname}, que não é atributo lista nem conjunto no schema fixado",
+                           unknown_input=False)
+    return hcl.ListE([item_expr(ctx, step, f"{fieldname}[{i}]", it, elem) for i, it in enumerate(t["items"])])
+
+
 # ------------------------------------------------------------------------------- árvore de campos do recurso
 class _Node:
     """Corpo de um recurso ou bloco aninhado: atributos (expressões ou objetos parciais) e blocos filhos."""
@@ -304,11 +347,26 @@ def render_plan(plan: dict, graph: dict | None, schema: sch.ProviderSchema) -> P
                                 "reason": f"tipo {step['resource_type']} não existe no aws {schema.provider_version}"})
             continue
         root = _Node(schema.resource(step["resource_type"]))
+        indexed: dict[str, dict] = {}     # forma antiga attr.N (C26-LIST): prefixo -> {índice: (expr, valor)}
         for v in step["values"]:
             f = v["field"]
+            segs = f.split(".")
             try:
-                expr = term_expr(ctx, step, f, v["term"])
-                _place(root, f.split("."), expr, f)
+                if segs[-1].isdigit() and len(segs) > 1 and \
+                        _collection_elem(getattr(_attr_exact(root.block, segs[:-1]), "type", None)) is not None:
+                    if v["term"]["kind"] == "list":
+                        raise Unrenderable(f"termo list no item indexado {f}", unknown_input=False)
+                    elem = _collection_elem(_attr_exact(root.block, segs[:-1]).type)
+                    slot = indexed.setdefault(".".join(segs[:-1]), {})
+                    if int(segs[-1]) in slot:
+                        raise Unrenderable(f"campo {f} aparece duas vezes", unknown_input=False)
+                    slot[int(segs[-1])] = (item_expr(ctx, step, f, v["term"], elem), v)
+                    continue
+                if v["term"]["kind"] == "list":
+                    expr = list_expr(ctx, step, f, v["term"], root.block)
+                else:
+                    expr = term_expr(ctx, step, f, v["term"])
+                _place(root, segs, expr, f)
             except Unrenderable as e:
                 target = pr.missing if e.unknown_input else pr.problems
                 target.append({"field": f, "address": addr, "reason": e.reason})
@@ -322,6 +380,23 @@ def render_plan(plan: dict, graph: dict | None, schema: sch.ProviderSchema) -> P
                                 set(v["term"]["value"])):
                     pr.missing.append({"field": f"{f}.{k}", "address": addr,
                                        "reason": "chave obrigatória do objeto ausente no plano"})
+        for prefix, slot in sorted(indexed.items()):
+            vals = [slot[i][1] for i in sorted(slot)]
+            try:
+                if sorted(slot) != list(range(len(slot))):
+                    raise Unrenderable(f"lista indexada {prefix} com índices {sorted(slot)}, não 0..{len(slot) - 1}",
+                                       unknown_input=False)
+                _place(root, prefix.split("."), hcl.ListE([slot[i][0] for i in sorted(slot)]), prefix)
+            except Unrenderable as e:
+                target = pr.missing if e.unknown_input else pr.problems
+                target.append({"field": prefix, "address": addr, "reason": e.reason})
+                pr.unrendered += [{"address": addr, "field": x["field"], "origin": x["origin"], "reason": e.reason}
+                                  for x in vals]
+                continue
+            pr.record.setdefault("notes", []).append(
+                f"C26-LIST: {addr} {prefix} veio indexado ({len(slot)} item(ns)); prefira termo list")
+            pr.provenance += [{"address": addr, "field": x["field"], "origin": x["origin"], "marked": x["marked"],
+                               "term_kind": x["term"]["kind"]} for x in vals]
         for m in _missing(root, ""):
             pr.missing.append({"field": m, "address": addr,
                                "reason": "campo obrigatório no schema fixado e ausente no plano"})

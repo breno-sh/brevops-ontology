@@ -19,7 +19,8 @@ def test_status_of_each_fixture_plan(rendered):
     st = {k: e["status"] for k, e in by_id(man).items()}
     assert st == {"LP-AWS-NET-01": "RENDERED", "LP-AWS-STO-01": "RENDERED", "LP-AWS-DB-01": "UNKNOWN_INPUT",
                   "LP-AWS-DB-02": "RENDERED", "LP-AWS-SEC-01": "UNKNOWN_INPUT", "LP-AWS-SEC-02": "RENDERED",
-                  "LP-AWS-MSG-01": "UNKNOWN_INPUT", "LP-AWS-BAD-01": "INVALID_PLAN"}
+                  "LP-AWS-MSG-01": "UNKNOWN_INPUT", "LP-AWS-BAD-01": "INVALID_PLAN",
+                  "LP-AWS-NET-02": "RENDERED", "LP-AWS-NET-03": "RENDERED"}
     assert man["other_provider"] == [{"plan_id": "LP-AWS-OTH-01", "status": "OTHER_PROVIDER",
                                       "target_provider": "google"}]
 

@@ -7,7 +7,8 @@ def test_terraform_validate_agrees_with_renderer(rendered, work):
     rep = tf_validate.validate_render(out, work / "tfv")
     by = {p["plan_id"]: p for p in rep["plans"]}
     assert rep["agree"], [(p["plan_id"], p["diagnostics"]) for p in rep["plans"] if not p["agree"]]
-    assert all(by[k]["terraform_valid"] for k in ("LP-AWS-NET-01", "LP-AWS-STO-01", "LP-AWS-DB-02", "LP-AWS-SEC-02"))
+    assert all(by[k]["terraform_valid"] for k in ("LP-AWS-NET-01", "LP-AWS-STO-01", "LP-AWS-DB-02", "LP-AWS-SEC-02",
+                                                  "LP-AWS-NET-02", "LP-AWS-NET-03"))
     assert by["LP-AWS-DB-01"]["terraform_missing"] == ["instance_class"]
     assert not (work / "tfv").exists()
 

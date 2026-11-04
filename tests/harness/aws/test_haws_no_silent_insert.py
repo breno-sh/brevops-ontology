@@ -11,7 +11,7 @@ def test_clean_render_has_no_findings(rendered):
     out, _ = rendered
     rep = nsi.check_render(out)
     assert rep["findings"] == []
-    assert rep["counts"]["RENDERED"] == 4 and rep["counts"]["UNKNOWN_INPUT"] == 3
+    assert rep["counts"]["RENDERED"] == 6 and rep["counts"]["UNKNOWN_INPUT"] == 3
 
 
 @pytest.mark.parametrize("mut", nsi.MUTATIONS, ids=[m[0].split()[0] for m in nsi.MUTATIONS])
