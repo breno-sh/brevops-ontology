@@ -206,7 +206,7 @@ class Context:
     def features(self, a: dict, facts: list[dict]) -> Atom:
         r = self.rules
         prov = a["provider"]
-        parent, _, raw_leaf = a["path"].rpartition(".")
+        raw_leaf = a["path"].rpartition(".")[2]
         leaf = self.base_leaf(raw_leaf, a)
         ltoks = tokens(leaf)
         type_toks = self.types[prov][a["resource_type"]]
@@ -271,6 +271,9 @@ def names_leaf_pattern(id_words: str, leaf_tokens: list[str]) -> re.Pattern:
     key = (id_words, tuple(leaf_tokens))
     if key not in _NL_CACHE:
         toks = list(leaf_tokens)
+        if not toks:
+            _NL_CACHE[key] = re.compile(r"(?!)")
+            return _NL_CACHE[key]
         toks[-1] = re.escape(singular(toks[-1])) + "(?:s|es)?"
         noun = r"[ _-]?".join(re.escape(t) if i < len(toks) - 1 else t for i, t in enumerate(toks))
         noun = r"\b" + noun + r"\b"
