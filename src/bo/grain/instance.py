@@ -31,6 +31,19 @@ def _sym(v) -> bool:
 def normalize(norm: str, v):
     if v is None or _sym(v):
         raise NormError("valor ausente ou simbólico")
+    if norm == "content":
+        # símbolo e referência entram como marcas estáveis da configuração (não são completados)
+        def mark(x):
+            if isinstance(x, dict) and "$unknown" in x:
+                return "sym:" + str(x["$unknown"])
+            if isinstance(x, dict) and "$ref" in x:
+                return "ref:" + str(x["$ref"])
+            if isinstance(x, dict):
+                return {k: mark(y) for k, y in x.items()}
+            if isinstance(x, list):
+                return [mark(y) for y in x]
+            return x
+        return sha256_text(canon(mark(v)))
     if norm == "str":
         return str(v).strip()
     if norm == "lower":
@@ -60,6 +73,9 @@ def _get(values: dict, path: str, index):
         return index
     if path == "$element":
         return values.get("$element") if isinstance(values, dict) else None
+    if path == "$content":
+        # T64: conteúdo do objeto-valor (valores configurados, blocos internos incluídos)
+        return {k: x for k, x in values.items() if not k.startswith("$")} if isinstance(values, dict) else None
     cur = values
     for part in path.split("."):
         if not isinstance(cur, dict) or part not in cur:
@@ -259,6 +275,12 @@ def decompose_config(config: dict, adapter, schema_blocks: dict, rs: R.RuleSet) 
             raise NormError(f"campo {f} sem mapa")
         return normalize(m.get("norm", "str"), _get(info["values"], m.get("path", f), info["index"]))
 
+    def _safe_content(x):
+        try:
+            return field_val(x, "$content")
+        except NormError:
+            return None
+
     def ident(nid, stack=()):
         if nid in memo:
             return memo[nid]
@@ -285,6 +307,14 @@ def decompose_config(config: dict, adapter, schema_blocks: dict, rs: R.RuleSet) 
                     raise NormError("identidade só por id opaco: sem valor na configuração")
                 for f in own:
                     key[f] = field_val(nid, f)
+                vo = nodes[nid].ev.value_object if nid in nodes else None
+                if vo and vo.get("duplicates") and "$content" in key:
+                    # T64: duplicata aceita = outro membro; ordinal entre os irmãos de conteúdo igual (o conjunto
+                    # de ordinais não depende da posição: os iguais são intercambiáveis)
+                    info = raw[nid]
+                    sib = sorted(x for x in nodes if raw[x]["cid"] == info["cid"] and raw[x]["parent"] ==
+                                 info["parent"] and x != nid)
+                    key["$dup"] = sum(1 for x in sib if x < nid and _safe_content(x) == key["$content"])
             except NormError as e0:
                 if nid not in raw or raw[nid]["parent"] is not None:
                     raise                 # bloco: o endereço é posicional e não serve de identidade (reordenação)

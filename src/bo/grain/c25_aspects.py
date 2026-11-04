@@ -129,6 +129,18 @@ TABLE = [
      "recursos: cada elemento designa o objeto referenciado e vira ligação (T58); ciclo de vida, dono e alcance pela "
      "R-GRAIN-LISTELEM. Elemento literal ou simbólico não cria ligação (UNKNOWN sem ocorrência); fato do SE no "
      "atributo prevalece; sem o átomo citável, nada. A ponta FACET do vínculo é lida como a unidade dona da faceta"),
+    ("identity", "item_identity", "R-GRAIN-T64",
+     "identidade do item da coleção (emenda 0.1.11). has_id false com lista substituída inteira ou duplicata aceita: "
+     "OBJETO-VALOR membro da coleção do pai; identity present within_parent anônima com chave = conteúdo ($content: "
+     "valores configurados do item, símbolos como símbolos); duplicata aceita = outro membro (ordinal entre os de "
+     "conteúdo igual, independente da posição); com a ponte para o campo-lista (T62), api_resource = carga útil "
+     "(item). has_id true: identidade própria (id_field ou id); requires_parent com parent_attribute: a referência "
+     "ao pai entra na chave e marca o pai de caminho (G2-CHILD)"),
+    ("(qualquer)", "(nível observed)", "R-GRAIN-OBS",
+     "OBSERVED (C25 1.4.0) entra com o nível na citação. Disputa: observada repetível (2+ repetições) e com controle "
+     "prevalece sobre doc publicada, derivação e interpretação do mesmo campo, se as observadas qualificadas "
+     "concordam; a disputa fica registrada (disputes e a citação vencida continua na evidência); sem repetição ou "
+     "controle, ou observadas divergentes: CONTRADICTORY"),
     ("identity", "attachment_attribute", "R-GRAIN-T63",
      "campo da spec que liga o dono a objetos do tipo binds_to, casado ao atributo pela leitura do modelo: ligação "
      "por atributo (T58) com alvo tipado; o nível INTERPRETED do fato vai para a citação (com model_id) e não é "
@@ -216,6 +228,14 @@ def _src(r: dict, rule: str, why: str = "") -> dict:
     note = f"{rule}: {r['fact_kind']}/{v.get('aspect', 'sem aspecto')}"
     if why:
         note += f" ({why})"
+    if r.get("level") == "observed":
+        # OBSERVED (C25 1.4.0): experimento na API real; qualificado = 2+ repetições e controle (R-GRAIN-OBS)
+        rep, ctl = r.get("repetitions") or 0, r.get("control")
+        qual = isinstance(rep, int) and rep >= 2 and bool(ctl)
+        dsp = r.get("disputes") or []
+        note += (f" [OBSERVED run {r.get('run_id')}, {rep} repetições, controle {'sim' if ctl else 'não'}"
+                 + (f", disputa com {', '.join(map(str, dsp))}" if dsp else "") + "]")
+        return {"level": "observed", "ref": r["evidence_id"], "note": note, "qualified": qual}
     return {"level": "derived", "ref": r["evidence_id"], "note": note}
 
 
@@ -275,6 +295,8 @@ def translate(records: list[dict], candidates: set[str] | None = None, disputes:
     own_ops: set = set()                              # blocos com operação própria de criar/apagar (T57, negativo)
     links: dict[str, dict] = defaultdict(dict)       # cid -> atributo -> ligação (T58)
     path_fields: dict[str, set] = defaultdict(set)   # cid -> campos de referência ao pai de caminho (T54)
+    list_items: dict[str, dict] = {}                  # cid -> ponte para campo-lista de itens (T62)
+    value_objects: dict[str, dict] = {}               # cid -> objeto-valor observado (T64)
     typed: dict[str, dict] = defaultdict(dict)       # cid -> {campo: tipo alvo ou None} (T44 reference_target)
     for cid, rs in sorted(by_cid.items()):
         rt = cid.split(".")[0]
@@ -309,10 +331,9 @@ def translate(records: list[dict], candidates: set[str] | None = None, disputes:
                 elif nested and isinstance(v, dict) and v.get("item_model") and \
                         str(v.get("field_type") or "").startswith("list["):
                     # T62: ponte para campo-lista de itens do pai: cada bloco é UM item da coleção, não o aspecto
-                    # (T49 não se aplica); sem identidade do item (nome ou conteúdo) na evidência, FACET e
-                    # COMPONENT anônimo ficam indistintos: UNKNOWN com o motivo (nunca FACET por omissão)
-                    unknown(cid, "api_resource", r, f"ponte para campo-lista de itens ({v.get('field_type')}): o "
-                            "item não é aspecto do pai e a identidade do item não tem evidência (T62)")
+                    # (T49 não se aplica); decidido depois do laço: com identidade do item (T64) é carga útil (item);
+                    # sem ela, FACET e COMPONENT anônimo ficam indistintos: UNKNOWN com o motivo
+                    list_items[cid] = r
                 else:
                     svc = (v.get("service") if isinstance(v, dict) else None) or (r.get("api_resource") or {}).get(
                         "service") or "UNKNOWN"
@@ -417,6 +438,29 @@ def translate(records: list[dict], candidates: set[str] | None = None, disputes:
                     links[cid][attr] = dict(prev, target=None, why="alvos divergentes")
                 elif not (prev.get("target") and prev["target"] == typed[cid][attr]):
                     links[cid][attr] = {"kind": "reference", "target": typed[cid][attr], "source": _src(r, rule)}
+            elif a == "item_identity":
+                # T64: identidade do item (fato do experimento ou da doc). Sem id, lista substituída inteira e/ou
+                # duplicata aceita: objeto-valor membro da coleção do pai, identidade = conteúdo (anônima), cada
+                # duplicata é um membro. Com id: identidade própria; requires_parent marca o pai de caminho.
+                src = _src(r, "R-GRAIN-T64")
+                if v.get("has_id") is False and nested and (v.get("replaced_whole") or v.get("duplicates_accepted")):
+                    put(cid, "identity", {"status": "present", "scope": "within_parent", "key_fields": ["$content"],
+                                          "anonymous": True, "source": src})
+                    put(cid, "element_name_key", {"status": "absent", "source": src})
+                    value_objects[cid] = {"duplicates": bool(v.get("duplicates_accepted")),
+                                          "replaced_whole": bool(v.get("replaced_whole")), "source": src}
+                elif v.get("has_id") is True:
+                    kf = [v.get("id_field") or "id"]
+                    pa = _rel(v.get("parent_attribute") or "", bp) if v.get("requires_parent") else ""
+                    if pa:
+                        kf.append(pa)
+                        path_fields[cid].add(pa)
+                        if v.get("parent_type") and not typed[cid].get(pa):
+                            typed[cid][pa] = v["parent_type"]
+                    put(cid, "identity", {"status": "present", "scope": "within_parent" if (pa or nested)
+                                          else "independent", "key_fields": kf, "source": src})
+                else:
+                    unknown(cid, "identity", r, "identidade do item sem forma traduzível (T64)")
             elif a == "attachment_attribute":
                 # T63: campo da spec que liga o dono a objetos do tipo binds_to, casado ao atributo Terraform por
                 # leitura do modelo: ligação por atributo com alvo tipado, nível INTERPRETED (nunca promovido)
@@ -770,6 +814,19 @@ def translate(records: list[dict], candidates: set[str] | None = None, disputes:
                 s["note"] = note + (" / " + s.get("note", "") if s.get("note") else "")
                 c2["source"] = s
                 put(cid, fld, c2)
+    for cid, r in sorted(list_items.items()):
+        v = r["value"]
+        if cid in value_objects:
+            put(cid, "api_resource", {"status": "payload", "label": v.get("item_model"),
+                                      "source": _src(r, "R-GRAIN-T62", "item da coleção do pai (T64)")})
+        else:
+            unknown(cid, "api_resource", r, f"ponte para campo-lista de itens ({v.get('field_type')}): o item não "
+                    "é aspecto do pai e a identidade do item não tem evidência (T62)")
+    for cid, vo in sorted(value_objects.items()):
+        ent = out.setdefault(cid, {})
+        ent["value_object"] = {k: x for k, x in vo.items() if k != "source"}
+        ent.setdefault("field_map", {})["$content"] = {"path": "$content", "norm": "content"}
+        reasons[cid].append("identity: objeto-valor (sem id; conteúdo é a chave; duplicata é outro membro) (T64)")
     for cid, ls in links.items():
         if ls:
             out.setdefault(cid, {})["links"] = {k: dict(x) for k, x in ls.items()}

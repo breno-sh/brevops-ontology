@@ -100,6 +100,9 @@ class Fact:
         return self.state == KNOWN
 
 
+EVIDENCE_ITEM_KEYS = ("level", "ref", "doc", "citation", "model_id", "note")   # C00 evidence_item
+
+
 def consolidate(fld: str, claims: list[dict]) -> Fact:
     for c in claims or []:
         if isinstance(c, dict) and c.get("status") == "contradictory":
@@ -109,8 +112,35 @@ def consolidate(fld: str, claims: list[dict]) -> Fact:
         return Fact(UNKNOWN, None)
     keys = {canon(s) for s in stated}
     if len(keys) > 1:
+        # R-GRAIN-OBS (emenda 0.1.11): alegação OBSERVED repetível (2+ repetições) e com controle prevalece sobre as
+        # demais (doc publicada, derivação, interpretação) quando todas as observadas qualificadas concordam; a
+        # divergência fica registrada (disputes) e nada é apagado. Observada sem repetição ou controle, ou duas
+        # observadas divergentes: CONTRADICTORY, como antes.
+        obs = [n for c in claims or [] if observed_qualified(c)
+               for n in [normalize_claim(fld, c)] if n is not None]
+        if obs and len({canon(o) for o in obs}) == 1:
+            return Fact(KNOWN, obs[0])
         return Fact(CONTRADICTORY, None)
     return Fact(KNOWN, stated[0])
+
+
+def observed_qualified(c) -> bool:
+    s = c.get("source") if isinstance(c, dict) else None
+    return isinstance(s, dict) and s.get("level") == "observed" and bool(s.get("qualified"))
+
+
+def disputes(fld: str, claims: list[dict]) -> list[str]:
+    """Refs das alegações vencidas por uma observação qualificada (R-GRAIN-OBS), para o registro da disputa."""
+    obs = [c for c in claims or [] if observed_qualified(c)]
+    if not obs:
+        return []
+    won = {canon(normalize_claim(fld, c)) for c in obs if normalize_claim(fld, c) is not None}
+    out = []
+    for c in claims or []:
+        n = normalize_claim(fld, c) if isinstance(c, dict) else None
+        if n is not None and canon(n) not in won:
+            out.append(str((c.get("source") or {}).get("ref")))
+    return sorted(set(out))
 
 
 @dataclass
@@ -136,6 +166,8 @@ class CandidateEvidence:
     implicit_facet: dict | None = None
     # ligações por atributo (T58): atributo -> {"kind": reference|selection, "target": tipo|None, "why", "source"}
     links: dict = field(default_factory=dict)
+    # objeto-valor (T64): {"duplicates": bool, "replaced_whole": bool}; identidade = conteúdo
+    value_object: dict | None = None
 
     def fact(self, fld: str) -> Fact:
         return consolidate(fld, self.claims.get(fld, []))
@@ -145,6 +177,8 @@ class CandidateEvidence:
         for f in flds:
             for c in self.claims.get(f, []):
                 s = c.get("source")
+                if s:
+                    s = {k: v for k, v in s.items() if k in EVIDENCE_ITEM_KEYS}
                 if s and canon(s) not in seen:
                     seen.add(canon(s))
                     out.append(s)
@@ -159,7 +193,8 @@ def from_dict(d: dict) -> CandidateEvidence:
                              groups=dict(d.get("groups", {})), roles=dict(d.get("roles", {})),
                              twin=d.get("twin"), out_of_domain=d.get("out_of_domain"),
                              parent_is_path_parent=bool(d.get("parent_is_path_parent")),
-                             implicit_facet=d.get("implicit_facet"), links=dict(d.get("links", {})))
+                             implicit_facet=d.get("implicit_facet"), links=dict(d.get("links", {})),
+                             value_object=d.get("value_object"))
 
 
 class FixtureAdapter:

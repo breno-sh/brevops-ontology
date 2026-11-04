@@ -36,7 +36,7 @@ from . import schema as S
 from .common import data_dir, dump_json, dump_jsonl, now, repo, results_dir, rules_path, sha256_file, stamp
 from .evidence import FixtureAdapter
 
-AUTHORED_AT = "2026-11-04T13:45:00-03:00"
+AUTHORED_AT = "2026-11-04T16:30:00-03:00"
 
 
 def _strip(rep: dict) -> dict:
@@ -408,6 +408,28 @@ vida preso à instância, G1 e G2 aceitam a evidência, e trocar a ordem troca B
 referência <code>by_name</code>; sem ela, o grafo embutido perde relações que o separado tem.</li>
 <li>Emenda 0.1.1 (CC-1): a primeira versão lia uma convenção que o SERVICE-EVIDENCE nunca gravou; os testes
 sintéticos usavam a mesma convenção e não pegaram. Entraram o adaptador por aspecto e testes com o arquivo real.</li>
+<li>Emenda 0.1.11 (adendo de 04/11 §2: evidência OBSERVADA, C25 1.4.0). <b>Leitura</b>: o fato observed entra com
+nível <code>observed</code> na citação, com run, repetições e controle na nota. <b>Disputa OBSERVED × PUBLISHED
+(R-GRAIN-OBS)</b>: a observação prevalece sobre a doc publicada, a derivação e a interpretação do mesmo campo quando é
+repetível (2+ repetições) e tem controle, e todas as observações qualificadas concordam; a disputa fica registrada (item
+de evidência <code>dispute:&lt;campo&gt;</code> com as alegações vencidas, que continuam citadas). Observação sem
+repetição ou sem controle, ou duas observações que divergem, deixam o campo CONTRADICTORY, como qualquer divergência.
+Justificativa: a doc descreve a API; o experimento repetido com controle é a API respondendo, e a doc pode estar
+desatualizada ou ser genérica. <b>Objeto-valor (T64)</b>: regra da security list OCI observada sem id, lista
+substituída inteira e duplicata aceita. Proposta: COMPONENT anônimo do contêiner, com identidade de ocorrência =
+conteúdo (valores configurados do item, blocos internos incluídos, símbolos como símbolos) e, como a API aceita
+duplicata, cada duplicata é outro membro (ordinal entre os de conteúdo igual; o conjunto de ordinais não depende da
+posição). Por que não FACET: a faceta é um aspecto do pai, um só por pai; aqui há muitos membros com semântica própria
+(direção, protocolo, estado por regra). Por que não carga transparente (T0): o membro não some no pai, é unidade do
+domínio que o tradutor emite e compara. Por que não COMPONENT com chave = posição: a lista é substituída inteira, a
+posição não identifica (reordenar não muda a configuração). Com a ponte para o campo-lista (T62), api_resource = carga
+útil (item da coleção). Sem a observação, segue UNKNOWN (T62). <b>Regra do NSG OCI</b>: observada com id e sem
+existência fora do NSG; a referência ao NSG entra na chave como pai de caminho e, com o ciclo de vida próprio de API,
+sai COMPONENT do NSG pela G2-CHILD (cascade_delete_by o NSG; a sonda de cascata ainda roda no OBS-GAPS). Controle: com id
+e sem a dependência do pai, não é COMPONENT. Formato esperado do fato (aspecto <code>item_identity</code>):
+<code>has_id</code>, <code>replaced_whole</code>, <code>duplicates_accepted</code>, e para o item com id
+<code>requires_parent</code>, <code>parent_attribute</code>, <code>parent_type</code> (opcional <code>id_field</code>).
+Testes com fatos sintéticos no formato do C25 OBSERVED em tests/grain/test_grain_observed.py.</li>
 <li>Emenda 0.1.10 (rodada final antes do PILOT-EXIT 2/2; E2 NET da calibração com 37 tipos UNKNOWN). Por que a
 R-GRAIN-LISTELEM não cobriu as anexações por <code>vpc_security_group_ids</code>: ela dá ciclo de vida, dono e
 alcance a um elemento de ligação que JÁ existe, e a ligação só nascia de fato do SERVICE-EVIDENCE sobre o atributo
