@@ -384,3 +384,14 @@ def test_emenda9_c05_unidades(sch):
     assert r.ok, r.errors[:3]
     recs = [json.loads(l) for l in (ROOT / "contracts/stubs/C05/value_space.jsonl").read_text().splitlines()]
     assert not [x for x in recs if x["quantity_kind"] == "quantitykind:InformationEntropy"]
+
+
+# ----------------------------------------------------------------------------------- emenda 10 (nível observed)
+def test_c25_observado_e_disputa(sch):
+    assert sch["C25"]["x-bo-contract"]["version"] == "1.4.0"
+    recs = [json.loads(l) for l in (ROOT / "contracts/stubs/C25/service_evidence.jsonl").read_text().splitlines()]
+    obs = [r for r in recs if r.get("level") == "observed"]
+    assert obs and all(r["repetitions"] >= 2 and r["observation_ref"]["path"].startswith("$BO_DATA/OBS-GAPS/")
+                       for r in obs)
+    assert all(r.get("disputes") for r in obs)          # diverge do publicado: disputa, os dois ficam
+    assert validate.validate("service_evidence", ROOT / "contracts/stubs/C25/service_evidence.jsonl").ok

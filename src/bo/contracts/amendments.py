@@ -120,6 +120,11 @@ AMENDMENTS = [
     {"contract": "C25", "from": "1.2.0", "to": "1.3.0", "at": "2026-11-04T14:00:00-03:00",
      "requested_by": "SERVICE-EVIDENCE", "source": "results/SERVICE-EVIDENCE/CONTRACT_CHANGE.txt (7)",
      "change": "rule_id de topo"},
+    # ---- emenda 10 (2026-11-04, adendo ADENDO_2026-11-04_OBSERVADO_ALIBABA.html §2)
+    {"contract": "C25", "from": "1.3.0", "to": "1.4.0", "at": "2026-11-04T16:30:00-03:00", "requested_by": "COORD",
+     "source": "ADENDO_2026-11-04_OBSERVADO_ALIBABA.html §2",
+     "change": "nível observed (observation_ref, run_id, repetitions >= 2, control, observed_at); disputa com o "
+               "publicado em disputes; só rótulos sintéticos"},
 ]
 
 

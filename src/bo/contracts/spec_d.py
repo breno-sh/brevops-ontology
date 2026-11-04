@@ -165,8 +165,18 @@ def c25() -> dict:
         "fact_kind": enum(*FACTS),
         "status": enum("stated", "unknown"), "value": {},
         "unknown_reason": enum("not_documented", "ambiguous", "contradictory", "out_of_pin"),
-        "level": c00("evidence_level"), "model_id": c00("model_id"), "citation": c00("web_citation"),
-        "doc": c00("doc_source"), "derived_from": arr(string(r"^SE-[A-Za-z0-9_\-]+$"), 1)},
+        "level": enum("published", "derived", "interpreted", "observed",
+                      description="observed (emenda 1.4.0): experimento reprodutível na API real; acima de interpreted "
+                                  "e distinto de published"),
+        "model_id": c00("model_id"), "citation": c00("web_citation"),
+        "doc": c00("doc_source"), "derived_from": arr(string(r"^SE-[A-Za-z0-9_\-]+$"), 1),
+        "observation_ref": obj({"path": string(r"^\$BO_DATA/OBS-GAPS/\S+$"), "record_id": text(1)},
+                               ["path", "record_id"], description="registro do experimento em $BO_DATA/OBS-GAPS"),
+        "run_id": string(r"^[A-Za-z0-9][A-Za-z0-9_.:\-]{2,63}$", description="rótulo sintético da execução"),
+        "repetitions": integer(2), "observed_at": c00("datetime"),
+        "control": obj({"description": text(5), "result": text(2)}, ["description", "result"]),
+        "disputes": arr(string(r"^SE-[A-Za-z0-9_\-]+$"), 1, unique=True,
+                        description="fatos publicados que este contradiz: a divergência vira disputa, nunca sobrescreve")},
         ["evidence_id", "provider", "pin", "api_resource", "fact_kind", "status"],
         allOf=[{"if": {"properties": {"status": const("stated")}}, "then": {"required": ["value", "level"]}},
                {"if": {"properties": {"status": const("unknown")}},
@@ -181,10 +191,14 @@ def c25() -> dict:
                 "then": {"required": ["derived_from"]}},
                {"if": {"properties": {"level": const("interpreted")}, "required": ["level"]},
                 "then": {"required": ["model_id"]}},
-               {"if": {"properties": {"level": {"enum": ["published", "derived"]}}, "required": ["level"]},
-                "then": {"not": {"required": ["model_id"]}}}])
+               {"if": {"properties": {"level": {"enum": ["published", "derived", "observed"]}}, "required": ["level"]},
+                "then": {"not": {"required": ["model_id"]}}},
+               {"if": {"properties": {"level": const("observed")}, "required": ["level"]},
+                "then": {"required": ["observation_ref", "run_id", "repetitions", "control", "observed_at"]},
+                "else": {"not": {"anyOf": [{"required": [k]} for k in ("observation_ref", "run_id", "repetitions",
+                                                                       "control", "observed_at")]}}}])
     return contract_schema(
-        "C25", "service_evidence", "1.3.0", "evidência de API e docs ligada ao pin", status="amended",
+        "C25", "service_evidence", "1.4.0", "evidência de API e docs ligada ao pin", status="amended",
         description="Fato de API/docs ligado ao pin: recurso de API, identidade, chave de importação, controlador de "
                     "ciclo de vida, dono, alcance, estado de conexão, efeito, precedência, suporte a tag/TTL; nível "
                     "(publicado | derivado | interpretado) e citação. Citação publicada separada de inferência; "
@@ -195,6 +209,13 @@ def c25() -> dict:
         defs={"service_evidence": se, "protocol_support": protocol_support()}, producers=["SERVICE-EVIDENCE"],
         rules=["C25-LEVEL: publicado cita a sentença (citation, doc ou schema do binário assinado); derivado aponta "
                "de quais fatos; interpretado tem model_id",
+               "C25-OBSERVED: observed (experimento reprodutível na API real) tem observation_ref em $BO_DATA/OBS-GAPS, "
+               "run_id, repetitions >= 2, control e observed_at; fica acima de interpreted e é distinto de published "
+               "(emenda 1.4.0, adendo de 04/11 §2)",
+               "C25-DISPUTE: observed e published do mesmo fato com valores diferentes viram disputa (o observed cita o "
+               "publicado em disputes; os dois ficam no arquivo, nada é sobrescrito)",
+               "C25-SYNTH: fato observado só com rótulos sintéticos (nenhum ocid1., arn, conta de 12 dígitos, GUID de "
+               "assinatura nem e-mail no valor, no controle ou na referência)",
                "C25-UNKNOWN: unknown cita a publicação consultada (consulted, citation, doc ou schema); level é opcional",
                "C25-DEFAULT: default afirmado tem as_of (como o C03-DEFAULT); api_bridge liga api_resource ao tipo",
                "C25-API: api_resource.resource aceita o marcador UNKNOWN quando a página não nomeia o recurso",

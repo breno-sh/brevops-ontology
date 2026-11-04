@@ -999,7 +999,23 @@ def c25() -> dict:
            "attributes": [], "status": "unknown", "reason": "a documentação fixada não diz a janela do limite",
            "requirement": {"text": "limite de taxa com janela declarada", "max_seconds": 60}, "documented": {},
            "validated": False, "evidence": [{"level": "derived", "note": "busca nas páginas do tipo sem frase"}]}]
-    return {"C25/service_evidence.jsonl": jsonl([e1, e2, e3, e4, e5, e6, e7]), "C25/protocol_support.jsonl": jsonl(ps)}
+    e8 = {"evidence_id": "SE-oci-0008", "provider": "oci", "pin": {"provider_version": "9.11.0"},
+          "api_resource": {"service": "core", "resource": "SecurityList"}, "terraform_resource_type": "oci_core_security_list",
+          "block_path": "ingress_security_rules", "fact_kind": "identity", "status": "stated",
+          "value": {"aspect": "item_identity", "has_id": True}, "level": "published",
+          "citation": {"uri": "https://docs.example.org/provider-d/security-list", "retrieved_at": TS,
+                       "sentence": "frase sintética: cada regra da lista é um item"}}
+    e9 = {"evidence_id": "SE-oci-0009", "provider": "oci", "pin": {"provider_version": "9.11.0"},
+          "api_resource": {"service": "core", "resource": "SecurityList"}, "terraform_resource_type": "oci_core_security_list",
+          "block_path": "ingress_security_rules", "fact_kind": "identity", "status": "stated",
+          "value": {"aspect": "item_identity", "has_id": False, "replaced_whole": True, "duplicates_accepted": True},
+          "level": "observed", "observation_ref": {"path": "$BO_DATA/OBS-GAPS/observations.jsonl",
+                                                   "record_id": "obs-gaps-20261104-1548/sl_rule_identity/2"},
+          "run_id": "obs-gaps-20261104-1548", "repetitions": 2, "observed_at": TS2,
+          "control": {"description": "lista sem regras lida antes e depois", "result": "sem itens, sem id"},
+          "disputes": ["SE-oci-0008"]}
+    return {"C25/service_evidence.jsonl": jsonl([e1, e2, e3, e4, e5, e6, e7, e8, e9]),
+            "C25/protocol_support.jsonl": jsonl(ps)}
 
 
 def c26() -> dict:

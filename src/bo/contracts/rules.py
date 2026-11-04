@@ -1305,11 +1305,50 @@ def r_pilot(objs, ctx, path):
 
 
 # ---------------------------------------------------------------------------------------------------- C25
+LEVEL_RANK = {"interpreted": 0, "derived": 1, "observed": 2, "published": 2}   # observed > interpreted; ≠ published
+GUID = re.compile(r"\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b", re.I)
+
+
+def _fact_key(e: dict):
+    v = e.get("value")
+    asp = v.get("aspect") if isinstance(v, dict) else None
+    return (e["provider"], e.get("terraform_resource_type"), e.get("block_path"), e["fact_kind"], asp)
+
+
+def _value_core(e: dict):
+    v = e.get("value")
+    if isinstance(v, dict):
+        return json.dumps({k: x for k, x in v.items() if k not in ("aspect", "note", "rule")}, sort_keys=True)
+    return json.dumps(v, sort_keys=True)
+
+
 @rule("C25", "service_evidence")
 def r_service(objs, ctx, path):
     ids = [e["evidence_id"] for e in objs]
     errs = dup(ids, "evidence_id")
+    byid = {e["evidence_id"]: e for e in objs}
+    pub = defaultdict(list)
+    for e in objs:
+        if e.get("level") == "published" and e["status"] == "stated":
+            pub[_fact_key(e)].append(e)
     for i, e in enumerate(objs):
+        if e.get("level") == "observed":
+            w = f"service_evidence[{i + 1}] {e['evidence_id']}"
+            blob = {k: e.get(k) for k in ("value", "control", "observation_ref", "run_id")}
+            for s_ in _walk_values(blob):
+                for name, rx in LEAK + [("GUID de assinatura", GUID), ("ocid real", re.compile(r"\bocid1\."))]:
+                    if rx.search(s_):
+                        errs.append(f"{w}: {name} em fato observado (use rótulo sintético)")
+                        break
+            for d in e.get("disputes") or []:
+                t = byid.get(d)
+                if t is None or t.get("level") != "published":
+                    errs.append(f"{w}: disputes cita {d}, que não é fato publicado do arquivo")
+            if e["status"] == "stated":
+                for p in pub.get(_fact_key(e), []):
+                    if _value_core(p) != _value_core(e) and p["evidence_id"] not in (e.get("disputes") or []):
+                        errs.append(f"{w}: diverge do publicado {p['evidence_id']} sem disputa registrada "
+                                    "(observado nunca sobrescreve publicado)")
         if e.get("block_path") and not e.get("terraform_resource_type"):
             errs.append(f"service_evidence[{i + 1}]: block_path sem terraform_resource_type")
         for d in e.get("derived_from") or []:

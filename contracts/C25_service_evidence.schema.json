@@ -1,12 +1,12 @@
 {
  "$schema": "https://json-schema.org/draft/2020-12/schema",
  "$id": "https://w3id.org/brevops/contracts/C25/service_evidence.schema.json",
- "title": "C25 service_evidence 1.3.0: evidência de API e docs ligada ao pin",
+ "title": "C25 service_evidence 1.4.0: evidência de API e docs ligada ao pin",
  "description": "Fato de API/docs ligado ao pin: recurso de API, identidade, chave de importação, controlador de ciclo de vida, dono, alcance, estado de conexão, efeito, precedência, suporte a tag/TTL; nível (publicado | derivado | interpretado) e citação. Citação publicada separada de inferência; desconhecido explícito.",
  "x-bo-contract": {
   "id": "C25",
   "name": "service_evidence",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "status": "amended",
   "owner": "CONTRACTS",
   "files": [
@@ -28,6 +28,9 @@
   ],
   "semantic_rules": [
    "C25-LEVEL: publicado cita a sentença (citation, doc ou schema do binário assinado); derivado aponta de quais fatos; interpretado tem model_id",
+   "C25-OBSERVED: observed (experimento reprodutível na API real) tem observation_ref em $BO_DATA/OBS-GAPS, run_id, repetitions >= 2, control e observed_at; fica acima de interpreted e é distinto de published (emenda 1.4.0, adendo de 04/11 §2)",
+   "C25-DISPUTE: observed e published do mesmo fato com valores diferentes viram disputa (o observed cita o publicado em disputes; os dois ficam no arquivo, nada é sobrescrito)",
+   "C25-SYNTH: fato observado só com rótulos sintéticos (nenhum ocid1., arn, conta de 12 dígitos, GUID de assinatura nem e-mail no valor, no controle ou na referência)",
    "C25-UNKNOWN: unknown cita a publicação consultada (consulted, citation, doc ou schema); level é opcional",
    "C25-DEFAULT: default afirmado tem as_of (como o C03-DEFAULT); api_bridge liga api_resource ao tipo",
    "C25-API: api_resource.resource aceita o marcador UNKNOWN quando a página não nomeia o recurso",
@@ -156,7 +159,13 @@
      ]
     },
     "level": {
-     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/evidence_level"
+     "enum": [
+      "published",
+      "derived",
+      "interpreted",
+      "observed"
+     ],
+     "description": "observed (emenda 1.4.0): experimento reprodutível na API real; acima de interpreted e distinto de published"
     },
     "model_id": {
      "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/model_id"
@@ -175,6 +184,68 @@
       "pattern": "^SE-[A-Za-z0-9_\\-]+$"
      },
      "minItems": 1
+    },
+    "observation_ref": {
+     "type": "object",
+     "properties": {
+      "path": {
+       "type": "string",
+       "minLength": 1,
+       "pattern": "^\\$BO_DATA/OBS-GAPS/\\S+$"
+      },
+      "record_id": {
+       "type": "string",
+       "minLength": 1
+      }
+     },
+     "required": [
+      "path",
+      "record_id"
+     ],
+     "additionalProperties": false,
+     "description": "registro do experimento em $BO_DATA/OBS-GAPS"
+    },
+    "run_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:\\-]{2,63}$",
+     "description": "rótulo sintético da execução"
+    },
+    "repetitions": {
+     "type": "integer",
+     "minimum": 2
+    },
+    "observed_at": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/datetime"
+    },
+    "control": {
+     "type": "object",
+     "properties": {
+      "description": {
+       "type": "string",
+       "minLength": 5
+      },
+      "result": {
+       "type": "string",
+       "minLength": 2
+      }
+     },
+     "required": [
+      "description",
+      "result"
+     ],
+     "additionalProperties": false
+    },
+    "disputes": {
+     "type": "array",
+     "items": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^SE-[A-Za-z0-9_\\-]+$"
+     },
+     "minItems": 1,
+     "uniqueItems": true,
+     "description": "fatos publicados que este contradiz: a divergência vira disputa, nunca sobrescreve"
     }
    },
    "required": [
@@ -341,7 +412,8 @@
        "level": {
         "enum": [
          "published",
-         "derived"
+         "derived",
+         "observed"
         ]
        }
       },
@@ -353,6 +425,58 @@
       "not": {
        "required": [
         "model_id"
+       ]
+      }
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "level": {
+        "const": "observed"
+       }
+      },
+      "required": [
+       "level"
+      ]
+     },
+     "then": {
+      "required": [
+       "observation_ref",
+       "run_id",
+       "repetitions",
+       "control",
+       "observed_at"
+      ]
+     },
+     "else": {
+      "not": {
+       "anyOf": [
+        {
+         "required": [
+          "observation_ref"
+         ]
+        },
+        {
+         "required": [
+          "run_id"
+         ]
+        },
+        {
+         "required": [
+          "repetitions"
+         ]
+        },
+        {
+         "required": [
+          "control"
+         ]
+        },
+        {
+         "required": [
+          "observed_at"
+         ]
+        }
        ]
       }
      }
