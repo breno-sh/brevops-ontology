@@ -1,0 +1,5289 @@
+{
+ "schema": "bo.result/1",
+ "contract": "C15",
+ "contract_version": "3.1.0",
+ "module": "DRIFT",
+ "generated_at": "2026-11-04T09:17:31-03:00",
+ "metrics": [
+  {
+   "metric_id": "M-DRIFT-AWS-SURVIVAL",
+   "name": "fração dos átomos da primeira versão observada (aws) presentes no pin",
+   "reading": "field",
+   "axis": "representability",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.947853,
+    "upper": 0.947853,
+    "est": 0.947853,
+    "n": 11506
+   },
+   "frame": {
+    "ref": {
+     "path": "$BO_DATA/DRIFT/atom_history.jsonl",
+     "sha256": "1cd376a265a5e7cc3826294221974dc8843b5cefa461e4256325c487f50bb4a4"
+    },
+    "description": "átomos aws presentes em 3.34.0"
+   },
+   "inclusion": {
+    "rule_id": "INC-DRIFT-FIRST",
+    "text": "átomo presente na primeira versão observada do provider"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   }
+  },
+  {
+   "metric_id": "M-DRIFT-AWS-CHANGED",
+   "name": "fração dos átomos do pin (aws) com ao menos uma mudança de contrato na janela",
+   "reading": "field",
+   "axis": "representability",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.328745,
+    "upper": 0.328745,
+    "est": 0.328745,
+    "n": 112893
+   },
+   "frame": {
+    "ref": {
+     "path": "$BO_DATA/DRIFT/atom_history.jsonl",
+     "sha256": "1cd376a265a5e7cc3826294221974dc8843b5cefa461e4256325c487f50bb4a4"
+    },
+    "description": "átomos aws presentes na última versão observada"
+   },
+   "inclusion": {
+    "rule_id": "INC-DRIFT-PIN",
+    "text": "átomo presente na última versão observada do provider"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   }
+  },
+  {
+   "metric_id": "M-DRIFT-AWS-RENAMED",
+   "name": "fração das saídas de átomo (aws) explicadas por renome com prova (R1 ou R2)",
+   "reading": "field",
+   "axis": "representability",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.00457,
+    "upper": 0.00457,
+    "est": 0.00457,
+    "n": 1094
+   },
+   "frame": {
+    "ref": {
+     "path": "$BO_DATA/DRIFT/atom_history.jsonl",
+     "sha256": "1cd376a265a5e7cc3826294221974dc8843b5cefa461e4256325c487f50bb4a4"
+    },
+    "description": "eventos de remoção e de renome do aws"
+   },
+   "inclusion": {
+    "rule_id": "INC-DRIFT-DEPART",
+    "text": "átomo que deixou de existir entre duas versões observadas"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   }
+  },
+  {
+   "metric_id": "M-DRIFT-GOOGLE-SURVIVAL",
+   "name": "fração dos átomos da primeira versão observada (google) presentes no pin",
+   "reading": "field",
+   "axis": "representability",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.950963,
+    "upper": 0.950963,
+    "est": 0.950963,
+    "n": 6648
+   },
+   "frame": {
+    "ref": {
+     "path": "$BO_DATA/DRIFT/atom_history.jsonl",
+     "sha256": "1cd376a265a5e7cc3826294221974dc8843b5cefa461e4256325c487f50bb4a4"
+    },
+    "description": "átomos google presentes em 3.74.0"
+   },
+   "inclusion": {
+    "rule_id": "INC-DRIFT-FIRST",
+    "text": "átomo presente na primeira versão observada do provider"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   }
+  },
+  {
+   "metric_id": "M-DRIFT-GOOGLE-CHANGED",
+   "name": "fração dos átomos do pin (google) com ao menos uma mudança de contrato na janela",
+   "reading": "field",
+   "axis": "representability",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.034784,
+    "upper": 0.034784,
+    "est": 0.034784,
+    "n": 32659
+   },
+   "frame": {
+    "ref": {
+     "path": "$BO_DATA/DRIFT/atom_history.jsonl",
+     "sha256": "1cd376a265a5e7cc3826294221974dc8843b5cefa461e4256325c487f50bb4a4"
+    },
+    "description": "átomos google presentes na última versão observada"
+   },
+   "inclusion": {
+    "rule_id": "INC-DRIFT-PIN",
+    "text": "átomo presente na última versão observada do provider"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   }
+  },
+  {
+   "metric_id": "M-DRIFT-GOOGLE-RENAMED",
+   "name": "fração das saídas de átomo (google) explicadas por renome com prova (R1 ou R2)",
+   "reading": "field",
+   "axis": "representability",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.008357,
+    "upper": 0.008357,
+    "est": 0.008357,
+    "n": 718
+   },
+   "frame": {
+    "ref": {
+     "path": "$BO_DATA/DRIFT/atom_history.jsonl",
+     "sha256": "1cd376a265a5e7cc3826294221974dc8843b5cefa461e4256325c487f50bb4a4"
+    },
+    "description": "eventos de remoção e de renome do google"
+   },
+   "inclusion": {
+    "rule_id": "INC-DRIFT-DEPART",
+    "text": "átomo que deixou de existir entre duas versões observadas"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   }
+  },
+  {
+   "metric_id": "M-DRIFT-AZURERM-SURVIVAL",
+   "name": "fração dos átomos da primeira versão observada (azurerm) presentes no pin",
+   "reading": "field",
+   "axis": "representability",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.787389,
+    "upper": 0.787389,
+    "est": 0.787389,
+    "n": 10404
+   },
+   "frame": {
+    "ref": {
+     "path": "$BO_DATA/DRIFT/atom_history.jsonl",
+     "sha256": "1cd376a265a5e7cc3826294221974dc8843b5cefa461e4256325c487f50bb4a4"
+    },
+    "description": "átomos azurerm presentes em 2.53.0"
+   },
+   "inclusion": {
+    "rule_id": "INC-DRIFT-FIRST",
+    "text": "átomo presente na primeira versão observada do provider"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   }
+  },
+  {
+   "metric_id": "M-DRIFT-AZURERM-CHANGED",
+   "name": "fração dos átomos do pin (azurerm) com ao menos uma mudança de contrato na janela",
+   "reading": "field",
+   "axis": "representability",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.047364,
+    "upper": 0.047364,
+    "est": 0.047364,
+    "n": 23351
+   },
+   "frame": {
+    "ref": {
+     "path": "$BO_DATA/DRIFT/atom_history.jsonl",
+     "sha256": "1cd376a265a5e7cc3826294221974dc8843b5cefa461e4256325c487f50bb4a4"
+    },
+    "description": "átomos azurerm presentes na última versão observada"
+   },
+   "inclusion": {
+    "rule_id": "INC-DRIFT-PIN",
+    "text": "átomo presente na última versão observada do provider"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   }
+  },
+  {
+   "metric_id": "M-DRIFT-AZURERM-RENAMED",
+   "name": "fração das saídas de átomo (azurerm) explicadas por renome com prova (R1 ou R2)",
+   "reading": "field",
+   "axis": "representability",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.067933,
+    "upper": 0.067933,
+    "est": 0.067933,
+    "n": 3842
+   },
+   "frame": {
+    "ref": {
+     "path": "$BO_DATA/DRIFT/atom_history.jsonl",
+     "sha256": "1cd376a265a5e7cc3826294221974dc8843b5cefa461e4256325c487f50bb4a4"
+    },
+    "description": "eventos de remoção e de renome do azurerm"
+   },
+   "inclusion": {
+    "rule_id": "INC-DRIFT-DEPART",
+    "text": "átomo que deixou de existir entre duas versões observadas"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   }
+  },
+  {
+   "metric_id": "M-DRIFT-OCI-SURVIVAL",
+   "name": "fração dos átomos da primeira versão observada (oci) presentes no pin",
+   "reading": "field",
+   "axis": "representability",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.922826,
+    "upper": 0.922826,
+    "est": 0.922826,
+    "n": 8902
+   },
+   "frame": {
+    "ref": {
+     "path": "$BO_DATA/DRIFT/atom_history.jsonl",
+     "sha256": "1cd376a265a5e7cc3826294221974dc8843b5cefa461e4256325c487f50bb4a4"
+    },
+    "description": "átomos oci presentes em 4.69.0"
+   },
+   "inclusion": {
+    "rule_id": "INC-DRIFT-FIRST",
+    "text": "átomo presente na primeira versão observada do provider"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   }
+  },
+  {
+   "metric_id": "M-DRIFT-OCI-CHANGED",
+   "name": "fração dos átomos do pin (oci) com ao menos uma mudança de contrato na janela",
+   "reading": "field",
+   "axis": "representability",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.03706,
+    "upper": 0.03706,
+    "est": 0.03706,
+    "n": 27172
+   },
+   "frame": {
+    "ref": {
+     "path": "$BO_DATA/DRIFT/atom_history.jsonl",
+     "sha256": "1cd376a265a5e7cc3826294221974dc8843b5cefa461e4256325c487f50bb4a4"
+    },
+    "description": "átomos oci presentes na última versão observada"
+   },
+   "inclusion": {
+    "rule_id": "INC-DRIFT-PIN",
+    "text": "átomo presente na última versão observada do provider"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   }
+  },
+  {
+   "metric_id": "M-DRIFT-OCI-RENAMED",
+   "name": "fração das saídas de átomo (oci) explicadas por renome com prova (R1 ou R2)",
+   "reading": "field",
+   "axis": "representability",
+   "quantifier": "observed_fraction",
+   "operational_coverage": {
+    "lower": 0.0,
+    "upper": 0.0,
+    "est": 0.0,
+    "n": 1982
+   },
+   "frame": {
+    "ref": {
+     "path": "$BO_DATA/DRIFT/atom_history.jsonl",
+     "sha256": "1cd376a265a5e7cc3826294221974dc8843b5cefa461e4256325c487f50bb4a4"
+    },
+    "description": "eventos de remoção e de renome do oci"
+   },
+   "inclusion": {
+    "rule_id": "INC-DRIFT-DEPART",
+    "text": "átomo que deixou de existir entre duas versões observadas"
+   },
+   "weights": {
+    "scheme": "uniform"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   }
+  }
+ ],
+ "notes": "Censo das versões amostradas (fim de trimestre + primeira de cada major, lista do PINS); frações sem incerteza amostral (lower = upper = est). Datas por intervalo (after, until]; lacunas declaradas, nunca interpoladas. superfície do provider Terraform (schema JSON do plugin, `terraform providers schema -json`, guardado pelos HIST-*), não a nuvem; datas são de publicação da versão do provider (atraso de disponibilidade no provider Terraform), nunca de lançamento na nuvem.",
+ "data": {
+  "estimand": "superfície do provider Terraform (schema JSON do plugin, `terraform providers schema -json`, guardado pelos HIST-*), não a nuvem; datas são de publicação da versão do provider (atraso de disponibilidade no provider Terraform), nunca de lançamento na nuvem",
+  "label": "atraso de disponibilidade no provider Terraform",
+  "interval_rule": "evento em (after, until]: after = última versão observada sem a mudança, until = primeira observada com ela; lacuna dentro do intervalo fica em spans_gap",
+  "compared_fields": [
+   "tf_type",
+   "required",
+   "optional",
+   "computed",
+   "sensitive",
+   "deprecated",
+   "write_only",
+   "nesting",
+   "block_path"
+  ],
+  "unobservable_fields": {
+   "force_new": "ForceNew/RequiresReplace não faz parte do schema JSON do plugin (só aparece no plano)",
+   "default": "Default não é exportado pelo schema JSON do plugin (protocolos 5 e 6)"
+  },
+  "rename_rules": {
+   "R1": "frase publicada no guia de atualização da major cruzada, na seção do tipo, citando os dois nomes; 'renamed' basta, substituição exige o mesmo tf_type; par único",
+   "R2": "ponte de depreciação: antigo vira deprecated no intervalo em que o novo aparece, convivem, o antigo sai; mesmo bloco pai e tf_type; tokens de um nome contidos nos do outro; par único",
+   "UNPROVEN": "par estrutural sem R1 nem R2 (saiu X, entrou Y no mesmo intervalo, mesmo pai e tf_type, tokens relacionados, único): fica em rename_candidates.jsonl; eventos seguem remoção + adição",
+   "scope": "renome de tipo de recurso não é evento C13 (C13-RENAME exige o mesmo tipo); entra só nas contagens types_added/types_removed"
+  },
+  "files": {
+   "events": {
+    "path": "$BO_DATA/DRIFT/events.jsonl",
+    "sha256": "f927f2f12651ce328d37a222c7d04728840d51bf83a4c04fa50c7367bf1c5738"
+   },
+   "atom_history": {
+    "path": "$BO_DATA/DRIFT/atom_history.jsonl",
+    "sha256": "1cd376a265a5e7cc3826294221974dc8843b5cefa461e4256325c487f50bb4a4"
+   },
+   "rename_candidates": {
+    "path": "$BO_DATA/DRIFT/rename_candidates.jsonl",
+    "sha256": "da6e69e3f0f31bc0bf6ff6c75967047ee35c86b000742a12a86e288ee67b8917"
+   }
+  },
+  "totals": {
+   "events": 217568,
+   "events_by_type": {
+    "addition": 166089,
+    "rename": 272,
+    "removal": 7364,
+    "contract_change": 43843
+   },
+   "atoms": 203241,
+   "rename_candidates": 315
+  },
+  "providers": {
+   "aws": {
+    "provider": "aws",
+    "hist_module": "HIST-AWS",
+    "versions_json": "$BO_DATA/HIST-AWS/versions.json",
+    "versions_listed": 26,
+    "versions_observed": 26,
+    "versions": [
+     {
+      "version": "3.34.0",
+      "released_at": "2021-03-25",
+      "observed": true,
+      "atoms": 11506,
+      "atoms_sha256": "e4ac142df8aa8334846ceb3f8932dca51e5ef7a3560ed63896209be178f9781c"
+     },
+     {
+      "version": "3.47.0",
+      "released_at": "2021-06-24",
+      "observed": true,
+      "atoms": 12943,
+      "atoms_sha256": "2caa80c6a70f8016c0735fa66c2c02f608466c4f45db61397f573dc51cf7d476"
+     },
+     {
+      "version": "3.61.0",
+      "released_at": "2021-09-30",
+      "observed": true,
+      "atoms": 14127,
+      "atoms_sha256": "a2cea5bc981f8ddd4c4ad996a2063cc536a51dfbdffb3ce218bfa787e11c7cfb"
+     },
+     {
+      "version": "3.70.0",
+      "released_at": "2021-12-16",
+      "observed": true,
+      "atoms": 14948,
+      "atoms_sha256": "00368d51d4f6966e5ac1513ef09e4321b1485a1a1380e016c5945f9549beac75"
+     },
+     {
+      "version": "4.0.0",
+      "released_at": "2022-02-10",
+      "observed": true,
+      "atoms": 15802,
+      "atoms_sha256": "97b408abd851e3f6eb0d2bc9b6a1c8f0b7f4310d116443e457ae7fb29cc54dbc"
+     },
+     {
+      "version": "4.8.0",
+      "released_at": "2022-03-25",
+      "observed": true,
+      "atoms": 16560,
+      "atoms_sha256": "49d3e4f505cb9e0fac682f1ea8fefb97af58601650ea9c09c1294bf043dfb532"
+     },
+     {
+      "version": "4.21.0",
+      "released_at": "2022-06-30",
+      "observed": true,
+      "atoms": 17918,
+      "atoms_sha256": "f7da04d873770f644d6f38ba900208c583a5bce51aecd37e166439b525aea45e"
+     },
+     {
+      "version": "4.33.0",
+      "released_at": "2022-09-29",
+      "observed": true,
+      "atoms": 21868,
+      "atoms_sha256": "b29f302bfad815e34d5e9211ed1d8325bf85b2922718027b4b7da407bf5f20e8"
+     },
+     {
+      "version": "4.48.0",
+      "released_at": "2022-12-19",
+      "observed": true,
+      "atoms": 30829,
+      "atoms_sha256": "c0af9c2cdc4ac22b5c93c81df8634bce537bec9de3fc699147b23dbcdc0b4b71"
+     },
+     {
+      "version": "4.61.0",
+      "released_at": "2023-03-30",
+      "observed": true,
+      "atoms": 32267,
+      "atoms_sha256": "977e715fc61bf8ddce07f50163540647c600cc278ceea87854e170d310f969c2"
+     },
+     {
+      "version": "5.0.0",
+      "released_at": "2023-05-25",
+      "observed": true,
+      "atoms": 45443,
+      "atoms_sha256": "51dcbf4036a443b112b4f1462d1b13627a27437d0833dc5fa992b0ffe625be90"
+     },
+     {
+      "version": "5.6.2",
+      "released_at": "2023-06-30",
+      "observed": true,
+      "atoms": 70728,
+      "atoms_sha256": "35a9cc6cecce034d1f8af93a122059beff028dd9836e760eb3f16ee1241465e8"
+     },
+     {
+      "version": "5.19.0",
+      "released_at": "2023-09-28",
+      "observed": true,
+      "atoms": 71259,
+      "atoms_sha256": "a00e8a3d1b121ca349d4bd26fd9292616c35498507b4fa9c2a16375db38768bd"
+     },
+     {
+      "version": "5.31.0",
+      "released_at": "2023-12-14",
+      "observed": true,
+      "atoms": 72832,
+      "atoms_sha256": "73813cb0b029a71cb37a1510292983816f9a045f3a2ae563dfb038e371b46788"
+     },
+     {
+      "version": "5.43.0",
+      "released_at": "2024-03-28",
+      "observed": true,
+      "atoms": 75659,
+      "atoms_sha256": "6e926aaba40b84e9bcac410ebc7562422a93d87f055f51308aa24d172eba3e09"
+     },
+     {
+      "version": "5.56.1",
+      "released_at": "2024-06-28",
+      "observed": true,
+      "atoms": 76418,
+      "atoms_sha256": "ce3584175f21370c4c55a55b4d27fcac675eace4fa814e4a986496ba9498377d"
+     },
+     {
+      "version": "5.69.0",
+      "released_at": "2024-09-26",
+      "observed": true,
+      "atoms": 77157,
+      "atoms_sha256": "9cb93e7bd7c504fa4e15db33d454566f70f77d3c053efe87f2ee4f7f49bd5b1e"
+     },
+     {
+      "version": "5.82.2",
+      "released_at": "2024-12-20",
+      "observed": true,
+      "atoms": 77765,
+      "atoms_sha256": "e80e4ed183c027163c0872cff3be245e147fa8f70d9cfb6f290c96018ee28981"
+     },
+     {
+      "version": "5.93.0",
+      "released_at": "2025-03-27",
+      "observed": true,
+      "atoms": 79216,
+      "atoms_sha256": "8bcfb9424faf39e8b4f81c2167f18c37e644e52b41b117b9ba20d892378ebb74"
+     },
+     {
+      "version": "6.0.0",
+      "released_at": "2025-06-18",
+      "observed": true,
+      "atoms": 81238,
+      "atoms_sha256": "7cd90741fc79c35113576de87bf3f60a3ddf4ac94da0919d4cd5f08a31623706"
+     },
+     {
+      "version": "6.14.1",
+      "released_at": "2025-09-22",
+      "observed": true,
+      "atoms": 82075,
+      "atoms_sha256": "78c8b280b71fc0c3690ed60d6cea609fb5d04e97e17852c44d1101b9a6a3309c"
+     },
+     {
+      "version": "6.27.0",
+      "released_at": "2025-12-17",
+      "observed": true,
+      "atoms": 83042,
+      "atoms_sha256": "ede399c14656f40af7dde7f7cce0610974ccb2a2e45138d1cfa9f94237bd6c10"
+     },
+     {
+      "version": "6.38.0",
+      "released_at": "2026-03-25",
+      "observed": true,
+      "atoms": 105586,
+      "atoms_sha256": "3cc2775cb09a11d6b95c7ad35067c2a367a471d36e8300e5a610dd8cbb39e03e"
+     },
+     {
+      "version": "6.52.0",
+      "released_at": "2026-06-24",
+      "observed": true,
+      "atoms": 106793,
+      "atoms_sha256": "9ff4b16628ede24f1b69e4ed4523101535579721b0518c4d18a8eecbcba981ad"
+     },
+     {
+      "version": "6.67.0",
+      "released_at": "2026-09-30",
+      "observed": true,
+      "atoms": 109573,
+      "atoms_sha256": "5d42687e20ce50250366da000b9da28321c443b93d7c1b7e39d1c78ed0e0ccb5"
+     },
+     {
+      "version": "6.71.0",
+      "released_at": "2026-10-28",
+      "observed": true,
+      "atoms": 112893,
+      "atoms_sha256": "2f5f7041a61315e938cc5adff2547bd507e1425e04f95341d7743afd8c3f356b"
+     }
+    ],
+    "gaps": [],
+    "left_truncation": {
+     "first_listed": "3.34.0",
+     "first_listed_released_at": "2021-03-25",
+     "first_observed": "3.34.0",
+     "first_observed_released_at": "2021-03-25",
+     "atoms_at_first_observed": 11506,
+     "rule": "átomo presente na primeira versão observada não tem evento de adição (entrada anterior à janela, não observada); lacuna na ponta esquerda empurra o início da observação"
+    },
+    "intervals": [
+     {
+      "after": "3.34.0",
+      "until": "3.47.0",
+      "atoms_after": 11506,
+      "atoms_until": 12943,
+      "events": {
+       "addition": 1439,
+       "rename": 0,
+       "removal": 2,
+       "contract_change": 97
+      },
+      "contract_change_by_field": {
+       "tf_type": 6,
+       "required": 16,
+       "optional": 18,
+       "computed": 29,
+       "sensitive": 0,
+       "deprecated": 1,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 27
+      },
+      "block_path_changes_distinct_blocks": 4,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 851,
+      "removals_in_removed_types": 0,
+      "types_added": 59,
+      "types_removed": 0,
+      "types_after": 692,
+      "types_until": 751,
+      "after_released_at": "2021-03-25",
+      "until_released_at": "2021-06-24",
+      "days": 91,
+      "spans_gap": []
+     },
+     {
+      "after": "3.47.0",
+      "until": "3.61.0",
+      "atoms_after": 12943,
+      "atoms_until": 14127,
+      "events": {
+       "addition": 1184,
+       "rename": 0,
+       "removal": 0,
+       "contract_change": 49
+      },
+      "contract_change_by_field": {
+       "tf_type": 3,
+       "required": 9,
+       "optional": 9,
+       "computed": 26,
+       "sensitive": 0,
+       "deprecated": 1,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 1
+      },
+      "block_path_changes_distinct_blocks": 1,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 660,
+      "removals_in_removed_types": 0,
+      "types_added": 57,
+      "types_removed": 0,
+      "types_after": 751,
+      "types_until": 808,
+      "after_released_at": "2021-06-24",
+      "until_released_at": "2021-09-30",
+      "days": 98,
+      "spans_gap": []
+     },
+     {
+      "after": "3.61.0",
+      "until": "3.70.0",
+      "atoms_after": 14127,
+      "atoms_until": 14948,
+      "events": {
+       "addition": 821,
+       "rename": 0,
+       "removal": 0,
+       "contract_change": 39
+      },
+      "contract_change_by_field": {
+       "tf_type": 5,
+       "required": 6,
+       "optional": 10,
+       "computed": 8,
+       "sensitive": 0,
+       "deprecated": 0,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 10
+      },
+      "block_path_changes_distinct_blocks": 2,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 488,
+      "removals_in_removed_types": 0,
+      "types_added": 52,
+      "types_removed": 0,
+      "types_after": 808,
+      "types_until": 860,
+      "after_released_at": "2021-09-30",
+      "until_released_at": "2021-12-16",
+      "days": 77,
+      "spans_gap": []
+     },
+     {
+      "after": "3.70.0",
+      "until": "4.0.0",
+      "atoms_after": 14948,
+      "atoms_until": 15802,
+      "events": {
+       "addition": 917,
+       "rename": 1,
+       "removal": 62,
+       "contract_change": 64
+      },
+      "contract_change_by_field": {
+       "tf_type": 5,
+       "required": 3,
+       "optional": 15,
+       "computed": 13,
+       "sensitive": 1,
+       "deprecated": 23,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 4
+      },
+      "block_path_changes_distinct_blocks": 2,
+      "renames_by_rule": {
+       "R1_published": 1,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 622,
+      "removals_in_removed_types": 0,
+      "types_added": 58,
+      "types_removed": 0,
+      "types_after": 860,
+      "types_until": 918,
+      "after_released_at": "2021-12-16",
+      "until_released_at": "2022-02-10",
+      "days": 56,
+      "spans_gap": []
+     },
+     {
+      "after": "4.0.0",
+      "until": "4.8.0",
+      "atoms_after": 15802,
+      "atoms_until": 16560,
+      "events": {
+       "addition": 758,
+       "rename": 0,
+       "removal": 0,
+       "contract_change": 89
+      },
+      "contract_change_by_field": {
+       "tf_type": 4,
+       "required": 9,
+       "optional": 24,
+       "computed": 13,
+       "sensitive": 1,
+       "deprecated": 4,
+       "write_only": 0,
+       "nesting": 8,
+       "block_path": 26
+      },
+      "block_path_changes_distinct_blocks": 2,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 554,
+      "removals_in_removed_types": 0,
+      "types_added": 43,
+      "types_removed": 0,
+      "types_after": 918,
+      "types_until": 961,
+      "after_released_at": "2022-02-10",
+      "until_released_at": "2022-03-25",
+      "days": 43,
+      "spans_gap": []
+     },
+     {
+      "after": "4.8.0",
+      "until": "4.21.0",
+      "atoms_after": 16560,
+      "atoms_until": 17918,
+      "events": {
+       "addition": 1369,
+       "rename": 0,
+       "removal": 11,
+       "contract_change": 61
+      },
+      "contract_change_by_field": {
+       "tf_type": 5,
+       "required": 9,
+       "optional": 15,
+       "computed": 8,
+       "sensitive": 0,
+       "deprecated": 1,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 23
+      },
+      "block_path_changes_distinct_blocks": 3,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 980,
+      "removals_in_removed_types": 0,
+      "types_added": 55,
+      "types_removed": 0,
+      "types_after": 961,
+      "types_until": 1016,
+      "after_released_at": "2022-03-25",
+      "until_released_at": "2022-06-30",
+      "days": 97,
+      "spans_gap": []
+     },
+     {
+      "after": "4.21.0",
+      "until": "4.33.0",
+      "atoms_after": 17918,
+      "atoms_until": 21868,
+      "events": {
+       "addition": 3951,
+       "rename": 0,
+       "removal": 1,
+       "contract_change": 47
+      },
+      "contract_change_by_field": {
+       "tf_type": 0,
+       "required": 4,
+       "optional": 4,
+       "computed": 9,
+       "sensitive": 0,
+       "deprecated": 21,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 9
+      },
+      "block_path_changes_distinct_blocks": 2,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 643,
+      "removals_in_removed_types": 0,
+      "types_added": 50,
+      "types_removed": 0,
+      "types_after": 1016,
+      "types_until": 1066,
+      "after_released_at": "2022-06-30",
+      "until_released_at": "2022-09-29",
+      "days": 91,
+      "spans_gap": []
+     },
+     {
+      "after": "4.33.0",
+      "until": "4.48.0",
+      "atoms_after": 21868,
+      "atoms_until": 30829,
+      "events": {
+       "addition": 8962,
+       "rename": 0,
+       "removal": 1,
+       "contract_change": 73
+      },
+      "contract_change_by_field": {
+       "tf_type": 2,
+       "required": 11,
+       "optional": 17,
+       "computed": 16,
+       "sensitive": 0,
+       "deprecated": 1,
+       "write_only": 0,
+       "nesting": 4,
+       "block_path": 22
+      },
+      "block_path_changes_distinct_blocks": 5,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 1214,
+      "removals_in_removed_types": 0,
+      "types_added": 65,
+      "types_removed": 0,
+      "types_after": 1066,
+      "types_until": 1131,
+      "after_released_at": "2022-09-29",
+      "until_released_at": "2022-12-19",
+      "days": 81,
+      "spans_gap": []
+     },
+     {
+      "after": "4.48.0",
+      "until": "4.61.0",
+      "atoms_after": 30829,
+      "atoms_until": 32267,
+      "events": {
+       "addition": 1441,
+       "rename": 0,
+       "removal": 3,
+       "contract_change": 280
+      },
+      "contract_change_by_field": {
+       "tf_type": 1,
+       "required": 16,
+       "optional": 18,
+       "computed": 25,
+       "sensitive": 0,
+       "deprecated": 5,
+       "write_only": 0,
+       "nesting": 19,
+       "block_path": 196
+      },
+      "block_path_changes_distinct_blocks": 19,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 448,
+      "removals_in_removed_types": 0,
+      "types_added": 41,
+      "types_removed": 0,
+      "types_after": 1131,
+      "types_until": 1172,
+      "after_released_at": "2022-12-19",
+      "until_released_at": "2023-03-30",
+      "days": 101,
+      "spans_gap": []
+     },
+     {
+      "after": "4.61.0",
+      "until": "5.0.0",
+      "atoms_after": 32267,
+      "atoms_until": 45443,
+      "events": {
+       "addition": 13281,
+       "rename": 4,
+       "removal": 101,
+       "contract_change": 73
+      },
+      "contract_change_by_field": {
+       "tf_type": 4,
+       "required": 8,
+       "optional": 12,
+       "computed": 19,
+       "sensitive": 0,
+       "deprecated": 10,
+       "write_only": 0,
+       "nesting": 6,
+       "block_path": 14
+      },
+      "block_path_changes_distinct_blocks": 4,
+      "renames_by_rule": {
+       "R1_published": 2,
+       "R2_derived": 2
+      },
+      "additions_in_new_types": 13014,
+      "removals_in_removed_types": 28,
+      "types_added": 41,
+      "types_removed": 5,
+      "types_after": 1172,
+      "types_until": 1208,
+      "after_released_at": "2023-03-30",
+      "until_released_at": "2023-05-25",
+      "days": 56,
+      "spans_gap": []
+     },
+     {
+      "after": "5.0.0",
+      "until": "5.6.2",
+      "atoms_after": 45443,
+      "atoms_until": 70728,
+      "events": {
+       "addition": 25286,
+       "rename": 0,
+       "removal": 1,
+       "contract_change": 57
+      },
+      "contract_change_by_field": {
+       "tf_type": 2,
+       "required": 7,
+       "optional": 10,
+       "computed": 6,
+       "sensitive": 0,
+       "deprecated": 4,
+       "write_only": 0,
+       "nesting": 2,
+       "block_path": 26
+      },
+      "block_path_changes_distinct_blocks": 5,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 25112,
+      "removals_in_removed_types": 0,
+      "types_added": 26,
+      "types_removed": 0,
+      "types_after": 1208,
+      "types_until": 1234,
+      "after_released_at": "2023-05-25",
+      "until_released_at": "2023-06-30",
+      "days": 36,
+      "spans_gap": []
+     },
+     {
+      "after": "5.6.2",
+      "until": "5.19.0",
+      "atoms_after": 70728,
+      "atoms_until": 71259,
+      "events": {
+       "addition": 538,
+       "rename": 0,
+       "removal": 7,
+       "contract_change": 35668
+      },
+      "contract_change_by_field": {
+       "tf_type": 1,
+       "required": 9,
+       "optional": 11,
+       "computed": 8,
+       "sensitive": 1,
+       "deprecated": 0,
+       "write_only": 0,
+       "nesting": 17,
+       "block_path": 35621
+      },
+      "block_path_changes_distinct_blocks": 16,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 278,
+      "removals_in_removed_types": 0,
+      "types_added": 25,
+      "types_removed": 0,
+      "types_after": 1234,
+      "types_until": 1259,
+      "after_released_at": "2023-06-30",
+      "until_released_at": "2023-09-28",
+      "days": 90,
+      "spans_gap": []
+     },
+     {
+      "after": "5.19.0",
+      "until": "5.31.0",
+      "atoms_after": 71259,
+      "atoms_until": 72832,
+      "events": {
+       "addition": 1575,
+       "rename": 0,
+       "removal": 2,
+       "contract_change": 322
+      },
+      "contract_change_by_field": {
+       "tf_type": 15,
+       "required": 11,
+       "optional": 11,
+       "computed": 29,
+       "sensitive": 1,
+       "deprecated": 1,
+       "write_only": 0,
+       "nesting": 3,
+       "block_path": 251
+      },
+      "block_path_changes_distinct_blocks": 54,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 502,
+      "removals_in_removed_types": 0,
+      "types_added": 45,
+      "types_removed": 0,
+      "types_after": 1259,
+      "types_until": 1304,
+      "after_released_at": "2023-09-28",
+      "until_released_at": "2023-12-14",
+      "days": 77,
+      "spans_gap": []
+     },
+     {
+      "after": "5.31.0",
+      "until": "5.43.0",
+      "atoms_after": 72832,
+      "atoms_until": 75659,
+      "events": {
+       "addition": 2829,
+       "rename": 0,
+       "removal": 2,
+       "contract_change": 67
+      },
+      "contract_change_by_field": {
+       "tf_type": 1,
+       "required": 5,
+       "optional": 6,
+       "computed": 8,
+       "sensitive": 0,
+       "deprecated": 3,
+       "write_only": 0,
+       "nesting": 20,
+       "block_path": 24
+      },
+      "block_path_changes_distinct_blocks": 10,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 1895,
+      "removals_in_removed_types": 0,
+      "types_added": 51,
+      "types_removed": 0,
+      "types_after": 1304,
+      "types_until": 1355,
+      "after_released_at": "2023-12-14",
+      "until_released_at": "2024-03-28",
+      "days": 105,
+      "spans_gap": []
+     },
+     {
+      "after": "5.43.0",
+      "until": "5.56.1",
+      "atoms_after": 75659,
+      "atoms_until": 76418,
+      "events": {
+       "addition": 759,
+       "rename": 0,
+       "removal": 0,
+       "contract_change": 67
+      },
+      "contract_change_by_field": {
+       "tf_type": 2,
+       "required": 15,
+       "optional": 15,
+       "computed": 22,
+       "sensitive": 2,
+       "deprecated": 3,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 8
+      },
+      "block_path_changes_distinct_blocks": 2,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 394,
+      "removals_in_removed_types": 0,
+      "types_added": 32,
+      "types_removed": 0,
+      "types_after": 1355,
+      "types_until": 1387,
+      "after_released_at": "2024-03-28",
+      "until_released_at": "2024-06-28",
+      "days": 92,
+      "spans_gap": []
+     },
+     {
+      "after": "5.56.1",
+      "until": "5.69.0",
+      "atoms_after": 76418,
+      "atoms_until": 77157,
+      "events": {
+       "addition": 746,
+       "rename": 0,
+       "removal": 7,
+       "contract_change": 50
+      },
+      "contract_change_by_field": {
+       "tf_type": 4,
+       "required": 12,
+       "optional": 12,
+       "computed": 9,
+       "sensitive": 0,
+       "deprecated": 0,
+       "write_only": 0,
+       "nesting": 5,
+       "block_path": 8
+      },
+      "block_path_changes_distinct_blocks": 4,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 425,
+      "removals_in_removed_types": 0,
+      "types_added": 37,
+      "types_removed": 0,
+      "types_after": 1387,
+      "types_until": 1424,
+      "after_released_at": "2024-06-28",
+      "until_released_at": "2024-09-26",
+      "days": 90,
+      "spans_gap": []
+     },
+     {
+      "after": "5.69.0",
+      "until": "5.82.2",
+      "atoms_after": 77157,
+      "atoms_until": 77765,
+      "events": {
+       "addition": 609,
+       "rename": 0,
+       "removal": 1,
+       "contract_change": 180
+      },
+      "contract_change_by_field": {
+       "tf_type": 6,
+       "required": 3,
+       "optional": 6,
+       "computed": 8,
+       "sensitive": 1,
+       "deprecated": 4,
+       "write_only": 0,
+       "nesting": 5,
+       "block_path": 147
+      },
+      "block_path_changes_distinct_blocks": 9,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 403,
+      "removals_in_removed_types": 0,
+      "types_added": 46,
+      "types_removed": 0,
+      "types_after": 1424,
+      "types_until": 1470,
+      "after_released_at": "2024-09-26",
+      "until_released_at": "2024-12-20",
+      "days": 85,
+      "spans_gap": []
+     },
+     {
+      "after": "5.82.2",
+      "until": "5.93.0",
+      "atoms_after": 77765,
+      "atoms_until": 79216,
+      "events": {
+       "addition": 1451,
+       "rename": 0,
+       "removal": 0,
+       "contract_change": 88
+      },
+      "contract_change_by_field": {
+       "tf_type": 4,
+       "required": 16,
+       "optional": 17,
+       "computed": 21,
+       "sensitive": 0,
+       "deprecated": 6,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 24
+      },
+      "block_path_changes_distinct_blocks": 1,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 412,
+      "removals_in_removed_types": 0,
+      "types_added": 28,
+      "types_removed": 0,
+      "types_after": 1470,
+      "types_until": 1498,
+      "after_released_at": "2024-12-20",
+      "until_released_at": "2025-03-27",
+      "days": 97,
+      "spans_gap": []
+     },
+     {
+      "after": "5.93.0",
+      "until": "6.0.0",
+      "atoms_after": 79216,
+      "atoms_until": 81238,
+      "events": {
+       "addition": 2908,
+       "rename": 0,
+       "removal": 886,
+       "contract_change": 145
+      },
+      "contract_change_by_field": {
+       "tf_type": 3,
+       "required": 6,
+       "optional": 12,
+       "computed": 8,
+       "sensitive": 0,
+       "deprecated": 22,
+       "write_only": 0,
+       "nesting": 39,
+       "block_path": 55
+      },
+      "block_path_changes_distinct_blocks": 9,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 386,
+      "removals_in_removed_types": 808,
+      "types_added": 28,
+      "types_removed": 20,
+      "types_after": 1498,
+      "types_until": 1506,
+      "after_released_at": "2025-03-27",
+      "until_released_at": "2025-06-18",
+      "days": 83,
+      "spans_gap": []
+     },
+     {
+      "after": "6.0.0",
+      "until": "6.14.1",
+      "atoms_after": 81238,
+      "atoms_until": 82075,
+      "events": {
+       "addition": 837,
+       "rename": 0,
+       "removal": 0,
+       "contract_change": 62
+      },
+      "contract_change_by_field": {
+       "tf_type": 2,
+       "required": 8,
+       "optional": 11,
+       "computed": 16,
+       "sensitive": 0,
+       "deprecated": 4,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 21
+      },
+      "block_path_changes_distinct_blocks": 5,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 621,
+      "removals_in_removed_types": 0,
+      "types_added": 37,
+      "types_removed": 0,
+      "types_after": 1506,
+      "types_until": 1543,
+      "after_released_at": "2025-06-18",
+      "until_released_at": "2025-09-22",
+      "days": 96,
+      "spans_gap": []
+     },
+     {
+      "after": "6.14.1",
+      "until": "6.27.0",
+      "atoms_after": 82075,
+      "atoms_until": 83042,
+      "events": {
+       "addition": 967,
+       "rename": 0,
+       "removal": 0,
+       "contract_change": 110
+      },
+      "contract_change_by_field": {
+       "tf_type": 6,
+       "required": 32,
+       "optional": 35,
+       "computed": 16,
+       "sensitive": 0,
+       "deprecated": 3,
+       "write_only": 0,
+       "nesting": 2,
+       "block_path": 16
+      },
+      "block_path_changes_distinct_blocks": 3,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 634,
+      "removals_in_removed_types": 0,
+      "types_added": 40,
+      "types_removed": 0,
+      "types_after": 1543,
+      "types_until": 1583,
+      "after_released_at": "2025-09-22",
+      "until_released_at": "2025-12-17",
+      "days": 86,
+      "spans_gap": []
+     },
+     {
+      "after": "6.27.0",
+      "until": "6.38.0",
+      "atoms_after": 83042,
+      "atoms_until": 105586,
+      "events": {
+       "addition": 22545,
+       "rename": 0,
+       "removal": 1,
+       "contract_change": 52
+      },
+      "contract_change_by_field": {
+       "tf_type": 3,
+       "required": 8,
+       "optional": 8,
+       "computed": 12,
+       "sensitive": 0,
+       "deprecated": 16,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 5
+      },
+      "block_path_changes_distinct_blocks": 1,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 22060,
+      "removals_in_removed_types": 0,
+      "types_added": 43,
+      "types_removed": 0,
+      "types_after": 1583,
+      "types_until": 1626,
+      "after_released_at": "2025-12-17",
+      "until_released_at": "2026-03-25",
+      "days": 98,
+      "spans_gap": []
+     },
+     {
+      "after": "6.38.0",
+      "until": "6.52.0",
+      "atoms_after": 105586,
+      "atoms_until": 106793,
+      "events": {
+       "addition": 1207,
+       "rename": 0,
+       "removal": 0,
+       "contract_change": 87
+      },
+      "contract_change_by_field": {
+       "tf_type": 2,
+       "required": 6,
+       "optional": 6,
+       "computed": 8,
+       "sensitive": 0,
+       "deprecated": 16,
+       "write_only": 0,
+       "nesting": 17,
+       "block_path": 32
+      },
+      "block_path_changes_distinct_blocks": 6,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 1046,
+      "removals_in_removed_types": 0,
+      "types_added": 49,
+      "types_removed": 0,
+      "types_after": 1626,
+      "types_until": 1675,
+      "after_released_at": "2026-03-25",
+      "until_released_at": "2026-06-24",
+      "days": 91,
+      "spans_gap": []
+     },
+     {
+      "after": "6.52.0",
+      "until": "6.67.0",
+      "atoms_after": 106793,
+      "atoms_until": 109573,
+      "events": {
+       "addition": 2781,
+       "rename": 0,
+       "removal": 1,
+       "contract_change": 82
+      },
+      "contract_change_by_field": {
+       "tf_type": 7,
+       "required": 17,
+       "optional": 18,
+       "computed": 23,
+       "sensitive": 2,
+       "deprecated": 5,
+       "write_only": 0,
+       "nesting": 2,
+       "block_path": 8
+      },
+      "block_path_changes_distinct_blocks": 4,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 889,
+      "removals_in_removed_types": 0,
+      "types_added": 53,
+      "types_removed": 0,
+      "types_after": 1675,
+      "types_until": 1728,
+      "after_released_at": "2026-06-24",
+      "until_released_at": "2026-09-30",
+      "days": 98,
+      "spans_gap": []
+     },
+     {
+      "after": "6.67.0",
+      "until": "6.71.0",
+      "atoms_after": 109573,
+      "atoms_until": 112893,
+      "events": {
+       "addition": 3320,
+       "rename": 0,
+       "removal": 0,
+       "contract_change": 1
+      },
+      "contract_change_by_field": {
+       "tf_type": 0,
+       "required": 0,
+       "optional": 0,
+       "computed": 1,
+       "sensitive": 0,
+       "deprecated": 0,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 0
+      },
+      "block_path_changes_distinct_blocks": 0,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 338,
+      "removals_in_removed_types": 0,
+      "types_added": 18,
+      "types_removed": 0,
+      "types_after": 1728,
+      "types_until": 1746,
+      "after_released_at": "2026-09-30",
+      "until_released_at": "2026-10-28",
+      "days": 28,
+      "spans_gap": []
+     }
+    ],
+    "events": {
+     "addition": 102481,
+     "rename": 5,
+     "removal": 1089,
+     "contract_change": 37910
+    },
+    "contract_change_by_field": {
+     "tf_type": 93,
+     "required": 246,
+     "optional": 320,
+     "computed": 361,
+     "sensitive": 9,
+     "deprecated": 154,
+     "write_only": 0,
+     "nesting": 149,
+     "block_path": 36578
+    },
+    "block_path_changes_distinct_blocks": 173,
+    "atoms_at_pin_changed": 37113,
+    "atoms_at_pin_changed_excluding_block_path": 859,
+    "renames_by_rule": {
+     "R1_published": 3,
+     "R2_derived": 2
+    },
+    "rename_candidates_by_status": {
+     "AMBIGUOUS": 11,
+     "REPLACEMENT": 3,
+     "REPLACEMENT_TYPE_CHANGED": 8,
+     "UNPROVEN": 1
+    },
+    "atoms_union": 113928,
+    "atom_history_records": 113928,
+    "atoms_at_pin": 112893,
+    "atoms_at_pin_in_types_of_first_observed": 32308,
+    "guides": {
+     "files": [
+      "$BO_DATA/downloads/docs-aws/v6.71.0/website/docs/guides/version-2-upgrade.html.markdown",
+      "$BO_DATA/downloads/docs-aws/v6.71.0/website/docs/guides/version-3-upgrade.html.markdown",
+      "$BO_DATA/downloads/docs-aws/v6.71.0/website/docs/guides/version-4-upgrade.html.markdown",
+      "$BO_DATA/downloads/docs-aws/v6.71.0/website/docs/guides/version-5-upgrade.html.markdown",
+      "$BO_DATA/downloads/docs-aws/v6.71.0/website/docs/guides/version-6-upgrade.html.markdown"
+     ],
+     "sha256": {
+      "$BO_DATA/downloads/docs-aws/v6.71.0/website/docs/guides/version-2-upgrade.html.markdown": "21fab25b26ccfa8b9a0b4a4f7071cea1b7d9d5f5de9e4512f5be01ede3688e63",
+      "$BO_DATA/downloads/docs-aws/v6.71.0/website/docs/guides/version-3-upgrade.html.markdown": "65e77b5bf96591ad049939ea4393cc65e1803d589968b9daf59ea4d135db2902",
+      "$BO_DATA/downloads/docs-aws/v6.71.0/website/docs/guides/version-4-upgrade.html.markdown": "acef3e03cdde4c7546552e5e80efd9a3b7da1427ede7710df984cf68473e8ef3",
+      "$BO_DATA/downloads/docs-aws/v6.71.0/website/docs/guides/version-5-upgrade.html.markdown": "7611acade8b80a878e16aa536ccf70ee953cd338d324421226b51719ba86cdf1",
+      "$BO_DATA/downloads/docs-aws/v6.71.0/website/docs/guides/version-6-upgrade.html.markdown": "88e5cf2a20bf34ef8c1c490b46419de235b47b0737d58faab4d215926c7e6df2"
+     },
+     "sentences_with_cue": 63
+    }
+   },
+   "google": {
+    "provider": "google",
+    "hist_module": "HIST-GCP",
+    "versions_json": "$BO_DATA/HIST-GCP/versions.json",
+    "versions_listed": 29,
+    "versions_observed": 28,
+    "versions": [
+     {
+      "version": "3.62.0",
+      "released_at": "2021-03-29",
+      "observed": false
+     },
+     {
+      "version": "3.74.0",
+      "released_at": "2021-06-28",
+      "observed": true,
+      "atoms": 6648,
+      "atoms_sha256": "e46f3c8cdd510153a541561c03b4832a65c019bb788930480d1d9bd5235fd58c"
+     },
+     {
+      "version": "3.86.0",
+      "released_at": "2021-09-27",
+      "observed": true,
+      "atoms": 7264,
+      "atoms_sha256": "074aa5ccd7e9c05e0a36917ed830b24e5087d2d297425202bd345657d537636a"
+     },
+     {
+      "version": "4.0.0",
+      "released_at": "2021-11-02",
+      "observed": true,
+      "atoms": 7285,
+      "atoms_sha256": "899b84fa3c68d96eb40451eeaef09545b4812b36c1c3121d145467251a126e60"
+     },
+     {
+      "version": "4.5.0",
+      "released_at": "2021-12-20",
+      "observed": true,
+      "atoms": 7724,
+      "atoms_sha256": "affc126753c5c8151648edafd28d165040c5091469f9244f7850f6a14a3d415b"
+     },
+     {
+      "version": "4.15.0",
+      "released_at": "2022-03-21",
+      "observed": true,
+      "atoms": 7922,
+      "atoms_sha256": "ee74834a5c27dde755e7ca181d73d667f0b46e981e306e964b8f9069e800f3ab"
+     },
+     {
+      "version": "4.27.0",
+      "released_at": "2022-06-27",
+      "observed": true,
+      "atoms": 8267,
+      "atoms_sha256": "a173349f166055fd22b83c39bf734171af11041fac896d47f2d28b5d5f32bc99"
+     },
+     {
+      "version": "4.38.0",
+      "released_at": "2022-09-26",
+      "observed": true,
+      "atoms": 8951,
+      "atoms_sha256": "31457981e99e40ee3eb6146d930032f25318f16c1eb1e8ca04f5443d0f3c4e6a"
+     },
+     {
+      "version": "4.47.0",
+      "released_at": "2022-12-21",
+      "observed": true,
+      "atoms": 9802,
+      "atoms_sha256": "b6e34a64bc67329d1e038627228a9765b61a63c2039bc46c5c9d1824a02091f4"
+     },
+     {
+      "version": "4.59.0",
+      "released_at": "2023-03-28",
+      "observed": true,
+      "atoms": 10837,
+      "atoms_sha256": "1bc582d669ff5df6e2b029ad736dc66d8936b504ace0184c66676d25ddca72c6"
+     },
+     {
+      "version": "4.71.0",
+      "released_at": "2023-06-27",
+      "observed": true,
+      "atoms": 11632,
+      "atoms_sha256": "2b61c9a19a48fec568ce4ec1212b6f7f96568cd329a3990c07b1e4da0fed1c76"
+     },
+     {
+      "version": "4.84.0",
+      "released_at": "2023-09-26",
+      "observed": true,
+      "atoms": 12937,
+      "atoms_sha256": "4dfd2f461112f32bc3c54fcb0aaef67cf649410a5b8a4f309f699025dc58e2d0"
+     },
+     {
+      "version": "5.0.0",
+      "released_at": "2023-10-02",
+      "observed": true,
+      "atoms": 13101,
+      "atoms_sha256": "2fb8be4dce7dbb055868d91d5742e357c95d159d0c2ed3dff085d16d6e9c5dfc"
+     },
+     {
+      "version": "5.10.0",
+      "released_at": "2023-12-18",
+      "observed": true,
+      "atoms": 14235,
+      "atoms_sha256": "348482e9e5aaa762086d9f9d46915e65bd65a38f0f85325b55110f680602a22e"
+     },
+     {
+      "version": "5.22.0",
+      "released_at": "2024-03-26",
+      "observed": true,
+      "atoms": 15357,
+      "atoms_sha256": "10ab1a50b34c9af41c43f3692de5a1d5721da2a94f75aa661e4601d4e0ea9116"
+     },
+     {
+      "version": "5.35.0",
+      "released_at": "2024-06-24",
+      "observed": true,
+      "atoms": 16301,
+      "atoms_sha256": "edb64e43e1da0e3b2a91eefe05eb60d779f9510cca69c6af5dd2514443875dad"
+     },
+     {
+      "version": "6.0.0",
+      "released_at": "2024-08-26",
+      "observed": true,
+      "atoms": 16864,
+      "atoms_sha256": "a4e107124cc44c523bbb2bc1d26326327c0aa0ecaa2420924b7e7ca52f48ce28"
+     },
+     {
+      "version": "6.5.0",
+      "released_at": "2024-09-30",
+      "observed": true,
+      "atoms": 17264,
+      "atoms_sha256": "2528abc9737651173d2a0b2f4dbf43e850930f824ea9036d5bd192e166dff3dc"
+     },
+     {
+      "version": "6.14.1",
+      "released_at": "2024-12-18",
+      "observed": true,
+      "atoms": 18381,
+      "atoms_sha256": "0244a58ff06d165d4b4a1bde1178f8db5419df038b202bc9cfc8eda13ec9e463"
+     },
+     {
+      "version": "6.27.0",
+      "released_at": "2025-03-25",
+      "observed": true,
+      "atoms": 19968,
+      "atoms_sha256": "416f5bb5a9c0fe195b5603dfb13f4feafbe7d11698797df52c3a632017bfd3f4"
+     },
+     {
+      "version": "6.41.0",
+      "released_at": "2025-06-24",
+      "observed": true,
+      "atoms": 22296,
+      "atoms_sha256": "2b3d79971a4c81b7277059ce0992f57b4601d1b07b7d36af3ec802bd0cfbf498"
+     },
+     {
+      "version": "7.0.0",
+      "released_at": "2025-08-26",
+      "observed": true,
+      "atoms": 23200,
+      "atoms_sha256": "4474cc44736334b127d917d16cea1ea437d43ee0e32b6b0eeeb05be4e6f4a36b"
+     },
+     {
+      "version": "7.5.0",
+      "released_at": "2025-09-30",
+      "observed": true,
+      "atoms": 23562,
+      "atoms_sha256": "602c672b33a8718b94a926519f20617c267bc28858b0b63d6a7257db7c8ee62d"
+     },
+     {
+      "version": "7.14.1",
+      "released_at": "2025-12-17",
+      "observed": true,
+      "atoms": 25097,
+      "atoms_sha256": "859e2f943b7e741ab918b2e3c5f0ccbfaba82dbcf6f2cab08370298098b9912a"
+     },
+     {
+      "version": "7.26.0",
+      "released_at": "2026-03-31",
+      "observed": true,
+      "atoms": 26436,
+      "atoms_sha256": "8b888bffa69fa499f384de64c58bdb569fc171e0b011794d0993ff658b5dbc2a"
+     },
+     {
+      "version": "7.39.0",
+      "released_at": "2026-06-30",
+      "observed": true,
+      "atoms": 29972,
+      "atoms_sha256": "d15466fa02c552f29f2d49ebed158791006076c7a3e446c9e62ab0096d594752"
+     },
+     {
+      "version": "8.0.0",
+      "released_at": "2026-08-26",
+      "observed": true,
+      "atoms": 30680,
+      "atoms_sha256": "88e668107de88476549f48f7a2adcbcc19f6b2f0a20f782f61f1cd55dcac12a2"
+     },
+     {
+      "version": "8.5.0",
+      "released_at": "2026-09-29",
+      "observed": true,
+      "atoms": 31698,
+      "atoms_sha256": "b60420c4f9b333fb0960663dd894afa37959cb2fe38a9582b7c1852e4f25073a"
+     },
+     {
+      "version": "8.9.0",
+      "released_at": "2026-10-27",
+      "observed": true,
+      "atoms": 32659,
+      "atoms_sha256": "1ab037976161be87da5cebe5820a308545be16515ea43822a98e05e199eae776"
+     }
+    ],
+    "gaps": [
+     {
+      "version": "3.62.0",
+      "released_at": "2021-03-29",
+      "reason": "extraction.json: status unavailable (sem build darwin_arm64 publicado)"
+     }
+    ],
+    "left_truncation": {
+     "first_listed": "3.62.0",
+     "first_listed_released_at": "2021-03-29",
+     "first_observed": "3.74.0",
+     "first_observed_released_at": "2021-06-28",
+     "atoms_at_first_observed": 6648,
+     "rule": "átomo presente na primeira versão observada não tem evento de adição (entrada anterior à janela, não observada); lacuna na ponta esquerda empurra o início da observação"
+    },
+    "intervals": [
+     {
+      "after": "3.74.0",
+      "until": "3.86.0",
+      "atoms_after": 6648,
+      "atoms_until": 7264,
+      "events": {
+       "addition": 619,
+       "rename": 0,
+       "removal": 3,
+       "contract_change": 16
+      },
+      "contract_change_by_field": {
+       "tf_type": 1,
+       "required": 2,
+       "optional": 3,
+       "computed": 10,
+       "sensitive": 0,
+       "deprecated": 0,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 0
+      },
+      "block_path_changes_distinct_blocks": 0,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 564,
+      "removals_in_removed_types": 0,
+      "types_added": 24,
+      "types_removed": 0,
+      "types_after": 416,
+      "types_until": 440,
+      "after_released_at": "2021-06-28",
+      "until_released_at": "2021-09-27",
+      "days": 91,
+      "spans_gap": []
+     },
+     {
+      "after": "3.86.0",
+      "until": "4.0.0",
+      "atoms_after": 7264,
+      "atoms_until": 7285,
+      "events": {
+       "addition": 73,
+       "rename": 1,
+       "removal": 52,
+       "contract_change": 33
+      },
+      "contract_change_by_field": {
+       "tf_type": 3,
+       "required": 6,
+       "optional": 6,
+       "computed": 15,
+       "sensitive": 0,
+       "deprecated": 1,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 2
+      },
+      "block_path_changes_distinct_blocks": 2,
+      "renames_by_rule": {
+       "R1_published": 1,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 37,
+      "removals_in_removed_types": 34,
+      "types_added": 3,
+      "types_removed": 5,
+      "types_after": 440,
+      "types_until": 438,
+      "after_released_at": "2021-09-27",
+      "until_released_at": "2021-11-02",
+      "days": 36,
+      "spans_gap": []
+     },
+     {
+      "after": "4.0.0",
+      "until": "4.5.0",
+      "atoms_after": 7285,
+      "atoms_until": 7724,
+      "events": {
+       "addition": 439,
+       "rename": 0,
+       "removal": 0,
+       "contract_change": 5
+      },
+      "contract_change_by_field": {
+       "tf_type": 1,
+       "required": 1,
+       "optional": 1,
+       "computed": 1,
+       "sensitive": 0,
+       "deprecated": 1,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 0
+      },
+      "block_path_changes_distinct_blocks": 0,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 404,
+      "removals_in_removed_types": 0,
+      "types_added": 15,
+      "types_removed": 0,
+      "types_after": 438,
+      "types_until": 453,
+      "after_released_at": "2021-11-02",
+      "until_released_at": "2021-12-20",
+      "days": 48,
+      "spans_gap": []
+     },
+     {
+      "after": "4.5.0",
+      "until": "4.15.0",
+      "atoms_after": 7724,
+      "atoms_until": 7922,
+      "events": {
+       "addition": 200,
+       "rename": 0,
+       "removal": 2,
+       "contract_change": 20
+      },
+      "contract_change_by_field": {
+       "tf_type": 0,
+       "required": 2,
+       "optional": 2,
+       "computed": 4,
+       "sensitive": 0,
+       "deprecated": 0,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 12
+      },
+      "block_path_changes_distinct_blocks": 2,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 105,
+      "removals_in_removed_types": 0,
+      "types_added": 7,
+      "types_removed": 0,
+      "types_after": 453,
+      "types_until": 460,
+      "after_released_at": "2021-12-20",
+      "until_released_at": "2022-03-21",
+      "days": 91,
+      "spans_gap": []
+     },
+     {
+      "after": "4.15.0",
+      "until": "4.27.0",
+      "atoms_after": 7922,
+      "atoms_until": 8267,
+      "events": {
+       "addition": 345,
+       "rename": 0,
+       "removal": 0,
+       "contract_change": 6
+      },
+      "contract_change_by_field": {
+       "tf_type": 1,
+       "required": 1,
+       "optional": 1,
+       "computed": 2,
+       "sensitive": 0,
+       "deprecated": 1,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 0
+      },
+      "block_path_changes_distinct_blocks": 0,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 213,
+      "removals_in_removed_types": 0,
+      "types_added": 19,
+      "types_removed": 0,
+      "types_after": 460,
+      "types_until": 479,
+      "after_released_at": "2022-03-21",
+      "until_released_at": "2022-06-27",
+      "days": 98,
+      "spans_gap": []
+     },
+     {
+      "after": "4.27.0",
+      "until": "4.38.0",
+      "atoms_after": 8267,
+      "atoms_until": 8951,
+      "events": {
+       "addition": 684,
+       "rename": 0,
+       "removal": 0,
+       "contract_change": 24
+      },
+      "contract_change_by_field": {
+       "tf_type": 0,
+       "required": 7,
+       "optional": 7,
+       "computed": 7,
+       "sensitive": 0,
+       "deprecated": 1,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 2
+      },
+      "block_path_changes_distinct_blocks": 1,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 538,
+      "removals_in_removed_types": 0,
+      "types_added": 42,
+      "types_removed": 0,
+      "types_after": 479,
+      "types_until": 521,
+      "after_released_at": "2022-06-27",
+      "until_released_at": "2022-09-26",
+      "days": 91,
+      "spans_gap": []
+     },
+     {
+      "after": "4.38.0",
+      "until": "4.47.0",
+      "atoms_after": 8951,
+      "atoms_until": 9802,
+      "events": {
+       "addition": 853,
+       "rename": 0,
+       "removal": 2,
+       "contract_change": 54
+      },
+      "contract_change_by_field": {
+       "tf_type": 3,
+       "required": 12,
+       "optional": 12,
+       "computed": 12,
+       "sensitive": 0,
+       "deprecated": 2,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 13
+      },
+      "block_path_changes_distinct_blocks": 3,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 612,
+      "removals_in_removed_types": 0,
+      "types_added": 39,
+      "types_removed": 0,
+      "types_after": 521,
+      "types_until": 560,
+      "after_released_at": "2022-09-26",
+      "until_released_at": "2022-12-21",
+      "days": 86,
+      "spans_gap": []
+     },
+     {
+      "after": "4.47.0",
+      "until": "4.59.0",
+      "atoms_after": 9802,
+      "atoms_until": 10837,
+      "events": {
+       "addition": 1035,
+       "rename": 0,
+       "removal": 0,
+       "contract_change": 65
+      },
+      "contract_change_by_field": {
+       "tf_type": 2,
+       "required": 3,
+       "optional": 3,
+       "computed": 10,
+       "sensitive": 1,
+       "deprecated": 0,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 46
+      },
+      "block_path_changes_distinct_blocks": 6,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 749,
+      "removals_in_removed_types": 0,
+      "types_added": 57,
+      "types_removed": 0,
+      "types_after": 560,
+      "types_until": 617,
+      "after_released_at": "2022-12-21",
+      "until_released_at": "2023-03-28",
+      "days": 97,
+      "spans_gap": []
+     },
+     {
+      "after": "4.59.0",
+      "until": "4.71.0",
+      "atoms_after": 10837,
+      "atoms_until": 11632,
+      "events": {
+       "addition": 795,
+       "rename": 0,
+       "removal": 0,
+       "contract_change": 208
+      },
+      "contract_change_by_field": {
+       "tf_type": 2,
+       "required": 4,
+       "optional": 4,
+       "computed": 6,
+       "sensitive": 0,
+       "deprecated": 0,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 192
+      },
+      "block_path_changes_distinct_blocks": 6,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 402,
+      "removals_in_removed_types": 0,
+      "types_added": 27,
+      "types_removed": 0,
+      "types_after": 617,
+      "types_until": 644,
+      "after_released_at": "2023-03-28",
+      "until_released_at": "2023-06-27",
+      "days": 91,
+      "spans_gap": []
+     },
+     {
+      "after": "4.71.0",
+      "until": "4.84.0",
+      "atoms_after": 11632,
+      "atoms_until": 12937,
+      "events": {
+       "addition": 1308,
+       "rename": 0,
+       "removal": 3,
+       "contract_change": 46
+      },
+      "contract_change_by_field": {
+       "tf_type": 4,
+       "required": 6,
+       "optional": 10,
+       "computed": 17,
+       "sensitive": 0,
+       "deprecated": 4,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 5
+      },
+      "block_path_changes_distinct_blocks": 2,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 984,
+      "removals_in_removed_types": 0,
+      "types_added": 54,
+      "types_removed": 0,
+      "types_after": 644,
+      "types_until": 698,
+      "after_released_at": "2023-06-27",
+      "until_released_at": "2023-09-26",
+      "days": 91,
+      "spans_gap": []
+     },
+     {
+      "after": "4.84.0",
+      "until": "5.0.0",
+      "atoms_after": 12937,
+      "atoms_until": 13101,
+      "events": {
+       "addition": 320,
+       "rename": 1,
+       "removal": 155,
+       "contract_change": 143
+      },
+      "contract_change_by_field": {
+       "tf_type": 34,
+       "required": 10,
+       "optional": 11,
+       "computed": 19,
+       "sensitive": 0,
+       "deprecated": 0,
+       "write_only": 0,
+       "nesting": 11,
+       "block_path": 58
+      },
+      "block_path_changes_distinct_blocks": 4,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 1
+      },
+      "additions_in_new_types": 48,
+      "removals_in_removed_types": 130,
+      "types_added": 2,
+      "types_removed": 10,
+      "types_after": 698,
+      "types_until": 690,
+      "after_released_at": "2023-09-26",
+      "until_released_at": "2023-10-02",
+      "days": 6,
+      "spans_gap": []
+     },
+     {
+      "after": "5.0.0",
+      "until": "5.10.0",
+      "atoms_after": 13101,
+      "atoms_until": 14235,
+      "events": {
+       "addition": 1134,
+       "rename": 0,
+       "removal": 0,
+       "contract_change": 20
+      },
+      "contract_change_by_field": {
+       "tf_type": 1,
+       "required": 7,
+       "optional": 8,
+       "computed": 1,
+       "sensitive": 0,
+       "deprecated": 2,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 1
+      },
+      "block_path_changes_distinct_blocks": 1,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 866,
+      "removals_in_removed_types": 0,
+      "types_added": 37,
+      "types_removed": 0,
+      "types_after": 690,
+      "types_until": 727,
+      "after_released_at": "2023-10-02",
+      "until_released_at": "2023-12-18",
+      "days": 77,
+      "spans_gap": []
+     },
+     {
+      "after": "5.10.0",
+      "until": "5.22.0",
+      "atoms_after": 14235,
+      "atoms_until": 15357,
+      "events": {
+       "addition": 1125,
+       "rename": 0,
+       "removal": 3,
+       "contract_change": 44
+      },
+      "contract_change_by_field": {
+       "tf_type": 3,
+       "required": 2,
+       "optional": 7,
+       "computed": 23,
+       "sensitive": 3,
+       "deprecated": 2,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 4
+      },
+      "block_path_changes_distinct_blocks": 2,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 940,
+      "removals_in_removed_types": 0,
+      "types_added": 56,
+      "types_removed": 0,
+      "types_after": 727,
+      "types_until": 783,
+      "after_released_at": "2023-12-18",
+      "until_released_at": "2024-03-26",
+      "days": 99,
+      "spans_gap": []
+     },
+     {
+      "after": "5.22.0",
+      "until": "5.35.0",
+      "atoms_after": 15357,
+      "atoms_until": 16301,
+      "events": {
+       "addition": 944,
+       "rename": 0,
+       "removal": 0,
+       "contract_change": 10
+      },
+      "contract_change_by_field": {
+       "tf_type": 0,
+       "required": 2,
+       "optional": 2,
+       "computed": 2,
+       "sensitive": 0,
+       "deprecated": 1,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 3
+      },
+      "block_path_changes_distinct_blocks": 1,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 750,
+      "removals_in_removed_types": 0,
+      "types_added": 44,
+      "types_removed": 0,
+      "types_after": 783,
+      "types_until": 827,
+      "after_released_at": "2024-03-26",
+      "until_released_at": "2024-06-24",
+      "days": 90,
+      "spans_gap": []
+     },
+     {
+      "after": "5.35.0",
+      "until": "6.0.0",
+      "atoms_after": 16301,
+      "atoms_until": 16864,
+      "events": {
+       "addition": 604,
+       "rename": 1,
+       "removal": 40,
+       "contract_change": 58
+      },
+      "contract_change_by_field": {
+       "tf_type": 0,
+       "required": 19,
+       "optional": 20,
+       "computed": 7,
+       "sensitive": 0,
+       "deprecated": 0,
+       "write_only": 0,
+       "nesting": 4,
+       "block_path": 8
+      },
+      "block_path_changes_distinct_blocks": 2,
+      "renames_by_rule": {
+       "R1_published": 1,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 401,
+      "removals_in_removed_types": 22,
+      "types_added": 36,
+      "types_removed": 2,
+      "types_after": 827,
+      "types_until": 861,
+      "after_released_at": "2024-06-24",
+      "until_released_at": "2024-08-26",
+      "days": 63,
+      "spans_gap": []
+     },
+     {
+      "after": "6.0.0",
+      "until": "6.5.0",
+      "atoms_after": 16864,
+      "atoms_until": 17264,
+      "events": {
+       "addition": 401,
+       "rename": 0,
+       "removal": 1,
+       "contract_change": 30
+      },
+      "contract_change_by_field": {
+       "tf_type": 1,
+       "required": 13,
+       "optional": 13,
+       "computed": 2,
+       "sensitive": 0,
+       "deprecated": 1,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 0
+      },
+      "block_path_changes_distinct_blocks": 0,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 283,
+      "removals_in_removed_types": 0,
+      "types_added": 20,
+      "types_removed": 0,
+      "types_after": 861,
+      "types_until": 881,
+      "after_released_at": "2024-08-26",
+      "until_released_at": "2024-09-30",
+      "days": 35,
+      "spans_gap": []
+     },
+     {
+      "after": "6.5.0",
+      "until": "6.14.1",
+      "atoms_after": 17264,
+      "atoms_until": 18381,
+      "events": {
+       "addition": 1117,
+       "rename": 0,
+       "removal": 0,
+       "contract_change": 97
+      },
+      "contract_change_by_field": {
+       "tf_type": 1,
+       "required": 7,
+       "optional": 7,
+       "computed": 3,
+       "sensitive": 0,
+       "deprecated": 1,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 78
+      },
+      "block_path_changes_distinct_blocks": 5,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 883,
+      "removals_in_removed_types": 0,
+      "types_added": 30,
+      "types_removed": 0,
+      "types_after": 881,
+      "types_until": 911,
+      "after_released_at": "2024-09-30",
+      "until_released_at": "2024-12-18",
+      "days": 79,
+      "spans_gap": []
+     },
+     {
+      "after": "6.14.1",
+      "until": "6.27.0",
+      "atoms_after": 18381,
+      "atoms_until": 19968,
+      "events": {
+       "addition": 1587,
+       "rename": 0,
+       "removal": 0,
+       "contract_change": 98
+      },
+      "contract_change_by_field": {
+       "tf_type": 1,
+       "required": 5,
+       "optional": 5,
+       "computed": 12,
+       "sensitive": 1,
+       "deprecated": 2,
+       "write_only": 0,
+       "nesting": 5,
+       "block_path": 67
+      },
+      "block_path_changes_distinct_blocks": 10,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 1230,
+      "removals_in_removed_types": 0,
+      "types_added": 73,
+      "types_removed": 0,
+      "types_after": 911,
+      "types_until": 984,
+      "after_released_at": "2024-12-18",
+      "until_released_at": "2025-03-25",
+      "days": 97,
+      "spans_gap": []
+     },
+     {
+      "after": "6.27.0",
+      "until": "6.41.0",
+      "atoms_after": 19968,
+      "atoms_until": 22296,
+      "events": {
+       "addition": 2328,
+       "rename": 0,
+       "removal": 0,
+       "contract_change": 76
+      },
+      "contract_change_by_field": {
+       "tf_type": 3,
+       "required": 23,
+       "optional": 25,
+       "computed": 11,
+       "sensitive": 1,
+       "deprecated": 7,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 6
+      },
+      "block_path_changes_distinct_blocks": 3,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 1823,
+      "removals_in_removed_types": 0,
+      "types_added": 85,
+      "types_removed": 0,
+      "types_after": 984,
+      "types_until": 1069,
+      "after_released_at": "2025-03-25",
+      "until_released_at": "2025-06-24",
+      "days": 91,
+      "spans_gap": []
+     },
+     {
+      "after": "6.41.0",
+      "until": "7.0.0",
+      "atoms_after": 22296,
+      "atoms_until": 23200,
+      "events": {
+       "addition": 989,
+       "rename": 3,
+       "removal": 85,
+       "contract_change": 89
+      },
+      "contract_change_by_field": {
+       "tf_type": 3,
+       "required": 11,
+       "optional": 14,
+       "computed": 9,
+       "sensitive": 0,
+       "deprecated": 2,
+       "write_only": 0,
+       "nesting": 6,
+       "block_path": 44
+      },
+      "block_path_changes_distinct_blocks": 10,
+      "renames_by_rule": {
+       "R1_published": 3,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 719,
+      "removals_in_removed_types": 67,
+      "types_added": 30,
+      "types_removed": 6,
+      "types_after": 1069,
+      "types_until": 1093,
+      "after_released_at": "2025-06-24",
+      "until_released_at": "2025-08-26",
+      "days": 63,
+      "spans_gap": []
+     },
+     {
+      "after": "7.0.0",
+      "until": "7.5.0",
+      "atoms_after": 23200,
+      "atoms_until": 23562,
+      "events": {
+       "addition": 363,
+       "rename": 0,
+       "removal": 1,
+       "contract_change": 15
+      },
+      "contract_change_by_field": {
+       "tf_type": 2,
+       "required": 2,
+       "optional": 2,
+       "computed": 6,
+       "sensitive": 0,
+       "deprecated": 3,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 0
+      },
+      "block_path_changes_distinct_blocks": 0,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 196,
+      "removals_in_removed_types": 0,
+      "types_added": 15,
+      "types_removed": 0,
+      "types_after": 1093,
+      "types_until": 1108,
+      "after_released_at": "2025-08-26",
+      "until_released_at": "2025-09-30",
+      "days": 35,
+      "spans_gap": []
+     },
+     {
+      "after": "7.5.0",
+      "until": "7.14.1",
+      "atoms_after": 23562,
+      "atoms_until": 25097,
+      "events": {
+       "addition": 1536,
+       "rename": 0,
+       "removal": 1,
+       "contract_change": 47
+      },
+      "contract_change_by_field": {
+       "tf_type": 5,
+       "required": 6,
+       "optional": 9,
+       "computed": 11,
+       "sensitive": 0,
+       "deprecated": 11,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 5
+      },
+      "block_path_changes_distinct_blocks": 2,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 1275,
+      "removals_in_removed_types": 0,
+      "types_added": 54,
+      "types_removed": 0,
+      "types_after": 1108,
+      "types_until": 1162,
+      "after_released_at": "2025-09-30",
+      "until_released_at": "2025-12-17",
+      "days": 78,
+      "spans_gap": []
+     },
+     {
+      "after": "7.14.1",
+      "until": "7.26.0",
+      "atoms_after": 25097,
+      "atoms_until": 26436,
+      "events": {
+       "addition": 1341,
+       "rename": 0,
+       "removal": 2,
+       "contract_change": 140
+      },
+      "contract_change_by_field": {
+       "tf_type": 10,
+       "required": 17,
+       "optional": 19,
+       "computed": 21,
+       "sensitive": 0,
+       "deprecated": 2,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 71
+      },
+      "block_path_changes_distinct_blocks": 3,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 937,
+      "removals_in_removed_types": 0,
+      "types_added": 49,
+      "types_removed": 0,
+      "types_after": 1162,
+      "types_until": 1211,
+      "after_released_at": "2025-12-17",
+      "until_released_at": "2026-03-31",
+      "days": 104,
+      "spans_gap": []
+     },
+     {
+      "after": "7.26.0",
+      "until": "7.39.0",
+      "atoms_after": 26436,
+      "atoms_until": 29972,
+      "events": {
+       "addition": 3536,
+       "rename": 0,
+       "removal": 0,
+       "contract_change": 94
+      },
+      "contract_change_by_field": {
+       "tf_type": 1,
+       "required": 14,
+       "optional": 15,
+       "computed": 29,
+       "sensitive": 12,
+       "deprecated": 6,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 17
+      },
+      "block_path_changes_distinct_blocks": 5,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 2268,
+      "removals_in_removed_types": 0,
+      "types_added": 95,
+      "types_removed": 0,
+      "types_after": 1211,
+      "types_until": 1306,
+      "after_released_at": "2026-03-31",
+      "until_released_at": "2026-06-30",
+      "days": 91,
+      "spans_gap": []
+     },
+     {
+      "after": "7.39.0",
+      "until": "8.0.0",
+      "atoms_after": 29972,
+      "atoms_until": 30680,
+      "events": {
+       "addition": 1067,
+       "rename": 0,
+       "removal": 359,
+       "contract_change": 57
+      },
+      "contract_change_by_field": {
+       "tf_type": 8,
+       "required": 9,
+       "optional": 9,
+       "computed": 4,
+       "sensitive": 1,
+       "deprecated": 2,
+       "write_only": 0,
+       "nesting": 2,
+       "block_path": 22
+      },
+      "block_path_changes_distinct_blocks": 2,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 756,
+      "removals_in_removed_types": 354,
+      "types_added": 40,
+      "types_removed": 16,
+      "types_after": 1306,
+      "types_until": 1330,
+      "after_released_at": "2026-06-30",
+      "until_released_at": "2026-08-26",
+      "days": 57,
+      "spans_gap": []
+     },
+     {
+      "after": "8.0.0",
+      "until": "8.5.0",
+      "atoms_after": 30680,
+      "atoms_until": 31698,
+      "events": {
+       "addition": 1021,
+       "rename": 0,
+       "removal": 3,
+       "contract_change": 25
+      },
+      "contract_change_by_field": {
+       "tf_type": 6,
+       "required": 2,
+       "optional": 2,
+       "computed": 8,
+       "sensitive": 0,
+       "deprecated": 0,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 7
+      },
+      "block_path_changes_distinct_blocks": 1,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 641,
+      "removals_in_removed_types": 0,
+      "types_added": 39,
+      "types_removed": 0,
+      "types_after": 1330,
+      "types_until": 1369,
+      "after_released_at": "2026-08-26",
+      "until_released_at": "2026-09-29",
+      "days": 34,
+      "spans_gap": []
+     },
+     {
+      "after": "8.5.0",
+      "until": "8.9.0",
+      "atoms_after": 31698,
+      "atoms_until": 32659,
+      "events": {
+       "addition": 961,
+       "rename": 0,
+       "removal": 0,
+       "contract_change": 49
+      },
+      "contract_change_by_field": {
+       "tf_type": 1,
+       "required": 3,
+       "optional": 5,
+       "computed": 1,
+       "sensitive": 1,
+       "deprecated": 14,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 24
+      },
+      "block_path_changes_distinct_blocks": 3,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 688,
+      "removals_in_removed_types": 0,
+      "types_added": 23,
+      "types_removed": 0,
+      "types_after": 1369,
+      "types_until": 1392,
+      "after_released_at": "2026-09-29",
+      "until_released_at": "2026-10-27",
+      "days": 28,
+      "spans_gap": []
+     }
+    ],
+    "events": {
+     "addition": 26725,
+     "rename": 6,
+     "removal": 712,
+     "contract_change": 1569
+    },
+    "contract_change_by_field": {
+     "tf_type": 97,
+     "required": 196,
+     "optional": 222,
+     "computed": 253,
+     "sensitive": 20,
+     "deprecated": 66,
+     "write_only": 0,
+     "nesting": 28,
+     "block_path": 687
+    },
+    "block_path_changes_distinct_blocks": 76,
+    "atoms_at_pin_changed": 1136,
+    "atoms_at_pin_changed_excluding_block_path": 596,
+    "renames_by_rule": {
+     "R1_published": 5,
+     "R2_derived": 1
+    },
+    "rename_candidates_by_status": {
+     "REPLACEMENT": 4,
+     "REPLACEMENT_TYPE_CHANGED": 2,
+     "UNPROVEN": 4
+    },
+    "atoms_union": 33360,
+    "atom_history_records": 33360,
+    "atoms_at_pin": 32659,
+    "atoms_at_pin_in_types_of_first_observed": 10115,
+    "guides": {
+     "files": [
+      "$BO_DATA/downloads/docs-google/website/docs/guides/version_2_upgrade.html.markdown",
+      "$BO_DATA/downloads/docs-google/website/docs/guides/version_3_upgrade.html.markdown",
+      "$BO_DATA/downloads/docs-google/website/docs/guides/version_4_upgrade.html.markdown",
+      "$BO_DATA/downloads/docs-google/website/docs/guides/version_5_upgrade.html.markdown",
+      "$BO_DATA/downloads/docs-google/website/docs/guides/version_6_upgrade.html.markdown",
+      "$BO_DATA/downloads/docs-google/website/docs/guides/version_7_upgrade.html.markdown",
+      "$BO_DATA/downloads/docs-google/website/docs/guides/version_8_upgrade.html.markdown"
+     ],
+     "sha256": {
+      "$BO_DATA/downloads/docs-google/website/docs/guides/version_2_upgrade.html.markdown": "b0584c985e2841ef648934ecd805277551c1453d4e42e6de511a9456a083a59a",
+      "$BO_DATA/downloads/docs-google/website/docs/guides/version_3_upgrade.html.markdown": "c6fe040b59501d2da48e8b72d202b3c97e3b2e44f8863624cbeb85f65b31b726",
+      "$BO_DATA/downloads/docs-google/website/docs/guides/version_4_upgrade.html.markdown": "fbcf2b943e28a83e407900a9c6f33ae857cd930561c73cea95d7eea5bd6b2385",
+      "$BO_DATA/downloads/docs-google/website/docs/guides/version_5_upgrade.html.markdown": "5d0e1459c8ebd16f685c15a2d914b87508bccd22928584c880d24af5d1815267",
+      "$BO_DATA/downloads/docs-google/website/docs/guides/version_6_upgrade.html.markdown": "df5c65e35488a6d233b8647fd999fc6614961e9ac1d14873aadcf58c8a51fc53",
+      "$BO_DATA/downloads/docs-google/website/docs/guides/version_7_upgrade.html.markdown": "ab9c895ec46a22202ce3e51320d51e8b6fbd0459d9af5271a616be1ced9dd85e",
+      "$BO_DATA/downloads/docs-google/website/docs/guides/version_8_upgrade.html.markdown": "443e343abcb9a40be42197bbadcbc15a5ff2fb152b6249c30445fec70801a560"
+     },
+     "sentences_with_cue": 36
+    }
+   },
+   "azurerm": {
+    "provider": "azurerm",
+    "hist_module": "HIST-AZURE",
+    "versions_json": "$BO_DATA/HIST-AZURE/versions.json",
+    "versions_listed": 27,
+    "versions_observed": 27,
+    "versions": [
+     {
+      "version": "2.53.0",
+      "released_at": "2021-03-25",
+      "observed": true,
+      "atoms": 10404,
+      "atoms_sha256": "8c7b2a2909eb1de0bd9e08cd608990ddd08242e3843973c3feb59ff793aaee75"
+     },
+     {
+      "version": "2.65.0",
+      "released_at": "2021-06-25",
+      "observed": true,
+      "atoms": 11497,
+      "atoms_sha256": "72c6d385b486ef0b3877b2077048eddd5b529be5cd792f1be7e89b8c21a366e7"
+     },
+     {
+      "version": "2.79.0",
+      "released_at": "2021-09-30",
+      "observed": true,
+      "atoms": 12980,
+      "atoms_sha256": "942147a4a18d77131810351bef3e6da94eb6bf85103389a3729569f7aad7a4a2"
+     },
+     {
+      "version": "2.90.0",
+      "released_at": "2021-12-17",
+      "observed": true,
+      "atoms": 13987,
+      "atoms_sha256": "369007c77d278193143f4410896bb6f0edcaaee0b72bb066e1412f15da5cf8e8"
+     },
+     {
+      "version": "3.0.0",
+      "released_at": "2022-03-24",
+      "observed": true,
+      "atoms": 15196,
+      "atoms_sha256": "9077542dcee434cbfb5dc0c70df034d346f7de4156e6ed44f0edd747b8788c22"
+     },
+     {
+      "version": "3.0.2",
+      "released_at": "2022-03-25",
+      "observed": true,
+      "atoms": 15196,
+      "atoms_sha256": "9870b694e85b90bb7c661484bf1a4f00b9240bc911b79090e9a5c6617fc80e0e"
+     },
+     {
+      "version": "3.12.0",
+      "released_at": "2022-06-30",
+      "observed": true,
+      "atoms": 15836,
+      "atoms_sha256": "f97abccae8d270fe90db66d7ce72545ea02c38b78660aad8c09163f07c4b5003"
+     },
+     {
+      "version": "3.25.0",
+      "released_at": "2022-09-29",
+      "observed": true,
+      "atoms": 17292,
+      "atoms_sha256": "1dfed8e46c3ce6106184a6549a1bac1aee3fad34ed11ae7072db16bd49f5abbc"
+     },
+     {
+      "version": "3.37.0",
+      "released_at": "2022-12-22",
+      "observed": true,
+      "atoms": 18195,
+      "atoms_sha256": "879842360872e24381b40b82fb8581935f257e9b0320fe3782520fa20b4fa702"
+     },
+     {
+      "version": "3.50.0",
+      "released_at": "2023-03-30",
+      "observed": true,
+      "atoms": 19913,
+      "atoms_sha256": "813dbe958e2fc0eb04847004bdfcdae844a1e71fb42a4bb7da5e3e74b8541275"
+     },
+     {
+      "version": "3.63.0",
+      "released_at": "2023-06-30",
+      "observed": true,
+      "atoms": 20874,
+      "atoms_sha256": "b6c70734bec64be3b12bbeb2fa509075dad7f313d8e181ea39392fe173577f29"
+     },
+     {
+      "version": "3.75.0",
+      "released_at": "2023-09-29",
+      "observed": true,
+      "atoms": 21659,
+      "atoms_sha256": "6a3811f3dca782daf6c7a9b8533970fb3161f35205977805a4309afd6510a600"
+     },
+     {
+      "version": "3.85.0",
+      "released_at": "2023-12-14",
+      "observed": true,
+      "atoms": 21890,
+      "atoms_sha256": "ce2e6b38be36f3ed22444989815d234efca63e01274f888df0764e8049041f5c"
+     },
+     {
+      "version": "3.97.1",
+      "released_at": "2024-03-22",
+      "observed": true,
+      "atoms": 22624,
+      "atoms_sha256": "671bc025491abd454605f4991100b27a85bbfd63c65d3ca60212419999fbaaa5"
+     },
+     {
+      "version": "3.110.0",
+      "released_at": "2024-06-28",
+      "observed": true,
+      "atoms": 23222,
+      "atoms_sha256": "a492203d95686797423b375a9d962f9886d73ed160d69c353c2f982b5c82595b"
+     },
+     {
+      "version": "4.0.0",
+      "released_at": "2024-08-22",
+      "observed": true,
+      "atoms": 21974,
+      "atoms_sha256": "f4a0e297abeb907ae5aa44fc1907191372ebbf6d753ca0837229ea3b2ee3b88a"
+     },
+     {
+      "version": "4.3.0",
+      "released_at": "2024-09-20",
+      "observed": true,
+      "atoms": 22071,
+      "atoms_sha256": "be0c76fb4f8640271ae69818d95d22d7a63401d897fac8d9ff9bf4d989903f9c"
+     },
+     {
+      "version": "4.14.0",
+      "released_at": "2024-12-13",
+      "observed": true,
+      "atoms": 22487,
+      "atoms_sha256": "5acfa9450600a746bbcc160a4b704fd3567f813a78893483cd94388feb68157b"
+     },
+     {
+      "version": "4.25.0",
+      "released_at": "2025-03-28",
+      "observed": true,
+      "atoms": 23162,
+      "atoms_sha256": "567c37246f811cc7373a4a8d182163b4f5d0f4b40547be561681a2a188a53f1c"
+     },
+     {
+      "version": "4.34.0",
+      "released_at": "2025-06-20",
+      "observed": true,
+      "atoms": 23281,
+      "atoms_sha256": "03ee438f07e772e91b4f33d2645ae28972600e9de8b144013284b7f9096f9c7b"
+     },
+     {
+      "version": "4.46.0",
+      "released_at": "2025-09-25",
+      "observed": true,
+      "atoms": 23567,
+      "atoms_sha256": "b6770fb3302530cc7bfc4a500ddbf26afb8a279c816c8e47cb0588fd5fc361af"
+     },
+     {
+      "version": "4.57.0",
+      "released_at": "2025-12-18",
+      "observed": true,
+      "atoms": 23719,
+      "atoms_sha256": "c7f66fc030a445e611d40bd88a61bcd062d26d00aa19ab1f3188a7fe762b2bf0"
+     },
+     {
+      "version": "4.66.0",
+      "released_at": "2026-03-26",
+      "observed": true,
+      "atoms": 23822,
+      "atoms_sha256": "93b84655d57ab1397e241c633b2403a5d5ac39c334f760d1842d21a2f7abed99"
+     },
+     {
+      "version": "4.79.0",
+      "released_at": "2026-06-25",
+      "observed": true,
+      "atoms": 24081,
+      "atoms_sha256": "bd32c301e37dfece13e47ecd7d7c9e013e1136096805e5ca10080ccb2587c586"
+     },
+     {
+      "version": "5.0.0",
+      "released_at": "2026-07-28",
+      "observed": true,
+      "atoms": 23221,
+      "atoms_sha256": "e0062c01048e87c7e30adf9667ac8da8767ce4459ee5892d1072b96931362f89"
+     },
+     {
+      "version": "5.7.0",
+      "released_at": "2026-09-24",
+      "observed": true,
+      "atoms": 23282,
+      "atoms_sha256": "c7694c4b447ba4e76eece66f0cd6f1a6d39a01766af111b4ecc6b4e5b7391453"
+     },
+     {
+      "version": "5.12.0",
+      "released_at": "2026-10-29",
+      "observed": true,
+      "atoms": 23351,
+      "atoms_sha256": "c9d4b2303d68030064e157fffeff0ea59d064762697c7d7d8d39ffa253a9ecd9"
+     }
+    ],
+    "gaps": [],
+    "left_truncation": {
+     "first_listed": "2.53.0",
+     "first_listed_released_at": "2021-03-25",
+     "first_observed": "2.53.0",
+     "first_observed_released_at": "2021-03-25",
+     "atoms_at_first_observed": 10404,
+     "rule": "átomo presente na primeira versão observada não tem evento de adição (entrada anterior à janela, não observada); lacuna na ponta esquerda empurra o início da observação"
+    },
+    "intervals": [
+     {
+      "after": "2.53.0",
+      "until": "2.65.0",
+      "atoms_after": 10404,
+      "atoms_until": 11497,
+      "events": {
+       "addition": 1104,
+       "rename": 0,
+       "removal": 11,
+       "contract_change": 135
+      },
+      "contract_change_by_field": {
+       "tf_type": 8,
+       "required": 13,
+       "optional": 13,
+       "computed": 12,
+       "sensitive": 0,
+       "deprecated": 9,
+       "write_only": 0,
+       "nesting": 21,
+       "block_path": 59
+      },
+      "block_path_changes_distinct_blocks": 8,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 747,
+      "removals_in_removed_types": 0,
+      "types_added": 53,
+      "types_removed": 0,
+      "types_after": 560,
+      "types_until": 613,
+      "after_released_at": "2021-03-25",
+      "until_released_at": "2021-06-25",
+      "days": 92,
+      "spans_gap": []
+     },
+     {
+      "after": "2.65.0",
+      "until": "2.79.0",
+      "atoms_after": 11497,
+      "atoms_until": 12980,
+      "events": {
+       "addition": 1487,
+       "rename": 0,
+       "removal": 4,
+       "contract_change": 58
+      },
+      "contract_change_by_field": {
+       "tf_type": 1,
+       "required": 15,
+       "optional": 17,
+       "computed": 14,
+       "sensitive": 0,
+       "deprecated": 6,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 5
+      },
+      "block_path_changes_distinct_blocks": 2,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 1054,
+      "removals_in_removed_types": 0,
+      "types_added": 77,
+      "types_removed": 0,
+      "types_after": 613,
+      "types_until": 690,
+      "after_released_at": "2021-06-25",
+      "until_released_at": "2021-09-30",
+      "days": 97,
+      "spans_gap": []
+     },
+     {
+      "after": "2.79.0",
+      "until": "2.90.0",
+      "atoms_after": 12980,
+      "atoms_until": 13987,
+      "events": {
+       "addition": 1008,
+       "rename": 0,
+       "removal": 1,
+       "contract_change": 220
+      },
+      "contract_change_by_field": {
+       "tf_type": 1,
+       "required": 43,
+       "optional": 44,
+       "computed": 48,
+       "sensitive": 0,
+       "deprecated": 51,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 33
+      },
+      "block_path_changes_distinct_blocks": 5,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 660,
+      "removals_in_removed_types": 0,
+      "types_added": 42,
+      "types_removed": 0,
+      "types_after": 690,
+      "types_until": 732,
+      "after_released_at": "2021-09-30",
+      "until_released_at": "2021-12-17",
+      "days": 78,
+      "spans_gap": []
+     },
+     {
+      "after": "2.90.0",
+      "until": "3.0.0",
+      "atoms_after": 13987,
+      "atoms_until": 15196,
+      "events": {
+       "addition": 1934,
+       "rename": 37,
+       "removal": 714,
+       "contract_change": 530
+      },
+      "contract_change_by_field": {
+       "tf_type": 65,
+       "required": 76,
+       "optional": 75,
+       "computed": 74,
+       "sensitive": 5,
+       "deprecated": 6,
+       "write_only": 0,
+       "nesting": 105,
+       "block_path": 124
+      },
+      "block_path_changes_distinct_blocks": 13,
+      "renames_by_rule": {
+       "R1_published": 37,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 1686,
+      "removals_in_removed_types": 446,
+      "types_added": 54,
+      "types_removed": 25,
+      "types_after": 732,
+      "types_until": 761,
+      "after_released_at": "2021-12-17",
+      "until_released_at": "2022-03-24",
+      "days": 97,
+      "spans_gap": []
+     },
+     {
+      "after": "3.0.0",
+      "until": "3.0.2",
+      "atoms_after": 15196,
+      "atoms_until": 15196,
+      "events": {
+       "addition": 0,
+       "rename": 0,
+       "removal": 0,
+       "contract_change": 0
+      },
+      "contract_change_by_field": {
+       "tf_type": 0,
+       "required": 0,
+       "optional": 0,
+       "computed": 0,
+       "sensitive": 0,
+       "deprecated": 0,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 0
+      },
+      "block_path_changes_distinct_blocks": 0,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 0,
+      "removals_in_removed_types": 0,
+      "types_added": 0,
+      "types_removed": 0,
+      "types_after": 761,
+      "types_until": 761,
+      "after_released_at": "2022-03-24",
+      "until_released_at": "2022-03-25",
+      "days": 1,
+      "spans_gap": []
+     },
+     {
+      "after": "3.0.2",
+      "until": "3.12.0",
+      "atoms_after": 15196,
+      "atoms_until": 15836,
+      "events": {
+       "addition": 640,
+       "rename": 0,
+       "removal": 0,
+       "contract_change": 75
+      },
+      "contract_change_by_field": {
+       "tf_type": 3,
+       "required": 10,
+       "optional": 10,
+       "computed": 15,
+       "sensitive": 2,
+       "deprecated": 5,
+       "write_only": 0,
+       "nesting": 3,
+       "block_path": 27
+      },
+      "block_path_changes_distinct_blocks": 8,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 480,
+      "removals_in_removed_types": 0,
+      "types_added": 36,
+      "types_removed": 0,
+      "types_after": 761,
+      "types_until": 797,
+      "after_released_at": "2022-03-25",
+      "until_released_at": "2022-06-30",
+      "days": 97,
+      "spans_gap": []
+     },
+     {
+      "after": "3.12.0",
+      "until": "3.25.0",
+      "atoms_after": 15836,
+      "atoms_until": 17292,
+      "events": {
+       "addition": 1456,
+       "rename": 0,
+       "removal": 0,
+       "contract_change": 113
+      },
+      "contract_change_by_field": {
+       "tf_type": 4,
+       "required": 19,
+       "optional": 19,
+       "computed": 15,
+       "sensitive": 1,
+       "deprecated": 16,
+       "write_only": 0,
+       "nesting": 15,
+       "block_path": 24
+      },
+      "block_path_changes_distinct_blocks": 3,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 1069,
+      "removals_in_removed_types": 0,
+      "types_added": 55,
+      "types_removed": 0,
+      "types_after": 797,
+      "types_until": 852,
+      "after_released_at": "2022-06-30",
+      "until_released_at": "2022-09-29",
+      "days": 91,
+      "spans_gap": []
+     },
+     {
+      "after": "3.25.0",
+      "until": "3.37.0",
+      "atoms_after": 17292,
+      "atoms_until": 18195,
+      "events": {
+       "addition": 905,
+       "rename": 0,
+       "removal": 2,
+       "contract_change": 67
+      },
+      "contract_change_by_field": {
+       "tf_type": 1,
+       "required": 19,
+       "optional": 19,
+       "computed": 5,
+       "sensitive": 0,
+       "deprecated": 10,
+       "write_only": 0,
+       "nesting": 2,
+       "block_path": 11
+      },
+      "block_path_changes_distinct_blocks": 4,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 600,
+      "removals_in_removed_types": 0,
+      "types_added": 47,
+      "types_removed": 0,
+      "types_after": 852,
+      "types_until": 899,
+      "after_released_at": "2022-09-29",
+      "until_released_at": "2022-12-22",
+      "days": 84,
+      "spans_gap": []
+     },
+     {
+      "after": "3.37.0",
+      "until": "3.50.0",
+      "atoms_after": 18195,
+      "atoms_until": 19913,
+      "events": {
+       "addition": 1734,
+       "rename": 0,
+       "removal": 16,
+       "contract_change": 98
+      },
+      "contract_change_by_field": {
+       "tf_type": 2,
+       "required": 19,
+       "optional": 19,
+       "computed": 23,
+       "sensitive": 7,
+       "deprecated": 11,
+       "write_only": 0,
+       "nesting": 3,
+       "block_path": 14
+      },
+      "block_path_changes_distinct_blocks": 4,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 865,
+      "removals_in_removed_types": 0,
+      "types_added": 51,
+      "types_removed": 0,
+      "types_after": 899,
+      "types_until": 950,
+      "after_released_at": "2022-12-22",
+      "until_released_at": "2023-03-30",
+      "days": 98,
+      "spans_gap": []
+     },
+     {
+      "after": "3.50.0",
+      "until": "3.63.0",
+      "atoms_after": 19913,
+      "atoms_until": 20874,
+      "events": {
+       "addition": 965,
+       "rename": 0,
+       "removal": 4,
+       "contract_change": 139
+      },
+      "contract_change_by_field": {
+       "tf_type": 5,
+       "required": 18,
+       "optional": 18,
+       "computed": 6,
+       "sensitive": 11,
+       "deprecated": 8,
+       "write_only": 0,
+       "nesting": 16,
+       "block_path": 57
+      },
+      "block_path_changes_distinct_blocks": 11,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 659,
+      "removals_in_removed_types": 0,
+      "types_added": 40,
+      "types_removed": 0,
+      "types_after": 950,
+      "types_until": 990,
+      "after_released_at": "2023-03-30",
+      "until_released_at": "2023-06-30",
+      "days": 92,
+      "spans_gap": []
+     },
+     {
+      "after": "3.63.0",
+      "until": "3.75.0",
+      "atoms_after": 20874,
+      "atoms_until": 21659,
+      "events": {
+       "addition": 790,
+       "rename": 0,
+       "removal": 5,
+       "contract_change": 40
+      },
+      "contract_change_by_field": {
+       "tf_type": 0,
+       "required": 15,
+       "optional": 15,
+       "computed": 4,
+       "sensitive": 0,
+       "deprecated": 6,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 0
+      },
+      "block_path_changes_distinct_blocks": 0,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 584,
+      "removals_in_removed_types": 0,
+      "types_added": 39,
+      "types_removed": 0,
+      "types_after": 990,
+      "types_until": 1029,
+      "after_released_at": "2023-06-30",
+      "until_released_at": "2023-09-29",
+      "days": 91,
+      "spans_gap": []
+     },
+     {
+      "after": "3.75.0",
+      "until": "3.85.0",
+      "atoms_after": 21659,
+      "atoms_until": 21890,
+      "events": {
+       "addition": 283,
+       "rename": 0,
+       "removal": 52,
+       "contract_change": 44
+      },
+      "contract_change_by_field": {
+       "tf_type": 0,
+       "required": 5,
+       "optional": 5,
+       "computed": 0,
+       "sensitive": 0,
+       "deprecated": 0,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 34
+      },
+      "block_path_changes_distinct_blocks": 3,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 132,
+      "removals_in_removed_types": 0,
+      "types_added": 11,
+      "types_removed": 0,
+      "types_after": 1029,
+      "types_until": 1040,
+      "after_released_at": "2023-09-29",
+      "until_released_at": "2023-12-14",
+      "days": 76,
+      "spans_gap": []
+     },
+     {
+      "after": "3.85.0",
+      "until": "3.97.1",
+      "atoms_after": 21890,
+      "atoms_until": 22624,
+      "events": {
+       "addition": 734,
+       "rename": 0,
+       "removal": 0,
+       "contract_change": 46
+      },
+      "contract_change_by_field": {
+       "tf_type": 0,
+       "required": 12,
+       "optional": 14,
+       "computed": 11,
+       "sensitive": 0,
+       "deprecated": 5,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 4
+      },
+      "block_path_changes_distinct_blocks": 2,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 560,
+      "removals_in_removed_types": 0,
+      "types_added": 32,
+      "types_removed": 0,
+      "types_after": 1040,
+      "types_until": 1072,
+      "after_released_at": "2023-12-14",
+      "until_released_at": "2024-03-22",
+      "days": 99,
+      "spans_gap": []
+     },
+     {
+      "after": "3.97.1",
+      "until": "3.110.0",
+      "atoms_after": 22624,
+      "atoms_until": 23222,
+      "events": {
+       "addition": 598,
+       "rename": 0,
+       "removal": 0,
+       "contract_change": 110
+      },
+      "contract_change_by_field": {
+       "tf_type": 3,
+       "required": 14,
+       "optional": 15,
+       "computed": 38,
+       "sensitive": 2,
+       "deprecated": 32,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 6
+      },
+      "block_path_changes_distinct_blocks": 2,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 406,
+      "removals_in_removed_types": 0,
+      "types_added": 24,
+      "types_removed": 0,
+      "types_after": 1072,
+      "types_until": 1096,
+      "after_released_at": "2024-03-22",
+      "until_released_at": "2024-06-28",
+      "days": 98,
+      "spans_gap": []
+     },
+     {
+      "after": "3.110.0",
+      "until": "4.0.0",
+      "atoms_after": 23222,
+      "atoms_until": 21974,
+      "events": {
+       "addition": 203,
+       "rename": 59,
+       "removal": 1410,
+       "contract_change": 299
+      },
+      "contract_change_by_field": {
+       "tf_type": 7,
+       "required": 26,
+       "optional": 26,
+       "computed": 125,
+       "sensitive": 6,
+       "deprecated": 1,
+       "write_only": 0,
+       "nesting": 24,
+       "block_path": 84
+      },
+      "block_path_changes_distinct_blocks": 12,
+      "renames_by_rule": {
+       "R1_published": 57,
+       "R2_derived": 2
+      },
+      "additions_in_new_types": 160,
+      "removals_in_removed_types": 1247,
+      "types_added": 12,
+      "types_removed": 67,
+      "types_after": 1096,
+      "types_until": 1041,
+      "after_released_at": "2024-06-28",
+      "until_released_at": "2024-08-22",
+      "days": 55,
+      "spans_gap": []
+     },
+     {
+      "after": "4.0.0",
+      "until": "4.3.0",
+      "atoms_after": 21974,
+      "atoms_until": 22071,
+      "events": {
+       "addition": 127,
+       "rename": 0,
+       "removal": 30,
+       "contract_change": 4
+      },
+      "contract_change_by_field": {
+       "tf_type": 0,
+       "required": 1,
+       "optional": 1,
+       "computed": 2,
+       "sensitive": 0,
+       "deprecated": 0,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 0
+      },
+      "block_path_changes_distinct_blocks": 0,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 120,
+      "removals_in_removed_types": 30,
+      "types_added": 7,
+      "types_removed": 2,
+      "types_after": 1041,
+      "types_until": 1046,
+      "after_released_at": "2024-08-22",
+      "until_released_at": "2024-09-20",
+      "days": 29,
+      "spans_gap": []
+     },
+     {
+      "after": "4.3.0",
+      "until": "4.14.0",
+      "atoms_after": 22071,
+      "atoms_until": 22487,
+      "events": {
+       "addition": 416,
+       "rename": 0,
+       "removal": 0,
+       "contract_change": 42
+      },
+      "contract_change_by_field": {
+       "tf_type": 1,
+       "required": 8,
+       "optional": 8,
+       "computed": 10,
+       "sensitive": 0,
+       "deprecated": 10,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 5
+      },
+      "block_path_changes_distinct_blocks": 2,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 371,
+      "removals_in_removed_types": 0,
+      "types_added": 23,
+      "types_removed": 0,
+      "types_after": 1046,
+      "types_until": 1069,
+      "after_released_at": "2024-09-20",
+      "until_released_at": "2024-12-13",
+      "days": 84,
+      "spans_gap": []
+     },
+     {
+      "after": "4.14.0",
+      "until": "4.25.0",
+      "atoms_after": 22487,
+      "atoms_until": 23162,
+      "events": {
+       "addition": 675,
+       "rename": 0,
+       "removal": 0,
+       "contract_change": 36
+      },
+      "contract_change_by_field": {
+       "tf_type": 1,
+       "required": 8,
+       "optional": 8,
+       "computed": 8,
+       "sensitive": 0,
+       "deprecated": 7,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 4
+      },
+      "block_path_changes_distinct_blocks": 2,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 553,
+      "removals_in_removed_types": 0,
+      "types_added": 23,
+      "types_removed": 0,
+      "types_after": 1069,
+      "types_until": 1092,
+      "after_released_at": "2024-12-13",
+      "until_released_at": "2025-03-28",
+      "days": 105,
+      "spans_gap": []
+     },
+     {
+      "after": "4.25.0",
+      "until": "4.34.0",
+      "atoms_after": 23162,
+      "atoms_until": 23281,
+      "events": {
+       "addition": 119,
+       "rename": 0,
+       "removal": 0,
+       "contract_change": 64
+      },
+      "contract_change_by_field": {
+       "tf_type": 0,
+       "required": 10,
+       "optional": 10,
+       "computed": 25,
+       "sensitive": 0,
+       "deprecated": 19,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 0
+      },
+      "block_path_changes_distinct_blocks": 0,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 54,
+      "removals_in_removed_types": 0,
+      "types_added": 5,
+      "types_removed": 0,
+      "types_after": 1092,
+      "types_until": 1097,
+      "after_released_at": "2025-03-28",
+      "until_released_at": "2025-06-20",
+      "days": 84,
+      "spans_gap": []
+     },
+     {
+      "after": "4.34.0",
+      "until": "4.46.0",
+      "atoms_after": 23281,
+      "atoms_until": 23567,
+      "events": {
+       "addition": 288,
+       "rename": 0,
+       "removal": 2,
+       "contract_change": 99
+      },
+      "contract_change_by_field": {
+       "tf_type": 1,
+       "required": 19,
+       "optional": 23,
+       "computed": 37,
+       "sensitive": 0,
+       "deprecated": 17,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 2
+      },
+      "block_path_changes_distinct_blocks": 1,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 158,
+      "removals_in_removed_types": 0,
+      "types_added": 14,
+      "types_removed": 0,
+      "types_after": 1097,
+      "types_until": 1111,
+      "after_released_at": "2025-06-20",
+      "until_released_at": "2025-09-25",
+      "days": 97,
+      "spans_gap": []
+     },
+     {
+      "after": "4.46.0",
+      "until": "4.57.0",
+      "atoms_after": 23567,
+      "atoms_until": 23719,
+      "events": {
+       "addition": 364,
+       "rename": 0,
+       "removal": 212,
+       "contract_change": 50
+      },
+      "contract_change_by_field": {
+       "tf_type": 0,
+       "required": 8,
+       "optional": 8,
+       "computed": 3,
+       "sensitive": 0,
+       "deprecated": 3,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 28
+      },
+      "block_path_changes_distinct_blocks": 6,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 312,
+      "removals_in_removed_types": 212,
+      "types_added": 18,
+      "types_removed": 12,
+      "types_after": 1111,
+      "types_until": 1117,
+      "after_released_at": "2025-09-25",
+      "until_released_at": "2025-12-18",
+      "days": 84,
+      "spans_gap": []
+     },
+     {
+      "after": "4.57.0",
+      "until": "4.66.0",
+      "atoms_after": 23719,
+      "atoms_until": 23822,
+      "events": {
+       "addition": 103,
+       "rename": 0,
+       "removal": 0,
+       "contract_change": 37
+      },
+      "contract_change_by_field": {
+       "tf_type": 0,
+       "required": 3,
+       "optional": 3,
+       "computed": 14,
+       "sensitive": 0,
+       "deprecated": 17,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 0
+      },
+      "block_path_changes_distinct_blocks": 0,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 74,
+      "removals_in_removed_types": 0,
+      "types_added": 7,
+      "types_removed": 0,
+      "types_after": 1117,
+      "types_until": 1124,
+      "after_released_at": "2025-12-18",
+      "until_released_at": "2026-03-26",
+      "days": 98,
+      "spans_gap": []
+     },
+     {
+      "after": "4.66.0",
+      "until": "4.79.0",
+      "atoms_after": 23822,
+      "atoms_until": 24081,
+      "events": {
+       "addition": 294,
+       "rename": 0,
+       "removal": 35,
+       "contract_change": 111
+      },
+      "contract_change_by_field": {
+       "tf_type": 0,
+       "required": 10,
+       "optional": 10,
+       "computed": 17,
+       "sensitive": 4,
+       "deprecated": 18,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 52
+      },
+      "block_path_changes_distinct_blocks": 3,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 190,
+      "removals_in_removed_types": 34,
+      "types_added": 10,
+      "types_removed": 2,
+      "types_after": 1124,
+      "types_until": 1132,
+      "after_released_at": "2026-03-26",
+      "until_released_at": "2026-06-25",
+      "days": 91,
+      "spans_gap": []
+     },
+     {
+      "after": "4.79.0",
+      "until": "5.0.0",
+      "atoms_after": 24081,
+      "atoms_until": 23221,
+      "events": {
+       "addition": 274,
+       "rename": 165,
+       "removal": 1083,
+       "contract_change": 155
+      },
+      "contract_change_by_field": {
+       "tf_type": 3,
+       "required": 32,
+       "optional": 34,
+       "computed": 77,
+       "sensitive": 0,
+       "deprecated": 2,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 7
+      },
+      "block_path_changes_distinct_blocks": 3,
+      "renames_by_rule": {
+       "R1_published": 165,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 218,
+      "removals_in_removed_types": 918,
+      "types_added": 9,
+      "types_removed": 38,
+      "types_after": 1132,
+      "types_until": 1103,
+      "after_released_at": "2026-06-25",
+      "until_released_at": "2026-07-28",
+      "days": 33,
+      "spans_gap": []
+     },
+     {
+      "after": "5.0.0",
+      "until": "5.7.0",
+      "atoms_after": 23221,
+      "atoms_until": 23282,
+      "events": {
+       "addition": 61,
+       "rename": 0,
+       "removal": 0,
+       "contract_change": 11
+      },
+      "contract_change_by_field": {
+       "tf_type": 0,
+       "required": 2,
+       "optional": 2,
+       "computed": 1,
+       "sensitive": 0,
+       "deprecated": 4,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 2
+      },
+      "block_path_changes_distinct_blocks": 1,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 27,
+      "removals_in_removed_types": 0,
+      "types_added": 2,
+      "types_removed": 0,
+      "types_after": 1103,
+      "types_until": 1105,
+      "after_released_at": "2026-07-28",
+      "until_released_at": "2026-09-24",
+      "days": 58,
+      "spans_gap": []
+     },
+     {
+      "after": "5.7.0",
+      "until": "5.12.0",
+      "atoms_after": 23282,
+      "atoms_until": 23351,
+      "events": {
+       "addition": 69,
+       "rename": 0,
+       "removal": 0,
+       "contract_change": 0
+      },
+      "contract_change_by_field": {
+       "tf_type": 0,
+       "required": 0,
+       "optional": 0,
+       "computed": 0,
+       "sensitive": 0,
+       "deprecated": 0,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 0
+      },
+      "block_path_changes_distinct_blocks": 0,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 45,
+      "removals_in_removed_types": 0,
+      "types_added": 2,
+      "types_removed": 0,
+      "types_after": 1105,
+      "types_until": 1107,
+      "after_released_at": "2026-09-24",
+      "until_released_at": "2026-10-29",
+      "days": 35,
+      "spans_gap": []
+     }
+    ],
+    "events": {
+     "addition": 16631,
+     "rename": 261,
+     "removal": 3581,
+     "contract_change": 2583
+    },
+    "contract_change_by_field": {
+     "tf_type": 106,
+     "required": 405,
+     "optional": 416,
+     "computed": 584,
+     "sensitive": 38,
+     "deprecated": 263,
+     "write_only": 0,
+     "nesting": 189,
+     "block_path": 582
+    },
+    "block_path_changes_distinct_blocks": 95,
+    "atoms_at_pin_changed": 1106,
+    "atoms_at_pin_changed_excluding_block_path": 821,
+    "renames_by_rule": {
+     "R1_published": 259,
+     "R2_derived": 2
+    },
+    "rename_candidates_by_status": {
+     "AMBIGUOUS": 50,
+     "REPLACEMENT": 171,
+     "REPLACEMENT_TYPE_CHANGED": 49,
+     "UNPROVEN": 8
+    },
+    "atoms_union": 27174,
+    "atom_history_records": 27174,
+    "atoms_at_pin": 23351,
+    "atoms_at_pin_in_types_of_first_observed": 11020,
+    "guides": {
+     "files": [
+      "$BO_DATA/downloads/docs-azurerm/v5.12.0/website/docs/guides/3.0-upgrade-guide.html.markdown",
+      "$BO_DATA/downloads/docs-azurerm/v5.12.0/website/docs/guides/4.0-upgrade-guide.html.markdown",
+      "$BO_DATA/downloads/docs-azurerm/v5.12.0/website/docs/guides/5.0-upgrade-guide.html.markdown"
+     ],
+     "sha256": {
+      "$BO_DATA/downloads/docs-azurerm/v5.12.0/website/docs/guides/3.0-upgrade-guide.html.markdown": "b499a0c8ca9485b380b3c9222f5f76705b9fd7996c13b40ba909f7437fb5e630",
+      "$BO_DATA/downloads/docs-azurerm/v5.12.0/website/docs/guides/4.0-upgrade-guide.html.markdown": "322237f5772e16b0f36a3a08b018b1de4c65ae68fafbcc48fa7cd7d239cd0bee",
+      "$BO_DATA/downloads/docs-azurerm/v5.12.0/website/docs/guides/5.0-upgrade-guide.html.markdown": "df404e0830e904f50efc7f28f29217c04139af152813fbb3c33a092b518034c8"
+     },
+     "sentences_with_cue": 541
+    }
+   },
+   "oci": {
+    "provider": "oci",
+    "hist_module": "HIST-OCI",
+    "versions_json": "$BO_DATA/HIST-OCI/versions.json",
+    "versions_listed": 25,
+    "versions_observed": 24,
+    "versions": [
+     {
+      "version": "4.67.3",
+      "released_at": "2022-03-14",
+      "observed": false
+     },
+     {
+      "version": "4.69.0",
+      "released_at": "2022-03-23",
+      "observed": true,
+      "atoms": 8902,
+      "atoms_sha256": "7387bbe42fbf4a792eae6dd469bdfa1a4db95c81f341ccce6508b62ca78a5d47"
+     },
+     {
+      "version": "4.82.0",
+      "released_at": "2022-06-28",
+      "observed": true,
+      "atoms": 9957,
+      "atoms_sha256": "3fd1705d3a1eaa924f36e4bc866166abe4ea1e653da3174bb31aebdb148047d9"
+     },
+     {
+      "version": "4.95.0",
+      "released_at": "2022-09-28",
+      "observed": true,
+      "atoms": 10926,
+      "atoms_sha256": "5d90533d9d827b3288b1bd723d48a8ac40ed4178236ef7b4d83c38f646616e55"
+     },
+     {
+      "version": "4.102.0",
+      "released_at": "2022-12-14",
+      "observed": true,
+      "atoms": 11685,
+      "atoms_sha256": "d97f0a013efe2479e0a121ff59769d3252c23227a10ee34336f73af706195e71"
+     },
+     {
+      "version": "4.114.0",
+      "released_at": "2023-03-29",
+      "observed": true,
+      "atoms": 13366,
+      "atoms_sha256": "19d0284fef9dbdd3d6bee40bcfac4085e7ecf99592a473f6b94cf03fc6d86b75"
+     },
+     {
+      "version": "5.0.0",
+      "released_at": "2023-06-06",
+      "observed": true,
+      "atoms": 13248,
+      "atoms_sha256": "8e29615421d6f84176b9e4c6a1b63587e0ee6986afed7f6421d5c0a29b09fe7c"
+     },
+     {
+      "version": "5.3.0",
+      "released_at": "2023-06-28",
+      "observed": true,
+      "atoms": 13444,
+      "atoms_sha256": "235e6db04f2f8f4d459e7bd9bad179abefc58e38d709d6e03d7233015c3d9536"
+     },
+     {
+      "version": "5.14.0",
+      "released_at": "2023-09-26",
+      "observed": true,
+      "atoms": 14552,
+      "atoms_sha256": "e20e99871f5af5956fb6465996ac678c03d960fd137283f61cc706b2a2a62d90"
+     },
+     {
+      "version": "5.23.0",
+      "released_at": "2023-12-12",
+      "observed": true,
+      "atoms": 16577,
+      "atoms_sha256": "48716a8347b214c311429f8bf57948677dda362c4fa5007f22243ad87ff824e3"
+     },
+     {
+      "version": "5.35.0",
+      "released_at": "2024-03-27",
+      "observed": true,
+      "atoms": 17669,
+      "atoms_sha256": "64e718dbffc804ff8c41cdf8287fc6c1ee5b359a0b53e32eb8ab565d9ee48b91"
+     },
+     {
+      "version": "6.0.0",
+      "released_at": "2024-06-26",
+      "observed": true,
+      "atoms": 18313,
+      "atoms_sha256": "abc1be485c494594d1aef7be9c95340677be25ee06c5b7a8dd5b1dc595429d04"
+     },
+     {
+      "version": "6.11.0",
+      "released_at": "2024-09-25",
+      "observed": true,
+      "atoms": 19448,
+      "atoms_sha256": "ef15bfa736f49f13e2af3d21a3debb163a3d4e7a82b2d43331e786499310055e"
+     },
+     {
+      "version": "6.21.0",
+      "released_at": "2024-12-19",
+      "observed": true,
+      "atoms": 20175,
+      "atoms_sha256": "a5e230f31ab4f550a85b657c464fad7ab626d2137374859c88cdf01e8c3b50e6"
+     },
+     {
+      "version": "6.32.0",
+      "released_at": "2025-03-26",
+      "observed": true,
+      "atoms": 21218,
+      "atoms_sha256": "9b197c2c7fadb0cd6f1e0b074ebf48d8c52feac60a25e3dcf9d8e899e471028c"
+     },
+     {
+      "version": "7.0.0",
+      "released_at": "2025-05-06",
+      "observed": true,
+      "atoms": 20793,
+      "atoms_sha256": "d07feac6eac2964dae795c19a8dedeeb3ae7e1ad2f2e8789fa73cd6a5af34fa9"
+     },
+     {
+      "version": "7.7.0",
+      "released_at": "2025-06-25",
+      "observed": true,
+      "atoms": 21815,
+      "atoms_sha256": "cf51568ec2ac274ecb7369b99204897a729837a04e316265018c17a55cf89ce6"
+     },
+     {
+      "version": "7.20.0",
+      "released_at": "2025-09-23",
+      "observed": true,
+      "atoms": 23226,
+      "atoms_sha256": "efaa88c0fbc606005789cafdc49ccf33a8fe72d5cfe5917e4cb33d799c5f5ff8"
+     },
+     {
+      "version": "7.29.0",
+      "released_at": "2025-12-17",
+      "observed": true,
+      "atoms": 24270,
+      "atoms_sha256": "dfccc7b9a01fb9b68d0e5d2bb9073430e5aeda7eba76fe8ae5b302b67e2b8f97"
+     },
+     {
+      "version": "8.0.0",
+      "released_at": "2026-02-04",
+      "observed": true,
+      "atoms": 24436,
+      "atoms_sha256": "ac65de1bd1bf23513c30bf4bce3d18dbfb5210b255594ee99f661b1adbd498e6"
+     },
+     {
+      "version": "8.7.0",
+      "released_at": "2026-03-25",
+      "observed": true,
+      "atoms": 25114,
+      "atoms_sha256": "b41b9649a7eb4dac9f7a16f969b4235ccaffed4e642dc348339f6149d96c1b7f"
+     },
+     {
+      "version": "8.20.0",
+      "released_at": "2026-06-24",
+      "observed": true,
+      "atoms": 26450,
+      "atoms_sha256": "2b22c2f3a85949ca0129a6428251f40d9cf389065d2efb66473f14a206d74785"
+     },
+     {
+      "version": "9.0.0",
+      "released_at": "2026-09-02",
+      "observed": true,
+      "atoms": 26660,
+      "atoms_sha256": "4599c85f01b1f1516adc259ba21ef543a656cbf5473fbfcb8e17442f476cf58c"
+     },
+     {
+      "version": "9.8.0",
+      "released_at": "2026-09-30",
+      "observed": true,
+      "atoms": 26987,
+      "atoms_sha256": "6976fe45bee4f2380ab51e5aac2719407ebe73a5f21bdc5ce47b0f9d1c8c8656"
+     },
+     {
+      "version": "9.11.0",
+      "released_at": "2026-10-21",
+      "observed": true,
+      "atoms": 27172,
+      "atoms_sha256": "2eecf58f46cbfe5731597c67f61c0db16e0587c929e81a17b15236434bed7b5e"
+     }
+    ],
+    "gaps": [
+     {
+      "version": "4.67.3",
+      "released_at": "2022-03-14",
+      "reason": "extraction.json: status not_extracted (Unavailable)"
+     }
+    ],
+    "left_truncation": {
+     "first_listed": "4.67.3",
+     "first_listed_released_at": "2022-03-14",
+     "first_observed": "4.69.0",
+     "first_observed_released_at": "2022-03-23",
+     "atoms_at_first_observed": 8902,
+     "rule": "átomo presente na primeira versão observada não tem evento de adição (entrada anterior à janela, não observada); lacuna na ponta esquerda empurra o início da observação"
+    },
+    "intervals": [
+     {
+      "after": "4.69.0",
+      "until": "4.82.0",
+      "atoms_after": 8902,
+      "atoms_until": 9957,
+      "events": {
+       "addition": 1057,
+       "rename": 0,
+       "removal": 2,
+       "contract_change": 174
+      },
+      "contract_change_by_field": {
+       "tf_type": 6,
+       "required": 6,
+       "optional": 5,
+       "computed": 24,
+       "sensitive": 0,
+       "deprecated": 1,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 132
+      },
+      "block_path_changes_distinct_blocks": 3,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 797,
+      "removals_in_removed_types": 0,
+      "types_added": 38,
+      "types_removed": 0,
+      "types_after": 398,
+      "types_until": 436,
+      "after_released_at": "2022-03-23",
+      "until_released_at": "2022-06-28",
+      "days": 97,
+      "spans_gap": []
+     },
+     {
+      "after": "4.82.0",
+      "until": "4.95.0",
+      "atoms_after": 9957,
+      "atoms_until": 10926,
+      "events": {
+       "addition": 981,
+       "rename": 0,
+       "removal": 12,
+       "contract_change": 65
+      },
+      "contract_change_by_field": {
+       "tf_type": 18,
+       "required": 10,
+       "optional": 12,
+       "computed": 6,
+       "sensitive": 0,
+       "deprecated": 0,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 19
+      },
+      "block_path_changes_distinct_blocks": 3,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 778,
+      "removals_in_removed_types": 0,
+      "types_added": 31,
+      "types_removed": 0,
+      "types_after": 436,
+      "types_until": 467,
+      "after_released_at": "2022-06-28",
+      "until_released_at": "2022-09-28",
+      "days": 92,
+      "spans_gap": []
+     },
+     {
+      "after": "4.95.0",
+      "until": "4.102.0",
+      "atoms_after": 10926,
+      "atoms_until": 11685,
+      "events": {
+       "addition": 770,
+       "rename": 0,
+       "removal": 11,
+       "contract_change": 95
+      },
+      "contract_change_by_field": {
+       "tf_type": 5,
+       "required": 17,
+       "optional": 22,
+       "computed": 20,
+       "sensitive": 0,
+       "deprecated": 3,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 28
+      },
+      "block_path_changes_distinct_blocks": 7,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 551,
+      "removals_in_removed_types": 0,
+      "types_added": 20,
+      "types_removed": 0,
+      "types_after": 467,
+      "types_until": 487,
+      "after_released_at": "2022-09-28",
+      "until_released_at": "2022-12-14",
+      "days": 77,
+      "spans_gap": []
+     },
+     {
+      "after": "4.102.0",
+      "until": "4.114.0",
+      "atoms_after": 11685,
+      "atoms_until": 13366,
+      "events": {
+       "addition": 1684,
+       "rename": 0,
+       "removal": 3,
+       "contract_change": 91
+      },
+      "contract_change_by_field": {
+       "tf_type": 6,
+       "required": 11,
+       "optional": 17,
+       "computed": 12,
+       "sensitive": 0,
+       "deprecated": 0,
+       "write_only": 0,
+       "nesting": 19,
+       "block_path": 26
+      },
+      "block_path_changes_distinct_blocks": 5,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 1526,
+      "removals_in_removed_types": 0,
+      "types_added": 44,
+      "types_removed": 0,
+      "types_after": 487,
+      "types_until": 531,
+      "after_released_at": "2022-12-14",
+      "until_released_at": "2023-03-29",
+      "days": 105,
+      "spans_gap": []
+     },
+     {
+      "after": "4.114.0",
+      "until": "5.0.0",
+      "atoms_after": 13366,
+      "atoms_until": 13248,
+      "events": {
+       "addition": 283,
+       "rename": 0,
+       "removal": 401,
+       "contract_change": 21
+      },
+      "contract_change_by_field": {
+       "tf_type": 7,
+       "required": 4,
+       "optional": 6,
+       "computed": 4,
+       "sensitive": 0,
+       "deprecated": 0,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 0
+      },
+      "block_path_changes_distinct_blocks": 0,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 203,
+      "removals_in_removed_types": 399,
+      "types_added": 14,
+      "types_removed": 5,
+      "types_after": 531,
+      "types_until": 540,
+      "after_released_at": "2023-03-29",
+      "until_released_at": "2023-06-06",
+      "days": 69,
+      "spans_gap": []
+     },
+     {
+      "after": "5.0.0",
+      "until": "5.3.0",
+      "atoms_after": 13248,
+      "atoms_until": 13444,
+      "events": {
+       "addition": 198,
+       "rename": 0,
+       "removal": 2,
+       "contract_change": 5
+      },
+      "contract_change_by_field": {
+       "tf_type": 1,
+       "required": 0,
+       "optional": 4,
+       "computed": 0,
+       "sensitive": 0,
+       "deprecated": 0,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 0
+      },
+      "block_path_changes_distinct_blocks": 0,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 150,
+      "removals_in_removed_types": 0,
+      "types_added": 6,
+      "types_removed": 0,
+      "types_after": 540,
+      "types_until": 546,
+      "after_released_at": "2023-06-06",
+      "until_released_at": "2023-06-28",
+      "days": 22,
+      "spans_gap": []
+     },
+     {
+      "after": "5.3.0",
+      "until": "5.14.0",
+      "atoms_after": 13444,
+      "atoms_until": 14552,
+      "events": {
+       "addition": 1123,
+       "rename": 0,
+       "removal": 15,
+       "contract_change": 60
+      },
+      "contract_change_by_field": {
+       "tf_type": 4,
+       "required": 12,
+       "optional": 15,
+       "computed": 16,
+       "sensitive": 0,
+       "deprecated": 0,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 13
+      },
+      "block_path_changes_distinct_blocks": 5,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 827,
+      "removals_in_removed_types": 12,
+      "types_added": 23,
+      "types_removed": 1,
+      "types_after": 546,
+      "types_until": 568,
+      "after_released_at": "2023-06-28",
+      "until_released_at": "2023-09-26",
+      "days": 90,
+      "spans_gap": []
+     },
+     {
+      "after": "5.14.0",
+      "until": "5.23.0",
+      "atoms_after": 14552,
+      "atoms_until": 16577,
+      "events": {
+       "addition": 2074,
+       "rename": 0,
+       "removal": 49,
+       "contract_change": 128
+      },
+      "contract_change_by_field": {
+       "tf_type": 7,
+       "required": 23,
+       "optional": 33,
+       "computed": 13,
+       "sensitive": 1,
+       "deprecated": 37,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 14
+      },
+      "block_path_changes_distinct_blocks": 3,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 1805,
+      "removals_in_removed_types": 0,
+      "types_added": 75,
+      "types_removed": 0,
+      "types_after": 568,
+      "types_until": 643,
+      "after_released_at": "2023-09-26",
+      "until_released_at": "2023-12-12",
+      "days": 77,
+      "spans_gap": []
+     },
+     {
+      "after": "5.23.0",
+      "until": "5.35.0",
+      "atoms_after": 16577,
+      "atoms_until": 17669,
+      "events": {
+       "addition": 1109,
+       "rename": 0,
+       "removal": 17,
+       "contract_change": 105
+      },
+      "contract_change_by_field": {
+       "tf_type": 9,
+       "required": 13,
+       "optional": 15,
+       "computed": 8,
+       "sensitive": 0,
+       "deprecated": 2,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 58
+      },
+      "block_path_changes_distinct_blocks": 6,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 724,
+      "removals_in_removed_types": 17,
+      "types_added": 23,
+      "types_removed": 1,
+      "types_after": 643,
+      "types_until": 665,
+      "after_released_at": "2023-12-12",
+      "until_released_at": "2024-03-27",
+      "days": 106,
+      "spans_gap": []
+     },
+     {
+      "after": "5.35.0",
+      "until": "6.0.0",
+      "atoms_after": 17669,
+      "atoms_until": 18313,
+      "events": {
+       "addition": 786,
+       "rename": 0,
+       "removal": 142,
+       "contract_change": 78
+      },
+      "contract_change_by_field": {
+       "tf_type": 19,
+       "required": 10,
+       "optional": 17,
+       "computed": 18,
+       "sensitive": 0,
+       "deprecated": 1,
+       "write_only": 0,
+       "nesting": 2,
+       "block_path": 11
+      },
+      "block_path_changes_distinct_blocks": 3,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 598,
+      "removals_in_removed_types": 141,
+      "types_added": 43,
+      "types_removed": 2,
+      "types_after": 665,
+      "types_until": 706,
+      "after_released_at": "2024-03-27",
+      "until_released_at": "2024-06-26",
+      "days": 91,
+      "spans_gap": []
+     },
+     {
+      "after": "6.0.0",
+      "until": "6.11.0",
+      "atoms_after": 18313,
+      "atoms_until": 19448,
+      "events": {
+       "addition": 1155,
+       "rename": 0,
+       "removal": 20,
+       "contract_change": 78
+      },
+      "contract_change_by_field": {
+       "tf_type": 7,
+       "required": 10,
+       "optional": 13,
+       "computed": 19,
+       "sensitive": 1,
+       "deprecated": 0,
+       "write_only": 0,
+       "nesting": 12,
+       "block_path": 16
+      },
+      "block_path_changes_distinct_blocks": 3,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 999,
+      "removals_in_removed_types": 19,
+      "types_added": 39,
+      "types_removed": 1,
+      "types_after": 706,
+      "types_until": 744,
+      "after_released_at": "2024-06-26",
+      "until_released_at": "2024-09-25",
+      "days": 91,
+      "spans_gap": []
+     },
+     {
+      "after": "6.11.0",
+      "until": "6.21.0",
+      "atoms_after": 19448,
+      "atoms_until": 20175,
+      "events": {
+       "addition": 730,
+       "rename": 0,
+       "removal": 3,
+       "contract_change": 98
+      },
+      "contract_change_by_field": {
+       "tf_type": 2,
+       "required": 6,
+       "optional": 10,
+       "computed": 36,
+       "sensitive": 12,
+       "deprecated": 0,
+       "write_only": 0,
+       "nesting": 12,
+       "block_path": 20
+      },
+      "block_path_changes_distinct_blocks": 4,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 474,
+      "removals_in_removed_types": 0,
+      "types_added": 22,
+      "types_removed": 0,
+      "types_after": 744,
+      "types_until": 766,
+      "after_released_at": "2024-09-25",
+      "until_released_at": "2024-12-19",
+      "days": 85,
+      "spans_gap": []
+     },
+     {
+      "after": "6.21.0",
+      "until": "6.32.0",
+      "atoms_after": 20175,
+      "atoms_until": 21218,
+      "events": {
+       "addition": 1045,
+       "rename": 0,
+       "removal": 2,
+       "contract_change": 231
+      },
+      "contract_change_by_field": {
+       "tf_type": 17,
+       "required": 7,
+       "optional": 13,
+       "computed": 17,
+       "sensitive": 0,
+       "deprecated": 1,
+       "write_only": 0,
+       "nesting": 85,
+       "block_path": 91
+      },
+      "block_path_changes_distinct_blocks": 22,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 726,
+      "removals_in_removed_types": 0,
+      "types_added": 43,
+      "types_removed": 0,
+      "types_after": 766,
+      "types_until": 809,
+      "after_released_at": "2024-12-19",
+      "until_released_at": "2025-03-26",
+      "days": 97,
+      "spans_gap": []
+     },
+     {
+      "after": "6.32.0",
+      "until": "7.0.0",
+      "atoms_after": 21218,
+      "atoms_until": 20793,
+      "events": {
+       "addition": 254,
+       "rename": 0,
+       "removal": 679,
+       "contract_change": 34
+      },
+      "contract_change_by_field": {
+       "tf_type": 2,
+       "required": 10,
+       "optional": 12,
+       "computed": 9,
+       "sensitive": 0,
+       "deprecated": 0,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 1
+      },
+      "block_path_changes_distinct_blocks": 1,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 171,
+      "removals_in_removed_types": 679,
+      "types_added": 9,
+      "types_removed": 23,
+      "types_after": 809,
+      "types_until": 795,
+      "after_released_at": "2025-03-26",
+      "until_released_at": "2025-05-06",
+      "days": 41,
+      "spans_gap": []
+     },
+     {
+      "after": "7.0.0",
+      "until": "7.7.0",
+      "atoms_after": 20793,
+      "atoms_until": 21815,
+      "events": {
+       "addition": 1022,
+       "rename": 0,
+       "removal": 0,
+       "contract_change": 10
+      },
+      "contract_change_by_field": {
+       "tf_type": 5,
+       "required": 1,
+       "optional": 1,
+       "computed": 3,
+       "sensitive": 0,
+       "deprecated": 0,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 0
+      },
+      "block_path_changes_distinct_blocks": 0,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 921,
+      "removals_in_removed_types": 0,
+      "types_added": 34,
+      "types_removed": 0,
+      "types_after": 795,
+      "types_until": 829,
+      "after_released_at": "2025-05-06",
+      "until_released_at": "2025-06-25",
+      "days": 50,
+      "spans_gap": []
+     },
+     {
+      "after": "7.7.0",
+      "until": "7.20.0",
+      "atoms_after": 21815,
+      "atoms_until": 23226,
+      "events": {
+       "addition": 1535,
+       "rename": 0,
+       "removal": 124,
+       "contract_change": 121
+      },
+      "contract_change_by_field": {
+       "tf_type": 12,
+       "required": 20,
+       "optional": 22,
+       "computed": 28,
+       "sensitive": 0,
+       "deprecated": 0,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 39
+      },
+      "block_path_changes_distinct_blocks": 3,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 1105,
+      "removals_in_removed_types": 121,
+      "types_added": 51,
+      "types_removed": 5,
+      "types_after": 829,
+      "types_until": 875,
+      "after_released_at": "2025-06-25",
+      "until_released_at": "2025-09-23",
+      "days": 90,
+      "spans_gap": []
+     },
+     {
+      "after": "7.20.0",
+      "until": "7.29.0",
+      "atoms_after": 23226,
+      "atoms_until": 24270,
+      "events": {
+       "addition": 1048,
+       "rename": 0,
+       "removal": 4,
+       "contract_change": 39
+      },
+      "contract_change_by_field": {
+       "tf_type": 12,
+       "required": 6,
+       "optional": 13,
+       "computed": 6,
+       "sensitive": 0,
+       "deprecated": 2,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 0
+      },
+      "block_path_changes_distinct_blocks": 0,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 798,
+      "removals_in_removed_types": 0,
+      "types_added": 40,
+      "types_removed": 0,
+      "types_after": 875,
+      "types_until": 915,
+      "after_released_at": "2025-09-23",
+      "until_released_at": "2025-12-17",
+      "days": 85,
+      "spans_gap": []
+     },
+     {
+      "after": "7.29.0",
+      "until": "8.0.0",
+      "atoms_after": 24270,
+      "atoms_until": 24436,
+      "events": {
+       "addition": 278,
+       "rename": 0,
+       "removal": 112,
+       "contract_change": 30
+      },
+      "contract_change_by_field": {
+       "tf_type": 7,
+       "required": 1,
+       "optional": 1,
+       "computed": 2,
+       "sensitive": 0,
+       "deprecated": 2,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 17
+      },
+      "block_path_changes_distinct_blocks": 1,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 171,
+      "removals_in_removed_types": 112,
+      "types_added": 11,
+      "types_removed": 2,
+      "types_after": 915,
+      "types_until": 924,
+      "after_released_at": "2025-12-17",
+      "until_released_at": "2026-02-04",
+      "days": 49,
+      "spans_gap": []
+     },
+     {
+      "after": "8.0.0",
+      "until": "8.7.0",
+      "atoms_after": 24436,
+      "atoms_until": 25114,
+      "events": {
+       "addition": 683,
+       "rename": 0,
+       "removal": 5,
+       "contract_change": 53
+      },
+      "contract_change_by_field": {
+       "tf_type": 3,
+       "required": 2,
+       "optional": 3,
+       "computed": 3,
+       "sensitive": 0,
+       "deprecated": 2,
+       "write_only": 0,
+       "nesting": 20,
+       "block_path": 20
+      },
+      "block_path_changes_distinct_blocks": 8,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 584,
+      "removals_in_removed_types": 0,
+      "types_added": 18,
+      "types_removed": 0,
+      "types_after": 924,
+      "types_until": 942,
+      "after_released_at": "2026-02-04",
+      "until_released_at": "2026-03-25",
+      "days": 49,
+      "spans_gap": []
+     },
+     {
+      "after": "8.7.0",
+      "until": "8.20.0",
+      "atoms_after": 25114,
+      "atoms_until": 26450,
+      "events": {
+       "addition": 1341,
+       "rename": 0,
+       "removal": 5,
+       "contract_change": 208
+      },
+      "contract_change_by_field": {
+       "tf_type": 16,
+       "required": 26,
+       "optional": 36,
+       "computed": 23,
+       "sensitive": 0,
+       "deprecated": 22,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 85
+      },
+      "block_path_changes_distinct_blocks": 6,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 797,
+      "removals_in_removed_types": 0,
+      "types_added": 48,
+      "types_removed": 0,
+      "types_after": 942,
+      "types_until": 990,
+      "after_released_at": "2026-03-25",
+      "until_released_at": "2026-06-24",
+      "days": 91,
+      "spans_gap": []
+     },
+     {
+      "after": "8.20.0",
+      "until": "9.0.0",
+      "atoms_after": 26450,
+      "atoms_until": 26660,
+      "events": {
+       "addition": 584,
+       "rename": 0,
+       "removal": 374,
+       "contract_change": 31
+      },
+      "contract_change_by_field": {
+       "tf_type": 4,
+       "required": 4,
+       "optional": 6,
+       "computed": 8,
+       "sensitive": 0,
+       "deprecated": 0,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 9
+      },
+      "block_path_changes_distinct_blocks": 1,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 413,
+      "removals_in_removed_types": 374,
+      "types_added": 19,
+      "types_removed": 3,
+      "types_after": 990,
+      "types_until": 1006,
+      "after_released_at": "2026-06-24",
+      "until_released_at": "2026-09-02",
+      "days": 70,
+      "spans_gap": []
+     },
+     {
+      "after": "9.0.0",
+      "until": "9.8.0",
+      "atoms_after": 26660,
+      "atoms_until": 26987,
+      "events": {
+       "addition": 327,
+       "rename": 0,
+       "removal": 0,
+       "contract_change": 17
+      },
+      "contract_change_by_field": {
+       "tf_type": 1,
+       "required": 2,
+       "optional": 2,
+       "computed": 2,
+       "sensitive": 0,
+       "deprecated": 2,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 8
+      },
+      "block_path_changes_distinct_blocks": 1,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 274,
+      "removals_in_removed_types": 0,
+      "types_added": 14,
+      "types_removed": 0,
+      "types_after": 1006,
+      "types_until": 1020,
+      "after_released_at": "2026-09-02",
+      "until_released_at": "2026-09-30",
+      "days": 28,
+      "spans_gap": []
+     },
+     {
+      "after": "9.8.0",
+      "until": "9.11.0",
+      "atoms_after": 26987,
+      "atoms_until": 27172,
+      "events": {
+       "addition": 185,
+       "rename": 0,
+       "removal": 0,
+       "contract_change": 9
+      },
+      "contract_change_by_field": {
+       "tf_type": 5,
+       "required": 1,
+       "optional": 1,
+       "computed": 2,
+       "sensitive": 0,
+       "deprecated": 0,
+       "write_only": 0,
+       "nesting": 0,
+       "block_path": 0
+      },
+      "block_path_changes_distinct_blocks": 0,
+      "renames_by_rule": {
+       "R1_published": 0,
+       "R2_derived": 0
+      },
+      "additions_in_new_types": 111,
+      "removals_in_removed_types": 0,
+      "types_added": 6,
+      "types_removed": 0,
+      "types_after": 1020,
+      "types_until": 1026,
+      "after_released_at": "2026-09-30",
+      "until_released_at": "2026-10-21",
+      "days": 21,
+      "spans_gap": []
+     }
+    ],
+    "events": {
+     "addition": 20252,
+     "rename": 0,
+     "removal": 1982,
+     "contract_change": 1781
+    },
+    "contract_change_by_field": {
+     "tf_type": 175,
+     "required": 202,
+     "optional": 279,
+     "computed": 279,
+     "sensitive": 14,
+     "deprecated": 75,
+     "write_only": 0,
+     "nesting": 150,
+     "block_path": 607
+    },
+    "block_path_changes_distinct_blocks": 85,
+    "atoms_at_pin_changed": 1007,
+    "atoms_at_pin_changed_excluding_block_path": 639,
+    "renames_by_rule": {},
+    "rename_candidates_by_status": {
+     "UNPROVEN": 4
+    },
+    "atoms_union": 28779,
+    "atom_history_records": 28779,
+    "atoms_at_pin": 27172,
+    "atoms_at_pin_in_types_of_first_observed": 11327,
+    "guides": {
+     "files": [
+      "$BO_DATA/downloads/docs-oci/website/docs/guides/version-2-upgrade.html.markdown",
+      "$BO_DATA/downloads/docs-oci/website/docs/guides/version-3-upgrade.html.markdown"
+     ],
+     "sha256": {
+      "$BO_DATA/downloads/docs-oci/website/docs/guides/version-2-upgrade.html.markdown": "36d850682dde78fe78a05e907d38c34cb8ddbdb111b77fc86ba7362301d6659f",
+      "$BO_DATA/downloads/docs-oci/website/docs/guides/version-3-upgrade.html.markdown": "6848af433a0384dbdb9ad34c44302967674971d2ef3f415a3531351e6b7cf4a8"
+     },
+     "sentences_with_cue": 0
+    }
+   }
+  }
+ }
+}

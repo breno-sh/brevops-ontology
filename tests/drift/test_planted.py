@@ -192,3 +192,13 @@ def test_regeneracao_identica(out, work):
         assert (out / f).read_bytes() == (o2 / f).read_bytes(), f
     ev = _events(out)
     assert len({e["event_id"] for e in ev}) == len(ev)
+
+
+def test_saidas_passam_no_privacy_lint(out):
+    # ids de evento com 32 hex: 12 dígitos seguidos dentro de hash não podem parecer conta
+    from bo.repo import privacy
+    found, n, _ = privacy.scan_paths([out], strict=True)
+    assert n >= 4 and found == []
+    from bo.drift import core
+    ids = [core.event_id("aws", f"k{i}") for i in range(20000)]
+    assert not any(privacy.twelve_digit_hits(x) for x in ids)

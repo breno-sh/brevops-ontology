@@ -137,7 +137,8 @@ class ProviderResult:
 
 
 def event_id(provider: str, key: str) -> str:
-    return f"EV-DRIFT-{provider}-" + hashlib.sha256(key.encode("utf-8")).hexdigest()[:16]
+    # 32 hex: token longo de hash (o privacy_lint não lê 12 dígitos seguidos dentro dele como conta)
+    return f"EV-DRIFT-{provider}-" + hashlib.sha256(key.encode("utf-8")).hexdigest()[:32]
 
 
 def _ev(provider, etype, rt, after, until, evidence, **kw) -> dict:

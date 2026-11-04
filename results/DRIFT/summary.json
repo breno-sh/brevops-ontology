@@ -1,0 +1,175 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "DRIFT",
+ "generated_at": "2026-11-04T09:07:09-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/DRIFT.txt",
+  "brief_sha256": "76fae2e47a48b95fe36bb46cf5d7f6273a638f1fa81cbe0fd8b8452a62754290",
+  "params": {
+   "onda": "7",
+   "fase": "F1",
+   "modo": "unlazy",
+   "estimando": "superficie do provider Terraform (schema JSON do plugin guardado pelos HIST), nao a nuvem",
+   "intervalo": "(after, until] entre versoes observadas consecutivas; lacuna atravessada, sem interpolacao",
+   "versoes_observadas": "aws 26/26, google 28/29 (3.62.0 lacuna), azurerm 27/27, oci 24/25 (4.67.3 lacuna)",
+   "campos_comparados": "tf_type required optional computed sensitive deprecated write_only nesting block_path",
+   "inobservaveis": "force_new e default: nao exportados por terraform providers schema -json",
+   "renome": "R1 frase publicada do guia de atualizacao da major cruzada; R2 ponte de depreciacao; resto UNPROVEN em rename_candidates.jsonl",
+   "processos": "4"
+  },
+  "inputs": [
+   {
+    "path": "$BO_DATA/HIST-AWS/versions.json",
+    "kind": "file",
+    "sha256": "5418aa84e00bfa4f94fbc3efe483842ba1ce1263352cfc8c7872cccee86ae9ba"
+   },
+   {
+    "path": "$BO_DATA/HIST-GCP/versions.json",
+    "kind": "file",
+    "sha256": "f576f29950b9d337f7bf5e0b06caaf4c8e1933382f7276882d88fd4826d69837"
+   },
+   {
+    "path": "$BO_DATA/HIST-AZURE/versions.json",
+    "kind": "file",
+    "sha256": "68ee510999b452535b64fe2ab8bb2863c8abaf7e5f196c9dbab833002be2c9d6"
+   },
+   {
+    "path": "$BO_DATA/HIST-OCI/versions.json",
+    "kind": "file",
+    "sha256": "672c916386f7ba347e7f21b22eb23b6b50da0d4f9b1ed8fbc84a9e1925c98ea1"
+   },
+   {
+    "path": "$BO_DATA/HIST-AWS/MANIFEST.sha256",
+    "kind": "file",
+    "sha256": "e1cb4e7be1d975531611d851e98c297656ed9d6d04675d257871cfb77287f07d"
+   },
+   {
+    "path": "$BO_DATA/HIST-GCP/MANIFEST.sha256",
+    "kind": "file",
+    "sha256": "d6bce523b5121f108333039b04d58b21f6c3eb6e90acf7772f32fb05b89a26b4"
+   },
+   {
+    "path": "$BO_DATA/HIST-AZURE/MANIFEST.sha256",
+    "kind": "file",
+    "sha256": "b02a94cd764516885e509752db8f90bd455188bb7495b96de6b9a98fd5e17da8"
+   },
+   {
+    "path": "$BO_DATA/HIST-OCI/MANIFEST.sha256",
+    "kind": "file",
+    "sha256": "e5964cbed8f73e8df636741b914ba293bb4ebdb26626e7b8e7eec01508895037"
+   },
+   {
+    "path": "$BO_DATA/downloads/docs-aws/v6.71.0/website/docs/guides/version-2-upgrade.html.markdown",
+    "kind": "file",
+    "sha256": "21fab25b26ccfa8b9a0b4a4f7071cea1b7d9d5f5de9e4512f5be01ede3688e63"
+   },
+   {
+    "path": "$BO_DATA/downloads/docs-aws/v6.71.0/website/docs/guides/version-3-upgrade.html.markdown",
+    "kind": "file",
+    "sha256": "65e77b5bf96591ad049939ea4393cc65e1803d589968b9daf59ea4d135db2902"
+   },
+   {
+    "path": "$BO_DATA/downloads/docs-aws/v6.71.0/website/docs/guides/version-4-upgrade.html.markdown",
+    "kind": "file",
+    "sha256": "acef3e03cdde4c7546552e5e80efd9a3b7da1427ede7710df984cf68473e8ef3"
+   },
+   {
+    "path": "$BO_DATA/downloads/docs-aws/v6.71.0/website/docs/guides/version-5-upgrade.html.markdown",
+    "kind": "file",
+    "sha256": "7611acade8b80a878e16aa536ccf70ee953cd338d324421226b51719ba86cdf1"
+   },
+   {
+    "path": "$BO_DATA/downloads/docs-aws/v6.71.0/website/docs/guides/version-6-upgrade.html.markdown",
+    "kind": "file",
+    "sha256": "88e5cf2a20bf34ef8c1c490b46419de235b47b0737d58faab4d215926c7e6df2"
+   },
+   {
+    "path": "$BO_DATA/downloads/docs-google/website/docs/guides/version_2_upgrade.html.markdown",
+    "kind": "file",
+    "sha256": "b0584c985e2841ef648934ecd805277551c1453d4e42e6de511a9456a083a59a"
+   },
+   {
+    "path": "$BO_DATA/downloads/docs-google/website/docs/guides/version_3_upgrade.html.markdown",
+    "kind": "file",
+    "sha256": "c6fe040b59501d2da48e8b72d202b3c97e3b2e44f8863624cbeb85f65b31b726"
+   },
+   {
+    "path": "$BO_DATA/downloads/docs-google/website/docs/guides/version_4_upgrade.html.markdown",
+    "kind": "file",
+    "sha256": "fbcf2b943e28a83e407900a9c6f33ae857cd930561c73cea95d7eea5bd6b2385"
+   },
+   {
+    "path": "$BO_DATA/downloads/docs-google/website/docs/guides/version_5_upgrade.html.markdown",
+    "kind": "file",
+    "sha256": "5d0e1459c8ebd16f685c15a2d914b87508bccd22928584c880d24af5d1815267"
+   },
+   {
+    "path": "$BO_DATA/downloads/docs-google/website/docs/guides/version_6_upgrade.html.markdown",
+    "kind": "file",
+    "sha256": "df5c65e35488a6d233b8647fd999fc6614961e9ac1d14873aadcf58c8a51fc53"
+   },
+   {
+    "path": "$BO_DATA/downloads/docs-google/website/docs/guides/version_7_upgrade.html.markdown",
+    "kind": "file",
+    "sha256": "ab9c895ec46a22202ce3e51320d51e8b6fbd0459d9af5271a616be1ced9dd85e"
+   },
+   {
+    "path": "$BO_DATA/downloads/docs-google/website/docs/guides/version_8_upgrade.html.markdown",
+    "kind": "file",
+    "sha256": "443e343abcb9a40be42197bbadcbc15a5ff2fb152b6249c30445fec70801a560"
+   },
+   {
+    "path": "$BO_DATA/downloads/docs-azurerm/v5.12.0/website/docs/guides/3.0-upgrade-guide.html.markdown",
+    "kind": "file",
+    "sha256": "b499a0c8ca9485b380b3c9222f5f76705b9fd7996c13b40ba909f7437fb5e630"
+   },
+   {
+    "path": "$BO_DATA/downloads/docs-azurerm/v5.12.0/website/docs/guides/4.0-upgrade-guide.html.markdown",
+    "kind": "file",
+    "sha256": "322237f5772e16b0f36a3a08b018b1de4c65ae68fafbcc48fa7cd7d239cd0bee"
+   },
+   {
+    "path": "$BO_DATA/downloads/docs-azurerm/v5.12.0/website/docs/guides/5.0-upgrade-guide.html.markdown",
+    "kind": "file",
+    "sha256": "df404e0830e904f50efc7f28f29217c04139af152813fbb3c33a092b518034c8"
+   },
+   {
+    "path": "$BO_DATA/downloads/docs-oci/website/docs/guides/version-2-upgrade.html.markdown",
+    "kind": "file",
+    "sha256": "36d850682dde78fe78a05e907d38c34cb8ddbdb111b77fc86ba7362301d6659f"
+   },
+   {
+    "path": "$BO_DATA/downloads/docs-oci/website/docs/guides/version-3-upgrade.html.markdown",
+    "kind": "file",
+    "sha256": "6848af433a0384dbdb9ad34c44302967674971d2ef3f415a3531351e6b7cf4a8"
+   }
+  ],
+  "recorded_at": "2026-11-04T09:07:09-03:00"
+ },
+ "sources": [
+  {
+   "uri": "https://github.com/hashicorp/terraform-provider-aws",
+   "license": "MPL-2.0",
+   "transformation": "guias de atualizacao na tag v6.71.0 (copia conferida do DOCS-AWS), lidos como texto; frases citadas como evidencia de renome"
+  },
+  {
+   "uri": "https://github.com/hashicorp/terraform-provider-google",
+   "license": "MPL-2.0",
+   "transformation": "guias de atualizacao na tag v8.9.0 (copia conferida do DOCS-GCP), lidos como texto"
+  },
+  {
+   "uri": "https://github.com/hashicorp/terraform-provider-azurerm",
+   "license": "MPL-2.0",
+   "transformation": "guias de atualizacao na tag v5.12.0 (copia conferida do DOCS-AZURE), lidos como texto"
+  },
+  {
+   "uri": "https://github.com/oracle/terraform-provider-oci",
+   "license": "MPL-2.0",
+   "transformation": "guias de atualizacao na tag v9.11.0 (copia conferida do DOCS-OCI); nenhum cobre a janela (majors 2 e 3)"
+  }
+ ],
+ "notes": "Atomos por versao dos HIST-* (C01) comparados entre versoes observadas consecutivas; eventos C13 com intervalo de versao; churn.json C15 de censo."
+}
