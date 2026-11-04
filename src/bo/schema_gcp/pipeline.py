@@ -28,11 +28,15 @@ from . import common as C
 from . import offline
 
 MANIFEST_SKIP = {"MANIFEST.sha256", "consume_ledger.json", "gate_report.json"}
+#: logs voláteis que as ferramentas do REPO gravam na pasta do módulo (make integration): não são saídas
+MANIFEST_SKIP_DIRS = {"integration"}
 
 
 def manifest_files(root: Path) -> list[Path]:
     return sorted(p for p in root.rglob("*")
-                  if p.is_file() and p.name not in MANIFEST_SKIP and "__pycache__" not in p.parts
+                  if p.is_file() and p.name not in MANIFEST_SKIP and not p.name.startswith("MANIFEST.sha256")
+                  and "__pycache__" not in p.parts
+                  and p.relative_to(root).parts[0] not in MANIFEST_SKIP_DIRS
                   and p.name != ".DS_Store")
 
 
