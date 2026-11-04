@@ -44,6 +44,17 @@ def value_type(b: Bundle, atom: str) -> dict | None:
     if v is None:
         return None
     dt = v.get("datatype") or {}
+    if dt.get("kind") == "tree" and dt.get("format") in ("list", "set", "map") and dt.get("value_scalar") in SCALARS \
+            and SCALARS[dt["value_scalar"]] != "enum":
+        # coleção (C09 3.2.0): o pacote dá o tipo do elemento (value_scalar) e, no mapa, o da chave (key_scalar)
+        item = {"datatype": SCALARS[dt["value_scalar"]], "quantity_kind": v.get("quantity_kind", "UNKNOWN"),
+                "unit": v.get("unit_qudt", "UNKNOWN")}
+        out = {"datatype": dt["format"], "item_type": item}
+        if dt["format"] == "map":
+            if dt.get("key_scalar") not in ("string", "integer"):
+                return None
+            out["key_type"] = dt["key_scalar"]
+        return out
     if dt.get("kind") != "scalar" or dt.get("scalar") not in SCALARS:
         return None
     out = {"datatype": SCALARS[dt["scalar"]], "quantity_kind": v.get("quantity_kind", "UNKNOWN"),
@@ -143,6 +154,10 @@ def projection_for(b: Bundle, atom: str, vt: dict | None, sample, log: dict) -> 
 def sample_of(vt: dict):
     """Valor de teste admitido pelo tipo (para o teste do extrator identidade da projeção)."""
     dt = vt.get("datatype")
+    if dt in ("list", "set"):
+        return [sample_of(vt["item_type"])]
+    if dt == "map":
+        return {"chave": sample_of(vt["item_type"])}
     if dt == "boolean":
         return True
     if dt == "enum":
@@ -242,18 +257,22 @@ def absence_row(b: Bundle, pair: str, atom: str, related: list[DEC.Decision], ot
         kind = "UNRESOLVED"
     cid = f"CLM-{pair}-STO-NONE-{atom}"
     r = _common(cid)
-    absence = {"kind": kind, "searched": searched}
+    # lado do átomo no par (C09 3.2.0 absence.side): o segundo provedor do par fica no OBJETO, com
+    # sssom:NoTermFound no sujeito, e a orientação canônica do par vale também para a ausência
+    side = "object" if provider_of(atom) == PAIR_SIDES[pair][1] else "subject"
+    absence = {"kind": kind, "side": side, "searched": searched}
     if evidence:
         absence["evidence"] = evidence
-    r.update({"subject_id": atom, "object_id": NO_TERM, "predicate_id": "skos:relatedMatch",
+    me, nobody = ("subject", "object") if side == "subject" else ("object", "subject")
+    r.update({f"{me}_id": atom, f"{nobody}_id": NO_TERM, "predicate_id": "skos:relatedMatch",
               "semantic_relation": "related",
               "value_domain_relation": {"relation": "unknown", "orientation": "subject_to_object"},
               "transport_fidelity": "none", "guard": {"all": []}, "loss_contract": [],
-              "evidence_state": "STRUCTURALLY_VALID", "subject_concept": concept, "object_concept": UNGLOSSED,
+              "evidence_state": "STRUCTURALLY_VALID", f"{me}_concept": concept, f"{nobody}_concept": UNGLOSSED,
               "absence": absence, "proof": {"type": "absence", "evidence": evidence, "tests": []}})
     vt = value_type(b, atom)
     if vt is not None:
-        r["subject_value_type"] = vt
+        r[f"{me}_value_type"] = vt
     projs = projections(b, ((atom, vt, None),), log)
     if projs:
         r["projection"] = projs
@@ -322,17 +341,18 @@ def _uniq(xs: list[dict]) -> list[dict]:
 def counts(rows: list[dict]) -> dict:
     from collections import Counter
     out = {"rows": len(rows), "by_pair": {}, "by_relation": dict(Counter(r["semantic_relation"] for r in rows
-                                                                          if r["object_id"] != NO_TERM)),
-           "by_evidence_state": dict(Counter(r["evidence_state"] for r in rows if r["object_id"] != NO_TERM)),
-           "absence_kinds": dict(Counter(r["absence"]["kind"] for r in rows if r["object_id"] == NO_TERM)),
+                                                                          if "absence" not in r)),
+           "by_evidence_state": dict(Counter(r["evidence_state"] for r in rows if "absence" not in r)),
+           "absence_kinds": dict(Counter(r["absence"]["kind"] for r in rows if "absence" in r)),
+           "absence_sides": dict(Counter(r["absence"].get("side", "subject") for r in rows if "absence" in r)),
            "projections": sum(len(r.get("projection") or []) for r in rows),
            "groups": sum(1 for r in rows if r.get("group"))}
     for pair, _, _ in PAIRS:
         rs = [r for r in rows if pair_of(r["claim_id"]) == pair]
         out["by_pair"][pair] = {
             "transport": sum(1 for r in rs if r["semantic_relation"] in TRANSPORTING),
-            "related": sum(1 for r in rs if r["semantic_relation"] == "related" and r["object_id"] != NO_TERM),
-            "absence": sum(1 for r in rs if r["object_id"] == NO_TERM)}
+            "related": sum(1 for r in rs if r["semantic_relation"] == "related" and "absence" not in r),
+            "absence": sum(1 for r in rs if "absence" in r)}
     return out
 
 

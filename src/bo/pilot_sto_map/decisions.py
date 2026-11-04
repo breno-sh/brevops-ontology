@@ -61,6 +61,10 @@ BOOL = ({"input": True, "expected": True}, {"input": False, "expected": False})
 DAYS = ({"input": 30, "expected": 30}, {"input": 365, "expected": 365})
 BYTES = ({"input": 1048576, "expected": 1048576},)
 LIST = ({"input": ["logs/"], "expected": ["logs/"]},)
+WRAP = {"name": "wrap_list", "params": {}}
+WRAPPED = ({"input": "logs/", "expected": ["logs/"]},)
+N_WRAP = ("prefixo único na origem -> lista de um prefixo no destino (wrap_list, C10 1.4.0): todo valor da origem "
+          "cabe (subset), sem perda; a volta é unwrap_single, só para listas de um elemento")
 
 
 def e2b(true, false):
@@ -76,8 +80,6 @@ W_REGION = ("os códigos de região de cada provedor não estão no pacote (text
             "exigiria inventar a tabela de regiões")
 W_REGION_AZ = ("no destino a localização é da conta de armazenamento (outra unidade, ligada ao contêiner por "
                "contenção) e os códigos de região não estão no pacote")
-W_PREFIX = ("a origem é um prefixo só (texto) e o destino é uma lista de prefixos; o registro fechado não tem "
-            "combinador que leve um escalar a uma lista, e o C09 não tem tipo de lista")
 W_CLASS = ("os nomes de classe de armazenamento de cada lado não estão no pacote (texto sem enum) ou não se "
            "correspondem um a um; a tabela teria de ser inventada")
 W_KEY = ("o valor é referência a uma chave no serviço de chaves de cada provedor; a chave do outro lado é outra "
@@ -239,7 +241,8 @@ D(X("CLM-AWSGCP-STO-0003", "AWSGCP", A_VER_BOOL, G_VER, "exact", ID, "lossless",
 D(X("CLM-AWSGCP-STO-0004", "AWSGCP", A_VER_STATUS, G_VER, "exact",
     e2b(["Enabled"], ["Suspended", "Disabled"]), "declared_loss", "equal",
     e2b_tests(["Enabled"], ["Suspended", "Disabled"]), loss=[LOSS_SUSP]))
-DECISIONS += _seq("AWSGCP", 5, A_PREFIXES, lambda c, a: R(c, "AWSGCP", a, G_PREFIX, "UNSUPPORTED_BY_TRANSLATOR", W_PREFIX))
+DECISIONS += _seq("AWSGCP", 5, A_PREFIXES,
+                  lambda c, a: X(c, "AWSGCP", a, G_PREFIX, "exact", WRAP, "lossless", "subset", WRAPPED, note=N_WRAP))
 DECISIONS += _seq("AWSGCP", 9, A_TRANS_CLASS, lambda c, a: R(c, "AWSGCP", a, G_ACTION_CLASS, "UNRESOLVED", W_CLASS))
 DECISIONS += _seq("AWSGCP", 11, A_NONCUR_DAYS, lambda c, a: R(c, "AWSGCP", a, G_NONCUR, "UNRESOLVED", W_CTX_ACTION))
 D(R("CLM-AWSGCP-STO-0013", "AWSGCP", A_NEWER, G_NEWER, "UNRESOLVED",
@@ -286,7 +289,8 @@ D(X("CLM-AWSAZ-STO-0006", "AWSAZ", A_RULE_STATUS, Z_RULE_EN, "exact", e2b(["Enab
     note="bijeção Enabled/Disabled <-> true/false"))
 DECISIONS += _seq("AWSAZ", 7, A_RULE_IDS,
                   lambda c, a: X(c, "AWSAZ", a, Z_RULE_NAME, "exact", ID, "partial", "unknown", STR))
-DECISIONS += _seq("AWSAZ", 9, A_PREFIXES, lambda c, a: R(c, "AWSAZ", a, Z_PREFIX, "UNSUPPORTED_BY_TRANSLATOR", W_PREFIX))
+DECISIONS += _seq("AWSAZ", 9, A_PREFIXES,
+                  lambda c, a: X(c, "AWSAZ", a, Z_PREFIX, "exact", WRAP, "lossless", "subset", WRAPPED, note=N_WRAP))
 DECISIONS += _seq("AWSAZ", 13, A_EXP_DAYS,
                   lambda c, a: X(c, "AWSAZ", a, Z_DELETE, "close", ID, "declared_loss", "unknown", DAYS,
                                  loss=list(LOSS_AZ_DAYS)))
@@ -304,7 +308,8 @@ D(X("CLM-AWSOCI-STO-0005", "AWSOCI", A_RULE_STATUS, O_RULE_EN, "exact", e2b(["En
     "lossless", "equal", e2b_tests(["Enabled"], ["Disabled"])))
 DECISIONS += _seq("AWSOCI", 6, A_RULE_IDS,
                   lambda c, a: X(c, "AWSOCI", a, O_RULE_NAME, "exact", ID, "partial", "unknown", STR))
-DECISIONS += _seq("AWSOCI", 8, A_PREFIXES, lambda c, a: R(c, "AWSOCI", a, O_PREFIX, "UNSUPPORTED_BY_TRANSLATOR", W_PREFIX))
+DECISIONS += _seq("AWSOCI", 8, A_PREFIXES,
+                  lambda c, a: X(c, "AWSOCI", a, O_PREFIX, "exact", WRAP, "lossless", "subset", WRAPPED, note=N_WRAP))
 DECISIONS += _seq("AWSOCI", 12, A_KMS, lambda c, a: R(c, "AWSOCI", a, O_KMS, "UNSUPPORTED_BY_TRANSLATOR", W_KEY))
 DECISIONS += _seq("AWSOCI", 14, A_BUCKET_KEY,
                   lambda c, a: X(c, "AWSOCI", a, O_BUCKET_KEY, "exact", ID, "lossless", "equal", BOOL))
@@ -318,7 +323,7 @@ D(R("CLM-GCPAZ-STO-0003", "GCPAZ", G_CLASS, Z_TIER, "UNRESOLVED",
     W_CLASS + "; no destino a camada é da conta de armazenamento"))
 D(X("CLM-GCPAZ-STO-0004", "GCPAZ", G_VER, Z_VER, "close", ID, "declared_loss", "equal", BOOL, loss=[LOSS_SCOPE_AZ]))
 D(X("CLM-GCPAZ-STO-0005", "GCPAZ", G_PREFIX, Z_PREFIX, "exact", ID, "partial", "unknown", LIST,
-    note="lista de prefixos nos dois; o C09 não tem tipo de lista, por isso os tipos ficam sem declarar"))
+    note="lista de prefixos nos dois (list<string> pelo C05, C09 3.2.0); restrições de formato fora do pacote"))
 DECISIONS += _seq("GCPAZ", 6, Z_KMS, lambda c, z: R(c, "GCPAZ", G_KMS, z, "UNSUPPORTED_BY_TRANSLATOR", W_KEY))
 DECISIONS += _seq("GCPAZ", 8, (Z_DELETE,) + Z_TIERS,
                   lambda c, z: R(c, "GCPAZ", G_AGE, z, "UNRESOLVED", W_CTX_ACTION_REV))
@@ -328,7 +333,7 @@ D(X("CLM-GCPOCI-STO-0001", "GCPOCI", G_NAME, O_NAME, "exact", ID, "partial", "un
 D(R("CLM-GCPOCI-STO-0002", "GCPOCI", G_CLASS, O_TIER, "UNRESOLVED", W_CLASS))
 D(R("CLM-GCPOCI-STO-0003", "GCPOCI", G_VER, O_VER, "UNRESOLVED", W_OCI_VERS))
 D(X("CLM-GCPOCI-STO-0004", "GCPOCI", G_PREFIX, O_PREFIX, "exact", ID, "partial", "unknown", LIST,
-    note="lista de prefixos nos dois; o C09 não tem tipo de lista, por isso os tipos ficam sem declarar"))
+    note="lista de prefixos nos dois (list<string> pelo C05, C09 3.2.0); restrições de formato fora do pacote"))
 D(R("CLM-GCPOCI-STO-0005", "GCPOCI", G_AGE, O_TIME, "UNSUPPORTED_BY_TRANSLATOR", W_OCI_TIME))
 D(R("CLM-GCPOCI-STO-0006", "GCPOCI", G_ACTION, O_ACTION, "UNRESOLVED",
     "os nomes de ação de cada lado não estão no pacote (texto sem enum)"))
@@ -341,7 +346,7 @@ D(R("CLM-AZOCI-STO-0003", "AZOCI", Z_VER, O_VER, "UNRESOLVED", W_OCI_VERS))
 D(X("CLM-AZOCI-STO-0004", "AZOCI", Z_RULE_EN, O_RULE_EN, "exact", ID, "lossless", "equal", BOOL))
 D(X("CLM-AZOCI-STO-0005", "AZOCI", Z_RULE_NAME, O_RULE_NAME, "exact", ID, "partial", "unknown", STR))
 D(X("CLM-AZOCI-STO-0006", "AZOCI", Z_PREFIX, O_PREFIX, "exact", ID, "partial", "unknown", LIST,
-    note="lista de prefixos nos dois; o C09 não tem tipo de lista, por isso os tipos ficam sem declarar"))
+    note="lista de prefixos nos dois (list<string> pelo C05, C09 3.2.0); restrições de formato fora do pacote"))
 DECISIONS += _seq("AZOCI", 7, Z_KMS, lambda c, z: R(c, "AZOCI", z, O_KMS, "UNSUPPORTED_BY_TRANSLATOR", W_KEY))
 D(R("CLM-AZOCI-STO-0009", "AZOCI", Z_ACCESS, O_ACCESS, "UNRESOLVED",
     "os valores de access_type do destino não estão no pacote (texto sem enum)"))

@@ -27,14 +27,18 @@ def built(bundle):
 
 
 def claims(rows):
-    return [r for r in rows if r["object_id"] != B.NO_TERM]
+    return [r for r in rows if "absence" not in r]
+
+
+def absent_atom(r):
+    return r["object_id"] if r["subject_id"] == B.NO_TERM else r["subject_id"]
 
 
 def test_exhaustive_every_atom_of_both_sides_per_pair(bundle, built):
     rows, _ = built
     assert B.exhaustive_gaps(bundle, rows) == []
     # e o teste não é vazio: tirar uma linha de ausência abre um buraco
-    victim = next(i for i, r in enumerate(rows) if r["object_id"] == B.NO_TERM)
+    victim = next(i for i, r in enumerate(rows) if "absence" in r)
     assert len(B.exhaustive_gaps(bundle, rows[:victim] + rows[victim + 1:])) == 1
 
 
@@ -51,8 +55,9 @@ def test_canonical_orientation_and_no_inverse_rows(built):
 def test_bundle_only_atoms(bundle, built):
     rows, _ = built
     for r in rows:
-        assert r["subject_id"] in bundle.atoms
-        assert r["object_id"] in bundle.atoms or r["object_id"] == B.NO_TERM
+        ids = [x for x in (r["subject_id"], r["object_id"]) if x != B.NO_TERM]
+        assert len(ids) == (1 if "absence" in r else 2)
+        assert all(x in bundle.atoms for x in ids)
 
 
 def test_registry_only_functions(built):
@@ -80,11 +85,17 @@ def test_predicate_matches_relation_and_direction_fields(built):
 def test_absence_rows_are_typed_and_do_not_transport(built):
     rows, _ = built
     for r in rows:
-        none = r["object_id"] == B.NO_TERM
+        none = B.NO_TERM in (r["subject_id"], r["object_id"])
         assert none == ("absence" in r)
         if none:
+            side = r["absence"]["side"]
+            sp, op = PAIR_SIDES[B.pair_of(r["claim_id"])]
+            # orientação canônica também na ausência: o átomo fica no lado do seu provedor (C09 3.2.0)
+            assert provider_of(r[f"{side}_id"]) == (sp if side == "subject" else op)
+            assert r["subject_id" if side == "object" else "object_id"] == B.NO_TERM
             assert r["semantic_relation"] == "related" and r["transport_fidelity"] == "none"
-            assert "translation_fn" not in r and r["object_concept"] == "bo:UNGLOSSED"
+            other = "subject" if side == "object" else "object"
+            assert "translation_fn" not in r and r[f"{other}_concept"] == "bo:UNGLOSSED"
             assert r["absence"]["kind"] in ("ABSENCE_DEMONSTRATED", "OUT_OF_PIN", "UNSUPPORTED_BY_TRANSLATOR",
                                             "UNRESOLVED")
             assert r["absence"]["searched"] and all(len(s) >= 3 for s in r["absence"]["searched"])
@@ -94,7 +105,7 @@ def test_related_only_atoms_get_absence_with_the_decision_kind(built):
     rows, _ = built
     moved = {(B.pair_of(r["claim_id"]), a) for r in claims(rows) if r["semantic_relation"] in B.TRANSPORTING
              for a in (r["subject_id"], r["object_id"])}
-    absent = {(B.pair_of(r["claim_id"]), r["subject_id"]): r for r in rows if r["object_id"] == B.NO_TERM}
+    absent = {(B.pair_of(r["claim_id"]), absent_atom(r)): r for r in rows if "absence" in r}
     for d in DEC.DECISIONS:
         if d.relation != "related":
             continue
@@ -137,7 +148,9 @@ def test_value_type_conversion(bundle):
                                                   "unit": "NOT_APPLICABLE"}
     st = B.value_type(bundle, DEC.A_VER_STATUS)
     assert st["datatype"] == "enum" and st["enum"] == bundle.value_space[DEC.A_VER_STATUS]["enum"]
-    assert B.value_type(bundle, DEC.G_PREFIX) is None            # lista: o C09 não exprime, nada inventado
+    lst = B.value_type(bundle, DEC.G_PREFIX)                    # lista com o tipo do elemento do C05 (C09 3.2.0)
+    assert lst["datatype"] == "list" and lst["item_type"]["datatype"] == "string"
+    assert B.value_type(bundle, "aws:aws_s3_bucket:policy") is None     # documento de política: sem forma no C09
     z = B.value_type(bundle, DEC.Z_DELETE)
     assert z["range"] == {"min": 0, "max": 99999} and z["unit"] == "unit:DAY"
 
@@ -187,8 +200,10 @@ def test_arbiter_never_ok_without_minimal_proof(built):
     oks = [v for v in res["verdicts"] if v["verdict"] == "OK" and v["claim_version_id"] in byv]
     assert oks
     assert [v["claim_id"] for v in oks if minimal_proof_gaps(byv[v["claim_version_id"]], False)] == []
-    assert not any(v["verdict"] == "OK" for v in res["verdicts"] if v["claim_id"].startswith("CLM-") and
-                   "-STO-NONE-" in v["claim_id"])
+    # ausência tem veredito próprio no árbitro recongelado: a UNRESOLVED nunca sai OK
+    unresolved = {r["claim_id"] for r in rows if "absence" in r and r["absence"]["kind"] == "UNRESOLVED"}
+    assert unresolved
+    assert not any(v["verdict"] == "OK" for v in res["verdicts"] if v["claim_id"] in unresolved)
 
 
 def test_decision_ids_unique_and_paired():
