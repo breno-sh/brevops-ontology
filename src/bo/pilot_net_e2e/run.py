@@ -7,8 +7,9 @@ Roda fixtures x 12 direções x controles, grava no staging (traço C23, plano e
 HCL renderizado) e confere: (1) os controles pedidos são exatamente os três; (2) o conjunto de casos é o mesmo nos
 três; (3) a ABox de c2 e c3 é a mesma (sha256) e o c1 não usa ABox; (4) a política de perda é a única do
 loss_policy e todo código de perda usado está nela; (5) cada alegação usou sempre a mesma transformação; (6) todo
-caso tem estado tipado; (7) traço (C23), plano e IR (C26) e tabelas C14 passam no validador único.
---write-results grava results/PILOT-NET-E2E/controls.json (C15). Sai 0 só se (1)-(7) valem.
+caso tem estado tipado; (7) traço (C23), plano e IR (C26) e tabelas C14 passam no validador único; (8) a TBox
+do c3 está no perfil OWL 2 DL (ROBOT validate-profile).
+--write-results grava results/PILOT-NET-E2E/controls.json (C15). Sai 0 só se (1)-(8) valem.
 """
 
 from __future__ import annotations
@@ -22,6 +23,19 @@ from bo.pilot.net import results as RS
 from .common import dump, load_report, out_dir, parser, results_dir, run_pipeline, say, validate
 
 STATES = {"TRANSLATED", "UNSUPPORTED", "REFUSED", "RENDER_BLOCKED"}
+
+
+def _dl_profile(ttl) -> str | None:
+    """TBox do c3 no perfil OWL 2 DL (ROBOT fixado do ONTPAT, validate-profile)."""
+    import subprocess
+    from bo.pilot.net import pipeline as P
+    from bo.pilot.net import reason as RS
+    rep = P.tmp() / "dl_profile.txt"
+    r = subprocess.run([RS.robot_bin(), "validate-profile", "--profile", "DL", "--input", str(ttl), "--output",
+                        str(rep)], capture_output=True, text=True, timeout=300,
+                       env={"PATH": "/usr/bin:/bin", "HOME": str(P.tmp()), "TMPDIR": str(P.tmp())})
+    head = rep.read_text(encoding="utf-8").splitlines()[0] if rep.exists() else (r.stderr or r.stdout)[-200:]
+    return None if r.returncode == 0 and "in profile" in head and "NOT" not in head else f"TBox c3 fora do OWL 2 DL: {head}"
 
 
 def main(argv=None) -> int:
@@ -56,6 +70,9 @@ def main(argv=None) -> int:
         rc, last = validate(contract, p)
         if rc != 0:
             fails.append(f"{f} reprova no validador ({contract}): {last}")
+    prof = _dl_profile(out / "ontology" / "net_slice_c3.ttl")
+    if prof:
+        fails.append(prof)
     c = rep["counts"]
     for k in CONTROLS:
         say(f"{k}: {json.dumps(c.get(k, {}), ensure_ascii=False, sort_keys=True)}")

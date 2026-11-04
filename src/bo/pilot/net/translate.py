@@ -162,6 +162,7 @@ class Translator:
         self.out = CaseOut(case_id, L.fixture_id, direction, control)
         self.ntr = 0
         self.loss_codes: list = []
+        self.consumed: dict = {}      # (indivíduo, átomo) -> como o valor foi usado sem saída própria
 
     # ---------------------------------------------------------------- traço C23
     def trace(self, *, atom, raw, result, code=None, out_atom=None, out_value=None, claim_id=None, prop=None,
@@ -221,7 +222,40 @@ class Translator:
             self.out.status = b.status
             self.out.reasons.append({"code": b.code, "detail": b.detail})
             self.out.graph = self.out.plan = None
+        self._account()
         return self.out
+
+    def _account(self):
+        """Traço por valor completo (E1): todo valor de átomo da origem sem registro ganha um — nome e
+        identificador não atravessam (o destino recebe nome derivado); o resto, sem realização usada, ou, se a
+        unidade foi bloqueada, o código do bloqueio."""
+        pre = f"ex:{self.L.fixture_id.lower().replace('-', '_')}__"
+        seen = {(t.get("individual", "")[len(pre):], t["input"]["atom_id"]) for t in self.out.traces}
+        blocked = self.out.reasons[0] if self.out.reasons else None
+        items = []
+        for s in self.L.sets.values():
+            if s.name is not None and s.name.atom:
+                items.append((s.name.atom, s.name.raw, s.sid, "name"))
+        for r in self.L.rules.values():
+            for a, raw in r.atoms.items():
+                items.append((a, raw, r.rid, "name" if a.endswith(":name") or a.endswith(".name") else "value"))
+        for atom, raw, ind, kind in items:
+            if (ind, atom) in seen or raw is None:
+                continue
+            seen.add((ind, atom))
+            if blocked:
+                self.trace(atom=atom, raw=raw, result="blocked", code=blocked["code"], individual=ind,
+                           detail=f"unidade bloqueada antes deste valor: {blocked['detail']}")
+            elif (ind, atom) in self.consumed:
+                axs, why = self.consumed[(ind, atom)]
+                self.trace(atom=atom, raw=raw, result="omitted", individual=ind, axioms=axs,
+                           meta=["valor usado na decisão do lowering, sem campo próprio no destino"], detail=why)
+            elif kind == "name":
+                self.trace(atom=atom, raw=raw, result="blocked", code="NO_REALIZATION", individual=ind, rule="T-NAME",
+                           detail="nome da origem não atravessa: o destino recebe nome derivado (C26 derived_name)")
+            else:
+                self.trace(atom=atom, raw=raw, result="blocked", code="NO_REALIZATION", individual=ind,
+                           detail="valor sem realização usada no destino nesta direção")
 
     def loss(self, code, fld, detail, step_losses=None):
         d = {"code": code, "field": fld, "detail": detail}
@@ -307,6 +341,8 @@ class Translator:
                 raise Blocked("NO_REALIZATION", "regra sem seletor: alcance 'toda a rede' é realização (c2+)")
             return True
         s = sel[0]
+        self.consumed[(r.rid, s.labels.atom)] = ([], "seleção por rótulo resolvida em anexação aos pontos com o "
+                                                     "rótulo (realização do vínculo)")
         if not self.K.structural:
             self.trace(atom=s.labels.atom, raw=s.labels.raw, result="blocked", code="NO_REALIZATION",
                        detail="seleção por rótulo vira anexação só pela realização do vínculo (c2+)")
@@ -505,6 +541,10 @@ class Translator:
             # o que esta permissão cobre também não é decidido por regra posterior: para quem vem depois, conta
             # como já decidido (sai do espaço restante), como a negação
             denied.append(me)
+        for b in boxes:
+            for a in b["rule"].atoms:
+                self.consumed[(b["rule"].rid, a)] = (["AX-NET-04", "AX-NET-05", "AX-NET-10"],
+                                                    "compilado no conjunto efetivo do destino só-permissão")
         self.out.consequences.append({"kind": "effective_set_compiled", "sets": g["sets"],
                                       "axioms": ["AX-NET-04"] + (["AX-NET-05"] if tie == {"deny_over_allow"} else [])})
         out = []

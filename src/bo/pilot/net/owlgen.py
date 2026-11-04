@@ -125,6 +125,7 @@ def tbox_ttl(control: str, cs=None) -> str:
         lines.append(f'{iri} a owl:DatatypeProperty ; rdfs:label "{concept.split(":", 1)[1]}"@pt ; '
                      f'rdfs:domain bo:FilterRule ; bo:fromConcept "{concept}" .')
     lines.append("bo:fromConcept a owl:AnnotationProperty .")
+    lines.append("skos:definition a owl:AnnotationProperty .")
     for v in AX.CONTROLLED_VALUES:
         lines.append(f"{v} a owl:NamedIndividual , bo:ControlledValue .")
     if control == "c3_full":

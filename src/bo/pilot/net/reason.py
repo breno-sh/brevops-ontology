@@ -106,9 +106,13 @@ def abox(lifted: list, structural: bool) -> rdflib.Graph:
     return g
 
 
+def nt_sorted(g: rdflib.Graph) -> str:
+    """N-Triples em ordem estável (a serialização do rdflib não fixa ordem): hash e cache determinísticos."""
+    return "\n".join(sorted(l for l in g.serialize(format="nt").splitlines() if l.strip())) + "\n"
+
+
 def input_sha(lifted: list) -> str:
-    g = abox(lifted, True)
-    return hashlib.sha256(g.serialize(format="nt").encode()).hexdigest()
+    return hashlib.sha256(nt_sorted(abox(lifted, True)).encode()).hexdigest()
 
 
 # --------------------------------------------------------------------------------------------- controles
@@ -221,7 +225,7 @@ def _c3(lifted: list, cs, tmp: Path | None) -> dict:
     ab = abox(lifted, True)
     out = {}
     try:
-        g = hermit(tb + ab.serialize(format="turtle"), tmp)
+        g = hermit(tb + nt_sorted(ab), tmp)
         out = _collect(g, lifted, "c3_full", ab)
         reasoned = g
     except InconsistentError:
@@ -230,7 +234,7 @@ def _c3(lifted: list, cs, tmp: Path | None) -> dict:
         for L in lifted:
             abL = abox([L], True)
             try:
-                gL = hermit(tb + abL.serialize(format="turtle"), tmp)
+                gL = hermit(tb + nt_sorted(abL), tmp)
                 out.update(_collect(gL, [L], "c3_full", abL))
                 reasoned += gL
             except InconsistentError as e:

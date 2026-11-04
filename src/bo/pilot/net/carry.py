@@ -110,6 +110,15 @@ def carry_group(cs, source_atom: str, raw, target_atom: str, ctx=None, bindings:
             if not g.ok:
                 return Out("blocked", code=VERDICT_CODE.get(g.verdict, "UNPROVEN"), claim_id=g.claim_id,
                            detail=f"alegação de grupo {g.claim_id} com veredito {g.verdict}", rule="T-UNPROVEN")
+            guard = g.claim.get("guard") or {"all": []}
+            if isinstance(guard, str):
+                guard = json.loads(guard)
+            from bo.semantics import guards as G
+            gv, gt = G.evaluate(guard, ctx or {})
+            if gv != G.TRUE:
+                code = "CONDITION_FALSE" if gv == G.FALSE else "CONDITION_INDETERMINATE"
+                return Out("blocked", code=code, claim_id=g.claim_id, rule="T-GUARD", guard=gv,
+                           detail=f"guarda da alegação de grupo {gv.lower()}: {gt}")
             try:
                 steps = g.group["steps"]
                 for st in steps:
@@ -126,9 +135,11 @@ def carry_group(cs, source_atom: str, raw, target_atom: str, ctx=None, bindings:
             side_dst = "object" if g.direction == "forward" else "subject"
             for var in g.group["variables"]:
                 if var["side"] == side_dst and var["field"] == target_atom and var["name"] in env:
-                    return Out("carried", env[var["name"]], claim_id=g.claim_id,
-                               fn={"name": "+".join(s["name"] for s in steps), "params": {}},
-                               detail="alegação de grupo")
+                    o = Out("carried", env[var["name"]], claim_id=g.claim_id,
+                            fn={"name": "+".join(s["name"] for s in steps), "params": {}},
+                            detail="alegação de grupo")
+                    o.inputs = [v["field"] for v in g.group["variables"] if v["side"] == side_src]
+                    return o
     return None
 
 

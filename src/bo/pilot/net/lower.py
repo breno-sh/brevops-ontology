@@ -41,6 +41,31 @@ class Builder:
         self.set_nodes = {}       # índice do grupo -> nó do conjunto
         self.tags = {}
 
+    # ------------------------------------------------------------ contexto das guardas (C10)
+    def guard_ctx(self, tr) -> dict:
+        """Contexto da guarda: 'subject.<campo>' = valor cru da ocorrência de origem (com e sem o prefixo do bloco),
+        presença de bloco (allow/deny) como valor ou ABSENT; 'object.<campo>' = o que o lowering já decidiu para
+        a ocorrência de destino. Termo que não está aqui fica não lido (guarda INDETERMINATE, nunca TRUE)."""
+        from bo.semantics.vocab import ABSENT
+        ctx = {}
+        r = tr.get("src_rule")
+        if r is not None:
+            for a, raw in r.atoms.items():
+                path = a.split(":", 2)[2]
+                for key in {path, path.split(".", 1)[1] if "." in path and "block_path" in r.tf
+                            and path.startswith(r.tf["block_path"] + ".") else path}:
+                    ctx[f"subject.{key}"] = ABSENT if raw is None else raw
+            if r.provider == "google":
+                effs = {m["effect"].value for m in r.matches if m.get("effect") is not None}
+                for b in ("allow", "deny"):
+                    ctx[f"subject.{b}"] = {"present": True} if b in effs else ABSENT
+        for k, v in (tr.get("object") or {}).items():
+            ctx[f"object.{k}"] = v
+        return ctx
+
+    def decide(self, tr, field, value):
+        tr.setdefault("object", {})[field] = value
+
     # ------------------------------------------------------------ resolução de um campo
     def resolve(self, tr, prop, target_field, target_atom, *, required=True, neutral=None, codec=None,
                 element=False, list_ok=False):
@@ -59,7 +84,7 @@ class Builder:
             raw = f.raw
             if element is not False:
                 raw = element
-            o = CY.carry(T.cs, f.atom, raw, target_atom, element=element is not False)
+            o = CY.carry(T.cs, f.atom, raw, target_atom, ctx=self.guard_ctx(tr), element=element is not False)
             if o.ok:
                 v = o.value
                 if list_ok and not isinstance(v, list):
@@ -153,6 +178,10 @@ class Builder:
             T.trace(atom=sp.atom or _construct_atom(tr, T), raw=sp.raw, result="blocked", code="OUT_OF_SUBSET",
                     individual=r.rid, prop="bo:ruleSourcePorts",
                     detail="porta de origem sem realização no destino: regra omitida (perda declarada)")
+            for a, raw in r.atoms.items():
+                if raw is not None and a != sp.atom:
+                    T.trace(atom=a, raw=raw, result="blocked", code="OUT_OF_SUBSET", individual=r.rid,
+                            detail="regra omitida inteira (porta de origem sem realização; perda SRC_PORT_DROPPED)")
             return True
         if not src_ports and sp is not None and sp.status in ("symbolic", "unread"):
             raise_block(T, tr, "src_ports", "porta de origem desconhecida", "UNKNOWN_SYMBOLIC_INPUT")
@@ -170,7 +199,7 @@ class Builder:
         facts = [_src_fact(tr, "priority") for tr in real]
         res = {}
         if real and all(f is not None and f.origin == "atom" and f.status == "known" for f in facts):
-            outs = [CY.carry(T.cs, f.atom, f.raw, target_atom) for f in facts]
+            outs = [CY.carry(T.cs, f.atom, f.raw, target_atom, ctx=self.guard_ctx(tr)) for f, tr in zip(facts, real)]
             if all(o.ok for o in outs):
                 src = [f.value for f in facts]
                 dst = [o.value for o in outs]
@@ -219,6 +248,42 @@ class Builder:
         raise Blocked("UNPROVEN" if any(f is not None and f.status == "known" for f in facts) else "UNKNOWN_INPUT",
                       f"prioridade no destino: {why_carry}; ordem da origem desconhecida no controle")
 
+    def mark_allow_only(self, tr):
+        """Destino só-permissão: o efeito (permitir) e a prioridade da origem decidem que a regra entra, sem campo
+        próprio; a porta de origem 'qualquer' é a ausência de filtro no destino."""
+        r = tr.get("src_rule")
+        if r is None or tr.get("compiled"):
+            return
+        T = self.T
+        for prop, why, axs in (("effect", "efeito permitir realizado pela própria regra no destino só-permissão",
+                                ["AX-NET-01", "AX-NET-10"]),
+                               ("priority", "ordem irrelevante entre permissões no destino só-permissão",
+                                ["AX-NET-02"])):
+            f = r.facts.get(prop)
+            if f is not None and f.atom:
+                T.consumed[(r.rid, f.atom)] = (axs, why)
+        sp = r.facts.get("src_ports")
+        if sp is not None and sp.atom and sp.status == "known" and sp.value is None:
+            T.consumed[(r.rid, sp.atom)] = ([], "porta de origem 'qualquer': o destino não filtra porta de origem")
+
+    def mark_group(self, tr, o, main_atom):
+        r = tr.get("src_rule")
+        for fld in getattr(o, "inputs", []) or []:
+            if r is not None and fld != main_atom:
+                self.T.consumed[(r.rid, fld)] = ([], f"transportado com {main_atom} pela alegação de grupo {o.claim_id}")
+
+    def mark_src_any(self, tr):
+        r = tr.get("src_rule")
+        sp = r.facts.get("src_ports") if r is not None else None
+        if sp is not None and sp.atom and sp.status == "known" and sp.value is None:
+            self.T.consumed[(r.rid, sp.atom)] = ([], "porta de origem 'qualquer': o destino não filtra porta de origem")
+
+    def mark_any(self, tr, prop, why):
+        r = tr.get("src_rule")
+        f = r.facts.get(prop) if r is not None else None
+        if f is not None and f.atom and f.status == "known":
+            self.T.consumed[(r.rid, f.atom)] = ([], why)
+
     def depends(self, *nodes):
         return [self.P.order_of(n) for n in nodes if n]
 
@@ -261,8 +326,7 @@ class AwsBuilder(Builder):
         from .translate import lit, name_of, refterm, val
         sn = P.node("bo:FilterRuleSet")
         self.set_nodes[gi] = sn
-        P.step(sn, "aws_security_group", [val("description", lit("conjunto traduzido pelo piloto"), "synthesized")],
-               name=name_of(P, sn, "bo-sg"), name_field="name",
+        P.step(sn, "aws_security_group", [], name=name_of(P, sn, "bo-sg"), name_field="name",
                choices=[{"choice_id": f"CH-AWS-RULE-{gi}", "options": ["aws_security_group_rule",
                                                                        "aws_vpc_security_group_ingress_rule"],
                          "selected": "aws_security_group_rule",
@@ -271,6 +335,7 @@ class AwsBuilder(Builder):
             eff = self.neutral(tr, "effect")
             if eff != "allow":
                 raise_block(T, tr, "effect", "destino só-permissão: regra que não permite não tem realização")
+            self.mark_allow_only(tr)
             if self.unexpressible(tr, src_ports=False, local=False):
                 continue
             cn = P.node("bo:FilterRule", component_of=sn, occurrence=[f"g{gi}", f"r{k}"])
@@ -280,6 +345,7 @@ class AwsBuilder(Builder):
             t, o = self.resolve(tr, "direction", "type", "aws:aws_security_group_rule:type",
                                 neutral=self.neutral(tr, "direction"), codec=lambda d: d)
             vals.append(val("type", t, o))
+            self.decide(tr, "type", t["value"])
             pt, po = self.resolve(tr, "protocol", "protocol", "aws:aws_security_group_rule:protocol",
                                   neutral=self.neutral(tr, "protocol"), codec=lambda p: V.proto_out("aws", p))
             vals.append(val("protocol", pt, po))
@@ -300,18 +366,19 @@ class AwsBuilder(Builder):
             for tf in ("from_port", "to_port"):
                 tatom = f"aws:aws_security_group_rule:{tf}"
                 o = None
+                src_atom = f.atom
                 if r.provider in ("google", "azurerm"):
                     elems = f.raw if isinstance(f.raw, list) else [f.raw]
                     if len(elems) != 1:
                         raise_block(self.T, tr, "dst_ports", "lista de faixas: uma regra por faixa exige projeção")
-                    o = CY.carry_group(self.T.cs, f.atom, elems[0], tatom, bindings={f.atom: elems[0]})
+                    o = CY.carry_group(self.T.cs, f.atom, elems[0], tatom, ctx=self.guard_ctx(tr), bindings={f.atom: elems[0]})
                 else:
                     src_atom = f.atom if tf == "from_port" else f.atom.rsplit(".", 1)[0] + (
                         ".max" if r.provider == "oci" else ".to_port")
                     if r.provider == "aws":
                         src_atom = f.atom.replace("from_port", tf)
                     raw = r.atoms.get(src_atom)
-                    o = CY.carry(self.T.cs, src_atom, raw, tatom)
+                    o = CY.carry(self.T.cs, src_atom, raw, tatom, ctx=self.guard_ctx(tr))
                 if o is None or not o.ok:
                     code = (o.code if o else "UNPROVEN") or "UNPROVEN"
                     self.T.trace(atom=f.atom, raw=f.raw, result="blocked", code=code, individual=r.rid,
@@ -319,9 +386,11 @@ class AwsBuilder(Builder):
                                  detail=(o.detail if o else "nenhuma alegação de porta"))
                     from .translate import Blocked
                     raise Blocked(code, f"porta {tf}: {(o.detail if o else 'sem alegação')}")
-                self.T.trace(atom=f.atom, raw=f.raw, result="carried", out_atom=tatom, out_value=o.value,
+                self.T.trace(atom=src_atom if r.provider not in ("google", "azurerm") else f.atom, raw=f.raw,
+                             result="carried", out_atom=tatom, out_value=o.value,
                              claim_id=o.claim_id, prop="bo:rulePortRangeStart" if tf == "from_port" else "bo:rulePortRangeEnd",
                              fn=o.fn, individual=r.rid, meta=[f"alegação {o.claim_id}"])
+                self.mark_group(tr, o, f.atom)
                 vals.append(val(tf, lit(o.value)))
             return
         n = self.neutral(tr, "dst_ports")
@@ -408,6 +477,7 @@ class GoogleBuilder(Builder):
             t, o = self.resolve(tr, "direction", "direction", "google:google_compute_firewall:direction",
                                 neutral=self.neutral(tr, "direction"), codec=lambda d: CY.lower_direction("google", d))
             vals.append(val("direction", t, o))
+            self.decide(tr, "direction", t["value"])
             d = t["value"].lower()
             pr = self._priority(tr)
             if pr is not None:
@@ -416,9 +486,23 @@ class GoogleBuilder(Builder):
             if eff not in ("allow", "deny"):
                 raise_block(T, tr, "effect", "efeito desconhecido: bloco allow{}/deny{} sem escolha", "UNKNOWN_INPUT")
             blk = eff
+            from bo.semantics.vocab import ABSENT
+            self.decide(tr, blk, {"present": True})
+            self.decide(tr, "deny" if blk == "allow" else "allow", ABSENT)
+            fe = _src_fact(tr, "effect")
+            if fe is not None and fe.origin == "atom" and fe.status == "known":
+                T.trace(atom=fe.atom, raw=fe.raw, result="carried", out_atom=f"google:google_compute_firewall:{blk}",
+                        out_value=blk, prop="bo:hasEffect", individual=tr["src_rule"].rid,
+                        meta=["codec de realização do efeito (valor publicado do atributo) -> bloco allow{}/deny{}"],
+                        realization="RZ-google-effect", detail="efeito descido pela escolha do bloco no destino")
             pt, po = self.resolve(tr, "protocol", f"{blk}.0.protocol", f"google:google_compute_firewall:{blk}.protocol",
                                   neutral=self.neutral(tr, "protocol"), codec=lambda p: V.proto_out("google", p))
             vals.append(val(f"{blk}.0.protocol", pt, po))
+            if pt["value"] not in ("tcp", "udp"):
+                self.mark_any(tr, "dst_ports", "protocolo sem porta: a faixa de portas da origem não se aplica")
+                if tr.get("match") is not None and tr["match"]["dst_ports"].atom and tr["src_rule"] is not None:
+                    T.consumed[(tr["src_rule"].rid, tr["match"]["dst_ports"].atom)] = (
+                        [], "protocolo sem porta: a faixa de portas da origem não se aplica")
             if pt["value"] in ("tcp", "udp"):
                 f = _src_fact(tr, "dst_ports")
                 if f is not None and f.origin == "atom" and f.status == "known" and tr["src_rule"].provider in ("aws", "oci"):
@@ -442,6 +526,11 @@ class GoogleBuilder(Builder):
             if fl is not None and fl.status != "absent":
                 t3, o3 = self.resolve(tr, "local", lf, f"google:google_compute_firewall:{lf}", list_ok=True)
                 vals.append(val(lf, t3, o3))
+            elif fl is not None and fl.atom and fl.raw is not None:
+                self.mark_any(tr, "local", "endereço local 'qualquer': sem filtro local no destino")
+                if tr["src_rule"].facts.get("local") is not None:
+                    self.T.consumed[(tr["src_rule"].rid, fl.atom)] = ([], "endereço local 'qualquer': sem filtro local no destino")
+            self.mark_src_any(tr)
             vals.append(val("target_tags", lit([tag]), "synthesized"))
             P.step(cn, "google_compute_firewall", vals, name=name_of(P, cn, "bo-fw"), name_field="name",
                    depends=self.depends(self.net))
@@ -456,7 +545,7 @@ class GoogleBuilder(Builder):
         T, r = self.T, tr["src_rule"]
         tatom = f"google:google_compute_firewall:{blk}.ports"
         binds = dict(r.atoms)
-        o = CY.carry_group(T.cs, f.atom, None, tatom, bindings=binds)
+        o = CY.carry_group(T.cs, f.atom, None, tatom, ctx=self.guard_ctx(tr), bindings=binds)
         if o is None or not o.ok:
             code = (o.code if o else "UNPROVEN") or "UNPROVEN"
             T.trace(atom=f.atom, raw=f.raw, result="blocked", code=code, individual=r.rid, prop="bo:ruleDestinationPorts",
@@ -465,6 +554,7 @@ class GoogleBuilder(Builder):
         v = o.value if isinstance(o.value, list) else [o.value]
         T.trace(atom=f.atom, raw=f.raw, result="carried", out_atom=tatom, out_value=v, claim_id=o.claim_id,
                 prop="bo:ruleDestinationPorts", fn=o.fn, individual=r.rid, meta=[f"alegação {o.claim_id}"])
+        self.mark_group(tr, o, f.atom)
         return val(f"{blk}.0.ports", lit(v))
 
     def endpoints(self, groups):
@@ -534,17 +624,19 @@ class AzureBuilder(Builder):
             vals = [val("resource_group_name", refterm(P, self.rg, "azurerm_resource_group", "name")),
                     val("network_security_group_name", refterm(P, sn, "azurerm_network_security_group", "name"))]
             A = "azurerm:azurerm_network_security_rule:"
-            t, o = self.resolve(tr, "direction", "direction", A + "direction", neutral=self.neutral(tr, "direction"),
-                                codec=lambda d: CY.lower_direction("azurerm", d))
-            vals.append(val("direction", t, o))
             eff = self.neutral(tr, "effect")
             f = _src_fact(tr, "effect")
             if f is not None and f.origin == "atom":
-                t, o = self.resolve(tr, "effect", "access", A + "access")
+                ta, oa = self.resolve(tr, "effect", "access", A + "access")
             else:
-                t, o = self.resolve(tr, "effect", "access", A + "access", neutral=eff,
-                                    codec=lambda e: CY.lower_effect("azurerm", e))
-            vals.append(val("access", t, o))
+                ta, oa = self.resolve(tr, "effect", "access", A + "access", neutral=eff,
+                                      codec=lambda e: CY.lower_effect("azurerm", e))
+            self.decide(tr, "access", ta["value"])
+            t, o = self.resolve(tr, "direction", "direction", A + "direction", neutral=self.neutral(tr, "direction"),
+                                codec=lambda d: CY.lower_direction("azurerm", d))
+            vals.append(val("direction", t, o))
+            self.decide(tr, "direction", t["value"])
+            vals.append(val("access", ta, oa))
             pr = self._priority(tr, used)
             vals.append(val("priority", lit(pr[0]), pr[1]))
             pt, po = self.resolve(tr, "protocol", "protocol", A + "protocol", neutral=self.neutral(tr, "protocol"),
@@ -566,7 +658,8 @@ class AzureBuilder(Builder):
         T = self.T
         if f is not None and f.origin == "atom" and f.status == "known" and tr["src_rule"].provider in ("aws", "oci"):
             r = tr["src_rule"]
-            o = CY.carry_group(T.cs, f.atom, None, A + "destination_port_range", bindings=dict(r.atoms))
+            o = CY.carry_group(T.cs, f.atom, None, A + "destination_port_range", ctx=self.guard_ctx(tr),
+                               bindings=dict(r.atoms))
             if o is None or not o.ok:
                 code = (o.code if o else "UNPROVEN") or "UNPROVEN"
                 T.trace(atom=f.atom, raw=f.raw, result="blocked", code=code, individual=r.rid,
@@ -577,6 +670,7 @@ class AzureBuilder(Builder):
             T.trace(atom=f.atom, raw=f.raw, result="carried", out_atom=A + "destination_port_range", out_value=o.value,
                     claim_id=o.claim_id, prop="bo:ruleDestinationPorts", fn=o.fn, individual=r.rid,
                     meta=[f"alegação {o.claim_id}"])
+            self.mark_group(tr, o, f.atom)
             vals.append(val("destination_port_range", lit(o.value)))
         elif f is not None and f.origin == "atom" and f.status != "absent":
             t, o = self.resolve(tr, "dst_ports", "destination_port_ranges", A + "destination_port_ranges", list_ok=True)
@@ -689,7 +783,17 @@ class OciBuilder(Builder):
                 raise_block(T, tr, "direction", "sentido escolhe o bloco (ingress/egress_security_rules): "
                                                 "desconhecido no controle", "UNKNOWN_INPUT")
             self.unexpressible(tr, src_ports=False, local=False, src_ports_block=True)
+            self.mark_allow_only(tr)
             blk = "ingress_security_rules" if d == "ingress" else "egress_security_rules"
+            fd = _src_fact(tr, "direction")
+            if fd is not None and fd.atom and fd.status == "known":
+                T.trace(atom=fd.atom, raw=fd.raw, result="carried", out_atom=f"oci:oci_core_security_list:{blk}",
+                        out_value=d, prop="bo:hasDirection", individual=tr["src_rule"].rid,
+                        meta=["codec de realização do sentido -> bloco ingress/egress_security_rules"],
+                        realization="RZ-oci-direction", detail="sentido descido pela escolha do bloco no destino")
+            fl = _src_fact(tr, "local")
+            if fl is not None and fl.atom and fl.raw is not None and fl.status == "absent":
+                T.consumed[(tr["src_rule"].rid, fl.atom)] = ([], "endereço local 'qualquer': sem filtro local no destino")
             remote = "source" if d == "ingress" else "destination"
             cn = P.node("bo:FilterRule", component_of=sn, occurrence=[f"g{gi}", f"r{k}"])
             P.ref(cn, sn, "bo:ruleInSet", "attachment")
@@ -736,23 +840,26 @@ class OciBuilder(Builder):
             r = tr["src_rule"]
             for mm in ("min", "max"):
                 tatom = f"{S}.{mm}"
+                src = f.atom
                 if r.provider == "aws":
                     src = f.atom.replace("from_port", "from_port" if mm == "min" else "to_port")
-                    o = CY.carry(T.cs, src, r.atoms.get(src), tatom)
+                    o = CY.carry(T.cs, src, r.atoms.get(src), tatom, ctx=self.guard_ctx(tr))
                 else:
                     elems = f.raw if isinstance(f.raw, list) else [f.raw]
                     if len(elems) != 1:
                         raise_block(T, tr, "dst_ports", "lista de faixas numa regra de faixa única")
-                    o = CY.carry_group(T.cs, f.atom, elems[0], tatom, bindings={f.atom: elems[0]})
+                    o = CY.carry_group(T.cs, f.atom, elems[0], tatom, ctx=self.guard_ctx(tr), bindings={f.atom: elems[0]})
                 if o is None or not o.ok:
                     code = (o.code if o else "UNPROVEN") or "UNPROVEN"
                     T.trace(atom=f.atom, raw=f.raw, result="blocked", code=code, individual=r.rid,
                             prop="bo:rulePortRangeStart", claim_id=o.claim_id if o else None,
                             detail=o.detail if o else "nenhuma alegação de porta")
                     raise Blocked(code, "portas: sem alegação OK")
-                T.trace(atom=f.atom, raw=f.raw, result="carried", out_atom=tatom, out_value=o.value, claim_id=o.claim_id,
+                T.trace(atom=src if r.provider == "aws" else f.atom, raw=f.raw, result="carried", out_atom=tatom,
+                        out_value=o.value, claim_id=o.claim_id,
                         prop="bo:rulePortRangeStart" if mm == "min" else "bo:rulePortRangeEnd", fn=o.fn,
                         individual=r.rid, meta=[f"alegação {o.claim_id}"])
+                self.mark_group(tr, o, f.atom)
                 vals.append(val(f"{base}.{mm}", lit(o.value)))
             return
         n = self.neutral(tr, "dst_ports")
