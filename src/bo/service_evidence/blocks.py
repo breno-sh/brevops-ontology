@@ -68,7 +68,7 @@ def run(ctx, T: str, api: dict, st: collections.Counter) -> None:
                       value={"aspect": "block_schema", "rule": "R-BLOCK-SCHEMA", "block_path": path,
                              "depth": depth, "facet_word": facet, **shape},
                       cit=common.schema_cite(p, ptr, "shape"))
-        attrs = shape["attributes"]
+        attrs = dict(x.rsplit(":", 1) for x in shape["attributes"])
         idl = sorted(a for a in ID_ATTRS if a in attrs and "c" in attrs[a])
         names = sorted(a for a in NAME_KEYS if a in attrs and "r" in attrs[a])
         one = shape["nesting_mode"] == "single" or shape.get("max_items") == 1

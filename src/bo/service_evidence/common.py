@@ -200,7 +200,9 @@ def block_shape(bt: dict) -> dict:
     sub-blocos. Op 'shape' da citação de schema."""
     b = bt.get("block") or {}
     out = {"nesting_mode": bt.get("nesting_mode"),
-           "attributes": {k: _flags(v) for k, v in sorted((b.get("attributes") or {}).items())},
+           # lista "nome:flags" (não objeto): chave JSON com nome de atributo Withheld (user_data, message_body)
+           # seguida de valor parece conteúdo para o privacy_lint, que é lexical
+           "attributes": [f"{k}:{_flags(v)}" for k, v in sorted((b.get("attributes") or {}).items())],
            "block_types": sorted((b.get("block_types") or {}).keys())}
     for k in ("min_items", "max_items"):
         if k in bt:
