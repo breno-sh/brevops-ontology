@@ -109,6 +109,24 @@ combinators:
   inverse:
     name: unwrap_single
     partial: true
+- name: list_to_set
+  kind: tuple
+  inputs:
+  - name: items
+    datatype: list
+    item_type:
+      datatype: any
+  outputs:
+  - name: items
+    datatype: set
+    item_type:
+      datatype: any
+  precondition: lista sem repetição
+  error: OutOfDomain
+  loss: ordem
+  inverse:
+    name: null
+    partial: false
 - name: unwrap_single
   kind: tuple
   inputs:

@@ -191,7 +191,7 @@ def c05() -> dict:
            "quantity_kind": "NOT_APPLICABLE", "unit_qudt": "NOT_APPLICABLE", "rate_window": None,
            "byte_convention": "NOT_APPLICABLE", "enum": ["STANDARD", "GLACIER"], "evidence": [EV_REF]}
     size = {"atom_id": "aws:aws_db_instance:allocated_storage", "datatype": {"kind": "scalar", "scalar": "integer"},
-            "quantity_kind": "quantitykind:InformationEntropy", "unit_qudt": "unit:GibiBYTE", "rate_window": None,
+            "quantity_kind": "quantitykind:AmountOfData", "unit_qudt": "unit:GibiBYTE", "rate_window": None,
             "byte_convention": "IEC", "range": {"min": 20, "max": 65536}, "evidence": [EV_DOC]}
     rate = {"atom_id": "aws:aws_api_gateway_method_settings:settings.throttling_rate_limit",
             "datatype": {"kind": "scalar", "scalar": "decimal"}, "quantity_kind": "quantitykind:Frequency",
@@ -200,7 +200,26 @@ def c05() -> dict:
     unk = {"atom_id": "aws:aws_db_instance:monitoring_interval", "datatype": {"kind": "scalar", "scalar": "integer"},
            "quantity_kind": "UNKNOWN", "unit_qudt": "UNKNOWN", "rate_window": None, "byte_convention": "NOT_APPLICABLE",
            "evidence": [EV_REF]}
-    return {"C05/value_space.jsonl": jsonl([days, cls, size, rate, unk])}
+    dur = {"atom_id": "aws:aws_db_instance:timeouts.create", "datatype": {"kind": "scalar", "scalar": "duration"},
+           "quantity_kind": "quantitykind:Time", "unit_qudt": "NOT_APPLICABLE", "rate_window": None,
+           "byte_convention": "NOT_APPLICABLE", "evidence": [EV_REF]}
+    bare = {"atom_id": "aws:aws_s3_object:content_length", "datatype": {"kind": "scalar", "scalar": "integer"},
+            "quantity_kind": "quantitykind:AmountOfData", "unit_qudt": "unit:BYTE", "rate_window": None,
+            "byte_convention": "NOT_APPLICABLE", "evidence": [EV_REF]}
+    gb = {"atom_id": "aws:aws_ebs_volume:size", "datatype": {"kind": "scalar", "scalar": "integer"},
+          "quantity_kind": "quantitykind:AmountOfData", "unit_qudt": "UNKNOWN", "rate_window": None,
+          "byte_convention": "NOT_APPLICABLE", "unit_candidates": ["unit:GigaBYTE", "unit:GibiBYTE"], "evidence": [EV_REF]}
+    iv = {"atom_id": "aws:aws_db_instance:monitoring_interval_s", "datatype": {"kind": "scalar", "scalar": "integer"},
+          "quantity_kind": "quantitykind:Time", "unit_qudt": "unit:SEC", "rate_window": None,
+          "byte_convention": "NOT_APPLICABLE", "allowed_values": [0, 1, 5, 60], "evidence": [EV_DOC]}
+    cpu = {"atom_id": "oci:oci_core_instance:shape_config.ocpus", "datatype": {"kind": "scalar", "scalar": "decimal"},
+           "quantity_kind": "quantitykind:Count", "unit_qudt": "unit:NUM", "rate_window": None,
+           "byte_convention": "NOT_APPLICABLE", "counted": "ocpu", "evidence": [EV_REF]}
+    tre = {"atom_id": "aws:aws_lb_target_group:health_check.matcher_ports", "datatype": {"kind": "tree", "format": "list",
+                                                                                    "value_scalar": "integer"},
+           "quantity_kind": "quantitykind:Count", "unit_qudt": "unit:NUM", "rate_window": None,
+           "byte_convention": "NOT_APPLICABLE", "range": {"min": 1, "max": 65535}, "evidence": [EV_REF]}
+    return {"C05/value_space.jsonl": jsonl([days, cls, size, rate, unk, dur, bare, gb, iv, cpu, tre])}
 
 
 # ------------------------------------------------------------------------------------------------- C06
@@ -477,6 +496,11 @@ def c10() -> dict:
                                             "unit": "NOT_APPLICABLE"}}],
                  "precondition": "valor escalar presente", "error": "nunca", "loss": "nenhuma",
                  "inverse": {"name": "unwrap_single", "partial": True}},
+                {"name": "list_to_set", "kind": "tuple",
+                 "inputs": [{"name": "items", "datatype": "list", "item_type": {"datatype": "any"}}],
+                 "outputs": [{"name": "items", "datatype": "set", "item_type": {"datatype": "any"}}],
+                 "precondition": "lista sem repetição", "error": "OutOfDomain", "loss": "ordem",
+                 "inverse": {"name": None, "partial": False}},
                 {"name": "unwrap_single", "kind": "tuple",
                  "inputs": [{"name": "items", "datatype": "list",
                              "item_type": {"datatype": "string", "quantity_kind": "NOT_APPLICABLE", "unit": "NOT_APPLICABLE"}}],
@@ -525,7 +549,10 @@ def c12() -> dict:
                                                                      "detail": "quota da conta sintética"},
            "evidence_state_after": "DOC_SUPPORTED"}
     oc2.pop("readback_id")
-    return {"C12/readback.jsonl": jsonl([rb]), "C12/outcomes.jsonl": jsonl([oc, oc2])}
+    oc3 = {**copy.deepcopy(oc2), "outcome_id": "OUT-0003",
+           "outcome": {"axis": "persistence", "value": "UNKNOWN", "block_code": "UNKNOWN_INPUT",
+                       "detail": "obrigatório no destino sem valor na origem"}}
+    return {"C12/readback.jsonl": jsonl([rb]), "C12/outcomes.jsonl": jsonl([oc, oc2, oc3])}
 
 
 def c13() -> dict:
@@ -946,7 +973,8 @@ def c25() -> dict:
     e4 = {"evidence_id": "SE-aws-0004", "provider": "aws", "pin": {"provider_version": "6.0.0"},
           "api_resource": {"service": "rds", "resource": "UNKNOWN"}, "terraform_resource_type": "aws_db_instance",
           "block_path": "blue_green_update", "fact_kind": "identity", "status": "stated",
-          "value": {"aspect": "block_schema"}, "level": "published", "schema": sch}
+          "value": {"aspect": "block_schema"}, "level": "published", "schema": {**sch, "op": "shape"},
+          "rule_id": "R-BLOCK-SHAPE"}
     e5 = {"evidence_id": "SE-aws-0005", "provider": "aws", "pin": {"provider_version": "6.0.0"},
           "api_resource": {"service": "rds", "resource": "DBInstance"}, "terraform_resource_type": "aws_db_instance",
           "fact_kind": "api_bridge", "status": "stated", "value": {"api_resource": "DBInstance"}, "level": "published",

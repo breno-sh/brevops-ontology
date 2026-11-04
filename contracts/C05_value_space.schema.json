@@ -1,13 +1,13 @@
 {
  "$schema": "https://json-schema.org/draft/2020-12/schema",
  "$id": "https://w3id.org/brevops/contracts/C05/value_space.schema.json",
- "title": "C05 value_space 3.0.0: espaço de valores por átomo",
+ "title": "C05 value_space 3.1.0: espaço de valores por átomo",
  "description": "datatype estruturado (escalar, tupla, árvore, referência); quantity_kind e unit_qudt = IRI | NOT_APPLICABLE | UNKNOWN; rate_window; byte_convention (SI | IEC); enum, faixa, formato, evidência.",
  "x-bo-contract": {
   "id": "C05",
   "name": "value_space",
-  "version": "3.0.0",
-  "status": "changed_v3",
+  "version": "3.1.0",
+  "status": "amended",
   "owner": "CONTRACTS",
   "files": [
    {
@@ -19,9 +19,10 @@
    }
   ],
   "semantic_rules": [
-   "C05-NA: quantity_kind NOT_APPLICABLE ⇔ unit_qudt NOT_APPLICABLE; UNKNOWN de grandeza ⇒ unidade UNKNOWN (NOT_APPLICABLE ≠ UNKNOWN)",
-   "C05-KIND: string, booleano, enum, árvore e referência não têm grandeza (NOT_APPLICABLE)",
-   "C05-BYTES: unidade de informação (byte/bit) exige byte_convention SI ou IEC",
+   "C05-NA: quantity_kind NOT_APPLICABLE ⇔ unit_qudt NOT_APPLICABLE, exceto duração (xsd:duration carrega a própria unidade: grandeza Time com unidade NOT_APPLICABLE); UNKNOWN de grandeza ⇒ unidade UNKNOWN (NOT_APPLICABLE ≠ UNKNOWN)",
+   "C05-KIND: string, booleano, enum e referência não têm grandeza (NOT_APPLICABLE); árvore só tem a do elemento quando value_scalar é numérico ou duração",
+   "C05-BYTES: unidade de informação com prefixo exige byte_convention SI ou IEC; unit:BYTE e unit:BIT sem prefixo aceitam NOT_APPLICABLE (convenção vácua)",
+   "C05-CAND: unit_candidates só com unidade UNKNOWN; allowed_values só em numérico; counted só em Count",
    "C05-RATE: grandeza de taxa (…Rate, Frequency ou unidade -PER-) exige rate_window",
    "C05-ENUM: enum só com escalar enum (e obrigatório nele); range só com numérico ou duração",
    "C05-UNIQ: atom_id único"
@@ -246,6 +247,35 @@
       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/evidence_item"
      },
      "minItems": 1
+    },
+    "unit_candidates": {
+     "type": "array",
+     "items": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(unit:|http://qudt\\.org/vocab/unit/)[A-Za-z0-9_\\-]+$"
+     },
+     "minItems": 2,
+     "uniqueItems": true,
+     "description": "unidades possíveis quando a convenção é aberta (ex.: GigaBYTE x GibiBYTE); só com unit_qudt UNKNOWN (emenda 3.1.0)"
+    },
+    "allowed_values": {
+     "type": "array",
+     "items": {
+      "type": "number"
+     },
+     "minItems": 1,
+     "uniqueItems": true,
+     "description": "valores válidos numéricos (escalar numérico ou elemento numérico de árvore)"
+    },
+    "counted": {
+     "enum": [
+      "vcpu",
+      "ocpu",
+      "ecpu",
+      "cpu"
+     ],
+     "description": "coisa contada quando a grandeza é Count"
     }
    },
    "required": [
@@ -286,6 +316,18 @@
       "properties": {
        "unit_qudt": {
         "const": "NOT_APPLICABLE"
+       },
+       "datatype": {
+        "not": {
+         "properties": {
+          "kind": {
+           "const": "scalar"
+          },
+          "scalar": {
+           "const": "duration"
+          }
+         }
+        }
        }
       }
      },
@@ -293,6 +335,20 @@
       "properties": {
        "quantity_kind": {
         "const": "NOT_APPLICABLE"
+       }
+      }
+     }
+    },
+    {
+     "if": {
+      "required": [
+       "unit_candidates"
+      ]
+     },
+     "then": {
+      "properties": {
+       "unit_qudt": {
+        "const": "UNKNOWN"
        }
       }
      }

@@ -1,12 +1,12 @@
 {
  "$schema": "https://json-schema.org/draft/2020-12/schema",
  "$id": "https://w3id.org/brevops/contracts/C10/transforms.schema.json",
- "title": "C10 transforms 3.1.0: transformações, gramática de guarda e tabela de composição",
+ "title": "C10 transforms 3.2.0: transformações, gramática de guarda e tabela de composição",
  "description": "Transformação escalar (grandeza de entrada = de saída) separada de combinador de tupla; domínio e codomínio, pré-condições, erro, perda, inversa parcial; durações com mês/ano só com contexto; gramática de guarda tipada e decidível (eq, in, present, refers_to_kind, region_in, edition_in, version_range) com teste de satisfatibilidade; tabela de composição.",
  "x-bo-contract": {
   "id": "C10",
   "name": "transforms",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "status": "amended",
   "owner": "CONTRACTS",
   "files": [
@@ -47,7 +47,7 @@
    "C10-SAT: cada sat_test dá o resultado esperado em bo.semantics.guards.satisfiable",
    "C10-TABLE: semantic_relation e value_domain_relation cobrem os 25 pares (r1, r2) uma vez cada; transport_fidelity os 16 pares (f1, f2)",
    "C10-GUARD: guarda passa no typecheck da gramática",
-   "C10-COLL: porta (e domínio/codomínio) list/set/map declara item_type (value_type do C09 3.2.0) e map declara key_type, espelhando a C09-COLL (emenda 3.1.0, pedido do TRANSFORMS)"
+   "C10-COLL: porta (e domínio/codomínio) list/set/map declara item_type (value_type do C09 3.2.0) e map declara key_type, espelhando a C09-COLL (emenda 3.1.0, pedido do TRANSFORMS); porta polimórfica usa item_type {datatype: any} (emenda 3.2.0)"
   ],
   "producers": [
    "SEMANTICS",
@@ -581,7 +581,8 @@
     "contract_version": {
      "enum": [
       "3.0.0",
-      "3.1.0"
+      "3.1.0",
+      "3.2.0"
      ]
     },
     "module": {
@@ -646,7 +647,24 @@
        ]
       },
       "item_type": {
-       "$ref": "https://w3id.org/brevops/contracts/C09/correspondences.schema.json#/$defs/value_type"
+       "anyOf": [
+        {
+         "$ref": "https://w3id.org/brevops/contracts/C09/correspondences.schema.json#/$defs/value_type"
+        },
+        {
+         "type": "object",
+         "properties": {
+          "datatype": {
+           "const": "any"
+          }
+         },
+         "required": [
+          "datatype"
+         ],
+         "additionalProperties": false
+        }
+       ],
+       "description": "value_type do C09, ou {datatype: any} para porta polimórfica (só no C10, nunca em alegação)"
       },
       "key_type": {
        "enum": [
@@ -738,7 +756,24 @@
        ]
       },
       "item_type": {
-       "$ref": "https://w3id.org/brevops/contracts/C09/correspondences.schema.json#/$defs/value_type"
+       "anyOf": [
+        {
+         "$ref": "https://w3id.org/brevops/contracts/C09/correspondences.schema.json#/$defs/value_type"
+        },
+        {
+         "type": "object",
+         "properties": {
+          "datatype": {
+           "const": "any"
+          }
+         },
+         "required": [
+          "datatype"
+         ],
+         "additionalProperties": false
+        }
+       ],
+       "description": "value_type do C09, ou {datatype: any} para porta polimórfica (só no C10, nunca em alegação)"
       },
       "key_type": {
        "enum": [
@@ -924,7 +959,24 @@
         ]
        },
        "item_type": {
-        "$ref": "https://w3id.org/brevops/contracts/C09/correspondences.schema.json#/$defs/value_type"
+        "anyOf": [
+         {
+          "$ref": "https://w3id.org/brevops/contracts/C09/correspondences.schema.json#/$defs/value_type"
+         },
+         {
+          "type": "object",
+          "properties": {
+           "datatype": {
+            "const": "any"
+           }
+          },
+          "required": [
+           "datatype"
+          ],
+          "additionalProperties": false
+         }
+        ],
+        "description": "value_type do C09, ou {datatype: any} para porta polimórfica (só no C10, nunca em alegação)"
        },
        "key_type": {
         "enum": [
@@ -1020,7 +1072,24 @@
         ]
        },
        "item_type": {
-        "$ref": "https://w3id.org/brevops/contracts/C09/correspondences.schema.json#/$defs/value_type"
+        "anyOf": [
+         {
+          "$ref": "https://w3id.org/brevops/contracts/C09/correspondences.schema.json#/$defs/value_type"
+         },
+         {
+          "type": "object",
+          "properties": {
+           "datatype": {
+            "const": "any"
+           }
+          },
+          "required": [
+           "datatype"
+          ],
+          "additionalProperties": false
+         }
+        ],
+        "description": "value_type do C09, ou {datatype: any} para porta polimórfica (só no C10, nunca em alegação)"
        },
        "key_type": {
         "enum": [

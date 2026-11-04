@@ -106,6 +106,20 @@ AMENDMENTS = [
     {"contract": "C10", "from": "3.0.0", "to": "3.1.0", "at": "2026-11-04T12:40:00-03:00", "requested_by": "TRANSFORMS",
      "source": "bo-transforms/results/TRANSFORMS/CONTRACT_CHANGE.txt",
      "change": "portas e domínio/codomínio aceitam list/set/map com item_type e key_type (C10-COLL)"},
+    # ---- emenda 9 (2026-11-04, E6 da tentativa 2 do PILOT-EXIT; razão em results/CONTRACTS/requests_ledger.json)
+    {"contract": "C00", "from": "3.1.0", "to": "3.2.0", "at": "2026-11-04T14:00:00-03:00",
+     "requested_by": "HARNESS-AWS, HARNESS-AZURE, SERVICE-EVIDENCE",
+     "source": "HARNESS-AWS item 2, HARNESS-AZURE proposta 4, SERVICE-EVIDENCE item 7",
+     "change": "outcome de persistência com block_code (só com UNKNOWN); schema_source.op shape"},
+    {"contract": "C05", "from": "3.0.0", "to": "3.1.0", "at": "2026-11-04T14:00:00-03:00", "requested_by": "UNITS",
+     "source": "results/UNITS/CONTRACT_CHANGE.txt (2-7)",
+     "change": "duração com unidade NOT_APPLICABLE; byte/bit sem prefixo com convenção NOT_APPLICABLE; unit_candidates; "
+               "allowed_values numérico; grandeza do elemento numérico de árvore; counted"},
+    {"contract": "C10", "from": "3.1.0", "to": "3.2.0", "at": "2026-11-04T14:00:00-03:00", "requested_by": "TRANSFORMS",
+     "source": "results/TRANSFORMS/CONTRACT_CHANGE.txt (2)", "change": "item_type {datatype: any} em porta polimórfica"},
+    {"contract": "C25", "from": "1.2.0", "to": "1.3.0", "at": "2026-11-04T14:00:00-03:00",
+     "requested_by": "SERVICE-EVIDENCE", "source": "results/SERVICE-EVIDENCE/CONTRACT_CHANGE.txt (7)",
+     "change": "rule_id de topo"},
 ]
 
 

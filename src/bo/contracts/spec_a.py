@@ -60,8 +60,11 @@ P_GOLDISH = r"(?i)(gold|truth|^label$|is_match|^expected|^answer$|^correct)"
 
 def c00_defs() -> dict:
     """Definições comuns. Todo contrato referencia estas pelo $id do C00."""
-    pers = obj({"axis": const("persistence"), "value": enum(*PERSISTENCE_VALUES), "detail": text(3)},
-               ["axis", "value"])
+    pers = obj({"axis": const("persistence"), "value": enum(*PERSISTENCE_VALUES), "detail": text(3),
+                "block_code": local("block_code")},
+               ["axis", "value"],
+               allOf=[{"if": {"required": ["block_code"]}, "then": {"properties": {"value": const("UNKNOWN")}}}],
+               description="block_code (C23) só com UNKNOWN: o caso foi barrado antes de implantar (emenda C00 3.2.0)")
     beh = obj({"axis": const("behavior"), "value": enum(*BEHAVIOR_VALUES), "detail": text(3)}, ["axis", "value"])
     lit = obj({"kind": const("literal"), "datatype": enum("string", "number", "bool", "null", "list", "map"),
                "value": {}}, ["kind", "datatype", "value"])
@@ -143,7 +146,7 @@ def c00_defs() -> dict:
         "web_citation": obj({"uri": string(r"^https://\S+$"), "retrieved_at": local("datetime"),
                              "section": text(1), "sentence": text(5)}, ["uri", "retrieved_at"]),
         "schema_source": obj({"provider_source": string(r"^registry\.terraform\.io/[a-z0-9-]+/[a-z0-9-]+$"),
-                              "schema_sha256": local("sha256"), "op": enum("node", "keys"),
+                              "schema_sha256": local("sha256"), "op": enum("node", "keys", "shape"),
                               "pointer": string(r"^(/[^/]*)+$"), "sentence": text(2),
                               "retrieved_at": local("datetime")},
                              ["provider_source", "schema_sha256", "op", "pointer", "sentence", "retrieved_at"],
@@ -213,7 +216,7 @@ def c00_spec() -> dict:
         "modules": arr(local("module"), 1)},
         ["timezone", "env", "index_sets", "contracts", "modules"], extra=True)
     return contract_schema(
-        "C00", "conventions", "3.1.0", "convenções e definições comuns", status="amended",
+        "C00", "conventions", "3.2.0", "convenções e definições comuns", status="amended",
         description="ID = stable_id; onda calculada do DAG; código em $BO_REPO/src/bo/<pacote>/; dados em "
                     "$BO_DATA/<ID>/; temporário em $BO_TMP=$BO_DATA/tmp/<ID> (nunca /tmp); caminhos só com índices "
                     "declarados em index_sets; datas ISO-8601 com fuso America/Recife. $defs comuns a todos os contratos.",
@@ -414,25 +417,38 @@ def c05() -> dict:
         "byte_convention": enum("SI", "IEC", "NOT_APPLICABLE"), "enum": arr({}, 1, unique=True),
         "range": obj({"min": number(), "max": number(), "min_exclusive": boolean(), "max_exclusive": boolean(),
                       "step": number(exclusiveMinimum=0)}),
-        "format": text(1), "sentinels": obj({}, extra=text(2)), "evidence": arr(c00("evidence_item"), 1)},
+        "format": text(1), "sentinels": obj({}, extra=text(2)), "evidence": arr(c00("evidence_item"), 1),
+        "unit_candidates": arr(string(r"^(unit:|http://qudt\.org/vocab/unit/)[A-Za-z0-9_\-]+$"), 2, unique=True,
+                               description="unidades possíveis quando a convenção é aberta (ex.: GigaBYTE x GibiBYTE); "
+                                           "só com unit_qudt UNKNOWN (emenda 3.1.0)"),
+        "allowed_values": arr(number(), 1, unique=True, description="valores válidos numéricos (escalar numérico ou "
+                                                                   "elemento numérico de árvore)"),
+        "counted": enum("vcpu", "ocpu", "ecpu", "cpu", description="coisa contada quando a grandeza é Count")},
         ["atom_id", "datatype", "quantity_kind", "unit_qudt", "rate_window", "byte_convention", "evidence"],
         allOf=[{"if": {"properties": {"quantity_kind": const("NOT_APPLICABLE")}},
                 "then": {"properties": {"unit_qudt": const("NOT_APPLICABLE"), "byte_convention": const("NOT_APPLICABLE"),
                                         "rate_window": {"type": "null"}}}},
-               {"if": {"properties": {"unit_qudt": const("NOT_APPLICABLE")}},
+               {"if": {"properties": {"unit_qudt": const("NOT_APPLICABLE"),
+                                      "datatype": {"not": {"properties": {"kind": const("scalar"),
+                                                                          "scalar": const("duration")}}}}},
                 "then": {"properties": {"quantity_kind": const("NOT_APPLICABLE")}}},
+               {"if": {"required": ["unit_candidates"]}, "then": {"properties": {"unit_qudt": const("UNKNOWN")}}},
                {"if": {"properties": {"quantity_kind": const("UNKNOWN")}},
                 "then": {"properties": {"unit_qudt": const("UNKNOWN")}}}])
     return contract_schema(
-        "C05", "value_space", "3.0.0", "espaço de valores por átomo", status="changed_v3",
+        "C05", "value_space", "3.1.0", "espaço de valores por átomo", status="amended",
         description="datatype estruturado (escalar, tupla, árvore, referência); quantity_kind e unit_qudt = IRI | "
                     "NOT_APPLICABLE | UNKNOWN; rate_window; byte_convention (SI | IEC); enum, faixa, formato, evidência.",
         files=[file_kind("value_space", "value_space.jsonl", "jsonl", "value_space", "record")], defs={"value_space": vs},
         producers=["UNITS"],
-        rules=["C05-NA: quantity_kind NOT_APPLICABLE ⇔ unit_qudt NOT_APPLICABLE; UNKNOWN de grandeza ⇒ unidade UNKNOWN "
+        rules=["C05-NA: quantity_kind NOT_APPLICABLE ⇔ unit_qudt NOT_APPLICABLE, exceto duração (xsd:duration carrega a "
+               "própria unidade: grandeza Time com unidade NOT_APPLICABLE); UNKNOWN de grandeza ⇒ unidade UNKNOWN "
                "(NOT_APPLICABLE ≠ UNKNOWN)",
-               "C05-KIND: string, booleano, enum, árvore e referência não têm grandeza (NOT_APPLICABLE)",
-               "C05-BYTES: unidade de informação (byte/bit) exige byte_convention SI ou IEC",
+               "C05-KIND: string, booleano, enum e referência não têm grandeza (NOT_APPLICABLE); árvore só tem a do "
+               "elemento quando value_scalar é numérico ou duração",
+               "C05-BYTES: unidade de informação com prefixo exige byte_convention SI ou IEC; unit:BYTE e unit:BIT sem "
+               "prefixo aceitam NOT_APPLICABLE (convenção vácua)",
+               "C05-CAND: unit_candidates só com unidade UNKNOWN; allowed_values só em numérico; counted só em Count",
                "C05-RATE: grandeza de taxa (…Rate, Frequency ou unidade -PER-) exige rate_window",
                "C05-ENUM: enum só com escalar enum (e obrigatório nele); range só com numérico ou duração",
                "C05-UNIQ: atom_id único"])

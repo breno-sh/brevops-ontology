@@ -283,15 +283,25 @@ def r_value_space(objs, ctx, path):
     for i, v in enumerate(objs):
         w = f"value_space[{i + 1}] {v.get('atom_id')}"
         qk, un, dt = v["quantity_kind"], v["unit_qudt"], v["datatype"]
-        if (qk == "NOT_APPLICABLE") != (un == "NOT_APPLICABLE"):
-            errs.append(f"{w}: NOT_APPLICABLE só nos dois (grandeza e unidade) ou em nenhum")
+        is_dur = dt["kind"] == "scalar" and dt.get("scalar") == "duration"
+        if (qk == "NOT_APPLICABLE") != (un == "NOT_APPLICABLE") and not (is_dur and un == "NOT_APPLICABLE"):
+            errs.append(f"{w}: NOT_APPLICABLE só nos dois (grandeza e unidade) ou em nenhum (exceto duração)")
         if qk == "UNKNOWN" and un != "UNKNOWN":
             errs.append(f"{w}: grandeza UNKNOWN com unidade {un} (unidade conhecida implica grandeza)")
-        numeric = dt["kind"] == "scalar" and dt["scalar"] in ("integer", "decimal", "duration")
+        numeric = (dt["kind"] == "scalar" and dt["scalar"] in ("integer", "decimal", "duration")) or \
+            (dt["kind"] == "tree" and dt.get("value_scalar") in ("integer", "decimal", "duration"))
         if not numeric and dt["kind"] != "tuple" and qk != "NOT_APPLICABLE":
             errs.append(f"{w}: {dt['kind']}/{dt.get('scalar', '')} não tem grandeza: use NOT_APPLICABLE (≠ UNKNOWN)")
-        if _is_bytes(un) and v["byte_convention"] not in ("SI", "IEC"):
+        bare = un.rsplit(":", 1)[-1].rsplit("/", 1)[-1] in ("BYTE", "BIT")
+        if _is_bytes(un) and v["byte_convention"] not in ("SI", "IEC") and not bare:
             errs.append(f"{w}: unidade de informação {un} sem byte_convention SI/IEC")
+        if "allowed_values" in v and not numeric:
+            errs.append(f"{w}: allowed_values em tipo não numérico")
+        if "counted" in v and not str(qk).endswith("Count"):
+            errs.append(f"{w}: counted só com grandeza Count")
+        cands = v.get("unit_candidates") or []
+        if cands and len({_is_bytes(c) for c in cands}) > 1:
+            errs.append(f"{w}: unit_candidates de grandezas diferentes")
         if not _is_bytes(un) and qk not in ("UNKNOWN",) and v["byte_convention"] in ("SI", "IEC"):
             errs.append(f"{w}: byte_convention {v['byte_convention']} sem unidade de informação")
         if _is_rate(qk, un) and not v["rate_window"]:

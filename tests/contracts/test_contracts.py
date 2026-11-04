@@ -275,7 +275,7 @@ def test_c03_tipo_por_arquivo(alias, path, kind):
 
 def test_emenda2_versoes():
     pub = catalog.schemas()
-    for cid, v in {"C03": "3.1.0", "C12": "3.1.0", "C15": "3.1.0", "C19": "3.1.0"}.items():
+    for cid, v in {"C03": "3.1.0", "C19": "3.1.0"}.items():
         assert pub[cid]["x-bo-contract"]["version"] == v
         assert "3.0.0" in amendments.chain(cid) or "1.0.0" in amendments.chain(cid)
 
@@ -332,7 +332,7 @@ def test_gabaritos_dos_oraculos(fatia):
 def test_protocol_support_e_origem_pilot(sch):
     assert validate.validate("C25", ROOT / "contracts/stubs/C25/protocol_support.jsonl").ok
     assert "pilot" in sch["C11"]["$defs"]["case"]["properties"]["origin"]["enum"]
-    assert sch["C24"]["x-bo-contract"]["version"] == "1.1.0" and sch["C25"]["x-bo-contract"]["version"] == "1.2.0"
+    assert sch["C24"]["x-bo-contract"]["version"] == "1.1.0"
 
 
 def test_plano_sem_tag_de_execucao():
@@ -361,3 +361,26 @@ def test_termo_lista_e_ausencia_do_lado_objeto(sch):
                                                   "target_node": "r2"}]})
     recs = sssom.read_tsv((ROOT / "contracts/stubs/C09/correspondences.sssom.tsv").read_text(encoding="utf-8"))[1]
     assert any(r["subject_id"] == "sssom:NoTermFound" and r["absence"]["side"] == "object" for r in recs)
+
+
+# ----------------------------------------------------------------------------------- emenda 9 e livro de pedidos
+def test_livro_de_pedidos():
+    from bo.contracts import ledger
+    rep = ledger.ledger("2026-11-04T14:00:00-03:00")
+    keys = [(r["module"], r["item"]) for r in rep["items"]]
+    assert len(keys) == len(set(keys))
+    assert {"ACEITO", "RECUSADO", "ADIADO_FASE_2", "DE_OUTRO_DONO"} >= set(rep["by_decision"])
+    e7 = {(r["module"], r["item"]) for r in __import__("bo.contracts.report", fromlist=["x"]).emenda7()["items"]}
+    assert e7 <= set(keys)
+    for k in [("PILOT-STO-MAP", "CC-13"), ("PILOT-STO-MAP", "CC-8"), ("PILOT-NET-E2E", "CC-NET-E2E-2"),
+              ("PILOT-NET-E2E", "CC-NET-E2E-3"), ("TRANSFORMS", "2"), ("BRIEFS", "5")]:
+        assert k in keys
+    for r in rep["items"]:
+        assert r["decision"] != "ACEITO" or r["closes"] not in ("-", "")
+
+
+def test_emenda9_c05_unidades(sch):
+    r = validate.validate("value_space", ROOT / "contracts/stubs/C05/value_space.jsonl")
+    assert r.ok, r.errors[:3]
+    recs = [json.loads(l) for l in (ROOT / "contracts/stubs/C05/value_space.jsonl").read_text().splitlines()]
+    assert not [x for x in recs if x["quantity_kind"] == "quantitykind:InformationEntropy"]

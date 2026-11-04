@@ -1,12 +1,12 @@
 {
  "$schema": "https://json-schema.org/draft/2020-12/schema",
  "$id": "https://w3id.org/brevops/contracts/C25/service_evidence.schema.json",
- "title": "C25 service_evidence 1.2.0: evidência de API e docs ligada ao pin",
+ "title": "C25 service_evidence 1.3.0: evidência de API e docs ligada ao pin",
  "description": "Fato de API/docs ligado ao pin: recurso de API, identidade, chave de importação, controlador de ciclo de vida, dono, alcance, estado de conexão, efeito, precedência, suporte a tag/TTL; nível (publicado | derivado | interpretado) e citação. Citação publicada separada de inferência; desconhecido explícito.",
  "x-bo-contract": {
   "id": "C25",
   "name": "service_evidence",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "status": "amended",
   "owner": "CONTRACTS",
   "files": [
@@ -103,6 +103,12 @@
     },
     "schema": {
      "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/schema_source"
+    },
+    "rule_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^[A-Z][A-Z0-9]*(-[A-Z0-9]+)+$",
+     "description": "regra do SERVICE-EVIDENCE que gerou o fato (emenda 1.3.0)"
     },
     "consulted": {
      "anyOf": [

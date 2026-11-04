@@ -1,12 +1,12 @@
 {
  "$schema": "https://json-schema.org/draft/2020-12/schema",
  "$id": "https://w3id.org/brevops/contracts/C00/conventions.schema.json",
- "title": "C00 conventions 3.1.0: convenções e definições comuns",
+ "title": "C00 conventions 3.2.0: convenções e definições comuns",
  "description": "ID = stable_id; onda calculada do DAG; código em $BO_REPO/src/bo/<pacote>/; dados em $BO_DATA/<ID>/; temporário em $BO_TMP=$BO_DATA/tmp/<ID> (nunca /tmp); caminhos só com índices declarados em index_sets; datas ISO-8601 com fuso America/Recife. $defs comuns a todos os contratos.",
  "x-bo-contract": {
   "id": "C00",
   "name": "conventions",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "status": "amended",
   "owner": "CONTRACTS",
   "files": [
@@ -352,13 +352,33 @@
     "detail": {
      "type": "string",
      "minLength": 3
+    },
+    "block_code": {
+     "$ref": "#/$defs/block_code"
     }
    },
    "required": [
     "axis",
     "value"
    ],
-   "additionalProperties": false
+   "additionalProperties": false,
+   "allOf": [
+    {
+     "if": {
+      "required": [
+       "block_code"
+      ]
+     },
+     "then": {
+      "properties": {
+       "value": {
+        "const": "UNKNOWN"
+       }
+      }
+     }
+    }
+   ],
+   "description": "block_code (C23) só com UNKNOWN: o caso foi barrado antes de implantar (emenda C00 3.2.0)"
   },
   "outcome_behavior": {
    "type": "object",
@@ -477,7 +497,8 @@
     "op": {
      "enum": [
       "node",
-      "keys"
+      "keys",
+      "shape"
      ]
     },
     "pointer": {

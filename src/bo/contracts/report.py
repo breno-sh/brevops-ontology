@@ -222,7 +222,8 @@ def producers() -> dict:
 def manifest_paths() -> list[str]:
     root = _base.repo()
     out = sorted(str(p.relative_to(root)) for p in (root / "contracts").rglob("*") if p.is_file())
-    out += ["results/CONTRACTS/adoption.json", "results/CONTRACTS/producers.json", "results/CONTRACTS/emenda7.json"]
+    out += ["results/CONTRACTS/adoption.json", "results/CONTRACTS/producers.json", "results/CONTRACTS/emenda7.json",
+            "results/CONTRACTS/requests_ledger.json"]
     return out
 
 
@@ -234,7 +235,9 @@ def main(argv=None) -> int:
     argv = list(sys.argv[1:] if argv is None else argv)
     root = _base.repo()
     out = _base.results_dir()
-    docs = {"adoption.json": adoption(), "producers.json": producers(), "emenda7.json": emenda7()}
+    from . import ledger as L
+    docs = {"adoption.json": adoption(), "producers.json": producers(), "emenda7.json": emenda7(),
+            "requests_ledger.json": L.ledger(_base.now(), L.EMENDA9_COMMIT)}
     if "--check" in argv:
         bad = []
         for name, d in docs.items():

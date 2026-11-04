@@ -157,6 +157,9 @@ def c25() -> dict:
         "block_path": string(r"^[A-Za-z0-9_]+(\.[A-Za-z0-9_]+)*$", description="bloco do tipo a que o fato se refere "
                                                                               "(emenda 1.1.0)"),
         "as_of": c00("date"), "schema": c00("schema_source"),
+        "rule_id": string(r"^[A-Z][A-Z0-9]*(-[A-Z0-9]+)+$",
+                                                        description="regra do SERVICE-EVIDENCE que gerou o fato "
+                                                                    "(emenda 1.3.0)"),
         "consulted": {"anyOf": [c00("doc_source"), c00("web_citation"), c00("schema_source")],
                       "description": "publicação consultada para um fato unknown (a busca pode ser refeita)"},
         "fact_kind": enum(*FACTS),
@@ -181,7 +184,7 @@ def c25() -> dict:
                {"if": {"properties": {"level": {"enum": ["published", "derived"]}}, "required": ["level"]},
                 "then": {"not": {"required": ["model_id"]}}}])
     return contract_schema(
-        "C25", "service_evidence", "1.2.0", "evidência de API e docs ligada ao pin", status="amended",
+        "C25", "service_evidence", "1.3.0", "evidência de API e docs ligada ao pin", status="amended",
         description="Fato de API/docs ligado ao pin: recurso de API, identidade, chave de importação, controlador de "
                     "ciclo de vida, dono, alcance, estado de conexão, efeito, precedência, suporte a tag/TTL; nível "
                     "(publicado | derivado | interpretado) e citação. Citação publicada separada de inferência; "
