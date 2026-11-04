@@ -1,0 +1,355 @@
+{
+ "holes": {
+  "aws": [],
+  "azurerm": [],
+  "google": [],
+  "oci": []
+ },
+ "providers": {
+  "aws": {
+   "aws_api_gateway_rest_api": [
+    "apigw",
+    "tagging"
+   ],
+   "aws_apigatewayv2_api": [
+    "apigwv2",
+    "tagging"
+   ],
+   "aws_cloudwatch_log_group": [
+    "logs",
+    "tagging"
+   ],
+   "aws_cloudwatch_metric_alarm": [
+    "tagging"
+   ],
+   "aws_db_instance": [
+    "rds_instances",
+    "tagging"
+   ],
+   "aws_db_subnet_group": [
+    "tagging"
+   ],
+   "aws_dynamodb_table": [
+    "dynamodb",
+    "tagging"
+   ],
+   "aws_efs_file_system": [
+    "efs",
+    "tagging"
+   ],
+   "aws_efs_mount_target": [
+    "cascata:pai"
+   ],
+   "aws_eip": [
+    "ec2_eips",
+    "tagging"
+   ],
+   "aws_elasticache_cluster": [
+    "elasticache",
+    "tagging"
+   ],
+   "aws_elasticache_subnet_group": [
+    "tagging"
+   ],
+   "aws_iam_policy": [
+    "iam_policies",
+    "tagging"
+   ],
+   "aws_iam_role": [
+    "iam_roles",
+    "tagging"
+   ],
+   "aws_iam_role_policy_attachment": [
+    "cascata:pai"
+   ],
+   "aws_internet_gateway": [
+    "tagging"
+   ],
+   "aws_kms_alias": [
+    "kms_aliases"
+   ],
+   "aws_kms_key": [
+    "kms",
+    "tagging"
+   ],
+   "aws_lambda_function": [
+    "lambda",
+    "tagging"
+   ],
+   "aws_lb": [
+    "elbv2",
+    "tagging"
+   ],
+   "aws_lb_listener": [
+    "tagging"
+   ],
+   "aws_lb_target_group": [
+    "tagging"
+   ],
+   "aws_nat_gateway": [
+    "ec2_nat",
+    "tagging"
+   ],
+   "aws_route53_zone": [
+    "route53",
+    "tagging"
+   ],
+   "aws_route_table": [
+    "tagging"
+   ],
+   "aws_route_table_association": [
+    "cascata:pai"
+   ],
+   "aws_s3_bucket": [
+    "s3",
+    "tagging"
+   ],
+   "aws_s3_bucket_lifecycle_configuration": [
+    "cascata:pai"
+   ],
+   "aws_s3_bucket_public_access_block": [
+    "cascata:pai"
+   ],
+   "aws_s3_bucket_server_side_encryption_configuration": [
+    "cascata:pai"
+   ],
+   "aws_s3_bucket_versioning": [
+    "cascata:pai"
+   ],
+   "aws_security_group": [
+    "tagging"
+   ],
+   "aws_sns_topic": [
+    "sns",
+    "tagging"
+   ],
+   "aws_sqs_queue": [
+    "sqs",
+    "tagging"
+   ],
+   "aws_subnet": [
+    "tagging"
+   ],
+   "aws_vpc": [
+    "ec2_vpcs",
+    "tagging"
+   ],
+   "aws_vpc_security_group_egress_rule": [
+    "tagging"
+   ],
+   "aws_vpc_security_group_ingress_rule": [
+    "tagging"
+   ]
+  },
+  "azurerm": {
+   "azurerm_api_management": [
+    "apim_deleted",
+    "resources"
+   ],
+   "azurerm_cdn_frontdoor_profile": [
+    "resources"
+   ],
+   "azurerm_cosmosdb_account": [
+    "resources"
+   ],
+   "azurerm_key_vault": [
+    "keyvault_deleted",
+    "resources"
+   ],
+   "azurerm_lb": [
+    "resources"
+   ],
+   "azurerm_linux_function_app": [
+    "resources"
+   ],
+   "azurerm_log_analytics_workspace": [
+    "resources"
+   ],
+   "azurerm_mssql_database": [
+    "resources"
+   ],
+   "azurerm_mssql_server": [
+    "resources"
+   ],
+   "azurerm_nat_gateway": [
+    "resources"
+   ],
+   "azurerm_network_security_group": [
+    "resources"
+   ],
+   "azurerm_network_security_rule": [
+    "resources"
+   ],
+   "azurerm_postgresql_flexible_server": [
+    "resources"
+   ],
+   "azurerm_public_ip": [
+    "resources"
+   ],
+   "azurerm_resource_group": [
+    "groups",
+    "resources"
+   ],
+   "azurerm_service_plan": [
+    "resources"
+   ],
+   "azurerm_servicebus_namespace": [
+    "resources"
+   ],
+   "azurerm_servicebus_queue": [
+    "resources"
+   ],
+   "azurerm_storage_account": [
+    "resources"
+   ],
+   "azurerm_storage_container": [
+    "resources"
+   ],
+   "azurerm_subnet": [
+    "resources"
+   ],
+   "azurerm_subnet_network_security_group_association": [
+    "cascata:pai",
+    "resources"
+   ],
+   "azurerm_virtual_network": [
+    "resources"
+   ]
+  },
+  "google": {
+   "google_cloud_run_v2_service": [
+    "asset_inventory"
+   ],
+   "google_cloudfunctions2_function": [
+    "asset_inventory"
+   ],
+   "google_compute_address": [
+    "asset_inventory",
+    "compute_addresses"
+   ],
+   "google_compute_firewall": [
+    "asset_inventory"
+   ],
+   "google_compute_forwarding_rule": [
+    "asset_inventory"
+   ],
+   "google_compute_global_address": [
+    "asset_inventory"
+   ],
+   "google_compute_network": [
+    "asset_inventory"
+   ],
+   "google_compute_router": [
+    "asset_inventory"
+   ],
+   "google_compute_router_nat": [
+    "asset_inventory"
+   ],
+   "google_compute_subnetwork": [
+    "asset_inventory"
+   ],
+   "google_firestore_database": [
+    "asset_inventory"
+   ],
+   "google_firestore_field": [
+    "asset_inventory",
+    "cascata:pai"
+   ],
+   "google_kms_crypto_key": [
+    "asset_inventory"
+   ],
+   "google_kms_key_ring": [
+    "asset_inventory",
+    "kms_keyrings"
+   ],
+   "google_logging_metric": [
+    "asset_inventory"
+   ],
+   "google_project_iam_member": [
+    "asset_inventory",
+    "cascata:pai"
+   ],
+   "google_pubsub_subscription": [
+    "asset_inventory"
+   ],
+   "google_pubsub_topic": [
+    "asset_inventory"
+   ],
+   "google_redis_instance": [
+    "asset_inventory"
+   ],
+   "google_service_account": [
+    "asset_inventory"
+   ],
+   "google_sql_database_instance": [
+    "asset_inventory",
+    "sql_instances"
+   ],
+   "google_storage_bucket": [
+    "asset_inventory"
+   ]
+  },
+  "oci": {
+   "oci_core_internet_gateway": [
+    "search"
+   ],
+   "oci_core_network_security_group": [
+    "search"
+   ],
+   "oci_core_network_security_group_security_rule": [
+    "cascata:pai",
+    "search"
+   ],
+   "oci_core_route_table": [
+    "search"
+   ],
+   "oci_core_security_list": [
+    "search"
+   ],
+   "oci_core_subnet": [
+    "search"
+   ],
+   "oci_core_vcn": [
+    "search"
+   ],
+   "oci_functions_application": [
+    "search"
+   ],
+   "oci_functions_function": [
+    "search"
+   ],
+   "oci_identity_compartment": [
+    "compartments",
+    "search"
+   ],
+   "oci_kms_key": [
+    "search"
+   ],
+   "oci_kms_vault": [
+    "search"
+   ],
+   "oci_logging_log": [
+    "search"
+   ],
+   "oci_logging_log_group": [
+    "search"
+   ],
+   "oci_nosql_table": [
+    "search"
+   ],
+   "oci_objectstorage_bucket": [
+    "search"
+   ],
+   "oci_ons_notification_topic": [
+    "search"
+   ],
+   "oci_ons_subscription": [
+    "search"
+   ],
+   "oci_queue_queue": [
+    "search"
+   ]
+  }
+ },
+ "schema": "bo.safety.sweep_coverage/1"
+}

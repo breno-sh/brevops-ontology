@@ -1,0 +1,28 @@
+SAFETY — notas para outros módulos (2026-11-04T02:51:14-03:00)
+Não são mudança de contrato (a interface redact(obj, context) e os arquivos do C16 seguem o publicado); são
+suposições de teste e de integração que a chegada do kit muda. Nada foi editado fora do owns do SAFETY.
+
+1. HARNESS-AWS: tests/harness/aws/test_haws_executor.py::test_cli_run_refused_without_kit_redactor_or_allowlist
+   Supõe que deploy/safety/redactor.py não existe e confere a mensagem "redator do kit". Com o kit mergeado, a
+   recusa continua acontecendo (INFRA_ERROR, nenhuma intenção, nada criado), mas pela regra seguinte do
+   executor ("allowlist de contas vazia", HAWS-IDENT-01). Mudança proposta no teste do HARNESS-AWS: aceitar
+   qualquer uma das duas recusas, por exemplo
+       assert r.outcome["outcome"]["value"] == "INFRA_ERROR"
+       assert ("redator do kit" in d) or ("allowlist de contas vazia" in d)   # d = detail
+   Medido nesta lane: 1 falha nos testes do HARNESS-AWS com o kit presente, 0 sem ele (68 testes).
+
+2. HARNESS-GCP: tests/harness/google/test_hg_executor.py::test_plano_reprovado_nao_chega_ao_runner e
+   test_hg_render.py::test_stub_do_c26_falha_unknown_input_sem_hcl já falham em bo/base sem o SAFETY
+   (2 falhas em 60, conferido no repositório principal); não têm relação com o kit.
+
+3. Módulos de nuvem (SMOKE-*, DEP-*, PROBE-*): o canal privado do manifesto (provider_resource_ref) fica fora
+   de $BO_DATA/<ID> e dos repositórios, em $BO_PRIVATE_DIR (padrão ~/.local/state/bo/manifests/<ID>). O
+   sandbox de leitura dessas lanes precisa liberar esse caminho (bo-lane refresh), como já libera
+   ~/.config/bo/allowlist só para o runner. A cópia pública em $BO_DATA/<ID>/ é a que os gates validam.
+
+4. Módulos de nuvem: o plan_guard exige a tag bo-run (valor = tag_value(batch_id), minúsculo) em todo tipo com
+   tag, allowed_account_ids no provider aws, e nome sintético bo-<lote>-NNNN (variável bo_names do runner) em
+   todo tipo sem tag. Conferido nos harnesses mergeados: AWS (default_tags bo-run, allowed_account_ids) e Azure
+   (tags bo-run) casam; OCI usa a chave freeform "bo_run" (com sublinhado), que não casa com o C16
+   (propertyNames ^bo-[a-z-]+$) nem com o filtro de posse: proposta = "bo-run"; Google não põe rótulo bo-run
+   nos templates gravados. Sem a tag, o plan_guard recusa (PG-TAG) antes do apply, que é o comportamento certo.

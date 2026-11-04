@@ -1,0 +1,100 @@
+{
+ "aliens": [
+  "N1 sem tag noutra região",
+  "N2 tag de outra execução",
+  "N3 prefixo bo- de outro lote",
+  "N4 formato sintético deste lote sem manifesto",
+  "N5 nome nosso noutro tipo",
+  "N6 bo-intent copiado sem bo-run",
+  "N7 já no baseline"
+ ],
+ "failed": 0,
+ "generated_at": "2026-11-04T03:02:59-03:00",
+ "providers": [
+  {
+   "baseline_diff_refused": true,
+   "baseline_diff_would_delete_aliens": 6,
+   "deleted_ours": 5,
+   "fails": [],
+   "foreign_after": 7,
+   "kept_aliens": 7,
+   "leak_found_and_reported": true,
+   "owned_live_after": 0,
+   "parallel_refused": true,
+   "provider": "aws",
+   "sweep_classes": {
+    "N1": "investigar",
+    "N2": "investigar",
+    "N3": "investigar",
+    "N4": "investigar",
+    "N5": "investigar",
+    "N6": "investigar",
+    "N7": "baseline"
+   }
+  },
+  {
+   "baseline_diff_refused": true,
+   "baseline_diff_would_delete_aliens": 6,
+   "deleted_ours": 4,
+   "fails": [],
+   "foreign_after": 7,
+   "kept_aliens": 7,
+   "leak_found_and_reported": true,
+   "owned_live_after": 0,
+   "parallel_refused": true,
+   "provider": "google",
+   "sweep_classes": {
+    "N1": "investigar",
+    "N2": "investigar",
+    "N3": "investigar",
+    "N4": "investigar",
+    "N5": "investigar",
+    "N6": "investigar",
+    "N7": "baseline"
+   }
+  },
+  {
+   "baseline_diff_refused": true,
+   "baseline_diff_would_delete_aliens": 6,
+   "deleted_ours": 5,
+   "fails": [],
+   "foreign_after": 7,
+   "kept_aliens": 7,
+   "leak_found_and_reported": true,
+   "owned_live_after": 0,
+   "parallel_refused": true,
+   "provider": "azurerm",
+   "sweep_classes": {
+    "N1": "investigar",
+    "N2": "investigar",
+    "N3": "investigar",
+    "N4": "investigar",
+    "N5": "investigar",
+    "N6": "investigar",
+    "N7": "baseline"
+   }
+  },
+  {
+   "baseline_diff_refused": true,
+   "baseline_diff_would_delete_aliens": 6,
+   "deleted_ours": 4,
+   "fails": [],
+   "foreign_after": 7,
+   "kept_aliens": 7,
+   "leak_found_and_reported": true,
+   "owned_live_after": 0,
+   "parallel_refused": true,
+   "provider": "oci",
+   "sweep_classes": {
+    "N1": "investigar",
+    "N2": "investigar",
+    "N3": "investigar",
+    "N4": "investigar",
+    "N5": "investigar",
+    "N6": "investigar",
+    "N7": "baseline"
+   }
+  }
+ ],
+ "schema": "bo.safety.no_baseline_delete/1"
+}

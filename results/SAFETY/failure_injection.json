@@ -1,0 +1,110 @@
+{
+ "checks": [
+  "R1 SIGKILL real",
+  "R2 manifesto legível",
+  "R3 intenções terminais e teardown completo",
+  "R4 só resíduo esperado",
+  "R5 nenhum alheio apagado",
+  "R6 pública = projeção, C16 válido",
+  "R7 ordem do protocolo"
+ ],
+ "generated_at": "2026-11-04T03:00:06-03:00",
+ "providers": {
+  "aws": {
+   "adoptions": 10,
+   "cut_tails": 36,
+   "failed": 0,
+   "kill_modes": [
+    "before",
+    "split",
+    "torn"
+   ],
+   "residue_kinds": [
+    "aws_kms_key:pending_deletion"
+   ],
+   "resource_types": [
+    "aws_route_table",
+    "aws_route_table_association",
+    "aws_s3_bucket",
+    "aws_kms_key",
+    "aws_kms_alias",
+    "aws_db_instance"
+   ],
+   "runs": 128,
+   "steps": 55,
+   "write_steps": 36
+  },
+  "azurerm": {
+   "adoptions": 8,
+   "cut_tails": 30,
+   "failed": 0,
+   "kill_modes": [
+    "before",
+    "split",
+    "torn"
+   ],
+   "residue_kinds": [],
+   "resource_types": [
+    "azurerm_resource_group",
+    "azurerm_subnet",
+    "azurerm_subnet_network_security_group_association",
+    "azurerm_storage_account",
+    "azurerm_key_vault"
+   ],
+   "runs": 108,
+   "steps": 47,
+   "write_steps": 30
+  },
+  "google": {
+   "adoptions": 10,
+   "cut_tails": 36,
+   "failed": 0,
+   "kill_modes": [
+    "before",
+    "split",
+    "torn"
+   ],
+   "residue_kinds": [
+    "google_kms_crypto_key:retained",
+    "google_kms_key_ring:retained"
+   ],
+   "resource_types": [
+    "google_compute_network",
+    "google_project_iam_member",
+    "google_storage_bucket",
+    "google_kms_key_ring",
+    "google_kms_crypto_key",
+    "google_sql_database_instance"
+   ],
+   "runs": 128,
+   "steps": 55,
+   "write_steps": 36
+  },
+  "oci": {
+   "adoptions": 8,
+   "cut_tails": 30,
+   "failed": 0,
+   "kill_modes": [
+    "before",
+    "split",
+    "torn"
+   ],
+   "residue_kinds": [
+    "oci_kms_vault:pending_deletion"
+   ],
+   "resource_types": [
+    "oci_identity_compartment",
+    "oci_core_network_security_group",
+    "oci_core_network_security_group_security_rule",
+    "oci_objectstorage_bucket",
+    "oci_kms_vault"
+   ],
+   "runs": 108,
+   "steps": 47,
+   "write_steps": 30
+  }
+ },
+ "schema": "bo.safety.failure_injection/1",
+ "total_failed": 0,
+ "total_runs": 472
+}

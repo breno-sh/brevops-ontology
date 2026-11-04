@@ -1,0 +1,120 @@
+{
+ "budget": {
+  "currency": "USD",
+  "default_usage": {
+   "egress_gb": 1,
+   "requests_millions": 0.1,
+   "storage_gb": 1
+  },
+  "heartbeat_grace_seconds": 600,
+  "heartbeat_interval_seconds": 60,
+  "hours_per_month": 730,
+  "identity_fresh_seconds": 300,
+  "max_window_hours": 72,
+  "providers": {
+   "aws": 30,
+   "azurerm": 30,
+   "google": 30,
+   "oci": 6
+  },
+  "short_window_hours": 2,
+  "total_cap": 100
+ },
+ "generated_from": {
+  "policy": "src/bo/safety/sku_policy.yaml",
+  "policy_sha256": "d554f4d3ed7b6b08f9bd0436b7cc1bc6a825c858174a2e7bf565ef7ae0f7a415",
+  "service_evidence": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl",
+  "service_evidence_sha256": "9ca6eaabab91e52e4cb605559f742bd4266cace83659647862cb2f5c3944eb60"
+ },
+ "providers": {
+  "aws": {
+   "class_c_patterns": 5,
+   "native_resource_destruction": 0,
+   "regions_allowed": [
+    "us-east-1"
+   ],
+   "removal_modes": {
+    "async": 3,
+    "scheduled": 1,
+    "sync": 34
+   },
+   "tag_no_evidence": [],
+   "tag_supported": 30,
+   "trace": {
+    "name": 1,
+    "ref": 7,
+    "tag": 30
+   },
+   "trace_downgraded_by_evidence": [],
+   "ttl_attribute_stated": 7,
+   "types": 38
+  },
+  "azurerm": {
+   "class_c_patterns": 5,
+   "native_resource_destruction": 0,
+   "regions_allowed": [
+    "eastus"
+   ],
+   "removal_modes": {
+    "async": 2,
+    "soft_delete": 2,
+    "sync": 19
+   },
+   "tag_no_evidence": [],
+   "tag_supported": 18,
+   "trace": {
+    "name": 4,
+    "ref": 1,
+    "tag": 18
+   },
+   "trace_downgraded_by_evidence": [],
+   "ttl_attribute_stated": 8,
+   "types": 23
+  },
+  "google": {
+   "class_c_patterns": 9,
+   "native_resource_destruction": 0,
+   "regions_allowed": [
+    "us-central1"
+   ],
+   "removal_modes": {
+    "async": 1,
+    "retained": 2,
+    "sync": 19
+   },
+   "tag_no_evidence": [],
+   "tag_supported": 10,
+   "trace": {
+    "name": 10,
+    "ref": 2,
+    "tag": 10
+   },
+   "trace_downgraded_by_evidence": [],
+   "ttl_attribute_stated": 4,
+   "types": 22
+  },
+  "oci": {
+   "class_c_patterns": 2,
+   "native_resource_destruction": 0,
+   "regions_allowed": [
+    "sa-saopaulo-1"
+   ],
+   "removal_modes": {
+    "async": 1,
+    "scheduled": 2,
+    "sync": 16
+   },
+   "tag_no_evidence": [],
+   "tag_supported": 18,
+   "trace": {
+    "name": 0,
+    "ref": 1,
+    "tag": 18
+   },
+   "trace_downgraded_by_evidence": [],
+   "ttl_attribute_stated": 2,
+   "types": 19
+  }
+ },
+ "schema": "bo.safety.sku_table_summary/1"
+}
