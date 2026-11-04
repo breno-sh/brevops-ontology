@@ -1,0 +1,7 @@
+RESOLUÇÃO — SCHEMA-GCP — 2026-11-03T21:25-03:00 (America/Recife)
+Complementa CONTRACT_CHANGE.txt, que fica como estava quando o SCHEMALIB o consumiu (entrada registrada no summary dele).
+Resolução dos itens 1 e 3 (2026-11-03T21:18-03:00): o SCHEMALIB (f8b5414, f197550, 7f2d5b2) passou a gravar write_only na
+biblioteca e trouxe a causa so_beta no crosscheck, com o schema do google-beta conferido. O módulo tirou a
+passada própria de write_only (atoms.jsonl continua byte a byte igual: sha256 a00b9d3f…, 31 átomos write_only)
+e a análise beta_check; ficou só bo.schema_gcp.beta_schema, que extrai o schema do google-beta que o crosscheck
+lê. crosscheck google 8.9.0: 1392 tipos, 1188 páginas, 954 iguais, familia_iam 438, so_beta 89, sem causa 0 -> PASS.
