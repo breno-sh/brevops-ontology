@@ -1,0 +1,132 @@
+{
+ "contract": "C15",
+ "contract_version": "3.1.0",
+ "data": {
+  "expected_h": 6,
+  "measured_h_total": 0.85,
+  "measured_minutes_total": 50.7,
+  "recalibration": "o caminho offline levou bem menos que o previsto; o que dominou foi ler contratos e adaptar os quatro harness (interfaces diferentes), não o raciocínio; o custo real da escala está no mapeamento (transporte) e não no E2E",
+  "steps": [
+   {
+    "end": "2026-11-04T09:24:07-03:00",
+    "evidence": "lane criada 09:11:45; common.py criado 09:24:07",
+    "minutes": 13.3,
+    "start": "2026-11-04T09:10:51-03:00",
+    "status": "done",
+    "step": "leitura: brief, plano (§0 §3b §4), contratos C14 C15 C23 C26, oráculo, entradas e harness"
+   },
+   {
+    "end": "2026-11-04T09:32:59-03:00",
+    "evidence": "claims.py 09:24:45, evidence.py 09:25:50, tbox.py 09:27:47, lift.py 09:29:45",
+    "minutes": 8.9,
+    "start": "2026-11-04T09:24:07-03:00",
+    "status": "done",
+    "step": "alegações (C09/C21) por direção, evidência C25, TBox da fatia, lifting e decomposição (21/21 do gabarito)"
+   },
+   {
+    "end": "2026-11-04T09:36:04-03:00",
+    "evidence": "abox.py 09:32:59, owl.py 09:33:44",
+    "minutes": 3.1,
+    "start": "2026-11-04T09:32:59-03:00",
+    "status": "done",
+    "step": "ABox, raciocinador RL e gerador do módulo OWL (C14) a partir das alegações OK"
+   },
+   {
+    "end": "2026-11-04T09:42:36-03:00",
+    "evidence": "translate.py 09:37:16, policy.py 09:37:38, lower.py 09:39:17, pipeline.py 09:40:39",
+    "minutes": 6.5,
+    "start": "2026-11-04T09:36:04-03:00",
+    "status": "done",
+    "step": "tradução pelos três controles, política de perda, IR de grafo e plano de lowering (C26)"
+   },
+   {
+    "end": "2026-11-04T09:44:31-03:00",
+    "evidence": "synth.py 09:42:36",
+    "minutes": 1.9,
+    "start": "2026-11-04T09:42:36-03:00",
+    "status": "done",
+    "step": "alegações sintéticas e primeiro caminho completo julgado pelo oráculo (c2 REJECT × c3 perda declarada)"
+   },
+   {
+    "end": "2026-11-04T09:47:31-03:00",
+    "evidence": "render.py 09:44:31",
+    "minutes": 3.0,
+    "start": "2026-11-04T09:44:31-03:00",
+    "status": "done",
+    "step": "render pelos quatro harness, conferência sem inserção silenciosa e terraform validate offline"
+   },
+   {
+    "end": "2026-11-04T09:53:25-03:00",
+    "evidence": "evaluate.py 09:47:31 … tf_validate verde 09:52:14",
+    "minutes": 5.9,
+    "start": "2026-11-04T09:47:31-03:00",
+    "status": "done",
+    "step": "avaliação pelo oráculo, canário de 12 direções, staging e comandos dos gates G1–G5"
+   },
+   {
+    "end": "2026-11-04T09:58:32-03:00",
+    "evidence": "robot.py 09:53:25; robot ok 09:58:32",
+    "minutes": 5.1,
+    "start": "2026-11-04T09:53:25-03:00",
+    "status": "done",
+    "step": "conferência do módulo pelo ROBOT/HermiT fixado (perfil DL, consequências iguais às do RL)"
+   },
+   {
+    "end": "2026-11-04T10:01:31-03:00",
+    "evidence": "tests 09:59:09; 19 passed",
+    "minutes": 3.0,
+    "start": "2026-11-04T09:58:32-03:00",
+    "status": "done",
+    "step": "testes (19) com alegações sintéticas e saídas atuais do mapeador"
+   },
+   {
+    "end": null,
+    "evidence": "publish.py 10:01:31; gates/PILOT-STO-E2E.sh 10:01:50",
+    "minutes": null,
+    "start": "2026-11-04T10:01:31-03:00",
+    "status": "in_progress",
+    "step": "gate do módulo, publicação sob trava, esforço, proveniência e commit"
+   },
+   {
+    "end": null,
+    "evidence": "laço de fundo de git log desde 09:43",
+    "minutes": null,
+    "start": "2026-11-04T10:01:31-03:00",
+    "status": "pending",
+    "step": "espera do PILOT-STO-MAP, rebase, corrida de ponta a ponta e gates de novo; merge"
+   }
+  ]
+ },
+ "generated_at": "2026-11-04T10:02:51-03:00",
+ "metrics": [
+  {
+   "axis": "operational",
+   "frame": {
+    "description": "passos do brief do PILOT-STO-E2E"
+   },
+   "inclusion": {
+    "rule_id": "INC-PSTO-EFFORT",
+    "text": "passo com início e fim medidos pelo relógio da sessão"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-PSTO-EFFORT-STEPS-DONE",
+   "name": "passos do piloto concluídos (esforço medido)",
+   "operational_coverage": {
+    "est": 0.818182,
+    "lower": 0.523019,
+    "n": 11,
+    "upper": 0.948632
+   },
+   "quantifier": "observed_fraction",
+   "reading": "decision",
+   "weights": {
+    "scheme": "uniform"
+   }
+  }
+ ],
+ "module": "PILOT-STO-E2E",
+ "notes": "Esforço real (relógio de parede da sessão do agente, America/Recife; início/fim pelos carimbos dos arquivos e dos comandos). Esforço previsto no catálogo: 6 h.",
+ "schema": "bo.result/1"
+}

@@ -1,0 +1,719 @@
+{
+ "contract": "C15",
+ "contract_version": "3.1.0",
+ "data": {
+  "consequences": [
+   {
+    "by_control": {
+     "c1_table": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "VERSIONING_STATE_DIFFERS"
+      ],
+      "status": "BLOCKED"
+     },
+     "c2_taxonomy": {
+      "block": "NO_REALIZATION",
+      "declared": [],
+      "status": "BLOCKED"
+     },
+     "c3_full": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "VERSIONING_STATE_DIFFERS"
+      ],
+      "status": "BLOCKED"
+     }
+    },
+    "direction": "azurerm->google",
+    "entry_id": "DX-AZ-GCP-T1-acceptable-01"
+   },
+   {
+    "by_control": {
+     "c1_table": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "VERSIONING_STATE_DIFFERS"
+      ],
+      "status": "BLOCKED"
+     },
+     "c2_taxonomy": {
+      "block": "NO_REALIZATION",
+      "declared": [],
+      "status": "BLOCKED"
+     },
+     "c3_full": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "VERSIONING_STATE_DIFFERS"
+      ],
+      "status": "BLOCKED"
+     }
+    },
+    "direction": "azurerm->google",
+    "entry_id": "DX-AZ-GCP-T1-negative-01"
+   },
+   {
+    "by_control": {
+     "c1_table": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "VERSIONING_STATE_DIFFERS"
+      ],
+      "status": "BLOCKED"
+     },
+     "c2_taxonomy": {
+      "block": "NO_REALIZATION",
+      "declared": [],
+      "status": "BLOCKED"
+     },
+     "c3_full": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "VERSIONING_STATE_DIFFERS"
+      ],
+      "status": "BLOCKED"
+     }
+    },
+    "direction": "azurerm->google",
+    "entry_id": "DX-AZ-GCP-T1-unknown-01"
+   },
+   {
+    "by_control": {
+     "c1_table": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "VERSIONING_STATE_DIFFERS"
+      ],
+      "status": "BLOCKED"
+     },
+     "c2_taxonomy": {
+      "block": "NO_REALIZATION",
+      "declared": [],
+      "status": "BLOCKED"
+     },
+     "c3_full": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "VERSIONING_STATE_DIFFERS"
+      ],
+      "status": "BLOCKED"
+     }
+    },
+    "direction": "azurerm->google",
+    "entry_id": "DX-AZ-GCP-T4-acceptable_declared-01"
+   },
+   {
+    "by_control": {
+     "c1_table": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "VERSIONING_STATE_DIFFERS"
+      ],
+      "status": "BLOCKED"
+     },
+     "c2_taxonomy": {
+      "block": "NO_REALIZATION",
+      "declared": [],
+      "status": "BLOCKED"
+     },
+     "c3_full": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "VERSIONING_STATE_DIFFERS"
+      ],
+      "status": "BLOCKED"
+     }
+    },
+    "direction": "azurerm->google",
+    "entry_id": "DX-AZ-GCP-T4-negative-01"
+   },
+   {
+    "by_control": {
+     "c1_table": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "VERSIONING_STATE_DIFFERS"
+      ],
+      "status": "BLOCKED"
+     },
+     "c2_taxonomy": {
+      "block": "NO_REALIZATION",
+      "declared": [],
+      "status": "BLOCKED"
+     },
+     "c3_full": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "VERSIONING_STATE_DIFFERS"
+      ],
+      "status": "BLOCKED"
+     }
+    },
+    "direction": "azurerm->google",
+    "entry_id": "DX-AZ-GCP-T4-negative_silent-01"
+   },
+   {
+    "by_control": {
+     "c1_table": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "VERSIONING_STATE_DIFFERS"
+      ],
+      "status": "BLOCKED"
+     },
+     "c2_taxonomy": {
+      "block": "NO_REALIZATION",
+      "declared": [],
+      "status": "BLOCKED"
+     },
+     "c3_full": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "VERSIONING_STATE_DIFFERS"
+      ],
+      "status": "BLOCKED"
+     }
+    },
+    "direction": "azurerm->google",
+    "entry_id": "DX-AZ-GCP-T4-unknown-01"
+   },
+   {
+    "by_control": {
+     "c1_table": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "VERSIONING_STATE_DIFFERS"
+      ],
+      "status": "BLOCKED"
+     },
+     "c2_taxonomy": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "VERSIONING_STATE_DIFFERS"
+      ],
+      "status": "BLOCKED"
+     },
+     "c3_full": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "SCOPE_WIDENED",
+       "VERSIONING_STATE_DIFFERS"
+      ],
+      "status": "BLOCKED"
+     }
+    },
+    "direction": "google->azurerm",
+    "entry_id": "DX-GCP-AZ-T1-acceptable_declared-01"
+   },
+   {
+    "by_control": {
+     "c1_table": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "VERSIONING_STATE_DIFFERS"
+      ],
+      "status": "BLOCKED"
+     },
+     "c2_taxonomy": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "VERSIONING_STATE_DIFFERS"
+      ],
+      "status": "BLOCKED"
+     },
+     "c3_full": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "SCOPE_WIDENED",
+       "VERSIONING_STATE_DIFFERS"
+      ],
+      "status": "BLOCKED"
+     }
+    },
+    "direction": "google->azurerm",
+    "entry_id": "DX-GCP-AZ-T1-negative_silent-01"
+   }
+  ],
+  "controls": {
+   "c1_table": {
+    "carried_values": 226,
+    "config_values": 998,
+    "entries": 181,
+    "inconsistent_sources": 0,
+    "lowered_units": 0,
+    "scope_losses_declared": 0,
+    "unit_blocks": {
+     "AMBIGUOUS_TARGET:T-VERDICT": 13,
+     "NO_REALIZATION:T-NO-CORRESPONDENCE": 120,
+     "RELATED_ONLY:T-RELATED": 40,
+     "UNPROVEN:T-VERDICT": 8
+    },
+    "value_blocks": {
+     "AMBIGUOUS_TARGET": 63,
+     "NO_REALIZATION": 515,
+     "RELATED_ONLY": 121,
+     "UNPROVEN": 73
+    }
+   },
+   "c2_taxonomy": {
+    "carried_values": 189,
+    "config_values": 998,
+    "entries": 181,
+    "inconsistent_sources": 0,
+    "lowered_units": 0,
+    "scope_losses_declared": 0,
+    "unit_blocks": {
+     "AMBIGUOUS_TARGET:T-VERDICT": 13,
+     "NO_REALIZATION:T-NO-CORRESPONDENCE": 120,
+     "RELATED_ONLY:T-RELATED": 40,
+     "UNPROVEN:T-VERDICT": 8
+    },
+    "value_blocks": {
+     "AMBIGUOUS_TARGET": 63,
+     "NO_REALIZATION": 515,
+     "NO_UNIT": 37,
+     "RELATED_ONLY": 121,
+     "UNPROVEN": 73
+    }
+   },
+   "c3_full": {
+    "carried_values": 210,
+    "config_values": 998,
+    "entries": 181,
+    "inconsistent_sources": 0,
+    "lowered_units": 0,
+    "scope_losses_declared": 2,
+    "unit_blocks": {
+     "AMBIGUOUS_TARGET:T-VERDICT": 13,
+     "NO_REALIZATION:T-NO-CORRESPONDENCE": 120,
+     "RELATED_ONLY:T-RELATED": 40,
+     "UNPROVEN:T-VERDICT": 8
+    },
+    "value_blocks": {
+     "AMBIGUOUS_TARGET": 63,
+     "NO_REALIZATION": 515,
+     "NO_UNIT": 16,
+     "RELATED_ONLY": 121,
+     "UNPROVEN": 73
+    }
+   }
+  },
+  "directions": {
+   "aws->azurerm": {
+    "c1_table": {
+     "entries": 17,
+     "lowered": 0
+    },
+    "c2_taxonomy": {
+     "entries": 17,
+     "lowered": 0
+    },
+    "c3_full": {
+     "entries": 17,
+     "lowered": 0
+    }
+   },
+   "aws->google": {
+    "c1_table": {
+     "entries": 14,
+     "lowered": 0
+    },
+    "c2_taxonomy": {
+     "entries": 14,
+     "lowered": 0
+    },
+    "c3_full": {
+     "entries": 14,
+     "lowered": 0
+    }
+   },
+   "aws->oci": {
+    "c1_table": {
+     "entries": 14,
+     "lowered": 0
+    },
+    "c2_taxonomy": {
+     "entries": 14,
+     "lowered": 0
+    },
+    "c3_full": {
+     "entries": 14,
+     "lowered": 0
+    }
+   },
+   "azurerm->aws": {
+    "c1_table": {
+     "entries": 15,
+     "lowered": 0
+    },
+    "c2_taxonomy": {
+     "entries": 15,
+     "lowered": 0
+    },
+    "c3_full": {
+     "entries": 15,
+     "lowered": 0
+    }
+   },
+   "azurerm->google": {
+    "c1_table": {
+     "entries": 15,
+     "lowered": 0
+    },
+    "c2_taxonomy": {
+     "entries": 15,
+     "lowered": 0
+    },
+    "c3_full": {
+     "entries": 15,
+     "lowered": 0
+    }
+   },
+   "azurerm->oci": {
+    "c1_table": {
+     "entries": 14,
+     "lowered": 0
+    },
+    "c2_taxonomy": {
+     "entries": 14,
+     "lowered": 0
+    },
+    "c3_full": {
+     "entries": 14,
+     "lowered": 0
+    }
+   },
+   "google->aws": {
+    "c1_table": {
+     "entries": 14,
+     "lowered": 0
+    },
+    "c2_taxonomy": {
+     "entries": 14,
+     "lowered": 0
+    },
+    "c3_full": {
+     "entries": 14,
+     "lowered": 0
+    }
+   },
+   "google->azurerm": {
+    "c1_table": {
+     "entries": 17,
+     "lowered": 0
+    },
+    "c2_taxonomy": {
+     "entries": 17,
+     "lowered": 0
+    },
+    "c3_full": {
+     "entries": 17,
+     "lowered": 0
+    }
+   },
+   "google->oci": {
+    "c1_table": {
+     "entries": 14,
+     "lowered": 0
+    },
+    "c2_taxonomy": {
+     "entries": 14,
+     "lowered": 0
+    },
+    "c3_full": {
+     "entries": 14,
+     "lowered": 0
+    }
+   },
+   "oci->aws": {
+    "c1_table": {
+     "entries": 15,
+     "lowered": 0
+    },
+    "c2_taxonomy": {
+     "entries": 15,
+     "lowered": 0
+    },
+    "c3_full": {
+     "entries": 15,
+     "lowered": 0
+    }
+   },
+   "oci->azurerm": {
+    "c1_table": {
+     "entries": 17,
+     "lowered": 0
+    },
+    "c2_taxonomy": {
+     "entries": 17,
+     "lowered": 0
+    },
+    "c3_full": {
+     "entries": 17,
+     "lowered": 0
+    }
+   },
+   "oci->google": {
+    "c1_table": {
+     "entries": 15,
+     "lowered": 0
+    },
+    "c2_taxonomy": {
+     "entries": 15,
+     "lowered": 0
+    },
+    "c3_full": {
+     "entries": 15,
+     "lowered": 0
+    }
+   }
+  },
+  "harness_findings": [
+   "HARNESS-GCP: o renderizador só aceita $BO_TMP com o nome HARNESS-GCP; reuso fora do módulo exige trocar a função de temporário no processo",
+   "HARNESS-GCP: perda (C26 losses) num campo que também é valor carregado é CONFLICTING_VALUES; a perda vai no átomo de origem",
+   "HARNESS-GCP: referência resolvida só por símbolo do nome derivado; contêiner com nome literal transportado não pode ser alvo de referência"
+  ],
+  "same_input": {
+   "checks": {
+    "claims_sha256": true,
+    "input_sha256": true,
+    "policy_sha256": true,
+    "transforms_sha256": true,
+    "verdicts_sha256": true
+   },
+   "per_control": {
+    "c1_table": {
+     "claims_sha256": "3ded03742f2af665eb872686b02f74f4b86e4f1f64352c05fdddba36e01a7754",
+     "entries": 181,
+     "input_sha256": "8f1142c13a362b850df33b569bac87f20ee55d693c01a9190b367fccda672e34",
+     "policy_sha256": "dd7afd9a4522bab44a739851a65e571f962415cb4e909956e659a9fdcd122dce",
+     "transforms_sha256": "806dd8e68378639221438ebf5f95636a812601e75b473bbecb1ae2b392ef26a7",
+     "verdicts_sha256": "eef7701e356b555b4d9ff5d324bc07ebb793e0c85c963f261f5ac451214851f2"
+    },
+    "c2_taxonomy": {
+     "claims_sha256": "3ded03742f2af665eb872686b02f74f4b86e4f1f64352c05fdddba36e01a7754",
+     "entries": 181,
+     "input_sha256": "8f1142c13a362b850df33b569bac87f20ee55d693c01a9190b367fccda672e34",
+     "policy_sha256": "dd7afd9a4522bab44a739851a65e571f962415cb4e909956e659a9fdcd122dce",
+     "transforms_sha256": "806dd8e68378639221438ebf5f95636a812601e75b473bbecb1ae2b392ef26a7",
+     "verdicts_sha256": "eef7701e356b555b4d9ff5d324bc07ebb793e0c85c963f261f5ac451214851f2"
+    },
+    "c3_full": {
+     "claims_sha256": "3ded03742f2af665eb872686b02f74f4b86e4f1f64352c05fdddba36e01a7754",
+     "entries": 181,
+     "input_sha256": "8f1142c13a362b850df33b569bac87f20ee55d693c01a9190b367fccda672e34",
+     "policy_sha256": "dd7afd9a4522bab44a739851a65e571f962415cb4e909956e659a9fdcd122dce",
+     "transforms_sha256": "806dd8e68378639221438ebf5f95636a812601e75b473bbecb1ae2b392ef26a7",
+     "verdicts_sha256": "eef7701e356b555b4d9ff5d324bc07ebb793e0c85c963f261f5ac451214851f2"
+    }
+   },
+   "policy": {
+    "effects_by_class": {
+     "AccessGrantSetting": [
+      "ACCESS_NARROWED"
+     ],
+     "AclModeSetting": [
+      "ACCESS_NARROWED"
+     ],
+     "LifecycleRule": [
+      "RETAINED_LONGER",
+      "EXPIRED_LATER"
+     ],
+     "LifecycleSetting": [
+      "RETAINED_LONGER",
+      "EXPIRED_LATER"
+     ],
+     "PublicAccessBlockSetting": [
+      "ACCESS_NARROWED"
+     ],
+     "VersioningSetting": [
+      "VERSIONING_STATE_DIFFERS"
+     ]
+    },
+    "never_declared": [
+     "EARLY_DELETION",
+     "EARLY_EXPIRATION",
+     "PUBLIC_WIDENED"
+    ],
+    "rules": [
+     "P1",
+     "P2",
+     "P3",
+     "P4",
+     "P5",
+     "P6"
+    ],
+    "verdict_block": {
+     "AMBIGUOUS": "AMBIGUOUS_TARGET",
+     "CONTESTED": "UNPROVEN",
+     "REFUTED_BY_RULE": "REFUTED_BY_RULE",
+     "UNPROVEN": "UNPROVEN"
+    },
+    "version": "1.0.0"
+   }
+  }
+ },
+ "generated_at": "2026-11-04T10:03:06-03:00",
+ "metrics": [
+  {
+   "axis": "transportability",
+   "frame": {
+    "description": "fixtures de calibração do PILOT-STO-ORACLE, 181 entradas de direção"
+   },
+   "inclusion": {
+    "rule_id": "INC-PSTO-CALIB",
+    "text": "entrada de direção de calibração; valor de configuração da fatia"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-PSTO-C1-FIELD",
+   "name": "c1_table: valores de configuração da fatia transportados",
+   "operational_coverage": {
+    "est": 0.226453,
+    "lower": 0.201564,
+    "n": 998,
+    "upper": 0.25344
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "transportability",
+   "frame": {
+    "description": "fixtures de calibração do PILOT-STO-ORACLE, 181 entradas de direção"
+   },
+   "inclusion": {
+    "rule_id": "INC-PSTO-CALIB",
+    "text": "entrada de direção de calibração; valor de configuração da fatia"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-PSTO-C1-COMPLETE-UNIT",
+   "name": "c1_table: unidades completas descidas (lowering + render)",
+   "operational_coverage": {
+    "est": 0.0,
+    "lower": 0.0,
+    "n": 181,
+    "upper": 0.020782
+   },
+   "quantifier": "observed_fraction",
+   "reading": "complete_unit",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "transportability",
+   "frame": {
+    "description": "fixtures de calibração do PILOT-STO-ORACLE, 181 entradas de direção"
+   },
+   "inclusion": {
+    "rule_id": "INC-PSTO-CALIB",
+    "text": "entrada de direção de calibração; valor de configuração da fatia"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-PSTO-C2-FIELD",
+   "name": "c2_taxonomy: valores de configuração da fatia transportados",
+   "operational_coverage": {
+    "est": 0.189379,
+    "lower": 0.166279,
+    "n": 998,
+    "upper": 0.214861
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "transportability",
+   "frame": {
+    "description": "fixtures de calibração do PILOT-STO-ORACLE, 181 entradas de direção"
+   },
+   "inclusion": {
+    "rule_id": "INC-PSTO-CALIB",
+    "text": "entrada de direção de calibração; valor de configuração da fatia"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-PSTO-C2-COMPLETE-UNIT",
+   "name": "c2_taxonomy: unidades completas descidas (lowering + render)",
+   "operational_coverage": {
+    "est": 0.0,
+    "lower": 0.0,
+    "n": 181,
+    "upper": 0.020782
+   },
+   "quantifier": "observed_fraction",
+   "reading": "complete_unit",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "transportability",
+   "frame": {
+    "description": "fixtures de calibração do PILOT-STO-ORACLE, 181 entradas de direção"
+   },
+   "inclusion": {
+    "rule_id": "INC-PSTO-CALIB",
+    "text": "entrada de direção de calibração; valor de configuração da fatia"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-PSTO-C3-FIELD",
+   "name": "c3_full: valores de configuração da fatia transportados",
+   "operational_coverage": {
+    "est": 0.210421,
+    "lower": 0.186267,
+    "n": 998,
+    "upper": 0.236796
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "transportability",
+   "frame": {
+    "description": "fixtures de calibração do PILOT-STO-ORACLE, 181 entradas de direção"
+   },
+   "inclusion": {
+    "rule_id": "INC-PSTO-CALIB",
+    "text": "entrada de direção de calibração; valor de configuração da fatia"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-PSTO-C3-COMPLETE-UNIT",
+   "name": "c3_full: unidades completas descidas (lowering + render)",
+   "operational_coverage": {
+    "est": 0.0,
+    "lower": 0.0,
+    "n": 181,
+    "upper": 0.020782
+   },
+   "quantifier": "observed_fraction",
+   "reading": "complete_unit",
+   "weights": {
+    "scheme": "uniform"
+   }
+  }
+ ],
+ "module": "PILOT-STO-E2E",
+ "notes": "Três controles com a mesma entrada, a mesma política de perda e o mesmo registro de transformações (data.same_input). Calibração apenas; as retidas são do PILOT-EXIT.",
+ "schema": "bo.result/1"
+}

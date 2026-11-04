@@ -1,0 +1,450 @@
+{
+ "contract": "C15",
+ "contract_version": "3.1.0",
+ "data": {
+  "by_control": {
+   "c1_table": {
+    "negative_candidates": {
+     "accepted": [],
+     "answers": {
+      "ABSTAIN": 58
+     },
+     "n": 58
+    },
+    "negative_fixture_claims": {
+     "accepted": [],
+     "answers": {
+      "ABSTAIN": 39
+     },
+     "n": 39
+    },
+    "per_direction": {
+     "aws->azurerm": {
+      "NOT_TRANSPORTED": 17
+     },
+     "aws->google": {
+      "NOT_TRANSPORTED": 14
+     },
+     "aws->oci": {
+      "NOT_TRANSPORTED": 14
+     },
+     "azurerm->aws": {
+      "NOT_TRANSPORTED": 15
+     },
+     "azurerm->google": {
+      "NOT_TRANSPORTED": 15
+     },
+     "azurerm->oci": {
+      "NOT_TRANSPORTED": 14
+     },
+     "google->aws": {
+      "NOT_TRANSPORTED": 14
+     },
+     "google->azurerm": {
+      "NOT_TRANSPORTED": 17
+     },
+     "google->oci": {
+      "NOT_TRANSPORTED": 14
+     },
+     "oci->aws": {
+      "NOT_TRANSPORTED": 15
+     },
+     "oci->azurerm": {
+      "NOT_TRANSPORTED": 17
+     },
+     "oci->google": {
+      "NOT_TRANSPORTED": 15
+     }
+    },
+    "rejects": [],
+    "spurious_declared": 0,
+    "verdicts": {
+     "NOT_TRANSPORTED": 181
+    }
+   },
+   "c2_taxonomy": {
+    "negative_candidates": {
+     "accepted": [],
+     "answers": {
+      "ABSTAIN": 58
+     },
+     "n": 58
+    },
+    "negative_fixture_claims": {
+     "accepted": [
+      {
+       "about": "disjoint_kinds",
+       "answer": "ACCEPT",
+       "case": "MC-DEC-SCOPE",
+       "code": null,
+       "fixture_id": "FX-STO-AZ-DEC-SCOPE-N01"
+      }
+     ],
+     "answers": {
+      "ABSTAIN": 28,
+      "ACCEPT": 1,
+      "REJECT": 10
+     },
+     "n": 39
+    },
+    "per_direction": {
+     "aws->azurerm": {
+      "NOT_TRANSPORTED": 17
+     },
+     "aws->google": {
+      "NOT_TRANSPORTED": 14
+     },
+     "aws->oci": {
+      "NOT_TRANSPORTED": 14
+     },
+     "azurerm->aws": {
+      "NOT_TRANSPORTED": 15
+     },
+     "azurerm->google": {
+      "NOT_TRANSPORTED": 15
+     },
+     "azurerm->oci": {
+      "NOT_TRANSPORTED": 14
+     },
+     "google->aws": {
+      "NOT_TRANSPORTED": 14
+     },
+     "google->azurerm": {
+      "NOT_TRANSPORTED": 17
+     },
+     "google->oci": {
+      "NOT_TRANSPORTED": 14
+     },
+     "oci->aws": {
+      "NOT_TRANSPORTED": 15
+     },
+     "oci->azurerm": {
+      "NOT_TRANSPORTED": 17
+     },
+     "oci->google": {
+      "NOT_TRANSPORTED": 15
+     }
+    },
+    "rejects": [],
+    "spurious_declared": 0,
+    "verdicts": {
+     "NOT_TRANSPORTED": 181
+    }
+   },
+   "c3_full": {
+    "negative_candidates": {
+     "accepted": [],
+     "answers": {
+      "ABSTAIN": 58
+     },
+     "n": 58
+    },
+    "negative_fixture_claims": {
+     "accepted": [],
+     "answers": {
+      "ABSTAIN": 28,
+      "REJECT": 11
+     },
+     "n": 39
+    },
+    "per_direction": {
+     "aws->azurerm": {
+      "NOT_TRANSPORTED": 17
+     },
+     "aws->google": {
+      "NOT_TRANSPORTED": 14
+     },
+     "aws->oci": {
+      "NOT_TRANSPORTED": 14
+     },
+     "azurerm->aws": {
+      "NOT_TRANSPORTED": 15
+     },
+     "azurerm->google": {
+      "NOT_TRANSPORTED": 15
+     },
+     "azurerm->oci": {
+      "NOT_TRANSPORTED": 14
+     },
+     "google->aws": {
+      "NOT_TRANSPORTED": 14
+     },
+     "google->azurerm": {
+      "NOT_TRANSPORTED": 17
+     },
+     "google->oci": {
+      "NOT_TRANSPORTED": 14
+     },
+     "oci->aws": {
+      "NOT_TRANSPORTED": 15
+     },
+     "oci->azurerm": {
+      "NOT_TRANSPORTED": 17
+     },
+     "oci->google": {
+      "NOT_TRANSPORTED": 15
+     }
+    },
+    "rejects": [],
+    "spurious_declared": 0,
+    "verdicts": {
+     "NOT_TRANSPORTED": 181
+    }
+   }
+  },
+  "gate": {
+   "criteria": [
+    "c3 sem REJECT",
+    "c3 não aceita contraexemplo de fixture",
+    "c3 não aceita configuração-alvo negativa"
+   ],
+   "failures": []
+  },
+  "heldout_read": false,
+  "oracle": {
+   "sha256": "3e4a549ce30d8d3d574d42e170799d2c7a6abc65e4f627e8c8b7d45b7b8241e0",
+   "version": "1.2.0"
+  },
+  "set": "calib"
+ },
+ "generated_at": "2026-11-04T09:51:14-03:00",
+ "metrics": [
+  {
+   "axis": "operational",
+   "frame": {
+    "description": "fixtures de calibração do PILOT-STO-ORACLE"
+   },
+   "inclusion": {
+    "rule_id": "INC-PSTO-CALIB",
+    "text": "entrada de direção ou alegação-contraexemplo de calibração"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-PSTO-C1-COMPLETE-UNIT-OPERA-0",
+   "name": "c1_table: julgamentos aceitos (com ou sem perda declarada) entre os que desceram",
+   "operational_coverage": {
+    "est": null,
+    "lower": 0.0,
+    "n": 0,
+    "upper": 1.0
+   },
+   "quantifier": "observed_fraction",
+   "reading": "complete_unit",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "transportability",
+   "frame": {
+    "description": "fixtures de calibração do PILOT-STO-ORACLE"
+   },
+   "inclusion": {
+    "rule_id": "INC-PSTO-CALIB",
+    "text": "entrada de direção ou alegação-contraexemplo de calibração"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-PSTO-C1-COMPLETE-UNIT-TRANS-1",
+   "name": "c1_table: entradas de direção que desceram e foram julgadas",
+   "operational_coverage": {
+    "est": 0.0,
+    "lower": 0.0,
+    "n": 181,
+    "upper": 0.020782
+   },
+   "quantifier": "observed_fraction",
+   "reading": "complete_unit",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "fixtures de calibração do PILOT-STO-ORACLE"
+   },
+   "inclusion": {
+    "rule_id": "INC-PSTO-CALIB",
+    "text": "entrada de direção ou alegação-contraexemplo de calibração"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-PSTO-C1-DECISION-REPRE-2",
+   "name": "c1_table: contraexemplos não aceitos (alegações das fixtures)",
+   "operational_coverage": {
+    "est": 1.0,
+    "lower": 0.910333,
+    "n": 39,
+    "upper": 1.0
+   },
+   "quantifier": "observed_fraction",
+   "reading": "decision",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "operational",
+   "frame": {
+    "description": "fixtures de calibração do PILOT-STO-ORACLE"
+   },
+   "inclusion": {
+    "rule_id": "INC-PSTO-CALIB",
+    "text": "entrada de direção ou alegação-contraexemplo de calibração"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-PSTO-C2-COMPLETE-UNIT-OPERA-3",
+   "name": "c2_taxonomy: julgamentos aceitos (com ou sem perda declarada) entre os que desceram",
+   "operational_coverage": {
+    "est": null,
+    "lower": 0.0,
+    "n": 0,
+    "upper": 1.0
+   },
+   "quantifier": "observed_fraction",
+   "reading": "complete_unit",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "transportability",
+   "frame": {
+    "description": "fixtures de calibração do PILOT-STO-ORACLE"
+   },
+   "inclusion": {
+    "rule_id": "INC-PSTO-CALIB",
+    "text": "entrada de direção ou alegação-contraexemplo de calibração"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-PSTO-C2-COMPLETE-UNIT-TRANS-4",
+   "name": "c2_taxonomy: entradas de direção que desceram e foram julgadas",
+   "operational_coverage": {
+    "est": 0.0,
+    "lower": 0.0,
+    "n": 181,
+    "upper": 0.020782
+   },
+   "quantifier": "observed_fraction",
+   "reading": "complete_unit",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "fixtures de calibração do PILOT-STO-ORACLE"
+   },
+   "inclusion": {
+    "rule_id": "INC-PSTO-CALIB",
+    "text": "entrada de direção ou alegação-contraexemplo de calibração"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-PSTO-C2-DECISION-REPRE-5",
+   "name": "c2_taxonomy: contraexemplos não aceitos (alegações das fixtures)",
+   "operational_coverage": {
+    "est": 0.974359,
+    "lower": 0.86819,
+    "n": 39,
+    "upper": 0.995459
+   },
+   "quantifier": "observed_fraction",
+   "reading": "decision",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "operational",
+   "frame": {
+    "description": "fixtures de calibração do PILOT-STO-ORACLE"
+   },
+   "inclusion": {
+    "rule_id": "INC-PSTO-CALIB",
+    "text": "entrada de direção ou alegação-contraexemplo de calibração"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-PSTO-C3-COMPLETE-UNIT-OPERA-6",
+   "name": "c3_full: julgamentos aceitos (com ou sem perda declarada) entre os que desceram",
+   "operational_coverage": {
+    "est": null,
+    "lower": 0.0,
+    "n": 0,
+    "upper": 1.0
+   },
+   "quantifier": "observed_fraction",
+   "reading": "complete_unit",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "transportability",
+   "frame": {
+    "description": "fixtures de calibração do PILOT-STO-ORACLE"
+   },
+   "inclusion": {
+    "rule_id": "INC-PSTO-CALIB",
+    "text": "entrada de direção ou alegação-contraexemplo de calibração"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-PSTO-C3-COMPLETE-UNIT-TRANS-7",
+   "name": "c3_full: entradas de direção que desceram e foram julgadas",
+   "operational_coverage": {
+    "est": 0.0,
+    "lower": 0.0,
+    "n": 181,
+    "upper": 0.020782
+   },
+   "quantifier": "observed_fraction",
+   "reading": "complete_unit",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "representability",
+   "frame": {
+    "description": "fixtures de calibração do PILOT-STO-ORACLE"
+   },
+   "inclusion": {
+    "rule_id": "INC-PSTO-CALIB",
+    "text": "entrada de direção ou alegação-contraexemplo de calibração"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-PSTO-C3-DECISION-REPRE-8",
+   "name": "c3_full: contraexemplos não aceitos (alegações das fixtures)",
+   "operational_coverage": {
+    "est": 1.0,
+    "lower": 0.910333,
+    "n": 39,
+    "upper": 1.0
+   },
+   "quantifier": "observed_fraction",
+   "reading": "decision",
+   "weights": {
+    "scheme": "uniform"
+   }
+  }
+ ],
+ "module": "PILOT-STO-E2E",
+ "notes": "Julgamento do oráculo offline nas fixtures de calibração. A fração de acerto é relatada, não é limiar (E4).",
+ "schema": "bo.result/1"
+}

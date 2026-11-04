@@ -1,0 +1,4 @@
+be51e75ce0827a50a06f323bc3b58ad23abffb22b774e291fb907b96ba9ee296  results/PILOT-STO-E2E/controls.json
+29cdc71532556c389e963457766bf47d53ab21c714a12f1f44a6cfbf8529ec0a  results/PILOT-STO-E2E/oracle_calib.json
+f2a1dfa4dc8d3c4f92def6b052f148c6e9793c5f617e77ca0709c7c2be328124  results/PILOT-STO-E2E/effort.json
+74aaa80b78305d8dc40d3e031abf1a322eedc5fa3059defcc10973c807fffe89  gates/PILOT-STO-E2E.sh

@@ -1,0 +1,136 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "PILOT-STO-E2E",
+ "generated_at": "2026-11-04T10:09:43-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-STO-E2E.txt",
+  "brief_sha256": "f53513519f7e24ff7cfde5cecf477b8772022d7d5a5b54080f979a8a9928d28e",
+  "params": {
+   "slice": "sto",
+   "controls": "c1_table,c2_taxonomy,c3_full",
+   "fixtures": "calib",
+   "policy_version": "1.0.0",
+   "pipeline_version": "1.0.0",
+   "reasoner": "RL-subset+HermiT-crosscheck"
+  },
+  "inputs": [
+   {
+    "path": "$BO_DATA/PILOT-STO-MAP/mapping.sssom.tsv",
+    "kind": "file",
+    "sha256": "3ded03742f2af665eb872686b02f74f4b86e4f1f64352c05fdddba36e01a7754"
+   },
+   {
+    "path": "$BO_DATA/PILOT-STO-MAP/verdicts.jsonl",
+    "kind": "file",
+    "sha256": "eef7701e356b555b4d9ff5d324bc07ebb793e0c85c963f261f5ac451214851f2"
+   },
+   {
+    "path": "$BO_REPO/pilot/sto/oracle",
+    "kind": "dir",
+    "sha256": "079d191f4971516ae8e93428cbbf33575692266a4cdd208b8f1d8947e9565718"
+   },
+   {
+    "path": "$BO_REPO/pilot/sto/fixtures_calib",
+    "kind": "dir",
+    "sha256": "bf6f5b87b14cbad83283eab8dd6152fee6ea7884927fdec86d4e3ca3021a0d6e"
+   },
+   {
+    "path": "$BO_REPO/pilot/sto/expected_answers.json",
+    "kind": "file",
+    "sha256": "9dfc58e25e9efbfa0369f0ecaf13a6cb5053482f843d38facb2d2db1d1b738fd"
+   },
+   {
+    "path": "$BO_REPO/ontology/patterns",
+    "kind": "dir",
+    "sha256": "21b18439b3fb97e19330ad7d37a07babadafd65d2d6085316e7a52132196a759"
+   },
+   {
+    "path": "$BO_DATA/SCHEMA-AWS/plugin_cache",
+    "kind": "dir",
+    "sha256": "dc6c709c65d1d892623304de865c737c612d9dabbdbbd71186a0825a3f41f016"
+   },
+   {
+    "path": "$BO_DATA/SCHEMA-GCP/plugin_cache",
+    "kind": "dir",
+    "sha256": "bcdc29a85b5e0f20fd562eda78b6f2bc8ccc2a522c3998fd4490910c28fc5353"
+   },
+   {
+    "path": "$BO_DATA/SCHEMA-AZURE/plugin_cache",
+    "kind": "dir",
+    "sha256": "ec5a0ab96eabe14691df8d164ed72b948b5faa9962574f8f87aa01a23b9ee9dd"
+   },
+   {
+    "path": "$BO_DATA/SCHEMA-OCI/plugin_cache",
+    "kind": "dir",
+    "sha256": "73defcd79b0d72bfb44ae7dba2f4b5d605c0d344c543e767c2beecc37c28ad52"
+   },
+   {
+    "path": "$BO_DATA/SCHEMA-AWS/atoms.jsonl",
+    "kind": "file",
+    "sha256": "5c6aba0585cb0e30f26877fd0ed6ba1a471092c792ecfa0b38f22d43d1e862a7"
+   },
+   {
+    "path": "$BO_DATA/SCHEMA-GCP/atoms.jsonl",
+    "kind": "file",
+    "sha256": "a00b9d3fb50a717fe3ba17ec0f4b2012f89ee7a3cb65e7ea5f21298afc75e4e1"
+   },
+   {
+    "path": "$BO_DATA/SCHEMA-AZURE/atoms.jsonl",
+    "kind": "file",
+    "sha256": "3e7a8160b3272bc0652427989d72860cb84cc198dfde1a9ae14405babfbbb915"
+   },
+   {
+    "path": "$BO_DATA/SCHEMA-OCI/atoms.jsonl",
+    "kind": "file",
+    "sha256": "99e3dc9d3434e48675fd71eb817145ae63c2159fd041f3c67dd1d308e814287c"
+   },
+   {
+    "path": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl",
+    "kind": "file",
+    "sha256": "a28da287407be6bdad291abe37e32372fc41f14a109db0a0fa412b805e415b09"
+   },
+   {
+    "path": "$BO_REPO/results/SERVICE-EVIDENCE/spec_disputes.json",
+    "kind": "file",
+    "sha256": "e9b10d64ba67d3819bad9cf7675f91b2fcf04f1e1a5b798967694ef15782ea64"
+   },
+   {
+    "path": "$BO_DATA/PILOT-STO-GLOSS/glossary.jsonl",
+    "kind": "file",
+    "sha256": "5b5b92a5b3618249e818857a96384e7b5a64c1a200b04a4ec21a31d697a1174a"
+   },
+   {
+    "path": "$BO_DATA/PILOT-STO-GLOSS/claims.jsonl",
+    "kind": "file",
+    "sha256": "83e510dfd1c203c21d77ecb5f378eede116c9513bbce5d16cbb6954dbcc13b6c"
+   },
+   {
+    "path": "$BO_REPO/universe/pins.json",
+    "kind": "file",
+    "sha256": "594a4e878ac489b3ed97cdd6344b9945a8fd3a5d22ae4d6f4bfebd264decfe3d"
+   }
+  ],
+  "recorded_at": "2026-11-04T10:09:43-03:00"
+ },
+ "sources": [
+  {
+   "uri": "pilot/sto (PILOT-STO-ORACLE)",
+   "license": "CC0 (sintético)",
+   "transformation": "fixtures de calibração lidas; retidas nunca lidas"
+  },
+  {
+   "uri": "registry.terraform.io providers fixados",
+   "license": "MPL-2.0",
+   "transformation": "terraform validate offline com o binário assinado (D1)"
+  },
+  {
+   "uri": "ROBOT 1.9.11 (HermiT embutido)",
+   "license": "BSD-3-Clause",
+   "transformation": "perfil OWL 2 DL e consistência do módulo (D6)"
+  }
+ ],
+ "notes": "Piloto sto E2E offline; calibração apenas. Model ID claude-opus-5-5. Sem nuvem."
+}
