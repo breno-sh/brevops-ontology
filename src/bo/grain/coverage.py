@@ -1,6 +1,6 @@
 """Verificador (gate do DECOMPOSE): todo átomo tem endereço canônico ou está em UNKNOWN com a evidência que falta.
 
-Uso: python -I -m bo.grain.coverage [--units U --atoms A --schema-atoms 'GLOB'] | --fixtures
+Uso: python -I -m bo.grain.coverage [--units U --atoms A --schema-atoms 'GLOB' --out-of-domain ARQ] | --fixtures
 
 Confere: (1) todo atom_id dos átomos C01 aparece em canonical_atoms, uma vez só (C19-UNIQ); (2) todo
 canonical_atom aponta para unidade existente (C19-LINK); (3) toda unidade UNKNOWN tem missing_evidence não
@@ -22,7 +22,8 @@ from . import schema as S
 from .common import stamp
 
 
-def check(schema_atoms: list[dict], units: list[dict], atoms: list[dict]) -> list[str]:
+def check(schema_atoms: list[dict], units: list[dict], atoms: list[dict], out_of_domain=()) -> list[str]:
+    """out_of_domain: atom_ids declarados fora do domínio (T45, ex. configuração do Terraform)."""
     errs = []
     uids = Counter(u["unit_id"] for u in units)
     errs += [f"unit_id repetido: {k}" for k, v in uids.items() if v > 1]
@@ -35,7 +36,7 @@ def check(schema_atoms: list[dict], units: list[dict], atoms: list[dict]) -> lis
     errs += [f"átomo em mais de uma unidade: {k}" for k, v in seen.items() if v > 1]
     errs += [f"canonical_atom aponta para unidade inexistente: {a['atom_id']}" for a in atoms
              if a["unit_id"] not in uids]
-    src = {a["atom_id"] for a in schema_atoms}
+    src = {a["atom_id"] for a in schema_atoms} - set(out_of_domain)
     # sub-átomos virtuais (T2): derivados do tipo cty de um átomo de coleção de objetos do C01
     from .schema import collection_fields
     colls = tuple(a["atom_id"] + "." for a in schema_atoms if collection_fields(a.get("tf_type")))
@@ -75,7 +76,9 @@ def main(argv=None) -> int:
         by = IO.schema_atoms(IO.arg(argv, "--schema-atoms"))
         units, atoms = IO.c19(IO.arg(argv, "--units"), IO.arg(argv, "--atoms"))
         src = [a for v in by.values() for a in v]
-        errs = check(src, units, atoms)
+        ood_p = IO.arg(argv, "--out-of-domain")
+        ood = [r["atom_id"] for r in IO.load_jsonl(ood_p)] if ood_p else []
+        errs = check(src, units, atoms, ood)
         print(stamp(f"coverage: {len(src)} átomo(s) C01, {len(units)} unidade(s), {len(atoms)} átomo(s) C19"))
     for e in errs[:50]:
         print("  ", e)

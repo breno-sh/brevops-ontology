@@ -44,7 +44,7 @@ def _decompose(prov, records, extra=(), drop=()):
     assert atoms, f"átomos reais ausentes para {prov}"
     cands = S.candidates_from_atoms(atoms)
     recs = [r for r in records if r.get("provider") == prov and not (
-        r.get("terraform_resource_type") in drop and r.get("fact_kind") in ("identity", "import_key"))]
+        r.get("terraform_resource_type") in drop and r.get("fact_kind") in ("identity", "import_key", "api_bridge"))]
     return atoms, S.decompose_schema(cands, C25Adapter(recs + list(extra), candidates={c.cid for c in cands}), RS)
 
 

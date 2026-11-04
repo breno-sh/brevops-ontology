@@ -81,6 +81,8 @@ def run(slice_types: dict | None = None, records: list[dict] | None = None, rs=N
             "container": {"type": CONTAINER[prov], **(dec.get(CONTAINER[prov]) or {"grain": "ABSENT_FROM_SCHEMA"})},
             "top_level": top, "nested_facet_like": {c: d for c, d in dec.items() if "." in c and d["grain"] == "FACET"},
             "c19_units": len(units), "c19_atoms": len(c19_atoms), "_units": units, "_atoms": c19_atoms,
+            "out_of_domain": sorted(res.out_of_domain), "out_of_domain_atoms": len(res.out_of_domain_atoms),
+            "virtual_atoms": len(res.virtual_atoms), "_res": res,
         }
     return out
 

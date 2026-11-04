@@ -49,6 +49,25 @@ TABLE = [
     ("api_bridge", "(qualquer, C25 1.1.0)", "R-GRAIN-T04",
      "como api_resource_bridge: api_resource {status: resource} com value.resource/service ou, sem eles, os do "
      "registro; UNKNOWN vira UNKNOWN"),
+    ("identity", "twin_type", "R-GRAIN-T09",
+     "o bloco embutido herda a evidência traduzida da camada de API do tipo gêmeo (identidade, chave de "
+     "importação, chave de nome, ligação com a API, ciclo de vida, dono, alcance); a referência do gêmeo ao tipo "
+     "do bloco vira o pai estrutural ($parent) e sai da chave; a evidência do gêmeo substitui a do bloco "
+     "(block_identity, block_config_owner, block_lifecycle são da camada Terraform); fatos com inherited_from não "
+     "são lidos de novo; o rótulo de reserva é o do gêmeo"),
+    ("identity", "reference_target", "R-GRAIN-T44",
+     "o atributo (relativo ao bloco) é referência tipada ao resolved quando target_types é ele só; senão "
+     "referência sem alvo; é o que liga chave, dono e pontas do vínculo (endpoints do C19) a unidades"),
+    ("identity", "reference_phrase", "R-GRAIN-T46", "sem tradução: frase da doc; o alvo vem de reference_target"),
+    ("lifecycle_controller", "terraform_timeouts", "R-GRAIN-T45",
+     "o bloco timeouts do tipo é configuração do Terraform, não do recurso: fora do domínio (não vira unidade; "
+     "os átomos vão para a lista fora_do_domínio); não dá ciclo de vida"),
+    ("effective_scope", "(qualquer outro, com kind)", "R-GRAIN-T43",
+     "fato derivado de alcance (CC-1c) com kind self/parent/container/global e via (pai estrutural, campo de "
+     "referência): alcance; camada Terraform ou kind ausente: UNKNOWN"),
+    ("(qualquer)", "(sem aspect, layer terraform)", "R-GRAIN-T98",
+     "lifecycle_controller e effective_scope: UNKNOWN (create/delete do provider, não o objeto na API); owner "
+     "de tipo de topo: UNKNOWN (onde o código escreve); owner de bloco aninhado com kind parent: aceito"),
     ("identity", "api_reference", "R-GRAIN-T05", "sem tradução: página de referência da API, informativa"),
     ("identity", "cardinality", "R-GRAIN-T06",
      "sem tradução: singular por escopo do provedor; o escopo não é unidade da decomposição"),
@@ -114,9 +133,16 @@ def _src(r: dict, rule: str, why: str = "") -> dict:
     return {"level": "derived", "ref": r["evidence_id"], "note": note}
 
 
+def _rel(attr: str, block_path: str | None) -> str:
+    """Caminho do atributo relativo ao candidato (sem o prefixo do bloco)."""
+    if block_path and attr.startswith(block_path + "."):
+        return attr[len(block_path) + 1:]
+    return attr
+
+
 def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[dict, dict]:
-    """records: C25 de UM provedor (todos os tipos, para os pares de T02). candidates: ids de candidato da
-    decomposição (alvos de referência só valem se existem). Devolve ({cid: evidência-dict}, {cid: [motivos]})."""
+    """records: C25 de UM provedor (todos os tipos, para os pares de T02 e os gêmeos de T09). candidates: ids de
+    candidato da decomposição (alvos de referência só valem se existem). Devolve ({cid: evidência}, {cid: motivos})."""
     by_cid: dict[str, list[dict]] = defaultdict(list)
     for r in records:
         if r.get("fact_kind") not in GRAIN_FACTS or not r.get("terraform_resource_type"):
@@ -133,33 +159,43 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
     def put(cid, fld, claim):
         out.setdefault(cid, {}).setdefault(fld, []).append(claim)
 
+    def aspect_of(r):
+        v = r.get("value")
+        return v.get("aspect") if isinstance(v, dict) else None
+
     def unknown(cid, fld, r, why):
         reasons[cid].append(f"{fld}: {why}")
-        put(cid, fld, {"status": "unknown", "source": _src(r, RULE_OF.get((r["fact_kind"], (r.get("value") if isinstance(
-            r.get("value"), dict) else {}).get("aspect")), "R-GRAIN-UNK"), why)})
+        put(cid, fld, {"status": "unknown", "source": _src(r, RULE_OF.get((r["fact_kind"], aspect_of(r)),
+                                                                          "R-GRAIN-UNK"), why)})
 
-    # 1ª passada: tudo que não depende de outro candidato
-    pending_ids, shared, containers, scopes = {}, {}, {}, {}
+    pending_ids, shared, containers, scopes, twins, timeouts = {}, {}, {}, {}, {}, {}
+    typed: dict[str, dict] = defaultdict(dict)       # cid -> {campo: tipo alvo ou None} (T44 reference_target)
     for cid, rs in sorted(by_cid.items()):
+        rt = cid.split(".")[0]
         nested = "." in cid
+        bp = cid.split(".", 1)[1] if nested else None
         parent_cid = cid.rsplit(".", 1)[0] if nested else None
         loc_scope = set(scope_fields)
         for r in rs:
-            v = r.get("value") if isinstance(r.get("value"), dict) else {}
-            if v.get("aspect") == "identity_scope":
+            if aspect_of(r) == "identity_scope":
+                v = r["value"]
                 if v.get("account"):
                     loc_scope.add("account_id")
                 if v.get("region"):
                     loc_scope.add("region")
         for r in rs:
             fld, v = r["fact_kind"], r.get("value")
+            a = aspect_of(r)
             if r.get("status") == "unknown":
                 st = "contradictory" if r.get("unknown_reason") == "contradictory" else "unknown"
                 reasons[cid].append(f"{fld}: {r.get('unknown_reason')}")
                 put(cid, fld, {"status": st, "source": _src(r, "R-GRAIN-UNK", r.get("unknown_reason") or "")})
                 continue
-            if fld == "api_bridge":
-                # C25 1.1.0: fato próprio da ponte API ↔ tipo (T04b), mesma tradução de api_resource_bridge
+            if isinstance(v, dict) and v.get("inherited_from"):
+                # fato herdado do gêmeo (R-TWIN): coberto por twin_type (T09), que copia a evidência traduzida
+                reasons[cid].append(f"{fld}: herdado de {v['inherited_from']} (coberto por twin_type)")
+                continue
+            if fld == "api_bridge" and a in (None, "api_resource_bridge"):
                 res_ = (v or {}).get("resource") if isinstance(v, dict) else None
                 res_ = res_ or (r.get("api_resource") or {}).get("resource")
                 if res_ in (None, "", "UNKNOWN"):
@@ -170,29 +206,61 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
                     put(cid, "api_resource", {"status": "resource", "label": res_, "service": svc, "resource": res_,
                                               "source": _src(r, "R-GRAIN-T04")})
                 continue
-            if not isinstance(v, dict) or "aspect" not in v:
-                # fato sem aspecto: alegação direta na convenção anterior (T99)
+            if a is None:
+                # fato sem aspecto: alegação direta na convenção anterior (T99), salvo camada Terraform (T98)
+                if isinstance(v, dict) and v.get("layer") == "terraform":
+                    if fld == "lifecycle_controller":
+                        unknown(cid, fld, r, "camada Terraform: create/delete do provider, não o objeto na API")
+                        continue
+                    if fld == "owner" and not nested:
+                        unknown(cid, fld, r, "camada Terraform: onde o código escreve, não o dono da configuração")
+                        continue
+                    if fld == "effective_scope":
+                        unknown(cid, fld, r, "camada Terraform: não é o alcance na API")
+                        continue
                 claim = {"kind": v} if isinstance(v, str) else {k: x for k, x in (v or {}).items()
                                                                  if k not in ("block_path", "references",
-                                                                              "field_map", "parent_role")}
+                                                                              "field_map", "parent_role", "layer",
+                                                                              "rule", "note")}
                 if isinstance(v, dict):
                     ent = out.setdefault(cid, {})
                     ent.setdefault("references", {}).update(v.get("references") or {})
                     ent.setdefault("field_map", {}).update(v.get("field_map") or {})
                     if v.get("parent_role"):
                         ent["parent_role"] = v["parent_role"]
+                    if claim.get("via") == parent_cid and nested:
+                        claim["via"] = "$parent"
+                    if claim.get("via") == []:
+                        claim.pop("via")
                 claim["source"] = _src(r, "R-GRAIN-T99", "alegação direta")
                 put(cid, fld, claim)
                 continue
-            a = v["aspect"]
             rule = RULE_OF.get((fld, a))
+            if rule is None and fld == "effective_scope" and "kind" in v:
+                rule = "R-GRAIN-T43"
             if rule is None:
                 unknown(cid, fld, r, f"aspecto {a} sem tradução na tabela")
             elif a == "resource_identity_schema":
-                key = [f for f in v.get("required", []) if f not in loc_scope]
-                pending_ids[cid] = (r, key)
+                pending_ids[cid] = (r, [f for f in v.get("required", []) if f not in loc_scope])
             elif a == "shared_identity_key":
                 shared[cid] = (r, [f for f in v.get("fields", []) if f not in loc_scope], list(v.get("peers", [])))
+            elif a == "twin_type":
+                twins[cid] = (r, v.get("twin"))
+            elif a == "reference_target":
+                attr = _rel(v.get("attribute", ""), bp)
+                tt = v.get("target_types") or []
+                res_t = v.get("resolved")
+                if attr and res_t and (not tt or tt == [res_t]):
+                    typed[cid][attr] = res_t
+                else:
+                    typed[cid][attr] = None
+                    reasons[cid].append(f"identity: referência {attr} com alvo ambíguo {tt}")
+            elif a == "reference_phrase":
+                reasons[cid].append("identity: reference_phrase é frase da doc; o alvo vem de reference_target")
+            elif a == "terraform_timeouts":
+                timeouts[rt] = r
+                reasons[cid].append("lifecycle_controller: terraform_timeouts é configuração do Terraform (fora do "
+                                    "domínio)")
             elif a == "api_resource_bridge":
                 if v.get("resource") in (None, "", "UNKNOWN"):
                     unknown(cid, "api_resource", r, "ponte sem recurso de API")
@@ -244,59 +312,118 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
                     unknown(cid, "lifecycle_controller", r, "política de remoção sem valores documentados")
             elif a == "type_scope":
                 scopes[cid] = (r, v.get("scope"))
+            elif rule == "R-GRAIN-T43":
+                if v.get("layer") == "terraform" or v.get("kind") not in ("self", "parent", "container", "global"):
+                    unknown(cid, fld, r, "alcance derivado sem kind de API")
+                else:
+                    claim = {"kind": v["kind"], "source": _src(r, rule)}
+                    via = v.get("via")
+                    if via:
+                        claim["via"] = "$parent" if (nested and via == parent_cid) else via
+                    put(cid, "effective_scope", claim)
             else:
                 unknown(cid, fld, r, f"aspecto {a}: sem tradução ({rule})")
 
-    # ciclo de vida consolidado por candidato (para achar a raiz dos pares de T02)
     from .evidence import consolidate
 
     def lc_self(cid):
         f = consolidate("lifecycle_controller", out.get(cid, {}).get("lifecycle_controller", []))
         return f.known and f.value["kind"] == "self"
 
-    refs_of: dict[str, dict] = defaultdict(dict)   # cid -> {campo: alvo ou None}
+    def ok_target(tgt):
+        return tgt is not None and (candidates is None or tgt in candidates)
+
+    key_refs: dict[str, dict] = defaultdict(dict)   # referências que ENTRAM na chave (T02, T21)
     for cid, (r, fields, peers) in sorted(shared.items()):
         roots = [p for p in sorted(set(peers) | {cid}) if lc_self(p)]
         if roots == [cid]:
-            continue                                   # é a raiz: a chave é própria
+            continue
         tgt = roots[0] if len(roots) == 1 else None
-        if tgt is not None and candidates is not None and tgt not in candidates:
-            tgt = None
         for f in fields:
-            refs_of[cid][f] = tgt
+            if f in typed.get(cid, {}):
+                continue                                      # alvo tipado explícito (T44) prevalece
+            key_refs[cid][f] = tgt if ok_target(tgt) else None
         if tgt is None:
             reasons[cid].append(f"identity: chave compartilhada {fields} sem raiz única com ciclo de vida self "
                                 f"entre os pares ({len(roots)} raiz(es))")
     for cid, (r, types) in sorted(containers.items()):
-        refs_of[cid]["$container"] = None
+        if any(t in types for t in typed.get(cid, {}).values() if t):
+            continue                                          # o contêiner é alvo de uma referência tipada
+        key_refs[cid]["$container"] = None
         reasons[cid].append(f"identity: contido em {r['value'].get('scope_kind')} ({types or 'sem tipo Terraform'}) "
                             "sem atributo de referência ao contêiner na identidade")
-    # 2ª passada: identidade e chave de importação com as referências
+    # referências tipadas e da chave no mapa de campos
+    for cid in set(typed) | set(key_refs):
+        ent = out.setdefault(cid, {})
+        fm = ent.setdefault("field_map", {})
+        for f, tgt in list(typed.get(cid, {}).items()) + list(key_refs.get(cid, {}).items()):
+            fm[f] = {"path": f, "ref": True}
+            if ok_target(tgt):
+                ent.setdefault("references", {})[f] = tgt
+    # identidade e chave de importação
     for key, (r, fields) in sorted(pending_ids.items()):
         cid = key.split("#")[0]
-        rfs = refs_of.get(cid, {})
-        kf = list(fields) + ([f for f in rfs if f not in fields])
+        kr = key_refs.get(cid, {})
+        kf = list(fields) + [f for f in kr if f not in fields]
+        is_ref = {f for f, m in out.get(cid, {}).get("field_map", {}).items() if m.get("ref")}
         if key.endswith("#import"):
             put(cid, "import_key", {"status": "present", "fields": kf, "source": _src(r, RULE_OF[("import_key",
                                                                                                    "import_formats")])})
         else:
-            put(cid, "identity", {"status": "present", "scope": "within_parent" if rfs else "independent",
+            rel = any(f in is_ref for f in kf)
+            put(cid, "identity", {"status": "present", "scope": "within_parent" if rel else "independent",
                                   "key_fields": kf, "source": _src(r, RULE_OF[("identity", "resource_identity_schema")])})
-    for cid, rfs in refs_of.items():
-        ent = out.setdefault(cid, {})
-        fm = ent.setdefault("field_map", {})
-        for f, t in rfs.items():
-            fm[f] = {"path": f, "ref": True}
-            if t is not None:
-                ent.setdefault("references", {})[f] = t
     for cid, (r, scope) in sorted(scopes.items()):
         rule = RULE_OF[("effective_scope", "type_scope")]
         if scope in PROVIDER_SCOPE_KINDS:
             put(cid, "effective_scope", {"kind": "global", "source": _src(r, rule)})
         else:
-            rf = [f for f in refs_of.get(cid, {}) if not f.startswith("$")]
+            rf = [f for f in key_refs.get(cid, {}) if not f.startswith("$")]
             put(cid, "effective_scope", {"kind": "parent", "via": rf[0], "source": _src(r, rule)} if len(rf) == 1
                 else {"kind": "self", "source": _src(r, rule)})
+    # T09: bloco embutido herda a evidência da camada de API do gêmeo; a referência do gêmeo ao tipo do bloco
+    # vira o pai estrutural ($parent)
+    for cid, (r, twin) in sorted(twins.items()):
+        top = cid.split(".")[0]
+        src_ev = out.get(twin)
+        if not twin or src_ev is None:
+            reasons[cid].append(f"identity: gêmeo {twin} sem evidência traduzida")
+            continue
+        to_parent = {f for f, m in src_ev.get("field_map", {}).items()
+                     if m.get("ref") and src_ev.get("references", {}).get(f) == top}
+        ent = out.setdefault(cid, {})
+        ent["twin"] = twin
+        # a evidência do gêmeo SUBSTITUI a do próprio bloco (fatos block_* são da camada Terraform): sem isso o
+        # bloco e o recurso separado divergiriam por construção (E2)
+        for fld in ("identity", "import_key", "element_name_key", "api_resource", "lifecycle_controller", "owner",
+                    "effective_scope"):
+            if ent.pop(fld, None):
+                reasons[cid].append(f"{fld}: fatos do bloco substituídos pela evidência do gêmeo {twin}")
+        for f, m in src_ev.get("field_map", {}).items():
+            if f not in to_parent:
+                ent.setdefault("field_map", {}).setdefault(f, dict(m))
+        for f, tgt in src_ev.get("references", {}).items():
+            if f not in to_parent:
+                ent.setdefault("references", {}).setdefault(f, tgt)
+        note = f"R-GRAIN-T09: herdado do gêmeo {twin}"
+        for fld in ("identity", "import_key", "element_name_key", "api_resource", "lifecycle_controller", "owner",
+                    "effective_scope"):
+            for c in src_ev.get(fld, []):
+                c2 = {k: (list(x) if isinstance(x, list) else x) for k, x in c.items() if k != "source"}
+                for kk in ("key_fields", "fields"):
+                    if kk in c2:
+                        c2[kk] = [f for f in c2[kk] if f not in to_parent]
+                if c2.get("via") in to_parent or (isinstance(c2.get("via"), list) and set(c2["via"]) & to_parent):
+                    c2["via"] = "$parent"
+                if fld == "identity" and c2.get("status") == "present" and to_parent & set(c.get("key_fields", [])):
+                    c2["scope"] = "within_parent"
+                s = dict(c.get("source") or {"level": "derived", "ref": r["evidence_id"]})
+                s["note"] = note + (" / " + s.get("note", "") if s.get("note") else "")
+                c2["source"] = s
+                put(cid, fld, c2)
+    # T45: bloco timeouts é configuração do Terraform: fora do domínio
+    for rt, r in sorted(timeouts.items()):
+        out.setdefault(f"{rt}.timeouts", {})["out_of_domain"] = "terraform_timeouts"
     # campos citados nas chaves sem mapa: nome canônico = caminho
     for cid, ent in out.items():
         fm = ent.setdefault("field_map", {})

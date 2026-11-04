@@ -12,7 +12,7 @@ import glob
 import sys
 from pathlib import Path
 
-from .common import data_root, load_jsonl
+from .common import data_root, load_jsonl  # noqa: F401 (load_jsonl reexportado)
 
 
 class MissingInput(SystemExit):

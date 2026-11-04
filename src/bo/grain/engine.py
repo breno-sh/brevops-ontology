@@ -223,6 +223,8 @@ class Context:
 def _label(n: Node, api: Fact) -> str:
     if api.known and api.value.get("label"):
         return str(api.value["label"])
+    if n.ev.twin:
+        return n.ev.twin.replace("_", " ")
     return (n.cid.split(".")[-1] if n.group is None else n.group).replace("_", " ")
 
 

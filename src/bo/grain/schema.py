@@ -106,6 +106,8 @@ class SchemaResult:
     transparent: dict = field(default_factory=dict)   # cid -> cid do pai efetivo (ou None)
     atom_owner: dict = field(default_factory=dict)    # atom_id -> (unit cid, caminho na unidade)
     virtual_atoms: set = field(default_factory=set)   # sub-átomos derivados do tipo cty (não estão no C01)
+    out_of_domain: dict = field(default_factory=dict) # cid -> motivo (T45: configuração do Terraform)
+    out_of_domain_atoms: dict = field(default_factory=dict)  # atom_id -> motivo
 
 
 def _is_payload(ev: CandidateEvidence) -> bool:
@@ -138,9 +140,17 @@ def decompose_schema(cands: list[Candidate], adapter, rs: R.RuleSet) -> SchemaRe
     def eff_parent_of(tcid):
         return transparent[tcid]
 
+    # T45: fora do domínio (o candidato e tudo abaixo dele)
+    ood: dict[str, str] = {}
+    for cid in sorted(by, key=lambda x: (x.count(".") + x.count(":"), x)):
+        c = by[cid]
+        if evs[cid].out_of_domain:
+            ood[cid] = evs[cid].out_of_domain
+        elif c.parent in ood:
+            ood[cid] = ood[c.parent]
     for cid in sorted(by, key=lambda x: (x.count(".") + x.count(":"), x)):
         ev = evs[cid]
-        if not _is_payload(ev):
+        if cid in ood or not _is_payload(ev):
             continue
         c = by[cid]
         if c.parent is not None:
@@ -154,7 +164,7 @@ def decompose_schema(cands: list[Candidate], adapter, rs: R.RuleSet) -> SchemaRe
                 transparent[cid] = tgt
     nodes: dict[str, Node] = {}
     for cid, c in sorted(by.items()):
-        if cid in transparent:
+        if cid in transparent or cid in ood:
             continue
         ev = evs[cid]
         rt = {}
@@ -166,7 +176,7 @@ def decompose_schema(cands: list[Candidate], adapter, rs: R.RuleSet) -> SchemaRe
                           block_path=c.block_path, group=c.group, parent=eff_parent(cid), ev=ev, ref_targets=rt,
                           by_role=True)
     decisions = decide_graph(list(nodes.values()), rs)
-    res = SchemaResult(provider, by, nodes, decisions, transparent)
+    res = SchemaResult(provider, by, nodes, decisions, transparent, out_of_domain=ood)
     # átomos: cada atributo vai para a unidade do candidato, ou do pai efetivo se o candidato é transparente
     for cid, c in sorted(by.items()):
         unit = cid
@@ -178,6 +188,9 @@ def decompose_schema(cands: list[Candidate], adapter, rs: R.RuleSet) -> SchemaRe
         for a in c.attrs:
             full = ".".join(list(c.block_path) + [a])
             aid = f"{c.provider}:{c.resource_type}:{full}"
+            if cid in ood:
+                res.out_of_domain_atoms[aid] = ood[cid]
+                continue
             if c.virtual or any(by[x].virtual for x in _ancestors(by, cid)):
                 res.virtual_atoms.add(aid)
             if u is None:

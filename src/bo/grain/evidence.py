@@ -35,11 +35,13 @@ class EvidenceError(ValueError):
 
 
 def _norm_via(v) -> tuple[str, ...]:
+    """via ausente, [] e ["$parent"] são a mesma coisa: o padrão é o pai estrutural (nó aninhado)."""
     if v is None:
         return ()
     if isinstance(v, str):
-        return (v,)
-    return tuple(sorted(str(x) for x in v))
+        v = [v]
+    out = tuple(sorted(str(x) for x in v))
+    return () if out == (PARENT,) else out
 
 
 def normalize_claim(fld: str, c: dict) -> dict | None:
@@ -125,6 +127,9 @@ class CandidateEvidence:
     groups: dict[str, dict] = field(default_factory=dict)
     # papéis do C04 por caminho relativo (opcional)
     roles: dict[str, str] = field(default_factory=dict)
+    # tipo gêmeo de que o bloco herdou a evidência (T09) e marca de fora do domínio (T45)
+    twin: str | None = None
+    out_of_domain: str | None = None
 
     def fact(self, fld: str) -> Fact:
         return consolidate(fld, self.claims.get(fld, []))
@@ -145,7 +150,8 @@ def from_dict(d: dict) -> CandidateEvidence:
     return CandidateEvidence(claims=claims, field_map=dict(d.get("field_map", {})),
                              references=dict(d.get("references", {})),
                              parent_role=d.get("parent_role", "parent"),
-                             groups=dict(d.get("groups", {})), roles=dict(d.get("roles", {})))
+                             groups=dict(d.get("groups", {})), roles=dict(d.get("roles", {})),
+                             twin=d.get("twin"), out_of_domain=d.get("out_of_domain"))
 
 
 class FixtureAdapter:

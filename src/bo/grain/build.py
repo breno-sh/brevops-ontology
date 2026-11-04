@@ -36,7 +36,7 @@ from . import schema as S
 from .common import data_dir, dump_json, dump_jsonl, now, repo, results_dir, rules_path, sha256_file, stamp
 from .evidence import FixtureAdapter
 
-AUTHORED_AT = "2026-11-04T03:00:00-03:00"
+AUTHORED_AT = "2026-11-04T03:30:00-03:00"
 
 
 def _strip(rep: dict) -> dict:
@@ -408,6 +408,11 @@ vida preso à instância, G1 e G2 aceitam a evidência, e trocar a ordem troca B
 referência <code>by_name</code>; sem ela, o grafo embutido perde relações que o separado tem.</li>
 <li>Emenda 0.1.1 (CC-1): a primeira versão lia uma convenção que o SERVICE-EVIDENCE nunca gravou; os testes
 sintéticos usavam a mesma convenção e não pegaram. Entraram o adaptador por aspecto e testes com o arquivo real.</li>
+<li>Emenda 0.1.2 (CC-1b, CC-1c): o adaptador 0.1.1 era anterior aos fatos de gêmeo, referência tipada e timeouts
+do SERVICE-EVIDENCE; os blocos embutidos saíam com "twin_type sem tradução" e o E2 não chegava ao grão. Achado no
+caminho: os fatos block_* do bloco (camada Terraform) contradiziam a identidade herdada do gêmeo; a evidência do
+gêmeo agora substitui a do bloco. Fatos sem aspecto com layer terraform (R-OWN-TOP, R-LIFE-TF) não viram dono de
+tipo de topo nem ciclo de vida: aceitá-los faria toda faceta separada dona de si.</li>
 <li>Emenda 0.1.1 (CC-NET-1): regras embutidas como atributo lista/conjunto de objetos não viravam unidade; agora
 viram bloco repetido (T2) com sub-átomos virtuais, e embutido × separado dá a mesma decomposição com a mesma
 evidência de API.</li>
@@ -426,7 +431,9 @@ vida; onde a evidência falta, o resultado é UNKNOWN, e o número de UNKNOWN é
 provedores saem UNKNOWN, porque faltam fatos, não tradução: nenhum aspecto dá dono da configuração a tipo de topo; o
 ciclo de vida do contêiner é not_documented (AWS, Azure, OCI) ou só tem deletion_policy sem valores (Google); a
 ponte de API é UNKNOWN na AWS e no Google; a chave compartilhada da AWS não tem raiz com ciclo de vida self; a
-contenção do Azure não diz o atributo de referência. Os controles positivos dos testes mostram que, com esses
+contenção do Azure não diz o atributo de referência. Com o gêmeo (T09) e a referência tipada (T44), o E2 no dado
+real sai igual para SG ingress, SG egress e NSG security_rule (mesmo grão, regra, falta, rótulo e relações; os dois
+lados ainda UNKNOWN pela mesma falta). Os controles positivos dos testes mostram que, com esses
 fatos, o mesmo caminho decide o contêiner (ENTITY), a faceta separada (FACET) e a regra embutida igual à separada
 (COMPONENT, mesmas relações).</li>
 <li>O lint é lexical e de higiene; validade vem dos compromissos, do GRAIN-REPRO e dos pilotos.</li>
