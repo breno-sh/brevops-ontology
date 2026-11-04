@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "HIST-AWS",
- "generated_at": "2026-11-04T02:19:08-03:00",
+ "generated_at": "2026-11-04T02:43:51-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/HIST-AWS.txt",
@@ -17,9 +17,10 @@
    "terraform": "1.15.8",
    "plataforma": "darwin_arm64",
    "sandbox": "env -i, HOME temporario, sandbox-exec sem credenciais (nega ~/.aws ~/.config/gcloud ~/.azure ~/.oci ~/.ssh); schema sem rede IP; init so com o registro",
-   "biblioteca": "bo.schema.extract e bo.schema.build (SCHEMALIB 7f2d5b2) + passada write_only do C01 2.1.0",
+   "biblioteca": "bo.schema.extract e bo.schema.build (SCHEMALIB, write_only do C01 2.1.0 pela biblioteca)",
    "ancora_gpg": "C874011F0AB405110D02105534365D9472D7468F",
-   "binarios": "zip e pasta desempacotada apagados apos cada versao; o zip do pin 6.71.0 e do SCHEMA-AWS (so lido, nao apagado)"
+   "binarios": "zip e pasta desempacotada apagados apos cada versao; o zip do pin 6.71.0 e do SCHEMA-AWS (so lido, nao apagado)",
+   "schema_cru": "$BO_DATA/downloads/hist-aws/tfschema/aws-<versao>/ (texto do fornecedor, dado nao confiavel), listado no MANIFEST do modulo"
   },
   "inputs": [
    {
@@ -35,7 +36,7 @@
    {
     "path": "$BO_DATA/downloads/hist-aws",
     "kind": "dir",
-    "sha256": "3a86a7e9596ca4627cad74fa9ccf24091ada34552754652d057deed1467b3608"
+    "sha256": "0b789af1fb660239504d6fb7d3a30973887d8031605499ee923c2eddef4c0aed"
    },
    {
     "path": "$BO_DATA/downloads/prefetch/aws/6.71.0",
@@ -48,7 +49,7 @@
     "sha256": "885b3290cd48738cbf9ee8a6d47a4452889843f8f53b8cf67fc8c9b16e553721"
    }
   ],
-  "recorded_at": "2026-11-04T02:19:08-03:00"
+  "recorded_at": "2026-11-04T02:43:51-03:00"
  },
  "sources": [
   {
