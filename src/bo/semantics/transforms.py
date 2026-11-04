@@ -270,10 +270,68 @@ REGISTRY: dict[str, Spec] = {s.name: s for s in [
 ]}
 
 
+_FOREIGN: dict[str, Spec] = {}
+
+
+def _from_closed_registry(name: str) -> Spec | None:
+    """Função do registro fechado do TRANSFORMS (bo.transforms.registry), quando ele está instalado.
+    A inversa só é aceita se o registro a declara e diz que a função NÃO é parcial; função parcial (ex.
+    enum_to_bool com mais de um texto por lado) é declarada não inversível: a volta fica sem inversa
+    (inverse_missing -> T-INVERSE, UNPROVEN), nunca exceção. O núcleo daqui tem precedência no nome."""
+    if name in _FOREIGN:
+        return _FOREIGN[name]
+    try:
+        from bo.transforms import registry as R
+        from bo.transforms import errors as RE
+    except ImportError:
+        return None
+    item = R.REGISTRY.get(name)
+    if item is None:
+        return None
+    is_comb = isinstance(item, R.Combinator)
+
+    def run(v, p, ctx, _n=name, _c=is_comb):
+        try:
+            if _c:
+                if not isinstance(v, dict):
+                    raise OutOfDomain(f"{_n}: combinador exige entradas nomeadas")
+                return R.apply_combinator(_n, v, ctx)
+            return R.apply_scalar(_n, v, p, ctx)
+        except RE.TransformError as e:
+            if getattr(e, "code", "") == RE.DECLARATION_ERROR:
+                raise TypeError_(str(e))
+            raise OutOfDomain(str(e))
+
+    def inv(p, _i=item, _c=is_comb):
+        if not _i.inverse or _i.partial:
+            return None
+        if _c:
+            return _i.inverse, {}
+        ip = getattr(_i, "inv_params", None)
+        return _i.inverse, (ip(p) if ip else {})
+    spec = Spec(name, "tuple" if is_comb else "scalar", "registro fechado (TRANSFORMS)", "registro fechado",
+                getattr(item, "precondition", ""), "OutOfDomain / TypeError_ (DECLARATION_ERROR)",
+                (item.inverse or "nenhuma") + (" (parcial: não inversível aqui)" if item.partial else ""),
+                run, inv, None)
+    _FOREIGN[name] = spec
+    return spec
+
+
 def get(name: str) -> Spec:
-    if name not in REGISTRY:
-        raise TypeError_(f"função de tradução fora do núcleo: {name!r}")
-    return REGISTRY[name]
+    if name in REGISTRY:
+        return REGISTRY[name]
+    spec = _from_closed_registry(name)
+    if spec is None:
+        raise TypeError_(f"função de tradução fora do núcleo e do registro fechado: {name!r}")
+    return spec
+
+
+def inverse_chain_safe(fn) -> list[dict] | None:
+    """inverse_chain que nunca levanta: função desconhecida = sem inversa (None)."""
+    try:
+        return inverse_chain(fn)
+    except TypeError_:
+        return None
 
 
 def apply(fn: dict, v, ctx: dict | None = None):

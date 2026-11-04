@@ -140,7 +140,7 @@ def invert(c: Claim) -> Claim:
         mp = dict(mp)
         mp["subset"] = "object" if mp.get("subset") == "subject" else "subject"
         inv["membership_predicate"] = mp
-    ich = T.inverse_chain(r.get("translation_fn")) if r.get("translation_fn") is not None else []
+    ich = T.inverse_chain_safe(r.get("translation_fn")) if r.get("translation_fn") is not None else []
     if r.get("translation_fn") is not None and ich is None:
         inv["translation_fn"] = None
         inv["inverse_missing"] = True
