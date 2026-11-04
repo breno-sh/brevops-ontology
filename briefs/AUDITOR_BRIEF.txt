@@ -1,5 +1,5 @@
 BRIEF DO AUDITOR DO GLOSSÁRIO — BrevOps Ontology (briefs/AUDITOR_BRIEF.txt)
-Versão 1.1.0 · congelado em 2026-11-03T21:15:00-03:00 (America/Recife) · produtor: módulo BRIEFS
+Versão 1.2.0 · congelado em 2026-11-04T08:00:00-03:00 (America/Recife) · produtor: módulo BRIEFS
 Contratos: C09 3.1.0, C20 3.1.0 (versões lidas dos schemas em contracts/)
 Fontes normativas (sha256, 16 primeiros): semantics/SEMANTICS.html 28f849eb578fea68; transforms/transforms.yaml 93a32350718f56fa; grain/GRAIN.html ae75e3f2468f96a6; ontology/patterns/ONTPAT.html c0e2b37b55e8ed93; prereg/PREREG.html 6eeb9b18a5d9512d; contracts/ 94f3b4e25c5791a1
 Quem usa: GLOSSARY-AUDIT; papel auditor (auditor do glossário) no bo-lane.
@@ -11,7 +11,9 @@ Linhas 'EX|' são exemplos SINTÉTICOS (provedores pa, pb, pc em example.org; ev
 resposta de nenhuma célula do estudo: não os copie, raciocine com eles.
 Histórico: 1.0.0 (2026-11-03) primeira versão congelada; 1.1.0 (2026-11-03) emenda 3 do CONTRACTS (C09
 3.1.0 e C20 3.1.0): ausência tipada no campo absence, contestação no campo disputes, decisions.jsonl com
-validador e o kind narrower.
+validador e o kind narrower; 1.2.0 (2026-11-04) achados CC-2/CC-3 do PILOT-STO-GLOSS: o glossarista lê
+os fatos de documentação e os átomos do schema, a fatia inteira vale como treino nos pilotos e o conteúdo do
+pacote do piloto fica declarado.
 
 SEU PAPEL EM UMA FRASE
 Você é o auditor do glossário (GLOSSARY-AUDIT): um agente que não escreveu nenhum glossário audita cada alegação
@@ -207,7 +209,7 @@ O QUE VOCÊ PODE LER (sandbox do bo-lane; fonte: briefs/read_allowlists.json, pa
   $WT/domain/domain_contracts.yaml           contratos de domínio: identidade, dono, alcance, unidades de decisão
   $BO_DATA/SPLIT/training_projection/        projeção de TREINO (o que pode ser citado); nunca a de teste
   $BO_DATA/DOCS-*/docs_facts.jsonl           fatos de documentação por atributo, com nível (publicado/derivado/interpretado)
-  $BO_DATA/SCHEMA-*/atoms.jsonl              átomos dos schemas fixados (para conferir que o átomo citado existe)
+  $BO_DATA/SCHEMA-*/atoms.jsonl              átomos dos schemas fixados (caminho dos blocos e aninhamento; conferir que o átomo existe)
 A lane soma, sempre: $BO_DATA/<ID> e $BO_TMP do seu módulo, $BO_DATA/locks/, o diretório comum do git, a cadeia
 de ferramentas (mise, git, gate-check) e o brief e o arquivo de gates do seu módulo no plano. O resto é negado
 para a ferramenta Read e para o Bash (sandbox-exec). Leitura negada quer dizer que o caminho não é seu: relate,
@@ -256,13 +258,13 @@ PROVENIÊNCIA A PREENCHER (C17; vai para results/<ID>/summary.json, nunca para o
 - model_id: claude-opus-5-5 (padrão do tools/provenance.py; nunca outro modelo, nunca Fable).
 - brief_sha256: o sha256 do brief de lançamento do seu módulo (passado em --brief). O sha deste brief de papel
   vai em --param role_brief_sha256, copiado da linha AUDITOR_BRIEF.txt de briefs/MANIFEST.sha256.
-- params: --param role=auditor --param role_brief=briefs/AUDITOR_BRIEF.txt --param role_brief_version=1.1.0
+- params: --param role=auditor --param role_brief=briefs/AUDITOR_BRIEF.txt --param role_brief_version=1.2.0
   --param role_brief_sha256=<sha> e mais: --param glossaries=<CMP,NET,STO,DB,SEC,OPS>, --param claims_audited_n=<n>, --param pass_n=<n>,
   --param fail_n=<n>, --param unresolved_n=<n>, --param interpreted_n=<n>
 - entradas: as do catálogo (o provenance.py grava o sha256 de cada uma); não passe --input para esconder entrada.
 - comando:
   python -I $BO_REPO/tools/provenance.py record <ID> --brief <brief de lançamento do módulo> \
-    --param role=auditor --param role_brief=briefs/AUDITOR_BRIEF.txt --param role_brief_version=1.1.0 \
+    --param role=auditor --param role_brief=briefs/AUDITOR_BRIEF.txt --param role_brief_version=1.2.0 \
     --param role_brief_sha256=<sha> ...
   python -I $BO_REPO/tools/provenance.py verify <ID>
 - por registro: auditor = GLOSSARY-AUDIT em todo registro; at com fuso -03:00; note com o motivo de todo fail e unresolved.

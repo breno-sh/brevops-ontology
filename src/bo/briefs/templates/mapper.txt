@@ -132,6 +132,10 @@ pilotos, o árbitro congelado (python -I -m bo.arbiter.run --frozen --in <arquiv
 Os exemplos sintéticos deste brief foram gravados assim e voltaram iguais: {{TSV_ROUNDTRIP}}
 
 M11. PILOTO × ESCALA
+Nos pilotos, o pacote (bundle/ do glossarista do piloto) tem candidates.jsonl (C08), glossary.jsonl,
+decisions.jsonl e claims.jsonl (C20), canonical_units.jsonl e canonical_atoms.jsonl (C19), o value_space.jsonl
+da fatia (C05) e MANIFEST.sha256; confira o manifesto antes de começar (shasum -a 256 -c). Ele não traz uso,
+valor, deploy, teste nem ouro, e você não procura isso fora dele.
 Os mapeamentos dos pilotos não entram no estudo principal; os mapeadores de escala recomeçam do zero e não leem
 nada dos pilotos. O RELIAB remapeia às cegas uma amostra: não leia o mapeamento que ele replica.
 @@FORBID

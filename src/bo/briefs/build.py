@@ -233,7 +233,9 @@ def brief_text(role: str, rep: dict, reg: dict, norm: str, cver: str) -> str:
         "resposta de nenhuma célula do estudo: não os copie, raciocine com eles.",
         "Histórico: 1.0.0 (2026-11-03) primeira versão congelada; 1.1.0 (2026-11-03) emenda 3 do CONTRACTS (C09",
         "3.1.0 e C20 3.1.0): ausência tipada no campo absence, contestação no campo disputes, decisions.jsonl com",
-        "validador e o kind narrower.",
+        "validador e o kind narrower; 1.2.0 (2026-11-04) achados CC-2/CC-3 do PILOT-STO-GLOSS: o glossarista lê",
+        "os fatos de documentação e os átomos do schema, a fatia inteira vale como treino nos pilotos e o conteúdo do",
+        "pacote do piloto fica declarado.",
     ])
     body = render("\n\n".join([parts["INTRO"], (tdir / "core.txt").read_text(encoding="utf-8").rstrip("\n"),
                                "PAPEL: " + common.ROLE_PT[role].upper() + "\n" + parts["BODY"],

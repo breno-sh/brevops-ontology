@@ -32,8 +32,16 @@ G1. O QUE VOCÊ ENTREGA (C20 3.1.0; caminhos exatos no brief do seu módulo)
 {{EX:DECISION_NARROWER}}
 {{EX:DECISION_SAME_KIND}}
 {{EX:DECISION_VALUE_TYPE}}
-- Nos pilotos, também canonical_units.jsonl (C19) e o pacote fechado do mapeador (bundle/): o grão sai da
-  biblioteca de grão, mecanicamente (G5).
+- Nos pilotos, também canonical_units.jsonl e canonical_atoms.jsonl (C19), com o grão saído da biblioteca de grão
+  mecanicamente (G5), e o pacote fechado do mapeador, bundle/, com exatamente:
+    candidates.jsonl (C08) dos átomos da fatia;
+    glossary.jsonl, decisions.jsonl e claims.jsonl (C20) do seu glossário;
+    canonical_units.jsonl e canonical_atoms.jsonl (C19);
+    value_space.jsonl (C05) só dos átomos da fatia;
+    MANIFEST.sha256 com o sha256 de cada arquivo acima.
+  O pacote vai sem uso, valor, deploy, teste nem ouro: nada de corpus, contagem de uso, valor configurado,
+  leitura de volta, fixture, oráculo ou correspondência de terceiros. O mapeador lê só o pacote; o que faltar nele
+  falta para o mapeamento.
 
 G2. ANCORAR ÁTOMOS DE DOIS PROVEDORES NO MESMO CONCEITO É UMA ALEGAÇÃO
 O gate bo.glossary.anchor_claims conta cada caminho átomo→conceito←átomo entre provedores diferentes como uma
@@ -79,9 +87,15 @@ em ENTITY: UNKNOWN fica UNKNOWN, com o missing_evidence que a biblioteca devolve
 CONTRACT_CHANGE ou relato, nunca conserto local.
 
 G6. SÓ A PROJEÇÃO DE TREINO
-Cite apenas átomos, unidades e sentenças da projeção de treino (bo.glossary.train_only). Unidade que você suspeita
-ser de teste: não procure saber, não cite. Nos pilotos, as unidades expostas ficam marcadas pilot_exposed pelo
-SPLIT; isso não muda o seu trabalho.
+Na escala, cite apenas átomos, unidades e sentenças da projeção de treino (bo.glossary.train_only). Unidade que
+você suspeita ser de teste: não procure saber, não cite. Nos pilotos, a fatia inteira vale como projeção de treino,
+porque o SPLIT vem depois deles; as unidades da fatia saem do hold-out e ficam marcadas pilot_exposed pelo SPLIT, e
+isso não muda o seu trabalho.
+A sentença de cada âncora vem da documentação do PRÓPRIO átomo: os fatos de documentação por atributo
+($BO_DATA/DOCS-*/docs_facts.jsonl, com nível publicado, derivado ou interpretado) e os átomos do schema fixado
+($BO_DATA/SCHEMA-*/atoms.jsonl, com o caminho dos blocos e o modo de aninhamento que a biblioteca de grão usa).
+As sentenças do SERVICE-EVIDENCE descrevem o serviço, não a definição do atributo: não sustentam âncora sozinhas.
+Átomo sem fato de documentação: âncora UNRESOLVED com o motivo no context, nunca uma sentença inventada.
 
 G7. CONFERIR ANTES DO COMMIT
   python -I -m bo.contracts.validate glossary <seu glossary.jsonl>

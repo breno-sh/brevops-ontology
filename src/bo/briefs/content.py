@@ -27,7 +27,8 @@ def _own(role):
 
 ROLE_READ = {
     "glossarist": PACKAGE + _own("glossarist") + INFRA + ["$WT/grain/", "$WT/ontology/patterns/naming_rules.yaml",
-                                     "$WT/semantics/SEMANTICS.html"],
+                                     "$WT/semantics/SEMANTICS.html", "$BO_DATA/DOCS-*/docs_facts.jsonl",
+                                     "$BO_DATA/SCHEMA-*/atoms.jsonl"],
     "mapper": PACKAGE + _own("mapper") + INFRA + ["$WT/semantics/", "$WT/transforms/", "$WT/arbiter/RULES.html"],
     "hunter": PACKAGE + _own("hunter") + INFRA + ["$WT/semantics/", "$WT/transforms/", "$WT/arbiter/RULES.html"],
     "auditor": PACKAGE + _own("auditor") + INFRA + ["$WT/semantics/", "$WT/grain/", "$WT/ontology/patterns/naming_rules.yaml",
@@ -53,7 +54,7 @@ WHY_READ = {
     "$WT/domain/domain_contracts.yaml": "contratos de domínio: identidade, dono, alcance, unidades de decisão",
     "$BO_DATA/SPLIT/training_projection/": "projeção de TREINO (o que pode ser citado); nunca a de teste",
     "$BO_DATA/DOCS-*/docs_facts.jsonl": "fatos de documentação por atributo, com nível (publicado/derivado/interpretado)",
-    "$BO_DATA/SCHEMA-*/atoms.jsonl": "átomos dos schemas fixados (para conferir que o átomo citado existe)",
+    "$BO_DATA/SCHEMA-*/atoms.jsonl": "átomos dos schemas fixados (caminho dos blocos e aninhamento; conferir que o átomo existe)",
     "$WT/prereg/": "pré-registro: métricas, critérios e consequências escritos antes dos dados",
 }
 for _r, _f in BRIEF_OF.items():
@@ -120,7 +121,10 @@ ROLE_REQUIRED = {
                               r"counterexample_search", r"extraction_method", r"evidence_level"],
         "não mapeia": [r"nunca átomo↔átomo", r"bo:UNGLOSSED"],
         "rótulo neutro e grandeza": [r"NOT_APPLICABLE", r"UNKNOWN", r"QUDT", r"token de provedor"],
-        "treino": [r"projeção de treino"],
+        "treino": [r"projeção de treino", r"fatia inteira vale como projeção de treino"],
+        "pacote do piloto": [r"candidates\.jsonl \(C08\)", r"canonical_atoms", r"value_space", r"MANIFEST\.sha256",
+                             r"sem uso, valor, deploy, teste nem ouro"],
+        "documentação dos átomos": [r"docs_facts\.jsonl", r"atoms\.jsonl"],
         "C20": [r"python -I -m bo\.contracts\.validate glossary", r"claims\.jsonl", r"decisions\.jsonl",
               r"validate decisions", r"narrower"],
     },

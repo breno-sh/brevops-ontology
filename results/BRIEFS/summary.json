@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "BRIEFS",
- "generated_at": "2026-11-03T21:12:33-03:00",
+ "generated_at": "2026-11-04T02:17:00-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/BRIEFS.txt",
@@ -13,13 +13,13 @@
    "modo": "unlazy",
    "onda": "6",
    "fase": "F1",
-   "brief_version": "1.1.0",
-   "frozen_at": "2026-11-03T21:15:00-03:00",
+   "brief_version": "1.2.0",
+   "frozen_at": "2026-11-04T08:00:00-03:00",
    "examples": "13",
    "semantics_reference": "bo.semantics.obligations",
    "c09": "3.1.0",
    "c20": "3.1.0",
-   "emenda": "CONTRACTS-3-bdceb64"
+   "emenda": "PILOT-STO-GLOSS-CC2-CC3"
   },
   "inputs": [
    {
@@ -53,7 +53,7 @@
     "sha256": "28f849eb578fea685935a2499cd13710e8a96b6cd01e4bc34419ae0e51f29596"
    }
   ],
-  "recorded_at": "2026-11-03T21:12:33-03:00"
+  "recorded_at": "2026-11-04T02:17:00-03:00"
  },
  "sources": [
   {

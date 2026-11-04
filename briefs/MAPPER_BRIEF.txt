@@ -1,5 +1,5 @@
 BRIEF DO MAPEADOR — BrevOps Ontology (briefs/MAPPER_BRIEF.txt)
-Versão 1.1.0 · congelado em 2026-11-03T21:15:00-03:00 (America/Recife) · produtor: módulo BRIEFS
+Versão 1.2.0 · congelado em 2026-11-04T08:00:00-03:00 (America/Recife) · produtor: módulo BRIEFS
 Contratos: C09 3.1.0, C20 3.1.0 (versões lidas dos schemas em contracts/)
 Fontes normativas (sha256, 16 primeiros): semantics/SEMANTICS.html 28f849eb578fea68; transforms/transforms.yaml 93a32350718f56fa; grain/GRAIN.html ae75e3f2468f96a6; ontology/patterns/ONTPAT.html c0e2b37b55e8ed93; prereg/PREREG.html 6eeb9b18a5d9512d; contracts/ 94f3b4e25c5791a1
 Quem usa: PILOT-STO-MAP, PILOT-NET-MAP, MAP-{pair}-{domain} (36: 6 pares × 6 domínios) e RELIAB (lançado com --role mapper); papel mapper (mapeador) no bo-lane.
@@ -11,7 +11,9 @@ Linhas 'EX|' são exemplos SINTÉTICOS (provedores pa, pb, pc em example.org; ev
 resposta de nenhuma célula do estudo: não os copie, raciocine com eles.
 Histórico: 1.0.0 (2026-11-03) primeira versão congelada; 1.1.0 (2026-11-03) emenda 3 do CONTRACTS (C09
 3.1.0 e C20 3.1.0): ausência tipada no campo absence, contestação no campo disputes, decisions.jsonl com
-validador e o kind narrower.
+validador e o kind narrower; 1.2.0 (2026-11-04) achados CC-2/CC-3 do PILOT-STO-GLOSS: o glossarista lê
+os fatos de documentação e os átomos do schema, a fatia inteira vale como treino nos pilotos e o conteúdo do
+pacote do piloto fica declarado.
 
 SEU PAPEL EM UMA FRASE
 Você é o mapeador de um par×domínio (MAP-<PAR>-<DOMÍNIO>), de uma fatia piloto (PILOT-STO-MAP, PILOT-NET-MAP) ou o
@@ -268,6 +270,10 @@ pilotos, o árbitro congelado (python -I -m bo.arbiter.run --frozen --in <arquiv
 Os exemplos sintéticos deste brief foram gravados assim e voltaram iguais: 10 linhas, 29 colunas, iguais na volta: sim; colunas perdidas: nenhuma; prefixos declarados: bo, bosx, concept, pa, pb, pc, semapv, skos, sssom
 
 M11. PILOTO × ESCALA
+Nos pilotos, o pacote (bundle/ do glossarista do piloto) tem candidates.jsonl (C08), glossary.jsonl,
+decisions.jsonl e claims.jsonl (C20), canonical_units.jsonl e canonical_atoms.jsonl (C19), o value_space.jsonl
+da fatia (C05) e MANIFEST.sha256; confira o manifesto antes de começar (shasum -a 256 -c). Ele não traz uso,
+valor, deploy, teste nem ouro, e você não procura isso fora dele.
 Os mapeamentos dos pilotos não entram no estudo principal; os mapeadores de escala recomeçam do zero e não leem
 nada dos pilotos. O RELIAB remapeia às cegas uma amostra: não leia o mapeamento que ele replica.
 
@@ -340,14 +346,14 @@ PROVENIÊNCIA A PREENCHER (C17; vai para results/<ID>/summary.json, nunca para o
 - model_id: claude-opus-5-5 (padrão do tools/provenance.py; nunca outro modelo, nunca Fable).
 - brief_sha256: o sha256 do brief de lançamento do seu módulo (passado em --brief). O sha deste brief de papel
   vai em --param role_brief_sha256, copiado da linha MAPPER_BRIEF.txt de briefs/MANIFEST.sha256.
-- params: --param role=mapper --param role_brief=briefs/MAPPER_BRIEF.txt --param role_brief_version=1.1.0
+- params: --param role=mapper --param role_brief=briefs/MAPPER_BRIEF.txt --param role_brief_version=1.2.0
   --param role_brief_sha256=<sha> e mais: --param pair=<PAR> --param domain=<DOMÍNIO> (ou --param slice=<sto|net>), --param bundle_sha256=<sha do pacote>,
   --param glossary_freeze=<digest do comprovante FREEZE-G, na escala>, --param rows_n=<n>, --param none_n=<n>,
   --param groups_n=<n>, --param mapping_set_id=<IRI>
 - entradas: as do catálogo (o provenance.py grava o sha256 de cada uma); não passe --input para esconder entrada.
 - comando:
   python -I $BO_REPO/tools/provenance.py record <ID> --brief <brief de lançamento do módulo> \
-    --param role=mapper --param role_brief=briefs/MAPPER_BRIEF.txt --param role_brief_version=1.1.0 \
+    --param role=mapper --param role_brief=briefs/MAPPER_BRIEF.txt --param role_brief_version=1.2.0 \
     --param role_brief_sha256=<sha> ...
   python -I $BO_REPO/tools/provenance.py verify <ID>
 - por registro: toda linha leva mapping_tool claude-opus-5-5 e creator_id = o seu ID; mapping_date = a data do mapeamento
