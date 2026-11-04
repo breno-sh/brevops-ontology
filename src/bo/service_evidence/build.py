@@ -1,6 +1,8 @@
 """Gera as saídas do SERVICE-EVIDENCE.
 
-  python -I -m bo.service_evidence.build           grava
+  python -I -m bo.service_evidence.build           grava $BO_DATA em .staging/ (results/ no lugar)
+  python -I -m bo.service_evidence.build --promote troca .staging -> definitivo (só dentro da trava merge-base)
+  python -I -m bo.service_evidence.build --rollback volta o definitivo anterior
   python -I -m bo.service_evidence.build --check   regera em memória e compara byte a byte (evidence_levels.json
                                                    sem o carimbo generated_at); sai 1 se diverge
 
@@ -17,9 +19,10 @@ from __future__ import annotations
 
 import collections
 import json
+import os
 import sys
 
-from . import blocks, common, curated, extract, protocol, rules, sources
+from . import blocks, common, curated, extract, grainfacts, protocol, rules, sources
 
 
 def _protocol_atoms():
@@ -38,6 +41,9 @@ def generate() -> dict:
         ctxs[p], stats[p], bridges[p] = ctx, st, extra["bridges"]
         stats[p]["out_of_pin_examples"] = extra["out_of_pin_examples"]
     _, cur = curated.records(ctxs, bridges)
+    for p in common.PROVIDERS:
+        grainfacts.scopes(ctxs[p])  # depois da curadoria: R-SCOPE-DOC prevalece
+        stats[p]["counters"] = dict(ctxs[p].st)
     recs = []
     for p in common.PROVIDERS:
         structural = {"block_schema", "block_identity", "block_config_owner", "block_lifecycle"}
@@ -182,8 +188,46 @@ def _strip_stamp(text: str) -> str:
     return json.dumps(d, ensure_ascii=False, sort_keys=True)
 
 
+DATA_FILES = ("service_evidence.jsonl", "protocol_support.jsonl")
+
+
+def staging() -> "common.Path":
+    return common.out_dir() / ".staging"
+
+
+def promote() -> int:
+    """Troca .staging -> lugar definitivo (só dentro da trava merge-base, junto com o merge). Guarda o definitivo
+    anterior em .staging/prev/ para --rollback."""
+    st, prev = staging(), staging() / "prev"
+    miss = [f for f in DATA_FILES if not (st / f).exists()]
+    if miss:
+        print("promote: nada em .staging para " + ", ".join(miss))
+        return 1
+    prev.mkdir(parents=True, exist_ok=True)
+    for f in DATA_FILES:
+        cur = common.out_dir() / f
+        if cur.exists():
+            os.replace(cur, prev / f)
+        os.replace(st / f, cur)
+    print(f"[{common.now()}] promote: {', '.join(DATA_FILES)} de .staging para {common.out_dir()}")
+    return 0
+
+
+def rollback() -> int:
+    prev = staging() / "prev"
+    for f in DATA_FILES:
+        if (prev / f).exists():
+            os.replace(prev / f, common.out_dir() / f)
+    print(f"[{common.now()}] rollback: definitivo anterior restaurado")
+    return 0
+
+
 def main(argv=None) -> int:
     argv = list(sys.argv[1:] if argv is None else argv)
+    if "--promote" in argv:
+        return promote()
+    if "--rollback" in argv:
+        return rollback()
     g = generate()
     files = render(g)
     if "--check" in argv:
@@ -205,12 +249,16 @@ def main(argv=None) -> int:
         print(f"regeneração idêntica: {len(files)} arquivos, {len(g['recs'])} fatos, {len(g['protocol'])} linhas "
               f"de protocolo")
         return 0
-    common.out_dir().mkdir(parents=True, exist_ok=True)
+    # dados em $BO_DATA vão para .staging; o definitivo só muda com --promote, dentro da trava, junto com o merge
+    staging().mkdir(parents=True, exist_ok=True)
     common.results_dir().mkdir(parents=True, exist_ok=True)
     for path, text in files.items():
-        with open(path, "w", encoding="utf-8") as f:
+        name = os.path.basename(path)
+        dest = staging() / name if name in DATA_FILES else path
+        with open(dest, "w", encoding="utf-8") as f:
             f.write(text)
-    print(f"[{common.now()}] gravado: {len(g['recs'])} fatos C25, {len(g['protocol'])} linhas de protocolo")
+    print(f"[{common.now()}] gravado em .staging: {len(g['recs'])} fatos C25, {len(g['protocol'])} linhas de "
+          f"protocolo (results/ já no lugar; promova com --promote dentro da trava)")
     return 0
 
 

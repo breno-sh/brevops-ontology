@@ -3,14 +3,14 @@
  "module": "SERVICE-EVIDENCE",
  "contract": "C25",
  "contract_version": "1.0.0",
- "generated_at": "2026-11-04T02:50:08-03:00",
- "records": 138111,
+ "generated_at": "2026-11-04T03:17:53-03:00",
+ "records": 155819,
  "by_level": {
-  "derived": 74574,
+  "derived": 97455,
   "interpreted": 6,
-  "published": 63531,
-  "status:stated": 125920,
-  "status:unknown": 12191
+  "published": 58358,
+  "status:stated": 148806,
+  "status:unknown": 7013
  },
  "by_provider": {
   "aws": {
@@ -18,8 +18,8 @@
    "api_bridge|published|stated": 1746,
    "connection_state|published|stated": 18,
    "connection_state|published|unknown": 5,
-   "effective_scope|published|stated": 22,
-   "effective_scope|published|unknown": 1725,
+   "effective_scope|derived|stated": 7846,
+   "effective_scope|published|stated": 24,
    "effect|published|stated": 17,
    "effect|published|unknown": 3,
    "identity|derived|stated": 8898,
@@ -43,9 +43,9 @@
    "api_bridge|published|stated": 679,
    "connection_state|published|stated": 9,
    "connection_state|published|unknown": 1,
+   "effective_scope|derived|stated": 7343,
    "effective_scope|interpreted|stated": 1,
-   "effective_scope|published|stated": 61,
-   "effective_scope|published|unknown": 1342,
+   "effective_scope|published|stated": 63,
    "effect|interpreted|stated": 1,
    "effect|published|stated": 16,
    "identity|derived|stated": 8745,
@@ -69,9 +69,9 @@
    "api_bridge|derived|stated": 1065,
    "connection_state|published|stated": 6,
    "connection_state|published|unknown": 2,
+   "effective_scope|derived|stated": 3717,
    "effective_scope|interpreted|stated": 1,
-   "effective_scope|published|stated": 3,
-   "effective_scope|published|unknown": 1103,
+   "effective_scope|published|stated": 4,
    "effect|published|stated": 52,
    "effect|published|unknown": 1,
    "identity|derived|stated": 5113,
@@ -94,8 +94,8 @@
    "api_bridge|published|stated": 887,
    "connection_state|interpreted|stated": 3,
    "connection_state|published|stated": 2,
+   "effective_scope|derived|stated": 3975,
    "effective_scope|published|stated": 26,
-   "effective_scope|published|unknown": 1008,
    "effect|published|stated": 3,
    "effect|published|unknown": 2,
    "identity|derived|stated": 4393,
@@ -121,7 +121,7 @@
    "api_bridge": 1746,
    "connection_state": 2,
    "effect": 14,
-   "effective_scope": 21,
+   "effective_scope": 1746,
    "identity": 1617,
    "import_key": 1654,
    "lifecycle_controller": 1138,
@@ -134,7 +134,7 @@
    "api_bridge": 679,
    "connection_state": 5,
    "effect": 12,
-   "effective_scope": 50,
+   "effective_scope": 1392,
    "identity": 1389,
    "import_key": 1386,
    "lifecycle_controller": 1241,
@@ -147,7 +147,7 @@
    "api_bridge": 1058,
    "connection_state": 5,
    "effect": 34,
-   "effective_scope": 4,
+   "effective_scope": 1107,
    "identity": 1098,
    "import_key": 1102,
    "lifecycle_controller": 1107,
@@ -160,7 +160,7 @@
    "api_bridge": 887,
    "connection_state": 2,
    "effect": 3,
-   "effective_scope": 18,
+   "effective_scope": 1026,
    "identity": 959,
    "import_key": 879,
    "lifecycle_controller": 1025,
@@ -180,7 +180,7 @@
   "missing": []
  },
  "curated": {
-  "published": 9,
+  "published": 14,
   "interpreted": 6,
   "gap_unknown": 31,
   "missing": []
@@ -218,16 +218,6 @@
   },
   {
    "provider": "aws",
-   "terraform_resource_type": "aws_vpc_security_group_egress_rule",
-   "fact_kind": "effective_scope"
-  },
-  {
-   "provider": "aws",
-   "terraform_resource_type": "aws_s3_bucket_versioning",
-   "fact_kind": "effective_scope"
-  },
-  {
-   "provider": "aws",
    "terraform_resource_type": "aws_s3_account_public_access_block",
    "fact_kind": "lifecycle_controller"
   },
@@ -268,23 +258,8 @@
   },
   {
    "provider": "aws",
-   "terraform_resource_type": "aws_security_group",
-   "fact_kind": "effective_scope"
-  },
-  {
-   "provider": "aws",
-   "terraform_resource_type": "aws_vpc_security_group_ingress_rule",
-   "fact_kind": "effective_scope"
-  },
-  {
-   "provider": "aws",
    "terraform_resource_type": "aws_security_group_rule",
    "fact_kind": "effect"
-  },
-  {
-   "provider": "aws",
-   "terraform_resource_type": "aws_security_group_rule",
-   "fact_kind": "effective_scope"
   },
   {
    "provider": "aws",
@@ -304,22 +279,12 @@
   {
    "provider": "aws",
    "terraform_resource_type": "aws_network_acl_rule",
-   "fact_kind": "effective_scope"
-  },
-  {
-   "provider": "aws",
-   "terraform_resource_type": "aws_network_acl_rule",
    "fact_kind": "connection_state"
   },
   {
    "provider": "aws",
    "terraform_resource_type": "aws_vpc_security_group_ingress_rule",
    "fact_kind": "connection_state"
-  },
-  {
-   "provider": "aws",
-   "terraform_resource_type": "aws_s3_bucket",
-   "fact_kind": "effective_scope"
   },
   {
    "provider": "aws",
@@ -365,11 +330,6 @@
    "provider": "azurerm",
    "terraform_resource_type": "azurerm_network_security_group",
    "fact_kind": "precedence"
-  },
-  {
-   "provider": "azurerm",
-   "terraform_resource_type": "azurerm_network_security_rule",
-   "fact_kind": "effective_scope"
   },
   {
    "provider": "azurerm",
@@ -394,11 +354,6 @@
   {
    "provider": "azurerm",
    "terraform_resource_type": "azurerm_network_security_group",
-   "fact_kind": "effective_scope"
-  },
-  {
-   "provider": "azurerm",
-   "terraform_resource_type": "azurerm_network_security_group",
    "fact_kind": "connection_state"
   },
   {
@@ -410,11 +365,6 @@
    "provider": "azurerm",
    "terraform_resource_type": "azurerm_network_security_group",
    "fact_kind": "effect"
-  },
-  {
-   "provider": "google",
-   "terraform_resource_type": "google_compute_firewall",
-   "fact_kind": "effective_scope"
   },
   {
    "provider": "google",
@@ -443,11 +393,6 @@
   },
   {
    "provider": "oci",
-   "terraform_resource_type": "oci_core_security_list",
-   "fact_kind": "effective_scope"
-  },
-  {
-   "provider": "oci",
    "terraform_resource_type": "oci_objectstorage_bucket",
    "fact_kind": "ttl_support"
   },
@@ -455,11 +400,6 @@
    "provider": "oci",
    "terraform_resource_type": "oci_core_security_list",
    "fact_kind": "effect"
-  },
-  {
-   "provider": "oci",
-   "terraform_resource_type": "oci_core_network_security_group_security_rule",
-   "fact_kind": "effective_scope"
   },
   {
    "provider": "oci",
@@ -475,11 +415,6 @@
    "provider": "oci",
    "terraform_resource_type": "oci_core_security_list",
    "fact_kind": "precedence"
-  },
-  {
-   "provider": "oci",
-   "terraform_resource_type": "oci_objectstorage_bucket",
-   "fact_kind": "effective_scope"
   },
   {
    "provider": "oci",
@@ -510,7 +445,7 @@
   "R-OWN-GCP-PARENT": "modelo de importação google: coleção = segmento antes de cada {{placeholder}}, ignorando locations, regions, zones e global; pai = a penúltima coleção; projects/organizations/folders/billingAccounts = contêiner.",
   "R-OWN-AWS-IDENTITY": "identidade do schema com account_id e/ou region -> alcance conta e/ou região.",
   "R-OWN-DOC-PARENT": "descrição literal de atributo de referência que diz 'belongs to', 'in which', 'that contains' ou 'compartment' -> atributo dono citado.",
-  "R-SCOPE-DOC": "frase literal com '<account|organization|project|folder|subscription|tenancy|management group|enterprise|bucket|container|network|vpc>-level', 'at the <X> level' ou 'all <coisas> in the <X>' -> alcance efetivo = X.",
+  "R-SCOPE-DOC": "prevalece sobre R-SCOPE-SELF e R-SCOPE-PARENT. Frase literal de anexação (a página diz a que o recurso se anexa ou a que alvos se aplica: rede, sub-redes, instâncias, recurso pai) ou frase com '<account|organization|project|folder|subscription|tenancy|management group|enterprise|bucket|container|network|vpc>-level', 'at the <X> level' ou 'all <coisas> in the <X>' -> alcance efetivo = X.",
   "R-LIFE-DOC": "frase literal que diz que destruir/remover o recurso só o tira do state, não apaga, ou suspende (efeito de destruição diferente de apagar o objeto).",
   "R-LIFE-DELETION-POLICY": "atributo deletion_policy documentado com valores ABANDON/DELETE (quem decide o fim do objeto de API ao destruir).",
   "R-CONN-DOC": "atributo stateless/stateful/connection tracking, ou descrição que diz stateful/stateless: frase literal e default datado do DOCS-*.",
@@ -533,6 +468,8 @@
   "R-TWIN": "bloco (ou coleção) B do tipo T tem gêmeo separado U quando uma linha da página de T ou de U cita `B` e `U` (ou `T`) entre crases e o nome passa na regra declarada (termos de B no nome de U; U tem um termo próprio de T; o resto de U fora de B e T é só rule/configuration/vpc); o bloco herda de U a ponte de API e a identidade do schema (derived_from = o vínculo publicado + o fato de U).",
   "R-REF-PHRASE": "descrição literal de atributo de papel REFERENCE (ROLES) no padrão '<ID|ARN|OCID|name|...> of the <coisa>': a coisa nomeada.",
   "R-REF-TARGET": "tipo-alvo da referência: <provedor>_<coisa> (termos com _) se existe no schema fixado; senão os tipos que terminam em _<coisa> (até 3); mais que isso, sem alvo.",
+  "R-SCOPE-SELF": "tipo de recurso de topo sem alcance publicado (R-SCOPE-DOC) tem alcance sobre ele mesmo: {kind: self}; derived_from = fato publicado do tipo no pin (importação, identidade ou tag), que mostra que ele é recurso de topo do schema fixado.",
+  "R-SCOPE-PARENT": "PREMISSA: um bloco aninhado (ou coleção como bloco) só existe dentro da configuração do pai, então, sem frase própria de alcance, o que ele configura vale para o pai: {kind: parent} (via ausente = pai estrutural). Bloco com R-SCOPE-DOC não recebe esta regra.",
   "C-PILOT-LITERAL": "fato escolhido à mão numa frase da página fixada; o valor repete o que a frase diz.",
   "C-PILOT-GAP": "tipo das fatias dos pilotos sem frase para este tipo de fato na página fixada: UNKNOWN explícito (a lacuna é resultado; não se preenche com conhecimento de fora do pin).",
   "I-PILOT-READING": "leitura do modelo sobre a frase citada (granularidade, interação entre níveis, regra implícita); value.basis diz o que foi inferido além do texto."
@@ -701,7 +638,7 @@
     "subcategory:block;import{id_attributes,id_text,identity,methods,separators,source,status,supported}": 1
    },
    "out_of_pin_examples": [],
-   "unknown_dropped_because_stated": 1889,
+   "unknown_dropped_because_stated": 3614,
    "docs_facts_read": {
     "lidos": 163851,
     "guardados": 13230,
@@ -715,9 +652,9 @@
     "api_bridge:published:stated": 1746,
     "import_key:published:stated": 1654,
     "identity:derived:stated": 8898,
-    "identity:published:stated": 10130,
+    "identity:published:stated": 10131,
     "owner:published:unknown": 1355,
-    "effective_scope:published:stated": 22,
+    "effective_scope:published:stated": 24,
     "lifecycle_controller:published:unknown": 1691,
     "tag_support:published:stated": 1746,
     "ttl_support:published:unknown": 1656,
@@ -726,7 +663,7 @@
     "lifecycle_controller:derived:stated": 6643,
     "R-OWN-TOP": 1654,
     "effective_scope:published:unknown": 1725,
-    "lifecycle_controller:published:stated": 707,
+    "lifecycle_controller:published:stated": 708,
     "R-LIFE-TF": 528,
     "R-REF-PHRASE": 3197,
     "R-REF-TARGET_sem_alvo": 1605,
@@ -739,13 +676,20 @@
     "precedence:published:stated": 2527,
     "owner:published:stated": 27,
     "ttl_aninhado_sem_frase": 9,
-    "effect:published:stated": 16,
+    "effect:published:stated": 17,
     "api_bridge:derived:stated": 16,
     "aws_ponte_por_operacao": 16,
     "connection_state:published:stated": 18,
     "tipos_com_identidade_compartilhada": 97,
     "R-TWIN_vinculos": 12,
-    "R-TWIN_herdados": 10
+    "R-TWIN_herdados": 10,
+    "connection_state:published:unknown": 5,
+    "precedence:published:unknown": 7,
+    "effect:published:unknown": 3,
+    "effective_scope:derived:stated": 7846,
+    "R-SCOPE-SELF": 1731,
+    "R-SCOPE-DOC_tipo": 15,
+    "R-SCOPE-PARENT": 6115
    }
   },
   "google": {
@@ -760,7 +704,7 @@
     "subcategory:block;import{status,unknown_reason}": 6
    },
    "out_of_pin_examples": [],
-   "unknown_dropped_because_stated": 381,
+   "unknown_dropped_because_stated": 1723,
    "docs_facts_read": {
     "lidos": 42822,
     "guardados": 6120,
@@ -789,13 +733,13 @@
     "blocos_abaixo_do_corte": 882,
     "lifecycle_controller:published:unknown": 520,
     "owner:published:stated": 203,
-    "effective_scope:published:stated": 61,
+    "effective_scope:published:stated": 63,
     "blocos_de_faceta": 317,
     "R-REF-TARGET": 1207,
     "colecoes_como_bloco": 340,
     "ttl_support:published:stated": 132,
-    "effect:published:stated": 14,
-    "precedence:published:stated": 42,
+    "effect:published:stated": 16,
+    "precedence:published:stated": 44,
     "ttl_aninhado_sem_frase": 14,
     "import_key:published:unknown": 6,
     "connection_state:published:stated": 9,
@@ -803,7 +747,15 @@
     "tipos_com_identidade_compartilhada": 205,
     "R-TWIN_vinculos": 1,
     "api_bridge:derived:stated": 1,
-    "R-TWIN_herdados": 1
+    "R-TWIN_herdados": 1,
+    "effect:interpreted:stated": 1,
+    "effective_scope:interpreted:stated": 1,
+    "connection_state:published:unknown": 1,
+    "precedence:published:unknown": 1,
+    "effective_scope:derived:stated": 7343,
+    "R-SCOPE-SELF": 1365,
+    "R-SCOPE-DOC_tipo": 27,
+    "R-SCOPE-PARENT": 5978
    }
   },
   "azurerm": {
@@ -817,7 +769,7 @@
     "subcategory:block;import{status,unknown_reason}": 5
    },
    "out_of_pin_examples": [],
-   "unknown_dropped_because_stated": 1195,
+   "unknown_dropped_because_stated": 2298,
    "docs_facts_read": {
     "lidos": 42571,
     "guardados": 7738,
@@ -853,12 +805,20 @@
     "precedence:published:stated": 77,
     "effect:published:stated": 52,
     "import_key:published:unknown": 5,
-    "effective_scope:published:stated": 2,
+    "effective_scope:published:stated": 4,
     "blocos_abaixo_do_corte": 7,
     "connection_state:published:stated": 6,
     "tipos_com_identidade_compartilhada": 75,
     "R-TWIN_vinculos": 7,
-    "R-TWIN_herdados": 11
+    "R-TWIN_herdados": 11,
+    "effective_scope:interpreted:stated": 1,
+    "connection_state:published:unknown": 2,
+    "effect:published:unknown": 1,
+    "precedence:published:unknown": 3,
+    "effective_scope:derived:stated": 3717,
+    "R-SCOPE-SELF": 1106,
+    "R-SCOPE-DOC_tipo": 1,
+    "R-SCOPE-PARENT": 2611
    }
   },
   "oci": {
@@ -872,7 +832,7 @@
     "subcategory:block;import{status,unknown_reason}": 55
    },
    "out_of_pin_examples": [],
-   "unknown_dropped_because_stated": 1412,
+   "unknown_dropped_because_stated": 2420,
    "docs_facts_read": {
     "lidos": 63840,
     "guardados": 19283,
@@ -910,7 +870,14 @@
     "identity:published:unknown": 50,
     "effective_scope:published:stated": 26,
     "connection_state:published:stated": 2,
-    "effect:published:stated": 2
+    "effect:published:stated": 3,
+    "connection_state:interpreted:stated": 3,
+    "effect:published:unknown": 2,
+    "precedence:published:unknown": 3,
+    "effective_scope:derived:stated": 3975,
+    "R-SCOPE-SELF": 1019,
+    "R-SCOPE-DOC_tipo": 7,
+    "R-SCOPE-PARENT": 2956
    }
   }
  }

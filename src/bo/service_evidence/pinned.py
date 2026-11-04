@@ -36,7 +36,13 @@ def _dates(v, path, bad, eid):
             _dates(x, path, bad, eid)
 
 
+def _data_dir(argv):
+    """--staging confere a geração ainda não promovida ($BO_DATA/SERVICE-EVIDENCE/.staging/)."""
+    return common.out_dir() / ".staging" if argv and "--staging" in argv else common.out_dir()
+
+
 def main(argv=None) -> int:
+    argv = list(sys.argv[1:] if argv is None else argv)
     bad, cnt = [], collections.Counter()
     pins = common.pins()
     srcdoc = build.sources_doc()
@@ -55,7 +61,7 @@ def main(argv=None) -> int:
             bad.append(f"{p}: schema sem data de extração")
         common.schema(p)  # sai se o sha256 do arquivo não for o do pin
     bridge_ver = {}
-    with open(common.out_dir() / "service_evidence.jsonl", encoding="utf-8") as f:
+    with open(_data_dir(argv) / "service_evidence.jsonl", encoding="utf-8") as f:
         recs = [json.loads(x) for x in f]
     for r in recs:
         v = r.get("value") or {}
@@ -84,7 +90,7 @@ def main(argv=None) -> int:
         if not d and not c and r["level"] != "derived" and r["level"] != "interpreted":
             bad.append(f"{eid}: sem fonte")
         _dates(v, "value", bad, eid)
-    with open(common.out_dir() / "protocol_support.jsonl", encoding="utf-8") as f:
+    with open(_data_dir(argv) / "protocol_support.jsonl", encoding="utf-8") as f:
         for i, line in enumerate(f, 1):
             r = json.loads(line)
             p = r["provider"]

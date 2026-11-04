@@ -168,3 +168,40 @@ def twins(ctx, pages: dict, info: dict) -> None:
                         derived=[lid, r["evidence_id"]])
                 ctx.st["R-TWIN_herdados"] += 1
     _ = rules
+
+
+PREVAIL = {"type_scope", "attachment_scope"}  # R-SCOPE-DOC publicado do tipo ou do bloco
+
+
+def scopes(ctx) -> None:
+    """R-SCOPE-SELF e R-SCOPE-PARENT, depois do extract e da curadoria (R-SCOPE-DOC prevalece)."""
+    doc_scoped, anchor, blocks_ = set(), {}, {}
+    for r in ctx.recs:
+        if r["status"] != "stated":
+            continue
+        T, bp, v = r["terraform_resource_type"], r.get("block_path"), r.get("value") or {}
+        if r["fact_kind"] == "effective_scope" and v.get("aspect") in PREVAIL:
+            doc_scoped.add((T, bp))
+        if v.get("aspect") == "block_schema":
+            blocks_[(T, bp)] = r
+        if not bp and r["level"] == "published":
+            rank = {"import_key": 0, "identity": 1, "tag_support": 2}.get(r["fact_kind"])
+            if rank is not None and (T not in anchor or rank < anchor[T][0]):
+                anchor[T] = (rank, r)
+    for T in sources.types(ctx.p):
+        if (T, None) in doc_scoped:
+            ctx.st["R-SCOPE-DOC_tipo"] += 1
+        elif T in anchor:
+            r = anchor[T][1]
+            ctx.add(T, "effective_scope", "scope_self", r["api_resource"], "stated", "derived",
+                    value={"kind": "self", "rule": "R-SCOPE-SELF", "layer": "terraform"},
+                    derived=[r["evidence_id"]])
+            ctx.st["R-SCOPE-SELF"] += 1
+    for (T, bp), r in sorted(blocks_.items()):
+        if (T, bp) in doc_scoped:
+            ctx.st["R-SCOPE-DOC_bloco"] += 1
+            continue
+        ctx.add(T, "effective_scope", f"scope_parent:{bp}", r["api_resource"], "stated", "derived",
+                value={"kind": "parent", "rule": "R-SCOPE-PARENT", "block_path": bp, "layer": "terraform"},
+                derived=[r["evidence_id"]])
+        ctx.st["R-SCOPE-PARENT"] += 1

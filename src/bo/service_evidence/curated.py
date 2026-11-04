@@ -90,6 +90,28 @@ ENTRIES = [
       "granularity": "per_rule", "default": "stateful", "as_of": "2026-10-21",
       "stateless_needs_reverse_rule": True,
       "basis": "a frase diz o default (false = stateful); cada instância deste tipo é uma regra"}),
+    # alcance por anexação (R-SCOPE-DOC, publicado; prevalece sobre R-SCOPE-SELF)
+    ("google", "google_compute_firewall", "effective_scope", "attach_network", G + "compute_firewall.html.markdown",
+     "The name or self_link of the network to attach this firewall to", None, "published",
+     {"aspect": "attachment_scope", "rule": "R-SCOPE-DOC", "attribute": "network", "attach_to": "network"}),
+    ("google", "google_compute_firewall", "effective_scope", "targets", G + "compute_firewall.html.markdown",
+     "A list of instance tags indicating sets of instances located in the",
+     "A list of instance tags indicating sets of instances located in the network that may make network "
+     "connections as specified in allowed[].", "published",
+     {"aspect": "attachment_scope", "rule": "R-SCOPE-DOC", "attribute": "target_tags",
+      "applies_to": "sets of instances located in the network (by instance tag)"}),
+    ("aws", "aws_security_group", "effective_scope", "associated", A + "security_group.html.markdown",
+     "Security groups are generally associated with other resources", None, "published",
+     {"aspect": "attachment_scope", "rule": "R-SCOPE-DOC",
+      "applies_to": "other resources associated with the security group (more than 100 resource types "
+                    "reference security groups)"}),
+    ("aws", "aws_network_acl", "effective_scope", "subnets", A + "network_acl.html.markdown",
+     "* `subnet_ids` - (Optional) A list of Subnet IDs to apply the ACL to", None, "published",
+     {"aspect": "attachment_scope", "rule": "R-SCOPE-DOC", "attribute": "subnet_ids", "applies_to": "subnets"}),
+    ("azurerm", "azurerm_network_security_rule", "effective_scope", "attach_nsg", Z + "network_security_rule.html.markdown",
+     "* `network_security_group_name` - (Required)", None, "published",
+     {"aspect": "attachment_scope", "rule": "R-SCOPE-DOC", "attribute": "network_security_group_name",
+      "attach_to": "network security group"}),
     # ---------------- armazenamento
     ("aws", "aws_s3_account_public_access_block", "identity", "one_per_account",
      A + "s3_account_public_access_block.html.markdown", "Each AWS account may only have one", None, "published",

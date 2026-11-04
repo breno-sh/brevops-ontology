@@ -128,9 +128,15 @@ def load(path) -> list:
         return [json.loads(x) for x in f if x.strip()]
 
 
+def _data_dir(argv):
+    """--staging confere a geração ainda não promovida ($BO_DATA/SERVICE-EVIDENCE/.staging/)."""
+    return common.out_dir() / ".staging" if argv and "--staging" in argv else common.out_dir()
+
+
 def main(argv=None) -> int:
-    recs = load(common.out_dir() / "service_evidence.jsonl")
-    rows = load(common.out_dir() / "protocol_support.jsonl")
+    argv = list(sys.argv[1:] if argv is None else argv)
+    recs = load(_data_dir(argv) / "service_evidence.jsonl")
+    rows = load(_data_dir(argv) / "protocol_support.jsonl")
     ids = {r["evidence_id"]: r for r in recs}
     bad, cnt = [], collections.Counter()
     for r in recs:

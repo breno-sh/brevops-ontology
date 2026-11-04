@@ -108,7 +108,8 @@ def test_levels_rejects_mutations(mut, expect):
 
 def _out_by_type(types):
     out = {}
-    with open(common.out_dir() / "service_evidence.jsonl", encoding="utf-8") as f:
+    st = common.out_dir() / ".staging" / "service_evidence.jsonl"  # geração ainda não promovida, se houver
+    with open(st if st.exists() else common.out_dir() / "service_evidence.jsonl", encoding="utf-8") as f:
         for line in f:
             r = json.loads(line)
             if r.get("terraform_resource_type") in types:
@@ -124,7 +125,7 @@ def test_block_facts_for_storage_facets():
     got = _out_by_type(set(want))
     for T, bps in want.items():
         for bp in bps:
-            kinds = {(r["fact_kind"], r["value"]["aspect"]) for r in got[T]
+            kinds = {(r["fact_kind"], r["value"].get("aspect")) for r in got[T]
                      if r["status"] == "stated" and r["value"].get("block_path") == bp}
             assert {("identity", "block_schema"), ("identity", "block_identity"), ("owner", "block_config_owner"),
                     ("lifecycle_controller", "block_lifecycle")} <= kinds, (T, bp, kinds)
@@ -156,3 +157,16 @@ def test_grain_facts_for_containers():
     assert has("aws_security_group", "identity", "R-TWIN", "ingress")
     assert all(r["value"].get("layer") == "terraform" for r in got["aws_s3_bucket"]
                if r.get("value") and r["value"].get("rule") == "R-LIFE-TF")
+
+
+def test_scope_rules():
+    got = _out_by_type({"aws_s3_bucket", "aws_s3_account_public_access_block", "google_compute_firewall"})
+    def rules_of(T, bp=None):
+        return {r["value"].get("rule") for r in got[T] if r["status"] == "stated" and r["fact_kind"] ==
+                "effective_scope" and r.get("block_path") == bp}
+    assert "R-SCOPE-SELF" in rules_of("aws_s3_bucket")
+    assert "R-SCOPE-PARENT" in rules_of("aws_s3_bucket", "versioning")
+    acct = rules_of("aws_s3_account_public_access_block")
+    assert "R-SCOPE-DOC" in acct and "R-SCOPE-SELF" not in acct
+    fw = rules_of("google_compute_firewall")
+    assert "R-SCOPE-DOC" in fw and "R-SCOPE-SELF" not in fw

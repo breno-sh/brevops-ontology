@@ -27,8 +27,16 @@ def path():
     return common.results_dir() / "MANIFEST.sha256"
 
 
+def _src(p: str):
+    """Arquivo de $BO_DATA com versão em .staging (ainda não promovida): o manifesto já leva o hash dela, para
+    conferir depois do --promote dentro da trava."""
+    real = common.real(p)
+    st = common.out_dir() / ".staging" / real.name
+    return st if real.parent == common.out_dir() and st.exists() else real
+
+
 def write() -> int:
-    lines = [f"{common.sha256_file(common.real(p))}  {p}" for p in FILES]
+    lines = [f"{common.sha256_file(_src(p))}  {p}" for p in FILES]
     path().write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(f"MANIFEST.sha256: {len(lines)} arquivos")
     return 0

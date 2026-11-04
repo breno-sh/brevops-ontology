@@ -42,7 +42,9 @@ RULES = {
     "R-OWN-AWS-IDENTITY": "identidade do schema com account_id e/ou region -> alcance conta e/ou região.",
     "R-OWN-DOC-PARENT": "descrição literal de atributo de referência que diz 'belongs to', 'in which', 'that contains' "
                         "ou 'compartment' -> atributo dono citado.",
-    "R-SCOPE-DOC": "frase literal com '<account|organization|project|folder|subscription|tenancy|management group|"
+    "R-SCOPE-DOC": "prevalece sobre R-SCOPE-SELF e R-SCOPE-PARENT. Frase literal de anexação (a página diz a que "
+                   "o recurso se anexa ou a que alvos se aplica: rede, sub-redes, instâncias, recurso pai) ou "
+                   "frase com '<account|organization|project|folder|subscription|tenancy|management group|"
                    "enterprise|bucket|container|network|vpc>-level', "
                    "'at the <X> level' ou 'all <coisas> in the <X>' -> alcance efetivo = X.",
     # ciclo de vida
@@ -104,6 +106,12 @@ RULES = {
                     "of the <coisa>': a coisa nomeada.",
     "R-REF-TARGET": "tipo-alvo da referência: <provedor>_<coisa> (termos com _) se existe no schema fixado; "
                     "senão os tipos que terminam em _<coisa> (até 3); mais que isso, sem alvo.",
+    "R-SCOPE-SELF": "tipo de recurso de topo sem alcance publicado (R-SCOPE-DOC) tem alcance sobre ele mesmo: "
+                    "{kind: self}; derived_from = fato publicado do tipo no pin (importação, identidade ou tag), que "
+                    "mostra que ele é recurso de topo do schema fixado.",
+    "R-SCOPE-PARENT": "PREMISSA: um bloco aninhado (ou coleção como bloco) só existe dentro da configuração do pai, "
+                      "então, sem frase própria de alcance, o que ele configura vale para o pai: {kind: parent} "
+                      "(via ausente = pai estrutural). Bloco com R-SCOPE-DOC não recebe esta regra.",
     # curadoria das fatias dos pilotos (curated.py): C-* publicado (o valor está escrito na frase), I-* interpretado
     "C-PILOT-LITERAL": "fato escolhido à mão numa frase da página fixada; o valor repete o que a frase diz.",
     "C-PILOT-GAP": "tipo das fatias dos pilotos sem frase para este tipo de fato na página fixada: UNKNOWN explícito "
