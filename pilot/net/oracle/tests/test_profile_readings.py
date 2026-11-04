@@ -52,11 +52,13 @@ def test_leitura_lenient_usa_regras_implicitas_interpretadas():
     assert d["f2"]["value"] == d["f4"]["value"] == "UNKNOWN"
 
 
-def test_leitura_strict_tira_o_estado_derivado_do_nsg_oci():
+def test_estado_da_regra_de_nsg_oci_publicado_vale_na_strict():
     f = load(NETDIR / "fixtures_calib/NETC-C03-OCI-NSG-SYM.json")
     f["config"]["resources"][1]["values"].pop("stateless")
     assert no.evaluate_fixture(f, "default")["decisions"]["f1r"]["value"] == "ALLOW"
-    assert no.evaluate_fixture(f, "strict")["decisions"]["f1r"]["value"] == "UNKNOWN"
+    # desde 83953b9 o estado da regra de NSG é publicado: a strict não o tira; o que cai na strict é o efeito
+    # 'só permissão' (oracle_derived) e o padrão sem regra, por isso o retorno fica UNKNOWN lá pelo outro motivo
+    assert semantics.param("oci", "state.nsg_rule", "strict").known
     # na strict também cai o efeito 'só permissão' (derivado deste oráculo): até o fluxo novo fica UNKNOWN
     f2 = load(NETDIR / "fixtures_calib/NETC-C02-OCI-STATEFUL.json")
     d = no.evaluate_fixture(f2, "strict")["decisions"]

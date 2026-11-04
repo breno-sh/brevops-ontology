@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "PILOT-NET-ORACLE",
- "generated_at": "2026-11-04T10:35:48-03:00",
+ "generated_at": "2026-11-04T12:47:37-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-NET-ORACLE.txt",
@@ -17,7 +17,8 @@
    "retained_translations": "24",
    "seal": "CMS-AES256-RSA4096-D15",
    "contract": "C24-1.1.0",
-   "service_evidence": "0a9e580"
+   "service_evidence": "83953b9",
+   "iteration": "2"
   },
   "inputs": [
    {
@@ -28,20 +29,20 @@
    {
     "path": "$BO_REPO/semantics/SEMANTICS.html",
     "kind": "file",
-    "sha256": "28f849eb578fea685935a2499cd13710e8a96b6cd01e4bc34419ae0e51f29596"
+    "sha256": "043777b7eb8a4362f267d5b563083d1e01f2811cb9a74de2377ae986252a2993"
    },
    {
     "path": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl",
     "kind": "file",
-    "sha256": "645b02308424fa4a574912d1c36375939f2f6124ef3cb6a32d3054c3490ead6d"
+    "sha256": "73047e02fdbe29ef9666b7a5e63773946b85e54c3a76e56b26e9210a5ea2af4a"
    },
    {
     "path": "$BO_REPO/results/SERVICE-EVIDENCE/spec_disputes.json",
     "kind": "file",
-    "sha256": "e9b10d64ba67d3819bad9cf7675f91b2fcf04f1e1a5b798967694ef15782ea64"
+    "sha256": "4239ea62ba3034337cd59ecf6eccba97eee5c1032bb9709775a145f5e2b19d6f"
    }
   ],
-  "recorded_at": "2026-11-04T10:35:48-03:00"
+  "recorded_at": "2026-11-04T12:47:37-03:00"
  },
  "sources": [
   {
@@ -60,5 +61,5 @@
    "transformation": "disputas spec x doc da fatia viram unidade UNKNOWN"
   }
  ],
- "notes": "oráculo offline NET; SE congelado em 0a9e580: 0 respostas mudadas; disputa da regra de NSG OCI segue UNKNOWN"
+ "notes": "oráculo offline NET, iteração 2 (SE 83953b9): estado da regra de NSG OCI publicado; 0 respostas mudadas"
 }

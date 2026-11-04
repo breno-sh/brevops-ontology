@@ -434,16 +434,15 @@
       },
       "state.nsg_rule": {
         "value": "per_rule_default_stateful",
-        "level": "oracle_derived",
+        "level": "published",
         "evidence": [
-          "SE-oci-cxwuvxzhyrwz3j6f",
-          "SE-oci-3ihxku562hxrgq4b"
+          "SE-oci-czy2wmgcweke3sq4"
         ],
         "values": [
           "per_rule_default_stateful",
           "UNKNOWN"
         ],
-        "basis": "a linha do NSG é interpretada no SERVICE-EVIDENCE; a frase da doc do NSG é idêntica à da security list, publicada em SE-oci-3ihxku562hxrgq4b. Na leitura strict o estado da regra de NSG é UNKNOWN"
+        "basis": "'Defaults to false, which means the rule is stateful' na doc da regra de NSG, publicado no SERVICE-EVIDENCE (83953b9, item 4 do CONTRACT_CHANGE); antes era derivação deste oráculo da frase idêntica da security list"
       },
       "stateless_reverse_rule": {
         "value": "required",
