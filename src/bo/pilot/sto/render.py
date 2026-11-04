@@ -21,17 +21,6 @@ CRED_PREFIXES = ("AWS_", "GOOGLE_", "GCLOUD_", "CLOUDSDK_", "ARM_", "AZURE_", "O
 OCI_KEYS = {"compartment": "compartment_id", "namespace": "objectstorage_namespace"}
 
 
-def _google_tmp_here():
-    """O harness do Google só aceita $BO_TMP com o nome do próprio módulo (HARNESS-GCP). Para reusar o
-    renderizador sem escrever no temporário de outro módulo, a função de temporário dele é trocada, só neste
-    processo, pela pasta do PILOT-STO-E2E (achado registrado em controls.json: harness não reusável como está)."""
-    from bo.harness.google import common as GC
-    mine = C.tmp_dir() / "harness-google"
-    mine.mkdir(parents=True, exist_ok=True)
-    GC.tmp = lambda: mine
-    return mine
-
-
 def work_dir(name: str) -> Path:
     p = C.tmp_dir() / "render" / name
     p.mkdir(parents=True, exist_ok=True)
@@ -77,8 +66,6 @@ def render(provider: str, plans: list[dict], graphs: list[dict], name: str) -> d
         detail = {e["plan_id"]: e.get("missing") or e.get("problems") or [] for e in man["plans"]}
     elif provider == "google":
         from bo.harness.google import render as R
-        _google_tmp_here()
-        out = _google_tmp_here() / name / "out"
         rc, rep = R.render_file(pf, out, d / "in" / "graph_ir.jsonl")
         if rc:
             raise RuntimeError(f"render google saiu {rc}: {rep.get('errors', [])[:3]}")
@@ -117,10 +104,6 @@ def no_silent_insert(r: dict) -> dict:
     elif prov == "google":
         from bo.harness.google import no_silent_insert as N
         from bo.harness.google import render as GR
-        work = _google_tmp_here() / "nsi"
-        if work.exists():
-            shutil.rmtree(work)
-        work.mkdir(parents=True)
         rep = N.run_plan(r["plan_file"], work, GR.Schema.load(None))
         for p in rep.get("plans", []):
             problems += [f"{p['plan_id']}: {x}" for x in p.get("problems", [])]

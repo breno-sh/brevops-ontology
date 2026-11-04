@@ -172,9 +172,11 @@ def controls_doc(out: dict) -> dict:
                                          "by_control": {ctl: {"status": s[0], "block": s[1], "declared": list(s[2])}
                                                         for ctl, s in sig.items()}})
     data["harness_findings"] = [
-        "HARNESS-GCP: o renderizador só aceita $BO_TMP com o nome HARNESS-GCP; reuso fora do módulo exige trocar a função de temporário no processo",
-        "HARNESS-GCP: perda (C26 losses) num campo que também é valor carregado é CONFLICTING_VALUES; a perda vai no átomo de origem",
-        "HARNESS-GCP: referência resolvida só por símbolo do nome derivado; contêiner com nome literal transportado não pode ser alvo de referência"]
+        {"finding": "HARNESS-GCP só aceitava $BO_TMP com o nome HARNESS-GCP", "status": "corrigido no harness (9082eda); contorno retirado"},
+        {"finding": "HARNESS-GCP recusava perda (C26 losses) em campo que também é valor (CONFLICTING_VALUES)",
+         "status": "corrigido no harness (9082eda); a perda voltou ao campo de destino"},
+        {"finding": "HARNESS-GCP resolvia referência só pelo símbolo do nome derivado",
+         "status": "corrigido no harness (9082eda): resolve por target_node, que o plano já traz"}]
     return {"schema": "bo.result/1", "contract": "C15", "contract_version": "3.1.0", "module": C.MODULE,
             "generated_at": C.now(), "metrics": metrics,
             "notes": "Três controles com a mesma entrada, a mesma política de perda e o mesmo registro de transformações "

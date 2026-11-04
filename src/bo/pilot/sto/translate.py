@@ -366,10 +366,9 @@ def translate(lf, dst: str, claims, control: str, tbox_ix: dict, env: dict | Non
                 continue
             n.values[fld] = (c.out_term, "carried", False, c.out_value)
             for ls in c.losses:
-                # o campo da perda é o átomo de ORIGEM (o que se perdeu da origem); o campo de destino vai no
-                # detalhe: perda em campo de destino que também é valor é recusada por harness (CONFLICTING_VALUES)
-                n.losses.append({"code": P.field_loss_code(ls), "field": v.atom_id,
-                                 "detail": (f"{fld}: " + (ls.get("why") or ls.get("kind") or "perda declarada"))[:200]})
+                # perda no campo de destino que recebe o valor; o átomo de origem vai no detalhe
+                n.losses.append({"code": P.field_loss_code(ls), "field": fld,
+                                 "detail": (f"de {v.atom_id}: " + (ls.get("why") or ls.get("kind") or "perda declarada"))[:200]})
     # dependências compartilhadas e campos obrigatórios (contexto declarado, nunca default inventado)
     for n in list(g.nodes.values()):
         sp = T.SHARED_PARENT.get(n.rtype)
