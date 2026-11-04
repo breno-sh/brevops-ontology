@@ -13,12 +13,18 @@ MODULE = "CORPUS-GCP"
 PROVIDER = "google"
 TZ = ZoneInfo("America/Recife")
 
-# Regras de contagem fixadas ANTES de ver qualquer número (vão para summary.json e build_report.json).
+# Regras de contagem (vão para summary.json e build_report.json). term_class e explicit_null foram corrigidos na
+# caça de defeitos pela semântica do C06 e do Terraform (cadeia simbolizada por privacidade não é dependência;
+# attr = null é omitir), antes de qualquer consumidor; nada aqui mira um número.
 PARAMS = {
     "provider": PROVIDER,
     "unit_resource": "bloco resource gerenciado (repo_id, file, resource_address) do resources.parquet; data fica fora",
     "unit_module": "diretório do arquivo .tf dentro do repositório (repo_id, dirname(file))",
-    "term_class": "literal = termo C06 literal; withheld = termo retido; simbólico = symbol|expression|reference|document",
+    "term_class": "withheld = termo retido em qualquer nível; simbólico = depende de referência, variável, local, "
+                  "saída de módulo, data source, atributo de recurso, count.index, each/iterador de dynamic, "
+                  "workspace ou função de arquivo/ambiente/relógio; literal = o resto (sai só do texto, inclusive "
+                  "cadeia, CIDR e IP simbolizados por privacidade)",
+    "explicit_null": "literal null no topo não configura o átomo (Terraform: igual a omitir)",
     "precedence": "por recurso e átomo, com várias ocorrências (blocos repetidos/dynamic): withheld > simbólico > literal",
     "type_row": "linha sem atom_id por (repo, tipo): n_resources = blocos do tipo; n_set = blocos com >= 1 átomo",
     "atom_rows": "só átomos com n_set >= 1 no repositório; os não configurados ficam implícitos na linha do tipo",

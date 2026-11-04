@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "CORPUS-GCP",
- "generated_at": "2026-11-04T09:36:17-03:00",
+ "generated_at": "2026-11-04T09:53:58-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/CORPUS-GCP.txt",
@@ -13,13 +13,14 @@
    "provider_version": "8.9.0",
    "unit_resource": "bloco resource gerenciado (repo_id, file, resource_address); data fora",
    "unit_module": "diretório do .tf no repositório",
-   "term_class": "literal=termo literal; withheld=retido; simbólico=symbol|expression|reference|document",
+   "term_class": "withheld se há termo retido em qualquer nível; simbólico se depende de referência, variável, local, saída de módulo, data source, atributo de recurso, count.index, each/iterador de dynamic, workspace ou função de arquivo/ambiente/relógio; literal o resto (inclui cadeia/CIDR/IP simbolizados por privacidade)",
+   "explicit_null": "attr = null não configura o átomo",
    "precedence": "withheld > simbólico > literal por recurso e átomo",
    "type_row": "linha sem atom_id por (repo, tipo); n_set = blocos com >= 1 átomo",
    "atom_rows": "só n_set >= 1",
    "object_attr": "caminho sob atributo objeto conta para o átomo",
    "meta": "count, for_each, provider, depends_on, lifecycle, provisioner, connection; for_each/iterator/labels de dynamic",
-   "unmatched_paths_min_repos": "5",
+   "unmatched_paths_listed": "n_repos >= 5 e todo segmento no vocabulário do schema",
    "recount_sample_mod": "20",
    "workers": "6",
    "hcl_branch_sha": "bb238abad07e62f5dbd2d8e67dddb71b53598459"
@@ -46,7 +47,7 @@
     "sha256": "a00b9d3fb50a717fe3ba17ec0f4b2012f89ee7a3cb65e7ea5f21298afc75e4e1"
    }
   ],
-  "recorded_at": "2026-11-04T09:36:17-03:00"
+  "recorded_at": "2026-11-04T09:53:58-03:00"
  },
  "sources": [
   {
@@ -60,5 +61,5 @@
    "transformation": "átomos do schema fixado (SCHEMA-GCP), só nomes de tipo e caminho"
   }
  ],
- "notes": "Uso do google 8.9.0 no TerraDS: 8895 repositórios (7944 famílias) com bloco gerenciado, 37628 módulos, 197834 blocos (1942 de 110 tipos fora do schema; 22089 blocos data fora). 639820 linhas C06 usage (84892 de tipo, 554928 de átomo). Átomos vistos 12544/32659 (7055 em >= 5 repositórios). Pares (bloco, átomo) configurados 1159020: literal 313504, simbólico 832599, withheld 12917. Registros google gerenciados 1381183: em átomo 1188595, meta 168303, tipo fora do schema 8256, caminho sem átomo 7573, bloco retido 7243, bloco em sintaxe de atributo 1211, dynamic sem content 2. Recontagem independente 1/20 sem divergência. Literal baixo em listas e CIDRs porque o HCL os grava como expressão (achado, não ajustado)."
+ "notes": "[2026-11-04T09:53:53-03:00] Uso do google 8.9.0 no TerraDS, sem split: 8895 repositórios (7944 famílias) com bloco gerenciado, 37628 módulos, 197834 blocos (1942 de 110 tipos fora do schema; 22089 blocos data fora). 639598 linhas C06 usage (84892 de tipo, 554706 de átomo). Átomos vistos 12525/32659 (7053 em >= 5 repositórios, 6988 em >= 5 famílias); tipos vistos 936/1392. Pares (bloco, átomo) configurados 1158539: literal 421642, simbólico 721687, withheld 15210. Registros google gerenciados 1381183: em átomo 1188114, meta 168303, tipo fora do schema 8256, caminho sem átomo 7573, bloco retido 7243, bloco em sintaxe de atributo 1211, attr = null 481, dynamic sem content 2. Recontagem independente 1/20 sem divergência. Totais por átomo (repositórios, famílias, módulos, recursos) em atom_totals.jsonl; por tipo em type_totals.jsonl."
 }

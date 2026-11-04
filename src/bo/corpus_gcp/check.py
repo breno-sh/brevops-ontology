@@ -25,6 +25,19 @@ from pathlib import Path
 from . import common as C
 
 META_TOP = ("count", "for_each", "provider", "depends_on", "lifecycle", "provisioner", "connection")
+# classe pelo JSON serializado do termo (aspas estruturais não aparecem escapadas dentro de valores)
+_WH = '"kind":"withheld"'
+_SYMB = re.compile(r'"kind":"reference"|"name_class":"(variable|local|module_output|data_source|resource_attribute|'
+                   r'count_index|each_key|workspace)"|"op":"(file|filebase64|filebase64sha256|filebase64sha512|'
+                   r'filemd5|filesha1|filesha256|filesha512|fileexists|fileset|templatefile|abspath|pathexpand|'
+                   r'timestamp|plantimestamp|uuid|bcrypt)"')
+
+
+def _cls(term: dict) -> str:
+    s = json.dumps(term, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+    if _WH in s:
+        return "withheld"
+    return "symbolic" if _SYMB.search(s) else "literal"
 
 
 def _fail(msgs: list, m: str) -> None:
@@ -223,8 +236,9 @@ def recount(sample_mod: int) -> dict[str, list[dict]]:
                                 break
                     if hit is None:
                         continue
-                    kind = r["term"]["kind"]
-                    c = "literal" if kind == "literal" else ("withheld" if kind == "withheld" else "symbolic")
+                    if r["term"] == {"kind": "literal", "datatype": "null", "value": None}:
+                        continue
+                    c = _cls(r["term"])
                     old = setv.get((key, hit))
                     if old is None or rank[c] > rank[old]:
                         setv[(key, hit)] = c

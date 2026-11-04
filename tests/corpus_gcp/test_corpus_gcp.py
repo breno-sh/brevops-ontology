@@ -9,8 +9,8 @@ import sys
 import pytest
 
 from bo.corpus_gcp import build
-from bo.corpus_gcp.check import _norm
-from bo.corpus_gcp.count import count_repo, load_atoms, resolve
+from bo.corpus_gcp.check import _cls, _norm
+from bo.corpus_gcp.count import count_repo, load_atoms, resolve, term_class
 from bo.corpus_gcp.paths import classify_path
 
 R, F = "R-0123456789ab", "F-0123456789ab"
@@ -99,13 +99,42 @@ def test_resolve(atoms):
     assert resolve(atoms, "google_compute_instance", "count", "literal") == ("meta", None)
 
 
+VAR = {"kind": "symbol", "symbol_id": "SYM-0123456789ab", "name_class": "variable", "scope": "repo"}
+LIT = {"kind": "literal", "datatype": "string", "value": "x"}
+WH = {"kind": "withheld", "reason": "secret"}
+REF = {"kind": "reference", "target_type": "google_compute_network",
+       "target_address": "google_compute_network.SYM-0123456789ab", "attribute": "id"}
+
+
+@pytest.mark.parametrize("term,want", [
+    (LIT, "literal"),
+    ({"kind": "symbol", "symbol_id": "SYM-0123456789ac", "name_class": "unknown", "scope": "repo"}, "literal"),
+    ({"kind": "expression", "op": "cidr", "args": [{"kind": "symbol", "symbol_id": "SYM-0123456789ac",
+      "name_class": "unknown", "scope": "repo"}, {"kind": "literal", "datatype": "number", "value": 24}]}, "literal"),
+    (VAR, "symbolic"),
+    (REF, "symbolic"),
+    ({"kind": "expression", "op": "hcl_template", "args": [LIT, VAR]}, "symbolic"),
+    ({"kind": "expression", "op": "file", "args": [LIT]}, "symbolic"),
+    ({"kind": "expression", "op": "lower", "args": [LIT]}, "literal"),
+    ({"kind": "expression", "op": "hcl_object", "args": [LIT, WH]}, "withheld"),
+    (WH, "withheld"),
+    ({"kind": "document", "format": "policy_json", "tree": {"a": "b"}, "symbolized": []}, "literal"),
+    ({"kind": "document", "format": "json", "tree": {"a": {"$term": REF}}, "symbolized": []}, "symbolic"),
+    ({"kind": "document", "format": "json", "tree": [{"$key": VAR, "$value": "x"}], "symbolized": []}, "symbolic"),
+    ({"kind": "document", "format": "json", "tree": {"k": [{"$term": WH}]}, "symbolized": []}, "withheld"),
+])
+def test_term_class_and_recount_agree(term, want):
+    assert term_class(term) == want
+    assert _cls(term) == want  # a recontagem independente classifica pelo JSON serializado
+
+
 def rec(file, addr, rtype, path, kind):
     term = {"literal": {"kind": "literal", "datatype": "string", "value": "x"},
-            "symbol": {"kind": "symbol", "symbol_id": "SYM-0123456789ab", "name_class": "variable", "scope": "repo"},
-            "expression": {"kind": "expression", "op": "hcl_tuple", "args": []},
-            "reference": {"kind": "reference", "target_type": "google_compute_network",
-                          "target_address": "google_compute_network.SYM-0123456789ab", "attribute": "id"},
-            "withheld": {"kind": "withheld", "reason": "secret"}}[kind]
+            "symbol": VAR,
+            "expression": {"kind": "expression", "op": "hcl_tuple", "args": [VAR]},
+            "privacy": {"kind": "symbol", "symbol_id": "SYM-0123456789ac", "name_class": "unknown", "scope": "repo"},
+            "null": {"kind": "literal", "datatype": "null", "value": None},
+            "reference": REF, "withheld": WH}[kind]
     return {"repo_id": R, "family_id": F, "file": file, "resource_address": addr, "resource_type": rtype,
             "provider": "google", "attr_path": path, "term": term}
 
@@ -120,7 +149,7 @@ UNK = ("main.tf", "google_beta_only_thing.SYM-000000000a06")
 
 def synthetic():
     resources = [(*FW1, "google_compute_firewall", 4), (*FW2, "google_compute_firewall", 2),
-                 (*FW3, "google_compute_firewall", 0), (*VM1, "google_compute_instance", 3),
+                 (*FW3, "google_compute_firewall", 2), (*VM1, "google_compute_instance", 3),
                  (*DATA, "google_compute_network", 1), (*UNK, "google_beta_only_thing", 1)]
     records = [
         rec(*FW1, "google_compute_firewall", "name", "literal"),
@@ -132,6 +161,8 @@ def synthetic():
         rec(*VM1, "google_compute_instance", "name", "literal"),
         rec(*VM1, "google_compute_instance", "metadata", "withheld"),
         rec(*VM1, "google_compute_instance", "zonee", "literal"),          # sem átomo
+        rec(*FW3, "google_compute_firewall", "name", "null"),              # attr = null: não configura
+        rec(*FW3, "google_compute_firewall", "network", "privacy"),        # cadeia simbolizada: literal
         rec(*DATA, "google_compute_network", "name", "literal"),           # data: fora
         rec(*UNK, "google_beta_only_thing", "name", "literal"),            # tipo fora do schema
     ]
@@ -143,12 +174,15 @@ def test_count_repo_rules(atoms):
     out = count_repo(R, F, resources, records, atoms)
     rows = {(r["resource_type"], r.get("atom_id")): r for r in out["rows"]}
     fw = rows[("google_compute_firewall", None)]
-    assert (fw["n_resources"], fw["n_set"], fw["n_literal"], fw["n_symbolic"], fw["n_withheld"]) == (3, 2, 0, 2, 0)
+    assert (fw["n_resources"], fw["n_set"], fw["n_literal"], fw["n_symbolic"], fw["n_withheld"]) == (3, 3, 1, 2, 0)
     name = rows[("google_compute_firewall", "google:google_compute_firewall:name")]
     assert (name["n_resources"], name["n_set"], name["n_literal"], name["n_symbolic"]) == (3, 2, 1, 1)
     ports = rows[("google_compute_firewall", "google:google_compute_firewall:allow.ports")]
     assert (ports["n_set"], ports["n_literal"], ports["n_symbolic"]) == (2, 0, 2)
-    assert ("google_compute_firewall", "google:google_compute_firewall:network") not in rows  # n_set 0: implícito
+    net = rows[("google_compute_firewall", "google:google_compute_firewall:network")]
+    assert (net["n_set"], net["n_literal"]) == (1, 1)
+    assert ("google_compute_firewall", "google:google_compute_firewall:allow.protocol") not in rows  # implícito
+    assert out["cov"]["records:explicit_null"] == 1
     vm = rows[("google_compute_instance", None)]
     assert (vm["n_resources"], vm["n_set"], vm["n_withheld"]) == (1, 1, 1)
     md = rows[("google_compute_instance", "google:google_compute_instance:metadata")]
@@ -164,7 +198,7 @@ def test_count_repo_rules(atoms):
     assert out["unmatched"] == [("google_compute_instance", "zonee")]
     # n_set, n_lit, n_sym, n_wh, n_mod, registros por tipo de termo
     assert out["atoms"]["google:google_compute_firewall:name"][:5] == [2, 1, 1, 0, 1]
-    assert out["types"]["google_compute_firewall"][:2] == [3, 2]       # 3 blocos em 2 módulos
+    assert out["types"]["google_compute_firewall"][:4] == [3, 2, 3, 2]  # 3 blocos em 2 módulos, todos com átomo
     for r in out["rows"]:
         assert r["n_literal"] + r["n_symbolic"] + r["n_withheld"] == r["n_set"] <= r["n_resources"]
 
@@ -207,3 +241,41 @@ def test_no_split_field(atoms):
     resources, records = synthetic()
     for r in count_repo(R, F, resources, records, atoms)["rows"]:
         assert not {"split", "partition", "fold"} & set(r)
+
+
+def test_promote_only_inside_lock(atoms, tmp_path, monkeypatch):
+    from bo.corpus_gcp import common as C
+    from bo.corpus_gcp import promote
+    monkeypatch.setenv("BO_DATA", str(tmp_path))
+    st = C.staging_dir()
+    st.mkdir(parents=True)
+    resources, records = synthetic()
+    (st / "usage.jsonl").write_text("".join(C.dumps(r) + "\n" for r in count_repo(R, F, resources, records,
+                                                                                    atoms)["rows"]))
+    (st / "coverage.json").write_text("{}\n")
+    (st / "MANIFEST.sha256").write_text("".join(f"{C.sha256_file(st / n)}  {n}\n"
+                                                for n in ("coverage.json", "usage.jsonl")))
+    assert promote.main(["--lock", "merge-base"]) == 2           # sem trava: nada trocado
+    assert (st / "usage.jsonl").is_file() and not (C.out_dir() / "usage.jsonl").exists()
+    lock = tmp_path / "locks" / "merge-base"
+    lock.mkdir(parents=True)
+    (lock / "owner").write_text("owner=OUTRO@1\n")
+    assert promote.main(["--lock", "merge-base"]) == 2           # trava de outro módulo
+    (lock / "owner").write_text("owner=CORPUS-GCP@1\n")
+    (st / "coverage.json").write_text("{\"mexido\": 1}\n")
+    assert promote.main(["--lock", "merge-base"]) == 1           # staging diverge do manifesto
+    (st / "coverage.json").write_text("{}\n")
+    assert promote.main(["--lock", "merge-base"]) == 0
+    assert not st.exists()
+    assert (C.out_dir() / "usage.jsonl").is_file() and (C.out_dir() / "MANIFEST.sha256").is_file()
+
+
+def test_validated_record_must_match_sha(tmp_path):
+    from bo.corpus_gcp import promote
+    (tmp_path / "usage.jsonl").write_text("x\n")
+    assert not promote.validated(tmp_path)
+    from bo.corpus_gcp.common import sha256_file
+    (tmp_path / promote.VALIDATED).write_text(json.dumps({"result": "PASS", "sha256": sha256_file(tmp_path / "usage.jsonl")}))
+    assert promote.validated(tmp_path)
+    (tmp_path / "usage.jsonl").write_text("y\n")
+    assert not promote.validated(tmp_path)

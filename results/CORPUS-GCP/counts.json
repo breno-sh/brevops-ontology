@@ -1,10 +1,10 @@
 {
  "atom_resource_pairs_class": {
-  "literal": 313504,
-  "symbolic": 832599,
-  "withheld": 12917
+  "literal": 421642,
+  "symbolic": 721687,
+  "withheld": 15210
  },
- "atom_resource_pairs_set": 1159020,
+ "atom_resource_pairs_set": 1158539,
  "checks": {},
  "corpus_types": 1046,
  "corpus_types_not_in_schema": 110,
@@ -20,9 +20,10 @@
   "8.9.0"
  ],
  "records_google_managed_by_category": {
-  "atom": 1187663,
+  "atom": 1187182,
   "atom_object": 932,
   "block_as_attribute": 1211,
+  "explicit_null": 481,
   "malformed": 2,
   "meta": 168303,
   "unmatched_path": 7573,
@@ -33,7 +34,7 @@
  "records_on_atoms_by_term_kind": {
   "document": 496,
   "expression": 404209,
-  "literal": 329422,
+  "literal": 328941,
   "reference": 112367,
   "symbol": 329104,
   "withheld": 12997
@@ -42,260 +43,260 @@
  "repos_with_managed_google": 8895,
  "schema": "bo.corpus_gcp.counts/1",
  "schema_atoms": 32659,
- "schema_atoms_seen": 12544,
- "schema_atoms_seen_ge5_families": 6992,
- "schema_atoms_seen_ge5_repos": 7055,
+ "schema_atoms_seen": 12525,
+ "schema_atoms_seen_ge5_families": 6988,
+ "schema_atoms_seen_ge5_repos": 7053,
  "schema_types": 1392,
  "schema_types_seen": 936,
  "top_atoms_by_repos": [
   {
    "atom_id": "google:google_compute_firewall:name",
    "n_families": 3101,
-   "n_literal": 2762,
+   "n_literal": 5341,
    "n_modules": 6720,
    "n_repos": 3651,
    "n_resources": 14539,
-   "n_symbolic": 11777,
+   "n_symbolic": 9198,
    "n_withheld": 0
   },
   {
    "atom_id": "google:google_compute_firewall:network",
    "n_families": 3101,
-   "n_literal": 1803,
+   "n_literal": 1888,
    "n_modules": 6720,
    "n_repos": 3651,
    "n_resources": 14539,
-   "n_symbolic": 12736,
+   "n_symbolic": 12651,
    "n_withheld": 0
   },
   {
    "atom_id": "google:google_compute_firewall:allow.protocol",
    "n_families": 3095,
-   "n_literal": 13454,
+   "n_literal": 13462,
    "n_modules": 6696,
    "n_repos": 3645,
    "n_resources": 14065,
-   "n_symbolic": 611,
+   "n_symbolic": 603,
    "n_withheld": 0
   },
   {
    "atom_id": "google:google_compute_instance:machine_type",
    "n_families": 3038,
-   "n_literal": 4032,
+   "n_literal": 4120,
    "n_modules": 6124,
    "n_repos": 3619,
    "n_resources": 7433,
-   "n_symbolic": 3401,
+   "n_symbolic": 3313,
    "n_withheld": 0
   },
   {
    "atom_id": "google:google_compute_instance:name",
    "n_families": 3038,
-   "n_literal": 1474,
+   "n_literal": 2739,
    "n_modules": 6124,
    "n_repos": 3619,
    "n_resources": 7433,
-   "n_symbolic": 5959,
+   "n_symbolic": 4694,
    "n_withheld": 0
   },
   {
    "atom_id": "google:google_compute_firewall:allow.ports",
    "n_families": 2984,
-   "n_literal": 9491,
+   "n_literal": 9628,
    "n_modules": 6326,
    "n_repos": 3523,
-   "n_resources": 11195,
-   "n_symbolic": 1704,
+   "n_resources": 11194,
+   "n_symbolic": 1566,
    "n_withheld": 0
   },
   {
    "atom_id": "google:google_compute_network:name",
    "n_families": 2962,
-   "n_literal": 1347,
+   "n_literal": 2275,
    "n_modules": 6873,
    "n_repos": 3520,
    "n_resources": 7734,
-   "n_symbolic": 6387,
+   "n_symbolic": 5459,
    "n_withheld": 0
   },
   {
    "atom_id": "google:google_compute_firewall:source_ranges",
    "n_families": 2863,
-   "n_literal": 3,
+   "n_literal": 6645,
    "n_modules": 5974,
    "n_repos": 3391,
    "n_resources": 11603,
-   "n_symbolic": 11600,
+   "n_symbolic": 4958,
    "n_withheld": 0
   },
   {
    "atom_id": "google:google_compute_instance:boot_disk.initialize_params.image",
    "n_families": 2888,
-   "n_literal": 3118,
+   "n_literal": 3673,
    "n_modules": 5720,
    "n_repos": 3328,
    "n_resources": 6926,
-   "n_symbolic": 3808,
+   "n_symbolic": 3253,
    "n_withheld": 0
   },
   {
    "atom_id": "google:google_compute_instance:zone",
    "n_families": 2712,
-   "n_literal": 1191,
+   "n_literal": 1312,
    "n_modules": 5631,
    "n_repos": 3274,
    "n_resources": 6799,
-   "n_symbolic": 5608,
+   "n_symbolic": 5487,
    "n_withheld": 0
   },
   {
    "atom_id": "google:google_service_account:account_id",
    "n_families": 2763,
-   "n_literal": 2236,
+   "n_literal": 4202,
    "n_modules": 6663,
    "n_repos": 3115,
    "n_resources": 8366,
-   "n_symbolic": 6130,
+   "n_symbolic": 4164,
    "n_withheld": 0
   },
   {
    "atom_id": "google:google_compute_network:auto_create_subnetworks",
    "n_families": 2626,
-   "n_literal": 6541,
+   "n_literal": 6543,
    "n_modules": 6074,
    "n_repos": 3038,
    "n_resources": 6882,
-   "n_symbolic": 341,
+   "n_symbolic": 339,
    "n_withheld": 0
   },
   {
    "atom_id": "google:google_compute_subnetwork:ip_cidr_range",
    "n_families": 2521,
-   "n_literal": 0,
+   "n_literal": 4438,
    "n_modules": 5750,
    "n_repos": 2914,
    "n_resources": 7716,
-   "n_symbolic": 7716,
+   "n_symbolic": 3278,
    "n_withheld": 0
   },
   {
    "atom_id": "google:google_compute_subnetwork:name",
    "n_families": 2521,
-   "n_literal": 0,
+   "n_literal": 2016,
    "n_modules": 5752,
    "n_repos": 2914,
    "n_resources": 7719,
-   "n_symbolic": 7719,
+   "n_symbolic": 5703,
    "n_withheld": 0
   },
   {
    "atom_id": "google:google_compute_subnetwork:network",
    "n_families": 2520,
-   "n_literal": 48,
+   "n_literal": 58,
    "n_modules": 5750,
    "n_repos": 2913,
    "n_resources": 7717,
-   "n_symbolic": 7669,
+   "n_symbolic": 7659,
    "n_withheld": 0
   },
   {
    "atom_id": "google:google_service_account:display_name",
    "n_families": 2512,
-   "n_literal": 3,
+   "n_literal": 4855,
    "n_modules": 5837,
    "n_repos": 2814,
    "n_resources": 7250,
-   "n_symbolic": 7247,
+   "n_symbolic": 2395,
    "n_withheld": 0
   },
   {
    "atom_id": "google:google_storage_bucket:name",
    "n_families": 2287,
-   "n_literal": 0,
+   "n_literal": 620,
    "n_modules": 4692,
    "n_repos": 2727,
    "n_resources": 5620,
-   "n_symbolic": 5620,
+   "n_symbolic": 5000,
    "n_withheld": 0
   },
   {
    "atom_id": "google:google_compute_subnetwork:region",
    "n_families": 2327,
-   "n_literal": 1499,
+   "n_literal": 1528,
    "n_modules": 5466,
    "n_repos": 2713,
    "n_resources": 7308,
-   "n_symbolic": 5809,
+   "n_symbolic": 5780,
    "n_withheld": 0
   },
   {
    "atom_id": "google:google_project_iam_member:member",
    "n_families": 2280,
-   "n_literal": 0,
+   "n_literal": 135,
    "n_modules": 6092,
    "n_repos": 2614,
    "n_resources": 14998,
-   "n_symbolic": 14998,
+   "n_symbolic": 14863,
    "n_withheld": 0
   },
   {
    "atom_id": "google:google_project_iam_member:role",
    "n_families": 2280,
-   "n_literal": 10745,
+   "n_literal": 11179,
    "n_modules": 6092,
    "n_repos": 2614,
    "n_resources": 14998,
-   "n_symbolic": 4253,
+   "n_symbolic": 3819,
    "n_withheld": 0
   },
   {
    "atom_id": "google:google_project_iam_member:project",
    "n_families": 2198,
-   "n_literal": 45,
+   "n_literal": 187,
    "n_modules": 5583,
    "n_repos": 2528,
    "n_resources": 14259,
-   "n_symbolic": 14214,
+   "n_symbolic": 14072,
    "n_withheld": 0
   },
   {
    "atom_id": "google:google_storage_bucket:location",
    "n_families": 2132,
-   "n_literal": 1529,
+   "n_literal": 1619,
    "n_modules": 4451,
    "n_repos": 2528,
    "n_resources": 5315,
-   "n_symbolic": 3786,
+   "n_symbolic": 3696,
    "n_withheld": 0
   },
   {
    "atom_id": "google:google_compute_firewall:target_tags",
-   "n_families": 2037,
-   "n_literal": 3542,
-   "n_modules": 4220,
-   "n_repos": 2370,
-   "n_resources": 9449,
-   "n_symbolic": 5907,
+   "n_families": 2036,
+   "n_literal": 4985,
+   "n_modules": 4219,
+   "n_repos": 2369,
+   "n_resources": 9448,
+   "n_symbolic": 4463,
    "n_withheld": 0
   },
   {
    "atom_id": "google:google_compute_instance:tags",
    "n_families": 2051,
-   "n_literal": 2223,
+   "n_literal": 3249,
    "n_modules": 3821,
    "n_repos": 2359,
    "n_resources": 4684,
-   "n_symbolic": 2461,
+   "n_symbolic": 1435,
    "n_withheld": 0
   },
   {
    "atom_id": "google:google_compute_instance:network_interface.network",
    "n_families": 2053,
-   "n_literal": 2080,
+   "n_literal": 2154,
    "n_modules": 3722,
    "n_repos": 2353,
    "n_resources": 4339,
-   "n_symbolic": 2259,
+   "n_symbolic": 2185,
    "n_withheld": 0
   }
  ],
@@ -363,16 +364,6 @@
    "resource_type": "google_container_cluster"
   },
   {
-   "n_repos": 212,
-   "path": "bucket_policy_only",
-   "resource_type": "google_storage_bucket"
-  },
-  {
-   "n_repos": 183,
-   "path": "replication.automatic",
-   "resource_type": "google_secret_manager_secret"
-  },
-  {
    "n_repos": 166,
    "path": "settings.ip_configuration.require_ssl",
    "resource_type": "google_sql_database_instance"
@@ -383,25 +374,35 @@
    "resource_type": "google_container_cluster"
   },
   {
-   "n_repos": 143,
-   "path": "workload_identity_config.identity_namespace",
+   "n_repos": 45,
+   "path": "disk.image",
+   "resource_type": "google_compute_instance"
+  },
+  {
+   "n_repos": 41,
+   "path": "instance_template",
+   "resource_type": "google_compute_instance_group_manager"
+  },
+  {
+   "n_repos": 39,
+   "path": "region",
    "resource_type": "google_container_cluster"
   },
   {
-   "n_repos": 128,
-   "path": "pod_security_policy_config.enabled",
-   "resource_type": "google_container_cluster"
+   "n_repos": 34,
+   "path": "direction",
+   "resource_type": "google_compute_organization_security_policy_rule"
   },
   {
-   "n_repos": 121,
-   "path": "addons_config.istio_config.disabled",
-   "resource_type": "google_container_cluster"
+   "n_repos": 34,
+   "path": "enable_logging",
+   "resource_type": "google_compute_organization_security_policy_rule"
   },
   {
-   "n_repos": 102,
-   "path": "addons_config.istio_config.auth",
-   "resource_type": "google_container_cluster"
+   "n_repos": 34,
+   "path": "match.config.layer4_config.ip_protocol",
+   "resource_type": "google_compute_organization_security_policy_rule"
   }
  ],
- "usage_rows": 639820
+ "usage_rows": 639598
 }

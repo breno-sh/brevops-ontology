@@ -28,6 +28,7 @@ from .count import KINDS, count_repo, load_atoms
 
 DETERMINISTIC = ("usage.jsonl", "atom_totals.jsonl", "type_totals.jsonl", "coverage.json")
 UNMATCHED_MIN_REPOS = 5  # caminho sem átomo só é listado pelo nome se aparece em >= 5 repositórios
+# ... e se todo segmento é nome de atributo/bloco do schema do google (nome escrito pelo usuário nunca sai)
 
 _ATOMS = None
 _SRC = None
@@ -202,8 +203,10 @@ def run(out: Path, workers: int, sample_mod: int = 1) -> dict:
 
     schema_types = {a["resource_type"] for a in atom_rows}
     unknown = sorted(((rt, t) for rt, t in type_acc.items() if not t[6]), key=lambda x: (-x[1][4], x[0]))
-    unm = sorted(((k, n) for k, n in unmatched_repos.items() if n >= UNMATCHED_MIN_REPOS),
-                 key=lambda x: (-x[1], x[0]))
+    vocab = {seg for a in atom_rows for seg in a["path"].split(".")}
+    listable = {k: n for k, n in unmatched_repos.items()
+                if n >= UNMATCHED_MIN_REPOS and all(seg in vocab for seg in k[1].split("."))}
+    unm = sorted(listable.items(), key=lambda x: (-x[1], x[0]))
     coverage = {
         "schema": "bo.corpus_gcp.coverage/1", "module": C.MODULE, "provider": "google",
         "provider_versions": versions,
@@ -218,6 +221,7 @@ def run(out: Path, workers: int, sample_mod: int = 1) -> dict:
         "unmatched_paths_min_repos": UNMATCHED_MIN_REPOS,
         "unmatched_paths": [{"resource_type": k[0], "path": k[1], "n_repos": n} for k, n in unm],
         "unmatched_paths_distinct": len(unmatched_repos),
+        "unmatched_paths_not_listed": len(unmatched_repos) - len(listable),
         "sample_mod": sample_mod,
     }
     C.write_json(out / "coverage.json", coverage)

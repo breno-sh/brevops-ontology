@@ -1,7 +1,15 @@
 """Contagem por repositório: blocos resource do google x átomos do schema fixado (C06 usage).
 
-Função pura (sem E/S), usada pelo build em paralelo e pelos testes. As regras estão em common.PARAMS e foram
-fixadas antes de qualquer contagem.
+Função pura (sem E/S), usada pelo build em paralelo e pelos testes. As regras estão em common.PARAMS.
+
+Classe do valor (term_class), sobre o termo C06 inteiro:
+  withheld  há termo retido em qualquer nível;
+  symbolic  o valor depende de algo fora do texto do atributo: referência a recurso, símbolo de variável, local,
+            saída de módulo, data source, atributo de recurso, count.index, each/iterador de dynamic, workspace,
+            ou função que lê arquivo, ambiente ou relógio (NONGROUND_FUNCS);
+  literal   o resto: o valor sai só do texto (literais, cadeias e endereços simbolizados pelo HCL por
+            privacidade, CIDR/IP, documento sem interpolação dependente, funções puras sobre isso).
+Literal null no topo (``attr = null``) não configura o átomo: para o Terraform é o mesmo que omitir.
 """
 
 from __future__ import annotations
@@ -21,12 +29,56 @@ def is_data(address: str) -> bool:
     return bool(DATA_ADDR.match(address))
 
 
-def term_class(kind: str) -> str:
-    if kind == "literal":
-        return "literal"
-    if kind == "withheld":
-        return "withheld"
-    return "symbolic"
+NONGROUND_CLASSES = frozenset({"variable", "local", "module_output", "data_source", "resource_attribute",
+                               "count_index", "each_key", "workspace"})
+NONGROUND_FUNCS = frozenset({"file", "filebase64", "filebase64sha256", "filebase64sha512", "filemd5", "filesha1",
+                             "filesha256", "filesha512", "fileexists", "fileset", "templatefile", "abspath",
+                             "pathexpand", "timestamp", "plantimestamp", "uuid", "bcrypt"})
+
+
+def _doc_terms(tree):
+    """Termos embutidos na árvore de um documento: {"$term": termo} e a chave interpolada {"$key": termo, ...}."""
+    stack = [tree]
+    while stack:
+        x = stack.pop()
+        if isinstance(x, dict):
+            emb = False
+            for kk in ("$term", "$key"):
+                t = x.get(kk)
+                if isinstance(t, dict) and "kind" in t:
+                    emb = True
+                    yield t
+            if "$term" in x and emb:
+                continue
+            stack.extend(v for kk, v in x.items() if kk != "$key" or not emb)
+        elif isinstance(x, list):
+            stack.extend(x)
+
+
+def term_class(term: dict) -> str:
+    worst = "literal"
+    stack = [term]
+    while stack:
+        t = stack.pop()
+        k = t.get("kind")
+        if k == "withheld":
+            return "withheld"
+        if k == "reference":
+            worst = "symbolic"
+        elif k == "symbol":
+            if t.get("name_class") in NONGROUND_CLASSES:
+                worst = "symbolic"
+        elif k == "expression":
+            if t.get("op") in NONGROUND_FUNCS:
+                worst = "symbolic"
+            stack.extend(a for a in t.get("args") or [] if isinstance(a, dict))
+        elif k == "document":
+            stack.extend(_doc_terms(t.get("tree")))
+    return worst
+
+
+def is_explicit_null(term: dict) -> bool:
+    return term.get("kind") == "literal" and term.get("datatype") == "null"
 
 
 def load_atoms(lines) -> dict[str, tuple[frozenset[str], frozenset[str]]]:
@@ -114,14 +166,18 @@ def count_repo(repo_id: str, family_id: str, resources, records, atoms) -> dict:
             chk["records_type_mismatch"] += 1
             continue
         cat, apath = resolve(atoms, rtype, r["attr_path"], kind)
-        cov[f"records:{cat}"] += 1
         if cat not in ("atom", "atom_object"):
+            cov[f"records:{cat}"] += 1
             if cat == "unmatched_path":
                 cov[f"unmatched_path_kind:{kind}"] += 1
                 cp = classify_path(r["attr_path"])[1]
                 unmatched.add((rtype, cp))
             continue
-        c = term_class(kind)
+        if is_explicit_null(r["term"]):
+            cov["records:explicit_null"] += 1
+            continue
+        cov[f"records:{cat}"] += 1
+        c = term_class(r["term"])
         prev = per_res[key].get(apath)
         if prev is None or CLASS_RANK[c] > CLASS_RANK[prev]:
             per_res[key][apath] = c
