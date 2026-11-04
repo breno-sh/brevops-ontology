@@ -48,13 +48,14 @@
    {
     "path": "$BO_REPO/grain/GRAIN.html",
     "kind": "file",
-    "sha256": "8219b5397f9af8008a93fd72c8606ac4b89e9b9bef1a288c88e0f85e07a156f6",
+    "sha256": "ebbd160a181dc8ec2cd082edf8c9dcbaaa364c7288be1c35f771f5e68a755de6",
     "sha256_before_emendas_4_grain_se": "ae75e3f2468f96a660415cd305e6b19757e93bf21948310e917360e2d3754b0b",
     "sha256_before_grain012": "a39b6bb8e21803c9502671f465dcc63dec233d2567a526608bbd2e1f2bc14412",
     "sha256_before_emenda6": "90ec8e96e36501acfe24dc741b59b4af6332a93d28c08467902c60a2fcccda95",
     "sha256_before_grain014": "f77d9a66e5854ad82ce0c0afed9ec51b0c3341ff9787d04b93f4d233f3acc96a",
     "sha256_before_grain015": "1e503e2e0412d40c3de6614a491c71594d9a6510efdc03899c3359e310b2808e",
-    "sha256_before_grain016": "2250a0aebdc2b2f0fa31f253a1e1b1250b7bdc5e115d8106269d7a103b7d733a"
+    "sha256_before_grain016": "2250a0aebdc2b2f0fa31f253a1e1b1250b7bdc5e115d8106269d7a103b7d733a",
+    "sha256_before_grain017": "8219b5397f9af8008a93fd72c8606ac4b89e9b9bef1a288c88e0f85e07a156f6"
    },
    {
     "path": "$BO_REPO/semantics/SEMANTICS.html",
