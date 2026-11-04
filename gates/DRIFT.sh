@@ -20,8 +20,10 @@ done
 [ ! -e "$OUT/.staging" ] || { echo "  $OUT/.staging ainda existe"; exit 1; }
 echo "  ok"
 
-step "contrato C13 (events) no validador oficial"
-$py -I -B -m bo.contracts.validate versions "$OUT/events.jsonl" | tail -1
+step "contrato C13 (events) no validador oficial, em paralelo com a regeneração (resultado mais abaixo)"
+ev_log="$BO_TMP/gate_events_validate.log"
+( $py -I -B -m bo.contracts.validate versions "$OUT/events.jsonl" > "$ev_log" 2>&1 ) &
+ev_pid=$!
 
 step "contrato C15 (churn.json) e C17 (summary.json)"
 $py -I -B -m bo.contracts.validate results results/DRIFT/churn.json | tail -1
@@ -33,6 +35,9 @@ echo "  confere"
 
 step "regeneração idêntica a partir dos HIST-* e dos guias"
 $py -I -B -m bo.drift.regen_check
+
+step "resultado do contrato C13 (events)"
+if wait "$ev_pid"; then tail -1 "$ev_log"; else tail -5 "$ev_log"; exit 1; fi
 
 step "manifesto C17 do repositório (results/DRIFT/MANIFEST.sha256)"
 shasum -a 256 -c results/DRIFT/MANIFEST.sha256 --quiet
