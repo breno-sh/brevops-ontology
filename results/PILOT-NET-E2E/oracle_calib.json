@@ -1,0 +1,3180 @@
+{
+ "contract": "C15",
+ "contract_version": "3.1.0",
+ "data": {
+  "cases": [
+   {
+    "case_id": "CASE-NETC-C01-AWS-INLINE-aws-google-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AWS-OTHER-aws-google-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AWS-SEP-aws-google-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AWS-SYM-aws-google-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-AWS-RET-aws-google-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-AWS-EGRESS-aws-google-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-AWS-INGRESS-NEW-aws-google-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C07-AWS-PARTIAL-22-aws-google-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C07-AWS-PARTIAL-ALLOW-aws-google-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-AWS-ATTACH-SYM-aws-google-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-AWS-ATTACH-aws-google-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-AWS-OTHER-VM-aws-google-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-AWS-NO-EGRESS-aws-google-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-AWS-NOMATCH-aws-google-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AWS-INLINE-aws-azurerm-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AWS-OTHER-aws-azurerm-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AWS-SEP-aws-azurerm-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AWS-SYM-aws-azurerm-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-AWS-RET-aws-azurerm-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-AWS-EGRESS-aws-azurerm-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-AWS-INGRESS-NEW-aws-azurerm-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C07-AWS-PARTIAL-22-aws-azurerm-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C07-AWS-PARTIAL-ALLOW-aws-azurerm-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-AWS-ATTACH-SYM-aws-azurerm-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-AWS-ATTACH-aws-azurerm-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-AWS-OTHER-VM-aws-azurerm-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-AWS-NO-EGRESS-aws-azurerm-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-AWS-NOMATCH-aws-azurerm-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AWS-INLINE-aws-oci-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AWS-OTHER-aws-oci-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AWS-SEP-aws-oci-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AWS-SYM-aws-oci-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-AWS-RET-aws-oci-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-AWS-EGRESS-aws-oci-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-AWS-INGRESS-NEW-aws-oci-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C07-AWS-PARTIAL-22-aws-oci-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C07-AWS-PARTIAL-ALLOW-aws-oci-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-AWS-ATTACH-SYM-aws-oci-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-AWS-ATTACH-aws-oci-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-AWS-OTHER-VM-aws-oci-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-AWS-NO-EGRESS-aws-oci-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-AWS-NOMATCH-aws-oci-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-GCP-RET-google-aws-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-GCP-ALLOW-FIRST-google-aws-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-GCP-DENY-WINS-SWAP-google-aws-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-GCP-DENY-WINS-google-aws-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C05-GCP-TIE-google-aws-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-GCP-INGRESS-NOMATCH-google-aws-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C07-GCP-PARTIAL-DENY0-google-aws-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C07-GCP-PARTIAL-google-aws-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-GCP-TAG-google-aws-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-GCP-UNTAGGED-google-aws-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-GCP-NOMATCH-google-aws-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-GCP-RET-google-azurerm-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-GCP-ALLOW-FIRST-google-azurerm-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-GCP-DENY-WINS-SWAP-google-azurerm-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-GCP-DENY-WINS-google-azurerm-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C05-GCP-TIE-google-azurerm-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-GCP-INGRESS-NOMATCH-google-azurerm-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C07-GCP-PARTIAL-DENY0-google-azurerm-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C07-GCP-PARTIAL-google-azurerm-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-GCP-TAG-google-azurerm-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-GCP-UNTAGGED-google-azurerm-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-GCP-NOMATCH-google-azurerm-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-GCP-RET-google-oci-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-GCP-ALLOW-FIRST-google-oci-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-GCP-DENY-WINS-SWAP-google-oci-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-GCP-DENY-WINS-google-oci-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C05-GCP-TIE-google-oci-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-GCP-INGRESS-NOMATCH-google-oci-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C07-GCP-PARTIAL-DENY0-google-oci-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C07-GCP-PARTIAL-google-oci-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-GCP-TAG-google-oci-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-GCP-UNTAGGED-google-oci-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-GCP-NOMATCH-google-oci-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AZ-INLINE-azurerm-aws-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AZ-SEP-azurerm-aws-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-AZ-RET-azurerm-aws-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-AZ-DENY-WINS-azurerm-aws-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-AZ-NOCATCH-azurerm-aws-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C05-AZ-DUP-DIRS-azurerm-aws-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C05-AZ-DUP-azurerm-aws-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-AZ-NIC-SUBNET-azurerm-aws-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AZ-INLINE-azurerm-google-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AZ-SEP-azurerm-google-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-AZ-RET-azurerm-google-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-AZ-DENY-WINS-azurerm-google-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-AZ-NOCATCH-azurerm-google-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C05-AZ-DUP-DIRS-azurerm-google-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C05-AZ-DUP-azurerm-google-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-AZ-NIC-SUBNET-azurerm-google-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AZ-INLINE-azurerm-oci-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AZ-SEP-azurerm-oci-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-AZ-RET-azurerm-oci-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-AZ-DENY-WINS-azurerm-oci-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-AZ-NOCATCH-azurerm-oci-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C05-AZ-DUP-DIRS-azurerm-oci-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C05-AZ-DUP-azurerm-oci-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-AZ-NIC-SUBNET-azurerm-oci-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-OCI-STATEFUL-oci-aws-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-OCI-STATELESS-oci-aws-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-MIXED-REV-oci-aws-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-MIXED-oci-aws-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-NSG-REV-oci-aws-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-NSG-SYM-oci-aws-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-OVERLAP-oci-aws-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-OCI-INGRESS-NEW-oci-aws-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-OCI-NOMATCH-oci-aws-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-OCI-STATEFUL-oci-google-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-OCI-STATELESS-oci-google-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-MIXED-REV-oci-google-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-MIXED-oci-google-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-NSG-REV-oci-google-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-NSG-SYM-oci-google-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-OVERLAP-oci-google-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-OCI-INGRESS-NEW-oci-google-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-OCI-NOMATCH-oci-google-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-OCI-STATEFUL-oci-azurerm-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-OCI-STATELESS-oci-azurerm-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-MIXED-REV-oci-azurerm-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-MIXED-oci-azurerm-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-NSG-REV-oci-azurerm-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-NSG-SYM-oci-azurerm-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-OVERLAP-oci-azurerm-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-OCI-INGRESS-NEW-oci-azurerm-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-OCI-NOMATCH-oci-azurerm-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AWS-INLINE-aws-google-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AWS-OTHER-aws-google-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AWS-SEP-aws-google-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AWS-SYM-aws-google-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-AWS-RET-aws-google-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-AWS-EGRESS-aws-google-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-AWS-INGRESS-NEW-aws-google-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C07-AWS-PARTIAL-22-aws-google-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C07-AWS-PARTIAL-ALLOW-aws-google-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-AWS-ATTACH-SYM-aws-google-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-AWS-ATTACH-aws-google-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-AWS-OTHER-VM-aws-google-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-AWS-NO-EGRESS-aws-google-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-AWS-NOMATCH-aws-google-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AWS-INLINE-aws-azurerm-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AWS-OTHER-aws-azurerm-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AWS-SEP-aws-azurerm-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AWS-SYM-aws-azurerm-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-AWS-RET-aws-azurerm-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-AWS-EGRESS-aws-azurerm-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-AWS-INGRESS-NEW-aws-azurerm-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C07-AWS-PARTIAL-22-aws-azurerm-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C07-AWS-PARTIAL-ALLOW-aws-azurerm-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-AWS-ATTACH-SYM-aws-azurerm-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-AWS-ATTACH-aws-azurerm-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-AWS-OTHER-VM-aws-azurerm-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-AWS-NO-EGRESS-aws-azurerm-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-AWS-NOMATCH-aws-azurerm-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AWS-INLINE-aws-oci-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AWS-OTHER-aws-oci-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AWS-SEP-aws-oci-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AWS-SYM-aws-oci-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-AWS-RET-aws-oci-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-AWS-EGRESS-aws-oci-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-AWS-INGRESS-NEW-aws-oci-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C07-AWS-PARTIAL-22-aws-oci-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C07-AWS-PARTIAL-ALLOW-aws-oci-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-AWS-ATTACH-SYM-aws-oci-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-AWS-ATTACH-aws-oci-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-AWS-OTHER-VM-aws-oci-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-AWS-NO-EGRESS-aws-oci-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-AWS-NOMATCH-aws-oci-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-GCP-RET-google-aws-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-GCP-ALLOW-FIRST-google-aws-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-GCP-DENY-WINS-SWAP-google-aws-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-GCP-DENY-WINS-google-aws-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C05-GCP-TIE-google-aws-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-GCP-INGRESS-NOMATCH-google-aws-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C07-GCP-PARTIAL-DENY0-google-aws-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C07-GCP-PARTIAL-google-aws-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-GCP-TAG-google-aws-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-GCP-UNTAGGED-google-aws-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-GCP-NOMATCH-google-aws-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-GCP-RET-google-azurerm-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-GCP-ALLOW-FIRST-google-azurerm-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-GCP-DENY-WINS-SWAP-google-azurerm-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-GCP-DENY-WINS-google-azurerm-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C05-GCP-TIE-google-azurerm-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-GCP-INGRESS-NOMATCH-google-azurerm-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C07-GCP-PARTIAL-DENY0-google-azurerm-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C07-GCP-PARTIAL-google-azurerm-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-GCP-TAG-google-azurerm-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-GCP-UNTAGGED-google-azurerm-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-GCP-NOMATCH-google-azurerm-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-GCP-RET-google-oci-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-GCP-ALLOW-FIRST-google-oci-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-GCP-DENY-WINS-SWAP-google-oci-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-GCP-DENY-WINS-google-oci-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C05-GCP-TIE-google-oci-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-GCP-INGRESS-NOMATCH-google-oci-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C07-GCP-PARTIAL-DENY0-google-oci-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C07-GCP-PARTIAL-google-oci-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-GCP-TAG-google-oci-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-GCP-UNTAGGED-google-oci-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-GCP-NOMATCH-google-oci-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AZ-INLINE-azurerm-aws-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AZ-SEP-azurerm-aws-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-AZ-RET-azurerm-aws-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-AZ-DENY-WINS-azurerm-aws-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-AZ-NOCATCH-azurerm-aws-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C05-AZ-DUP-DIRS-azurerm-aws-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C05-AZ-DUP-azurerm-aws-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-AZ-NIC-SUBNET-azurerm-aws-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AZ-INLINE-azurerm-google-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AZ-SEP-azurerm-google-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-AZ-RET-azurerm-google-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-AZ-DENY-WINS-azurerm-google-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-AZ-NOCATCH-azurerm-google-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C05-AZ-DUP-DIRS-azurerm-google-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C05-AZ-DUP-azurerm-google-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-AZ-NIC-SUBNET-azurerm-google-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AZ-INLINE-azurerm-oci-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AZ-SEP-azurerm-oci-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-AZ-RET-azurerm-oci-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-AZ-DENY-WINS-azurerm-oci-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-AZ-NOCATCH-azurerm-oci-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C05-AZ-DUP-DIRS-azurerm-oci-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C05-AZ-DUP-azurerm-oci-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-AZ-NIC-SUBNET-azurerm-oci-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-OCI-STATEFUL-oci-aws-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-OCI-STATELESS-oci-aws-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-MIXED-REV-oci-aws-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-MIXED-oci-aws-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-NSG-REV-oci-aws-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-NSG-SYM-oci-aws-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-OVERLAP-oci-aws-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-OCI-INGRESS-NEW-oci-aws-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-OCI-NOMATCH-oci-aws-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-OCI-STATEFUL-oci-google-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-OCI-STATELESS-oci-google-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-MIXED-REV-oci-google-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-MIXED-oci-google-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-NSG-REV-oci-google-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-NSG-SYM-oci-google-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-OVERLAP-oci-google-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-OCI-INGRESS-NEW-oci-google-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-OCI-NOMATCH-oci-google-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-OCI-STATEFUL-oci-azurerm-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-OCI-STATELESS-oci-azurerm-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-MIXED-REV-oci-azurerm-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-MIXED-oci-azurerm-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-NSG-REV-oci-azurerm-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-NSG-SYM-oci-azurerm-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-OVERLAP-oci-azurerm-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-OCI-INGRESS-NEW-oci-azurerm-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-OCI-NOMATCH-oci-azurerm-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AWS-INLINE-aws-google-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AWS-OTHER-aws-google-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AWS-SEP-aws-google-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AWS-SYM-aws-google-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-AWS-RET-aws-google-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-AWS-EGRESS-aws-google-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-AWS-INGRESS-NEW-aws-google-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C07-AWS-PARTIAL-22-aws-google-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C07-AWS-PARTIAL-ALLOW-aws-google-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-AWS-ATTACH-SYM-aws-google-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-AWS-ATTACH-aws-google-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-AWS-OTHER-VM-aws-google-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-AWS-NO-EGRESS-aws-google-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-AWS-NOMATCH-aws-google-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AWS-INLINE-aws-azurerm-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AWS-OTHER-aws-azurerm-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AWS-SEP-aws-azurerm-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AWS-SYM-aws-azurerm-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-AWS-RET-aws-azurerm-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-AWS-EGRESS-aws-azurerm-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-AWS-INGRESS-NEW-aws-azurerm-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C07-AWS-PARTIAL-22-aws-azurerm-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C07-AWS-PARTIAL-ALLOW-aws-azurerm-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-AWS-ATTACH-SYM-aws-azurerm-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-AWS-ATTACH-aws-azurerm-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-AWS-OTHER-VM-aws-azurerm-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-AWS-NO-EGRESS-aws-azurerm-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-AWS-NOMATCH-aws-azurerm-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AWS-INLINE-aws-oci-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AWS-OTHER-aws-oci-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AWS-SEP-aws-oci-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AWS-SYM-aws-oci-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-AWS-RET-aws-oci-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-AWS-EGRESS-aws-oci-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-AWS-INGRESS-NEW-aws-oci-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C07-AWS-PARTIAL-22-aws-oci-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C07-AWS-PARTIAL-ALLOW-aws-oci-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-AWS-ATTACH-SYM-aws-oci-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-AWS-ATTACH-aws-oci-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-AWS-OTHER-VM-aws-oci-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-AWS-NO-EGRESS-aws-oci-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-AWS-NOMATCH-aws-oci-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-GCP-RET-google-aws-c3",
+    "declared_losses": [
+     "LOSS-NET-EFFECT-DENY",
+     "LOSS-NET-STATE",
+     "LOSS-NET-UNKNOWN-INPUT"
+    ],
+    "status": "TRANSLATED",
+    "undeclarable": [],
+    "verdict": "ACCEPT"
+   },
+   {
+    "case_id": "CASE-NETC-C04-GCP-ALLOW-FIRST-google-aws-c3",
+    "declared_losses": [
+     "LOSS-NET-EFFECT-DENY",
+     "LOSS-NET-STATE",
+     "LOSS-NET-UNKNOWN-INPUT"
+    ],
+    "status": "TRANSLATED",
+    "undeclarable": [],
+    "verdict": "ACCEPT"
+   },
+   {
+    "case_id": "CASE-NETC-C04-GCP-DENY-WINS-SWAP-google-aws-c3",
+    "declared_losses": [
+     "LOSS-NET-EFFECT-DENY",
+     "LOSS-NET-STATE",
+     "LOSS-NET-UNKNOWN-INPUT"
+    ],
+    "status": "TRANSLATED",
+    "undeclarable": [],
+    "verdict": "ACCEPT"
+   },
+   {
+    "case_id": "CASE-NETC-C04-GCP-DENY-WINS-google-aws-c3",
+    "declared_losses": [
+     "LOSS-NET-EFFECT-DENY",
+     "LOSS-NET-STATE",
+     "LOSS-NET-UNKNOWN-INPUT"
+    ],
+    "status": "TRANSLATED",
+    "undeclarable": [],
+    "verdict": "ACCEPT"
+   },
+   {
+    "case_id": "CASE-NETC-C05-GCP-TIE-google-aws-c3",
+    "declared_losses": [
+     "LOSS-NET-EFFECT-DENY",
+     "LOSS-NET-STATE",
+     "LOSS-NET-UNKNOWN-INPUT"
+    ],
+    "status": "TRANSLATED",
+    "undeclarable": [],
+    "verdict": "ACCEPT"
+   },
+   {
+    "case_id": "CASE-NETC-C06-GCP-INGRESS-NOMATCH-google-aws-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C07-GCP-PARTIAL-DENY0-google-aws-c3",
+    "declared_losses": [
+     "LOSS-NET-EFFECT-DENY",
+     "LOSS-NET-STATE",
+     "LOSS-NET-UNKNOWN-INPUT"
+    ],
+    "status": "TRANSLATED",
+    "undeclarable": [],
+    "verdict": "ACCEPT_WITH_DECLARED_LOSS"
+   },
+   {
+    "case_id": "CASE-NETC-C07-GCP-PARTIAL-google-aws-c3",
+    "declared_losses": [
+     "LOSS-NET-EFFECT-DENY",
+     "LOSS-NET-STATE",
+     "LOSS-NET-UNKNOWN-INPUT"
+    ],
+    "status": "TRANSLATED",
+    "undeclarable": [],
+    "verdict": "ACCEPT_WITH_DECLARED_LOSS"
+   },
+   {
+    "case_id": "CASE-NETC-C08-GCP-TAG-google-aws-c3",
+    "declared_losses": [
+     "LOSS-NET-EFFECT-DENY",
+     "LOSS-NET-STATE",
+     "LOSS-NET-UNKNOWN-INPUT"
+    ],
+    "status": "TRANSLATED",
+    "undeclarable": [],
+    "verdict": "ACCEPT"
+   },
+   {
+    "case_id": "CASE-NETC-C08-GCP-UNTAGGED-google-aws-c3",
+    "declared_losses": [
+     "LOSS-NET-EFFECT-DENY",
+     "LOSS-NET-STATE",
+     "LOSS-NET-UNKNOWN-INPUT"
+    ],
+    "status": "TRANSLATED",
+    "undeclarable": [],
+    "verdict": "ACCEPT"
+   },
+   {
+    "case_id": "CASE-NETC-C09-GCP-NOMATCH-google-aws-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-GCP-RET-google-azurerm-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-GCP-ALLOW-FIRST-google-azurerm-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-GCP-DENY-WINS-SWAP-google-azurerm-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-GCP-DENY-WINS-google-azurerm-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C05-GCP-TIE-google-azurerm-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-GCP-INGRESS-NOMATCH-google-azurerm-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C07-GCP-PARTIAL-DENY0-google-azurerm-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C07-GCP-PARTIAL-google-azurerm-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-GCP-TAG-google-azurerm-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-GCP-UNTAGGED-google-azurerm-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-GCP-NOMATCH-google-azurerm-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-GCP-RET-google-oci-c3",
+    "declared_losses": [],
+    "status": "RENDER_BLOCKED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-GCP-ALLOW-FIRST-google-oci-c3",
+    "declared_losses": [],
+    "status": "RENDER_BLOCKED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-GCP-DENY-WINS-SWAP-google-oci-c3",
+    "declared_losses": [],
+    "status": "RENDER_BLOCKED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-GCP-DENY-WINS-google-oci-c3",
+    "declared_losses": [],
+    "status": "RENDER_BLOCKED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C05-GCP-TIE-google-oci-c3",
+    "declared_losses": [],
+    "status": "RENDER_BLOCKED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-GCP-INGRESS-NOMATCH-google-oci-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C07-GCP-PARTIAL-DENY0-google-oci-c3",
+    "declared_losses": [],
+    "status": "RENDER_BLOCKED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C07-GCP-PARTIAL-google-oci-c3",
+    "declared_losses": [],
+    "status": "RENDER_BLOCKED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-GCP-TAG-google-oci-c3",
+    "declared_losses": [],
+    "status": "RENDER_BLOCKED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-GCP-UNTAGGED-google-oci-c3",
+    "declared_losses": [],
+    "status": "RENDER_BLOCKED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-GCP-NOMATCH-google-oci-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AZ-INLINE-azurerm-aws-c3",
+    "declared_losses": [
+     "LOSS-NET-EFFECT-DENY",
+     "LOSS-NET-STATE",
+     "LOSS-NET-UNKNOWN-INPUT"
+    ],
+    "status": "TRANSLATED",
+    "undeclarable": [],
+    "verdict": "ACCEPT"
+   },
+   {
+    "case_id": "CASE-NETC-C01-AZ-SEP-azurerm-aws-c3",
+    "declared_losses": [
+     "LOSS-NET-EFFECT-DENY",
+     "LOSS-NET-STATE",
+     "LOSS-NET-UNKNOWN-INPUT"
+    ],
+    "status": "TRANSLATED",
+    "undeclarable": [],
+    "verdict": "ACCEPT"
+   },
+   {
+    "case_id": "CASE-NETC-C02-AZ-RET-azurerm-aws-c3",
+    "declared_losses": [
+     "LOSS-NET-EFFECT-DENY",
+     "LOSS-NET-STATE",
+     "LOSS-NET-UNKNOWN-INPUT"
+    ],
+    "status": "TRANSLATED",
+    "undeclarable": [],
+    "verdict": "ACCEPT"
+   },
+   {
+    "case_id": "CASE-NETC-C04-AZ-DENY-WINS-azurerm-aws-c3",
+    "declared_losses": [
+     "LOSS-NET-EFFECT-DENY",
+     "LOSS-NET-STATE",
+     "LOSS-NET-UNKNOWN-INPUT"
+    ],
+    "status": "TRANSLATED",
+    "undeclarable": [],
+    "verdict": "ACCEPT"
+   },
+   {
+    "case_id": "CASE-NETC-C04-AZ-NOCATCH-azurerm-aws-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C05-AZ-DUP-DIRS-azurerm-aws-c3",
+    "declared_losses": [
+     "LOSS-NET-EFFECT-DENY",
+     "LOSS-NET-STATE",
+     "LOSS-NET-UNKNOWN-INPUT"
+    ],
+    "status": "TRANSLATED",
+    "undeclarable": [],
+    "verdict": "ACCEPT"
+   },
+   {
+    "case_id": "CASE-NETC-C05-AZ-DUP-azurerm-aws-c3",
+    "declared_losses": [],
+    "status": "REFUSED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-AZ-NIC-SUBNET-azurerm-aws-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AZ-INLINE-azurerm-google-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AZ-SEP-azurerm-google-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-AZ-RET-azurerm-google-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-AZ-DENY-WINS-azurerm-google-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-AZ-NOCATCH-azurerm-google-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C05-AZ-DUP-DIRS-azurerm-google-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C05-AZ-DUP-azurerm-google-c3",
+    "declared_losses": [],
+    "status": "REFUSED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-AZ-NIC-SUBNET-azurerm-google-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AZ-INLINE-azurerm-oci-c3",
+    "declared_losses": [],
+    "status": "RENDER_BLOCKED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C01-AZ-SEP-azurerm-oci-c3",
+    "declared_losses": [],
+    "status": "RENDER_BLOCKED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-AZ-RET-azurerm-oci-c3",
+    "declared_losses": [],
+    "status": "RENDER_BLOCKED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-AZ-DENY-WINS-azurerm-oci-c3",
+    "declared_losses": [],
+    "status": "RENDER_BLOCKED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C04-AZ-NOCATCH-azurerm-oci-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C05-AZ-DUP-DIRS-azurerm-oci-c3",
+    "declared_losses": [],
+    "status": "RENDER_BLOCKED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C05-AZ-DUP-azurerm-oci-c3",
+    "declared_losses": [],
+    "status": "REFUSED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C08-AZ-NIC-SUBNET-azurerm-oci-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-OCI-STATEFUL-oci-aws-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-OCI-STATELESS-oci-aws-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-MIXED-REV-oci-aws-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-MIXED-oci-aws-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-NSG-REV-oci-aws-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-NSG-SYM-oci-aws-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-OVERLAP-oci-aws-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-OCI-INGRESS-NEW-oci-aws-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-OCI-NOMATCH-oci-aws-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-OCI-STATEFUL-oci-google-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-OCI-STATELESS-oci-google-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-MIXED-REV-oci-google-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-MIXED-oci-google-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-NSG-REV-oci-google-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-NSG-SYM-oci-google-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-OVERLAP-oci-google-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-OCI-INGRESS-NEW-oci-google-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-OCI-NOMATCH-oci-google-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-OCI-STATEFUL-oci-azurerm-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C02-OCI-STATELESS-oci-azurerm-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-MIXED-REV-oci-azurerm-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-MIXED-oci-azurerm-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-NSG-REV-oci-azurerm-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-NSG-SYM-oci-azurerm-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C03-OCI-OVERLAP-oci-azurerm-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-OCI-INGRESS-NEW-oci-azurerm-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-OCI-NOMATCH-oci-azurerm-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   }
+  ],
+  "criteria": {
+   "a": "zero perda silenciosa (c3_full)",
+   "b": "zero DENY -> ALLOW (c3_full)",
+   "c": "zero destino inválido (c3_full)",
+   "d": "negativos 'rejects' recusados (c3_full)",
+   "e": "ponte com o oráculo: casos de referência com o veredito esperado"
+  },
+  "failures": [],
+  "negative_fixtures": [
+   {
+    "check": "not_entails",
+    "fixture_id": "NETC-C01-AWS-OTHER",
+    "outcomes": {
+     "aws->azurerm": "UNSUPPORTED",
+     "aws->google": "UNSUPPORTED",
+     "aws->oci": "UNSUPPORTED"
+    },
+    "transported_when_must_reject": []
+   },
+   {
+    "check": "not_entails",
+    "fixture_id": "NETC-C02-OCI-STATELESS",
+    "outcomes": {
+     "oci->aws": "UNSUPPORTED",
+     "oci->azurerm": "UNSUPPORTED",
+     "oci->google": "UNSUPPORTED"
+    },
+    "transported_when_must_reject": []
+   },
+   {
+    "check": "not_entails",
+    "fixture_id": "NETC-C03-OCI-MIXED",
+    "outcomes": {
+     "oci->aws": "UNSUPPORTED",
+     "oci->azurerm": "UNSUPPORTED",
+     "oci->google": "UNSUPPORTED"
+    },
+    "transported_when_must_reject": []
+   },
+   {
+    "check": "not_entails",
+    "fixture_id": "NETC-C04-GCP-ALLOW-FIRST",
+    "outcomes": {
+     "google->aws": "ACCEPT",
+     "google->azurerm": "UNSUPPORTED",
+     "google->oci": "RENDER_BLOCKED"
+    },
+    "transported_when_must_reject": []
+   },
+   {
+    "check": "rejects",
+    "fixture_id": "NETC-C05-AZ-DUP",
+    "outcomes": {
+     "azurerm->aws": "REFUSED",
+     "azurerm->google": "REFUSED",
+     "azurerm->oci": "REFUSED"
+    },
+    "transported_when_must_reject": []
+   },
+   {
+    "check": "not_entails",
+    "fixture_id": "NETC-C06-AWS-INGRESS-NEW",
+    "outcomes": {
+     "aws->azurerm": "UNSUPPORTED",
+     "aws->google": "UNSUPPORTED",
+     "aws->oci": "UNSUPPORTED"
+    },
+    "transported_when_must_reject": []
+   },
+   {
+    "check": "not_entails",
+    "fixture_id": "NETC-C06-OCI-INGRESS-NEW",
+    "outcomes": {
+     "oci->aws": "UNSUPPORTED",
+     "oci->azurerm": "UNSUPPORTED",
+     "oci->google": "UNSUPPORTED"
+    },
+    "transported_when_must_reject": []
+   },
+   {
+    "check": "not_entails",
+    "fixture_id": "NETC-C07-GCP-PARTIAL",
+    "outcomes": {
+     "google->aws": "ACCEPT_WITH_DECLARED_LOSS",
+     "google->azurerm": "UNSUPPORTED",
+     "google->oci": "RENDER_BLOCKED"
+    },
+    "transported_when_must_reject": []
+   },
+   {
+    "check": "not_entails",
+    "fixture_id": "NETC-C08-AWS-OTHER-VM",
+    "outcomes": {
+     "aws->azurerm": "UNSUPPORTED",
+     "aws->google": "UNSUPPORTED",
+     "aws->oci": "UNSUPPORTED"
+    },
+    "transported_when_must_reject": []
+   },
+   {
+    "check": "not_entails",
+    "fixture_id": "NETC-C08-GCP-UNTAGGED",
+    "outcomes": {
+     "google->aws": "ACCEPT",
+     "google->azurerm": "UNSUPPORTED",
+     "google->oci": "RENDER_BLOCKED"
+    },
+    "transported_when_must_reject": []
+   },
+   {
+    "check": "not_entails",
+    "fixture_id": "NETC-C09-AWS-NO-EGRESS",
+    "outcomes": {
+     "aws->azurerm": "UNSUPPORTED",
+     "aws->google": "UNSUPPORTED",
+     "aws->oci": "UNSUPPORTED"
+    },
+    "transported_when_must_reject": []
+   }
+  ],
+  "oracle_files_sha256": {
+   "pilot/net/oracle/ORACLE.html": "f5cc0256e8d4ea7f2f2c5776afdf10db8c1758a8fdff3978d4a8ef8b3721d427",
+   "pilot/net/oracle/directions.json": "5ae4bd4939c599a31467014209add4cbbd01d5b599e0f3ef58d3cfc89ccc9e8f",
+   "pilot/net/oracle/disputes.json": "4bf60f221b68124a1124634d78f1f23398b0e3536ec6e481d5410a8283824b0e",
+   "pilot/net/oracle/documented_examples.json": "2164d957b0a3dcc522353b7323683b29af4fb2504dfc7be849c166f85a04d13d",
+   "pilot/net/oracle/expected_answers.schema.json": "1cd279f77c88d0084795c2c3a317cab6b3a40ca6cd44bb7f0aa33699e71449bc",
+   "pilot/net/oracle/net_oracle/__init__.py": "5711d062c8ed0be806ffa2da628472645ea76b170c10eadee66633ef6ebbddfb",
+   "pilot/net/oracle/net_oracle/adapters.py": "e51ddefb5b555d2bbce1778b7b53d4ed3cafffd9e7d40185e8c93ae361b0f2e9",
+   "pilot/net/oracle/net_oracle/decomposing.py": "a252dc1e28bf768928cf416745200f60ea51302635f220c00c4940d0cf56c5ba",
+   "pilot/net/oracle/net_oracle/evaluate.py": "a6c6fb9dc923e31c2b6357bb247525e52d4947e688fb2f478a6f2e41c6722bee",
+   "pilot/net/oracle/net_oracle/judging.py": "0fdb04236387ff641a92ad15e77fb7f1f67dc014296ad0858d45025b8a237e91",
+   "pilot/net/oracle/net_oracle/model.py": "1570ebe054d019861a75344bbbca43e81c3cbdcda9aff1e4fbf24a977fe7bacb",
+   "pilot/net/oracle/net_oracle/semantics.py": "ad446967b946ab17471a71236d124c5d646003be671366d33ae995831862ab03",
+   "pilot/net/oracle/sealed_index.json": "45826019391c70358190c1191e5bfcda25b03114771392691d09becfd0fdf7d8",
+   "pilot/net/oracle/semantics_profile.json": "f24e5f4234f103f88f344f330a3d06988ad596cbf872c1e449c5d407cc7a5e21",
+   "pilot/net/oracle/tests/conftest.py": "e3ad840bca01544ce70449864a48a9d3989b73e3bb1d519f2c6eae0cb8827b0f",
+   "pilot/net/oracle/tests/test_calib.py": "2b293ea6311c95e8bd18ee9b258816eca5853bed735bb321f2af75e73d493a65",
+   "pilot/net/oracle/tests/test_commitments.py": "c6dc665464f585f574a03baff68ead42e08e6ee313523f5a04753a86d9d00c47",
+   "pilot/net/oracle/tests/test_documented_examples.py": "8c0fb08a00bada42f9ce2fb45c16d4e49656ace08b5aada4c3d876e32c91bd13",
+   "pilot/net/oracle/tests/test_judge_rules.py": "5ce385c5150cedb880849289672700981d1cec58c87ead2823c6ae34894b6d26",
+   "pilot/net/oracle/tests/test_profile_readings.py": "fad7e1c2094e66d4a16081ad3728632ccc2c601dc7378389f34341ffd4908bd3"
+  },
+  "reference_cases": [
+   {
+    "case_id": "NETC-T-AWS-AZU-N",
+    "expected": "REJECT",
+    "judge": "REJECT",
+    "ok": true,
+    "polarity": "negative"
+   },
+   {
+    "case_id": "NETC-T-AWS-AZU-P",
+    "expected": "ACCEPT",
+    "judge": "ACCEPT",
+    "ok": true,
+    "polarity": "positive"
+   },
+   {
+    "case_id": "NETC-T-AWS-AZU-U",
+    "expected": "ACCEPT_WITH_DECLARED_LOSS",
+    "judge": "ACCEPT_WITH_DECLARED_LOSS",
+    "ok": true,
+    "polarity": "unknown"
+   },
+   {
+    "case_id": "NETC-T-AWS-GOO-N",
+    "expected": "REJECT",
+    "judge": "REJECT",
+    "ok": true,
+    "polarity": "negative"
+   },
+   {
+    "case_id": "NETC-T-AWS-GOO-P",
+    "expected": "ACCEPT",
+    "judge": "ACCEPT",
+    "ok": true,
+    "polarity": "positive"
+   },
+   {
+    "case_id": "NETC-T-AWS-GOO-U",
+    "expected": "ACCEPT_WITH_DECLARED_LOSS",
+    "judge": "ACCEPT_WITH_DECLARED_LOSS",
+    "ok": true,
+    "polarity": "unknown"
+   },
+   {
+    "case_id": "NETC-T-AWS-OCI-N",
+    "expected": "REJECT",
+    "judge": "REJECT",
+    "ok": true,
+    "polarity": "negative"
+   },
+   {
+    "case_id": "NETC-T-AWS-OCI-P",
+    "expected": "ACCEPT_WITH_DECLARED_LOSS",
+    "judge": "ACCEPT_WITH_DECLARED_LOSS",
+    "ok": true,
+    "polarity": "positive"
+   },
+   {
+    "case_id": "NETC-T-AWS-OCI-U",
+    "expected": "REJECT",
+    "judge": "REJECT",
+    "ok": true,
+    "polarity": "unknown"
+   },
+   {
+    "case_id": "NETC-T-AZU-AWS-N",
+    "expected": "REJECT",
+    "judge": "REJECT",
+    "ok": true,
+    "polarity": "negative"
+   },
+   {
+    "case_id": "NETC-T-AZU-AWS-P",
+    "expected": "ACCEPT",
+    "judge": "ACCEPT",
+    "ok": true,
+    "polarity": "positive"
+   },
+   {
+    "case_id": "NETC-T-AZU-AWS-U",
+    "expected": "REJECT",
+    "judge": "REJECT",
+    "ok": true,
+    "polarity": "unknown"
+   },
+   {
+    "case_id": "NETC-T-AZU-GOO-N",
+    "expected": "REJECT",
+    "judge": "REJECT",
+    "ok": true,
+    "polarity": "negative"
+   },
+   {
+    "case_id": "NETC-T-AZU-GOO-P",
+    "expected": "ACCEPT",
+    "judge": "ACCEPT",
+    "ok": true,
+    "polarity": "positive"
+   },
+   {
+    "case_id": "NETC-T-AZU-GOO-U",
+    "expected": "ACCEPT_WITH_DECLARED_LOSS",
+    "judge": "ACCEPT_WITH_DECLARED_LOSS",
+    "ok": true,
+    "polarity": "unknown"
+   },
+   {
+    "case_id": "NETC-T-AZU-OCI-N",
+    "expected": "REJECT",
+    "judge": "REJECT",
+    "ok": true,
+    "polarity": "negative"
+   },
+   {
+    "case_id": "NETC-T-AZU-OCI-P",
+    "expected": "ACCEPT_WITH_DECLARED_LOSS",
+    "judge": "ACCEPT_WITH_DECLARED_LOSS",
+    "ok": true,
+    "polarity": "positive"
+   },
+   {
+    "case_id": "NETC-T-AZU-OCI-U",
+    "expected": "REJECT",
+    "judge": "REJECT",
+    "ok": true,
+    "polarity": "unknown"
+   },
+   {
+    "case_id": "NETC-T-GOO-AWS-N",
+    "expected": "REJECT",
+    "judge": "REJECT",
+    "ok": true,
+    "polarity": "negative"
+   },
+   {
+    "case_id": "NETC-T-GOO-AWS-P",
+    "expected": "ACCEPT",
+    "judge": "ACCEPT",
+    "ok": true,
+    "polarity": "positive"
+   },
+   {
+    "case_id": "NETC-T-GOO-AWS-U",
+    "expected": "REJECT",
+    "judge": "REJECT",
+    "ok": true,
+    "polarity": "unknown"
+   },
+   {
+    "case_id": "NETC-T-GOO-AZU-N",
+    "expected": "REJECT",
+    "judge": "REJECT",
+    "ok": true,
+    "polarity": "negative"
+   },
+   {
+    "case_id": "NETC-T-GOO-AZU-P",
+    "expected": "ACCEPT",
+    "judge": "ACCEPT",
+    "ok": true,
+    "polarity": "positive"
+   },
+   {
+    "case_id": "NETC-T-GOO-AZU-U",
+    "expected": "ACCEPT_WITH_DECLARED_LOSS",
+    "judge": "ACCEPT_WITH_DECLARED_LOSS",
+    "ok": true,
+    "polarity": "unknown"
+   },
+   {
+    "case_id": "NETC-T-GOO-OCI-N",
+    "expected": "REJECT",
+    "judge": "REJECT",
+    "ok": true,
+    "polarity": "negative"
+   },
+   {
+    "case_id": "NETC-T-GOO-OCI-P",
+    "expected": "ACCEPT_WITH_DECLARED_LOSS",
+    "judge": "ACCEPT_WITH_DECLARED_LOSS",
+    "ok": true,
+    "polarity": "positive"
+   },
+   {
+    "case_id": "NETC-T-GOO-OCI-U",
+    "expected": "REJECT",
+    "judge": "REJECT",
+    "ok": true,
+    "polarity": "unknown"
+   },
+   {
+    "case_id": "NETC-T-OCI-AWS-N",
+    "expected": "REJECT",
+    "judge": "REJECT",
+    "ok": true,
+    "polarity": "negative"
+   },
+   {
+    "case_id": "NETC-T-OCI-AWS-P",
+    "expected": "ACCEPT_WITH_DECLARED_LOSS",
+    "judge": "ACCEPT_WITH_DECLARED_LOSS",
+    "ok": true,
+    "polarity": "positive"
+   },
+   {
+    "case_id": "NETC-T-OCI-AWS-U",
+    "expected": "REJECT",
+    "judge": "REJECT",
+    "ok": true,
+    "polarity": "unknown"
+   },
+   {
+    "case_id": "NETC-T-OCI-AZU-N",
+    "expected": "REJECT",
+    "judge": "REJECT",
+    "ok": true,
+    "polarity": "negative"
+   },
+   {
+    "case_id": "NETC-T-OCI-AZU-P",
+    "expected": "ACCEPT_WITH_DECLARED_LOSS",
+    "judge": "ACCEPT_WITH_DECLARED_LOSS",
+    "ok": true,
+    "polarity": "positive"
+   },
+   {
+    "case_id": "NETC-T-OCI-AZU-U",
+    "expected": "ACCEPT_WITH_DECLARED_LOSS",
+    "judge": "ACCEPT_WITH_DECLARED_LOSS",
+    "ok": true,
+    "polarity": "unknown"
+   },
+   {
+    "case_id": "NETC-T-OCI-GOO-N",
+    "expected": "REJECT",
+    "judge": "REJECT",
+    "ok": true,
+    "polarity": "negative"
+   },
+   {
+    "case_id": "NETC-T-OCI-GOO-P",
+    "expected": "ACCEPT_WITH_DECLARED_LOSS",
+    "judge": "ACCEPT_WITH_DECLARED_LOSS",
+    "ok": true,
+    "polarity": "positive"
+   },
+   {
+    "case_id": "NETC-T-OCI-GOO-U",
+    "expected": "ACCEPT_WITH_DECLARED_LOSS",
+    "judge": "ACCEPT_WITH_DECLARED_LOSS",
+    "ok": true,
+    "polarity": "unknown"
+   }
+  ],
+  "verdicts": {
+   "c1_table": {},
+   "c2_taxonomy": {},
+   "c3_full": {
+    "ACCEPT": 12,
+    "ACCEPT_WITH_DECLARED_LOSS": 2
+   }
+  }
+ },
+ "generated_at": "2026-11-04T11:04:42-03:00",
+ "metrics": [
+  {
+   "axis": "operational",
+   "frame": {
+    "description": "fixtures de calibração do PILOT-NET-ORACLE x 12 direções",
+    "ref": {
+     "path": "$BO_REPO/pilot/net/fixtures_calib/",
+     "sha256": "2db533988db3b9abc1eb2fdbffed50e765c51c6fd0277359124fd610f037ecaf"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-NET-CALIB",
+    "text": "caso renderizado e julgado; sem divergência descoberta"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-NET-ORACLE-NOSILENT",
+   "name": "caso julgado sem perda silenciosa (c3_full)",
+   "operational_coverage": {
+    "est": 1.0,
+    "lower": 1.0,
+    "n": 14,
+    "upper": 1.0
+   },
+   "quantifier": "observed_fraction",
+   "reading": "complete_unit",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "operational",
+   "frame": {
+    "description": "fixtures de calibração do PILOT-NET-ORACLE x 12 direções",
+    "ref": {
+     "path": "$BO_REPO/pilot/net/fixtures_calib/",
+     "sha256": "2db533988db3b9abc1eb2fdbffed50e765c51c6fd0277359124fd610f037ecaf"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-NET-CALIB",
+    "text": "caso renderizado e julgado; nenhum DENY -> ALLOW"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-NET-ORACLE-NONEG",
+   "name": "caso julgado sem negativo transportado (c3_full)",
+   "operational_coverage": {
+    "est": 1.0,
+    "lower": 1.0,
+    "n": 14,
+    "upper": 1.0
+   },
+   "quantifier": "observed_fraction",
+   "reading": "complete_unit",
+   "weights": {
+    "scheme": "uniform"
+   }
+  }
+ ],
+ "module": "PILOT-NET-E2E",
+ "notes": "oráculo congelado do PILOT-NET-ORACLE nas fixtures de calibração; perdas declaradas pela política única; fração relatada, não limiar (E4 é sobre perda silenciosa e contraexemplo)",
+ "schema": "bo.result/1"
+}

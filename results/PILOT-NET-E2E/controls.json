@@ -1,0 +1,801 @@
+{
+ "contract": "C15",
+ "contract_version": "3.1.0",
+ "data": {
+  "c3_only_consequences": {
+   "cases": [
+    {
+     "c1": "UNSUPPORTED",
+     "c2": "UNSUPPORTED",
+     "c3": "ACCEPT",
+     "consequences": [
+      "effective_set_compiled"
+     ],
+     "direction": "azurerm->aws",
+     "fixture_id": "NETC-C01-AZ-INLINE",
+     "justifying_axioms": [
+      "AX-NET-04"
+     ]
+    },
+    {
+     "c1": "UNSUPPORTED",
+     "c2": "UNSUPPORTED",
+     "c3": "ACCEPT",
+     "consequences": [
+      "effective_set_compiled"
+     ],
+     "direction": "azurerm->aws",
+     "fixture_id": "NETC-C01-AZ-SEP",
+     "justifying_axioms": [
+      "AX-NET-04"
+     ]
+    },
+    {
+     "c1": "UNSUPPORTED",
+     "c2": "UNSUPPORTED",
+     "c3": "ACCEPT",
+     "consequences": [
+      "effective_set_compiled"
+     ],
+     "direction": "azurerm->aws",
+     "fixture_id": "NETC-C02-AZ-RET",
+     "justifying_axioms": [
+      "AX-NET-04"
+     ]
+    },
+    {
+     "c1": "UNSUPPORTED",
+     "c2": "UNSUPPORTED",
+     "c3": "ACCEPT",
+     "consequences": [
+      "effective_set_compiled"
+     ],
+     "direction": "google->aws",
+     "fixture_id": "NETC-C02-GCP-RET",
+     "justifying_axioms": [
+      "AX-NET-04",
+      "AX-NET-05"
+     ]
+    },
+    {
+     "c1": "UNSUPPORTED",
+     "c2": "UNSUPPORTED",
+     "c3": "ACCEPT",
+     "consequences": [
+      "effective_set_compiled"
+     ],
+     "direction": "azurerm->aws",
+     "fixture_id": "NETC-C04-AZ-DENY-WINS",
+     "justifying_axioms": [
+      "AX-NET-04"
+     ]
+    },
+    {
+     "c1": "UNSUPPORTED",
+     "c2": "UNSUPPORTED",
+     "c3": "ACCEPT",
+     "consequences": [
+      "effective_set_compiled"
+     ],
+     "direction": "google->aws",
+     "fixture_id": "NETC-C04-GCP-ALLOW-FIRST",
+     "justifying_axioms": [
+      "AX-NET-04",
+      "AX-NET-05"
+     ]
+    },
+    {
+     "c1": "UNSUPPORTED",
+     "c2": "UNSUPPORTED",
+     "c3": "ACCEPT",
+     "consequences": [
+      "effective_set_compiled"
+     ],
+     "direction": "google->aws",
+     "fixture_id": "NETC-C04-GCP-DENY-WINS",
+     "justifying_axioms": [
+      "AX-NET-04",
+      "AX-NET-05"
+     ]
+    },
+    {
+     "c1": "UNSUPPORTED",
+     "c2": "UNSUPPORTED",
+     "c3": "ACCEPT",
+     "consequences": [
+      "effective_set_compiled"
+     ],
+     "direction": "google->aws",
+     "fixture_id": "NETC-C04-GCP-DENY-WINS-SWAP",
+     "justifying_axioms": [
+      "AX-NET-04",
+      "AX-NET-05"
+     ]
+    },
+    {
+     "c1": "UNSUPPORTED",
+     "c2": "UNSUPPORTED",
+     "c3": "REFUSED",
+     "consequences": [
+      "source_rejected"
+     ],
+     "direction": "azurerm->aws",
+     "fixture_id": "NETC-C05-AZ-DUP",
+     "justifying_axioms": [
+      "AX-NET-06"
+     ]
+    },
+    {
+     "c1": "UNSUPPORTED",
+     "c2": "UNSUPPORTED",
+     "c3": "REFUSED",
+     "consequences": [
+      "source_rejected"
+     ],
+     "direction": "azurerm->google",
+     "fixture_id": "NETC-C05-AZ-DUP",
+     "justifying_axioms": [
+      "AX-NET-06"
+     ]
+    },
+    {
+     "c1": "UNSUPPORTED",
+     "c2": "UNSUPPORTED",
+     "c3": "REFUSED",
+     "consequences": [
+      "source_rejected"
+     ],
+     "direction": "azurerm->oci",
+     "fixture_id": "NETC-C05-AZ-DUP",
+     "justifying_axioms": [
+      "AX-NET-06"
+     ]
+    },
+    {
+     "c1": "UNSUPPORTED",
+     "c2": "UNSUPPORTED",
+     "c3": "ACCEPT",
+     "consequences": [
+      "effective_set_compiled"
+     ],
+     "direction": "azurerm->aws",
+     "fixture_id": "NETC-C05-AZ-DUP-DIRS",
+     "justifying_axioms": [
+      "AX-NET-04"
+     ]
+    },
+    {
+     "c1": "UNSUPPORTED",
+     "c2": "UNSUPPORTED",
+     "c3": "ACCEPT",
+     "consequences": [
+      "effective_set_compiled"
+     ],
+     "direction": "google->aws",
+     "fixture_id": "NETC-C05-GCP-TIE",
+     "justifying_axioms": [
+      "AX-NET-04",
+      "AX-NET-05"
+     ]
+    },
+    {
+     "c1": "UNSUPPORTED",
+     "c2": "UNSUPPORTED",
+     "c3": "ACCEPT_WITH_DECLARED_LOSS",
+     "consequences": [
+      "effective_set_compiled"
+     ],
+     "direction": "google->aws",
+     "fixture_id": "NETC-C07-GCP-PARTIAL",
+     "justifying_axioms": [
+      "AX-NET-04",
+      "AX-NET-05"
+     ]
+    },
+    {
+     "c1": "UNSUPPORTED",
+     "c2": "UNSUPPORTED",
+     "c3": "ACCEPT_WITH_DECLARED_LOSS",
+     "consequences": [
+      "effective_set_compiled"
+     ],
+     "direction": "google->aws",
+     "fixture_id": "NETC-C07-GCP-PARTIAL-DENY0",
+     "justifying_axioms": [
+      "AX-NET-04",
+      "AX-NET-05"
+     ]
+    },
+    {
+     "c1": "UNSUPPORTED",
+     "c2": "UNSUPPORTED",
+     "c3": "ACCEPT",
+     "consequences": [
+      "effective_set_compiled"
+     ],
+     "direction": "google->aws",
+     "fixture_id": "NETC-C08-GCP-TAG",
+     "justifying_axioms": [
+      "AX-NET-04",
+      "AX-NET-05"
+     ]
+    },
+    {
+     "c1": "UNSUPPORTED",
+     "c2": "UNSUPPORTED",
+     "c3": "ACCEPT",
+     "consequences": [
+      "effective_set_compiled"
+     ],
+     "direction": "google->aws",
+     "fixture_id": "NETC-C08-GCP-UNTAGGED",
+     "justifying_axioms": [
+      "AX-NET-04",
+      "AX-NET-05"
+     ]
+    }
+   ],
+   "families": {
+    "effective_set_compiled": 14,
+    "source_rejected": 3
+   },
+   "n_cases": 17
+  },
+  "claims": {
+   "mapping": "$BO_DATA/PILOT-NET-MAP/mapping.sssom.tsv",
+   "mode": "mapping",
+   "ok": 25,
+   "records": 634,
+   "sha256": {
+    "mapping": "e29ce0e6d43a3824bac3688be5c657d8fd1b5ddb4ef6c73383edf0ce9c877eb8",
+    "verdicts": "d08bcde461ec6d647f102d1ed3741c8e9d844522a4b9f449e0cc7d1a92524096"
+   },
+   "verdicts": "$BO_DATA/PILOT-NET-MAP/verdicts.jsonl"
+  },
+  "invariants": {
+   "abox_sha256": "1e2b76b39de46e392b7ae4467a6aa92dc5a85d866a61804e1fa0a85096c45f99",
+   "claims_sha256": {
+    "mapping": "e29ce0e6d43a3824bac3688be5c657d8fd1b5ddb4ef6c73383edf0ce9c877eb8",
+    "verdicts": "d08bcde461ec6d647f102d1ed3741c8e9d844522a4b9f449e0cc7d1a92524096"
+   },
+   "loss_policy_codes_used": {
+    "c1_table": [],
+    "c2_taxonomy": [],
+    "c3_full": [
+     "DEFAULT_NO_EVIDENCE",
+     "DENY_COMPILED",
+     "STATE_NOT_EXPRESSIBLE",
+     "UNKNOWN_INPUT"
+    ]
+   },
+   "ok": true,
+   "same_abox_for_c2_c3": true,
+   "same_case_set": true,
+   "same_loss_policy": true,
+   "same_transform_per_claim": true
+  },
+  "loss_policy": {
+   "DEFAULT_NO_EVIDENCE": {
+    "flows": "all",
+    "loss_id": "LOSS-NET-DEFAULT"
+   },
+   "DENY_COMPILED": {
+    "flows": "all",
+    "loss_id": "LOSS-NET-EFFECT-DENY"
+   },
+   "SELECTOR_AS_ATTACHMENT": {
+    "flows": "all",
+    "loss_id": "LOSS-NET-SELECTOR"
+   },
+   "SRC_PORT_DROPPED": {
+    "flows": "all",
+    "loss_id": "LOSS-NET-SRCPORT"
+   },
+   "STATE_NOT_EXPRESSIBLE": {
+    "flows": "return",
+    "loss_id": "LOSS-NET-STATE"
+   },
+   "UNKNOWN_INPUT": {
+    "flows": "all",
+    "loss_id": "LOSS-NET-UNKNOWN-INPUT"
+   }
+  },
+  "per_control": {
+   "c1_table": {
+    "block_codes": {
+     "AMBIGUOUS_TARGET": 3,
+     "NO_REALIZATION": 47,
+     "TRANSFORM_OUT_OF_DOMAIN": 2,
+     "UNKNOWN_INPUT": 61,
+     "UNKNOWN_SYMBOLIC_INPUT": 6,
+     "UNPROVEN": 7
+    },
+    "by_direction": {
+     "aws->azurerm": {
+      "accepted": 0,
+      "n": 14,
+      "refused": 0,
+      "rejected": 0,
+      "unsupported": 14
+     },
+     "aws->google": {
+      "accepted": 0,
+      "n": 14,
+      "refused": 0,
+      "rejected": 0,
+      "unsupported": 14
+     },
+     "aws->oci": {
+      "accepted": 0,
+      "n": 14,
+      "refused": 0,
+      "rejected": 0,
+      "unsupported": 14
+     },
+     "azurerm->aws": {
+      "accepted": 0,
+      "n": 8,
+      "refused": 0,
+      "rejected": 0,
+      "unsupported": 8
+     },
+     "azurerm->google": {
+      "accepted": 0,
+      "n": 8,
+      "refused": 0,
+      "rejected": 0,
+      "unsupported": 8
+     },
+     "azurerm->oci": {
+      "accepted": 0,
+      "n": 8,
+      "refused": 0,
+      "rejected": 0,
+      "unsupported": 8
+     },
+     "google->aws": {
+      "accepted": 0,
+      "n": 11,
+      "refused": 0,
+      "rejected": 0,
+      "unsupported": 11
+     },
+     "google->azurerm": {
+      "accepted": 0,
+      "n": 11,
+      "refused": 0,
+      "rejected": 0,
+      "unsupported": 11
+     },
+     "google->oci": {
+      "accepted": 0,
+      "n": 11,
+      "refused": 0,
+      "rejected": 0,
+      "unsupported": 11
+     },
+     "oci->aws": {
+      "accepted": 0,
+      "n": 9,
+      "refused": 0,
+      "rejected": 0,
+      "unsupported": 9
+     },
+     "oci->azurerm": {
+      "accepted": 0,
+      "n": 9,
+      "refused": 0,
+      "rejected": 0,
+      "unsupported": 9
+     },
+     "oci->google": {
+      "accepted": 0,
+      "n": 9,
+      "refused": 0,
+      "rejected": 0,
+      "unsupported": 9
+     }
+    },
+    "status": {
+     "UNSUPPORTED": 126
+    },
+    "unsafe": [],
+    "verdicts": {}
+   },
+   "c2_taxonomy": {
+    "block_codes": {
+     "AMBIGUOUS_TARGET": 3,
+     "TRANSFORM_OUT_OF_DOMAIN": 2,
+     "UNKNOWN_INPUT": 91,
+     "UNKNOWN_SYMBOLIC_INPUT": 6,
+     "UNPROVEN": 24
+    },
+    "by_direction": {
+     "aws->azurerm": {
+      "accepted": 0,
+      "n": 14,
+      "refused": 0,
+      "rejected": 0,
+      "unsupported": 14
+     },
+     "aws->google": {
+      "accepted": 0,
+      "n": 14,
+      "refused": 0,
+      "rejected": 0,
+      "unsupported": 14
+     },
+     "aws->oci": {
+      "accepted": 0,
+      "n": 14,
+      "refused": 0,
+      "rejected": 0,
+      "unsupported": 14
+     },
+     "azurerm->aws": {
+      "accepted": 0,
+      "n": 8,
+      "refused": 0,
+      "rejected": 0,
+      "unsupported": 8
+     },
+     "azurerm->google": {
+      "accepted": 0,
+      "n": 8,
+      "refused": 0,
+      "rejected": 0,
+      "unsupported": 8
+     },
+     "azurerm->oci": {
+      "accepted": 0,
+      "n": 8,
+      "refused": 0,
+      "rejected": 0,
+      "unsupported": 8
+     },
+     "google->aws": {
+      "accepted": 0,
+      "n": 11,
+      "refused": 0,
+      "rejected": 0,
+      "unsupported": 11
+     },
+     "google->azurerm": {
+      "accepted": 0,
+      "n": 11,
+      "refused": 0,
+      "rejected": 0,
+      "unsupported": 11
+     },
+     "google->oci": {
+      "accepted": 0,
+      "n": 11,
+      "refused": 0,
+      "rejected": 0,
+      "unsupported": 11
+     },
+     "oci->aws": {
+      "accepted": 0,
+      "n": 9,
+      "refused": 0,
+      "rejected": 0,
+      "unsupported": 9
+     },
+     "oci->azurerm": {
+      "accepted": 0,
+      "n": 9,
+      "refused": 0,
+      "rejected": 0,
+      "unsupported": 9
+     },
+     "oci->google": {
+      "accepted": 0,
+      "n": 9,
+      "refused": 0,
+      "rejected": 0,
+      "unsupported": 9
+     }
+    },
+    "status": {
+     "UNSUPPORTED": 126
+    },
+    "unsafe": [],
+    "verdicts": {}
+   },
+   "c3_full": {
+    "block_codes": {
+     "AMBIGUOUS_TARGET": 3,
+     "CONDITION_INDETERMINATE": 1,
+     "INVALID_PLAN": 14,
+     "SHACL_VIOLATION": 3,
+     "TRANSFORM_OUT_OF_DOMAIN": 22,
+     "UNKNOWN_SYMBOLIC_INPUT": 6,
+     "UNPROVEN": 63
+    },
+    "by_direction": {
+     "aws->azurerm": {
+      "accepted": 0,
+      "n": 14,
+      "refused": 0,
+      "rejected": 0,
+      "unsupported": 14
+     },
+     "aws->google": {
+      "accepted": 0,
+      "n": 14,
+      "refused": 0,
+      "rejected": 0,
+      "unsupported": 14
+     },
+     "aws->oci": {
+      "accepted": 0,
+      "n": 14,
+      "refused": 0,
+      "rejected": 0,
+      "unsupported": 14
+     },
+     "azurerm->aws": {
+      "accepted": 5,
+      "n": 8,
+      "refused": 1,
+      "rejected": 0,
+      "unsupported": 2
+     },
+     "azurerm->google": {
+      "accepted": 0,
+      "n": 8,
+      "refused": 1,
+      "rejected": 0,
+      "unsupported": 7
+     },
+     "azurerm->oci": {
+      "accepted": 0,
+      "n": 8,
+      "refused": 1,
+      "rejected": 0,
+      "unsupported": 7
+     },
+     "google->aws": {
+      "accepted": 9,
+      "n": 11,
+      "refused": 0,
+      "rejected": 0,
+      "unsupported": 2
+     },
+     "google->azurerm": {
+      "accepted": 0,
+      "n": 11,
+      "refused": 0,
+      "rejected": 0,
+      "unsupported": 11
+     },
+     "google->oci": {
+      "accepted": 0,
+      "n": 11,
+      "refused": 0,
+      "rejected": 0,
+      "unsupported": 11
+     },
+     "oci->aws": {
+      "accepted": 0,
+      "n": 9,
+      "refused": 0,
+      "rejected": 0,
+      "unsupported": 9
+     },
+     "oci->azurerm": {
+      "accepted": 0,
+      "n": 9,
+      "refused": 0,
+      "rejected": 0,
+      "unsupported": 9
+     },
+     "oci->google": {
+      "accepted": 0,
+      "n": 9,
+      "refused": 0,
+      "rejected": 0,
+      "unsupported": 9
+     }
+    },
+    "status": {
+     "REFUSED": 3,
+     "RENDER_BLOCKED": 14,
+     "TRANSLATED": 14,
+     "UNSUPPORTED": 95
+    },
+    "unsafe": [],
+    "verdicts": {
+     "ACCEPT": 12,
+     "ACCEPT_WITH_DECLARED_LOSS": 2
+    }
+   }
+  }
+ },
+ "generated_at": "2026-11-04T11:04:42-03:00",
+ "metrics": [
+  {
+   "axis": "operational",
+   "frame": {
+    "description": "fixtures de calibração do PILOT-NET-ORACLE x 12 direções",
+    "ref": {
+     "path": "$BO_REPO/pilot/net/fixtures_calib/",
+     "sha256": "2db533988db3b9abc1eb2fdbffed50e765c51c6fd0277359124fd610f037ecaf"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-NET-CALIB",
+    "text": "caso fixture x direção; plano completo, HCL e juiz do oráculo"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-NET-C1-UNIT",
+   "name": "unidade completa atravessada (c1_table)",
+   "operational_coverage": {
+    "est": 0.0,
+    "lower": 0.0,
+    "n": 126,
+    "upper": 0.0
+   },
+   "quantifier": "observed_fraction",
+   "reading": "complete_unit",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "operational",
+   "frame": {
+    "description": "fixtures de calibração do PILOT-NET-ORACLE x 12 direções",
+    "ref": {
+     "path": "$BO_REPO/pilot/net/fixtures_calib/",
+     "sha256": "2db533988db3b9abc1eb2fdbffed50e765c51c6fd0277359124fd610f037ecaf"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-NET-CALIB",
+    "text": "fluxo da fixture em cada caso; igual = atravessou"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-NET-C1-DECISION",
+   "name": "decisão de fluxo atravessada (c1_table)",
+   "operational_coverage": {
+    "est": 0.0,
+    "lower": 0.0,
+    "n": 291,
+    "upper": 0.0
+   },
+   "quantifier": "observed_fraction",
+   "reading": "decision",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "operational",
+   "frame": {
+    "description": "fixtures de calibração do PILOT-NET-ORACLE x 12 direções",
+    "ref": {
+     "path": "$BO_REPO/pilot/net/fixtures_calib/",
+     "sha256": "2db533988db3b9abc1eb2fdbffed50e765c51c6fd0277359124fd610f037ecaf"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-NET-CALIB",
+    "text": "caso fixture x direção; plano completo, HCL e juiz do oráculo"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-NET-C2-UNIT",
+   "name": "unidade completa atravessada (c2_taxonomy)",
+   "operational_coverage": {
+    "est": 0.0,
+    "lower": 0.0,
+    "n": 126,
+    "upper": 0.0
+   },
+   "quantifier": "observed_fraction",
+   "reading": "complete_unit",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "operational",
+   "frame": {
+    "description": "fixtures de calibração do PILOT-NET-ORACLE x 12 direções",
+    "ref": {
+     "path": "$BO_REPO/pilot/net/fixtures_calib/",
+     "sha256": "2db533988db3b9abc1eb2fdbffed50e765c51c6fd0277359124fd610f037ecaf"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-NET-CALIB",
+    "text": "fluxo da fixture em cada caso; igual = atravessou"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-NET-C2-DECISION",
+   "name": "decisão de fluxo atravessada (c2_taxonomy)",
+   "operational_coverage": {
+    "est": 0.0,
+    "lower": 0.0,
+    "n": 291,
+    "upper": 0.0
+   },
+   "quantifier": "observed_fraction",
+   "reading": "decision",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "operational",
+   "frame": {
+    "description": "fixtures de calibração do PILOT-NET-ORACLE x 12 direções",
+    "ref": {
+     "path": "$BO_REPO/pilot/net/fixtures_calib/",
+     "sha256": "2db533988db3b9abc1eb2fdbffed50e765c51c6fd0277359124fd610f037ecaf"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-NET-CALIB",
+    "text": "caso fixture x direção; plano completo, HCL e juiz do oráculo"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-NET-C3-UNIT",
+   "name": "unidade completa atravessada (c3_full)",
+   "operational_coverage": {
+    "est": 0.1111,
+    "lower": 0.1111,
+    "n": 126,
+    "upper": 0.1111
+   },
+   "quantifier": "observed_fraction",
+   "reading": "complete_unit",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "operational",
+   "frame": {
+    "description": "fixtures de calibração do PILOT-NET-ORACLE x 12 direções",
+    "ref": {
+     "path": "$BO_REPO/pilot/net/fixtures_calib/",
+     "sha256": "2db533988db3b9abc1eb2fdbffed50e765c51c6fd0277359124fd610f037ecaf"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-NET-CALIB",
+    "text": "fluxo da fixture em cada caso; igual = atravessou"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-NET-C3-DECISION",
+   "name": "decisão de fluxo atravessada (c3_full)",
+   "operational_coverage": {
+    "est": 0.1271,
+    "lower": 0.1271,
+    "n": 291,
+    "upper": 0.134
+   },
+   "quantifier": "observed_fraction",
+   "reading": "decision",
+   "weights": {
+    "scheme": "uniform"
+   }
+  }
+ ],
+ "module": "PILOT-NET-E2E",
+ "notes": "três controles com a mesma entrada (ABox), a mesma política de perda e as mesmas transformações; consequências só do c3 relatadas sobre a CALIBRAÇÃO (exploratório; H9 conta nas retidas)",
+ "schema": "bo.result/1"
+}

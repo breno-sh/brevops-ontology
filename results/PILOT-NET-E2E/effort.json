@@ -1,0 +1,126 @@
+{
+ "contract": "C15",
+ "contract_version": "3.1.0",
+ "data": {
+  "agent": {
+   "agent": "claude-opus-5-5",
+   "expected_h": 6,
+   "started_at": "2026-11-04T09:10:00-03:00",
+   "steps": [
+    {
+     "agent_hours": 0.27,
+     "end": "09:26",
+     "start": "09:10",
+     "step": "leitura do brief, plano, contratos, oráculo, harnesses e biblioteca de grão; desenho"
+    },
+    {
+     "agent_hours": 0.2,
+     "end": "09:38",
+     "start": "09:26",
+     "step": "vocabulário de realização, lifting, catálogo de axiomas, gerador OWL/C14 e os 3 controles"
+    },
+    {
+     "agent_hours": 0.23,
+     "end": "09:52",
+     "start": "09:38",
+     "step": "alegações (C09/C21), alegações sintéticas, transporte e tradução para IR de grafo e plano"
+    },
+    {
+     "agent_hours": 0.13,
+     "end": "10:00",
+     "start": "09:52",
+     "step": "lowering nos 4 provedores, render pelos HARNESS-*, releitura para o oráculo, política de perda"
+    },
+    {
+     "agent_hours": 0.1,
+     "end": "10:06",
+     "start": "10:00",
+     "step": "pipeline das 12 direções e comandos run/oracle_eval"
+    },
+    {
+     "agent_hours": 0.08,
+     "end": "10:11",
+     "start": "10:06",
+     "step": "gates grain_check, no_silent_insert, tf_validate"
+    },
+    {
+     "agent_hours": 0.07,
+     "end": "10:15",
+     "start": "10:11",
+     "step": "testes, gate do módulo, achados de contrato, primeiro commit"
+    },
+    {
+     "agent_hours": 0.23,
+     "end": "10:29",
+     "start": "10:15",
+     "step": "segunda passada: guardas C10, traço por valor completo, perfil DL, pista da tabela, defeitos"
+    },
+    {
+     "agent_hours": 0.2,
+     "end": "11:15",
+     "start": "11:03",
+     "step": "integração com o mapeamento real (PILOT-NET-MAP), resultados e rerodada dos gates"
+    }
+   ],
+   "wait": [
+    {
+     "end": "11:03",
+     "hours": 0.57,
+     "start": "10:29",
+     "what": "PILOT-NET-MAP em bo/base (rebase sobre GRAIN 0.1.7/0.1.8 e oráculo regerado no meio)"
+    }
+   ]
+  },
+  "expected_h": 6,
+  "machine_seconds": {
+   "inputs": 0.03,
+   "lift": 0.002,
+   "oracle.c3": 0.129,
+   "owl": 0.001,
+   "reason.c1": 0.0,
+   "reason.c2": 0.107,
+   "reason.c3": 0.14,
+   "render.c3": 0.322,
+   "translate.c1": 0.009,
+   "translate.c2": 0.013,
+   "translate.c3": 0.021,
+   "write": 0.043
+  }
+ },
+ "generated_at": "2026-11-04T11:04:42-03:00",
+ "metrics": [
+  {
+   "axis": "operational",
+   "frame": {
+    "description": "passos do brief do PILOT-NET-E2E (livro de esforço)",
+    "ref": {
+     "path": "$BO_REPO/src/bo/pilot_net_e2e/effort_ledger.py",
+     "sha256": "7d156fca73496ecce514de5a714aabfdbad1c31127c94e24241a953862a4ceb1"
+    }
+   },
+   "inclusion": {
+    "rule_id": "INC-NET-EFFORT",
+    "text": "passo do brief com hora de início e fim"
+   },
+   "joint_uncertainty": {
+    "method": "none"
+   },
+   "metric_id": "M-NET-EFFORT-MEASURED",
+   "name": "passos do piloto com esforço medido",
+   "operational_coverage": {
+    "est": 1.0,
+    "lower": 1.0,
+    "n": 9,
+    "upper": 1.0
+   },
+   "quantifier": "observed_fraction",
+   "reading": "field",
+   "weights": {
+    "scheme": "uniform"
+   }
+  }
+ ],
+ "module": "PILOT-NET-E2E",
+ "notes": "esforço real do agente por passo (relógio de parede, America/Recife) e tempo de máquina medido na execução; base para o PILOT-EXIT recalibrar o cronograma",
+ "schema": "bo.result/1"
+}

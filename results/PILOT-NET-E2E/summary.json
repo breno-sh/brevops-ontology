@@ -1,0 +1,87 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "PILOT-NET-E2E",
+ "generated_at": "2026-11-04T11:04:44-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-NET-E2E.txt",
+  "brief_sha256": "996ca9758402f11f0b64f0b07a7c79e30be772e203923599c2dfbd236a2b8480",
+  "params": {
+   "slice": "net",
+   "claims": "mapping",
+   "fixtures": "calib",
+   "controls": "c1_table,c2_taxonomy,c3_full",
+   "robot": "1.9.11",
+   "terraform": "1.15.8",
+   "recorded_at": "2026-11-04T11:04:42-03:00"
+  },
+  "inputs": [
+   {
+    "path": "$BO_DATA/PILOT-NET-MAP/mapping.sssom.tsv",
+    "kind": "file",
+    "sha256": "e29ce0e6d43a3824bac3688be5c657d8fd1b5ddb4ef6c73383edf0ce9c877eb8"
+   },
+   {
+    "path": "$BO_DATA/PILOT-NET-MAP/verdicts.jsonl",
+    "kind": "file",
+    "sha256": "d08bcde461ec6d647f102d1ed3741c8e9d844522a4b9f449e0cc7d1a92524096"
+   },
+   {
+    "path": "$BO_REPO/pilot/net/oracle",
+    "kind": "dir",
+    "sha256": "6b2208c99dc691e98a9d53bedb4d5a473f75c6d49a1411c47b3c377c1474fcc1"
+   },
+   {
+    "path": "$BO_REPO/pilot/net/fixtures_calib",
+    "kind": "dir",
+    "sha256": "511250ef390af5490b2dcd1dedb446360fccf47bbebf09206a44de8c5a4f0923"
+   },
+   {
+    "path": "$BO_REPO/ontology/patterns",
+    "kind": "dir",
+    "sha256": "21b18439b3fb97e19330ad7d37a07babadafd65d2d6085316e7a52132196a759"
+   },
+   {
+    "path": "$BO_DATA/SCHEMA-AWS/plugin_cache",
+    "kind": "dir",
+    "sha256": "dc6c709c65d1d892623304de865c737c612d9dabbdbbd71186a0825a3f41f016"
+   },
+   {
+    "path": "$BO_DATA/SCHEMA-AZURE/plugin_cache",
+    "kind": "dir",
+    "sha256": "ec5a0ab96eabe14691df8d164ed72b948b5faa9962574f8f87aa01a23b9ee9dd"
+   },
+   {
+    "path": "$BO_DATA/SCHEMA-GCP/plugin_cache",
+    "kind": "dir",
+    "sha256": "bcdc29a85b5e0f20fd562eda78b6f2bc8ccc2a522c3998fd4490910c28fc5353"
+   },
+   {
+    "path": "$BO_DATA/SCHEMA-OCI/plugin_cache",
+    "kind": "dir",
+    "sha256": "73defcd79b0d72bfb44ae7dba2f4b5d605c0d344c543e767c2beecc37c28ad52"
+   }
+  ],
+  "recorded_at": "2026-11-04T11:04:44-03:00"
+ },
+ "sources": [
+  {
+   "uri": "pilot/net/oracle",
+   "license": "interno (PILOT-NET-ORACLE)",
+   "transformation": "juiz e fixtures de calibração, sem alteração"
+  },
+  {
+   "uri": "$BO_DATA/PILOT-NET-MAP/mapping.sssom.tsv",
+   "license": "interno (PILOT-NET-MAP)",
+   "transformation": "alegações OK transportam valor"
+  },
+  {
+   "uri": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl",
+   "license": "interno (frases MPL-2.0 dos providers)",
+   "transformation": "evidência dos axiomas e realizações"
+  }
+ ],
+ "notes": "alegações reais do PILOT-NET-MAP; sintéticas só nos testes; achados em CONTRACT_CHANGE.txt"
+}
