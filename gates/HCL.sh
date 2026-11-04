@@ -16,7 +16,7 @@ step "testes (tests/hcl, pytest)"
 $py -I -B -m pytest tests/hcl -q -p no:cacheprovider
 
 step "saídas declaradas existem e não estão vazias"
-for f in resources.parquet symbolic_config.jsonl parse_stats.json licenses.json symbolic_config.index.json vocab_keep.u64; do
+for f in resources.parquet symbolic_config.jsonl parse_stats.json licenses.json symbolic_config.index.json vocab_keep.u64 unit_counts.json; do
   test -s "$D/$f" || { echo "falta $D/$f"; exit 1; }
 done
 test -s results/HCL/summary.json || { echo "falta results/HCL/summary.json"; exit 1; }

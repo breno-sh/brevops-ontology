@@ -38,3 +38,14 @@ no código do HCL. Nada foi afrouxado; o merge em bo/base NÃO foi feito.
    SERVICE-EVIDENCE não bate com o dado dele em $BO_DATA. Não é do HCL.
    G1 stats, G3 symbolic_roundtrip, G6 gate_smoke, G9 ownership, G10 commit_lint: OK na lane; no
    ambiente da base G1/G3/G4 só resolvem depois do merge (o pacote bo.hcl ainda não está em bo/base).
+
+4. Decisões do coordenador aplicadas (2026-11-04T08:40-03:00)
+   Lint: COORD d4559dd lê .parquet decodificado; gate-check com --timeout 3600.
+   G4, opção (b): unidade alinhada à da tabela, (diretório de módulo, Managed|Data, tipo, nome) único
+   (bo.hcl.unitcount; o sqlite não tem nenhuma linha repetida nessa unidade). Tolerância inalterada.
+   Original (bloco): 6.169/6.426 tipos dentro (257 fora), total −0,74%.
+   Alinhado: 6.216/6.425 dentro (209 fora), total 1.898.242 vs 1.918.818 (−1,07%).
+   Dos 209: 208 cabem na tolerância sem a falta em diretórios com arquivo que o python-hcl2 recusa
+   (achado de cobertura do parser, lista em results/HCL/parser_coverage_types.json); 1 por outra causa:
+   Data:azurerm_policy_definition, nosso 291 vs 284 (tol 6), 8 unidades a mais sem causa achada.
+   G4 fica ABANDON com essa decomposição, sem ajuste.

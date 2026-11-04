@@ -1,0 +1,2115 @@
+{
+ "aligned": {
+  "total_rel_diff": -0.010723,
+  "types": 6425,
+  "types_ok": 6216
+ },
+ "note": "tipos fora de ±2% na unidade alinhada cuja diferença é só falta em diretório com arquivo que o python-hcl2 8.1.4 recusou (cobertura do parser); 'other' = fora por outra causa",
+ "original_block_count": {
+  "total_rel_diff": -0.007375,
+  "types": 6426,
+  "types_ok": 6169
+ },
+ "other": [
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 1,
+    "sobra": 8
+   },
+   "diff": 7,
+   "ours": 291,
+   "sqlite": 284,
+   "tolerance": 6,
+   "type": "Data:azurerm_policy_definition"
+  }
+ ],
+ "parser_coverage": [
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 194
+   },
+   "diff": -194,
+   "ours": 6290,
+   "sqlite": 6484,
+   "tolerance": 130,
+   "type": "Managed:aws_autoscaling_group"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 185
+   },
+   "diff": -185,
+   "ours": 2465,
+   "sqlite": 2650,
+   "tolerance": 53,
+   "type": "Managed:oci_core_security_list"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 178
+   },
+   "diff": -178,
+   "ours": 3012,
+   "sqlite": 3190,
+   "tolerance": 64,
+   "type": "Managed:aws_launch_configuration"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 141
+   },
+   "diff": -141,
+   "ours": 3640,
+   "sqlite": 3781,
+   "tolerance": 76,
+   "type": "Managed:oci_core_subnet"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 124
+   },
+   "diff": -124,
+   "ours": 1704,
+   "sqlite": 1828,
+   "tolerance": 37,
+   "type": "Managed:aws_iam_group_policy_attachment"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 109
+   },
+   "diff": -109,
+   "ours": 2298,
+   "sqlite": 2407,
+   "tolerance": 49,
+   "type": "Managed:oci_core_route_table"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 80
+   },
+   "diff": -80,
+   "ours": 3559,
+   "sqlite": 3639,
+   "tolerance": 73,
+   "type": "Managed:aws_s3_bucket_object"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 72,
+    "sobra": 1
+   },
+   "diff": -71,
+   "ours": 1530,
+   "sqlite": 1601,
+   "tolerance": 33,
+   "type": "Data:aws_iam_role"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 63
+   },
+   "diff": -63,
+   "ours": 1938,
+   "sqlite": 2001,
+   "tolerance": 41,
+   "type": "Managed:aws_api_gateway_method_response"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 61
+   },
+   "diff": -61,
+   "ours": 1756,
+   "sqlite": 1817,
+   "tolerance": 37,
+   "type": "Managed:aws_api_gateway_integration_response"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 61
+   },
+   "diff": -61,
+   "ours": 1436,
+   "sqlite": 1497,
+   "tolerance": 30,
+   "type": "Managed:oci_core_internet_gateway"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 57
+   },
+   "diff": -57,
+   "ours": 1916,
+   "sqlite": 1973,
+   "tolerance": 40,
+   "type": "Managed:aws_codebuild_project"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 54
+   },
+   "diff": -54,
+   "ours": 748,
+   "sqlite": 802,
+   "tolerance": 17,
+   "type": "Managed:oci_core_virtual_network"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 52
+   },
+   "diff": -52,
+   "ours": 1740,
+   "sqlite": 1792,
+   "tolerance": 36,
+   "type": "Managed:google_dns_record_set"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 48
+   },
+   "diff": -48,
+   "ours": 422,
+   "sqlite": 470,
+   "tolerance": 10,
+   "type": "Managed:azurerm_linux_virtual_machine_scale_set"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 45
+   },
+   "diff": -45,
+   "ours": 1359,
+   "sqlite": 1404,
+   "tolerance": 29,
+   "type": "Managed:aws_alb_target_group"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 45
+   },
+   "diff": -45,
+   "ours": 1015,
+   "sqlite": 1060,
+   "tolerance": 22,
+   "type": "Managed:azurerm_availability_set"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 40
+   },
+   "diff": -40,
+   "ours": 328,
+   "sqlite": 368,
+   "tolerance": 8,
+   "type": "Managed:aws_alb_listener_rule"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 38
+   },
+   "diff": -38,
+   "ours": 1037,
+   "sqlite": 1075,
+   "tolerance": 22,
+   "type": "Data:aws_acm_certificate"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 38
+   },
+   "diff": -38,
+   "ours": 1613,
+   "sqlite": 1651,
+   "tolerance": 34,
+   "type": "Managed:aws_alb_listener"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 36
+   },
+   "diff": -36,
+   "ours": 1506,
+   "sqlite": 1542,
+   "tolerance": 31,
+   "type": "Managed:aws_iam_group"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 36
+   },
+   "diff": -36,
+   "ours": 1106,
+   "sqlite": 1142,
+   "tolerance": 23,
+   "type": "Managed:google_compute_instance_template"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 32
+   },
+   "diff": -32,
+   "ours": 486,
+   "sqlite": 518,
+   "tolerance": 11,
+   "type": "Managed:aws_iam_service_linked_role"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 31
+   },
+   "diff": -31,
+   "ours": 1110,
+   "sqlite": 1141,
+   "tolerance": 23,
+   "type": "Managed:aws_alb"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 30
+   },
+   "diff": -30,
+   "ours": 967,
+   "sqlite": 997,
+   "tolerance": 20,
+   "type": "Managed:aws_autoscaling_attachment"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 29
+   },
+   "diff": -29,
+   "ours": 863,
+   "sqlite": 892,
+   "tolerance": 18,
+   "type": "Managed:aws_elasticsearch_domain"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 25
+   },
+   "diff": -25,
+   "ours": 223,
+   "sqlite": 248,
+   "tolerance": 5,
+   "type": "Managed:aws_msk_configuration"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 24
+   },
+   "diff": -24,
+   "ours": 1070,
+   "sqlite": 1094,
+   "tolerance": 22,
+   "type": "Data:azurerm_storage_account"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 22
+   },
+   "diff": -22,
+   "ours": 281,
+   "sqlite": 303,
+   "tolerance": 7,
+   "type": "Managed:aws_msk_cluster"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 21
+   },
+   "diff": -21,
+   "ours": 17,
+   "sqlite": 38,
+   "tolerance": 1,
+   "type": "Managed:azurerm_mssql_virtual_machine"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 21
+   },
+   "diff": -21,
+   "ours": 360,
+   "sqlite": 381,
+   "tolerance": 8,
+   "type": "Managed:azurerm_template_deployment"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 20
+   },
+   "diff": -20,
+   "ours": 709,
+   "sqlite": 729,
+   "tolerance": 15,
+   "type": "Managed:aws_iam_group_membership"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 19
+   },
+   "diff": -19,
+   "ours": 453,
+   "sqlite": 472,
+   "tolerance": 10,
+   "type": "Managed:google_compute_instance_group_manager"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 18
+   },
+   "diff": -18,
+   "ours": 728,
+   "sqlite": 746,
+   "tolerance": 15,
+   "type": "Managed:oci_core_nat_gateway"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 17
+   },
+   "diff": -17,
+   "ours": 609,
+   "sqlite": 626,
+   "tolerance": 13,
+   "type": "Managed:google_cloud_run_v2_service"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 17
+   },
+   "diff": -17,
+   "ours": 520,
+   "sqlite": 537,
+   "tolerance": 11,
+   "type": "Managed:google_compute_http_health_check"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 17
+   },
+   "diff": -17,
+   "ours": 571,
+   "sqlite": 588,
+   "tolerance": 12,
+   "type": "Managed:google_compute_region_instance_group_manager"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 17,
+    "sobra": 1
+   },
+   "diff": -16,
+   "ours": 276,
+   "sqlite": 292,
+   "tolerance": 6,
+   "type": "Managed:aws_config_configuration_recorder"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 17,
+    "sobra": 1
+   },
+   "diff": -16,
+   "ours": 262,
+   "sqlite": 278,
+   "tolerance": 6,
+   "type": "Managed:aws_config_delivery_channel"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 16
+   },
+   "diff": -16,
+   "ours": 19,
+   "sqlite": 35,
+   "tolerance": 1,
+   "type": "Managed:google_dataproc_job"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 15,
+    "sobra": 1
+   },
+   "diff": -14,
+   "ours": 226,
+   "sqlite": 240,
+   "tolerance": 5,
+   "type": "Managed:aws_config_configuration_recorder_status"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 14
+   },
+   "diff": -14,
+   "ours": 335,
+   "sqlite": 349,
+   "tolerance": 7,
+   "type": "Managed:azurerm_function_app"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 14
+   },
+   "diff": -14,
+   "ours": 315,
+   "sqlite": 329,
+   "tolerance": 7,
+   "type": "Managed:azurerm_virtual_machine_scale_set"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 14
+   },
+   "diff": -14,
+   "ours": 210,
+   "sqlite": 224,
+   "tolerance": 5,
+   "type": "Managed:google_compute_project_metadata_item"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 13
+   },
+   "diff": -13,
+   "ours": 446,
+   "sqlite": 459,
+   "tolerance": 10,
+   "type": "Managed:aws_main_route_table_association"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 13
+   },
+   "diff": -13,
+   "ours": 161,
+   "sqlite": 174,
+   "tolerance": 4,
+   "type": "Managed:google_compute_autoscaler"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 13
+   },
+   "diff": -13,
+   "ours": 18,
+   "sqlite": 31,
+   "tolerance": 1,
+   "type": "Managed:google_secure_source_manager_instance"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 12
+   },
+   "diff": -12,
+   "ours": 288,
+   "sqlite": 300,
+   "tolerance": 6,
+   "type": "Managed:aws_autoscaling_notification"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 12
+   },
+   "diff": -12,
+   "ours": 372,
+   "sqlite": 384,
+   "tolerance": 8,
+   "type": "Managed:aws_codecommit_repository"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 12
+   },
+   "diff": -12,
+   "ours": 0,
+   "sqlite": 12,
+   "tolerance": 1,
+   "type": "Managed:aws_ec2_route"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 12
+   },
+   "diff": -12,
+   "ours": 0,
+   "sqlite": 12,
+   "tolerance": 1,
+   "type": "Managed:aws_ec2_routetable"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 12
+   },
+   "diff": -12,
+   "ours": 0,
+   "sqlite": 12,
+   "tolerance": 1,
+   "type": "Managed:aws_ec2_subnet"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 12
+   },
+   "diff": -12,
+   "ours": 0,
+   "sqlite": 12,
+   "tolerance": 1,
+   "type": "Managed:aws_ec2_subnetroutetableassociation"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 12
+   },
+   "diff": -12,
+   "ours": 401,
+   "sqlite": 413,
+   "tolerance": 9,
+   "type": "Managed:google_compute_target_pool"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 11
+   },
+   "diff": -11,
+   "ours": 450,
+   "sqlite": 461,
+   "tolerance": 10,
+   "type": "Managed:azurerm_container_group"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 11
+   },
+   "diff": -11,
+   "ours": 63,
+   "sqlite": 74,
+   "tolerance": 2,
+   "type": "Managed:google_data_fusion_instance"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 10
+   },
+   "diff": -10,
+   "ours": 260,
+   "sqlite": 270,
+   "tolerance": 6,
+   "type": "Data:aws_instances"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 10
+   },
+   "diff": -10,
+   "ours": 277,
+   "sqlite": 287,
+   "tolerance": 6,
+   "type": "Managed:aws_api_gateway_account"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 10
+   },
+   "diff": -10,
+   "ours": 87,
+   "sqlite": 97,
+   "tolerance": 2,
+   "type": "Managed:aws_codebuild_webhook"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 10
+   },
+   "diff": -10,
+   "ours": 396,
+   "sqlite": 406,
+   "tolerance": 9,
+   "type": "Managed:aws_codedeploy_app"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 10
+   },
+   "diff": -10,
+   "ours": 425,
+   "sqlite": 435,
+   "tolerance": 9,
+   "type": "Managed:aws_codedeploy_deployment_group"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 10
+   },
+   "diff": -10,
+   "ours": 283,
+   "sqlite": 293,
+   "tolerance": 6,
+   "type": "Managed:google_compute_region_autoscaler"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 10
+   },
+   "diff": -10,
+   "ours": 126,
+   "sqlite": 136,
+   "tolerance": 3,
+   "type": "Managed:google_privateca_certificate_authority"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 10
+   },
+   "diff": -10,
+   "ours": 73,
+   "sqlite": 83,
+   "tolerance": 2,
+   "type": "Managed:google_storage_bucket_acl"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 9
+   },
+   "diff": -9,
+   "ours": 297,
+   "sqlite": 306,
+   "tolerance": 7,
+   "type": "Managed:google_compute_backend_bucket"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 9
+   },
+   "diff": -9,
+   "ours": 65,
+   "sqlite": 74,
+   "tolerance": 2,
+   "type": "Managed:oci_database_db_system"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 8
+   },
+   "diff": -8,
+   "ours": 269,
+   "sqlite": 277,
+   "tolerance": 6,
+   "type": "Managed:aws_alb_target_group_attachment"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 8
+   },
+   "diff": -8,
+   "ours": 75,
+   "sqlite": 83,
+   "tolerance": 2,
+   "type": "Managed:google_storage_object_acl"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 7
+   },
+   "diff": -7,
+   "ours": 18,
+   "sqlite": 25,
+   "tolerance": 1,
+   "type": "Data:aws_alb_listener"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 7
+   },
+   "diff": -7,
+   "ours": 61,
+   "sqlite": 68,
+   "tolerance": 2,
+   "type": "Managed:google_datastream_connection_profile"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 7
+   },
+   "diff": -7,
+   "ours": 289,
+   "sqlite": 296,
+   "tolerance": 6,
+   "type": "Managed:google_logging_project_sink"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 7
+   },
+   "diff": -7,
+   "ours": 15,
+   "sqlite": 22,
+   "tolerance": 1,
+   "type": "Managed:google_secure_source_manager_repository"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 6
+   },
+   "diff": -6,
+   "ours": 217,
+   "sqlite": 223,
+   "tolerance": 5,
+   "type": "Managed:aws_athena_named_query"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 6
+   },
+   "diff": -6,
+   "ours": 172,
+   "sqlite": 178,
+   "tolerance": 4,
+   "type": "Managed:azurerm_api_management_api_operation"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 6
+   },
+   "diff": -6,
+   "ours": 198,
+   "sqlite": 204,
+   "tolerance": 5,
+   "type": "Managed:azurerm_lb_backend_address_pool_address"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 6
+   },
+   "diff": -6,
+   "ours": 157,
+   "sqlite": 163,
+   "tolerance": 4,
+   "type": "Managed:azurerm_storage_queue"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 8,
+    "sobra": 2
+   },
+   "diff": -6,
+   "ours": 92,
+   "sqlite": 98,
+   "tolerance": 2,
+   "type": "Managed:azurerm_traffic_manager_endpoint"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 6
+   },
+   "diff": -6,
+   "ours": 51,
+   "sqlite": 57,
+   "tolerance": 2,
+   "type": "Managed:google_cloudbuildv2_connection"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 6
+   },
+   "diff": -6,
+   "ours": 59,
+   "sqlite": 65,
+   "tolerance": 2,
+   "type": "Managed:google_cloudbuildv2_repository"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 6
+   },
+   "diff": -6,
+   "ours": 36,
+   "sqlite": 42,
+   "tolerance": 1,
+   "type": "Managed:oci_identity_tag_default"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 5
+   },
+   "diff": -5,
+   "ours": 149,
+   "sqlite": 154,
+   "tolerance": 4,
+   "type": "Data:aws_availability_zone"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 5
+   },
+   "diff": -5,
+   "ours": 0,
+   "sqlite": 5,
+   "tolerance": 1,
+   "type": "Data:google_compute_region_instance_template"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 5
+   },
+   "diff": -5,
+   "ours": 36,
+   "sqlite": 41,
+   "tolerance": 1,
+   "type": "Data:google_storage_object_signed_url"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 5
+   },
+   "diff": -5,
+   "ours": 115,
+   "sqlite": 120,
+   "tolerance": 3,
+   "type": "Managed:aws_ami_from_instance"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 5
+   },
+   "diff": -5,
+   "ours": 13,
+   "sqlite": 18,
+   "tolerance": 1,
+   "type": "Managed:aws_apprunner_custom_domain_association"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 5
+   },
+   "diff": -5,
+   "ours": 131,
+   "sqlite": 136,
+   "tolerance": 3,
+   "type": "Managed:aws_cognito_identity_pool"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 5
+   },
+   "diff": -5,
+   "ours": 100,
+   "sqlite": 105,
+   "tolerance": 3,
+   "type": "Managed:aws_cognito_identity_pool_roles_attachment"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 5
+   },
+   "diff": -5,
+   "ours": 2,
+   "sqlite": 7,
+   "tolerance": 1,
+   "type": "Managed:aws_kms_custom_key_store"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 5
+   },
+   "diff": -5,
+   "ours": 40,
+   "sqlite": 45,
+   "tolerance": 1,
+   "type": "Managed:azurerm_route_server_bgp_connection"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 5
+   },
+   "diff": -5,
+   "ours": 27,
+   "sqlite": 32,
+   "tolerance": 1,
+   "type": "Managed:google_compute_region_security_policy"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 5
+   },
+   "diff": -5,
+   "ours": 2,
+   "sqlite": 7,
+   "tolerance": 1,
+   "type": "Managed:google_dataplex_glossary"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 5
+   },
+   "diff": -5,
+   "ours": 0,
+   "sqlite": 5,
+   "tolerance": 1,
+   "type": "Managed:google_game_services_game_server_cluster"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 5
+   },
+   "diff": -5,
+   "ours": 5,
+   "sqlite": 10,
+   "tolerance": 1,
+   "type": "Managed:google_game_services_realm"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 5
+   },
+   "diff": -5,
+   "ours": 80,
+   "sqlite": 85,
+   "tolerance": 2,
+   "type": "Managed:google_iap_brand"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 4
+   },
+   "diff": -4,
+   "ours": 75,
+   "sqlite": 79,
+   "tolerance": 2,
+   "type": "Data:aws_alb"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 4
+   },
+   "diff": -4,
+   "ours": 119,
+   "sqlite": 123,
+   "tolerance": 3,
+   "type": "Managed:aws_api_gateway_vpc_link"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 4
+   },
+   "diff": -4,
+   "ours": 35,
+   "sqlite": 39,
+   "tolerance": 1,
+   "type": "Managed:aws_codedeploy_deployment_config"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 4
+   },
+   "diff": -4,
+   "ours": 8,
+   "sqlite": 12,
+   "tolerance": 1,
+   "type": "Managed:aws_ec2_fleet"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 4
+   },
+   "diff": -4,
+   "ours": 134,
+   "sqlite": 138,
+   "tolerance": 3,
+   "type": "Managed:aws_opensearch_domain"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 4
+   },
+   "diff": -4,
+   "ours": 142,
+   "sqlite": 146,
+   "tolerance": 3,
+   "type": "Managed:aws_route53_zone_association"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 4
+   },
+   "diff": -4,
+   "ours": 45,
+   "sqlite": 49,
+   "tolerance": 1,
+   "type": "Managed:aws_spot_fleet_request"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 4
+   },
+   "diff": -4,
+   "ours": 121,
+   "sqlite": 125,
+   "tolerance": 3,
+   "type": "Managed:azurerm_postgresql_firewall_rule"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 4
+   },
+   "diff": -4,
+   "ours": 3,
+   "sqlite": 7,
+   "tolerance": 1,
+   "type": "Managed:google_bigquery_capacity_commitment"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 4
+   },
+   "diff": -4,
+   "ours": 50,
+   "sqlite": 54,
+   "tolerance": 2,
+   "type": "Managed:google_binary_authorization_policy"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 4
+   },
+   "diff": -4,
+   "ours": 26,
+   "sqlite": 30,
+   "tolerance": 1,
+   "type": "Managed:google_database_migration_service_connection_profile"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 4
+   },
+   "diff": -4,
+   "ours": 66,
+   "sqlite": 70,
+   "tolerance": 2,
+   "type": "Managed:google_dataproc_cluster"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 4
+   },
+   "diff": -4,
+   "ours": 24,
+   "sqlite": 28,
+   "tolerance": 1,
+   "type": "Managed:google_datastream_stream"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 4
+   },
+   "diff": -4,
+   "ours": 4,
+   "sqlite": 8,
+   "tolerance": 1,
+   "type": "Managed:google_model_armor_template"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 4
+   },
+   "diff": -4,
+   "ours": 97,
+   "sqlite": 101,
+   "tolerance": 3,
+   "type": "Managed:google_privateca_ca_pool"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 4
+   },
+   "diff": -4,
+   "ours": 24,
+   "sqlite": 28,
+   "tolerance": 1,
+   "type": "Managed:google_privateca_ca_pool_iam_binding"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 4
+   },
+   "diff": -4,
+   "ours": 135,
+   "sqlite": 139,
+   "tolerance": 3,
+   "type": "Managed:google_pubsub_subscription_iam_member"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 3
+   },
+   "diff": -3,
+   "ours": 13,
+   "sqlite": 16,
+   "tolerance": 1,
+   "type": "Data:aws_alb_target_group"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 3
+   },
+   "diff": -3,
+   "ours": 18,
+   "sqlite": 21,
+   "tolerance": 1,
+   "type": "Data:aws_billing_service_account"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 3
+   },
+   "diff": -3,
+   "ours": 6,
+   "sqlite": 9,
+   "tolerance": 1,
+   "type": "Data:google_app_engine_default_service_account"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 3
+   },
+   "diff": -3,
+   "ours": 32,
+   "sqlite": 35,
+   "tolerance": 1,
+   "type": "Data:google_compute_instance_template"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 3
+   },
+   "diff": -3,
+   "ours": 10,
+   "sqlite": 13,
+   "tolerance": 1,
+   "type": "Data:google_tpu_tensorflow_versions"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 3
+   },
+   "diff": -3,
+   "ours": 81,
+   "sqlite": 84,
+   "tolerance": 2,
+   "type": "Managed:aws_appmesh_virtual_node"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 3
+   },
+   "diff": -3,
+   "ours": 40,
+   "sqlite": 43,
+   "tolerance": 1,
+   "type": "Managed:aws_bedrockagent_agent"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 3
+   },
+   "diff": -3,
+   "ours": 21,
+   "sqlite": 24,
+   "tolerance": 1,
+   "type": "Managed:aws_bedrockagent_agent_action_group"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 3
+   },
+   "diff": -3,
+   "ours": 17,
+   "sqlite": 20,
+   "tolerance": 1,
+   "type": "Managed:aws_bedrockagent_agent_knowledge_base_association"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 3
+   },
+   "diff": -3,
+   "ours": 41,
+   "sqlite": 44,
+   "tolerance": 1,
+   "type": "Managed:aws_bedrockagent_data_source"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 3
+   },
+   "diff": -3,
+   "ours": 48,
+   "sqlite": 51,
+   "tolerance": 2,
+   "type": "Managed:aws_bedrockagent_knowledge_base"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 3
+   },
+   "diff": -3,
+   "ours": 20,
+   "sqlite": 23,
+   "tolerance": 1,
+   "type": "Managed:aws_codecommit_trigger"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 3
+   },
+   "diff": -3,
+   "ours": 22,
+   "sqlite": 25,
+   "tolerance": 1,
+   "type": "Managed:aws_default_vpc_dhcp_options"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 3
+   },
+   "diff": -3,
+   "ours": 52,
+   "sqlite": 55,
+   "tolerance": 2,
+   "type": "Managed:aws_lightsail_static_ip_attachment"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 3
+   },
+   "diff": -3,
+   "ours": 12,
+   "sqlite": 15,
+   "tolerance": 1,
+   "type": "Managed:aws_macie2_custom_data_identifier"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 3
+   },
+   "diff": -3,
+   "ours": 79,
+   "sqlite": 82,
+   "tolerance": 2,
+   "type": "Managed:aws_networkfirewall_firewall"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 3
+   },
+   "diff": -3,
+   "ours": 5,
+   "sqlite": 8,
+   "tolerance": 1,
+   "type": "Managed:aws_ssoadmin_instance_access_control_attributes"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 3
+   },
+   "diff": -3,
+   "ours": 88,
+   "sqlite": 91,
+   "tolerance": 2,
+   "type": "Managed:azurerm_iothub"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 3
+   },
+   "diff": -3,
+   "ours": 11,
+   "sqlite": 14,
+   "tolerance": 1,
+   "type": "Managed:azurerm_postgresql_active_directory_administrator"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 3
+   },
+   "diff": -3,
+   "ours": 65,
+   "sqlite": 68,
+   "tolerance": 2,
+   "type": "Managed:azurerm_postgresql_virtual_network_rule"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 3
+   },
+   "diff": -3,
+   "ours": 55,
+   "sqlite": 58,
+   "tolerance": 2,
+   "type": "Managed:azurerm_service_fabric_cluster"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 3
+   },
+   "diff": -3,
+   "ours": 65,
+   "sqlite": 68,
+   "tolerance": 2,
+   "type": "Managed:azurerm_traffic_manager_external_endpoint"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 3
+   },
+   "diff": -3,
+   "ours": 88,
+   "sqlite": 91,
+   "tolerance": 2,
+   "type": "Managed:google_compute_target_tcp_proxy"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 3
+   },
+   "diff": -3,
+   "ours": 0,
+   "sqlite": 3,
+   "tolerance": 1,
+   "type": "Managed:google_dataplex_glossary_category"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 3
+   },
+   "diff": -3,
+   "ours": 0,
+   "sqlite": 3,
+   "tolerance": 1,
+   "type": "Managed:google_dataplex_glossary_term"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 3
+   },
+   "diff": -3,
+   "ours": 17,
+   "sqlite": 20,
+   "tolerance": 1,
+   "type": "Managed:google_network_security_firewall_endpoint_association"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 3
+   },
+   "diff": -3,
+   "ours": 27,
+   "sqlite": 30,
+   "tolerance": 1,
+   "type": "Managed:google_network_security_security_profile"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 3
+   },
+   "diff": -3,
+   "ours": 27,
+   "sqlite": 30,
+   "tolerance": 1,
+   "type": "Managed:google_network_security_security_profile_group"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 3
+   },
+   "diff": -3,
+   "ours": 0,
+   "sqlite": 3,
+   "tolerance": 1,
+   "type": "Managed:google_network_services_lb_route_extension"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 3
+   },
+   "diff": -3,
+   "ours": 79,
+   "sqlite": 82,
+   "tolerance": 2,
+   "type": "Managed:google_pubsub_schema"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 3
+   },
+   "diff": -3,
+   "ours": 4,
+   "sqlite": 7,
+   "tolerance": 1,
+   "type": "Managed:google_secure_source_manager_branch_rule"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 3
+   },
+   "diff": -3,
+   "ours": 1,
+   "sqlite": 4,
+   "tolerance": 1,
+   "type": "Managed:google_secure_source_manager_hook"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 3
+   },
+   "diff": -3,
+   "ours": 12,
+   "sqlite": 15,
+   "tolerance": 1,
+   "type": "Managed:google_tpu_node"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 3
+   },
+   "diff": -3,
+   "ours": 9,
+   "sqlite": 12,
+   "tolerance": 1,
+   "type": "Managed:google_vertex_ai_endpoint"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 18,
+   "sqlite": 20,
+   "tolerance": 1,
+   "type": "Data:aws_lambda_layer_version"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 1,
+    "falta_outro": 1
+   },
+   "diff": -2,
+   "ours": 11,
+   "sqlite": 13,
+   "tolerance": 1,
+   "type": "Data:aws_vpc_security_group_rule"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 1,
+    "falta_outro": 1
+   },
+   "diff": -2,
+   "ours": 12,
+   "sqlite": 14,
+   "tolerance": 1,
+   "type": "Data:aws_vpc_security_group_rules"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 42,
+   "sqlite": 44,
+   "tolerance": 1,
+   "type": "Data:azurerm_network_watcher"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 48,
+   "sqlite": 50,
+   "tolerance": 1,
+   "type": "Managed:aws_ami_copy"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 0,
+   "sqlite": 2,
+   "tolerance": 1,
+   "type": "Managed:aws_clb_listener"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 0,
+   "sqlite": 2,
+   "tolerance": 1,
+   "type": "Managed:aws_cognito_userpoolclient"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 1,
+   "sqlite": 3,
+   "tolerance": 1,
+   "type": "Managed:aws_customerprofiles_domain"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 1,
+   "sqlite": 3,
+   "tolerance": 1,
+   "type": "Managed:aws_ec2_capacity_block_reservation"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 23,
+   "sqlite": 25,
+   "tolerance": 1,
+   "type": "Managed:aws_fms_admin_account"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 18,
+   "sqlite": 20,
+   "tolerance": 1,
+   "type": "Managed:aws_glacier_vault"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 40,
+   "sqlite": 42,
+   "tolerance": 1,
+   "type": "Managed:aws_guardduty_ipset"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 0,
+   "sqlite": 2,
+   "tolerance": 1,
+   "type": "Managed:aws_iam_access_policy"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 19,
+   "sqlite": 21,
+   "tolerance": 1,
+   "type": "Managed:aws_inspector2_delegated_admin_account"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 24,
+   "sqlite": 26,
+   "tolerance": 1,
+   "type": "Managed:aws_inspector_resource_group"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 5,
+   "sqlite": 7,
+   "tolerance": 1,
+   "type": "Managed:aws_kinesis_analytics_application"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 21,
+   "sqlite": 23,
+   "tolerance": 1,
+   "type": "Managed:aws_load_balancer_policy"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 35,
+   "sqlite": 37,
+   "tolerance": 1,
+   "type": "Managed:aws_msk_scram_secret_association"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 1,
+   "sqlite": 3,
+   "tolerance": 1,
+   "type": "Managed:aws_networkmanager_customer_gateway_association"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 45,
+   "sqlite": 47,
+   "tolerance": 1,
+   "type": "Managed:aws_opensearchserverless_collection"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 8,
+   "sqlite": 10,
+   "tolerance": 1,
+   "type": "Managed:aws_organizations_resource_policy"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 0,
+   "sqlite": 2,
+   "tolerance": 1,
+   "type": "Managed:aws_s3_bucketpolicy"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 37,
+   "sqlite": 39,
+   "tolerance": 1,
+   "type": "Managed:aws_sagemaker_domain"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 31,
+   "sqlite": 33,
+   "tolerance": 1,
+   "type": "Managed:aws_sagemaker_user_profile"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 12,
+   "sqlite": 14,
+   "tolerance": 1,
+   "type": "Managed:aws_service_discovery_public_dns_namespace"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 48,
+   "sqlite": 50,
+   "tolerance": 1,
+   "type": "Managed:aws_ses_event_destination"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 33,
+   "sqlite": 35,
+   "tolerance": 1,
+   "type": "Managed:aws_storagegateway_gateway"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 0,
+   "sqlite": 2,
+   "tolerance": 1,
+   "type": "Managed:azurerm_api_management_openid_connect_provider"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 32,
+   "sqlite": 34,
+   "tolerance": 1,
+   "type": "Managed:azurerm_api_management_user"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 27,
+   "sqlite": 29,
+   "tolerance": 1,
+   "type": "Managed:azurerm_dev_test_lab"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 4,
+   "sqlite": 6,
+   "tolerance": 1,
+   "type": "Managed:azurerm_dev_test_linux_virtual_machine"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 24,
+   "sqlite": 26,
+   "tolerance": 1,
+   "type": "Managed:azurerm_dev_test_virtual_network"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 36,
+   "sqlite": 38,
+   "tolerance": 1,
+   "type": "Managed:azurerm_mysql_configuration"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 2,
+   "sqlite": 4,
+   "tolerance": 1,
+   "type": "Managed:azurerm_private_dns_zone_group"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 34,
+   "sqlite": 36,
+   "tolerance": 1,
+   "type": "Managed:azurerm_route_server"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 40,
+   "sqlite": 42,
+   "tolerance": 1,
+   "type": "Managed:azurerm_storage_account_static_website"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 0,
+   "sqlite": 2,
+   "tolerance": 1,
+   "type": "Managed:google_access_context_manager_access_level_condition"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 3,
+   "sqlite": 5,
+   "tolerance": 1,
+   "type": "Managed:google_access_context_manager_access_levels"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 35,
+   "sqlite": 37,
+   "tolerance": 1,
+   "type": "Managed:google_access_context_manager_access_policy_iam_binding"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 23,
+   "sqlite": 25,
+   "tolerance": 1,
+   "type": "Managed:google_access_context_manager_access_policy_iam_member"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 0,
+   "sqlite": 2,
+   "tolerance": 1,
+   "type": "Managed:google_access_context_manager_gcp_user_access_binding"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 22,
+   "sqlite": 24,
+   "tolerance": 1,
+   "type": "Managed:google_app_engine_firewall_rule"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 41,
+   "sqlite": 43,
+   "tolerance": 1,
+   "type": "Managed:google_app_engine_standard_app_version"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 41,
+   "sqlite": 43,
+   "tolerance": 1,
+   "type": "Managed:google_cloud_tasks_queue"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 9,
+   "sqlite": 11,
+   "tolerance": 1,
+   "type": "Managed:google_cloud_tasks_queue_iam_member"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 12,
+   "sqlite": 14,
+   "tolerance": 1,
+   "type": "Managed:google_compute_https_health_check"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 47,
+   "sqlite": 49,
+   "tolerance": 1,
+   "type": "Managed:google_compute_network_attachment"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 4,
+   "sqlite": 6,
+   "tolerance": 1,
+   "type": "Managed:google_compute_network_edge_security_service"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 0,
+   "sqlite": 2,
+   "tolerance": 1,
+   "type": "Managed:google_compute_public_delegated_prefix"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 16,
+   "sqlite": 18,
+   "tolerance": 1,
+   "type": "Managed:google_data_loss_prevention_inspect_template"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 16,
+   "sqlite": 18,
+   "tolerance": 1,
+   "type": "Managed:google_discovery_engine_search_engine"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 0,
+   "sqlite": 2,
+   "tolerance": 1,
+   "type": "Managed:google_folder_access_approval_settings"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 25,
+   "sqlite": 27,
+   "tolerance": 1,
+   "type": "Managed:google_iam_workforce_pool"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 25,
+   "sqlite": 27,
+   "tolerance": 1,
+   "type": "Managed:google_iam_workforce_pool_provider"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 0,
+   "sqlite": 2,
+   "tolerance": 1,
+   "type": "Managed:google_iap_tunnel_dest_group"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 16,
+   "sqlite": 18,
+   "tolerance": 1,
+   "type": "Managed:google_network_connectivity_group"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 7,
+   "sqlite": 9,
+   "tolerance": 1,
+   "type": "Managed:google_oracle_database_autonomous_database"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 0,
+   "sqlite": 2,
+   "tolerance": 1,
+   "type": "Managed:google_organization_access_approval_settings"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 0,
+   "sqlite": 2,
+   "tolerance": 1,
+   "type": "Managed:google_project_access_approval_settings"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 10,
+   "sqlite": 12,
+   "tolerance": 1,
+   "type": "Managed:google_spanner_instance_config"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 17,
+   "sqlite": 19,
+   "tolerance": 1,
+   "type": "Managed:oci_identity_domains_group"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 2,
+   "sqlite": 4,
+   "tolerance": 1,
+   "type": "Managed:oci_identity_idp_group_mapping"
+  },
+  {
+   "decomposition": {
+    "falta_em_dir_com_arquivo_recusado": 2
+   },
+   "diff": -2,
+   "ours": 48,
+   "sqlite": 50,
+   "tolerance": 1,
+   "type": "Managed:oci_load_balancer_hostname"
+  }
+ ]
+}
