@@ -72,12 +72,12 @@ def facts(obs: list[dict], reports: dict) -> list[dict]:
     """Fatos observados como dicionários neutros: {provider, type, block_path, fact_kind, rule, value, evidence}."""
     out = []
 
-    def emit(T, bp, kind, rule, value, treat, control):
+    def emit(T, bp, kind, rule, value, treat, control, provider="oci"):
         reps = _reps(treat)
         if len(reps) < 2 or not control or any(c["rc"] != 0 for c in control):
             return
         used = treat + control
-        out.append({"provider": "oci", "type": T, "block_path": bp, "fact_kind": kind, "rule": rule,
+        out.append({"provider": provider, "type": T, "block_path": bp, "fact_kind": kind, "rule": rule,
                     "value": value, "observation_ref": sorted({_ref(r) for r in used}),
                     "run_id": sorted({r["run"] for r in used}), "repetitions": len(reps),
                     "control": sorted({f"{c['step']}:rc={c['rc']}" for c in control}),
@@ -124,6 +124,34 @@ def facts(obs: list[dict], reports: dict) -> list[dict]:
                             "inexistente; a cascata é inferida de 404 depois do delete do pai, com controle antes"},
                  dele + gone,
                  _steps(obs, e2, "list_before_nsg_delete_control"))
+    # azure (OBS-GAPS-AZ): só com o report.json do lote presente
+    if "OBS-GAPS-AZ" in reports:
+        az = [r for r in obs if r["_src"] == "OBS-GAPS-AZ"]
+
+        def st_(exp, step):
+            return [r for r in az if r.get("experiment") == exp and r.get("step") == step]
+        types_ = st_("a", "provider_resource_types") + st_("a", "cli_command_table_scan")
+        no_type = bool(types_) and all(not (r.get("result") or {}).get("types_matching_associat")
+                                       and not (r.get("result") or {}).get("network_commands_matching_associat")
+                                       for r in types_)
+        blocked = st_("b", "delete_nsg_while_associated")
+        ctrl = st_("control", "delete_nsgC_unassociated")
+        for T, via, before, after, exp, kind in (
+                ("azurerm_network_interface_security_group_association", "network_interface_id",
+                 "nsg_backrefs_before_nic_delete", "nsg_backrefs_after_nic_delete", "d", "networkInterfaces"),
+                ("azurerm_subnet_network_security_group_association", "subnet_id",
+                 "nsg_backrefs_before_nic_delete", "nsg_backrefs_after_subnet_delete", "d2", "subnets")):
+            bef, aft = st_("d", before), st_(exp, after)
+            def n(r):
+                v = (r.get("result") or {}).get(kind)
+                return len(v) if isinstance(v, list) else (v if isinstance(v, int) else -1)
+            gone = bool(bef) and bool(aft) and all(n(r) >= 1 for r in bef) and all(n(r) == 0 for r in aft)
+            if no_type and gone and blocked and all(r["rc"] != 0 for r in blocked):
+                emit(T, None, "lifecycle_controller", "R-OBS-ASSOC-LIFE",
+                     {"kind": "parent", "via": [via], "rule": "R-OBS-ASSOC-LIFE", "layer": "api",
+                      "observed": {"own_resource_type": False, "removed_with_holder": True,
+                                   "blocks_nsg_delete_while_associated": True}},
+                     types_ + bef + aft + blocked, ctrl, provider="azurerm")
     return out
 
 
@@ -135,13 +163,13 @@ def records(ctxs: dict, disputes: list) -> dict:
           "reports": sorted(reports), "pending": []}
     if not any(r["experiment"] == "EXP2-oci-nsg" for r in obs) or not _closed(reports, "EXP2-oci-nsg"):
         st["pending"].append("R-OBS-CASCADE: experimento EXP2 sem report.json fechado")
-    if not (common.bo_data() / "OBS-GAPS-AZ").exists():
-        st["pending"].append("R-OBS-ASSOC-LIFE: OBS-GAPS-AZ ainda não existe")
+    if "OBS-GAPS-AZ" not in reports:
+        st["pending"].append("R-OBS-ASSOC-LIFE: OBS-GAPS-AZ sem report.json")
     cand = []
     for f in fs:
         p = f["provider"]
         ctx = ctxs[p]
-        api = {"service": "core", "resource": f["type"]}
+        api = {"service": "core" if p == "oci" else "Microsoft.Network", "resource": f["type"]}
         v = dict(f["value"])
         if f["block_path"]:
             v["block_path"] = f["block_path"]
