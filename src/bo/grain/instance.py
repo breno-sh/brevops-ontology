@@ -131,7 +131,8 @@ def build_nodes(config: dict, adapter, schema_blocks: dict) -> tuple[dict, dict,
             lcid = f"{cid}:{attr}"
             if lcid not in evs:
                 extra = adapter.evidence(lcid) if has and has(lcid) else None
-                evs[lcid] = from_dict(S.link_evidence(cid, attr, link, extra))
+                aid = f"{provider}:{rtype}:{'.'.join(list(block_path) + [attr])}"
+                evs[lcid] = from_dict(S.link_evidence(cid, attr, link, extra, atom_id=aid))
             for i, el in enumerate(v):
                 raw[f"{nid}:{attr}#{i}"] = dict(cid=lcid, rt=rtype, values={"$element": el, "$attr": attr,
                                                                            "$kind": link.get("kind")},

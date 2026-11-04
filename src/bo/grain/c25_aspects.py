@@ -116,10 +116,12 @@ TABLE = [
      "SELEÇÃO POR RÓTULO (emenda 0.1.9): atributo que a evidência descreve, com citação, como seleção ou alvo por "
      "rótulo/tag: cada valor é um vínculo (G1) entre o dono e um nó SELECTOR, cuja identidade é o predicado "
      "normalizado (chave do seletor, valor); o seletor não é recurso nem tem ciclo de vida. Referência tipada a tipo "
-     "de recurso (T44) no mesmo atributo prevalece: lista de ids de recurso é referência, nunca seletor. Para toda "
-     "ligação por atributo (T58), o elemento é um valor escalar do dono: dono da configuração = a própria "
-     "associação, ciclo de vida = o do dono (some quando o dono deixa de listá-lo), alcance próprio — derivado do "
-     "schema e do fato que descreve o atributo; fatos próprios da ligação prevalecem"),
+     "de recurso (T44) no mesmo atributo prevalece: lista de ids de recurso é referência, nunca seletor"),
+    ("(ligação por atributo)", "(elemento de atributo-lista)", "R-GRAIN-LISTELEM",
+     "DERIVADO: o elemento é um valor escalar do dono; dono da configuração = a própria associação, ciclo de vida = o "
+     "do dono (some quando o dono deixa de listá-lo), alcance próprio. A alegação é level derived com ref = o átomo "
+     "do schema que prova que o atributo é do dono (provedor:tipo:caminho). Fato do SERVICE-EVIDENCE sobre o "
+     "atributo entra junto: igual, o campo fica KNOWN; diferente, CONTRADICTORY (nunca sobrescrita)"),
     ("api_resource", "(pontes equivalentes)", "R-GRAIN-T53",
      "duas pontes que nomeiam o mesmo recurso só com grafia diferente (caixa, sublinhado, hífen), ainda que o "
      "nome do serviço difira entre a doc e o SDK da spec, são uma alegação só; recursos de fato diferentes "

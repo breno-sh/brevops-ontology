@@ -427,7 +427,13 @@ associação (não há outra configuração), ciclo de vida = o do dono (some qu
 próprio; fatos da ligação, se houver, prevalecem. O gêmeo pode apontar o bloco correspondente (twin_block_path), e
 a identidade de API prevalece sobre a de bloco derivada do schema (T56c): com isso, o E2 STO do lifecycle_rule
 embutido × rule do recurso separado sai igual (COMPONENT sob a faceta de configuração de ciclo de vida, implícita no
-embutido).</li>
+embutido).
+Condições do coordenador para a derivação do elemento de atributo-lista (R-GRAIN-LISTELEM): é alegação DERIVADA com
+citação do átomo do schema que prova que o atributo é do dono (ref = provedor:tipo:caminho), nunca default
+silencioso; fato do SERVICE-EVIDENCE sobre o atributo entra junto e, se diverge, o campo fica CONTRADICTORY (não há
+sobrescrita). Sensibilidade (dado da iteração 2): só a fatia NET depende dela — google 4 vs 3 unidades no esquema e
+96 vs 58 ocorrências na instância (as 38 seleções), oci 25 vs 18 na instância (7 anexações por lista); STO não muda.
+Relatório em $BO_DATA/GRAIN/listelem_sensitivity.json.</li>
 <li>Emenda 0.1.8 (faceta implícita, T3/T57, decisão do coordenador): quando a API só aceita os blocos como membros
 de um único objeto-faceta do pai, configurado por uma operação única sobre o pai (ex.: a configuração de ciclo de vida
 do contêiner, com as regras como membro, gravada por uma só operação sobre o contêiner), a forma embutida — que não

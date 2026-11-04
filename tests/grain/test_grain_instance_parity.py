@@ -75,14 +75,34 @@ def test_same_selector_predicate_shared_between_holders():
     assert len(web) == 2                                             # web e db; web compartilhado pelos dois donos
 
 
-def test_link_decides_binding_with_link_facts():
-    ev = _world()
-    ad = FixtureAdapter(dict(ev, **{"v_host:set_ids": {
-        "lifecycle_controller": [F.c(kind="self", tag="l")], "owner": [F.c(kind="self", tag="l")],
-        "effective_scope": [F.c(kind="self", tag="l")]}}))
-    oc = I.decompose_config(_cfg(), ad, {"v_set": {"rule"}}, RS)
-    link = [o for o in oc if any(":set_ids#" in n for n in o.tf)]
-    assert link and link[0].grain == "BINDING" and set(link[0].endpoints) == {"holder", "target"}
+def test_listelem_se_fact_agreeing_keeps_binding_contrary_is_contradictory():
+    """R-GRAIN-LISTELEM: fato do SE sobre o atributo entra junto da derivação; igual mantém, diferente contradiz."""
+    def run(kind):
+        ev = _world()
+        ev["v_host:set_ids"] = {"lifecycle_controller": [F.c(kind=kind, tag="se")]}
+        oc = I.decompose_config(_cfg(), FixtureAdapter(ev), {"v_set": {"rule"}}, RS)
+        return [o for o in oc if any(":set_ids#" in n for n in o.tf)][0]
+    agree = run("parent")
+    assert agree.grain == "BINDING"
+    contra = run("self")
+    assert contra.grain == "UNKNOWN" and "lifecycle_controller" in contra.missing
+
+
+def test_listelem_is_derived_with_schema_atom_citation_and_can_be_switched_off():
+    from bo.grain import schema as S
+    from bo.grain.evidence import from_dict
+    ev = from_dict(S.link_evidence("v_host", "set_ids", {"kind": "reference", "target": "v_set",
+                                                          "source": F.src("lk")}, None,
+                                   atom_id="provider_v:v_host:set_ids"))
+    cl = ev.claims["owner"][-1]["source"]
+    assert cl["level"] == "derived" and cl["ref"] == "provider_v:v_host:set_ids" and "R-GRAIN-LISTELEM" in cl["note"]
+    S.LISTELEM_ENABLED = False
+    try:
+        oc = occs(_cfg())
+        links = [o for o in oc if any(":set_ids#" in n for n in o.tf)]
+        assert links[0].grain == "UNKNOWN"                       # sem a derivação, sem fato do SE: UNKNOWN
+    finally:
+        S.LISTELEM_ENABLED = True
 
 
 def test_external_reference_and_address_identity():

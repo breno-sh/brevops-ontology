@@ -37,7 +37,11 @@ def scalar_list(tf_type) -> bool:
         isinstance(tf_type[1], str)
 
 
-def link_evidence(holder_cid: str, attr: str, link: dict, extra) -> dict:
+# R-GRAIN-LISTELEM (T60) pode ser desligada para medir a sensibilidade do resultado a ela
+LISTELEM_ENABLED = True
+
+
+def link_evidence(holder_cid: str, attr: str, link: dict, extra, atom_id: str | None = None) -> dict:
     """Evidência derivada (T58) do candidato de ligação <holder>:<attr>, mais os fatos próprios da ligação."""
     sel = link.get("kind") == "selection" and bool(link.get("source"))     # seleção só com citação (T60)
     fld = "selector" if sel else "target"
@@ -54,14 +58,17 @@ def link_evidence(holder_cid: str, attr: str, link: dict, extra) -> dict:
         cl = (extra.claims.get(k) if extra is not None else None) or []
         if cl:
             out[k] = list(cl)
-    # T60: o elemento de um atributo-lista é um valor escalar do dono: não tem configuração além da própria
-    # identidade (dono = a própria associação), existe enquanto o dono o lista (ciclo de vida do dono) e vale onde
-    # está (alcance próprio). Derivado do schema + do fato que descreve o atributo (link.source); fatos próprios da
-    # ligação, se houver, prevalecem
-    d60 = dict(src, note=src.get("note", "") + " (T60: elemento escalar do atributo do dono)")
-    out.setdefault("lifecycle_controller", [{"kind": "parent", "via": "$parent", "source": d60}])
-    out.setdefault("owner", [{"kind": "self", "source": d60}])
-    out.setdefault("effective_scope", [{"kind": "self", "source": d60}])
+    # R-GRAIN-LISTELEM (T60): o elemento de um atributo-lista é um valor escalar do dono: não tem configuração além
+    # da própria identidade (dono = a própria associação), existe enquanto o dono o lista (ciclo de vida do dono) e
+    # vale onde está (alcance próprio). DERIVADO, com citação do átomo do schema que prova que o atributo é do dono.
+    # Fato do SERVICE-EVIDENCE sobre o atributo entra junto: se concorda, o campo é KNOWN; se diverge, CONTRADICTORY
+    # (nunca sobrescrita).
+    if LISTELEM_ENABLED and atom_id:
+        d60 = {"level": "derived", "ref": atom_id,
+               "note": "R-GRAIN-LISTELEM: elemento escalar do atributo do dono (átomo do schema citado)"}
+        for k, claim in (("lifecycle_controller", {"kind": "parent", "via": "$parent"}), ("owner", {"kind": "self"}),
+                         ("effective_scope", {"kind": "self"})):
+            out[k] = list(out.get(k, [])) + [dict(claim, source=d60)]
     return out
 
 
@@ -182,7 +189,8 @@ def decompose_schema(cands: list[Candidate], adapter, rs: R.RuleSet) -> SchemaRe
             lid = f"{c.cid}:{attr}"
             extra = adapter.evidence(lid) if getattr(adapter, "has", None) and adapter.has(lid) else None
             by[lid] = Candidate(lid, c.provider, c.resource_type, c.block_path, "link", [], c.cid, group=attr)
-            evs[lid] = from_dict(link_evidence(c.cid, attr, link, extra))
+            aid = f"{c.provider}:{c.resource_type}:{'.'.join(list(c.block_path) + [attr])}"
+            evs[lid] = from_dict(link_evidence(c.cid, attr, link, extra, atom_id=aid))
     # T57: faceta implícita (só com fato da spec): um candidato <pai>:<faceta> entre o pai e os blocos membros
     for c in sorted(list(by.values()), key=lambda x: x.cid):
         imp = evs[c.cid].implicit_facet if c.cid in evs else None
