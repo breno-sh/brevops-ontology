@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "SCHEMALIB",
- "generated_at": "2026-11-03T21:08:04-03:00",
+ "generated_at": "2026-11-03T21:29:04-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/SCHEMALIB.txt",
@@ -17,7 +17,8 @@
    "versoes": "aws 5.83.1, azurerm 5.5.0, google 8.2.0, oci 9.1.0 (do catalogo4v2 e dos locks de tfschema4)",
    "regua": "provider_populated = computed, nao required, nome em arn/id/owner_id/region/tags_all",
    "sandbox": "env -i, HOME temporario, sandbox-exec sem credenciais; schema sem rede IP",
-   "pedidos_driver": "so_beta e causas do crosscheck; write_only do C01 2.1.0; pagina_sem_titulo"
+   "pedidos_driver": "so_beta e causas do crosscheck; write_only do C01 2.1.0; pagina_sem_titulo; página sem título pelo nome do arquivo",
+   "motivos_lidos": "results/SCHEMA-GCP/CONTRACT_CHANGE.txt e results/SCHEMA-OCI/CONTRACT_CHANGE.txt (notas vivas de outros módulos: citadas, não fixadas por hash)"
   },
   "inputs": [
    {
@@ -49,19 +50,9 @@
     "path": "$BO_DATA/downloads/tfschema/oci-9.1.0/schema.json.gz",
     "kind": "file",
     "sha256": "5235c9e4477a936e97f29423456d3c88afc7d7e64f54f55869d7b9f5e2827842"
-   },
-   {
-    "path": "/Users/breno/doutorado/brevops-ontology/results/SCHEMA-GCP/CONTRACT_CHANGE.txt",
-    "kind": "file",
-    "sha256": "c989fe719a8af2d979e07eac4321e67f7c62af2717e34a41e1c2a8ff5586b7f3"
-   },
-   {
-    "path": "/Users/breno/doutorado/brevops-ontology/results/SCHEMA-OCI/CONTRACT_CHANGE.txt",
-    "kind": "file",
-    "sha256": "67c4714081d90f3ae8cef4f58ab847a3a39b449ab502dab0ab00bc0291e88db4"
    }
   ],
-  "recorded_at": "2026-11-03T21:08:04-03:00"
+  "recorded_at": "2026-11-03T21:29:04-03:00"
  },
  "sources": [
   {
@@ -90,5 +81,5 @@
    "transformation": "índice de documentação, só contagem de páginas por tipo (crosscheck)"
   }
  ],
- "notes": "Reprodução do catalogo4v2: 4946/4946 tipos com as 6 contagens iguais (100%), árvore igual em 4946; 158946 átomos C01 e 4946 tipos C02 validados. crosscheck com causas conferidas nas versões dos SCHEMA-*: aws 6.71.0, azurerm 5.12.0 e google 8.9.0 PASS; oci 9.11.0 PASS (página sem título de tipo removido = pagina_sem_tipo_no_schema pelo nome do arquivo)."
+ "notes": "Reprodução do catalogo4v2: 4946/4946 tipos com as 6 contagens iguais (100%), árvore igual em 4946; 158946 átomos C01 e 4946 tipos C02 validados. crosscheck com causas conferidas nas versões dos SCHEMA-*: aws 6.71.0, azurerm 5.12.0, google 8.9.0 e oci 9.11.0 PASS (no oci, a página sem título de tipo removido conta como pagina_sem_tipo_no_schema pelo nome do arquivo)."
 }
