@@ -107,8 +107,8 @@ def test_referencia_nao_e_inferida_do_grafo():
                                               "term": {"kind": "expression", "op": "merge", "args": []}}),
      "UNSUPPORTED_TERM"),
     (lambda p: p["steps"][1]["typed_choices"][0].update(selected=None), "CHOICE_UNRESOLVED"),
-    (lambda p: p["steps"][2]["losses"].append({"code": "X_LOSS", "field": "settings.backup_configuration.enabled"}),
-     "CONFLICTING_VALUES"),
+    # perda + valor no mesmo campo deixou de ser conflito (achado do PILOT-STO-E2E); conflito é o mesmo campo duas vezes
+    (lambda p: p["steps"][1]["values"].append(dict(p["steps"][1]["values"][1])), "CONFLICTING_VALUES"),
     (lambda p: p["steps"][1]["values"].append({"field": "settings.database_flags.name", "origin": "carried",
                                               "marked": False,
                                               "term": {"kind": "literal", "datatype": "string", "value": "x"}}),
@@ -269,3 +269,140 @@ def test_rotulo_nao_altera_o_termo_do_plano():
     r = render(plan, graph)
     assert r.status == "RENDERED", r.failures
     assert plan == before and re.search(r'\n +env += "sandbox"\n +bo-run += var\.lp_hg_bucket_bo_run\n', r.hcl)
+
+
+# ------------------------------------------------------------------ termo list (C00 3.1.0) e forma indexada (C26-LIST)
+def _fw(name="net_list"):
+    plan, graph = load_fixture(name)
+    return plan, graph, next(st for st in plan["steps"] if st["resource_type"] == "google_compute_firewall")
+
+
+def test_termo_list_de_literais_e_de_referencias():
+    plan, graph, fw = _fw()
+    r = render(plan, graph)
+    assert r.status == "RENDERED", r.failures
+    assert 'source_ranges           = ["10.0.0.0/8", "192.168.0.0/16"]' in r.hcl
+    assert ("target_service_accounts = [google_service_account.lp_hg_netlist_r2.email, "
+            "google_service_account.lp_hg_netlist_r3.email]") in r.hcl
+    assert 'ports    = ["22", "443"]' in r.hcl and r.notes == []
+
+
+def test_forma_indexada_antiga_monta_a_mesma_lista_com_nota():
+    plan, graph, fw = _fw("net_list_indexed")
+    r = render(plan, graph)
+    assert r.status == "RENDERED", r.failures
+    assert ("target_service_accounts = [google_service_account.lp_hg_netlistidx_r2.email, "
+            "google_service_account.lp_hg_netlistidx_r3.email]") in r.hcl
+    assert len(r.notes) == 3 and all("C26-LIST" in n for n in r.notes)
+
+
+def test_forma_indexada_com_buraco_e_index_gap():
+    plan, graph, fw = _fw("net_list_indexed")
+    for v in fw["values"]:
+        if v["field"] == "target_service_accounts.1":
+            v["field"] = "target_service_accounts.2"
+    r = render(plan, graph)
+    assert r.status == "UNKNOWN_INPUT" and r.hcl is None and "INDEX_GAP" in codes(r)
+
+
+def test_termo_list_e_indice_no_mesmo_atributo_e_conflito():
+    plan, graph, fw = _fw()
+    fw["values"].append({"field": "source_ranges.2", "marked": False, "origin": "carried",
+                         "term": {"datatype": "string", "kind": "literal", "value": "172.16.0.0/12"}})
+    r = render(plan, graph)
+    assert r.hcl is None and "CONFLICTING_VALUES" in codes(r)
+
+
+def test_termo_list_em_atributo_escalar_e_tipo_errado():
+    plan, graph, fw = _fw()
+    for v in fw["values"]:
+        if v["field"] == "network":
+            v["term"] = {"kind": "list", "items": [v["term"]]}
+    r = render(plan, graph)
+    assert r.hcl is None and "TYPE_MISMATCH" in codes(r)
+
+
+def test_item_de_lista_com_tipo_errado_e_item_nao_suportado():
+    plan, graph, fw = _fw()
+    for v in fw["values"]:
+        if v["field"] == "source_ranges":
+            v["term"]["items"].append({"datatype": "number", "kind": "literal", "value": 7})
+    assert "TYPE_MISMATCH" in codes(render(plan, graph))
+    plan, graph, fw = _fw()
+    for v in fw["values"]:
+        if v["field"] == "source_ranges":
+            v["term"]["items"].append({"kind": "withheld", "reason": "secret"})
+    assert "UNSUPPORTED_TERM" in codes(render(plan, graph))
+
+
+def test_lista_vazia_vira_colchetes():
+    plan, graph, fw = _fw()
+    for v in fw["values"]:
+        if v["field"] == "source_ranges":
+            v["term"]["items"] = []
+    r = render(plan, graph)
+    assert r.status == "RENDERED" and "source_ranges           = []" in r.hcl
+
+
+# ------------------------------------------------------------------ achados do PILOT-STO-E2E (controls.json)
+def test_referencia_por_target_node_a_conteiner_com_nome_literal():
+    plan, graph, fw = _fw()
+    r = render(plan, graph)
+    # r2 e r3 não têm nome derivado: só o target_node acha o alvo
+    assert not any("derived_name" in st for st in plan["steps"] if st["node_id"] in ("r2", "r3"))
+    assert "google_service_account.lp_hg_netlist_r3.email" in r.hcl
+    for v in fw["values"]:
+        if v["field"] == "target_service_accounts":
+            for it in v["term"]["items"]:
+                del it["target_node"]
+    r = render(plan, graph)
+    assert r.hcl is None and "UNKNOWN_INPUT" in codes(r)
+
+
+def test_target_node_de_outro_tipo_nao_resolve():
+    plan, graph, fw = _fw()
+    for v in fw["values"]:
+        if v["field"] == "target_service_accounts":
+            v["term"]["items"][0]["target_node"] = "r1"      # r1 é a rede, não a conta de serviço
+    r = render(plan, graph)
+    assert r.hcl is None and any("0 alvo(s)" in f["detail"] for f in r.failures)
+
+
+def test_perda_declarada_em_campo_com_valor_renderiza_e_fica_no_relatorio():
+    plan, graph, fw = _fw()
+    assert [x["field"] for x in fw["losses"]] == ["source_ranges"]
+    r = render(plan, graph)
+    assert r.status == "RENDERED" and "source_ranges" in r.hcl
+    assert [(x["field"], x["address"]) for x in r.losses] == [("source_ranges",
+                                                              "google_compute_firewall.lp_hg_netlist_r4")]
+
+
+def test_validate_offline_das_fixtures_de_lista(work):
+    from bo.harness.google import tf_validate as TV
+    outs = []
+    for n in ("net_list", "net_list_indexed"):
+        rc, rep = R.render_file(PLANS / n / "lowering_plan.jsonl", work / n)
+        assert rc == 0 and rep["counts"]["failed"] == 0
+        outs.append(work / n)
+    assert all(TV.validate_dir(d)["ok"] for d in outs)
+    # quebra de propósito: lista de referências num atributo escalar do HCL tem de reprovar no validate
+    f = outs[0] / "lp_hg_netlist.tf"
+    f.write_text(f.read_text().replace("network                 = google_compute_network.lp_hg_netlist_r1.id",
+                                       "network                 = [google_compute_network.lp_hg_netlist_r1.id]"))
+    assert TV.validate_dir(outs[0])["ok"] is False
+
+
+def test_readback_de_lista_com_referencias():
+    from bo.harness.google import readback as RB
+    plan, graph, fw = _fw()
+    leaves = [lf for lf in RB.plan_leaves(plan, graph, SCHEMA) if lf["path"] == "target_service_accounts"]
+    assert len(leaves) == 1 and leaves[0]["set_attr"]
+    lf = leaves[0]
+    st = {"google_service_account.lp_hg_netlist_r2": {"values": {"email": "a@x"}},
+          "google_service_account.lp_hg_netlist_r3": {"values": {"email": "b@x"}}}
+    f = lambda v: {"state": "read", "value": v}
+    cmp = {"name": "exact"}
+    assert RB.judge_leaf(lf, f(["b@x", "a@x"]), cmp, st) == "match"          # set: sem ordem
+    assert RB.judge_leaf(lf, f(["a@x"]), cmp, st) == "mismatch"
+    assert RB.judge_leaf(lf, f(["a@x", "c@x"]), cmp, st) == "mismatch"
+    assert RB.judge_leaf(lf, f(["a@x", "b@x"]), cmp, {}) == "symbolic"

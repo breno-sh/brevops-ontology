@@ -30,6 +30,9 @@ for d in deploy/fixtures/google/_templates/plans/*/; do
       "$BO_TMP/gate_render/$n/render_report.json"
 done
 
+step "terraform validate offline das fixtures renderizadas (sandbox sem credenciais, provider do SCHEMA-GCP)"
+$py -I -B -m bo.harness.google.tf_validate "$BO_TMP"/gate_render/*/
+
 step "HCL = plano + valores sintetizados declarados"
 $py -I -B -m bo.harness.google.no_silent_insert
 

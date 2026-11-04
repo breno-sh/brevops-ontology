@@ -31,6 +31,7 @@ import hcl2
 
 from . import common as C
 from . import render as R
+from .schema import attr_at
 from . import run_label as RL
 
 _REF = re.compile(r"^(data\.)?([a-z][a-z0-9_]*)\.(SYM-[0-9a-f]{8,16})$")
@@ -189,12 +190,21 @@ class Expected:
             self.vars[name] = True
             return ("expr", "var." + name)
         if k == "reference":
+            # alvo calculado aqui, sem o renderizador: pelo nó (target_node) quando o termo traz, senão pelo
+            # símbolo do endereço no nome derivado; precisa dar exatamente um passo
             m = _REF.match(t["target_address"])
-            hits = [s for s in self.plan["steps"] if s["resource_type"] == m.group(2)
-                    and (s["action"] == "reference") == bool(m.group(1))
-                    and any(self.terms.get(x, {}).get("symbol_id") == m.group(3)
-                            for x in (s.get("derived_name") or {}).get("from_terms", []))]
+            same = [s for s in self.plan["steps"] if s["resource_type"] == m.group(2)
+                    and (s["action"] == "reference") == bool(m.group(1))]
+            if t.get("target_node"):
+                hits = [s for s in same if s["node_id"] == t["target_node"] and s["action"] != "configure"]
+            else:
+                hits = [s for s in same if any(self.terms.get(x, {}).get("symbol_id") == m.group(3)
+                                               for x in (s.get("derived_name") or {}).get("from_terms", []))]
+            if len(hits) != 1:
+                return ("unresolved", t["target_address"])
             return ("expr", f"{self.addr(hits[0])}.{t['attribute']}")
+        if k == "list":
+            return [self.term(x, st, fld) for x in t["items"]]
         if k == "document":
             return json.dumps(t["tree"], ensure_ascii=False, sort_keys=True, separators=(",", ":"))
         raise ValueError(k)
@@ -256,6 +266,21 @@ class Expected:
                 if da != a and da not in deps:
                     deps.append(da)
             self.losses += [(a, x["field"]) for x in st["losses"]]
+        # forma antiga attr.N (C26-LIST) num atributo list/set: o HCL tem a lista inteira attr = [..]
+        for st in self.plan["steps"]:
+            a, blk = self.addr(st), self.block(st)
+            leaves = self.leaves.get(a, {})
+            groups: dict = {}
+            for path in list(leaves):
+                head, _, idx = path.rpartition(".")
+                if not idx.isdigit() or not head:
+                    continue
+                attr, rest = attr_at(blk, head.split("."))
+                if attr and not rest and isinstance(attr["type"], list) and attr["type"][0] in ("list", "set"):
+                    groups.setdefault(head, {})[int(idx)] = leaves.pop(path)
+            for head, items in groups.items():
+                leaves[head] = [items[i] for i in sorted(items)] if sorted(items) == list(range(len(items))) \
+                    else ("index_gap", tuple(sorted(items)))
         # inserção declarada HI-GCP-01: rótulo da execução nos recursos dos tipos da lista (nunca em data source)
         for st in self.plan["steps"]:
             own = self.owner(st)
@@ -334,6 +359,10 @@ def compare(rendered_dir: Path, plan: dict, graph: dict, schema) -> list[str]:
         if sorted(deps) != sorted(exp.deps.get(a, [])):
             probs.append(f"{a}: depends_on {deps} ≠ plano {exp.deps.get(a, [])}")
     for a, f in exp.losses:
+        # perda declarada num campo que o plano também transporta: o valor vai para o HCL (é o que o plano manda
+        # escrever) e a perda fica no relatório; só é defeito a perda de campo SEM valor aparecer no HCL
+        if any(p == f or p.startswith(f + ".") for p in exp.leaves.get(a, {})):
+            continue
         leaves = {}
         if a in got["resource"]:
             rtype = a.removeprefix("data.").split(".")[0]
@@ -450,6 +479,7 @@ def negative_controls(work: Path, schema) -> list[dict]:
                                                                "    \"bo-run\" = \"x\"\n  }\n", 1),
              r"'labels' no HCL sem origem|'labels\.bo-run' no HCL sem origem")
     out += label_controls(work, schema)
+    out += list_controls(work, schema)
     # campo obrigatório retirado do plano -> UNKNOWN_INPUT, nada escrito
     p2 = copy.deepcopy(plan)
     p2["steps"][1]["values"] = [v for v in p2["steps"][1]["values"] if v["field"] != "database_version"]
@@ -468,6 +498,73 @@ def negative_controls(work: Path, schema) -> list[dict]:
     rc3, rep3 = R.render_file(d / "lowering_plan.jsonl", d / "out")
     out.append({"control": "sintetizado sem marca recusado na entrada",
                 "caught": rc3 == 1 and not (d / "out").exists(), "detail": rep3.get("errors", [])[:1]})
+    return out
+
+
+def _fixture_base(work: Path, name: str):
+    fx = C.templates() / "plans" / name
+    plan = C.read_jsonl(fx / "lowering_plan.jsonl")[0]
+    graph = C.read_jsonl(fx / "graph_ir.jsonl")[0]
+    base = work / f"neg_{name}_base"
+    if base.exists():
+        shutil.rmtree(base)
+    rc, rep = R.render_file(fx / "lowering_plan.jsonl", base)
+    tf = base / R.file_name(plan["plan_id"])
+    return plan, graph, base, tf, rc, rep
+
+
+def list_controls(work: Path, schema) -> list[dict]:
+    """Sabotagens do termo list (C00 3.1.0) e da forma indexada (C26-LIST) nas fixtures net_list*."""
+    out = []
+    for name in ("net_list", "net_list_indexed"):
+        plan, graph, base, tf, rc, rep = _fixture_base(work, name)
+        if rc or not tf.exists():
+            out.append({"control": f"fixture {name} renderiza para os controles de lista", "caught": False,
+                        "expected": "RENDERED", "detail": (rep.get("errors") or [])[:2]})
+            continue
+        text = tf.read_text(encoding="utf-8")
+        slug = C.slug(plan["plan_id"])
+        a, b = f"google_service_account.{slug}_r2.email", f"google_service_account.{slug}_r3.email"
+        lst = f"[{a}, {b}]"
+
+        def sabotage(label, new_text, expect):
+            d = work / ("neg_" + C.slug(name + "_" + label))
+            if d.exists():
+                shutil.rmtree(d)
+            d.mkdir()
+            (d / tf.name).write_text(new_text, encoding="utf-8")
+            shutil.copy(base / "versions.tf", d / "versions.tf")
+            probs = compare(d, plan, graph, schema)
+            out.append({"control": f"{name}: {label}", "caught": new_text != text
+                        and any(re.search(expect, p) for p in probs), "expected": expect, "detail": probs[:2]})
+
+        ctl = work / f"neg_{name}_controle"
+        if ctl.exists():
+            shutil.rmtree(ctl)
+        ctl.mkdir()
+        shutil.copy(tf, ctl / tf.name)
+        shutil.copy(base / "versions.tf", ctl / "versions.tf")
+        p0 = compare(ctl, plan, graph, schema)
+        out.append({"control": f"{name}: cópia sem sabotagem passa", "caught": not p0, "expected": "nenhum problema",
+                    "detail": p0[:2]})
+        tsa = r"'target_service_accounts' = .* no HCL, plano diz"
+        sabotage("item removido da lista", text.replace(lst, f"[{a}]", 1), tsa)
+        sabotage("item trocado na lista", text.replace(lst, f"[{a}, {a}]", 1), tsa)
+        sabotage("item extra na lista", text.replace(lst, f"[{a}, {b}, {a}]", 1), tsa)
+        sabotage("ordem trocada na lista", text.replace(lst, f"[{b}, {a}]", 1), tsa)
+        sabotage("lista de literais alterada", text.replace('"10.0.0.0/8"', '"10.0.0.0/9"', 1),
+                 r"'source_ranges' = .* no HCL, plano diz")
+        if name == "net_list_indexed":
+            # buraco de índice no plano: INDEX_GAP, e nenhum HCL
+            p2 = copy.deepcopy(plan)
+            for st in p2["steps"]:
+                for v in st["values"]:
+                    if v["field"] == "target_service_accounts.1":
+                        v["field"] = "target_service_accounts.2"
+            r2 = R.render_plan(p2, graph, schema)
+            out.append({"control": f"{name}: buraco de índice vira INDEX_GAP", "expected": "INDEX_GAP sem HCL",
+                        "caught": r2.hcl is None and "INDEX_GAP" in [f["code"] for f in r2.failures],
+                        "detail": [f["detail"] for f in r2.failures][:2]})
     return out
 
 

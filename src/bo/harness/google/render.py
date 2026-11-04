@@ -8,6 +8,12 @@ O renderizador só escreve no HCL o que o plano declara:
   - o nome derivado (derived_name) no atributo 'name' do tipo, com os termos citados;
   - depends_on a partir dos passos citados;
   - termo simbólico -> variável de entrada SEM default (o runner liga um valor sintético declarado);
+  - termo list (C00 3.1.0) num atributo list/set -> lista HCL na ordem dos itens, cada item pelo caminho do termo
+    escalar (referência inclusive); a forma antiga 'attr.N' (C26-LIST, aceita com nota) monta a mesma lista, com
+    índices 0..n-1 sem buraco (senão INDEX_GAP) e sem misturar com o termo list (CONFLICTING_VALUES);
+  - referência: pelo nó (target_node, C00 3.0.1) quando o termo traz; senão pelo símbolo do nome derivado;
+  - perda declarada (losses) num campo que também tem valor: o valor vai para o HCL e a perda fica no relatório
+    (a perda é do átomo de origem, ex. arredondamento; o valor transportado é o que o plano manda escrever);
   - termo withheld de segredo -> variável sensível SEM default (gerada na hora pelo runner, nunca gravada);
   - o andaime fixo do harness: bloco terraform com o provider e a versão de universe/pins.json;
   - a inserção declarada HI-GCP-01 (bo.harness.google.run_label): labels["bo-run"] = var.<plano>_bo_run, SEM
@@ -58,6 +64,7 @@ FAIL_TO_BLOCK = {
     "AMBIGUOUS_BLOCK_INDEX": "AMBIGUOUS_TARGET",
     "CHOICE_UNRESOLVED": "AMBIGUOUS_TARGET",
     "CONDITION_FALSE": "CONDITION_FALSE",
+    "INDEX_GAP": "UNKNOWN_INPUT",
 }
 RENDERED = "RENDERED"
 _PLACEHOLDER = re.compile(r"\{(t[0-9]+)\}")
@@ -87,10 +94,12 @@ class Rendered:
     choices: list = field(default_factory=list)
     deferred_guards: list = field(default_factory=list)
     addresses: dict = field(default_factory=dict)
+    notes: list = field(default_factory=list)
 
     def report(self) -> dict:
         d = {k: getattr(self, k) for k in ("plan_id", "graph_id", "status", "failures", "ledger", "variables",
-                                           "synthesized", "losses", "choices", "deferred_guards", "addresses")}
+                                           "synthesized", "losses", "choices", "deferred_guards", "addresses",
+                                           "notes")}
         d["file"] = file_name(self.plan_id) if self.status == RENDERED else None
         return d
 
@@ -152,6 +161,14 @@ def var_type(cty) -> str:
 
 
 # ------------------------------------------------------------------------------------------------ corpo
+class Indexed(dict):
+    """Atributo lista dado na forma antiga 'attr.N' (C26-LIST): índice -> valor, montado em lista no fim."""
+
+
+def is_list_type(cty) -> bool:
+    return isinstance(cty, list) and cty[0] in ("list", "set")
+
+
 class Builder:
     """Monta o corpo de UM recurso a partir dos valores do plano, com o schema do tipo."""
 
@@ -195,6 +212,22 @@ class Builder:
                 raise Fail("COMPUTED_ONLY", where, f"{'.'.join(here)} é só computado no google {self.r.schema.version}")
             rule = withheld_rule(self.r.rules, self.rtype, ".".join(here), attr)
             rest = segs[1:]
+            if rest and len(rest) == 1 and rest[0].isdigit() and "nested_type" not in attr \
+                    and is_list_type(attr["type"]):
+                # forma antiga (C26-LIST): attr.N = termo; vira a lista attr = [..] no fim do passo
+                cur = body.attrs.setdefault(s, Indexed())
+                if not isinstance(cur, Indexed):
+                    raise Fail("CONFLICTING_VALUES", where, f"{'.'.join(here)} recebe lista inteira e por índice")
+                idx = int(rest[0])
+                if idx in cur:
+                    raise Fail("CONFLICTING_VALUES", where, f"{'.'.join(here + rest)} recebe dois valores")
+                self._check_leaf(attr["type"][1], value, rule, here + rest, where, origin)
+                cur[idx] = value
+                self._mark(here + rest, origin, order, ref)
+                note = f"{self.address}.{'.'.join(here)}: C26-LIST: prefira termo list à forma indexada"
+                if note not in self.r.out.notes:
+                    self.r.out.notes.append(note)
+                return
             if rest:
                 cty = attr["type"]
                 if "nested_type" in attr or not (isinstance(cty, list) and cty[0] in ("map", "object")):
@@ -272,6 +305,21 @@ class Builder:
         p = ".".join(here)
         self.set_paths[p] = order
         self.r.out.ledger.append({"address": self.address, "path": p, "origin": origin, "order": order, **ref})
+
+    def assemble_indexed(self) -> list[str]:
+        """Troca cada Indexed por lista; devolve os atributos com buraco de índice (INDEX_GAP)."""
+        gaps: list[str] = []
+        self._assemble(self.body, [], gaps)
+        return gaps
+
+    def _assemble(self, body, pre, gaps):
+        for name, v in list(body.attrs.items()):
+            if isinstance(v, Indexed):
+                if sorted(v) != list(range(len(v))):
+                    gaps.append(f"{'.'.join(pre + [name])} com índices {sorted(v)} (esperado 0..{len(v) - 1})")
+                body.attrs[name] = [v[i] for i in sorted(v)]
+        for _, b in body.blocks:
+            self._assemble(b, pre, gaps)
 
     def missing_required(self) -> list[str]:
         out: list[str] = []
@@ -354,19 +402,22 @@ class PlanRenderer:
         is_data, ttype, sym = bool(m.group(1)), m.group(2), m.group(3)
         if "attribute" not in term:
             raise Fail("UNKNOWN_INPUT", where, f"referência a {ttype} sem atributo; o harness não escolhe um")
-        hits = []
-        for s in self.plan["steps"]:
-            if s["resource_type"] != ttype or (s["action"] == "reference") != is_data:
-                continue
-            tids = (s.get("derived_name") or {}).get("from_terms", [])
-            if any(self.terms.get(t, {}).get("symbol_id") == sym for t in tids):
-                hits.append(s)
+        if term.get("target_type") and term["target_type"] != ttype:
+            raise Fail("UNKNOWN_INPUT", where, f"target_type {term['target_type']} difere do endereço ({ttype})")
+        hits = ref_targets(self.plan, self.terms, term, ttype, is_data, sym)
         if len(hits) != 1:
             raise Fail("UNKNOWN_INPUT", where, f"referência a {ttype} ({sym}) com {len(hits)} alvo(s) no plano")
         return H.Expr(f"{self.address(hits[0])}.{term['attribute']}")
 
-    def term_value(self, term: dict, step: dict, fld: str, cty, where: str):
+    def term_value(self, term: dict, step: dict, fld: str, cty, where: str, in_list: bool = False):
         k = term["kind"]
+        if k == "list":
+            if cty != "dynamic" and not is_list_type(cty):
+                raise Fail("TYPE_MISMATCH", where, f"{fld}: termo list num atributo de tipo {json.dumps(cty)}")
+            et = cty[1] if is_list_type(cty) else "dynamic"
+            return [self.term_value(it, step, fld, et, where, in_list=True) for it in term["items"]]
+        if in_list and k in ("withheld", "document"):
+            raise Fail("UNSUPPORTED_TERM", where, f"{fld}: termo {k} dentro de lista não é renderizado pelo harness")
         if k == "literal":
             dt, v = term["datatype"], term["value"]
             want = {"string": str, "bool": bool, "list": list, "map": dict}.get(dt)
@@ -491,17 +542,16 @@ class PlanRenderer:
             o.addresses[str(st["order"])] = b.address
         if parent is None:
             builders[st["order"]] = b
-        loss_fields = {x["field"] for x in st["losses"]}
         for v in st["values"]:
             # cada valor falha sozinho: o caso reprova, mas o relatório lista todos os defeitos do passo
             fld = v["field"]
             try:
-                if fld in loss_fields:
-                    raise Fail("CONFLICTING_VALUES", where, f"{fld} é perda declarada e valor carregado ao mesmo tempo")
                 attr, rest = attr_at(b.schema, fld.split("."))
                 cty = attr["type"] if attr else "dynamic"
                 if attr and rest and isinstance(cty, list) and cty[0] in ("map", "object"):
                     cty = cty[1] if cty[0] == "map" else cty[1].get(rest[0], "dynamic")
+                elif attr and len(rest) == 1 and rest[0].isdigit() and is_list_type(cty):
+                    cty = cty[1]            # forma antiga attr.N: o termo é um elemento da lista
                 val = self.term_value(v["term"], st, fld, cty, where)
                 secret = v["term"]["kind"] == "withheld"      # só chega aqui o withheld de segredo (variável sensível)
                 b.place(fld, val, v["origin"], st["order"], where, {"field": fld}, secret=secret)
@@ -552,6 +602,9 @@ class PlanRenderer:
 
     def finish(self, builders, owner) -> Rendered:
         o = self.out
+        for order, b in sorted(builders.items()):
+            for g in b.assemble_indexed():
+                o.failures.append(Fail("INDEX_GAP", f"passo {order} ({b.address})", g).record())
         if not o.failures:
             for order, b in sorted(builders.items()):
                 try:
@@ -595,6 +648,23 @@ class PlanRenderer:
                   "HCL = plano + valores sintetizados declarados; nada inserido pelo harness. Não editar."]
         o.hcl = H.document(blocks, header)
         return o
+
+
+def ref_targets(plan: dict, terms: dict, term: dict, ttype: str, is_data: bool, sym: str) -> list[dict]:
+    """Passos que uma referência pode apontar: pelo nó (target_node) quando o termo traz; senão pelo símbolo do
+    endereço citado em from_terms do nome derivado. Tipo e ação (data/recurso) têm de bater nos dois casos."""
+    out = []
+    for s in plan["steps"]:
+        if s["resource_type"] != ttype or (s["action"] == "reference") != is_data:
+            continue
+        if term.get("target_node"):
+            if s["node_id"] == term["target_node"] and s["action"] != "configure":
+                out.append(s)
+            continue
+        tids = (s.get("derived_name") or {}).get("from_terms", [])
+        if any(terms.get(t, {}).get("symbol_id") == sym for t in tids):
+            out.append(s)
+    return out
 
 
 def render_plan(plan: dict, graph: dict | None, schema: Schema, side: str = "object", rules=None) -> Rendered:

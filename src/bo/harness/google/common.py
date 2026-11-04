@@ -6,6 +6,7 @@ import datetime as _dt
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -28,11 +29,19 @@ def data() -> Path:
     return Path(os.environ.get("BO_DATA", "/Users/breno/doutorado/brevops-data"))
 
 
+_MODULE_TMP = re.compile(r"^[A-Z][A-Z0-9]*(-[A-Z0-9]+)*$")
+
+
 def tmp() -> Path:
-    """$BO_TMP exclusivo do módulo (N8): nunca /tmp nem o temporário de outro módulo."""
-    p = Path(os.environ.get("BO_TMP") or data() / "tmp" / MODULE).resolve()
-    if p.name != MODULE or not str(p).startswith(str(data().resolve()) + "/"):
-        raise SystemExit(f"BO_TMP fora do diretório exclusivo do {MODULE}: {p}")
+    """$BO_TMP do módulo que roda o processo (N8): $BO_DATA/tmp/<ID>, um nível só, nunca /tmp.
+
+    Sem BO_TMP é o do HARNESS-GCP. Quem reusa o renderizador (pilotos) roda com o próprio $BO_DATA/tmp/<ID> e não
+    precisa trocar esta função; o harness só escreve dentro dele (achado do PILOT-STO-E2E, controls.json).
+    """
+    root = (data() / "tmp").resolve()
+    p = Path(os.environ.get("BO_TMP") or root / MODULE).resolve()
+    if p.parent != root or not _MODULE_TMP.match(p.name):
+        raise SystemExit(f"BO_TMP fora de $BO_DATA/tmp/<ID do módulo>: {p}")
     p.mkdir(parents=True, exist_ok=True)
     return p
 

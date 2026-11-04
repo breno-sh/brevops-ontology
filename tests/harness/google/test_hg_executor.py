@@ -219,12 +219,20 @@ def test_classificacao_de_erros():
 
 
 def test_bo_tmp_alheio_e_recusado(monkeypatch):
-    monkeypatch.setenv("BO_TMP", str(C.data() / "tmp" / "HARNESS-AWS"))
-    with pytest.raises(SystemExit):
-        C.tmp()
-    monkeypatch.setenv("BO_TMP", "/tmp/HARNESS-GCP")
-    with pytest.raises(SystemExit):
-        C.tmp()
+    # fora de $BO_DATA/tmp/<ID>: /tmp, a raiz de $BO_DATA/tmp, pasta aninhada e nome que não é ID de módulo
+    for bad in ("/tmp/HARNESS-GCP", str(C.data() / "tmp"), str(C.data() / "tmp" / "HARNESS-GCP" / "sub"),
+                str(C.data() / "tmp" / "harness-gcp"), str(C.data() / "HARNESS-GCP")):
+        monkeypatch.setenv("BO_TMP", bad)
+        with pytest.raises(SystemExit):
+            C.tmp()
+
+
+def test_bo_tmp_do_modulo_que_reusa_o_renderizador(monkeypatch):
+    # achado do PILOT-STO-E2E: quem reusa o harness roda com o próprio $BO_DATA/tmp/<ID>, sem trocar C.tmp
+    monkeypatch.setenv("BO_TMP", str(C.data() / "tmp" / "PILOT-STO-E2E"))
+    assert C.tmp() == (C.data() / "tmp" / "PILOT-STO-E2E").resolve()
+    monkeypatch.delenv("BO_TMP")
+    assert C.tmp().name == "HARNESS-GCP"
 
 
 def test_canario_recusa_registro_com_segredo():

@@ -136,6 +136,23 @@ def judge_leaf(leaf: dict, field: dict, comparator: dict, state_resources: dict 
         if target is None:
             return "symbolic"
         return "match" if _same_ref(target, obs) else "mismatch"
+    if isinstance(exp, list) and any(isinstance(x, tuple) for x in exp):
+        # termo list com referência (C00 3.1.0): cada item resolvido no state; set compara sem ordem
+        want = [resolve(x, state_resources or {}) if isinstance(x, tuple) else x for x in exp]
+        if any(w is None for w, x in zip(want, exp) if isinstance(x, tuple)):
+            return "symbolic"
+        if not isinstance(obs, list) or len(obs) != len(want):
+            return "mismatch"
+        same = (lambda w, o: _same_ref(w, o) if isinstance(w, str) and isinstance(o, str) else w == o)
+        if leaf.get("set_attr"):
+            free = list(range(len(obs)))
+            for w in want:
+                hit = next((i for i in free if same(w, obs[i])), None)
+                if hit is None:
+                    return "mismatch"
+                free.remove(hit)
+            return "match"
+        return "match" if all(same(w, o) for w, o in zip(want, obs)) else "mismatch"
     try:
         if leaf.get("set_attr") and isinstance(exp, list) and isinstance(obs, list):
             return "match" if CMP.compare({"name": "set_equal"}, exp, obs) else "mismatch"
