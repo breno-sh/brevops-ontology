@@ -3,8 +3,8 @@
  "contract_version": "3.1.0",
  "data": {
   "expected_h": 6,
-  "measured_h_total": 0.85,
-  "measured_minutes_total": 50.7,
+  "measured_h_total": 2.71,
+  "measured_minutes_total": 162.8,
   "recalibration": "o caminho offline levou bem menos que o previsto; o que dominou foi ler contratos e adaptar os quatro harness (interfaces diferentes), não o raciocínio; o custo real da escala está no mapeamento (transporte) e não no E2E",
   "steps": [
    {
@@ -80,24 +80,32 @@
     "step": "testes (19) com alegações sintéticas e saídas atuais do mapeador"
    },
    {
-    "end": null,
-    "evidence": "publish.py 10:01:31; gates/PILOT-STO-E2E.sh 10:01:50",
-    "minutes": null,
+    "end": "2026-11-04T10:11:34-03:00",
+    "evidence": "gates/PILOT-STO-E2E.sh OK 10:10:31; commit dos resultados",
+    "minutes": 10.1,
     "start": "2026-11-04T10:01:31-03:00",
-    "status": "in_progress",
+    "status": "done",
     "step": "gate do módulo, publicação sob trava, esforço, proveniência e commit"
    },
    {
-    "end": null,
-    "evidence": "laço de fundo de git log desde 09:43",
-    "minutes": null,
-    "start": "2026-11-04T10:01:31-03:00",
-    "status": "pending",
-    "step": "espera do PILOT-STO-MAP, rebase, corrida de ponta a ponta e gates de novo; merge"
+    "end": "2026-11-04T11:49:43-03:00",
+    "evidence": "laço de git log; merge do PILOT-STO-MAP visto 11:49:43",
+    "minutes": 98.2,
+    "start": "2026-11-04T10:11:34-03:00",
+    "status": "done",
+    "step": "espera do PILOT-STO-MAP (sem trabalho do módulo), com rebase e testes a cada avanço da base"
+   },
+   {
+    "end": "2026-11-04T11:53:30-03:00",
+    "evidence": "G1-G5 e ROBOT verdes 11:52:41",
+    "minutes": 3.8,
+    "start": "2026-11-04T11:49:43-03:00",
+    "status": "done",
+    "step": "rebase sobre o PILOT-STO-MAP final, corrida de ponta a ponta, gates de novo e merge"
    }
   ]
  },
- "generated_at": "2026-11-04T10:02:51-03:00",
+ "generated_at": "2026-11-04T11:52:59-03:00",
  "metrics": [
   {
    "axis": "operational",
@@ -114,10 +122,10 @@
    "metric_id": "M-PSTO-EFFORT-STEPS-DONE",
    "name": "passos do piloto concluídos (esforço medido)",
    "operational_coverage": {
-    "est": 0.818182,
-    "lower": 0.523019,
-    "n": 11,
-    "upper": 0.948632
+    "est": 1.0,
+    "lower": 0.757506,
+    "n": 12,
+    "upper": 1.0
    },
    "quantifier": "observed_fraction",
    "reading": "decision",
