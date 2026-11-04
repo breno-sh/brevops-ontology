@@ -1,0 +1,49 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "CQFIX",
+ "generated_at": "2026-11-03T21:09:36-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/CQFIX.txt",
+  "brief_sha256": "7e88ba60d329af67d331cf17f0e002a375f3c5a987963661947032e5ce339126",
+  "params": {
+   "cis_concepts": "8",
+   "cq_count": "37",
+   "providers": "aws:6.71.0,google:8.9.0,azurerm:5.12.0,oci:9.11.0",
+   "terraform": "1.15.8"
+  },
+  "inputs": [
+   {
+    "path": "$BO_REPO/requirements/cq_spec.jsonl",
+    "kind": "file",
+    "sha256": "370bcb7229eedd274f758f3792a570039a4b282416f41a4935bd87426f66ebe1"
+   },
+   {
+    "path": "$BO_REPO/cq/cis_cross_provider.csv",
+    "kind": "file",
+    "sha256": "4ed5796bd2b796dc1b1ba73c1a34d3b82e844bc9674497f004bd444a4d5be3b1"
+   }
+  ],
+  "recorded_at": "2026-11-03T21:09:36-03:00"
+ },
+ "sources": [
+  {
+   "uri": "requirements/cq_spec.jsonl",
+   "license": "interno (REQUIREMENTS)",
+   "transformation": "fixtures abstratas instanciadas por provedor; respostas copiadas"
+  },
+  {
+   "uri": "cq/cis_cross_provider.csv",
+   "license": "interno (CQSRC, CIS via mods Steampipe)",
+   "transformation": "8 conceitos nos 4 viram CQ-CIS-01..08"
+  },
+  {
+   "uri": "SCHEMA-*/types.jsonl e atoms.jsonl",
+   "license": "MPL-2.0 (providers Terraform)",
+   "transformation": "evidência de NOT_APPLICABLE e conferência de tipos"
+  }
+ ],
+ "notes": "fixtures C/N/I das 37 CQs; terraform só fmt/validate offline"
+}

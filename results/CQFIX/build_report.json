@@ -1,0 +1,75 @@
+{
+ "schema": "bo.cqfix.build_report/1",
+ "module": "CQFIX",
+ "generated_at": "2026-11-03T21:10:31-03:00",
+ "cq_count": 37,
+ "cis_cq_count": 8,
+ "cis_concepts_plan_estimate": 10,
+ "cis_note": "o CQSRC achou 8 conceitos CIS com controle nos 4 benchmarks (o plano estimava ~10); o CQFIX trabalha com os 8",
+ "providers": {
+  "aws": {
+   "variants": {
+    "REALIZED": 110,
+    "NOT_APPLICABLE": 1
+   },
+   "cqs": {
+    "APPLICABLE": 36,
+    "PARTIAL": 1,
+    "NOT_APPLICABLE": 0
+   },
+   "evidence_level": {
+    "STRUCTURAL": 65,
+    "INTERPRETED": 45
+   },
+   "resources": 429
+  },
+  "google": {
+   "variants": {
+    "REALIZED": 104,
+    "NOT_APPLICABLE": 7
+   },
+   "cqs": {
+    "APPLICABLE": 33,
+    "PARTIAL": 3,
+    "NOT_APPLICABLE": 1
+   },
+   "evidence_level": {
+    "STRUCTURAL": 77,
+    "INTERPRETED": 27
+   },
+   "resources": 292
+  },
+  "azurerm": {
+   "variants": {
+    "REALIZED": 101,
+    "NOT_APPLICABLE": 10
+   },
+   "cqs": {
+    "APPLICABLE": 31,
+    "PARTIAL": 5,
+    "NOT_APPLICABLE": 1
+   },
+   "evidence_level": {
+    "STRUCTURAL": 87,
+    "INTERPRETED": 14
+   },
+   "resources": 457
+  },
+  "oci": {
+   "variants": {
+    "REALIZED": 106,
+    "NOT_APPLICABLE": 5
+   },
+   "cqs": {
+    "APPLICABLE": 33,
+    "PARTIAL": 4,
+    "NOT_APPLICABLE": 0
+   },
+   "evidence_level": {
+    "STRUCTURAL": 81,
+    "INTERPRETED": 25
+   },
+   "resources": 344
+  }
+ }
+}

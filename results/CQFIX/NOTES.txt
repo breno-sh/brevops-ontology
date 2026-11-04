@@ -1,0 +1,22 @@
+CQFIX — notas do módulo (2026-11-03, America/Recife)
+
+1. CIS: o CQSRC achou 8 conceitos com controle CIS nos 4 benchmarks (o plano estimava ~10). O CQFIX trabalha
+   com os 8 (CQ-CIS-01..08, especificação C24 em results/CQFIX/cq_spec_cis.jsonl).
+2. Aplicabilidade por variante: cada (CQ, provedor, variante) é REALIZED ou NOT_APPLICABLE com evidência
+   conferível (ausência no schema fixado) ou citação marcada INTERPRETED. A CQ "se aplica" ao provedor quando
+   ao menos uma variante é realizável; as outras, quando não, são NA com evidência. Contagens em
+   build_report.json e no fixture_check.json.
+3. Os renderizadores HARNESS-* (C26 -> HCL) não geram main.tf: o contrato de saída é um main.tf por provedor e
+   os quatro renderizadores emitem leiautes diferentes (arquivo por plano, módulo por plano). O CQFIX segue o
+   mesmo princípio sem inserção silenciosa: todo bloco que não é indivíduo da fixture está em "synthesized"
+   com motivo, e todo desvio da situação abstrata está em "deviations".
+4. C11: a CQ de provedor único ainda não tem alegação de correspondência; cada fixture traz c11_case_seed com
+   os campos conhecidos e os pendentes nomeados (claim_id, frame_ref, peso, plano C26), sem inventar ids.
+5. Vocabulário: bo.requirements.terms não tem tipo para chave de cifra nem para credencial programática; as
+   CQs CIS-02/03 usam secret_value_holder e config_description. Proposta ao REQUIREMENTS, não muda contrato.
+6. Achados contra a hipótese, registrados e não ajustados: a negação com precedência não existe na OCI
+   (NET-01-N); o estado de conexão não é declarável no GCP, no Azure e na AWS (NET-02); MFA do usuário humano
+   fica fora dos providers google e azurerm (CIS-01); a precedência por posição textual só existe na AWS
+   (Network Firewall STRICT_ORDER).
+7. consume_check: na primeira execução (17:41) o fecho acusou manifestos transitivos de HARNESS-* e TRANSFORMS
+   (entrada contracts/stubs mudou depois do consumo, pela emenda 2 do CONTRACTS). Não é posse do CQFIX.
