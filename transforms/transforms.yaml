@@ -2,7 +2,7 @@ schema: bo.transforms/1
 contract: C10
 contract_version: 3.0.0
 module: TRANSFORMS
-generated_at: '2026-11-04T12:25:00-03:00'
+generated_at: '2026-11-04T12:27:00-03:00'
 scalar:
 - name: identity
   kind: scalar
@@ -989,3 +989,133 @@ combinators:
   inverse:
     name: null
     partial: false
+- name: wrap_list
+  kind: tuple
+  inputs:
+  - name: value
+    datatype: any
+  outputs:
+  - name: list
+    datatype: tuple
+  precondition: 'qualquer valor; escalar -> lista de um elemento (ex. prefixo escalar -> lista de prefixos); portas:
+    value (qualquer valor); list (lista (C09 list) de um elemento); coleção (C09 3.2.0) por porta: list = list'
+  error: 'UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido'
+  loss: nenhuma
+  inverse:
+    name: unwrap_single
+    partial: false
+- name: unwrap_single
+  kind: tuple
+  inputs:
+  - name: list
+    datatype: tuple
+  outputs:
+  - name: value
+    datatype: any
+  precondition: 'lista com exatamente um elemento; portas: list (lista (C09 list) de exatamente um elemento); value
+    (o elemento); coleção (C09 3.2.0) por porta: list = list'
+  error: 'TRANSFORM_OUT_OF_DOMAIN: não é lista, ou lista vazia ou com mais de um elemento | UNKNOWN_INPUT: valor
+    não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido'
+  loss: nenhuma
+  inverse:
+    name: wrap_list
+    partial: false
+- name: list_to_set
+  kind: tuple
+  inputs:
+  - name: list
+    datatype: tuple
+  outputs:
+  - name: set
+    datatype: tuple
+  precondition: 'lista de valores JSON; portas: list (lista (C09 list) de valores JSON); set (conjunto (C09 set):
+    lista sem repetição em ordem canônica); coleção (C09 3.2.0) por porta: list = list, set = set'
+  error: 'TRANSFORM_OUT_OF_DOMAIN: não é lista | UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT:
+    valor simbólico ainda não resolvido'
+  loss: 'not_expressible: a ordem e a repetição da lista não se recuperam'
+  inverse:
+    name: set_to_list
+    partial: true
+- name: set_to_list
+  kind: tuple
+  inputs:
+  - name: set
+    datatype: tuple
+  outputs:
+  - name: list
+    datatype: tuple
+  precondition: 'conjunto sem elemento repetido; portas: set (conjunto (C09 set): lista sem repetição, qualquer
+    ordem); list (lista (C09 list) na ordem canônica); coleção (C09 3.2.0) por porta: set = set, list = list'
+  error: 'TRANSFORM_OUT_OF_DOMAIN: não é lista, ou tem elemento repetido | UNKNOWN_INPUT: valor não lido (NOT_READ)
+    | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido'
+  loss: 'nenhuma (a ordem da lista é a canônica: o conjunto não tem ordem para perder)'
+  inverse:
+    name: list_to_set
+    partial: false
+- name: map_list
+  kind: tuple
+  inputs:
+  - name: list
+    datatype: tuple
+  - name: fn
+    datatype: string
+  - name: params
+    datatype: tuple
+  outputs:
+  - name: list
+    datatype: tuple
+  precondition: 'aplica a escalar fn (com params) a cada elemento, na ordem; a grandeza do elemento é a da escalar
+    (não muda); portas: list (lista (C09 list)); fn (nome de transformação ESCALAR do registro); params (params
+    da escalar (objeto)); list (lista do mesmo tamanho e ordem, item_type = saída da escalar); coleção (C09 3.2.0)
+    por porta: list = list'
+  error: 'TRANSFORM_OUT_OF_DOMAIN: coleção mal formada ou elemento fora do domínio da escalar | DECLARATION_ERROR:
+    fn fora do registro ou não escalar, ou params mal tipados para fn | UNKNOWN_INPUT: valor não lido (NOT_READ)
+    | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido'
+  loss: 'semantic: a perda de cada elemento é a da escalar fn; a inversa é map_list com a inversa de fn'
+  inverse:
+    name: map_list
+    partial: true
+- name: map_set
+  kind: tuple
+  inputs:
+  - name: set
+    datatype: tuple
+  - name: fn
+    datatype: string
+  - name: params
+    datatype: tuple
+  outputs:
+  - name: set
+    datatype: tuple
+  precondition: 'aplica a escalar fn a cada elemento do conjunto; imagens iguais se juntam; portas: set (conjunto
+    (C09 set)); fn (nome de transformação ESCALAR do registro); params (params da escalar (objeto)); set (conjunto
+    das imagens, ordem canônica); coleção (C09 3.2.0) por porta: set = set'
+  error: 'TRANSFORM_OUT_OF_DOMAIN: coleção mal formada ou elemento fora do domínio da escalar | DECLARATION_ERROR:
+    fn fora do registro ou não escalar, ou params mal tipados para fn | UNKNOWN_INPUT: valor não lido (NOT_READ)
+    | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido'
+  loss: 'semantic: escalar não injetiva junta elementos (o conjunto encolhe); além disso, a perda de fn'
+  inverse:
+    name: map_set
+    partial: true
+- name: map_values
+  kind: tuple
+  inputs:
+  - name: map
+    datatype: tuple
+  - name: fn
+    datatype: string
+  - name: params
+    datatype: tuple
+  outputs:
+  - name: map
+    datatype: tuple
+  precondition: 'aplica a escalar fn a cada valor do mapa; as chaves não mudam; portas: map (mapa (C09 map) chave
+    -> valor); fn (nome de transformação ESCALAR do registro); params (params da escalar (objeto)); map (mesmas
+    chaves, valores = saída da escalar); coleção (C09 3.2.0) por porta: map = map'
+  error: 'TRANSFORM_OUT_OF_DOMAIN: coleção mal formada ou elemento fora do domínio da escalar | DECLARATION_ERROR:
+    fn fora do registro ou não escalar, ou params mal tipados para fn | UNKNOWN_INPUT: valor não lido (NOT_READ)
+    | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido'
+  loss: 'semantic: a perda de cada valor é a da escalar fn; a inversa é map_values com a inversa de fn'
+  inverse:
+    name: map_values
+    partial: true

@@ -179,6 +179,15 @@ def adversarial_checks() -> list[str]:
             errs.append(f"cadeia adversarial aceita: {why}")
         except DeclarationError:
             pass
+    # coleção (emenda 1.2.0): elemento a elemento herda a regra da escalar
+    gib = {"datatype": "number", "quantity_kind": U.INFO, "unit": "unit:GibiBYTE"}
+    for nm, src in (("map_list", "list"), ("map_set", "set")):
+        try:
+            R.collection_type_out(nm, {"datatype": src, "item_type": gib}, "unit_convert_time",
+                                  {"from": "unit:SEC", "to": "unit:MIN"})
+            errs.append(f"coleção adversarial aceita: {nm} com escalar de outra grandeza")
+        except DeclarationError:
+            pass
     for why, chain, tin, tout in CHAIN_OK:
         try:
             R.check_chain(chain, tin, tout)

@@ -273,3 +273,50 @@ def test_enum_to_bool_domain_declared_in_yaml():
     e2b = next(s for s in doc["scalar"] if s["name"] == "enum_to_bool")
     assert {k: v["part_of"] for k, v in e2b["params"].items()} == {"true": "domain", "false": "domain"}
     assert "true ∪ false" in e2b["precondition"]
+
+
+# ------------------------------------------------------------------ emenda 1.2.0: coleções (STO-MAP CC-6)
+def test_wrap_unwrap_and_set_list():
+    assert R.apply_combinator("wrap_list", {"value": "logs/"}) == {"list": ["logs/"]}
+    assert R.apply_combinator("unwrap_single", {"list": ["logs/"]}) == {"value": "logs/"}
+    with pytest.raises(TransformError):
+        R.apply_combinator("unwrap_single", {"list": ["a", "b"]})
+    assert R.apply_combinator("list_to_set", {"list": [3, 1, 3, 2]}) == {"set": [1, 2, 3]}
+    assert R.apply_combinator("set_to_list", {"set": ["b", "a"]}) == {"list": ["a", "b"]}
+    with pytest.raises(TransformError):
+        R.apply_combinator("set_to_list", {"set": ["a", "a"]})
+    doc = R.document()
+    l2s = next(c for c in doc["combinators"] if c["name"] == "list_to_set")
+    assert l2s["loss"].startswith("not_expressible") and l2s["inverse"] == {"name": "set_to_list", "partial": True}
+
+
+def test_map_elements_and_inverse():
+    gib = {"fn": "unit_convert_information", "params": {"from": "unit:GibiBYTE", "to": "unit:MebiBYTE"}}
+    out = R.apply_combinator("map_list", {"list": [1, 2], **gib})
+    assert out == {"list": [1024, 2048]}
+    name, ins = R.invert("map_list", None, {"list": [1, 2], **gib}, out)
+    assert R.apply_combinator(name, ins) == {"list": [1, 2]}
+    assert R.apply_combinator("map_values", {"map": {"a": 1}, **gib}) == {"map": {"a": 1024}}
+    noninj = {"fn": "enum_map", "params": {"table": {"a": "x", "b": "x"}}}
+    assert R.apply_combinator("map_set", {"set": ["a", "b"], **noninj}) == {"set": ["x"]}
+    assert R.invert("map_set", None, {"set": ["a", "b"], **noninj}, {"set": ["x"]}) is None
+    with pytest.raises(TransformError) as e:
+        R.apply_combinator("map_list", {"list": ["10.0.0.0/8"], "fn": "split_cidr", "params": {}})
+    assert e.value.code == "DECLARATION_ERROR"
+
+
+def test_collection_types_c09_3_2_0():
+    gib = {"datatype": "number", "quantity_kind": U.INFO, "unit": "unit:GibiBYTE"}
+    t = R.collection_type_out("map_list", {"datatype": "list", "item_type": gib}, "unit_convert_information",
+                              {"from": "unit:GibiBYTE", "to": "unit:MebiBYTE"})
+    assert t == {"datatype": "list", "item_type": {**gib, "unit": "unit:MebiBYTE", "byte_convention": "IEC"}}
+    assert R.collection_type_out("wrap_list", {"datatype": "string", "quantity_kind": "NOT_APPLICABLE"}) == {
+        "datatype": "list", "item_type": {"datatype": "string", "quantity_kind": "NOT_APPLICABLE"}}
+    assert R.collection_type_out("list_to_set", {"datatype": "list", "item_type": gib})["datatype"] == "set"
+    with pytest.raises(DeclarationError):      # elemento mudaria de grandeza
+        R.collection_type_out("map_list", {"datatype": "list", "item_type": gib}, "unit_convert_time",
+                              {"from": "unit:SEC", "to": "unit:MIN"})
+    with pytest.raises(DeclarationError):      # C09-COLL: coleção sem item_type
+        R.collection_type_out("list_to_set", {"datatype": "list"})
+    with pytest.raises(DeclarationError):
+        R.collection_type_out("unwrap_single", {"datatype": "set", "item_type": gib})

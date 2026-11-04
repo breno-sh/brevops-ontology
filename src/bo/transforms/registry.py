@@ -37,8 +37,8 @@ from . import units as U
 from .errors import DeclarationError, NoUnit, OutOfDomain, SymbolicInput, TransformError, UnknownInput
 from .markers import ABSENT, is_absent, is_not_read, is_symbolic
 
-REGISTRY_VERSION = "1.1.0"
-GENERATED_AT = "2026-11-04T12:25:00-03:00"     # data da versão do registro (fixa: a regeneração é idêntica)
+REGISTRY_VERSION = "1.2.0"
+GENERATED_AT = "2026-11-04T12:27:00-03:00"     # data da versão do registro (fixa: a regeneração é idêntica)
 LOSS_KINDS = ("rounding", "saturation", "absence", "sentinel", "context_dependence", "not_expressible", "semantic")
 DATATYPES = ("integer", "decimal", "boolean", "string", "enum", "duration", "tuple", "number", "any")
 _NO = object()
@@ -95,6 +95,8 @@ class Combinator:
     accepts_absent: bool = False
     c11_name: str | None = None   # comparador: nome no C11
     kind: str = "tuple"
+    collection: tuple = ()        # ((porta, list|set|map), ...): coleção do C09 3.2.0 levada numa porta tuple do C10
+    inv_inputs: Callable | None = None   # (entradas, saídas) -> entradas da inversa | None (sem inversa)
 
 
 # ============================================================================================== parâmetros
@@ -1134,6 +1136,173 @@ COMBINATORS.append(Combinator(
          "tolerance": 0}, err="TRANSFORM_OUT_OF_DOMAIN", note="mês sem contexto de calendário")),
     accepts_absent=True, c11_name="numeric_tolerance"))
 
+# ======================================================================== combinadores de coleção (emenda 1.2.0)
+# Pedido STO-MAP CC-6: o C09 3.2.0 tem value_type list/set/map com item_type (e key_type). Representação: lista JSON
+# (list), lista JSON sem repetição em ordem canônica (set) e objeto JSON (map). O C10 3.0.0 não tem list/set/map no
+# datatype de porta: as portas são 'tuple' (valor estruturado) e o tipo de coleção vai em 'collection' e na restrição
+# da porta (proposta em results/TRANSFORMS/CONTRACT_CHANGE.txt).
+def _as_list(v, what):
+    if not isinstance(v, list):
+        raise OutOfDomain(f"{what}: não é lista: {v!r}")
+    return v
+
+
+def _canon_sorted(xs):
+    keyed = {}
+    for x in xs:
+        keyed.setdefault(CMP._canon(x), x)
+    return [keyed[k] for k in sorted(keyed)]
+
+
+def _wrap_list(v, ctx):
+    return {"list": [v["value"]]}
+
+
+def _unwrap_single(v, ctx):
+    xs = _as_list(v["list"], "unwrap_single")
+    if len(xs) != 1:
+        raise OutOfDomain(f"unwrap_single exige exatamente um elemento (tem {len(xs)})")
+    return {"value": xs[0]}
+
+
+def _list_to_set(v, ctx):
+    return {"set": _canon_sorted(_as_list(v["list"], "list_to_set"))}
+
+
+def _set_to_list(v, ctx):
+    xs = _as_list(v["set"], "set_to_list")
+    if len({CMP._canon(x) for x in xs}) != len(xs):
+        raise OutOfDomain("set_to_list: conjunto com elemento repetido")
+    return {"list": _canon_sorted(xs)}
+
+
+def _elem_fn(v, what):
+    name, p = v["fn"], v["params"]
+    if not isinstance(name, str) or not isinstance(p, dict):
+        raise DeclarationError(f"{what}: fn é nome e params é objeto")
+    if not isinstance(get(name), Scalar):
+        raise DeclarationError(f"{what}: {name} não é escalar; elemento a elemento só com escalar do registro")
+    return name, p
+
+
+def _map_elems(xs, name, p, ctx, what):
+    out = []
+    for i, x in enumerate(xs):
+        try:
+            out.append(apply_scalar(name, x, p, ctx))
+        except TransformError as e:
+            raise type(e)(f"{what}[{i}]: {e.args[0]}", e.code) from None
+    return out
+
+
+def _map_list(v, ctx):
+    name, p = _elem_fn(v, "map_list")
+    return {"list": _map_elems(_as_list(v["list"], "map_list"), name, p, ctx, "map_list")}
+
+
+def _map_set(v, ctx):
+    name, p = _elem_fn(v, "map_set")
+    xs = _as_list(v["set"], "map_set")
+    if len({CMP._canon(x) for x in xs}) != len(xs):
+        raise OutOfDomain("map_set: conjunto com elemento repetido")
+    return {"set": _canon_sorted(_map_elems(xs, name, p, ctx, "map_set"))}
+
+
+def _map_values(v, ctx):
+    name, p = _elem_fn(v, "map_values")
+    m = v["map"]
+    if not isinstance(m, dict):
+        raise OutOfDomain(f"map_values: não é objeto: {m!r}")
+    keys = list(m)
+    return {"map": dict(zip(keys, _map_elems([m[k] for k in keys], name, p, ctx, "map_values")))}
+
+
+def _elem_inverse(port):
+    def inv(inputs, outputs):
+        r = inverse_of(inputs["fn"], inputs["params"])
+        return None if r is None else {port: outputs[port], "fn": r[0], "params": r[1]}
+    return inv
+
+
+_ELEM_ERRORS = (("TRANSFORM_OUT_OF_DOMAIN", "coleção mal formada ou elemento fora do domínio da escalar"),
+                ("DECLARATION_ERROR", "fn fora do registro ou não escalar, ou params mal tipados para fn"))
+_GIB = {"fn": "unit_convert_information", "params": {"from": "unit:GibiBYTE", "to": "unit:MebiBYTE"}}
+_NONINJ = {"fn": "enum_map", "params": {"table": {"a": "x", "b": "x", "c": "y"}}}
+_FN_PORTS = (("fn", "string", "nome de transformação ESCALAR do registro"),
+             ("params", "tuple", "params da escalar (objeto)"))
+
+COMBINATORS += [
+    Combinator("wrap_list", (("value", "any", "qualquer valor"),), (("list", "tuple", "lista (C09 list) de um elemento"),),
+               "qualquer valor; escalar -> lista de um elemento (ex. prefixo escalar -> lista de prefixos)", (), (),
+               "nenhuma", "unwrap_single", False, _wrap_list,
+               (Ex({"value": "logs/"}, out={"list": ["logs/"]}, roundtrip=True),
+                Ex({"value": {"k": 1}}, out={"list": [{"k": 1}]}, roundtrip=True)),
+               collection=(("list", "list"),)),
+    Combinator("unwrap_single", (("list", "tuple", "lista (C09 list) de exatamente um elemento"),),
+               (("value", "any", "o elemento"),), "lista com exatamente um elemento",
+               (("TRANSFORM_OUT_OF_DOMAIN", "não é lista, ou lista vazia ou com mais de um elemento"),), (),
+               "nenhuma", "wrap_list", False, _unwrap_single,
+               (Ex({"list": ["logs/"]}, out={"value": "logs/"}, roundtrip=True),
+                Ex({"list": []}, err="TRANSFORM_OUT_OF_DOMAIN"),
+                Ex({"list": ["a", "b"]}, err="TRANSFORM_OUT_OF_DOMAIN", note="lista de dois não vira escalar"),
+                Ex({"list": "a"}, err="TRANSFORM_OUT_OF_DOMAIN")),
+               collection=(("list", "list"),)),
+    Combinator("list_to_set", (("list", "tuple", "lista (C09 list) de valores JSON"),),
+               (("set", "tuple", "conjunto (C09 set): lista sem repetição em ordem canônica"),),
+               "lista de valores JSON", (("TRANSFORM_OUT_OF_DOMAIN", "não é lista"),),
+               ("not_expressible",), "a ordem e a repetição da lista não se recuperam", "set_to_list", True,
+               _list_to_set,
+               (Ex({"list": ["b", "a", "b"]}, out={"set": ["a", "b"]}, note="ordem e repetição somem"),
+                Ex({"list": ["a", "b"]}, out={"set": ["a", "b"]}, roundtrip=True),
+                Ex({"list": {"a": 1}}, err="TRANSFORM_OUT_OF_DOMAIN")),
+               collection=(("list", "list"), ("set", "set"))),
+    Combinator("set_to_list", (("set", "tuple", "conjunto (C09 set): lista sem repetição, qualquer ordem"),),
+               (("list", "tuple", "lista (C09 list) na ordem canônica"),), "conjunto sem elemento repetido",
+               (("TRANSFORM_OUT_OF_DOMAIN", "não é lista, ou tem elemento repetido"),), (),
+               "nenhuma (a ordem da lista é a canônica: o conjunto não tem ordem para perder)", "list_to_set", False,
+               _set_to_list,
+               (Ex({"set": ["b", "a"]}, out={"list": ["a", "b"]}, roundtrip=True),
+                Ex({"set": [3, 1, 2]}, out={"list": [1, 2, 3]}, roundtrip=True),
+                Ex({"set": ["a", "a"]}, err="TRANSFORM_OUT_OF_DOMAIN")),
+               collection=(("set", "set"), ("list", "list"))),
+    Combinator("map_list", (("list", "tuple", "lista (C09 list)"),) + _FN_PORTS,
+               (("list", "tuple", "lista do mesmo tamanho e ordem, item_type = saída da escalar"),),
+               "aplica a escalar fn (com params) a cada elemento, na ordem; a grandeza do elemento é a da escalar "
+               "(não muda)", _ELEM_ERRORS, ("semantic",),
+               "a perda de cada elemento é a da escalar fn; a inversa é map_list com a inversa de fn", "map_list", True,
+               _map_list,
+               (Ex({"list": [1, 2], **_GIB}, out={"list": [1024, 2048]}, roundtrip=True),
+                Ex({"list": [], **_GIB}, out={"list": []}, roundtrip=True),
+                Ex({"list": ["a", "b"], **_NONINJ}, out={"list": ["x", "x"]}, note="enum_map não injetiva: sem inversa"),
+                Ex({"list": ["a", "z"], **_NONINJ}, err="TRANSFORM_OUT_OF_DOMAIN"),
+                Ex({"list": ["10.0.0.0/8"], "fn": "split_cidr", "params": {}}, err="DECLARATION_ERROR"),
+                Ex({"list": [1], "fn": "scale", "params": {"factor": 2}}, err="DECLARATION_ERROR"),
+                Ex({"list": [1, {"$not_read": True}], **_GIB}, err="UNKNOWN_INPUT"),
+                Ex({"list": [{"$symbolic": True}], **_GIB}, err="UNKNOWN_SYMBOLIC_INPUT")),
+               collection=(("list", "list"),), inv_inputs=_elem_inverse("list")),
+    Combinator("map_set", (("set", "tuple", "conjunto (C09 set)"),) + _FN_PORTS,
+               (("set", "tuple", "conjunto das imagens, ordem canônica"),),
+               "aplica a escalar fn a cada elemento do conjunto; imagens iguais se juntam", _ELEM_ERRORS,
+               ("semantic",), "escalar não injetiva junta elementos (o conjunto encolhe); além disso, a perda de fn",
+               "map_set", True, _map_set,
+               (Ex({"set": [1, 2], **_GIB}, out={"set": [1024, 2048]}, roundtrip=True),
+                Ex({"set": ["a", "b", "c"], **_NONINJ}, out={"set": ["x", "y"]}, note="a e b viram x"),
+                Ex({"set": [1, 1], **_GIB}, err="TRANSFORM_OUT_OF_DOMAIN"),
+                Ex({"set": [1], "fn": "nao_existe", "params": {}}, err="DECLARATION_ERROR")),
+               collection=(("set", "set"),), inv_inputs=_elem_inverse("set")),
+    Combinator("map_values", (("map", "tuple", "mapa (C09 map) chave -> valor"),) + _FN_PORTS,
+               (("map", "tuple", "mesmas chaves, valores = saída da escalar"),),
+               "aplica a escalar fn a cada valor do mapa; as chaves não mudam", _ELEM_ERRORS, ("semantic",),
+               "a perda de cada valor é a da escalar fn; a inversa é map_values com a inversa de fn", "map_values",
+               True, _map_values,
+               (Ex({"map": {"a": 1, "b": 2}, **_GIB}, out={"map": {"a": 1024, "b": 2048}}, roundtrip=True),
+                Ex({"map": {"k": "a"}, **_NONINJ}, out={"map": {"k": "x"}}, note="enum_map não injetiva: sem inversa"),
+                Ex({"map": [1], **_GIB}, err="TRANSFORM_OUT_OF_DOMAIN"),
+                Ex({"map": {"k": 1}, "fn": "unit_convert_information", "params": {"from": "unit:SEC", "to": "unit:BYTE"}},
+                   err="DECLARATION_ERROR")),
+               collection=(("map", "map"),), inv_inputs=_elem_inverse("map")),
+]
+
 _MARKER_ERRORS = (("UNKNOWN_INPUT", "valor não lido (NOT_READ)"),
                   ("UNKNOWN_SYMBOLIC_INPUT", "valor simbólico ainda não resolvido"))
 
@@ -1294,6 +1463,50 @@ def finite_image(name: str, params: dict | None = None, values=None):
     return frozenset(out)
 
 
+def invert(name: str, params: dict | None, inputs, outputs):
+    """(nome, params|entradas) para aplicar a inversa parcial a esta instância, ou None quando não há.
+    Escalar: (nome, params). Combinador: (nome, entradas da inversa) = saídas, ou o que inv_inputs der."""
+    t = get(name)
+    if isinstance(t, Scalar):
+        return inverse_of(name, params)
+    if t.inverse is None:
+        return None
+    if t.inv_inputs is not None:
+        ins = t.inv_inputs(inputs, outputs)
+        return None if ins is None else (t.inverse, ins)
+    return t.inverse, outputs
+
+
+_COLL_SHAPE = {"wrap_list": (None, "list"), "unwrap_single": ("list", None), "list_to_set": ("list", "set"),
+               "set_to_list": ("set", "list"), "map_list": ("list", "list"), "map_set": ("set", "set"),
+               "map_values": ("map", "map")}
+
+
+def collection_type_out(name: str, tin: dict, fn: str | None = None, params: dict | None = None) -> dict:
+    """Tipo de saída (value_type do C09 3.2.0: {datatype: list|set|map, item_type, key_type?}) de um combinador de
+    coleção. map_* tipam o elemento por type_out da escalar, que reprova se a grandeza do elemento mudaria."""
+    if name not in _COLL_SHAPE:
+        raise DeclarationError(f"{name} não é combinador de coleção")
+    src, dst = _COLL_SHAPE[name]
+    if src is not None and tin.get("datatype") != src:
+        raise DeclarationError(f"{name}: entrada {tin.get('datatype')}, esperado {src}")
+    if src is not None and "item_type" not in tin:
+        raise DeclarationError(f"{name}: coleção sem item_type (C09-COLL)")
+    if name == "wrap_list":
+        return {"datatype": "list", "item_type": dict(tin)}
+    if name == "unwrap_single":
+        return dict(tin["item_type"])
+    item = dict(tin["item_type"])
+    if name.startswith("map_"):
+        if fn is None:
+            raise DeclarationError(f"{name}: tipar exige fn")
+        item = type_out(fn, params or {}, item)
+    out = {"datatype": dst, "item_type": item}
+    if dst == "map":
+        out["key_type"] = tin.get("key_type")
+    return out
+
+
 def apply_chain(chain, v, ctx: dict | None = None):
     """Cadeia de escalares [{name, params}], da esquerda para a direita."""
     for item in chain_of(chain):
@@ -1390,7 +1603,9 @@ def to_item(t) -> dict:
             "inputs": [{"name": n, "datatype": dt} for n, dt, _ in t.inputs],
             "outputs": [{"name": n, "datatype": dt} for n, dt, _ in t.outputs],
             "precondition": t.precondition + "; portas: " + "; ".join(
-                f"{n} ({r})" for n, _, r in t.inputs + t.outputs),
+                f"{n} ({r})" for n, _, r in t.inputs + t.outputs) + (
+                "; coleção (C09 3.2.0) por porta: " + ", ".join(f"{p} = {k}" for p, k in t.collection)
+                if t.collection else ""),
             "error": _err_text(t.errors), "loss": _loss_text(t),
             "inverse": {"name": t.inverse, "partial": t.partial}}
 
@@ -1420,6 +1635,6 @@ def parse_loss_field(text: str) -> list[str]:
     return [k.strip() for k in kinds.split(",")] if sep else ["<sem tipo>"]
 
 
-__all__ = ["finite_domain", "finite_image", "REGISTRY", "SCALARS", "COMBINATORS", "Scalar", "Combinator", "Ex", "apply_scalar", "apply_combinator",
+__all__ = ["invert", "collection_type_out", "finite_domain", "finite_image", "REGISTRY", "SCALARS", "COMBINATORS", "Scalar", "Combinator", "Ex", "apply_scalar", "apply_combinator",
            "apply_chain", "inverse_of", "type_out", "check_chain", "resolve_kernel", "document", "to_item", "get",
            "LOSS_KINDS", "DATATYPES", "parse_error_field", "parse_loss_field", "REGISTRY_VERSION", "GENERATED_AT"]

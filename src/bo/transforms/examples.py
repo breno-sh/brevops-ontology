@@ -23,10 +23,22 @@ def same_input(t, a, b) -> bool:
     """A volta pela inversa confere com a entrada, porta a porta, pelo datatype declarado."""
     if isinstance(t, R.Scalar):
         return _same(a, b, t.domain["datatype"])
-    if not (isinstance(a, dict) and isinstance(b, dict)) or set(a) != set(b):
+    if not (isinstance(a, dict) and isinstance(b, dict)):
+        return False
+    if t.inv_inputs is not None:
+        # a inversa devolve só as portas de dados (fn e params são da instância, não do valor)
+        b = {k: b[k] for k in a if k in b}
+    if set(a) != set(b):
         return False
     types = {n: dt for n, dt, _ in t.inputs}
-    return all(_same(a[k], b[k], types.get(k)) for k in a)
+    coll = dict(t.collection)
+    for k in a:
+        if coll.get(k) == "set" and isinstance(a[k], list) and isinstance(b[k], list):
+            if {CMP._canon(x) for x in a[k]} != {CMP._canon(x) for x in b[k]} or len(a[k]) != len(b[k]):
+                return False
+        elif not _same(a[k], b[k], types.get(k)):
+            return False
+    return True
 
 
 def run_example(t, ex) -> tuple[bool, str]:
@@ -46,12 +58,12 @@ def run_example(t, ex) -> tuple[bool, str]:
     if ex.out is not R._NO and not _same(got, ex.out):
         return False, f"saída {got!r}, esperado {ex.out!r}"
     if ex.roundtrip:
-        inv = R.inverse_of(t.name, ex.params)
+        inv = R.invert(t.name, ex.params, ex.value, got)
         if inv is None:
             return False, "ida e volta pedida, mas a instância não tem inversa"
         name, p = inv
         try:
-            back = R.apply_scalar(name, got, p, ex.ctx) if scalar else R.apply_combinator(name, got, ex.ctx)
+            back = R.apply_scalar(name, got, p, ex.ctx) if scalar else R.apply_combinator(name, p, ex.ctx)
         except TransformError as e:
             return False, f"inversa {name} falhou: {e}"
         if not same_input(t, back, ex.value):

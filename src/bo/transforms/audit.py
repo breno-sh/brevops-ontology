@@ -34,13 +34,13 @@ def _apply(t, ex):
 
 def _roundtrips(t, ex):
     """True/False se volta pela inversa; None se a instância não tem inversa."""
-    inv = R.inverse_of(t.name, ex.params)
+    got = _apply(t, ex)
+    inv = R.invert(t.name, ex.params, ex.value, got)
     if inv is None:
         return None
-    got = _apply(t, ex)
     name, p = inv
     try:
-        back = R.apply_scalar(name, got, p, ex.ctx) if isinstance(t, R.Scalar) else R.apply_combinator(name, got, ex.ctx)
+        back = R.apply_scalar(name, got, p, ex.ctx) if isinstance(t, R.Scalar) else R.apply_combinator(name, p, ex.ctx)
     except TransformError:
         return False
     return same_input(t, back, ex.value)

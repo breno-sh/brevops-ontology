@@ -39,6 +39,9 @@ FINDINGS = [
     "O comparador numeric_tolerance do C11 tem só {name, tolerance}, sem dizer se a tolerância é absoluta ou "
     "relativa (o C22 tem kind). O registro declara ABSOLUTA, na unidade do expected; tipos de unidade diferentes "
     "dos dois lados vão por compare_quantity_tolerance. Sugestão ao CONTRACTS: tolerance_kind no C11.",
+    "O C10 3.0.0 não tem list/set/map no datatype de porta (o C09 3.2.0 tem, com item_type): os combinadores de "
+    "coleção da emenda 1.2.0 usam porta 'tuple' e declaram a coleção na restrição da porta; proposta de C10 3.1.0 "
+    "em results/TRANSFORMS/CONTRACT_CHANGE.txt (não bloqueia: o tipo exato sai de collection_type_out).",
     "O C10 combinador não tem params: o que é parâmetro no núcleo do SEMANTICS (key de json_get/map_get) vira porta "
     "de entrada aqui; json_get e map_get ficam com duas entradas e uma saída.",
     "xsd:duration segue o espaço de valores do XSD 1.1 (meses, segundos): P0M1D não tem meses e vira 86400 s sem "
@@ -57,6 +60,13 @@ EMENDAS = [
      "change": "finite_domain/finite_image no registro; enum_to_bool declara domínio = true ∪ false, bool_to_enum "
                "domínio {true, false} e imagem {params.true, params.false}, enum_map domínio = chaves (part_of nos "
                "params e na pré-condição); o ARBITERLIB recongela para usar no VDR"},
+    {"registry_version": "1.2.0", "commit_subject": "[TRANSFORMS] emenda 1.2.0: combinadores de coleção (CC-6)",
+     "request": "PILOT-STO-MAP CC-6 (results/CONTRACTS/emenda7.json: ACEITO, C09 3.2.0; combinadores do registro "
+                "do C10 com o TRANSFORMS)",
+     "change": "wrap_list/unwrap_single (escalar <-> lista de um), list_to_set (perda declarada de ordem e "
+               "repetição)/set_to_list, map_list/map_set/map_values (escalar do registro elemento a elemento, "
+               "inversa com a inversa da escalar) e collection_type_out (value_type do C09 3.2.0); portas tuple + "
+               "collection porque o C10 3.0.0 não tem list/set/map (CONTRACT_CHANGE.txt)"},
 ]
 
 

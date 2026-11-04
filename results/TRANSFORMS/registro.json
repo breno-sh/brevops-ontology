@@ -1,13 +1,13 @@
 {
  "schema": "bo.transforms_index/1",
  "module": "TRANSFORMS",
- "registry_version": "1.1.0",
- "generated_at": "2026-11-04T12:25:00-03:00",
+ "registry_version": "1.2.0",
+ "generated_at": "2026-11-04T12:27:00-03:00",
  "counts": {
   "scalar": 27,
-  "combinators": 17,
+  "combinators": 24,
   "comparators": 7,
-  "examples": 343,
+  "examples": 385,
   "sat_tests": 30,
   "incompatible_pairs": 11,
   "compatible_pairs": 5,
@@ -1478,12 +1478,204 @@
     "error": 8
    },
    "c11_comparator": "numeric_tolerance"
+  },
+  {
+   "name": "wrap_list",
+   "kind": "tuple",
+   "signature": {
+    "inputs": [
+     "value"
+    ],
+    "outputs": [
+     "list"
+    ]
+   },
+   "loss": [],
+   "inverse": "unwrap_single",
+   "partial": false,
+   "error_codes": [
+    "UNKNOWN_INPUT",
+    "UNKNOWN_SYMBOLIC_INPUT"
+   ],
+   "examples": {
+    "positive": 0,
+    "roundtrip": 2,
+    "error": 2
+   }
+  },
+  {
+   "name": "unwrap_single",
+   "kind": "tuple",
+   "signature": {
+    "inputs": [
+     "list"
+    ],
+    "outputs": [
+     "value"
+    ]
+   },
+   "loss": [],
+   "inverse": "wrap_list",
+   "partial": false,
+   "error_codes": [
+    "TRANSFORM_OUT_OF_DOMAIN",
+    "UNKNOWN_INPUT",
+    "UNKNOWN_SYMBOLIC_INPUT"
+   ],
+   "examples": {
+    "positive": 0,
+    "roundtrip": 1,
+    "error": 5
+   }
+  },
+  {
+   "name": "list_to_set",
+   "kind": "tuple",
+   "signature": {
+    "inputs": [
+     "list"
+    ],
+    "outputs": [
+     "set"
+    ]
+   },
+   "loss": [
+    "not_expressible"
+   ],
+   "inverse": "set_to_list",
+   "partial": true,
+   "error_codes": [
+    "TRANSFORM_OUT_OF_DOMAIN",
+    "UNKNOWN_INPUT",
+    "UNKNOWN_SYMBOLIC_INPUT"
+   ],
+   "examples": {
+    "positive": 1,
+    "roundtrip": 1,
+    "error": 3
+   }
+  },
+  {
+   "name": "set_to_list",
+   "kind": "tuple",
+   "signature": {
+    "inputs": [
+     "set"
+    ],
+    "outputs": [
+     "list"
+    ]
+   },
+   "loss": [],
+   "inverse": "list_to_set",
+   "partial": false,
+   "error_codes": [
+    "TRANSFORM_OUT_OF_DOMAIN",
+    "UNKNOWN_INPUT",
+    "UNKNOWN_SYMBOLIC_INPUT"
+   ],
+   "examples": {
+    "positive": 0,
+    "roundtrip": 2,
+    "error": 3
+   }
+  },
+  {
+   "name": "map_list",
+   "kind": "tuple",
+   "signature": {
+    "inputs": [
+     "list",
+     "fn",
+     "params"
+    ],
+    "outputs": [
+     "list"
+    ]
+   },
+   "loss": [
+    "semantic"
+   ],
+   "inverse": "map_list",
+   "partial": true,
+   "error_codes": [
+    "TRANSFORM_OUT_OF_DOMAIN",
+    "DECLARATION_ERROR",
+    "UNKNOWN_INPUT",
+    "UNKNOWN_SYMBOLIC_INPUT"
+   ],
+   "examples": {
+    "positive": 1,
+    "roundtrip": 2,
+    "error": 7
+   }
+  },
+  {
+   "name": "map_set",
+   "kind": "tuple",
+   "signature": {
+    "inputs": [
+     "set",
+     "fn",
+     "params"
+    ],
+    "outputs": [
+     "set"
+    ]
+   },
+   "loss": [
+    "semantic"
+   ],
+   "inverse": "map_set",
+   "partial": true,
+   "error_codes": [
+    "TRANSFORM_OUT_OF_DOMAIN",
+    "DECLARATION_ERROR",
+    "UNKNOWN_INPUT",
+    "UNKNOWN_SYMBOLIC_INPUT"
+   ],
+   "examples": {
+    "positive": 1,
+    "roundtrip": 1,
+    "error": 4
+   }
+  },
+  {
+   "name": "map_values",
+   "kind": "tuple",
+   "signature": {
+    "inputs": [
+     "map",
+     "fn",
+     "params"
+    ],
+    "outputs": [
+     "map"
+    ]
+   },
+   "loss": [
+    "semantic"
+   ],
+   "inverse": "map_values",
+   "partial": true,
+   "error_codes": [
+    "TRANSFORM_OUT_OF_DOMAIN",
+    "DECLARATION_ERROR",
+    "UNKNOWN_INPUT",
+    "UNKNOWN_SYMBOLIC_INPUT"
+   ],
+   "examples": {
+    "positive": 1,
+    "roundtrip": 1,
+    "error": 4
+   }
   }
  ],
  "findings": [
   "bo.semantics.guards.satisfiable dava SAT (ou UNKNOWN) onde não há valor possível em duas classes de guarda, e esta implementação (conferida por força bruta) dá UNSAT: (a) version_range sobre termo de universo fechado (enum ou boolean) ou não textual; (b) refers_to_kind junto com restrição de valor escalar ou universo fechado no mesmo termo. Eram 39 de 3998 guardas aleatórias; o SEMANTICS corrigiu em f48865f, os sat_tests passaram a incluir as duas classes e o guard_sat agora exige igualdade total (ver $BO_DATA/TRANSFORMS/guard_sat.json).",
   "O C10 não tem variável de tipo: uma escalar polimórfica que preserva a grandeza não se declara com grandeza concreta. O registro declara por grandeza (unit_convert_time, round_information, ...) e deixa só identity polimórfica, com grandeza NOT_APPLICABLE como no stub do CONTRACTS; NOT_APPLICABLE ali quer dizer 'não impõe nem muda grandeza', não 'valor sem grandeza'. Sugestão ao CONTRACTS: quantity_kind '$in' (variável) no C10.",
   "O comparador numeric_tolerance do C11 tem só {name, tolerance}, sem dizer se a tolerância é absoluta ou relativa (o C22 tem kind). O registro declara ABSOLUTA, na unidade do expected; tipos de unidade diferentes dos dois lados vão por compare_quantity_tolerance. Sugestão ao CONTRACTS: tolerance_kind no C11.",
+  "O C10 3.0.0 não tem list/set/map no datatype de porta (o C09 3.2.0 tem, com item_type): os combinadores de coleção da emenda 1.2.0 usam porta 'tuple' e declaram a coleção na restrição da porta; proposta de C10 3.1.0 em results/TRANSFORMS/CONTRACT_CHANGE.txt (não bloqueia: o tipo exato sai de collection_type_out).",
   "O C10 combinador não tem params: o que é parâmetro no núcleo do SEMANTICS (key de json_get/map_get) vira porta de entrada aqui; json_get e map_get ficam com duas entradas e uma saída.",
   "xsd:duration segue o espaço de valores do XSD 1.1 (meses, segundos): P0M1D não tem meses e vira 86400 s sem contexto; P1M e P1Y sem contexto de calendário são TRANSFORM_OUT_OF_DOMAIN; P1M = P30D é falso (duration_equal).",
   "Os IRIs de unidade seguem o padrão do C00 e as grandezas do SEMANTICS; a existência de cada IRI no QUDT (iri_status = pattern_only) é conferida pelo UNITS, não aqui.",
