@@ -277,6 +277,40 @@ class Builder:
         if f is not None and f.atom and f.status == "known":
             self.T.consumed[(r.rid, f.atom)] = ([], why)
 
+    # ------------------------------------------------------------ referências do plano (traço C23)
+    def member_ref(self, tr, field, target_atom, term):
+        """Referência regra -> conjunto: leva a PERTENÇA da origem (bloco do conjunto ou campo-pai da regra
+        separada); regra sintetizada (negação de fecho) leva referência sintetizada."""
+        from .translate import val
+        r = tr.get("src_rule")
+        if r is None or tr.get("synth"):
+            return val(field, term, "synthesized")
+        prov, rt = r.provider, r.tf["resource_type"]
+        if "block_path" in r.tf:
+            atom = f"{prov}:{rt}:{r.tf['block_path']}"
+        else:
+            atom = f"{prov}:{rt}:{V.STANDALONE_RULES[prov][rt]['parent']}"
+        raw = self.T.L.sets[r.set_id].tf["address"] if r.set_id else None
+        self.T.trace(atom=atom, raw=raw, result="carried", out_atom=target_atom, out_value=term, prop="bo:ruleInSet",
+                     individual=r.rid, meta=["pertença da regra ao conjunto na configuração de origem"],
+                     detail="referência ao conjunto traduzido no mesmo plano")
+        return val(field, term, "carried")
+
+    def attach_ref(self, tid, field, target_atom, term):
+        """Referência do ponto de anexação ao conjunto: leva a ANEXAÇÃO da origem do alvo tid."""
+        from .translate import val
+        atts = [a for a in self.T.L.attachments if a.endpoint == tid and a.set_id]
+        if not atts:
+            return val(field, term, "synthesized")
+        prov = self.T.L.provider
+        for a in atts:
+            fld = a.tf.get("block_path") or ("network_security_group_id" if prov == "azurerm" else "id")
+            self.T.trace(atom=f"{prov}:{a.tf['resource_type']}:{fld}", raw=self.T.L.sets[a.set_id].tf["address"],
+                         result="carried", out_atom=target_atom, out_value=term, prop="bo:attachesRuleSet",
+                         individual=a.set_id, meta=[f"anexação do alvo {tid} na configuração de origem"],
+                         detail="referência do ponto de anexação ao conjunto traduzido")
+        return val(field, term, "carried")
+
     def depends(self, *nodes):
         return [self.P.order_of(n) for n in nodes if n]
 
@@ -319,7 +353,7 @@ class AwsBuilder(Builder):
         from .translate import lit, name_of, refterm, val
         sn = P.node("bo:FilterRuleSet")
         self.set_nodes[gi] = sn
-        P.step(sn, "aws_security_group", [], name=name_of(P, sn, "bo-sg"), name_field="name",
+        P.step(sn, "aws_security_group", [], name=name_of(P, sn, "bo-sg"),
                choices=[{"choice_id": f"CH-AWS-RULE-{gi}", "options": ["aws_security_group_rule",
                                                                        "aws_vpc_security_group_ingress_rule"],
                          "selected": "aws_security_group_rule",
@@ -334,7 +368,8 @@ class AwsBuilder(Builder):
             cn = P.node("bo:FilterRule", component_of=sn, occurrence=[f"g{gi}", f"r{k}"])
             P.ref(cn, sn, "bo:ruleInSet", "attachment")
             losses = []
-            vals = [val("security_group_id", refterm(P, sn, "aws_security_group"))]
+            vals = [self.member_ref(tr, "security_group_id", "aws:aws_security_group_rule:security_group_id",
+                                    refterm(P, sn, "aws_security_group"))]
             t, o = self.resolve(tr, "direction", "type", "aws:aws_security_group_rule:type",
                                 neutral=self.neutral(tr, "direction"), codec=lambda d: d)
             vals.append(val("type", t, o))
@@ -421,7 +456,8 @@ class AwsBuilder(Builder):
                 sym = P.term({"kind": "symbol", "symbol_id": _sym(P, f"nic-{tid}"), "name_class": "resource_attribute",
                               "scope": "repo"})
                 P.step(an, "aws_network_interface_sg_attachment",
-                       [val("security_group_id", refterm(P, sn, "aws_security_group")),
+                       [self.attach_ref(tid, "security_group_id", "aws:aws_network_interface_sg_attachment:security_group_id",
+                                        refterm(P, sn, "aws_security_group")),
                         val("network_interface_id", P.terms[int(sym[1:]) - 1]["term"], "synthesized")],
                        depends=self.depends(sn),
                        unknowns=[{"term_id": sym, "reason": "interface do ponto de anexação: contexto do caso, fora "
@@ -466,7 +502,8 @@ class GoogleBuilder(Builder):
                 continue
             cn = P.node("bo:FilterRule", component_of=self.net, occurrence=[f"g{gi}", f"r{k}"])
             P.ref(cn, self.net, "bo:ruleInSet", "attachment")
-            vals = [val("network", refterm(P, self.net, "google_compute_network", "id"))]
+            vals = [self.member_ref(tr, "network", "google:google_compute_firewall:network",
+                                    refterm(P, self.net, "google_compute_network", "id"))]
             t, o = self.resolve(tr, "direction", "direction", "google:google_compute_firewall:direction",
                                 neutral=self.neutral(tr, "direction"), codec=lambda d: CY.lower_direction("google", d))
             vals.append(val("direction", t, o))
@@ -562,7 +599,9 @@ class GoogleBuilder(Builder):
                 P.step(en, "google_compute_instance",
                        [val("machine_type", P.terms[int(mt[1:]) - 1]["term"], "synthesized"),
                         val("boot_disk.0.initialize_params.0.image", P.terms[int(im[1:]) - 1]["term"], "synthesized"),
-                        val("network_interface.0.network", refterm(P, self.net, "google_compute_network", "id")),
+                        self.attach_ref(tid, "network_interface.0.network",
+                                        "google:google_compute_instance:network_interface.network",
+                                        refterm(P, self.net, "google_compute_network", "id")),
                         val("tags", lit([self.tags[gi]]), "synthesized")],
                        name=name_of(P, en, "bo-vm"), name_field="name", depends=self.depends(self.net),
                        unknowns=[{"term_id": mt, "reason": "tipo de máquina: contexto do ponto, fora da fatia"},
@@ -583,14 +622,14 @@ class AzureBuilder(Builder):
                name=name_of(P, self.rg, "bo-rg"), name_field="name")
         self.vnet = P.node("bo:NetworkEndpoint")
         P.step(self.vnet, "azurerm_virtual_network",
-               [val("resource_group_name", refterm(P, self.rg, "azurerm_resource_group", "name")),
-                val("location", refterm(P, self.rg, "azurerm_resource_group", "location")),
+               [val("resource_group_name", refterm(P, self.rg, "azurerm_resource_group", "name"), "synthesized"),
+                val("location", refterm(P, self.rg, "azurerm_resource_group", "location"), "synthesized"),
                 val("address_space", lit(["10.20.0.0/16"]), "synthesized")],
                name=name_of(P, self.vnet, "bo-vnet"), name_field="name", depends=self.depends(self.rg))
         self.snet = P.node("bo:NetworkEndpoint")
         P.step(self.snet, "azurerm_subnet",
-               [val("resource_group_name", refterm(P, self.rg, "azurerm_resource_group", "name")),
-                val("virtual_network_name", refterm(P, self.vnet, "azurerm_virtual_network", "name")),
+               [val("resource_group_name", refterm(P, self.rg, "azurerm_resource_group", "name"), "synthesized"),
+                val("virtual_network_name", refterm(P, self.vnet, "azurerm_virtual_network", "name"), "synthesized"),
                 val("address_prefixes", lit(["10.20.1.0/24"]), "synthesized")],
                name=name_of(P, self.snet, "bo-snet"), name_field="name", depends=self.depends(self.rg, self.vnet))
         for n, k in ((self.vnet, "inNetwork"), (self.snet, "inNetwork")):
@@ -605,8 +644,8 @@ class AzureBuilder(Builder):
         self.set_nodes[gi] = sn
         P.ref(sn, self.rg, "bo:inResourceGroup")
         P.step(sn, "azurerm_network_security_group",
-               [val("resource_group_name", refterm(P, self.rg, "azurerm_resource_group", "name")),
-                val("location", refterm(P, self.rg, "azurerm_resource_group", "location"))],
+               [val("resource_group_name", refterm(P, self.rg, "azurerm_resource_group", "name"), "synthesized"),
+                val("location", refterm(P, self.rg, "azurerm_resource_group", "location"), "synthesized")],
                name=name_of(P, sn, "bo-nsg"), name_field="name", depends=self.depends(self.rg))
         used = set()
         self._prio = self.plan_priorities(rules, "azurerm:azurerm_network_security_rule:priority", required=True)
@@ -614,8 +653,10 @@ class AzureBuilder(Builder):
             cn = P.node("bo:FilterRule", component_of=sn, occurrence=[f"g{gi}", f"r{k}"])
             P.ref(cn, sn, "bo:ruleInSet", "attachment")
             P.ref(cn, self.rg, "bo:inResourceGroup")
-            vals = [val("resource_group_name", refterm(P, self.rg, "azurerm_resource_group", "name")),
-                    val("network_security_group_name", refterm(P, sn, "azurerm_network_security_group", "name"))]
+            vals = [val("resource_group_name", refterm(P, self.rg, "azurerm_resource_group", "name"), "synthesized"),
+                    self.member_ref(tr, "network_security_group_name",
+                                    "azurerm:azurerm_network_security_rule:network_security_group_name",
+                                    refterm(P, sn, "azurerm_network_security_group", "name"))]
             A = "azurerm:azurerm_network_security_rule:"
             eff = self.neutral(tr, "effect")
             f = _src_fact(tr, "effect")
@@ -724,10 +765,10 @@ class AzureBuilder(Builder):
                 P.ref(nic, self.rg, "bo:inResourceGroup")
                 P.ref(nic, self.snet, "bo:inSubnet")
                 P.step(nic, "azurerm_network_interface",
-                       [val("resource_group_name", refterm(P, self.rg, "azurerm_resource_group", "name")),
-                        val("location", refterm(P, self.rg, "azurerm_resource_group", "location")),
+                       [val("resource_group_name", refterm(P, self.rg, "azurerm_resource_group", "name"), "synthesized"),
+                        val("location", refterm(P, self.rg, "azurerm_resource_group", "location"), "synthesized"),
                         val("ip_configuration.name", lit("ipc"), "synthesized"),
-                        val("ip_configuration.subnet_id", refterm(P, self.snet, "azurerm_subnet", "id")),
+                        val("ip_configuration.subnet_id", refterm(P, self.snet, "azurerm_subnet", "id"), "synthesized"),
                         val("ip_configuration.private_ip_address_allocation", lit("Dynamic"), "synthesized")],
                        name=name_of(P, nic, "bo-nic"), name_field="name", depends=self.depends(self.rg, self.snet))
                 an = P.node("bo:RuleSetAttachment")
@@ -735,8 +776,11 @@ class AzureBuilder(Builder):
                 P.ref(an, sn, "bo:attachesRuleSet", "attachment")
                 P.ref(an, nic, "bo:attachesEndpoint", "attachment")
                 P.step(an, "azurerm_network_interface_security_group_association",
-                       [val("network_interface_id", refterm(P, nic, "azurerm_network_interface", "id")),
-                        val("network_security_group_id", refterm(P, sn, "azurerm_network_security_group", "id"))],
+                       [val("network_interface_id", refterm(P, nic, "azurerm_network_interface", "id"), "synthesized"),
+                        self.attach_ref(tid, "network_security_group_id",
+                                        "azurerm:azurerm_network_interface_security_group_association:"
+                                        "network_security_group_id",
+                                        refterm(P, sn, "azurerm_network_security_group", "id"))],
                        depends=self.depends(nic, sn))
                 self.T.out.endpoints[tid] = {"node": nic, "kind": "azure_nic", "assoc": an, "set_node": sn}
 
@@ -764,7 +808,7 @@ class OciBuilder(Builder):
         self.set_nodes[gi] = sn
         P.ref(sn, self.vcn, "bo:inNetwork")
         vals = [val("compartment_id", P.terms[int(self.comp[1:]) - 1]["term"], "synthesized"),
-                val("vcn_id", refterm(P, self.vcn, "oci_core_vcn", "id"))]
+                val("vcn_id", refterm(P, self.vcn, "oci_core_vcn", "id"), "synthesized")]
         idx = {"ingress": 0, "egress": 0}
         choices = []
         for k, tr in enumerate(rules):
@@ -878,9 +922,10 @@ class OciBuilder(Builder):
                 P.ref(sub, sn, "bo:attachesRuleSet", "attachment")
                 P.step(sub, "oci_core_subnet",
                        [val("compartment_id", P.terms[int(self.comp[1:]) - 1]["term"], "synthesized"),
-                        val("vcn_id", refterm(P, self.vcn, "oci_core_vcn", "id")),
+                        val("vcn_id", refterm(P, self.vcn, "oci_core_vcn", "id"), "synthesized"),
                         val("cidr_block", lit(f"10.0.{k}.0/24"), "synthesized"),
-                        val("security_list_ids.0", refterm(P, sn, "oci_core_security_list", "id"))],
+                        self.attach_ref(tid, "security_list_ids", "oci:oci_core_subnet:security_list_ids",
+                                        {"kind": "list", "items": [refterm(P, sn, "oci_core_security_list", "id")]})],
                        name=name_of(P, sub, f"subnet{k}", literal_name=True), name_field="display_name",
                        depends=self.depends(self.vcn, sn))
                 self.T.out.endpoints[tid] = {"node": sub, "kind": "oci_subnet", "set_node": sn}

@@ -1,7 +1,10 @@
 PILOT-NET-E2E: mudanças de contrato e achados exigidos pelo piloto net
 Registrado em 2026-11-04T10:15:00-03:00 (America/Recife). Base: bo/base 8450403.
 
-CC-NET-E2E-1 (bloqueia o lowering para o OCI nas 3 direções x -> oci)
+CC-NET-E2E-1 (bloqueava o lowering para o OCI nas 3 direções x -> oci) — RESOLVIDO em 2026-11-04T13:07-03:00:
+  CONTRACTS emenda 7 (C00 3.1.0, termo list) e HARNESS-OCI e2e0133 (termo list renderiza); o plano agora escreve
+  security_list_ids = {"kind": "list", "items": [referência]} e as direções x -> oci renderizam e validam.
+  Texto original:
   O C00 3.0.1 não tem termo de LISTA: um literal list só leva valores planos e uma expressão não tem construtor de
   lista. A anexação do conjunto na OCI só existe como atributo-lista de referências (oci_core_subnet.security_list_ids,
   create_vnic_details.nsg_ids); não há recurso de anexação com referência escalar. O plano C26 escreve

@@ -74,7 +74,21 @@ def _get(body, path):
     return cur
 
 
-def check_case(plan: dict, files: dict, provider: str) -> list:
+def _name_rx(dn: dict, terms: dict):
+    """Nome derivado esperado: literais do template e termos literais exatos; termo símbolo vira variável."""
+    parts = re.split(r"(\{t[0-9]+\})", dn["template"])
+    rx = ""
+    for p in parts:
+        m = re.fullmatch(r"\{(t[0-9]+)\}", p)
+        if not m:
+            rx += re.escape(p)
+            continue
+        t = terms.get(m.group(1)) or {}
+        rx += re.escape(str(t["value"])) if t.get("kind") == "literal" else r"\$\{var\.[A-Za-z0-9_]+\}"
+    return re.compile("^" + rx + "$")
+
+
+def check_case(plan: dict, files: dict, provider: str, graph: dict | None = None) -> list:
     issues = []
     parsed = {"resources": {}, "variables": {}}
     for name, text in files.items():
@@ -101,6 +115,14 @@ def check_case(plan: dict, files: dict, provider: str) -> list:
         dn = st.get("derived_name") or {}
         if dn.get("field"):
             allowed.add(dn["field"].split(".")[0])
+            got = _get(body, dn["field"])
+            if got is KeyError:
+                issues.append({"kind": "DROPPED", "where": f"{label}.{dn['field']}", "detail": "nome derivado"})
+            elif graph is not None:
+                terms = {t["term_id"]: t["term"] for t in graph.get("terms", [])}
+                if not (isinstance(got, str) and _name_rx(dn, terms).match(got)):
+                    issues.append({"kind": "ALTERED", "where": f"{label}.{dn['field']}",
+                                   "detail": f"nome derivado {got!r} fora do template {dn['template']!r}"})
         for k in body:
             if k not in allowed:
                 issues.append({"kind": "INSERTED", "where": f"{label}.{k}"})
@@ -117,6 +139,14 @@ def check_case(plan: dict, files: dict, provider: str) -> list:
             elif t["kind"] == "reference":
                 if not (isinstance(got, str) and got.startswith("${") and t["target_type"] in got):
                     issues.append({"kind": "ALTERED", "where": f"{label}.{v['field']}", "detail": "referência"})
+            elif t["kind"] == "list":
+                items = got if isinstance(got, list) else None
+                if items is None or len(items) != len(t["items"]) or not all(
+                        (it["kind"] == "reference" and isinstance(g, str) and it["target_type"] in g) or
+                        (it["kind"] == "literal" and _norm_lit(g) == _norm_lit(it["value"])) or
+                        (it["kind"] == "symbol" and isinstance(g, str) and "var." in g)
+                        for it, g in zip(t["items"], items)):
+                    issues.append({"kind": "ALTERED", "where": f"{label}.{v['field']}", "detail": "lista"})
             elif t["kind"] == "symbol":
                 if not (isinstance(got, str) and "var." in got):
                     issues.append({"kind": "ALTERED", "where": f"{label}.{v['field']}", "detail": "símbolo"})
@@ -141,7 +171,7 @@ def _norm_lit(v):
     return v
 
 
-def mutations(plan, files, provider) -> list:
+def mutations(plan, files, provider, graph=None) -> list:
     """Cada mutação tem de reprovar."""
     name = next(iter(files))
     text = files[name]
@@ -165,7 +195,7 @@ def mutations(plan, files, provider) -> list:
     for k, t in cases.items():
         if t is None:
             continue
-        iss = check_case(plan, dict(files, **{name: t}), provider)
+        iss = check_case(plan, dict(files, **{name: t}), provider, graph)
         out.append({"mutation": k, "caught": bool(iss)})
     return out
 
@@ -180,6 +210,8 @@ def main(argv=None) -> int:
     rows = [json.loads(l) for l in (out / "cases.jsonl").read_text(encoding="utf-8").splitlines() if l.strip()]
     plans = {p["plan_id"]: p for p in (json.loads(l) for l in (out / "lowering_plan.jsonl").read_text(
         encoding="utf-8").splitlines() if l.strip())}
+    graphs = {g["graph_id"]: g for g in (json.loads(l) for l in (out / "graph_ir.jsonl").read_text(
+        encoding="utf-8").splitlines() if l.strip())}
     checked, bad, per_prov, muts = 0, [], {}, []
     for r in rows:
         if r["render_status"] != "RENDERED":
@@ -187,13 +219,15 @@ def main(argv=None) -> int:
         d = out / "hcl" / r["case_id"]
         files = {p.name: p.read_text(encoding="utf-8") for p in sorted(d.glob("*.tf"))}
         prov = r["direction"].split("->")[1]
-        iss = check_case(plans[r["plan_id"]], files, prov)
+        pl = plans[r["plan_id"]]
+        gr = graphs.get(pl["graph_id"])
+        iss = check_case(pl, files, prov, gr)
         checked += 1
         per_prov[prov] = per_prov.get(prov, 0) + 1
         if iss:
             bad.append({"case_id": r["case_id"], "issues": iss[:10]})
         if per_prov[prov] == 1:
-            muts += [dict(m, provider=prov, case_id=r["case_id"]) for m in mutations(plans[r["plan_id"]], files, prov)]
+            muts += [dict(m, provider=prov, case_id=r["case_id"]) for m in mutations(pl, files, prov, gr)]
     uncaught = [m for m in muts if not m["caught"]]
     rep = {"schema": "bo.pilot_net.no_silent_insert/1", "checked": checked, "per_provider": per_prov,
            "failures": bad, "mutations": muts, "uncaught_mutations": uncaught}

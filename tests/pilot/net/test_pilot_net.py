@@ -176,7 +176,34 @@ def test_no_silent_insert_catches_mutations(run, tmpdir_mod):
     assert all(m["caught"] for m in NSI.mutations(plans[r["plan_id"]], files, prov))
 
 
-def test_oci_list_of_references_is_a_declared_render_block(run, tmpdir_mod):
+def test_oci_attachment_renders_as_list_term(run, tmpdir_mod):
+    """C00 3.1.0 (termo list) + HARNESS-OCI e2e0133: as direções x -> oci renderizam (antes, CC-NET-E2E-1)."""
     oci = [r for r in rows(tmpdir_mod) if r["direction"].endswith("->oci") and r["translate_status"] == "TRANSLATED"]
-    assert oci and all(r["status"] == "RENDER_BLOCKED" for r in oci)
-    assert any("security_list_ids" in json.dumps(r["render_problems"]) for r in oci)
+    assert oci and all(r["render_status"] == "RENDERED" for r in oci)
+    plans = [json.loads(l) for l in (tmpdir_mod / "run" / "lowering_plan.jsonl").read_text().splitlines()]
+    sub = [v for p in plans if p["target_provider"] == "oci" for st in p["steps"] for v in st["values"]
+           if v["field"] == "security_list_ids"]
+    assert sub and all(v["term"]["kind"] == "list" for v in sub)
+
+
+def test_every_carried_plan_value_has_a_trace(run, tmpdir_mod):
+    """E1: todo valor 'carried' do plano tem traço C23 carried com o mesmo átomo de saída."""
+    out = tmpdir_mod / "run"
+    carried = {}
+    for l in (out / "translation_trace.jsonl").read_text().splitlines():
+        t = json.loads(l)
+        if t["result"] == "carried":
+            carried.setdefault(t["case_id"], set()).add(t["output"]["atom_id"])
+    import re
+    for r in rows(tmpdir_mod):
+        if not r["plan_id"]:
+            continue
+    plans = {p["plan_id"]: p for p in map(json.loads, (out / "lowering_plan.jsonl").read_text().splitlines())}
+    for r in rows(tmpdir_mod):
+        p = plans.get(r["plan_id"])
+        for st in (p or {}).get("steps", []):
+            for v in st["values"]:
+                if v["origin"] == "carried":
+                    f = re.sub(r"\.[0-9]+(?=\.|$)", "", v["field"])
+                    assert f"{p['target_provider']}:{st['resource_type']}:{f}" in carried.get(r["case_id"], set()), \
+                        (r["case_id"], v["field"])
