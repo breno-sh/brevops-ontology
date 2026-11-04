@@ -1,8 +1,8 @@
 {
  "schema": "bo.transforms_amendments/1",
  "module": "TRANSFORMS",
- "registry_version": "1.2.0",
- "generated_at": "2026-11-04T12:27:00-03:00",
+ "registry_version": "1.3.0",
+ "generated_at": "2026-11-04T12:33:00-03:00",
  "amendments": [
   {
    "registry_version": "1.1.0",
@@ -15,6 +15,12 @@
    "commit_subject": "[TRANSFORMS] emenda 1.2.0: combinadores de coleção (CC-6)",
    "request": "PILOT-STO-MAP CC-6 (results/CONTRACTS/emenda7.json: ACEITO, C09 3.2.0; combinadores do registro do C10 com o TRANSFORMS)",
    "change": "wrap_list/unwrap_single (escalar <-> lista de um), list_to_set (perda declarada de ordem e repetição)/set_to_list, map_list/map_set/map_values (escalar do registro elemento a elemento, inversa com a inversa da escalar) e collection_type_out (value_type do C09 3.2.0); portas tuple + collection porque o C10 3.0.0 não tem list/set/map (CONTRACT_CHANGE.txt)"
+  },
+  {
+   "registry_version": "1.3.0",
+   "commit_subject": "[TRANSFORMS] emenda 1.3.0: bytes e bits em AmountOfData (CC-5)",
+   "request": "PILOT-STO-MAP CC-5 (results/CONTRACTS/emenda7.json: NÃO É DO CONTRACTS, donos UNITS e SEMANTICS; alinhamento do registro pedido pelo coordenador)",
+   "change": "quantitykind de BIT, BYTE e prefixos = quantitykind:AmountOfData (QUDT 3.5.3, qudt:unitForQuantityKind), igual a bo.units.rules e ao SEMANTICS (313e4d4); as escalares *_information mantêm o nome e mudam a grandeza declarada; teste contra bo.units.rules"
   }
  ]
 }

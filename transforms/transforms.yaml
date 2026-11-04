@@ -2,7 +2,7 @@ schema: bo.transforms/1
 contract: C10
 contract_version: 3.0.0
 module: TRANSFORMS
-generated_at: '2026-11-04T12:27:00-03:00'
+generated_at: '2026-11-04T12:33:00-03:00'
 scalar:
 - name: identity
   kind: scalar
@@ -237,14 +237,13 @@ scalar:
   kind: scalar
   domain:
     datatype: number
-    quantity_kind: quantitykind:InformationEntropy
+    quantity_kind: quantitykind:AmountOfData
   codomain:
     datatype: number
-    quantity_kind: quantitykind:InformationEntropy
-  precondition: mesma grandeza (quantitykind:InformationEntropy); from e to ∈ {unit:BIT, unit:KiloBIT, unit:MegaBIT,
-    unit:GigaBIT, unit:BYTE, unit:KiloBYTE, unit:MegaBYTE, unit:GigaBYTE, unit:TeraBYTE, unit:KibiBYTE, unit:MebiBYTE,
-    unit:GibiBYTE, unit:TebiBYTE}; valor na unidade from; a janela de taxa, se houver, não muda; resultado exato
-    (racional)
+    quantity_kind: quantitykind:AmountOfData
+  precondition: mesma grandeza (quantitykind:AmountOfData); from e to ∈ {unit:BIT, unit:KiloBIT, unit:MegaBIT, unit:GigaBIT,
+    unit:BYTE, unit:KiloBYTE, unit:MegaBYTE, unit:GigaBYTE, unit:TeraBYTE, unit:KibiBYTE, unit:MebiBYTE, unit:GibiBYTE,
+    unit:TebiBYTE}; valor na unidade from; a janela de taxa, se houver, não muda; resultado exato (racional)
   error: 'TRANSFORM_OUT_OF_DOMAIN: valor não numérico ou ausente | DECLARATION_ERROR: from/to fora do registro ou
     de outra grandeza | UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda
     não resolvido'
@@ -255,11 +254,11 @@ scalar:
   params:
     from:
       type: unit
-      quantity_kind: quantitykind:InformationEntropy
+      quantity_kind: quantitykind:AmountOfData
       required: true
     to:
       type: unit
-      quantity_kind: quantitykind:InformationEntropy
+      quantity_kind: quantitykind:AmountOfData
       required: true
 - name: unit_convert_ratio
   kind: scalar
@@ -324,12 +323,12 @@ scalar:
   kind: scalar
   domain:
     datatype: number
-    quantity_kind: quantitykind:InformationEntropy
+    quantity_kind: quantitykind:AmountOfData
   codomain:
     datatype: number
-    quantity_kind: quantitykind:InformationEntropy
-  precondition: valor de quantitykind:InformationEntropy por janela from_window (tipo de unidade inclui a janela);
-    janelas xsd:duration fixas (sem mês/ano) e positivas; statistic ∈ ['sum', 'average'] (total ou média por janela)
+    quantity_kind: quantitykind:AmountOfData
+  precondition: valor de quantitykind:AmountOfData por janela from_window (tipo de unidade inclui a janela); janelas
+    xsd:duration fixas (sem mês/ano) e positivas; statistic ∈ ['sum', 'average'] (total ou média por janela)
   error: 'TRANSFORM_OUT_OF_DOMAIN: valor não numérico ou ausente | DECLARATION_ERROR: janela com mês/ano ou não
     positiva; estatística não aditiva (max, min, pNN) | UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT:
     valor simbólico ainda não resolvido'
@@ -384,12 +383,12 @@ scalar:
   kind: scalar
   domain:
     datatype: number
-    quantity_kind: quantitykind:InformationEntropy
+    quantity_kind: quantitykind:AmountOfData
   codomain:
     datatype: integer
-    quantity_kind: quantitykind:InformationEntropy
-  precondition: número de quantitykind:InformationEntropy; unidade e janela não mudam; mode ∈ ['floor', 'ceiling',
-    'half_even', 'half_up', 'exact']
+    quantity_kind: quantitykind:AmountOfData
+  precondition: número de quantitykind:AmountOfData; unidade e janela não mudam; mode ∈ ['floor', 'ceiling', 'half_even',
+    'half_up', 'exact']
   error: 'TRANSFORM_OUT_OF_DOMAIN: valor não numérico ou ausente; não inteiro no modo exact | DECLARATION_ERROR:
     modo fora da lista | UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda
     não resolvido'
@@ -485,11 +484,11 @@ scalar:
   kind: scalar
   domain:
     datatype: number
-    quantity_kind: quantitykind:InformationEntropy
+    quantity_kind: quantitykind:AmountOfData
   codomain:
     datatype: number
-    quantity_kind: quantitykind:InformationEntropy
-  precondition: número de quantitykind:InformationEntropy; min e/ou max na MESMA unidade do valor; min ≤ max
+    quantity_kind: quantitykind:AmountOfData
+  precondition: número de quantitykind:AmountOfData; min e/ou max na MESMA unidade do valor; min ≤ max
   error: 'TRANSFORM_OUT_OF_DOMAIN: valor não numérico ou ausente | DECLARATION_ERROR: sem limite, ou min > max |
     UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido'
   loss: 'saturation: valor fora de [min, max] vira o limite; o original não se recupera'
@@ -567,12 +566,12 @@ scalar:
   kind: scalar
   domain:
     datatype: number
-    quantity_kind: quantitykind:InformationEntropy
+    quantity_kind: quantitykind:AmountOfData
   codomain:
     datatype: number
-    quantity_kind: quantitykind:InformationEntropy
+    quantity_kind: quantitykind:AmountOfData
   precondition: table = [{from, to}] com sentinelas (texto, inteiro, booleano ou ABSENT); valor que não é sentinela
-    passa intacto; valor regular igual a uma sentinela de destino é recusado; grandeza quantitykind:InformationEntropy
+    passa intacto; valor regular igual a uma sentinela de destino é recusado; grandeza quantitykind:AmountOfData
     e unidade não mudam
   error: 'TRANSFORM_OUT_OF_DOMAIN: valor regular colide com sentinela de destino; ausência sem sentinela | DECLARATION_ERROR:
     table vazia, mal formada ou com origem repetida | UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT:

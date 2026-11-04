@@ -46,7 +46,10 @@ FINDINGS = [
     "de entrada aqui; json_get e map_get ficam com duas entradas e uma saída.",
     "xsd:duration segue o espaço de valores do XSD 1.1 (meses, segundos): P0M1D não tem meses e vira 86400 s sem "
     "contexto; P1M e P1Y sem contexto de calendário são TRANSFORM_OUT_OF_DOMAIN; P1M = P30D é falso (duration_equal).",
-    "Os IRIs de unidade seguem o padrão do C00 e as grandezas do SEMANTICS; a existência de cada IRI no QUDT "
+    "BYTE e BIT sem prefixo: o registro dá convenção de byte None (fator 1 em SI e IEC); bo.units.rules grava SI "
+    "(UNITS-BYTE-00, convenção vácua) e propôs ao CONTRACTS aceitar NOT_APPLICABLE no C05; nos prefixados as duas "
+    "tabelas concordam (teste test_tr_units_rules).",
+    "Os IRIs de unidade seguem o padrão do C00 e as grandezas do UNITS (QUDT 3.5.3); a existência de cada IRI no QUDT "
     "(iri_status = pattern_only) é conferida pelo UNITS, não aqui.",
     "O núcleo do SEMANTICS tem scale (fator sem unidade) e rate_window_convert sem grandeza; o registro fechado não "
     "os inclui: unit_convert_<grandeza> e rate_window_convert_<grandeza> cobrem os usos com tipo concreto.",
@@ -67,6 +70,12 @@ EMENDAS = [
                "repetição)/set_to_list, map_list/map_set/map_values (escalar do registro elemento a elemento, "
                "inversa com a inversa da escalar) e collection_type_out (value_type do C09 3.2.0); portas tuple + "
                "collection porque o C10 3.0.0 não tem list/set/map (CONTRACT_CHANGE.txt)"},
+    {"registry_version": "1.3.0", "commit_subject": "[TRANSFORMS] emenda 1.3.0: bytes e bits em AmountOfData (CC-5)",
+     "request": "PILOT-STO-MAP CC-5 (results/CONTRACTS/emenda7.json: NÃO É DO CONTRACTS, donos UNITS e SEMANTICS; "
+                "alinhamento do registro pedido pelo coordenador)",
+     "change": "quantitykind de BIT, BYTE e prefixos = quantitykind:AmountOfData (QUDT 3.5.3, "
+               "qudt:unitForQuantityKind), igual a bo.units.rules e ao SEMANTICS (313e4d4); as escalares "
+               "*_information mantêm o nome e mudam a grandeza declarada; teste contra bo.units.rules"},
 ]
 
 

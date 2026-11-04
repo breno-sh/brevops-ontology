@@ -4,7 +4,9 @@ Tipo de unidade = (unidade QUDT, janela de taxa, convenção de byte). A janela 
 (N4): 5 contagens por PT5M não são 5 contagens por PT1M, e GigaBYTE (SI, 10^9) não é GibiBYTE (IEC, 2^30).
 Dois valores só se comparam ou se convertem com o tipo inteiro declarado; a conversão é sempre explícita.
 
-Grandezas (QUDT, por IRI): Time, InformationEntropy, Count, DimensionlessRatio. NOT_APPLICABLE (não há grandeza)
+Grandezas (QUDT, por IRI): Time, AmountOfData, Count, DimensionlessRatio. BYTE, BIT e prefixos são de
+quantitykind:AmountOfData, como o QUDT 3.5.3 os liga (qudt:unitForQuantityKind) e como o UNITS e o SEMANTICS
+gravam (emenda 1.3.0, pedido STO-MAP CC-5; antes era InformationEntropy). NOT_APPLICABLE (não há grandeza)
 é diferente de UNKNOWN (há, mas não se sabe); UNKNOWN como unidade é NO_UNIT, nunca um palpite.
 Os IRIs abaixo seguem o padrão do C00; a conferência de existência no QUDT é do módulo UNITS (iri_status).
 
@@ -27,7 +29,7 @@ NOT_APPLICABLE = "NOT_APPLICABLE"
 UNKNOWN = "UNKNOWN"
 
 TIME = "quantitykind:Time"
-INFO = "quantitykind:InformationEntropy"
+INFO = "quantitykind:AmountOfData"      # nomes *_information mantidos (estáveis para quem os cita)
 COUNT = "quantitykind:Count"
 RATIO = "quantitykind:DimensionlessRatio"
 KINDS = {"time": TIME, "information": INFO, "count": COUNT, "ratio": RATIO}
