@@ -28,8 +28,9 @@
    {
     "path": "$BO_REPO/contracts",
     "kind": "dir",
-    "sha256": "0e7cc1fd6a996e1807b407300c4327b905270a7a0ef52610902099a27103a8b2",
-    "sha256_before_emenda11": "872d043a5f9dee87d25ff9e525448ed615c00e227cb7a60eb5eb0fc13a5a8185"
+    "sha256": "a09b0768287c61b41c973bfc1d208395761fd153ab0d10afbc96badc6c1c022f",
+    "sha256_before_emenda11": "872d043a5f9dee87d25ff9e525448ed615c00e227cb7a60eb5eb0fc13a5a8185",
+    "sha256_before_emenda12": "0e7cc1fd6a996e1807b407300c4327b905270a7a0ef52610902099a27103a8b2"
    }
   ],
   "recorded_at": "2026-11-04T14:28:32-03:00"
