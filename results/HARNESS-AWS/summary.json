@@ -25,10 +25,11 @@
    {
     "path": "$BO_REPO/contracts/stubs",
     "kind": "dir",
-    "sha256": "9782b476473da02aca51c6ed724625207d0bb54fd76a7c440f0a553e1d27d135",
+    "sha256": "929b124dd416ed592176e821a4983db9caf593ff72e6caea325af00d998fd01a",
     "sha256_before_emenda3_e_skosfix": "6d24a5ce7306bc53d657c96122bc0c8ee7c0057d2b7b543b77507bc30be8abb6",
     "sha256_before_emendas_4_grain_se": "7ee2eaa73c1e0105f3f62d30492d3401ecf87fef0c55dd0dc0e1a05710289f75",
-    "sha256_before_emenda5": "4d3e1ef5cca14555d3688d6275d009582507e823d5df70a688738a39955f75f1"
+    "sha256_before_emenda5": "4d3e1ef5cca14555d3688d6275d009582507e823d5df70a688738a39955f75f1",
+    "sha256_before_emenda6": "9782b476473da02aca51c6ed724625207d0bb54fd76a7c440f0a553e1d27d135"
    },
    {
     "path": "$BO_REPO/universe/pins.json",

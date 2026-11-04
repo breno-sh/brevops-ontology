@@ -25,9 +25,10 @@
    {
     "path": "$BO_REPO/contracts",
     "kind": "dir",
-    "sha256": "3392fd0feb0a735b13ccd8dccc87de2f914502b983bb82c504c829bbe03dd43b",
+    "sha256": "53a5c1f1fad4a1af88e30f4669f3a7a5f7e347f66143b69d3d6481459cbfd8fd",
     "sha256_before_emendas_4_grain_se": "94f3b4e25c5791a1a8bf55b1151804d251b77d719024235d73bafb1492eacee3",
-    "sha256_before_grain012": "db415bb8ae8f2efc96a8dd7e7d5728413ae086b6f042826335c6702b00325e5b"
+    "sha256_before_grain012": "db415bb8ae8f2efc96a8dd7e7d5728413ae086b6f042826335c6702b00325e5b",
+    "sha256_before_emenda6": "3392fd0feb0a735b13ccd8dccc87de2f914502b983bb82c504c829bbe03dd43b"
    },
    {
     "path": "$BO_REPO/transforms/transforms.yaml",
@@ -47,9 +48,10 @@
    {
     "path": "$BO_REPO/grain/GRAIN.html",
     "kind": "file",
-    "sha256": "90ec8e96e36501acfe24dc741b59b4af6332a93d28c08467902c60a2fcccda95",
+    "sha256": "f77d9a66e5854ad82ce0c0afed9ec51b0c3341ff9787d04b93f4d233f3acc96a",
     "sha256_before_emendas_4_grain_se": "ae75e3f2468f96a660415cd305e6b19757e93bf21948310e917360e2d3754b0b",
-    "sha256_before_grain012": "a39b6bb8e21803c9502671f465dcc63dec233d2567a526608bbd2e1f2bc14412"
+    "sha256_before_grain012": "a39b6bb8e21803c9502671f465dcc63dec233d2567a526608bbd2e1f2bc14412",
+    "sha256_before_emenda6": "90ec8e96e36501acfe24dc741b59b4af6332a93d28c08467902c60a2fcccda95"
    },
    {
     "path": "$BO_REPO/semantics/SEMANTICS.html",
