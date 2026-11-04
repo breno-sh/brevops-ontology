@@ -180,9 +180,11 @@ def decompose(fx: dict) -> list:
         if a.tf["resource_type"] in ("oci_core_subnet",):
             ep = a.tf["address"]
         nid = a.tf["address"]
-        k, miss, _ = _kind_c19(go, nid, a.tf["resource_type"])
         if "block_path" in a.tf:
-            k, miss = "UNKNOWN", ["grain_occurrence"]
+            k, miss = _binding_occ(go, a.tf["address"], a.tf["block_path"],
+                                   L.sets[a.set_id].tf["address"] if a.set_id else None)
+        else:
+            k, miss, _ = _kind_c19(go, nid, a.tf["resource_type"])
         u = {"domain_unit": "attachment", "kind": k, "parent": None,
              "occurrence": {"set": set_addr, "target": ep},
              "tf": {k2: v for k2, v in a.tf.items() if k2 in ("resource_type", "block_path")}}
@@ -193,12 +195,29 @@ def decompose(fx: dict) -> list:
         units.append(u)
     for sel in L.selections:
         r = L.rules[sel.rule_id]
-        for tag in sel.labels.raw if isinstance(sel.labels.raw, list) else []:
-            units.append({"domain_unit": "selection", "kind": "UNKNOWN", "parent": None,
-                          "occurrence": {"label": tag, "rule": r.facts["name"].raw},
-                          "tf": {"resource_type": r.tf["resource_type"], "block_path": "target_tags"},
-                          "unknown": ["grain_occurrence"]})
+        for i, tag in enumerate(sel.labels.raw if isinstance(sel.labels.raw, list) else []):
+            o = go["by_nid"].get(f"{r.tf['address']}:target_tags#{i}")
+            k = o.grain if o is not None else "UNKNOWN"
+            u = {"domain_unit": "selection", "kind": k, "parent": None,
+                 "occurrence": {"label": tag, "rule": r.facts["name"].raw},
+                 "tf": {"resource_type": r.tf["resource_type"], "block_path": "target_tags"}}
+            if k == "UNKNOWN":
+                u["unknown"] = list(o.missing) if o is not None else ["grain_occurrence"]
+            units.append(u)
     return _dedupe(units)
+
+
+def _binding_occ(go, holder: str, block_path: str, set_addr: str | None):
+    """Vínculo por atributo-lista (GRAIN 0.1.9): ocorrência '<dono>[/bloco#i]:<atributo>#j' cuja ponta é o conjunto."""
+    attr = block_path.split(".")[-1]
+    set_occ = go["by_nid"].get(set_addr).occ_id if set_addr and go["by_nid"].get(set_addr) else None
+    hits = [o for nid, o in go["by_nid"].items() if nid.startswith(holder) and f":{attr}#" in nid]
+    for o in hits:
+        if set_occ and set_occ in (o.endpoints or {}).values():
+            return o.grain, list(o.missing)
+    if len(hits) == 1:
+        return hits[0].grain, list(hits[0].missing)
+    return "UNKNOWN", ["grain_occurrence"]
 
 
 def _dedupe(units):
