@@ -176,3 +176,40 @@ def test_determinismo_no_mundo():
     b = judge(list(reversed(claims)))
     assert engine.verdict_map(a["verdicts"]) == engine.verdict_map(b["verdicts"])
     assert [v["claim_version_id"] for v in a["verdicts"]] == [v["claim_version_id"] for v in b["verdicts"]]
+
+
+# ------------------------------------------------------------------------------------- ids de regra (CC-2)
+def test_todo_id_de_regra_publicado_casa_com_o_c21():
+    import re
+    from bo.arbiter.rules import RULE_ID_PATTERN, all_rules
+    pat = re.compile(RULE_ID_PATTERN)
+    assert all(pat.match(r) for r in all_rules())
+
+
+def test_vereditos_da_bateria_sem_prova_passam_no_c21_oficial():
+    """Sem prova cobre EVIDENCE e SENTINEL do SEMANTICS (ids de uma palavra): saem com o id conforme."""
+    from bo.arbiter.unproven import _gloss
+    vs = []
+    for c in B.unproven_cases():
+        r = engine.arbitrate(B.items_of([c["claim"]]), glossary=_gloss(c.get("glossary_case")), decided_at=DEC,
+                             arbiter_sha256=SHA)
+        vs += r["verdicts"]
+    s = B.C("T-SN", "pa:t.ret", "exact", "pb:t.ret",
+            B.T("integer", quantity_kind="quantitykind:Time", unit="unit:DAY", range={"min": 1, "max": 30},
+                sentinels={"0": "nunca expira"}), B.SECS(86400, 2592000), B.UC("unit:DAY", "unit:SEC"), "subset",
+            "lossless", tests=[{"input": 1, "expected": 86400}])
+    vs += judge([s])["verdicts"]
+    rules = {r for v in vs for r in v["rules"]}
+    assert {"EVIDENCE-DOC", "SENTINEL-MAP"} <= rules and not ({"EVIDENCE", "SENTINEL"} & rules)
+    p = TMP / "c21_unproven" / "verdicts.jsonl"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text("".join(json.dumps(v, ensure_ascii=False, sort_keys=True) + "\n" for v in vs), encoding="utf-8")
+    assert not run.validate_c21(p)
+
+
+def test_alias_antigo_desliga_a_regra():
+    r = base()
+    r["evidence_state"] = "STRUCTURALLY_VALID"
+    assert "EVIDENCE-DOC" in v_of(judge([r]), "T-1")[0]["rules"]
+    for alias in ("EVIDENCE", "EVIDENCE-DOC"):
+        assert v_of(judge([r], disabled=frozenset({alias})), "T-1")[0]["verdict"] == "OK"

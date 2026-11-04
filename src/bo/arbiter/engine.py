@@ -19,7 +19,7 @@ from . import setcheck as SC
 from .common import canon, now, sha256_bytes
 from .freeze import arbiter_sha
 from .inputs import repeated_fields, resolve_versions
-from .rules import verdict_of
+from .rules import published_id, semantics_ids, verdict_of
 
 
 def _sortkey(it):
@@ -58,7 +58,7 @@ def _detail(fails: list[dict], ok_text: str) -> str:
 def arbitrate(items: list[dict], *, glossary=None, atoms: list[dict] | None = None, cycle: int = 1,
               decided_at: str | None = None, disabled=frozenset(), arbiter_sha256: str | None = None) -> dict:
     """items: [{rec, source, domain, line}] (inputs.load). -> {verdicts, cycles, report}."""
-    dis = frozenset(disabled)
+    dis = semantics_ids(disabled)
     decided_at = decided_at or now()
     sha = arbiter_sha256 or arbiter_sha()
     current, superseded, vfails = resolve_versions(items)
@@ -103,6 +103,17 @@ def arbitrate(items: list[dict], *, glossary=None, atoms: list[dict] | None = No
             extra_fails.setdefault(cid, []).append(CC.F(x["rule"], x["outcome"], x["detail"]))
             if x.get("composition_used"):
                 comp_used.setdefault(cid, []).append(x["composition_used"])
+
+    for c in checked:
+        for f in c.failures:
+            f["rule"] = published_id(f["rule"])
+    for fs in extra_fails.values():
+        for f in fs:
+            f["rule"] = published_id(f["rule"])
+    for comp in k4["composites"]:
+        comp["rules"] = sorted({published_id(r) for r in comp["rules"]})
+    for x in set_conf + k4["conflicts"]:
+        x["rule"] = published_id(x["rule"])
 
     verdicts, seen_vid = [], set()
     for c in checked:

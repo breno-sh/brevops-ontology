@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "ARBITERLIB",
- "generated_at": "2026-11-03T17:49:54-03:00",
+ "generated_at": "2026-11-04T09:34:22-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/ARBITERLIB.txt",
@@ -11,17 +11,13 @@
   "params": {
    "effort_h": "6",
    "semantics_commit": "f48865f",
-   "base": "3c2141f"
+   "refreeze": "CC-1,CC-2_PILOT-STO-MAP"
   },
   "inputs": [
    {
     "path": "$BO_REPO/contracts",
     "kind": "dir",
-    "sha256": "53a5c1f1fad4a1af88e30f4669f3a7a5f7e347f66143b69d3d6481459cbfd8fd",
-    "sha256_before_emenda3_e_skosfix": "999f2a2f0445b22ddbda929a15ec8e7fe029ef775ed4f3db44e3d0756eca7b31",
-    "sha256_before_emendas_4_grain_se": "94f3b4e25c5791a1a8bf55b1151804d251b77d719024235d73bafb1492eacee3",
-    "sha256_before_emenda5": "db415bb8ae8f2efc96a8dd7e7d5728413ae086b6f042826335c6702b00325e5b",
-    "sha256_before_emenda6": "3392fd0feb0a735b13ccd8dccc87de2f914502b983bb82c504c829bbe03dd43b"
+    "sha256": "53a5c1f1fad4a1af88e30f4669f3a7a5f7e347f66143b69d3d6481459cbfd8fd"
    },
    {
     "path": "$BO_REPO/transforms/transforms.yaml",
@@ -39,7 +35,7 @@
     "sha256": "f279876043e13a1d1bcc2e0f645aa761f758681bf7fde1beff3a915c6549c80f"
    }
   ],
-  "recorded_at": "2026-11-03T17:49:54-03:00"
+  "recorded_at": "2026-11-04T09:34:22-03:00"
  },
  "sources": [
   {
@@ -48,5 +44,5 @@
    "transformation": "direção SKOS e disjunção exactMatch/broadMatch/relatedMatch (S46) aplicadas como regra"
   }
  ],
- "notes": "árbitro mecânico v3 (C21); bateria sintética, sem dado real"
+ "notes": "árbitro mecânico v3 (C21); recongelado em 2026-11-04 sobre as emendas 3 a 6 do CONTRACTS; ids EVIDENCE e SENTINEL publicados como EVIDENCE-DOC e SENTINEL-MAP"
 }

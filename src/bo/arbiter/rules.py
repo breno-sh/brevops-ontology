@@ -84,10 +84,36 @@ _r("ARB-REAL-MULTI", "A5", "realização", A, "Realizações múltiplas do mesmo
 SET_RULES_FROM_SEM = ("SKOS-DISJ", "A-EXCL", "P-OVERLAP", "P-OCC", "P-EXEC", "G-VARS", "G-ARITY", "G-OCC")
 
 
+# Id de regra do C21: '^[A-Z][A-Z0-9]*(-[A-Z0-9]+)+$' (C00 rule_id). Duas regras do SEMANTICS têm id de uma
+# palavra e não casam; o árbitro não muda o SEMANTICS (não é dono): publica com o id conforme abaixo e aceita o
+# antigo como alias (em 'disabled', na leitura de vereditos antigos e no RULES.html). Motivo: CC-2 do
+# PILOT-STO-MAP (04/11/2026); a semântica da regra não muda.
+RULE_ID_PATTERN = r"^[A-Z][A-Z0-9]*(-[A-Z0-9]+)+$"
+RULE_ALIASES = {"EVIDENCE": "EVIDENCE-DOC", "SENTINEL": "SENTINEL-MAP"}     # id do SEMANTICS -> id publicado
+ALIAS_OF = {v: k for k, v in RULE_ALIASES.items()}                           # id publicado -> id do SEMANTICS
+
+
+def published_id(rid: str) -> str:
+    return RULE_ALIASES.get(rid, rid)
+
+
+def semantics_ids(disabled) -> frozenset:
+    """'disabled' aceita o id publicado e o antigo; o SEMANTICS só conhece o antigo."""
+    out = set(disabled)
+    for rid in list(out):
+        if rid in ALIAS_OF:
+            out.add(ALIAS_OF[rid])
+        if rid in RULE_ALIASES:
+            out.add(RULE_ALIASES[rid])
+    return frozenset(out)
+
+
 def all_rules() -> dict[str, dict]:
     out = {}
     for rid, r in SEM_RULES.items():
-        out[rid] = {**r, "source": "bo.semantics.rules"}
+        pid = published_id(rid)
+        out[pid] = {**r, "rule_id": pid, "source": "bo.semantics.rules",
+                    **({"alias_of": rid} if pid != rid else {})}
     for rid, r in ARB_RULES.items():
         out[rid] = {**r, "source": "bo.arbiter.rules"}
     return out

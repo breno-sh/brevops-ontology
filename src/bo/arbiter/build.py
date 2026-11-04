@@ -24,9 +24,9 @@ from . import battery as B
 from . import engine
 from .common import dump_json, dump_jsonl, emit, now, repo, sha256_bytes
 from .freeze import MANIFEST, RULES_HTML, frozen_files, manifest_text
-from .rules import ARB_RULES, PRECEDENCE, SEM_RULES
+from .rules import ARB_RULES, PRECEDENCE, RULE_ALIASES, RULE_ID_PATTERN, SEM_RULES, published_id
 
-AUTHORED_AT = "2026-11-03T17:50:00-03:00"
+AUTHORED_AT = "2026-11-04T09:45:00-03:00"
 RES = "results/ARBITERLIB"
 
 CONVENTIONS = [
@@ -48,6 +48,13 @@ CONVENTIONS = [
                 "corrente e pela última auditoria, não pelo que o mapeador declarou. DOC_SUPPORTED ou OBSERVATION_TESTED; "
                 "PERSISTENCE_VERIFIED não conta para âncora (leitura de volta não prova significado, regra do SEMANTICS; "
                 "é a leitura do '≥ DOC_SUPPORTED' do brief com essa exceção). Sem glossário, UNPROVEN."),
+    ("Ids de regra", "Todo id publicado casa com o padrão do C21 ({pat}). Duas regras do SEMANTICS têm id de uma palavra e "
+                     "saem com id conforme, mantido o antigo como alias (aceito em 'disabled'): {al}. A regra não muda; "
+                     "só o nome publicado (CC-2 do PILOT-STO-MAP, 04/11/2026)."),
+    ("Recongelamento", "2026-11-04: o fecho congelado mudou a montante (emendas 3 a 6 do CONTRACTS: esquemas C00, C09, C20 e "
+                       "src/bo/contracts/rules.py, spec_a..d.py, sssom.py) e o árbitro foi recongelado sobre bo/base; "
+                       "comprovante em results/ARBITERLIB/freeze_receipt.json. Motivo: contrato a montante, não "
+                       "ajuste de resultado (CC-1 do PILOT-STO-MAP)."),
     ("Ciclo", "cycle do C21 é a rodada do árbitro (1; com --previous, 1 + a maior já gravada). Os ciclos do grafo K4 "
               "vão em cycles.jsonl (cada tentativa de composição e as diretas conferidas)."),
     ("Compostos", "Todo composto COMPOSED do K4 sai em verdicts.jsonl com claim_id = pernas ligadas por ∘ e "
@@ -68,11 +75,15 @@ def rules_html(files: list[str]) -> str:
     rows_arb = "".join(f"<tr><td><code>{_t(r['rule_id'])}</code></td><td>{_t(r['layer'])}</td><td>{_t(r['family'])}</td>"
                        f"<td>{_t(r['on_fail'])}</td><td>{_t(r['text'])}</td><td>{_t(', '.join(r['answers']))}</td></tr>"
                        for r in ARB_RULES.values())
-    rows_sem = "".join(f"<tr><td><code>{_t(r['rule_id'])}</code></td><td>{_t(r['family'])}</td><td>{_t(r['on_fail'])}</td>"
+    rows_sem = "".join(f"<tr><td><code>{_t(published_id(r['rule_id']))}</code>"
+                       + (f" (alias do SEMANTICS: <code>{_t(r['rule_id'])}</code>)" if published_id(r['rule_id']) != r['rule_id'] else "")
+                       + f"</td><td>{_t(r['family'])}</td><td>{_t(r['on_fail'])}</td>"
                        f"<td>{_t(r['text'])}</td></tr>" for r in SEM_RULES.values())
     rows_tab = "".join(f"<tr><td>{_t(a)}</td><td>{_t(b)}</td><td>{_t(v['result'] or '⊥ (UNPROVEN)')}</td>"
                        f"<td>{_t(v['why'])}</td></tr>" for (a, b), v in st.items())
-    rows_conv = "".join(f"<tr><th>{_t(k)}</th><td>{_t(v)}</td></tr>" for k, v in CONVENTIONS)
+    al = ", ".join(f"{a} -> {b}" for a, b in sorted(RULE_ALIASES.items()))
+    rows_conv = "".join(f"<tr><th>{_t(k)}</th><td>{_t(v.replace("{pat}", RULE_ID_PATTERN).replace("{al}", al))}</td></tr>"
+                        for k, v in CONVENTIONS)
     rows_files = "".join(f"<li><code>{_t(f)}</code></li>" for f in files)
     return f"""<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>Regras do árbitro</title>
@@ -107,7 +118,7 @@ identificada (P-OCC, ARB-OCC-ID), versões e esquema (ARB-VERSION, ARB-C09-SCHEM
 <li><b>A2</b> tipo e grandeza para TODA correspondência que transporta valor (exact, close, broad, narrow e grupos): TYPE-WF,
 KIND-UNKNOWN, KIND-EQ, UNIT-*, ARB-G-TYPE, ARB-FN-TYPE, ARB-ATOM-TYPE.</li>
 <li><b>A3</b> obrigação de prova do tipo declarado: EXACT-NORM/TESTS, CLOSE-LOSS, BN-PRED/TESTS com orientação SKOS,
-FIXED-DATED, EVIDENCE; mesmo conceito não prova (ANCHOR-NOT-PROOF, ARB-ANCHOR); unknown==unknown é UNPROVEN.</li>
+FIXED-DATED, EVIDENCE-DOC; mesmo conceito não prova (ANCHOR-NOT-PROOF, ARB-ANCHOR); unknown==unknown é UNPROVEN.</li>
 <li><b>A4</b> composição no K4 pela tabela formal, com interseção das guardas, satisfatibilidade e domínio compatível
 (K-*); closeMatch não compõe por fecho; conflito de ciclo (ARB-K4-REL, ARB-K4-VDR, ARB-K4-VALUE) e de par
 (SKOS-DISJ, ARB-PAIR-REL, ARB-PAIR-VALUE).</li>

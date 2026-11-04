@@ -509,11 +509,11 @@ def unproven_cases() -> list[dict]:
     notest = copy.deepcopy(b); notest["proof"]["tests"] = []; notest["claim_id"] = "U-NOTEST"
     add("exact sem testes", ids(notest), "UNPROVEN", "EXACT-TESTS", ids(b))
     sv = copy.deepcopy(b); sv["evidence_state"] = "STRUCTURALLY_VALID"; sv["claim_id"] = "U-SV"
-    add("só estruturalmente válida", ids(sv), "UNPROVEN", "EVIDENCE", ids(b))
+    add("só estruturalmente válida", ids(sv), "UNPROVEN", "EVIDENCE-DOC", ids(b))
     nocite = copy.deepcopy(b); nocite["proof"]["evidence"] = []; nocite["claim_id"] = "U-NOCITE"
-    add("DOC_SUPPORTED sem citação", ids(nocite), "UNPROVEN", "EVIDENCE", ids(b))
+    add("DOC_SUPPORTED sem citação", ids(nocite), "UNPROVEN", "EVIDENCE-DOC", ids(b))
     pv = copy.deepcopy(b); pv["evidence_state"] = "UNRESOLVED"; pv["claim_id"] = "U-UNRES"
-    add("UNRESOLVED", ids(pv), "UNPROVEN", "EVIDENCE", ids(b))
+    add("UNRESOLVED", ids(pv), "UNPROVEN", "EVIDENCE-DOC", ids(b))
     br = copy.deepcopy(E.BROAD_ARCHIVE)
     for k, v in (("subject_value_type", ENUM("flexible_retrieval", "deep_archive")),
                  ("object_value_type", ENUM("standard", "nearline", "coldline", "archive"))):
