@@ -408,6 +408,10 @@ vida preso à instância, G1 e G2 aceitam a evidência, e trocar a ordem troca B
 referência <code>by_name</code>; sem ela, o grafo embutido perde relações que o separado tem.</li>
 <li>Emenda 0.1.1 (CC-1): a primeira versão lia uma convenção que o SERVICE-EVIDENCE nunca gravou; os testes
 sintéticos usavam a mesma convenção e não pegaram. Entraram o adaptador por aspecto e testes com o arquivo real.</li>
+<li>Emenda 0.1.6, ainda: com o SERVICE-EVIDENCE do CC-10 (767bb22), pontes que nomeiam o mesmo recurso com grafia
+diferente (doc "objectstorage/Bucket" e spec "object_storage/bucket") contradiziam-se; T53 as unifica. Blocos que
+herdam do gêmeo (T09) podem sair FACET quando o gêmeo tem ligação de API de aspecto: é evidência herdada, não
+omissão.</li>
 <li>Emenda 0.1.6 (regra nova G4-NS, decisão do coordenador): identidade qualificada por um contêiner de NAMESPACE
 (grupo de recursos, compartimento; conta, região e projeto já eram escopo do provedor) não é composição. Justificativa:
 o contêiner de namespace só dá unicidade ao nome; a configuração e o ciclo de vida de API da unidade são dela, e o

@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "GRAIN",
- "generated_at": "2026-11-04T09:33:19-03:00",
+ "generated_at": "2026-11-04T09:48:37-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/GRAIN.txt",
@@ -44,7 +44,7 @@
     "sha256": "038f73fcebedfbf3b5ff3d23b1ff0758a87e8be2616b141b232628e1a64d1438"
    }
   ],
-  "recorded_at": "2026-11-04T09:33:19-03:00"
+  "recorded_at": "2026-11-04T09:48:37-03:00"
  },
  "sources": [
   {
@@ -53,5 +53,5 @@
    "transformation": "mundos sintéticos escritos no módulo (provider_a..provider_h), sem dado real"
   }
  ],
- "notes": "Emendas 0.1.1-0.1.6: adaptador C25 por aspecto, contêiner externo (T51), regra G4-NS com marca de namespace (T52) e cascade_delete_by, coleções como bloco repetido e pontas em endpoints (C19 3.1.0). Testes de integração leem o dado real de $BO_DATA (volátil, fora das entradas registradas)."
+ "notes": "Emendas 0.1.1-0.1.6: adaptador C25 por aspecto, contêiner externo (T51), regra G4-NS com marca de namespace (T52) e cascade_delete_by, pontes equivalentes (T53), coleções como bloco repetido e pontas em endpoints (C19 3.1.0). Testes de integração leem o dado real de $BO_DATA (volátil, fora das entradas registradas)."
 }

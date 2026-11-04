@@ -87,6 +87,9 @@ TABLE = [
      "marca de NAMESPACE: a referência tipada ao contêiner (T21) é marcada namespace; qualifica o nome mas não "
      "compõe a unidade (G4-NS) e vira a relação cascade_delete_by. Também o fato explícito namespace_container "
      "{attribute}. Sem a marca, a contenção segue composição (T21) e a regra G4-NS não se aplica"),
+    ("api_resource", "(pontes equivalentes)", "R-GRAIN-T53",
+     "duas pontes que nomeiam o mesmo serviço/recurso só com grafia diferente (caixa, sublinhado, hífen) são uma "
+     "alegação só; nomes de fato diferentes continuam CONTRADICTORY (disputa)"),
     ("api_bridge", "spec_bridge_candidates", "R-GRAIN-T48",
      "sem tradução: a spec casa com mais de um tipo e o desempate não dá este tipo; UNKNOWN com o motivo"),
     ("identity", "api_reference", "R-GRAIN-T05", "sem tradução: página de referência da API, informativa"),
@@ -440,6 +443,17 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
             rf = [f for f in key_refs.get(cid, {}) if not f.startswith("$")]
             put(cid, "effective_scope", {"kind": "parent", "via": rf[0], "source": _src(r, rule)} if len(rf) == 1
                 else {"kind": "self", "source": _src(r, rule)})
+    # T53: pontes que nomeiam o mesmo recurso com grafia diferente (caixa, sublinhado) são a mesma alegação; fica a
+    # primeira (as divergências de verdade continuam CONTRADICTORY)
+    def _k(c):
+        return tuple("".join(ch for ch in str(c.get(x) or "").lower() if ch.isalnum()) for x in ("service", "resource"))
+    for cid, ent in out.items():
+        br = [c for c in ent.get("api_resource", []) if c.get("status") == "resource" and c.get("resource")]
+        if len(br) > 1 and len({_k(c) for c in br}) == 1 and len({(c.get("service"), c.get("resource")) for c in br}) > 1:
+            first = br[0]
+            ent["api_resource"] = [c for c in ent["api_resource"] if c not in br[1:]]
+            reasons[cid].append(f"api_resource: pontes equivalentes (grafia) unificadas em {first.get('service')}/"
+                                f"{first.get('resource')} (T53)")
     # T50: via implícito (ausente) e via explícito do mesmo kind, de fontes diferentes, dizem a mesma coisa quando
     # só há um via explícito: o implícito recebe o explícito (sem isso, suspend sem via contradiria a spec)
     for cid, ent in out.items():

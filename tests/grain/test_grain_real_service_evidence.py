@@ -61,9 +61,15 @@ def test_container_of_each_provider_is_decided_with_traceable_reasons(real):
 
 
 def test_nested_blocks_never_facet_by_omission(real):
+    """Bloco aninhado só sai FACET com ligação de API de aspecto afirmada para ELE (fato do bloco ou herdado do
+    gêmeo, T09); nunca por omissão."""
     for prov, p in real["providers"].items():
+        res = p["_res"]
         for cid, d in p["nested_facet_like"].items():
-            pytest.fail(f"{prov}: {cid} saiu FACET sem fato de aspecto da API para o bloco: {d}")
+            api = res.nodes[cid].ev.fact("api_resource")
+            assert api.known and api.value["status"] == "aspect", (prov, cid, d)
+            assert res.nodes[cid].ev.twin or any(c.get("source") for c in res.nodes[cid].ev.claims.get(
+                "api_resource", [])), (prov, cid)
 
 
 def test_real_c19_validates(real, tmp_path):
