@@ -22,7 +22,7 @@ import json
 import os
 import sys
 
-from . import apispec, attach, blocks, common, curated, extract, grainfacts, protocol, rules, sources, specfacts
+from . import apispec, attach, blocks, observed, common, curated, extract, grainfacts, protocol, rules, sources, specfacts
 
 
 def _protocol_atoms():
@@ -50,6 +50,8 @@ def generate() -> dict:
         spec_own = {r["terraform_resource_type"] for r in ctxs[p].recs
                     if (r.get("value") or {}).get("rule") == "R-LIFE-SPEC"}
         grainfacts.scopes(ctxs[p], prim | spec_own)  # depois da curadoria: R-SCOPE-DOC prevalece
+    obs_st = observed.records(ctxs, disputes)  # nível OBSERVED (só entra no C25 com a emenda 10)
+    for p in common.PROVIDERS:
         stats[p]["counters"] = dict(ctxs[p].st)
     recs = []
     for p in common.PROVIDERS:
@@ -72,6 +74,7 @@ def generate() -> dict:
     if perr:
         raise SystemExit("protocol_support fora do formato: " + "; ".join(perr[:5]))
     return {"recs": recs, "protocol": prow, "protocol_missing": pmiss, "stats": stats, "curated": cur,
+            "observed": obs_st,
             "disputes": sorted(disputes, key=lambda d: (d["provider"], d["terraform_resource_type"], d["fact"]))}
 
 
@@ -117,6 +120,7 @@ def evidence_levels(g: dict) -> dict:
                              "missing": g["protocol_missing"]},
         "curated": g["curated"],
         "spec_disputes": len(g["disputes"]),
+        "observed": {k: v for k, v in g["observed"].items() if k != "candidates"},
         "spec_coverage": {p: {"types": c["types"], "bridged": len(c["bridged"]), "ambiguous": len(c["ambiguous"]),
                               "no_candidate": len(c["no_candidate"])} for p, c in specfacts.COVERAGE.items()},
         "spec_sources": {p: {"pin": apispec.SPEC[p]["pin"], "date": apispec.SPEC[p]["date"],
@@ -339,6 +343,9 @@ def main(argv=None) -> int:
         return 0
     # dados em $BO_DATA vão para .staging; o definitivo só muda com --promote, dentro da trava, junto com o merge
     staging().mkdir(parents=True, exist_ok=True)
+    with open(staging() / "observed_candidates.jsonl", "w", encoding="utf-8") as f:
+        for c in g["observed"].get("candidates", []):
+            f.write(common.canon(c) + "\n")
     common.results_dir().mkdir(parents=True, exist_ok=True)
     for path, text in files.items():
         name = os.path.basename(path)

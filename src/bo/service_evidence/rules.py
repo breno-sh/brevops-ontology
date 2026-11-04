@@ -188,6 +188,15 @@ RULES = {
                  "próprio objeto (…Id -> atributo id; …Name -> name ou <coisa>), os demais casam com atributo de topo "
                  "de mesmo nome; within_parent se algum dos demais é atributo REFERENCE. Parâmetro sem atributo: "
                  "nada (UNKNOWN).",
+    # nível OBSERVED (adendo 04/11 §2; observed.py)
+    "R-OBS-ID": "experimento OBS-GAPS (2 repetições + controle): regra da security list OCI sem id (lista trocada "
+                "inteira, aceita duplicata) -> identity absent; regra do NSG OCI listada com id e alterada/removida "
+                "pelo id -> identity present (id).",
+    "R-OBS-OWNER": "a API recusa regra de NSG OCI com NSG inexistente ou sem nsg-id e não há comando de regra solta: "
+                   "dono = o NSG (kind parent). Divergência com a camada de API pela doc vira disputa observada × doc.",
+    "R-OBS-CASCADE": "regras do NSG OCI somem com o NSG (delete do NSG, list/update das regras depois falham): "
+                     "ciclo de vida = pai. Só com o report.json do OBS-GAPS fechando o experimento.",
+    "R-OBS-ASSOC-LIFE": "ciclo de vida da associação NSG<->NIC/subnet no Azure pelo OBS-GAPS-AZ (pendente).",
     # curadoria das fatias dos pilotos (curated.py): C-* publicado (o valor está escrito na frase), I-* interpretado
     "C-PILOT-LITERAL": "fato escolhido à mão numa frase da página fixada; o valor repete o que a frase diz.",
     "C-PILOT-GAP": "tipo das fatias dos pilotos sem frase para este tipo de fato na página fixada: UNKNOWN explícito "

@@ -272,3 +272,20 @@ def test_promote_refused_without_own_lock(monkeypatch):
     (lock / "owner").write_text(f"owner=SERVICE-EVIDENCE\npid={os.getpid()}\n")
     assert build.promote() == 0 and pub.read_text() == "novo\n"  # trava própria: troca
     subprocess.run(["rm", "-rf", str(root)])
+
+
+def test_observed_rules_on_partial_obs_gaps():
+    """Com os dados parciais do OBS-GAPS: security list sem id, regra de NSG com id e dono = NSG; cascata pendente."""
+    from bo.service_evidence import observed
+    obs, reports = observed.load()
+    if not obs:
+        pytest.skip("OBS-GAPS ainda sem observações")
+    fs = {(f["type"], f["block_path"], f["fact_kind"], f["rule"]): f for f in observed.facts(obs, reports)}
+    sl = fs.get(("oci_core_security_list", "ingress_security_rules", "identity", "R-OBS-ID"))
+    assert sl and sl["value"]["status"] == "absent" and sl["repetitions"] >= 2 and sl["control"]
+    ng = fs.get(("oci_core_network_security_group_security_rule", None, "identity", "R-OBS-ID"))
+    assert ng and ng["value"]["key_fields"] == ["id"]
+    ow = fs.get(("oci_core_network_security_group_security_rule", None, "owner", "R-OBS-OWNER"))
+    assert ow and ow["value"]["kind"] == "parent"
+    cas = any(k[3] == "R-OBS-CASCADE" for k in fs)
+    assert cas == observed._closed(reports, "EXP2-oci-nsg")  # cascata só com o experimento fechado no report

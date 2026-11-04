@@ -110,8 +110,10 @@ def main(argv=None) -> int:
             if not DT.match(c.get("retrieved_at", "")):
                 bad.append(f"{eid}: citação sem data")
             cnt["schema"] += 1
-        if not d and not c and r["level"] != "derived" and r["level"] != "interpreted":
+        if not d and not c and r["level"] not in ("derived", "interpreted", "observed"):
             bad.append(f"{eid}: sem fonte")
+        if r["level"] == "observed" and not DT.match(str(r.get("observed_at", ""))):
+            bad.append(f"{eid}: observado sem data")
         _dates(v, "value", bad, eid)
     with open(_data_dir(argv) / "protocol_support.jsonl", encoding="utf-8") as f:
         for i, line in enumerate(f, 1):

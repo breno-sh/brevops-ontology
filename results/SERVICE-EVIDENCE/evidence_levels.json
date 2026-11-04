@@ -3,7 +3,7 @@
  "module": "SERVICE-EVIDENCE",
  "contract": "C25",
  "contract_version": "1.0.0",
- "generated_at": "2026-11-04T14:00:25-03:00",
+ "generated_at": "2026-11-04T16:24:02-03:00",
  "records": 200262,
  "by_level": {
   "derived": 132581,
@@ -194,7 +194,16 @@
    "identidade_associacao": 2
   }
  },
- "spec_disputes": 77,
+ "spec_disputes": 79,
+ "observed": {
+  "observations": 127,
+  "facts": 5,
+  "accepted_by_c25": false,
+  "reports": [
+   "OBS-GAPS"
+  ],
+  "pending": []
+ },
  "spec_coverage": {
   "aws": {
    "types": 1746,
@@ -1853,6 +1862,10 @@
   "R-FACET-SPEC": "spec_facet_member: a API só aceita os blocos como membros de um objeto-faceta único do pai, gravado por uma operação sobre o pai (aws Put<Faceta> com o payload; google patch/update do recurso com o campo do objeto; azure PUT do recurso/sub-recurso), e o bloco não tem create/delete próprios: {facet, facet_resource, operation, member, single_operation: true}.",
   "R-TWIN-SPEC": "bloco embutido e bloco do tipo separado que caem no mesmo membro da spec (ex.: aws_s3_bucket.lifecycle_rule e aws_s3_bucket_lifecycle_configuration.rule -> BucketLifecycleConfiguration.Rules) são gêmeos: twin_type com twin e twin_block_path.",
   "R-ID-SPEC": "azure: parâmetros do caminho da instância (sem subscriptionId): último -> name, demais -> atributo de mesmo nome em snake_case. item de lista de bloco: a estrutura do item na spec tem membro ID/id (aws) ou id/name (google/azure) -> essa chave (within_parent) se o bloco tem o atributo; sem membro de identidade -> ausente. aws: regra criada por Authorize e removida por Revoke tem identidade própria quando a estrutura <Pai>Rule da spec tem o membro <Pai>RuleId (ex.: SecurityGroupRule.SecurityGroupRuleId) e o tipo tem o atributo de mesmo nome em snake_case. oci: os parâmetros do caminho do delete_<n> do recurso são a chave de identidade; o último é o próprio objeto (…Id -> atributo id; …Name -> name ou <coisa>), os demais casam com atributo de topo de mesmo nome; within_parent se algum dos demais é atributo REFERENCE. Parâmetro sem atributo: nada (UNKNOWN).",
+  "R-OBS-ID": "experimento OBS-GAPS (2 repetições + controle): regra da security list OCI sem id (lista trocada inteira, aceita duplicata) -> identity absent; regra do NSG OCI listada com id e alterada/removida pelo id -> identity present (id).",
+  "R-OBS-OWNER": "a API recusa regra de NSG OCI com NSG inexistente ou sem nsg-id e não há comando de regra solta: dono = o NSG (kind parent). Divergência com a camada de API pela doc vira disputa observada × doc.",
+  "R-OBS-CASCADE": "regras do NSG OCI somem com o NSG (delete do NSG, list/update das regras depois falham): ciclo de vida = pai. Só com o report.json do OBS-GAPS fechando o experimento.",
+  "R-OBS-ASSOC-LIFE": "ciclo de vida da associação NSG<->NIC/subnet no Azure pelo OBS-GAPS-AZ (pendente).",
   "C-PILOT-LITERAL": "fato escolhido à mão numa frase da página fixada; o valor repete o que a frase diz.",
   "C-PILOT-GAP": "tipo das fatias dos pilotos sem frase para este tipo de fato na página fixada: UNKNOWN explícito (a lacuna é resultado; não se preenche com conhecimento de fora do pin).",
   "I-PILOT-READING": "leitura do modelo sobre a frase citada (granularidade, interação entre níveis, regra implícita); value.basis diz o que foi inferido além do texto."

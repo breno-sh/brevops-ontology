@@ -675,6 +675,24 @@
   {
    "provider": "oci",
    "terraform_resource_type": "oci_core_network_security_group_security_rule",
+   "fact": "lifecycle_controller",
+   "kind": "observed_x_doc",
+   "doc": {
+    "kind": "self",
+    "rule": "R-LIFE-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-OBS-CASCADE",
+    "level": "observed"
+   },
+   "evidence": [
+    "SE-oci-l7vx4ajpaevy2ecg"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_core_network_security_group_security_rule",
    "fact": "owner",
    "doc": {
     "kind": "self",
@@ -687,6 +705,24 @@
    "evidence": [
     "SE-oci-3uf5jwnkdj6kln7h",
     "SE-oci-zj3vmaqgzxojxf3k"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_core_network_security_group_security_rule",
+   "fact": "owner",
+   "kind": "observed_x_doc",
+   "doc": {
+    "kind": "self",
+    "rule": "R-OWN-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-OBS-OWNER",
+    "level": "observed"
+   },
+   "evidence": [
+    "SE-oci-3uf5jwnkdj6kln7h"
    ]
   },
   {

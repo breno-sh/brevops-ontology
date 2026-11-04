@@ -17,7 +17,16 @@ import sys
 
 from . import apispec, common, rules
 
-LEVELS = {"published", "derived", "interpreted"}
+LEVELS = {"published", "derived", "interpreted", "observed"}
+_OBS = None
+
+
+def _obs_refs() -> set:
+    global _OBS
+    if _OBS is None:
+        from . import observed
+        _OBS = {observed._ref(r) for r in observed.load()[0]}
+    return _OBS
 
 
 def check_record(r: dict, ids: dict, bad: list, cnt: collections.Counter) -> None:
@@ -90,6 +99,17 @@ def check_record(r: dict, ids: dict, bad: list, cnt: collections.Counter) -> Non
                 err("derived_from aponta fato desconhecido")
         if "model_id" in r:
             err("derivado com model_id")
+    elif lvl == "observed":
+        for k in ("observation_ref", "run_id", "repetitions", "control", "observed_at"):
+            if not r.get(k):
+                err(f"observado sem {k}")
+        if (r.get("repetitions") or 0) < 2:
+            err("observado com menos de 2 repetições")
+        miss = [x for x in r.get("observation_ref") or [] if x not in _obs_refs()]
+        if miss:
+            err(f"observation_ref sem observação no OBS-GAPS: {miss[:2]}")
+        if "model_id" in r:
+            err("observado com model_id")
     elif lvl == "interpreted":
         if not r.get("model_id"):
             err("interpretado sem model_id")
