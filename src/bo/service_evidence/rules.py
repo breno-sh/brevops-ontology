@@ -124,6 +124,27 @@ RULES = {
                         "primário: {kind: parent, via: [atributo de referência], layer: api}.",
     "R-LIFE-API-SHARED": "camada de API: idem para o ciclo de vida: o objeto é do primário, {kind: parent, via, "
                          "layer: api}.",
+    # CC-8: especificação de API do provedor (apispec.py, specfacts.py)
+    "R-SPEC-OP": "operação da spec fixada do provedor (Smithy aws, Discovery google, OpenAPI azure, SDK oci lido "
+                 "como texto), citada por arquivo, ponteiro e nome da operação.",
+    "R-BRIDGE-SPEC": "ponte tipo Terraform <-> recurso da spec só com casamento ÚNICO: aws nome do tipo sem aws_ "
+                     "(e sem s3_/ec2_/vpc_) = substantivo da operação em snake_case (faceta: pai_faceta); google "
+                     "<serviço>_<coleção no singular>; azure tipos ARM da ponte da doc = tipos do caminho da spec; "
+                     "oci nome sem oci_<serviço>_ (ou ponte da doc) = substantivo do método. Mais de um: candidatos, "
+                     "sem fato de camada API. Recurso da spec que casa com mais de um tipo: fica com a ponte só o "
+                     "único tipo do grupo que não referencia (R-REF-TARGET, ou atributo REFERENCE de topo chamado "
+                     "<recurso no singular>_id) outro membro; os demais ficam como "
+                     "candidatos.",
+    "R-LIFE-SPEC": "o recurso da spec tem create e delete próprios sobre o próprio identificador (aws Create<N> e "
+                   "Delete<N>; google insert e delete; azure PUT e DELETE no caminho da instância; oci delete_<n> com "
+                   "caminho terminado em {identificador} e create_<n> ou put_<n>): ciclo de vida próprio na API, {kind: self, layer: api}.",
+    "R-OWN-SPEC": "recurso de R-LIFE-SPEC: a configuração está no próprio objeto, {kind: self, layer: api}; faceta "
+                  "(sem create/delete próprios e configurada só por operação sobre o identificador do pai: aws "
+                  "Put/Authorize/Revoke com os rótulos do Delete do pai no mesmo caminho-base, ou nome com o prefixo "
+                  "do pai; azure PUT sem DELETE com o último nome constante; oci put/update/add/remove com caminho "
+                  "que estende o do delete do pai): {kind: parent, layer: api, via: atributo de referência}.",
+    "R-LIFE-SPEC-PARENT": "faceta de R-OWN-SPEC: sem create/delete próprios, o objeto nasce e some com o pai na "
+                          "API: {kind: parent, layer: api}.",
     # curadoria das fatias dos pilotos (curated.py): C-* publicado (o valor está escrito na frase), I-* interpretado
     "C-PILOT-LITERAL": "fato escolhido à mão numa frase da página fixada; o valor repete o que a frase diz.",
     "C-PILOT-GAP": "tipo das fatias dos pilotos sem frase para este tipo de fato na página fixada: UNKNOWN explícito "

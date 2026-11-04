@@ -180,6 +180,7 @@ def scopes(ctx, api_primary: set | None = None) -> None:
     bridge_id = {r["terraform_resource_type"]: r["evidence_id"] for r in ctx.recs
                  if r["fact_kind"] == "api_bridge" and r["status"] == "stated" and not r.get("block_path")
                  and r["terraform_resource_type"] in api_primary
+                 and (r.get("value") or {}).get("aspect") == "api_resource_bridge"
                  and (r.get("value") or {}).get("resource") not in (None, "", "UNKNOWN")}
     doc_scoped, anchor, blocks_ = set(), {}, {}
     for r in ctx.recs:
@@ -232,8 +233,8 @@ def api_layer(ctx) -> set[str]:
             continue
         v = r.get("value") or {}
         T = r["terraform_resource_type"]
-        if r["fact_kind"] == "api_bridge" and not v.get("inherited_from") and \
-                v.get("resource") not in (None, "", "UNKNOWN"):
+        if r["fact_kind"] == "api_bridge" and not v.get("inherited_from") and v.get("rule") != "R-BRIDGE-SPEC" \
+                and v.get("resource") not in (None, "", "UNKNOWN"):
             bridge.setdefault(T, r)
         if v.get("aspect") == "reference_target" and v.get("resolved"):
             refs.setdefault(T, {})[v["attribute"]] = (v["resolved"], r["evidence_id"])

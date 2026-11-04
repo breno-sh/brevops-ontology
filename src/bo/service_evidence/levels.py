@@ -15,7 +15,7 @@ import collections
 import json
 import sys
 
-from . import common, rules
+from . import apispec, common, rules
 
 LEVELS = {"published", "derived", "interpreted"}
 
@@ -49,7 +49,13 @@ def check_record(r: dict, ids: dict, bad: list, cnt: collections.Counter) -> Non
                 err(f"doc não resolve: {why}")
             else:
                 cnt["doc_resolvido"] += 1
-        if cit:
+        if cit and cit.get("section", "").startswith("apispec "):
+            why = apispec.resolve(p, cit)
+            if why:
+                err(f"citação da spec não resolve: {why}")
+            else:
+                cnt["spec_resolvido"] += 1
+        elif cit:
             why = common.resolve_schema(p, cit)
             if why:
                 err(f"citação do schema não resolve: {why}")

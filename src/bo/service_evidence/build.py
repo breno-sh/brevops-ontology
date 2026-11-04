@@ -22,7 +22,7 @@ import json
 import os
 import sys
 
-from . import blocks, common, curated, extract, grainfacts, protocol, rules, sources
+from . import apispec, blocks, common, curated, extract, grainfacts, protocol, rules, sources, specfacts
 
 
 def _protocol_atoms():
@@ -41,9 +41,13 @@ def generate() -> dict:
         ctxs[p], stats[p], bridges[p] = ctx, st, extra["bridges"]
         stats[p]["out_of_pin_examples"] = extra["out_of_pin_examples"]
     _, cur = curated.records(ctxs, bridges)
+    disputes = []
     for p in common.PROVIDERS:
-        prim = grainfacts.api_layer(ctxs[p])  # CC-1d: camada de API só com ponte citada
-        grainfacts.scopes(ctxs[p], prim)  # depois da curadoria: R-SCOPE-DOC prevalece
+        prim = grainfacts.api_layer(ctxs[p])  # CC-1d: camada de API só com ponte citada na doc
+        specfacts.run(ctxs[p], bridges[p], disputes)  # CC-8: camada de API pela spec do provedor
+        spec_own = {r["terraform_resource_type"] for r in ctxs[p].recs
+                    if (r.get("value") or {}).get("rule") == "R-LIFE-SPEC"}
+        grainfacts.scopes(ctxs[p], prim | spec_own)  # depois da curadoria: R-SCOPE-DOC prevalece
         stats[p]["counters"] = dict(ctxs[p].st)
     recs = []
     for p in common.PROVIDERS:
@@ -65,7 +69,8 @@ def generate() -> dict:
     perr = protocol.validate(prow)
     if perr:
         raise SystemExit("protocol_support fora do formato: " + "; ".join(perr[:5]))
-    return {"recs": recs, "protocol": prow, "protocol_missing": pmiss, "stats": stats, "curated": cur}
+    return {"recs": recs, "protocol": prow, "protocol_missing": pmiss, "stats": stats, "curated": cur,
+            "disputes": sorted(disputes, key=lambda d: (d["provider"], d["terraform_resource_type"], d["fact"]))}
 
 
 def evidence_levels(g: dict) -> dict:
@@ -109,6 +114,10 @@ def evidence_levels(g: dict) -> dict:
                              "by_status": dict(collections.Counter(r["status"] for r in g["protocol"])),
                              "missing": g["protocol_missing"]},
         "curated": g["curated"],
+        "spec_disputes": len(g["disputes"]),
+        "spec_sources": {p: {"pin": apispec.SPEC[p]["pin"], "date": apispec.SPEC[p]["date"],
+                             "files": {f: apispec.sha(p, f) for f in apispec.SPEC[p]["files"]}}
+                         for p in common.PROVIDERS},
         "pilot_slice_gaps": gaps,
         "level_policy": {
             "published": "a frase citada (doc_source da página fixada, ou nó do schema do binário assinado do pin "
@@ -160,6 +169,11 @@ def sources_doc() -> dict:
                      "source_txt_sha256": common.sha256_file(common.real(src["source_txt"]))},
             "schema": {"uri": m["uri"], "sha256": m["sha256"], "retrieved_at": m["retrieved_at"],
                        "path": src["prefetch"].format(v=common.version(p)) + "/providers-schema.json"},
+            "apispec": {"pin": apispec.SPEC[p]["pin"], "date": apispec.SPEC[p]["date"],
+                        "retrieved_at": apispec.RETRIEVED, "versions": apispec.SPEC[p]["versions"],
+                        "files": {f: {"uri": apispec.url(p, f), "sha256": apispec.sha(p, f)}
+                                  for f in apispec.SPEC[p]["files"]},
+                        "source_txt": f"$BO_DATA/downloads/apispec-{p}/SOURCE.txt"},
         }
     return out
 
@@ -170,12 +184,16 @@ def render(g: dict) -> dict[str, str]:
     lv = json.dumps(evidence_levels(g), ensure_ascii=False, indent=1, sort_keys=False) + "\n"
     srcs = json.dumps(sources_doc(), ensure_ascii=False, indent=1) + "\n"
     sch = json.dumps(protocol.SCHEMA, ensure_ascii=False, indent=1) + "\n"
+    disp = json.dumps({"schema": "bo.spec_disputes/1", "module": common.MODULE,
+                       "note": "conflito spec x doc registrado, não resolvido: os dois fatos ficam no C25",
+                       "disputes": g["disputes"]}, ensure_ascii=False, indent=1) + "\n"
     return {
         str(common.out_dir() / "service_evidence.jsonl"): lines,
         str(common.out_dir() / "protocol_support.jsonl"): prot,
         str(common.results_dir() / "evidence_levels.json"): lv,
         str(common.results_dir() / "sources.json"): srcs,
         str(common.results_dir() / "protocol_support.schema.json"): sch,
+        str(common.results_dir() / "spec_disputes.json"): disp,
     }
 
 

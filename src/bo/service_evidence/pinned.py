@@ -17,7 +17,7 @@ import json
 import re
 import sys
 
-from . import build, common
+from . import apispec, build, common
 
 DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 DT = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2})?-03:00$")
@@ -60,19 +60,25 @@ def main(argv=None) -> int:
         if not DT.match(s["schema"]["retrieved_at"]):
             bad.append(f"{p}: schema sem data de extração")
         common.schema(p)  # sai se o sha256 do arquivo não for o do pin
+    for p in common.PROVIDERS:
+        bad += [f"{p}: spec {x} não confere com SHA256SUMS" for x in apispec.sums_ok(p)]
+        txt = (common.bo_data() / "downloads" / f"apispec-{p}" / "SOURCE.txt").read_text(encoding="utf-8")
+        for f in apispec.SPEC[p]["files"]:
+            if apispec.sha(p, f) not in txt:
+                bad.append(f"{p}: sha256 da spec {f} não está no SOURCE.txt")
     bridge_ver = {}
     with open(_data_dir(argv) / "service_evidence.jsonl", encoding="utf-8") as f:
         recs = [json.loads(x) for x in f]
     for r in recs:
         v = r.get("value") or {}
         if v.get("aspect") == "api_resource_bridge" and v.get("api_version"):
-            bridge_ver[(r["provider"], r["terraform_resource_type"])] = v["api_version"]
+            bridge_ver.setdefault((r["provider"], r["terraform_resource_type"]), set()).add(v["api_version"])
     for r in recs:
         eid, p = r["evidence_id"], r["provider"]
         if r["pin"]["provider_version"] != pins[p]["version"]:
             bad.append(f"{eid}: provider_version fora do pin")
         av = r["pin"].get("api_version")
-        if av is not None and bridge_ver.get((p, r.get("terraform_resource_type"))) != av:
+        if av is not None and av not in bridge_ver.get((p, r.get("terraform_resource_type")), set()):
             bad.append(f"{eid}: api_version sem ponte publicada que a dê")
         d = r.get("doc")
         if d:
@@ -80,7 +86,14 @@ def main(argv=None) -> int:
                 bad.append(f"{eid}: doc fora do pin")
             cnt["doc"] += 1
         c = r.get("citation")
-        if c:
+        if c and c.get("section", "").startswith("apispec "):
+            m2 = apispec.SECTION_RX.match(c["section"])
+            if not m2 or m2["file"] not in apispec.SPEC[p]["files"] or m2["sha"] != apispec.sha(p, m2["file"]):
+                bad.append(f"{eid}: citação de spec fora da fonte fixada")
+            if not DT.match(c.get("retrieved_at", "")):
+                bad.append(f"{eid}: citação sem data")
+            cnt["spec"] += 1
+        elif c:
             m = common.SECTION_RX.match(c.get("section", ""))
             if not m or m["sha"] != pins[p]["schema_sha256"] or c["uri"] != srcdoc["providers"][p]["schema"]["uri"]:
                 bad.append(f"{eid}: citação de schema fora do pin")

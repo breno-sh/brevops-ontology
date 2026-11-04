@@ -1,0 +1,207 @@
+{
+ "schema": "bo.spec_disputes/1",
+ "module": "SERVICE-EVIDENCE",
+ "note": "conflito spec x doc registrado, não resolvido: os dois fatos ficam no C25",
+ "disputes": [
+  {
+   "provider": "google",
+   "terraform_resource_type": "google_compute_interconnect_attachment_group",
+   "fact": "api_bridge",
+   "doc": {
+    "service": "compute",
+    "resource": "interconnects"
+   },
+   "spec": {
+    "service": "compute",
+    "resource": "interconnectAttachmentGroups"
+   },
+   "evidence": [
+    "SE-google-z4un5u3thjyiaudl"
+   ]
+  },
+  {
+   "provider": "google",
+   "terraform_resource_type": "google_compute_interconnect_group",
+   "fact": "api_bridge",
+   "doc": {
+    "service": "compute",
+    "resource": "interconnects"
+   },
+   "spec": {
+    "service": "compute",
+    "resource": "interconnectGroups"
+   },
+   "evidence": [
+    "SE-google-w5lvqizgs5k4lbld"
+   ]
+  },
+  {
+   "provider": "google",
+   "terraform_resource_type": "google_compute_region_health_aggregation_policy",
+   "fact": "api_bridge",
+   "doc": {
+    "service": "compute",
+    "resource": "healthAggregationPolicies"
+   },
+   "spec": {
+    "service": "compute",
+    "resource": "regionHealthAggregationPolicies"
+   },
+   "evidence": [
+    "SE-google-cc7bhctoh7hbzdlc"
+   ]
+  },
+  {
+   "provider": "google",
+   "terraform_resource_type": "google_compute_vpn_gateway",
+   "fact": "api_bridge",
+   "doc": {
+    "service": "compute",
+    "resource": "targetVpnGateways"
+   },
+   "spec": {
+    "service": "compute",
+    "resource": "vpnGateways"
+   },
+   "evidence": [
+    "SE-google-ugtccryuz6o3drsw"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_core_drg_nat_policy_drg_nat_rule",
+   "fact": "lifecycle_controller",
+   "doc": {
+    "kind": "self",
+    "rule": "R-LIFE-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-LIFE-SPEC-PARENT"
+   },
+   "evidence": [
+    "SE-oci-tljxww7cxndvg3us",
+    "SE-oci-pon3jroatdq3ru6p"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_core_drg_nat_policy_drg_nat_rule",
+   "fact": "owner",
+   "doc": {
+    "kind": "self",
+    "rule": "R-OWN-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-OWN-SPEC"
+   },
+   "evidence": [
+    "SE-oci-3ilhdgmxea42lpx2",
+    "SE-oci-gansu4lkfgvhh5xf"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_core_drg_route_distribution_statement",
+   "fact": "lifecycle_controller",
+   "doc": {
+    "kind": "self",
+    "rule": "R-LIFE-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-LIFE-SPEC-PARENT"
+   },
+   "evidence": [
+    "SE-oci-qeucdmwyeqdfph4j",
+    "SE-oci-znq2wavincrnil2g"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_core_drg_route_distribution_statement",
+   "fact": "owner",
+   "doc": {
+    "kind": "self",
+    "rule": "R-OWN-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-OWN-SPEC"
+   },
+   "evidence": [
+    "SE-oci-2opovrh5cwxahts7",
+    "SE-oci-j27xaxhdphh7bd3z"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_core_network_security_group_security_rule",
+   "fact": "lifecycle_controller",
+   "doc": {
+    "kind": "self",
+    "rule": "R-LIFE-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-LIFE-SPEC-PARENT"
+   },
+   "evidence": [
+    "SE-oci-l7vx4ajpaevy2ecg",
+    "SE-oci-ubus4j7ltxpdtqxg"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_core_network_security_group_security_rule",
+   "fact": "owner",
+   "doc": {
+    "kind": "self",
+    "rule": "R-OWN-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-OWN-SPEC"
+   },
+   "evidence": [
+    "SE-oci-3uf5jwnkdj6kln7h",
+    "SE-oci-zj3vmaqgzxojxf3k"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_objectstorage_object_lifecycle_policy",
+   "fact": "lifecycle_controller",
+   "doc": {
+    "kind": "self",
+    "rule": "R-LIFE-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-LIFE-SPEC-PARENT"
+   },
+   "evidence": [
+    "SE-oci-2iam25lrjrqv3hu6",
+    "SE-oci-7o3wovj6unfbibgi"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_objectstorage_object_lifecycle_policy",
+   "fact": "owner",
+   "doc": {
+    "kind": "self",
+    "rule": "R-OWN-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-OWN-SPEC"
+   },
+   "evidence": [
+    "SE-oci-ly3dxhupemtm3r2k",
+    "SE-oci-kkzc3zme53bcjzl4"
+   ]
+  }
+ ]
+}

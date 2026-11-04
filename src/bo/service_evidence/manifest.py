@@ -18,6 +18,11 @@ FILES = [
     "$BO_REPO/results/SERVICE-EVIDENCE/evidence_levels.json",
     "$BO_REPO/results/SERVICE-EVIDENCE/sources.json",
     "$BO_REPO/results/SERVICE-EVIDENCE/protocol_support.schema.json",
+    "$BO_REPO/results/SERVICE-EVIDENCE/spec_disputes.json",
+    "$BO_DATA/downloads/apispec-aws/SHA256SUMS",
+    "$BO_DATA/downloads/apispec-google/SHA256SUMS",
+    "$BO_DATA/downloads/apispec-azurerm/SHA256SUMS",
+    "$BO_DATA/downloads/apispec-oci/SHA256SUMS",
     "$BO_REPO/results/SERVICE-EVIDENCE/CONTRACT_CHANGE.txt",
     "$BO_REPO/gates/SERVICE-EVIDENCE.sh",
 ]

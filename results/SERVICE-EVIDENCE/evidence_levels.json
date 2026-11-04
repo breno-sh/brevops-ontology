@@ -3,18 +3,18 @@
  "module": "SERVICE-EVIDENCE",
  "contract": "C25",
  "contract_version": "1.0.0",
- "generated_at": "2026-11-04T08:00:44-03:00",
- "records": 159899,
+ "generated_at": "2026-11-04T08:44:47-03:00",
+ "records": 161044,
  "by_level": {
-  "derived": 101626,
+  "derived": 102351,
   "interpreted": 6,
-  "published": 58267,
-  "status:stated": 152977,
-  "status:unknown": 6922
+  "published": 58687,
+  "status:stated": 154169,
+  "status:unknown": 6875
  },
  "by_provider": {
   "aws": {
-   "api_bridge|derived|stated": 16,
+   "api_bridge|derived|stated": 96,
    "api_bridge|published|stated": 1746,
    "connection_state|published|stated": 18,
    "connection_state|published|unknown": 5,
@@ -26,12 +26,12 @@
    "identity|published|stated": 10131,
    "import_key|published|stated": 1654,
    "import_key|published|unknown": 92,
-   "lifecycle_controller|derived|stated": 6647,
-   "lifecycle_controller|published|stated": 708,
-   "lifecycle_controller|published|unknown": 1067,
-   "owner|derived|stated": 8158,
-   "owner|published|stated": 27,
-   "owner|published|unknown": 89,
+   "lifecycle_controller|derived|stated": 6727,
+   "lifecycle_controller|published|stated": 836,
+   "lifecycle_controller|published|unknown": 1023,
+   "owner|derived|stated": 8238,
+   "owner|published|stated": 43,
+   "owner|published|unknown": 88,
    "precedence|published|stated": 2527,
    "precedence|published|unknown": 7,
    "tag_support|published|stated": 1746,
@@ -39,7 +39,7 @@
    "ttl_support|published|unknown": 1656
   },
   "google": {
-   "api_bridge|derived|stated": 1,
+   "api_bridge|derived|stated": 89,
    "api_bridge|published|stated": 679,
    "connection_state|published|stated": 9,
    "connection_state|published|unknown": 1,
@@ -53,12 +53,12 @@
    "identity|published|unknown": 5,
    "import_key|published|stated": 1386,
    "import_key|published|unknown": 6,
-   "lifecycle_controller|derived|stated": 7424,
-   "lifecycle_controller|published|stated": 1814,
-   "lifecycle_controller|published|unknown": 442,
-   "owner|derived|stated": 8919,
+   "lifecycle_controller|derived|stated": 7512,
+   "lifecycle_controller|published|stated": 1990,
+   "lifecycle_controller|published|unknown": 441,
+   "owner|derived|stated": 9007,
    "owner|published|stated": 203,
-   "owner|published|unknown": 25,
+   "owner|published|unknown": 24,
    "precedence|published|stated": 44,
    "precedence|published|unknown": 1,
    "tag_support|published|stated": 1392,
@@ -66,7 +66,7 @@
    "ttl_support|published|unknown": 1312
   },
   "azurerm": {
-   "api_bridge|derived|stated": 1065,
+   "api_bridge|derived|stated": 1108,
    "connection_state|published|stated": 6,
    "connection_state|published|unknown": 2,
    "effective_scope|derived|stated": 3717,
@@ -79,9 +79,9 @@
    "identity|published|unknown": 10,
    "import_key|published|stated": 1102,
    "import_key|published|unknown": 5,
-   "lifecycle_controller|derived|stated": 4409,
-   "lifecycle_controller|published|stated": 1110,
-   "owner|derived|stated": 5449,
+   "lifecycle_controller|derived|stated": 4442,
+   "lifecycle_controller|published|stated": 1186,
+   "owner|derived|stated": 5482,
    "owner|published|stated": 103,
    "owner|published|unknown": 4,
    "precedence|published|stated": 77,
@@ -91,6 +91,7 @@
    "ttl_support|published|unknown": 990
   },
   "oci": {
+   "api_bridge|derived|stated": 40,
    "api_bridge|published|stated": 887,
    "connection_state|interpreted|stated": 3,
    "connection_state|published|stated": 2,
@@ -103,11 +104,11 @@
    "identity|published|unknown": 32,
    "import_key|published|stated": 879,
    "import_key|published|unknown": 147,
-   "lifecycle_controller|derived|stated": 4821,
-   "lifecycle_controller|published|stated": 1031,
+   "lifecycle_controller|derived|stated": 4857,
+   "lifecycle_controller|published|stated": 1097,
    "lifecycle_controller|published|unknown": 1,
-   "owner|derived|stated": 4687,
-   "owner|published|stated": 560,
+   "owner|derived|stated": 4723,
+   "owner|published|stated": 565,
    "owner|published|unknown": 53,
    "precedence|published|stated": 13,
    "precedence|published|unknown": 3,
@@ -124,20 +125,20 @@
    "effective_scope": 1746,
    "identity": 1617,
    "import_key": 1654,
-   "lifecycle_controller": 1138,
-   "owner": 1689,
+   "lifecycle_controller": 1164,
+   "owner": 1690,
    "precedence": 43,
    "tag_support": 1746,
    "ttl_support": 90
   },
   "google": {
-   "api_bridge": 679,
+   "api_bridge": 685,
    "connection_state": 5,
    "effect": 12,
    "effective_scope": 1392,
    "identity": 1389,
    "import_key": 1386,
-   "lifecycle_controller": 1241,
+   "lifecycle_controller": 1242,
    "owner": 1381,
    "precedence": 42,
    "tag_support": 1392,
@@ -157,7 +158,7 @@
    "ttl_support": 117
   },
   "oci": {
-   "api_bridge": 887,
+   "api_bridge": 889,
    "connection_state": 2,
    "effect": 3,
    "effective_scope": 1026,
@@ -184,6 +185,41 @@
   "interpreted": 6,
   "gap_unknown": 31,
   "missing": []
+ },
+ "spec_disputes": 12,
+ "spec_sources": {
+  "aws": {
+   "pin": "aws/api-models-aws@1b9ff13fe6c28ea9774a527e53cda6a3b91369dc",
+   "date": "2026-10-30",
+   "files": {
+    "s3-2006-03-01.json": "73e4f75747396176053a0fcc910261cf670c7e133c1cebcfffefa703fad3ce68",
+    "ec2-2016-11-15.json": "2a61258f48c9769ccd24ad8d0a439593334fbafcf2a82d49677d72a04747f85e"
+   }
+  },
+  "google": {
+   "pin": "discovery v1 (revision no documento)",
+   "date": "2026-11-04",
+   "files": {
+    "storage-v1.json": "0ee35fa148cbf2725ec9e395f53a15e8c4b023a305040dedb2ca5c0996df443c",
+    "compute-v1.json": "4966f4a98f01867b4a8629e48749914b118f3b9f0631673a6108ca348a000376"
+   }
+  },
+  "azurerm": {
+   "pin": "Azure/azure-rest-api-specs@6ad5af824ebf340b4a83889dbdd70572124b57a5",
+   "date": "2026-11-03",
+   "files": {
+    "storage-2026-09-01-openapi.json": "9b3aeac07a8682e7adc3055adbde5da2d5cfb3670891856b7733535ce4d0eef0",
+    "network-2026-03-01-virtualNetwork.json": "0bfb316d7cbbecc06ae43c2cf57ed134d456e5b12607f9eab61c1a798d6452c5"
+   }
+  },
+  "oci": {
+   "pin": "oracle/oci-python-sdk@ec1d21a37357b8ab1e86fec7132bc08f3df17782",
+   "date": "2026-11-03",
+   "files": {
+    "object_storage_client.py.txt": "1075141534c454a0351bc241d42e3ba449500c5e80ca4e5c2da7fa2a453a6d76",
+    "virtual_network_client.py.txt": "df728bd2641dde2e893c616b7560888255b144fce27d9bb24cc28e26bd19dab0"
+   }
+  }
  },
  "pilot_slice_gaps": [
   {
@@ -474,6 +510,11 @@
   "R-LIFE-API": "camada de API: o tipo de R-OWN-API que também tem R-LIFE-TF (create e delete do provider) cria e apaga o objeto de API da ponte: {kind: self, layer: api}.",
   "R-OWN-API-SHARED": "camada de API: membro do grupo de ponte que referencia o primário configura o objeto do primário: {kind: parent, via: [atributo de referência], layer: api}.",
   "R-LIFE-API-SHARED": "camada de API: idem para o ciclo de vida: o objeto é do primário, {kind: parent, via, layer: api}.",
+  "R-SPEC-OP": "operação da spec fixada do provedor (Smithy aws, Discovery google, OpenAPI azure, SDK oci lido como texto), citada por arquivo, ponteiro e nome da operação.",
+  "R-BRIDGE-SPEC": "ponte tipo Terraform <-> recurso da spec só com casamento ÚNICO: aws nome do tipo sem aws_ (e sem s3_/ec2_/vpc_) = substantivo da operação em snake_case (faceta: pai_faceta); google <serviço>_<coleção no singular>; azure tipos ARM da ponte da doc = tipos do caminho da spec; oci nome sem oci_<serviço>_ (ou ponte da doc) = substantivo do método. Mais de um: candidatos, sem fato de camada API. Recurso da spec que casa com mais de um tipo: fica com a ponte só o único tipo do grupo que não referencia (R-REF-TARGET, ou atributo REFERENCE de topo chamado <recurso no singular>_id) outro membro; os demais ficam como candidatos.",
+  "R-LIFE-SPEC": "o recurso da spec tem create e delete próprios sobre o próprio identificador (aws Create<N> e Delete<N>; google insert e delete; azure PUT e DELETE no caminho da instância; oci delete_<n> com caminho terminado em {identificador} e create_<n> ou put_<n>): ciclo de vida próprio na API, {kind: self, layer: api}.",
+  "R-OWN-SPEC": "recurso de R-LIFE-SPEC: a configuração está no próprio objeto, {kind: self, layer: api}; faceta (sem create/delete próprios e configurada só por operação sobre o identificador do pai: aws Put/Authorize/Revoke com os rótulos do Delete do pai no mesmo caminho-base, ou nome com o prefixo do pai; azure PUT sem DELETE com o último nome constante; oci put/update/add/remove com caminho que estende o do delete do pai): {kind: parent, layer: api, via: atributo de referência}.",
+  "R-LIFE-SPEC-PARENT": "faceta de R-OWN-SPEC: sem create/delete próprios, o objeto nasce e some com o pai na API: {kind: parent, layer: api}.",
   "C-PILOT-LITERAL": "fato escolhido à mão numa frase da página fixada; o valor repete o que a frase diz.",
   "C-PILOT-GAP": "tipo das fatias dos pilotos sem frase para este tipo de fato na página fixada: UNKNOWN explícito (a lacuna é resultado; não se preenche com conhecimento de fora do pin).",
   "I-PILOT-READING": "leitura do modelo sobre a frase citada (granularidade, interação entre níveis, regra implícita); value.basis diz o que foi inferido além do texto."
@@ -642,7 +683,7 @@
     "subcategory:block;import{id_attributes,id_text,identity,methods,separators,source,status,supported}": 1
    },
    "out_of_pin_examples": [],
-   "unknown_dropped_because_stated": 3615,
+   "unknown_dropped_because_stated": 3660,
    "docs_facts_read": {
     "lidos": 163851,
     "guardados": 13230,
@@ -663,11 +704,11 @@
     "tag_support:published:stated": 1746,
     "ttl_support:published:unknown": 1656,
     "blocos": 6115,
-    "owner:derived:stated": 8158,
-    "lifecycle_controller:derived:stated": 6647,
+    "owner:derived:stated": 8238,
+    "lifecycle_controller:derived:stated": 6727,
     "R-OWN-TOP": 1654,
     "effective_scope:published:unknown": 1725,
-    "lifecycle_controller:published:stated": 708,
+    "lifecycle_controller:published:stated": 836,
     "R-LIFE-TF": 528,
     "R-REF-PHRASE": 3197,
     "R-REF-TARGET_sem_alvo": 1605,
@@ -678,10 +719,10 @@
     "blocos_abaixo_do_corte": 68926,
     "blocos_de_faceta": 244,
     "precedence:published:stated": 2527,
-    "owner:published:stated": 27,
+    "owner:published:stated": 43,
     "ttl_aninhado_sem_frase": 9,
     "effect:published:stated": 17,
-    "api_bridge:derived:stated": 16,
+    "api_bridge:derived:stated": 96,
     "aws_ponte_por_operacao": 16,
     "connection_state:published:stated": 18,
     "tipos_com_identidade_compartilhada": 97,
@@ -693,12 +734,16 @@
     "R-OWN-API": 14,
     "R-LIFE-API": 4,
     "R-OWN-API_ambiguo": 2,
+    "R-BRIDGE-SPEC": 80,
+    "R-LIFE-SPEC": 64,
+    "R-OWN-SPEC": 80,
+    "R-LIFE-SPEC-PARENT": 16,
     "effective_scope:derived:stated": 7846,
     "R-SCOPE-SELF": 1731,
-    "R-SCOPE-SELF_api": 14,
+    "R-SCOPE-SELF_api": 76,
     "R-SCOPE-DOC_tipo": 15,
     "R-SCOPE-PARENT": 6115,
-    "R-SCOPE-PARENT_api": 73
+    "R-SCOPE-PARENT_api": 199
    }
   },
   "google": {
@@ -713,7 +758,7 @@
     "subcategory:block;import{status,unknown_reason}": 6
    },
    "out_of_pin_examples": [],
-   "unknown_dropped_because_stated": 1734,
+   "unknown_dropped_because_stated": 1736,
    "docs_facts_read": {
     "lidos": 42822,
     "guardados": 6120,
@@ -728,13 +773,13 @@
     "identity:published:stated": 8704,
     "identity:derived:stated": 8745,
     "owner:published:unknown": 334,
-    "lifecycle_controller:published:stated": 1814,
+    "lifecycle_controller:published:stated": 1990,
     "effective_scope:published:unknown": 1342,
     "tag_support:published:stated": 1392,
     "ttl_support:published:unknown": 1312,
     "blocos": 5978,
-    "owner:derived:stated": 8919,
-    "lifecycle_controller:derived:stated": 7424,
+    "owner:derived:stated": 9007,
+    "lifecycle_controller:derived:stated": 7512,
     "R-OWN-TOP": 1355,
     "R-LIFE-TF": 919,
     "R-REF-PHRASE": 1775,
@@ -755,7 +800,7 @@
     "identity:published:unknown": 10,
     "tipos_com_identidade_compartilhada": 205,
     "R-TWIN_vinculos": 1,
-    "api_bridge:derived:stated": 1,
+    "api_bridge:derived:stated": 89,
     "R-TWIN_herdados": 1,
     "effect:interpreted:stated": 1,
     "effective_scope:interpreted:stated": 1,
@@ -764,12 +809,15 @@
     "R-OWN-API": 545,
     "R-LIFE-API": 527,
     "R-OWN-API_ambiguo": 79,
+    "R-BRIDGE-SPEC": 88,
+    "R-LIFE-SPEC": 88,
+    "R-OWN-SPEC": 88,
     "effective_scope:derived:stated": 7343,
     "R-SCOPE-SELF": 1365,
-    "R-SCOPE-SELF_api": 526,
+    "R-SCOPE-SELF_api": 556,
     "R-SCOPE-DOC_tipo": 27,
     "R-SCOPE-PARENT": 5978,
-    "R-SCOPE-PARENT_api": 3354
+    "R-SCOPE-PARENT_api": 3644
    }
   },
   "azurerm": {
@@ -793,17 +841,17 @@
     "arquivo": "ausente"
    },
    "extract_counters": {
-    "api_bridge:derived:stated": 1065,
+    "api_bridge:derived:stated": 1108,
     "import_key:published:stated": 1102,
     "identity:derived:stated": 5113,
-    "owner:derived:stated": 5449,
+    "owner:derived:stated": 5482,
     "effective_scope:published:unknown": 1105,
     "lifecycle_controller:published:unknown": 1104,
     "tag_support:published:stated": 1107,
     "ttl_support:published:unknown": 990,
     "R-OWN-TOP": 1102,
-    "lifecycle_controller:published:stated": 1110,
-    "lifecycle_controller:derived:stated": 4409,
+    "lifecycle_controller:published:stated": 1186,
+    "lifecycle_controller:derived:stated": 4442,
     "R-LIFE-TF": 1107,
     "identity:published:stated": 5075,
     "R-REF-PHRASE": 2259,
@@ -834,11 +882,16 @@
     "R-OWN-API_ambiguo": 367,
     "R-OWN-API-SHARED": 12,
     "R-LIFE-API-SHARED": 12,
+    "R-BRIDGE-SPEC_grupo": 2,
+    "R-BRIDGE-SPEC": 33,
+    "R-LIFE-SPEC": 33,
+    "R-OWN-SPEC": 33,
+    "R-BRIDGE-SPEC_ambiguo": 10,
     "effective_scope:derived:stated": 3717,
-    "R-SCOPE-SELF_api": 678,
+    "R-SCOPE-SELF_api": 679,
     "R-SCOPE-SELF": 1106,
     "R-SCOPE-DOC_tipo": 1,
-    "R-SCOPE-PARENT_api": 1229,
+    "R-SCOPE-PARENT_api": 1248,
     "R-SCOPE-PARENT": 2611
    }
   },
@@ -866,15 +919,15 @@
     "api_bridge:published:stated": 887,
     "import_key:published:stated": 879,
     "identity:derived:stated": 4393,
-    "owner:published:stated": 560,
+    "owner:published:stated": 565,
     "effective_scope:published:unknown": 1008,
     "lifecycle_controller:published:unknown": 1021,
     "tag_support:published:stated": 1628,
     "ttl_support:published:unknown": 958,
-    "owner:derived:stated": 4687,
+    "owner:derived:stated": 4723,
     "R-OWN-TOP": 879,
-    "lifecycle_controller:published:stated": 1031,
-    "lifecycle_controller:derived:stated": 4821,
+    "lifecycle_controller:published:stated": 1097,
+    "lifecycle_controller:derived:stated": 4857,
     "R-LIFE-TF": 1018,
     "blocos": 2956,
     "identity:published:stated": 4208,
@@ -898,11 +951,18 @@
     "R-OWN-API": 852,
     "R-LIFE-API": 847,
     "R-OWN-API_ambiguo": 35,
+    "R-BRIDGE-SPEC_grupo": 2,
+    "api_bridge:derived:stated": 40,
+    "R-BRIDGE-SPEC": 36,
+    "R-LIFE-SPEC": 31,
+    "R-OWN-SPEC": 36,
+    "R-BRIDGE-SPEC_ambiguo": 4,
+    "R-LIFE-SPEC-PARENT": 5,
     "effective_scope:derived:stated": 3975,
-    "R-SCOPE-SELF_api": 845,
+    "R-SCOPE-SELF_api": 846,
     "R-SCOPE-SELF": 1019,
     "R-SCOPE-DOC_tipo": 7,
-    "R-SCOPE-PARENT_api": 2705,
+    "R-SCOPE-PARENT_api": 2706,
     "R-SCOPE-PARENT": 2956
    }
   }

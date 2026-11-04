@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "SERVICE-EVIDENCE",
- "generated_at": "2026-11-04T02:52:30-03:00",
+ "generated_at": "2026-11-04T08:48:16-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/SERVICE-EVIDENCE.txt",
@@ -13,7 +13,8 @@
    "providers": "aws,google,azurerm,oci",
    "versions": "6.71.0,8.9.0,5.12.0,9.11.0",
    "block_max_depth": "4",
-   "c25": "1.1.0"
+   "c25": "1.1.0",
+   "cc": "CC-8"
   },
   "inputs": [
    {
@@ -90,9 +91,29 @@
     "path": "$BO_REPO/universe/pins.json",
     "kind": "file",
     "sha256": "594a4e878ac489b3ed97cdd6344b9945a8fd3a5d22ae4d6f4bfebd264decfe3d"
+   },
+   {
+    "path": "$BO_DATA/downloads/apispec-aws/SHA256SUMS",
+    "kind": "file",
+    "sha256": "1cfdcdaf7ae3cacd79b705fac28ca39d44de5338c574464de88cb24c30673796"
+   },
+   {
+    "path": "$BO_DATA/downloads/apispec-google/SHA256SUMS",
+    "kind": "file",
+    "sha256": "77cf079a23cb5a05f2183b18c6f91f4f6ebdb3f7ac6b87d7bb26706da4e85aee"
+   },
+   {
+    "path": "$BO_DATA/downloads/apispec-azurerm/SHA256SUMS",
+    "kind": "file",
+    "sha256": "99272a6ff4955c576c87c97b3dc146e0def704808a839f1685dc5bdf8236aedc"
+   },
+   {
+    "path": "$BO_DATA/downloads/apispec-oci/SHA256SUMS",
+    "kind": "file",
+    "sha256": "31561697762dbf8ab7bacff561ff2d95d3f0fb4e54b1be1813e8e037c0ca2b38"
    }
   ],
-  "recorded_at": "2026-11-04T02:52:30-03:00"
+  "recorded_at": "2026-11-04T08:48:16-03:00"
  },
  "sources": [
   {
@@ -118,8 +139,28 @@
   {
    "uri": "https://registry.terraform.io (providers schema -json dos 4 binários assinados do pin)",
    "license": "MPL-2.0",
-   "transformation": "nós de resource_identity_schemas, chaves, timeouts e forma dos blocos citados por ponteiro JSON"
+   "transformation": "nós citados por ponteiro JSON"
+  },
+  {
+   "uri": "https://github.com/aws/api-models-aws@1b9ff13fe6c2 (s3, ec2)",
+   "license": "Apache-2.0",
+   "transformation": "modelos Smithy lidos como JSON; operações citadas por ponteiro"
+  },
+  {
+   "uri": "https://www.googleapis.com/discovery/v1 (storage v1 rev 20261030, compute v1 rev 20261026)",
+   "license": "Google APIs Terms of Service",
+   "transformation": "documentos Discovery lidos como JSON; não redistribuídos"
+  },
+  {
+   "uri": "https://github.com/Azure/azure-rest-api-specs@6ad5af824ebf (Microsoft.Storage 2026-09-01, Microsoft.Network 2026-03-01)",
+   "license": "MIT",
+   "transformation": "OpenAPI lido como JSON"
+  },
+  {
+   "uri": "https://github.com/oracle/oci-python-sdk@ec1d21a37357 (object_storage, core/virtual_network)",
+   "license": "UPL-1.0 ou Apache-2.0",
+   "transformation": "código lido como texto por expressão regular; nunca importado"
   }
  ],
- "notes": "fatos mecânicos por regra declarada (rules.py), por bloco (block_path) e de grão (R-OWN-TOP, R-LIFE-TF, R-BRIDGE-DOC, R-TWIN, R-REF-*), todos derivados; 6 interpretados e a seleção de tipo do protocol_support feitos por claude-opus-5-5"
+ "notes": "fatos mecânicos por regra declarada; camada API da spec do provedor (CC-8, fatias STO e NET: s3, ec2, storage, compute, Microsoft.Storage, Microsoft.Network, objectstorage, core); 6 interpretados e a seleção do protocol_support por claude-opus-5-5"
 }
