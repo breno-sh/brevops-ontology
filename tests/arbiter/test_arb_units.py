@@ -291,3 +291,46 @@ def test_check_unproven_sem_out_grava_em_bo_tmp(tsv, monkeypatch):
     assert run.main(["--check-unproven", "--in", str(p), "--decided-at", DEC]) == 0
     assert (d / "bo_tmp" / "arbiter" / "verdicts.jsonl").exists()
     assert not (data_root() / mid).exists()
+
+
+# ------------------------------------------ domínio de wrap_list / unwrap_single (CC-13 do PILOT-STO-MAP)
+def _coll(cid, fn, st, ot, vdr, fid, test):
+    return B.C(cid, "pa:t.prefix", "exact", "pb:t.prefixes", st, ot, {"name": fn, "params": {}}, vdr, fid, tests=[test])
+
+
+def _L(it):
+    return {"datatype": "list", "item_type": it}
+
+
+def test_wrap_list_com_elemento_contido_sem_perda_sai_ok():
+    c = _coll("T-WRAP", "wrap_list", B.ENUM("logs/", "tmp/"), _L(B.ENUM("logs/", "tmp/", "data/")), "subset", "lossless",
+              {"input": "logs/", "expected": ["logs/"]})
+    assert v_of(judge([c]), "T-WRAP")[0]["verdict"] == "OK"
+
+
+def test_wrap_list_declarado_igual_refuta():
+    c = _coll("T-WRAP", "wrap_list", B.ENUM("logs/"), _L(B.ENUM("logs/")), "equal", "lossless",
+              {"input": "logs/", "expected": ["logs/"]})
+    v = v_of(judge([c]), "T-WRAP")[0]
+    assert v["verdict"] == "REFUTED_BY_RULE" and "VDR-COMPUTED" in v["rules"]
+
+
+def test_unwrap_single_e_parcial():
+    c = _coll("T-UNW", "unwrap_single", _L(B.ENUM("a", "b")), B.ENUM("a", "b"), "superset", "partial",
+              {"input": ["a"], "expected": "a"})
+    assert v_of(judge([c]), "T-UNW")[0]["verdict"] == "OK"
+    c2 = _coll("T-UNW2", "unwrap_single", _L(B.ENUM("a", "b")), B.ENUM("a", "b"), "equal", "lossless",
+               {"input": ["a"], "expected": "a"})
+    v = v_of(judge([c2]), "T-UNW2")[0]
+    assert v["verdict"] == "REFUTED_BY_RULE" and {"VDR-COMPUTED", "FID-COHERENT"} <= set(v["rules"])
+
+
+def test_texto_aberto_continua_sem_prova_como_no_nucleo():
+    """Domínio aberto (texto sem enum) não prova 'sem perda', no núcleo (identity) e na lista (wrap_list)."""
+    S = B.STR
+    w = _coll("T-WOPEN", "wrap_list", S, _L(S), "subset", "lossless", {"input": "logs/", "expected": ["logs/"]})
+    i = B.C("T-IOPEN", "pa:t.p", "exact", "pb:t.p", S, S, B.IDN, "equal", "lossless",
+            tests=[{"input": "x", "expected": "x"}])
+    for cid, r in (("T-WOPEN", w), ("T-IOPEN", i)):
+        v = v_of(judge([r]), cid)[0]
+        assert v["verdict"] == "UNPROVEN" and "VDR-UNKNOWN" in v["rules"], v

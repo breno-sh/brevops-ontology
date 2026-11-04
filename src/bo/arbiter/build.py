@@ -26,7 +26,7 @@ from .common import dump_json, dump_jsonl, emit, now, repo, sha256_bytes
 from .freeze import MANIFEST, RULES_HTML, frozen_files, manifest_text
 from .rules import ARB_RULES, PRECEDENCE, RULE_ALIASES, RULE_ID_PATTERN, SEM_RULES, published_id
 
-AUTHORED_AT = "2026-11-04T12:30:00-03:00"
+AUTHORED_AT = "2026-11-04T14:00:00-03:00"
 RES = "results/ARBITERLIB"
 
 CONVENTIONS = [
@@ -56,9 +56,10 @@ CONVENTIONS = [
                        "depois, o SEMANTICS 61d6fae (CC-3: invert aceita função do registro) mudou claims.py e "
                        "transforms.py do fecho e o árbitro foi recongelado de novo (ARBITER-20261104-2); depois da emenda 7 "
                        "do CONTRACTS e dos merges do SEMANTICS e do TRANSFORMS que ela pediu, recongelado pela "
-                       "terceira vez (ARBITER-20261104-3), com o HEAD de bo/base conferido dentro da trava. Comprovante "
-                       "vigente: results/ARBITERLIB/freeze_receipt_ARBITER-20261104-3.json; os anteriores ficam como "
-                       "histórico. Motivo: contrato e referência a montante, "
+                       "terceira vez (ARBITER-20261104-3), e pela quarta (ARBITER-20261104-4) sobre a emenda 9 do "
+                       "CONTRACTS e o último SERVICE-EVIDENCE e GRAIN da rodada, sempre com o HEAD de bo/base conferido "
+                       "dentro da trava. Comprovante vigente: o de nome mais recente em "
+                       "results/ARBITERLIB/freeze_receipt_ARBITER-*.json; os anteriores ficam como histórico. Motivo: contrato e referência a montante, "
                        "não ajuste de resultado (CC-1 do PILOT-STO-MAP)."),
     ("Ausência", "Linha com sssom:NoTermFound (C09-NONE; C09 3.2.0 com absence.side) tem veredito próprio: OK quando a "
                  "ausência é bem formada, de tipo provado (ABSENCE_DEMONSTRATED, OUT_OF_PIN, UNSUPPORTED_BY_TRANSLATOR) e "
@@ -68,7 +69,10 @@ CONVENTIONS = [
     ("Domínio no registro", "Cadeia só do registro do TRANSFORMS com domínio do sujeito finito (enum, booleano, inteiro "
                             "com faixa curta): a relação de domínios é calculada aplicando o registro a cada valor; "
                             "vale VDR-COMPUTED e FID-COHERENT como no núcleo, e 'sem perda' deixa de ser UNPROVEN quando "
-                            "o cálculo o prova. CC-9 do PILOT-STO-MAP."),
+                            "o cálculo o prova. CC-9 do PILOT-STO-MAP. wrap_list e unwrap_single: a relação sobe do elemento "
+                            "para a lista (wrap: elemento contido dá subset próprio; unwrap: função parcial, só listas "
+                            "de um elemento). A relação do elemento é a do SEMANTICS: texto aberto (sem enum) dá unknown "
+                            "e não prova 'sem perda', como identity texto->texto no núcleo. CC-13 do PILOT-STO-MAP."),
     ("Saída da conferência", "bo.arbiter.run com --check-unproven e sem --out grava em $BO_TMP/arbiter, nunca em $BO_DATA "
                              "(o gate não regrava o dado publicado). CC-MAP-NET-4 do PILOT-NET-MAP."),
     ("Ciclo", "cycle do C21 é a rodada do árbitro (1; com --previous, 1 + a maior já gravada). Os ciclos do grafo K4 "

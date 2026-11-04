@@ -492,8 +492,81 @@ def registry_vdr(eff: dict) -> str:
     return PARTIAL_ADJUST[r] if undefined else r
 
 
+LIFT_WRAP = {"equal": "subset", "subset": "subset", "superset": "overlap", "overlap": "overlap",
+             "disjoint": "disjoint", "unknown": "unknown"}
+
+
+def collection_vdr(eff: dict) -> str | None:
+    """wrap_list (escalar -> lista de um elemento) e unwrap_single (lista de exatamente um -> escalar), do registro do
+    TRANSFORMS: a relação de domínios sobe do ELEMENTO para a lista (CC-13 do PILOT-STO-MAP). None = não é o caso.
+      wrap_list     imagem = {[x] : x ∈ dom(sujeito)}. Com o elemento do sujeito ⊆ item_type do objeto, a imagem é
+                    subconjunto PRÓPRIO das listas do objeto (há listas vazias e de 2+ elementos): 'subset'.
+                    Elemento sobreposto -> overlap; disjunto -> disjoint; relação do elemento unknown -> unknown.
+      unwrap_single definida só nas listas de um elemento: imagem = dom(item_type) pela função; a relação do elemento
+                    com o objeto leva o ajuste de função parcial do SEMANTICS (equal->superset, subset->overlap).
+    A relação do elemento é a do SEMANTICS (valuetypes.relation): domínio aberto (texto sem enum) dá unknown, como
+    no núcleo; com domínio finito, o elemento passa pelo registro valor a valor."""
+    from bo.semantics.obligations import PARTIAL_ADJUST
+    from bo.semantics.valuetypes import EnumDomain, relation
+    ch = ST.chain_of(eff.get("translation_fn"))
+    if len(ch) != 1 or ch[0].get("name") not in ("wrap_list", "unwrap_single"):
+        return None
+    name = ch[0]["name"]
+    try:
+        ts = ValueType.from_dict(eff["subject_value_type"])
+        to = ValueType.from_dict(eff["object_value_type"])
+    except (TypeError_, OutOfDomain, ValueError, KeyError, TypeError):
+        return "unknown"
+    if name == "wrap_list":
+        if to.datatype != "list" or to.item is None or ts.datatype in ("list", "set", "map"):
+            return "disjoint" if to.datatype != "list" else "unknown"
+        sd, it = ts.domain(), to.item
+        if isinstance(sd, EnumDomain):
+            img, out_of = set(), 0
+            for v in sd.values:
+                try:
+                    y = _reg_apply(ch, v)
+                except (TransformError, KeyError, TypeError, ValueError):
+                    out_of += 1
+                    continue
+                if isinstance(y, list) and len(y) == 1 and it.admits(y[0]):
+                    img.add(1)
+                else:
+                    out_of += 1
+            if not img:
+                return "disjoint"
+            return "overlap" if out_of else "subset"
+        try:
+            return LIFT_WRAP[relation(sd, it.domain())]
+        except (TypeError_, OutOfDomain, TypeError):
+            return "unknown"
+    if ts.datatype != "list" or ts.item is None:
+        return "unknown"
+    idom = ts.item.domain()
+    if isinstance(idom, EnumDomain):
+        img = set()
+        for v in idom.values:
+            try:
+                img.add(_reg_apply(ch, [v]))
+            except (TransformError, KeyError, TypeError, ValueError):
+                pass
+        if not img:
+            return "disjoint"
+        try:
+            r = relation(EnumDomain(frozenset(img)), to.domain())
+        except (TypeError_, OutOfDomain, TypeError):
+            return "unknown"
+    else:
+        try:
+            r = relation(idom, to.domain())
+        except (TypeError_, OutOfDomain, TypeError):
+            return "unknown"
+    return PARTIAL_ADJUST[r]
+
+
 def _registry_domain(c: Checked, eff: dict, dis) -> None:
-    vdr = registry_vdr(eff)
+    cv = collection_vdr(eff)
+    vdr = cv if cv is not None else registry_vdr(eff)
     c.computed["vdr"] = vdr
     if vdr == "unknown":
         return
