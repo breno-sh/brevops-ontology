@@ -125,7 +125,8 @@ TABLE = [
     ("api_resource", "(pontes equivalentes)", "R-GRAIN-T53",
      "duas pontes que nomeiam o mesmo recurso só com grafia diferente (caixa, sublinhado, hífen), ainda que o "
      "nome do serviço difira entre a doc e o SDK da spec, são uma alegação só; recursos de fato diferentes "
-     "continuam CONTRADICTORY (disputa)"),
+     "continuam CONTRADICTORY (disputa); par que o SERVICE-EVIDENCE publica como disputa (spec_disputes.json) "
+     "nunca é unificado"),
     ("api_bridge", "spec_bridge_candidates", "R-GRAIN-T48",
      "sem tradução: a spec casa com mais de um tipo e o desempate não dá este tipo; UNKNOWN com o motivo"),
     ("identity", "api_reference", "R-GRAIN-T05", "sem tradução: página de referência da API, informativa"),
@@ -210,7 +211,21 @@ def _rel(attr: str, block_path: str | None) -> str:
     return attr
 
 
-def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[dict, dict]:
+def load_disputes() -> set:
+    """(provedor, tipo, campo) das disputas spec × doc publicadas pelo SERVICE-EVIDENCE: nunca unificadas (T53)."""
+    import json
+    from .common import repo
+    p = repo() / "results" / "SERVICE-EVIDENCE" / "spec_disputes.json"
+    if not p.is_file():
+        return set()
+    out = set()
+    for d in json.loads(p.read_text(encoding="utf-8")).get("disputes", []):
+        fld = "api_resource" if d.get("fact") == "api_bridge" else d.get("fact")
+        out.add((d.get("provider"), d.get("terraform_resource_type"), fld))
+    return out
+
+
+def translate(records: list[dict], candidates: set[str] | None = None, disputes: set | None = None) -> tuple[dict, dict]:
     """records: C25 de UM provedor (todos os tipos, para os pares de T02 e os gêmeos de T09). candidates: ids de
     candidato da decomposição (alvos de referência só valem se existem). Devolve ({cid: evidência}, {cid: motivos})."""
     by_cid: dict[str, list[dict]] = defaultdict(list)
@@ -610,6 +625,10 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
         return "".join(ch for ch in str(c.get("resource") or "").lower() if ch.isalnum())
     for cid, ent in out.items():
         br = [c for c in ent.get("api_resource", []) if c.get("status") == "resource" and c.get("resource")]
+        if (provider, cid, "api_resource") in (disputes or set()):
+            if len(br) > 1:
+                reasons[cid].append("api_resource: disputa spec × doc publicada pelo SERVICE-EVIDENCE: CONTRADICTORY")
+            continue
         if len(br) > 1 and len({_k(c) for c in br}) == 1 and len({(c.get("service"), c.get("resource")) for c in br}) > 1:
             spec = [c for c in br if "R-BRIDGE-SPEC" in str((c.get("source") or {}).get("note", "")) or
                     "SPEC" in str((c.get("source") or {}).get("ref", ""))]

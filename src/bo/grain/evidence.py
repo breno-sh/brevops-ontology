@@ -199,8 +199,9 @@ class C25Adapter:
             for r in records:
                 by_p.setdefault(r.get("provider", ""), []).append(r)
             cset = set(candidates) if candidates is not None else None
+            disputes = A.load_disputes()
             for prov in sorted(by_p):
-                ev, why = A.translate(by_p[prov], cset)
+                ev, why = A.translate(by_p[prov], cset, disputes)
                 self.by_cid.update(ev)
                 self.reasons.update(why)
             records = []
