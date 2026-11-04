@@ -280,6 +280,19 @@ def build_candidates(paths_rows) -> list[dict]:
     return out
 
 
+def se_subset(se: list[dict], types: set) -> list[dict]:
+    """Fatos C25 dos tipos da fatia mais o fecho dos derived_from (C25-DERIVED: a derivação cita fato do arquivo)."""
+    by = {r["evidence_id"]: r for r in se}
+    keep = {r["evidence_id"] for r in se if r.get("terraform_resource_type") in types}
+    stack = list(keep)
+    while stack:
+        for d in by[stack.pop()].get("derived_from") or []:
+            if d in by and d not in keep:
+                keep.add(d)
+                stack.append(d)
+    return [by[k] for k in sorted(keep)]
+
+
 def build_atoms(vs, roles, units, atoms) -> list[dict]:
     unit_of = {a["atom_id"]: a["unit_id"] for a in atoms}
     out = []
@@ -314,8 +327,7 @@ def generate(dst: Path) -> dict:
     bundle = {"glossary.jsonl": glossary, "decisions.jsonl": decisions, "claims.jsonl": claims,
               "canonical_units.jsonl": g["units"], "canonical_atoms.jsonl": g["atoms"],
               "atoms.jsonl": build_atoms(vs, roles, g["units"], g["atoms"]),
-              "service_evidence.jsonl": sorted((r for r in se if r.get("terraform_resource_type") in types),
-                                               key=lambda r: r["evidence_id"]),
+              "service_evidence.jsonl": se_subset(se, types),
               "candidates.jsonl": build_candidates(rows), "slice_notes.jsonl": build_notes(se),
               "anchor_paths.jsonl": rows}
     bdir = dst / "bundle"

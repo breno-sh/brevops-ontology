@@ -1,0 +1,96 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "PILOT-NET-GLOSS",
+ "generated_at": "2026-11-04T09:18:48-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-NET-GLOSS.txt",
+  "brief_sha256": "f4c8867e371411dc8083db572bd69ab4da6b1c4421bc65749fe1c10ca95ee748",
+  "params": {
+   "role": "glossarist",
+   "role_brief": "briefs/GLOSSARY_BRIEF.txt",
+   "role_brief_version": "1.2.0",
+   "role_brief_sha256": "e3fc6fed52867d5fccce970d2e47f763a5795032389af94a9bd6d2832641281b",
+   "slice": "net",
+   "concepts_n": "19",
+   "anchors_n": "52",
+   "multi_provider_anchor_paths_n": "56",
+   "model_extracted_anchors_n": "1",
+   "training_projection_receipt": "none",
+   "grain_rules_version": "0.1.4",
+   "e2_inline_equal_decided": "0/3"
+  },
+  "inputs": [
+   {
+    "path": "$BO_REPO/grain/grain_rules.yaml",
+    "kind": "file",
+    "sha256": "e7114db9332e2673203e67028bd894b4e7c6257235a0618bffa6a20a94415392"
+   },
+   {
+    "path": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl",
+    "kind": "file",
+    "sha256": "6bc9f724ca4629f9dd73c3921a39919e88fed5f4f3b290a13655ec0b92b05772"
+   },
+   {
+    "path": "$BO_DATA/UNITS/value_space.jsonl",
+    "kind": "file",
+    "sha256": "ab698af55202de1e3e469353bbdec2b423252d45970a69d1dc814938c0c520e5"
+   },
+   {
+    "path": "$BO_DATA/ROLES/roles.jsonl",
+    "kind": "file",
+    "sha256": "ed9356faacc1b2c91230af13ea20c76b90d3372bb250b7b1a98e354281fb43b6"
+   },
+   {
+    "path": "$BO_REPO/briefs/GLOSSARY_BRIEF.txt",
+    "kind": "file",
+    "sha256": "e3fc6fed52867d5fccce970d2e47f763a5795032389af94a9bd6d2832641281b"
+   },
+   {
+    "path": "$BO_DATA/DOCS-AWS/docs_facts.jsonl",
+    "kind": "file",
+    "sha256": "0e60c72f0e407cb698731ca109a14c88a844e8923cb1e8797807a96fd8bffa12"
+   },
+   {
+    "path": "$BO_DATA/DOCS-AZURE/docs_facts.jsonl",
+    "kind": "file",
+    "sha256": "23efd739b2bd9f16a1088c29b4bc1dacaa78bbd4d91cfd7c26bfa38351763ced"
+   },
+   {
+    "path": "$BO_DATA/DOCS-GCP/docs_facts.jsonl",
+    "kind": "file",
+    "sha256": "f9a43bef915e80e27f30f694d2fafc2639b072546742cf328baa1f64e7b5c603"
+   },
+   {
+    "path": "$BO_DATA/DOCS-OCI/docs_facts.jsonl",
+    "kind": "file",
+    "sha256": "a016f68e90104e0cd48472e0d2b86f982722ca889be9e9ff9591f61405e2fa34"
+   },
+   {
+    "path": "$BO_DATA/SCHEMA-AWS/atoms.jsonl",
+    "kind": "file",
+    "sha256": "5c6aba0585cb0e30f26877fd0ed6ba1a471092c792ecfa0b38f22d43d1e862a7"
+   },
+   {
+    "path": "$BO_DATA/SCHEMA-AZURE/atoms.jsonl",
+    "kind": "file",
+    "sha256": "3e7a8160b3272bc0652427989d72860cb84cc198dfde1a9ae14405babfbbb915"
+   },
+   {
+    "path": "$BO_DATA/SCHEMA-GCP/atoms.jsonl",
+    "kind": "file",
+    "sha256": "a00b9d3fb50a717fe3ba17ec0f4b2012f89ee7a3cb65e7ea5f21298afc75e4e1"
+   },
+   {
+    "path": "$BO_DATA/SCHEMA-OCI/atoms.jsonl",
+    "kind": "file",
+    "sha256": "99e3dc9d3434e48675fd71eb817145ae63c2159fd041f3c67dd1d308e814287c"
+   }
+  ],
+  "recorded_at": "2026-11-04T09:18:48-03:00"
+ },
+ "sources": [],
+ "notes": "E2 registrado como está: assinaturas embutido × separado iguais, mas UNKNOWN nas duas formas; grão: 2 ENTITY, 37 UNKNOWN"
+}
