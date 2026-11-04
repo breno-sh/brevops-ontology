@@ -148,7 +148,7 @@ def run(d: Path, inp: dict | None = None) -> tuple[list[str], dict]:
 
 def main(argv=None) -> int:
     argv = list(sys.argv[1:] if argv is None else argv)
-    d = build.out_dir()
+    d = build.current_dir()
     for a in argv:
         if a.startswith("--dir="):
             d = Path(a.split("=", 1)[1])

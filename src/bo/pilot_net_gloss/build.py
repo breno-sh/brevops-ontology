@@ -3,7 +3,8 @@
   python -I -m bo.pilot_net_gloss.build            grava em $BO_DATA/PILOT-NET-GLOSS e results/PILOT-NET-GLOSS
   python -I -m bo.pilot_net_gloss.build --check    regenera em $BO_TMP/regen e compara byte a byte com o gravado
   python -I -m bo.pilot_net_gloss.build --diagnostic   gera só em $BO_TMP/diagnostic, com os bloqueios listados
-O build sem flag recusa (saída 4) gravar a saída oficial enquanto faltar docs_facts (CC-2) ou átomos de schema (CC-3).
+  python -I -m bo.pilot_net_gloss.build --publish  troca o staging pelo publicado (só dentro da trava merge-base)
+O build sem flag grava em $BO_DATA/PILOT-NET-GLOSS/.staging, nunca no publicado, e recusa (saída 4) gravar a saída oficial enquanto faltar docs_facts (CC-2) ou átomos de schema (CC-3).
 
 Saídas (C19, C20, C08): canonical_units.jsonl, canonical_atoms.jsonl, grain_unknown_reasons.jsonl, glossary.jsonl,
 claims.jsonl, decisions.jsonl, anchor_paths.jsonl e bundle/ (pacote fechado do mapeador do piloto).
@@ -44,6 +45,16 @@ def tmp() -> Path:
 
 def out_dir() -> Path:
     return data() / SL.MODULE
+
+
+def staging_dir() -> Path:
+    """Saída nova é gravada aqui; só a troca (--publish), dentro da trava merge-base, toca o publicado."""
+    return out_dir() / ".staging"
+
+
+def current_dir() -> Path:
+    """O que os gates conferem: o staging, se há rodada pendente, senão o publicado."""
+    return staging_dir() if staging_dir().is_dir() else out_dir()
 
 
 def results_dir() -> Path:
@@ -365,12 +376,14 @@ def report(res: dict) -> dict:
             "candidates": len(res["bundle"]["candidates.jsonl"]), "e2_inline_vs_separate": e2(g["units"])}
 
 
-def manifest_lines() -> list[str]:
+def manifest_lines(src: Path | None = None) -> list[str]:
+    """Hashes da saída com os caminhos PUBLICADOS (src = staging antes da troca; os bytes são os mesmos depois)."""
+    src = src or current_dir()
     lines = []
     for n in DATA_FILES + EXTRA_FILES:
-        lines.append(f"{sha(out_dir() / n)}  $BO_DATA/{SL.MODULE}/{n}")
+        lines.append(f"{sha(src / n)}  $BO_DATA/{SL.MODULE}/{n}")
     for n in BUNDLE_FILES:
-        lines.append(f"{sha(out_dir() / 'bundle' / n)}  $BO_DATA/{SL.MODULE}/bundle/{n}")
+        lines.append(f"{sha(src / 'bundle' / n)}  $BO_DATA/{SL.MODULE}/bundle/{n}")
     for n in ("CONTRACT_CHANGE.txt",):
         p = results_dir() / n
         if p.is_file():
@@ -386,7 +399,7 @@ def check() -> int:
     generate(regen)
     bad = []
     for n in DATA_FILES + EXTRA_FILES + [f"bundle/{x}" for x in BUNDLE_FILES]:
-        a, b = out_dir() / n, regen / n
+        a, b = current_dir() / n, regen / n
         if not a.is_file() or a.read_bytes() != b.read_bytes():
             bad.append(n)
     mf = results_dir() / "MANIFEST.sha256"
@@ -395,7 +408,8 @@ def check() -> int:
     if bad:
         print("regeneração diverge do gravado: " + ", ".join(bad))
         return 1
-    print(f"regeneração idêntica: {len(DATA_FILES) + len(EXTRA_FILES) + len(BUNDLE_FILES)} arquivos e o MANIFEST conferem")
+    print(f"regeneração idêntica: {len(DATA_FILES) + len(EXTRA_FILES) + len(BUNDLE_FILES)} arquivos ({current_dir().name}) "
+          "e o MANIFEST conferem")
     return 0
 
 
@@ -421,10 +435,33 @@ def diagnostic(dst: Path) -> int:
     return 0
 
 
+def publish() -> int:
+    """Troca o staging pelo publicado (chamar só dentro da trava merge-base, logo antes do commit e do ff)."""
+    st = staging_dir()
+    if not st.is_dir():
+        print("publish: não há staging")
+        return 2
+    names = DATA_FILES + EXTRA_FILES + [f"bundle/{x}" for x in BUNDLE_FILES]
+    miss = [n for n in names if not (st / n).is_file()]
+    if miss:
+        print("publish: staging incompleto: " + ", ".join(miss))
+        return 2
+    (out_dir() / "bundle").mkdir(parents=True, exist_ok=True)
+    for n in names:
+        os.replace(st / n, out_dir() / n)
+    for p in sorted(st.rglob("*"), reverse=True):
+        p.unlink() if p.is_file() else p.rmdir()
+    st.rmdir()
+    print(f"publish: {len(names)} arquivo(s) trocados em {out_dir()}")
+    return 0
+
+
 def main(argv=None) -> int:
     argv = list(sys.argv[1:] if argv is None else argv)
     if "--check" in argv:
         return check()
+    if "--publish" in argv:
+        return publish()
     if "--diagnostic" in argv:
         return diagnostic(tmp() / "diagnostic")
     stage = tmp() / "stage"
@@ -435,12 +472,13 @@ def main(argv=None) -> int:
         for b in bl:
             print("  " + b)
         return 4
-    res = generate(out_dir())
+    res = generate(staging_dir())
     results_dir().mkdir(parents=True, exist_ok=True)
     rep = report(res)
     (results_dir() / "build_report.json").write_text(json.dumps(rep, ensure_ascii=False, indent=1, sort_keys=True)
                                                      + "\n", encoding="utf-8")
-    (results_dir() / "MANIFEST.sha256").write_text("\n".join(manifest_lines()) + "\n", encoding="utf-8")
+    (results_dir() / "MANIFEST.sha256").write_text("\n".join(manifest_lines(staging_dir())) + "\n",
+                                                   encoding="utf-8")
     print(json.dumps(rep, ensure_ascii=False, sort_keys=True))
     return 0
 

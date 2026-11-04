@@ -9,7 +9,7 @@ export BO_TMP="${BO_TMP:-$BO_DATA/tmp/PILOT-NET-GLOSS}"
 mkdir -p "$BO_TMP"
 cd "$BO_REPO"
 py=python
-D="$BO_DATA/PILOT-NET-GLOSS"
+D="$BO_DATA/PILOT-NET-GLOSS"; [ -d "$D/.staging" ] && D="$D/.staging"   # rodada pendente: confere o staging
 step() { echo "== $*"; }
 
 step "testes (tests/pilot_net_gloss, pytest)"

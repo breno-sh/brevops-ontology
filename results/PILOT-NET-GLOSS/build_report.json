@@ -54,7 +54,7 @@
    ]
   }
  ],
- "generated_at": "2026-11-04T13:07:17-03:00",
+ "generated_at": "2026-11-04T14:00:58-03:00",
  "glossary": {
   "anchors": 52,
   "anchors_by_kind": {
@@ -110,7 +110,7 @@
    "google": 6,
    "oci": 22
   },
-  "unknown_reasons": 181
+  "unknown_reasons": 188
  },
  "module": "PILOT-NET-GLOSS",
  "schema": "bo.pilot_gloss_report/1"

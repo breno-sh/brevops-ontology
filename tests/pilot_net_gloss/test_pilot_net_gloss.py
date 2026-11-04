@@ -157,3 +157,20 @@ def test_block_anchor_is_claim_with_implication(tmp_path):
     _rewrite(tmp_path, "claims.jsonl", lambda r: r[:-1] + [bad])
     errs, _ = anchor_claims.run(tmp_path, dict(inp, types=["pa_rule", "pb_rule"]))
     assert any(e.startswith("A1") and "implicação" in e for e in errs)
+
+
+def test_publish_swaps_only_from_complete_staging(tmp_path, monkeypatch):
+    monkeypatch.setenv("BO_DATA", str(tmp_path))
+    out = tmp_path / SL.MODULE
+    st = out / ".staging"
+    names = build.DATA_FILES + build.EXTRA_FILES + [f"bundle/{x}" for x in build.BUNDLE_FILES]
+    for n in names[:-1]:
+        (st / n).parent.mkdir(parents=True, exist_ok=True)
+        (st / n).write_text("novo\n")
+    (out / "claims.jsonl").parent.mkdir(parents=True, exist_ok=True)
+    (out / "claims.jsonl").write_text("velho\n")
+    assert build.publish() == 2 and (out / "claims.jsonl").read_text() == "velho\n"   # staging incompleto
+    (st / names[-1]).write_text("novo\n")
+    assert build.current_dir() == st
+    assert build.publish() == 0
+    assert (out / "claims.jsonl").read_text() == "novo\n" and not st.exists() and build.current_dir() == out
