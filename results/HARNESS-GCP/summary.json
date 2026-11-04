@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "HARNESS-GCP",
- "generated_at": "2026-11-03T07:25:36-03:00",
+ "generated_at": "2026-11-04T08:23:30-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/HARNESS-GCP.txt",
@@ -12,18 +12,21 @@
    "fase": "F1",
    "nuvem": "nenhuma",
    "provider": "google-8.9.0",
-   "terraform": "1.15.8"
+   "terraform": "1.15.8",
+   "safety_skus_sha256": "44fd9734789706f4c5478b1f1ebadf78b0931ff9c38c25563d7168228b43ff7b",
+   "insercao_declarada": "HI-GCP-01"
   },
   "inputs": [
    {
     "path": "$BO_REPO/contracts/stubs",
     "kind": "dir",
-    "sha256": "4d3e1ef5cca14555d3688d6275d009582507e823d5df70a688738a39955f75f1",
+    "sha256": "9782b476473da02aca51c6ed724625207d0bb54fd76a7c440f0a553e1d27d135",
     "sha256_before_plan_regen_stubpath": "83834d95cee77815c0364a2354c4170cef924c61ca43de28a494460c718b1ff8",
     "sha256_before_coord_fix_0303": "effb48fd8c0fec1af54c73b098a3519ab38fcb82fea17cf97343a98c1b6c7821",
     "sha256_before_plan_regen_oci_bindings": "83834d95cee77815c0364a2354c4170cef924c61ca43de28a494460c718b1ff8",
     "sha256_before_emenda3_e_skosfix": "6d24a5ce7306bc53d657c96122bc0c8ee7c0057d2b7b543b77507bc30be8abb6",
-    "sha256_before_emendas_4_grain_se": "7ee2eaa73c1e0105f3f62d30492d3401ecf87fef0c55dd0dc0e1a05710289f75"
+    "sha256_before_emendas_4_grain_se": "7ee2eaa73c1e0105f3f62d30492d3401ecf87fef0c55dd0dc0e1a05710289f75",
+    "sha256_before_emenda5": "4d3e1ef5cca14555d3688d6275d009582507e823d5df70a688738a39955f75f1"
    },
    {
     "path": "$BO_DATA/downloads/prefetch/google/8.9.0/providers-schema.json",
@@ -31,7 +34,7 @@
     "sha256": "239c0eae0e0ae9453cfe8cb7690646882f8ac0f9387ba4a67b5168917ecb8345"
    }
   ],
-  "recorded_at": "2026-11-03T07:25:36-03:00"
+  "recorded_at": "2026-11-04T08:23:30-03:00"
  },
  "sources": [
   {
@@ -40,5 +43,5 @@
    "transformation": "terraform providers schema -json (pré-busca assinada, sem credenciais) -> índice compacto de 32 recursos e 6 data sources em deploy/fixtures/google/_templates/schema_index.json"
   }
  ],
- "notes": "Harness offline: render C26->HCL sem inserção silenciosa, no_silent_insert com parser independente, redator na origem, executor com respostas gravadas. Nenhuma nuvem, nenhum apply, nenhuma credencial."
+ "notes": "Harness offline: render C26->HCL sem inserção silenciosa, no_silent_insert com parser independente, redator na origem, executor com respostas gravadas. Nenhuma nuvem, nenhum apply, nenhuma credencial. 2026-11-04: testes do stub C26 corrigidos (a emenda 2 do CONTRACTS, 3c2141f, trocou o stub de plano único google LP-0001 por um plano por provedor; os testes liam o plano [0], que virou o aws; o LP-0001 ficou como fixture c26_stub_pre_emenda2 e as asserções originais seguem nele); inserção declarada HI-GCP-01: labels[bo-run] = var.<plano>_bo_run nos tipos com trace=tag da tabela de SKUs do SAFETY (run_label.json), ligada pelo executor ao run_tag; conferida no no_silent_insert com controles negativos. Entradas recalculadas depois da emenda 5 do CONTRACTS (stubs C24 e C25; nada do C26 mudou)."
 }

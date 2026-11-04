@@ -1,0 +1,25 @@
+{
+ "attribute": "labels",
+ "insertion_id": "HI-GCP-01",
+ "label_key": "bo-run",
+ "module": "HARNESS-GCP",
+ "schema": "bo.harness_google.run_label/1",
+ "source": {
+  "path": "deploy/safety/allowlist_skus.yaml",
+  "rule": "providers.google.types[*].trace == 'tag' (tag_attribute 'labels')",
+  "sha256_at_write": "44fd9734789706f4c5478b1f1ebadf78b0931ff9c38c25563d7168228b43ff7b"
+ },
+ "types": [
+  "google_cloud_run_v2_service",
+  "google_cloudfunctions2_function",
+  "google_compute_address",
+  "google_compute_forwarding_rule",
+  "google_compute_global_address",
+  "google_kms_crypto_key",
+  "google_pubsub_subscription",
+  "google_pubsub_topic",
+  "google_redis_instance",
+  "google_storage_bucket"
+ ],
+ "value": "variável '<plano>_bo_run' sem default; o executor liga o run_tag da execução (tag_value(batch_id) do SAFETY)"
+}

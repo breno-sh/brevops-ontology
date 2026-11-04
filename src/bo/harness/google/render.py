@@ -9,14 +9,17 @@ O renderizador só escreve no HCL o que o plano declara:
   - depends_on a partir dos passos citados;
   - termo simbólico -> variável de entrada SEM default (o runner liga um valor sintético declarado);
   - termo withheld de segredo -> variável sensível SEM default (gerada na hora pelo runner, nunca gravada);
-  - o andaime fixo do harness: bloco terraform com o provider e a versão de universe/pins.json.
+  - o andaime fixo do harness: bloco terraform com o provider e a versão de universe/pins.json;
+  - a inserção declarada HI-GCP-01 (bo.harness.google.run_label): labels["bo-run"] = var.<plano>_bo_run, SEM
+    default, só nos recursos dos tipos que a tabela de SKUs do SAFETY rastreia por rótulo (o plan_guard recusa
+    o plano sem ela, PG-TAG); rótulo 'bo-run' já trazido pelo plano é CONFLICTING_VALUES.
 Nada mais: campo obrigatório do schema fixado que o plano não traz faz o caso falhar como UNKNOWN_INPUT; campo
 fora do schema, tipo errado, termo não suportado, escolha sem seleção, guarda falsa ou conteúdo withheld como
 literal também reprovam o caso (código no render_report.json), e nenhum HCL do plano reprovado é escrito.
 
 Convenções de nome (o no_silent_insert as confere): recurso '<tipo>.<plano>_<nó>', data source
 'data.<tipo>.<plano>_<nó>', variável simbólica '<plano>_<sym_…>', variável de segredo '<plano>_<nó>_secret_<campo>',
-onde <plano> = plan_id em minúsculas com '-' -> '_'.
+variável do rótulo da execução '<plano>_bo_run', onde <plano> = plan_id em minúsculas com '-' -> '_'.
 """
 
 from __future__ import annotations
@@ -35,6 +38,7 @@ from bo.transforms.markers import SYMBOLIC
 
 from . import common as C
 from . import hcl as H
+from . import run_label as RL
 from .schema import Schema, attr_at, is_settable
 
 # código de falha do renderizador -> block_code do C00 (para o traço C23 e o C12)
@@ -527,8 +531,33 @@ class PlanRenderer:
             o.ledger.append({"address": b.address, "path": "depends_on", "origin": "plan_depends_on",
                              "order": st["order"], "target": x})
 
+    def run_label(self, order: int, b: "Builder"):
+        """HI-GCP-01: labels["bo-run"] = var.<plano>_bo_run nos recursos dos tipos rastreados por rótulo."""
+        if b.kind != "resource" or b.rtype not in RL.types():
+            return
+        where = f"passo {order} ({b.address})"
+        attr = b.schema["attributes"].get(RL.ATTRIBUTE)
+        if attr is None or not is_settable(attr) or attr["type"] != ["map", "string"]:
+            raise Fail("FIELD_NOT_IN_SCHEMA", where, f"{b.rtype} está em {RL.path().name} mas não tem "
+                       f"'{RL.ATTRIBUTE}' map(string) configurável no google {self.schema.version}")
+        cur = b.body.attrs.get(RL.ATTRIBUTE)
+        if isinstance(cur, dict):
+            b.body.attrs[RL.ATTRIBUTE] = dict(cur)     # cópia: o termo do plano não é alterado
+        name = RL.var_name(self.slug)
+        v = self.variables.setdefault(name, {"name": name, "kind": "run_label", "type": "string",
+                                             "sensitive": False, "insertion_id": RL.INSERTION_ID, "used_by": []})
+        b.place(f"{RL.ATTRIBUTE}.{RL.LABEL_KEY}", H.Expr("var." + name), "harness_declared", order, where,
+                {"field": f"{RL.ATTRIBUTE}.{RL.LABEL_KEY}", "insertion_id": RL.INSERTION_ID})
+        v["used_by"].append(b.address)
+
     def finish(self, builders, owner) -> Rendered:
         o = self.out
+        if not o.failures:
+            for order, b in sorted(builders.items()):
+                try:
+                    self.run_label(order, b)
+                except Fail as f:
+                    o.failures.append(f.record())
         for order, b in sorted(builders.items()):
             miss = b.missing_required()
             if miss:
@@ -548,6 +577,8 @@ class PlanRenderer:
             vb.attrs["type"] = H.Expr(v["type"])
             vb.attrs["description"] = ("valor sintético ligado pelo runner (símbolo " + v["symbol_id"] + ")"
                                        if v["kind"] == "symbolic_input"
+                                       else "rótulo bo-run da execução, ligado pelo executor (" + v["insertion_id"]
+                                       + ")" if v["kind"] == "run_label"
                                        else "segredo gerado na hora pelo runner; nunca gravado")
             if v["sensitive"]:
                 vb.attrs["sensitive"] = True
@@ -559,6 +590,8 @@ class PlanRenderer:
             rtype, local = b.address.removeprefix("data.").split(".", 1)
             blocks.append(("data" if b.kind == "data" else "resource", [rtype, local], body))
         header = [f"Gerado por bo.harness.google.render a partir de {o.plan_id} (grafo {o.graph_id}).",
+                  "HCL = plano + valores sintetizados declarados + rótulo bo-run declarado (HI-GCP-01). Não editar."
+                  if any(v["kind"] == "run_label" for v in o.variables) else
                   "HCL = plano + valores sintetizados declarados; nada inserido pelo harness. Não editar."]
         o.hcl = H.document(blocks, header)
         return o

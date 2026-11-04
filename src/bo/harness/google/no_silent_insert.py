@@ -8,11 +8,12 @@ deploy/fixtures/google/_templates/plans/*/lowering_plan.jsonl. Para cada plano:
   2. lê o HCL com um parser INDEPENDENTE do emissor (python-hcl2, versão do requirements.lock) e achata cada
      recurso em folhas (endereço, caminho, valor);
   3. calcula, só a partir do plano e do grafo, as folhas esperadas: valores do passo, nome derivado, depends_on,
-     variáveis de símbolo e de segredo; e confere igualdade exata dos dois conjuntos, as perdas fora do HCL, as
+     variáveis de símbolo e de segredo, e a inserção declarada HI-GCP-01 (labels["bo-run"] = var.<plano>_bo_run,
+     só nos tipos de run_label.json); e confere igualdade exata dos dois conjuntos, as perdas fora do HCL, as
      variáveis sem default e o andaime (versions.tf) igual ao fixado;
   4. plano reprovado (UNKNOWN_INPUT etc.) não pode ter .tf escrito.
 Controles negativos (o gate só passa se TODOS forem pegos): atributo inserido, valor removido, valor trocado,
-default em variável, campo obrigatório retirado do plano (tem de dar UNKNOWN_INPUT) e valor sintetizado sem marca
+default em variável, rótulo bo-run removido, trocado ou posto em tipo fora da lista, campo obrigatório retirado do plano (tem de dar UNKNOWN_INPUT) e valor sintetizado sem marca
 (o validador do C26 tem de recusar e nada pode ser escrito).
 Relatório: $BO_DATA/HARNESS-GCP/no_silent_insert.json.
 """
@@ -30,6 +31,7 @@ import hcl2
 
 from . import common as C
 from . import render as R
+from . import run_label as RL
 
 _REF = re.compile(r"^(data\.)?([a-z][a-z0-9_]*)\.(SYM-[0-9a-f]{8,16})$")
 _PH = re.compile(r"\{(t[0-9]+)\}")
@@ -254,6 +256,13 @@ class Expected:
                 if da != a and da not in deps:
                     deps.append(da)
             self.losses += [(a, x["field"]) for x in st["losses"]]
+        # inserção declarada HI-GCP-01: rótulo da execução nos recursos dos tipos da lista (nunca em data source)
+        for st in self.plan["steps"]:
+            own = self.owner(st)
+            if own["action"] != "reference" and own["resource_type"] in RL.types():
+                name = RL.var_name(self.slug)
+                self.leaves[self.addr(st)][f"{RL.ATTRIBUTE}.{RL.LABEL_KEY}"] = ("expr", "var." + name)
+                self.vars[name] = False
         return self
 
 
@@ -436,6 +445,11 @@ def negative_controls(work: Path, schema) -> list[dict]:
     sabotage("depends_on removido", re.sub(r"\n  depends_on += \[[^\]]*\]", "", text, count=1),
              r"depends_on \[\] ≠ plano")
     sabotage("variável extra", text + '\nvariable "x_extra" {\n  type = string\n}\n', r"variáveis .* ≠ esperadas")
+    sabotage("rótulo bo-run em tipo fora da lista", text.replace("  deletion_protection = false\n",
+                                                               "  deletion_protection = false\n  labels = {\n"
+                                                               "    \"bo-run\" = \"x\"\n  }\n", 1),
+             r"'labels' no HCL sem origem|'labels\.bo-run' no HCL sem origem")
+    out += label_controls(work, schema)
     # campo obrigatório retirado do plano -> UNKNOWN_INPUT, nada escrito
     p2 = copy.deepcopy(plan)
     p2["steps"][1]["values"] = [v for v in p2["steps"][1]["values"] if v["field"] != "database_version"]
@@ -454,6 +468,43 @@ def negative_controls(work: Path, schema) -> list[dict]:
     rc3, rep3 = R.render_file(d / "lowering_plan.jsonl", d / "out")
     out.append({"control": "sintetizado sem marca recusado na entrada",
                 "caught": rc3 == 1 and not (d / "out").exists(), "detail": rep3.get("errors", [])[:1]})
+    return out
+
+
+def label_controls(work: Path, schema) -> list[dict]:
+    """Sabotagens do rótulo bo-run (HI-GCP-01) na fixture bucket: removido, trocado, variável com default."""
+    fx = C.templates() / "plans" / "bucket"
+    plan = C.read_jsonl(fx / "lowering_plan.jsonl")[0]
+    graph = C.read_jsonl(fx / "graph_ir.jsonl")[0]
+    base = work / "neg_label_base"
+    if base.exists():
+        shutil.rmtree(base)
+    R.render_file(fx / "lowering_plan.jsonl", base)
+    tf = base / R.file_name(plan["plan_id"])
+    text = tf.read_text(encoding="utf-8")
+    var = RL.var_name(C.slug(plan["plan_id"]))
+    line = re.search(r'\n( *)"?bo-run"? += var\.' + var + r"\n", text)
+    out = [{"control": "rótulo bo-run presente na fixture bucket", "caught": bool(line), "expected": "linha do rótulo",
+            "detail": []}]
+    if not line:
+        return out
+
+    def sabotage(label: str, new_text: str, expect: str):
+        d = work / ("neg_" + C.slug(label))
+        if d.exists():
+            shutil.rmtree(d)
+        d.mkdir()
+        (d / tf.name).write_text(new_text, encoding="utf-8")
+        shutil.copy(base / "versions.tf", d / "versions.tf")
+        probs = compare(d, plan, graph, schema)
+        hit = new_text != text and any(re.search(expect, p) for p in probs)
+        out.append({"control": label, "caught": hit, "expected": expect, "detail": probs[:2]})
+
+    sabotage("rótulo bo-run removido", text.replace(line.group(0), "\n", 1), r"'labels\.bo-run' do plano ausente")
+    sabotage("rótulo bo-run trocado", text.replace(line.group(0), f'\n{line.group(1)}"bo-run" = "fixo"\n', 1),
+             r"'labels\.bo-run' = 'fixo' no HCL")
+    sabotage("rótulo bo-run com default", re.sub(r'(variable "' + var + r'" \{\n)', r'\1  default = "x"\n', text,
+                                                 count=1), r"variável " + var + " com default")
     return out
 
 

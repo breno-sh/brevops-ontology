@@ -129,12 +129,42 @@ def test_simbolo_sem_valor_sintetico_e_unknown_input_sem_apply():
 
 
 def test_plano_reprovado_nao_chega_ao_runner():
-    plan = C.read_jsonl(C.repo() / "contracts" / "stubs" / "C26" / "lowering_plan.jsonl")[0]
-    graph = C.read_jsonl(C.repo() / "contracts" / "stubs" / "C26" / "graph_ir.jsonl")[0]
+    # plano google do stub do C26 de antes da emenda 2 (fixture do harness; ver test_hg_render.PRE_EMENDA2)
+    d = C.templates() / "c26_stub_pre_emenda2"
+    plan = C.read_jsonl(d / "lowering_plan.jsonl")[0]
+    graph = C.read_jsonl(d / "graph_ir.jsonl")[0]
     ex, runner, order, it = make("netsql_persisted.json")
     r = ex.run_case(case_for(plan), plan, graph, bindings={}, runtime_context={})
     assert r.outcome["outcome"]["value"] == "UNKNOWN" and r.outcome["outcome"]["detail"].startswith("UNKNOWN_INPUT")
     assert runner.calls == [] and order == []
+
+
+@pytest.mark.parametrize("prov", ["aws", "azurerm", "oci"])
+def test_plano_de_outro_provedor_do_stub_nao_chega_ao_runner(prov):
+    stub = C.repo() / "contracts" / "stubs" / "C26"
+    plan = next(p for p in C.read_jsonl(stub / "lowering_plan.jsonl") if p["target_provider"] == prov)
+    graph = next(g for g in C.read_jsonl(stub / "graph_ir.jsonl") if g["graph_id"] == plan["graph_id"])
+    ex, runner, order, it = make("netsql_persisted.json")
+    r = ex.run_case(case_for(plan), plan, graph, bindings={}, runtime_context={})
+    assert r.outcome["outcome"]["value"] == "UNKNOWN" and r.outcome["outcome"]["detail"].startswith("WRONG_PROVIDER")
+    assert runner.calls == [] and order == []
+
+
+@pytest.mark.parametrize("run_tag", [None, "b-hg-0001"])
+def test_rotulo_bo_run_ligado_pelo_executor(run_tag):
+    plan, graph = load_fixture("bucket")
+    ex, runner, order, it = make("netsql_api400.json", run_tag=run_tag)
+    r = ex.run_case(case_for(plan), plan, graph, bindings={"SYM-5e6f708192a3": "bo-hgbkt"},
+                    runtime_context={"region": "us-central1"})
+    assert "apply" in runner.calls, r.outcome
+    assert runner.env_seen["TF_VAR_lp_hg_bucket_bo_run"] == (run_tag or ex.run_id)
+    assert not any(k.startswith("TF_VAR_") and k.endswith("_bo_run") and k != "TF_VAR_lp_hg_bucket_bo_run"
+                   for k in runner.env_seen)
+
+
+def test_run_tag_invalido_e_recusado():
+    with pytest.raises(ValueError):
+        make("netsql_persisted.json", run_tag="B_Maiusculo")
 
 
 def test_simbolo_em_campo_secreto_e_recusado():

@@ -221,10 +221,15 @@ class CaseRun:
 class Executor:
     def __init__(self, runner: Runner, *, identity_guard, intent, run_id: str, schema=None, redactor=None,
                  sleep=time.sleep, wait_s: float = 30.0, read_interval_s: float = 15.0,
-                 allow_disk_ephemeral: bool = False, heartbeat=None):
+                 allow_disk_ephemeral: bool = False, heartbeat=None, run_tag: str | None = None):
         if not re.match(r"^[a-z0-9][a-z0-9-]{2,40}$", run_id):
             raise ValueError("run_id: minúsculas, dígitos e '-', 3 a 41 caracteres")
+        # valor do rótulo bo-run (HI-GCP-01): o runner do SAFETY passa tag_value(batch_id); sem ele, o run_id
+        run_tag = run_id if run_tag is None else run_tag
+        if not re.match(r"^[a-z0-9][a-z0-9_-]{0,62}$", run_tag):
+            raise ValueError("run_tag: valor de rótulo do Google (minúsculas, dígitos, '-' e '_'; até 63)")
         self.runner, self.identity_guard, self.intent, self.run_id = runner, identity_guard, intent, run_id
+        self.run_tag = run_tag
         self.schema = schema or R.Schema.load()
         self.redactor = redactor or GoogleRedactor(self.schema)
         self.sleep, self.wait_s, self.read_interval_s = sleep, wait_s, read_interval_s
@@ -273,6 +278,8 @@ class Executor:
                     missing.append(v["symbol_id"])
                     continue
                 env["TF_VAR_" + v["name"]] = val
+            elif v["kind"] == "run_label":
+                env["TF_VAR_" + v["name"]] = self.run_tag
             else:
                 sec = secrets.token_urlsafe(24)
                 self.redactor.register_secret(sec)
