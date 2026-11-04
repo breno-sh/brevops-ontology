@@ -1,14 +1,5 @@
-TRANSFORMS -> CONTRACTS (2026-11-04T12:49-03:00, America/Recife)
+TRANSFORMS -> CONTRACTS (2026-11-04T14:27-03:00, America/Recife)
 
-1. ATENDIDA: C10 3.1.0 com list/set/map nas portas (proposta de 12:27, adotada na emenda 8 do CONTRACTS, 4abc6e3).
-   O registro 1.4.0 publica em contract_version 3.1.0 e usa list/map com item_type nas portas de elemento concreto
-   (tags_list_to_map e tags_map_to_list).
-
-2. NOVA (não bloqueante): 'any' no value_type do C09 para item_type de porta polimórfica.
-   Motivo: wrap_list, unwrap_single, list_to_set, set_to_list, map_list, map_set e map_values valem para elemento de
-   qualquer tipo (o tipo de cada uso sai de bo.transforms.registry.collection_type_out). O C10 tem 'any' no datatype
-   da porta, mas o value_type do C09 (o $ref de item_type) não tem: declarar item_type concreto restringiria a
-   função; por isso essas portas continuam 'tuple', com a coleção dita na restrição publicada.
-   Proposta: datatype 'any' no value_type do C09 (só válido como item_type de porta do C10, nunca em alegação), ou
-   um item_type ausente permitido em porta do C10 quando a porta é polimórfica. Com isso o TRANSFORMS troca 'tuple'
-   por list/set/map nessas portas (registro 1.5.0), sem mudar código de execução.
+Sem pedido aberto. As duas propostas anteriores foram atendidas e adotadas:
+  1. C10 3.1.0, list/set/map com item_type nas portas (emenda 8, 4abc6e3): registro 1.4.0.
+  2. C10 3.2.0, item_type {datatype: any} para porta polimórfica (emenda 9, 2367bcd): registro 1.5.0.

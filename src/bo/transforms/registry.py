@@ -37,8 +37,8 @@ from . import units as U
 from .errors import DeclarationError, NoUnit, OutOfDomain, SymbolicInput, TransformError, UnknownInput
 from .markers import ABSENT, is_absent, is_not_read, is_symbolic
 
-REGISTRY_VERSION = "1.4.0"
-GENERATED_AT = "2026-11-04T12:49:00-03:00"     # data da versão do registro (fixa: a regeneração é idêntica)
+REGISTRY_VERSION = "1.5.0"
+GENERATED_AT = "2026-11-04T14:27:00-03:00"     # data da versão do registro (fixa: a regeneração é idêntica)
 LOSS_KINDS = ("rounding", "saturation", "absence", "sentinel", "context_dependence", "not_expressible", "semantic")
 DATATYPES = ("integer", "decimal", "boolean", "string", "enum", "duration", "tuple", "number", "any", "list", "set",
              "map")
@@ -1026,7 +1026,8 @@ COMBINATORS: list[Combinator] = [
                 ("UNKNOWN_INPUT", "entrada ausente ou não lida")),
                ("not_expressible",), "as outras chaves do mapa", None, False, _map_get,
                (Ex({"map": {"env": "prod", "team": "a"}, "key": "env"}, out={"value": "prod"}),
-                Ex({"map": {"env": "prod"}, "key": "team"}, err="TRANSFORM_OUT_OF_DOMAIN"))),
+                Ex({"map": {"env": "prod"}, "key": "team"}, err="TRANSFORM_OUT_OF_DOMAIN")),
+               collection=(("map", "map"),)),
     Combinator("tags_list_to_map", (("tags", "tuple", "lista de {key, value} ou {Key, Value}, textos"),),
                (("map", "tuple", "objeto texto -> texto"),), "chaves únicas; chave e valor textos",
                (("TRANSFORM_OUT_OF_DOMAIN", "chave repetida, campo fora de {key, value} ou valor não texto"),
@@ -1108,7 +1109,8 @@ for _c11, (_dt, _pre, _loss, _ltxt, _exs) in _CMP_DOC.items():
          ("UNKNOWN_INPUT", "valor não lido (NOT_READ)"),
          ("UNKNOWN_SYMBOLIC_INPUT", "valor simbólico ainda não resolvido"),
          ("DECLARATION_ERROR", "tolerância ausente, negativa ou fora de numeric_tolerance"))),
-        _loss, _ltxt, None, False, _cmp_fn(_c11), _exs, accepts_absent=True, c11_name=_c11))
+        _loss, _ltxt, None, False, _cmp_fn(_c11), _exs, accepts_absent=True, c11_name=_c11,
+        collection=(("expected", "list"), ("observed", "list")) if _c11 == "set_equal" else ()))
 COMBINATORS.append(Combinator(
     "compare_quantity_tolerance",
     (("expected", "number", "valor planejado"), ("expected_type", "tuple", "{unit, rate_window?, byte_convention?}"),
@@ -1597,8 +1599,12 @@ def _loss_text(t) -> str:
 
 def _port(t, name, dt) -> dict:
     """Porta publicada: list/set/map com item_type (C10 3.1.0) quando o tipo do elemento é concreto; porta polimórfica
-    (elemento de qualquer tipo) fica 'tuple' porque o value_type do C09 não tem 'any' para item_type."""
+    (elemento de qualquer tipo) sai list/set/map com item_type {datatype: any} (C10 3.2.0)."""
     vt = dict(t.port_types).get(name) if isinstance(t, Combinator) else None
+    if vt is None and isinstance(t, Combinator) and name in dict(t.collection):
+        # porta polimórfica: elemento de qualquer tipo (C10 3.2.0, item_type {datatype: any})
+        kind = dict(t.collection)[name]
+        vt = {"datatype": kind, "item_type": {"datatype": "any"}, **({"key_type": "string"} if kind == "map" else {})}
     if vt is None:
         return {"name": name, "datatype": dt}
     return {"name": name, **json.loads(json.dumps({k: vt[k] for k in ("datatype", "key_type", "item_type") if k in vt}))}
@@ -1628,7 +1634,7 @@ def to_item(t) -> dict:
 
 
 def document() -> dict:
-    return {"schema": "bo.transforms/1", "contract": "C10", "contract_version": "3.1.0", "module": "TRANSFORMS",
+    return {"schema": "bo.transforms/1", "contract": "C10", "contract_version": "3.2.0", "module": "TRANSFORMS",
             "generated_at": GENERATED_AT, "scalar": [to_item(s) for s in SCALARS],
             "combinators": [to_item(c) for c in COMBINATORS]}
 
