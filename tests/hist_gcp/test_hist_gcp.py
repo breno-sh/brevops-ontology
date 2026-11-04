@@ -121,7 +121,7 @@ def test_http_404_sem_build_vira_indisponivel_com_evidencia(monkeypatch, work):
 
 # ------------------------------------------------------------------ átomos
 
-def test_atomos_iguais_a_biblioteca_mais_write_only(schema_file, work):
+def test_atomos_sao_os_da_biblioteca_com_write_only(schema_file, work):
     raw, counts = A.build_bytes(schema_file, "6.0.0")
     mine = [json.loads(x) for x in raw.decode().splitlines()]
     ps = core.providers(core.load(schema_file))
@@ -129,10 +129,9 @@ def test_atomos_iguais_a_biblioteca_mais_write_only(schema_file, work):
     assert len(mine) == len(lib) == counts["atoms"] == 6
     wo = {a["atom_id"] for a in mine if a.get("write_only")}
     assert wo == {"google:google_widget:secret_wo", "google:google_widget:conf.key_wo"}
-    for m, b in zip(mine, lib):
-        m = dict(m)
-        m.pop("write_only", None)
-        assert m == b
+    assert mine == lib
+    core.write_jsonl(work / "lib.jsonl", lib)
+    assert (work / "lib.jsonl").read_bytes() == raw
     assert counts["write_only"] == 2 and counts["types"] == 2 and counts["data_sources"] == 1
 
 
@@ -145,15 +144,6 @@ def test_atomos_gzip_deterministico_e_valida_c01(schema_file, work):
     j = work / "atoms.jsonl"
     j.write_bytes(C.gunzip_bytes(work / "a1" / "atoms_6.0.0.jsonl.gz"))
     assert V.validate("C01_atoms", j).ok
-
-
-def test_write_only_nao_duplica_se_a_biblioteca_ja_gravar(schema_file):
-    ps = core.providers(core.load(schema_file))
-    ts = next(t for t in core.iter_types(ps["google"], "google", "6.0.0") if t.resource_type == "google_widget")
-    for a in ts.atoms:
-        a["write_only"] = a["path"] == "secret_wo"
-    assert A.annotate_write_only(ts) == 1
-    assert [a["write_only"] for a in ts.atoms].count(True) == 1
 
 
 # ------------------------------------------------------------------ check (G2) num mundo sintético
