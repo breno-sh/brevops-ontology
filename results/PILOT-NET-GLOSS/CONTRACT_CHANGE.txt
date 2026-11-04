@@ -125,3 +125,11 @@ SE 365e6ed (fatos observados), árbitro 4bee77e, CONTRACTS emenda 11, BRIEFS/PRE
 NSG da OCI passou de G0-IDENTITY para G0-NEEDS (só falta effective_scope); os blocos ingress/egress_security_rules
 da security list deixaram de ser unidade (transparentes) e os seus sub-blocos passaram a faltar só api_resource.
 Glossário inalterado; F-5 segue sem frase publicada.
+
+CC-NET-5 (2026-11-04T18:35:00-03:00, BLOQUEIA o publish desta rodada): o C25 1.5.0 aceita level "observed" (emenda 10)
+  e a biblioteca de grão (0.1.11) copia a fonte {level: observed, ref: SE-...} para evidence[] e identity.evidence[]
+  do C19; mas o C19 3.1.0 usa o evidence_item do C00, cujo evidence_level é só published | derived | interpreted.
+  Resultado: o canonical_units desta rodada reprova no validador único (9 erros em 4 unidades: as duas anexações e o
+  NSG do provedor azurerm e a regra separada do NSG da oci). Não altero a saída mecânica. Proposta (CONTRACTS): emenda
+  do C00 evidence_level com "observed" (e o C19 herda), ou o GRAIN rebaixa a fonte observada para derived com nota.
+  Também em aberto: o BRIEFS consumiu o GRAIN.html antes do ed1fc66 (consume_check, manifestos_transitivos).
