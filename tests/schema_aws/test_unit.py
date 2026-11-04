@@ -127,34 +127,25 @@ def test_make_mesmos_bytes_e_contratos(work, schema_gz):
     assert V.validate("C02_types", work / "t1.jsonl").ok
 
 
-def test_write_only_so_acrescenta_campo(work, schema_gz):
-    """Fora o campo write_only, os átomos são byte a byte os da bo.schema.build."""
+def test_saida_e_a_da_biblioteca_byte_a_byte(work, schema_gz):
+    """O módulo não acrescenta nem muda nada: átomos e tipos são os bytes da bo.schema.build."""
     from bo.schema import build
     build.build(schema_gz, "aws", "6.71.0", work / "lib.jsonl", work / "t.jsonl")
     atoms.make(schema_gz, "6.71.0", work / "mod.jsonl", work / "t2.jsonl")
-    lib = [json.loads(x) for x in open(work / "lib.jsonl")]
-    mod = [json.loads(x) for x in open(work / "mod.jsonl")]
-    for a in mod:
-        a.pop("write_only", None)
-    assert lib == mod
+    assert (work / "lib.jsonl").read_bytes() == (work / "mod.jsonl").read_bytes()
     assert (work / "t.jsonl").read_bytes() == (work / "t2.jsonl").read_bytes()
+    assert sum('"write_only": true' in x for x in open(work / "lib.jsonl")) == 2
 
 
-def test_write_only_computed_reprova(work, schema_doc):
+def test_write_only_computed_reprova_na_biblioteca(work, schema_doc, schema_gz):
+    """C01-WRITEONLY é conferida pela biblioteca: write_only + computed reprova no build."""
+    import gzip
     blk = schema_doc["provider_schemas"][common.ADDRESS]["resource_schemas"]["aws_exemplo_simples"]["block"]
-    blk["attributes"]["arn"]["write_only"] = True                 # computed + write_only: viola C01-WRITEONLY
-    ps = core.providers(schema_doc)["aws"]
-    ts = list(core.iter_types(ps, "aws", "6.71.0"))
-    core.write_jsonl(work / "a.jsonl", (a for t in ts for a in t.atoms))
+    blk["attributes"]["arn"]["write_only"] = True
+    with open(schema_gz, "wb") as f, gzip.GzipFile(filename="schema.json", mode="wb", fileobj=f, mtime=0) as g:
+        g.write(json.dumps(schema_doc).encode())
     with pytest.raises(core.SchemaError):
-        atoms.write_only_pass(work / "a.jsonl", ps)
-
-
-def test_raw_attribute_segue_block_path(schema_doc):
-    ps = core.providers(schema_doc)["aws"]
-    blk = ps["resource_schemas"]["aws_exemplo_segredo"]["block"]
-    a = {"path": "config.inner.n", "block_path": [{"block": "config"}, {"block": "inner"}]}
-    assert atoms.raw_attribute(blk, a)["type"] == "number"
+        atoms.make(schema_gz, "6.71.0", work / "a.jsonl", work / "t.jsonl")
 
 
 # ------------------------------------------------------------------ plugin_cache

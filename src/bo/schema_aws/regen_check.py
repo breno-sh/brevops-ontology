@@ -5,7 +5,7 @@
 Passa (sai 0) só se:
   * MANIFEST.sha256 de $BO_DATA/SCHEMA-AWS confere (inclui o binário do provider e o schema no cache);
   * schema.json.gz descomprime no sha256 de schema.json.sha256, que é o schema_sha256 do pins.json;
-  * duas execuções independentes de átomos+tipos (bo.schema.build + write_only) em $BO_TMP/regen/run1 e run2
+  * duas execuções independentes de átomos+tipos (bo.schema.build) em $BO_TMP/regen/run1 e run2
     dão o mesmo sha256 entre si e o mesmo dos atoms.jsonl e types.jsonl publicados;
   * com --extract: o terraform é executado de novo (bo.schema.extract, mesmo lock e sandbox) e a saída crua
     tem o mesmo sha256 (a primeira execução é a publicada; init com rede só para o registro).

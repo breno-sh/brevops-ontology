@@ -8,7 +8,7 @@
   3. lock do módulo (h1 + zh de todas as plataformas) em plugin_cache/terraform.lock.hcl;
   4. bo.schema.extract com esse lock (init -lockfile=readonly, schema sem rede, env -i, sandbox-exec);
      confere sha256 da saída == pins.json e sha256 do binário carregado == membro do zip assinado;
-  5. átomos e tipos pela bo.schema.build + campo write_only do C01 2.1.0 (bo.schema_aws.atoms), validados;
+  5. átomos (C01 2.1.0, com write_only) e tipos pela bo.schema.build (bo.schema_aws.atoms), validados;
   6. plugin_cache/: lock, configuração de instalação offline (filesystem_mirror), pino do binário, README;
      prova de terraform validate offline (bo.schema_aws.offline);
   7. build_report.json e MANIFEST.sha256 em $BO_DATA/SCHEMA-AWS.

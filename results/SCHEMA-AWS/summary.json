@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "SCHEMA-AWS",
- "generated_at": "2026-11-03T07:25:48-03:00",
+ "generated_at": "2026-11-03T21:16:58-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/SCHEMA-AWS.txt",
@@ -17,7 +17,7 @@
    "terraform": "1.15.8",
    "plataforma": "darwin_arm64",
    "sandbox": "env -i, HOME temporario, sandbox-exec sem credenciais; schema e validate sem rede IP; init so com o registro",
-   "biblioteca": "bo.schema.extract e bo.schema.build (SCHEMALIB c839609) + passada write_only do C01 2.1.0",
+   "biblioteca": "bo.schema.extract e bo.schema.build (SCHEMALIB 7f2d5b2, write_only do C01 2.1.0 na propria biblioteca)",
    "ancora_gpg": "C874011F0AB405110D02105534365D9472D7468F"
   },
   "inputs": [
@@ -42,7 +42,7 @@
     "sha256": "f89800247db8e9c3eeffafb5dd35e156c18b494eadf97c34640ef2fd71683988"
    }
   ],
-  "recorded_at": "2026-11-03T07:25:48-03:00"
+  "recorded_at": "2026-11-03T21:16:58-03:00"
  },
  "sources": [
   {
@@ -61,5 +61,5 @@
    "transformation": "indice de documentacao, so contagem de paginas por tipo (crosscheck)"
   }
  ],
- "notes": "aws 6.71.0: 1746 tipos, 112893 atomos (37 write_only), 687 data sources; schema sha256 igual ao pins.json e reproduzido por reextracao; crosscheck 1740 paginas + 6 aliases de bloco identico; G7 bloqueado pelo privacy_lint (ver CONTRACT_CHANGE.txt)"
+ "notes": "aws 6.71.0: 1746 tipos, 112893 atomos (37 write_only, gravados pela bo.schema), 687 data sources; schema sha256 igual ao pins.json e reproduzido por reextracao; crosscheck 1740 paginas + 6 aliases de bloco identico; saida identica antes e depois de tirar a passada write_only (atoms 5c6aba05...)"
 }

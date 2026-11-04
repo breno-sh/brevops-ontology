@@ -85,9 +85,7 @@ Testes do diff (cópia em $BO_DATA/tmp/SCHEMA-AWS/lintpatch, 2026-11-03T07:23-07
    com cadeias 'arn:' do próprio provider). Se o plano exigir o binário fisicamente em plugin_cache/, o
    privacy_lint precisa de uma exceção para pacote assinado conferido por sha256 (não proposta aqui).
 
-4. (registro, sem mudança pedida) write_only
-   A bo.schema (SCHEMALIB) ainda grava o C01 2.0.0: não emite write_only. O SCHEMA-AWS acrescenta o campo
-   numa passada separada (src/bo/schema_aws/atoms.py), lida do mesmo schema pelo mesmo caminho, sem tocar em
-   outro campo (teste: fora write_only, os átomos são byte a byte os da biblioteca). aws 6.71.0: 37 átomos
-   write_only, todos optional e não computed (C01-WRITEONLY confere). Quando a bo.schema emitir o campo,
-   a passada vira redundante e pode sair.
+4. (registro, resolvido) write_only
+   A bo.schema (SCHEMALIB f8b5414) passou a gravar write_only do C01 2.1.0. A passada extra do SCHEMA-AWS
+   saiu (2026-11-03, America/Recife); a saída agora é a da biblioteca e ficou byte a byte igual à publicada
+   (mesmo sha256 de atoms.jsonl e types.jsonl; 37 átomos write_only, todos optional e não computed).
