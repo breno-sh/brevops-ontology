@@ -39,5 +39,5 @@
  "rule": "disputa spec x doc sobre lifecycle_controller ou owner: a unidade vira UNKNOWN com o motivo (decisões de acesso não dependem desses fatos)",
  "schema": "bo.pilot_net.disputes/1",
  "source": "$BO_REPO/results/SERVICE-EVIDENCE/spec_disputes.json",
- "source_sha256": "4239ea62ba3034337cd59ecf6eccba97eee5c1032bb9709775a145f5e2b19d6f"
+ "source_sha256": "e913932b1c8f925aa090ef467f86cfd1675f64d45f3dcc47f425817c09eaf90d"
 }
