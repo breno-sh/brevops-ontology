@@ -1,5 +1,5 @@
 {
- "alignment": "coordenador 2026-11-04, comum aos 4 CORPUS: literal = não depende de variável, recurso, data source, local ou função avaliada no plano (lê arquivo, relógio ou acaso); cadeia simbolizada só por privacidade é literal; attr = null não configura átomo; precedência withheld > symbolic > literal; blocos data fora",
+ "alignment": "coordenador 2026-11-04, comum aos 4 CORPUS: literal = não depende de variável, recurso, data source, local, path.*, função de provedor provider::… ou função avaliada no plano (lê arquivo, relógio ou acaso); cadeia simbolizada só por privacidade é literal; attr = null não configura átomo; precedência withheld > symbolic > literal; blocos data fora; linha de tipo: n_set = recursos com pelo menos um átomo configurado, classe do recurso pela mesma precedência",
  "atoms_used": {
   "any": 24500,
   "configurable": 24150,
@@ -7,8 +7,8 @@
   "not_configurable": 350
  },
  "cells_resource_atom": {
-  "literal": 1967811,
-  "symbolic": 2728602,
+  "literal": 1965933,
+  "symbolic": 2730480,
   "total": 4795970,
   "withheld": 99557
  },
@@ -54,7 +54,13 @@
   "records_withheld_block_attributed": 8516,
   "records_withheld_block_unattributed": 1973
  },
- "rules_version": "U1-U9/2",
+ "resources_with_atom": {
+  "literal": 71581,
+  "symbolic": 904936,
+  "total": 1070955,
+  "withheld": 94438
+ },
+ "rules_version": "U1-U9/3",
  "schema": {
   "atoms": 112893,
   "atoms_configurable": 108266,

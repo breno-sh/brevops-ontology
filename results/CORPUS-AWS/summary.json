@@ -3,13 +3,13 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "CORPUS-AWS",
- "generated_at": "2026-11-04T11:08:07-03:00",
+ "generated_at": "2026-11-04T11:35:40-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/CORPUS-AWS.txt",
   "brief_sha256": "46686579efafea35dd3b71475c8d6bc8885242c99c85ef276f55126dd0cabd8e",
   "params": {
-   "rules_version": "U1-U9/2",
+   "rules_version": "U1-U9/3",
    "provider": "aws",
    "schema_provider_version": "6.71.0",
    "workers": "8",
@@ -20,7 +20,7 @@
    "check_sample_mod": "61",
    "unidade_recurso": "bloco resource (Managed); data fora",
    "unidade_modulo": "diretório do .tf no repositório",
-   "alinhamento_entre_lanes": "coordenador 2026-11-04, comum aos 4 CORPUS: literal = não depende de variável, recurso, data source, local ou função avaliada no plano (lê arquivo, relógio ou acaso); cadeia simbolizada só por privacidade é literal; attr = null não configura átomo; withheld > symbolic > literal; blocos data fora"
+   "alinhamento_entre_lanes": "coordenador 2026-11-04, comum aos 4 CORPUS: literal = não depende de variável, recurso, data source, local, path.*, função de provedor provider::… ou função avaliada no plano (lê arquivo, relógio ou acaso); cadeia simbolizada só por privacidade é literal; attr = null não configura átomo; precedência withheld > symbolic > literal; blocos data fora; linha de tipo: n_set = recursos com pelo menos um átomo configurado, classe do recurso pela mesma precedência"
   },
   "inputs": [
    {
@@ -39,7 +39,7 @@
     "sha256": "5c6aba0585cb0e30f26877fd0ed6ba1a471092c792ecfa0b38f22d43d1e862a7"
    }
   ],
-  "recorded_at": "2026-11-04T11:08:07-03:00"
+  "recorded_at": "2026-11-04T11:35:40-03:00"
  },
  "sources": [
   {
@@ -53,5 +53,5 @@
    "transformation": "átomos do schema (SCHEMA-AWS) como denominador e alvo do casamento de caminhos"
   }
  ],
- "notes": "Uso real dos átomos aws no TerraDS (sem split), regras U1-U9/2. Alinhamento entre lanes (coordenador, 04/11): attr = null não configura átomo (1.730 registros saem); path.* e função de provedor passam a literal; cadeia simbolizada por privacidade já era literal; withheld > symbolic > literal e blocos data fora já valiam. 44.605 repositórios, 39.961 famílias, 135.994 módulos (diretórios), 1.076.821 recursos gerenciados (208.158 blocos data fora). usage.jsonl: 2.787.679 linhas (474.504 de tipo, 2.313.175 de átomo), validador oficial 0 erro. Átomos: 24.500 de 112.893 configurados ao menos uma vez (21,7%); 9.939 em >= 5 famílias. Células recurso×átomo: 4.795.970 (literal 41,0%, simbólico 56,9%, retido 2,1%). Não atribuídos: caminho fora do schema 6.71.0 (0,45% dos registros; ex. aws_eip.vpc, aws_db_instance.name), tipo fora do schema (141 tipos), bloco retido com vários átomos (1.901 registros do environment do aws_codebuild_project, retido inteiro pelo HCL). Consistência: 0 registro sem recurso, 0 n_attrs divergente; 2ª implementação na amostra de 725 repositórios: 0 divergência. Linha de tipo (sem atom_id) com n_set 0 por definição (U8). Detalhe em results/CORPUS-AWS/counts.json e $BO_DATA/CORPUS-AWS/atom_totals.jsonl."
+ "notes": "Uso real dos átomos aws no TerraDS (sem split), regras U1-U9/3. Alinhamento entre os 4 CORPUS (coordenador, 04/11): literal = não depende de variável, recurso, data source, local, path.*, função de provedor ou função avaliada no plano; cadeia simbolizada só por privacidade é literal; attr = null não configura átomo (1.730 registros); withheld > symbolic > literal; blocos data fora; linha de tipo com n_set = recursos com pelo menos um átomo configurado (classe do recurso pela mesma precedência). 44.605 repositórios, 39.961 famílias, 135.994 módulos (diretórios), 1.076.821 recursos gerenciados (208.158 blocos data fora). usage.jsonl: 2.787.679 linhas (474.504 de tipo, 2.313.175 de átomo), validador oficial 0 erro. Átomos: 24.500 de 112.893 configurados ao menos uma vez (21,7%); 9.939 em >= 5 famílias. Células recurso×átomo: 4.795.970 (literal 41,0%, simbólico 56,9%, retido 2,1%). Recursos com algum átomo: 1.070.955 (literal 6,7%, simbólico 84,5%, retido 8,8%). Não atribuídos: caminho fora do schema 6.71.0 (0,45% dos registros; ex. aws_eip.vpc, aws_db_instance.name), tipo fora do schema (141 tipos), bloco retido com vários átomos (1.901 registros do environment do aws_codebuild_project, retido inteiro pelo HCL). Consistência: 0 registro sem recurso, 0 n_attrs divergente; 2ª implementação na amostra de 725 repositórios (átomo e tipo): 0 divergência. Detalhe em results/CORPUS-AWS/counts.json e $BO_DATA/CORPUS-AWS/atom_totals.jsonl."
 }
