@@ -187,3 +187,18 @@ def test_nsg_rule_without_parent_dependency_is_not_component():
     oc = I.decompose_config(_nsg_cfg(), C25Adapter(_nsg_records(requires_parent=False)), {}, RS)
     r = [o for o in oc if o.tf == [f"{RULE}.r1"]][0]
     assert r.grain != "COMPONENT"
+
+
+def test_official_c25_stub_pair_observed_wins_over_published():
+    """Par do stub oficial do C25 1.4.0 (SE-oci-0008 publicado has_id=true x SE-oci-0009 observado has_id=false):
+    a observação repetível com controle prevalece e a disputa fica registrada."""
+    import json
+    from pathlib import Path
+    stub = Path(__file__).resolve().parents[2] / "contracts" / "stubs" / "C25" / "service_evidence.jsonl"
+    recs = [json.loads(x) for x in stub.read_text(encoding="utf-8").splitlines() if x.strip()]
+    pair = [r for r in recs if r.get("evidence_id") in ("SE-oci-0008", "SE-oci-0009")]
+    assert len(pair) == 2
+    ev = C25Adapter(pair).evidence("oci_core_security_list.ingress_security_rules")
+    f = ev.fact("identity")
+    assert f.known and f.value.get("anonymous") is True and f.value["key_fields"] == ["$content"]
+    assert disputes("identity", ev.claims["identity"]) == ["SE-oci-0008"]
