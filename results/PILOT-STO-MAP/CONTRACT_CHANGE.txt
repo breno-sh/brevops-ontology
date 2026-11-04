@@ -9,6 +9,13 @@ os gates seguem com o comando do catálogo. Com eles corrigidos, a rerodada é u
   python -I -m bo.pilot_sto_map.pipeline            (staging, entradas por sha256 no pipeline_report.json)
   tools/lock.sh with merge-base --owner PILOT-STO-MAP --wait 600 -- python -I -m bo.pilot_sto_map.pipeline --promote-only
 
+ATUALIZAÇÃO 2026-11-04T14:36:00-03:00 (America/Recife), rodada final: base 83f5d59, pacote do STO-GLOSS
+(MANIFEST 64223069), árbitro final 7fc1a85 (ARBITER.sha256 b4cf2f98).
+  CC-13 fechado do meu lado: o árbitro final ainda não calcula a imagem do wrap_list, então "sem perda" não é
+  provável para prefixo de texto aberto -> lista. Pelo SEMANTICS (derive_fidelity: domínio não calculado dá partial)
+  os 12 prefixos escalar->lista passam a declarar transport_fidelity partial (relação de domínio declarada subset,
+  que é o que a tradução faz). Segue aberto, sem bloquear: CC-8.
+
 ATUALIZAÇÃO 2026-11-04T13:12:00-03:00 (America/Recife), tentativa 2: base e22bf7a, pacote do STO-GLOSS e22bf7a
 (MANIFEST 88c09465), árbitro ARBITER-20261104-3 (cc57c0a), C09 3.2.0, SEMANTICS emenda 2, C10 com wrap_list.
   RESOLVIDOS: CC-5 (BYTE em AmountOfData: as 2 alegações de tamanho com unidade conhecida saem OK), CC-6 (coleções:
