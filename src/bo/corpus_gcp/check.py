@@ -28,7 +28,7 @@ META_TOP = ("count", "for_each", "provider", "depends_on", "lifecycle", "provisi
 # classe pelo JSON serializado do termo (aspas estruturais não aparecem escapadas dentro de valores)
 _WH = '"kind":"withheld"'
 _SYMB = re.compile(r'"kind":"reference"|"name_class":"(variable|local|module_output|data_source|resource_attribute|'
-                   r'count_index|each_key|workspace)"|"op":"(file|filebase64|filebase64sha256|filebase64sha512|'
+                   r'count_index|each_key|workspace|path)"|"op":"(hcl_provider_function|file|filebase64|filebase64sha256|filebase64sha512|'
                    r'filemd5|filesha1|filesha256|filesha512|fileexists|fileset|templatefile|abspath|pathexpand|'
                    r'timestamp|plantimestamp|uuid|bcrypt)"')
 

@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "CORPUS-GCP",
- "generated_at": "2026-11-04T09:53:58-03:00",
+ "generated_at": "2026-11-04T11:37:03-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/CORPUS-GCP.txt",
@@ -13,7 +13,8 @@
    "provider_version": "8.9.0",
    "unit_resource": "bloco resource gerenciado (repo_id, file, resource_address); data fora",
    "unit_module": "diretório do .tf no repositório",
-   "term_class": "withheld se há termo retido em qualquer nível; simbólico se depende de referência, variável, local, saída de módulo, data source, atributo de recurso, count.index, each/iterador de dynamic, workspace ou função de arquivo/ambiente/relógio; literal o resto (inclui cadeia/CIDR/IP simbolizados por privacidade)",
+   "term_class": "withheld se há termo retido em qualquer nível; simbólico se depende de referência, variável, local, saída de módulo, data source, atributo de recurso, count.index, each/iterador de dynamic, workspace, path.*, função de provedor (provider::...) ou função de arquivo/ambiente/relógio; literal o resto (inclui cadeia/CIDR/IP simbolizados por privacidade)",
+   "alinhamento_lanes": "decisão do coordenador para os 4 CORPUS (04/11): path.* e função de provedor são simbólicos",
    "explicit_null": "attr = null não configura o átomo",
    "precedence": "withheld > simbólico > literal por recurso e átomo",
    "type_row": "linha sem atom_id por (repo, tipo); n_set = blocos com >= 1 átomo",
@@ -23,7 +24,7 @@
    "unmatched_paths_listed": "n_repos >= 5 e todo segmento no vocabulário do schema",
    "recount_sample_mod": "20",
    "workers": "6",
-   "hcl_branch_sha": "bb238abad07e62f5dbd2d8e67dddb71b53598459"
+   "hcl_base_sha": "b5c256e"
   },
   "inputs": [
    {
@@ -47,7 +48,7 @@
     "sha256": "a00b9d3fb50a717fe3ba17ec0f4b2012f89ee7a3cb65e7ea5f21298afc75e4e1"
    }
   ],
-  "recorded_at": "2026-11-04T09:53:58-03:00"
+  "recorded_at": "2026-11-04T11:37:03-03:00"
  },
  "sources": [
   {
@@ -61,5 +62,5 @@
    "transformation": "átomos do schema fixado (SCHEMA-GCP), só nomes de tipo e caminho"
   }
  ],
- "notes": "[2026-11-04T09:53:53-03:00] Uso do google 8.9.0 no TerraDS, sem split: 8895 repositórios (7944 famílias) com bloco gerenciado, 37628 módulos, 197834 blocos (1942 de 110 tipos fora do schema; 22089 blocos data fora). 639598 linhas C06 usage (84892 de tipo, 554706 de átomo). Átomos vistos 12525/32659 (7053 em >= 5 repositórios, 6988 em >= 5 famílias); tipos vistos 936/1392. Pares (bloco, átomo) configurados 1158539: literal 421642, simbólico 721687, withheld 15210. Registros google gerenciados 1381183: em átomo 1188114, meta 168303, tipo fora do schema 8256, caminho sem átomo 7573, bloco retido 7243, bloco em sintaxe de atributo 1211, attr = null 481, dynamic sem content 2. Recontagem independente 1/20 sem divergência. Totais por átomo (repositórios, famílias, módulos, recursos) em atom_totals.jsonl; por tipo em type_totals.jsonl."
+ "notes": "[2026-11-04T11:37:01-03:00] Uso do google 8.9.0 no TerraDS, sem split: 8895 repositórios (7944 famílias) com bloco gerenciado, 37628 módulos, 197834 blocos (1942 de 110 tipos fora do schema; 22089 blocos data fora). 639598 linhas C06 usage. Átomos vistos 12525/32659 (7053 em >= 5 repositórios); tipos vistos 936/1392. Pares (bloco, átomo) configurados 1158539: literal 421247, simbólico 722082, withheld 15210. Classe alinhada entre os 4 CORPUS (coordenador, 04/11): path.* e função de provedor são simbólicos. Registros: em átomo 1188114, meta 168303, tipo fora do schema 8256, caminho sem átomo 7573, bloco retido 7243, bloco em sintaxe de atributo 1211, attr = null 481. Recontagem independente 1/20 sem divergência."
 }

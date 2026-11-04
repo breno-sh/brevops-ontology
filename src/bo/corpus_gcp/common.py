@@ -22,8 +22,10 @@ PARAMS = {
     "unit_module": "diretório do arquivo .tf dentro do repositório (repo_id, dirname(file))",
     "term_class": "withheld = termo retido em qualquer nível; simbólico = depende de referência, variável, local, "
                   "saída de módulo, data source, atributo de recurso, count.index, each/iterador de dynamic, "
-                  "workspace ou função de arquivo/ambiente/relógio; literal = o resto (sai só do texto, inclusive "
+                  "workspace, path.*, função de provedor (provider::...) ou função de arquivo/ambiente/relógio; literal = o resto (sai só do texto, inclusive "
                   "cadeia, CIDR e IP simbolizados por privacidade)",
+    "alinhamento_lanes": "decisão do coordenador para os 4 CORPUS (04/11): path.* e função de provedor "
+                         "(provider::...) são simbólicos",
     "explicit_null": "literal null no topo não configura o átomo (Terraform: igual a omitir)",
     "precedence": "por recurso e átomo, com várias ocorrências (blocos repetidos/dynamic): withheld > simbólico > literal",
     "type_row": "linha sem atom_id por (repo, tipo): n_resources = blocos do tipo; n_set = blocos com >= 1 átomo",

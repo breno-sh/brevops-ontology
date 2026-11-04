@@ -6,7 +6,8 @@ Classe do valor (term_class), sobre o termo C06 inteiro:
   withheld  há termo retido em qualquer nível;
   symbolic  o valor depende de algo fora do texto do atributo: referência a recurso, símbolo de variável, local,
             saída de módulo, data source, atributo de recurso, count.index, each/iterador de dynamic, workspace,
-            ou função que lê arquivo, ambiente ou relógio (NONGROUND_FUNCS);
+            path.* (onde o módulo está, resolvido no plano), função de provedor (provider::...), ou função que lê
+            arquivo, ambiente ou relógio (NONGROUND_FUNCS);
   literal   o resto: o valor sai só do texto (literais, cadeias e endereços simbolizados pelo HCL por
             privacidade, CIDR/IP, documento sem interpolação dependente, funções puras sobre isso).
 Literal null no topo (``attr = null``) não configura o átomo: para o Terraform é o mesmo que omitir.
@@ -30,7 +31,9 @@ def is_data(address: str) -> bool:
 
 
 NONGROUND_CLASSES = frozenset({"variable", "local", "module_output", "data_source", "resource_attribute",
-                               "count_index", "each_key", "workspace"})
+                               "count_index", "each_key", "workspace", "path"})
+# função de provedor (provider::ns::f) é resolvida pelo plugin no plano: depende de fora do texto
+NONGROUND_OPS = frozenset({"hcl_provider_function"})
 NONGROUND_FUNCS = frozenset({"file", "filebase64", "filebase64sha256", "filebase64sha512", "filemd5", "filesha1",
                              "filesha256", "filesha512", "fileexists", "fileset", "templatefile", "abspath",
                              "pathexpand", "timestamp", "plantimestamp", "uuid", "bcrypt"})
@@ -69,7 +72,7 @@ def term_class(term: dict) -> str:
             if t.get("name_class") in NONGROUND_CLASSES:
                 worst = "symbolic"
         elif k == "expression":
-            if t.get("op") in NONGROUND_FUNCS:
+            if t.get("op") in NONGROUND_FUNCS or t.get("op") in NONGROUND_OPS:
                 worst = "symbolic"
             stack.extend(a for a in t.get("args") or [] if isinstance(a, dict))
         elif k == "document":
