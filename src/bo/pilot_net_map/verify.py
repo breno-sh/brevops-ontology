@@ -10,7 +10,10 @@ Confere, nesta ordem, e sai 1 na primeira classe que reprovar (todas são impres
   bundle_only todo átomo citado (sujeito, objeto, variável, projeção, guarda) é do pacote
   registry    funções, passos de grupo e operadores de guarda só do registro fechado (transforms/)
   orientation fora das ausências, sujeito = primeiro provedor do par e objeto = segundo; claim_id no par certo
-  verdicts    verdicts.jsonl válido no C21 e com o mesmo mapa de vereditos que o árbitro dá de novo
+  verdicts    verdicts.jsonl válido no C21 e com o mesmo mapa de vereditos que o árbitro dá de novo (em memória)
+  published   o mapa de vereditos de verdicts.jsonl é o publicado em results/PILOT-NET-MAP/report.json
+              (verdict_map_sha256); a conferência é pelo mapa, não pelo sha do arquivo
+Nada aqui grava: o árbitro roda em memória e as saídas só são lidas.
 """
 
 from __future__ import annotations
@@ -153,6 +156,17 @@ def check_verdicts(d: Path) -> list[str]:
     return bad
 
 
+def check_published(d: Path) -> list[str]:
+    from .build import verdict_map_sha256
+    from .common import results_dir
+    rp = results_dir() / "report.json"
+    if not rp.exists():
+        return [f"{rp}: ausente"]
+    want = (json.loads(rp.read_text(encoding="utf-8")).get("arbiter") or {}).get("verdict_map_sha256")
+    got = verdict_map_sha256(load_jsonl(d / "verdicts.jsonl"))
+    return [] if got == want else [f"mapa de vereditos {got[:12]} difere do publicado {str(want)[:12]}"]
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(prog="bo.pilot_net_map.verify")
     ap.add_argument("--dir")
@@ -181,6 +195,7 @@ def main(argv=None) -> int:
     out["orientation"] = check_orientation(recs_file)
     if not a.skip_verdicts:
         out["verdicts"] = check_verdicts(d)
+        out["published"] = check_published(d)
     rc = 0
     for k, errs in out.items():
         emit(f"  {'ok   ' if not errs else 'FALHA'} {k}: {len(errs)} problema(s)")

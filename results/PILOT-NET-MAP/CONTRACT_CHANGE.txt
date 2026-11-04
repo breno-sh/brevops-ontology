@@ -63,3 +63,16 @@ ADENDO 2026-11-04T11:01:00-03:00 (America/Recife), bo/base fe9c60c: os três blo
   CC-MAP-NET-1 resolvido pelo ARBITERLIB 52371e8/ddcdae7 (recongelado sobre o SEMANTICS 61d6fae): --frozen confere.
   CC-MAP-NET-3 resolvido pela rodada final do PILOT-NET-GLOSS (fe9c60c, GRAIN 0.1.8) e pelo PREREG (COORD 5b53dd8).
   Mapeamento refeito de ponta a ponta sobre o pacote novo; vereditos trocados sob a trava. F-1 a F-7 continuam.
+
+CC-MAP-NET-4 (2026-11-04T11:05:00-03:00, America/Recife): o G3 do catálogo regrava o dado publicado
+  O comando do catálogo "python -I -m bo.arbiter.run --frozen --in $BO_DATA/PILOT-NET-MAP/mapping.sssom.tsv
+  --check-unproven" não passa --out, e o bo.arbiter.run grava por padrão em $BO_DATA/$BO_ID com decided_at = agora:
+  cada gate-check (meu, do E2E, do EXIT) regrava $BO_DATA/PILOT-NET-MAP/verdicts.jsonl fora da trava.
+  Medido sobre bo/base: sha do arquivo antes 6ad25cd9..., depois de 1 rodada 9dc23756..., de 2 rodadas d08bcde4...;
+  o mapa de vereditos ficou 792fae9a... nas três, igual ao publicado em report.json.
+  O verdicts.jsonl NÃO está no meu MANIFEST.sha256 (só results/), então o make integration não quebra por ele;
+  o gate do módulo (gates/PILOT-NET-MAP.sh -> bo.pilot_net_map.verify) só lê: árbitro em memória e comparação
+  pelo verdict_map_sha256. Mudar o comando de gate e o árbitro não é do meu owns. Proposta (uma das duas):
+  (a) catálogo: G3 = "python -I -m bo.arbiter.run --frozen --in $BO_DATA/PILOT-NET-MAP/mapping.sssom.tsv
+      --check-unproven --out $BO_TMP/arbiter" (o mesmo nos PILOT-*-MAP);
+  (b) ARBITERLIB: com --check-unproven e sem --out, gravar em $BO_TMP e não em $BO_DATA.

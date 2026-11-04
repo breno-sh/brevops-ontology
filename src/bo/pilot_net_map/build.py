@@ -94,6 +94,15 @@ def run_checks(stage: Path) -> dict:
     return out
 
 
+def verdict_map_sha256(vs: list[dict]) -> str:
+    """Digest do mapa de vereditos (id da versão, veredito, regras, composição): não depende de decided_at,
+    arbiter_sha256 nem texto. É o que se publica e o que os gates comparam, nunca o sha do arquivo."""
+    from .common import sha256_bytes
+    vmap = sorted((v["claim_version_id"], v["verdict"], list(v["rules"]), list(v["composition_used"] or ()))
+                  for v in vs)
+    return sha256_bytes(json.dumps(vmap, ensure_ascii=False).encode("utf-8"))
+
+
 def verdict_summary(stage: Path, recs: list[dict]) -> dict:
     vs = load_jsonl(stage / "verdicts.jsonl")
     base = {r["claim_id"]: r for r in recs}
@@ -110,13 +119,10 @@ def verdict_summary(stage: Path, recs: list[dict]) -> dict:
         c[v["verdict"]] += 1
         by_kind[(kind, v["verdict"])] += 1
         rules.update(v["rules"])
-    vmap = sorted((v["claim_version_id"], v["verdict"], tuple(v["rules"]), tuple(v["composition_used"] or ()))
-                  for v in vs)
-    from .common import sha256_bytes
     return {"verdicts": dict(sorted(c.items())),
             "by_kind": {f"{k}|{v}": n for (k, v), n in sorted(by_kind.items())},
             "rules": dict(sorted(rules.items())),
-            "verdict_map_sha256": sha256_bytes(json.dumps(vmap, ensure_ascii=False).encode("utf-8"))}
+            "verdict_map_sha256": verdict_map_sha256(vs)}
 
 
 def _lock_held() -> bool:
