@@ -1,4 +1,20 @@
 CONTRACT_CHANGE — PILOT-STO-GLOSS (piloto sto: grão mecânico e glossário da fatia)
+ATUALIZAÇÃO 2026-11-04T13:06:00-03:00 (America/Recife), TENTATIVA 2 (pré PILOT-EXIT 2): GRAIN 748b7f1 (0.1.9), SE
+iteração 2 (83953b9), CONTRACTS 7 e 8, SEMANTICS 2, TRANSFORMS 1.4, BRIEFS 1.3.1 (42fb98d), C20 3.3.0.
+  CC-6 RESOLVIDO (C20 3.3.0): a âncora da ACL separada cuja descrição é cópia de outra página sai UNRESOLVED sem
+  sentença, com o motivo no context; toda âncora com sentença leva evidence_ref ao fato C03 do átomo.
+  Grão: 65/121 unidades decididas (aws 30/52, azurerm 11/33, google 23/29, oci 1/7).
+  Contêineres: aws_s3_bucket, google_storage_bucket e oci_objectstorage_bucket ENTITY; azurerm_storage_container
+  UNKNOWN (G0-IDENTITY, UNRESOLVED: "contido em resource sem tipo Terraform sem atributo de referência ao contêiner
+  na identidade"; id_template sem tradução T03). 3 de 4.
+  E2 medível pelo glossarista (embalagem na aws): 3/5 invariantes (versionamento, criptografia, lifecycle_rule
+  COMPONENT = COMPONENT); a regra de criptografia (UNKNOWN embutida × FACET separada) e o grant (UNKNOWN × FACET)
+  divergem. Entre provedores: as facetas embutidas do google (versioning, encryption, lifecycle_rule,
+  retention_policy, soft_delete_policy) e o blob_properties do azurerm agora saem FACET, como na aws; mas a regra
+  de ciclo de vida sai COMPONENT na aws e FACET no google (mesmo papel, grão diferente). Seguem UNKNOWN: ciclo de
+  vida separado do azurerm (management_policy) e da oci (object_lifecycle_policy), a chave do cliente do azurerm,
+  o bloqueio de acesso público da conta (aws), as ACL e políticas do google e o namespace da oci.
+
 ATUALIZAÇÃO 2026-11-04T10:56:00-03:00 (America/Recife), RODADA FINAL dos pilotos: GRAIN 7749db1 (0.1.8, faceta
 implícita só com operação única da spec), BRIEFS 157a3d5, SE congelado (0a9e580).
   Grão: 18/116 unidades decididas (aws 13, azurerm 2, google 2, oci 1). Novo: azurerm_storage_encryption_scope

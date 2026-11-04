@@ -20,7 +20,7 @@ from . import common as C
 from . import decompose as DEC
 from . import spec as SP
 
-RECORDED_AT = "2026-11-04T03:40:00-03:00"   # quando o julgamento do spec.py foi escrito
+RECORDED_AT = "2026-11-04T13:30:00-03:00"   # quando o julgamento do spec.py foi revisto (tentativa 2, C20 3.3.0)
 DOCS_DIR = {"aws": "DOCS-AWS", "google": "DOCS-GCP", "azurerm": "DOCS-AZURE", "oci": "DOCS-OCI"}
 PAIRS = [("AWSGCP", "aws", "google"), ("AWSAZ", "aws", "azurerm"), ("AWSOCI", "aws", "oci"),
          ("GCPAZ", "google", "azurerm"), ("GCPOCI", "google", "oci"), ("AZOCI", "azurerm", "oci")]
@@ -91,14 +91,23 @@ def build_glossary(canon_atoms: set[str]) -> dict:
         if aid not in canon_atoms:
             errs.append(f"{aid}: fora dos átomos canônicos da fatia")
             continue
+        prov = aid.split(":")[0]
+        n_by_prov[prov] += 1
+        cl_id = f"ANC-{prov}-{n_by_prov[prov]:04d}"
+        if mark == "UX":
+            # C20-UNRESOLVED: sem sentença; o motivo vai no context (nunca sentença inventada ou emprestada)
+            claims.append({"claim_id": cl_id, "claim_version_id": f"{cl_id}@1", "event_id": f"EV-{cl_id}-1",
+                           "concept_id": c[0], "atom_id": aid, "anchor_kind": "atom", "context": note,
+                           "counterexample_search": counterexample(c, anchored, all_descs),
+                           "extraction_method": "manual", "evidence_level": "derived",
+                           "evidence_state": "UNRESOLVED", "recorded_at": RECORDED_AT})
+            states[c[0]].append("UNRESOLVED")
+            continue
         fs = all_descs.get(aid)
         if not fs:
             errs.append(f"{aid}: sem fato de documentação (descrição com fonte)")
             continue
         f = fs[0]
-        prov = aid.split(":")[0]
-        n_by_prov[prov] += 1
-        cl_id = f"ANC-{prov}-{n_by_prov[prov]:04d}"
         level = f["evidence_level"]
         state = "STRUCTURALLY_VALID" if mark == "SV" and level in ("published", "derived") else "UNRESOLVED"
         src = {k: f["source"][k] for k in ("repo", "tag", "file", "line", "sentence")}
@@ -106,7 +115,8 @@ def build_glossary(canon_atoms: set[str]) -> dict:
                "concept_id": c[0], "atom_id": aid, "anchor_kind": "atom", "sentence": src["sentence"],
                "context": f"{note}; fato {f['fact_id']}", "counterexample_search": counterexample(c, anchored, all_descs),
                "extraction_method": f.get("extraction_method", "parser"), "evidence_level": level,
-               "evidence_state": state, "source": src, "recorded_at": RECORDED_AT}
+               "evidence_state": state, "source": src, "evidence_ref": {"contract": "C03", "id": f["fact_id"]},
+               "recorded_at": RECORDED_AT}
         if level == "interpreted":
             rec["model_id"] = f.get("model_id") or C.MODEL_ID
         claims.append(rec)

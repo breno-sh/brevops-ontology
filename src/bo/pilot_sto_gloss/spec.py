@@ -3,7 +3,8 @@
 Isto é o JULGAMENTO do glossarista, escrito à mão e conferido pelo build: cada âncora cita o átomo; a sentença,
 a fonte e o nível vêm do fato de documentação do PRÓPRIO átomo (DOCS-*/docs_facts.jsonl, fact_kind description),
 nunca deste arquivo. Âncora "SV" = a sentença sustenta a definição (STRUCTURALLY_VALID); "UR" = a sentença existe,
-mas não basta (UNRESOLVED: hipótese de alinhamento), com o motivo. Nenhuma âncora liga átomo a átomo.
+mas não basta (UNRESOLVED: hipótese de alinhamento), com o motivo; "UX" = não há sentença do próprio átomo que
+sirva (UNRESOLVED sem sentence, motivo no context; C20 3.3.0 C20-UNRESOLVED). Nenhuma âncora liga átomo a átomo.
 
 Conceito: (concept_id, rótulo, definição gênero+diferença, quantity_kind, unit, datatype, semântica do valor,
 palavras da busca de contraexemplo, [âncoras]). Âncora: (atom_id, "SV"|"UR", nota de contexto).
@@ -269,8 +270,9 @@ CONCEPTS = [
     ("concept:acl_grant_permission", "permissão concedida por entrada de ACL",
      "nível de permissão que uma entrada de ACL de um contêiner concede ao seu beneficiário",
      NA, NA, "enum", "nominal; nomes de permissão do serviço", ["permission", "role"],
-     [("aws:aws_s3_bucket_acl:access_control_policy.grant.permission", "UR",
-       "a frase publicada fala em permissões de log (contraexemplo no próprio texto; parece cópia de outra página)"),
+     [("aws:aws_s3_bucket_acl:access_control_policy.grant.permission", "UX",
+       "procurado nos fatos de documentação do tipo: a única descrição do atributo fala em permissões de log, "
+       "copiada de outra página; nenhuma sentença do próprio átomo sustenta a definição"),
       ("aws:aws_s3_bucket:grant.permissions", "SV", "bloco embutido (forma antiga), lista"),
       ("google:google_storage_bucket_access_control:role", "SV", "uma entrada de ACL por recurso")]),
     ("concept:acl_grantee", "beneficiário de entrada de ACL",

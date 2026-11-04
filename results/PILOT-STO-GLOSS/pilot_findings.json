@@ -1,14 +1,14 @@
 {
  "c25_shape": {
-  "grain_fact_records": 849,
-  "stated": 844,
+  "grain_fact_records": 1085,
+  "stated": 1080,
   "stated_by_aspect": {
-   "effective_scope/None": 148,
+   "effective_scope/None": 200,
    "effective_scope/attribute_scope": 2,
    "effective_scope/effective_public_access": 1,
    "effective_scope/effective_public_access_prevention": 1,
    "effective_scope/type_scope": 3,
-   "identity/None": 1,
+   "identity/None": 13,
    "identity/block_identity": 93,
    "identity/block_schema": 93,
    "identity/cardinality": 1,
@@ -17,25 +17,27 @@
    "identity/reference_target": 15,
    "identity/resource_identity_schema": 21,
    "identity/shared_identity_key": 12,
-   "identity/twin_type": 7,
+   "identity/spec_facet_member": 5,
+   "identity/spec_field": 60,
+   "identity/twin_type": 8,
    "import_key/import_formats": 22,
-   "lifecycle_controller/None": 57,
+   "lifecycle_controller/None": 109,
    "lifecycle_controller/block_lifecycle": 93,
    "lifecycle_controller/deletion_policy": 3,
    "lifecycle_controller/destroy_effect": 6,
    "lifecycle_controller/spec_operation": 15,
    "lifecycle_controller/terraform_timeouts": 15,
-   "owner/None": 69,
+   "owner/None": 121,
    "owner/block_config_owner": 93,
    "owner/identity_scope": 9,
    "owner/parent": 5,
    "owner/parent_attribute": 1,
-   "owner/spec_operation": 16
+   "owner/spec_operation": 18
   },
   "status_unknown": 5,
-  "with_block_path": 570
+  "with_block_path": 744
  },
- "decided_units": 18,
+ "decided_units": 65,
  "excluded": {
   "aws_s3_bucket_object": "objeto: conteúdo é Withheld",
   "aws_s3_bucket_object_lock_configuration": "retenção imutável: fora das quatro facetas",
@@ -52,7 +54,7 @@
   "oci_objectstorage_private_endpoint": "acesso de rede, não acesso público ao conteúdo",
   "oci_objectstorage_replication_policy": "replicação: fora das quatro facetas"
  },
- "generated_at": "2026-11-04T10:54:47-03:00",
+ "generated_at": "2026-11-04T13:05:03-03:00",
  "grain": {
   "aws": {
    "atoms": 161,
@@ -65,6 +67,7 @@
     "reasons": [
      "api_resource: ponte sem recurso de API",
      "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
+     "identity: aspecto spec_field sem tradução na tabela",
      "lifecycle_controller: aspecto spec_operation: sem tradução (R-GRAIN-T57)",
      "lifecycle_controller: camada Terraform: create/delete do provider, não o objeto na API",
      "lifecycle_controller: terraform_timeouts é configuração do Terraform (fora do domínio)",
@@ -75,25 +78,25 @@
     "rule": "GRAIN-G4-ENTITY",
     "type": "aws_s3_bucket"
    },
-   "evidence_records": 387,
+   "evidence_records": 491,
    "grains": {
-    "COMPONENT": 1,
+    "COMPONENT": 2,
     "ENTITY": 1,
-    "FACET": 11,
-    "UNKNOWN": 38
+    "FACET": 27,
+    "UNKNOWN": 22
    },
    "missing": {
-    "api_resource": 14,
-    "effective_scope": 28,
-    "identity": 24,
-    "lifecycle_controller": 24,
-    "owner": 24
+    "api_resource": 9,
+    "effective_scope": 11,
+    "identity": 13,
+    "lifecycle_controller": 12,
+    "owner": 12
    },
    "rules": {
-    "GRAIN-G0-IDENTITY": 24,
-    "GRAIN-G0-NEEDS": 14,
-    "GRAIN-G2-COMPONENT": 1,
-    "GRAIN-G3-FACET": 11,
+    "GRAIN-G0-IDENTITY": 13,
+    "GRAIN-G0-NEEDS": 9,
+    "GRAIN-G2-COMPONENT": 2,
+    "GRAIN-G3-FACET": 27,
     "GRAIN-G4-ENTITY": 1
    },
    "top_level": {
@@ -124,6 +127,7 @@
      "reasons": [
       "api_resource: ponte sem recurso de API",
       "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
+      "identity: aspecto spec_field sem tradução na tabela",
       "lifecycle_controller: aspecto spec_operation: sem tradução (R-GRAIN-T57)",
       "lifecycle_controller: camada Terraform: create/delete do provider, não o objeto na API",
       "lifecycle_controller: terraform_timeouts é configuração do Terraform (fora do domínio)",
@@ -142,6 +146,7 @@
       "api_resource: ponte sem recurso de API",
       "effective_scope: camada Terraform: não é o alcance na API",
       "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
+      "identity: aspecto spec_field sem tradução na tabela",
       "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
       "lifecycle_controller: destroy_effect state_only: não diz quem apaga",
       "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)",
@@ -159,6 +164,7 @@
       "api_resource: ponte sem recurso de API",
       "effective_scope: camada Terraform: não é o alcance na API",
       "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
+      "identity: aspecto spec_field sem tradução na tabela",
       "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
       "lifecycle_controller: terraform_timeouts é configuração do Terraform (fora do domínio)",
       "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)",
@@ -175,6 +181,7 @@
       "api_resource: objeto da ponte com ciclo de vida do pai: aspecto (T49)",
       "api_resource: ponte sem recurso de API",
       "effective_scope: camada Terraform: não é o alcance na API",
+      "identity: aspecto spec_field sem tradução na tabela",
       "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)",
       "owner: aspecto spec_operation sem tradução na tabela",
       "owner: camada Terraform: onde o código escreve, não o dono da configuração"
@@ -218,6 +225,7 @@
       "api_resource: ponte sem recurso de API",
       "effective_scope: camada Terraform: não é o alcance na API",
       "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
+      "identity: aspecto spec_field sem tradução na tabela",
       "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
       "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)",
       "owner: aspecto spec_operation sem tradução na tabela",
@@ -234,6 +242,7 @@
       "api_resource: ponte sem recurso de API",
       "effective_scope: camada Terraform: não é o alcance na API",
       "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
+      "identity: aspecto spec_field sem tradução na tabela",
       "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
       "lifecycle_controller: destroy_effect state_only: não diz quem apaga",
       "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)",
@@ -243,7 +252,7 @@
      "rule": "GRAIN-G3-FACET"
     }
    },
-   "units": 51
+   "units": 52
   },
   "azurerm": {
    "atoms": 232,
@@ -270,23 +279,25 @@
     "rule": "GRAIN-G0-IDENTITY",
     "type": "azurerm_storage_container"
    },
-   "evidence_records": 280,
+   "evidence_records": 363,
    "grains": {
     "COMPONENT": 1,
     "ENTITY": 1,
-    "UNKNOWN": 29
+    "FACET": 9,
+    "UNKNOWN": 22
    },
    "missing": {
-    "api_resource": 8,
-    "effective_scope": 18,
-    "identity": 21,
-    "lifecycle_controller": 18,
-    "owner": 18
+    "api_resource": 4,
+    "effective_scope": 15,
+    "identity": 18,
+    "lifecycle_controller": 15,
+    "owner": 15
    },
    "rules": {
-    "GRAIN-G0-IDENTITY": 21,
-    "GRAIN-G0-NEEDS": 8,
+    "GRAIN-G0-IDENTITY": 18,
+    "GRAIN-G0-NEEDS": 4,
     "GRAIN-G2-CHILD": 1,
+    "GRAIN-G3-FACET": 9,
     "GRAIN-G4-NS": 1
    },
    "top_level": {
@@ -298,6 +309,7 @@
       "effective_scope: aspecto attribute_scope: sem tradução (R-GRAIN-T41)",
       "identity: ['resource_group_name'] referencia contêiner de namespace (cascade_delete_by)",
       "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
+      "identity: aspecto spec_field sem tradução na tabela",
       "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
       "import_key: formato de importação sem atributos nomeados",
       "lifecycle_controller: aspecto spec_operation: sem tradução (R-GRAIN-T57)",
@@ -378,6 +390,7 @@
      ],
      "reasons": [
       "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
+      "identity: aspecto spec_field sem tradução na tabela",
       "identity: contido em resource (['azurerm_security_center_storage_defender', 'azurerm_storage_account', 'azurerm_storage_account_customer_managed_key', 'azurerm_storage_account_network_rules', 'azurerm_storage_account_queue_properties', 'azurerm_storage_account_static_website', 'azurerm_storage_account_table_properties', 'azurerm_storage_blob_inventory_policy']) sem atributo de referência ao contêiner na identidade",
       "import_key: formato de importação sem atributos nomeados",
       "lifecycle_controller: aspecto spec_operation: sem tradução (R-GRAIN-T57)",
@@ -390,7 +403,7 @@
      "rule": "GRAIN-G0-IDENTITY"
     }
    },
-   "units": 31
+   "units": 33
   },
   "google": {
    "atoms": 112,
@@ -404,6 +417,7 @@
      "effective_scope: aspecto attribute_scope: sem tradução (R-GRAIN-T41)",
      "effective_scope: aspecto effective_public_access_prevention: sem tradução (R-GRAIN-T42)",
      "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
+     "identity: aspecto spec_field sem tradução na tabela",
      "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
      "import_key: formato de importação sem atributos nomeados",
      "lifecycle_controller: aspecto spec_operation: sem tradução (R-GRAIN-T57)",
@@ -415,21 +429,22 @@
     "rule": "GRAIN-G4-ENTITY",
     "type": "google_storage_bucket"
    },
-   "evidence_records": 214,
+   "evidence_records": 315,
    "grains": {
     "ENTITY": 2,
-    "UNKNOWN": 25
+    "FACET": 21,
+    "UNKNOWN": 6
    },
    "missing": {
-    "api_resource": 12,
-    "effective_scope": 12,
-    "identity": 12,
-    "lifecycle_controller": 13,
-    "owner": 13
+    "effective_scope": 5,
+    "identity": 5,
+    "lifecycle_controller": 6,
+    "owner": 6
    },
    "rules": {
-    "GRAIN-G0-IDENTITY": 12,
-    "GRAIN-G0-NEEDS": 13,
+    "GRAIN-G0-IDENTITY": 5,
+    "GRAIN-G0-NEEDS": 1,
+    "GRAIN-G3-FACET": 21,
     "GRAIN-G4-ENTITY": 2
    },
    "top_level": {
@@ -441,6 +456,7 @@
       "effective_scope: aspecto attribute_scope: sem tradução (R-GRAIN-T41)",
       "effective_scope: aspecto effective_public_access_prevention: sem tradução (R-GRAIN-T42)",
       "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
+      "identity: aspecto spec_field sem tradução na tabela",
       "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
       "import_key: formato de importação sem atributos nomeados",
       "lifecycle_controller: aspecto spec_operation: sem tradução (R-GRAIN-T57)",
@@ -536,7 +552,7 @@
      "rule": "GRAIN-G0-IDENTITY"
     }
    },
-   "units": 27
+   "units": 29
   },
   "oci": {
    "atoms": 57,
@@ -645,7 +661,7 @@
  },
  "module": "PILOT-STO-GLOSS",
  "packaging_invariance": {
-  "invariant": 2,
+  "invariant": 3,
   "note": "o casamento com o gabarito do oráculo (E2 inteiro) é do PILOT-STO-E2E/PILOT-EXIT; o glossarista não lê o oráculo",
   "pairs": 5,
   "rows": [
@@ -660,7 +676,7 @@
     ],
     "separate_grains": [
      "FACET",
-     "UNKNOWN"
+     "FACET"
     ]
    },
    {
@@ -684,19 +700,19 @@
      "aws_s3_bucket_server_side_encryption_configuration.rule"
     ],
     "separate_grains": [
-     "UNKNOWN"
+     "FACET"
     ]
    },
    {
     "inline": "aws_s3_bucket.lifecycle_rule",
     "inline_grain": "COMPONENT",
-    "invariant": false,
+    "invariant": true,
     "provider": "aws",
     "separate": [
      "aws_s3_bucket_lifecycle_configuration.rule"
     ],
     "separate_grains": [
-     "UNKNOWN"
+     "COMPONENT"
     ]
    },
    {
@@ -708,7 +724,7 @@
      "aws_s3_bucket_acl.access_control_policy.grant"
     ],
     "separate_grains": [
-     "UNKNOWN"
+     "FACET"
     ]
    }
   ]
@@ -823,7 +839,7 @@
   ]
  },
  "slice_atoms": 562,
- "slice_evidence_records": 954,
+ "slice_evidence_records": 1242,
  "slice_types": 23,
- "units": 116
+ "units": 121
 }

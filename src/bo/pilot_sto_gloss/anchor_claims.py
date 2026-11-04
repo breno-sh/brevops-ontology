@@ -9,8 +9,11 @@ quando:
   - uma âncora STRUCTURALLY_VALID não traz source {repo, tag, file, line, sentence} ou a busca de contraexemplo;
   - extraction_method model sem evidence_level interpreted e model_id claude-opus-5-5;
   - o evidence_state do conceito não é o menor estado das suas âncoras (UNRESOLVED sem âncora);
-  - num caminho átomo→conceito←átomo entre provedores diferentes, alguma das duas âncoras não tem evidência
-    (sentença com fonte); cada caminho conta como alegação de correspondência e é impresso no total.
+  - âncora com sentença sem evidence_ref ao fato C03 do átomo (C20-EVREF), ou âncora sem sentença que não é
+    UNRESOLVED com motivo no context (C20-UNRESOLVED);
+  - num caminho átomo→conceito←átomo entre provedores diferentes, uma ponta sem sentença com fonte que não esteja
+    declarada UNRESOLVED; cada caminho conta como alegação de correspondência, e os sem prova nas duas pontas
+    saem no total (paths_without_evidence) como hipótese, nunca como correspondência.
 Saída 0 = passou; 1 = reprovou (motivos impressos); 2 = entrada ausente.
 """
 
@@ -70,6 +73,13 @@ def check(d: Path, validate=True) -> tuple[list[str], dict]:
             errs.append(f"{tag}: estado {st} não é do glossarista (só UNRESOLVED ou STRUCTURALLY_VALID)")
         if st == "STRUCTURALLY_VALID" and not has_evidence(cl):
             errs.append(f"{tag}: STRUCTURALLY_VALID sem sentença e fonte completas")
+        if cl.get("sentence"):
+            ref = cl.get("evidence_ref") or {}
+            if ref.get("contract") != "C03" or not str(ref.get("id", "")).startswith("DF-"):
+                errs.append(f"{tag}: sentença sem evidence_ref ao fato C03 do átomo (C20-EVREF)")
+        else:
+            if st != "UNRESOLVED" or len(cl.get("context") or "") < 15 or cl.get("source") or cl.get("evidence_ref"):
+                errs.append(f"{tag}: âncora sem sentença tem de ser UNRESOLVED, com motivo no context e sem fonte")
         if not (cl.get("counterexample_search") or {}).get("query"):
             errs.append(f"{tag}: sem busca de contraexemplo")
         if cl.get("extraction_method") == "model" and (cl.get("evidence_level") != "interpreted"
@@ -78,8 +88,7 @@ def check(d: Path, validate=True) -> tuple[list[str], dict]:
         by_concept.setdefault(cid, []).append(cl)
     for cid, c in concepts.items():
         sts = [cl.get("evidence_state") for cl in by_concept.get(cid, []) if cl.get("evidence_state") in ORDER]
-        with_sentence = [s for s, cl in zip(sts, by_concept.get(cid, [])) if cl.get("sentence")]
-        want = min(with_sentence, key=ORDER.index) if with_sentence else "UNRESOLVED"
+        want = min(sts, key=ORDER.index) if sts else "UNRESOLVED"
         if c.get("evidence_state") != want:
             errs.append(f"{cid}: evidence_state {c.get('evidence_state')} ≠ menor das âncoras ({want})")
     paths = unproven = hypothesis = 0
@@ -91,7 +100,11 @@ def check(d: Path, validate=True) -> tuple[list[str], dict]:
             hypothesis += "UNRESOLVED" in (a.get("evidence_state"), b.get("evidence_state"))
             if not (has_evidence(a) and has_evidence(b)):
                 unproven += 1
-                errs.append(f"caminho {a['claim_id']}→{cid}←{b['claim_id']}: âncora sem evidência (sentença com fonte)")
+                # sem sentença com fonte numa ponta: só pode ser hipótese declarada (UNRESOLVED com motivo)
+                for x in (a, b):
+                    if not has_evidence(x) and x.get("evidence_state") != "UNRESOLVED":
+                        errs.append(f"caminho {a['claim_id']}→{cid}←{b['claim_id']}: {x['claim_id']} sem "
+                                    f"evidência e acima de UNRESOLVED")
     stats = {"concepts": len(concepts), "anchors": len(claims), "multi_provider_paths": paths,
              "paths_without_evidence": unproven, "paths_with_unresolved_anchor": hypothesis}
     return errs, stats

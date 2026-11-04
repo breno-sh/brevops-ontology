@@ -40,6 +40,11 @@ def _claim(n, prov, atom, concept="concept:item_history_kept", state="STRUCTURAL
          "extraction_method": "parser", "evidence_level": "published", "evidence_state": state, "recorded_at": T}
     if with_source:
         c["source"] = _src(f"docs/{prov}.md")
+        c["evidence_ref"] = {"contract": "C03", "id": f"DF-fixture-{prov}-{n}"}
+    else:
+        del c["sentence"]
+        c["context"] = "procurado nos fatos de documentação do tipo: o atributo não tem descrição própria"
+        c["extraction_method"], c["evidence_level"] = "manual", "derived"
     return c
 
 
@@ -76,14 +81,32 @@ def test_valid_package_passes_and_counts_paths(pkg):
     assert st["multi_provider_paths"] == 1 and st["paths_without_evidence"] == 0
 
 
-def test_multi_provider_path_without_evidence_fails(pkg):
+def test_unresolved_anchor_without_sentence_is_hypothesis_not_error(pkg):
     files, write = pkg
     f = copy.deepcopy(files)
     f["claims.jsonl"][1] = _claim(1, "pb", "pb:pb_store:history_on", state="UNRESOLVED", with_source=False)
     f["glossary.jsonl"][0]["evidence_state"] = "UNRESOLVED"
-    errs, st = A.check(write(f), validate=False)
-    assert st["paths_without_evidence"] == 1
-    assert any("sem evidência" in e for e in errs)
+    errs, st = A.check(write(f), validate=True)
+    assert errs == [] and st["paths_without_evidence"] == 1 and st["paths_with_unresolved_anchor"] == 1
+
+
+def test_anchor_without_sentence_above_unresolved_fails(pkg):
+    files, write = pkg
+    f = copy.deepcopy(files)
+    bad = _claim(1, "pb", "pb:pb_store:history_on", state="UNRESOLVED", with_source=False)
+    bad["evidence_state"] = "STRUCTURALLY_VALID"
+    f["claims.jsonl"][1] = bad
+    errs, _ = A.check(write(f), validate=False)
+    assert any("sem sentença e fonte" in e for e in errs)
+    assert any("acima de UNRESOLVED" in e for e in errs)
+
+
+def test_sentence_without_evidence_ref_fails(pkg):
+    files, write = pkg
+    f = copy.deepcopy(files)
+    del f["claims.jsonl"][0]["evidence_ref"]
+    errs, _ = A.check(write(f), validate=False)
+    assert any("C20-EVREF" in e for e in errs)
 
 
 def test_doc_supported_written_by_glossarist_fails(pkg):
@@ -207,7 +230,8 @@ def test_spec_is_provider_neutral_and_consistent():
         for text in (c[0], c[1], c[2]):
             words = set(re.split(r"[^a-z0-9]+", text.lower()))
             assert not words & set(toks), (c[0], words & set(toks))
-        assert all(m in ("SV", "UR") for _, m, _ in c[8])
+        assert all(m in ("SV", "UR", "UX") for _, m, _ in c[8])
+        assert all(len(n) >= 15 for _, m, n in c[8] if m == "UX")
         assert c[2].count(" ") >= 6  # definição com gênero e diferença, não um rótulo
     atoms = [a for c in SP.CONCEPTS for a, _, _ in c[8]]
     assert len(atoms) == len(set(atoms))
