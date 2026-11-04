@@ -285,3 +285,19 @@ def test_packaging_invariance_counts_only_decided_equal_grains():
     assert got["aws_s3_bucket.versioning"] is True
     assert got["aws_s3_bucket.lifecycle_rule"] is False
     assert got["aws_s3_bucket.grant"] is False  # UNKNOWN == UNKNOWN não é invariância
+
+
+def test_promote_refuses_without_own_lock(tmp_path, monkeypatch, capsys):
+    monkeypatch.setenv("BO_DATA", str(tmp_path))
+    (tmp_path / "locks" / "merge-base").mkdir(parents=True)
+    (tmp_path / "locks" / "merge-base" / "owner").write_text("owner=OUTRO\npid=1\n")
+    assert B.promote() == 2
+    assert "RECUSADO" in capsys.readouterr().out
+
+
+def test_target_dir_prefers_pending_staging(tmp_path, monkeypatch):
+    monkeypatch.setenv("BO_DATA", str(tmp_path))
+    assert B.target_dir() == tmp_path / C.MODULE
+    (tmp_path / C.MODULE / ".staging").mkdir(parents=True)
+    (tmp_path / C.MODULE / ".staging" / "glossary.jsonl").write_text("")
+    assert B.target_dir() == tmp_path / C.MODULE / ".staging"

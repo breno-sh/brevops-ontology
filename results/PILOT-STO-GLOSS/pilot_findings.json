@@ -1,14 +1,14 @@
 {
  "c25_shape": {
-  "grain_fact_records": 1085,
-  "stated": 1080,
+  "grain_fact_records": 1086,
+  "stated": 1081,
   "stated_by_aspect": {
    "effective_scope/None": 200,
    "effective_scope/attribute_scope": 2,
    "effective_scope/effective_public_access": 1,
    "effective_scope/effective_public_access_prevention": 1,
    "effective_scope/type_scope": 3,
-   "identity/None": 13,
+   "identity/None": 14,
    "identity/block_identity": 93,
    "identity/block_schema": 93,
    "identity/cardinality": 1,
@@ -54,7 +54,7 @@
   "oci_objectstorage_private_endpoint": "acesso de rede, não acesso público ao conteúdo",
   "oci_objectstorage_replication_policy": "replicação: fora das quatro facetas"
  },
- "generated_at": "2026-11-04T13:05:03-03:00",
+ "generated_at": "2026-11-04T14:31:36-03:00",
  "grain": {
   "aws": {
    "atoms": 161,
@@ -279,7 +279,7 @@
     "rule": "GRAIN-G0-IDENTITY",
     "type": "azurerm_storage_container"
    },
-   "evidence_records": 363,
+   "evidence_records": 364,
    "grains": {
     "COMPONENT": 1,
     "ENTITY": 1,
@@ -311,6 +311,7 @@
       "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
       "identity: aspecto spec_field sem tradução na tabela",
       "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
+      "identity: resource_identity_schema da camada Terraform substituída pela identidade de API (T56)",
       "import_key: formato de importação sem atributos nomeados",
       "lifecycle_controller: aspecto spec_operation: sem tradução (R-GRAIN-T57)",
       "lifecycle_controller: camada Terraform: create/delete do provider, não o objeto na API",
@@ -839,7 +840,7 @@
   ]
  },
  "slice_atoms": 562,
- "slice_evidence_records": 1242,
+ "slice_evidence_records": 1243,
  "slice_types": 23,
  "units": 121
 }

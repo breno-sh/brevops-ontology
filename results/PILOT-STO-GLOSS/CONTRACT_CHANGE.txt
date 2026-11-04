@@ -1,4 +1,12 @@
 CONTRACT_CHANGE — PILOT-STO-GLOSS (piloto sto: grão mecânico e glossário da fatia)
+ATUALIZAÇÃO 2026-11-04T14:32:00-03:00 (America/Recife), RODADA FINAL antes do PILOT-EXIT 2/2: GRAIN cbe1f08, SE
+28faee8, árbitro 7fc1a85, CONTRACTS emenda 9, TRANSFORMS 9d17ced, BRIEFS 49293d8. Geração em .staging; troca, commit
+do MANIFEST.sha256 das saídas e ff dentro da trava.
+  Resultado igual ao da tentativa 2 no grão (só mudam as referências de evidência das unidades): 65/121 decididas;
+  contêineres aws, google e oci ENTITY, azurerm_storage_container UNKNOWN (identity); embalagem na aws 3/5
+  invariante; regra de ciclo de vida COMPONENT na aws × FACET no google. Glossário, âncoras, decisões e
+  candidatos idênticos aos da tentativa 2.
+
 ATUALIZAÇÃO 2026-11-04T13:06:00-03:00 (America/Recife), TENTATIVA 2 (pré PILOT-EXIT 2): GRAIN 748b7f1 (0.1.9), SE
 iteração 2 (83953b9), CONTRACTS 7 e 8, SEMANTICS 2, TRANSFORMS 1.4, BRIEFS 1.3.1 (42fb98d), C20 3.3.0.
   CC-6 RESOLVIDO (C20 3.3.0): a âncora da ACL separada cuja descrição é cópia de outra página sai UNRESOLVED sem

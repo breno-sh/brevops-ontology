@@ -4,7 +4,9 @@
   glossary.jsonl, claims.jsonl, decisions.jsonl C20 3.2.0, do julgamento em spec.py + fatos de documentação
   bundle/                                       pacote fechado do mapeador (GLOSSARY_BRIEF 1.2.0, G1)
 
-Uso: python -I -m bo.pilot_sto_gloss.build [--check]
+Uso: python -I -m bo.pilot_sto_gloss.build            grava em $BO_DATA/PILOT-STO-GLOSS/.staging/
+     python -I -m bo.pilot_sto_gloss.build --check    refaz e compara (com o .staging, se há; senão o definitivo)
+     python -I -m bo.pilot_sto_gloss.build --promote  troca .staging -> definitivo (só dentro da trava merge-base)
 """
 
 from __future__ import annotations
@@ -12,6 +14,7 @@ from __future__ import annotations
 import collections
 import hashlib
 import json
+import os
 import shutil
 import sys
 from pathlib import Path
@@ -241,25 +244,111 @@ def produce() -> dict[str, str]:
     return files
 
 
+def staging() -> Path:
+    return C.data_dir() / ".staging"
+
+
+def target_dir() -> Path:
+    """Onde estão as saídas a conferir: o .staging, se há geração pendente; senão o lugar definitivo."""
+    st = staging()
+    return st if (st / "glossary.jsonl").is_file() else C.data_dir()
+
+
+def lock_guard() -> str | None:
+    """None se a trava merge-base é deste módulo e o pid dela é ancestral vivo deste processo."""
+    import subprocess
+
+    own = C.data_root() / "locks" / "merge-base" / "owner"
+    if not own.exists():
+        return "trava merge-base não está pega"
+    kv = dict(x.split("=", 1) for x in own.read_text(encoding="utf-8").splitlines() if "=" in x)
+    if kv.get("owner") != C.MODULE:
+        return f"trava merge-base é de {kv.get('owner')}"
+    try:
+        pid = int(kv.get("pid", "0"))
+        os.kill(pid, 0)
+    except (ValueError, ProcessLookupError, PermissionError):
+        return "pid da trava não é um processo vivo"
+    anc, cur = set(), os.getpid()
+    while cur and cur not in anc:
+        anc.add(cur)
+        r = subprocess.run(["ps", "-o", "ppid=", "-p", str(cur)], capture_output=True, text=True)
+        try:
+            cur = int(r.stdout.strip() or 0)
+        except ValueError:
+            break
+    return None if pid in anc else "pid da trava não é ancestral deste processo"
+
+
+def data_manifest(d: Path) -> str:
+    """MANIFEST.sha256 (C17) das saídas definitivas, com caminho portátil $BO_DATA/PILOT-STO-GLOSS/..."""
+    rows = []
+    paths = [d / n for n in DATA_NAMES if (d / n).is_file()] + sorted(p for p in (d / "bundle").glob("*") if p.is_file())
+    for p in paths:
+        rel = p.relative_to(d).as_posix()
+        rows.append(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  $BO_DATA/{C.MODULE}/{rel}\n")
+    return "".join(rows)
+
+
+DATA_NAMES = ("canonical_units.jsonl", "canonical_atoms.jsonl", "glossary.jsonl", "claims.jsonl", "decisions.jsonl",
+              "decompose_report.json")
+
+
+def promote() -> int:
+    """Troca .staging -> definitivo SÓ dentro da trava merge-base deste módulo; guarda o anterior em .staging/prev e
+    grava results/PILOT-STO-GLOSS/MANIFEST.sha256 do que foi promovido (para o commit dentro da trava)."""
+    why = lock_guard()
+    if why:
+        print(f"[{C.now()}] promote RECUSADO: {why}")
+        return 2
+    st, d = staging(), C.data_dir()
+    if not (st / "glossary.jsonl").is_file():
+        print("promote: nada em .staging")
+        return 1
+    prev = st / "prev"
+    if prev.exists():
+        shutil.rmtree(prev)
+    prev.mkdir(parents=True)
+    for name in list(DATA_NAMES) + ["bundle"]:
+        cur, new = d / name, st / name
+        if not new.exists():
+            continue
+        if cur.exists():
+            os.replace(cur, prev / name)
+        os.replace(new, cur)
+    (C.results_dir() / "MANIFEST.sha256").write_text(data_manifest(d), encoding="utf-8")
+    print(f"[{C.now()}] promote: saídas de .staging para {d}; MANIFEST.sha256 gravado em results/")
+    return 0
+
+
 def main(argv=None) -> int:
     argv = list(sys.argv[1:] if argv is None else argv)
+    if "--promote" in argv:
+        return promote()
     try:
         files = produce()
     except BuildError as e:
         print(f"FALHA: {e}")
         return 1
-    d = C.data_dir()
     if "--check" in argv:
+        d = target_dir()
         bad = [k for k, v in files.items() if not (d / k).is_file() or (d / k).read_text(encoding="utf-8") != v]
         extra = sorted(str(p.relative_to(d / "bundle")) for p in (d / "bundle").glob("*")
                        if p.name not in BUNDLE_FILES + ("MANIFEST.sha256",)) if (d / "bundle").is_dir() else []
         if bad or extra:
-            print(f"FALHA: saídas diferem do que as entradas dão hoje: {bad} {extra}")
+            print(f"FALHA: saídas em {d} diferem do que as entradas dão hoje: {bad} {extra}")
             return 1
-        print(f"OK: {len(files)} arquivo(s) regenerado(s) idêntico(s)")
+        print(f"OK: {len(files)} arquivo(s) em {d} regenerado(s) idêntico(s)")
         return 0
-    if (d / "bundle").is_dir():
-        shutil.rmtree(d / "bundle")
+    # dados em $BO_DATA vão para .staging; o definitivo só muda com --promote, dentro da trava, junto com o merge
+    d = staging()
+    if d.exists():
+        for name in list(DATA_NAMES) + ["bundle"]:
+            p = d / name
+            if p.is_dir():
+                shutil.rmtree(p)
+            elif p.exists():
+                p.unlink()
     for k, v in files.items():
         p = d / k
         p.parent.mkdir(parents=True, exist_ok=True)

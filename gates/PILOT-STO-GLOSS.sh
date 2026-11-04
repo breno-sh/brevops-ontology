@@ -7,7 +7,9 @@ set -euo pipefail
 : "${BO_DATA:=/Users/breno/doutorado/brevops-data}"
 cd "$BO_REPO"
 py=python
-d="$BO_DATA/PILOT-STO-GLOSS"
+# saídas a conferir: o .staging, se há geração pendente (antes da troca na trava); senão o definitivo
+d=$($py -I -B -c 'from bo.pilot_sto_gloss.build import target_dir; print(target_dir())')
+echo "saídas conferidas em: $d"
 step() { echo "== $*"; }
 
 step "testes (tests/pilot_sto_gloss): gate anchor_claims com controles, diagnóstico do grão como está"
@@ -37,6 +39,25 @@ have=$(cd "$d/bundle" && ls | sort | tr '\n' ' ' | sed 's/ $//')
 for f in glossary decisions claims canonical_units canonical_atoms; do
   cmp -s "$d/$f.jsonl" "$d/bundle/$f.jsonl" || { echo "bundle/$f.jsonl difere da saída do módulo"; exit 1; }
 done
+
+step "âncoras multi-provedor como alegações com evidência, nas saídas conferidas"
+$py -I -B -m bo.pilot_sto_gloss.anchor_claims --dir "$d"
+
+step "MANIFEST.sha256 das saídas definitivas (quando não há troca pendente)"
+if [ "$d" = "$BO_DATA/PILOT-STO-GLOSS" ] && [ -f results/PILOT-STO-GLOSS/MANIFEST.sha256 ]; then
+  $py -I -B -c '
+import hashlib, os, sys
+bad = []
+for line in open("results/PILOT-STO-GLOSS/MANIFEST.sha256", encoding="utf-8"):
+    h, p = line.rstrip("\n").split("  ", 1)
+    p = p.replace("$BO_DATA", os.environ["BO_DATA"])
+    if not os.path.isfile(p) or hashlib.sha256(open(p, "rb").read()).hexdigest() != h:
+        bad.append(p)
+print("MANIFEST confere" if not bad else f"MANIFEST não confere: {bad[:5]}")
+sys.exit(1 if bad else 0)'
+else
+  echo "troca pendente em .staging: o MANIFEST é gravado pelo --promote, dentro da trava"
+fi
 
 step "proveniência C17"
 $py -I tools/provenance.py verify PILOT-STO-GLOSS
