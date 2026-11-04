@@ -237,7 +237,9 @@ def brief_text(role: str, rep: dict, reg: dict, norm: str, cver: str) -> str:
         "validador e o kind narrower; 1.2.0 (2026-11-04) achados CC-2/CC-3 do PILOT-STO-GLOSS: o glossarista lê",
         "os fatos de documentação e os átomos do schema, a fatia inteira vale como treino nos pilotos e o conteúdo do",
         "pacote do piloto fica declarado; 1.3.0 (2026-11-04) C20 3.3.0 (CC-6 do PILOT-STO-GLOSS): âncora UNRESOLVED",
-        "sem sentença com o motivo no context, evidence_ref e âncora de bloco/tipo.",
+        "sem sentença com o motivo no context, evidence_ref e âncora de bloco/tipo; 1.3.1 (2026-11-04) regenerado",
+        "sobre a emenda 8 do CONTRACTS, as emendas 1.1.0-1.4.0 do TRANSFORMS e a emenda 2 do SEMANTICS (registro de",
+        "combinadores e fontes normativas).",
     ])
     body = render("\n\n".join([parts["INTRO"], (tdir / "core.txt").read_text(encoding="utf-8").rstrip("\n"),
                                "PAPEL: " + common.ROLE_PT[role].upper() + "\n" + parts["BODY"],

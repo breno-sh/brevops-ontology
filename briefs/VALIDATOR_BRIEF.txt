@@ -1,7 +1,7 @@
 BRIEF DO AVALIADOR — BrevOps Ontology (briefs/VALIDATOR_BRIEF.txt)
-Versão 1.3.0 · congelado em 2026-11-04T13:00:00-03:00 (America/Recife) · produtor: módulo BRIEFS
+Versão 1.3.1 · congelado em 2026-11-04T13:05:00-03:00 (America/Recife) · produtor: módulo BRIEFS
 Contratos: C09 3.2.0, C20 3.3.0 (versões lidas dos schemas em contracts/)
-Fontes normativas (sha256, 16 primeiros): semantics/SEMANTICS.html 28f849eb578fea68; transforms/transforms.yaml 93a32350718f56fa; grain/GRAIN.html 27553697c43d4d22; ontology/patterns/ONTPAT.html c0e2b37b55e8ed93; prereg/PREREG.html 6eeb9b18a5d9512d; contracts/ 92a1f9456185479b
+Fontes normativas (sha256, 16 primeiros): semantics/SEMANTICS.html 043777b7eb8a4362; transforms/transforms.yaml 8be0b59e4cb848b4; grain/GRAIN.html 27553697c43d4d22; ontology/patterns/ONTPAT.html c0e2b37b55e8ed93; prereg/PREREG.html 6eeb9b18a5d9512d; contracts/ 22effd7f76cd425d
 Quem usa: PILOT-EXIT (lançado com --role evaluator) e todo módulo que o coordenador lançar como avaliador; papel evaluator (avaliador) no bo-lane.
 Precedência: este brief de papel complementa o brief de lançamento do seu módulo; em conflito vale o mais
 restritivo, e o conflito vai para o relatório. Mudar este texto depois do FREEZE0 é emenda (versão nova, motivo
@@ -14,7 +14,9 @@ Histórico: 1.0.0 (2026-11-03) primeira versão congelada; 1.1.0 (2026-11-03) em
 validador e o kind narrower; 1.2.0 (2026-11-04) achados CC-2/CC-3 do PILOT-STO-GLOSS: o glossarista lê
 os fatos de documentação e os átomos do schema, a fatia inteira vale como treino nos pilotos e o conteúdo do
 pacote do piloto fica declarado; 1.3.0 (2026-11-04) C20 3.3.0 (CC-6 do PILOT-STO-GLOSS): âncora UNRESOLVED
-sem sentença com o motivo no context, evidence_ref e âncora de bloco/tipo.
+sem sentença com o motivo no context, evidence_ref e âncora de bloco/tipo; 1.3.1 (2026-11-04) regenerado
+sobre a emenda 8 do CONTRACTS, as emendas 1.1.0-1.4.0 do TRANSFORMS e a emenda 2 do SEMANTICS (registro de
+combinadores e fontes normativas).
 
 SEU PAPEL EM UMA FRASE
 Você é o avaliador: um agente que não implementou o que avalia (ex.: PILOT-EXIT roda o código congelado dos pilotos
@@ -236,13 +238,13 @@ PROVENIÊNCIA A PREENCHER (C17; vai para results/<ID>/summary.json, nunca para o
 - model_id: claude-opus-5-5 (padrão do tools/provenance.py; nunca outro modelo, nunca Fable).
 - brief_sha256: o sha256 do brief de lançamento do seu módulo (passado em --brief). O sha deste brief de papel
   vai em --param role_brief_sha256, copiado da linha VALIDATOR_BRIEF.txt de briefs/MANIFEST.sha256.
-- params: --param role=evaluator --param role_brief=briefs/VALIDATOR_BRIEF.txt --param role_brief_version=1.3.0
+- params: --param role=evaluator --param role_brief=briefs/VALIDATOR_BRIEF.txt --param role_brief_version=1.3.1
   --param role_brief_sha256=<sha> e mais: --param evaluated_code_sha256=<sha do código congelado avaliado>, --param criteria_sha256=<sha do arquivo de
   critérios>, --param attempt=<n de tentativas>, --param seeds=<sementes do pré-registro, se houver>
 - entradas: as do catálogo (o provenance.py grava o sha256 de cada uma); não passe --input para esconder entrada.
 - comando:
   python -I $BO_REPO/tools/provenance.py record <ID> --brief <brief de lançamento do módulo> \
-    --param role=evaluator --param role_brief=briefs/VALIDATOR_BRIEF.txt --param role_brief_version=1.3.0 \
+    --param role=evaluator --param role_brief=briefs/VALIDATOR_BRIEF.txt --param role_brief_version=1.3.1 \
     --param role_brief_sha256=<sha> ...
   python -I $BO_REPO/tools/provenance.py verify <ID>
 - por registro: cada resultado cita o sha do código avaliado e o do critério aplicado; nenhum número digitado à mão.

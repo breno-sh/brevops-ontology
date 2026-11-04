@@ -1,7 +1,7 @@
 BRIEF DO MAPEADOR — BrevOps Ontology (briefs/MAPPER_BRIEF.txt)
-Versão 1.3.0 · congelado em 2026-11-04T13:00:00-03:00 (America/Recife) · produtor: módulo BRIEFS
+Versão 1.3.1 · congelado em 2026-11-04T13:05:00-03:00 (America/Recife) · produtor: módulo BRIEFS
 Contratos: C09 3.2.0, C20 3.3.0 (versões lidas dos schemas em contracts/)
-Fontes normativas (sha256, 16 primeiros): semantics/SEMANTICS.html 28f849eb578fea68; transforms/transforms.yaml 93a32350718f56fa; grain/GRAIN.html 27553697c43d4d22; ontology/patterns/ONTPAT.html c0e2b37b55e8ed93; prereg/PREREG.html 6eeb9b18a5d9512d; contracts/ 92a1f9456185479b
+Fontes normativas (sha256, 16 primeiros): semantics/SEMANTICS.html 043777b7eb8a4362; transforms/transforms.yaml 8be0b59e4cb848b4; grain/GRAIN.html 27553697c43d4d22; ontology/patterns/ONTPAT.html c0e2b37b55e8ed93; prereg/PREREG.html 6eeb9b18a5d9512d; contracts/ 22effd7f76cd425d
 Quem usa: PILOT-STO-MAP, PILOT-NET-MAP, MAP-{pair}-{domain} (36: 6 pares × 6 domínios) e RELIAB (lançado com --role mapper); papel mapper (mapeador) no bo-lane.
 Precedência: este brief de papel complementa o brief de lançamento do seu módulo; em conflito vale o mais
 restritivo, e o conflito vai para o relatório. Mudar este texto depois do FREEZE0 é emenda (versão nova, motivo
@@ -14,7 +14,9 @@ Histórico: 1.0.0 (2026-11-03) primeira versão congelada; 1.1.0 (2026-11-03) em
 validador e o kind narrower; 1.2.0 (2026-11-04) achados CC-2/CC-3 do PILOT-STO-GLOSS: o glossarista lê
 os fatos de documentação e os átomos do schema, a fatia inteira vale como treino nos pilotos e o conteúdo do
 pacote do piloto fica declarado; 1.3.0 (2026-11-04) C20 3.3.0 (CC-6 do PILOT-STO-GLOSS): âncora UNRESOLVED
-sem sentença com o motivo no context, evidence_ref e âncora de bloco/tipo.
+sem sentença com o motivo no context, evidence_ref e âncora de bloco/tipo; 1.3.1 (2026-11-04) regenerado
+sobre a emenda 8 do CONTRACTS, as emendas 1.1.0-1.4.0 do TRANSFORMS e a emenda 2 do SEMANTICS (registro de
+combinadores e fontes normativas).
 
 SEU PAPEL EM UMA FRASE
 Você é o mapeador de um par×domínio (MAP-<PAR>-<DOMÍNIO>), de uma fatia piloto (PILOT-STO-MAP, PILOT-NET-MAP) ou o
@@ -191,9 +193,9 @@ mesmo sujeito só são exclusivas se a interseção das guardas é UNSAT; senão
   EX| {"alternative_to": ["CLM-BRF-ALT-STD"], "basis": "direct", "claim_id": "CLM-BRF-ALT-PREM", "claim_version_id": "CLM-BRF-ALT-PREM@1", "creator_id": "MAP-EXEMPLO", "event_id": "EV-CLM-BRF-ALT-PREM-1", "evidence_state": "DOC_SUPPORTED", "exclusivity": "ProvenExclusive", "guard": {"all": [{"op": "edition_in", "term": "object.edition", "value": ["premium"]}]}, "loss_contract": [], "mapping_justification": "semapv:UnspecifiedMatching", "mapping_tool": "claude-opus-5-5", "object_concept": "concept:item_mode", "object_id": "pb:pb_gizmo:mode", "object_value_type": {"datatype": "enum", "enum": ["on", "off"], "quantity_kind": "NOT_APPLICABLE", "unit": "NOT_APPLICABLE"}, "predicate_id": "skos:exactMatch", "proof": {"evidence": [{"date": "2026-11-03", "sentence": "frase sintética de documentação que sustenta a alegação", "source": "fixture:doc-sintetica"}], "tests": [{"expected": "off", "input": "off"}], "type": "normalization"}, "semantic_relation": "exact", "subject_concept": "concept:item_mode", "subject_id": "pa:pa_widget:mode", "subject_value_type": {"datatype": "enum", "enum": ["on", "off"], "quantity_kind": "NOT_APPLICABLE", "unit": "NOT_APPLICABLE"}, "translation_fn": {"name": "identity", "params": {}}, "transport_fidelity": "lossless", "value_domain_relation": {"orientation": "subject_to_object", "relation": "equal"}}
   EX= veredito OK (bo.semantics.obligations; regras que falham: nenhuma)
 
-M4. TRADUÇÃO E PERDA: SÓ O REGISTRO FECHADO (transforms/transforms.yaml, C10 3.0.0)
+M4. TRADUÇÃO E PERDA: SÓ O REGISTRO FECHADO (transforms/transforms.yaml, C10 3.1.0)
 Escalares (a grandeza de saída É a de entrada): identity, enum_map, bool_to_enum, enum_to_bool, normalize_text, duration_to_number, number_to_duration, seconds_text_to_duration, duration_to_seconds_text, unit_convert_time, unit_convert_information, unit_convert_ratio, rate_window_convert_count, rate_window_convert_information, round_time, round_information, round_count, round_ratio, clamp_time, clamp_information, clamp_count, clamp_ratio, sentinel_map_time, sentinel_map_information, sentinel_map_count, sentinel_map_ratio, sentinel_map_value
-Combinadores de tupla (tipos por componente): split_port_range, join_port_range, split_cidr, join_cidr, split_alarm_query, join_alarm_query, json_get, map_get, tags_list_to_map, tags_map_to_list
+Combinadores de tupla (tipos por componente): split_port_range, join_port_range, split_cidr, join_cidr, split_alarm_query, join_alarm_query, json_get, map_get, tags_list_to_map, tags_map_to_list, wrap_list, unwrap_single, list_to_set, set_to_list, map_list, map_set, map_values
 Os comparadores (compare_*) são da leitura de volta, não de tradução. Nome fora do registro reprova o
 bo.map.registry_only; mês e ano para segundos sem contexto de calendário é TRANSFORM_OUT_OF_DOMAIN.
 Perdas do loss_contract: rounding (valor fora do passo do destino), saturation (fora da faixa), absence (origem sem
@@ -350,14 +352,14 @@ PROVENIÊNCIA A PREENCHER (C17; vai para results/<ID>/summary.json, nunca para o
 - model_id: claude-opus-5-5 (padrão do tools/provenance.py; nunca outro modelo, nunca Fable).
 - brief_sha256: o sha256 do brief de lançamento do seu módulo (passado em --brief). O sha deste brief de papel
   vai em --param role_brief_sha256, copiado da linha MAPPER_BRIEF.txt de briefs/MANIFEST.sha256.
-- params: --param role=mapper --param role_brief=briefs/MAPPER_BRIEF.txt --param role_brief_version=1.3.0
+- params: --param role=mapper --param role_brief=briefs/MAPPER_BRIEF.txt --param role_brief_version=1.3.1
   --param role_brief_sha256=<sha> e mais: --param pair=<PAR> --param domain=<DOMÍNIO> (ou --param slice=<sto|net>), --param bundle_sha256=<sha do pacote>,
   --param glossary_freeze=<digest do comprovante FREEZE-G, na escala>, --param rows_n=<n>, --param none_n=<n>,
   --param groups_n=<n>, --param mapping_set_id=<IRI>
 - entradas: as do catálogo (o provenance.py grava o sha256 de cada uma); não passe --input para esconder entrada.
 - comando:
   python -I $BO_REPO/tools/provenance.py record <ID> --brief <brief de lançamento do módulo> \
-    --param role=mapper --param role_brief=briefs/MAPPER_BRIEF.txt --param role_brief_version=1.3.0 \
+    --param role=mapper --param role_brief=briefs/MAPPER_BRIEF.txt --param role_brief_version=1.3.1 \
     --param role_brief_sha256=<sha> ...
   python -I $BO_REPO/tools/provenance.py verify <ID>
 - por registro: toda linha leva mapping_tool claude-opus-5-5 e creator_id = o seu ID; mapping_date = a data do mapeamento

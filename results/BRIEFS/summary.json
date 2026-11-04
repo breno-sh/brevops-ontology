@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "BRIEFS",
- "generated_at": "2026-11-04T12:22:12-03:00",
+ "generated_at": "2026-11-04T13:00:46-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/BRIEFS.txt",
@@ -13,25 +13,25 @@
    "modo": "unlazy",
    "onda": "6",
    "fase": "F1",
-   "brief_version": "1.3.0",
-   "frozen_at": "2026-11-04T13:00:00-03:00",
+   "brief_version": "1.3.1",
+   "frozen_at": "2026-11-04T13:05:00-03:00",
    "examples": "13",
    "semantics_reference": "bo.semantics.obligations",
    "c09": "3.2.0",
    "c20": "3.3.0",
-   "emenda": "CONTRACTS-7-9919e4c",
+   "emenda": "CONTRACTS-7-8",
    "request": "PILOT-STO-GLOSS-CC-6"
   },
   "inputs": [
    {
     "path": "$BO_REPO/contracts",
     "kind": "dir",
-    "sha256": "92a1f9456185479b2529ca97d2805fb3176b61eda95dad6882c6c9d09bff14d0"
+    "sha256": "22effd7f76cd425d75668364234de3d1e373d5e80f880a08d588b37d8bf59076"
    },
    {
     "path": "$BO_REPO/transforms/transforms.yaml",
     "kind": "file",
-    "sha256": "93a32350718f56fa8a832943083bfbe47f45681c5ac9dd92252d6564d0540921"
+    "sha256": "8be0b59e4cb848b4ffee28f215d50040ce9fbe33b614f9e125acb6254fb223ac"
    },
    {
     "path": "$BO_REPO/ontology/patterns/ONTPAT.html",
@@ -51,10 +51,10 @@
    {
     "path": "$BO_REPO/semantics/SEMANTICS.html",
     "kind": "file",
-    "sha256": "28f849eb578fea685935a2499cd13710e8a96b6cd01e4bc34419ae0e51f29596"
+    "sha256": "043777b7eb8a4362f267d5b563083d1e01f2811cb9a74de2377ae986252a2993"
    }
   ],
-  "recorded_at": "2026-11-04T12:22:12-03:00"
+  "recorded_at": "2026-11-04T13:00:46-03:00"
  },
  "sources": [
   {

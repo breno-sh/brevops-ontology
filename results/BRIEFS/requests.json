@@ -6,6 +6,6 @@
   {"source": "PILOT-STO-GLOSS", "item": "CC-2", "what": "glossarista lê DOCS-*/docs_facts.jsonl", "status": "resolvido", "brief_version": "1.2.0", "at": "2026-11-04T02:20:00-03:00"},
   {"source": "PILOT-STO-GLOSS", "item": "CC-3", "what": "glossarista lê SCHEMA-*/atoms.jsonl", "status": "resolvido", "brief_version": "1.2.0", "at": "2026-11-04T02:20:00-03:00"},
   {"source": "PILOT-STO-GLOSS", "item": "CC-4", "what": "conteúdo do bundle/ declarado (GLOSSARY_BRIEF e MAPPER_BRIEF); o catálogo já declara decisions.jsonl e canonical_atoms.jsonl como saídas dos PILOT-*-GLOSS; resta ao COORD atualizar as versões de contrato carimbadas no artifact_catalog (C19 e C20 seguem 3.0.0)", "status": "resolvido no BRIEFS; versões do catálogo com o COORD", "brief_version": "1.2.0", "at": "2026-11-04T13:00:00-03:00"},
-  {"source": "PILOT-STO-GLOSS", "item": "CC-6", "what": "âncora UNRESOLVED sem sentença com motivo no context (C20 3.3.0, emenda 7) e evidence_ref nos briefs de glossarista, mapeador e auditor", "status": "resolvido", "brief_version": "1.3.0", "at": "2026-11-04T13:00:00-03:00"}
+  {"source": "PILOT-STO-GLOSS", "item": "CC-6", "what": "âncora UNRESOLVED sem sentença com motivo no context (C20 3.3.0, emenda 7) e evidence_ref nos briefs de glossarista, mapeador e auditor", "status": "resolvido", "brief_version": "1.3.0 (regenerado como 1.3.1 sobre as emendas que entraram depois)", "at": "2026-11-04T13:05:00-03:00"}
  ]
 }
