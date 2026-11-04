@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "PILOT-STO-MAP",
- "generated_at": "2026-11-04T09:21:28-03:00",
+ "generated_at": "2026-11-04T10:18:07-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-STO-MAP.txt",
@@ -22,7 +22,7 @@
    "projections_n": "237",
    "mapping_set_id": "https://w3id.org/brevops/mapping/PILOT-STO-MAP/1",
    "decided_at": "2026-11-04T09:00:00-03:00",
-   "base": "3e8bed9"
+   "base": "61d6fae"
   },
   "inputs": [
    {
@@ -36,8 +36,8 @@
     "sha256": "65cbcea35653cdaa4e9f272279d86b19dc88c649aeec0de4fff60f17162cd3a9"
    }
   ],
-  "recorded_at": "2026-11-04T09:21:28-03:00"
+  "recorded_at": "2026-11-04T10:18:07-03:00"
  },
  "sources": [],
- "notes": "pipeline: python -I -m bo.pilot_sto_map.pipeline; bloqueios externos em results/PILOT-STO-MAP/CONTRACT_CHANGE.txt (CC-1..CC-4, CC-10)"
+ "notes": "pipeline: python -I -m bo.pilot_sto_map.pipeline; bloqueios em results/PILOT-STO-MAP/CONTRACT_CHANGE.txt"
 }

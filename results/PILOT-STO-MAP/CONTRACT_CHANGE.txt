@@ -9,7 +9,20 @@ os gates seguem com o comando do catálogo. Com eles corrigidos, a rerodada é u
   python -I -m bo.pilot_sto_map.pipeline            (staging, entradas por sha256 no pipeline_report.json)
   tools/lock.sh with merge-base --owner PILOT-STO-MAP --wait 600 -- python -I -m bo.pilot_sto_map.pipeline --promote-only
 
-BLOQUEANTES
+ATUALIZAÇÃO 2026-11-04T10:20:00-03:00 (America/Recife), base 61d6fae, pacote 3e8bed9 (MANIFEST d853e9f9ea27082f):
+  RESOLVIDOS na base: CC-2 (ids de regra do C21, ARBITERLIB 35e299f), CC-3 (invert com função do registro,
+  SEMANTICS 61d6fae), CC-10 (privacy_lint com hex16 do event_id, COORD 7e444c2). Pipeline: C09 0 erro, ida e volta
+  SKOS 9/9, C21 0 erro, privacy_lint 0 achado, check-unproven 0.
+  CC-1 VOLTOU (G3, G4): o recongelamento 35e299f veio ANTES do 61d6fae, que mudou dois arquivos do fecho congelado
+  (src/bo/semantics/claims.py, src/bo/semantics/transforms.py). bo.arbiter.run --frozen sai 3 de novo. Proposta:
+  ARBITERLIB recongela sobre 61d6fae; e a regra de emenda: commit que toca arquivo listado em ARBITER.sha256 só
+  entra com o recongelamento no mesmo merge.
+  CC-11 (G6): consume_check reprova manifestos_transitivos: PILOT-STO-GLOSS consumiu grain_rules.yaml e
+  service_evidence.jsonl antes do GRAIN 0.1.6 e do SE 767bb22/ce1e590; PREREG consumiu semantics/ antes do 61d6fae.
+  Some quando o PILOT-STO-GLOSS rerodar (já anunciado) e o PREREG reconsumir. O pacote 3e8bed9 em si confere com o
+  MANIFEST.
+
+BLOQUEANTES (estado de 09:00)
 CC-1 (G3, G4) O árbitro não é mais o congelado. arbiter/ARBITER.sha256 é de 5c5662d; as emendas 3 a 6 do CONTRACTS
   mudaram 9 arquivos do fecho congelado (C00, C09 e C20 schema; src/bo/contracts/rules.py, spec_a..d.py, sssom.py).
   python -I -m bo.arbiter.run --frozen ... sai 3 antes de julgar ("o código não é o congelado").

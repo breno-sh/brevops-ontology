@@ -1,8 +1,6 @@
 {
  "blocked": [
-  "skos_roundtrip",
-  "arbiter",
-  "privacy_lint"
+  "arbiter"
  ],
  "contract_change": "results/PILOT-STO-MAP/CONTRACT_CHANGE.txt",
  "counts": {
@@ -57,7 +55,7 @@
   "rows": 1608
  },
  "decided_at": "2026-11-04T09:00:00-03:00",
- "generated_at": "2026-11-04T09:21:28-03:00",
+ "generated_at": "2026-11-04T10:18:19-03:00",
  "inputs": {
   "bundle_files": {
    "candidates.jsonl": "f0b745dfdd59010e2f47a113f6b0f4d872df62317d27675ef1aefbb5a3d72d45",
@@ -80,9 +78,9 @@
  "outputs": {
   "build_record.json": "5d265e072704dd61a2dbd23acd09a101903bacdfcb6ba4f72d5bb9beea2e1fb1",
   "mapping.sssom.tsv": "3ded03742f2af665eb872686b02f74f4b86e4f1f64352c05fdddba36e01a7754",
-  "verdicts.jsonl": "eef7701e356b555b4d9ff5d324bc07ebb793e0c85c963f261f5ac451214851f2"
+  "verdicts.jsonl": "874ee5d495c5cdbac4691419ac54c577da965d70610a605784f35378ca1f7657"
  },
- "pipeline_generated_at": "2026-11-04T09:21:07-03:00",
+ "pipeline_generated_at": "2026-11-04T10:17:54-03:00",
  "schema": "bo.pilot_sto_map.report/1",
  "steps": [
   {
@@ -99,43 +97,31 @@
    "step": "c09_validate"
   },
   {
-   "error": "TypeError_: função de tradução fora do núcleo: 'enum_to_bool'",
-   "ok": false,
+   "checks": 9,
+   "failed": [],
+   "ok": true,
    "step": "skos_roundtrip"
   },
   {
-   "c21_errors": [
-    "linha 5: schema rules/0: 'EVIDENCE' does not match '^[A-Z][A-Z0-9]*(-[A-Z0-9]+)+$'",
-    "linha 402: schema rules/0: 'EVIDENCE' does not match '^[A-Z][A-Z0-9]*(-[A-Z0-9]+)+$'",
-    "linha 662: schema rules/0: 'EVIDENCE' does not match '^[A-Z][A-Z0-9]*(-[A-Z0-9]+)+$'"
-   ],
+   "c21_errors": [],
    "check_unproven": [
     "check-unproven: 0 OK sem prova mínima; UNPROVEN = 1533"
    ],
    "freeze_drift": [
-    "contracts/C00_conventions.schema.json: sha256 diferente do congelado",
-    "contracts/C09_correspondences.schema.json: sha256 diferente do congelado",
-    "contracts/C20_glossary.schema.json: sha256 diferente do congelado",
-    "src/bo/contracts/rules.py: sha256 diferente do congelado",
-    "src/bo/contracts/spec_a.py: sha256 diferente do congelado",
-    "src/bo/contracts/spec_b.py: sha256 diferente do congelado",
-    "src/bo/contracts/spec_c.py: sha256 diferente do congelado",
-    "src/bo/contracts/spec_d.py: sha256 diferente do congelado",
-    "src/bo/contracts/sssom.py: sha256 diferente do congelado"
+    "src/bo/semantics/claims.py: sha256 diferente do congelado",
+    "src/bo/semantics/transforms.py: sha256 diferente do congelado"
    ],
    "frozen_checked": false,
-   "n_c21_errors": 3,
+   "n_c21_errors": 0,
    "ok": false,
-   "rc": 1,
+   "rc": 0,
    "step": "arbiter"
   },
   {
-   "files": [
-    "verdicts.jsonl"
-   ],
-   "findings": 10,
-   "ok": false,
-   "rc": 1,
+   "files": [],
+   "findings": 0,
+   "ok": true,
+   "rc": 0,
    "step": "privacy_lint"
   }
  ],
@@ -157,7 +143,7 @@
   "rules_on_claims": {
    "ARB-REAL-MULTI": 12,
    "ARB-RELATED-EV": 27,
-   "EVIDENCE": 3,
+   "EVIDENCE-DOC": 3,
    "KIND-UNKNOWN": 7,
    "TYPE-WF": 4,
    "VDR-UNKNOWN": 2
