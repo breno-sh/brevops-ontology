@@ -149,6 +149,12 @@ def oracle_calib(staging: Path, rep: dict, ev: dict) -> dict:
                                for r in rows]}}
 
 
+def _ledger_sha() -> str:
+    import hashlib
+    p = Path(__file__).resolve().parents[1] / "pilot_net_e2e" / "effort_ledger.py"
+    return hashlib.sha256(p.read_bytes()).hexdigest()
+
+
 def effort(rep: dict, ledger: dict) -> dict:
     steps = ledger["steps"]
     n = len(steps)
@@ -159,8 +165,9 @@ def effort(rep: dict, ledger: dict) -> dict:
                          "reading": "field", "axis": "operational", "quantifier": "observed_fraction",
                          "operational_coverage": {"lower": round(measured / n, 4), "upper": round(measured / n, 4),
                                                   "est": round(measured / n, 4), "n": n},
-                         "frame": {"ref": {"path": "$BO_REPO/results/PILOT-NET-E2E/effort.json", "sha256": None},
-                                   "description": "passos do brief do PILOT-NET-E2E"},
+                         "frame": {"ref": {"path": "$BO_REPO/src/bo/pilot_net_e2e/effort_ledger.py",
+                                           "sha256": _ledger_sha()},
+                                   "description": "passos do brief do PILOT-NET-E2E (livro de esforço)"},
                          "inclusion": {"rule_id": "INC-NET-EFFORT", "text": "passo do brief com hora de início e fim"},
                          "weights": {"scheme": "uniform"}, "joint_uncertainty": {"method": "none"}}],
             "notes": "esforço real do agente por passo (relógio de parede, America/Recife) e tempo de máquina medido "
