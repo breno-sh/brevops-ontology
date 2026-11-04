@@ -64,7 +64,9 @@ LIST = ({"input": ["logs/"], "expected": ["logs/"]},)
 WRAP = {"name": "wrap_list", "params": {}}
 WRAPPED = ({"input": "logs/", "expected": ["logs/"]},)
 N_WRAP = ("prefixo único na origem -> lista de um prefixo no destino (wrap_list, C10 1.4.0): todo valor da origem "
-          "cabe (subset), sem perda; a volta é unwrap_single, só para listas de um elemento")
+          "cabe numa lista de um elemento (subset); o domínio de texto aberto não prova 'sem perda' pelo SEMANTICS "
+          "(o árbitro não calcula a imagem do combinador), então a fidelidade declarada é partial; a volta é "
+          "unwrap_single, só para listas de um elemento")
 
 
 def e2b(true, false):
@@ -242,7 +244,7 @@ D(X("CLM-AWSGCP-STO-0004", "AWSGCP", A_VER_STATUS, G_VER, "exact",
     e2b(["Enabled"], ["Suspended", "Disabled"]), "declared_loss", "equal",
     e2b_tests(["Enabled"], ["Suspended", "Disabled"]), loss=[LOSS_SUSP]))
 DECISIONS += _seq("AWSGCP", 5, A_PREFIXES,
-                  lambda c, a: X(c, "AWSGCP", a, G_PREFIX, "exact", WRAP, "lossless", "subset", WRAPPED, note=N_WRAP))
+                  lambda c, a: X(c, "AWSGCP", a, G_PREFIX, "exact", WRAP, "partial", "subset", WRAPPED, note=N_WRAP))
 DECISIONS += _seq("AWSGCP", 9, A_TRANS_CLASS, lambda c, a: R(c, "AWSGCP", a, G_ACTION_CLASS, "UNRESOLVED", W_CLASS))
 DECISIONS += _seq("AWSGCP", 11, A_NONCUR_DAYS, lambda c, a: R(c, "AWSGCP", a, G_NONCUR, "UNRESOLVED", W_CTX_ACTION))
 D(R("CLM-AWSGCP-STO-0013", "AWSGCP", A_NEWER, G_NEWER, "UNRESOLVED",
@@ -290,7 +292,7 @@ D(X("CLM-AWSAZ-STO-0006", "AWSAZ", A_RULE_STATUS, Z_RULE_EN, "exact", e2b(["Enab
 DECISIONS += _seq("AWSAZ", 7, A_RULE_IDS,
                   lambda c, a: X(c, "AWSAZ", a, Z_RULE_NAME, "exact", ID, "partial", "unknown", STR))
 DECISIONS += _seq("AWSAZ", 9, A_PREFIXES,
-                  lambda c, a: X(c, "AWSAZ", a, Z_PREFIX, "exact", WRAP, "lossless", "subset", WRAPPED, note=N_WRAP))
+                  lambda c, a: X(c, "AWSAZ", a, Z_PREFIX, "exact", WRAP, "partial", "subset", WRAPPED, note=N_WRAP))
 DECISIONS += _seq("AWSAZ", 13, A_EXP_DAYS,
                   lambda c, a: X(c, "AWSAZ", a, Z_DELETE, "close", ID, "declared_loss", "unknown", DAYS,
                                  loss=list(LOSS_AZ_DAYS)))
@@ -309,7 +311,7 @@ D(X("CLM-AWSOCI-STO-0005", "AWSOCI", A_RULE_STATUS, O_RULE_EN, "exact", e2b(["En
 DECISIONS += _seq("AWSOCI", 6, A_RULE_IDS,
                   lambda c, a: X(c, "AWSOCI", a, O_RULE_NAME, "exact", ID, "partial", "unknown", STR))
 DECISIONS += _seq("AWSOCI", 8, A_PREFIXES,
-                  lambda c, a: X(c, "AWSOCI", a, O_PREFIX, "exact", WRAP, "lossless", "subset", WRAPPED, note=N_WRAP))
+                  lambda c, a: X(c, "AWSOCI", a, O_PREFIX, "exact", WRAP, "partial", "subset", WRAPPED, note=N_WRAP))
 DECISIONS += _seq("AWSOCI", 12, A_KMS, lambda c, a: R(c, "AWSOCI", a, O_KMS, "UNSUPPORTED_BY_TRANSLATOR", W_KEY))
 DECISIONS += _seq("AWSOCI", 14, A_BUCKET_KEY,
                   lambda c, a: X(c, "AWSOCI", a, O_BUCKET_KEY, "exact", ID, "lossless", "equal", BOOL))
