@@ -1,0 +1,593 @@
+{
+ "files": {
+  "VOCAB_QUDT-QUANTITY-KINDS-ALL.ttl": "b246c2f851e3c9353cafddf9640b18b696c410e176b29735218f7a266bcb9888",
+  "VOCAB_QUDT-UNITS-ALL.ttl": "5e84f3e10ae6a3c535e2e7616dc2affee09dd52bea5229822188730493fd4418"
+ },
+ "module": "UNITS",
+ "pairs": [
+  {
+   "errors": [],
+   "quantity_kind": "NOT_APPLICABLE",
+   "records": 172987,
+   "unit_qudt": "NOT_APPLICABLE"
+  },
+  {
+   "errors": [],
+   "quantity_kind": "UNKNOWN",
+   "records": 7999,
+   "unit_qudt": "UNKNOWN"
+  },
+  {
+   "errors": [],
+   "quantity_kind": "quantitykind:AmountOfData",
+   "records": 554,
+   "unit_qudt": "UNKNOWN"
+  },
+  {
+   "errors": [],
+   "quantity_kind": "quantitykind:AmountOfData",
+   "records": 2,
+   "unit_qudt": "unit:BIT"
+  },
+  {
+   "errors": [],
+   "quantity_kind": "quantitykind:AmountOfData",
+   "records": 342,
+   "unit_qudt": "unit:BYTE"
+  },
+  {
+   "errors": [],
+   "quantity_kind": "quantitykind:AmountOfData",
+   "records": 67,
+   "unit_qudt": "unit:GibiBYTE"
+  },
+  {
+   "errors": [],
+   "quantity_kind": "quantitykind:AmountOfData",
+   "records": 8,
+   "unit_qudt": "unit:GigaBIT"
+  },
+  {
+   "errors": [],
+   "quantity_kind": "quantitykind:AmountOfData",
+   "records": 5,
+   "unit_qudt": "unit:KibiBYTE"
+  },
+  {
+   "errors": [],
+   "quantity_kind": "quantitykind:AmountOfData",
+   "records": 50,
+   "unit_qudt": "unit:MebiBYTE"
+  },
+  {
+   "errors": [],
+   "quantity_kind": "quantitykind:AmountOfData",
+   "records": 23,
+   "unit_qudt": "unit:MegaBIT"
+  },
+  {
+   "errors": [],
+   "quantity_kind": "quantitykind:AmountOfData",
+   "records": 4,
+   "unit_qudt": "unit:TebiBYTE"
+  },
+  {
+   "errors": [],
+   "quantity_kind": "quantitykind:Count",
+   "records": 222,
+   "unit_qudt": "unit:NUM"
+  },
+  {
+   "errors": [],
+   "quantity_kind": "quantitykind:DimensionlessRatio",
+   "records": 244,
+   "unit_qudt": "unit:PERCENT"
+  },
+  {
+   "errors": [],
+   "quantity_kind": "quantitykind:Time",
+   "records": 63,
+   "unit_qudt": "UNKNOWN"
+  },
+  {
+   "errors": [],
+   "quantity_kind": "quantitykind:Time",
+   "records": 312,
+   "unit_qudt": "unit:DAY"
+  },
+  {
+   "errors": [],
+   "quantity_kind": "quantitykind:Time",
+   "records": 118,
+   "unit_qudt": "unit:HR"
+  },
+  {
+   "errors": [],
+   "quantity_kind": "quantitykind:Time",
+   "records": 289,
+   "unit_qudt": "unit:MIN"
+  },
+  {
+   "errors": [],
+   "quantity_kind": "quantitykind:Time",
+   "records": 8,
+   "unit_qudt": "unit:MO"
+  },
+  {
+   "errors": [],
+   "quantity_kind": "quantitykind:Time",
+   "records": 1,
+   "unit_qudt": "unit:MicroSEC"
+  },
+  {
+   "errors": [],
+   "quantity_kind": "quantitykind:Time",
+   "records": 105,
+   "unit_qudt": "unit:MilliSEC"
+  },
+  {
+   "errors": [],
+   "quantity_kind": "quantitykind:Time",
+   "records": 110,
+   "unit_qudt": "unit:NanoSEC"
+  },
+  {
+   "errors": [],
+   "quantity_kind": "quantitykind:Time",
+   "records": 12538,
+   "unit_qudt": "unit:SEC"
+  },
+  {
+   "errors": [],
+   "quantity_kind": "quantitykind:Time",
+   "records": 13,
+   "unit_qudt": "unit:WK"
+  },
+  {
+   "errors": [],
+   "quantity_kind": "quantitykind:Time",
+   "records": 11,
+   "unit_qudt": "unit:YR"
+  }
+ ],
+ "quantity_kinds": {
+  "quantitykind:AmountOfData": {
+   "deprecated": false,
+   "exists": true
+  },
+  "quantitykind:Count": {
+   "deprecated": false,
+   "exists": true
+  },
+  "quantitykind:DimensionlessRatio": {
+   "deprecated": false,
+   "exists": true
+  },
+  "quantitykind:Time": {
+   "deprecated": false,
+   "exists": true
+  }
+ },
+ "qudt_version": "3.5.3",
+ "schema": "bo.units.iri_status/1",
+ "transforms_registry_check": [
+  {
+   "qudt_links_transforms_kind": false,
+   "qudt_links_units_kind": true,
+   "transforms_kind": "quantitykind:InformationEntropy",
+   "unit": "unit:BIT",
+   "units_kind": "quantitykind:AmountOfData"
+  },
+  {
+   "qudt_links_transforms_kind": false,
+   "qudt_links_units_kind": true,
+   "transforms_kind": "quantitykind:InformationEntropy",
+   "unit": "unit:BYTE",
+   "units_kind": "quantitykind:AmountOfData"
+  },
+  {
+   "qudt_links_transforms_kind": true,
+   "qudt_links_units_kind": true,
+   "transforms_kind": "quantitykind:Time",
+   "unit": "unit:DAY",
+   "units_kind": "quantitykind:Time"
+  },
+  {
+   "qudt_links_transforms_kind": true,
+   "qudt_links_units_kind": true,
+   "transforms_kind": "quantitykind:DimensionlessRatio",
+   "unit": "unit:FRACTION",
+   "units_kind": "quantitykind:DimensionlessRatio"
+  },
+  {
+   "qudt_links_transforms_kind": false,
+   "qudt_links_units_kind": true,
+   "transforms_kind": "quantitykind:InformationEntropy",
+   "unit": "unit:GibiBYTE",
+   "units_kind": "quantitykind:AmountOfData"
+  },
+  {
+   "qudt_links_transforms_kind": false,
+   "qudt_links_units_kind": true,
+   "transforms_kind": "quantitykind:InformationEntropy",
+   "unit": "unit:GigaBIT",
+   "units_kind": "quantitykind:AmountOfData"
+  },
+  {
+   "qudt_links_transforms_kind": false,
+   "qudt_links_units_kind": true,
+   "transforms_kind": "quantitykind:InformationEntropy",
+   "unit": "unit:GigaBYTE",
+   "units_kind": "quantitykind:AmountOfData"
+  },
+  {
+   "qudt_links_transforms_kind": true,
+   "qudt_links_units_kind": true,
+   "transforms_kind": "quantitykind:Time",
+   "unit": "unit:HR",
+   "units_kind": "quantitykind:Time"
+  },
+  {
+   "qudt_links_transforms_kind": false,
+   "qudt_links_units_kind": true,
+   "transforms_kind": "quantitykind:InformationEntropy",
+   "unit": "unit:KibiBYTE",
+   "units_kind": "quantitykind:AmountOfData"
+  },
+  {
+   "qudt_links_transforms_kind": false,
+   "qudt_links_units_kind": true,
+   "transforms_kind": "quantitykind:InformationEntropy",
+   "unit": "unit:KiloBIT",
+   "units_kind": "quantitykind:AmountOfData"
+  },
+  {
+   "qudt_links_transforms_kind": false,
+   "qudt_links_units_kind": true,
+   "transforms_kind": "quantitykind:InformationEntropy",
+   "unit": "unit:KiloBYTE",
+   "units_kind": "quantitykind:AmountOfData"
+  },
+  {
+   "qudt_links_transforms_kind": true,
+   "qudt_links_units_kind": true,
+   "transforms_kind": "quantitykind:Time",
+   "unit": "unit:MIN",
+   "units_kind": "quantitykind:Time"
+  },
+  {
+   "qudt_links_transforms_kind": true,
+   "qudt_links_units_kind": true,
+   "transforms_kind": "quantitykind:Time",
+   "unit": "unit:MO",
+   "units_kind": "quantitykind:Time"
+  },
+  {
+   "qudt_links_transforms_kind": false,
+   "qudt_links_units_kind": true,
+   "transforms_kind": "quantitykind:InformationEntropy",
+   "unit": "unit:MebiBYTE",
+   "units_kind": "quantitykind:AmountOfData"
+  },
+  {
+   "qudt_links_transforms_kind": false,
+   "qudt_links_units_kind": true,
+   "transforms_kind": "quantitykind:InformationEntropy",
+   "unit": "unit:MegaBIT",
+   "units_kind": "quantitykind:AmountOfData"
+  },
+  {
+   "qudt_links_transforms_kind": false,
+   "qudt_links_units_kind": true,
+   "transforms_kind": "quantitykind:InformationEntropy",
+   "unit": "unit:MegaBYTE",
+   "units_kind": "quantitykind:AmountOfData"
+  },
+  {
+   "qudt_links_transforms_kind": true,
+   "qudt_links_units_kind": true,
+   "transforms_kind": "quantitykind:Time",
+   "unit": "unit:MicroSEC",
+   "units_kind": "quantitykind:Time"
+  },
+  {
+   "qudt_links_transforms_kind": true,
+   "qudt_links_units_kind": true,
+   "transforms_kind": "quantitykind:Time",
+   "unit": "unit:MilliSEC",
+   "units_kind": "quantitykind:Time"
+  },
+  {
+   "qudt_links_transforms_kind": true,
+   "qudt_links_units_kind": true,
+   "transforms_kind": "quantitykind:Count",
+   "unit": "unit:NUM",
+   "units_kind": "quantitykind:Count"
+  },
+  {
+   "qudt_links_transforms_kind": true,
+   "qudt_links_units_kind": true,
+   "transforms_kind": "quantitykind:Time",
+   "unit": "unit:NanoSEC",
+   "units_kind": "quantitykind:Time"
+  },
+  {
+   "qudt_links_transforms_kind": true,
+   "qudt_links_units_kind": true,
+   "transforms_kind": "quantitykind:DimensionlessRatio",
+   "unit": "unit:PERCENT",
+   "units_kind": "quantitykind:DimensionlessRatio"
+  },
+  {
+   "qudt_links_transforms_kind": true,
+   "qudt_links_units_kind": true,
+   "transforms_kind": "quantitykind:Time",
+   "unit": "unit:SEC",
+   "units_kind": "quantitykind:Time"
+  },
+  {
+   "qudt_links_transforms_kind": false,
+   "qudt_links_units_kind": true,
+   "transforms_kind": "quantitykind:InformationEntropy",
+   "unit": "unit:TebiBYTE",
+   "units_kind": "quantitykind:AmountOfData"
+  },
+  {
+   "qudt_links_transforms_kind": false,
+   "qudt_links_units_kind": true,
+   "transforms_kind": "quantitykind:InformationEntropy",
+   "unit": "unit:TeraBYTE",
+   "units_kind": "quantitykind:AmountOfData"
+  },
+  {
+   "qudt_links_transforms_kind": true,
+   "qudt_links_units_kind": true,
+   "transforms_kind": "quantitykind:Time",
+   "unit": "unit:WK",
+   "units_kind": "quantitykind:Time"
+  },
+  {
+   "qudt_links_transforms_kind": true,
+   "qudt_links_units_kind": true,
+   "transforms_kind": "quantitykind:Time",
+   "unit": "unit:YR",
+   "units_kind": "quantitykind:Time"
+  }
+ ],
+ "units": {
+  "unit:BIT": {
+   "deprecated": false,
+   "exists": true,
+   "qudt_kinds": [
+    "AmountOfData",
+    "BitDataVolume",
+    "DatasetOfBits"
+   ]
+  },
+  "unit:BYTE": {
+   "deprecated": false,
+   "exists": true,
+   "qudt_kinds": [
+    "AmountOfData",
+    "ByteDataVolume"
+   ]
+  },
+  "unit:DAY": {
+   "deprecated": false,
+   "exists": true,
+   "qudt_kinds": [
+    "BiodegredationHalfLife",
+    "FishBiotransformationHalfLife",
+    "HalfLife",
+    "MeanLifetime",
+    "Time"
+   ]
+  },
+  "unit:GibiBYTE": {
+   "deprecated": false,
+   "exists": true,
+   "qudt_kinds": [
+    "AmountOfData",
+    "ByteDataVolume"
+   ]
+  },
+  "unit:GigaBIT": {
+   "deprecated": false,
+   "exists": true,
+   "qudt_kinds": [
+    "AmountOfData",
+    "BitDataVolume",
+    "DatasetOfBits"
+   ]
+  },
+  "unit:HR": {
+   "deprecated": false,
+   "exists": true,
+   "qudt_kinds": [
+    "HalfLife",
+    "MeanLifetime",
+    "Time"
+   ]
+  },
+  "unit:KibiBYTE": {
+   "deprecated": false,
+   "exists": true,
+   "qudt_kinds": [
+    "AmountOfData",
+    "ByteDataVolume"
+   ]
+  },
+  "unit:MIN": {
+   "deprecated": false,
+   "exists": true,
+   "qudt_kinds": [
+    "Adaptation",
+    "HalfLife",
+    "MeanLifetime",
+    "Time"
+   ]
+  },
+  "unit:MO": {
+   "deprecated": false,
+   "exists": true,
+   "qudt_kinds": [
+    "Time"
+   ]
+  },
+  "unit:MebiBYTE": {
+   "deprecated": false,
+   "exists": true,
+   "qudt_kinds": [
+    "AmountOfData",
+    "ByteDataVolume"
+   ]
+  },
+  "unit:MegaBIT": {
+   "deprecated": false,
+   "exists": true,
+   "qudt_kinds": [
+    "AmountOfData",
+    "BitDataVolume",
+    "DatasetOfBits"
+   ]
+  },
+  "unit:MicroSEC": {
+   "deprecated": false,
+   "exists": true,
+   "qudt_kinds": [
+    "CarrierLifetime",
+    "InductanceBasedTimeConstant",
+    "ResistanceBasedInductance",
+    "Time"
+   ]
+  },
+  "unit:MilliSEC": {
+   "deprecated": false,
+   "exists": true,
+   "qudt_kinds": [
+    "ActionTime",
+    "BurnTime",
+    "IgnitionIntervalTime",
+    "InductanceBasedTimeConstant",
+    "RelaxationTime",
+    "ResistanceBasedInductance",
+    "SpecificImpulse",
+    "Time",
+    "WebTime"
+   ]
+  },
+  "unit:NUM": {
+   "deprecated": false,
+   "exists": true,
+   "qudt_kinds": [
+    "Count",
+    "MassNumber",
+    "NeutronNumber",
+    "NucleonNumber",
+    "NumberOfElectricalPhases",
+    "NumberOfParticles",
+    "Piece",
+    "Population",
+    "Turns"
+   ]
+  },
+  "unit:NanoSEC": {
+   "deprecated": false,
+   "exists": true,
+   "qudt_kinds": [
+    "CarrierLifetime",
+    "Time"
+   ]
+  },
+  "unit:PERCENT": {
+   "deprecated": false,
+   "exists": true,
+   "qudt_kinds": [
+    "BioconcentrationFactor",
+    "CoefficientOfPerformance",
+    "CompressibilityFactor",
+    "DimensionlessRatio",
+    "DutyCycle",
+    "EccentricityOfOrbit",
+    "Efficiency",
+    "ElectricCurrentImbalance",
+    "Emissivity",
+    "FissionCoreRadiusToHeightRatio",
+    "FrictionCoefficient",
+    "Gain",
+    "HeatCapacityRatio",
+    "IncidenceProportion",
+    "LengthRatio",
+    "LuminousFluxRatio",
+    "MassFraction",
+    "MoleFraction",
+    "OpeningRatio",
+    "PayloadRatio",
+    "PressureRatio",
+    "Prevalence",
+    "Reflectance",
+    "RelativeMassDefect",
+    "RelativeMolecularMass",
+    "ResistanceRatio",
+    "ServiceFactor",
+    "SignalDetectionThreshold",
+    "SpecificHeatsRatio",
+    "SpeedRatio",
+    "StateOfCharge",
+    "ThermalEfficiency",
+    "ThrustToWeightRatio",
+    "TimeRatio",
+    "Transmittance",
+    "VoltageImbalance",
+    "VoltageRatio",
+    "VolumeFlowRatio",
+    "VolumeStrain"
+   ]
+  },
+  "unit:SEC": {
+   "deprecated": false,
+   "exists": true,
+   "qudt_kinds": [
+    "ActionTime",
+    "BurnTime",
+    "CarrierLifetime",
+    "HalfLife",
+    "IgnitionIntervalTime",
+    "InductanceBasedTimeConstant",
+    "MeanLifetime",
+    "Period",
+    "ReactorTimeConstant",
+    "RelaxationTime",
+    "ResistanceBasedInductance",
+    "ReverberationTime",
+    "SpecificImpulse",
+    "Time",
+    "WebTime"
+   ]
+  },
+  "unit:TebiBYTE": {
+   "deprecated": false,
+   "exists": true,
+   "qudt_kinds": [
+    "AmountOfData",
+    "ByteDataVolume"
+   ]
+  },
+  "unit:WK": {
+   "deprecated": false,
+   "exists": true,
+   "qudt_kinds": [
+    "Time"
+   ]
+  },
+  "unit:YR": {
+   "deprecated": false,
+   "exists": true,
+   "qudt_kinds": [
+    "HalfLife",
+    "MeanLifetime",
+    "Time"
+   ]
+  }
+ }
+}

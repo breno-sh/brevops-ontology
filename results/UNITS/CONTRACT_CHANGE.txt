@@ -1,0 +1,56 @@
+CONTRACT_CHANGE — UNITS — 2026-11-03T21:01-03:00 (America/Recife)
+
+Proposta NÃO bloqueante (mesmo regime do SCHEMALIB e dos DOCS-*). O value_space.jsonl confere no C05 3.0.0 pelo
+validador único (196.075 registros, 0 erro). O que segue são pontos em que o C05, o registro do TRANSFORMS (C10) e o
+QUDT fixado não dizem a mesma coisa, e o que o UNITS gravou enquanto o dono decide. Donos: CONTRACTS (C05) e
+TRANSFORMS (C10). Contagens: results/UNITS/coverage.json (recontadas a cada build).
+
+1. Grandeza dos bytes e bits (C10 e stub do C05)
+   bo.transforms.units usa quantitykind:InformationEntropy para BIT, BYTE e prefixos; o stub do C05 também. No QUDT
+   3.5.3 (sha256 em results/UNITS/iri_status.json) nenhuma dessas unidades é ligada a InformationEntropy: todas são
+   qudt:unitForQuantityKind quantitykind:AmountOfData (e ByteDataVolume/BitDataVolume). O UNITS grava AmountOfData
+   (1.055 registros) e o gate qudt_iri_only reprova a dupla (BYTE, InformationEntropy).
+   Efeito hoje: UnitType.of({"unit": ..., "quantity_kind": "quantitykind:AmountOfData"}) do TRANSFORMS levanta
+   DeclarationError; quem converte deve passar só unit/rate_window/byte_convention.
+   Proposta: INFO = "quantitykind:AmountOfData" no bo.transforms.units e no stub C05.
+
+2. Byte e bit sem prefixo e o C05-BYTES
+   C05-BYTES exige byte_convention SI|IEC para toda unidade de informação; o registro do TRANSFORMS dá convenção None
+   a unit:BYTE e unit:BIT (fator 1 nas duas). O UNITS grava SI (regra UNITS-BYTE-00, convenção vácua; 344
+   registros). Proposta: C05 aceitar NOT_APPLICABLE em byte_convention quando a unidade não tem prefixo.
+
+3. Duração e unidade (C05-NA × ONTPAT DurationNoUnitShape)
+   O ONTPAT diz que xsd:duration carrega a própria unidade (bo:UnitNotApplicable); o C05-NA proíbe unidade
+   NOT_APPLICABLE com grandeza Time. O UNITS grava: duração Go (timeouts.*, 11.609) e google.protobuf.Duration (82)
+   com unit:SEC, como unidade da faixa e da forma canônica (sem meses, conversão exata); ISO-8601 (62) com unidade
+   UNKNOWN, porque mês não é número fixo de segundos. Proposta: C05 aceitar unit_qudt NOT_APPLICABLE com
+   datatype duration e grandeza Time, ou declarar que unit_qudt da duração é a unidade da faixa.
+
+4. Prefixo decimal de byte sem convenção declarada
+   'GB', 'MB', 'KB', 'TB' (e gigabyte...) na doc de nuvem servem também para 2^30. Sem a convenção na frase, o UNITS
+   grava grandeza AmountOfData e unidade UNKNOWN (UNITS-BYTE-02; 554 registros); o prefixo (giga) se perde. Proposta:
+   campo opcional unit_candidates (ex. [unit:GigaBYTE, unit:GibiBYTE]) ou byte_convention UNKNOWN com unidade de
+   prefixo, para o árbitro distinguir "giga, convenção aberta" de "nada se sabe".
+
+5. Valores válidos fora de string
+   C05-ENUM só aceita enum em escalar enum: 921 listas de valores publicadas em número (ex. intervalos 0, 1, 5, 60)
+   e as listas em itens de coleção não entram. Proposta: allowed_values para escalar numérico e para value_scalar
+   de árvore.
+
+6. Unidade em string e em coleção
+   C05-KIND força NOT_APPLICABLE fora de número/duração/tupla. 276 strings com unidade publicada ("String containing
+   an integer value ... (10MB)"), 729 enums com unidade e 19 listas de número com unidade ficam NOT_APPLICABLE.
+   Proposta: árvore com value_scalar numérico pode carregar grandeza e unidade do elemento.
+
+7. Coisa contada
+   vCPU, OCPU, ECPU e CPU viram Count/unit:NUM (113 registros); a coisa contada só vai na nota da evidência, e
+   1 OCPU ≠ 1 vCPU. Proposta: campo opcional counted (texto de vocabulário fechado).
+
+8. Sem tipo de referência nem inteiro
+   O schema do Terraform não distingue inteiro de decimal (todo 'number' vira decimal) e não diz o tipo-alvo de um
+   id; o UNITS não grava datatype reference (ARN e OCID ficam em format). Registro, sem pedido de mudança.
+
+9. Entradas
+   Gerado com os DOCS-* completos de bo/base (DOCS-AWS republicado: os 35.242 átomos de bloco repetido têm fato
+   próprio em docs_facts.jsonl). O shared_block_map.jsonl também é lido (UNITS-SHARED-01), mas nenhuma repetição
+   precisou herdar fato (shared_map_repeats_inherited = 0 no build_report).

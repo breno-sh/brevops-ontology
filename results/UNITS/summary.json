@@ -1,0 +1,84 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "UNITS",
+ "generated_at": "2026-11-03T21:01:53-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/UNITS.txt",
+  "brief_sha256": "4a298ddbd79f64aa88f49f39c95d0470932e0d66ae1c667bf195e583c69d5749",
+  "params": {
+   "qudt_version": "3.5.3",
+   "transforms_registry": "bo.transforms.units",
+   "byte_si_prefix": "UNKNOWN_sem_convencao",
+   "duration_go_unit": "unit:SEC"
+  },
+  "inputs": [
+   {
+    "path": "$BO_DATA/SCHEMA-AWS/atoms.jsonl",
+    "kind": "file",
+    "sha256": "5c6aba0585cb0e30f26877fd0ed6ba1a471092c792ecfa0b38f22d43d1e862a7"
+   },
+   {
+    "path": "$BO_DATA/DOCS-AWS/docs_facts.jsonl",
+    "kind": "file",
+    "sha256": "0e60c72f0e407cb698731ca109a14c88a844e8923cb1e8797807a96fd8bffa12"
+   },
+   {
+    "path": "$BO_DATA/SCHEMA-GCP/atoms.jsonl",
+    "kind": "file",
+    "sha256": "a00b9d3fb50a717fe3ba17ec0f4b2012f89ee7a3cb65e7ea5f21298afc75e4e1"
+   },
+   {
+    "path": "$BO_DATA/DOCS-GCP/docs_facts.jsonl",
+    "kind": "file",
+    "sha256": "f9a43bef915e80e27f30f694d2fafc2639b072546742cf328baa1f64e7b5c603"
+   },
+   {
+    "path": "$BO_DATA/SCHEMA-AZURE/atoms.jsonl",
+    "kind": "file",
+    "sha256": "3e7a8160b3272bc0652427989d72860cb84cc198dfde1a9ae14405babfbbb915"
+   },
+   {
+    "path": "$BO_DATA/DOCS-AZURE/docs_facts.jsonl",
+    "kind": "file",
+    "sha256": "23efd739b2bd9f16a1088c29b4bc1dacaa78bbd4d91cfd7c26bfa38351763ced"
+   },
+   {
+    "path": "$BO_DATA/SCHEMA-OCI/atoms.jsonl",
+    "kind": "file",
+    "sha256": "99e3dc9d3434e48675fd71eb817145ae63c2159fd041f3c67dd1d308e814287c"
+   },
+   {
+    "path": "$BO_DATA/DOCS-OCI/docs_facts.jsonl",
+    "kind": "file",
+    "sha256": "a016f68e90104e0cd48472e0d2b86f982722ca889be9e9ff9591f61405e2fa34"
+   },
+   {
+    "path": "$BO_DATA/DOCS-AWS/shared_block_map.jsonl",
+    "kind": "file",
+    "sha256": "e6e90db53b3440d78799e260095dba5e2f24e2b011a1fd230f58e82c3c90eab7"
+   },
+   {
+    "path": "$BO_DATA/downloads/qudt-3.5.3/VOCAB_QUDT-UNITS-ALL.ttl",
+    "kind": "file",
+    "sha256": "5e84f3e10ae6a3c535e2e7616dc2affee09dd52bea5229822188730493fd4418"
+   },
+   {
+    "path": "$BO_DATA/downloads/qudt-3.5.3/VOCAB_QUDT-QUANTITY-KINDS-ALL.ttl",
+    "kind": "file",
+    "sha256": "b246c2f851e3c9353cafddf9640b18b696c410e176b29735218f7a266bcb9888"
+   }
+  ],
+  "recorded_at": "2026-11-03T21:01:53-03:00"
+ },
+ "sources": [
+  {
+   "uri": "https://github.com/qudt/qudt-public-repo/releases/tag/v3.5.3",
+   "license": "CC-BY-4.0",
+   "transformation": "vocabulários de unidade e grandeza lidos como RDF para conferir IRI, obsolescência e ligação unidade-grandeza"
+  }
+ ],
+ "notes": "value_space C05 de 196075 átomos; regras declaradas em src/bo/units/rules.py; achados de contrato em results/UNITS/CONTRACT_CHANGE.txt"
+}

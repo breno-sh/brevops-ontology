@@ -82,6 +82,7 @@ def load_shared_map(facts: dict[str, list[dict]], stats: Counter) -> None:
     if not p.exists():
         stats["shared_map_absent"] += 1
         return
+    stats["shared_map_repeats_inherited"] += 0
     with open(p, encoding="utf-8") as f:
         for line in f:
             r = json.loads(line)
