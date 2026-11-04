@@ -111,9 +111,9 @@ def _build_spec() -> dict:
 SPEC = _build_spec()
 SECTION_RX = re.compile(r"^apispec (?P<prov>[a-z]+)/(?P<file>\S+) sha256 (?P<sha>[0-9a-f]{64}) (?P<ptr>\S+)$")
 DL = None
-AWS_VERB = re.compile(r"^(Create|Delete|Put|Get|Update|Modify|Describe|List|Authorize|Revoke|Associate|Disassociate|"
+AWS_VERB = re.compile(r"^(Create|Delete|Run|Terminate|Put|Get|Update|Modify|Describe|List|Authorize|Revoke|Associate|Disassociate|"
                       r"Attach|Detach|Enable|Disable|Replace|Apply|Restore|Copy|Head)([A-Z].*)$")
-OCI_VERB = re.compile(r"^(create|delete|terminate|get|list|update|put|add|remove|change|restore|copy|reencrypt|rename|"
+OCI_VERB = re.compile(r"^(create|launch|delete|terminate|get|list|update|put|add|remove|change|restore|copy|reencrypt|rename|"
                       r"make|abort|commit|head|upload)_(.+)$")
 
 
@@ -278,6 +278,12 @@ def _aws():
                 if m:
                     ops.setdefault(m.group(2), {})[m.group(1)] = "/shapes/" + esc(k)
         labels = lambda ptr: tuple(project("aws", f, ptr)["labels"])  # noqa: E731
+        # Run<N>s/Terminate<N>s (ec2: RunInstances/TerminateInstances) contam como create/delete do substantivo no
+        # singular quando não há Create/Delete para ele
+        for n in [x for x in ops if x.endswith("s") and "Run" in ops[x] and "Terminate" in ops[x]]:
+            sg = ops.setdefault(n[:-1], {})
+            if "Create" not in sg and "Delete" not in sg:
+                sg["Create"], sg["Delete"] = ops[n]["Run"], ops[n]["Terminate"]
         own = {n: o for n, o in ops.items() if "Create" in o and "Delete" in o}
         own_by_labels = {}
         for n, o in own.items():
@@ -396,7 +402,7 @@ def _oci():
             if rp is None or mt is None:
                 continue
             path = re.search(r'"([^"]+)"', lines[rp]).group(1)
-            verb = "delete" if vm.group(1) == "terminate" else vm.group(1)  # terminate_<n> é o delete da OCI
+            verb = {"terminate": "delete", "launch": "create"}.get(vm.group(1), vm.group(1))  # sinônimos da OCI
             ops.setdefault(vm.group(2), {}).setdefault(verb, (f"L{i + 1},{rp + 1},{mt + 1}", path))
         # próprio: delete_<n> cujo caminho termina num identificador {param}, e create_<n> ou put_<n> (o put que
         # grava o objeto pelo próprio nome, como put_object); delete com último segmento constante é faceta
@@ -533,13 +539,15 @@ def aws_item_shape(f: str, target: str) -> str:
     return st["member"]["target"] if st.get("type") == "list" else target
 
 
-def oci_model_field(svc: str, model: str, key: str):
-    """(fid, ponteiro M<linha>, tipo) do campo no swagger_types do modelo models/<model>.py do módulo; ou None."""
-    for fid in SPEC["oci"].get("models", {}):
-        if fid.endswith(f"/src/oci/{svc}/models/{model}.py"):
-            for i, ln in enumerate(load_lines("oci", fid)):
-                mm = re.match(r"\s+'([a-z0-9_]+)': '([^']+)',?$", ln)
-                if mm and mm.group(1) == key:
-                    return fid, f"M{i + 1}", mm.group(2)
-            return None
+def oci_model_field(svc: str, model: str, key: str, details: bool = False):
+    """(fid, ponteiro M<linha>, tipo) do campo no swagger_types de models/<model>.py do módulo; com details, também
+    launch_<model>_details.py e create_<model>_details.py (corpo da criação). None se não há."""
+    names = [model] + ([f"launch_{model}_details", f"create_{model}_details"] if details else [])
+    for nm in names:
+        for fid in SPEC["oci"].get("models", {}):
+            if fid.endswith(f"/src/oci/{svc}/models/{nm}.py"):
+                for i, ln in enumerate(load_lines("oci", fid)):
+                    mm = re.match(r"\s+'([a-z0-9_]+)': '([^']+)',?$", ln)
+                    if mm and mm.group(1) == key:
+                        return fid, f"M{i + 1}", mm.group(2)
     return None

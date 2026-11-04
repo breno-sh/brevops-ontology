@@ -80,3 +80,12 @@ descrita abaixo e em results/SERVICE-EVIDENCE/evidence_levels.json (level_policy
    (GRAIN); o SERVICE-EVIDENCE não emite alcance para elas sem fonte.
    Disputas OCI (regra de NSG, política de ciclo de vida do bucket): continuam disputas; não há evidência nova
    além da spec do SDK, que já é um dos lados.
+
+9. PILOT-NET-MAP F-5 (regras que só permitem) — 2026-11-04T14:08-03:00
+   Procurado nas fontes já fixadas: documentação Smithy ec2 (SecurityGroup, IpPermission, SecurityGroupRule,
+   CreateSecurityGroup, Authorize/RevokeSecurityGroupIngress/Egress, com membros) e docstrings dos modelos do SDK OCI
+   (SecurityList, IngressSecurityRule, EgressSecurityRule, SecurityRule, AddSecurityRuleDetails, NetworkSecurityGroup).
+   Nenhuma frase diz que as regras SÓ permitem. As mais próximas dizem o efeito de uma regra, não a exclusividade:
+   ec2 AuthorizeSecurityGroupIngress "An inbound rule permits instances to receive traffic from ..."; OCI
+   IngressSecurityRule "A rule for allowing inbound IP packets."; SecurityRule "Set to `EGRESS` for rules to allow
+   outbound IP packets ...". Nada publicado como effect (não há frase literal de exclusividade).

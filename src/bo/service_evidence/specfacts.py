@@ -254,6 +254,8 @@ def run(ctx, bridges: dict, disputes: list) -> None:
             _blocks(ctx, T, r, m, api, bid)
             if p == "oci" and r.get("path"):
                 _oci_identity(ctx, T, r, api, ops, bid)
+            if p == "azurerm":
+                _azure_identity(ctx, T, r, api, ops, bid)
         for kind, (k, rule) in new.items():
             v = {"kind": k, "rule": rule, "layer": "api", "spec_resource": f"{r['service']}:{r['resource']}"}
             if k == "parent":
@@ -375,4 +377,32 @@ def _aws_rule_identity(ctx, T: str, r: dict, api: dict, ops: list, bid: str) -> 
             value={"status": "present", "scope": "independent", "key_fields": [attr], "rule": "R-ID-SPEC",
                    "layer": "api", "spec_member": f"{sh.split('#')[1]}.{mem}"},
             derived=ops + [bid, mid])
+    ctx.st["R-ID-SPEC"] += 1
+
+
+def _azure_identity(ctx, T: str, r: dict, api: dict, ops: list, bid: str) -> None:
+    """R-ID-SPEC (azure): os parâmetros do caminho PUT/DELETE da instância são a chave. O último é o nome do próprio
+    objeto (atributo name); resourceGroupName -> resource_group_name; o nome de um tipo pai (<x>Name) ->
+    <x>_name; subscriptionId é escopo do provedor e fica fora. Parâmetro sem atributo: nada."""
+    p = ctx.p
+    path = A.unesc(r["delete"].split("/")[2])
+    params = [x.strip("{}") for x in path.split("/") if x.startswith("{")]
+    top = {pa for pa, depth, *_ in sources.atoms(p).get(T, []) if not depth and "." not in pa}
+    keys = []
+    for i, prm in enumerate(params):
+        if prm == "subscriptionId":
+            continue
+        sn = A.snake(prm)
+        last = i == len(params) - 1
+        opts = ["name"] if last else [sn, sn.replace("_name", "") + "_name"]
+        hit = next((o for o in opts if o in top), None)
+        if not hit:
+            ctx.st["R-ID-SPEC_sem_atributo"] += 1
+            return
+        keys.append(hit)
+    scope = "within_parent" if len(keys) > 2 else "independent"
+    ctx.add(T, "identity", "spec_identity", api, "stated", "derived",
+            value={"status": "present", "scope": scope, "key_fields": keys, "rule": "R-ID-SPEC", "layer": "api",
+                   "spec_path": path},
+            derived=ops + [bid])
     ctx.st["R-ID-SPEC"] += 1

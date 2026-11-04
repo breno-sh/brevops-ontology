@@ -122,7 +122,7 @@ def run(ctx, bridges_unused=None) -> None:
         elif p == "oci" and r["create"]:
             # bloco de recurso próprio -> campo do modelo de dados do SDK (models/<recurso>.py, swagger_types)
             for bp in [b for b in bps if "." not in b]:
-                hit = A.oci_model_field(r["service"], r["resource"], bp)
+                hit = A.oci_model_field(r["service"], r["resource"], bp, details=True)
                 if not hit:
                     continue
                 mf, ptr, typ = hit

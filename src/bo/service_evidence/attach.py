@@ -30,6 +30,10 @@ ENTRIES = [
 ]
 
 
+ASSOC_KEY = {"azurerm_subnet_network_security_group_association": "subnet_id",
+             "azurerm_network_interface_security_group_association": "network_interface_id"}
+
+
 def run(ctxs: dict) -> dict:
     st = {"emitidos": 0, "faltando": []}
     for p, T, attr, bp, target, src, opname in ENTRIES:
@@ -69,4 +73,14 @@ def run(ctxs: dict) -> dict:
         ctx.add(T, "identity", f"attach:{path}", api, "stated", "interpreted", value=v, derived=[fid],
                 model=common.MODEL_ID)
         st["emitidos"] += 1
+        if T in ASSOC_KEY:
+            # o campo da spec é UMA referência (não lista): no máximo um NSG por subnet/NIC; a associação é
+            # identificada pelo lado que guarda o campo (R-ID-SPEC-ATTACH)
+            node = A.project(p, f, ptr)
+            if node.get("type") in (None, "object") and node.get("ref"):
+                ctx.add(T, "identity", "spec_identity", api, "stated", "derived",
+                        value={"status": "present", "scope": "independent", "key_fields": [ASSOC_KEY[T]],
+                               "rule": "R-ID-SPEC-ATTACH", "layer": "api", "single_reference": node["ref"]},
+                        derived=[fid])
+                st["identidade_associacao"] = st.get("identidade_associacao", 0) + 1
     return st

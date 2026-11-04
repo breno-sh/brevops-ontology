@@ -143,7 +143,7 @@ RULES = {
                      "2 termos), parando no 1º nível que casa; os demais ficam como "
                      "candidatos.",
     "R-LIFE-SPEC": "o recurso da spec tem create e delete próprios sobre o próprio identificador (aws Create<N> e "
-                   "Delete<N>; google insert e delete; azure PUT e DELETE no caminho da instância; oci delete_<n> (ou "
+                   "Delete<N>, ou Run<N>s e Terminate<N>s; oci launch_<n> conta como create; google insert e delete; azure PUT e DELETE no caminho da instância; oci delete_<n> (ou "
                    "terminate_<n>) com "
                    "caminho terminado em {identificador} e create_<n> ou put_<n>): ciclo de vida próprio na API, {kind: self, layer: api}.",
     "R-OWN-SPEC": "recurso de R-LIFE-SPEC: a configuração está no próprio objeto, {kind: self, layer: api}; faceta "
@@ -169,6 +169,9 @@ RULES = {
                      ".nsg_ids; azure SubnetPropertiesFormat/NetworkInterfacePropertiesFormat.networkSecurityGroup). O "
                      "campo é publicado (citação); a ligação atributo Terraform <-> campo é leitura do modelo "
                      "(interpretada, value.basis).",
+    "R-ID-SPEC-ATTACH": "associação azure: o campo da spec que guarda a anexação é UMA referência ($ref, não "
+                        "lista) no objeto do lado da subnet/NIC; a associação é identificada por esse lado "
+                        "(subnet_id / network_interface_id).",
     "R-FACET-SPEC": "spec_facet_member: a API só aceita os blocos como membros de um objeto-faceta único do pai, "
                     "gravado por uma operação sobre o pai (aws Put<Faceta> com o payload; google patch/update do "
                     "recurso com o campo do objeto; azure PUT do recurso/sub-recurso), e o bloco não tem create/"
@@ -176,7 +179,8 @@ RULES = {
     "R-TWIN-SPEC": "bloco embutido e bloco do tipo separado que caem no mesmo membro da spec (ex.: aws_s3_bucket"
                    ".lifecycle_rule e aws_s3_bucket_lifecycle_configuration.rule -> BucketLifecycleConfiguration"
                    ".Rules) são gêmeos: twin_type com twin e twin_block_path.",
-    "R-ID-SPEC": "item de lista de bloco: a estrutura do item na spec tem membro ID/id (aws) ou id/name "
+    "R-ID-SPEC": "azure: parâmetros do caminho da instância (sem subscriptionId): último -> name, demais -> atributo "
+                 "de mesmo nome em snake_case. item de lista de bloco: a estrutura do item na spec tem membro ID/id (aws) ou id/name "
                  "(google/azure) -> essa chave (within_parent) se o bloco tem o atributo; sem membro de identidade -> "
                  "ausente. aws: regra criada por Authorize e removida por Revoke tem identidade própria quando a estrutura "
                  "<Pai>Rule da spec tem o membro <Pai>RuleId (ex.: SecurityGroupRule.SecurityGroupRuleId) e o tipo "

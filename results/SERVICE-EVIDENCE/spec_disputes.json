@@ -827,6 +827,40 @@
   },
   {
    "provider": "oci",
+   "terraform_resource_type": "oci_database_exadata_iorm_config",
+   "fact": "lifecycle_controller",
+   "doc": {
+    "kind": "self",
+    "rule": "R-LIFE-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-LIFE-SPEC-PARENT"
+   },
+   "evidence": [
+    "SE-oci-maf5e5rpl74mx4fn",
+    "SE-oci-u4jmgkfcz7q7jqag"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_database_exadata_iorm_config",
+   "fact": "owner",
+   "doc": {
+    "kind": "self",
+    "rule": "R-OWN-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-OWN-SPEC"
+   },
+   "evidence": [
+    "SE-oci-bjkl7vo6nt2lsnhu",
+    "SE-oci-nicp2fu3jxcbwbtr"
+   ]
+  },
+  {
+   "provider": "oci",
    "terraform_resource_type": "oci_datascience_model_provenance",
    "fact": "lifecycle_controller",
    "doc": {
