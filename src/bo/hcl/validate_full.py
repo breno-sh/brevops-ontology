@@ -52,7 +52,11 @@ def main(argv=None) -> int:
     def run(p):
         r = subprocess.run([sys.executable, "-I", "-m", "bo.contracts.validate", "C06", str(p)],
                            capture_output=True, text=True)
-        last = [ln for ln in (r.stdout + r.stderr).splitlines() if "item(ns)" in ln]
+        out = (r.stdout + r.stderr).splitlines()
+        errs = [ln for ln in out if "ERRO" in ln]
+        if errs:  # só em $BO_TMP, para depuração local; nunca vai para $BO_DATA/HCL
+            (p.parent / "erros.txt").write_text("\n".join(errs) + "\n", encoding="utf-8")
+        last = [ln for ln in out if "item(ns)" in ln]
         m = re.search(r"(\d+) item\(ns\), (\d+) erro", last[-1]) if last else None
         return r.returncode, (int(m.group(1)), int(m.group(2))) if m else (0, -1)
 
@@ -65,7 +69,8 @@ def main(argv=None) -> int:
            "sha256": sha256_file(src), "pieces": len(paths), "items": items, "errors": errors,
            "failed_pieces": bad, "result": "PASS" if not bad and items > 0 else "FAIL"}
     write_json(d / "contract_report.json", rep)
-    shutil.rmtree(root, ignore_errors=True)
+    if not bad:
+        shutil.rmtree(root, ignore_errors=True)
     print(f"[{now()}] validate_full: {items} registros em {len(paths)} pedaços, {errors} erro(s) -> {rep['result']}")
     return 0 if rep["result"] == "PASS" else 1
 

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import io
+import posixpath
 import sqlite3
 import tarfile
 
@@ -27,20 +28,48 @@ def iter_repos(tar_path=TAR, limit: int | None = None, only: set | None = None):
                 return
 
 
-def repo_files(tid: str, data: bytes) -> tuple[list, int]:
-    """Arquivos .tf/.tf.json do repositório: [(caminho relativo, bytes)] ordenado; e o nº de outros arquivos."""
+def repo_files(tid: str, data: bytes, stats=None) -> tuple[list, int]:
+    """Arquivos .tf/.tf.json do repositório: [(caminho relativo, bytes)] ordenado; e o nº de outros arquivos.
+
+    Link simbólico .tf (comum: network.tf -> ../../shared/network.tf) é lido como o Terraform leria: com o
+    conteúdo do alvo, no caminho do link, se o alvo é arquivo do mesmo repositório (cadeia de até 8 links).
+    Link para fora do repositório ou para alvo ausente não é lido e é contado (symlink_unresolved)."""
     out, other = [], 0
+    pre = tid + "/"
+    regular, links = {}, {}
     with tarfile.open(fileobj=io.BytesIO(data), mode="r:gz") as inner:
         for im in inner:
-            if not im.isfile():
+            rel = im.name[len(pre):] if im.name.startswith(pre) else im.name
+            if im.isfile():
+                if rel.endswith(TF_SUFFIXES):
+                    regular[rel] = inner.extractfile(im).read()
+                else:
+                    other += 1
+            elif im.issym() and rel.endswith(TF_SUFFIXES):
+                links[rel] = im.linkname
+    for rel, target in links.items():
+        cur, tgt, ok = rel, target, False
+        for _ in range(8):
+            if tgt.startswith("/"):
+                break
+            p = posixpath.normpath(posixpath.join(posixpath.dirname(cur), tgt))
+            if p.startswith("..") or p == ".":
+                break
+            if p in regular:
+                regular_target = regular[p]
+                ok = True
+                break
+            if p in links:
+                cur, tgt = p, links[p]
                 continue
-            name = im.name
-            pre = tid + "/"
-            rel = name[len(pre):] if name.startswith(pre) else name
-            if rel.endswith(TF_SUFFIXES):
-                out.append((rel, inner.extractfile(im).read()))
-            else:
-                other += 1
+            break
+        if ok:
+            out.append((rel, regular_target))
+            if stats is not None:
+                stats["symlink_resolved"] += 1
+        elif stats is not None:
+            stats["symlink_unresolved"] += 1
+    out.extend(regular.items())
     out.sort(key=lambda x: x[0])
     return out, other
 

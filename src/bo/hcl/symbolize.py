@@ -14,6 +14,7 @@ from __future__ import annotations
 import json
 import re
 
+from bo.contracts.rules import LEAK as CONTRACT_LEAK  # regra C06 do validador: nenhum literal com e-mail, ARN...
 from bo.repo import privacy
 
 from . import classify as C
@@ -85,7 +86,8 @@ class Vocab:
             return False
         ok = self._priv.get(text)
         if ok is None:
-            ok = not privacy.scan_text(text, "v") and ("\n" not in text) and len(text) <= 256
+            ok = not privacy.scan_text(text, "v") and not any(rx.search(text) for _, rx in CONTRACT_LEAK) \
+                and ("\n" not in text) and len(text) <= 256
             self._priv[text] = ok
         return ok
 

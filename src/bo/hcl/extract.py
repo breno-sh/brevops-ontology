@@ -142,7 +142,7 @@ def repo_core(tid, data, keep, reveal=False):
     """Um repositório inteiro, na ordem canônica. reveal=True (só roundtrip) guarda a tabela privada e as ASTs."""
     stats = collections.Counter()
     by_type = collections.Counter()
-    files, other = source.repo_files(tid, data)
+    files, other = source.repo_files(tid, data, stats)
     stats["other_files"] += other
     dig = hashlib.sha256()
     for h in sorted(hashlib.sha256(b).hexdigest() for _, b in files):
@@ -362,6 +362,7 @@ def main(argv=None) -> int:
         "blocks_by_provider": {k.split(":", 1)[1]: v for k, v in sorted(stats.items()) if k.startswith("blocks:")},
         "dup_address_same_file": stats["dup_address_same_file"],
         "invalid_type_label": stats["invalid_type_label"],
+        "symlinks": {"resolved": stats["symlink_resolved"], "unresolved": stats["symlink_unresolved"]},
         "terms_by_kind": {k.split(":", 1)[1]: v for k, v in sorted(stats.items()) if k.startswith("term:")},
         "withheld_by_reason": {"n_" + k.split(":", 1)[1]: v for k, v in sorted(stats.items())
                                if k.startswith("withheld:")},

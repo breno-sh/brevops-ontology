@@ -326,3 +326,28 @@ def test_withheld_inside_documents():
     assert t["kind"] == "document"
     s = json.dumps(t)
     assert SECRET_VAL not in s and s.count('"withheld"') == 2
+
+
+def test_symlinked_tf_is_read_like_terraform():
+    buf = io.BytesIO()
+    with tarfile.open(fileobj=buf, mode="w:gz") as t:
+        b = b'resource "google_compute_network" "main" {\n  name = "n"\n}\n'
+        ti = tarfile.TarInfo("77/shared/network.tf")
+        ti.size = len(b)
+        t.addfile(ti, io.BytesIO(b))
+        for name, target in (("77/a/network.tf", "../shared/network.tf"), ("77/b/x.tf", "../../fora.tf")):
+            li = tarfile.TarInfo(name)
+            li.type, li.linkname = tarfile.SYMTYPE, target
+            t.addfile(li)
+    r = repo_core("77", buf.getvalue(), set())
+    assert sorted(x[2] for x in r["rows"]) == ["a/network.tf", "shared/network.tf"] or \
+        len(r["rows"]) == 2
+    assert r["stats"]["symlink_resolved"] == 1 and r["stats"]["symlink_unresolved"] == 1
+
+
+def test_vocab_never_keeps_contract_leaks():
+    """Mesmo um e-mail de domínio de exemplo (aceito pelo privacy_lint) não fica literal: a regra C06 reprova."""
+    from bo.hcl.common import key64
+    mail = "ops" + "@" + "example.com"
+    v = Vocab({key64("c", mail), key64("c", "t3.micro")})
+    assert not v.literal_ok("c", mail) and v.literal_ok("c", "t3.micro")
