@@ -1,0 +1,50 @@
+PILOT-NET-MAP: mudanças de contrato que bloqueiam o gate G3 (e, por ele, G4 e G11)
+Registrado em 2026-11-04T09:40:00-03:00 (America/Recife). Base: bo/base 7fb8f68 (PILOT-NET-GLOSS já mergeado).
+Reprodução: python -I -m bo.pilot_net_map.build   (gera em $BO_DATA/PILOT-NET-MAP/.staging; o relatório
+build_report.json guarda a saída de cada conferência). O mapeamento (C09) passa no validador oficial e na ida e
+volta SKOS; o que reprova é o árbitro, por dois defeitos fora do meu owns. Nada foi afrouxado nem contornado:
+o módulo para aqui até ARBITERLIB/CONTRACTS corrigirem; o mapeamento fica trocado em $BO_DATA/PILOT-NET-MAP e
+os vereditos não.
+
+CC-MAP-NET-1 (bloqueia G3): o congelamento do árbitro não confere com bo/base
+  python -I -m bo.arbiter.run --frozen ... sai 3 ("o código não é o congelado", 9 divergências) para QUALQUER
+  entrada: arbiter/ARBITER.sha256 é de 5c5662d (2026-11-03 17:52) e as emendas 3 a 6 do CONTRACTS mudaram depois
+  contracts/C00_conventions.schema.json, C09_correspondences.schema.json, C20_glossary.schema.json e
+  src/bo/contracts/{rules,spec_a,spec_b,spec_c,spec_d,sssom}.py, que estão no fecho congelado. O summary.json do
+  ARBITERLIB registra os sha256 das entradas antes de cada emenda, mas o ARBITER.sha256 não foi refeito.
+  Proposta: ARBITERLIB refaz o congelamento sobre bo/base (bo.arbiter.freeze), roda a bateria de novo e regrava
+  o ARBITER.sha256 (arbiter_sha256 do C21 muda); depois, tools/invalidate.py check --apply nos consumidores.
+
+CC-MAP-NET-2 (bloqueia G3 mesmo com o árbitro recongelado): o C21 recusa ids de regra do próprio árbitro
+  C00 $defs.rule_id exige hífen (^[A-Z][A-Z0-9]*(-[A-Z0-9]+)+$, igual desde 755f655), mas o SEMANTICS e o
+  ARBITERLIB emitem as regras EVIDENCE e SENTINEL, sem hífen. Toda alegação que cai na EVIDENCE (estado abaixo de
+  DOC_SUPPORTED ou sem citação: o caso normal de UNPROVEN honesto) gera um veredito que o validador oficial do
+  C21 reprova, e o bo.arbiter.run sai 1. Nesta fatia: 75 vereditos com EVIDENCE.
+  Proposta (uma das duas, decisão do CONTRACTS): (a) C00 rule_id aceita id de uma palavra
+  (^[A-Z][A-Z0-9]*(-[A-Z0-9]+)*$); ou (b) SEMANTICS/ARBITERLIB renomeiam EVIDENCE -> EV-CITED e
+  SENTINEL -> SENT-MAP (emenda com versão nova e invalidação dos consumidores; os briefs citam EVIDENCE).
+
+Achados que não bloqueiam (o mapeamento sai, com UNPROVEN honesto onde o pacote não basta):
+  F-1 lista e mapa sem datatype no C05/C09: atributos de lista (source_ranges, cidr_blocks, ports,
+      *_port_ranges, *_prefixes, *_ids) e de mapa (tags) não têm tipo de valor declarável; as alegações que os
+      tocam saem UNPROVEN por KIND-UNKNOWN (104 vereditos) e os grupos de portas com lista não se escrevem.
+      Proposta: C05/C09 com datatype list e map (tipo do elemento), e combinador de lista no registro C10.
+  F-2 campos de bloco embutido sem tipo no pacote: aws_security_group ingress.*/egress.* e
+      azurerm_network_security_group security_rule.* estão nos átomos canônicos (C19) mas não no atoms.jsonl
+      nem com tipo; no bloco do azurerm nem os valores de sentido e efeito estão documentados, então nenhum
+      emparelhamento com guarda se escreve e os campos vão para ausência UNRESOLVED.
+  F-3 valores de enum suspeitos no pacote (registrados como estão, sem correção): google direction traz
+      source_ranges, source_tags e source_service_accounts além de INGRESS/EGRESS; aws_security_group_rule type
+      só traz ingress; oci_core_security_list source/destination só trazem IP. Origem provável: extração do
+      SCHEMA-* a partir de frase de documentação. Efeito: domínio superset e transporte parcial onde entram.
+  F-4 sentido da regra NSG oci (direction) em texto livre, sem valores no pacote: nenhuma guarda por sentido
+      se escreve contra regra de sentido fixo; os emparelhamentos saem pulados e o átomo vai para UNRESOLVED.
+  F-5 efeito fixo (aws e oci só permitem) só está nas notas do glossarista (SN-NET-0001/0002); o C25 marca
+      effect unknown. O fixed_default do AZOCI fica STRUCTURALLY_VALID (UNPROVEN), e com o lado sem atributo
+      como sujeito (AWSAZ, GCP x aws/oci) o fixed_default nem se exprime na orientação canônica.
+  F-6 ausência do lado objeto: a linha de ausência só tem sujeito (C09-NONE), então o átomo do segundo provedor
+      sem contraparte vai como sujeito da ausência no par (fora da orientação canônica do M1). Proposta: campo
+      absence.pair_side ou ausência permitida com subject_id = sssom:NoTermFound.
+  F-7 o árbitro devolve UNPROVEN (ARB-RELATED-EV) para toda ausência STRUCTURALLY_VALID, inclusive as que o
+      exemplo do MAPPER_BRIEF M8 mostra como OK no bo.semantics.obligations: 432 ausências UNPROVEN. É a regra
+      congelada; registro para a leitura dos números, não como defeito.
