@@ -58,8 +58,9 @@ ACHADOS (resultado, não ajuste)
 CONTRATOS
 - C24 1.1.0 (emenda 5 do CONTRACTS) tem o tipo pilot_expected_answers: expected_answers.json valida nele (gate do módulo).
 - C11 3.1.0: cada entrada de direção leva c11_case_seed com o que o oráculo sabe (case_id, group_id, par, domínio STO,
-  cardinalidade, direção, origin=pilot, comparador, classe de custo, valores); claim_id, relação, frame, peso e plano de
-  lowering ficam em 'pending' porque vêm do mapeamento e do E2E, que o oráculo não lê.
+  cardinalidade, direção, comparador, classe de custo, valores); claim_id, relação, frame, peso e plano de
+  lowering ficam em 'pending' porque vêm do mapeamento e do E2E, que o oráculo não lê; origin=pilot também fica em
+  'pending', como o schema da semente no C24 1.1.0 exige.
 
 REVISÃO 2026-11-04 (SERVICE-EVIDENCE CC-1c e CC-1d, 69fb76e)
 - Rerodei o gabarito sobre o service_evidence.jsonl novo (sha256 cc5260d3...). Mudaram 2 respostas, ambas do

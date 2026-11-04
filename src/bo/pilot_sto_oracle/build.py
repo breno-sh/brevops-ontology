@@ -115,11 +115,12 @@ def c11_seed(e):
     return {"case_id": "CASE-PSTO-" + e["entry_id"], "group_id": f"G-PSTO-{fam.split('-')[0]}-{pair}",
             "stratum_partial": {"pair": pair, "domain": "STO", "cardinality": "1:1",
                                 "direction": "forward" if a == first else "inverse"},
-            "origin": "pilot", "side": "subject", "comparator": {"name": "exact"}, "cost_class": "free", "values": values,
+            "side": "subject", "comparator": {"name": "exact"}, "cost_class": "free", "values": values,
             "pending": {"claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
                         "claim_version_id": "idem", "stratum.relation": "sai da alegação",
                         "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE", "weight": "idem",
-                        "lowering_plan": "plano C26 do PILOT-STO-E2E"}}
+                        "lowering_plan": "plano C26 do PILOT-STO-E2E",
+                        "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin"}}
 
 
 # ------------------------------------------------------------------ escrita da calibração

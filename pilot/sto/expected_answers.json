@@ -10,12 +10,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-AWSAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -56,12 +56,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-AWSAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -104,12 +104,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-AWSAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -151,12 +151,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-AWSAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -198,12 +198,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-AWSAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -245,12 +245,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-AWSAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -299,12 +299,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-AWSAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -355,12 +355,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-AWSAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -410,12 +410,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-AWSAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -465,12 +465,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-AWSAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -511,12 +511,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-AWSAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -559,12 +559,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-AWSAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -606,12 +606,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-AWSAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -653,12 +653,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-AWSAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -700,12 +700,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-AWSAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -748,12 +748,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-AWSAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -795,12 +795,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-AWSAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -842,12 +842,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-AWSGCP",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -888,12 +888,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-AWSGCP",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -935,12 +935,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-AWSGCP",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -982,12 +982,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-AWSGCP",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -1036,12 +1036,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-AWSGCP",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -1092,12 +1092,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-AWSGCP",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -1147,12 +1147,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-AWSGCP",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -1202,12 +1202,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-AWSGCP",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -1248,12 +1248,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-AWSGCP",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -1296,12 +1296,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-AWSGCP",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -1343,12 +1343,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-AWSGCP",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -1390,12 +1390,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-AWSGCP",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -1436,12 +1436,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-AWSGCP",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -1483,12 +1483,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-AWSGCP",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -1530,12 +1530,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-AWSOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -1576,12 +1576,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-AWSOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -1623,12 +1623,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-AWSOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -1670,12 +1670,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-AWSOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -1724,12 +1724,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-AWSOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -1780,12 +1780,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-AWSOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -1835,12 +1835,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-AWSOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -1890,12 +1890,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-AWSOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -1936,12 +1936,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-AWSOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -1984,12 +1984,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-AWSOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -2031,12 +2031,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-AWSOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -2078,12 +2078,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-AWSOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -2126,12 +2126,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-AWSOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -2173,12 +2173,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-AWSOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -2220,12 +2220,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-AWSAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -2266,12 +2266,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-AWSAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -2313,12 +2313,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-AWSAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -2360,12 +2360,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-AWSAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -2414,12 +2414,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-AWSAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -2470,12 +2470,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-AWSAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -2525,12 +2525,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-AWSAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -2580,12 +2580,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-AWSAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -2626,12 +2626,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-AWSAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -2674,12 +2674,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-AWSAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -2721,12 +2721,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-AWSAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -2768,12 +2768,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-AWSAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -2816,12 +2816,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-AWSAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -2863,12 +2863,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-AWSAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -2910,12 +2910,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-AWSAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -2957,12 +2957,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-GCPAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -3003,12 +3003,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-GCPAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -3050,12 +3050,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-GCPAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -3097,12 +3097,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-GCPAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -3151,12 +3151,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-GCPAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -3207,12 +3207,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-GCPAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -3262,12 +3262,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-GCPAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -3317,12 +3317,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-GCPAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -3363,12 +3363,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-GCPAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -3411,12 +3411,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-GCPAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -3458,12 +3458,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-GCPAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -3505,12 +3505,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-GCPAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -3553,12 +3553,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-GCPAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -3600,12 +3600,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-GCPAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -3647,12 +3647,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-GCPAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -3694,12 +3694,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-AZOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -3740,12 +3740,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-AZOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -3787,12 +3787,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-AZOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -3834,12 +3834,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-AZOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -3888,12 +3888,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-AZOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -3944,12 +3944,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-AZOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -3999,12 +3999,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-AZOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -4054,12 +4054,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-AZOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -4100,12 +4100,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-AZOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -4148,12 +4148,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-AZOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -4195,12 +4195,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-AZOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -4242,12 +4242,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-AZOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -4288,12 +4288,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-AZOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -4335,12 +4335,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-AZOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -4382,12 +4382,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-AWSGCP",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -4428,12 +4428,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-AWSGCP",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -4475,12 +4475,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-AWSGCP",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -4522,12 +4522,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-AWSGCP",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -4576,12 +4576,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-AWSGCP",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -4632,12 +4632,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-AWSGCP",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -4687,12 +4687,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-AWSGCP",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -4742,12 +4742,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-AWSGCP",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -4788,12 +4788,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-AWSGCP",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -4836,12 +4836,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-AWSGCP",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -4883,12 +4883,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-AWSGCP",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -4930,12 +4930,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-AWSGCP",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -4976,12 +4976,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-AWSGCP",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -5023,12 +5023,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-AWSGCP",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -5070,12 +5070,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-GCPAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -5116,12 +5116,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-GCPAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -5164,12 +5164,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-GCPAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -5211,12 +5211,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-GCPAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -5258,12 +5258,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-GCPAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -5305,12 +5305,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-GCPAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -5359,12 +5359,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-GCPAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -5415,12 +5415,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-GCPAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -5470,12 +5470,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-GCPAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -5525,12 +5525,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-GCPAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -5571,12 +5571,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-GCPAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -5619,12 +5619,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-GCPAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -5666,12 +5666,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-GCPAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -5713,12 +5713,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-GCPAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -5760,12 +5760,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-GCPAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -5808,12 +5808,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-GCPAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -5855,12 +5855,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-GCPAZ",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -5902,12 +5902,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-GCPOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -5948,12 +5948,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-GCPOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -5995,12 +5995,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-GCPOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -6042,12 +6042,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-GCPOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -6096,12 +6096,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-GCPOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -6152,12 +6152,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-GCPOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -6207,12 +6207,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-GCPOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -6262,12 +6262,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-GCPOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -6308,12 +6308,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-GCPOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -6356,12 +6356,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-GCPOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -6403,12 +6403,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-GCPOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -6450,12 +6450,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-GCPOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -6498,12 +6498,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-GCPOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -6545,12 +6545,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-GCPOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -6592,12 +6592,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-AWSOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -6638,12 +6638,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-AWSOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -6685,12 +6685,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-AWSOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -6732,12 +6732,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-AWSOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -6786,12 +6786,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-AWSOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -6842,12 +6842,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-AWSOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -6897,12 +6897,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-AWSOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -6952,12 +6952,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-AWSOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -6998,12 +6998,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-AWSOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -7046,12 +7046,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-AWSOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -7093,12 +7093,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-AWSOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -7140,12 +7140,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-AWSOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -7188,12 +7188,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-AWSOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -7235,12 +7235,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-AWSOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -7282,12 +7282,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-AWSOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -7329,12 +7329,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-AZOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -7375,12 +7375,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-AZOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -7423,12 +7423,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-AZOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -7470,12 +7470,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-AZOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -7517,12 +7517,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-AZOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -7564,12 +7564,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-AZOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -7618,12 +7618,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-AZOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -7674,12 +7674,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-AZOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -7729,12 +7729,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-AZOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -7784,12 +7784,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-AZOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -7830,12 +7830,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-AZOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -7878,12 +7878,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-AZOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -7925,12 +7925,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-AZOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -7972,12 +7972,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-AZOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -8019,12 +8019,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-AZOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -8065,12 +8065,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-AZOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -8112,12 +8112,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-AZOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -8159,12 +8159,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-GCPOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -8205,12 +8205,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-GCPOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -8252,12 +8252,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T1-GCPOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -8299,12 +8299,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-GCPOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -8353,12 +8353,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-GCPOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -8409,12 +8409,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-GCPOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -8464,12 +8464,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T2-GCPOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -8519,12 +8519,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-GCPOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -8565,12 +8565,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-GCPOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -8613,12 +8613,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-GCPOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -8660,12 +8660,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T3-GCPOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -8707,12 +8707,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-GCPOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -8755,12 +8755,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-GCPOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -8802,12 +8802,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-GCPOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -8849,12 +8849,12 @@
     },
     "cost_class": "free",
     "group_id": "G-PSTO-T4-GCPOCI",
-    "origin": "pilot",
     "pending": {
      "claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
      "claim_version_id": "idem",
      "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE",
      "lowering_plan": "plano C26 do PILOT-STO-E2E",
+     "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin",
      "stratum.relation": "sai da alegação",
      "weight": "idem"
     },
@@ -11667,7 +11667,7 @@
    "summary": "versionamento do contêiner não lido"
   }
  },
- "generated_at": "2026-11-04T08:18:18-03:00",
+ "generated_at": "2026-11-04T08:20:07-03:00",
  "heldout": {
   "ciphertext_sha256": "95945627050269f346713758448a918b8079c58c362d361ac208cca4781d72c3",
   "counts": {
