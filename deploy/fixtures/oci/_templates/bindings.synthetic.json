@@ -4,7 +4,6 @@
  "note": "Bindings SINTÉTICOS para o gate de render do stub C26 (sem nuvem). Ligam cada símbolo de contexto do stub a uma chave de context_bindings.json; o HCL recebe só var.bo_ctx_<chave> (variável sem default) e o render_report.json registra a origem de cada atributo como binding:<chave>. Nenhum valor é gravado aqui: o valor (compartment, namespace, tag) é dado pelo contexto da execução na hora do apply (offline: OCID sintético montado em memória pelo OfflineKit). Por isso não há OCID neste arquivo, nem falso: o privacy_lint reprova qualquer texto com formato de OCID.",
  "bindings": [
   {"symbol_id": "SYM-c0a1000000000001", "key": "compartment_id"},
-  {"symbol_id": "SYM-c0a1000000000002", "key": "objectstorage_namespace"},
-  {"symbol_id": "SYM-c0a1000000000003", "key": "run_tag"}
+  {"symbol_id": "SYM-c0a1000000000002", "key": "objectstorage_namespace"}
  ]
 }

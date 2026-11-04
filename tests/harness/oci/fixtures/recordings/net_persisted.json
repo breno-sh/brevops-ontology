@@ -11,7 +11,7 @@
   "bo_region"
  ],
  "identity": "sandbox-synthetic",
- "module_sha256": "9fd3ad3a5c692f57ee980fde1e05ef90d60fe2b7a58af6cbd67c8cf928b44ccb",
+ "module_sha256": "6f00d81d5976f68bb099ce3506d58f1dcc2e9f434927fb84abc70e74e8ba84c8",
  "note": "gravação sintética (sem nuvem): state no formato de terraform show -json montado do plano de exemplo",
  "plan_id": "LP-OCI-NET-0001",
  "polls": [
@@ -39,7 +39,7 @@
           "compartment_id": "@CTX:compartment_id",
           "display_name": "bo-net-0001-vcn",
           "freeform_tags": {
-           "bo_run": "@CTX:run_tag"
+           "bo-run": "@CTX:run_tag"
           },
           "id": "@OCID:oci_core_vcn:163",
           "state": "PROVISIONING",
@@ -63,6 +63,9 @@
             "protocol": "all"
            }
           ],
+          "freeform_tags": {
+           "bo-run": "@CTX:run_tag"
+          },
           "id": "@OCID:oci_core_security_list:164",
           "ingress_security_rules": [
            {
@@ -108,6 +111,9 @@
          "values": {
           "compartment_id": "@CTX:compartment_id",
           "display_name": "bo-net-0001-nsg",
+          "freeform_tags": {
+           "bo-run": "@CTX:run_tag"
+          },
           "id": "@OCID:oci_core_network_security_group:165",
           "state": "AVAILABLE",
           "time_created": "2026-11-03 10:00:00.000 +0000 UTC",
@@ -173,7 +179,7 @@
           "compartment_id": "@CTX:compartment_id",
           "display_name": "bo-net-0001-vcn",
           "freeform_tags": {
-           "bo_run": "@CTX:run_tag"
+           "bo-run": "@CTX:run_tag"
           },
           "id": "@OCID:oci_core_vcn:163",
           "state": "AVAILABLE",
@@ -197,6 +203,9 @@
             "protocol": "all"
            }
           ],
+          "freeform_tags": {
+           "bo-run": "@CTX:run_tag"
+          },
           "id": "@OCID:oci_core_security_list:164",
           "ingress_security_rules": [
            {
@@ -242,6 +251,9 @@
          "values": {
           "compartment_id": "@CTX:compartment_id",
           "display_name": "bo-net-0001-nsg",
+          "freeform_tags": {
+           "bo-run": "@CTX:run_tag"
+          },
           "id": "@OCID:oci_core_network_security_group:165",
           "state": "AVAILABLE",
           "time_created": "2026-11-03 10:00:00.000 +0000 UTC",

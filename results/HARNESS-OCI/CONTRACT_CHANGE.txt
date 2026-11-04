@@ -105,3 +105,12 @@ ACHADO 4 (2026-11-04T07:54:33-03:00) — chave da tag de execução: bo_run (OCI
        sem isso o HCL do stub teria as duas chaves.
   Até a decisão, o plano OCI com a tag "bo_run" é recusado pelo plan_guard (PG-TAG) antes de qualquer apply,
   que é o comportamento seguro. Nada aplicado, nenhuma nuvem.
+
+RESOLUÇÃO DO ACHADO 4 (2026-11-04T08:48-03:00) — opção B, emenda 6 do CONTRACTS (2f3c0d3, C26 1.2.0, C26-NOTAG)
+  O stub não traz mais freeform_tags.bo_run. Neste módulo: os exemplos perderam o valor da tag (e o termo e o
+  binding do símbolo do run_tag), e o renderizador põe a inserção declarada HI-OCI-01,
+  freeform_tags["bo-run"] = var.bo_ctx_run_tag, nos recursos dos 18 tipos com trace = tag da tabela de SKUs do
+  SAFETY (deploy/fixtures/oci/_templates/run_tag.json, conferida com a tabela por teste). A inserção sai no
+  render_report em 'insertions', nunca em 'written'. Plano com freeform_tags inteiro ou com a chave bo-run é
+  CONFLICTING_VALUES (INVALID_PLAN). O no_silent_insert confere a chave em cada recurso da lista e reprova se ela
+  faltar, mudar, ganhar default ou aparecer em tipo fora da lista. rendered_example/ e as gravações foram regerados.

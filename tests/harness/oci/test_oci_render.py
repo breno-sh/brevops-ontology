@@ -336,3 +336,65 @@ def test_catalog_g2_with_synthetic_bindings(tmp_out):
     assert SB.fmt_check(tmp_out / "g2").rc == 0
     i, v = SB.init_validate(tmp_out / "g2")
     assert i.rc == 0 and json.loads(v.out)["valid"]
+
+
+# ------------------------------------------------------------------ HI-OCI-01: tag bo-run declarada pelo harness
+def test_lista_da_tag_bate_com_a_tabela_do_safety():
+    from bo.harness.oci import run_tag as RT
+    from bo.harness.oci import schema as S
+    assert (REPO / RT.SAFETY_TABLE).is_file(), "tabela de SKUs do SAFETY ausente"
+    assert sorted(RT.types()) == RT.from_safety_table()
+    t = S.table()
+    for rtype in sorted(RT.types()):
+        a = t.block("resource", rtype).attrs.get(RT.ATTRIBUTE)
+        assert a is not None and a.type == ["map", "string"] and a.configurable, rtype
+
+
+def test_tag_bo_run_so_nos_recursos_dos_tipos_da_lista(tmp_out, example_plans):
+    from bo.harness.oci import run_tag as RT
+    res = R.render(EX / "lowering_plan.jsonl", tmp_out / "out", bindings_path=EX / "bindings.json")
+    for p in res.renders:
+        plan = example_plans[p.plan_id]
+        want = sorted(p.labels[s["order"]] for s in plan["steps"]
+                      if s["action"] != "reference" and s["resource_type"] in RT.types())
+        assert want, p.plan_id
+        assert sorted(x["label"] for x in p.insertions) == want
+        assert all(x["insertion_id"] == "HI-OCI-01" and x["expr"] == "var.bo_ctx_run_tag"
+                   and x["source"] == "binding:run_tag" for x in p.insertions)
+        # nunca no 'written' (que é só do plano) e a variável vem da chave de contexto run_tag, sem default
+        assert not any(w.field.startswith("freeform_tags") for w in p.written)
+        assert p.variables["bo_ctx_run_tag"].source == "binding:run_tag"
+        tf = (tmp_out / "out" / p.module / "main.tf").read_text()
+        assert tf.count('"bo-run" = var.bo_ctx_run_tag') == len(want) and "bo_run" not in tf
+
+
+def test_plano_com_freeform_tags_e_conflito(tmp_out, example_plans):
+    plan = mutate(example_plans["LP-OCI-STO-0001"], 1, lambda s: s["values"].append(
+        {"field": "freeform_tags", "origin": "carried", "marked": False,
+         "term": {"kind": "literal", "datatype": "map", "value": {"bo-run": "fixo"}}}))
+    pf, bf = write_plan(tmp_out / "in", [plan])
+    res = R.render(pf, tmp_out / "out", bindings_path=bf)
+    assert statuses(res) == {"LP-OCI-STO-0001": "INVALID_PLAN"}
+    assert codes(res, "LP-OCI-STO-0001") == ["CONFLICTING_VALUES"]
+    assert not (tmp_out / "out" / "lp_oci_sto_0001").exists()
+
+
+def test_chave_bo_run_vinda_do_plano_e_conflito(example_plans):
+    # o C26 já recusa '-' no caminho; o renderizador recusa de novo se a chave chegar por outra via
+    from bo.harness.oci import schema as S
+    plan = mutate(example_plans["LP-OCI-STO-0001"], 1, lambda s: s["values"].append(
+        {"field": "freeform_tags.bo-run", "origin": "carried", "marked": False,
+         "term": {"kind": "literal", "datatype": "string", "value": "fixo"}}))
+    graph = {g["graph_id"]: g for g in load_jsonl(EX / "graph_ir.jsonl")}[plan["graph_id"]]
+    pr = R.render_plan(plan, graph, R.load_bindings(EX / "bindings.json"), R.Templates.load(), S.table())
+    assert pr.status == "INVALID_PLAN" and "CONFLICTING_VALUES" in {i.code for i in pr.issues}
+    assert pr.blocks == [] and pr.insertions == []
+
+
+def test_plano_com_tag_de_execucao_e_recusado_pelo_c26(tmp_out, example_plans):
+    plan = mutate(example_plans["LP-OCI-STO-0001"], 1, lambda s: s["values"].append(
+        {"field": "freeform_tags.bo_run", "origin": "carried", "marked": False,
+         "term": {"kind": "literal", "datatype": "string", "value": "fixo"}}))
+    pf, bf = write_plan(tmp_out / "in", [plan])
+    with pytest.raises(ValueError, match="C26-NOTAG|tag de execução"):
+        R.render(pf, tmp_out / "out", bindings_path=bf)

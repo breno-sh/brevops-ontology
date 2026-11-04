@@ -19,6 +19,11 @@ caminho que ele declara. Campo obrigatório do schema do oci fixado que o plano 
 símbolo sem binding, referência sem alvo no plano, segredo carried e fecho de dependências aberto: o plano sai
 UNKNOWN_INPUT e nenhum HCL dele é escrito. Plano para outro provedor: NOT_APPLICABLE.
 
+Além do plano, uma única inserção DECLARADA (bo.harness.oci.run_tag, HI-OCI-01): freeform_tags["bo-run"] =
+var.bo_ctx_run_tag nos recursos dos tipos que a tabela de SKUs do SAFETY rastreia por tag (o plan_guard recusa o
+plano sem ela, PG-TAG; desde o C26 1.2.0 o plano não traz tag de execução). Ela sai no relatório em 'insertions',
+nunca em 'written'. Plano que já traga freeform_tags com bo-run, ou freeform_tags inteiro, é CONFLICTING_VALUES.
+
 Saída 0 quando a entrada confere com o C26 e todo plano recebeu situação; 2 para entrada inválida ou uso errado.
 """
 
@@ -35,6 +40,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from . import MODULE_ID, PROVIDER, PROVIDER_VERSION, SCHEMA_SHA256, SCHEMA_TABLE, hcl, templates_dir, tmp_root
+from . import run_tag as RT
 from . import schema as S
 
 TZ = timezone(timedelta(hours=-3))
@@ -46,7 +52,7 @@ UNKNOWN_CODES = {"MISSING_REQUIRED_FIELD", "MISSING_REQUIRED_BLOCK", "UNRESOLVED
 INVALID_CODES = {"RESOURCE_TYPE_NOT_IN_PIN", "FIELD_NOT_IN_SCHEMA", "FIELD_NOT_CONFIGURABLE", "PATH_ENDS_AT_BLOCK",
                  "INDEX_NOT_ALLOWED", "KEY_NOT_ALLOWED", "TYPE_MISMATCH", "TERM_DATATYPE_MISMATCH",
                  "DUPLICATE_FIELD", "MIXED_INDEXING", "INDEX_GAP", "MAX_ITEMS_EXCEEDED", "AMBIGUOUS_TARGET",
-                 "REFERENCE_NOT_IN_DEPENDS_ON", "UNSUPPORTED_TERM", "UNKNOWN_BINDING_KEY"}
+                 "REFERENCE_NOT_IN_DEPENDS_ON", "UNSUPPORTED_TERM", "UNKNOWN_BINDING_KEY", "CONFLICTING_VALUES"}
 STATUS = ("RENDERED", "UNKNOWN_INPUT", "INVALID_PLAN", "NOT_APPLICABLE")
 
 # expressões do C00 que o renderizador sabe escrever: operadores do HCL e funções puras do Terraform
@@ -150,6 +156,7 @@ class PlanRender:
     notes: list = field(default_factory=list)
     losses: list = field(default_factory=list)
     choices: list = field(default_factory=list)
+    insertions: list = field(default_factory=list)    # inserções declaradas do harness (HI-OCI-01)
 
     def report(self) -> dict:
         return {
@@ -160,6 +167,7 @@ class PlanRender:
             "written": [w.__dict__ for w in self.written],
             "variables": [v.__dict__ for v in sorted(self.variables.values(), key=lambda v: v.name)],
             "losses": self.losses, "choices": self.choices, "notes": self.notes,
+            "insertions": self.insertions,
         }
 
 
@@ -573,6 +581,8 @@ def render_plan(plan: dict, graph: dict | None, bindings: dict, tpl: Templates,
             pr.written.append(w)
             if attr.deprecated:
                 pr.notes.append(f"passo {step['order']}: {fpath} está marcado deprecated no schema")
+        if kind == "resource" and rtype in RT.types():
+            _run_tag(root, block, step, label, rtype, ctx, pr)
         failed = {(i.order, i.field) for i in pr.issues}
         req: list = []
         _check_required(root, block, "", req, step)
@@ -586,10 +596,42 @@ def render_plan(plan: dict, graph: dict | None, bindings: dict, tpl: Templates,
     elif pr.issues:
         pr.status = "UNKNOWN_INPUT"
     if pr.status != "RENDERED":
-        pr.blocks, pr.variables = [], {}
+        pr.blocks, pr.variables, pr.insertions = [], {}, []
     else:
         pr.module = module_name(pr.plan_id)
     return pr
+
+
+def _run_tag(root: Node, block: S.Block, step: dict, label: str, rtype: str, ctx: PlanCtx, pr: PlanRender) -> None:
+    """HI-OCI-01: freeform_tags["bo-run"] = var.bo_ctx_run_tag, declarado; conflito com o plano reprova."""
+    where = f"{RT.ATTRIBUTE}.{RT.TAG_KEY}"
+    a = block.attrs.get(RT.ATTRIBUTE)
+    if a is None or a.type != ["map", "string"] or not a.configurable:
+        pr.issues.append(Issue("FIELD_NOT_IN_SCHEMA", step["order"], step["node_id"], where,
+                               f"{rtype} está em {RT.path().name} sem {RT.ATTRIBUTE} map(string) no oci {PROVIDER_VERSION}"))
+        return
+    cur = root.attrs.get(RT.ATTRIBUTE)
+    if isinstance(cur, Leaf):
+        pr.issues.append(Issue("CONFLICTING_VALUES", step["order"], step["node_id"], RT.ATTRIBUTE,
+                               f"o plano dá {RT.ATTRIBUTE} inteiro; a chave {RT.TAG_KEY} é do harness ({RT.INSERTION_ID})"))
+        return
+    if isinstance(cur, dict) and RT.TAG_KEY in cur:
+        pr.issues.append(Issue("CONFLICTING_VALUES", step["order"], step["node_id"], where,
+                               f"o plano já traz {where}; a tag de execução é do harness ({RT.INSERTION_ID})"))
+        return
+    if RT.BINDING_KEY not in ctx.tpl.bindings:
+        pr.issues.append(Issue("UNKNOWN_BINDING_KEY", step["order"], step["node_id"], where,
+                               f"chave de contexto {RT.BINDING_KEY} fora de context_bindings.json"))
+        return
+    name = ctx.tpl.binding_var(RT.BINDING_KEY)
+    expr = hcl.traversal("var", name)
+    w = Written(label, rtype, "resource", where, where, "harness_declared", True, "insertion", expr,
+                f"binding:{RT.BINDING_KEY}", step["node_id"])
+    root.attrs.setdefault(RT.ATTRIBUTE, {})[RT.TAG_KEY] = Leaf(expr, w)
+    pr.variables[name] = Var(name, ctx.tpl.bindings[RT.BINDING_KEY]["type"], False, f"binding:{RT.BINDING_KEY}")
+    pr.insertions.append({"insertion_id": RT.INSERTION_ID, "label": label, "resource_type": rtype,
+                          "node_id": step["node_id"], "hcl_path": where, "expr": expr,
+                          "source": f"binding:{RT.BINDING_KEY}"})
 
 
 # ------------------------------------------------------------------------------------------- arquivos
@@ -613,7 +655,8 @@ def module_files(pr: PlanRender, tpl: Templates) -> dict[str, str]:
     tf.block(_required_providers(tpl))
     blocks = [tf] + [_variable(v) for v in sorted(pr.variables.values(), key=lambda v: v.name)] + pr.blocks
     head = [f"{MODULE_ID}: plano {pr.plan_id} (grafo {pr.graph_id}), oci {PROVIDER_VERSION}.",
-            "Gerado por bo.harness.oci.render; cada atributo vem do plano (ver render_report.json)."]
+            "Gerado por bo.harness.oci.render; cada atributo vem do plano (ver render_report.json)"
+            + (f", salvo a tag {RT.TAG_KEY} declarada ({RT.INSERTION_ID})." if pr.insertions else ".")]
     return {f"{pr.module}/main.tf": hcl.write_file(blocks, head)}
 
 

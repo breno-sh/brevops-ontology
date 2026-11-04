@@ -4,8 +4,7 @@
   "synthetic": false,
   "used_keys": [
    "compartment_id",
-   "objectstorage_namespace",
-   "run_tag"
+   "objectstorage_namespace"
   ],
   "values_written": false
  },
@@ -16,15 +15,15 @@
   "UNKNOWN_INPUT": 0
  },
  "files": {
-  "lp_oci_net_0001/main.tf": "9fd3ad3a5c692f57ee980fde1e05ef90d60fe2b7a58af6cbd67c8cf928b44ccb",
-  "lp_oci_sto_0001/main.tf": "d18757701989bc3fa6f03466bd5d01fa87e025b73518576c51d4caf05ae4d2ba",
+  "lp_oci_net_0001/main.tf": "6f00d81d5976f68bb099ce3506d58f1dcc2e9f434927fb84abc70e74e8ba84c8",
+  "lp_oci_sto_0001/main.tf": "e69c92e4899df3a459f00cd4b29dc4c671118b33f59078ec70dbb26aeada4d53",
   "main.tf": "c9d0946fa1a33d4265c6eacb7a4ac7cb3c713842353524b138872cddd83b7897"
  },
- "generated_at": "2026-11-03T17:42:59-03:00",
+ "generated_at": "2026-11-04T08:46:48-03:00",
  "input": {
-  "bindings_sha256": "23848d73ece55fd83930470177b13f09aaac35b8188c4bd67d26a8902745d064",
-  "graph_ir_sha256": "750f0b8b3f10c819b4141d4c0e488914aab6f7f94715c4e84f739da69ef2edad",
-  "plan_sha256": "9f295432f4c1ebf5aa6a5d3c3bbf75134afc802e044b9f0b34a5a288aef6d49c"
+  "bindings_sha256": "e17cdcdeea243baa9e47a2db46448c24b2361284d353f89d0de851cfb05b1270",
+  "graph_ir_sha256": "6f52a15a807b11fb0c026fe9d8ab73655914530590796887caddf32923fd59f2",
+  "plan_sha256": "411942c8e205234b759a590a188aa2286f746883434ac4acf3f87c74e4a5533f"
  },
  "module": "HARNESS-OCI",
  "plans": [
@@ -38,6 +37,35 @@
     }
    ],
    "graph_id": "GIR-OCI-NET-0001",
+   "insertions": [
+    {
+     "expr": "var.bo_ctx_run_tag",
+     "hcl_path": "freeform_tags.bo-run",
+     "insertion_id": "HI-OCI-01",
+     "label": "r1",
+     "node_id": "r1",
+     "resource_type": "oci_core_vcn",
+     "source": "binding:run_tag"
+    },
+    {
+     "expr": "var.bo_ctx_run_tag",
+     "hcl_path": "freeform_tags.bo-run",
+     "insertion_id": "HI-OCI-01",
+     "label": "r2",
+     "node_id": "r2",
+     "resource_type": "oci_core_security_list",
+     "source": "binding:run_tag"
+    },
+    {
+     "expr": "var.bo_ctx_run_tag",
+     "hcl_path": "freeform_tags.bo-run",
+     "insertion_id": "HI-OCI-01",
+     "label": "r3",
+     "node_id": "r3",
+     "resource_type": "oci_core_network_security_group",
+     "source": "binding:run_tag"
+    }
+   ],
    "issues": [],
    "labels": {
     "1": "r1",
@@ -117,20 +145,6 @@
      "resource_type": "oci_core_vcn",
      "source": "plan",
      "term_kind": "literal"
-    },
-    {
-     "derived_value": null,
-     "expr": "var.bo_ctx_run_tag",
-     "field": "freeform_tags.bo_run",
-     "hcl_path": "freeform_tags.bo_run",
-     "kind": "resource",
-     "label": "r1",
-     "marked": true,
-     "node_id": "r1",
-     "origin": "synthesized",
-     "resource_type": "oci_core_vcn",
-     "source": "binding:run_tag",
-     "term_kind": "symbol"
     },
     {
      "derived_value": null,
@@ -501,6 +515,17 @@
   {
    "choices": [],
    "graph_id": "GIR-OCI-STO-0001",
+   "insertions": [
+    {
+     "expr": "var.bo_ctx_run_tag",
+     "hcl_path": "freeform_tags.bo-run",
+     "insertion_id": "HI-OCI-01",
+     "label": "r1",
+     "node_id": "r1",
+     "resource_type": "oci_objectstorage_bucket",
+     "source": "binding:run_tag"
+    }
+   ],
    "issues": [],
    "labels": {
     "1": "r1",
@@ -611,20 +636,6 @@
      "resource_type": "oci_objectstorage_bucket",
      "source": "plan",
      "term_kind": "literal"
-    },
-    {
-     "derived_value": null,
-     "expr": "var.bo_ctx_run_tag",
-     "field": "freeform_tags.bo_run",
-     "hcl_path": "freeform_tags.bo_run",
-     "kind": "resource",
-     "label": "r1",
-     "marked": true,
-     "node_id": "r1",
-     "origin": "synthesized",
-     "resource_type": "oci_objectstorage_bucket",
-     "source": "binding:run_tag",
-     "term_kind": "symbol"
     },
     {
      "derived_value": null,

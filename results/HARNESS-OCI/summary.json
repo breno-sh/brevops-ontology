@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "HARNESS-OCI",
- "generated_at": "2026-11-04T08:23:31-03:00",
+ "generated_at": "2026-11-04T08:48:10-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/HARNESS-OCI.txt",
@@ -16,19 +16,22 @@
    "cloud": "nenhuma",
    "recordings": "sinteticas",
    "contracts": "C26-1.1.0,C12-3.1.0,C00-3.0.1",
-   "g2_bindings": "deploy/fixtures/oci/_templates/bindings.synthetic.json"
+   "g2_bindings": "deploy/fixtures/oci/_templates/bindings.synthetic.json",
+   "safety_skus_sha256": "da426ef166267ee3fe7a91c704a9e0a23a7b4ffe3f1032e432f5ffd4699bf6ed",
+   "insercao_declarada": "HI-OCI-01"
   },
   "inputs": [
    {
     "path": "$BO_REPO/contracts/stubs",
     "kind": "dir",
-    "sha256": "9782b476473da02aca51c6ed724625207d0bb54fd76a7c440f0a553e1d27d135",
+    "sha256": "929b124dd416ed592176e821a4983db9caf593ff72e6caea325af00d998fd01a",
     "sha256_before_emenda3_e_skosfix": "6d24a5ce7306bc53d657c96122bc0c8ee7c0057d2b7b543b77507bc30be8abb6",
     "sha256_before_emendas_4_grain_se": "7ee2eaa73c1e0105f3f62d30492d3401ecf87fef0c55dd0dc0e1a05710289f75",
-    "sha256_before_emenda5": "4d3e1ef5cca14555d3688d6275d009582507e823d5df70a688738a39955f75f1"
+    "sha256_before_emenda5": "4d3e1ef5cca14555d3688d6275d009582507e823d5df70a688738a39955f75f1",
+    "sha256_before_emenda6": "9782b476473da02aca51c6ed724625207d0bb54fd76a7c440f0a553e1d27d135"
    }
   ],
-  "recorded_at": "2026-11-04T08:23:31-03:00"
+  "recorded_at": "2026-11-04T08:48:10-03:00"
  },
  "sources": [
   {
@@ -37,5 +40,5 @@
    "transformation": "terraform providers schema -json num sandbox sem credenciais (D1); só a estrutura vira src/bo/harness/oci/data/oci-9.11.0.schema_table.jsonl"
   }
  ],
- "notes": "Harness OCI offline: render C26->HCL sem inserção, no_silent_insert, executor com respostas gravadas sintéticas. Nenhuma chamada de nuvem. Refeito sobre a emenda 2 do CONTRACTS. 2026-11-04: troca da chave freeform bo_run por bo-run (C16, plan_guard PG-TAG) NÃO aplicada: o C26 não aceita '-' em caminho de campo (steps[].values[].field) e a tag vem do plano, inclusive do stub do CONTRACTS; registrada como ACHADO 4 em CONTRACT_CHANGE.txt, com duas propostas. Nada do harness mudou. Entradas recalculadas depois da emenda 5 do CONTRACTS (stubs C24 e C25; nada do C26 mudou)."
+ "notes": "Harness OCI offline: render C26->HCL sem inserção, no_silent_insert, executor com respostas gravadas sintéticas. Nenhuma chamada de nuvem. Refeito sobre a emenda 2 do CONTRACTS. 2026-11-04: troca da chave freeform bo_run por bo-run (C16, plan_guard PG-TAG) NÃO aplicada: o C26 não aceita '-' em caminho de campo (steps[].values[].field) e a tag vem do plano, inclusive do stub do CONTRACTS; registrada como ACHADO 4 em CONTRACT_CHANGE.txt, com duas propostas. Nada do harness mudou. Entradas recalculadas depois da emenda 5 do CONTRACTS (stubs C24 e C25; nada do C26 mudou). 2026-11-04: após a emenda 6 do CONTRACTS (C26 1.2.0, C26-NOTAG), inserção declarada HI-OCI-01 freeform_tags[bo-run] = var.bo_ctx_run_tag nos tipos com trace=tag da tabela de SKUs do SAFETY (run_tag.json); exemplos sem a tag de execução; rendered_example e gravações regerados; no_silent_insert com mutações e controles do HCL da tag."
 }

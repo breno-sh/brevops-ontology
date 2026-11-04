@@ -1,5 +1,5 @@
 # HARNESS-OCI: plano LP-OCI-STO-0001 (grafo GIR-OCI-STO-0001), oci 9.11.0.
-# Gerado por bo.harness.oci.render; cada atributo vem do plano (ver render_report.json).
+# Gerado por bo.harness.oci.render; cada atributo vem do plano (ver render_report.json), salvo a tag bo-run declarada (HI-OCI-01).
 
 terraform {
   required_providers {
@@ -22,7 +22,7 @@ variable "bo_ctx_run_tag" {
 resource "oci_objectstorage_bucket" "r1" {
   access_type    = "NoPublicAccess"
   compartment_id = var.bo_ctx_compartment_id
-  freeform_tags  = { "bo_run" = var.bo_ctx_run_tag }
+  freeform_tags  = { "bo-run" = var.bo_ctx_run_tag }
   name           = "bo-sto-0001"
   namespace      = var.bo_ctx_objectstorage_namespace
   versioning     = "Enabled"

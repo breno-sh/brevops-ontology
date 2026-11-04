@@ -7,10 +7,6 @@
   {
    "key": "objectstorage_namespace",
    "symbol_id": "SYM-c0a1000000000002"
-  },
-  {
-   "key": "run_tag",
-   "symbol_id": "SYM-c0a1000000000003"
   }
  ],
  "note": "liga os símbolos de contexto dos exemplos às chaves de context_bindings.json",

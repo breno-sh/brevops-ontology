@@ -1,5 +1,5 @@
 # HARNESS-OCI: plano LP-OCI-NET-0001 (grafo GIR-OCI-NET-0001), oci 9.11.0.
-# Gerado por bo.harness.oci.render; cada atributo vem do plano (ver render_report.json).
+# Gerado por bo.harness.oci.render; cada atributo vem do plano (ver render_report.json), salvo a tag bo-run declarada (HI-OCI-01).
 
 terraform {
   required_providers {
@@ -19,12 +19,13 @@ resource "oci_core_vcn" "r1" {
   cidr_blocks    = ["10.0.0.0/16"]
   compartment_id = var.bo_ctx_compartment_id
   display_name   = "bo-net-0001-vcn"
-  freeform_tags  = { "bo_run" = var.bo_ctx_run_tag }
+  freeform_tags  = { "bo-run" = var.bo_ctx_run_tag }
 }
 
 resource "oci_core_security_list" "r2" {
   compartment_id = var.bo_ctx_compartment_id
   display_name   = "bo-net-0001-sl"
+  freeform_tags  = { "bo-run" = var.bo_ctx_run_tag }
   vcn_id         = oci_core_vcn.r1.id
   egress_security_rules {
     destination = "10.0.0.0/16"
@@ -53,6 +54,7 @@ resource "oci_core_security_list" "r2" {
 resource "oci_core_network_security_group" "r3" {
   compartment_id = var.bo_ctx_compartment_id
   display_name   = "bo-net-0001-nsg"
+  freeform_tags  = { "bo-run" = var.bo_ctx_run_tag }
   vcn_id         = oci_core_vcn.r1.id
 }
 

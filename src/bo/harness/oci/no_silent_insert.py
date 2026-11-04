@@ -9,12 +9,17 @@ mutações geradas deles. Três checagens:
   1. Independente do renderizador: o HCL de cada plano RENDERED é lido de volta pelo python-hcl2 (outro parser) e
      achatado em caminhos; cada folha de recurso tem de casar com exatamente um valor do plano (mesmo caminho e mesmo
      valor), e cada valor do plano com exatamente uma folha. Folha sem valor = INSERÇÃO; valor sem folha = PERDA.
+     A única folha fora do plano aceita é a inserção declarada HI-OCI-01 (bo.harness.oci.run_tag):
+     freeform_tags["bo-run"] = var.bo_ctx_run_tag, exatamente nos recursos dos tipos de run_tag.json.
      Fora dos recursos, só o encanamento do molde (root_template.json): bloco terraform com as versões fixadas,
      provider com os atributos do molde, variáveis usadas por algum valor e módulos com source + variáveis.
   2. Mutações: tirar um campo obrigatório (pelo schema do oci fixado) de um plano RENDERED tem de dar UNKNOWN_INPUT e
      nenhum HCL do plano; idem para escolha sem seleção, símbolo sem binding e fecho de dependências aberto; campo fora
      do schema tem de dar INVALID_PLAN.
-  3. Vacuidade: o gate reprova se nenhum plano foi renderizado e conferido.
+     Plano com freeform_tags inteiro num tipo com a tag declarada tem de dar INVALID_PLAN (CONFLICTING_VALUES).
+  3. Controles do HCL (sabotagem do texto renderizado): tag bo-run removida, trocada, posta em tipo fora da lista
+     e variável da tag com default têm de ser pegos pela checagem 1.
+  4. Vacuidade: o gate reprova se nenhum plano foi renderizado e conferido.
 
 Relatório (só contagens e códigos) em $BO_DATA/HARNESS-OCI/no_silent_insert.json.
 """
@@ -31,6 +36,7 @@ from pathlib import Path
 
 from . import MODULE_ID, module_data, repo_root, templates_dir, tmp_root
 from . import render as R
+from . import run_tag as RT
 from . import schema as S
 
 EXPR = re.compile(r"^\$\{(.*)\}$", re.S)
@@ -225,6 +231,20 @@ def check_rendered(out: Path, plan: dict, pr_report: dict, bindings: dict, tpl: 
             got = flat[h]
             if isinstance(got, tuple) and got[0] == "expr":
                 used_vars |= set(re.findall(r"\bvar\.([A-Za-z0-9_]+)", got[1]))
+        # inserção declarada HI-OCI-01: exatamente nos recursos dos tipos da lista
+        th = (RT.ATTRIBUTE, RT.TAG_KEY)
+        if key[0] == "resource" and key[1] in RT.types():
+            want_tag = ("expr", f"var.{tpl.binding_var(RT.BINDING_KEY)}")
+            if th not in flat:
+                v.append(f"{plan['plan_id']} passo {step['order']}: tag {RT.TAG_KEY} declarada ({RT.INSERTION_ID}) "
+                         f"ausente do HCL (PERDA)")
+            elif th in claimed:
+                v.append(f"{plan['plan_id']} passo {step['order']}: tag {RT.TAG_KEY} reclamada pelo plano")
+            elif flat[th] != want_tag:
+                v.append(f"{plan['plan_id']} passo {step['order']}: tag {RT.TAG_KEY} no HCL difere da declarada")
+            else:
+                claimed[th] = RT.INSERTION_ID
+                used_vars.add(tpl.binding_var(RT.BINDING_KEY))
         for h in sorted(set(flat) - set(claimed), key=str):
             v.append(f"{plan['plan_id']} passo {step['order']}: folha {'.'.join(map(str, h))} sem valor no plano "
                      f"(INSERÇÃO)")
@@ -237,6 +257,12 @@ def check_rendered(out: Path, plan: dict, pr_report: dict, bindings: dict, tpl: 
                 v.append(f"{plan['plan_id']}: variável {name} com campos fora do molde {sorted(extra)}")
             if "default" in body:
                 v.append(f"{plan['plan_id']}: variável {name} com default (valor inventado)")
+    want_ins = sorted((s["resource_type"], label[s["order"]]) for s in plan["steps"]
+                      if s["action"] != "reference" and s["resource_type"] in RT.types())
+    got_ins = sorted((x["resource_type"], x["label"]) for x in pr_report.get("insertions", [])
+                     if x.get("insertion_id") == RT.INSERTION_ID)
+    if got_ins != want_ins:
+        v.append(f"{plan['plan_id']}: inserções no relatório {got_ins} ≠ declaradas {want_ins}")
     if declared != used_vars:
         v.append(f"{plan['plan_id']}: variáveis declaradas {sorted(declared)} ≠ usadas {sorted(used_vars)}")
     v += _check_terraform_block(d, tpl, root=False, where=plan["plan_id"])
@@ -330,6 +356,12 @@ def mutations(plan: dict, bindings: dict) -> list[tuple[str, dict, dict, str]]:
             ms = next(x for x in m["steps"] if x["order"] == s["order"])
             ms["typed_choices"][0]["selected"] = None
             out.append((f"escolha_aberta_{s['node_id']}", m, bindings, "UNKNOWN_INPUT"))
+        if kind == "resource" and s["resource_type"] in RT.types():
+            m = copy.deepcopy(plan)
+            ms = next(x for x in m["steps"] if x["order"] == s["order"])
+            ms["values"].append({"field": RT.ATTRIBUTE, "origin": "carried", "marked": False,
+                                 "term": {"kind": "literal", "datatype": "map", "value": {RT.TAG_KEY: "fixo"}}})
+            out.append((f"tag_no_plano_{s['node_id']}", m, bindings, "INVALID_PLAN"))
     m = copy.deepcopy(plan)
     m["dependency_closure"] = {"closed": False, "missing": ["r_fora_do_plano"]}
     out.append(("fecho_aberto", m, bindings, "UNKNOWN_INPUT"))
@@ -388,6 +420,54 @@ def run_corpus(plan_files: list[tuple[Path, Path | None]], work: Path) -> dict:
     return rep
 
 
+def hcl_controls(work: Path) -> list[dict]:
+    """Sabotagens do texto renderizado da tag declarada; cada uma tem de ser pega por check_rendered."""
+    tpl = R.Templates.load()
+    ex = templates_dir() / "examples"
+    base = work / "hcl_controls_base"
+    rr = R.render(ex / "lowering_plan.jsonl", base, bindings_path=ex / "bindings.json")
+    bindings = R.load_bindings(ex / "bindings.json")
+    plans = {p["plan_id"]: p for p in R.load_jsonl(ex / "lowering_plan.jsonl")}
+    graphs = {g["graph_id"]: g for g in R.load_jsonl(ex / "graph_ir.jsonl")}
+    var = tpl.binding_var(RT.BINDING_KEY)
+    tag_line = re.compile(r'"' + re.escape(RT.TAG_KEY) + r'" = var\.' + var)
+    out = []
+    for pr in rr.report["plans"]:
+        if pr["status"] != "RENDERED" or not pr["insertions"]:
+            continue
+        plan, graph = plans[pr["plan_id"]], graphs.get(plans[pr["plan_id"]]["graph_id"])
+        f = base / pr["module"] / "main.tf"
+        text = f.read_text(encoding="utf-8")
+        out.append({"control": f"{pr['plan_id']}: cópia sem sabotagem passa",
+                    "caught": check_rendered(base, plan, pr, bindings, tpl, graph) == [], "detail": []})
+        untagged = next((s for s in plan["steps"] if s["action"] != "reference"
+                         and s["resource_type"] not in RT.types()), None)
+
+        def sabotage(name, new_text, expect):
+            d = work / f"hcl_{R.module_name(pr['plan_id'])}_{len(out)}"
+            if d.exists():
+                shutil.rmtree(d)
+            shutil.copytree(base, d)
+            (d / pr["module"] / "main.tf").write_text(new_text, encoding="utf-8")
+            v = check_rendered(d, plan, pr, bindings, tpl, graph)
+            out.append({"control": f"{pr['plan_id']}: {name}", "caught": new_text != text
+                        and any(re.search(expect, x) for x in v), "detail": v[:2]})
+
+        sabotage("tag bo-run removida", tag_line.sub("", text, count=1), r"ausente do HCL \(PERDA\)|PERDA")
+        sabotage("tag bo-run trocada", tag_line.sub(f'"{RT.TAG_KEY}" = "fixo"', text, count=1),
+                 r"difere da declarada")
+        sabotage("variável da tag com default",
+                 text.replace(f'variable "{var}" {{\n  type = string\n}}',
+                              f'variable "{var}" {{\n  type    = string\n  default = "x"\n}}', 1), r"default")
+        if untagged is not None:
+            lab = pr["labels"][str(untagged["order"])]
+            hdr = f'resource "{untagged["resource_type"]}" "{lab}" {{\n'
+            sabotage(f"tag bo-run em {untagged['resource_type']} (fora da lista)",
+                     text.replace(hdr, hdr + f'  {RT.ATTRIBUTE} = {{ "{RT.TAG_KEY}" = var.{var} }}\n', 1),
+                     r"INSERÇÃO")
+    return out
+
+
 def _portable(p: Path) -> str:
     p = p.resolve()
     for root, tag in ((repo_root().resolve(), "$BO_REPO"), (tmp_root().resolve(), "$BO_TMP")):
@@ -419,8 +499,10 @@ def main(argv: list[str] | None = None) -> int:
         shutil.rmtree(work)
     work.mkdir(parents=True)
     rep = run_corpus(files, work)
+    rep["hcl_controls"] = hcl_controls(work)
+    missed = [c["control"] for c in rep["hcl_controls"] if not c["caught"]]
     ok = not rep["violations"] and not rep["mutations"]["failed"] and rep["rendered_checked"] > 0 \
-        and rep["mutations"]["total"] > 0
+        and rep["mutations"]["total"] > 0 and rep["hcl_controls"] and not missed
     rep.update({"schema": "bo.harness.oci.no_silent_insert/1", "module": MODULE_ID, "generated_at": R.now_iso(),
                 "result": "OK" if ok else "REPROVADO",
                 "vacuous": rep["rendered_checked"] == 0})
@@ -430,8 +512,9 @@ def main(argv: list[str] | None = None) -> int:
     m = rep["mutations"]
     print(f"[{rep['generated_at']}] no_silent_insert: {len(files)} arquivo(s), situação {rep['status_counts']}, "
           f"{rep['rendered_checked']} plano(s) conferido(s) contra o HCL, {len(rep['violations'])} violação(ões); "
-          f"mutações {m['as_expected']}/{m['total']} como esperado -> {rep['result']}")
-    for x in rep["violations"][:20] + m["failed"][:20]:
+          f"mutações {m['as_expected']}/{m['total']} como esperado; controles do HCL "
+          f"{len(rep['hcl_controls']) - len(missed)}/{len(rep['hcl_controls'])} pegos -> {rep['result']}")
+    for x in rep["violations"][:20] + m["failed"][:20] + ["CONTROLE NÃO PEGO " + c for c in missed]:
         print("  " + x)
     if rep["rendered_checked"] == 0:
         print("  nenhum plano renderizado: o gate não passa por vacuidade")

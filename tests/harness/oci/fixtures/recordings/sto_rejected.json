@@ -14,7 +14,7 @@
   "bo_region"
  ],
  "identity": "sandbox-synthetic",
- "module_sha256": "d18757701989bc3fa6f03466bd5d01fa87e025b73518576c51d4caf05ae4d2ba",
+ "module_sha256": "e69c92e4899df3a459f00cd4b29dc4c671118b33f59078ec70dbb26aeada4d53",
  "note": "gravação sintética (sem nuvem): state no formato de terraform show -json montado do plano de exemplo",
  "plan_id": "LP-OCI-STO-0001",
  "polls": [],

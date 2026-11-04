@@ -103,6 +103,10 @@ def state_for(plan_report: dict, plan: dict, lifecycle: dict | None = None) -> d
         else:
             raise ValueError(f"termo {t['kind']} sem gravação sintética")
         _set_path(r, _tokens(w["hcl_path"]), val)
+    # inserção declarada do harness (HI-OCI-01): a tag de execução volta no state como o provider a guarda
+    for ins in plan_report.get("insertions", []):
+        r = res.setdefault((ins["resource_type"], ins["label"]), {"id": _ocid_token(ins["resource_type"], ins["label"])})
+        _set_path(r, _tokens(ins["hcl_path"]), "@CTX:" + ins["source"].split(":", 1)[1])
     # referência a atributo que não é id: copia o valor do alvo
     for r in res.values():
         _resolve_refs(r, res)

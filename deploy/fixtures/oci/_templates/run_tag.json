@@ -1,0 +1,34 @@
+{
+ "attribute": "freeform_tags",
+ "binding_key": "run_tag",
+ "insertion_id": "HI-OCI-01",
+ "module": "HARNESS-OCI",
+ "schema": "bo.harness.oci.run_tag/1",
+ "source": {
+  "path": "deploy/safety/allowlist_skus.yaml",
+  "rule": "providers.oci.types[*].trace == 'tag' (tag_attribute 'freeform_tags')",
+  "sha256_at_write": "da426ef166267ee3fe7a91c704a9e0a23a7b4ffe3f1032e432f5ffd4699bf6ed"
+ },
+ "tag_key": "bo-run",
+ "types": [
+  "oci_core_internet_gateway",
+  "oci_core_network_security_group",
+  "oci_core_route_table",
+  "oci_core_security_list",
+  "oci_core_subnet",
+  "oci_core_vcn",
+  "oci_functions_application",
+  "oci_functions_function",
+  "oci_identity_compartment",
+  "oci_kms_key",
+  "oci_kms_vault",
+  "oci_logging_log",
+  "oci_logging_log_group",
+  "oci_nosql_table",
+  "oci_objectstorage_bucket",
+  "oci_ons_notification_topic",
+  "oci_ons_subscription",
+  "oci_queue_queue"
+ ],
+ "value": "var.bo_ctx_run_tag (chave de contexto run_tag, sem default; valor do contexto da execução)"
+}
