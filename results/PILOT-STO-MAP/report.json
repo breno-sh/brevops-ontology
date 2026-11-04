@@ -53,18 +53,18 @@
   "rows": 1608
  },
  "decided_at": "2026-11-04T09:00:00-03:00",
- "generated_at": "2026-11-04T10:21:34-03:00",
+ "generated_at": "2026-11-04T11:48:27-03:00",
  "inputs": {
   "bundle_files": {
    "candidates.jsonl": "48579494bcc27703933e8b6505a24a55195923f104967a1d5f45920d437c3c77",
    "canonical_atoms.jsonl": "b29a9c37286b2346f7e7930da37e4c71c010b3c6839716e1ccbd50b549923282",
-   "canonical_units.jsonl": "c87caa73979807176e65122cb4eedfe90e0b548f2b542a75400ff9b9100ad58e",
+   "canonical_units.jsonl": "4cfb46edfdcee55e206a0efe1c71bcb35d28c1d9eaef962e7643a76fd449950c",
    "claims.jsonl": "83e510dfd1c203c21d77ecb5f378eede116c9513bbce5d16cbb6954dbcc13b6c",
    "decisions.jsonl": "7ef77e48998f8d781041fa848821e7a6da2c9f39a55d49622f3627ee02901016",
    "glossary.jsonl": "5b5b92a5b3618249e818857a96384e7b5a64c1a200b04a4ec21a31d697a1174a",
    "value_space.jsonl": "ba90b632840ee34ab92f8561742c2d4283ccb0c11694986fe5d660f5c5564d5f"
   },
-  "bundle_manifest_sha256": "f5f2131d482427d18f99739453abeb93fbbd46da5fdc806005079882717246c8",
+  "bundle_manifest_sha256": "0f794556ac8b4a5c36586132cdd2b16db8fcf3c76f3e9de1007a902becd020a0",
   "code": {
    "src/bo/pilot_sto_map/build.py": "b05c6ed566fae2be476916755d1eb9afd953f71f90b3cac23202fc61b17a5aaa",
    "src/bo/pilot_sto_map/common.py": "270152d9b392f766c25c041aac4cde7a522871c2f4160a61a702a6aec3c294be",
@@ -74,11 +74,11 @@
  },
  "module": "PILOT-STO-MAP",
  "outputs": {
-  "build_record.json": "6eb5de7384a3cc95da82162319de3fe09268539d55de33273ae4d3893071eb24",
+  "build_record.json": "671e2fb8cfc03d85b80ecf621690e392a5f8654c28b2d266ac9cf233954ee716",
   "mapping.sssom.tsv": "3ded03742f2af665eb872686b02f74f4b86e4f1f64352c05fdddba36e01a7754",
   "verdicts.jsonl": "95e3faee9cb058821391736574e7307838eb87265359af07f10730fcdec658d6"
  },
- "pipeline_generated_at": "2026-11-04T10:21:01-03:00",
+ "pipeline_generated_at": "2026-11-04T11:48:11-03:00",
  "schema": "bo.pilot_sto_map.report/1",
  "steps": [
   {

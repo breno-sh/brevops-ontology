@@ -9,6 +9,16 @@ os gates seguem com o comando do catálogo. Com eles corrigidos, a rerodada é u
   python -I -m bo.pilot_sto_map.pipeline            (staging, entradas por sha256 no pipeline_report.json)
   tools/lock.sh with merge-base --owner PILOT-STO-MAP --wait 600 -- python -I -m bo.pilot_sto_map.pipeline --promote-only
 
+ATUALIZAÇÃO 2026-11-04T11:50:00-03:00 (America/Recife), base d3fde5d, pacote final do STO-GLOSS (MANIFEST 0f794556):
+  Pipeline sem bloqueio; mesmas 1608 linhas e mesmos vereditos (nenhuma decisão largada).
+  CC-12 (integração; comando do catálogo, fora do owns): o G3 (python -I -m bo.arbiter.run --frozen --in ...
+  --check-unproven, sem --out) grava em $BO_DATA/$BO_ID: regrava verdicts.jsonl, cycles.jsonl, arbiter_report.json e
+  run_record.json publicados com decided_at = hora do gate (src/bo/arbiter/run.py, out padrão). O que fiz no owns:
+  o publicado só muda pelo --promote com instante fixo; o bo.pilot_sto_map.verify (no gates/PILOT-STO-MAP.sh)
+  reprova se o verdicts.jsonl publicado não tem o sha256 do pipeline_report, e o merge restaura o publicado pelo
+  --promote-only na mesma trava, depois do make gate. Proposta: o catálogo passar --out $BO_TMP/arbiter no G3 dos
+  dois PILOT-*-MAP (ou o bo.arbiter.run usar $BO_TMP como saída padrão quando BO_ID não é ARBITERLIB).
+
 ATUALIZAÇÃO 2026-11-04T10:22:00-03:00 (America/Recife), base 5f0ebb5, pacote do STO-GLOSS 5f0ebb5 (MANIFEST f5f2131d):
   BLOQUEANTES TODOS RESOLVIDOS: CC-1 (ARBITERLIB 52371e8 recongela sobre 61d6fae; --frozen confere), CC-11 (PREREG
   5b53dd8 e STO-GLOSS 5f0ebb5; consume_check OK). Pipeline sem bloqueio: C09 0 erro, SKOS 9/9, árbitro congelado com
