@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "PILOT-STO-MAP",
- "generated_at": "2026-11-04T10:18:07-03:00",
+ "generated_at": "2026-11-04T10:21:34-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-STO-MAP.txt",
@@ -14,7 +14,7 @@
    "role_brief_version": "1.2.0",
    "role_brief_sha256": "65cbcea35653cdaa4e9f272279d86b19dc88c649aeec0de4fff60f17162cd3a9",
    "slice": "sto",
-   "bundle_sha256": "d853e9f9ea27082f7f56a5b5da13d31b658c3de16ffe7b60719ce333c920a3ec",
+   "bundle_sha256": "f5f2131d482427d18f99739453abeb93fbbd46da5fdc806005079882717246c8",
    "rows_n": "1608",
    "claims_n": "110",
    "none_n": "1498",
@@ -22,13 +22,13 @@
    "projections_n": "237",
    "mapping_set_id": "https://w3id.org/brevops/mapping/PILOT-STO-MAP/1",
    "decided_at": "2026-11-04T09:00:00-03:00",
-   "base": "61d6fae"
+   "base": "121a4bd"
   },
   "inputs": [
    {
     "path": "$BO_DATA/PILOT-STO-GLOSS/bundle",
     "kind": "dir",
-    "sha256": "77289ae5553ba671484d06b2aa38d4d08ee4050b1d8f67d9f94dafd48cb9ee99"
+    "sha256": "d39a2306f266a5ed8c4cc10fd13587bdfc6d3c08f5f47e1b8d2a1ba9d2b0f215"
    },
    {
     "path": "$BO_REPO/briefs/MAPPER_BRIEF.txt",
@@ -36,8 +36,8 @@
     "sha256": "65cbcea35653cdaa4e9f272279d86b19dc88c649aeec0de4fff60f17162cd3a9"
    }
   ],
-  "recorded_at": "2026-11-04T10:18:07-03:00"
+  "recorded_at": "2026-11-04T10:21:34-03:00"
  },
  "sources": [],
- "notes": "pipeline: python -I -m bo.pilot_sto_map.pipeline; bloqueios em results/PILOT-STO-MAP/CONTRACT_CHANGE.txt"
+ "notes": "pipeline: python -I -m bo.pilot_sto_map.pipeline; achados em results/PILOT-STO-MAP/CONTRACT_CHANGE.txt"
 }

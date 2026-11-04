@@ -9,6 +9,13 @@ os gates seguem com o comando do catálogo. Com eles corrigidos, a rerodada é u
   python -I -m bo.pilot_sto_map.pipeline            (staging, entradas por sha256 no pipeline_report.json)
   tools/lock.sh with merge-base --owner PILOT-STO-MAP --wait 600 -- python -I -m bo.pilot_sto_map.pipeline --promote-only
 
+ATUALIZAÇÃO 2026-11-04T10:22:00-03:00 (America/Recife), base 5f0ebb5, pacote do STO-GLOSS 5f0ebb5 (MANIFEST f5f2131d):
+  BLOQUEANTES TODOS RESOLVIDOS: CC-1 (ARBITERLIB 52371e8 recongela sobre 61d6fae; --frozen confere), CC-11 (PREREG
+  5b53dd8 e STO-GLOSS 5f0ebb5; consume_check OK). Pipeline sem bloqueio: C09 0 erro, SKOS 9/9, árbitro congelado com
+  C21 0 erro, check-unproven 0, privacy_lint 0. O pacote novo mudou o grão (unidades), não os átomos, âncoras nem o
+  value_space da fatia: as 1608 linhas e os vereditos saem iguais (nenhuma decisão largada).
+  Seguem abertos, sem bloquear: CC-5 a CC-9.
+
 ATUALIZAÇÃO 2026-11-04T10:20:00-03:00 (America/Recife), base 61d6fae, pacote 3e8bed9 (MANIFEST d853e9f9ea27082f):
   RESOLVIDOS na base: CC-2 (ids de regra do C21, ARBITERLIB 35e299f), CC-3 (invert com função do registro,
   SEMANTICS 61d6fae), CC-10 (privacy_lint com hex16 do event_id, COORD 7e444c2). Pipeline: C09 0 erro, ida e volta
