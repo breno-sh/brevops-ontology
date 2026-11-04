@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "GOLD-MODS",
- "generated_at": "2026-11-04T09:33:26-03:00",
+ "generated_at": "2026-11-04T10:35:11-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/GOLD-MODS.txt",
@@ -14,13 +14,13 @@
    "generator": "python -I -m bo.gold_mods.build",
    "resolver": "python -I -m bo.gold_mods.resolve GOLD-MODS",
    "level": "DERIVADO",
-   "variant": "diretório com blocos de um só dos 4 provedores (V1); interface = variáveis que chegam a atributos (V2)",
+   "variant": "diretório com blocos de um só dos 4 provedores (V1); interface = variáveis que chegam a atributos de resource/data (V2)",
    "pair": "mesmo repositório, provedores diferentes, |interseção|>=2 e Jaccard>=0.5 (V3); contraparte mútua, empate pelo prefixo de diretório (V3b, acrescentada após a 1ª rodada)",
    "dedupe": "um repositório por family_id do C06",
-   "close": "identity em pelo menos um par (L2); grupo só com transporte direto nos dois lados (L3)",
+   "close": "identity em pelo menos um par (L2); grupo só com transporte direto nos dois lados (L3); data source fora das linhas",
    "unresolved": "átomo não atestado fora do suporte (L5) ou par só desdobrado de pivô N:M (L3b, acrescentada após a 1ª rodada)",
    "evidence_pairs_in_row": "8",
-   "hcl_branch_sha": "bb238abad07e62f5dbd2d8e67dddb71b53598459"
+   "hcl_merge_commit": "b5c256e"
   },
   "inputs": [
    {
@@ -39,7 +39,7 @@
     "sha256": "8c19fddc9fce501376cc3745134489b4dd9e07614abc87c5c9a35f10939489b0"
    }
   ],
-  "recorded_at": "2026-11-04T09:33:26-03:00"
+  "recorded_at": "2026-11-04T10:35:11-03:00"
  },
  "sources": [
   {
@@ -48,5 +48,5 @@
    "transformation": "lido só pelo C06 simbólico do HCL; variáveis seguidas até atributos; ids sintéticos"
   }
  ],
- "notes": "Ouro DERIVADO de famílias de módulos (variantes por provedor no mesmo repositório). Números em results/GOLD-MODS/families.json; resolução em $BO_DATA/GOLD-MODS/resolution.json; rastros em $BO_DATA/GOLD-MODS/traces.jsonl. Começo antecipado sobre a extração do HCL ainda não mergeada (bo/hcl), por decisão do coordenador."
+ "notes": "Ouro DERIVADO de famílias de módulos (variantes por provedor no mesmo repositório): 66119 repositórios lidos, 233 com famílias (163 cópias C06 puladas), 465 famílias, 607 pares de variantes (40543 só pelo limiar V3), 3563 linhas (3523 D, 40 G; 261 close, 3302 related), 490 STRUCTURALLY_VALID e 3073 UNRESOLVED (todas nm_unfolded). Um repositório gerado responde por 200 dos 607 pares. Átomo não conferido no schema fixado (GOLD-AUDIT). Números em results/GOLD-MODS/families.json; resolução e rastros em $BO_DATA/GOLD-MODS/. Começo antecipado sobre a extração do HCL; sha das 3 entradas confere com o MANIFEST do HCL mergeado."
 }
