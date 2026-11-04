@@ -1,0 +1,64 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "CORPUS-GCP",
+ "generated_at": "2026-11-04T09:36:17-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/CORPUS-GCP.txt",
+  "brief_sha256": "5cd3313e12af69a3694b5ba198c98ed84e33fb8ee7445e0ca224f6c1bcf004fc",
+  "params": {
+   "provider": "google",
+   "provider_version": "8.9.0",
+   "unit_resource": "bloco resource gerenciado (repo_id, file, resource_address); data fora",
+   "unit_module": "diretório do .tf no repositório",
+   "term_class": "literal=termo literal; withheld=retido; simbólico=symbol|expression|reference|document",
+   "precedence": "withheld > simbólico > literal por recurso e átomo",
+   "type_row": "linha sem atom_id por (repo, tipo); n_set = blocos com >= 1 átomo",
+   "atom_rows": "só n_set >= 1",
+   "object_attr": "caminho sob atributo objeto conta para o átomo",
+   "meta": "count, for_each, provider, depends_on, lifecycle, provisioner, connection; for_each/iterator/labels de dynamic",
+   "unmatched_paths_min_repos": "5",
+   "recount_sample_mod": "20",
+   "workers": "6",
+   "hcl_branch_sha": "bb238abad07e62f5dbd2d8e67dddb71b53598459"
+  },
+  "inputs": [
+   {
+    "path": "$BO_DATA/HCL/resources.parquet",
+    "kind": "file",
+    "sha256": "4862e47b8fac5dbfca08ac725141e7e84c4915579b250504eaf7b417537c13c0"
+   },
+   {
+    "path": "$BO_DATA/HCL/symbolic_config.jsonl",
+    "kind": "file",
+    "sha256": "867340a28cb3a6c3a215ea9735c5308fdbf516954a896d0aae6d19db8e0c560f"
+   },
+   {
+    "path": "$BO_DATA/HCL/symbolic_config.index.json",
+    "kind": "file",
+    "sha256": "f20260ec47d07b89f32516867c5067611fe3859ea10789aacada4a61940316a3"
+   },
+   {
+    "path": "$BO_DATA/SCHEMA-GCP/atoms.jsonl",
+    "kind": "file",
+    "sha256": "a00b9d3fb50a717fe3ba17ec0f4b2012f89ee7a3cb65e7ea5f21298afc75e4e1"
+   }
+  ],
+  "recorded_at": "2026-11-04T09:36:17-03:00"
+ },
+ "sources": [
+  {
+   "uri": "https://doi.org/10.5281/zenodo.20339474",
+   "license": "CC-BY-4.0 (dataset); licença por repositório em $BO_DATA/HCL/licenses.json",
+   "transformation": "configuração simbólica do HCL contada por átomo e repositório; só ids sintéticos e contagens"
+  },
+  {
+   "uri": "https://registry.terraform.io/providers/hashicorp/google/8.9.0",
+   "license": "MPL-2.0",
+   "transformation": "átomos do schema fixado (SCHEMA-GCP), só nomes de tipo e caminho"
+  }
+ ],
+ "notes": "Uso do google 8.9.0 no TerraDS: 8895 repositórios (7944 famílias) com bloco gerenciado, 37628 módulos, 197834 blocos (1942 de 110 tipos fora do schema; 22089 blocos data fora). 639820 linhas C06 usage (84892 de tipo, 554928 de átomo). Átomos vistos 12544/32659 (7055 em >= 5 repositórios). Pares (bloco, átomo) configurados 1159020: literal 313504, simbólico 832599, withheld 12917. Registros google gerenciados 1381183: em átomo 1188595, meta 168303, tipo fora do schema 8256, caminho sem átomo 7573, bloco retido 7243, bloco em sintaxe de atributo 1211, dynamic sem content 2. Recontagem independente 1/20 sem divergência. Literal baixo em listas e CIDRs porque o HCL os grava como expressão (achado, não ajustado)."
+}
