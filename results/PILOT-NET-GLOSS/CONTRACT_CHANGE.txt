@@ -1,0 +1,49 @@
+PILOT-NET-GLOSS: mudanças de contrato e achados da fatia net (diagnóstico, sem saída oficial gravada)
+Registrado em 2026-11-04T02:40:00-03:00 (America/Recife). Base: bo/base af99548.
+Diagnóstico reproduzível: python -I -m bo.pilot_net_gloss.build --diagnostic  (grava só em $BO_TMP/diagnostic)
+O build sem flag recusa gravar $BO_DATA/PILOT-NET-GLOSS enquanto houver CC-1, CC-2 ou CC-3 (saída 4).
+
+Números do diagnóstico (13 tipos da fatia, 217 átomos, 4 provedores):
+  grão: 47 unidades candidatas, 47 UNKNOWN (GRAIN-G0-IDENTITY), missing identity/lifecycle_controller/owner/
+  effective_scope em todas; 55 alegações do SERVICE-EVIDENCE ilegíveis para o C25Adapter (identity 31,
+  import_key 13, owner 10, lifecycle_controller 1).
+  glossário (só com sentenças do C25): 12 conceitos, 7 âncoras (google 1, azurerm 2, oci 4), 8 conceitos sem
+  âncora, 1 caminho entre provedores (prioridade: google x azurerm), desfecho UNPROVEN (ANCHOR-NOT-PROOF, EVIDENCE);
+  controle positivo (âncoras promovidas em memória) compõe exact 1/1.
+  docs_facts (C03) da fatia, agora no catálogo: 401 fatos, description para 217/217 átomos.
+
+CC-1 (igual ao do PILOT-STO-GLOSS; já em correção no GRAIN e no SERVICE-EVIDENCE)
+  O C25 1.0.0 deixa `value` livre e o SERVICE-EVIDENCE grava por aspecto (resource_identity_schema, id_template,
+  import_formats, parent, parent_attribute, deletion_policy...); o C25Adapter do bo.grain lê {status, key_fields,
+  scope, ...} e levanta EvidenceError. Proposta: fixar no C25 (ou num adaptador versionado do GRAIN) a tradução
+  aspecto -> alegação de grão, com status unknown explícito onde o aspecto não decide o campo.
+
+CC-NET-1 (bloqueia o critério E2 do piloto net: invariância inline x standalone)
+  As regras embutidas do security group (ingress, egress) e do conjunto de regras do terceiro provedor
+  (security_rule) são atributos de lista de objetos, não blocos: o C01 tem 1 átomo por coleção e nenhum átomo por
+  campo da regra (o SCHEMA-* tem 67/45 átomos desses provedores, sem ingress.* nem security_rule.*). O GRAIN.html
+  já lista o limite ("atributo de coleção de objetos ainda não vira elemento"). Sem isso, a regra embutida não vira
+  unidade nem tem átomos a ancorar, e a regra separada sim: a decomposição não pode sair igual nas duas embalagens.
+  Proposta: (a) SCHEMA/SCHEMALIB expõe os atributos aninhados (nested_type / objeto em lista) como átomos com
+  caminho e marca a coleção; (b) GRAIN emenda T1/candidatos para tratar o elemento da coleção como bloco.
+
+CC-NET-2 (efeito e sentido realizados pela estrutura, sem átomo)
+  O efeito no firewall do segundo provedor vem do bloco usado (allow ou deny) e o sentido, em dois provedores, vem do
+  bloco ou do tipo (ingress/egress, *_ingress_rule/*_egress_rule), não de um atributo. O C20 3.1.0 só ancora
+  atom_id (folha do C01): o conceito fica sem âncora onde mora na estrutura e o mapeador não recebe essa ligação.
+  Proposta: registro C20 "structural_anchor" {concept_id, block_path|resource_type, realization: block_choice|
+  type_choice, value} com a mesma exigência de sentença e contraexemplo da âncora.
+
+CC-NET-3 (referências e blocos de meta)
+  (a) Nenhum fato da fatia traz references/field_map (alvo de security_group_id, network_security_group_name,
+  network_security_group_id, vcn_id...): mesmo com o CC-1 resolvido, regra separada e anexação não chegam a
+  COMPONENT/BINDING sem o alvo da referência. Conferir no adaptador novo.
+  (b) Os blocos timeouts viram candidatos (11 das 47 unidades) e saem UNKNOWN: são meta do Terraform, não da API.
+  Proposta: o SERVICE-EVIDENCE os marca api_resource=payload (T0) ou o catálogo de candidatos os exclui.
+  (c) A única alegação de ciclo de vida afirmada na fatia (deletion_policy do firewall) é política do Terraform,
+  não controlador de ciclo de vida da API; contá-la como lifecycle_controller misturaria as camadas.
+
+CC-NET-4 (evidência das âncoras)
+  Só com o C25, 7 de 217 átomos têm sentença do próprio átomo; o resto do glossário ficaria sem âncora. Com os
+  docs_facts (C03) no catálogo (CC-2/CC-3), as âncoras passam a citar o fato do próprio átomo; o build e o gate F4
+  (bo.pilot_net_gloss.anchor_claims, regra A1) já aceitam fonte C25 do tipo ou C03 do átomo.
