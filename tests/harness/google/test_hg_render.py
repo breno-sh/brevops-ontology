@@ -240,7 +240,11 @@ def test_rotulo_bo_run_na_fixture_bucket_e_no_kms_pubsub():
     b = render(*load_fixture("bucket"))
     assert any(x["path"] == "labels.bo-run" and x["address"] == "google_storage_bucket.lp_hg_bucket_r1"
                for x in b.ledger)
-    assert "bo-run  = var.lp_hg_bucket_bo_run" in b.hcl
+    assert re.search(r"\n +bo-run += var\.lp_hg_bucket_bo_run\n", b.hcl)
+    # a tag de execução vem só da inserção HI-GCP-01: nenhum valor do plano é rótulo bo_* (C26-NOTAG)
+    plan, _ = load_fixture("bucket")
+    assert not any(v["field"].startswith("labels.bo") for s in plan["steps"] for v in s["values"])
+    assert [x["origin"] for x in b.ledger if x["path"].startswith("labels.bo")] == ["harness_declared"]
     k = render(*load_fixture("kms_pubsub"))
     tipos = sorted(x["address"].split(".")[0] for x in k.ledger if x["path"] == "labels.bo-run")
     assert tipos == ["google_kms_crypto_key", "google_pubsub_subscription", "google_pubsub_topic"]

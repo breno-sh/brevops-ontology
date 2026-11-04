@@ -479,8 +479,12 @@ def label_controls(work: Path, schema) -> list[dict]:
     base = work / "neg_label_base"
     if base.exists():
         shutil.rmtree(base)
-    R.render_file(fx / "lowering_plan.jsonl", base)
+    rc, rep = R.render_file(fx / "lowering_plan.jsonl", base)
     tf = base / R.file_name(plan["plan_id"])
+    if rc or not tf.exists():
+        # fixture fora do C26 ou não renderizada: os controles do rótulo não rodam, e isso conta como não pego
+        return [{"control": "fixture bucket renderiza para os controles do rótulo", "caught": False,
+                 "expected": "RENDERED", "detail": (rep.get("errors") or [p["status"] for p in rep.get("plans", [])])[:2]}]
     text = tf.read_text(encoding="utf-8")
     var = RL.var_name(C.slug(plan["plan_id"]))
     line = re.search(r'\n( *)"?bo-run"? += var\.' + var + r"\n", text)

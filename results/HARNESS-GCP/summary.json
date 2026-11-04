@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "HARNESS-GCP",
- "generated_at": "2026-11-04T08:23:30-03:00",
+ "generated_at": "2026-11-04T08:49:01-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/HARNESS-GCP.txt",
@@ -35,7 +35,7 @@
     "sha256": "239c0eae0e0ae9453cfe8cb7690646882f8ac0f9387ba4a67b5168917ecb8345"
    }
   ],
-  "recorded_at": "2026-11-04T08:23:30-03:00"
+  "recorded_at": "2026-11-04T08:49:01-03:00"
  },
  "sources": [
   {
@@ -44,5 +44,5 @@
    "transformation": "terraform providers schema -json (pré-busca assinada, sem credenciais) -> índice compacto de 32 recursos e 6 data sources em deploy/fixtures/google/_templates/schema_index.json"
   }
  ],
- "notes": "Harness offline: render C26->HCL sem inserção silenciosa, no_silent_insert com parser independente, redator na origem, executor com respostas gravadas. Nenhuma nuvem, nenhum apply, nenhuma credencial. 2026-11-04: testes do stub C26 corrigidos (a emenda 2 do CONTRACTS, 3c2141f, trocou o stub de plano único google LP-0001 por um plano por provedor; os testes liam o plano [0], que virou o aws; o LP-0001 ficou como fixture c26_stub_pre_emenda2 e as asserções originais seguem nele); inserção declarada HI-GCP-01: labels[bo-run] = var.<plano>_bo_run nos tipos com trace=tag da tabela de SKUs do SAFETY (run_label.json), ligada pelo executor ao run_tag; conferida no no_silent_insert com controles negativos. Entradas recalculadas depois da emenda 5 do CONTRACTS (stubs C24 e C25; nada do C26 mudou)."
+ "notes": "Harness offline: render C26->HCL sem inserção silenciosa, no_silent_insert com parser independente, redator na origem, executor com respostas gravadas. Nenhuma nuvem, nenhum apply, nenhuma credencial. 2026-11-04: testes do stub C26 corrigidos (a emenda 2 do CONTRACTS, 3c2141f, trocou o stub de plano único google LP-0001 por um plano por provedor; os testes liam o plano [0], que virou o aws; o LP-0001 ficou como fixture c26_stub_pre_emenda2 e as asserções originais seguem nele); inserção declarada HI-GCP-01: labels[bo-run] = var.<plano>_bo_run nos tipos com trace=tag da tabela de SKUs do SAFETY (run_label.json), ligada pelo executor ao run_tag; conferida no no_silent_insert com controles negativos. Entradas recalculadas depois da emenda 5 do CONTRACTS (stubs C24 e C25; nada do C26 mudou). 2026-11-04: emenda 6 do CONTRACTS (C26 1.2.0, C26-NOTAG) recusa tag de execução no plano; a fixture bucket perdeu labels.bo_case (agora igual ao stub LP-HG-BUCKET) e o rótulo vem só da inserção HI-GCP-01; controles do rótulo no no_silent_insert reprovam sem traceback se a fixture não renderizar."
 }
