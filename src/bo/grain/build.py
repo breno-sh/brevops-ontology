@@ -36,7 +36,7 @@ from . import schema as S
 from .common import data_dir, dump_json, dump_jsonl, now, repo, results_dir, rules_path, sha256_file, stamp
 from .evidence import FixtureAdapter
 
-AUTHORED_AT = "2026-11-04T03:30:00-03:00"
+AUTHORED_AT = "2026-11-04T08:30:00-03:00"
 
 
 def _strip(rep: dict) -> dict:
@@ -408,6 +408,11 @@ vida preso à instância, G1 e G2 aceitam a evidência, e trocar a ordem troca B
 referência <code>by_name</code>; sem ela, o grafo embutido perde relações que o separado tem.</li>
 <li>Emenda 0.1.1 (CC-1): a primeira versão lia uma convenção que o SERVICE-EVIDENCE nunca gravou; os testes
 sintéticos usavam a mesma convenção e não pegaram. Entraram o adaptador por aspecto e testes com o arquivo real.</li>
+<li>Emenda 0.1.3 (CC-1d, CC-1e): a herança do gêmeo testava <code>via in conjunto</code> antes de ver se via era
+lista (TypeError no azurerm). Fatos de API sem aspecto (R-OWN-API, R-LIFE-API, R-SCOPE-SELF com layer api) são
+consumidos; com layer terraform continuam recusados. Achado no caminho: com a referência tipada ao contêiner fora
+da chave, um escopo de criptografia filho da conta saía ENTITY; a contenção (owner/parent) agora põe essa
+referência na chave, e o caso volta a UNKNOWN (contêiner sem decisão), que é o que a evidência sustenta.</li>
 <li>Emenda 0.1.2 (CC-1b, CC-1c): o adaptador 0.1.1 era anterior aos fatos de gêmeo, referência tipada e timeouts
 do SERVICE-EVIDENCE; os blocos embutidos saíam com "twin_type sem tradução" e o E2 não chegava ao grão. Achado no
 caminho: os fatos block_* do bloco (camada Terraform) contradiziam a identidade herdada do gêmeo; a evidência do

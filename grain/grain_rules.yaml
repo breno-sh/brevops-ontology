@@ -7,10 +7,10 @@
 schema: bo.grain.rules/1
 contract: C19
 contract_version: 3.1.0
-rules_version: 0.1.2
+rules_version: 0.1.3
 status: PROVISIONAL
 written_at: "2026-11-03T02:00:00-03:00"
-amended_at: "2026-11-04T03:30:00-03:00"
+amended_at: "2026-11-04T08:30:00-03:00"
 definitive_after: [GRAIN-REPRO, PILOT-EXIT]
 
 layers:
@@ -168,6 +168,10 @@ amendments:
     version: 0.1.1
     origin: CC-NET-1 do piloto de rede
     text: passo T2 da normalização (atributo lista ou conjunto de objetos vira bloco repetido com sub-átomos virtuais derivados do tipo cty), para que a regra embutida e a regra separada tenham o mesmo grão
+  - id: GRAIN-A5
+    version: 0.1.3
+    origin: CC-1d e CC-1e do piloto de rede
+    text: herança do gêmeo aceita via em lista (só as entradas que apontam para o tipo do bloco viram o pai); fatos da camada de API sem aspecto são consumidos e só a camada Terraform é recusada; alcance por anexação traduzido (o alcance da unidade é ela mesma, a anexação é relação); chave compartilhada é própria quando o candidato tem ciclo de vida próprio; a referência tipada ao contêiner da identidade entra na chave (identidade relativa ao contêiner)
   - id: GRAIN-A4
     version: 0.1.2
     origin: CC-1b do piloto de rede e CC-1c (alcance efetivo derivado)

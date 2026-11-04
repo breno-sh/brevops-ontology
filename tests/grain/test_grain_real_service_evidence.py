@@ -146,3 +146,42 @@ def test_c25_1_1_forms_record_block_path_and_api_bridge():
     assert blk.fact("identity").value == {"status": "absent"}
     assert blk.fact("owner").value["kind"] == "parent"
     assert ad.evidence("x_store").fact("api_resource").value["resource"] == "Store"
+
+
+def test_cc1d_translate_whole_real_file_every_provider(records):
+    """CC-1d: a tradução roda sobre TODOS os fatos reais de cada provedor (antes, TypeError no azurerm na T09)."""
+    from bo.grain import c25_aspects as A
+    by = {}
+    for r in records:
+        by.setdefault(r.get("provider"), []).append(r)
+    for prov, recs in sorted(by.items()):
+        ev, why = A.translate(recs)
+        assert ev, prov
+
+
+def test_cc1d_twin_with_list_via():
+    from bo.grain import c25_aspects as A
+    recs = [_fact("SE-v1", "aws", "x_rule", "identity", {"aspect": "reference_target", "attribute": "set_id",
+                                                         "resolved": "x_set", "target_types": ["x_set"]}),
+            _fact("SE-v2", "aws", "x_rule", "owner", {"kind": "parent", "via": ["set_id", "other_id"]}),
+            _fact("SE-v3", "aws", "x_set", "identity", {"aspect": "twin_type", "twin": "x_rule"})]
+    recs[2]["block_path"] = "rule"
+    ev, _ = A.translate(recs)
+    assert ev["x_set.rule"]["owner"][0]["via"] == ["$parent", "other_id"]
+
+
+def test_cc1e_api_layer_accepted_terraform_layer_refused():
+    def run(layer, kind):
+        return C25Adapter([_fact("SE-l1", "aws", "x_t", kind, {"kind": "self", "layer": layer, "rule": "R"})]) \
+            .evidence("x_t").fact(kind).state
+    for k in ("owner", "lifecycle_controller", "effective_scope"):
+        assert run("api", k) == "KNOWN"
+        assert run("terraform", k) == "UNKNOWN"
+
+
+def test_cc1e_attachment_scope():
+    ad = C25Adapter([_fact("SE-a1", "aws", "x_acl", "effective_scope",
+                           {"aspect": "attachment_scope", "attribute": "subnet_ids", "applies_to": "subnets"})])
+    ev = ad.evidence("x_acl")
+    assert ev.fact("effective_scope").value["kind"] == "self"
+    assert ev.field_map["subnet_ids"]["ref"] is True

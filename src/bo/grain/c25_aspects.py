@@ -39,9 +39,9 @@ TABLE = [
      "identity present; key_fields = required menos os campos de escopo do provedor; escopo within_parent se "
      "algum campo da chave é referência (T02, T21), senão independent; optional não entra"),
     ("identity", "shared_identity_key", "R-GRAIN-T02",
-     "os campos são referência ao objeto compartilhado: alvo = o único par (peers ou o próprio) cujo ciclo de "
-     "vida consolidado é self; se é o próprio, os campos são chave própria; nenhum ou mais de um: alvo não "
-     "resolvido"),
+     "se o próprio candidato tem ciclo de vida consolidado self, os campos são chave própria; senão são "
+     "referência ao objeto compartilhado: alvo = o único par (peers) com ciclo de vida self; nenhum ou mais de um: "
+     "alvo não resolvido"),
     ("identity", "id_template", "R-GRAIN-T03",
      "sem tradução: formato do id Terraform, pode incluir atributos opcionais; não é chave natural"),
     ("identity", "api_resource_bridge", "R-GRAIN-T04",
@@ -83,9 +83,9 @@ TABLE = [
      "sem tradução para owner: diz quem é dono da IDENTIDADE (conta, região), não da configuração; marca "
      "account_id/region como campos de escopo do provedor para T01"),
     ("owner", "parent", "R-GRAIN-T21",
-     "sem tradução para owner (contenção da identidade); se o scope_kind é unidade (não escopo do provedor) e "
-     "a identidade não tem atributo de referência ao pai, a chave ganha uma referência não resolvida "
-     "($container): a identidade fica UNRESOLVED"),
+     "sem tradução para owner (contenção da identidade); se o scope_kind é unidade (não escopo do provedor): "
+     "a referência tipada (T44) cujo alvo é um dos parent_terraform_types entra na chave (identidade relativa ao "
+     "contêiner); sem ela, a chave ganha uma referência não resolvida ($container) e a identidade fica UNRESOLVED"),
     ("owner", "parent_attribute", "R-GRAIN-T22",
      "sem tradução para owner (atributo de contenção, não dono da configuração)"),
     ("owner", "block_config_owner", "R-GRAIN-T23",
@@ -101,6 +101,9 @@ TABLE = [
     ("effective_scope", "type_scope", "R-GRAIN-T40",
      "scope de escopo do provedor (account, project, organization, ...): {kind: global}; outro scope: {kind: "
      "parent, via: o campo de referência da chave} se a chave tem uma referência, senão {kind: self}"),
+    ("effective_scope", "attachment_scope", "R-GRAIN-T47",
+     "effective_scope {kind: self}: a configuração da unidade vale onde ela está anexada, e a anexação é relação "
+     "(o atributo vira referência; vínculos de outros tipos), não alcance de outra unidade"),
     ("effective_scope", "attribute_scope", "R-GRAIN-T41",
      "sem tradução: escopo de UM atributo, não da unidade"),
     ("effective_scope", "effective_public_access", "R-GRAIN-T42",
@@ -122,7 +125,8 @@ def is_aspect_record(r: dict) -> bool:
     v = r.get("value")
     if r.get("fact_kind") not in GRAIN_FACTS:
         return False
-    return r.get("fact_kind") == "api_bridge" or bool(r.get("block_path")) or (isinstance(v, dict) and "aspect" in v)
+    return r.get("fact_kind") == "api_bridge" or bool(r.get("block_path")) or (
+        isinstance(v, dict) and ("aspect" in v or "layer" in v))
 
 
 def _src(r: dict, rule: str, why: str = "") -> dict:
@@ -312,6 +316,14 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
                     unknown(cid, "lifecycle_controller", r, "política de remoção sem valores documentados")
             elif a == "type_scope":
                 scopes[cid] = (r, v.get("scope"))
+            elif a == "attachment_scope":
+                # T47: a configuração vale onde a unidade está anexada; a anexação é relação (atributo de
+                # referência ou vínculo de outro tipo), não alcance de outra unidade: o alcance da unidade é ela mesma
+                put(cid, "effective_scope", {"kind": "self", "source": _src(r, rule, "aplica-se onde está anexado")})
+                if v.get("attribute"):
+                    attr = _rel(v["attribute"], bp)
+                    typed[cid].setdefault(attr, None)
+                    reasons[cid].append(f"effective_scope: anexação por {attr} (alvo: {v.get('applies_to')})")
             elif rule == "R-GRAIN-T43":
                 if v.get("layer") == "terraform" or v.get("kind") not in ("self", "parent", "container", "global"):
                     unknown(cid, fld, r, "alcance derivado sem kind de API")
@@ -335,9 +347,9 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
 
     key_refs: dict[str, dict] = defaultdict(dict)   # referências que ENTRAM na chave (T02, T21)
     for cid, (r, fields, peers) in sorted(shared.items()):
-        roots = [p for p in sorted(set(peers) | {cid}) if lc_self(p)]
-        if roots == [cid]:
-            continue
+        if lc_self(cid):
+            continue                                          # tem ciclo de vida próprio: a chave é própria
+        roots = [p for p in sorted(set(peers)) if lc_self(p)]
         tgt = roots[0] if len(roots) == 1 else None
         for f in fields:
             if f in typed.get(cid, {}):
@@ -347,8 +359,12 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
             reasons[cid].append(f"identity: chave compartilhada {fields} sem raiz única com ciclo de vida self "
                                 f"entre os pares ({len(roots)} raiz(es))")
     for cid, (r, types) in sorted(containers.items()):
-        if any(t in types for t in typed.get(cid, {}).values() if t):
-            continue                                          # o contêiner é alvo de uma referência tipada
+        via_typed = [f for f, tt in typed.get(cid, {}).items() if tt and tt in types]
+        if len(via_typed) == 1:
+            # o contêiner da identidade é o alvo de uma referência tipada: a identidade é relativa a ele (T21)
+            f = via_typed[0]
+            key_refs[cid][f] = typed[cid][f] if ok_target(typed[cid][f]) else None
+            continue
         key_refs[cid]["$container"] = None
         reasons[cid].append(f"identity: contido em {r['value'].get('scope_kind')} ({types or 'sem tipo Terraform'}) "
                             "sem atributo de referência ao contêiner na identidade")
@@ -413,8 +429,12 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
                 for kk in ("key_fields", "fields"):
                     if kk in c2:
                         c2[kk] = [f for f in c2[kk] if f not in to_parent]
-                if c2.get("via") in to_parent or (isinstance(c2.get("via"), list) and set(c2["via"]) & to_parent):
-                    c2["via"] = "$parent"
+                via = c2.get("via")
+                vias = set(via) if isinstance(via, list) else ({via} if isinstance(via, str) else set())
+                if vias & to_parent:
+                    # CC-1d: via pode ser lista; só as entradas que apontam para o tipo do bloco viram o pai
+                    rest = sorted(vias - to_parent)
+                    c2["via"] = "$parent" if not rest else ["$parent"] + rest
                 if fld == "identity" and c2.get("status") == "present" and to_parent & set(c.get("key_fields", [])):
                     c2["scope"] = "within_parent"
                 s = dict(c.get("source") or {"level": "derived", "ref": r["evidence_id"]})

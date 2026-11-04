@@ -71,7 +71,8 @@ def test_e2_control_twin_facts_decide_both(records, prov, top, inline, sep, ref)
              _fact("SE-t5", prov, sep, "lifecycle_controller", {"kind": "parent", "via": ref}),
              _fact("SE-t6", prov, sep, "owner", {"kind": "parent", "via": ref}),
              _fact("SE-t7", prov, sep, "effective_scope", {"kind": "parent", "via": ref})]
-    drop = {("api_bridge", top)}
+    # o controle SUBSTITUI os fatos de api, ciclo de vida, dono e alcance do contêiner e do separado
+    drop = {(k, x) for k in ("api_bridge", "lifecycle_controller", "owner", "effective_scope") for x in (top, sep)}
     recs = [r for r in records if r.get("provider") == prov and (r["fact_kind"], r.get("terraform_resource_type"))
             not in drop]
     if prov == "azurerm":   # o contêiner do NSG (grupo de recursos) não está na fatia: a identidade fica sem alvo
