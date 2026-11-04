@@ -50,3 +50,15 @@ ADENDO 2026-11-04T14:40:00-03:00 (America/Recife), GRAIN final cbe1f08 e PILOT-N
   passaram a BINDING). Restam 21 tipos UNKNOWN: 11 regras da security list OCI (G0-NEEDS api_resource), 9
   associações azurerm (G0-NEEDS lifecycle_controller, owner, effective_scope) e 1 anexação AWS por variável
   (G0-IDENTITY, NETC-C08-AWS-ATTACH-SYM). Unidades, pais e chaves 42/42; reordenação 42/42; embalagem 3/3.
+
+ADENDO 2026-11-04T18:50:00-03:00 (America/Recife), rodada final 2/2: GRAIN ed1fc66 (0.1.11), oráculo b55e10b,
+árbitro 4bee77e, PILOT-NET-MAP 10c4134.
+  CC-NET-E2E-2: 24/42 fixtures iguais ao gabarito (o b55e10b voltou a esperar COMPONENT nas regras de NSG OCI, que o
+  GRAIN segue deixando UNKNOWN). Restam 24 tipos UNKNOWN: 11 regras da security list OCI, 3 regras de NSG OCI
+  (G0-NEEDS effective_scope), 9 associações azurerm e 1 anexação AWS por variável. Unidades, pais e chaves 42/42;
+  reordenação 42/42; embalagem 3/3.
+  LIMITAÇÃO DECLARADA GRAIN-A12 (esquema x instância): a camada de instância aplica as regras da de esquema, mas
+  bloco de id opaco segue sem identidade de ocorrência (o endereço é posicional), então regra embutida como a da
+  security list OCI fica UNKNOWN na instância. O piloto toma o tipo da unidade C19 de esquema do PILOT-NET-GLOSS
+  quando a construção está na fatia e, fora dela, da instância; onde os dois discordarem vale o C19, e a divergência
+  é do GRAIN, não do piloto. Nesta rodada C19 e instância concordam em todas as unidades comparadas.
