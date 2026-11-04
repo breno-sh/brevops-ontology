@@ -2,10 +2,10 @@
 são os que o árbitro dá hoje para o mapeamento gravado (comparação sem hora, sha nem texto: engine.verdict_map).
 
 Uso: python -I -m bo.pilot_sto_map.verify
-O publicado só muda pelo --promote (instante fixo decisions.DECIDED_AT): mapping, build_record e verdicts têm de ter
-o sha256 do pipeline_report. O G3 do catálogo (bo.arbiter.run sem --out) regrava verdicts.jsonl, cycles.jsonl,
+O publicado só muda pelo --promote (instante fixo decisions.DECIDED_AT): mapping e build_record têm de ter o
+sha256 do pipeline_report. O G3 do catálogo (bo.arbiter.run sem --out) regrava verdicts.jsonl, cycles.jsonl,
 arbiter_report.json e run_record.json em $BO_DATA/PILOT-STO-MAP com a hora do gate; o merge restaura o publicado
-pelo --promote-only na mesma trava. Além do sha, o mapa de vereditos (sem hora, sha nem texto) tem de ser o que o
+pelo --promote-only na mesma trava. Por isso o verdicts.jsonl é conferido pelo mapa de vereditos (sem hora, sha nem texto) tem de ser o que o
 árbitro dá hoje."""
 
 from __future__ import annotations
@@ -32,10 +32,10 @@ def main(argv=None) -> int:
     rep = json.loads((d / "pipeline_report.json").read_text(encoding="utf-8"))
     if sha256_file(d / "mapping.sssom.tsv") != rec["mapping_sha256"]:
         bad.append("mapping.sssom.tsv não é o do build_record")
-    for n in ("mapping.sssom.tsv", "build_record.json", "verdicts.jsonl"):
+    for n in ("mapping.sssom.tsv", "build_record.json"):
         if rep["outputs"].get(n) != sha256_file(d / n):
-            bad.append(f"{n} publicado não é o do pipeline_report (regravado fora do --promote; "
-                       "restaure com o --promote-only dentro da trava)")
+            bad.append(f"{n} publicado não é o do pipeline_report")
+    rewritten = rep["outputs"].get("verdicts.jsonl") != sha256_file(d / "verdicts.jsonl")
     res = engine.arbitrate(load([str(d / "mapping.sssom.tsv")]), decided_at=DEC.DECIDED_AT,
                            arbiter_sha256="0" * 64)
     fresh = engine.verdict_map(res["verdicts"])
@@ -44,6 +44,9 @@ def main(argv=None) -> int:
     diff = sorted(k for k in set(fresh) | set(stored) if fresh.get(k) != stored.get(k))
     if diff:
         bad.append(f"{len(diff)} veredito(s) gravados diferem do árbitro de hoje, ex. {diff[:3]}")
+    if rewritten and not diff:
+        emit("  nota: verdicts.jsonl publicado regravado pelo G3 do catálogo (hora do gate); mapa de vereditos igual "
+             "ao promovido; o merge restaura os bytes com o --promote-only (CC-12)")
     for b in bad:
         emit(f"  FALHA {b}")
     emit(f"[{now()}] verify: {len(stored)} veredito(s) conferidos contra o árbitro; "
