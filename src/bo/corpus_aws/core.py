@@ -16,13 +16,15 @@ U5 bloco retido inteiro (o HCL retém `environment { ... }` sem abrir): atribuí
    relatado por (tipo, bloco).
 U6 classe de um valor: retido se há termo retido em qualquer ponto do termo; senão simbólico se o valor depende
    de nome resolvido fora do atributo (var, local, saída de módulo, data, referência a recurso, count/each,
-   workspace, iterador de dynamic, ou função avaliada no plano que lê arquivo, relógio ou acaso); senão literal
-   (inclui texto literal simbolizado só por privacidade, name_class 'unknown', path.*, funções puras sobre
-   literais e documento sem interpolação dependente). Alinhado entre os 4 CORPUS por decisão do coordenador
-   (04/11): a simbolização por privacidade é redação, não dependência.
+   path.*, workspace, iterador de dynamic, função de provedor provider::…, ou função avaliada no plano que lê
+   arquivo, relógio ou acaso); senão literal (inclui texto literal simbolizado só por privacidade, name_class
+   'unknown', funções puras sobre literais e documento sem interpolação dependente). Alinhado entre os 4 CORPUS
+   por decisão do coordenador (04/11): a simbolização por privacidade é redação, não dependência; path.* e
+   função de provedor dependem do lugar do módulo ou do provedor e são resolvidos no plano.
 U7 classe por (recurso, átomo) com vários registros (blocos repetidos): retido > simbólico > literal.
-U8 linha de tipo (sem atom_id): n_resources = blocos gerenciados do tipo no repositório; n_set = 0 por
-   definição (o uso por átomo está nas linhas com atom_id). Tipo ausente do schema só tem linha de tipo.
+U8 linha de tipo (sem atom_id): n_resources = blocos gerenciados do tipo no repositório; n_set = recursos do
+   tipo com pelo menos um átomo configurado; a classe do recurso combina todos os seus átomos pela precedência
+   do U7 (como na biblioteca do OCI; coordenador, 04/11). Tipo ausente do schema só tem linha de tipo (n_set 0).
 U9 `attr = null` (termo literal null no topo do registro) não configura o átomo: para o Terraform é o mesmo que
    omitir. Contado à parte (records_explicit_null). Alinhado entre os 4 CORPUS (coordenador, 04/11).
 """
@@ -34,16 +36,18 @@ import posixpath
 import re
 from collections import Counter, defaultdict
 
-RULES_VERSION = "U1-U9/2"
+RULES_VERSION = "U1-U9/3"
 
 META_TOP = frozenset({"count", "for_each", "provider", "depends_on", "lifecycle", "provisioner", "connection"})
 DYNAMIC_META = frozenset({"for_each", "iterator", "labels"})
 SYMBOLIC_CLASSES = frozenset({"variable", "local", "module_output", "data_source", "resource_attribute",
-                              "count_index", "each_key", "workspace"})
+                              "count_index", "each_key", "path", "workspace"})
 # funções do Terraform cujo valor não sai do texto do atributo: leem arquivo/diretório, relógio ou acaso
 IMPURE_FUNCS = frozenset({"file", "fileexists", "fileset", "filebase64", "filebase64sha256", "filebase64sha512",
                           "filemd5", "filesha1", "filesha256", "filesha512", "templatefile", "abspath",
                           "pathexpand", "timestamp", "plantimestamp", "uuid", "bcrypt"})
+
+PROVIDER_FUNC_OP = "hcl_provider_function"  # função provider::… (o HCL guarda o nome como literal no 1º arg)
 
 CLASSES = ("literal", "symbolic", "withheld")
 _RANK = {"literal": 0, "symbolic": 1, "withheld": 2}
@@ -200,7 +204,7 @@ def term_rank(t: dict) -> int:
         return _doc_class(t.get("tree"))
     if k == "expression":
         op = t.get("op")
-        worst = 1 if op in IMPURE_FUNCS else 0
+        worst = 1 if (op == PROVIDER_FUNC_OP or op in IMPURE_FUNCS) else 0
         for a in t.get("args") or ():
             worst = max(worst, term_rank(a))
             if worst == 2:
@@ -301,7 +305,17 @@ class RepoAgg:
             row[1 + rank] += 1
             mods[(t, p)].add(module_of(file))
         rows = {k: (v[0], v[1], v[2], v[3], len(mods[k])) for k, v in per.items()}
-        return {"repo_id": self.repo_id, "family_id": self.family_id, "rows": rows, "diag": dict(self.diag),
+        res_rank: dict[tuple, int] = {}
+        for (file, addr, _p), rank in self.cells.items():
+            if res_rank.get((file, addr), -1) < rank:
+                res_rank[(file, addr)] = rank
+        type_rows: dict[str, list] = {}
+        for key, rank in res_rank.items():
+            tr = type_rows.setdefault(self.resources[key][0], [0, 0, 0, 0])
+            tr[0] += 1
+            tr[1 + rank] += 1
+        return {"repo_id": self.repo_id, "family_id": self.family_id, "rows": rows,
+                "type_rows": {t: tuple(v) for t, v in type_rows.items()}, "diag": dict(self.diag),
                 "unattributed_blocks": dict(self.unattributed_blocks), "unmatched_paths": dict(self.unmatched_paths),
                 "unknown_types": dict(self.unknown_types)}
 

@@ -68,8 +68,9 @@ def test_normalize_rejects_garbage():
     (ex("max", lit(1, "number"), lit(2, "number")), "literal"),
     (ex("max", sym("variable"), lit(2, "number")), "symbolic"),
     (ex("file", lit("p.json")), "symbolic"),            # lê arquivo: o valor não sai do texto do atributo
-    (ex("hcl_provider_function", lit("provider::aws::x"), lit(1, "number")), "literal"),  # pura, sobre literal
-    (sym("path"), "literal"),                          # path.* não é dependência (alinhamento dos 4 CORPUS)
+    (ex("hcl_provider_function", lit("provider::aws::x"), lit(1, "number")), "symbolic"),  # resolvida no plano
+    (sym("path"), "symbolic"),                         # path.*: depende do lugar do módulo (4 CORPUS)
+    (ex("max", sym("path"), lit(1, "number")), "symbolic"),
     (sym("module_output"), "symbolic"),
     (sym("local"), "symbolic"),
     (ex("hcl_object", lit("k"), WH), "withheld"),
@@ -160,13 +161,13 @@ RESOURCES = [  # (repo, file, addr, tipo, provider)
 EXPECTED = [
     (R1, "aws_gone", None, 1, 0, 0, 0, 0),
     (R1, "aws_other", None, 1, 0, 0, 0, 0),
-    (R1, "aws_thing", None, 2, 0, 0, 0, 0),
+    (R1, "aws_thing", None, 2, 2, 1, 0, 1),
     (R1, "aws_thing", "aws:aws_thing:environment.variables", 2, 1, 0, 0, 1),
     (R1, "aws_thing", "aws:aws_thing:ingress", 2, 1, 0, 1, 0),
     (R1, "aws_thing", "aws:aws_thing:name", 2, 2, 2, 0, 0),
     (R1, "aws_thing", "aws:aws_thing:rule.match.field", 2, 1, 0, 1, 0),
     (R1, "aws_thing", "aws:aws_thing:size", 2, 2, 1, 1, 0),
-    (R2, "aws_thing", None, 1, 0, 0, 0, 0),
+    (R2, "aws_thing", None, 1, 1, 0, 0, 1),
     (R2, "aws_thing", "aws:aws_thing:name", 1, 1, 0, 0, 1),
 ]
 
@@ -278,3 +279,16 @@ def test_promote_refuses_without_lock(fake_data, tmp_path, monkeypatch):
     from bo.corpus_aws import promote
     monkeypatch.setenv("BO_REPO", str(tmp_path / "repo"))
     assert promote.main([]) == 3
+
+
+def test_check_catches_type_row_tampering(fake_data, tmp_path):
+    out = tmp_path / "tt"
+    assert build.main(["--workers", "1", "--out", str(out)]) == 0
+    lines = (out / "usage.jsonl").read_text().splitlines()
+    i = next(k for k, ln in enumerate(lines) if "atom_id" not in ln and '"aws_thing"' in ln)
+    u = json.loads(lines[i])
+    u["n_set"] -= 1
+    u["n_literal" if u["n_literal"] else "n_withheld"] -= 1
+    lines[i] = core.dumps(u)
+    (out / "usage.jsonl").write_text("\n".join(lines) + "\n")
+    assert check.main([str(out), "--sample-mod", "1"]) == 1

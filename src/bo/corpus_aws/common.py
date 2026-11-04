@@ -20,8 +20,10 @@ NAME_MIN_FAMILIES = 5
 TOP_N = 50
 # regras comuns aos 4 CORPUS, por decisão do coordenador (2026-11-04)
 ALIGNMENT = ("coordenador 2026-11-04, comum aos 4 CORPUS: literal = não depende de variável, recurso, data source, "
-             "local ou função avaliada no plano (lê arquivo, relógio ou acaso); cadeia simbolizada só por privacidade "
-             "é literal; attr = null não configura átomo; precedência withheld > symbolic > literal; blocos data fora")
+             "local, path.*, função de provedor provider::… ou função avaliada no plano (lê arquivo, relógio ou acaso); "
+             "cadeia simbolizada só por privacidade é literal; attr = null não configura átomo; precedência "
+             "withheld > symbolic > literal; blocos data fora; linha de tipo: n_set = recursos com pelo menos um "
+             "átomo configurado, classe do recurso pela mesma precedência")
 
 
 def bo_data() -> Path:

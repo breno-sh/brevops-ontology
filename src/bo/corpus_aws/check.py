@@ -40,7 +40,7 @@ _IDX = re.compile(r"\[\d+\]")
 _DYN = re.compile(r'dynamic\["([^"]*)"\](?:\[\d+\])*\.')
 _META = {"count", "for_each", "provider", "depends_on", "lifecycle", "provisioner", "connection"}
 _SYMB = {"variable", "local", "module_output", "data_source", "resource_attribute", "count_index", "each_key",
-         "workspace"}
+         "path", "workspace"}
 _IMPURE = {"file", "fileexists", "fileset", "filebase64", "filebase64sha256", "filebase64sha512", "filemd5",
            "filesha1", "filesha256", "filesha512", "templatefile", "abspath", "pathexpand", "timestamp",
            "plantimestamp", "uuid", "bcrypt"}
@@ -76,7 +76,7 @@ def naive_class(t, found=None) -> set:
         if t["name_class"] in _SYMB:
             found.add("s")
     elif k == "expression":
-        if t["op"] in _IMPURE:
+        if t["op"] in _IMPURE or t["op"] == "hcl_provider_function":
             found.add("s")
         for a in t["args"]:
             naive_class(a, found)
@@ -127,8 +127,14 @@ def naive_repo(lines, managed: dict, atoms: dict, configurable_under: dict):
         ck = (key, hit)
         cell[ck] = max(cell.get(ck, -1), cls)
     out = defaultdict(lambda: [0, 0, 0, 0])
+    worst = {}
     for ((f, a), p), c in cell.items():
         row = out[(managed[(f, a)], p)]
+        row[0] += 1
+        row[1 + c] += 1
+        worst[(f, a)] = max(worst.get((f, a), -1), c)
+    for (f, a), c in worst.items():  # linha de tipo: recursos com algum átomo, pior classe do recurso
+        row = out[(managed[(f, a)], None)]
         row[0] += 1
         row[1 + c] += 1
     return out
@@ -259,6 +265,12 @@ def run(d: Path, validator: bool, sample_mod: int) -> tuple[list[str], dict]:
     sample_rows = defaultdict(dict)
     prev = None
     cur_type = None
+    grp = {}
+
+    def close_type():
+        # n_set da linha de tipo: recursos com algum átomo -> entre o maior e a soma dos n_set dos seus átomos
+        if grp and not (grp["max"] <= grp["n_set"] <= grp["sum"]):
+            errs.append(f"usage[{grp['i']}]: n_set da linha de tipo fora de [max, soma] dos átomos")
     n_rows = 0
     split_rx = re.compile(r"split|partition|calib|holdout|test_set", re.I)
     with open(d / "usage.jsonl", encoding="utf-8") as f:
@@ -282,10 +294,13 @@ def run(d: Path, validator: bool, sample_mod: int) -> tuple[list[str], dict]:
             prev = key
             tk = (u["repo_id"], u["family_id"], u["resource_type"])
             if aid is None:
-                if u["n_set"] != 0:
-                    errs.append(f"usage[{i}]: linha de tipo com n_set != 0")
+                close_type()
                 got_type[tk] = u["n_resources"]
                 cur_type = (tk, u["n_resources"])
+                grp.update(n_set=u["n_set"], max=0, sum=0, i=i)
+                if u["n_set"] and u["repo_id"] in managed_by_repo:
+                    sample_rows[u["repo_id"]][(u["resource_type"], None)] = \
+                        [u["n_set"], u["n_literal"], u["n_symbolic"], u["n_withheld"]]
                 continue
             if cur_type is None or cur_type[0] != tk or cur_type[1] != u["n_resources"]:
                 errs.append(f"usage[{i}]: linha de átomo sem a linha de tipo ou com outro n_resources")
@@ -294,6 +309,8 @@ def run(d: Path, validator: bool, sample_mod: int) -> tuple[list[str], dict]:
                 errs.append(f"usage[{i}]: atom_id fora do schema ou de outro tipo")
             if u["n_set"] < 1:
                 errs.append(f"usage[{i}]: linha de átomo com n_set 0")
+            grp["max"] = max(grp["max"], u["n_set"])
+            grp["sum"] += u["n_set"]
             s = sums[aid]
             s[0] += 1
             s[1] += u["n_set"]
@@ -306,6 +323,7 @@ def run(d: Path, validator: bool, sample_mod: int) -> tuple[list[str], dict]:
                     [u["n_set"], u["n_literal"], u["n_symbolic"], u["n_withheld"]]
             if len(errs) > 50:
                 break
+    close_type()
     if got_type != want_type:
         miss = len(set(want_type) - set(got_type))
         extra = len(set(got_type) - set(want_type))
@@ -368,11 +386,11 @@ def run(d: Path, validator: bool, sample_mod: int) -> tuple[list[str], dict]:
             nv = naive_repo(lines, managed_by_repo[rid], atoms, configurable_under)
             got = sample_rows.get(rid, {})
             want = {k: v for k, v in nv.items()}
-            n_cells += sum(v[0] for v in want.values())
+            n_cells += sum(v[0] for k, v in want.items() if k[1] is not None)
             if got != want:
                 diff_repos += 1
                 if diff_repos <= 5:
-                    ks = sorted(set(got) ^ set(want)) or sorted(k for k in want if want[k] != got.get(k))
+                    ks = sorted(set(got) ^ set(want), key=str) or sorted((k for k in want if want[k] != got.get(k)), key=str)
                     errs.append(f"2ª implementação diverge num repositório da amostra ({len(ks)} chave(s))")
     info["sample"] = {"mod": sample_mod, "repos": len(sample_repos), "cells": n_cells,
                       "repos_divergent": diff_repos}

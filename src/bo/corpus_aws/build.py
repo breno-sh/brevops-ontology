@@ -158,6 +158,7 @@ def build(args) -> int:
     typ = defaultdict(lambda: [0, 0, 0, set()])            # tipo -> [repos, mods, recursos, famílias]
     n_rows_type = n_rows_atom = 0
     cls_cells = Counter()
+    type_cls = Counter()
     upath = out / "usage.jsonl"
     with open(str(upath) + ".part", "w", encoding="utf-8") as fo:
         for rid in sorted(repos):
@@ -181,7 +182,12 @@ def build(args) -> int:
                 rows_by_type[ty].append((p, vals))
             for ty in sorted(type_n[rid]):
                 nres = type_n[rid][ty]
-                fo.write(dumps(usage_row(prov, rid, fid, ty, nres)) + "\n")
+                ts, tl, tsy, tw = r["type_rows"].get(ty, (0, 0, 0, 0))
+                fo.write(dumps(usage_row(prov, rid, fid, ty, nres, None, ts, tl, tsy, tw)) + "\n")
+                type_cls["set"] += ts
+                type_cls["literal"] += tl
+                type_cls["symbolic"] += tsy
+                type_cls["withheld"] += tw
                 n_rows_type += 1
                 tt = typ[ty]
                 tt[0] += 1
@@ -272,6 +278,8 @@ def build(args) -> int:
         "atoms_used": {"any": used["atoms_used"], "configurable": used["atoms_used_configurable"],
                        "not_configurable": used["atoms_used_not_configurable"],
                        "in_ge5_families": used["atoms_used_ge5_families"]},
+        "resources_with_atom": {"total": type_cls["set"], **{k: type_cls[k] for k in
+                                                             ("literal", "symbolic", "withheld")}},
         "cells_resource_atom": {"total": sum(cls_cells.values()), **{k: cls_cells[k] for k in
                                                                      ("literal", "symbolic", "withheld")}},
         "records": {k: diag[k] for k in sorted(diag) if k.startswith("records_")},
