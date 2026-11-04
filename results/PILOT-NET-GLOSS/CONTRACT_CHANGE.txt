@@ -133,3 +133,5 @@ CC-NET-5 (2026-11-04T18:35:00-03:00, BLOQUEIA o publish desta rodada): o C25 1.5
   NSG do provedor azurerm e a regra separada do NSG da oci). Não altero a saída mecânica. Proposta (CONTRACTS): emenda
   do C00 evidence_level com "observed" (e o C19 herda), ou o GRAIN rebaixa a fonte observada para derived com nota.
   Também em aberto: o BRIEFS consumiu o GRAIN.html antes do ed1fc66 (consume_check, manifestos_transitivos).
+  RESOLVIDO 2026-11-04T18:41:00-03:00: emenda 12 do CONTRACTS (cd6a66e) põe observed no C00; árbitro recongelado
+  (28b9ba0); BRIEFS corrigido (58c47da). canonical_units valida (38 itens, 0 erro). E2 3/3.
