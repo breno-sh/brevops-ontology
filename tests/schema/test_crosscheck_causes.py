@@ -89,8 +89,8 @@ def test_beta_warning_in_docs_is_not_a_cause(work):
     text = "---\npage_title: \"P\"\n---\n\nThis resource is in beta, and should be used with the terraform-provider-google-beta provider.\n"
     rep, _ = run(work, "google", "8.9.0", ["google_a"],
                  {("resources", "a"): page("# google_a"), ("resources", "bb"): text})
-    assert rep["veredito"] == "FAIL" and rep["paginas_sem_tipo"] == ["google_bb"]
     assert "so_beta" not in rep["por_causa"]
+    assert causes(rep) == [("google_bb", "pagina_sem_tipo_no_schema")]      # pelo nome do arquivo, nunca pelo aviso
 
 
 def test_alias():
@@ -139,12 +139,12 @@ def test_type_without_documentation(work):
 
 
 def test_no_cause_fails(work):
-    """Página sem título e tipo nomeado por um título que já tem página: os dois ficam sem causa."""
+    """Página cujo título nomeia um tipo que já tem página, e linha '# ' fora de TITLE: as duas ficam sem causa."""
     rep, _ = run(work, "oci", "9.11.0", ["oci_x", "oci_y"],
-                 {("resources", "x"): page("# oci_x"), ("resources", "untitled"): "---\npage_title: \"P\"\n---\nsem título\n",
+                 {("resources", "x"): page("# oci_x"), ("resources", "weird"): page("# Um Título Qualquer"),
                   ("resources", "dup"): page("# oci_x")})
     assert rep["veredito"] == "FAIL"
-    assert rep["paginas_sem_tipo"] == ["oci_dup", "oci_untitled"]
+    assert rep["paginas_sem_tipo"] == ["oci_dup", "oci_weird"]
     assert rep["tipos_sem_pagina"] == []
     assert ("oci_y", "tipo_sem_documentacao") in causes(rep)
 
@@ -232,11 +232,26 @@ def test_untitled_page_whose_file_names_a_schema_type(work):
 
 
 def test_untitled_rule_is_not_a_name_exception(work):
-    """Sem título e arquivo que não é tipo do schema: sem causa. Com linha '# ' (mesmo fora de TITLE): sem causa."""
-    untitled = "---\npage_title: \"P\"\n---\n\nsó texto\n"
+    """Com linha '# ' (mesmo fora de TITLE) a regra do nome do arquivo não se aplica: sem causa."""
     rep, _ = run(work, "oci", "9.11.0", ["oci_x"],
-                 {("resources", "x"): page("# oci_x"), ("resources", "gone_agent"): untitled,
-                  ("resources", "cg_items"): page("# Um Título Qualquer")},
+                 {("resources", "x"): page("# oci_x"), ("resources", "cg_items"): page("# Um Título Qualquer")},
                  data_sources=["oci_cg_items"])
-    assert rep["veredito"] == "FAIL" and rep["paginas_sem_tipo"] == ["oci_cg_items", "oci_gone_agent"]
+    assert rep["veredito"] == "FAIL" and rep["paginas_sem_tipo"] == ["oci_cg_items"]
     assert "pagina_sem_titulo" not in rep["por_causa"]
+
+
+def test_untitled_page_of_removed_type(work):
+    """Sem linha '# ' e o nome do arquivo não é tipo do schema: pagina_sem_tipo_no_schema pelo nome do arquivo;
+    a frase de remoção da própria página vira o detalhe tipo_removido."""
+    removed = ("---\npage_title: \"P: oci_gone_agent\"\n---\n\n"
+               "### support for this resource has been removed from v5.28.0\n")
+    plain = "---\npage_title: \"P\"\n---\n\nsó texto\n"
+    rep, _ = run(work, "oci", "9.11.0", ["oci_x"],
+                 {("resources", "x"): page("# oci_x"), ("resources", "gone_agent"): removed,
+                  ("resources", "other_gone"): plain})
+    assert rep["veredito"] == "PASS"
+    ex = {e["pagina"]: e for e in rep["explicadas"]}
+    assert ex["oci_gone_agent"]["causa"] == ex["oci_other_gone"]["causa"] == "pagina_sem_tipo_no_schema"
+    assert ex["oci_gone_agent"]["tipo_removido"] == {
+        "versao": "5.28.0", "frase": "support for this resource has been removed from v5.28.0"}
+    assert "tipo_removido" not in ex["oci_other_gone"]

@@ -46,3 +46,6 @@ ATUALIZAÇÃO — 2026-11-03 (America/Recife), pedidos do driver depois da emend
   nome de arquivo (<provedor>_<slug>) é tipo do schema da versão. No oci 9.11.0 ela NÃO explica
   oci_database_migration_agent: esse nome não é recurso nem data source do schema 9.11.0 (a própria página diz que
   o suporte saiu na v5.28.0). A página continua sem causa e o oci 9.11.0 continua FAIL; não criei exceção por nome.
+- 2026-11-03 (America/Recife), pedido do driver: página sem nenhuma linha '# ' cujo nome de arquivo não é tipo do
+  schema vira pagina_sem_tipo_no_schema (decidido_por: nome_do_arquivo), com o detalhe tipo_removido quando a
+  página declara a remoção (frase citada). oci 9.11.0 agora PASS: oci_database_migration_agent, tipo_removido 5.28.0.

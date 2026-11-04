@@ -46,6 +46,7 @@ PRODUCER = {"aws": "SCHEMA-AWS", "azurerm": "SCHEMA-AZURE", "google": "SCHEMA-GC
 BETA = {"google": "registry.terraform.io/hashicorp/google-beta"}
 IAM_SUFFIXES = ("_iam_binding", "_iam_member", "_iam_policy", "_iam_audit_config")
 H1_LINE = re.compile(r"^# ", re.M)
+REMOVED = re.compile(r"^.*\bsupport for this resource has been removed (?:from|in) v?(\d+\.\d+\.\d+)\b.*$", re.M | re.I)
 TITLE = re.compile(r"^#\s+(?:(Resource|Data Source|Ephemeral Resource|List Resource|Action):\s*)?"
                    r"`?([a-z][a-z0-9_]*)`?\s*$", re.M)
 
@@ -59,8 +60,10 @@ CAUSES = {
     "nome_divergente": "[página e tipo] o título da página nomeia exatamente um tipo de recurso do schema que não tem "
                        "página pelo slug: os dois formam um par (igualdade de nome, sem semelhança)",
     "data_source_publicado_como_recurso": "[página] título 'Data Source: X' com X em data_source_schemas do schema",
-    "pagina_sem_tipo_no_schema": "[página] o título nomeia X, e X não é recurso nem data source do schema da versão "
-                                 "(nem do google-beta, quando conferido)",
+    "pagina_sem_tipo_no_schema": "[página] o título nomeia X (ou, sem nenhuma linha '# ', o nome do arquivo é X), e X "
+                                 "não é recurso nem data source do schema da versão (nem do google-beta, quando "
+                                 "conferido); detalhe tipo_removido quando a página declara 'support for this "
+                                 "resource has been removed from vN' (frase citada)",
     "pagina_sem_titulo": "[página] o arquivo não tem nenhuma linha que comece com '# ', e o nome do arquivo "
                          "(<provedor>_<slug>) é um tipo do schema da versão (data source, ou recurso do "
                          "google-beta quando conferido)",
@@ -194,7 +197,7 @@ class Evidence:
     data_sources: set
     resources: set
     titles: dict = field(default_factory=dict)        # nome da página (índice resources/hcl) -> (tipo, nome)
-    untitled: set = field(default_factory=set)        # páginas de recurso sem nenhuma linha '# '
+    untitled: dict = field(default_factory=dict)      # página de recurso sem linha '# ' -> frase de remoção ou None
     resource_titles: dict = field(default_factory=dict)  # nome nomeado por título de recurso -> [páginas]
     beta_types: set | None = None
     proof: dict = field(default_factory=dict)
@@ -205,7 +208,7 @@ def parse_title(text: str) -> tuple[str, str] | None:
     return (m.group(1) or "Resource", m.group(2)) if m else None
 
 
-def read_docs(docs: Path, index: dict, provider: str, version: str) -> tuple[dict, dict, set, dict]:
+def read_docs(docs: Path, index: dict, provider: str, version: str) -> tuple[dict, dict, dict, dict]:
     """(títulos das páginas de recurso, títulos de recurso de todas as páginas, páginas sem linha '# ', prova). Confere o MANIFEST.json."""
     man = docs.parent / "MANIFEST.json"
     if not man.exists():
@@ -215,7 +218,7 @@ def read_docs(docs: Path, index: dict, provider: str, version: str) -> tuple[dic
     if m.get("provider") != addr or m.get("version") != version:
         raise EvidenceError(f"crosscheck: MANIFEST.json de {m.get('provider')} {m.get('version')}")
     shas = {f["path"]: f["sha256"] for f in m.get("files") or []}
-    page_titles, res_titles, untitled, n = {}, {}, set(), 0
+    page_titles, res_titles, untitled, n = {}, {}, {}, 0
     for d in index.get("docs") or []:
         if d.get("language") != "hcl" or not str(d.get("path", "")).startswith("website/docs/"):
             continue
@@ -232,7 +235,9 @@ def read_docs(docs: Path, index: dict, provider: str, version: str) -> tuple[dic
         if d.get("category") == "resources":
             page_titles[_name(provider, d["slug"])] = t
             if not H1_LINE.search(text):
-                untitled.add(_name(provider, d["slug"]))
+                m = REMOVED.search(text)
+                untitled[_name(provider, d["slug"])] = (
+                    {"versao": m.group(1), "frase": m.group(0).strip("# ").strip()[:160]} if m else None)
         if t and t[0] != "Data Source":
             res_titles.setdefault(t[1], []).append(_name(provider, d["slug"]))
     return page_titles, res_titles, untitled, {"docs": str(docs), "manifest_sha256": _sha_file(man), "paginas_lidas": n}
@@ -290,8 +295,14 @@ def _with_evidence(types_left: list, pages_left: list, ev: Evidence, explained: 
         if p in ev.untitled:
             if p in ev.data_sources or (ev.beta_types and p in ev.beta_types):
                 explained.append({"pagina": p, "causa": "pagina_sem_titulo", "arquivo_nomeia": p})
+            elif p not in ev.resources:          # sempre verdade aqui (página sem tipo), conferido por clareza
+                e = {"pagina": p, "causa": "pagina_sem_tipo_no_schema", "arquivo_nomeia": p,
+                     "decidido_por": "nome_do_arquivo (página sem linha '# ')"}
+                if ev.untitled[p]:
+                    e["tipo_removido"] = ev.untitled[p]
+                explained.append(e)
             else:
-                pages_out.append(p)              # sem título e o nome do arquivo não é tipo do schema: sem causa
+                pages_out.append(p)
             continue
         t = ev.titles.get(p)
         if t is None:

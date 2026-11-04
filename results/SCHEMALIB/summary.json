@@ -90,5 +90,5 @@
    "transformation": "índice de documentação, só contagem de páginas por tipo (crosscheck)"
   }
  ],
- "notes": "Reprodução do catalogo4v2: 4946/4946 tipos com as 6 contagens iguais (100%), árvore igual em 4946; 158946 átomos C01 e 4946 tipos C02 validados. crosscheck com causas conferidas nas versões dos SCHEMA-*: aws 6.71.0, azurerm 5.12.0 e google 8.9.0 PASS; oci 9.11.0 FAIL por 1 página sem título cujo nome de arquivo não é tipo do schema (ver CONTRACT_CHANGE.txt)."
+ "notes": "Reprodução do catalogo4v2: 4946/4946 tipos com as 6 contagens iguais (100%), árvore igual em 4946; 158946 átomos C01 e 4946 tipos C02 validados. crosscheck com causas conferidas nas versões dos SCHEMA-*: aws 6.71.0, azurerm 5.12.0 e google 8.9.0 PASS; oci 9.11.0 PASS (página sem título de tipo removido = pagina_sem_tipo_no_schema pelo nome do arquivo)."
 }
