@@ -46,3 +46,13 @@ def test_sto_pacote_menor_troca_tudo(work):
     M.materialize("sto", {"fixtures": g.fixtures[:3], "entries": g.entries[:2]}, work)
     files = sorted(p.name for p in (work / "pilot/sto/fixtures_calib").rglob("*.json"))
     assert len(files) == 5
+
+
+def test_manifesto_do_oraculo_confere_na_copia(work):
+    from bo.pilot_sto_oracle import cases
+    _copy(work)
+    g = cases.generate("calib")
+    M.materialize("sto", {"fixtures": g.fixtures[:4], "entries": g.entries[:3]}, work)
+    r = subprocess.run(["shasum", "-a", "256", "-c", "pilot/sto/ORACLE.sha256", "--quiet"], cwd=work,
+                       capture_output=True, text=True)
+    assert r.returncode == 0, r.stdout[-300:]

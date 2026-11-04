@@ -59,7 +59,18 @@ def verify_existing(rec: dict, ids: dict, seals: dict) -> list[str]:
     return errs
 
 
-def run_slice(slice_: str, ident: dict, root: Path, workdir: Path, decrypt_argv=C.VM_DECRYPT_ARGV) -> dict:
+def calib_bundle(slice_: str) -> dict:
+    """Pacote da calibração PÚBLICA no formato do selo (ensaio do avaliador; nunca as retidas)."""
+    if slice_ == "sto":
+        from bo.pilot_sto_oracle import cases
+        g = cases.generate("calib")
+        return {"fixtures": g.fixtures, "entries": g.entries}
+    from bo.pilot_net_oracle import calib
+    return {"fixtures": calib.fixtures(), "translations": calib.translations()}
+
+
+def run_slice(slice_: str, ident: dict, root: Path, workdir: Path, decrypt_argv=C.VM_DECRYPT_ARGV,
+              rehearsal: bool = False) -> dict:
     s = C.SLICES[slice_]
     mid = s["e2e"]
     t0 = time.monotonic()
@@ -71,7 +82,11 @@ def run_slice(slice_: str, ident: dict, root: Path, workdir: Path, decrypt_argv=
     if frozen.digest(check) != ident["code_sha256"]:
         raise frozen.FrozenError("cópia exportada ≠ sha do código congelado")
     data_root = runner.overlay(C.data(), rdir / "data", mid)
-    opened = unseal.open_slice(slice_, decrypt_argv=decrypt_argv, root=root)
+    if rehearsal:
+        opened = {"bundle": calib_bundle(slice_), "ciphertext_sha256": None, "plaintext_sha256": None,
+                  "plaintext_bytes": None, "n_items": None}
+    else:
+        opened = unseal.open_slice(slice_, decrypt_argv=decrypt_argv, root=root)
     counts = materialize.materialize(slice_, opened["bundle"], frozen_repo)
     cmds = runner.catalog_gates(mid)
     res = runner.run_commands(cmds, frozen_repo, data_root, mid, rdir / "logs")
@@ -87,6 +102,8 @@ def main(argv=None) -> int:
     ap.add_argument("--slices", default="sto,net")
     ap.add_argument("--reproduce", action="store_true")
     ap.add_argument("--verify-only", action="store_true", help="nunca executa: só confere o registro (gate do módulo)")
+    ap.add_argument("--rehearsal", action="store_true",
+                    help="ensaio na CALIBRAÇÃO pública (sem decifrar, sem tentativa, nada gravado fora de $BO_TMP)")
     ap.add_argument("--keep-workdir", action="store_true", help="não apaga $BO_TMP/run (só para depurar o avaliador)")
     ap.add_argument("ids", nargs="*")
     a = ap.parse_args(argv)
@@ -111,6 +128,15 @@ def main(argv=None) -> int:
                   + "; ".join(ids[s]["problems"]) + " (V1: pare e relate)")
             return 2
     key = key_of(ids, seals)
+    if a.rehearsal:
+        workdir = C.tmp() / "rehearsal"
+        out = {}
+        for s in slices:
+            out[s] = run_slice(s, ids[s], root, workdir, rehearsal=True)
+            C.say(f"heldout_run --rehearsal: {s}: saídas {[c['rc'] for c in out[s]['commands']]}, {out[s]['seconds']} s")
+            C.write_json(workdir / f"{s}_evidence.json", out[s]["evidence"])
+        C.say(f"heldout_run --rehearsal: evidência do ensaio em {C.portable(workdir)} (não é tentativa)")
+        return 0
     rec = C.read_json(record_path(root))
     if rec and rec.get("key") == key and not a.reproduce:
         errs = verify_existing(rec, ids, seals)

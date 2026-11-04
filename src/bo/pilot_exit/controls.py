@@ -87,3 +87,14 @@ def justified(c3_traces: list[dict]) -> dict:
         if not isinstance(ja, list) or not ja or not isinstance(cm, list) or set(ja) & set(cm):
             bad += 1
     return {"c3_carried": n, "c3_bad_justification": bad}
+
+
+def n_required(root) -> int:
+    """n por família exigido pelo C-H9 (prereg/power.json, result.n_cases_per_family)."""
+    import json
+    from pathlib import Path
+    p = json.loads((Path(root) / "prereg" / "power.json").read_text(encoding="utf-8"))
+    for c in p["data"]["contrasts"]:
+        if c["contrast_id"] == "C-H9":
+            return int(c["result"]["n_cases_per_family"])
+    raise KeyError("C-H9 ausente do power.json")

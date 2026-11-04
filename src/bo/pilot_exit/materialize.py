@@ -119,5 +119,36 @@ def net(bundle: dict, root: Path) -> dict:
     return {"fixtures": len(fx), "translations": len(tr)}
 
 
+def refresh_manifest(slice_: str, root: Path) -> int:
+    """ORACLE.sha256 da cópia passa a descrever os arquivos que estão nela (as retidas no lugar da calibração);
+    as linhas do avaliador, das regras e do selo ficam como estavam."""
+    import hashlib
+    mf = root / "pilot" / slice_ / "ORACLE.sha256"
+    if not mf.is_file():
+        return 0
+    swapped = (f"pilot/{slice_}/fixtures_calib/", f"pilot/{slice_}/expected_answers.json",
+               f"pilot/{slice_}/oracle/directions.json")
+    files = sorted((root / "pilot" / slice_ / "fixtures_calib").rglob("*.json")) + \
+        [root / "pilot" / slice_ / "expected_answers.json", root / "pilot" / slice_ / "oracle" / "directions.json"]
+    now = {str(f.relative_to(root)): hashlib.sha256(f.read_bytes()).hexdigest() for f in files if f.is_file()}
+    lines, seen = [], set()
+    for l in mf.read_text(encoding="utf-8").splitlines():
+        if not l.strip():
+            continue
+        path = l.split("  ", 1)[-1]
+        if path.startswith(swapped):
+            if path in now:
+                lines.append(f"{now[path]}  {path}")
+                seen.add(path)
+            continue
+        lines.append(l)
+    new = [f"{h}  {p}" for p, h in sorted(now.items()) if p not in seen]
+    mf.write_text("\n".join(lines + new) + "\n", encoding="utf-8")
+    return len(now)
+
+
+
 def materialize(slice_: str, bundle: dict, root: Path) -> dict:
-    return sto(bundle, root) if slice_ == "sto" else net(bundle, root)
+    out = sto(bundle, root) if slice_ == "sto" else net(bundle, root)
+    out["oracle_manifest_lines"] = refresh_manifest(slice_, root)
+    return out
