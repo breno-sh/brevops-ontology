@@ -26,9 +26,9 @@ code,.fx{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.8rem}
 nav a{margin-right:10px;font-size:.88rem;color:var(--accent)}
 ol li,ul li{margin:3px 0}</style></head><body><main>
 <h1>Procedimento de grão canônico</h1>
-<div class="meta">Módulo GRAIN · contrato de saída C19 3.0.0 · regras 0.1.0
+<div class="meta">Módulo GRAIN · contrato de saída C19 3.0.0 · regras 0.1.1
 <b class="unk">PROVISIONAL</b> (definitivas só depois de GRAIN-REPRO, PILOT-EXIT) · escrito em
-2026-11-03T02:30:00-03:00 (America/Recife) · grain_rules.yaml sha256 e80155ef23e26609… · responde a R1-M2, R1-M7, R2-W2,
+2026-11-04T03:00:00-03:00 (America/Recife) · grain_rules.yaml sha256 ee6e3efb33c78d91… · responde a R1-M2, R1-M7, R2-W2,
 Gemini A3/A6, GPT-6 F1/S1</div>
 <div class="kpis">
 <div class="kpi"><b>6</b>regras (G0–G4 e G0-NOMATCH)</div>
@@ -47,7 +47,7 @@ Gemini A3/A6, GPT-6 F1/S1</div>
 <h2 id="leitura">Para quem reimplementa</h2>
 <p>Esta página é o contrato do procedimento. O GRAIN-REPRO implementa a partir só dela (sem ler
 <code>src/bo/grain/</code>) e mede a concordância; desacordo vira emenda das regras ou UNKNOWN. São normativos:
-as seções Evidência, Normalização, Identidade, Regras, Resolução, Saída C19 e Instância, e o arquivo
+as seções Evidência, Normalização, Identidade, Regras, Resolução, Saída C19, Instância e a tabela aspecto → alegação (Adaptadores), e o arquivo
 <code>grain/grain_rules.yaml</code> (a parte executável das regras; seu sha256 está em <code>grain/RULES.sha256</code>).
 O resto (resultados, achados) é informativo. Nenhuma regra cita provedor, prefixo de tipo ou sufixo de nome: o que
 cada provedor diz entra pelos adaptadores de evidência, que são permitidos e ficam fora das regras.</p>
@@ -70,7 +70,14 @@ e compara-se por JSON canônico. Todas iguais → <b>KNOWN</b> com esse valor; s
 irmão); <code>references</code> (campo de referência → candidato-alvo); <code>parent_role</code> (papel do pai
 estrutural quando ele entra numa tupla de vínculo; padrão <code>parent</code>); <code>groups</code> (grupos de
 atributos ligados a aspectos, com a evidência própria de cada grupo). Os nomes nas chaves de identidade são os
-nomes canônicos do <code>field_map</code>, nunca o nome do provedor.</p><h2 id="normalizacao">Normalização de cima para baixo</h2><ol><li><b>T0</b>: blocos e recursos marcados pela evidência como carga útil da API do pai (api_resource=payload, sem identidade própria) são transparentes; os átomos sobem para o pai e os blocos filhos passam a ter como pai estrutural o pai dele</li><li><b>T1</b>: grupos de atributos que a evidência liga a um aspecto da API viram candidatos próprios, como se fossem blocos</li><li><b>R</b>: as regras abaixo são tentadas por prioridade crescente; a primeira cujo match vale decide; se faltar evidência listada em needs, o resultado é UNKNOWN com essa lista e as regras de prioridade menor NÃO são tentadas; se o guard é falso, tenta-se a próxima</li><li><b>Z</b>: se nenhuma regra decide, o resultado é UNKNOWN (GRAIN-G0-NOMATCH) com os campos cujos guards falharam</li></ol>
+nomes canônicos do <code>field_map</code>, nunca o nome do provedor.</p><h2 id="normalizacao">Normalização de cima para baixo</h2><ol><li><b>T0</b>: blocos e recursos marcados pela evidência como carga útil da API do pai (api_resource=payload, sem identidade própria) são transparentes; os átomos sobem para o pai e os blocos filhos passam a ter como pai estrutural o pai dele</li><li><b>T1</b>: grupos de atributos que a evidência liga a um aspecto da API viram candidatos próprios, como se fossem blocos</li><li><b>T2</b>: atributo cujo tipo cty é lista ou conjunto de objetos vira bloco repetido; os campos saem do próprio tipo como sub-átomos virtuais (caminho atributo.campo), marcados como derivados do tipo e não do schema de blocos; o átomo da coleção fica com o contêiner</li><li><b>R</b>: as regras abaixo são tentadas por prioridade crescente; a primeira cujo match vale decide; se faltar evidência listada em needs, o resultado é UNKNOWN com essa lista e as regras de prioridade menor NÃO são tentadas; se o guard é falso, tenta-se a próxima</li><li><b>Z</b>: se nenhuma regra decide, o resultado é UNKNOWN (GRAIN-G0-NOMATCH) com os campos cujos guards falharam</li></ol>
+<p><b>Coleção de objetos (T2, emenda GRAIN-A2)</b>: atributo cujo <code>tf_type</code> cty é
+<code>["list"|"set", ["object", {campo: tipo}]]</code> (ou a forma nested_type <code>[modo, {...}, opcionais]</code>) vira
+o candidato <code>tipo.bloco….atributo</code>, com nesting = o modo e atributos = os campos do objeto, recursivamente
+para campos que também são coleções. Os sub-átomos <code>provedor:tipo:caminho.atributo.campo</code> são VIRTUAIS:
+derivados do tipo cty, não do schema de blocos (os átomos do SCHEMA-* não são regenerados); o átomo da coleção
+(<code>…atributo</code>) fica com a unidade do contêiner. O verificador de cobertura aceita sub-átomo virtual só sob um
+átomo de coleção do C01. Lista de objetos com um só elemento não muda nada: a cardinalidade não decide.</p>
 <p><b>Transparente (T0)</b> = api_resource KNOWN com <code>status: payload</code> E identity KNOWN com
 <code>status: absent</code>. O pai efetivo de um transparente aninhado é o pai estrutural (já pulando outros
 transparentes); o de um recurso de topo transparente é o alvo da única referência da sua chave de importação (sem
@@ -164,14 +171,26 @@ normalizada pelos nomes canônicos <code>config: true</code> do próprio nó e d
 referências simples fora da chave, regra, missing). A camada Terraform não entra.</li></ul><h2 id="adaptadores">Adaptadores de evidência</h2><ul>
 <li><b>FixtureAdapter</b>: a tabela <code>{candidato: {campo: [alegações], field_map, references, parent_role, groups,
 roles}}</code>, usada pelos mundos sintéticos.</li>
-<li><b>C25Adapter</b> (service_evidence.jsonl do SERVICE-EVIDENCE, C25 1.0.0). Convenção de leitura, já que o C25
-deixa <code>value</code> livre: fact_kind identity, import_key, lifecycle_controller, owner, effective_scope viram
-alegações; <code>value</code> é o objeto da alegação ou, para ciclo de vida, dono e alcance, a string do kind;
-<code>value.block_path</code> endereça um bloco aninhado; no fato identity, <code>api_status</code> e <code>label</code>
-dão a ligação com a API (service/resource vêm do registro), <code>element_name_key</code> (lista; vazia = ausente),
-<code>references</code>, <code>field_map</code> e <code>parent_role</code> vão para o candidato; campo citado numa chave
-sem field_map ganha nome canônico = caminho. status unknown vira alegação desconhecida; unknown_reason contradictory
-vira CONTRADICTORY. A fonte do C19 é <code>{level, ref: evidence_id}</code>.</li></ul><h2 id="resultados">Resultados (mundos sintéticos)</h2>
+<li><b>C25Adapter</b> (service_evidence.jsonl do SERVICE-EVIDENCE, C25 1.0.0). Se algum registro traz
+<code>value.aspect</code> (a forma real do SERVICE-EVIDENCE), todos os fatos de grão do provedor passam pela tabela por
+aspecto abaixo (emenda GRAIN-A1, CC-1). Fato afirmado sem aspecto segue a convenção anterior (T99).</li></ul>
+<h3 id="aspectos">Tabela aspecto → alegação (normativa)</h3>
+<ul><li>Nada é inventado: aspecto sem tradução, aspecto fora da tabela e fato com status unknown viram alegação UNKNOWN
+com o motivo, que fica na fonte da alegação e nos motivos do relatório; a consolidação os ignora.</li>
+<li>Dono da IDENTIDADE (identity_scope, parent, parent_attribute) não é dono da CONFIGURAÇÃO: nunca vira o campo
+owner. Por isso, hoje, nenhum aspecto dá owner a um tipo de topo: só os blocos (block_config_owner) e os fatos T99.</li>
+<li>destroy_effect <code>suspend</code> num recurso separado é indício de faceta do pai; <code>not_deleted</code> e
+<code>state_only</code> dizem que o destroy não apaga, não quem apaga.</li>
+<li>Bloco aninhado só ganha alegação com fato de <code>block_path</code>; sem ela é UNKNOWN pela G0, nunca FACET por
+omissão. Aspecto de bloco sem ligação com a API (não há block_api) deixa o bloco UNKNOWN com api_resource.</li>
+<li>Nenhuma heurística de nome: <code>block_schema.facet_word</code> não é lido; alvo de referência só pela chave
+compartilhada (T02) ou por fato explícito.</li>
+<li>Fonte de cada alegação traduzida: <code>{level: derived, ref: evidence_id, note: "&lt;regra&gt;: &lt;fato&gt;/&lt;aspecto&gt;"}</code>.
+Ordem: primeiro todos os aspectos que não dependem de outro candidato; depois T02 (que lê o ciclo de vida já
+consolidado dos pares), T21, T01/T10 com as referências e T40.</li></ul>
+<div class="wrap"><table><thead><tr><th>campo</th><th>aspecto</th><th>regra</th><th>tradução</th></tr></thead><tbody><tr><td><code>identity</code></td><td><code>resource_identity_schema</code></td><td>R-GRAIN-T01</td><td>identity present; key_fields = required menos os campos de escopo do provedor; escopo within_parent se algum campo da chave é referência (T02, T21), senão independent; optional não entra</td></tr><tr><td><code>identity</code></td><td><code>shared_identity_key</code></td><td>R-GRAIN-T02</td><td>os campos são referência ao objeto compartilhado: alvo = o único par (peers ou o próprio) cujo ciclo de vida consolidado é self; se é o próprio, os campos são chave própria; nenhum ou mais de um: alvo não resolvido</td></tr><tr><td><code>identity</code></td><td><code>id_template</code></td><td>R-GRAIN-T03</td><td>sem tradução: formato do id Terraform, pode incluir atributos opcionais; não é chave natural</td></tr><tr><td><code>identity</code></td><td><code>api_resource_bridge</code></td><td>R-GRAIN-T04</td><td>api_resource {status: resource, label/resource/service da ponte}; resource UNKNOWN vira UNKNOWN</td></tr><tr><td><code>identity</code></td><td><code>api_reference</code></td><td>R-GRAIN-T05</td><td>sem tradução: página de referência da API, informativa</td></tr><tr><td><code>identity</code></td><td><code>cardinality</code></td><td>R-GRAIN-T06</td><td>sem tradução: singular por escopo do provedor; o escopo não é unidade da decomposição</td></tr><tr><td><code>identity</code></td><td><code>block_identity</code></td><td>R-GRAIN-T07</td><td>schema_identity present com key_fields: identity present within_parent e element_name_key = key_fields; absent sem element_name_candidates: identity absent; absent com candidatos: UNKNOWN (candidatos não confirmados)</td></tr><tr><td><code>identity</code></td><td><code>block_schema</code></td><td>R-GRAIN-T08</td><td>sem tradução: estrutura do bloco (facet_word não é lido)</td></tr><tr><td><code>import_key</code></td><td><code>import_formats</code></td><td>R-GRAIN-T10</td><td>supported false: import_key absent; identity.required presente: import_key present com required menos os campos de escopo do provedor; só placeholders, values ou id_format: UNKNOWN (sem atributos nomeados)</td></tr><tr><td><code>owner</code></td><td><code>identity_scope</code></td><td>R-GRAIN-T20</td><td>sem tradução para owner: diz quem é dono da IDENTIDADE (conta, região), não da configuração; marca account_id/region como campos de escopo do provedor para T01</td></tr><tr><td><code>owner</code></td><td><code>parent</code></td><td>R-GRAIN-T21</td><td>sem tradução para owner (contenção da identidade); se o scope_kind é unidade (não escopo do provedor) e a identidade não tem atributo de referência ao pai, a chave ganha uma referência não resolvida ($container): a identidade fica UNRESOLVED</td></tr><tr><td><code>owner</code></td><td><code>parent_attribute</code></td><td>R-GRAIN-T22</td><td>sem tradução para owner (atributo de contenção, não dono da configuração)</td></tr><tr><td><code>owner</code></td><td><code>block_config_owner</code></td><td>R-GRAIN-T23</td><td>owner {kind: parent, via: $parent} quando via é o pai estrutural do bloco; senão UNKNOWN</td></tr><tr><td><code>lifecycle_controller</code></td><td><code>destroy_effect</code></td><td>R-GRAIN-T30</td><td>suspend: lifecycle_controller {kind: parent} e api_resource {status: aspect} (indício de faceta do pai); not_deleted e state_only: UNKNOWN (o destroy não apaga; não diz quem apaga)</td></tr><tr><td><code>lifecycle_controller</code></td><td><code>deletion_policy</code></td><td>R-GRAIN-T31</td><td>values com DELETE: lifecycle_controller {kind: self}; values vazio: UNKNOWN (política sem valores documentados)</td></tr><tr><td><code>lifecycle_controller</code></td><td><code>block_lifecycle</code></td><td>R-GRAIN-T32</td><td>lifecycle_controller {kind: parent, via: $parent} quando via é o pai estrutural do bloco; senão UNKNOWN</td></tr><tr><td><code>effective_scope</code></td><td><code>type_scope</code></td><td>R-GRAIN-T40</td><td>scope de escopo do provedor (account, project, organization, ...): {kind: global}; outro scope: {kind: parent, via: o campo de referência da chave} se a chave tem uma referência, senão {kind: self}</td></tr><tr><td><code>effective_scope</code></td><td><code>attribute_scope</code></td><td>R-GRAIN-T41</td><td>sem tradução: escopo de UM atributo, não da unidade</td></tr><tr><td><code>effective_scope</code></td><td><code>effective_public_access</code></td><td>R-GRAIN-T42</td><td>sem tradução: avaliação de acesso efetivo (oráculo do piloto), não grão</td></tr><tr><td><code>effective_scope</code></td><td><code>effective_public_access_prevention</code></td><td>R-GRAIN-T42</td><td>sem tradução: avaliação de acesso efetivo (oráculo do piloto), não grão</td></tr><tr><td><code>(qualquer)</code></td><td><code>(sem aspect)</code></td><td>R-GRAIN-T99</td><td>fato afirmado sem value.aspect: alegação direta na convenção anterior (identity/import_key como objeto; lifecycle_controller/owner/effective_scope como string do kind ou {kind, via}); é a porta para o SERVICE-EVIDENCE emitir fatos derivados de grão já traduzidos</td></tr><tr><td><code>(qualquer)</code></td><td><code>(status unknown)</code></td><td>R-GRAIN-UNK</td><td>alegação UNKNOWN com o unknown_reason; contradictory vira CONTRADICTORY</td></tr><tr><td><code>(qualquer)</code></td><td><code>(aspecto fora da tabela)</code></td><td>R-GRAIN-UNK</td><td>alegação UNKNOWN com o motivo &#x27;sem tradução&#x27;</td></tr></tbody></table></div>
+<p>Campos de escopo do provedor (conhecimento do adaptador, permitido fora das regras; T20 acrescenta account_id e
+region quando identity_scope os marca):</p><div class="wrap"><table><thead><tr><th>provedor</th><th>campos de escopo do provedor (fora da chave)</th></tr></thead><tbody><tr><td><code>aws</code></td><td><code>[&quot;account_id&quot;, &quot;region&quot;]</code></td></tr><tr><td><code>azurerm</code></td><td><code>[&quot;subscription_id&quot;]</code></td></tr><tr><td><code>google</code></td><td><code>[&quot;project&quot;, &quot;project_id&quot;]</code></td></tr><tr><td><code>oci</code></td><td><code>[]</code></td></tr></tbody></table></div><h2 id="resultados">Resultados (mundos sintéticos)</h2>
 <h3>Quatro embalagens do mesmo contêiner de objetos</h3>
 <p>Provedor sintético <code>provider_a</code>. Assinaturas de schema iguais:
 <b class="ok">True</b>; decomposições de instância
@@ -204,6 +223,11 @@ referências nunca é INDEPENDENT). A prioridade que de fato decide é G1 &gt; G
 vida preso à instância, G1 e G2 aceitam a evidência, e trocar a ordem troca BINDING por COMPONENT (caso P4).</li>
 <li>Elementos embutidos que se referem a irmãos pelo nome (regra → pool no balanceador embutido) precisam de
 referência <code>by_name</code>; sem ela, o grafo embutido perde relações que o separado tem.</li>
+<li>Emenda 0.1.1 (CC-1): a primeira versão lia uma convenção que o SERVICE-EVIDENCE nunca gravou; os testes
+sintéticos usavam a mesma convenção e não pegaram. Entraram o adaptador por aspecto e testes com o arquivo real.</li>
+<li>Emenda 0.1.1 (CC-NET-1): regras embutidas como atributo lista/conjunto de objetos não viravam unidade; agora
+viram bloco repetido (T2) com sub-átomos virtuais, e embutido × separado dá a mesma decomposição com a mesma
+evidência de API.</li>
 <li>C19 3.0.0 não tem campo para as pontas do vínculo nem para uma lista de donos. As pontas vão em
 <code>identity.evidence</code> (<code>endpoint:&lt;papel&gt;=&lt;unit_id&gt;</code>); faceta de vários donos sem vínculo
 entre eles sai UNKNOWN com <code>owner</code>. Proposta de emenda (não bloqueante, para o coordenador):
@@ -213,8 +237,14 @@ nem para alvo de referência; a convenção de <code>value</code> acima os carre
 entram no DECOMPOSE, e o GRAIN-REPRO roda os gabaritos adversariais reais.</li>
 <li>A qualidade da decomposição é a da evidência: o procedimento não inventa identidade, dono, alcance nem ciclo de
 vida; onde a evidência falta, o resultado é UNKNOWN, e o número de UNKNOWN é resultado, não defeito a esvaziar.</li>
-<li>Atributo de coleção de objetos (lista de objetos como atributo, não como bloco) ainda não vira elemento; precisa
-de grupo de atributos por elemento (emenda futura, se os schemas reais pedirem).</li>
+<li>Dado real (SERVICE-EVIDENCE da onda atual, medido por <code>python -I -m bo.grain.realdata</code> e pelos testes
+<code>test_grain_real_*</code>): a fatia de armazenamento não levanta mais EvidenceError, mas os contêineres dos quatro
+provedores saem UNKNOWN, porque faltam fatos, não tradução: nenhum aspecto dá dono da configuração a tipo de topo; o
+ciclo de vida do contêiner é not_documented (AWS, Azure, OCI) ou só tem deletion_policy sem valores (Google); a
+ponte de API é UNKNOWN na AWS e no Google; a chave compartilhada da AWS não tem raiz com ciclo de vida self; a
+contenção do Azure não diz o atributo de referência. Os controles positivos dos testes mostram que, com esses
+fatos, o mesmo caminho decide o contêiner (ENTITY), a faceta separada (FACET) e a regra embutida igual à separada
+(COMPONENT, mesmas relações).</li>
 <li>O lint é lexical e de higiene; validade vem dos compromissos, do GRAIN-REPRO e dos pilotos.</li>
 <li>Regras provisórias: mudam só por emenda versionada depois do GRAIN-REPRO e do PILOT-EXIT.</li></ul>
 </main></body></html>

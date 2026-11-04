@@ -7,9 +7,10 @@
 schema: bo.grain.rules/1
 contract: C19
 contract_version: 3.0.0
-rules_version: 0.1.0
+rules_version: 0.1.1
 status: PROVISIONAL
 written_at: "2026-11-03T02:00:00-03:00"
+amended_at: "2026-11-04T03:00:00-03:00"
 definitive_after: [GRAIN-REPRO, PILOT-EXIT]
 
 layers:
@@ -86,6 +87,8 @@ procedure:
     text: blocos e recursos marcados pela evidência como carga útil da API do pai (api_resource=payload, sem identidade própria) são transparentes; os átomos sobem para o pai e os blocos filhos passam a ter como pai estrutural o pai dele
   - step: T1
     text: grupos de atributos que a evidência liga a um aspecto da API viram candidatos próprios, como se fossem blocos
+  - step: T2
+    text: atributo cujo tipo cty é lista ou conjunto de objetos vira bloco repetido; os campos saem do próprio tipo como sub-átomos virtuais (caminho atributo.campo), marcados como derivados do tipo e não do schema de blocos; o átomo da coleção fica com o contêiner
   - step: R
     text: as regras abaixo são tentadas por prioridade crescente; a primeira cujo match vale decide; se faltar evidência listada em needs, o resultado é UNKNOWN com essa lista e as regras de prioridade menor NÃO são tentadas; se o guard é falso, tenta-se a próxima
   - step: Z
@@ -154,6 +157,17 @@ rules:
     text: a evidência está completa mas nenhuma regra a aceita (ex. identidade dentro do pai com ciclo de vida próprio); UNKNOWN com os campos cujos guards falharam
     match: {}
     missing: from_failed_guards
+
+amendments:
+  # Emendas versionadas (as regras G0-G4 e os predicados não mudaram; mudaram a leitura da evidência e os candidatos).
+  - id: GRAIN-A1
+    version: 0.1.1
+    origin: CC-1 do piloto de armazenamento (decisão do coordenador, opção b)
+    text: adaptador da evidência de serviço por aspecto, com a tabela aspecto para alegação normativa no GRAIN.html; aspecto sem tradução vira alegação UNKNOWN com motivo; dono da identidade nunca vira dono da configuração; efeito de destroy que suspende a configuração é indício de faceta do pai; bloco aninhado sem fato próprio fica UNKNOWN, nunca FACET por omissão
+  - id: GRAIN-A2
+    version: 0.1.1
+    origin: CC-NET-1 do piloto de rede
+    text: passo T2 da normalização (atributo lista ou conjunto de objetos vira bloco repetido com sub-átomos virtuais derivados do tipo cty), para que a regra embutida e a regra separada tenham o mesmo grão
 
 procedural_outcomes:
   # Desfechos do procedimento que não são regras de grão, mas aparecem em rule_applied.

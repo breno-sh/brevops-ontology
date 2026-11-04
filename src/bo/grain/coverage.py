@@ -36,8 +36,11 @@ def check(schema_atoms: list[dict], units: list[dict], atoms: list[dict]) -> lis
     errs += [f"canonical_atom aponta para unidade inexistente: {a['atom_id']}" for a in atoms
              if a["unit_id"] not in uids]
     src = {a["atom_id"] for a in schema_atoms}
+    # sub-átomos virtuais (T2): derivados do tipo cty de um átomo de coleção de objetos do C01
+    from .schema import collection_fields
+    colls = tuple(a["atom_id"] + "." for a in schema_atoms if collection_fields(a.get("tf_type")))
     errs += [f"átomo sem endereço canônico: {k}" for k in sorted(src - set(seen))]
-    errs += [f"canonical_atom sem átomo de origem: {k}" for k in sorted(set(seen) - src)]
+    errs += [f"canonical_atom sem átomo de origem: {k}" for k in sorted(set(seen) - src) if not k.startswith(colls)]
     return errs
 
 

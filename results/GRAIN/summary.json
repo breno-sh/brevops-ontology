@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "GRAIN",
- "generated_at": "2026-11-03T02:03:36-03:00",
+ "generated_at": "2026-11-04T02:30:41-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/GRAIN.txt",
@@ -13,8 +13,9 @@
    "modo": "unlazy",
    "onda": "5",
    "fase": "F1",
-   "rules_version": "0.1.0",
+   "rules_version": "0.1.1",
    "rules_status": "PROVISIONAL",
+   "emendas": "GRAIN-A1,GRAIN-A2",
    "pyyaml": "6.0.3",
    "pytest": "9.1.1",
    "jsonschema": "4.26.0"
@@ -28,11 +29,7 @@
    {
     "path": "$BO_REPO/contracts",
     "kind": "dir",
-    "sha256": "94f3b4e25c5791a1a8bf55b1151804d251b77d719024235d73bafb1492eacee3",
-    "sha256_before_plan_regen_stubpath": "56c3142efebde6c8f413ef725c449201b2699841fe43676569492b52504ad042",
-    "sha256_before_coord_fix_0303": "4db98dcfb6928333b47738fdfa0e7f08285e00cb7be8325ed9165a1997979510",
-    "sha256_before_plan_regen_oci_bindings": "56c3142efebde6c8f413ef725c449201b2699841fe43676569492b52504ad042",
-    "sha256_before_emenda3_e_skosfix": "999f2a2f0445b22ddbda929a15ec8e7fe029ef775ed4f3db44e3d0756eca7b31"
+    "sha256": "94f3b4e25c5791a1a8bf55b1151804d251b77d719024235d73bafb1492eacee3"
    },
    {
     "path": "$BO_REPO/semantics/SEMANTICS.html",
@@ -45,7 +42,7 @@
     "sha256": "038f73fcebedfbf3b5ff3d23b1ff0758a87e8be2616b141b232628e1a64d1438"
    }
   ],
-  "recorded_at": "2026-11-03T02:03:36-03:00"
+  "recorded_at": "2026-11-04T02:30:41-03:00"
  },
  "sources": [
   {
@@ -54,5 +51,5 @@
    "transformation": "mundos sintéticos escritos no módulo (provider_a..provider_h), sem dado real"
   }
  ],
- "notes": "Regras de grão provisórias (G0-G4); definitivas só depois do GRAIN-REPRO e do PILOT-EXIT. Contexto lido: plano v3 (seções 0, 3b, 4, 7-9, 14) e revisão GPT-6 pelo brief. Sem nuvem, sem download."
+ "notes": "Emenda 0.1.1: adaptador C25 por aspecto (CC-1 do PILOT-STO-GLOSS) e coleções de objetos como bloco repetido (CC-NET-1 do PILOT-NET-GLOSS). Testes de integração leem o service_evidence.jsonl e os atoms.jsonl reais em $BO_DATA (volátil, fora das entradas registradas); relatório em $BO_DATA/GRAIN/realdata.json."
 }

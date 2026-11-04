@@ -27,6 +27,34 @@ class Candidate:
     attrs: list            # caminhos de atributo relativos ao candidato
     parent: str | None
     group: str | None = None
+    virtual: bool = False  # elemento de atributo lista/conjunto de objetos: campos derivados do tipo cty (T2)
+
+
+def collection_fields(tf_type):
+    """tf_type cty de lista ou conjunto de objetos -> (modo, {campo: tipo}); senão None.
+    Aceita ["list"|"set", ["object", {...}]] e a forma nested_type [modo, {...}, opcionais] (C01-NESTED)."""
+    if not isinstance(tf_type, list) or len(tf_type) < 2 or tf_type[0] not in ("list", "set"):
+        return None
+    inner = tf_type[1]
+    if isinstance(inner, list) and len(inner) >= 2 and inner[0] == "object" and isinstance(inner[1], dict):
+        return tf_type[0], inner[1]
+    if isinstance(inner, dict):
+        return tf_type[0], inner
+    return None
+
+
+def _add_collections(out: list, provider, rt, parent_cid, block_path, attr_types: dict):
+    """T2: cada atributo lista/conjunto de objetos vira um candidato de bloco repetido, recursivamente."""
+    for an, ty in sorted(attr_types.items()):
+        cf = collection_fields(ty)
+        if cf is None:
+            continue
+        mode, fields = cf
+        path = list(block_path) + [an]
+        cid = rt + "." + ".".join(path)
+        out.append(Candidate(cid, provider, rt, tuple(path), mode,
+                             sorted(f for f, ft in fields.items()), parent_cid, virtual=True))
+        _add_collections(out, provider, rt, cid, path, fields)
 
 
 def candidates_from_tf_schema(provider: str, resource_schemas: dict) -> list[Candidate]:
@@ -34,8 +62,9 @@ def candidates_from_tf_schema(provider: str, resource_schemas: dict) -> list[Can
 
     def walk(rt, block, path, parent, nesting):
         cid = rt + ("." + ".".join(path) if path else "")
-        out.append(Candidate(cid, provider, rt, tuple(path), nesting, sorted((block.get("attributes") or {}).keys()),
-                             parent))
+        attrs = block.get("attributes") or {}
+        out.append(Candidate(cid, provider, rt, tuple(path), nesting, sorted(attrs.keys()), parent))
+        _add_collections(out, provider, rt, cid, path, {k: v.get("type") for k, v in attrs.items()})
         for bname, bt in sorted((block.get("block_types") or {}).items()):
             walk(rt, bt.get("block") or {}, path + [bname], cid, bt.get("nesting_mode", "single"))
 
@@ -57,7 +86,12 @@ def candidates_from_atoms(atoms: list[dict]) -> list[Candidate]:
                 nest = a["block_path"][i - 1]["nesting_mode"] if i else "none"
                 by[cid] = Candidate(cid, prov, rt, tuple(p), nest, [], parent)
         leaf = a["path"].split(".")[-1]
-        by[rt + ("." + ".".join(blocks) if blocks else "")].attrs.append(leaf)
+        owner = rt + ("." + ".".join(blocks) if blocks else "")
+        by[owner].attrs.append(leaf)
+        extra: list = []
+        _add_collections(extra, prov, rt, owner, blocks, {leaf: a.get("tf_type")})
+        for c in extra:
+            by.setdefault(c.cid, c)
     for c in by.values():
         c.attrs = sorted(set(c.attrs))
     return [by[k] for k in sorted(by)]
@@ -71,6 +105,7 @@ class SchemaResult:
     decisions: dict
     transparent: dict = field(default_factory=dict)   # cid -> cid do pai efetivo (ou None)
     atom_owner: dict = field(default_factory=dict)    # atom_id -> (unit cid, caminho na unidade)
+    virtual_atoms: set = field(default_factory=set)   # sub-átomos derivados do tipo cty (não estão no C01)
 
 
 def _is_payload(ev: CandidateEvidence) -> bool:
@@ -143,6 +178,8 @@ def decompose_schema(cands: list[Candidate], adapter, rs: R.RuleSet) -> SchemaRe
         for a in c.attrs:
             full = ".".join(list(c.block_path) + [a])
             aid = f"{c.provider}:{c.resource_type}:{full}"
+            if c.virtual or any(by[x].virtual for x in _ancestors(by, cid)):
+                res.virtual_atoms.add(aid)
             if u is None:
                 res.atom_owner[aid] = (None, full)
             elif c.group is not None or unit == cid:
@@ -152,6 +189,14 @@ def decompose_schema(cands: list[Candidate], adapter, rs: R.RuleSet) -> SchemaRe
             else:
                 res.atom_owner[aid] = (unit, full)
     return res
+
+
+def _ancestors(by, cid):
+    out, p = [], by[cid].parent
+    while p is not None and p in by:
+        out.append(p)
+        p = by[p].parent
+    return out
 
 
 def unit_id(provider: str, cid: str) -> str:

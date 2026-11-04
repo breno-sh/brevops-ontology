@@ -172,8 +172,21 @@ class C25Adapter:
                    "lifecycle_controller": "lifecycle_controller", "owner": "owner",
                    "effective_scope": "effective_scope"}
 
-    def __init__(self, records: list[dict], extra: dict[str, dict] | None = None):
+    def __init__(self, records: list[dict], extra: dict[str, dict] | None = None, candidates=None):
         self.by_cid: dict[str, dict] = {}
+        self.reasons: dict[str, list] = {}
+        from . import c25_aspects as A
+        if any(A.is_aspect_record(r) for r in records):
+            # forma por aspecto do SERVICE-EVIDENCE: tradução normativa (bo.grain.c25_aspects.TABLE)
+            by_p: dict[str, list] = {}
+            for r in records:
+                by_p.setdefault(r.get("provider", ""), []).append(r)
+            cset = set(candidates) if candidates is not None else None
+            for prov in sorted(by_p):
+                ev, why = A.translate(by_p[prov], cset)
+                self.by_cid.update(ev)
+                self.reasons.update(why)
+            records = []
         for r in records:
             fk = r.get("fact_kind")
             fld = self._FACT_FIELD.get(fk)

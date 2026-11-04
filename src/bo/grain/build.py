@@ -36,7 +36,7 @@ from . import schema as S
 from .common import data_dir, dump_json, dump_jsonl, now, repo, results_dir, rules_path, sha256_file, stamp
 from .evidence import FixtureAdapter
 
-AUTHORED_AT = "2026-11-03T02:30:00-03:00"
+AUTHORED_AT = "2026-11-04T03:00:00-03:00"
 
 
 def _strip(rep: dict) -> dict:
@@ -172,7 +172,7 @@ Gemini A3/A6, GPT-6 F1/S1</div>
     P.append("""<h2 id="leitura">Para quem reimplementa</h2>
 <p>Esta página é o contrato do procedimento. O GRAIN-REPRO implementa a partir só dela (sem ler
 <code>src/bo/grain/</code>) e mede a concordância; desacordo vira emenda das regras ou UNKNOWN. São normativos:
-as seções Evidência, Normalização, Identidade, Regras, Resolução, Saída C19 e Instância, e o arquivo
+as seções Evidência, Normalização, Identidade, Regras, Resolução, Saída C19, Instância e a tabela aspecto → alegação (Adaptadores), e o arquivo
 <code>grain/grain_rules.yaml</code> (a parte executável das regras; seu sha256 está em <code>grain/RULES.sha256</code>).
 O resto (resultados, achados) é informativo. Nenhuma regra cita provedor, prefixo de tipo ou sufixo de nome: o que
 cada provedor diz entra pelos adaptadores de evidência, que são permitidos e ficam fora das regras.</p>
@@ -206,6 +206,13 @@ atributos ligados a aspectos, com a evidência própria de cada grupo). Os nomes
 nomes canônicos do <code>field_map</code>, nunca o nome do provedor.</p>""")
     proc = "".join(f"<li><b>{e(s['step'])}</b>: {e(s['text'])}</li>" for s in doc["procedure"])
     P.append(f"""<h2 id="normalizacao">Normalização de cima para baixo</h2><ol>{proc}</ol>
+<p><b>Coleção de objetos (T2, emenda GRAIN-A2)</b>: atributo cujo <code>tf_type</code> cty é
+<code>["list"|"set", ["object", {{campo: tipo}}]]</code> (ou a forma nested_type <code>[modo, {{...}}, opcionais]</code>) vira
+o candidato <code>tipo.bloco….atributo</code>, com nesting = o modo e atributos = os campos do objeto, recursivamente
+para campos que também são coleções. Os sub-átomos <code>provedor:tipo:caminho.atributo.campo</code> são VIRTUAIS:
+derivados do tipo cty, não do schema de blocos (os átomos do SCHEMA-* não são regenerados); o átomo da coleção
+(<code>…atributo</code>) fica com a unidade do contêiner. O verificador de cobertura aceita sub-átomo virtual só sob um
+átomo de coleção do C01. Lista de objetos com um só elemento não muda nada: a cardinalidade não decide.</p>
 <p><b>Transparente (T0)</b> = api_resource KNOWN com <code>status: payload</code> E identity KNOWN com
 <code>status: absent</code>. O pai efetivo de um transparente aninhado é o pai estrutural (já pulando outros
 transparentes); o de um recurso de topo transparente é o alvo da única referência da sua chave de importação (sem
@@ -325,17 +332,33 @@ camadas Terraform anotadas); com configuração diferente, as duas UNKNOWN (<cod
 <li>Comparação entre embalagens: por ocorrência, (identidade, grão, rótulo, pai, pontas, chave, configuração
 normalizada pelos nomes canônicos <code>config: true</code> do próprio nó e dos transparentes que sobem para ele,
 referências simples fora da chave, regra, missing). A camada Terraform não entra.</li></ul>""")
-    P.append("""<h2 id="adaptadores">Adaptadores de evidência</h2><ul>
-<li><b>FixtureAdapter</b>: a tabela <code>{candidato: {campo: [alegações], field_map, references, parent_role, groups,
-roles}}</code>, usada pelos mundos sintéticos.</li>
-<li><b>C25Adapter</b> (service_evidence.jsonl do SERVICE-EVIDENCE, C25 1.0.0). Convenção de leitura, já que o C25
-deixa <code>value</code> livre: fact_kind identity, import_key, lifecycle_controller, owner, effective_scope viram
-alegações; <code>value</code> é o objeto da alegação ou, para ciclo de vida, dono e alcance, a string do kind;
-<code>value.block_path</code> endereça um bloco aninhado; no fato identity, <code>api_status</code> e <code>label</code>
-dão a ligação com a API (service/resource vêm do registro), <code>element_name_key</code> (lista; vazia = ausente),
-<code>references</code>, <code>field_map</code> e <code>parent_role</code> vão para o candidato; campo citado numa chave
-sem field_map ganha nome canônico = caminho. status unknown vira alegação desconhecida; unknown_reason contradictory
-vira CONTRADICTORY. A fonte do C19 é <code>{level, ref: evidence_id}</code>.</li></ul>""")
+    from . import c25_aspects as A
+    tab = _table(["campo", "aspecto", "regra", "tradução"], [[_code(f), _code(a), e(r), e(x)] for f, a, r, x in A.TABLE])
+    sc = _table(["provedor", "campos de escopo do provedor (fora da chave)"],
+                [[_code(k), _code(sorted(v))] for k, v in sorted(A.PROVIDER_SCOPE_FIELDS.items())])
+    P.append(f"""<h2 id="adaptadores">Adaptadores de evidência</h2><ul>
+<li><b>FixtureAdapter</b>: a tabela <code>{{candidato: {{campo: [alegações], field_map, references, parent_role, groups,
+roles}}}}</code>, usada pelos mundos sintéticos.</li>
+<li><b>C25Adapter</b> (service_evidence.jsonl do SERVICE-EVIDENCE, C25 1.0.0). Se algum registro traz
+<code>value.aspect</code> (a forma real do SERVICE-EVIDENCE), todos os fatos de grão do provedor passam pela tabela por
+aspecto abaixo (emenda GRAIN-A1, CC-1). Fato afirmado sem aspecto segue a convenção anterior (T99).</li></ul>
+<h3 id="aspectos">Tabela aspecto → alegação (normativa)</h3>
+<ul><li>Nada é inventado: aspecto sem tradução, aspecto fora da tabela e fato com status unknown viram alegação UNKNOWN
+com o motivo, que fica na fonte da alegação e nos motivos do relatório; a consolidação os ignora.</li>
+<li>Dono da IDENTIDADE (identity_scope, parent, parent_attribute) não é dono da CONFIGURAÇÃO: nunca vira o campo
+owner. Por isso, hoje, nenhum aspecto dá owner a um tipo de topo: só os blocos (block_config_owner) e os fatos T99.</li>
+<li>destroy_effect <code>suspend</code> num recurso separado é indício de faceta do pai; <code>not_deleted</code> e
+<code>state_only</code> dizem que o destroy não apaga, não quem apaga.</li>
+<li>Bloco aninhado só ganha alegação com fato de <code>block_path</code>; sem ela é UNKNOWN pela G0, nunca FACET por
+omissão. Aspecto de bloco sem ligação com a API (não há block_api) deixa o bloco UNKNOWN com api_resource.</li>
+<li>Nenhuma heurística de nome: <code>block_schema.facet_word</code> não é lido; alvo de referência só pela chave
+compartilhada (T02) ou por fato explícito.</li>
+<li>Fonte de cada alegação traduzida: <code>{{level: derived, ref: evidence_id, note: "&lt;regra&gt;: &lt;fato&gt;/&lt;aspecto&gt;"}}</code>.
+Ordem: primeiro todos os aspectos que não dependem de outro candidato; depois T02 (que lê o ciclo de vida já
+consolidado dos pares), T21, T01/T10 com as referências e T40.</li></ul>
+{tab}
+<p>Campos de escopo do provedor (conhecimento do adaptador, permitido fora das regras; T20 acrescenta account_id e
+region quando identity_scope os marca):</p>{sc}""")
     ex = pk["packagings"]
     pk_rows = [[_code(k), _code(v["schema_candidates"]), str(v["schema_units"]), str(v["instance_units"]),
                 '<span class="ok">sim</span>' if pk["reorder_invariant"][k] else '<span class="no">não</span>']
@@ -382,6 +405,11 @@ referências nunca é INDEPENDENT). A prioridade que de fato decide é G1 &gt; G
 vida preso à instância, G1 e G2 aceitam a evidência, e trocar a ordem troca BINDING por COMPONENT (caso P4).</li>
 <li>Elementos embutidos que se referem a irmãos pelo nome (regra → pool no balanceador embutido) precisam de
 referência <code>by_name</code>; sem ela, o grafo embutido perde relações que o separado tem.</li>
+<li>Emenda 0.1.1 (CC-1): a primeira versão lia uma convenção que o SERVICE-EVIDENCE nunca gravou; os testes
+sintéticos usavam a mesma convenção e não pegaram. Entraram o adaptador por aspecto e testes com o arquivo real.</li>
+<li>Emenda 0.1.1 (CC-NET-1): regras embutidas como atributo lista/conjunto de objetos não viravam unidade; agora
+viram bloco repetido (T2) com sub-átomos virtuais, e embutido × separado dá a mesma decomposição com a mesma
+evidência de API.</li>
 <li>C19 3.0.0 não tem campo para as pontas do vínculo nem para uma lista de donos. As pontas vão em
 <code>identity.evidence</code> (<code>endpoint:&lt;papel&gt;=&lt;unit_id&gt;</code>); faceta de vários donos sem vínculo
 entre eles sai UNKNOWN com <code>owner</code>. Proposta de emenda (não bloqueante, para o coordenador):
@@ -392,8 +420,14 @@ nem para alvo de referência; a convenção de <code>value</code> acima os carre
 entram no DECOMPOSE, e o GRAIN-REPRO roda os gabaritos adversariais reais.</li>
 <li>A qualidade da decomposição é a da evidência: o procedimento não inventa identidade, dono, alcance nem ciclo de
 vida; onde a evidência falta, o resultado é UNKNOWN, e o número de UNKNOWN é resultado, não defeito a esvaziar.</li>
-<li>Atributo de coleção de objetos (lista de objetos como atributo, não como bloco) ainda não vira elemento; precisa
-de grupo de atributos por elemento (emenda futura, se os schemas reais pedirem).</li>
+<li>Dado real (SERVICE-EVIDENCE da onda atual, medido por <code>python -I -m bo.grain.realdata</code> e pelos testes
+<code>test_grain_real_*</code>): a fatia de armazenamento não levanta mais EvidenceError, mas os contêineres dos quatro
+provedores saem UNKNOWN, porque faltam fatos, não tradução: nenhum aspecto dá dono da configuração a tipo de topo; o
+ciclo de vida do contêiner é not_documented (AWS, Azure, OCI) ou só tem deletion_policy sem valores (Google); a
+ponte de API é UNKNOWN na AWS e no Google; a chave compartilhada da AWS não tem raiz com ciclo de vida self; a
+contenção do Azure não diz o atributo de referência. Os controles positivos dos testes mostram que, com esses
+fatos, o mesmo caminho decide o contêiner (ENTITY), a faceta separada (FACET) e a regra embutida igual à separada
+(COMPONENT, mesmas relações).</li>
 <li>O lint é lexical e de higiene; validade vem dos compromissos, do GRAIN-REPRO e dos pilotos.</li>
 <li>Regras provisórias: mudam só por emenda versionada depois do GRAIN-REPRO e do PILOT-EXIT.</li></ul>
 </main></body></html>

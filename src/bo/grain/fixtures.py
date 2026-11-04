@@ -259,9 +259,24 @@ def schema_blocks(resource_schemas: dict) -> dict:
     """cid -> nomes dos blocos filhos (para a camada de instância)."""
     out = {}
 
+    from .schema import collection_fields
+
+    def walk_obj(cid, fields):
+        out[cid] = set()
+        for f, ty in fields.items():
+            cf = collection_fields(ty)
+            if cf:
+                out[cid].add(f)
+                walk_obj(f"{cid}.{f}", cf[1])
+
     def walk(cid, block):
         bt = block.get("block_types") or {}
         out[cid] = set(bt)
+        for a, spec in (block.get("attributes") or {}).items():
+            cf = collection_fields(spec.get("type"))
+            if cf:
+                out[cid].add(a)
+                walk_obj(f"{cid}.{a}", cf[1])
         for b, spec in bt.items():
             walk(f"{cid}.{b}", spec.get("block") or {})
 
