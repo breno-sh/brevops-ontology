@@ -1,0 +1,49 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "HIST-OCI",
+ "generated_at": "2026-11-03T22:00:30-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/HIST-OCI.txt",
+  "brief_sha256": "539fb953a1f98e4a44fa5e98b12b0e18a5843d0d15211ce08b52e7511f7efa67",
+  "params": {
+   "provider": "oci",
+   "source": "registry.terraform.io/oracle/oci",
+   "platform": "darwin_arm64",
+   "terraform": "1.15.8",
+   "versoes_listadas": "25",
+   "versoes_extraidas": "24",
+   "versoes_sem_schema": "1",
+   "pin": "9.11.0",
+   "lista": "universe/history_versions.json",
+   "contrato_lista": "C13@3.1.0",
+   "ancora_gpg": "7F1079B5E6547DBFCCEFB9A41533A49284137CEB",
+   "biblioteca": "bo.schema",
+   "role": "builder",
+   "sandbox": "env -i, HOME temporário, sandbox-exec, schema sem rede"
+  },
+  "inputs": [
+   {
+    "path": "$BO_REPO/universe/history_versions.json",
+    "kind": "file",
+    "sha256": "7186bdf94fb5764d84725f8c5560ee2a1cc505a9aa0f5bd02fef720e8fcea146"
+   }
+  ],
+  "recorded_at": "2026-11-03T22:00:30-03:00"
+ },
+ "sources": [
+  {
+   "uri": "https://registry.terraform.io/v1/providers/oracle/oci/<versão>/download/darwin/arm64",
+   "license": "metadado público do Terraform Registry (termos de uso da HashiCorp)",
+   "transformation": "lido como JSON: shasum, URLs do release e chave pública"
+  },
+  {
+   "uri": "https://github.com/oracle/terraform-provider-oci/releases",
+   "license": "MPL-2.0 (terraform-provider-oci)",
+   "transformation": "SHA256SUMS assinado conferido por gpg; zip conferido por sha256; binário executado só para terraform providers schema -json em sandbox sem credenciais e apagado depois"
+  }
+ ],
+ "notes": "Truncamento à esquerda: janela desde 2021-01-01, mas o oci só aparece como oracle/oci a partir da 4.67.3 (2022-03-14); nada antes é observado. A 4.67.3 (index_first) não tem schema: o registro aponta o SHA256SUMS para um release do GitHub que responde 404 (a API do GitHub também responde 404 para a tag v4.67.3), então não há cadeia de confiança; a primeira versão com schema é a 4.69.0 (2022-03-23). 24 de 25 versões extraídas do binário assinado (chave primária da Oracle), datas monótonas, regeneração idêntica, binários apagados. Tipos de recurso: 398 (4.69.0) a 1026 (9.11.0); átomos: 8902 a 27172; quedas na 5.0.0 (13366->13248 átomos) e na 7.0.0 (809->795 tipos). Átomos do pin idênticos byte a byte aos do SCHEMA-OCI (conferência informativa). Carimbos em America/Recife."
+}
