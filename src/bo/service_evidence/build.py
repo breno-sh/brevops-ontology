@@ -232,9 +232,45 @@ def staging() -> "common.Path":
     return common.out_dir() / ".staging"
 
 
+def _ancestors(pid: int) -> set[int]:
+    import subprocess
+    out, cur = set(), pid
+    while cur and cur not in out:
+        out.add(cur)
+        r = subprocess.run(["ps", "-o", "ppid=", "-p", str(cur)], capture_output=True, text=True)
+        try:
+            cur = int(r.stdout.strip() or 0)
+        except ValueError:
+            break
+    return out
+
+
+def lock_guard() -> str | None:
+    """None se a trava merge-base é do SERVICE-EVIDENCE com o pid de um processo vivo que é ancestral deste;
+    senão o motivo da recusa. Sem isso, --promote e --rollback não tocam no dado publicado."""
+    own = common.bo_data() / "locks" / "merge-base" / "owner"
+    if not own.exists():
+        return "trava merge-base não está pega"
+    kv = dict(x.split("=", 1) for x in own.read_text(encoding="utf-8").splitlines() if "=" in x)
+    if kv.get("owner") != common.MODULE:
+        return f"trava merge-base é de {kv.get('owner')}"
+    try:
+        pid = int(kv.get("pid", "0"))
+        os.kill(pid, 0)
+    except (ValueError, ProcessLookupError, PermissionError):
+        return "pid da trava não é um processo vivo"
+    if pid not in _ancestors(os.getpid()):
+        return "pid da trava não é ancestral deste processo"
+    return None
+
+
 def promote() -> int:
-    """Troca .staging -> lugar definitivo (só dentro da trava merge-base, junto com o merge). Guarda o definitivo
-    anterior em .staging/prev/ para --rollback."""
+    """Troca .staging -> lugar definitivo SÓ dentro da trava merge-base do SERVICE-EVIDENCE (lock_guard), junto com o
+    merge. Guarda o definitivo anterior em .staging/prev/ para --rollback. O mtime do promovido vira a hora da troca."""
+    why = lock_guard()
+    if why:
+        print(f"[{common.now()}] promote RECUSADO: {why}")
+        return 2
     st, prev = staging(), staging() / "prev"
     miss = [f for f in DATA_FILES if not (st / f).exists()]
     if miss:
@@ -251,11 +287,16 @@ def promote() -> int:
         if cur.exists():
             os.replace(cur, prev / f)
         os.replace(st / f, cur)
+        os.utime(cur, None)
     print(f"[{common.now()}] promote: {', '.join(DATA_FILES)} de .staging para {common.out_dir()}")
     return 0
 
 
 def rollback() -> int:
+    why = lock_guard()
+    if why:
+        print(f"[{common.now()}] rollback RECUSADO: {why}")
+        return 2
     prev = staging() / "prev"
     for f in DATA_FILES:
         if (prev / f).exists():

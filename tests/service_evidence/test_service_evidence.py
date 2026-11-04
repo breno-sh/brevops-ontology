@@ -240,3 +240,35 @@ def test_final_round_oci_blocks_and_attachments():
     att = [r for r in got["aws_instance"] if r["status"] == "stated"
            and (r.get("value") or {}).get("aspect") == "attachment_attribute"]
     assert att and att[0]["level"] == "interpreted" and att[0]["model_id"] and att[0]["derived_from"]
+
+
+def test_promote_refused_without_own_lock(monkeypatch):
+    """--promote/--rollback só dentro da trava merge-base do SERVICE-EVIDENCE com pid vivo e ancestral."""
+    import os
+    import subprocess
+    from pathlib import Path
+    from bo.service_evidence import build
+    root = Path(os.environ.get("BO_TMP", "/Users/breno/doutorado/brevops-data/tmp/SERVICE-EVIDENCE")) / "promote_test"
+    subprocess.run(["rm", "-rf", str(root)])
+    st = root / "SERVICE-EVIDENCE" / ".staging"
+    st.mkdir(parents=True)
+    for f in build.DATA_FILES:
+        (st / f).write_text("novo\n")
+        (root / "SERVICE-EVIDENCE" / f).write_text("publicado\n")
+    monkeypatch.setenv("BO_DATA", str(root))
+    pub = root / "SERVICE-EVIDENCE" / "service_evidence.jsonl"
+    assert build.promote() == 2 and pub.read_text() == "publicado\n"  # sem trava
+    lock = root / "locks" / "merge-base"
+    lock.mkdir(parents=True)
+    (lock / "owner").write_text(f"owner=OUTRO\npid={os.getpid()}\n")
+    assert build.promote() == 2 and pub.read_text() == "publicado\n"  # trava de outro módulo
+    dead = subprocess.Popen(["true"])
+    dead.wait()
+    (lock / "owner").write_text(f"owner=SERVICE-EVIDENCE\npid={dead.pid}\n")
+    assert build.promote() == 2 and pub.read_text() == "publicado\n"  # pid morto
+    (lock / "owner").write_text("owner=SERVICE-EVIDENCE\npid=1\n")
+    assert build.promote() == 2 and pub.read_text() == "publicado\n"  # vivo mas não ancestral
+    assert build.rollback() == 2
+    (lock / "owner").write_text(f"owner=SERVICE-EVIDENCE\npid={os.getpid()}\n")
+    assert build.promote() == 0 and pub.read_text() == "novo\n"  # trava própria: troca
+    subprocess.run(["rm", "-rf", str(root)])
