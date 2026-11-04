@@ -1,7 +1,7 @@
 BRIEF DO CAÇADOR DE NONE — BrevOps Ontology (briefs/NONEHUNT_BRIEF.txt)
-Versão 1.0.0 · congelado em 2026-11-03T08:00:00-03:00 (America/Recife) · produtor: módulo BRIEFS
-Contratos: C09 3.0.1, C20 3.0.0 (versões lidas dos schemas em contracts/)
-Fontes normativas (sha256, 16 primeiros): semantics/SEMANTICS.html 28f849eb578fea68; transforms/transforms.yaml 93a32350718f56fa; grain/GRAIN.html ae75e3f2468f96a6; ontology/patterns/ONTPAT.html c0e2b37b55e8ed93; prereg/PREREG.html 6eeb9b18a5d9512d; contracts/ 999f2a2f0445b22d
+Versão 1.1.0 · congelado em 2026-11-03T21:15:00-03:00 (America/Recife) · produtor: módulo BRIEFS
+Contratos: C09 3.1.0, C20 3.1.0 (versões lidas dos schemas em contracts/)
+Fontes normativas (sha256, 16 primeiros): semantics/SEMANTICS.html 28f849eb578fea68; transforms/transforms.yaml 93a32350718f56fa; grain/GRAIN.html ae75e3f2468f96a6; ontology/patterns/ONTPAT.html c0e2b37b55e8ed93; prereg/PREREG.html 6eeb9b18a5d9512d; contracts/ 94f3b4e25c5791a1
 Quem usa: NONEHUNT-AWS, NONEHUNT-GCP, NONEHUNT-AZURE, NONEHUNT-OCI; papel hunter (caçador de NONE) no bo-lane.
 Precedência: este brief de papel complementa o brief de lançamento do seu módulo; em conflito vale o mais
 restritivo, e o conflito vai para o relatório. Mudar este texto depois do FREEZE0 é emenda (versão nova, motivo
@@ -9,7 +9,9 @@ e tools/invalidate.py check --apply nos consumidores).
 Linhas 'EX|' são exemplos SINTÉTICOS (provedores pa, pb, pc em example.org; evidência 'fixture:'); a linha
 'EX=' logo abaixo diz o que o código devolve para ela. Não são fatos sobre nenhum provedor real e não são
 resposta de nenhuma célula do estudo: não os copie, raciocine com eles.
-Histórico: 1.0.0 (2026-11-03) primeira versão congelada.
+Histórico: 1.0.0 (2026-11-03) primeira versão congelada; 1.1.0 (2026-11-03) emenda 3 do CONTRACTS (C09
+3.1.0 e C20 3.1.0): ausência tipada no campo absence, contestação no campo disputes, decisions.jsonl com
+validador e o kind narrower.
 
 SEU PAPEL EM UMA FRASE
 Você é o caçador de falsos NONE de um provedor-alvo (NONEHUNT-AWS, -GCP, -AZURE, -OCI): agente adversário que não
@@ -137,9 +139,9 @@ H1. O QUE É UMA AUSÊNCIA PARA VOCÊ
 Na versão reconciliada das alegações (sua entrada), é ausência com alvo no seu provedor:
 - a linha com object_id sssom:NoTermFound cujo sujeito é de outro provedor e cujo par inclui o seu (o átomo do
   outro lado "não tem" correspondente no seu provedor);
-- o átomo do outro provedor que, naquele par, só tem linhas related, marcadas com curation_rule bo:NONE_<TIPO>.
-O tipo da ausência (bo:NONE_ABSENCE_DEMONSTRATED, bo:NONE_OUT_OF_PIN, bo:NONE_UNSUPPORTED_BY_TRANSLATOR,
-bo:NONE_UNRESOLVED) diz o que o mapeador afirmou; você contesta a afirmação, não o tipo.
+- o átomo do outro provedor que, naquele par, só tem linhas related (ele também tem a linha de ausência).
+O tipo da ausência (campo absence.kind: ABSENCE_DEMONSTRATED, OUT_OF_PIN, UNSUPPORTED_BY_TRANSLATOR, UNRESOLVED; em
+arquivo antigo, curation_rule bo:NONE_<tipo>) diz o que o mapeador afirmou; você contesta a afirmação, não o tipo.
 
 H2. COMO PROCURAR
 - No schema fixado do seu provedor (atoms.jsonl da sua entrada) e nos fatos de documentação dele: atributos com a
@@ -150,14 +152,14 @@ H2. COMO PROCURAR
 - Quando não achar, não escreva nada: o seu silêncio não confirma a ausência (a taxa de falso NONE é estimada por
   outro módulo, com amostra probabilística).
 
-H3. O QUE VOCÊ ENTREGA: disputes.jsonl (C09 3.0.1, uma alegação decodificada por linha)
+H3. O QUE VOCÊ ENTREGA: disputes.jsonl (C09 3.1.0, uma alegação decodificada por linha)
 Cada descoberta é uma alegação com TODAS as obrigações do mapeador: os três campos, guarda, tradução do registro
 fechado (transforms/transforms.yaml), contrato de perda, predicado de pertença em broad/narrow, projeção e grupo
 quando couber, proof com testes que rodam, evidence_state honesto (DOC_SUPPORTED só com sentença publicada citada).
-Na orientação do par da ausência contestada; claim_id DSP-<provedor>-<n>; see_also = o claim_id da ausência
-contestada; comment com uma frase do porquê; creator_id = o seu ID; mapping_tool claude-opus-5-5;
+Na orientação do par da ausência contestada; claim_id DSP-<provedor>-<n>; disputes = [o claim_id da ausência
+contestada] (campo do C09 3.1.0; nunca a própria alegação); comment com uma frase do porquê; creator_id = o seu ID; mapping_tool claude-opus-5-5;
 mapping_justification semapv:UnspecifiedMatching. Exemplo sintético (contesta CLM-BRF-NONE-01 do brief do mapeador):
-  EX| {"basis": "direct", "claim_id": "DSP-BRF-pb-0001", "claim_version_id": "DSP-BRF-pb-0001@1", "comment": "descoberta adversarial: contesta a ausência CLM-BRF-NONE-01; alvo existe no schema fixado", "creator_id": "NONEHUNT-EXEMPLO", "event_id": "EV-DSP-BRF-pb-0001-1", "evidence_state": "DOC_SUPPORTED", "guard": {"all": []}, "loss_contract": [], "mapping_justification": "semapv:UnspecifiedMatching", "mapping_tool": "claude-opus-5-5", "object_concept": "concept:item_spin_rate", "object_id": "pb:pb_gadget:turn_rate", "object_value_type": {"datatype": "integer", "quantity_kind": "quantitykind:Frequency", "range": {"max": 1000, "min": 1}, "unit": "unit:HZ"}, "predicate_id": "skos:exactMatch", "proof": {"evidence": [{"date": "2026-11-03", "sentence": "frase sintética de documentação que sustenta a alegação", "source": "fixture:doc-sintetica"}], "tests": [{"expected": 10, "input": 10}], "type": "normalization"}, "see_also": "CLM-BRF-NONE-01", "semantic_relation": "exact", "subject_concept": "concept:item_spin_rate", "subject_id": "pa:pa_widget:spin_rate", "subject_value_type": {"datatype": "integer", "quantity_kind": "quantitykind:Frequency", "range": {"max": 100, "min": 1}, "unit": "unit:HZ"}, "translation_fn": {"name": "identity", "params": {}}, "transport_fidelity": "lossless", "value_domain_relation": {"orientation": "subject_to_object", "relation": "subset"}}
+  EX| {"basis": "direct", "claim_id": "DSP-BRF-pb-0001", "claim_version_id": "DSP-BRF-pb-0001@1", "comment": "descoberta adversarial: contesta a ausência CLM-BRF-NONE-01; alvo existe no schema fixado", "creator_id": "NONEHUNT-EXEMPLO", "disputes": ["CLM-BRF-NONE-01"], "event_id": "EV-DSP-BRF-pb-0001-1", "evidence_state": "DOC_SUPPORTED", "guard": {"all": []}, "loss_contract": [], "mapping_justification": "semapv:UnspecifiedMatching", "mapping_tool": "claude-opus-5-5", "object_concept": "concept:item_spin_rate", "object_id": "pb:pb_gadget:turn_rate", "object_value_type": {"datatype": "integer", "quantity_kind": "quantitykind:Frequency", "range": {"max": 1000, "min": 1}, "unit": "unit:HZ"}, "predicate_id": "skos:exactMatch", "proof": {"evidence": [{"date": "2026-11-03", "sentence": "frase sintética de documentação que sustenta a alegação", "source": "fixture:doc-sintetica"}], "tests": [{"expected": 10, "input": 10}], "type": "normalization"}, "semantic_relation": "exact", "subject_concept": "concept:item_spin_rate", "subject_id": "pa:pa_widget:spin_rate", "subject_value_type": {"datatype": "integer", "quantity_kind": "quantitykind:Frequency", "range": {"max": 100, "min": 1}, "unit": "unit:HZ"}, "translation_fn": {"name": "identity", "params": {}}, "transport_fidelity": "lossless", "value_domain_relation": {"orientation": "subject_to_object", "relation": "subset"}}
   EX= veredito REFUTED_BY_RULE (bo.semantics.obligations; regras que falham: KIND-UNKNOWN, TYPE-WF)
 Grave uma linha por registro em JSON canônico (chaves ordenadas, UTF-8). Se precisar do TSV, o caminho oficial é
 bo.contracts.sssom.write_tsv (nunca bo.semantics.sssom_io.write_tsv, que descarta colunas novas em silêncio).
@@ -237,16 +239,16 @@ PROVENIÊNCIA A PREENCHER (C17; vai para results/<ID>/summary.json, nunca para o
 - model_id: claude-opus-5-5 (padrão do tools/provenance.py; nunca outro modelo, nunca Fable).
 - brief_sha256: o sha256 do brief de lançamento do seu módulo (passado em --brief). O sha deste brief de papel
   vai em --param role_brief_sha256, copiado da linha NONEHUNT_BRIEF.txt de briefs/MANIFEST.sha256.
-- params: --param role=hunter --param role_brief=briefs/NONEHUNT_BRIEF.txt --param role_brief_version=1.0.0
+- params: --param role=hunter --param role_brief=briefs/NONEHUNT_BRIEF.txt --param role_brief_version=1.1.0
   --param role_brief_sha256=<sha> e mais: --param target_provider=<aws|google|azurerm|oci>, --param absences_examined_n=<n>, --param disputes_n=<n>,
   --param reconciled_sha256=<sha da versão reconciliada lida>
 - entradas: as do catálogo (o provenance.py grava o sha256 de cada uma); não passe --input para esconder entrada.
 - comando:
   python -I $BO_REPO/tools/provenance.py record <ID> --brief <brief de lançamento do módulo> \
-    --param role=hunter --param role_brief=briefs/NONEHUNT_BRIEF.txt --param role_brief_version=1.0.0 \
+    --param role=hunter --param role_brief=briefs/NONEHUNT_BRIEF.txt --param role_brief_version=1.1.0 \
     --param role_brief_sha256=<sha> ...
   python -I $BO_REPO/tools/provenance.py verify <ID>
-- por registro: toda descoberta leva mapping_tool claude-opus-5-5, creator_id = o seu ID e see_also = a ausência contestada.
+- por registro: toda descoberta leva mapping_tool claude-opus-5-5, creator_id = o seu ID e disputes = [a ausência contestada].
 
 NUVEM
 Proibida nesta etapa (decisão do Breno). Nenhum módulo deste papel toca conta de nuvem, nenhum apply, nenhuma

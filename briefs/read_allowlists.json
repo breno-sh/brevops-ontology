@@ -2,7 +2,7 @@
  "evaluator_modules": [
   "PILOT-EXIT"
  ],
- "frozen_at": "2026-11-03T08:00:00-03:00",
+ "frozen_at": "2026-11-03T21:15:00-03:00",
  "launch_role_override": {
   "PILOT-EXIT": "evaluator",
   "RELIAB": "mapper"
@@ -157,5 +157,5 @@
   "$BO_DATA/SPLIT/holdout_units.json.enc",
   "$BO_DATA/UNSEAL/"
  ],
- "version": "1.0.0"
+ "version": "1.1.0"
 }

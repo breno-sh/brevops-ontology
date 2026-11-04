@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "BRIEFS",
- "generated_at": "2026-11-03T17:42:00-03:00",
+ "generated_at": "2026-11-03T21:12:33-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/BRIEFS.txt",
@@ -13,18 +13,19 @@
    "modo": "unlazy",
    "onda": "6",
    "fase": "F1",
-   "brief_version": "1.0.0",
-   "frozen_at": "2026-11-03T08:00:00-03:00",
+   "brief_version": "1.1.0",
+   "frozen_at": "2026-11-03T21:15:00-03:00",
    "examples": "13",
    "semantics_reference": "bo.semantics.obligations",
-   "c09": "3.0.1",
-   "c20": "3.0.0"
+   "c09": "3.1.0",
+   "c20": "3.1.0",
+   "emenda": "CONTRACTS-3-bdceb64"
   },
   "inputs": [
    {
     "path": "$BO_REPO/contracts",
     "kind": "dir",
-    "sha256": "999f2a2f0445b22ddbda929a15ec8e7fe029ef775ed4f3db44e3d0756eca7b31"
+    "sha256": "94f3b4e25c5791a1a8bf55b1151804d251b77d719024235d73bafb1492eacee3"
    },
    {
     "path": "$BO_REPO/transforms/transforms.yaml",
@@ -52,7 +53,7 @@
     "sha256": "28f849eb578fea685935a2499cd13710e8a96b6cd01e4bc34419ae0e51f29596"
    }
   ],
-  "recorded_at": "2026-11-03T17:42:00-03:00"
+  "recorded_at": "2026-11-03T21:12:33-03:00"
  },
  "sources": [
   {
@@ -63,7 +64,7 @@
   {
    "uri": "https://mapping-commons.github.io/sssom/",
    "license": "CC0-1.0",
-   "transformation": "convenção sssom:NoTermFound e slots padrão (curation_rule, see_also) usados para a ausência tipada"
+   "transformation": "convenção sssom:NoTermFound e slots padrão usados para a ausência tipada"
   }
  ]
 }

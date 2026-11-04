@@ -121,7 +121,8 @@ ROLE_REQUIRED = {
         "não mapeia": [r"nunca átomo↔átomo", r"bo:UNGLOSSED"],
         "rótulo neutro e grandeza": [r"NOT_APPLICABLE", r"UNKNOWN", r"QUDT", r"token de provedor"],
         "treino": [r"projeção de treino"],
-        "C20": [r"python -I -m bo\.contracts\.validate glossary", r"claims\.jsonl", r"decisions\.jsonl"],
+        "C20": [r"python -I -m bo\.contracts\.validate glossary", r"claims\.jsonl", r"decisions\.jsonl",
+              r"validate decisions", r"narrower"],
     },
     "mapper": {
         "guarda": [r"\bguard\b", r"edition_in", r"version_range", r"CONDITION_INDETERMINATE"],
@@ -129,14 +130,14 @@ ROLE_REQUIRED = {
         "predicado de pertença": [r"membership_predicate", r"subset", r"members", r"non_members"],
         "ida e volta": [r"[Ii]da e volta", r"OUT_OF_SUBSET", r"skos:narrowMatch"],
         "escrita C09": [r"bo\.contracts\.sssom", r"write_tsv", r"bo\.semantics\.sssom_io\.write_tsv"],
-        "ausência tipada": [r"sssom:NoTermFound", r"bo:NONE_"],
+        "ausência tipada": [r"sssom:NoTermFound", r"\babsence\b", r"ABSENCE_DEMONSTRATED", r"searched"],
         "registro fechado": [r"transforms\.yaml", r"registry_only"],
         "grupo": [r"bo_group_id", r"variáveis nomeadas"],
     },
     "hunter": {
         "adversarial": [r"descobertas adversariais", r"não é amostra", r"nunca extrapol"],
         "alvo existe": [r"schema fixado", r"bo\.nonehunt\.check"],
-        "escrita C09": [r"bo\.contracts\.sssom", r"disputes\.jsonl", r"see_also"],
+        "escrita C09": [r"bo\.contracts\.sssom", r"disputes\.jsonl", r"disputes = \["],
         "não mapeou": [r"[Qq]uem caça erro não mapeou"],
     },
     "auditor": {

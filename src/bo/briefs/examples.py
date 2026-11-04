@@ -118,14 +118,16 @@ RELATED = claim(
     "concept:item_note", "concept:item_label")
 RELATED["proof"] = {"type": "none", "evidence": copy.deepcopy(DOC), "tests": []}
 
-# ausência tipada (NONE): nem um termo relacionado no outro lado; o tipo vai em curation_rule (C09 3.0.1) até a
-# emenda proposta em results/BRIEFS/CONTRACT_CHANGE.txt
+# ausência tipada (NONE), C09 3.1.0: object_id sssom:NoTermFound e o campo absence {kind, searched, evidence}
 NONE_ROW = claim(
     "CLM-BRF-NONE-01", "pa:pa_widget:spin_rate", "related", "sssom:NoTermFound",
     T("integer", quantity_kind="quantitykind:Frequency", unit="unit:HZ"), None, None, "unknown", "none",
     "concept:item_spin_rate", "bo:UNGLOSSED",
-    curation_rule="bo:NONE_ABSENCE_DEMONSTRATED", evidence_state="STRUCTURALLY_VALID",
-    comment="procurados no pacote: atributos do tipo pb_gadget e vizinhos por referência; nenhum realiza a decisão")
+    evidence_state="STRUCTURALLY_VALID",
+    absence={"kind": "ABSENCE_DEMONSTRATED",
+             "searched": ["atributos do tipo pb_gadget no pacote", "vizinhos de pb_gadget por referência e anexação"],
+             "evidence": [{"source": "fixture:pacote-sintetico#pb_gadget", "date": "2026-11-03",
+                           "sentence": "nenhum atributo nem subgrafo do pacote realiza a decisão"}]})
 del NONE_ROW["object_value_type"]
 NONE_ROW["proof"] = {"type": "absence", "tests": [],
                      "evidence": [{"source": "fixture:pacote-sintetico#pb_gadget", "date": "2026-11-03",
@@ -239,6 +241,18 @@ GLOSSARY_CONCEPT = {
     "definition": "intervalo de tempo durante o qual um item é mantido antes de ser descartado",
     "domain": "OPS", "quantity_kind": "quantitykind:Time", "unit": "unit:DAY", "status": "active",
     "evidence_state": "STRUCTURALLY_VALID"}
+GLOSSARY_EXTRA = [
+    {"concept_id": "concept:item_min_level", "label": "nível mínimo do item",
+     "definition": "limite inferior de nível de serviço aceito para um item", "domain": "OPS",
+     "quantity_kind": "NOT_APPLICABLE", "unit": "NOT_APPLICABLE", "status": "active", "evidence_state": "UNRESOLVED"},
+    {"concept_id": "concept:item_min_level_strict", "label": "nível mínimo estrito do item",
+     "definition": "limite inferior de nível de serviço restrito aos dois níveis mais altos",
+     "domain": "OPS", "quantity_kind": "NOT_APPLICABLE", "unit": "NOT_APPLICABLE", "status": "active",
+     "evidence_state": "UNRESOLVED"},
+    {"concept_id": "concept:item_wait_before_check", "label": "espera antes da verificação",
+     "definition": "intervalo de tempo que se espera antes de verificar o estado de um item",
+     "domain": "OPS", "quantity_kind": "quantitykind:Time", "unit": "unit:SEC", "status": "active",
+     "evidence_state": "UNRESOLVED"}]
 GLOSSARY_CONCEPT_NA = {
     "concept_id": "concept:item_grade", "label": "grau do item",
     "definition": "classificação ordinal de um item por nível de serviço",
@@ -298,7 +312,11 @@ DECISION_VALUE_TYPE = {"schema": "bo.glossary_decision/1", "decision_id": "GD-BR
                        "value": {"datatype": "enum", "enum_semantics": "ordinal: g_low < g_top"},
                        "reason": "tipo de valor e semântica do enum do conceito", "evidence": [],
                        "author": "GLOSSARY-EXEMPLO", "recorded_at": "2026-11-03T08:00:00-03:00"}
-DECISIONS = [DECISION_BROADER, DECISION_SAME_KIND, DECISION_VALUE_TYPE]
+DECISION_NARROWER = {"schema": "bo.glossary_decision/1", "decision_id": "GD-BRF-0004", "kind": "narrower",
+                     "concept_id": "concept:item_min_level", "related_concept": "concept:item_min_level_strict",
+                     "reason": "a mesma relação do GD-BRF-0001 lida do lado amplo (concept_id é o mais amplo)",
+                     "evidence": [], "author": "GLOSSARY-EXEMPLO", "recorded_at": "2026-11-03T08:00:00-03:00"}
+DECISIONS = [DECISION_BROADER, DECISION_SAME_KIND, DECISION_VALUE_TYPE, DECISION_NARROWER]
 
 
 # -------------------------------------------------------------------------------------------- execução
@@ -460,18 +478,20 @@ def validate_files(out_dir) -> dict:
         "glossary": out / "glossary.jsonl",
         "claims": out / "claims.jsonl",
         "glossary_audit": out / "glossary_audit.jsonl",
+        "decisions": out / "decisions.jsonl",
     }
     files["correspondences"].write_text(CS.write_tsv(copy.deepcopy(GOOD_ROWS), MAPPING_SET_ID, PREFIXES),
                                         encoding="utf-8")
     dispute = dispute_example()
     files["correspondences_jsonl"].write_text(common.canon(dispute) + "\n", encoding="utf-8")
-    files["glossary"].write_text("".join(common.canon(x) + "\n" for x in (GLOSSARY_CONCEPT, GLOSSARY_CONCEPT_NA)),
+    files["glossary"].write_text("".join(common.canon(x) + "\n"
+                                         for x in [GLOSSARY_CONCEPT, GLOSSARY_CONCEPT_NA] + GLOSSARY_EXTRA),
                                  encoding="utf-8")
     files["claims"].write_text("".join(common.canon(x) + "\n" for x in (ANCHOR_PA, ANCHOR_PB, ANCHOR_PA_AUDITED)),
                                encoding="utf-8")
     files["glossary_audit"].write_text("".join(common.canon(x) + "\n" for x in (AUDIT_PASS, AUDIT_INDIRECT)),
                                        encoding="utf-8")
-    (out / "decisions.jsonl").write_text("".join(common.canon(x) + "\n" for x in DECISIONS), encoding="utf-8")
+    files["decisions"].write_text("".join(common.canon(x) + "\n" for x in DECISIONS), encoding="utf-8")
     report = {}
     for kind, p in files.items():
         cp = subprocess.run([sys.executable, "-I", "-m", "bo.contracts.validate", kind, str(p)],
@@ -488,6 +508,6 @@ def dispute_example() -> dict:
               T("integer", quantity_kind="quantitykind:Frequency", unit="unit:HZ", range={"min": 1, "max": 1000}),
               IDENT, "subset", "lossless", "concept:item_spin_rate", "concept:item_spin_rate",
               tests=[{"input": 10, "expected": 10}], creator_id="NONEHUNT-EXEMPLO",
-              see_also="CLM-BRF-NONE-01",
+              disputes=["CLM-BRF-NONE-01"],
               comment="descoberta adversarial: contesta a ausência CLM-BRF-NONE-01; alvo existe no schema fixado")
     return d

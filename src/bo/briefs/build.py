@@ -51,9 +51,10 @@ EXAMPLES = {
     "ANCHOR_PA": (E.ANCHOR_PA, "C20 anchor_claim"), "ANCHOR_PB": (E.ANCHOR_PB, "C20 anchor_claim"),
     "ANCHOR_PA_AUDITED": (E.ANCHOR_PA_AUDITED, "C20 anchor_claim"),
     "AUDIT_PASS": (E.AUDIT_PASS, "C20 audit"), "AUDIT_INDIRECT": (E.AUDIT_INDIRECT, "C20 audit"),
-    "DECISION_BROADER": (E.DECISION_BROADER, "decisão (formato provisório)"),
-    "DECISION_SAME_KIND": (E.DECISION_SAME_KIND, "decisão (formato provisório)"),
-    "DECISION_VALUE_TYPE": (E.DECISION_VALUE_TYPE, "decisão (formato provisório)"),
+    "DECISION_BROADER": (E.DECISION_BROADER, "C20 decision"),
+    "DECISION_SAME_KIND": (E.DECISION_SAME_KIND, "C20 decision"),
+    "DECISION_VALUE_TYPE": (E.DECISION_VALUE_TYPE, "C20 decision"),
+    "DECISION_NARROWER": (E.DECISION_NARROWER, "C20 decision"),
 }
 
 
@@ -230,7 +231,9 @@ def brief_text(role: str, rep: dict, reg: dict, norm: str, cver: str) -> str:
         "Linhas 'EX|' são exemplos SINTÉTICOS (provedores pa, pb, pc em example.org; evidência 'fixture:'); a linha",
         "'EX=' logo abaixo diz o que o código devolve para ela. Não são fatos sobre nenhum provedor real e não são",
         "resposta de nenhuma célula do estudo: não os copie, raciocine com eles.",
-        "Histórico: 1.0.0 (2026-11-03) primeira versão congelada.",
+        "Histórico: 1.0.0 (2026-11-03) primeira versão congelada; 1.1.0 (2026-11-03) emenda 3 do CONTRACTS (C09",
+        "3.1.0 e C20 3.1.0): ausência tipada no campo absence, contestação no campo disputes, decisions.jsonl com",
+        "validador e o kind narrower.",
     ])
     body = render("\n\n".join([parts["INTRO"], (tdir / "core.txt").read_text(encoding="utf-8").rstrip("\n"),
                                "PAPEL: " + common.ROLE_PT[role].upper() + "\n" + parts["BODY"],

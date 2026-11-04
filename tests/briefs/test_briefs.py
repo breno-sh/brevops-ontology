@@ -140,3 +140,21 @@ def test_read_lists_in_json_match_content():
 def test_regeneration_identical():
     from bo.briefs import build
     assert build.check() == []
+
+
+def test_decisions_reference_rule_rejects_unknown_concept():
+    """C20-DEC-REF: decisão que cita conceito fora do glossary.jsonl irmão reprova (o exemplo completo passa)."""
+    import subprocess, sys
+    d = common.tmp_dir() / "tests" / "decref"
+    E.validate_files(d)
+    bad = copy.deepcopy(E.DECISION_BROADER)
+    bad["related_concept"] = "concept:nao_existe"
+    (d / "decisions.jsonl").write_text(common.canon(bad) + "\n", encoding="utf-8")
+    cp = subprocess.run([sys.executable, "-I", "-m", "bo.contracts.validate", "decisions", str(d / "decisions.jsonl")],
+                        capture_output=True, text=True)
+    assert cp.returncode != 0
+
+
+def test_none_row_uses_absence_and_dispute_uses_disputes():
+    assert E.NONE_ROW["absence"]["kind"] == "ABSENCE_DEMONSTRATED" and "curation_rule" not in E.NONE_ROW
+    assert E.dispute_example()["disputes"] == [E.NONE_ROW["claim_id"]] and "see_also" not in E.dispute_example()

@@ -8,9 +8,9 @@ H1. O QUE É UMA AUSÊNCIA PARA VOCÊ
 Na versão reconciliada das alegações (sua entrada), é ausência com alvo no seu provedor:
 - a linha com object_id sssom:NoTermFound cujo sujeito é de outro provedor e cujo par inclui o seu (o átomo do
   outro lado "não tem" correspondente no seu provedor);
-- o átomo do outro provedor que, naquele par, só tem linhas related, marcadas com curation_rule bo:NONE_<TIPO>.
-O tipo da ausência (bo:NONE_ABSENCE_DEMONSTRATED, bo:NONE_OUT_OF_PIN, bo:NONE_UNSUPPORTED_BY_TRANSLATOR,
-bo:NONE_UNRESOLVED) diz o que o mapeador afirmou; você contesta a afirmação, não o tipo.
+- o átomo do outro provedor que, naquele par, só tem linhas related (ele também tem a linha de ausência).
+O tipo da ausência (campo absence.kind: ABSENCE_DEMONSTRATED, OUT_OF_PIN, UNSUPPORTED_BY_TRANSLATOR, UNRESOLVED; em
+arquivo antigo, curation_rule bo:NONE_<tipo>) diz o que o mapeador afirmou; você contesta a afirmação, não o tipo.
 
 H2. COMO PROCURAR
 - No schema fixado do seu provedor (atoms.jsonl da sua entrada) e nos fatos de documentação dele: atributos com a
@@ -21,12 +21,12 @@ H2. COMO PROCURAR
 - Quando não achar, não escreva nada: o seu silêncio não confirma a ausência (a taxa de falso NONE é estimada por
   outro módulo, com amostra probabilística).
 
-H3. O QUE VOCÊ ENTREGA: disputes.jsonl (C09 3.0.1, uma alegação decodificada por linha)
+H3. O QUE VOCÊ ENTREGA: disputes.jsonl (C09 3.1.0, uma alegação decodificada por linha)
 Cada descoberta é uma alegação com TODAS as obrigações do mapeador: os três campos, guarda, tradução do registro
 fechado (transforms/transforms.yaml), contrato de perda, predicado de pertença em broad/narrow, projeção e grupo
 quando couber, proof com testes que rodam, evidence_state honesto (DOC_SUPPORTED só com sentença publicada citada).
-Na orientação do par da ausência contestada; claim_id DSP-<provedor>-<n>; see_also = o claim_id da ausência
-contestada; comment com uma frase do porquê; creator_id = o seu ID; mapping_tool claude-opus-5-5;
+Na orientação do par da ausência contestada; claim_id DSP-<provedor>-<n>; disputes = [o claim_id da ausência
+contestada] (campo do C09 3.1.0; nunca a própria alegação); comment com uma frase do porquê; creator_id = o seu ID; mapping_tool claude-opus-5-5;
 mapping_justification semapv:UnspecifiedMatching. Exemplo sintético (contesta CLM-BRF-NONE-01 do brief do mapeador):
 {{EX:DISPUTE}}
 Grave uma linha por registro em JSON canônico (chaves ordenadas, UTF-8). Se precisar do TSV, o caminho oficial é
@@ -54,4 +54,4 @@ bo.nonehunt.check (vira bo.nonehunt_<provedor>.check).
 --param target_provider=<aws|google|azurerm|oci>, --param absences_examined_n=<n>, --param disputes_n=<n>,
   --param reconciled_sha256=<sha da versão reconciliada lida>
 @@PROV_RECORD
-toda descoberta leva mapping_tool claude-opus-5-5, creator_id = o seu ID e see_also = a ausência contestada.
+toda descoberta leva mapping_tool claude-opus-5-5, creator_id = o seu ID e disputes = [a ausência contestada].

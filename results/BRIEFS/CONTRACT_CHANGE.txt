@@ -1,4 +1,8 @@
-CONTRACT_CHANGE — BRIEFS — gravado em 2026-11-03T17:45:00-03:00 (America/Recife)
+CONTRACT_CHANGE — BRIEFS — gravado em 2026-11-03T17:45:00-03:00, revisto em 2026-11-03T21:15:00-03:00 (America/Recife)
+
+SITUAÇÃO NA REVISÃO: itens 1 e 2 ADOTADOS pela emenda 3 do CONTRACTS (bdceb64: C20 3.1.0 com decisions.jsonl e
+kind narrower; C09 3.1.0 com absence e disputes); briefs 1.1.0 passam a usá-los. Item 4 CORRIGIDO pelo SEMANTICS
+(63cb3ed: skos_roundtrip --file lê o arquivo e reprova vazio). Item 3 (fiação do catálogo) continua aberto.
 
 Proposta NÃO bloqueante para o BRIEFS (os briefs são texto e já dizem o que fazer com o contrato vigente), mas
 bloqueante para os consumidores se não for decidida antes dos pilotos: PILOT-*-GLOSS (onda 8) e PILOT-*-MAP (onda 9).

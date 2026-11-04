@@ -6,7 +6,7 @@ quatro provedores e dos contratos de domínio, com rótulo neutro, definição, 
 enum, hierarquia e âncoras. Você não mapeia: nunca átomo↔átomo. E ancorar átomos de dois provedores no mesmo
 conceito é uma ALEGAÇÃO auditada, não um mapeamento grátis.
 @@BODY
-G1. O QUE VOCÊ ENTREGA (C20 3.0.0; caminhos exatos no brief do seu módulo)
+G1. O QUE VOCÊ ENTREGA (C20 3.1.0; caminhos exatos no brief do seu módulo)
 - glossary.jsonl (registro concept): concept_id (concept:<snake_case>, sem token de provedor), label (pt,
   neutro), definition (gênero + diferença: "X é um Y que ..."), domain, quantity_kind (IRI QUDT, NOT_APPLICABLE
   ou UNKNOWN), unit (IRI QUDT; NOT_APPLICABLE quando a grandeza é NOT_APPLICABLE; ausente quando UNKNOWN), status
@@ -21,14 +21,15 @@ G1. O QUE VOCÊ ENTREGA (C20 3.0.0; caminhos exatos no brief do seu módulo)
   extraction_method, evidence_level, evidence_state e recorded_at (America/Recife).
 {{EX:ANCHOR_PA}}
 {{EX:ANCHOR_PB}}
-- decisions.jsonl: o registro de decisões do domínio. O C20 3.0.0 ainda não tem tipo de arquivo para ele nem campo
-  de hierarquia no conceito (proposta de emenda em results/BRIEFS/CONTRACT_CHANGE.txt); até a emenda, use EXATAMENTE
-  este formato provisório, um objeto por linha: schema "bo.glossary_decision/1", decision_id (GD-...), kind
-  (broader | value_type | same_kind_distinct | merge | split | exclusive | ungrounded), concept_id,
-  related_concept (para broader, same_kind_distinct, merge e split), value (para value_type: datatype e
-  enum_semantics), reason, evidence (lista de {source, sentence, date}; pode ser vazia), author (seu ID) e
-  recorded_at. Se a emenda do C20 entrar antes de você começar, ela manda.
+- decisions.jsonl (C20 3.1.0, registro decision): o registro de decisões do domínio, um objeto por linha:
+  schema "bo.glossary_decision/1", decision_id (GD-...), kind (broader | narrower | value_type |
+  same_kind_distinct | merge | split | exclusive | ungrounded), concept_id, related_concept (obrigatório em
+  broader, narrower, same_kind_distinct, merge e split; nunca igual ao concept_id), value (só em value_type:
+  datatype, enum_semantics, rate_window, byte_convention), reason, evidence (lista de {source, sentence, date};
+  pode ser vazia), author (seu ID) e recorded_at. Todo conceito citado (concept_id e related_concept) existe no
+  seu glossary.jsonl (regra C20-DEC-REF); a hierarquia não tem ciclo (C20-DEC-ACYCLIC).
 {{EX:DECISION_BROADER}}
+{{EX:DECISION_NARROWER}}
 {{EX:DECISION_SAME_KIND}}
 {{EX:DECISION_VALUE_TYPE}}
 - Nos pilotos, também canonical_units.jsonl (C19) e o pacote fechado do mapeador (bundle/): o grão sai da
@@ -66,7 +67,8 @@ G3. RÓTULO, DEFINIÇÃO E GRANDEZA (bo.glossary.lint; higiene, não validade)
 
 G4. HIERARQUIA (broader/narrower)
 Em decisions, kind broader: concept_id é o MAIS ESTREITO e related_concept o MAIS AMPLO (concept_id ⊂
-related_concept), a mesma direção de "X skos:broader Y" (Y mais geral). Toda extensão do mais estreito cabe no
+related_concept), a mesma direção de "X skos:broader Y" (Y mais geral); kind narrower é o inverso (concept_id é o
+mais amplo). Grave cada relação UMA vez, num dos dois sentidos (C20-DEC-DIR). Toda extensão do mais estreito cabe no
 mais amplo; sem ciclo (bo.glossary.acyclic no GLOSSARY-FREEZE); papel antirrígido nunca acima de tipo rígido
 (OntoClean corrigido: "Estudante ⊑ Pessoa" vale, "Pessoa ⊑ Estudante" é o erro).
 
@@ -84,8 +86,8 @@ SPLIT; isso não muda o seu trabalho.
 G7. CONFERIR ANTES DO COMMIT
   python -I -m bo.contracts.validate glossary <seu glossary.jsonl>
   python -I -m bo.contracts.validate claims <seu claims.jsonl>
+  python -I -m bo.contracts.validate decisions <seu decisions.jsonl>   (com o glossary.jsonl na mesma pasta)
   python -I -m bo.glossary.anchor_claims <ID>   (e, na escala, bo.glossary.lint e bo.glossary.train_only)
-O decisions.jsonl ainda não tem validador de contrato: confira o formato provisório do G1 no seu próprio teste.
 @@FORBID
 - Escrever correspondência átomo↔átomo, relação SKOS entre átomos, função de tradução ou "equivale a".
 - Ler mapeamentos, candidatos, pacotes de mapeador, saídas da auditoria ou de outro glossarista.

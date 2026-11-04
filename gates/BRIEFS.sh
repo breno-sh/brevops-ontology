@@ -14,12 +14,13 @@ $py -I -B -m pytest tests/briefs -q -p no:cacheprovider
 step "regeneração idêntica (briefs/*, read_allowlists.json, manifestos, results/BRIEFS/examples*)"
 $py -I -B -m bo.briefs.build --check
 
-step "exemplos nos validadores únicos (C09 TSV e JSONL, C20 glossary, claims, glossary_audit)"
+step "exemplos nos validadores únicos (C09 TSV e JSONL, C20 glossary, claims, glossary_audit, decisions)"
 $py -I -m bo.contracts.validate correspondences results/BRIEFS/examples/mapper_examples.sssom.tsv | tail -1
 $py -I -m bo.contracts.validate correspondences_jsonl results/BRIEFS/examples/nonehunt_examples.jsonl | tail -1
 $py -I -m bo.contracts.validate glossary results/BRIEFS/examples/glossary.jsonl | tail -1
 $py -I -m bo.contracts.validate claims results/BRIEFS/examples/claims.jsonl | tail -1
 $py -I -m bo.contracts.validate glossary_audit results/BRIEFS/examples/glossary_audit.jsonl | tail -1
+$py -I -m bo.contracts.validate decisions results/BRIEFS/examples/decisions.jsonl | tail -1
 
 step "lint (higiene) e listas de leitura"
 $py -I -B -m bo.briefs.lint | tail -1

@@ -1,7 +1,7 @@
 BRIEF DO GLOSSARISTA — BrevOps Ontology (briefs/GLOSSARY_BRIEF.txt)
-Versão 1.0.0 · congelado em 2026-11-03T08:00:00-03:00 (America/Recife) · produtor: módulo BRIEFS
-Contratos: C09 3.0.1, C20 3.0.0 (versões lidas dos schemas em contracts/)
-Fontes normativas (sha256, 16 primeiros): semantics/SEMANTICS.html 28f849eb578fea68; transforms/transforms.yaml 93a32350718f56fa; grain/GRAIN.html ae75e3f2468f96a6; ontology/patterns/ONTPAT.html c0e2b37b55e8ed93; prereg/PREREG.html 6eeb9b18a5d9512d; contracts/ 999f2a2f0445b22d
+Versão 1.1.0 · congelado em 2026-11-03T21:15:00-03:00 (America/Recife) · produtor: módulo BRIEFS
+Contratos: C09 3.1.0, C20 3.1.0 (versões lidas dos schemas em contracts/)
+Fontes normativas (sha256, 16 primeiros): semantics/SEMANTICS.html 28f849eb578fea68; transforms/transforms.yaml 93a32350718f56fa; grain/GRAIN.html ae75e3f2468f96a6; ontology/patterns/ONTPAT.html c0e2b37b55e8ed93; prereg/PREREG.html 6eeb9b18a5d9512d; contracts/ 94f3b4e25c5791a1
 Quem usa: PILOT-STO-GLOSS, PILOT-NET-GLOSS, GLOSSARY-CMP, GLOSSARY-NET, GLOSSARY-STO, GLOSSARY-DB, GLOSSARY-SEC, GLOSSARY-OPS; papel glossarist (glossarista) no bo-lane.
 Precedência: este brief de papel complementa o brief de lançamento do seu módulo; em conflito vale o mais
 restritivo, e o conflito vai para o relatório. Mudar este texto depois do FREEZE0 é emenda (versão nova, motivo
@@ -9,7 +9,9 @@ e tools/invalidate.py check --apply nos consumidores).
 Linhas 'EX|' são exemplos SINTÉTICOS (provedores pa, pb, pc em example.org; evidência 'fixture:'); a linha
 'EX=' logo abaixo diz o que o código devolve para ela. Não são fatos sobre nenhum provedor real e não são
 resposta de nenhuma célula do estudo: não os copie, raciocine com eles.
-Histórico: 1.0.0 (2026-11-03) primeira versão congelada.
+Histórico: 1.0.0 (2026-11-03) primeira versão congelada; 1.1.0 (2026-11-03) emenda 3 do CONTRACTS (C09
+3.1.0 e C20 3.1.0): ausência tipada no campo absence, contestação no campo disputes, decisions.jsonl com
+validador e o kind narrower.
 
 SEU PAPEL EM UMA FRASE
 Você é o glossarista de uma fatia (PILOT-STO-GLOSS, PILOT-NET-GLOSS) ou de um domínio (GLOSSARY-CMP, -NET, -STO,
@@ -135,7 +137,7 @@ evidence_level interpreted, extraction_method model e model_id claude-opus-5-5, 
 Julgamento de LLM nunca é verdade-terreno.
 
 PAPEL: GLOSSARISTA
-G1. O QUE VOCÊ ENTREGA (C20 3.0.0; caminhos exatos no brief do seu módulo)
+G1. O QUE VOCÊ ENTREGA (C20 3.1.0; caminhos exatos no brief do seu módulo)
 - glossary.jsonl (registro concept): concept_id (concept:<snake_case>, sem token de provedor), label (pt,
   neutro), definition (gênero + diferença: "X é um Y que ..."), domain, quantity_kind (IRI QUDT, NOT_APPLICABLE
   ou UNKNOWN), unit (IRI QUDT; NOT_APPLICABLE quando a grandeza é NOT_APPLICABLE; ausente quando UNKNOWN), status
@@ -154,19 +156,21 @@ G1. O QUE VOCÊ ENTREGA (C20 3.0.0; caminhos exatos no brief do seu módulo)
   EX= C20 anchor_claim
   EX| {"atom_id": "pb:pb_gadget:keep_days", "claim_id": "ANC-BRF-pb-01", "claim_version_id": "ANC-BRF-pb-01@1", "concept_id": "concept:item_keep_period", "context": "seção de argumentos do tipo sintético", "counterexample_search": {"found": false, "query": "keep days retain hold period", "result": "nenhum uso com outro significado no pacote"}, "event_id": "EV-ANC-BRF-pb-01-1", "evidence_level": "interpreted", "evidence_state": "STRUCTURALLY_VALID", "extraction_method": "model", "model_id": "claude-opus-5-5", "recorded_at": "2026-11-03T08:00:00-03:00", "sentence": "frase sintética: dias durante os quais o item é mantido", "source": {"file": "docs/gadget.md", "line": 40, "repo": "example-org/provider-b-docs", "sentence": "frase sintética de documentação que sustenta o fato", "tag": "v2.0.0"}}
   EX= C20 anchor_claim
-- decisions.jsonl: o registro de decisões do domínio. O C20 3.0.0 ainda não tem tipo de arquivo para ele nem campo
-  de hierarquia no conceito (proposta de emenda em results/BRIEFS/CONTRACT_CHANGE.txt); até a emenda, use EXATAMENTE
-  este formato provisório, um objeto por linha: schema "bo.glossary_decision/1", decision_id (GD-...), kind
-  (broader | value_type | same_kind_distinct | merge | split | exclusive | ungrounded), concept_id,
-  related_concept (para broader, same_kind_distinct, merge e split), value (para value_type: datatype e
-  enum_semantics), reason, evidence (lista de {source, sentence, date}; pode ser vazia), author (seu ID) e
-  recorded_at. Se a emenda do C20 entrar antes de você começar, ela manda.
+- decisions.jsonl (C20 3.1.0, registro decision): o registro de decisões do domínio, um objeto por linha:
+  schema "bo.glossary_decision/1", decision_id (GD-...), kind (broader | narrower | value_type |
+  same_kind_distinct | merge | split | exclusive | ungrounded), concept_id, related_concept (obrigatório em
+  broader, narrower, same_kind_distinct, merge e split; nunca igual ao concept_id), value (só em value_type:
+  datatype, enum_semantics, rate_window, byte_convention), reason, evidence (lista de {source, sentence, date};
+  pode ser vazia), author (seu ID) e recorded_at. Todo conceito citado (concept_id e related_concept) existe no
+  seu glossary.jsonl (regra C20-DEC-REF); a hierarquia não tem ciclo (C20-DEC-ACYCLIC).
   EX| {"author": "GLOSSARY-EXEMPLO", "concept_id": "concept:item_min_level_strict", "decision_id": "GD-BRF-0001", "evidence": [{"date": "2026-11-03", "sentence": "frase sintética", "source": "fixture:doc-sintetica"}], "kind": "broader", "reason": "todo nível mínimo estrito é um nível mínimo (extensão contida)", "recorded_at": "2026-11-03T08:00:00-03:00", "related_concept": "concept:item_min_level", "schema": "bo.glossary_decision/1"}
-  EX= decisão (formato provisório)
+  EX= C20 decision
+  EX| {"author": "GLOSSARY-EXEMPLO", "concept_id": "concept:item_min_level", "decision_id": "GD-BRF-0004", "evidence": [], "kind": "narrower", "reason": "a mesma relação do GD-BRF-0001 lida do lado amplo (concept_id é o mais amplo)", "recorded_at": "2026-11-03T08:00:00-03:00", "related_concept": "concept:item_min_level_strict", "schema": "bo.glossary_decision/1"}
+  EX= C20 decision
   EX| {"author": "GLOSSARY-EXEMPLO", "concept_id": "concept:item_keep_period", "decision_id": "GD-BRF-0002", "evidence": [], "kind": "same_kind_distinct", "reason": "mesma grandeza (tempo), significados distintos: guardar depois de criar × esperar antes de medir", "recorded_at": "2026-11-03T08:00:00-03:00", "related_concept": "concept:item_wait_before_check", "schema": "bo.glossary_decision/1"}
-  EX= decisão (formato provisório)
+  EX= C20 decision
   EX| {"author": "GLOSSARY-EXEMPLO", "concept_id": "concept:item_grade", "decision_id": "GD-BRF-0003", "evidence": [], "kind": "value_type", "reason": "tipo de valor e semântica do enum do conceito", "recorded_at": "2026-11-03T08:00:00-03:00", "schema": "bo.glossary_decision/1", "value": {"datatype": "enum", "enum_semantics": "ordinal: g_low < g_top"}}
-  EX= decisão (formato provisório)
+  EX= C20 decision
 - Nos pilotos, também canonical_units.jsonl (C19) e o pacote fechado do mapeador (bundle/): o grão sai da
   biblioteca de grão, mecanicamente (G5).
 
@@ -202,7 +206,8 @@ G3. RÓTULO, DEFINIÇÃO E GRANDEZA (bo.glossary.lint; higiene, não validade)
 
 G4. HIERARQUIA (broader/narrower)
 Em decisions, kind broader: concept_id é o MAIS ESTREITO e related_concept o MAIS AMPLO (concept_id ⊂
-related_concept), a mesma direção de "X skos:broader Y" (Y mais geral). Toda extensão do mais estreito cabe no
+related_concept), a mesma direção de "X skos:broader Y" (Y mais geral); kind narrower é o inverso (concept_id é o
+mais amplo). Grave cada relação UMA vez, num dos dois sentidos (C20-DEC-DIR). Toda extensão do mais estreito cabe no
 mais amplo; sem ciclo (bo.glossary.acyclic no GLOSSARY-FREEZE); papel antirrígido nunca acima de tipo rígido
 (OntoClean corrigido: "Estudante ⊑ Pessoa" vale, "Pessoa ⊑ Estudante" é o erro).
 
@@ -220,8 +225,8 @@ SPLIT; isso não muda o seu trabalho.
 G7. CONFERIR ANTES DO COMMIT
   python -I -m bo.contracts.validate glossary <seu glossary.jsonl>
   python -I -m bo.contracts.validate claims <seu claims.jsonl>
+  python -I -m bo.contracts.validate decisions <seu decisions.jsonl>   (com o glossary.jsonl na mesma pasta)
   python -I -m bo.glossary.anchor_claims <ID>   (e, na escala, bo.glossary.lint e bo.glossary.train_only)
-O decisions.jsonl ainda não tem validador de contrato: confira o formato provisório do G1 no seu próprio teste.
 
 O QUE VOCÊ PODE LER (sandbox do bo-lane; fonte: briefs/read_allowlists.json, papel glossarist)
   $OWNS                                      o que é seu (código, testes, gate, resultados, dados do módulo)
@@ -291,14 +296,14 @@ PROVENIÊNCIA A PREENCHER (C17; vai para results/<ID>/summary.json, nunca para o
 - model_id: claude-opus-5-5 (padrão do tools/provenance.py; nunca outro modelo, nunca Fable).
 - brief_sha256: o sha256 do brief de lançamento do seu módulo (passado em --brief). O sha deste brief de papel
   vai em --param role_brief_sha256, copiado da linha GLOSSARY_BRIEF.txt de briefs/MANIFEST.sha256.
-- params: --param role=glossarist --param role_brief=briefs/GLOSSARY_BRIEF.txt --param role_brief_version=1.0.0
+- params: --param role=glossarist --param role_brief=briefs/GLOSSARY_BRIEF.txt --param role_brief_version=1.1.0
   --param role_brief_sha256=<sha> e mais: --param domain=<CMP|NET|STO|DB|SEC|OPS> (ou --param slice=<sto|net> nos pilotos), --param concepts_n=<n>,
   --param anchors_n=<n>, --param multi_provider_anchor_paths_n=<n>, --param model_extracted_anchors_n=<n>,
   --param training_projection_receipt=<digest do comprovante SPLIT, quando houver>
 - entradas: as do catálogo (o provenance.py grava o sha256 de cada uma); não passe --input para esconder entrada.
 - comando:
   python -I $BO_REPO/tools/provenance.py record <ID> --brief <brief de lançamento do módulo> \
-    --param role=glossarist --param role_brief=briefs/GLOSSARY_BRIEF.txt --param role_brief_version=1.0.0 \
+    --param role=glossarist --param role_brief=briefs/GLOSSARY_BRIEF.txt --param role_brief_version=1.1.0 \
     --param role_brief_sha256=<sha> ...
   python -I $BO_REPO/tools/provenance.py verify <ID>
 - por registro: toda âncora com extraction_method model leva evidence_level interpreted e model_id claude-opus-5-5; recorded_at

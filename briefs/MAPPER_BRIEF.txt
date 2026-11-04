@@ -1,7 +1,7 @@
 BRIEF DO MAPEADOR — BrevOps Ontology (briefs/MAPPER_BRIEF.txt)
-Versão 1.0.0 · congelado em 2026-11-03T08:00:00-03:00 (America/Recife) · produtor: módulo BRIEFS
-Contratos: C09 3.0.1, C20 3.0.0 (versões lidas dos schemas em contracts/)
-Fontes normativas (sha256, 16 primeiros): semantics/SEMANTICS.html 28f849eb578fea68; transforms/transforms.yaml 93a32350718f56fa; grain/GRAIN.html ae75e3f2468f96a6; ontology/patterns/ONTPAT.html c0e2b37b55e8ed93; prereg/PREREG.html 6eeb9b18a5d9512d; contracts/ 999f2a2f0445b22d
+Versão 1.1.0 · congelado em 2026-11-03T21:15:00-03:00 (America/Recife) · produtor: módulo BRIEFS
+Contratos: C09 3.1.0, C20 3.1.0 (versões lidas dos schemas em contracts/)
+Fontes normativas (sha256, 16 primeiros): semantics/SEMANTICS.html 28f849eb578fea68; transforms/transforms.yaml 93a32350718f56fa; grain/GRAIN.html ae75e3f2468f96a6; ontology/patterns/ONTPAT.html c0e2b37b55e8ed93; prereg/PREREG.html 6eeb9b18a5d9512d; contracts/ 94f3b4e25c5791a1
 Quem usa: PILOT-STO-MAP, PILOT-NET-MAP, MAP-{pair}-{domain} (36: 6 pares × 6 domínios) e RELIAB (lançado com --role mapper); papel mapper (mapeador) no bo-lane.
 Precedência: este brief de papel complementa o brief de lançamento do seu módulo; em conflito vale o mais
 restritivo, e o conflito vai para o relatório. Mudar este texto depois do FREEZE0 é emenda (versão nova, motivo
@@ -9,7 +9,9 @@ e tools/invalidate.py check --apply nos consumidores).
 Linhas 'EX|' são exemplos SINTÉTICOS (provedores pa, pb, pc em example.org; evidência 'fixture:'); a linha
 'EX=' logo abaixo diz o que o código devolve para ela. Não são fatos sobre nenhum provedor real e não são
 resposta de nenhuma célula do estudo: não os copie, raciocine com eles.
-Histórico: 1.0.0 (2026-11-03) primeira versão congelada.
+Histórico: 1.0.0 (2026-11-03) primeira versão congelada; 1.1.0 (2026-11-03) emenda 3 do CONTRACTS (C09
+3.1.0 e C20 3.1.0): ausência tipada no campo absence, contestação no campo disputes, decisions.jsonl com
+validador e o kind narrower.
 
 SEU PAPEL EM UMA FRASE
 Você é o mapeador de um par×domínio (MAP-<PAR>-<DOMÍNIO>), de uma fatia piloto (PILOT-STO-MAP, PILOT-NET-MAP) ou o
@@ -137,7 +139,7 @@ Julgamento de LLM nunca é verdade-terreno.
 
 PAPEL: MAPEADOR
 M1. O QUE VOCÊ ENTREGA
-- mapping.sssom.tsv (C09 3.0.1). Uma linha por alegação, na ORIENTAÇÃO CANÔNICA do par: o sujeito é o provedor que
+- mapping.sssom.tsv (C09 3.1.0). Uma linha por alegação, na ORIENTAÇÃO CANÔNICA do par: o sujeito é o provedor que
   vem primeiro no ID do par e o objeto, o segundo (AWSGCP: aws→google; AWSAZ: aws→azurerm; AWSOCI: aws→oci;
   GCPAZ: google→azurerm; GCPOCI: google→oci; AZOCI: azurerm→oci). A volta é calculada pelo código (inversa,
   basis inverse); nunca grave a volta como segunda linha. Nos pilotos, um arquivo com os 6 pares da fatia, cada
@@ -165,6 +167,7 @@ M2. A LINHA, CAMPO A CAMPO
   projection          projeções por ocorrência (M6), quando o campo alimenta mais de um conceito ou está em bloco
   bo_group_id, group  grupo como regra sobre subgrafo (M7)
   alternative_to, exclusivity  realizações alternativas do mesmo sujeito (M3)
+  absence             só na linha de ausência (object_id sssom:NoTermFound): {kind, searched, evidence} (M8)
   proof               {"type", "evidence", "tests"}: os testes RODAM (normalização, pertença, grupo)
   evidence_state      STRUCTURALLY_VALID, ou DOC_SUPPORTED só com sentença publicada citada (M9)
   basis               direct (ou shared_concept, M9)
@@ -226,16 +229,19 @@ rodam. Exemplo sintético (N:M, duas facetas do lado a ligadas por junção):
 M8. AUSÊNCIA TIPADA (NONE)
 Átomo sem nenhuma correspondência no outro lado: uma linha com object_id sssom:NoTermFound, predicate_id
 skos:relatedMatch, semantic_relation related, transport_fidelity none, translation_fn null, value_domain_relation
-unknown, object_concept bo:UNGLOSSED, proof.type absence com a evidência do que você procurou, e o tipo em
-curation_rule (C09 3.0.1 não tem campo próprio; proposta de emenda em results/BRIEFS/CONTRACT_CHANGE.txt):
-  bo:NONE_ABSENCE_DEMONSTRATED       você procurou no pacote e mostra onde (tipos, vizinhos por referência)
-  bo:NONE_OUT_OF_PIN                 a decisão vive fora dos providers fixados (outro provider Terraform)
-  bo:NONE_UNSUPPORTED_BY_TRANSLATOR  existe no destino, mas o registro não tem como traduzir
-  bo:NONE_UNRESOLVED                 não deu para decidir com o que o pacote tem
-Átomo que só tem relação related também leva curation_rule bo:NONE_<TIPO> nessa linha (related não transporta). O
+unknown, object_concept bo:UNGLOSSED, proof.type absence, e o campo absence do C09 3.1.0 (regra C09-NONE):
+absence = {"kind": <tipo>, "searched": [o que você procurou, ≥ 1 item], "evidence": [...]}, com kind:
+  ABSENCE_DEMONSTRATED       você procurou no pacote e mostra onde (tipos, vizinhos por referência)
+  OUT_OF_PIN                 a decisão vive fora dos providers fixados (outro provider Terraform)
+  UNSUPPORTED_BY_TRANSLATOR  existe no destino, mas o registro não tem como traduzir
+  UNRESOLVED                 não deu para decidir com o que o pacote tem
+absence só existe nessa linha (com outro object_id, o validador reprova). Use absence, não a forma provisória
+curation_rule bo:NONE_<tipo> da versão 1.0.0 deste brief (o validador ainda a aceita, mas ela não é mais o padrão).
+Átomo que só tem relação related também ganha a linha de ausência, porque related não transporta; a linha related
+continua como está. O
 lado sem atributo mas com comportamento fixo ou padrão não é ausência: é alegação com fixed_default {kind, value,
 context, evidence {date, source}}. O curie_map declara o prefixo sssom. Exemplo sintético:
-  EX| {"basis": "direct", "claim_id": "CLM-BRF-NONE-01", "claim_version_id": "CLM-BRF-NONE-01@1", "comment": "procurados no pacote: atributos do tipo pb_gadget e vizinhos por referência; nenhum realiza a decisão", "creator_id": "MAP-EXEMPLO", "curation_rule": "bo:NONE_ABSENCE_DEMONSTRATED", "event_id": "EV-CLM-BRF-NONE-01-1", "evidence_state": "STRUCTURALLY_VALID", "guard": {"all": []}, "loss_contract": [], "mapping_justification": "semapv:UnspecifiedMatching", "mapping_tool": "claude-opus-5-5", "object_concept": "bo:UNGLOSSED", "object_id": "sssom:NoTermFound", "predicate_id": "skos:relatedMatch", "proof": {"evidence": [{"date": "2026-11-03", "sentence": "nenhum atributo nem subgrafo do pacote realiza a decisão", "source": "fixture:pacote-sintetico#pb_gadget"}], "tests": [], "type": "absence"}, "semantic_relation": "related", "subject_concept": "concept:item_spin_rate", "subject_id": "pa:pa_widget:spin_rate", "subject_value_type": {"datatype": "integer", "quantity_kind": "quantitykind:Frequency", "unit": "unit:HZ"}, "translation_fn": null, "transport_fidelity": "none", "value_domain_relation": {"orientation": "subject_to_object", "relation": "unknown"}}
+  EX| {"absence": {"evidence": [{"date": "2026-11-03", "sentence": "nenhum atributo nem subgrafo do pacote realiza a decisão", "source": "fixture:pacote-sintetico#pb_gadget"}], "kind": "ABSENCE_DEMONSTRATED", "searched": ["atributos do tipo pb_gadget no pacote", "vizinhos de pb_gadget por referência e anexação"]}, "basis": "direct", "claim_id": "CLM-BRF-NONE-01", "claim_version_id": "CLM-BRF-NONE-01@1", "creator_id": "MAP-EXEMPLO", "event_id": "EV-CLM-BRF-NONE-01-1", "evidence_state": "STRUCTURALLY_VALID", "guard": {"all": []}, "loss_contract": [], "mapping_justification": "semapv:UnspecifiedMatching", "mapping_tool": "claude-opus-5-5", "object_concept": "bo:UNGLOSSED", "object_id": "sssom:NoTermFound", "predicate_id": "skos:relatedMatch", "proof": {"evidence": [{"date": "2026-11-03", "sentence": "nenhum atributo nem subgrafo do pacote realiza a decisão", "source": "fixture:pacote-sintetico#pb_gadget"}], "tests": [], "type": "absence"}, "semantic_relation": "related", "subject_concept": "concept:item_spin_rate", "subject_id": "pa:pa_widget:spin_rate", "subject_value_type": {"datatype": "integer", "quantity_kind": "quantitykind:Frequency", "unit": "unit:HZ"}, "translation_fn": null, "transport_fidelity": "none", "value_domain_relation": {"orientation": "subject_to_object", "relation": "unknown"}}
   EX= veredito OK (bo.semantics.obligations; regras que falham: nenhuma)
 Ausência não entra na cobertura: ela vai para os caçadores (descobertas adversariais) e para uma amostra
 probabilística feita por outro módulo. Por isso uma ausência mal tipada custa caro: tipe com cuidado.
@@ -259,7 +265,7 @@ Nunca use bo.semantics.sssom_io.write_tsv (descarta as colunas novas do C09 em s
 sssom-py (descarta os slots de extensão). Depois rode, na ordem: python -I -m bo.contracts.validate correspondences
 <arquivo>; python -I -m bo.semantics.skos_roundtrip --file <arquivo>; os comandos de família do seu papel; e, nos
 pilotos, o árbitro congelado (python -I -m bo.arbiter.run --frozen --in <arquivo> --check-unproven).
-Os exemplos sintéticos deste brief foram gravados assim e voltaram iguais: 10 linhas, 30 colunas, iguais na volta: sim; colunas perdidas: nenhuma; prefixos declarados: bo, bosx, concept, pa, pb, pc, semapv, skos, sssom
+Os exemplos sintéticos deste brief foram gravados assim e voltaram iguais: 10 linhas, 29 colunas, iguais na volta: sim; colunas perdidas: nenhuma; prefixos declarados: bo, bosx, concept, pa, pb, pc, semapv, skos, sssom
 
 M11. PILOTO × ESCALA
 Os mapeamentos dos pilotos não entram no estudo principal; os mapeadores de escala recomeçam do zero e não leem
@@ -334,14 +340,14 @@ PROVENIÊNCIA A PREENCHER (C17; vai para results/<ID>/summary.json, nunca para o
 - model_id: claude-opus-5-5 (padrão do tools/provenance.py; nunca outro modelo, nunca Fable).
 - brief_sha256: o sha256 do brief de lançamento do seu módulo (passado em --brief). O sha deste brief de papel
   vai em --param role_brief_sha256, copiado da linha MAPPER_BRIEF.txt de briefs/MANIFEST.sha256.
-- params: --param role=mapper --param role_brief=briefs/MAPPER_BRIEF.txt --param role_brief_version=1.0.0
+- params: --param role=mapper --param role_brief=briefs/MAPPER_BRIEF.txt --param role_brief_version=1.1.0
   --param role_brief_sha256=<sha> e mais: --param pair=<PAR> --param domain=<DOMÍNIO> (ou --param slice=<sto|net>), --param bundle_sha256=<sha do pacote>,
   --param glossary_freeze=<digest do comprovante FREEZE-G, na escala>, --param rows_n=<n>, --param none_n=<n>,
   --param groups_n=<n>, --param mapping_set_id=<IRI>
 - entradas: as do catálogo (o provenance.py grava o sha256 de cada uma); não passe --input para esconder entrada.
 - comando:
   python -I $BO_REPO/tools/provenance.py record <ID> --brief <brief de lançamento do módulo> \
-    --param role=mapper --param role_brief=briefs/MAPPER_BRIEF.txt --param role_brief_version=1.0.0 \
+    --param role=mapper --param role_brief=briefs/MAPPER_BRIEF.txt --param role_brief_version=1.1.0 \
     --param role_brief_sha256=<sha> ...
   python -I $BO_REPO/tools/provenance.py verify <ID>
 - por registro: toda linha leva mapping_tool claude-opus-5-5 e creator_id = o seu ID; mapping_date = a data do mapeamento

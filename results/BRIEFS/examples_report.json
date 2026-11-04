@@ -220,6 +220,10 @@
    "kind": "claims",
    "rc": 0
   },
+  "decisions.jsonl": {
+   "kind": "decisions",
+   "rc": 0
+  },
   "glossary.jsonl": {
    "kind": "glossary",
    "rc": 0
@@ -381,10 +385,9 @@
    "object_value_type",
    "alternative_to",
    "exclusivity",
+   "absence",
    "creator_id",
-   "mapping_tool",
-   "curation_rule",
-   "comment"
+   "mapping_tool"
   ],
   "equal": true,
   "lost_columns": [],
@@ -400,5 +403,5 @@
    "sssom"
   ]
  },
- "version": "1.0.0"
+ "version": "1.1.0"
 }

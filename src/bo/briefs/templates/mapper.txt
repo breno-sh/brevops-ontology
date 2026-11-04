@@ -8,7 +8,7 @@ para broad/narrow) ou a ausência tipada. Você não fez o glossário, não cria
 congelado julga, e sem prova o veredito é UNPROVEN.
 @@BODY
 M1. O QUE VOCÊ ENTREGA
-- mapping.sssom.tsv (C09 3.0.1). Uma linha por alegação, na ORIENTAÇÃO CANÔNICA do par: o sujeito é o provedor que
+- mapping.sssom.tsv (C09 3.1.0). Uma linha por alegação, na ORIENTAÇÃO CANÔNICA do par: o sujeito é o provedor que
   vem primeiro no ID do par e o objeto, o segundo (AWSGCP: aws→google; AWSAZ: aws→azurerm; AWSOCI: aws→oci;
   GCPAZ: google→azurerm; GCPOCI: google→oci; AZOCI: azurerm→oci). A volta é calculada pelo código (inversa,
   basis inverse); nunca grave a volta como segunda linha. Nos pilotos, um arquivo com os 6 pares da fatia, cada
@@ -36,6 +36,7 @@ M2. A LINHA, CAMPO A CAMPO
   projection          projeções por ocorrência (M6), quando o campo alimenta mais de um conceito ou está em bloco
   bo_group_id, group  grupo como regra sobre subgrafo (M7)
   alternative_to, exclusivity  realizações alternativas do mesmo sujeito (M3)
+  absence             só na linha de ausência (object_id sssom:NoTermFound): {kind, searched, evidence} (M8)
   proof               {"type", "evidence", "tests"}: os testes RODAM (normalização, pertença, grupo)
   evidence_state      STRUCTURALLY_VALID, ou DOC_SUPPORTED só com sentença publicada citada (M9)
   basis               direct (ou shared_concept, M9)
@@ -93,13 +94,16 @@ rodam. Exemplo sintético (N:M, duas facetas do lado a ligadas por junção):
 M8. AUSÊNCIA TIPADA (NONE)
 Átomo sem nenhuma correspondência no outro lado: uma linha com object_id sssom:NoTermFound, predicate_id
 skos:relatedMatch, semantic_relation related, transport_fidelity none, translation_fn null, value_domain_relation
-unknown, object_concept bo:UNGLOSSED, proof.type absence com a evidência do que você procurou, e o tipo em
-curation_rule (C09 3.0.1 não tem campo próprio; proposta de emenda em results/BRIEFS/CONTRACT_CHANGE.txt):
-  bo:NONE_ABSENCE_DEMONSTRATED       você procurou no pacote e mostra onde (tipos, vizinhos por referência)
-  bo:NONE_OUT_OF_PIN                 a decisão vive fora dos providers fixados (outro provider Terraform)
-  bo:NONE_UNSUPPORTED_BY_TRANSLATOR  existe no destino, mas o registro não tem como traduzir
-  bo:NONE_UNRESOLVED                 não deu para decidir com o que o pacote tem
-Átomo que só tem relação related também leva curation_rule bo:NONE_<TIPO> nessa linha (related não transporta). O
+unknown, object_concept bo:UNGLOSSED, proof.type absence, e o campo absence do C09 3.1.0 (regra C09-NONE):
+absence = {"kind": <tipo>, "searched": [o que você procurou, ≥ 1 item], "evidence": [...]}, com kind:
+  ABSENCE_DEMONSTRATED       você procurou no pacote e mostra onde (tipos, vizinhos por referência)
+  OUT_OF_PIN                 a decisão vive fora dos providers fixados (outro provider Terraform)
+  UNSUPPORTED_BY_TRANSLATOR  existe no destino, mas o registro não tem como traduzir
+  UNRESOLVED                 não deu para decidir com o que o pacote tem
+absence só existe nessa linha (com outro object_id, o validador reprova). Use absence, não a forma provisória
+curation_rule bo:NONE_<tipo> da versão 1.0.0 deste brief (o validador ainda a aceita, mas ela não é mais o padrão).
+Átomo que só tem relação related também ganha a linha de ausência, porque related não transporta; a linha related
+continua como está. O
 lado sem atributo mas com comportamento fixo ou padrão não é ausência: é alegação com fixed_default {kind, value,
 context, evidence {date, source}}. O curie_map declara o prefixo sssom. Exemplo sintético:
 {{EX:NONE_ROW}}
