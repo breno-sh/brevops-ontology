@@ -67,6 +67,11 @@ CC8 = {
             "pin": "oracle/oci-python-sdk@ec1d21a37357b8ab1e86fec7132bc08f3df17782", "date": "2026-11-03"},
 }
 CC9_DIRS = {p: f"apispec-{p}-cc9" for p in ("aws", "google", "azurerm", "oci")}
+EXTRA_DIRS = {"oci": ["apispec-oci-models"]}  # modelos de dados do SDK (swagger_types), rodada final do piloto
+
+
+def batch_dirs(p: str) -> list[str]:
+    return [CC9_DIRS[p]] + EXTRA_DIRS.get(p, [])
 
 
 def _build_spec() -> dict:
@@ -78,20 +83,27 @@ def _build_spec() -> dict:
         urls = {f"{c['dir']}/{f}": u for f, u in c["urls"].items()}
         sets = [{"dir": c["dir"], "pin": c["pin"], "date": c["date"]}]
         versions = dict(c["versions"])
-        fj = common.bo_data() / "downloads" / CC9_DIRS[p] / "FILES.json"
-        if not fj.exists():
-            fj = common.bo_data() / "downloads" / (CC9_DIRS[p] + ".staging") / "FILES.json"
-        if fj.exists():
+        kinds = {}
+        for bd in batch_dirs(p):
+            fj = common.bo_data() / "downloads" / bd / "FILES.json"
+            if not fj.exists():
+                fj = common.bo_data() / "downloads" / (bd + ".staging") / "FILES.json"
+            if not fj.exists():
+                continue
             j = json.loads(fj.read_text(encoding="utf-8"))
             seen = set(urls.values())
             for rel, meta in sorted(j["files"].items()):
                 if meta["url"] in seen:
                     continue
-                fid = f"{CC9_DIRS[p]}/{rel}"
-                files[fid], urls[fid] = meta["service"], meta["url"]
-                versions.setdefault(meta["service"], meta.get("version") or j["pin"])
-            sets.append({"dir": CC9_DIRS[p], "pin": j["pin"], "date": j["date"]})
-        out[p] = {"files": files, "urls": urls, "versions": versions, "sets": sets,
+                fid = f"{bd}/{rel}"
+                urls[fid] = meta["url"]
+                if meta.get("kind") == "model":
+                    kinds[fid] = "model"
+                else:
+                    files[fid] = meta["service"]
+                    versions.setdefault(meta["service"], meta.get("version") or j["pin"])
+            sets.append({"dir": bd, "pin": j["pin"], "date": j["date"]})
+        out[p] = {"files": files, "urls": urls, "versions": versions, "sets": sets, "models": kinds,
                   "pin": "; ".join(x["pin"] for x in sets), "date": max(x["date"] for x in sets)}
     return out
 
@@ -199,8 +211,11 @@ def project(p: str, f: str, ptr: str) -> dict:
         _, _paths, path, meth = ptr.split("/", 3)
         o = load_json(p, f)["paths"][unesc(path)][meth]
         return {"operationId": o.get("operationId"), "method": meth.upper(), "path": unesc(path)}
-    m = re.match(r"^L(\d+),(\d+),(\d+)$", ptr)
     lines = load_lines(p, f)
+    mm = re.match(r"^M(\d+)$", ptr)
+    if mm:  # linha do swagger_types de um modelo do SDK
+        return {"model_line": lines[int(mm.group(1)) - 1].strip()}
+    m = re.match(r"^L(\d+),(\d+),(\d+)$", ptr)
     return {"lines": [lines[int(m.group(i)) - 1].strip() for i in (1, 2, 3)]}
 
 
@@ -213,7 +228,7 @@ def resolve(p: str, cit: dict) -> str | None:
     m = SECTION_RX.match(cit.get("section", ""))
     if not m:
         return "section sem ponteiro de spec"
-    if m["prov"] != p or m["file"] not in SPEC[p]["files"]:
+    if m["prov"] != p or (m["file"] not in SPEC[p]["files"] and m["file"] not in SPEC[p].get("models", {})):
         return "arquivo de spec fora da lista fixada"
     if m["sha"] != sha(p, m["file"]) or sums_ok(p):
         return "sha256 do arquivo de spec não confere"
@@ -516,3 +531,15 @@ def aws_item_shape(f: str, target: str) -> str:
     shapes = load_json("aws", f)["shapes"]
     st = shapes.get(target, {})
     return st["member"]["target"] if st.get("type") == "list" else target
+
+
+def oci_model_field(svc: str, model: str, key: str):
+    """(fid, ponteiro M<linha>, tipo) do campo no swagger_types do modelo models/<model>.py do módulo; ou None."""
+    for fid in SPEC["oci"].get("models", {}):
+        if fid.endswith(f"/src/oci/{svc}/models/{model}.py"):
+            for i, ln in enumerate(load_lines("oci", fid)):
+                mm = re.match(r"\s+'([a-z0-9_]+)': '([^']+)',?$", ln)
+                if mm and mm.group(1) == key:
+                    return fid, f"M{i + 1}", mm.group(2)
+            return None
+    return None

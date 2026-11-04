@@ -72,7 +72,7 @@ def main(argv=None) -> int:
             for line in (d / "SHA256SUMS").read_text(encoding="utf-8").splitlines():
                 h, f = line.split("  ", 1)
                 listed.add((f"{st['dir']}/{f}", h))
-        for f in apispec.SPEC[p]["files"]:
+        for f in list(apispec.SPEC[p]["files"]) + list(apispec.SPEC[p].get("models", {})):
             if (f, apispec.sha(p, f)) not in listed:
                 bad.append(f"{p}: spec {f} fora do SHA256SUMS do seu lote")
     bridge_ver = {}
@@ -97,7 +97,8 @@ def main(argv=None) -> int:
         c = r.get("citation")
         if c and c.get("section", "").startswith("apispec "):
             m2 = apispec.SECTION_RX.match(c["section"])
-            if not m2 or m2["file"] not in apispec.SPEC[p]["files"] or m2["sha"] != apispec.sha(p, m2["file"]):
+            if not m2 or (m2["file"] not in apispec.SPEC[p]["files"] and m2["file"] not in
+                          apispec.SPEC[p].get("models", {})) or m2["sha"] != apispec.sha(p, m2["file"]):
                 bad.append(f"{eid}: citação de spec fora da fonte fixada")
             if not DT.match(c.get("retrieved_at", "")):
                 bad.append(f"{eid}: citação sem data")

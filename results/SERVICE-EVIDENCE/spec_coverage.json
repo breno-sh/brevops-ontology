@@ -4634,6 +4634,11 @@
      "dir": "apispec-oci-cc9",
      "pin": "oracle/oci-python-sdk@ec1d21a37357b8ab1e86fec7132bc08f3df17782",
      "date": "2026-11-03"
+    },
+    {
+     "dir": "apispec-oci-models",
+     "pin": "oracle/oci-python-sdk@ec1d21a37357b8ab1e86fec7132bc08f3df17782",
+     "date": "2026-11-03"
     }
    ],
    "types": 1026,

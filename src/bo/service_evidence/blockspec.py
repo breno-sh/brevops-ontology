@@ -119,6 +119,26 @@ def run(ctx, bridges_unused=None) -> None:
                                       facet_resource=f"{base_r['service']}:{base_r['resource']}.{names[0]}",
                                       operation=A.project(p, base_r["file"], base_r.get("update") or
                                                           base_r["config"][0]), member=names[-1])
+        elif p == "oci" and r["create"]:
+            # bloco de recurso próprio -> campo do modelo de dados do SDK (models/<recurso>.py, swagger_types)
+            for bp in [b for b in bps if "." not in b]:
+                hit = A.oci_model_field(r["service"], r["resource"], bp)
+                if not hit:
+                    continue
+                mf, ptr, typ = hit
+                fid = ctx.add(T, "identity", f"specfield:{mf}:{ptr}",
+                              {"service": r["service"], "resource": r["resource"]}, "stated", "published",
+                              value={"aspect": "spec_field", "rule": "R-SPEC-OP", "field": bp, "field_type": typ},
+                              cit=A.cite(p, mf, ptr))
+                item = typ[5:-1] if typ.startswith("list[") else typ
+                api_b = {"service": r["service"], "resource": f"{r['resource']}.{bp}"}
+                der = [fid, bid_of(ctx, T)]
+                ctx.add(T, "api_bridge", f"specblock:{bp}", api_b, "stated", "derived",
+                        value={"aspect": "api_resource_bridge", "rule": "R-BRIDGE-SPEC-BLOCK", "block_path": bp,
+                               "service": r["service"], "resource": api_b["resource"], "field_type": typ,
+                               "item_model": item, "spec_file": mf},
+                        derived=[x for x in der if x])
+                ctx.st["R-BRIDGE-SPEC-BLOCK"] += 1
         elif p == "aws":
             facets = [(k, fr) for k, fr in m.items() if k[0] == r["service"] and fr.get("parent") ==
                       (r["resource"] if r["create"] else None)] if r["create"] else [(key, r)]
@@ -204,3 +224,11 @@ def _facet_member(ctx, T, bp, api_b, der, facet, facet_resource, operation, memb
                    "single_operation": True},
             derived=der)
     ctx.st["R-FACET-SPEC"] += 1
+
+
+def bid_of(ctx, T):
+    for r in ctx.recs:
+        if r["terraform_resource_type"] == T and not r.get("block_path") and r["status"] == "stated" \
+                and (r.get("value") or {}).get("rule") == "R-BRIDGE-SPEC" and r["fact_kind"] == "api_bridge":
+            return r["evidence_id"]
+    return None

@@ -161,9 +161,14 @@ RULES = {
     "R-BRIDGE-SPEC-BLOCK": "bloco ligado ao campo ou sub-recurso da spec que ele configura (google: campo do corpo "
                            "do insert, lowerCamel do nome ou 1º termo + resto, ex. lifecycle_rule -> lifecycle.rule; "
                            "azure: <x>_properties -> sub-recurso <x>Services do pai e sub-blocos -> campos do corpo "
-                           "dele; aws: membro de lista do payload de faceta do pai, termos da faceta + membro no "
+                           "dele; oci: campo do swagger_types do modelo models/<recurso>.py do SDK; aws: membro de lista do payload de faceta do pai, termos da faceta + membro no "
                            "singular, ou caminho de membros no tipo-faceta), com um nível intermediário único e "
                            "plural aceitos. Dono, ciclo e alcance do bloco = pai (R-OWN-SPEC-BLOCK).",
+    "R-ATTACH-SPEC": "atributo de anexação: a spec tem um campo/membro que liga o objeto dono a um conjunto de "
+                     "regras de outro tipo (aws ModifyInstanceAttribute.Groups; oci CreateVnicDetails/UpdateVnicDetails"
+                     ".nsg_ids; azure SubnetPropertiesFormat/NetworkInterfacePropertiesFormat.networkSecurityGroup). O "
+                     "campo é publicado (citação); a ligação atributo Terraform <-> campo é leitura do modelo "
+                     "(interpretada, value.basis).",
     "R-FACET-SPEC": "spec_facet_member: a API só aceita os blocos como membros de um objeto-faceta único do pai, "
                     "gravado por uma operação sobre o pai (aws Put<Faceta> com o payload; google patch/update do "
                     "recurso com o campo do objeto; azure PUT do recurso/sub-recurso), e o bloco não tem create/"

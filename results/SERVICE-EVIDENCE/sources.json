@@ -4732,7 +4732,7 @@
     "path": "$BO_DATA/downloads/prefetch/oci/9.11.0/providers-schema.json"
    },
    "apispec": {
-    "pin": "oracle/oci-python-sdk@ec1d21a37357b8ab1e86fec7132bc08f3df17782; oracle/oci-python-sdk@ec1d21a37357b8ab1e86fec7132bc08f3df17782",
+    "pin": "oracle/oci-python-sdk@ec1d21a37357b8ab1e86fec7132bc08f3df17782; oracle/oci-python-sdk@ec1d21a37357b8ab1e86fec7132bc08f3df17782; oracle/oci-python-sdk@ec1d21a37357b8ab1e86fec7132bc08f3df17782",
     "date": "2026-11-03",
     "retrieved_at": "2026-11-04T08:36-03:00",
     "versions": {

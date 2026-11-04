@@ -231,3 +231,12 @@ def test_cc12_block_bridges():
     assert "api_resource_bridge" in asp("google_storage_bucket", "versioning")
     assert "api_resource_bridge" in asp("azurerm_storage_account", "blob_properties")
     assert {"api_resource_bridge", "spec_facet_member", "twin_type"} <= asp("aws_s3_bucket", "lifecycle_rule")
+
+
+def test_final_round_oci_blocks_and_attachments():
+    got = _out_by_type({"oci_core_security_list", "aws_instance"})
+    assert any(r["status"] == "stated" and r.get("block_path") == "ingress_security_rules"
+               and r["value"].get("rule") == "R-BRIDGE-SPEC-BLOCK" for r in got["oci_core_security_list"])
+    att = [r for r in got["aws_instance"] if r["status"] == "stated"
+           and (r.get("value") or {}).get("aspect") == "attachment_attribute"]
+    assert att and att[0]["level"] == "interpreted" and att[0]["model_id"] and att[0]["derived_from"]
