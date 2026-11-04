@@ -173,8 +173,14 @@ def twins(ctx, pages: dict, info: dict) -> None:
 PREVAIL = {"type_scope", "attachment_scope"}  # R-SCOPE-DOC publicado do tipo ou do bloco
 
 
-def scopes(ctx) -> None:
-    """R-SCOPE-SELF e R-SCOPE-PARENT, depois do extract e da curadoria (R-SCOPE-DOC prevalece)."""
+def scopes(ctx, api_primary: set | None = None) -> None:
+    """R-SCOPE-SELF e R-SCOPE-PARENT, depois do extract e da curadoria (R-SCOPE-DOC prevalece). Tipo primário
+    de ponte de API (api_layer) e seus blocos: camada api (derived_from inclui a ponte); os outros: terraform."""
+    api_primary = api_primary or set()
+    bridge_id = {r["terraform_resource_type"]: r["evidence_id"] for r in ctx.recs
+                 if r["fact_kind"] == "api_bridge" and r["status"] == "stated" and not r.get("block_path")
+                 and r["terraform_resource_type"] in api_primary
+                 and (r.get("value") or {}).get("resource") not in (None, "", "UNKNOWN")}
     doc_scoped, anchor, blocks_ = set(), {}, {}
     for r in ctx.recs:
         if r["status"] != "stated":
@@ -193,15 +199,77 @@ def scopes(ctx) -> None:
             ctx.st["R-SCOPE-DOC_tipo"] += 1
         elif T in anchor:
             r = anchor[T][1]
+            api = T in bridge_id
             ctx.add(T, "effective_scope", "scope_self", r["api_resource"], "stated", "derived",
-                    value={"kind": "self", "rule": "R-SCOPE-SELF", "layer": "terraform"},
-                    derived=[r["evidence_id"]])
+                    value={"kind": "self", "rule": "R-SCOPE-SELF", "layer": "api" if api else "terraform"},
+                    derived=[r["evidence_id"]] + ([bridge_id[T]] if api else []))
+            if api:
+                ctx.st["R-SCOPE-SELF_api"] += 1
             ctx.st["R-SCOPE-SELF"] += 1
     for (T, bp), r in sorted(blocks_.items()):
         if (T, bp) in doc_scoped:
             ctx.st["R-SCOPE-DOC_bloco"] += 1
             continue
+        api = T in bridge_id
         ctx.add(T, "effective_scope", f"scope_parent:{bp}", r["api_resource"], "stated", "derived",
-                value={"kind": "parent", "rule": "R-SCOPE-PARENT", "block_path": bp, "layer": "terraform"},
-                derived=[r["evidence_id"]])
+                value={"kind": "parent", "rule": "R-SCOPE-PARENT", "block_path": bp,
+                       "layer": "api" if api else "terraform"},
+                derived=[r["evidence_id"]] + ([bridge_id[T]] if api else []))
+        if api:
+            ctx.st["R-SCOPE-PARENT_api"] += 1
         ctx.st["R-SCOPE-PARENT"] += 1
+
+
+def api_layer(ctx) -> set[str]:
+    """CC-1d: dono, ciclo de vida e alcance na camada de API, só com ponte publicada/derivada para um recurso
+    de API (resource != UNKNOWN). Tipos com a mesma ponte formam um grupo; quem referencia (R-REF-TARGET
+    resolvido, atributo de topo) outro membro do grupo configura o objeto dele (dono e ciclo = pai, via o
+    atributo); o único membro que não referencia nenhum outro é o primário (dono e ciclo = self). Mais de um
+    primário: nada (ambíguo). Devolve os tipos primários (camada API para R-SCOPE-*)."""
+    bridge, refs, life = {}, {}, {}
+    for r in ctx.recs:
+        if r["status"] != "stated" or r.get("block_path"):
+            continue
+        v = r.get("value") or {}
+        T = r["terraform_resource_type"]
+        if r["fact_kind"] == "api_bridge" and not v.get("inherited_from") and \
+                v.get("resource") not in (None, "", "UNKNOWN"):
+            bridge.setdefault(T, r)
+        if v.get("aspect") == "reference_target" and v.get("resolved"):
+            refs.setdefault(T, {})[v["attribute"]] = (v["resolved"], r["evidence_id"])
+        if v.get("rule") == "R-LIFE-TF":
+            life[T] = r
+    groups = {}
+    for T, r in bridge.items():
+        groups.setdefault((r["value"].get("service"), r["value"]["resource"]), []).append(T)
+    primaries = set()
+    for key, members in sorted(groups.items()):
+        mset = set(members)
+        pointing = {U: [(a, tgt, rid) for a, (tgt, rid) in sorted(refs.get(U, {}).items()) if tgt in mset and tgt != U]
+                    for U in members}
+        prim = [U for U in members if not pointing[U]]
+        if len(prim) != 1:
+            ctx.st["R-OWN-API_ambiguo"] += len(members)
+            continue
+        P = prim[0]
+        primaries.add(P)
+        br = bridge[P]
+        ctx.add(P, "owner", "own_api", br["api_resource"], "stated", "derived",
+                value={"kind": "self", "rule": "R-OWN-API", "layer": "api"}, derived=[br["evidence_id"]])
+        ctx.st["R-OWN-API"] += 1
+        if P in life:
+            ctx.add(P, "lifecycle_controller", "life_api", br["api_resource"], "stated", "derived",
+                    value={"kind": "self", "rule": "R-LIFE-API", "layer": "api"},
+                    derived=[br["evidence_id"], life[P]["evidence_id"]])
+            ctx.st["R-LIFE-API"] += 1
+        for U in members:
+            for a, tgt, rid in pointing[U][:1]:
+                if tgt != P:
+                    continue
+                bu = bridge[U]
+                for kind, rule in (("owner", "R-OWN-API-SHARED"), ("lifecycle_controller", "R-LIFE-API-SHARED")):
+                    ctx.add(U, kind, f"{rule}", bu["api_resource"], "stated", "derived",
+                            value={"kind": "parent", "via": [a], "rule": rule, "layer": "api", "shared_with": P},
+                            derived=[bu["evidence_id"], br["evidence_id"], rid])
+                    ctx.st[rule] += 1
+    return primaries

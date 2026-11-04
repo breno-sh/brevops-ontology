@@ -107,11 +107,23 @@ RULES = {
     "R-REF-TARGET": "tipo-alvo da referência: <provedor>_<coisa> (termos com _) se existe no schema fixado; "
                     "senão os tipos que terminam em _<coisa> (até 3); mais que isso, sem alvo.",
     "R-SCOPE-SELF": "tipo de recurso de topo sem alcance publicado (R-SCOPE-DOC) tem alcance sobre ele mesmo: "
-                    "{kind: self}; derived_from = fato publicado do tipo no pin (importação, identidade ou tag), que "
+                    "{kind: self}; layer api quando o tipo é primário de R-OWN-API (derived_from inclui a ponte), "
+                    "senão terraform; derived_from = fato publicado do tipo no pin (importação, identidade ou tag), que "
                     "mostra que ele é recurso de topo do schema fixado.",
     "R-SCOPE-PARENT": "PREMISSA: um bloco aninhado (ou coleção como bloco) só existe dentro da configuração do pai, "
                       "então, sem frase própria de alcance, o que ele configura vale para o pai: {kind: parent} "
-                      "(via ausente = pai estrutural). Bloco com R-SCOPE-DOC não recebe esta regra.",
+                      "(via ausente = pai estrutural); layer api quando o tipo é primário de R-OWN-API, senão "
+                      "terraform. Bloco com R-SCOPE-DOC não recebe esta regra.",
+    "R-OWN-API": "camada de API: tipo com ponte para recurso de API (R-BRIDGE-*, resource conhecido) que é o único "
+                 "do seu grupo de ponte (mesmo serviço e recurso) sem referência resolvida (R-REF-TARGET) a outro "
+                 "membro: a configuração é do próprio objeto de API, {kind: self, layer: api}. Sem ponte, ou com mais "
+                 "de um membro assim, nada (UNKNOWN).",
+    "R-LIFE-API": "camada de API: o tipo de R-OWN-API que também tem R-LIFE-TF (create e delete do provider) cria e "
+                  "apaga o objeto de API da ponte: {kind: self, layer: api}.",
+    "R-OWN-API-SHARED": "camada de API: membro do grupo de ponte que referencia o primário configura o objeto do "
+                        "primário: {kind: parent, via: [atributo de referência], layer: api}.",
+    "R-LIFE-API-SHARED": "camada de API: idem para o ciclo de vida: o objeto é do primário, {kind: parent, via, "
+                         "layer: api}.",
     # curadoria das fatias dos pilotos (curated.py): C-* publicado (o valor está escrito na frase), I-* interpretado
     "C-PILOT-LITERAL": "fato escolhido à mão numa frase da página fixada; o valor repete o que a frase diz.",
     "C-PILOT-GAP": "tipo das fatias dos pilotos sem frase para este tipo de fato na página fixada: UNKNOWN explícito "

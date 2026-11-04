@@ -170,3 +170,12 @@ def test_scope_rules():
     assert "R-SCOPE-DOC" in acct and "R-SCOPE-SELF" not in acct
     fw = rules_of("google_compute_firewall")
     assert "R-SCOPE-DOC" in fw and "R-SCOPE-SELF" not in fw
+
+
+def test_api_layer_only_with_bridge():
+    got = _out_by_type({"oci_objectstorage_bucket", "aws_s3_bucket"})
+    def api_rules(T):
+        return {r["value"].get("rule") for r in got[T] if r["status"] == "stated" and not r.get("block_path")
+                and (r.get("value") or {}).get("layer") == "api"}
+    assert {"R-OWN-API", "R-LIFE-API", "R-SCOPE-SELF"} <= api_rules("oci_objectstorage_bucket")
+    assert api_rules("aws_s3_bucket") == set()  # a página não cita o recurso de API: fica UNKNOWN

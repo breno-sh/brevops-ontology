@@ -42,7 +42,8 @@ def generate() -> dict:
         stats[p]["out_of_pin_examples"] = extra["out_of_pin_examples"]
     _, cur = curated.records(ctxs, bridges)
     for p in common.PROVIDERS:
-        grainfacts.scopes(ctxs[p])  # depois da curadoria: R-SCOPE-DOC prevalece
+        prim = grainfacts.api_layer(ctxs[p])  # CC-1d: camada de API só com ponte citada
+        grainfacts.scopes(ctxs[p], prim)  # depois da curadoria: R-SCOPE-DOC prevalece
         stats[p]["counters"] = dict(ctxs[p].st)
     recs = []
     for p in common.PROVIDERS:
