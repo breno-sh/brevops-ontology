@@ -6,7 +6,8 @@ Uso: python -I -m bo.pilot_sto_map.pipeline [--promote | --promote-only]
   3. ida e volta SKOS do arquivo (bo.semantics.skos_roundtrip --file); exceção da biblioteca vira falha registrada
   4. árbitro (bo.arbiter.run --check-unproven, instante fixo decisions.DECIDED_AT; --frozen quando o
      congelamento confere, senão roda sem e registra as divergências): verdicts, cycles, relatório, run_record
-  5. pipeline_report.json: entradas por sha256, saída de cada etapa, contagens, bloqueios
+  5. privacy_lint --strict do staging
+  6. pipeline_report.json: entradas por sha256, saída de cada etapa, contagens, bloqueios
   --promote       depois das etapas, troca o staging pelo definitivo (só com a trava merge-base deste módulo)
   --promote-only  só a troca (o staging já gerado), também só com a trava
 Saída 0 só se todas as etapas passam; com bloqueio externo (congelamento, C21 do árbitro, ida e volta) sai 1,
@@ -81,6 +82,17 @@ def verdict_counts(out: Path) -> dict:
             "rules_on_claims": dict(Counter(r for v in claims for r in v["rules"]))}
 
 
+def step_privacy(paths: list[Path]) -> dict:
+    import subprocess
+    import sys
+    from .common import repo
+    r = subprocess.run([sys.executable, "-I", str(repo() / "tools" / "privacy_lint.py"), "--strict", *map(str, paths)],
+                       capture_output=True, text=True, check=False)
+    hits = [l.strip() for l in r.stdout.splitlines() if "ACHADO" in l]
+    return {"step": "privacy_lint", "ok": r.returncode == 0, "rc": r.returncode, "findings": len(hits),
+            "files": sorted({h.split(":")[0].split()[-1].rsplit("/", 1)[-1] for h in hits})}
+
+
 def lock_owned() -> tuple[bool, str]:
     f = data_root() / "locks" / "merge-base" / "owner"
     if not f.is_file():
@@ -126,6 +138,7 @@ def main(argv=None) -> int:
     steps.append(step_validate(tsv))
     steps.append(step_skos(tsv))
     steps.append(step_arbiter(tsv, st))
+    steps.append(step_privacy([st]))
     report = {"schema": "bo.pilot_sto_map.pipeline/1", "module": MODULE, "generated_at": now(),
               "timezone": "America/Recife", "decided_at": DEC.DECIDED_AT,
               "inputs": {"bundle_manifest_sha256": b.sha256, "bundle_files": b.hashes,

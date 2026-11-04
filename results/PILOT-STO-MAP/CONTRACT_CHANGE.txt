@@ -3,7 +3,7 @@ CONTRACT_CHANGE — PILOT-STO-MAP (piloto sto: mapeamento dos 6 pares da fatia e
 ainda o de cf404be, MANIFEST 7d2efa60171faf24).
 
 O mapeamento e o pipeline estão completos sobre o pacote de hoje (1608 linhas C09, 110 alegações + 1498
-ausências tipadas; validador oficial do C09: 0 erro). Quatro defeitos em código ou contrato já mergeado, fora do
+ausências tipadas; validador oficial do C09: 0 erro). Cinco defeitos em código ou contrato já mergeado, fora do
 meu owns, deixam gates do catálogo vermelhos. Não contornei nenhum: as alegações ficaram como o mapeamento manda e
 os gates seguem com o comando do catálogo. Com eles corrigidos, a rerodada é um comando:
   python -I -m bo.pilot_sto_map.pipeline            (staging, entradas por sha256 no pipeline_report.json)
@@ -38,6 +38,13 @@ CC-4 (G6) consume_check reprova manifestos_transitivos: o PILOT-STO-GLOSS consum
   É o caminho já previsto: GRAIN -> PILOT-STO-GLOSS -> pacote novo. O build relê o pacote pelo MANIFEST, refaz tipos,
   conceitos, sentenças e estados, larga (dropped) decisão cujo átomo saiu e mantém a exaustividade; o consume_check
   precisa de --reset depois.
+
+CC-10 (G7) O privacy_lint reprova o verdicts.jsonl que o árbitro grava. O event_id do C21 é
+  EV-ARB-<ciclo>-<16 hex do sha256 do claim_version_id> (engine._event_id); o privacy_lint só isenta token hex com 32
+  ou mais caracteres (src/bo/repo/privacy.py HEX_TOKEN), e 16 hex com 12 dígitos seguidos viram "doze_digitos".
+  Aqui: 10 de 1694 vereditos. Não renomeei alegação para fugir do hash. Proposta: o árbitro usar 32 hex no event_id
+  (recongelando, CC-1), ou o privacy_lint isentar o padrão EV-[A-Z]+-[0-9]+-[0-9a-f]{16}. Teste: o árbitro sobre a
+  bateria passa no privacy_lint --strict.
 
 NÃO BLOQUEANTES (resultado; nada forçado)
 CC-5 UNITS x SEMANTICS: o C05 do pacote dá quantitykind:AmountOfData com unit:BYTE em 6 átomos de tamanho de objeto;
