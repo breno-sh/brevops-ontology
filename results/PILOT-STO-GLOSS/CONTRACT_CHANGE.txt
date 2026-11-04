@@ -1,4 +1,21 @@
 CONTRACT_CHANGE — PILOT-STO-GLOSS (piloto sto: grão mecânico e glossário da fatia)
+ATUALIZAÇÃO 2026-11-04T09:19:00-03:00 (America/Recife), base com GRAIN a296cd0 (0.1.4) e SERVICE-EVIDENCE 787ab84:
+  Decidem agora: aws_s3_bucket ENTITY (G4), aws_s3_bucket.lifecycle_rule COMPONENT (G2, pai = contêiner),
+  aws_s3_bucket_public_access_block FACET (G3, dono = contêiner), google_storage_bucket ENTITY (G4),
+  google_storage_bucket_access_control ENTITY (G4). Unidades: 5 decididas, 111 UNKNOWN de 116.
+  Continuam UNKNOWN (achado, não forçado):
+  - azurerm_storage_container: G0-IDENTITY, UNRESOLVED, falta identity ("contido em resource sem tipo Terraform
+    sem atributo de referência ao contêiner na identidade"; id_template sem tradução T03).
+  - oci_objectstorage_bucket: G0-IDENTITY, ABSENT, falta identity (compartment_id com alvo ambíguo entre dois tipos).
+  - aws: os recursos separados de versionamento, ciclo de vida, ACL, política e propriedade saem G0-NEEDS só por
+    effective_scope (BORROWED: a faceta está certa na identidade, falta o alcance); criptografia separada falta
+    ciclo, dono, alcance e ponte de API.
+  Consequência para E2 (invariância embutido × separado): na aws, lifecycle_rule embutido = COMPONENT e
+  aws_s3_bucket_lifecycle_configuration separado = UNKNOWN; o versionamento separado também é UNKNOWN. A
+  invariância ainda não aparece, e Azure e OCI não têm contêiner decidido.
+  Observação para o GRAIN-REPRO (não é decisão do glossarista): google_storage_bucket_access_control (uma entrada de
+  ACL do contêiner) sai ENTITY independente, enquanto a ACL inteira (google_storage_bucket_acl) sai ORPHAN.
+
 ATUALIZAÇÃO 2026-11-04T08:16:00-03:00 (America/Recife), base 22d72df (SERVICE-EVIDENCE 69fb76e: dono, ciclo e
 alcance na camada de API; GRAIN 0.1.2): os 4 contêineres CONTINUAM UNKNOWN (116/116 unidades UNKNOWN). Não forcei.
   aws_s3_bucket            G0-IDENTITY, UNRESOLVED, falta identity+lifecycle_controller+owner+effective_scope.
