@@ -1,14 +1,15 @@
 {
+ "alignment": "coordenador 2026-11-04, comum aos 4 CORPUS: literal = não depende de variável, recurso, data source, local ou função avaliada no plano (lê arquivo, relógio ou acaso); cadeia simbolizada só por privacidade é literal; attr = null não configura átomo; precedência withheld > symbolic > literal; blocos data fora",
  "atoms_used": {
-  "any": 24513,
-  "configurable": 24155,
-  "in_ge5_families": 9949,
-  "not_configurable": 358
+  "any": 24500,
+  "configurable": 24150,
+  "in_ge5_families": 9939,
+  "not_configurable": 350
  },
  "cells_resource_atom": {
-  "literal": 1967463,
-  "symbolic": 2730480,
-  "total": 4797500,
+  "literal": 1967811,
+  "symbolic": 2728602,
+  "total": 4795970,
   "withheld": 99557
  },
  "consistency": {
@@ -36,7 +37,8 @@
   "records_data": 687732,
   "records_dynamic_meta": 74256,
   "records_embedded_withheld": 31657,
-  "records_exact": 4792714,
+  "records_exact": 4791147,
+  "records_explicit_null": 1730,
   "records_managed": 5914530,
   "records_meta": 370976,
   "records_meta:connection": 2992,
@@ -46,13 +48,13 @@
   "records_meta:lifecycle": 46672,
   "records_meta:provider": 25488,
   "records_meta:provisioner": 10096,
-  "records_prefix": 637349,
+  "records_prefix": 637257,
   "records_type_unknown": 2386,
-  "records_unmatched": 26360,
+  "records_unmatched": 26289,
   "records_withheld_block_attributed": 8516,
   "records_withheld_block_unattributed": 1973
  },
- "rules_version": "U1-U8/1",
+ "rules_version": "U1-U9/2",
  "schema": {
   "atoms": 112893,
   "atoms_configurable": 108266,
@@ -113,9 +115,9 @@
   ]
  },
  "unmatched_paths": {
-  "distinct": 1284,
-  "records": 26360,
-  "records_not_named": 2274,
+  "distinct": 1283,
+  "records": 26289,
+  "records_not_named": 2273,
   "top": [
    {
     "families": 4048,
@@ -124,9 +126,9 @@
     "resource_type": "aws_eip"
    },
    {
-    "families": 1085,
+    "families": 1084,
     "path": "name",
-    "records": 2666,
+    "records": 2665,
     "resource_type": "aws_db_instance"
    },
    {
@@ -136,9 +138,9 @@
     "resource_type": "aws_api_gateway_deployment"
    },
    {
-    "families": 417,
+    "families": 399,
     "path": "enable_classiclink",
-    "records": 687,
+    "records": 664,
     "resource_type": "aws_vpc"
    },
    {
@@ -148,9 +150,9 @@
     "resource_type": "aws_autoscaling_group"
    },
    {
-    "families": 229,
+    "families": 211,
     "path": "enable_classiclink_dns_support",
-    "records": 343,
+    "records": 320,
     "resource_type": "aws_vpc"
    },
    {
@@ -238,12 +240,6 @@
     "resource_type": "aws_lb_listener_rule"
    },
    {
-    "families": 84,
-    "path": "enable_classiclink",
-    "records": 112,
-    "resource_type": "aws_default_vpc"
-   },
-   {
     "families": 78,
     "path": "stage_description",
     "records": 106,
@@ -272,6 +268,12 @@
     "path": "broker_node_group_info.ebs_volume_size",
     "records": 192,
     "resource_type": "aws_msk_cluster"
+   },
+   {
+    "families": 67,
+    "path": "enable_classiclink",
+    "records": 90,
+    "resource_type": "aws_default_vpc"
    },
    {
     "families": 66,
@@ -304,9 +306,9 @@
     "resource_type": "aws_spot_instance_request"
    },
    {
-    "families": 54,
+    "families": 53,
     "path": "availability_zones",
-    "records": 88,
+    "records": 87,
     "resource_type": "aws_elasticache_replication_group"
    },
    {
@@ -420,8 +422,8 @@
   ]
  },
  "usage_rows": {
-  "atom_rows": 2314354,
-  "total": 2788858,
+  "atom_rows": 2313175,
+  "total": 2787679,
   "type_rows": 474504
  },
  "withheld_blocks_unattributed": {
