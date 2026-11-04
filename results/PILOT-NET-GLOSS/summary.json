@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "PILOT-NET-GLOSS",
- "generated_at": "2026-11-04T09:31:52-03:00",
+ "generated_at": "2026-11-04T10:55:06-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-NET-GLOSS.txt",
@@ -19,19 +19,19 @@
    "multi_provider_anchor_paths_n": "56",
    "model_extracted_anchors_n": "1",
    "training_projection_receipt": "none",
-   "grain_rules_version": "0.1.5",
-   "e2_inline_equal_decided": "0/3"
+   "grain_rules_version": "0.1.8",
+   "e2_inline_equal_decided": "3/3"
   },
   "inputs": [
    {
     "path": "$BO_REPO/grain/grain_rules.yaml",
     "kind": "file",
-    "sha256": "61c69f5d5ffb74e4dbad2947d73c735d8e96a2b531ca84e63de45256a7c750eb"
+    "sha256": "d91d91773ecfeeb62dd385ab857ffe5bd7eefe306b145fba64d79b1e558b632f"
    },
    {
     "path": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl",
     "kind": "file",
-    "sha256": "6bc9f724ca4629f9dd73c3921a39919e88fed5f4f3b290a13655ec0b92b05772"
+    "sha256": "645b02308424fa4a574912d1c36375939f2f6124ef3cb6a32d3054c3490ead6d"
    },
    {
     "path": "$BO_DATA/UNITS/value_space.jsonl",
@@ -89,8 +89,8 @@
     "sha256": "99e3dc9d3434e48675fd71eb817145ae63c2159fd041f3c67dd1d308e814287c"
    }
   ],
-  "recorded_at": "2026-11-04T09:31:52-03:00"
+  "recorded_at": "2026-11-04T10:55:06-03:00"
  },
  "sources": [],
- "notes": "E2 registrado como está: assinaturas embutido × separado iguais, UNKNOWN nas duas formas; grão: 2 ENTITY, 37 UNKNOWN"
+ "notes": "rodada final dos pilotos: E2 3/3 (COMPONENT nas duas formas); grão 6 COMPONENT, 3 ENTITY, 30 UNKNOWN"
 }

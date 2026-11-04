@@ -91,3 +91,8 @@ CC-1d resolvido (build roda nos 4 provedores). Grão: 39 unidades, 2 ENTITY (G4)
 × separado é igual (aws ingress/egress: UNKNOWN G0-NEEDS sem lifecycle_controller, owner e effective_scope; regra do
 NSG: UNKNOWN G0-IDENTITY sem identity). Primeiro merge feito com este estado, por decisão do coordenador (o
 PILOT-NET-MAP espera o pacote); rerodar incrementalmente quando GRAIN e SERVICE-EVIDENCE (CC-10) avançarem.
+
+ADENDO 2026-11-04T10:58:00-03:00 (America/Recife), rodada final dos pilotos: bo/base com GRAIN 0.1.8 (7749db1) e
+BRIEFS regravado (157a3d5). Grão: 39 unidades, 6 COMPONENT, 3 ENTITY, 30 UNKNOWN. E2 (embutido = separado, grão
+decidido): 3 de 3 — SG ingress e egress COMPONENT (G2-COMPONENT) e regra do NSG COMPONENT (G2-CHILD) nas duas
+formas. Glossário inalterado: 19 conceitos, 52 âncoras, 56 caminhos UNPROVEN, controle positivo 48/48.
