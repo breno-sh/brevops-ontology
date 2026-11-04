@@ -1,0 +1,47 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "HCL",
+ "generated_at": "2026-11-04T02:39:24-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/HCL.txt",
+  "brief_sha256": "159e5a8d9321c653c58772cc3d918622ffb05513a2faa7951c83656eada6de1e",
+  "params": {
+   "vocab_min_families": "5",
+   "vocab_enum_share": "0.5",
+   "file_timeout_s": "20",
+   "max_file_bytes": "4194304",
+   "parser": "python-hcl2==8.1.4",
+   "roundtrip_repos": "400",
+   "workers": "14"
+  },
+  "inputs": [
+   {
+    "path": "/Users/breno/doutorado/pesquisa/superficie/data/terrads/zenodo-20339474/TerraDS.tar.gz",
+    "kind": "file",
+    "sha256": "e3e14764a5a1205f38ed4790d840773ca8c6fccb06adf0e5c5c3c1bf45ae0b79"
+   },
+   {
+    "path": "/Users/breno/doutorado/pesquisa/superficie/data/terrads/zenodo-20339474/TerraDS.sqlite",
+    "kind": "file",
+    "sha256": "728477a499dd949e4dd74ca6230318544839ac465d317ef743da093f3c2e96aa"
+   }
+  ],
+  "recorded_at": "2026-11-04T02:39:24-03:00"
+ },
+ "sources": [
+  {
+   "uri": "https://doi.org/10.5281/zenodo.20339474",
+   "license": "CC-BY-4.0 (dataset); licença por repositório em $BO_DATA/HCL/licenses.json",
+   "transformation": ".tf lidos sem executar (python-hcl2, LALR); só termos simbólicos, ids sintéticos e agregados gravados"
+  },
+  {
+   "uri": "https://pypi.org/project/python-hcl2/8.1.4/",
+   "license": "MIT",
+   "transformation": "parser usado só como biblioteca (parses_to_tree)"
+  }
+ ],
+ "notes": "Extração completa: 82749 repos, 1520509 .tf (1509680 lidos, parse_rate 0.9929), 1904259 recursos, 10907251 registros C06 (validados inteiros: 0 erro). Crosscheck por tipo (critério fixado antes: |dif|<=max(ceil(2%),1)) reprova 257 de 6426 tipos; total -0,74%. Decomposição dos tipos fora: 2797 blocos faltam por arquivo que o python-hcl2 não parseia (0,71% dos arquivos; gramática), 994 sobram (sqlite conta menos), 2 sem causa. Links simbólicos .tf resolvidos dentro do repo (7131; 204 para fora/ausentes)."
+}
