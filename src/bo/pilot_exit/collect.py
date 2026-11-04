@@ -57,10 +57,37 @@ def net_commands(cmds: list[str], frozen_repo: Path, out: Path) -> list[str]:
     return res
 
 
+# Sonda STO: chama a API do próprio código congelado (a mesma corrida determinística que o oracle_eval dele refaz)
+# e grava, por controle e entrada, só estado, códigos e veredito; nenhum valor de configuração.
+STO_PROBE = r'''
+import json, sys
+from bo.pilot.sto import evaluate as E, pipeline as PL, stage as ST
+out = ST.run_all(write=False)
+res = out["res"]
+j = E.judge_runs(res)
+neg = E.negatives(out["ctx"], res)
+rows = []
+for ctl, runs in res["runs"].items():
+    for r, e, jj in zip(runs, res["entries"], j[ctl]):
+        rows.append({"control": ctl, "entry_id": e["entry_id"], "direction": e["direction"], "family": e["family"],
+                     "variant": e["variant"], "status": r.status, "block_code": (r.block or [None])[0],
+                     "plan_id": (r.plan or {}).get("plan_id"), "verdict": jj.get("verdict"), "code": jj.get("code"),
+                     "n_spurious_declared": len(jj.get("spurious_declared") or [])})
+negs = {ctl: {"fixture_claims": [{k: x.get(k) for k in ("fixture_id", "case", "about", "answer", "code")}
+                                 for x in v["fixture_claims"]],
+              "candidates": [{k: x.get(k) for k in ("entry_id", "variant", "answer")} for x in v["candidates"]]}
+        for ctl, v in neg.items()}
+json.dump({"rows": rows, "negatives": negs}, open(sys.argv[1], "w"), ensure_ascii=False, sort_keys=True)
+'''
+
+
 def commands(slice_: str, cmds: list[str], frozen_repo: Path, out: Path) -> list[str]:
     if slice_ == "net":
         return net_commands(cmds, frozen_repo, out)
-    raise CollectError(f"adaptador da fatia {slice_} não escrito")
+    out.mkdir(parents=True, exist_ok=True)
+    probe = out / "sto_probe.py"
+    probe.write_text(STO_PROBE, encoding="utf-8")
+    return list(cmds) + [f"python -I {probe} {out / 'sto_probe.json'}"]
 
 
 # ------------------------------------------------------------------------------------------------- comum
@@ -213,15 +240,123 @@ def net(bundle: dict, frozen_repo: Path, data_root: Path, out: Path, cmd_results
             "controls": ctrl}
 
 
+# ------------------------------------------------------------------------------------------------- STO
+def sto(bundle: dict, frozen_repo: Path, data_root: Path, out: Path, cmd_results: list[dict]) -> dict:
+    sd = data_root / "PILOT-STO-E2E" / ".staging"
+    pr = C.read_json(out / "sto_probe.json")
+    if not pr:
+        raise CollectError("STO: a sonda do código congelado não gravou sto_probe.json")
+    ent = {e["entry_id"]: e for e in bundle["entries"]}
+    fxs = {f["fixture"]["fixture_id"]: f for f in bundle["fixtures"]}
+    render = (C.read_json(sd / "render_status.json") or {}).get("plans") or {}
+
+    def rstat(pid):
+        v = render.get(pid)
+        return v if isinstance(v, str) else (v or {}).get("status")
+    rows = pr["rows"]
+    prim = [r for r in rows if r["control"] == "c3_full"]
+
+    def state(r):
+        if r["status"] == "LOWERED":
+            return "OUTPUT" if rstat(r["plan_id"]) == "RENDERED" else "RENDER_BLOCKED"
+        return "UNSUPPORTED" if r.get("block_code") else "MISSING"
+    srows = [dict(r, state=state(r)) for r in prim]
+    dirs, dir_states = directions_from(srows)
+    plans = {p["plan_id"]: p for p in _jsonl(sd / "lowering_plan.jsonl")}
+    traces = _jsonl(sd / "translation_trace.jsonl")
+    case_of = {}
+    for t in traces:
+        cid = t.get("case_id") or ""
+        if cid.startswith("CASE-PSTO-"):
+            case_of.setdefault(cid, cid[len("CASE-PSTO-"):])
+    tr_rows = [{"case_id": "CASE-PSTO-" + r["entry_id"], "plan_id": r["plan_id"]} for r in prim if r["plan_id"]]
+    tg = trace_gaps(tr_rows, plans, [t for t in traces if t.get("control") == "c3"])
+    nsi = C.read_json(sd / "nsi_report.json") or {}
+    study = nsi.get("study") or {}
+    rendered = sum(1 for r in prim if r["status"] == "LOWERED" and rstat(r["plan_id"]) == "RENDERED")
+    checked = sum(int(v.get("checked", 0)) for v in study.values() if isinstance(v, dict))
+    inserted = sum(len(v.get("problems") or []) for v in study.values() if isinstance(v, dict)) + \
+        len(nsi.get("judged_vs_plan") or [])
+    unchecked = max(0, rendered - checked)
+    # E2: conferências de decomposição das retidas (contadas aqui) x as que o grain_check comparou
+    gr = C.read_json(sd / "grain_report.json") or {}
+    want = sum(1 for f in fxs.values() for c in f["checks"] if c["kind"] == "decomposition")
+    got = int(gr.get("decomposition_checks") or 0)
+    g_mis = len(gr.get("decomposition_mismatches") or []) + max(0, want - got)
+    g_inv = len(gr.get("reorder_failures") or []) + len(gr.get("packaging_failures") or [])
+    # E4 (c3_full)
+    judged = [r for r in prim if r["status"] == "LOWERED"]
+    silent = [r["entry_id"] for r in judged if r["verdict"] == "REJECT"]
+    n3 = pr["negatives"].get("c3_full", {})
+    acc_claims = [x["fixture_id"] for x in n3.get("fixture_claims", []) if x["answer"] == "ACCEPT"]
+    acc_cand = [x["entry_id"] for x in n3.get("candidates", []) if x["answer"] == "ACCEPT"]
+    grain_neg = [x.get("fixture_id") for x in gr.get("negative_not_rejected") or []]
+    correct = sum(1 for r in judged if r["verdict"] in GOOD)
+    # E5
+    rec = C.read_json(sd / "run_record.json") or {}
+    pc = rec.get("per_control") or {}
+    keys = ("input_sha256", "policy_sha256", "transforms_sha256", "claims_sha256", "verdicts_sha256")
+    same = bool(pc) and all(len({(pc.get(c) or {}).get(k) for c in K.CONTROLS}) == 1 for k in keys) and \
+        set(pc) == set(K.CONTROLS)
+    by = defaultdict(dict)
+    for r in rows:
+        by[r["entry_id"]][r["control"]] = r
+
+    def outcome(r):
+        if not r or r["status"] != "LOWERED":
+            return "absent"
+        return "correct" if r["verdict"] in GOOD else "incorrect" if r["verdict"] == "REJECT" else "absent"
+    cases = []
+    for eid, cs in sorted(by.items()):
+        e = ent.get(eid, {})
+        cases.append({"case_id": eid, "family": e.get("family", "?"), "polarity": e.get("polarity", "unknown"),
+                      "c1": outcome(cs.get("c1_table")), "c2": outcome(cs.get("c2_taxonomy")),
+                      "c3": outcome(cs.get("c3_full")), "transport_changed": False})
+    # contraexemplos das fixtures (alegações): rejeitar é a resposta certa; entram como casos negativos próprios
+    fc = {c: {(x["fixture_id"], x.get("about")): x["answer"] for x in pr["negatives"].get(c, {}).get("fixture_claims", [])}
+          for c in K.CONTROLS}
+    for key in sorted(set().union(*[set(v) for v in fc.values()])):
+        ans = {c: fc[c].get(key) for c in K.CONTROLS}
+        oc = {c: ("correct" if a == "REJECT" else "incorrect" if a == "ACCEPT" else "absent") for c, a in ans.items()}
+        cases.append({"case_id": f"{key[0]}:{key[1]}", "family": (fxs.get(key[0], {}).get("fixture") or {}).get("case", "?"),
+                      "polarity": "negative", "c1": oc["c1_table"], "c2": oc["c2_taxonomy"], "c3": oc["c3_full"],
+                      "c1_rejects": ans["c1_table"] == "REJECT", "c2_rejects": ans["c2_taxonomy"] == "REJECT",
+                      "c3_rejects": ans["c3_full"] == "REJECT", "transport_changed": False})
+    just = K.justified([t for t in traces if t.get("control") == "c3"], [])
+    rule = K.r_ctrl(cases, K.n_required(frozen_repo))
+    ctrl = {"available": True, "same_input": same, "consequences_counted": bool(cases) and just["c3_bad_justification"] == 0,
+            "input_sha": {c: (pc.get(c) or {}).get("input_sha256") for c in K.CONTROLS},
+            "invariants": {k: len({(pc.get(c) or {}).get(k) for c in K.CONTROLS}) == 1 for k in keys},
+            "n_cases": len(cases), "counts": K.counts(cases), "justified": just, "rule": rule,
+            "status_by_control": {c: dict(Counter(r["status"] for r in rows if r["control"] == c)) for c in K.CONTROLS},
+            "note": "entrada de direção: correto = a tradução que desceu é aceita pelo juiz do oráculo (com ou sem "
+                    "perda declarada), incorreto = REJECT, ausente = não desceu; alegação-contraexemplo das fixtures: "
+                    "correto = REJECT, incorreto = ACCEPT, ausente = ABSTAIN"}
+    return {"directions": dirs, "direction_states_c3": dir_states, "values_total": tg["carried_values"],
+            "values_without_trace": tg["without_trace"], "trace_detail": tg, "silent_insertions": inserted + unchecked,
+            "insertion_detail": {"rendered": rendered, "checked": checked, "inserted": inserted, "unchecked": unchecked,
+                                 "canary": {k: {kk: v.get(kk) for kk in ("plans", "rendered", "checked")}
+                                            for k, v in (nsi.get("canary") or {}).items()}},
+            "grain": {"mandatory_total": want, "compared": got, "mismatches": g_mis,
+                      "invariance_variants": int(gr.get("reorder_trials") or 0) + int(gr.get("packaging_trials") or 0),
+                      "invariance_failures": g_inv},
+            "oracle": {"items": len(prim), "judged": len(judged), "correct": correct, "silent_losses": len(silent),
+                       "negatives_carried": len(acc_claims) + len(acc_cand) + len(grain_neg),
+                       "silent_loss_cases": silent, "accepted_negative_claims": acc_claims,
+                       "accepted_negative_candidates": acc_cand, "grain_negatives_not_rejected": grain_neg,
+                       "verdicts_c3": dict(Counter(r["verdict"] for r in prim)),
+                       "block_codes_c3": dict(Counter(r["block_code"] for r in prim if r["block_code"])),
+                       "accuracy_rule": "acerto = entrada c3 que desceu e o juiz do oráculo aceita; denominador = "
+                                        "todas as entradas de direção c3"},
+            "controls": ctrl}
+
+
 # ------------------------------------------------------------------------------------------------- entrada
 def collect(slice_: str, bundle: dict, frozen_repo: Path, data_root: Path, cmd_results: list[dict], logdir: Path,
             out: Path | None = None) -> dict:
     s = C.SLICES[slice_]
     out = out or (logdir.parent / "out")
-    if slice_ == "net":
-        ev = net(bundle, frozen_repo, data_root, out, cmd_results)
-    else:
-        raise CollectError(f"adaptador da fatia {slice_} não escrito")
+    ev = (net if slice_ == "net" else sto)(bundle, frozen_repo, data_root, out, cmd_results)
     m, v = data_root / s["map"] / "mapping.sssom.tsv", data_root / s["map"] / "verdicts.jsonl"
     ev["claims"] = claims_check.check(m, v)
     ev["claims"].update({"sssom": f"$BO_DATA/{s['map']}/mapping.sssom.tsv", "verdicts": f"$BO_DATA/{s['map']}/verdicts.jsonl",

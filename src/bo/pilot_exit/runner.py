@@ -43,7 +43,7 @@ def overlay(real: Path, dest: Path, own: str) -> Path:
         if p.name in SKIP_TOP:
             continue
         if p.name == own:
-            shutil.copytree(p, dest / own, symlinks=True)
+            shutil.copytree(p, dest / own, symlinks=True, ignore=shutil.ignore_patterns(".staging"))
         else:
             (dest / p.name).symlink_to(p)
     (dest / "tmp").mkdir()
