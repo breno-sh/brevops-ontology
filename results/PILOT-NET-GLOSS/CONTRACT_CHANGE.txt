@@ -73,3 +73,14 @@ resolvido pelo BRIEFS 1.2.0 (docs_facts por átomo). Glossário refeito: 19 conc
 2 tipo), 56 caminhos entre provedores, todos UNPROVEN; controle positivo 48/48 exact onde os dois tipos são
 escalares conhecidos (8 caminhos têm lista de um lado: o bo.semantics não tem tipo lista, KIND-UNKNOWN). Restam
 CC-1b e CC-1c (grão), em correção no GRAIN e no SERVICE-EVIDENCE.
+
+ADENDO 2026-11-04T08:15:00-03:00 (America/Recife), bo/base 2223272 (GRAIN 0.1.2 957870a/e580e22, SERVICE-EVIDENCE
+a9af398 promovido às 08:00).
+CC-1d (bloqueia o build): bo.grain.c25_aspects.translate, R-GRAIN-T09 (herança do gêmeo), levanta TypeError no
+  provedor azurerm: `c2.get("via") in to_parent` roda antes do teste isinstance(list) e `via` agora é lista.
+  Correção proposta (do GRAIN, não minha): testar lista primeiro. Os outros três provedores decompõem.
+CC-1e (grão segue UNKNOWN nos três que rodam: aws 7, google 5, oci 22): os fatos novos de owner e effective_scope
+  vêm com layer terraform (R-OWN-TOP, R-SCOPE-SELF) e o adaptador os recusa com razão ("camada Terraform: não é o
+  alcance na API"); o aspecto attachment_scope não tem tradução na tabela; lifecycle_controller segue
+  not_documented. E2: as assinaturas embutido × separado agora são iguais (aws 2/2), mas iguais em UNKNOWN, o que
+  não prova invariância (o critério exige grão decidido).
