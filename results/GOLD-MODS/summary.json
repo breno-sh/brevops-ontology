@@ -1,0 +1,52 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "GOLD-MODS",
+ "generated_at": "2026-11-04T09:33:26-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/GOLD-MODS.txt",
+  "brief_sha256": "1b08029078bb613d781b522d90024f64e83eaf405b5e2d353eb3b30ccd294f70",
+  "params": {
+   "network": "none",
+   "cloud": "none",
+   "generator": "python -I -m bo.gold_mods.build",
+   "resolver": "python -I -m bo.gold_mods.resolve GOLD-MODS",
+   "level": "DERIVADO",
+   "variant": "diretório com blocos de um só dos 4 provedores (V1); interface = variáveis que chegam a atributos (V2)",
+   "pair": "mesmo repositório, provedores diferentes, |interseção|>=2 e Jaccard>=0.5 (V3); contraparte mútua, empate pelo prefixo de diretório (V3b, acrescentada após a 1ª rodada)",
+   "dedupe": "um repositório por family_id do C06",
+   "close": "identity em pelo menos um par (L2); grupo só com transporte direto nos dois lados (L3)",
+   "unresolved": "átomo não atestado fora do suporte (L5) ou par só desdobrado de pivô N:M (L3b, acrescentada após a 1ª rodada)",
+   "evidence_pairs_in_row": "8",
+   "hcl_branch_sha": "bb238abad07e62f5dbd2d8e67dddb71b53598459"
+  },
+  "inputs": [
+   {
+    "path": "$BO_DATA/HCL/symbolic_config.jsonl",
+    "kind": "file",
+    "sha256": "867340a28cb3a6c3a215ea9735c5308fdbf516954a896d0aae6d19db8e0c560f"
+   },
+   {
+    "path": "$BO_DATA/HCL/symbolic_config.index.json",
+    "kind": "file",
+    "sha256": "f20260ec47d07b89f32516867c5067611fe3859ea10789aacada4a61940316a3"
+   },
+   {
+    "path": "$BO_DATA/HCL/licenses.json",
+    "kind": "file",
+    "sha256": "8c19fddc9fce501376cc3745134489b4dd9e07614abc87c5c9a35f10939489b0"
+   }
+  ],
+  "recorded_at": "2026-11-04T09:33:26-03:00"
+ },
+ "sources": [
+  {
+   "uri": "https://doi.org/10.5281/zenodo.20339474",
+   "license": "CC-BY-4.0 (dataset); licença por repositório em $BO_DATA/HCL/licenses.json",
+   "transformation": "lido só pelo C06 simbólico do HCL; variáveis seguidas até atributos; ids sintéticos"
+  }
+ ],
+ "notes": "Ouro DERIVADO de famílias de módulos (variantes por provedor no mesmo repositório). Números em results/GOLD-MODS/families.json; resolução em $BO_DATA/GOLD-MODS/resolution.json; rastros em $BO_DATA/GOLD-MODS/traces.jsonl. Começo antecipado sobre a extração do HCL ainda não mergeada (bo/hcl), por decisão do coordenador."
+}
