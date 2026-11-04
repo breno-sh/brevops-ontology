@@ -132,7 +132,7 @@ ITEMS = [
     ("SERVICE-EVIDENCE", "7b", "rule_id de topo", "CONTRACTS", A, "C25@1.3.0", E9, ""),
     # ---------------------------------------------------------------- UNITS
     ("UNITS", "1", "grandeza de bytes e bits (AmountOfData)", "UNITS; SEMANTICS; TRANSFORMS; CONTRACTS (stub)", A,
-     "stub C05@3.1.0", E9, "SEMANTICS adotou (ea53bcf); o TRANSFORMS ainda diverge (bo.units.crosscheck)"),
+     "stub C05@3.1.0", E9, "SEMANTICS adotou (ea53bcf) e TRANSFORMS 1.3.0 (325a84b)"),
     ("UNITS", "2", "byte e bit sem prefixo com convenção NOT_APPLICABLE", "CONTRACTS", A, "C05@3.1.0", E9, ""),
     ("UNITS", "3", "duração com unidade NOT_APPLICABLE", "CONTRACTS", A, "C05@3.1.0", E9, ""),
     ("UNITS", "4", "prefixo de byte sem convenção (unit_candidates)", "CONTRACTS", A, "C05@3.1.0", E9, ""),
@@ -185,14 +185,65 @@ ITEMS = [
 ]
 
 
+CAT = ("metadado do catálogo: regenerar o plano reabre todos os gates; os artefatos já seguem as versões novas e são "
+       "conferidos pelo validador, não pelo carimbo")
+# correções do coordenador (2026-11-04), conferidas no git log de bo/base e nos results do dono:
+# (dono, decisão, status-ou-fecha, commit, motivo); o motivo original fica em why_before
+COORD = {
+    ("PILOT-NET-MAP", "F-7"): ("ARBITERLIB", O, RES, "2028169/cc57c0a",
+                               "veredito próprio para ausência (src/bo/arbiter/engine.py, forma absence)"),
+    ("PILOT-STO-MAP", "CC-7"): ("ARBITERLIB", O, RES, "2028169/cc57c0a", "veredito próprio para ausência"),
+    ("PILOT-STO-MAP", "CC-9"): ("TRANSFORMS; ARBITERLIB", O, RES, "e3f14b1, 2028169",
+                                "domínio finito de enum_to_bool (TRANSFORMS 1.1.0) e árbitro recongelado"),
+    ("PILOT-STO-MAP", "CC-5"): ("UNITS; SEMANTICS; TRANSFORMS; CONTRACTS", O, RES, "ea53bcf, 325a84b, 2367bcd",
+                                "AmountOfData no SEMANTICS (emenda 2), TRANSFORMS 1.3.0, UNITS emenda 1, C05 3.1.0"),
+    ("PILOT-STO-GLOSS", "CC-5"): ("GRAIN; SERVICE-EVIDENCE", O, RES, "767bb22, ce1e590, 83953b9; GRAIN 0.1.4–0.1.9",
+                                  "alcance, ciclo de vida e dono na camada de API"),
+    ("PILOT-STO-GLOSS", "CC-7"): ("GRAIN; SERVICE-EVIDENCE", O, RES, "767bb22, ce1e590, 83953b9; GRAIN 0.1.4–0.1.9",
+                                  "fonte de ciclo de vida, dono e alcance na camada de API decidida"),
+    ("HARNESS-AWS", "4"): ("COORD", D, "-", "-", CAT),
+    ("BRIEFS", "3"): ("COORD", D, "-", "-", CAT),
+    ("BRIEFS", "5"): ("COORD", D, "-", "-", CAT),
+    ("PILOT-STO-GLOSS", "CC-4"): ("COORD; CAND", D, "-", "-", CAT),
+    ("HARNESS-AZURE", "5"): ("JUDGE", D, "-", "-", "o dono é o JUDGE, módulo da fase 2"),
+    ("PILOT-NET-MAP", "F-2"): ("SCHEMALIB; SCHEMA-*", D, "-", "-",
+                               "o SCHEMALIB 1.1.0 já emite os átomos de elemento; regenerar os SCHEMA-* fica para a fase 2 "
+                               "(cascata)"),
+    ("PILOT-NET-MAP", "F-3"): ("SCHEMA-*; UNITS", D, "-", "-",
+                               "revisão de dado nos SCHEMA-*; o piloto trata como ausência UNRESOLVED, sem efeito em E1–E4"),
+    ("PILOT-NET-MAP", "F-4"): ("DOCS-OCI; UNITS", D, "-", "-",
+                               "revisão de dado no DOCS-OCI; o piloto trata como ausência UNRESOLVED, sem efeito em E1–E4"),
+    ("SCHEMALIB", "2"): ("SCHEMALIB", D, "-", "-", "lacuna conhecida da biblioteca, regenerada na fase 2"),
+    ("SCHEMA-GCP", "3"): ("SCHEMALIB", D, "-", "-", "lacuna conhecida da biblioteca, regenerada na fase 2"),
+}
+IN_PROGRESS = {("PILOT-NET-E2E", "CC-NET-E2E-2"), ("PILOT-STO-MAP", "CC-8"), ("PILOT-STO-MAP", "CC-13"),
+               ("PILOT-NET-MAP", "F-5"), ("PILOT-NET-GLOSS", "CC-NET-3")}
+
+
+def _items() -> list:
+    out = []
+    for it in ITEMS:
+        mod, item, summary, owner, dec, closes, commit, why = it
+        c = COORD.get((mod, item))
+        if c:
+            owner, dec, closes, commit, new_why = c
+            why = new_why + " [decisão/conferência do coordenador, 2026-11-04]"
+        out.append((mod, item, summary, owner, dec, closes, commit, why))
+    return out
+
+
 def ledger(now: str, e9_commit: str | None = None) -> dict:
     rows = []
-    for mod, item, summary, owner, dec, closes, commit, why in ITEMS:
+    for mod, item, summary, owner, dec, closes, commit, why in _items():
         if dec == O:
             status, commit_ = closes, commit
             closes_ = "-"
+            if (mod, item) in IN_PROGRESS:
+                status = ABE + " (em curso)"
+        elif dec == D:
+            status, closes_, commit_ = "ADIADO", "fase 2", "-"
         else:
-            status, closes_, commit_ = ("FECHADO" if dec == A else "-"), closes, commit
+            status, closes_, commit_ = ("FECHADO" if dec == A else "FECHADO (sem mudança)"), closes, commit
         if commit_ == E9:
             commit_ = e9_commit or E9
         rows.append({"module": mod, "item": item, "summary": summary, "owner": owner, "decision": dec,
@@ -200,7 +251,11 @@ def ledger(now: str, e9_commit: str | None = None) -> dict:
     by = {}
     for r in rows:
         by[r["decision"]] = by.get(r["decision"], 0) + 1
-    open_ = sum(1 for r in rows if r["status"] == ABE)
+    st = {}
+    for r in rows:
+        st[r["status"]] = st.get(r["status"], 0) + 1
     return {"schema": "bo.contracts_requests_ledger/1", "module": "CONTRACTS", "generated_at": now,
             "scope": "CONTRACT_CHANGE.txt dos PILOT-* e dos módulos que eles consomem (bo/base)",
-            "n": len(rows), "by_decision": dict(sorted(by.items())), "open_elsewhere": open_, "items": rows}
+            "n": len(rows), "by_decision": dict(sorted(by.items())), "by_status": dict(sorted(st.items())),
+            "open": sorted(f"{r['module']} {r['item']} ({r['owner']})" for r in rows if r["status"].startswith(ABE)),
+            "items": rows}

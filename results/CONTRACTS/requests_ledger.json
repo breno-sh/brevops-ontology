@@ -1,16 +1,29 @@
 {
  "schema": "bo.contracts_requests_ledger/1",
  "module": "CONTRACTS",
- "generated_at": "2026-11-04T13:58:31-03:00",
+ "generated_at": "2026-11-04T14:00:14-03:00",
  "scope": "CONTRACT_CHANGE.txt dos PILOT-* e dos módulos que eles consomem (bo/base)",
  "n": 114,
  "by_decision": {
   "ACEITO": 59,
-  "ADIADO_FASE_2": 1,
-  "DE_OUTRO_DONO": 47,
-  "RECUSADO": 7
+  "ADIADO_FASE_2": 11,
+  "DE_OUTRO_DONO": 38,
+  "RECUSADO": 6
  },
- "open_elsewhere": 20,
+ "by_status": {
+  "ABERTO (em curso)": 5,
+  "ADIADO": 11,
+  "FECHADO": 59,
+  "FECHADO (sem mudança)": 6,
+  "RESOLVIDO": 33
+ },
+ "open": [
+  "PILOT-NET-E2E CC-NET-E2E-2 (GRAIN (b, c); SERVICE-EVIDENCE (a))",
+  "PILOT-NET-GLOSS CC-NET-3 (SERVICE-EVIDENCE; GRAIN; CAND)",
+  "PILOT-NET-MAP F-5 (PILOT-NET-GLOSS)",
+  "PILOT-STO-MAP CC-13 (SEMANTICS; ARBITERLIB)",
+  "PILOT-STO-MAP CC-8 (GRAIN)"
+ ],
  "items": [
   {
    "module": "PILOT-NET-E2E",
@@ -29,7 +42,7 @@
    "summary": "tipo da anexação, seleção por rótulo e regras OCI saem UNKNOWN",
    "owner": "GRAIN (b, c); SERVICE-EVIDENCE (a)",
    "decision": "DE_OUTRO_DONO",
-   "status": "ABERTO",
+   "status": "ABERTO (em curso)",
    "closes": "-",
    "commit": "SERVICE-EVIDENCE respondeu (a) no item 8 (regras OCI com dono, ciclo e alcance); (b) e (c) são do GRAIN",
    "why": ""
@@ -40,7 +53,7 @@
    "summary": "c2_taxonomy traduz fixture inválida; c3_full recusa",
    "owner": "-",
    "decision": "RECUSADO",
-   "status": "-",
+   "status": "FECHADO (sem mudança)",
    "closes": "-",
    "commit": "-",
    "why": "achado sobre os controles, sem pedido de mudança"
@@ -84,7 +97,7 @@
    "summary": "alvo das referências, timeouts, deletion_policy",
    "owner": "SERVICE-EVIDENCE; GRAIN; CAND",
    "decision": "DE_OUTRO_DONO",
-   "status": "ABERTO",
+   "status": "ABERTO (em curso)",
    "closes": "-",
    "commit": "-",
    "why": "não é formato de contrato"
@@ -117,7 +130,7 @@
    "summary": "rule_id de uma palavra (EVIDENCE, SENTINEL)",
    "owner": "ARBITERLIB",
    "decision": "RECUSADO",
-   "status": "-",
+   "status": "FECHADO (sem mudança)",
    "closes": "-",
    "commit": "35e299f",
    "why": "o ARBITERLIB renomeou as regras; o rule_id do C00 continua com hífen"
@@ -161,8 +174,8 @@
    "summary": "grupo de portas contra faixa em lista: variável intermediária sem campo",
    "owner": "SEMANTICS; CONTRACTS",
    "decision": "ADIADO_FASE_2",
-   "status": "-",
-   "closes": "-",
+   "status": "ADIADO",
+   "closes": "fase 2",
    "commit": "-",
    "why": "a G-VARS do SEMANTICS exige campo para toda variável; o C09 acompanha quando o SEMANTICS definir a variável intermediária (fase 2)"
   },
@@ -170,34 +183,34 @@
    "module": "PILOT-NET-MAP",
    "item": "F-2",
    "summary": "campos de bloco embutido sem tipo no pacote",
-   "owner": "SCHEMALIB; UNITS; GRAIN",
-   "decision": "DE_OUTRO_DONO",
-   "status": "ABERTO",
-   "closes": "-",
+   "owner": "SCHEMALIB; SCHEMA-*",
+   "decision": "ADIADO_FASE_2",
+   "status": "ADIADO",
+   "closes": "fase 2",
    "commit": "-",
-   "why": "elementos de coleção chegam com o refresh da fase 2 (SCHEMALIB 1.1.0, C01 2.2.0)"
+   "why": "o SCHEMALIB 1.1.0 já emite os átomos de elemento; regenerar os SCHEMA-* fica para a fase 2 (cascata) [decisão/conferência do coordenador, 2026-11-04]"
   },
   {
    "module": "PILOT-NET-MAP",
    "item": "F-3",
    "summary": "valores de enum suspeitos no pacote",
    "owner": "SCHEMA-*; UNITS",
-   "decision": "DE_OUTRO_DONO",
-   "status": "ABERTO",
-   "closes": "-",
+   "decision": "ADIADO_FASE_2",
+   "status": "ADIADO",
+   "closes": "fase 2",
    "commit": "-",
-   "why": ""
+   "why": "revisão de dado nos SCHEMA-*; o piloto trata como ausência UNRESOLVED, sem efeito em E1–E4 [decisão/conferência do coordenador, 2026-11-04]"
   },
   {
    "module": "PILOT-NET-MAP",
    "item": "F-4",
    "summary": "sentido da regra NSG oci em texto livre",
-   "owner": "UNITS; DOCS-OCI",
-   "decision": "DE_OUTRO_DONO",
-   "status": "ABERTO",
-   "closes": "-",
+   "owner": "DOCS-OCI; UNITS",
+   "decision": "ADIADO_FASE_2",
+   "status": "ADIADO",
+   "closes": "fase 2",
    "commit": "-",
-   "why": ""
+   "why": "revisão de dado no DOCS-OCI; o piloto trata como ausência UNRESOLVED, sem efeito em E1–E4 [decisão/conferência do coordenador, 2026-11-04]"
   },
   {
    "module": "PILOT-NET-MAP",
@@ -205,7 +218,7 @@
    "summary": "efeito fixo (aws, oci só permitem) sem decisão nem sentença",
    "owner": "PILOT-NET-GLOSS",
    "decision": "DE_OUTRO_DONO",
-   "status": "ABERTO",
+   "status": "ABERTO (em curso)",
    "closes": "-",
    "commit": "-",
    "why": "decisão C20 (value_type com a semântica) cabe no contrato vigente; falta a decisão do glossarista"
@@ -227,10 +240,10 @@
    "summary": "árbitro devolve UNPROVEN para toda ausência",
    "owner": "ARBITERLIB",
    "decision": "DE_OUTRO_DONO",
-   "status": "ABERTO",
+   "status": "RESOLVIDO",
    "closes": "-",
-   "commit": "-",
-   "why": "regra congelada; o C09 já tem a ausência tipada desde a emenda 3"
+   "commit": "2028169/cc57c0a",
+   "why": "veredito próprio para ausência (src/bo/arbiter/engine.py, forma absence) [decisão/conferência do coordenador, 2026-11-04]"
   },
   {
    "module": "PILOT-NET-ORACLE",
@@ -282,7 +295,7 @@
    "summary": "prioridade única do NSG Azure ambígua",
    "owner": "-",
    "decision": "RECUSADO",
-   "status": "-",
+   "status": "FECHADO (sem mudança)",
    "closes": "-",
    "commit": "-",
    "why": "ambiguidade da documentação; o oráculo trata como UNKNOWN"
@@ -325,11 +338,11 @@
    "item": "CC-4",
    "summary": "saídas e versões do piloto no catálogo; conteúdo do bundle",
    "owner": "COORD; CAND",
-   "decision": "DE_OUTRO_DONO",
-   "status": "ABERTO",
-   "closes": "-",
+   "decision": "ADIADO_FASE_2",
+   "status": "ADIADO",
+   "closes": "fase 2",
    "commit": "-",
-   "why": "o catálogo ainda carimba C19/C20 3.0.0 (o validador aceita a cadeia de emendas)"
+   "why": "metadado do catálogo: regenerar o plano reabre todos os gates; os artefatos já seguem as versões novas e são conferidos pelo validador, não pelo carimbo [decisão/conferência do coordenador, 2026-11-04]"
   },
   {
    "module": "PILOT-STO-GLOSS",
@@ -337,10 +350,10 @@
    "summary": "grão 100% UNKNOWN por falta de effective_scope",
    "owner": "GRAIN; SERVICE-EVIDENCE",
    "decision": "DE_OUTRO_DONO",
-   "status": "ABERTO",
+   "status": "RESOLVIDO",
    "closes": "-",
-   "commit": "-",
-   "why": ""
+   "commit": "767bb22, ce1e590, 83953b9; GRAIN 0.1.4–0.1.9",
+   "why": "alcance, ciclo de vida e dono na camada de API [decisão/conferência do coordenador, 2026-11-04]"
   },
   {
    "module": "PILOT-STO-GLOSS",
@@ -359,10 +372,10 @@
    "summary": "fonte de ciclo de vida, dono e alcance na camada de API",
    "owner": "GRAIN; SERVICE-EVIDENCE",
    "decision": "DE_OUTRO_DONO",
-   "status": "ABERTO",
+   "status": "RESOLVIDO",
    "closes": "-",
-   "commit": "-",
-   "why": ""
+   "commit": "767bb22, ce1e590, 83953b9; GRAIN 0.1.4–0.1.9",
+   "why": "fonte de ciclo de vida, dono e alcance na camada de API decidida [decisão/conferência do coordenador, 2026-11-04]"
   },
   {
    "module": "PILOT-STO-MAP",
@@ -381,7 +394,7 @@
    "summary": "rule_id de uma palavra",
    "owner": "ARBITERLIB",
    "decision": "RECUSADO",
-   "status": "-",
+   "status": "FECHADO (sem mudança)",
    "closes": "-",
    "commit": "35e299f",
    "why": "regras renomeadas no ARBITERLIB"
@@ -412,12 +425,12 @@
    "module": "PILOT-STO-MAP",
    "item": "CC-5",
    "summary": "grandeza de unit:BYTE",
-   "owner": "UNITS; SEMANTICS; TRANSFORMS",
+   "owner": "UNITS; SEMANTICS; TRANSFORMS; CONTRACTS",
    "decision": "DE_OUTRO_DONO",
-   "status": "ABERTO",
+   "status": "RESOLVIDO",
    "closes": "-",
-   "commit": "UNITS 1.0.0, ea53bcf",
-   "why": "UNITS e SEMANTICS em AmountOfData; o TRANSFORMS ainda diverge (13 unidades); stub do C05 corrigido na emenda 9"
+   "commit": "ea53bcf, 325a84b, 2367bcd",
+   "why": "AmountOfData no SEMANTICS (emenda 2), TRANSFORMS 1.3.0, UNITS emenda 1, C05 3.1.0 [decisão/conferência do coordenador, 2026-11-04]"
   },
   {
    "module": "PILOT-STO-MAP",
@@ -436,10 +449,10 @@
    "summary": "ausência tipada como veredito próprio",
    "owner": "ARBITERLIB",
    "decision": "DE_OUTRO_DONO",
-   "status": "ABERTO",
+   "status": "RESOLVIDO",
    "closes": "-",
-   "commit": "-",
-   "why": ""
+   "commit": "2028169/cc57c0a",
+   "why": "veredito próprio para ausência [decisão/conferência do coordenador, 2026-11-04]"
   },
   {
    "module": "PILOT-STO-MAP",
@@ -447,7 +460,7 @@
    "summary": "occurrence_key de bloco repetido",
    "owner": "GRAIN",
    "decision": "DE_OUTRO_DONO",
-   "status": "ABERTO",
+   "status": "ABERTO (em curso)",
    "closes": "-",
    "commit": "-",
    "why": ""
@@ -456,12 +469,12 @@
    "module": "PILOT-STO-MAP",
    "item": "CC-9",
    "summary": "domínio de função do registro com tabela finita",
-   "owner": "ARBITERLIB; TRANSFORMS",
+   "owner": "TRANSFORMS; ARBITERLIB",
    "decision": "DE_OUTRO_DONO",
-   "status": "ABERTO",
+   "status": "RESOLVIDO",
    "closes": "-",
-   "commit": "-",
-   "why": ""
+   "commit": "e3f14b1, 2028169",
+   "why": "domínio finito de enum_to_bool (TRANSFORMS 1.1.0) e árbitro recongelado [decisão/conferência do coordenador, 2026-11-04]"
   },
   {
    "module": "PILOT-STO-MAP",
@@ -502,7 +515,7 @@
    "summary": "domínio de wrap_list no árbitro (VDR-UNKNOWN)",
    "owner": "SEMANTICS; ARBITERLIB",
    "decision": "DE_OUTRO_DONO",
-   "status": "ABERTO",
+   "status": "ABERTO (em curso)",
    "closes": "-",
    "commit": "-",
    "why": "o formato já existe (C10 3.1.0/3.2.0); falta a imagem calculada"
@@ -556,11 +569,11 @@
    "item": "4",
    "summary": "entradas do harness no catálogo (pins, schema)",
    "owner": "COORD",
-   "decision": "DE_OUTRO_DONO",
-   "status": "ABERTO",
-   "closes": "-",
+   "decision": "ADIADO_FASE_2",
+   "status": "ADIADO",
+   "closes": "fase 2",
    "commit": "-",
-   "why": ""
+   "why": "metadado do catálogo: regenerar o plano reabre todos os gates; os artefatos já seguem as versões novas e são conferidos pelo validador, não pelo carimbo [decisão/conferência do coordenador, 2026-11-04]"
   },
   {
    "module": "HARNESS-AWS",
@@ -633,11 +646,11 @@
    "item": "5",
    "summary": "identificadores da conta sempre withheld",
    "owner": "JUDGE",
-   "decision": "DE_OUTRO_DONO",
-   "status": "ABERTO",
-   "closes": "-",
+   "decision": "ADIADO_FASE_2",
+   "status": "ADIADO",
+   "closes": "fase 2",
    "commit": "-",
-   "why": "política do juiz"
+   "why": "o dono é o JUDGE, módulo da fase 2 [decisão/conferência do coordenador, 2026-11-04]"
   },
   {
    "module": "HARNESS-GCP",
@@ -813,7 +826,7 @@
    "status": "FECHADO",
    "closes": "stub C05@3.1.0",
    "commit": "2367bcd",
-   "why": "SEMANTICS adotou (ea53bcf); o TRANSFORMS ainda diverge (bo.units.crosscheck)"
+   "why": "SEMANTICS adotou (ea53bcf) e TRANSFORMS 1.3.0 (325a84b)"
   },
   {
    "module": "UNITS",
@@ -930,11 +943,11 @@
    "item": "3",
    "summary": "fiação do catálogo (VALIDATOR_BRIEF, papéis)",
    "owner": "COORD",
-   "decision": "DE_OUTRO_DONO",
-   "status": "ABERTO",
-   "closes": "-",
+   "decision": "ADIADO_FASE_2",
+   "status": "ADIADO",
+   "closes": "fase 2",
    "commit": "-",
-   "why": ""
+   "why": "metadado do catálogo: regenerar o plano reabre todos os gates; os artefatos já seguem as versões novas e são conferidos pelo validador, não pelo carimbo [decisão/conferência do coordenador, 2026-11-04]"
   },
   {
    "module": "BRIEFS",
@@ -952,11 +965,11 @@
    "item": "5",
    "summary": "catálogo carimba C19/C20 3.0.0 nas saídas dos pilotos",
    "owner": "COORD",
-   "decision": "DE_OUTRO_DONO",
-   "status": "ABERTO",
-   "closes": "-",
+   "decision": "ADIADO_FASE_2",
+   "status": "ADIADO",
+   "closes": "fase 2",
    "commit": "-",
-   "why": "regenerar o artifact_catalog com as versões de contracts/ (amendments.py)"
+   "why": "metadado do catálogo: regenerar o plano reabre todos os gates; os artefatos já seguem as versões novas e são conferidos pelo validador, não pelo carimbo [decisão/conferência do coordenador, 2026-11-04]"
   },
   {
    "module": "DOCS-AWS",
@@ -1019,7 +1032,7 @@
    "summary": "coverage.json no C15",
    "owner": "-",
    "decision": "RECUSADO",
-   "status": "-",
+   "status": "FECHADO (sem mudança)",
    "closes": "-",
    "commit": "-",
    "why": "cabe no C15 result vigente"
@@ -1052,7 +1065,7 @@
    "summary": "eixo do C15 para cobertura de documentação",
    "owner": "-",
    "decision": "RECUSADO",
-   "status": "-",
+   "status": "FECHADO (sem mudança)",
    "closes": "-",
    "commit": "-",
    "why": "representability/field/observed_fraction descreve o censo"
@@ -1116,12 +1129,12 @@
    "module": "SCHEMALIB",
    "item": "2",
    "summary": "nested_type como um átomo",
-   "owner": "-",
-   "decision": "RECUSADO",
-   "status": "-",
-   "closes": "-",
+   "owner": "SCHEMALIB",
+   "decision": "ADIADO_FASE_2",
+   "status": "ADIADO",
+   "closes": "fase 2",
    "commit": "-",
-   "why": "registro; cabe no C01 vigente"
+   "why": "lacuna conhecida da biblioteca, regenerada na fase 2 [decisão/conferência do coordenador, 2026-11-04]"
   },
   {
    "module": "SCHEMALIB",
@@ -1194,11 +1207,11 @@
    "item": "3",
    "summary": "lacuna da biblioteca",
    "owner": "SCHEMALIB",
-   "decision": "DE_OUTRO_DONO",
-   "status": "ABERTO",
-   "closes": "-",
+   "decision": "ADIADO_FASE_2",
+   "status": "ADIADO",
+   "closes": "fase 2",
    "commit": "-",
-   "why": ""
+   "why": "lacuna conhecida da biblioteca, regenerada na fase 2 [decisão/conferência do coordenador, 2026-11-04]"
   },
   {
    "module": "SCHEMA-OCI",
