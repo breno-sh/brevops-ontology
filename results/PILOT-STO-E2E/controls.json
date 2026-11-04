@@ -8,6 +8,222 @@
      "c1_table": {
       "block": "NO_REALIZATION",
       "declared": [
+       "EXPIRED_LATER",
+       "RETAINED_LONGER"
+      ],
+      "status": "BLOCKED"
+     },
+     "c2_taxonomy": {
+      "block": "NO_REALIZATION",
+      "declared": [],
+      "status": "BLOCKED"
+     },
+     "c3_full": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "EXPIRED_LATER",
+       "RETAINED_LONGER"
+      ],
+      "status": "BLOCKED"
+     }
+    },
+    "direction": "azurerm->aws",
+    "entry_id": "DX-AZ-AWS-T3-acceptable-01"
+   },
+   {
+    "by_control": {
+     "c1_table": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "EXPIRED_LATER",
+       "RETAINED_LONGER"
+      ],
+      "status": "BLOCKED"
+     },
+     "c2_taxonomy": {
+      "block": "NO_REALIZATION",
+      "declared": [],
+      "status": "BLOCKED"
+     },
+     "c3_full": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "EXPIRED_LATER",
+       "RETAINED_LONGER"
+      ],
+      "status": "BLOCKED"
+     }
+    },
+    "direction": "azurerm->aws",
+    "entry_id": "DX-AZ-AWS-T3-acceptable_declared-01"
+   },
+   {
+    "by_control": {
+     "c1_table": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "EXPIRED_LATER",
+       "RETAINED_LONGER"
+      ],
+      "status": "BLOCKED"
+     },
+     "c2_taxonomy": {
+      "block": "NO_REALIZATION",
+      "declared": [],
+      "status": "BLOCKED"
+     },
+     "c3_full": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "EXPIRED_LATER",
+       "RETAINED_LONGER"
+      ],
+      "status": "BLOCKED"
+     }
+    },
+    "direction": "azurerm->aws",
+    "entry_id": "DX-AZ-AWS-T3-negative-01"
+   },
+   {
+    "by_control": {
+     "c1_table": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "EXPIRED_LATER",
+       "RETAINED_LONGER"
+      ],
+      "status": "BLOCKED"
+     },
+     "c2_taxonomy": {
+      "block": "NO_REALIZATION",
+      "declared": [],
+      "status": "BLOCKED"
+     },
+     "c3_full": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "EXPIRED_LATER",
+       "RETAINED_LONGER"
+      ],
+      "status": "BLOCKED"
+     }
+    },
+    "direction": "azurerm->aws",
+    "entry_id": "DX-AZ-AWS-T3-unknown-01"
+   },
+   {
+    "by_control": {
+     "c1_table": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "EXPIRED_LATER",
+       "RETAINED_LONGER"
+      ],
+      "status": "BLOCKED"
+     },
+     "c2_taxonomy": {
+      "block": "NO_REALIZATION",
+      "declared": [],
+      "status": "BLOCKED"
+     },
+     "c3_full": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "EXPIRED_LATER",
+       "RETAINED_LONGER"
+      ],
+      "status": "BLOCKED"
+     }
+    },
+    "direction": "azurerm->aws",
+    "entry_id": "DX-AZ-AWS-T4-acceptable_declared-01"
+   },
+   {
+    "by_control": {
+     "c1_table": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "EXPIRED_LATER",
+       "RETAINED_LONGER"
+      ],
+      "status": "BLOCKED"
+     },
+     "c2_taxonomy": {
+      "block": "NO_REALIZATION",
+      "declared": [],
+      "status": "BLOCKED"
+     },
+     "c3_full": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "EXPIRED_LATER",
+       "RETAINED_LONGER"
+      ],
+      "status": "BLOCKED"
+     }
+    },
+    "direction": "azurerm->aws",
+    "entry_id": "DX-AZ-AWS-T4-negative-01"
+   },
+   {
+    "by_control": {
+     "c1_table": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "EXPIRED_LATER",
+       "RETAINED_LONGER"
+      ],
+      "status": "BLOCKED"
+     },
+     "c2_taxonomy": {
+      "block": "NO_REALIZATION",
+      "declared": [],
+      "status": "BLOCKED"
+     },
+     "c3_full": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "EXPIRED_LATER",
+       "RETAINED_LONGER"
+      ],
+      "status": "BLOCKED"
+     }
+    },
+    "direction": "azurerm->aws",
+    "entry_id": "DX-AZ-AWS-T4-negative_silent-01"
+   },
+   {
+    "by_control": {
+     "c1_table": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "EXPIRED_LATER",
+       "RETAINED_LONGER"
+      ],
+      "status": "BLOCKED"
+     },
+     "c2_taxonomy": {
+      "block": "NO_REALIZATION",
+      "declared": [],
+      "status": "BLOCKED"
+     },
+     "c3_full": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "EXPIRED_LATER",
+       "RETAINED_LONGER"
+      ],
+      "status": "BLOCKED"
+     }
+    },
+    "direction": "azurerm->aws",
+    "entry_id": "DX-AZ-AWS-T4-unknown-01"
+   },
+   {
+    "by_control": {
+     "c1_table": {
+      "block": "NO_REALIZATION",
+      "declared": [
        "VERSIONING_STATE_DIFFERS"
       ],
       "status": "BLOCKED"
@@ -233,11 +449,203 @@
     },
     "direction": "google->azurerm",
     "entry_id": "DX-GCP-AZ-T1-negative_silent-01"
+   },
+   {
+    "by_control": {
+     "c1_table": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "EXPIRED_LATER",
+       "RETAINED_LONGER"
+      ],
+      "status": "BLOCKED"
+     },
+     "c2_taxonomy": {
+      "block": "NO_REALIZATION",
+      "declared": [],
+      "status": "BLOCKED"
+     },
+     "c3_full": {
+      "block": "NO_REALIZATION",
+      "declared": [],
+      "status": "BLOCKED"
+     }
+    },
+    "direction": "oci->aws",
+    "entry_id": "DX-OCI-AWS-T3-acceptable-01"
+   },
+   {
+    "by_control": {
+     "c1_table": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "EXPIRED_LATER",
+       "RETAINED_LONGER"
+      ],
+      "status": "BLOCKED"
+     },
+     "c2_taxonomy": {
+      "block": "NO_REALIZATION",
+      "declared": [],
+      "status": "BLOCKED"
+     },
+     "c3_full": {
+      "block": "NO_REALIZATION",
+      "declared": [],
+      "status": "BLOCKED"
+     }
+    },
+    "direction": "oci->aws",
+    "entry_id": "DX-OCI-AWS-T3-acceptable_declared-01"
+   },
+   {
+    "by_control": {
+     "c1_table": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "EXPIRED_LATER",
+       "RETAINED_LONGER"
+      ],
+      "status": "BLOCKED"
+     },
+     "c2_taxonomy": {
+      "block": "NO_REALIZATION",
+      "declared": [],
+      "status": "BLOCKED"
+     },
+     "c3_full": {
+      "block": "NO_REALIZATION",
+      "declared": [],
+      "status": "BLOCKED"
+     }
+    },
+    "direction": "oci->aws",
+    "entry_id": "DX-OCI-AWS-T3-negative-01"
+   },
+   {
+    "by_control": {
+     "c1_table": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "EXPIRED_LATER",
+       "RETAINED_LONGER"
+      ],
+      "status": "BLOCKED"
+     },
+     "c2_taxonomy": {
+      "block": "NO_REALIZATION",
+      "declared": [],
+      "status": "BLOCKED"
+     },
+     "c3_full": {
+      "block": "NO_REALIZATION",
+      "declared": [],
+      "status": "BLOCKED"
+     }
+    },
+    "direction": "oci->aws",
+    "entry_id": "DX-OCI-AWS-T3-unknown-01"
+   },
+   {
+    "by_control": {
+     "c1_table": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "EXPIRED_LATER",
+       "RETAINED_LONGER"
+      ],
+      "status": "BLOCKED"
+     },
+     "c2_taxonomy": {
+      "block": "NO_REALIZATION",
+      "declared": [],
+      "status": "BLOCKED"
+     },
+     "c3_full": {
+      "block": "NO_REALIZATION",
+      "declared": [],
+      "status": "BLOCKED"
+     }
+    },
+    "direction": "oci->aws",
+    "entry_id": "DX-OCI-AWS-T4-acceptable_declared-01"
+   },
+   {
+    "by_control": {
+     "c1_table": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "EXPIRED_LATER",
+       "RETAINED_LONGER"
+      ],
+      "status": "BLOCKED"
+     },
+     "c2_taxonomy": {
+      "block": "NO_REALIZATION",
+      "declared": [],
+      "status": "BLOCKED"
+     },
+     "c3_full": {
+      "block": "NO_REALIZATION",
+      "declared": [],
+      "status": "BLOCKED"
+     }
+    },
+    "direction": "oci->aws",
+    "entry_id": "DX-OCI-AWS-T4-negative-01"
+   },
+   {
+    "by_control": {
+     "c1_table": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "EXPIRED_LATER",
+       "RETAINED_LONGER"
+      ],
+      "status": "BLOCKED"
+     },
+     "c2_taxonomy": {
+      "block": "NO_REALIZATION",
+      "declared": [],
+      "status": "BLOCKED"
+     },
+     "c3_full": {
+      "block": "NO_REALIZATION",
+      "declared": [],
+      "status": "BLOCKED"
+     }
+    },
+    "direction": "oci->aws",
+    "entry_id": "DX-OCI-AWS-T4-negative_silent-01"
+   },
+   {
+    "by_control": {
+     "c1_table": {
+      "block": "NO_REALIZATION",
+      "declared": [
+       "EXPIRED_LATER",
+       "RETAINED_LONGER"
+      ],
+      "status": "BLOCKED"
+     },
+     "c2_taxonomy": {
+      "block": "NO_REALIZATION",
+      "declared": [],
+      "status": "BLOCKED"
+     },
+     "c3_full": {
+      "block": "NO_REALIZATION",
+      "declared": [],
+      "status": "BLOCKED"
+     }
+    },
+    "direction": "oci->aws",
+    "entry_id": "DX-OCI-AWS-T4-unknown-01"
    }
   ],
   "controls": {
    "c1_table": {
-    "carried_values": 226,
+    "carried_values": 257,
     "config_values": 998,
     "entries": 181,
     "inconsistent_sources": 0,
@@ -246,18 +654,18 @@
     "unit_blocks": {
      "AMBIGUOUS_TARGET:T-VERDICT": 13,
      "NO_REALIZATION:T-NO-CORRESPONDENCE": 120,
-     "RELATED_ONLY:T-RELATED": 40,
-     "UNPROVEN:T-VERDICT": 8
+     "RELATED_ONLY:T-RELATED": 31,
+     "UNPROVEN:T-VERDICT": 17
     },
     "value_blocks": {
      "AMBIGUOUS_TARGET": 63,
      "NO_REALIZATION": 515,
-     "RELATED_ONLY": 121,
-     "UNPROVEN": 73
+     "RELATED_ONLY": 99,
+     "UNPROVEN": 64
     }
    },
    "c2_taxonomy": {
-    "carried_values": 189,
+    "carried_values": 204,
     "config_values": 998,
     "entries": 181,
     "inconsistent_sources": 0,
@@ -266,19 +674,19 @@
     "unit_blocks": {
      "AMBIGUOUS_TARGET:T-VERDICT": 13,
      "NO_REALIZATION:T-NO-CORRESPONDENCE": 120,
-     "RELATED_ONLY:T-RELATED": 40,
-     "UNPROVEN:T-VERDICT": 8
+     "RELATED_ONLY:T-RELATED": 31,
+     "UNPROVEN:T-VERDICT": 17
     },
     "value_blocks": {
      "AMBIGUOUS_TARGET": 63,
      "NO_REALIZATION": 515,
-     "NO_UNIT": 37,
-     "RELATED_ONLY": 121,
-     "UNPROVEN": 73
+     "NO_UNIT": 53,
+     "RELATED_ONLY": 99,
+     "UNPROVEN": 64
     }
    },
    "c3_full": {
-    "carried_values": 210,
+    "carried_values": 233,
     "config_values": 998,
     "entries": 181,
     "inconsistent_sources": 0,
@@ -287,15 +695,15 @@
     "unit_blocks": {
      "AMBIGUOUS_TARGET:T-VERDICT": 13,
      "NO_REALIZATION:T-NO-CORRESPONDENCE": 120,
-     "RELATED_ONLY:T-RELATED": 40,
-     "UNPROVEN:T-VERDICT": 8
+     "RELATED_ONLY:T-RELATED": 31,
+     "UNPROVEN:T-VERDICT": 17
     },
     "value_blocks": {
      "AMBIGUOUS_TARGET": 63,
      "NO_REALIZATION": 515,
-     "NO_UNIT": 16,
-     "RELATED_ONLY": 121,
-     "UNPROVEN": 73
+     "NO_UNIT": 24,
+     "RELATED_ONLY": 99,
+     "UNPROVEN": 64
     }
    }
   },
@@ -484,28 +892,28 @@
    },
    "per_control": {
     "c1_table": {
-     "claims_sha256": "3ded03742f2af665eb872686b02f74f4b86e4f1f64352c05fdddba36e01a7754",
+     "claims_sha256": "f99f5a463dc600b62f997577744157123246fed99e838dcd7fe6239dd3dfc39d",
      "entries": 181,
      "input_sha256": "8f1142c13a362b850df33b569bac87f20ee55d693c01a9190b367fccda672e34",
      "policy_sha256": "dd7afd9a4522bab44a739851a65e571f962415cb4e909956e659a9fdcd122dce",
-     "transforms_sha256": "806dd8e68378639221438ebf5f95636a812601e75b473bbecb1ae2b392ef26a7",
-     "verdicts_sha256": "518225d3607896a86aa7eb1aabf05f7951e7fb46a83313d71fb367818c40d4b9"
+     "transforms_sha256": "07e2177c39bb68a02fe5f7a60a68da42a6e74d90fc37635445b4225248445e38",
+     "verdicts_sha256": "cab63fc5059b4a4b5b9f8a6bee66472a7e28e91ecb7e64facd64e7a4d5bbb243"
     },
     "c2_taxonomy": {
-     "claims_sha256": "3ded03742f2af665eb872686b02f74f4b86e4f1f64352c05fdddba36e01a7754",
+     "claims_sha256": "f99f5a463dc600b62f997577744157123246fed99e838dcd7fe6239dd3dfc39d",
      "entries": 181,
      "input_sha256": "8f1142c13a362b850df33b569bac87f20ee55d693c01a9190b367fccda672e34",
      "policy_sha256": "dd7afd9a4522bab44a739851a65e571f962415cb4e909956e659a9fdcd122dce",
-     "transforms_sha256": "806dd8e68378639221438ebf5f95636a812601e75b473bbecb1ae2b392ef26a7",
-     "verdicts_sha256": "518225d3607896a86aa7eb1aabf05f7951e7fb46a83313d71fb367818c40d4b9"
+     "transforms_sha256": "07e2177c39bb68a02fe5f7a60a68da42a6e74d90fc37635445b4225248445e38",
+     "verdicts_sha256": "cab63fc5059b4a4b5b9f8a6bee66472a7e28e91ecb7e64facd64e7a4d5bbb243"
     },
     "c3_full": {
-     "claims_sha256": "3ded03742f2af665eb872686b02f74f4b86e4f1f64352c05fdddba36e01a7754",
+     "claims_sha256": "f99f5a463dc600b62f997577744157123246fed99e838dcd7fe6239dd3dfc39d",
      "entries": 181,
      "input_sha256": "8f1142c13a362b850df33b569bac87f20ee55d693c01a9190b367fccda672e34",
      "policy_sha256": "dd7afd9a4522bab44a739851a65e571f962415cb4e909956e659a9fdcd122dce",
-     "transforms_sha256": "806dd8e68378639221438ebf5f95636a812601e75b473bbecb1ae2b392ef26a7",
-     "verdicts_sha256": "518225d3607896a86aa7eb1aabf05f7951e7fb46a83313d71fb367818c40d4b9"
+     "transforms_sha256": "07e2177c39bb68a02fe5f7a60a68da42a6e74d90fc37635445b4225248445e38",
+     "verdicts_sha256": "cab63fc5059b4a4b5b9f8a6bee66472a7e28e91ecb7e64facd64e7a4d5bbb243"
     }
    },
    "policy": {
@@ -554,7 +962,7 @@
    }
   }
  },
- "generated_at": "2026-11-04T11:54:06-03:00",
+ "generated_at": "2026-11-04T13:12:49-03:00",
  "metrics": [
   {
    "axis": "transportability",
@@ -571,10 +979,10 @@
    "metric_id": "M-PSTO-C1-FIELD",
    "name": "c1_table: valores de configuração da fatia transportados",
    "operational_coverage": {
-    "est": 0.226453,
-    "lower": 0.201564,
+    "est": 0.257515,
+    "lower": 0.231352,
     "n": 998,
-    "upper": 0.25344
+    "upper": 0.285537
    },
    "quantifier": "observed_fraction",
    "reading": "field",
@@ -623,10 +1031,10 @@
    "metric_id": "M-PSTO-C2-FIELD",
    "name": "c2_taxonomy: valores de configuração da fatia transportados",
    "operational_coverage": {
-    "est": 0.189379,
-    "lower": 0.166279,
+    "est": 0.204409,
+    "lower": 0.180545,
     "n": 998,
-    "upper": 0.214861
+    "upper": 0.230539
    },
    "quantifier": "observed_fraction",
    "reading": "field",
@@ -675,10 +1083,10 @@
    "metric_id": "M-PSTO-C3-FIELD",
    "name": "c3_full: valores de configuração da fatia transportados",
    "operational_coverage": {
-    "est": 0.210421,
-    "lower": 0.186267,
+    "est": 0.233467,
+    "lower": 0.208273,
     "n": 998,
-    "upper": 0.236796
+    "upper": 0.260704
    },
    "quantifier": "observed_fraction",
    "reading": "field",
