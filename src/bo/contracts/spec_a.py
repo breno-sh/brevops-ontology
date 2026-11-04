@@ -12,7 +12,7 @@ SYNTHETIC_PROVIDER = r"^provider_[a-z]$"
 PAIRS = ("AWSGCP", "AWSAZ", "AWSOCI", "GCPAZ", "GCPOCI", "AZOCI")
 PAIR_SIDE = {"AWS": "aws", "GCP": "google", "AZ": "azurerm", "OCI": "oci"}
 DOMAINS = ("CMP", "NET", "STO", "DB", "SEC", "OPS")
-EVIDENCE_LEVELS = ("published", "derived", "interpreted")
+EVIDENCE_LEVELS = ("published", "derived", "interpreted", "observed")   # observed: emenda C00 3.3.0 (= C25 1.4.0)
 EVIDENCE_STATES = ("UNRESOLVED", "STRUCTURALLY_VALID", "DOC_SUPPORTED", "PERSISTENCE_VERIFIED", "OBSERVATION_TESTED")
 MARKERS = ("NOT_APPLICABLE", "UNKNOWN")
 PERSISTENCE_VALUES = ("PERSISTED", "ALTERED", "REJECTED_BY_API", "NOT_READABLE", "INFRA_ERROR", "UNKNOWN")
@@ -160,7 +160,7 @@ def c00_defs() -> dict:
                    "citation": local("web_citation"), "model_id": local("model_id"), "note": text(3)}, ["level"]),
             "anyOf": [{"required": ["ref"]}, {"required": ["doc"]}, {"required": ["citation"]}],
             "allOf": [{"if": {"properties": {"level": const("interpreted")}}, "then": {"required": ["model_id"]}},
-                      {"if": {"properties": {"level": {"enum": ["published", "derived"]}}},
+                      {"if": {"properties": {"level": {"enum": ["published", "derived", "observed"]}}},
                        "then": {"not": {"required": ["model_id"]}}}]},
         "file_ref": obj({"path": local("portable_path"), "sha256": local("sha256")}, ["path", "sha256"]),
         "term": {"oneOf": [lit, sym, expr, doc, ref, wh, lst],
@@ -216,7 +216,7 @@ def c00_spec() -> dict:
         "modules": arr(local("module"), 1)},
         ["timezone", "env", "index_sets", "contracts", "modules"], extra=True)
     return contract_schema(
-        "C00", "conventions", "3.2.0", "convenções e definições comuns", status="amended",
+        "C00", "conventions", "3.3.0", "convenções e definições comuns", status="amended",
         description="ID = stable_id; onda calculada do DAG; código em $BO_REPO/src/bo/<pacote>/; dados em "
                     "$BO_DATA/<ID>/; temporário em $BO_TMP=$BO_DATA/tmp/<ID> (nunca /tmp); caminhos só com índices "
                     "declarados em index_sets; datas ISO-8601 com fuso America/Recife. $defs comuns a todos os contratos.",

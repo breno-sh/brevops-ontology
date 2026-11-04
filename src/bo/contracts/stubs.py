@@ -780,7 +780,9 @@ def c19() -> dict:
           "endpoints": [{"role": "subnet", "unit_id": "CU-aws-subnet"}, {"role": "route_table", "unit_id": "CU-aws-route-table"}],
           "lifecycle_controller": {"kind": "self"}, "owner": {"kind": "self"}, "effective_scope": {"kind": "parent",
                                                                                                    "ref": "CU-aws-subnet"},
-          "evidence": [EV_REF], "rule_applied": "GRAIN-BINDING-01", "missing_evidence": []}
+          "evidence": [EV_REF, {"level": "observed", "ref": "SE-azurerm-0011",
+                                "note": "observado: run obs-az-01, 2 repetições, com controle"}],
+          "rule_applied": "GRAIN-BINDING-01", "missing_evidence": []}
     u5 = {"unit_id": "CU-aws-peering-options", "provider": "aws", "kind": "FACET",
           "layers": {"terraform": {"resource_type": "aws_vpc_peering_connection_options"}, "domain_unit": "opções do peering"},
           "identity": {"evidence": [EV_REF], "key_fields": ["vpc_peering_connection_id"], "anonymous": False,

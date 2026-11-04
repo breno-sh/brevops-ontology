@@ -1,7 +1,7 @@
 {
  "schema": "bo.contracts_adoption/1",
  "module": "CONTRACTS",
- "generated_at": "2026-11-04T17:21:45-03:00",
+ "generated_at": "2026-11-04T18:34:08-03:00",
  "adopted": [
   {
    "source": "results/REQUIREMENTS/C24_proposta/requirements.schema.json",
@@ -431,6 +431,15 @@
    "requested_by": "SERVICE-EVIDENCE, COORD",
    "source": "SERVICE-EVIDENCE itens 10 e 11 (795bffc); PREREG b95403a",
    "change": "observation_ref em OBS-GAPS(-AZ); tipo spec_disputes com status e resolução por observação; disputes cita publicado ou derivado; aspectos item_identity e namespace_cascade"
+  },
+  {
+   "contract": "C00",
+   "from": "3.2.0",
+   "to": "3.3.0",
+   "at": "2026-11-04T18:45:00-03:00",
+   "requested_by": "PILOT-NET-GLOSS",
+   "source": "results/PILOT-NET-GLOSS/CONTRACT_CHANGE.txt (CC-NET-5)",
+   "change": "evidence_level aceita observed (mesma semântica do C25 1.4.0; sem model_id); o C19 herda"
   }
  ],
  "findings": [
