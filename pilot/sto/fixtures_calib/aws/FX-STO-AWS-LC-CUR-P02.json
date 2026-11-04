@@ -1,0 +1,77 @@
+{
+ "case": "MC-LC-CUR",
+ "context": {},
+ "fixture_id": "FX-STO-AWS-LC-CUR-P02",
+ "polarity": "positive",
+ "provider": "aws",
+ "provider_version": "6.71.0",
+ "read": {
+  "completeness": "complete",
+  "not_read": [],
+  "withheld": []
+ },
+ "schema": "bo.pilot.sto.fixture/1",
+ "split": "calib",
+ "summary": "versionado: expirar a corrente a torna não corrente",
+ "terraform": {
+  "resource": {
+   "aws_s3_bucket": {
+    "data": {
+     "bucket": "fx-data"
+    }
+   },
+   "aws_s3_bucket_lifecycle_configuration": {
+    "data": {
+     "bucket": "${aws_s3_bucket.data.id}",
+     "rule": [
+      {
+       "expiration": [
+        {
+         "days": 30
+        }
+       ],
+       "filter": [
+        {
+         "prefix": ""
+        }
+       ],
+       "id": "expire",
+       "status": "Enabled"
+      }
+     ]
+    }
+   },
+   "aws_s3_bucket_versioning": {
+    "data": {
+     "bucket": "${aws_s3_bucket.data.id}",
+     "versioning_configuration": [
+      {
+       "status": "Enabled"
+      }
+     ]
+    }
+   }
+  }
+ },
+ "timeline": {
+  "container": "aws_s3_bucket.data",
+  "eval_day": 40,
+  "events": [
+   {
+    "day": 0,
+    "key": "old.bin",
+    "op": "put"
+   },
+   {
+    "day": 10,
+    "key": "edge.bin",
+    "op": "put"
+   },
+   {
+    "day": 11,
+    "key": "young.bin",
+    "op": "put"
+   }
+  ]
+ }
+}

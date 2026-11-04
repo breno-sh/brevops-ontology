@@ -1,0 +1,40 @@
+{
+ "case": "MC-DEC-PACK",
+ "context": {},
+ "fixture_id": "FX-STO-GCP-DEC-PACK-U01",
+ "polarity": "unknown",
+ "provider": "google",
+ "provider_version": "8.9.0",
+ "read": {
+  "completeness": "complete",
+  "not_read": [],
+  "withheld": []
+ },
+ "schema": "bo.pilot.sto.fixture/1",
+ "split": "calib",
+ "summary": "concessão IAM com contêiner não resolvido",
+ "terraform": {
+  "resource": {
+   "google_storage_bucket": {
+    "data": {
+     "location": "US",
+     "name": "fx-data",
+     "public_access_prevention": "inherited",
+     "uniform_bucket_level_access": true
+    }
+   },
+   "google_storage_bucket_iam_member": {
+    "grant": {
+     "bucket": "${var.bucket_name}",
+     "member": "allUsers",
+     "role": "roles/storage.objectViewer"
+    }
+   }
+  },
+  "variable": {
+   "bucket_name": {
+    "type": "string"
+   }
+  }
+ }
+}

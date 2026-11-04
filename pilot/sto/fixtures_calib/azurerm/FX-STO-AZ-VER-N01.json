@@ -1,0 +1,63 @@
+{
+ "case": "MC-VER",
+ "context": {},
+ "fixture_id": "FX-STO-AZ-VER-N01",
+ "polarity": "negative",
+ "provider": "azurerm",
+ "provider_version": "5.12.0",
+ "read": {
+  "completeness": "complete",
+  "not_read": [],
+  "withheld": []
+ },
+ "schema": "bo.pilot.sto.fixture/1",
+ "split": "calib",
+ "summary": "alegação 'suspenso = nunca versionado' tem de ser rejeitada",
+ "terraform": {
+  "resource": {
+   "azurerm_storage_account": {
+    "data_acct": {
+     "account_replication_type": "LRS",
+     "account_tier": "Standard",
+     "allow_nested_items_to_be_public": false,
+     "blob_properties": [
+      {
+       "versioning_enabled": false
+      }
+     ],
+     "location": "eastus",
+     "name": "fxdataacct",
+     "resource_group_name": "${var.resource_group_name}"
+    }
+   },
+   "azurerm_storage_container": {
+    "data": {
+     "container_access_type": "private",
+     "name": "data",
+     "storage_account_id": "${azurerm_storage_account.data_acct.id}"
+    }
+   }
+  },
+  "variable": {
+   "resource_group_name": {
+    "type": "string"
+   }
+  }
+ },
+ "timeline": {
+  "container": "azurerm_storage_container.data",
+  "eval_day": 20,
+  "events": [
+   {
+    "day": 0,
+    "op": "set_versioning",
+    "value": true
+   },
+   {
+    "day": 10,
+    "op": "set_versioning",
+    "value": false
+   }
+  ]
+ }
+}

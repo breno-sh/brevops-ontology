@@ -1,0 +1,151 @@
+{
+ "direction_families": {
+  "T1-VERSIONED": "versionamento ligado com sobrescrita e exclusão; vizinho na mesma conta (Azure)",
+  "T2-PUBLIC-READ": "leitura anônima sem listagem",
+  "T3-EXPIRE": "expiração da versão corrente com o dia de fronteira (>= × >)",
+  "T4-NONCURRENT": "exclusão de versões não correntes com relógios diferentes"
+ },
+ "directions": [
+  "aws->google",
+  "aws->azurerm",
+  "aws->oci",
+  "google->aws",
+  "google->azurerm",
+  "google->oci",
+  "azurerm->aws",
+  "azurerm->google",
+  "azurerm->oci",
+  "oci->aws",
+  "oci->google",
+  "oci->azurerm"
+ ],
+ "loss_codes": {
+  "ACCESS_NARROWED": "eixo de acesso público concedido na origem e negado no alvo",
+  "EARLY_DELETION": "versão apagada no alvo que a origem mantém",
+  "EARLY_EXPIRATION": "versão não corrente no alvo que a origem mantém corrente",
+  "EXPIRED_LATER": "versão corrente no alvo que a origem já tornou não corrente",
+  "PUBLIC_WIDENED": "eixo de acesso público negado na origem e concedido no alvo",
+  "RETAINED_LONGER": "versão mantida no alvo que a origem já apagou",
+  "SCOPE_WIDENED": "configuração do alvo alcança contêineres além dos traduzidos",
+  "VERSIONING_STATE_DIFFERS": "estado de versionamento diferente sem perda de versão observável"
+ },
+ "mandatory_cases": {
+  "MC-DEC-PACK": {
+   "answers": [
+    "F1"
+   ],
+   "commitments": [
+    "CMT-BKT-P01",
+    "CMT-BKT-U02"
+   ],
+   "requirements": [
+    "REQ-ENT-01",
+    "REQ-STO-01"
+   ],
+   "title": "decomposição invariante à embalagem (bloco embutido × recurso separado × atributo)"
+  },
+  "MC-DEC-SCOPE": {
+   "answers": [
+    "F1"
+   ],
+   "commitments": [
+    "CMT-BKT-P02",
+    "CMT-BKT-P03",
+    "CMT-BKT-N01",
+    "CMT-BKT-N03",
+    "CMT-LC-U01"
+   ],
+   "requirements": [
+    "REQ-REL-01",
+    "REQ-STO-01"
+   ],
+   "title": "dono × alcance efetivo; conta × contêiner no Azure; nível de conta na AWS; namespace OCI"
+  },
+  "MC-LC-CUR": {
+   "answers": [
+    "F5",
+    "F6"
+   ],
+   "commitments": [
+    "CMT-LOSS-P01"
+   ],
+   "requirements": [
+    "REQ-STO-01"
+   ],
+   "title": "ciclo de vida da versão corrente numa linha do tempo sintética, com o dia de fronteira"
+  },
+  "MC-LC-FILTER": {
+   "answers": [
+    "F5"
+   ],
+   "commitments": [],
+   "requirements": [
+    "REQ-STO-01"
+   ],
+   "title": "aplicabilidade da regra: estado, prefixo, contêiner no prefixo (Azure), exclusão (OCI)"
+  },
+  "MC-LC-NONCUR": {
+   "answers": [
+    "F5",
+    "F6"
+   ],
+   "commitments": [
+    "CMT-LOSS-N02"
+   ],
+   "requirements": [
+    "REQ-STO-01"
+   ],
+   "title": "exclusão de versões não correntes: relógio (desde não corrente × desde criação) e retenção por contagem"
+  },
+  "MC-PUB-GRAN": {
+   "answers": [
+    "F5"
+   ],
+   "commitments": [],
+   "requirements": [
+    "REQ-STO-01"
+   ],
+   "title": "granularidade do acesso público: ler × listar × autenticado qualquer"
+  },
+  "MC-PUB-LEVEL": {
+   "answers": [
+    "F1",
+    "S10"
+   ],
+   "commitments": [
+    "CMT-BKT-N02",
+    "CMT-BKT-U01"
+   ],
+   "requirements": [
+    "REQ-REL-01",
+    "REQ-ABS-01"
+   ],
+   "title": "acesso público efetivo entre níveis (conta, contêiner, política, ACL, propriedade, organização)"
+  },
+  "MC-VER": {
+   "answers": [
+    "F1",
+    "F5"
+   ],
+   "commitments": [
+    "CMT-CFG-P02",
+    "CMT-ID-P01"
+   ],
+   "requirements": [
+    "REQ-STO-01"
+   ],
+   "title": "versionamento efetivo: ligado, suspenso, nunca ligado, transição recusada"
+  }
+ },
+ "never_coverable": [
+  "EARLY_DELETION",
+  "EARLY_EXPIRATION",
+  "PUBLIC_WIDENED"
+ ],
+ "polarities": [
+  "positive",
+  "negative",
+  "unknown"
+ ],
+ "schema": "bo.pilot.sto.mandatory/1"
+}

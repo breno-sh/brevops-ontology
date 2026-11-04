@@ -1,0 +1,95 @@
+{
+ "container_map": {
+  "azurerm_storage_container.src": "aws_s3_bucket.dst"
+ },
+ "declared_losses": [],
+ "direction": "azurerm->aws",
+ "entry_id": "DX-AZ-AWS-T2-acceptable-01",
+ "family": "T2-PUBLIC-READ",
+ "note": "",
+ "schema": "bo.pilot.sto.direction_entry/1",
+ "source": {
+  "context": {},
+  "fixture_id": "DX-AZ-AWS-T2-acceptable-01-S",
+  "provider": "azurerm",
+  "provider_version": "5.12.0",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "azurerm_storage_account": {
+     "src_acct": {
+      "account_replication_type": "LRS",
+      "account_tier": "Standard",
+      "allow_nested_items_to_be_public": true,
+      "location": "eastus",
+      "name": "fxsrcacct",
+      "resource_group_name": "${var.resource_group_name}"
+     }
+    },
+    "azurerm_storage_container": {
+     "src": {
+      "container_access_type": "blob",
+      "name": "src",
+      "storage_account_id": "${azurerm_storage_account.src_acct.id}"
+     }
+    }
+   },
+   "variable": {
+    "resource_group_name": {
+     "type": "string"
+    }
+   }
+  }
+ },
+ "target": {
+  "context": {
+   "account_public_access_block": {
+    "status": "none_configured"
+   }
+  },
+  "fixture_id": "DX-AZ-AWS-T2-acceptable-01-T",
+  "provider": "aws",
+  "provider_version": "6.71.0",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "aws_s3_bucket": {
+     "dst": {
+      "bucket": "fx-dst"
+     }
+    },
+    "aws_s3_bucket_policy": {
+     "dst": {
+      "bucket": "${aws_s3_bucket.dst.id}",
+      "depends_on": [
+       "aws_s3_bucket_public_access_block.dst"
+      ],
+      "policy": "{\"Statement\": [{\"Action\": [\"s3:GetObject\"], \"Effect\": \"Allow\", \"Principal\": \"*\", \"Resource\": \"${aws_s3_bucket.dst.arn}/*\", \"Sid\": \"PublicRead\"}], \"Version\": \"2012-10-17\"}"
+     }
+    },
+    "aws_s3_bucket_public_access_block": {
+     "dst": {
+      "block_public_acls": false,
+      "block_public_policy": false,
+      "bucket": "${aws_s3_bucket.dst.id}",
+      "ignore_public_acls": false,
+      "restrict_public_buckets": false
+     }
+    }
+   }
+  }
+ },
+ "variant": "acceptable"
+}

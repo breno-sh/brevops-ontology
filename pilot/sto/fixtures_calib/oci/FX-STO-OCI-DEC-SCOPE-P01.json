@@ -1,0 +1,52 @@
+{
+ "case": "MC-DEC-SCOPE",
+ "context": {},
+ "fixture_id": "FX-STO-OCI-DEC-SCOPE-P01",
+ "polarity": "positive",
+ "provider": "oci",
+ "provider_version": "9.11.0",
+ "read": {
+  "completeness": "complete",
+  "not_read": [],
+  "withheld": []
+ },
+ "schema": "bo.pilot.sto.fixture/1",
+ "split": "calib",
+ "summary": "ciclo de vida do contêiner: faceta com alcance próprio",
+ "terraform": {
+  "resource": {
+   "oci_objectstorage_bucket": {
+    "logs": {
+     "access_type": "NoPublicAccess",
+     "compartment_id": "${var.compartment_id}",
+     "name": "fx-logs",
+     "namespace": "${var.namespace}"
+    }
+   },
+   "oci_objectstorage_object_lifecycle_policy": {
+    "logs": {
+     "bucket": "${oci_objectstorage_bucket.logs.name}",
+     "namespace": "${var.namespace}",
+     "rules": [
+      {
+       "action": "DELETE",
+       "is_enabled": true,
+       "name": "expire",
+       "target": "objects",
+       "time_amount": 30,
+       "time_unit": "DAYS"
+      }
+     ]
+    }
+   }
+  },
+  "variable": {
+   "compartment_id": {
+    "type": "string"
+   },
+   "namespace": {
+    "type": "string"
+   }
+  }
+ }
+}

@@ -1,0 +1,36 @@
+{
+ "case": "MC-DEC-SCOPE",
+ "context": {},
+ "fixture_id": "FX-STO-AWS-DEC-SCOPE-N01",
+ "polarity": "negative",
+ "provider": "aws",
+ "provider_version": "6.71.0",
+ "read": {
+  "completeness": "complete",
+  "not_read": [],
+  "withheld": []
+ },
+ "schema": "bo.pilot.sto.fixture/1",
+ "split": "calib",
+ "summary": "bloqueio de conta alegado faceta de um contêiner",
+ "terraform": {
+  "resource": {
+   "aws_s3_account_public_access_block": {
+    "this": {
+     "block_public_acls": true,
+     "block_public_policy": true,
+     "ignore_public_acls": true,
+     "restrict_public_buckets": true
+    }
+   },
+   "aws_s3_bucket": {
+    "logs": {
+     "bucket": "fx-logs"
+    },
+    "media": {
+     "bucket": "fx-media"
+    }
+   }
+  }
+ }
+}

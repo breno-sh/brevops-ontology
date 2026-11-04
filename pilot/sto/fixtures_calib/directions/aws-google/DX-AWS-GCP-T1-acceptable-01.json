@@ -1,0 +1,126 @@
+{
+ "container_map": {
+  "aws_s3_bucket.src": "google_storage_bucket.dst"
+ },
+ "declared_losses": [],
+ "direction": "aws->google",
+ "entry_id": "DX-AWS-GCP-T1-acceptable-01",
+ "family": "T1-VERSIONED",
+ "note": "",
+ "schema": "bo.pilot.sto.direction_entry/1",
+ "source": {
+  "context": {},
+  "fixture_id": "DX-AWS-GCP-T1-acceptable-01-S",
+  "provider": "aws",
+  "provider_version": "6.71.0",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "aws_s3_bucket": {
+     "src": {
+      "bucket": "fx-src"
+     }
+    },
+    "aws_s3_bucket_versioning": {
+     "src": {
+      "bucket": "${aws_s3_bucket.src.id}",
+      "versioning_configuration": [
+       {
+        "status": "Enabled"
+       }
+      ]
+     }
+    }
+   }
+  },
+  "timeline": {
+   "container": "aws_s3_bucket.src",
+   "eval_day": 6,
+   "events": [
+    {
+     "day": 0,
+     "key": "doc.txt",
+     "op": "put"
+    },
+    {
+     "day": 1,
+     "key": "gone.txt",
+     "op": "put"
+    },
+    {
+     "day": 3,
+     "key": "doc.txt",
+     "op": "put"
+    },
+    {
+     "day": 4,
+     "key": "gone.txt",
+     "op": "delete"
+    }
+   ]
+  }
+ },
+ "target": {
+  "context": {},
+  "fixture_id": "DX-AWS-GCP-T1-acceptable-01-T",
+  "provider": "google",
+  "provider_version": "8.9.0",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "google_storage_bucket": {
+     "dst": {
+      "location": "US",
+      "name": "fx-dst",
+      "public_access_prevention": "inherited",
+      "uniform_bucket_level_access": true,
+      "versioning": [
+       {
+        "enabled": true
+       }
+      ]
+     }
+    }
+   }
+  },
+  "timeline": {
+   "container": "google_storage_bucket.dst",
+   "eval_day": 6,
+   "events": [
+    {
+     "day": 0,
+     "key": "doc.txt",
+     "op": "put"
+    },
+    {
+     "day": 1,
+     "key": "gone.txt",
+     "op": "put"
+    },
+    {
+     "day": 3,
+     "key": "doc.txt",
+     "op": "put"
+    },
+    {
+     "day": 4,
+     "key": "gone.txt",
+     "op": "delete"
+    }
+   ]
+  }
+ },
+ "variant": "acceptable"
+}

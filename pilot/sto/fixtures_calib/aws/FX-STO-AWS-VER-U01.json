@@ -1,0 +1,40 @@
+{
+ "case": "MC-VER",
+ "context": {},
+ "fixture_id": "FX-STO-AWS-VER-U01",
+ "polarity": "unknown",
+ "provider": "aws",
+ "provider_version": "6.71.0",
+ "read": {
+  "completeness": "complete",
+  "not_read": [],
+  "withheld": []
+ },
+ "schema": "bo.pilot.sto.fixture/1",
+ "split": "calib",
+ "summary": "versionamento separado com referência não resolvida",
+ "terraform": {
+  "resource": {
+   "aws_s3_bucket": {
+    "data": {
+     "bucket": "fx-data"
+    }
+   },
+   "aws_s3_bucket_versioning": {
+    "data": {
+     "bucket": "${var.bucket_id}",
+     "versioning_configuration": [
+      {
+       "status": "Enabled"
+      }
+     ]
+    }
+   }
+  },
+  "variable": {
+   "bucket_id": {
+    "type": "string"
+   }
+  }
+ }
+}

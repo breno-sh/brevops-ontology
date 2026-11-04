@@ -1,0 +1,74 @@
+{
+ "case": "MC-LC-NONCUR",
+ "context": {},
+ "fixture_id": "FX-STO-GCP-LC-NONCUR-P02",
+ "polarity": "positive",
+ "provider": "google",
+ "provider_version": "8.9.0",
+ "read": {
+  "completeness": "complete",
+  "not_read": [],
+  "withheld": []
+ },
+ "schema": "bo.pilot.sto.fixture/1",
+ "split": "calib",
+ "summary": "apaga quem tem >= 2 versões mais novas",
+ "terraform": {
+  "resource": {
+   "google_storage_bucket": {
+    "data": {
+     "lifecycle_rule": [
+      {
+       "action": [
+        {
+         "type": "Delete"
+        }
+       ],
+       "condition": [
+        {
+         "num_newer_versions": 2,
+         "with_state": "ARCHIVED"
+        }
+       ]
+      }
+     ],
+     "location": "US",
+     "name": "fx-data",
+     "public_access_prevention": "inherited",
+     "uniform_bucket_level_access": true,
+     "versioning": [
+      {
+       "enabled": true
+      }
+     ]
+    }
+   }
+  }
+ },
+ "timeline": {
+  "container": "google_storage_bucket.data",
+  "eval_day": 8,
+  "events": [
+   {
+    "day": 0,
+    "key": "q.dat",
+    "op": "put"
+   },
+   {
+    "day": 1,
+    "key": "q.dat",
+    "op": "put"
+   },
+   {
+    "day": 2,
+    "key": "q.dat",
+    "op": "put"
+   },
+   {
+    "day": 3,
+    "key": "q.dat",
+    "op": "put"
+   }
+  ]
+ }
+}

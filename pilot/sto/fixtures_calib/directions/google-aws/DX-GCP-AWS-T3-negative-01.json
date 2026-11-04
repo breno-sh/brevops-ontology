@@ -1,0 +1,137 @@
+{
+ "container_map": {
+  "google_storage_bucket.src": "aws_s3_bucket.dst"
+ },
+ "declared_losses": [],
+ "direction": "google->aws",
+ "entry_id": "DX-GCP-AWS-T3-negative-01",
+ "family": "T3-EXPIRE",
+ "note": "um dia antes apaga o objeto que a origem mantém",
+ "schema": "bo.pilot.sto.direction_entry/1",
+ "source": {
+  "context": {},
+  "fixture_id": "DX-GCP-AWS-T3-negative-01-S",
+  "provider": "google",
+  "provider_version": "8.9.0",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "google_storage_bucket": {
+     "src": {
+      "lifecycle_rule": [
+       {
+        "action": [
+         {
+          "type": "Delete"
+         }
+        ],
+        "condition": [
+         {
+          "age": 30,
+          "with_state": "LIVE"
+         }
+        ]
+       }
+      ],
+      "location": "US",
+      "name": "fx-src",
+      "public_access_prevention": "inherited",
+      "uniform_bucket_level_access": true
+     }
+    }
+   }
+  },
+  "timeline": {
+   "container": "google_storage_bucket.src",
+   "eval_day": 40,
+   "events": [
+    {
+     "day": 0,
+     "key": "old.bin",
+     "op": "put"
+    },
+    {
+     "day": 10,
+     "key": "edge.bin",
+     "op": "put"
+    },
+    {
+     "day": 11,
+     "key": "young.bin",
+     "op": "put"
+    }
+   ]
+  }
+ },
+ "target": {
+  "context": {},
+  "fixture_id": "DX-GCP-AWS-T3-negative-01-T",
+  "provider": "aws",
+  "provider_version": "6.71.0",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "aws_s3_bucket": {
+     "dst": {
+      "bucket": "fx-dst"
+     }
+    },
+    "aws_s3_bucket_lifecycle_configuration": {
+     "dst": {
+      "bucket": "${aws_s3_bucket.dst.id}",
+      "rule": [
+       {
+        "expiration": [
+         {
+          "days": 29
+         }
+        ],
+        "filter": [
+         {
+          "prefix": ""
+         }
+        ],
+        "id": "expire",
+        "status": "Enabled"
+       }
+      ]
+     }
+    }
+   }
+  },
+  "timeline": {
+   "container": "aws_s3_bucket.dst",
+   "eval_day": 40,
+   "events": [
+    {
+     "day": 0,
+     "key": "old.bin",
+     "op": "put"
+    },
+    {
+     "day": 10,
+     "key": "edge.bin",
+     "op": "put"
+    },
+    {
+     "day": 11,
+     "key": "young.bin",
+     "op": "put"
+    }
+   ]
+  }
+ },
+ "variant": "negative"
+}

@@ -1,0 +1,53 @@
+{
+ "case": "MC-VER",
+ "context": {},
+ "fixture_id": "FX-STO-OCI-VER-P01",
+ "polarity": "positive",
+ "provider": "oci",
+ "provider_version": "9.11.0",
+ "read": {
+  "completeness": "complete",
+  "not_read": [],
+  "withheld": []
+ },
+ "schema": "bo.pilot.sto.fixture/1",
+ "split": "calib",
+ "summary": "versionamento ['Enabled', 'Suspended'] → SUSPENDED",
+ "terraform": {
+  "resource": {
+   "oci_objectstorage_bucket": {
+    "data": {
+     "access_type": "NoPublicAccess",
+     "compartment_id": "${var.compartment_id}",
+     "name": "fx-data",
+     "namespace": "${var.namespace}",
+     "versioning": "Suspended"
+    }
+   }
+  },
+  "variable": {
+   "compartment_id": {
+    "type": "string"
+   },
+   "namespace": {
+    "type": "string"
+   }
+  }
+ },
+ "timeline": {
+  "container": "oci_objectstorage_bucket.data",
+  "eval_day": 20,
+  "events": [
+   {
+    "day": 0,
+    "op": "set_versioning",
+    "value": "Enabled"
+   },
+   {
+    "day": 10,
+    "op": "set_versioning",
+    "value": "Suspended"
+   }
+  ]
+ }
+}

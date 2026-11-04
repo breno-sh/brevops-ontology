@@ -1,0 +1,74 @@
+{
+ "case": "MC-LC-CUR",
+ "context": {},
+ "fixture_id": "FX-STO-OCI-LC-CUR-U01",
+ "polarity": "unknown",
+ "provider": "oci",
+ "provider_version": "9.11.0",
+ "read": {
+  "completeness": "complete",
+  "not_read": [],
+  "withheld": []
+ },
+ "schema": "bo.pilot.sto.fixture/1",
+ "split": "calib",
+ "summary": "DELETE na corrente em contêiner versionado: doc fixada não decide",
+ "terraform": {
+  "resource": {
+   "oci_objectstorage_bucket": {
+    "data": {
+     "access_type": "NoPublicAccess",
+     "compartment_id": "${var.compartment_id}",
+     "name": "fx-data",
+     "namespace": "${var.namespace}",
+     "versioning": "Enabled"
+    }
+   },
+   "oci_objectstorage_object_lifecycle_policy": {
+    "data": {
+     "bucket": "${oci_objectstorage_bucket.data.name}",
+     "namespace": "${var.namespace}",
+     "rules": [
+      {
+       "action": "DELETE",
+       "is_enabled": true,
+       "name": "expire",
+       "target": "objects",
+       "time_amount": 30,
+       "time_unit": "DAYS"
+      }
+     ]
+    }
+   }
+  },
+  "variable": {
+   "compartment_id": {
+    "type": "string"
+   },
+   "namespace": {
+    "type": "string"
+   }
+  }
+ },
+ "timeline": {
+  "container": "oci_objectstorage_bucket.data",
+  "eval_day": 40,
+  "events": [
+   {
+    "day": 0,
+    "key": "old.bin",
+    "op": "put"
+   },
+   {
+    "day": 10,
+    "key": "edge.bin",
+    "op": "put"
+   },
+   {
+    "day": 11,
+    "key": "young.bin",
+    "op": "put"
+   }
+  ]
+ }
+}

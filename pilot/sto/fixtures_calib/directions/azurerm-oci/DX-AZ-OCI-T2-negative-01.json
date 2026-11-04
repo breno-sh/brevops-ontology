@@ -1,0 +1,84 @@
+{
+ "container_map": {
+  "azurerm_storage_container.src": "oci_objectstorage_bucket.dst"
+ },
+ "declared_losses": [],
+ "direction": "azurerm->oci",
+ "entry_id": "DX-AZ-OCI-T2-negative-01",
+ "family": "T2-PUBLIC-READ",
+ "note": "alvo que também lista: mais público que a origem",
+ "schema": "bo.pilot.sto.direction_entry/1",
+ "source": {
+  "context": {},
+  "fixture_id": "DX-AZ-OCI-T2-negative-01-S",
+  "provider": "azurerm",
+  "provider_version": "5.12.0",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "azurerm_storage_account": {
+     "src_acct": {
+      "account_replication_type": "LRS",
+      "account_tier": "Standard",
+      "allow_nested_items_to_be_public": true,
+      "location": "eastus",
+      "name": "fxsrcacct",
+      "resource_group_name": "${var.resource_group_name}"
+     }
+    },
+    "azurerm_storage_container": {
+     "src": {
+      "container_access_type": "blob",
+      "name": "src",
+      "storage_account_id": "${azurerm_storage_account.src_acct.id}"
+     }
+    }
+   },
+   "variable": {
+    "resource_group_name": {
+     "type": "string"
+    }
+   }
+  }
+ },
+ "target": {
+  "context": {},
+  "fixture_id": "DX-AZ-OCI-T2-negative-01-T",
+  "provider": "oci",
+  "provider_version": "9.11.0",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "oci_objectstorage_bucket": {
+     "dst": {
+      "access_type": "ObjectRead",
+      "compartment_id": "${var.compartment_id}",
+      "name": "fx-dst",
+      "namespace": "${var.namespace}"
+     }
+    }
+   },
+   "variable": {
+    "compartment_id": {
+     "type": "string"
+    },
+    "namespace": {
+     "type": "string"
+    }
+   }
+  }
+ },
+ "variant": "negative"
+}

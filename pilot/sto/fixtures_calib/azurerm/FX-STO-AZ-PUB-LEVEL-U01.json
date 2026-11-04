@@ -1,0 +1,35 @@
+{
+ "case": "MC-PUB-LEVEL",
+ "context": {},
+ "fixture_id": "FX-STO-AZ-PUB-LEVEL-U01",
+ "polarity": "unknown",
+ "provider": "azurerm",
+ "provider_version": "5.12.0",
+ "read": {
+  "completeness": "complete",
+  "not_read": [],
+  "withheld": []
+ },
+ "schema": "bo.pilot.sto.fixture/1",
+ "split": "calib",
+ "summary": "conta não lida (CMT-BKT-U01)",
+ "terraform": {
+  "resource": {
+   "azurerm_storage_container": {
+    "site": {
+     "container_access_type": "container",
+     "name": "site",
+     "storage_account_id": "${var.storage_account_id}"
+    }
+   }
+  },
+  "variable": {
+   "resource_group_name": {
+    "type": "string"
+   },
+   "storage_account_id": {
+    "type": "string"
+   }
+  }
+ }
+}

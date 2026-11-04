@@ -1,0 +1,79 @@
+{
+ "container_map": {
+  "oci_objectstorage_bucket.src": "google_storage_bucket.dst"
+ },
+ "declared_losses": [],
+ "direction": "oci->google",
+ "entry_id": "DX-OCI-GCP-T2-negative-01",
+ "family": "T2-PUBLIC-READ",
+ "note": "alvo que também lista: mais público que a origem",
+ "schema": "bo.pilot.sto.direction_entry/1",
+ "source": {
+  "context": {},
+  "fixture_id": "DX-OCI-GCP-T2-negative-01-S",
+  "provider": "oci",
+  "provider_version": "9.11.0",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "oci_objectstorage_bucket": {
+     "src": {
+      "access_type": "ObjectReadWithoutList",
+      "compartment_id": "${var.compartment_id}",
+      "name": "fx-src",
+      "namespace": "${var.namespace}"
+     }
+    }
+   },
+   "variable": {
+    "compartment_id": {
+     "type": "string"
+    },
+    "namespace": {
+     "type": "string"
+    }
+   }
+  }
+ },
+ "target": {
+  "context": {
+   "org_policy_public_access_prevention": false
+  },
+  "fixture_id": "DX-OCI-GCP-T2-negative-01-T",
+  "provider": "google",
+  "provider_version": "8.9.0",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "google_storage_bucket": {
+     "dst": {
+      "location": "US",
+      "name": "fx-dst",
+      "public_access_prevention": "inherited",
+      "uniform_bucket_level_access": true
+     }
+    },
+    "google_storage_bucket_iam_member": {
+     "dst_public": {
+      "bucket": "${google_storage_bucket.dst.name}",
+      "member": "allUsers",
+      "role": "roles/storage.objectViewer"
+     }
+    }
+   }
+  }
+ },
+ "variant": "negative"
+}

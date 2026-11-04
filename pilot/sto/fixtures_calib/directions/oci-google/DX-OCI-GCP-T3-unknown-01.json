@@ -1,0 +1,148 @@
+{
+ "container_map": {
+  "oci_objectstorage_bucket.src": "google_storage_bucket.dst"
+ },
+ "declared_losses": [],
+ "direction": "oci->google",
+ "entry_id": "DX-OCI-GCP-T3-unknown-01",
+ "family": "T3-EXPIRE",
+ "note": "",
+ "schema": "bo.pilot.sto.direction_entry/1",
+ "source": {
+  "context": {},
+  "fixture_id": "DX-OCI-GCP-T3-unknown-01-S",
+  "provider": "oci",
+  "provider_version": "9.11.0",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "oci_objectstorage_bucket": {
+     "src": {
+      "access_type": "NoPublicAccess",
+      "compartment_id": "${var.compartment_id}",
+      "name": "fx-src",
+      "namespace": "${var.namespace}"
+     }
+    },
+    "oci_objectstorage_object_lifecycle_policy": {
+     "src": {
+      "bucket": "${oci_objectstorage_bucket.src.name}",
+      "namespace": "${var.namespace}",
+      "rules": [
+       {
+        "action": "DELETE",
+        "is_enabled": true,
+        "name": "expire",
+        "target": "objects",
+        "time_amount": 30,
+        "time_unit": "DAYS"
+       }
+      ]
+     }
+    }
+   },
+   "variable": {
+    "compartment_id": {
+     "type": "string"
+    },
+    "namespace": {
+     "type": "string"
+    }
+   }
+  },
+  "timeline": {
+   "container": "oci_objectstorage_bucket.src",
+   "eval_day": 40,
+   "events": [
+    {
+     "day": 0,
+     "key": "old.bin",
+     "op": "put"
+    },
+    {
+     "day": 10,
+     "key": "edge.bin",
+     "op": "put"
+    },
+    {
+     "day": 11,
+     "key": "young.bin",
+     "op": "put"
+    }
+   ]
+  }
+ },
+ "target": {
+  "context": {},
+  "fixture_id": "DX-OCI-GCP-T3-unknown-01-T",
+  "provider": "google",
+  "provider_version": "8.9.0",
+  "read": {
+   "completeness": "partial",
+   "not_read": [
+    {
+     "of": "google_storage_bucket.dst",
+     "what": "lifecycle"
+    }
+   ],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "google_storage_bucket": {
+     "dst": {
+      "lifecycle_rule": [
+       {
+        "action": [
+         {
+          "type": "Delete"
+         }
+        ],
+        "condition": [
+         {
+          "age": 30,
+          "with_state": "LIVE"
+         }
+        ]
+       }
+      ],
+      "location": "US",
+      "name": "fx-dst",
+      "public_access_prevention": "inherited",
+      "uniform_bucket_level_access": true
+     }
+    }
+   }
+  },
+  "timeline": {
+   "container": "google_storage_bucket.dst",
+   "eval_day": 40,
+   "events": [
+    {
+     "day": 0,
+     "key": "old.bin",
+     "op": "put"
+    },
+    {
+     "day": 10,
+     "key": "edge.bin",
+     "op": "put"
+    },
+    {
+     "day": 11,
+     "key": "young.bin",
+     "op": "put"
+    }
+   ]
+  }
+ },
+ "variant": "unknown"
+}

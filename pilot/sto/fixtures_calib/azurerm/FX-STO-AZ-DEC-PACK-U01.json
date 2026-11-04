@@ -1,0 +1,35 @@
+{
+ "case": "MC-DEC-PACK",
+ "context": {},
+ "fixture_id": "FX-STO-AZ-DEC-PACK-U01",
+ "polarity": "unknown",
+ "provider": "azurerm",
+ "provider_version": "5.12.0",
+ "read": {
+  "completeness": "complete",
+  "not_read": [],
+  "withheld": []
+ },
+ "schema": "bo.pilot.sto.fixture/1",
+ "split": "calib",
+ "summary": "contêiner cuja conta não foi lida: dono UNKNOWN",
+ "terraform": {
+  "resource": {
+   "azurerm_storage_container": {
+    "data": {
+     "container_access_type": "private",
+     "name": "data",
+     "storage_account_id": "${var.storage_account_id}"
+    }
+   }
+  },
+  "variable": {
+   "resource_group_name": {
+    "type": "string"
+   },
+   "storage_account_id": {
+    "type": "string"
+   }
+  }
+ }
+}

@@ -1,0 +1,43 @@
+{
+ "case": "MC-DEC-SCOPE",
+ "context": {},
+ "fixture_id": "FX-STO-GCP-DEC-SCOPE-P01",
+ "polarity": "positive",
+ "provider": "google",
+ "provider_version": "8.9.0",
+ "read": {
+  "completeness": "complete",
+  "not_read": [],
+  "withheld": []
+ },
+ "schema": "bo.pilot.sto.fixture/1",
+ "split": "calib",
+ "summary": "ciclo de vida do contêiner: faceta com alcance próprio",
+ "terraform": {
+  "resource": {
+   "google_storage_bucket": {
+    "logs": {
+     "lifecycle_rule": [
+      {
+       "action": [
+        {
+         "type": "Delete"
+        }
+       ],
+       "condition": [
+        {
+         "age": 30,
+         "with_state": "LIVE"
+        }
+       ]
+      }
+     ],
+     "location": "US",
+     "name": "fx-logs",
+     "public_access_prevention": "inherited",
+     "uniform_bucket_level_access": true
+    }
+   }
+  }
+ }
+}

@@ -1,0 +1,58 @@
+{
+ "case": "MC-PUB-LEVEL",
+ "context": {
+  "account_public_access_block": {
+   "status": "none_configured"
+  }
+ },
+ "fixture_id": "FX-STO-AWS-PUB-LEVEL-P01",
+ "polarity": "positive",
+ "provider": "aws",
+ "provider_version": "6.71.0",
+ "read": {
+  "completeness": "complete",
+  "not_read": [],
+  "withheld": []
+ },
+ "schema": "bo.pilot.sto.fixture/1",
+ "split": "calib",
+ "summary": "ACL public-read com os bloqueios desligados (exemplo publicado)",
+ "terraform": {
+  "resource": {
+   "aws_s3_bucket": {
+    "site": {
+     "bucket": "fx-site"
+    }
+   },
+   "aws_s3_bucket_acl": {
+    "site": {
+     "acl": "public-read",
+     "bucket": "${aws_s3_bucket.site.id}",
+     "depends_on": [
+      "aws_s3_bucket_public_access_block.site",
+      "aws_s3_bucket_ownership_controls.site"
+     ]
+    }
+   },
+   "aws_s3_bucket_ownership_controls": {
+    "site": {
+     "bucket": "${aws_s3_bucket.site.id}",
+     "rule": [
+      {
+       "object_ownership": "BucketOwnerPreferred"
+      }
+     ]
+    }
+   },
+   "aws_s3_bucket_public_access_block": {
+    "site": {
+     "block_public_acls": false,
+     "block_public_policy": false,
+     "bucket": "${aws_s3_bucket.site.id}",
+     "ignore_public_acls": false,
+     "restrict_public_buckets": false
+    }
+   }
+  }
+ }
+}

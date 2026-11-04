@@ -1,0 +1,62 @@
+{
+ "case": "MC-PUB-LEVEL",
+ "context": {
+  "account_public_access_block": {
+   "block_public_acls": true,
+   "block_public_policy": true,
+   "ignore_public_acls": true,
+   "restrict_public_buckets": true,
+   "status": "declared"
+  }
+ },
+ "fixture_id": "FX-STO-AWS-PUB-LEVEL-P02",
+ "polarity": "positive",
+ "provider": "aws",
+ "provider_version": "6.71.0",
+ "read": {
+  "completeness": "complete",
+  "not_read": [],
+  "withheld": []
+ },
+ "schema": "bo.pilot.sto.fixture/1",
+ "split": "calib",
+ "summary": "bloqueio da conta ignora a ACL pública",
+ "terraform": {
+  "resource": {
+   "aws_s3_bucket": {
+    "site": {
+     "bucket": "fx-site"
+    }
+   },
+   "aws_s3_bucket_acl": {
+    "site": {
+     "acl": "public-read",
+     "bucket": "${aws_s3_bucket.site.id}",
+     "depends_on": [
+      "aws_s3_bucket_public_access_block.site",
+      "aws_s3_bucket_ownership_controls.site"
+     ]
+    }
+   },
+   "aws_s3_bucket_ownership_controls": {
+    "site": {
+     "bucket": "${aws_s3_bucket.site.id}",
+     "rule": [
+      {
+       "object_ownership": "BucketOwnerPreferred"
+      }
+     ]
+    }
+   },
+   "aws_s3_bucket_public_access_block": {
+    "site": {
+     "block_public_acls": false,
+     "block_public_policy": false,
+     "bucket": "${aws_s3_bucket.site.id}",
+     "ignore_public_acls": false,
+     "restrict_public_buckets": false
+    }
+   }
+  }
+ }
+}

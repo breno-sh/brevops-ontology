@@ -1,0 +1,47 @@
+{
+ "case": "MC-DEC-PACK",
+ "context": {},
+ "fixture_id": "FX-STO-AZ-DEC-PACK-N01",
+ "polarity": "negative",
+ "provider": "azurerm",
+ "provider_version": "5.12.0",
+ "read": {
+  "completeness": "complete",
+  "not_read": [],
+  "withheld": []
+ },
+ "schema": "bo.pilot.sto.fixture/1",
+ "split": "calib",
+ "summary": "versionamento da conta registrado como faceta de um contêiner (CMT-BKT-N03)",
+ "terraform": {
+  "resource": {
+   "azurerm_storage_account": {
+    "acct": {
+     "account_replication_type": "LRS",
+     "account_tier": "Standard",
+     "allow_nested_items_to_be_public": false,
+     "blob_properties": [
+      {
+       "versioning_enabled": true
+      }
+     ],
+     "location": "eastus",
+     "name": "fxacct",
+     "resource_group_name": "${var.resource_group_name}"
+    }
+   },
+   "azurerm_storage_container": {
+    "data": {
+     "container_access_type": "private",
+     "name": "data",
+     "storage_account_id": "${azurerm_storage_account.acct.id}"
+    }
+   }
+  },
+  "variable": {
+   "resource_group_name": {
+    "type": "string"
+   }
+  }
+ }
+}

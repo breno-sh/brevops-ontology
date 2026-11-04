@@ -1,0 +1,51 @@
+{
+ "case": "MC-VER",
+ "context": {},
+ "fixture_id": "FX-STO-AWS-VER-N02",
+ "polarity": "negative",
+ "provider": "aws",
+ "provider_version": "6.71.0",
+ "read": {
+  "completeness": "complete",
+  "not_read": [],
+  "withheld": []
+ },
+ "schema": "bo.pilot.sto.fixture/1",
+ "split": "calib",
+ "summary": "voltar a 'Disabled' depois de habilitado: a API recusa",
+ "terraform": {
+  "resource": {
+   "aws_s3_bucket": {
+    "data": {
+     "bucket": "fx-data"
+    }
+   },
+   "aws_s3_bucket_versioning": {
+    "data": {
+     "bucket": "${aws_s3_bucket.data.id}",
+     "versioning_configuration": [
+      {
+       "status": "Disabled"
+      }
+     ]
+    }
+   }
+  }
+ },
+ "timeline": {
+  "container": "aws_s3_bucket.data",
+  "eval_day": 10,
+  "events": [
+   {
+    "day": 0,
+    "op": "set_versioning",
+    "value": "Enabled"
+   },
+   {
+    "day": 10,
+    "op": "set_versioning",
+    "value": "Disabled"
+   }
+  ]
+ }
+}

@@ -1,0 +1,51 @@
+{
+ "case": "MC-VER",
+ "context": {},
+ "fixture_id": "FX-STO-AWS-VER-P01",
+ "polarity": "positive",
+ "provider": "aws",
+ "provider_version": "6.71.0",
+ "read": {
+  "completeness": "complete",
+  "not_read": [],
+  "withheld": []
+ },
+ "schema": "bo.pilot.sto.fixture/1",
+ "split": "calib",
+ "summary": "versionamento ['Enabled', 'Suspended'] → SUSPENDED",
+ "terraform": {
+  "resource": {
+   "aws_s3_bucket": {
+    "data": {
+     "bucket": "fx-data"
+    }
+   },
+   "aws_s3_bucket_versioning": {
+    "data": {
+     "bucket": "${aws_s3_bucket.data.id}",
+     "versioning_configuration": [
+      {
+       "status": "Suspended"
+      }
+     ]
+    }
+   }
+  }
+ },
+ "timeline": {
+  "container": "aws_s3_bucket.data",
+  "eval_day": 20,
+  "events": [
+   {
+    "day": 0,
+    "op": "set_versioning",
+    "value": "Enabled"
+   },
+   {
+    "day": 10,
+    "op": "set_versioning",
+    "value": "Suspended"
+   }
+  ]
+ }
+}

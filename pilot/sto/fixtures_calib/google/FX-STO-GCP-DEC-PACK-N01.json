@@ -1,0 +1,33 @@
+{
+ "case": "MC-DEC-PACK",
+ "context": {},
+ "fixture_id": "FX-STO-GCP-DEC-PACK-N01",
+ "polarity": "negative",
+ "provider": "google",
+ "provider_version": "8.9.0",
+ "read": {
+  "completeness": "complete",
+  "not_read": [],
+  "withheld": []
+ },
+ "schema": "bo.pilot.sto.fixture/1",
+ "split": "calib",
+ "summary": "bloco embutido alegado com dono diferente do contêiner",
+ "terraform": {
+  "resource": {
+   "google_storage_bucket": {
+    "data": {
+     "location": "US",
+     "name": "fx-data",
+     "public_access_prevention": "inherited",
+     "uniform_bucket_level_access": true,
+     "versioning": [
+      {
+       "enabled": true
+      }
+     ]
+    }
+   }
+  }
+ }
+}

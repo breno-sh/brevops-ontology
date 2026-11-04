@@ -1,0 +1,128 @@
+{
+ "container_map": {
+  "oci_objectstorage_bucket.src": "google_storage_bucket.dst"
+ },
+ "declared_losses": [],
+ "direction": "oci->google",
+ "entry_id": "DX-OCI-GCP-T1-negative-01",
+ "family": "T1-VERSIONED",
+ "note": "alvo sem versionamento perde as versões sobrescritas e excluídas",
+ "schema": "bo.pilot.sto.direction_entry/1",
+ "source": {
+  "context": {},
+  "fixture_id": "DX-OCI-GCP-T1-negative-01-S",
+  "provider": "oci",
+  "provider_version": "9.11.0",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "oci_objectstorage_bucket": {
+     "src": {
+      "access_type": "NoPublicAccess",
+      "compartment_id": "${var.compartment_id}",
+      "name": "fx-src",
+      "namespace": "${var.namespace}",
+      "versioning": "Enabled"
+     }
+    }
+   },
+   "variable": {
+    "compartment_id": {
+     "type": "string"
+    },
+    "namespace": {
+     "type": "string"
+    }
+   }
+  },
+  "timeline": {
+   "container": "oci_objectstorage_bucket.src",
+   "eval_day": 6,
+   "events": [
+    {
+     "day": 0,
+     "key": "doc.txt",
+     "op": "put"
+    },
+    {
+     "day": 1,
+     "key": "gone.txt",
+     "op": "put"
+    },
+    {
+     "day": 3,
+     "key": "doc.txt",
+     "op": "put"
+    },
+    {
+     "day": 4,
+     "key": "gone.txt",
+     "op": "delete"
+    }
+   ]
+  }
+ },
+ "target": {
+  "context": {},
+  "fixture_id": "DX-OCI-GCP-T1-negative-01-T",
+  "provider": "google",
+  "provider_version": "8.9.0",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "google_storage_bucket": {
+     "dst": {
+      "location": "US",
+      "name": "fx-dst",
+      "public_access_prevention": "inherited",
+      "uniform_bucket_level_access": true,
+      "versioning": [
+       {
+        "enabled": false
+       }
+      ]
+     }
+    }
+   }
+  },
+  "timeline": {
+   "container": "google_storage_bucket.dst",
+   "eval_day": 6,
+   "events": [
+    {
+     "day": 0,
+     "key": "doc.txt",
+     "op": "put"
+    },
+    {
+     "day": 1,
+     "key": "gone.txt",
+     "op": "put"
+    },
+    {
+     "day": 3,
+     "key": "doc.txt",
+     "op": "put"
+    },
+    {
+     "day": 4,
+     "key": "gone.txt",
+     "op": "delete"
+    }
+   ]
+  }
+ },
+ "variant": "negative"
+}

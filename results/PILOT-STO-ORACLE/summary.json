@@ -1,0 +1,77 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "PILOT-STO-ORACLE",
+ "generated_at": "2026-11-04T02:38:26-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-STO-ORACLE.txt",
+  "brief_sha256": "dcc0cad3880b87ac5e3efb55c1feb1b019f4e455d371d3fb8242169c5e6db1d3",
+  "params": {
+   "oracle_version": "1.0.0",
+   "calib_fixtures": "121",
+   "calib_direction_entries": "181",
+   "heldout_items": "302",
+   "providers": "aws:6.71.0,google:8.9.0,azurerm:5.12.0,oci:9.11.0",
+   "seal": "openssl-cms-aes256-D15",
+   "rules": "78"
+  },
+  "inputs": [
+   {
+    "path": "$BO_REPO/requirements/commitments.jsonl",
+    "kind": "file",
+    "sha256": "038f73fcebedfbf3b5ff3d23b1ff0758a87e8be2616b141b232628e1a64d1438"
+   },
+   {
+    "path": "$BO_REPO/semantics/SEMANTICS.html",
+    "kind": "file",
+    "sha256": "28f849eb578fea685935a2499cd13710e8a96b6cd01e4bc34419ae0e51f29596"
+   },
+   {
+    "path": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl",
+    "kind": "file",
+    "sha256": "50bc893ff48a2ce45b76e4260d6642b5a5014ad71a1067b34d70b1933ee5653b"
+   }
+  ],
+  "recorded_at": "2026-11-04T02:38:26-03:00"
+ },
+ "sources": [
+  {
+   "uri": "https://github.com/hashicorp/terraform-provider-aws (v6.71.0, website/docs/r)",
+   "license": "MPL-2.0",
+   "transformation": "frases citadas por linha nas regras do oráculo; exemplos reproduzidos nos testes"
+  },
+  {
+   "uri": "https://github.com/hashicorp/terraform-provider-google (v8.9.0, website/docs/r)",
+   "license": "MPL-2.0",
+   "transformation": "idem"
+  },
+  {
+   "uri": "https://github.com/hashicorp/terraform-provider-azurerm (v5.12.0, website/docs/r)",
+   "license": "MPL-2.0",
+   "transformation": "idem"
+  },
+  {
+   "uri": "https://github.com/oracle/terraform-provider-oci (v9.11.0, website/docs/r)",
+   "license": "MPL-2.0",
+   "transformation": "idem"
+  },
+  {
+   "uri": "$BO_DATA/downloads/prefetch/{provider}/{versão}/providers-schema.json",
+   "license": "MPL-2.0 (providers Terraform)",
+   "transformation": "conferência de atributos das fixtures (schema_check)"
+  },
+  {
+   "uri": "requirements/commitments.jsonl",
+   "license": "interno (REQUIREMENTS)",
+   "transformation": "compromissos BUCKET/LOSS/LC/ABS viram casos obrigatórios"
+  },
+  {
+   "uri": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl",
+   "license": "interno (SERVICE-EVIDENCE)",
+   "transformation": "dono, alcance e ciclo de vida citados por evidence_id"
+  }
+ ],
+ "notes": "oráculo offline STO; retidas só cifradas com o certificado da VM (D15); nada lido do glossário ou do mapeamento"
+}

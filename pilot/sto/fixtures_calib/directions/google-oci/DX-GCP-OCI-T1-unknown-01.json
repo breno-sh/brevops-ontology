@@ -1,0 +1,133 @@
+{
+ "container_map": {
+  "google_storage_bucket.src": "oci_objectstorage_bucket.dst"
+ },
+ "declared_losses": [],
+ "direction": "google->oci",
+ "entry_id": "DX-GCP-OCI-T1-unknown-01",
+ "family": "T1-VERSIONED",
+ "note": "",
+ "schema": "bo.pilot.sto.direction_entry/1",
+ "source": {
+  "context": {},
+  "fixture_id": "DX-GCP-OCI-T1-unknown-01-S",
+  "provider": "google",
+  "provider_version": "8.9.0",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "google_storage_bucket": {
+     "src": {
+      "location": "US",
+      "name": "fx-src",
+      "public_access_prevention": "inherited",
+      "uniform_bucket_level_access": true,
+      "versioning": [
+       {
+        "enabled": true
+       }
+      ]
+     }
+    }
+   }
+  },
+  "timeline": {
+   "container": "google_storage_bucket.src",
+   "eval_day": 6,
+   "events": [
+    {
+     "day": 0,
+     "key": "doc.txt",
+     "op": "put"
+    },
+    {
+     "day": 1,
+     "key": "gone.txt",
+     "op": "put"
+    },
+    {
+     "day": 3,
+     "key": "doc.txt",
+     "op": "put"
+    },
+    {
+     "day": 4,
+     "key": "gone.txt",
+     "op": "delete"
+    }
+   ]
+  }
+ },
+ "target": {
+  "context": {},
+  "fixture_id": "DX-GCP-OCI-T1-unknown-01-T",
+  "provider": "oci",
+  "provider_version": "9.11.0",
+  "read": {
+   "completeness": "partial",
+   "not_read": [
+    {
+     "of": "oci_objectstorage_bucket.dst",
+     "what": "versioning"
+    }
+   ],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "oci_objectstorage_bucket": {
+     "dst": {
+      "access_type": "NoPublicAccess",
+      "compartment_id": "${var.compartment_id}",
+      "name": "fx-dst",
+      "namespace": "${var.namespace}",
+      "versioning": "Enabled"
+     }
+    }
+   },
+   "variable": {
+    "compartment_id": {
+     "type": "string"
+    },
+    "namespace": {
+     "type": "string"
+    }
+   }
+  },
+  "timeline": {
+   "container": "oci_objectstorage_bucket.dst",
+   "eval_day": 6,
+   "events": [
+    {
+     "day": 0,
+     "key": "doc.txt",
+     "op": "put"
+    },
+    {
+     "day": 1,
+     "key": "gone.txt",
+     "op": "put"
+    },
+    {
+     "day": 3,
+     "key": "doc.txt",
+     "op": "put"
+    },
+    {
+     "day": 4,
+     "key": "gone.txt",
+     "op": "delete"
+    }
+   ]
+  }
+ },
+ "variant": "unknown"
+}

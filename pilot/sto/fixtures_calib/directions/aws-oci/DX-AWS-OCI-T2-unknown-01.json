@@ -1,0 +1,94 @@
+{
+ "container_map": {
+  "aws_s3_bucket.src": "oci_objectstorage_bucket.dst"
+ },
+ "declared_losses": [],
+ "direction": "aws->oci",
+ "entry_id": "DX-AWS-OCI-T2-unknown-01",
+ "family": "T2-PUBLIC-READ",
+ "note": "nível superior do alvo não lido",
+ "schema": "bo.pilot.sto.direction_entry/1",
+ "source": {
+  "context": {
+   "account_public_access_block": {
+    "status": "none_configured"
+   }
+  },
+  "fixture_id": "DX-AWS-OCI-T2-unknown-01-S",
+  "provider": "aws",
+  "provider_version": "6.71.0",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "aws_s3_bucket": {
+     "src": {
+      "bucket": "fx-src"
+     }
+    },
+    "aws_s3_bucket_policy": {
+     "src": {
+      "bucket": "${aws_s3_bucket.src.id}",
+      "depends_on": [
+       "aws_s3_bucket_public_access_block.src"
+      ],
+      "policy": "{\"Statement\": [{\"Action\": [\"s3:GetObject\"], \"Effect\": \"Allow\", \"Principal\": \"*\", \"Resource\": \"${aws_s3_bucket.src.arn}/*\", \"Sid\": \"PublicRead\"}], \"Version\": \"2012-10-17\"}"
+     }
+    },
+    "aws_s3_bucket_public_access_block": {
+     "src": {
+      "block_public_acls": false,
+      "block_public_policy": false,
+      "bucket": "${aws_s3_bucket.src.id}",
+      "ignore_public_acls": false,
+      "restrict_public_buckets": false
+     }
+    }
+   }
+  }
+ },
+ "target": {
+  "context": {},
+  "fixture_id": "DX-AWS-OCI-T2-unknown-01-T",
+  "provider": "oci",
+  "provider_version": "9.11.0",
+  "read": {
+   "completeness": "partial",
+   "not_read": [
+    {
+     "of": "oci_objectstorage_bucket.dst",
+     "what": "public_access"
+    }
+   ],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "oci_objectstorage_bucket": {
+     "dst": {
+      "access_type": "ObjectReadWithoutList",
+      "compartment_id": "${var.compartment_id}",
+      "name": "fx-dst",
+      "namespace": "${var.namespace}"
+     }
+    }
+   },
+   "variable": {
+    "compartment_id": {
+     "type": "string"
+    },
+    "namespace": {
+     "type": "string"
+    }
+   }
+  }
+ },
+ "variant": "unknown"
+}

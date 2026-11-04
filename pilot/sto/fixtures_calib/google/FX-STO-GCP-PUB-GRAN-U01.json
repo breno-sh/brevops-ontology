@@ -1,0 +1,43 @@
+{
+ "case": "MC-PUB-GRAN",
+ "context": {
+  "org_policy_public_access_prevention": false
+ },
+ "fixture_id": "FX-STO-GCP-PUB-GRAN-U01",
+ "polarity": "unknown",
+ "provider": "google",
+ "provider_version": "8.9.0",
+ "read": {
+  "completeness": "complete",
+  "not_read": [],
+  "withheld": []
+ },
+ "schema": "bo.pilot.sto.fixture/1",
+ "split": "calib",
+ "summary": "concessão pública condicionada",
+ "terraform": {
+  "resource": {
+   "google_storage_bucket": {
+    "site": {
+     "location": "US",
+     "name": "fx-site",
+     "public_access_prevention": "inherited",
+     "uniform_bucket_level_access": true
+    }
+   },
+   "google_storage_bucket_iam_member": {
+    "site": {
+     "bucket": "${google_storage_bucket.site.name}",
+     "condition": [
+      {
+       "expression": "request.time < timestamp(\"2030-01-01T00:00:00Z\")",
+       "title": "until"
+      }
+     ],
+     "member": "allUsers",
+     "role": "roles/storage.objectViewer"
+    }
+   }
+  }
+ }
+}

@@ -1,0 +1,47 @@
+{
+ "case": "MC-PUB-GRAN",
+ "context": {
+  "account_public_access_block": {
+   "status": "none_configured"
+  }
+ },
+ "fixture_id": "FX-STO-AWS-PUB-GRAN-U01",
+ "polarity": "unknown",
+ "provider": "aws",
+ "provider_version": "6.71.0",
+ "read": {
+  "completeness": "complete",
+  "not_read": [],
+  "withheld": []
+ },
+ "schema": "bo.pilot.sto.fixture/1",
+ "split": "calib",
+ "summary": "política pública condicionada",
+ "terraform": {
+  "resource": {
+   "aws_s3_bucket": {
+    "site": {
+     "bucket": "fx-site"
+    }
+   },
+   "aws_s3_bucket_policy": {
+    "site": {
+     "bucket": "${aws_s3_bucket.site.id}",
+     "depends_on": [
+      "aws_s3_bucket_public_access_block.site"
+     ],
+     "policy": "{\"Statement\": [{\"Action\": [\"s3:GetObject\"], \"Condition\": {\"Bool\": {\"aws:SecureTransport\": \"true\"}}, \"Effect\": \"Allow\", \"Principal\": \"*\", \"Resource\": \"${aws_s3_bucket.site.arn}/*\", \"Sid\": \"PublicRead\"}], \"Version\": \"2012-10-17\"}"
+    }
+   },
+   "aws_s3_bucket_public_access_block": {
+    "site": {
+     "block_public_acls": false,
+     "block_public_policy": false,
+     "bucket": "${aws_s3_bucket.site.id}",
+     "ignore_public_acls": false,
+     "restrict_public_buckets": false
+    }
+   }
+  }
+ }
+}

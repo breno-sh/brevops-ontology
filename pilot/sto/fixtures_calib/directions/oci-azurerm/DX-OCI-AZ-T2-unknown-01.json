@@ -1,0 +1,89 @@
+{
+ "container_map": {
+  "oci_objectstorage_bucket.src": "azurerm_storage_container.dst"
+ },
+ "declared_losses": [],
+ "direction": "oci->azurerm",
+ "entry_id": "DX-OCI-AZ-T2-unknown-01",
+ "family": "T2-PUBLIC-READ",
+ "note": "nível superior do alvo não lido",
+ "schema": "bo.pilot.sto.direction_entry/1",
+ "source": {
+  "context": {},
+  "fixture_id": "DX-OCI-AZ-T2-unknown-01-S",
+  "provider": "oci",
+  "provider_version": "9.11.0",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "oci_objectstorage_bucket": {
+     "src": {
+      "access_type": "ObjectReadWithoutList",
+      "compartment_id": "${var.compartment_id}",
+      "name": "fx-src",
+      "namespace": "${var.namespace}"
+     }
+    }
+   },
+   "variable": {
+    "compartment_id": {
+     "type": "string"
+    },
+    "namespace": {
+     "type": "string"
+    }
+   }
+  }
+ },
+ "target": {
+  "context": {},
+  "fixture_id": "DX-OCI-AZ-T2-unknown-01-T",
+  "provider": "azurerm",
+  "provider_version": "5.12.0",
+  "read": {
+   "completeness": "partial",
+   "not_read": [
+    {
+     "of": "azurerm_storage_account.dst_acct",
+     "what": "allow_nested_items_to_be_public"
+    }
+   ],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "azurerm_storage_account": {
+     "dst_acct": {
+      "account_replication_type": "LRS",
+      "account_tier": "Standard",
+      "allow_nested_items_to_be_public": true,
+      "location": "eastus",
+      "name": "fxdstacct",
+      "resource_group_name": "${var.resource_group_name}"
+     }
+    },
+    "azurerm_storage_container": {
+     "dst": {
+      "container_access_type": "blob",
+      "name": "dst",
+      "storage_account_id": "${azurerm_storage_account.dst_acct.id}"
+     }
+    }
+   },
+   "variable": {
+    "resource_group_name": {
+     "type": "string"
+    }
+   }
+  }
+ },
+ "variant": "unknown"
+}

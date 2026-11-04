@@ -1,0 +1,147 @@
+{
+ "container_map": {
+  "oci_objectstorage_bucket.src": "azurerm_storage_container.dst"
+ },
+ "declared_losses": [],
+ "direction": "oci->azurerm",
+ "entry_id": "DX-OCI-AZ-T1-unknown-01",
+ "family": "T1-VERSIONED",
+ "note": "",
+ "schema": "bo.pilot.sto.direction_entry/1",
+ "source": {
+  "context": {},
+  "fixture_id": "DX-OCI-AZ-T1-unknown-01-S",
+  "provider": "oci",
+  "provider_version": "9.11.0",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "oci_objectstorage_bucket": {
+     "src": {
+      "access_type": "NoPublicAccess",
+      "compartment_id": "${var.compartment_id}",
+      "name": "fx-src",
+      "namespace": "${var.namespace}",
+      "versioning": "Enabled"
+     }
+    }
+   },
+   "variable": {
+    "compartment_id": {
+     "type": "string"
+    },
+    "namespace": {
+     "type": "string"
+    }
+   }
+  },
+  "timeline": {
+   "container": "oci_objectstorage_bucket.src",
+   "eval_day": 6,
+   "events": [
+    {
+     "day": 0,
+     "key": "doc.txt",
+     "op": "put"
+    },
+    {
+     "day": 1,
+     "key": "gone.txt",
+     "op": "put"
+    },
+    {
+     "day": 3,
+     "key": "doc.txt",
+     "op": "put"
+    },
+    {
+     "day": 4,
+     "key": "gone.txt",
+     "op": "delete"
+    }
+   ]
+  }
+ },
+ "target": {
+  "context": {},
+  "fixture_id": "DX-OCI-AZ-T1-unknown-01-T",
+  "provider": "azurerm",
+  "provider_version": "5.12.0",
+  "read": {
+   "completeness": "partial",
+   "not_read": [
+    {
+     "of": "azurerm_storage_account.dst_acct",
+     "what": "blob_properties"
+    }
+   ],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "azurerm_storage_account": {
+     "dst_acct": {
+      "account_replication_type": "LRS",
+      "account_tier": "Standard",
+      "allow_nested_items_to_be_public": false,
+      "blob_properties": [
+       {
+        "versioning_enabled": true
+       }
+      ],
+      "location": "eastus",
+      "name": "fxdstacct",
+      "resource_group_name": "${var.resource_group_name}"
+     }
+    },
+    "azurerm_storage_container": {
+     "dst": {
+      "container_access_type": "private",
+      "name": "dst",
+      "storage_account_id": "${azurerm_storage_account.dst_acct.id}"
+     }
+    }
+   },
+   "variable": {
+    "resource_group_name": {
+     "type": "string"
+    }
+   }
+  },
+  "timeline": {
+   "container": "azurerm_storage_container.dst",
+   "eval_day": 6,
+   "events": [
+    {
+     "day": 0,
+     "key": "doc.txt",
+     "op": "put"
+    },
+    {
+     "day": 1,
+     "key": "gone.txt",
+     "op": "put"
+    },
+    {
+     "day": 3,
+     "key": "doc.txt",
+     "op": "put"
+    },
+    {
+     "day": 4,
+     "key": "gone.txt",
+     "op": "delete"
+    }
+   ]
+  }
+ },
+ "variant": "unknown"
+}

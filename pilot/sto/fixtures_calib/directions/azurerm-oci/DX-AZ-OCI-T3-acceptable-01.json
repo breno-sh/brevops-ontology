@@ -1,0 +1,169 @@
+{
+ "container_map": {
+  "azurerm_storage_container.src": "oci_objectstorage_bucket.dst"
+ },
+ "declared_losses": [],
+ "direction": "azurerm->oci",
+ "entry_id": "DX-AZ-OCI-T3-acceptable-01",
+ "family": "T3-EXPIRE",
+ "note": "limite convertido (>= E ≡ > E-1)",
+ "schema": "bo.pilot.sto.direction_entry/1",
+ "source": {
+  "context": {},
+  "fixture_id": "DX-AZ-OCI-T3-acceptable-01-S",
+  "provider": "azurerm",
+  "provider_version": "5.12.0",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "azurerm_storage_account": {
+     "src_acct": {
+      "account_replication_type": "LRS",
+      "account_tier": "Standard",
+      "allow_nested_items_to_be_public": false,
+      "location": "eastus",
+      "name": "fxsrcacct",
+      "resource_group_name": "${var.resource_group_name}"
+     }
+    },
+    "azurerm_storage_container": {
+     "src": {
+      "container_access_type": "private",
+      "name": "src",
+      "storage_account_id": "${azurerm_storage_account.src_acct.id}"
+     }
+    },
+    "azurerm_storage_management_policy": {
+     "src_acct_policy": {
+      "rule": [
+       {
+        "actions": [
+         {
+          "base_blob": [
+           {
+            "delete_after_days_since_modification_greater_than": 29
+           }
+          ]
+         }
+        ],
+        "enabled": true,
+        "filters": [
+         {
+          "blob_types": [
+           "blockBlob"
+          ]
+         }
+        ],
+        "name": "expire"
+       }
+      ],
+      "storage_account_id": "${azurerm_storage_account.src_acct.id}"
+     }
+    }
+   },
+   "variable": {
+    "resource_group_name": {
+     "type": "string"
+    }
+   }
+  },
+  "timeline": {
+   "container": "azurerm_storage_container.src",
+   "eval_day": 40,
+   "events": [
+    {
+     "day": 0,
+     "key": "old.bin",
+     "op": "put"
+    },
+    {
+     "day": 10,
+     "key": "edge.bin",
+     "op": "put"
+    },
+    {
+     "day": 11,
+     "key": "young.bin",
+     "op": "put"
+    }
+   ]
+  }
+ },
+ "target": {
+  "context": {},
+  "fixture_id": "DX-AZ-OCI-T3-acceptable-01-T",
+  "provider": "oci",
+  "provider_version": "9.11.0",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "oci_objectstorage_bucket": {
+     "dst": {
+      "access_type": "NoPublicAccess",
+      "compartment_id": "${var.compartment_id}",
+      "name": "fx-dst",
+      "namespace": "${var.namespace}"
+     }
+    },
+    "oci_objectstorage_object_lifecycle_policy": {
+     "dst": {
+      "bucket": "${oci_objectstorage_bucket.dst.name}",
+      "namespace": "${var.namespace}",
+      "rules": [
+       {
+        "action": "DELETE",
+        "is_enabled": true,
+        "name": "expire",
+        "target": "objects",
+        "time_amount": 30,
+        "time_unit": "DAYS"
+       }
+      ]
+     }
+    }
+   },
+   "variable": {
+    "compartment_id": {
+     "type": "string"
+    },
+    "namespace": {
+     "type": "string"
+    }
+   }
+  },
+  "timeline": {
+   "container": "oci_objectstorage_bucket.dst",
+   "eval_day": 40,
+   "events": [
+    {
+     "day": 0,
+     "key": "old.bin",
+     "op": "put"
+    },
+    {
+     "day": 10,
+     "key": "edge.bin",
+     "op": "put"
+    },
+    {
+     "day": 11,
+     "key": "young.bin",
+     "op": "put"
+    }
+   ]
+  }
+ },
+ "variant": "acceptable"
+}

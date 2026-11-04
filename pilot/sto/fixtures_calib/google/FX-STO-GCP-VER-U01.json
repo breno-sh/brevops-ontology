@@ -1,0 +1,38 @@
+{
+ "case": "MC-VER",
+ "context": {},
+ "fixture_id": "FX-STO-GCP-VER-U01",
+ "polarity": "unknown",
+ "provider": "google",
+ "provider_version": "8.9.0",
+ "read": {
+  "completeness": "partial",
+  "not_read": [
+   {
+    "of": "google_storage_bucket.data",
+    "what": "versioning"
+   }
+  ],
+  "withheld": []
+ },
+ "schema": "bo.pilot.sto.fixture/1",
+ "split": "calib",
+ "summary": "versionamento do contêiner não lido",
+ "terraform": {
+  "resource": {
+   "google_storage_bucket": {
+    "data": {
+     "location": "US",
+     "name": "fx-data",
+     "public_access_prevention": "inherited",
+     "uniform_bucket_level_access": true,
+     "versioning": [
+      {
+       "enabled": true
+      }
+     ]
+    }
+   }
+  }
+ }
+}

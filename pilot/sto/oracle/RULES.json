@@ -1,0 +1,806 @@
+{
+ "docs_root": "$BO_DATA/downloads/",
+ "oracle_version": "1.0.0",
+ "rules": {
+  "AWS-ACL-PUBLIC-READ": {
+   "evidence": [
+    {
+     "file": "docs-aws/v6.71.0/website/docs/r/s3_bucket_acl.html.markdown",
+     "line": 44,
+     "needle": "all bucket objects become publicly exposed"
+    }
+   ],
+   "level": "published"
+  },
+  "AWS-DEFAULT-SECURITY": {
+   "basis": "a doc fixada fala das configurações de segurança padrão do contêiner sem enumerá-las: sem o bloqueio ou o controle de propriedade declarados, o efeito é UNKNOWN",
+   "evidence": [
+    {
+     "file": "docs-aws/v6.71.0/website/docs/r/s3_bucket_acl.html.markdown",
+     "line": 43,
+     "needle": "This example explicitly disables the default S3 bucket security settings"
+    }
+   ],
+   "level": "published"
+  },
+  "AWS-LC-DAYS": {
+   "evidence": [
+    {
+     "file": "docs-aws/v6.71.0/website/docs/r/s3_bucket.html.markdown",
+     "line": 119,
+     "needle": "Number of days after object creation when the specific rule action takes effect"
+    }
+   ],
+   "level": "published"
+  },
+  "AWS-LC-EODM": {
+   "evidence": [
+    {
+     "file": "docs-aws/v6.71.0/website/docs/r/s3_bucket_lifecycle_configuration.html.markdown",
+     "line": 404,
+     "needle": "Whether Amazon S3 will remove a delete marker with no noncurrent versions"
+    }
+   ],
+   "level": "published"
+  },
+  "AWS-LC-EXPIRE-VERSIONED": {
+   "basis": "expirar a versão corrente em contêiner versionado cria marcador (é o marcador 'expirado' de que fala a doc); em não versionado apaga",
+   "evidence": [
+    {
+     "file": "docs-aws/v6.71.0/website/docs/r/s3_bucket.html.markdown",
+     "line": 120,
+     "needle": "direct Amazon S3 to delete expired object delete markers"
+    }
+   ],
+   "level": "derived"
+  },
+  "AWS-LC-FILTER": {
+   "evidence": [
+    {
+     "file": "docs-aws/v6.71.0/website/docs/r/s3_bucket_lifecycle_configuration.html.markdown",
+     "line": 415,
+     "needle": "Prefix identifying one or more objects to which the rule applies"
+    },
+    {
+     "file": "docs-aws/v6.71.0/website/docs/r/s3_bucket_lifecycle_configuration.html.markdown",
+     "line": 412,
+     "needle": "The Lifecycle Rule will apply to any object matching all the predicates"
+    }
+   ],
+   "level": "published"
+  },
+  "AWS-LC-NOMIX": {
+   "evidence": [
+    {
+     "file": "docs-aws/v6.71.0/website/docs/r/s3_bucket.html.markdown",
+     "line": 98,
+     "needle": "`lifecycle_rule` cannot be mixed with the external `aws_s3_bucket_lifecycle_configuration` resource"
+    }
+   ],
+   "level": "published"
+  },
+  "AWS-LC-NONCURRENT": {
+   "evidence": [
+    {
+     "file": "docs-aws/v6.71.0/website/docs/r/s3_bucket_lifecycle_configuration.html.markdown",
+     "line": 423,
+     "needle": "Number of days an object is noncurrent before Amazon S3 can perform the associated action"
+    },
+    {
+     "file": "docs-aws/v6.71.0/website/docs/r/s3_bucket_lifecycle_configuration.html.markdown",
+     "line": 422,
+     "needle": "Number of noncurrent versions Amazon S3 will retain"
+    }
+   ],
+   "level": "published"
+  },
+  "AWS-LC-SINGLE": {
+   "evidence": [
+    {
+     "file": "docs-aws/v6.71.0/website/docs/r/s3_bucket_lifecycle_configuration.html.markdown",
+     "line": 21,
+     "needle": "S3 Buckets only support a single lifecycle configuration"
+    }
+   ],
+   "level": "published"
+  },
+  "AWS-LC-STATUS": {
+   "evidence": [
+    {
+     "file": "docs-aws/v6.71.0/website/docs/r/s3_bucket_lifecycle_configuration.html.markdown",
+     "line": 389,
+     "needle": "Whether the rule is currently being applied. Valid values: `Enabled` or `Disabled`"
+    }
+   ],
+   "level": "published"
+  },
+  "AWS-LC-TRANSITION": {
+   "evidence": [
+    {
+     "file": "docs-aws/v6.71.0/website/docs/r/s3_bucket_lifecycle_configuration.html.markdown",
+     "line": 440,
+     "needle": "Number of days after creation when objects are transitioned"
+    }
+   ],
+   "level": "published"
+  },
+  "AWS-OBJLOCK-VERSIONING": {
+   "evidence": [
+    {
+     "file": "docs-aws/v6.71.0/website/docs/r/s3_bucket.html.markdown",
+     "line": 154,
+     "needle": "Amazon S3 automatically enables versioning for the bucket"
+    },
+    {
+     "file": "docs-aws/v6.71.0/website/docs/r/s3_bucket.html.markdown",
+     "line": 155,
+     "needle": "you can't disable Object Lock or suspend versioning"
+    }
+   ],
+   "level": "published"
+  },
+  "AWS-OWNERSHIP-ENFORCED": {
+   "evidence": [
+    {
+     "file": "docs-aws/v6.71.0/website/docs/r/s3_bucket_ownership_controls.html.markdown",
+     "line": 43,
+     "needle": "ACLs no longer affect permissions to data in the S3 bucket"
+    }
+   ],
+   "level": "published"
+  },
+  "AWS-PAB-ACCOUNT-SCOPE": {
+   "evidence": [
+    {
+     "file": "docs-aws/v6.71.0/website/docs/r/s3_account_public_access_block.html.markdown",
+     "line": 13,
+     "needle": "Each AWS account may only have one S3 Public Access Block configuration"
+    }
+   ],
+   "level": "published"
+  },
+  "AWS-PAB-ACLS": {
+   "evidence": [
+    {
+     "file": "docs-aws/v6.71.0/website/docs/r/s3_bucket_public_access_block.html.markdown",
+     "line": 38,
+     "needle": "PUT Bucket ACL and PUT Object ACL calls fail if the specified ACL allows public access"
+    },
+    {
+     "file": "docs-aws/v6.71.0/website/docs/r/s3_account_public_access_block.html.markdown",
+     "line": 31,
+     "needle": "Whether Amazon S3 should block public ACLs for buckets in this account"
+    }
+   ],
+   "level": "published"
+  },
+  "AWS-PAB-DEFAULTS": {
+   "evidence": [
+    {
+     "file": "docs-aws/v6.71.0/website/docs/r/s3_bucket_public_access_block.html.markdown",
+     "line": 38,
+     "needle": "Defaults to `false`"
+    }
+   ],
+   "level": "published"
+  },
+  "AWS-PAB-IGNORE": {
+   "evidence": [
+    {
+     "file": "docs-aws/v6.71.0/website/docs/r/s3_bucket_public_access_block.html.markdown",
+     "line": 41,
+     "needle": "Amazon S3 ignores public ACLs on this bucket and any objects that it contains"
+    },
+    {
+     "file": "docs-aws/v6.71.0/website/docs/r/s3_account_public_access_block.html.markdown",
+     "line": 33,
+     "needle": "Amazon S3 ignores all public ACLs on buckets in this account"
+    }
+   ],
+   "level": "published"
+  },
+  "AWS-PAB-POLICY": {
+   "evidence": [
+    {
+     "file": "docs-aws/v6.71.0/website/docs/r/s3_bucket_public_access_block.html.markdown",
+     "line": 39,
+     "needle": "Amazon S3 rejects calls to PUT Bucket policy if the specified bucket policy allows public access"
+    },
+    {
+     "file": "docs-aws/v6.71.0/website/docs/r/s3_bucket_public_access_block.html.markdown",
+     "line": 39,
+     "needle": "Enabling this setting does not affect the existing bucket policy"
+    }
+   ],
+   "level": "published"
+  },
+  "AWS-PAB-RESTRICT": {
+   "evidence": [
+    {
+     "file": "docs-aws/v6.71.0/website/docs/r/s3_bucket_public_access_block.html.markdown",
+     "line": 43,
+     "needle": "only the bucket owner and AWS services can access this bucket if it has a public policy"
+    },
+    {
+     "file": "docs-aws/v6.71.0/website/docs/r/s3_account_public_access_block.html.markdown",
+     "line": 34,
+     "needle": "only the bucket owner and AWS Services can access buckets with public policies"
+    }
+   ],
+   "level": "published"
+  },
+  "AWS-POLICY-PUBLIC": {
+   "basis": "declaração Allow com Principal '*' e sem Condition é política pública; com Condition, UNKNOWN (CONDITION_INDETERMINATE); Deny equivalente anula",
+   "evidence": [
+    {
+     "file": "docs-aws/v6.71.0/website/docs/r/s3_bucket_public_access_block.html.markdown",
+     "line": 39,
+     "needle": "if the specified bucket policy allows public access"
+    }
+   ],
+   "level": "interpreted"
+  },
+  "AWS-SUSPENDED-NULL": {
+   "basis": "no S3 suspenso a gravação cria a versão nula e substitui a versão nula anterior; versões com id ficam (guia de versionamento do S3 ligado pela doc)",
+   "evidence": [
+    {
+     "file": "docs-aws/v6.71.0/website/docs/r/s3_bucket_versioning.html.markdown",
+     "line": 15,
+     "needle": "How S3 versioning works"
+    }
+   ],
+   "level": "interpreted"
+  },
+  "AWS-VER-DEFAULT": {
+   "basis": "sem configuração o contêiner nunca foi versionado (a doc fala em 'version-enable a bucket' como ato)",
+   "evidence": [
+    {
+     "file": "docs-aws/v6.71.0/website/docs/r/s3_bucket.html.markdown",
+     "line": 289,
+     "needle": "Once you version-enable a bucket"
+    }
+   ],
+   "level": "derived"
+  },
+  "AWS-VER-INLINE-SUSPEND": {
+   "basis": "enabled=false depois de habilitado = suspenso, pela frase que proíbe voltar a não versionado e permite suspender",
+   "evidence": [
+    {
+     "file": "docs-aws/v6.71.0/website/docs/r/s3_bucket.html.markdown",
+     "line": 289,
+     "needle": "You can, however, suspend versioning on that bucket"
+    }
+   ],
+   "level": "derived"
+  },
+  "AWS-VER-INLINE-VS-SEPARATE": {
+   "evidence": [
+    {
+     "file": "docs-aws/v6.71.0/website/docs/r/s3_bucket.html.markdown",
+     "line": 285,
+     "needle": "To manage changes of versioning state to an S3 bucket, use the `aws_s3_bucket_versioning` resource instead"
+    }
+   ],
+   "level": "published"
+  },
+  "AWS-VER-NO-RETURN": {
+   "evidence": [
+    {
+     "file": "docs-aws/v6.71.0/website/docs/r/s3_bucket_versioning.html.markdown",
+     "line": 104,
+     "needle": "does not support returning buckets to an unversioned state"
+    },
+    {
+     "file": "docs-aws/v6.71.0/website/docs/r/s3_bucket.html.markdown",
+     "line": 289,
+     "needle": "it can never return to an unversioned state"
+    }
+   ],
+   "level": "published"
+  },
+  "AWS-VER-STATUS": {
+   "evidence": [
+    {
+     "file": "docs-aws/v6.71.0/website/docs/r/s3_bucket_versioning.html.markdown",
+     "line": 109,
+     "needle": "Valid values: `Enabled`, `Suspended`, or `Disabled`"
+    }
+   ],
+   "level": "published"
+  },
+  "AZ-ACCESS-LEVELS": {
+   "basis": "blob = leitura anônima de blobs sem listar; container = leitura e listagem (SE-azurerm-jsrgfyqpyvcurgpn liga o efeito ao nível da conta)",
+   "evidence": [],
+   "level": "interpreted"
+  },
+  "AZ-CONTAINER-ACCESS": {
+   "evidence": [
+    {
+     "file": "docs-azurerm/v5.12.0/website/docs/r/storage_container.html.markdown",
+     "line": 48,
+     "needle": "Possible values are `blob`, `container` or `private`. Defaults to `private`"
+    }
+   ],
+   "level": "published"
+  },
+  "AZ-LC-ACCOUNT": {
+   "evidence": [
+    {
+     "file": "docs-azurerm/v5.12.0/website/docs/r/storage_management_policy.html.markdown",
+     "line": 89,
+     "needle": "Specifies the id of the storage account to apply the management policy to"
+    }
+   ],
+   "level": "published"
+  },
+  "AZ-LC-DELETE-VERSIONED": {
+   "basis": "excluir o blob base com versionamento ligado deixa a versão anterior (não corrente)",
+   "evidence": [],
+   "level": "interpreted"
+  },
+  "AZ-LC-ENABLED": {
+   "evidence": [
+    {
+     "file": "docs-azurerm/v5.12.0/website/docs/r/storage_management_policy.html.markdown",
+     "line": 98,
+     "needle": "Boolean to specify whether the rule is enabled"
+    }
+   ],
+   "level": "published"
+  },
+  "AZ-LC-GT": {
+   "evidence": [
+    {
+     "file": "docs-azurerm/v5.12.0/website/docs/r/storage_management_policy.html.markdown",
+     "line": 148,
+     "needle": "The age in days after last modification to delete the blob"
+    },
+    {
+     "file": "docs-azurerm/v5.12.0/website/docs/r/storage_management_policy.html.markdown",
+     "line": 148,
+     "needle": "Defaults to `-1`"
+    }
+   ],
+   "level": "published"
+  },
+  "AZ-LC-PREFIX": {
+   "basis": "prefix_match começa pelo nome do contêiner ('container1/prefix1' no exemplo publicado)",
+   "evidence": [
+    {
+     "file": "docs-azurerm/v5.12.0/website/docs/r/storage_management_policy.html.markdown",
+     "line": 38,
+     "needle": "prefix_match = [\"container1/prefix1\"]"
+    }
+   ],
+   "level": "interpreted"
+  },
+  "AZ-LC-VERSION": {
+   "basis": "version.delete_after_days_since_creation conta da criação da versão (gravação do conteúdo dela), com 'maior que' como os demais limites da política",
+   "evidence": [
+    {
+     "file": "docs-azurerm/v5.12.0/website/docs/r/storage_management_policy.html.markdown",
+     "line": 174,
+     "needle": "The age in days after creation to delete the blob version"
+    }
+   ],
+   "level": "interpreted"
+  },
+  "AZ-NESTED": {
+   "evidence": [
+    {
+     "file": "docs-azurerm/v5.12.0/website/docs/r/storage_account.html.markdown",
+     "line": 123,
+     "needle": "Allow or disallow nested items within this Account to opt into being public. Defaults to `false`"
+    }
+   ],
+   "level": "published"
+  },
+  "AZ-VER-ACCOUNT": {
+   "evidence": [
+    {
+     "file": "docs-azurerm/v5.12.0/website/docs/r/storage_account.html.markdown",
+     "line": 209,
+     "needle": "`versioning_enabled` - (Optional) Is versioning enabled? Default to `false`."
+    }
+   ],
+   "level": "published"
+  },
+  "AZ-VER-SCOPE": {
+   "basis": "o versionamento de blob_properties da conta vale para todo contêiner da conta (compromisso CMT-BKT-P02, nota azurerm; a doc fixada não diz o alcance)",
+   "evidence": [
+    {
+     "file": "docs-azurerm/v5.12.0/website/docs/r/storage_account.html.markdown",
+     "line": 151,
+     "needle": "`blob_properties` - (Optional) A `blob_properties` block"
+    }
+   ],
+   "level": "interpreted"
+  },
+  "AZ-VER-SUSPEND": {
+   "basis": "versioning_enabled=false depois de true = suspenso (versões anteriores ficam)",
+   "evidence": [
+    {
+     "file": "docs-azurerm/v5.12.0/website/docs/r/storage_account.html.markdown",
+     "line": 209,
+     "needle": "Is versioning enabled?"
+    }
+   ],
+   "level": "interpreted"
+  },
+  "DEC-AZ-CONTAINER": {
+   "basis": "SE-azurerm-n2yvw45ffqgp2565 (dono: blobServices da conta) e SE-azurerm-f2gheenu5o33ymps (controlador de ciclo de vida não documentado): dono conhecido, tipo UNKNOWN",
+   "evidence": [],
+   "level": "derived"
+  },
+  "DEC-FACET-REF": {
+   "basis": "recurso separado identificado pelo contêiner (identity schema: bucket obrigatório) é faceta do contêiner (CMT-BKT-P01)",
+   "evidence": [],
+   "level": "derived"
+  },
+  "DEC-OCI-BUCKET": {
+   "basis": "o namespace é escopo de unicidade do nome (bucket_scope NAMESPACE), não pai com ciclo de vida: contêiner é entidade com chave composta",
+   "evidence": [
+    {
+     "file": "docs-oci/website/docs/r/objectstorage_bucket.html.markdown",
+     "line": 66,
+     "needle": "Bucket names must be unique within an Object Storage namespace"
+    }
+   ],
+   "level": "derived"
+  },
+  "DEC-OCI-NAMESPACE": {
+   "basis": "SE de oci_objectstorage_namespace_metadata: dono, alcance e ciclo de vida não documentados",
+   "evidence": [],
+   "level": "derived"
+  },
+  "DEC-OWN-ID": {
+   "basis": "recurso de topo com identidade própria na API e sem pai na evidência = entidade (compromisso CMT-BKT-P03, nota aws/google)",
+   "evidence": [],
+   "level": "derived"
+  },
+  "DELETE-MARKER-AWS": {
+   "basis": "a doc fala de marcadores de exclusão expirados em contêiner versionado ou suspenso: excluir ali cria marcador",
+   "evidence": [
+    {
+     "file": "docs-aws/v6.71.0/website/docs/r/s3_bucket.html.markdown",
+     "line": 120,
+     "needle": "On a versioned bucket (versioning-enabled or versioning-suspended bucket)"
+    }
+   ],
+   "level": "derived"
+  },
+  "DELETE-NOMARKER": {
+   "basis": "GCS e Azure não têm marcador: excluir a versão corrente a torna não corrente; OCI cria marcador (docs de versionamento dos provedores, fora do pin)",
+   "evidence": [],
+   "level": "interpreted"
+  },
+  "GCP-ALLUSERS": {
+   "evidence": [
+    {
+     "file": "docs-google/website/docs/r/storage_bucket_iam.html.markdown",
+     "line": 161,
+     "needle": "A special identifier that represents anyone who is on the internet"
+    },
+    {
+     "file": "docs-google/website/docs/r/storage_bucket_iam.html.markdown",
+     "line": 162,
+     "needle": "anyone who is authenticated with a Google account or a service account"
+    }
+   ],
+   "level": "published"
+  },
+  "GCP-IAM-CONDITION": {
+   "basis": "concessão com condição: a decisão depende do contexto do pedido (CMT-IAM-U03)",
+   "evidence": [],
+   "level": "interpreted"
+  },
+  "GCP-LC-AGE": {
+   "evidence": [
+    {
+     "file": "docs-google/website/docs/r/storage_bucket.html.markdown",
+     "line": 291,
+     "needle": "Minimum age of an object in days to satisfy this condition"
+    }
+   ],
+   "level": "published"
+  },
+  "GCP-LC-AGE0": {
+   "evidence": [
+    {
+     "file": "docs-google/website/docs/r/storage_bucket.html.markdown",
+     "line": 93,
+     "needle": "a default `age` of 0 will be set"
+    }
+   ],
+   "level": "published"
+  },
+  "GCP-LC-ALL": {
+   "evidence": [
+    {
+     "file": "docs-google/website/docs/r/storage_bucket.html.markdown",
+     "line": 289,
+     "needle": "an object has to match all of the conditions for the action to be taken"
+    }
+   ],
+   "level": "published"
+  },
+  "GCP-LC-DELETE-LIVE": {
+   "basis": "Delete na versão viva de contêiner versionado a torna não corrente (arquivada); em não versionado apaga",
+   "evidence": [
+    {
+     "file": "docs-google/website/docs/r/storage_bucket.html.markdown",
+     "line": 285,
+     "needle": "Supported values include: `Delete`, `SetStorageClass`"
+    }
+   ],
+   "level": "interpreted"
+  },
+  "GCP-LC-NEWER": {
+   "evidence": [
+    {
+     "file": "docs-google/website/docs/r/storage_bucket.html.markdown",
+     "line": 303,
+     "needle": "The number of newer versions of an object to satisfy this condition"
+    }
+   ],
+   "level": "published"
+  },
+  "GCP-LC-NONCURRENT": {
+   "evidence": [
+    {
+     "file": "docs-google/website/docs/r/storage_bucket.html.markdown",
+     "line": 315,
+     "needle": "Number of days elapsed since the noncurrent timestamp of an object"
+    }
+   ],
+   "level": "published"
+  },
+  "GCP-LC-PREFIX": {
+   "evidence": [
+    {
+     "file": "docs-google/website/docs/r/storage_bucket.html.markdown",
+     "line": 299,
+     "needle": "One or more matching name prefixes to satisfy this condition"
+    }
+   ],
+   "level": "published"
+  },
+  "GCP-LC-STATE": {
+   "evidence": [
+    {
+     "file": "docs-google/website/docs/r/storage_bucket.html.markdown",
+     "line": 295,
+     "needle": "Match to live and/or archived objects. Unversioned buckets have only live objects"
+    }
+   ],
+   "level": "published"
+  },
+  "GCP-PAP": {
+   "evidence": [
+    {
+     "file": "docs-google/website/docs/r/storage_bucket.html.markdown",
+     "line": 256,
+     "needle": "only if the bucket is subject to the public access prevention organization policy constraint"
+    }
+   ],
+   "level": "published"
+  },
+  "GCP-PAP-INHERITED": {
+   "basis": "SE-google-2lbhng4aavw3ulnv: inherited só impede se a política da organização impõe; política não lida = UNKNOWN",
+   "evidence": [
+    {
+     "file": "docs-google/website/docs/r/storage_bucket.html.markdown",
+     "line": 256,
+     "needle": "Defaults to \"inherited\""
+    }
+   ],
+   "level": "interpreted"
+  },
+  "GCP-ROLE-PERMS": {
+   "basis": "objectViewer lê e lista; legacyObjectReader só lê; legacyBucketReader só lista (tabela de papéis do IAM do Cloud Storage, fora do pin)",
+   "evidence": [],
+   "level": "interpreted"
+  },
+  "GCP-UBLA": {
+   "basis": "com acesso uniforme no nível do contêiner as ACLs deixam de valer; só o IAM concede (SE-google-wpq2kb4u5hopohcz cita a coexistência de ACL e IAM)",
+   "evidence": [
+    {
+     "file": "docs-google/website/docs/r/storage_bucket.html.markdown",
+     "line": 254,
+     "needle": "Enables [Uniform bucket-level access]"
+    }
+   ],
+   "level": "interpreted"
+  },
+  "GCP-VER-DEFAULT": {
+   "basis": "bloco versioning ausente = nunca versionado; marcado como padrão, não configurado",
+   "evidence": [
+    {
+     "file": "docs-google/website/docs/r/storage_bucket.html.markdown",
+     "line": 231,
+     "needle": "(Optional) The bucket's [Versioning]"
+    }
+   ],
+   "level": "interpreted"
+  },
+  "GCP-VER-ENABLED": {
+   "evidence": [
+    {
+     "file": "docs-google/website/docs/r/storage_bucket.html.markdown",
+     "line": 333,
+     "needle": "While set to `true`, versioning is fully enabled for this bucket"
+    }
+   ],
+   "level": "published"
+  },
+  "GCP-VER-SUSPEND": {
+   "basis": "enabled=false depois de true = suspenso (versões não correntes guardadas, novas gravações sem versão); a doc fixada só diz o que true faz e aponta para a página de versionamento",
+   "evidence": [
+    {
+     "file": "docs-google/website/docs/r/storage_bucket.html.markdown",
+     "line": 231,
+     "needle": "The bucket's [Versioning](https://cloud.google.com/storage/docs/object-versioning) configuration"
+    }
+   ],
+   "level": "interpreted"
+  },
+  "OCI-ACCESS-DEFAULT": {
+   "evidence": [
+    {
+     "file": "docs-oci/website/docs/r/objectstorage_bucket.html.markdown",
+     "line": 57,
+     "needle": "A bucket is set to `NoPublicAccess` by default"
+    }
+   ],
+   "level": "published"
+  },
+  "OCI-ACCESS-TYPE": {
+   "evidence": [
+    {
+     "file": "docs-oci/website/docs/r/objectstorage_bucket.html.markdown",
+     "line": 57,
+     "needle": "When `ObjectRead` is enabled on the bucket, public access is allowed for the `GetObject`, `HeadObject`, and `ListObjects` operations"
+    },
+    {
+     "file": "docs-oci/website/docs/r/objectstorage_bucket.html.markdown",
+     "line": 57,
+     "needle": "When `ObjectReadWithoutList` is enabled on the bucket, public access is allowed for the `GetObject` and `HeadObject` operations"
+    }
+   ],
+   "level": "published"
+  },
+  "OCI-LC-DELETE": {
+   "evidence": [
+    {
+     "file": "docs-oci/website/docs/r/objectstorage_object_lifecycle_policy.html.markdown",
+     "line": 56,
+     "needle": "Rules using the action 'DELETE' permanently delete objects from buckets"
+    }
+   ],
+   "level": "published"
+  },
+  "OCI-LC-ENABLED": {
+   "evidence": [
+    {
+     "file": "docs-oci/website/docs/r/objectstorage_object_lifecycle_policy.html.markdown",
+     "line": 57,
+     "needle": "A Boolean that determines whether this rule is currently enabled"
+    }
+   ],
+   "level": "published"
+  },
+  "OCI-LC-EXCLUDE": {
+   "evidence": [
+    {
+     "file": "docs-oci/website/docs/r/objectstorage_object_lifecycle_policy.html.markdown",
+     "line": 60,
+     "needle": "Exclusion patterns take precedence over inclusion patterns"
+    },
+    {
+     "file": "docs-oci/website/docs/r/objectstorage_object_lifecycle_policy.html.markdown",
+     "line": 72,
+     "needle": "An empty array means to include all objects"
+    }
+   ],
+   "level": "published"
+  },
+  "OCI-LC-LASTMOD": {
+   "evidence": [
+    {
+     "file": "docs-oci/website/docs/r/objectstorage_object_lifecycle_policy.html.markdown",
+     "line": 74,
+     "needle": "is calculated in relation to each object's Last-Modified time"
+    }
+   ],
+   "level": "published"
+  },
+  "OCI-LC-TARGET": {
+   "evidence": [
+    {
+     "file": "docs-oci/website/docs/r/objectstorage_object_lifecycle_policy.html.markdown",
+     "line": 73,
+     "needle": "\"previous-object-versions\" is used to specify ARCHIVE, INFREQUENT_ACCESS or DELETE rule for previous versions"
+    }
+   ],
+   "level": "published"
+  },
+  "OCI-LC-UNIT": {
+   "evidence": [
+    {
+     "file": "docs-oci/website/docs/r/objectstorage_object_lifecycle_policy.html.markdown",
+     "line": 75,
+     "needle": "Years are defined as 365.2425 days long and likewise round up to the next midnight UTC"
+    }
+   ],
+   "level": "published"
+  },
+  "OCI-LC-VERSIONED-CONFLICT": {
+   "basis": "a frase fixada diz que DELETE apaga permanentemente; para a versão corrente num contêiner versionado a doc fixada não diz se vira versão anterior: UNKNOWN",
+   "evidence": [
+    {
+     "file": "docs-oci/website/docs/r/objectstorage_object_lifecycle_policy.html.markdown",
+     "line": 56,
+     "needle": "permanently delete objects from buckets"
+    }
+   ],
+   "level": "published"
+  },
+  "OCI-VER-DEFAULT": {
+   "evidence": [
+    {
+     "file": "docs-oci/website/docs/r/objectstorage_bucket.html.markdown",
+     "line": 76,
+     "needle": "By default, a bucket is created with versioning `Disabled`"
+    }
+   ],
+   "level": "published"
+  },
+  "OCI-VER-VALUES": {
+   "evidence": [
+    {
+     "file": "docs-oci/website/docs/r/objectstorage_bucket.html.markdown",
+     "line": 76,
+     "needle": "Allowed Create values: Enabled, Disabled. Allowed Update values: Enabled, Suspended."
+    }
+   ],
+   "level": "published"
+  },
+  "READ-INCOMPLETE": {
+   "basis": "CMT-BKT-U01 e REQ-ABS-01: nível que pode mudar a resposta e não foi lido dá UNKNOWN",
+   "evidence": [],
+   "level": "derived"
+  },
+  "REF-UNRESOLVED": {
+   "basis": "CMT-BKT-U02: referência não resolvida ao contêiner dá UNKNOWN com a evidência que falta",
+   "evidence": [],
+   "level": "derived"
+  },
+  "UNSUPPORTED": {
+   "basis": "recurso da configuração fora do que o oráculo modela: UNKNOWN, nunca valor inventado",
+   "evidence": [],
+   "level": "derived"
+  },
+  "WRITE-UNVERSIONED": {
+   "basis": "sem versionamento, regravar substitui o objeto (oposto da frase de proteção contra sobrescrita)",
+   "evidence": [
+    {
+     "file": "docs-oci/website/docs/r/objectstorage_bucket.html.markdown",
+     "line": 76,
+     "needle": "Objects in a version enabled bucket are protected from overwrites and deletions"
+    }
+   ],
+   "level": "derived"
+  },
+  "WRITE-VERSIONED": {
+   "evidence": [
+    {
+     "file": "docs-oci/website/docs/r/objectstorage_bucket.html.markdown",
+     "line": 76,
+     "needle": "Previous versions of the same object will be available in the bucket"
+    }
+   ],
+   "level": "published"
+  }
+ },
+ "schema": "bo.pilot.sto.rules/1"
+}

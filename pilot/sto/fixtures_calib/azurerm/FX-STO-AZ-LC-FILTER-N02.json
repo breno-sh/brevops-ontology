@@ -1,0 +1,88 @@
+{
+ "case": "MC-LC-FILTER",
+ "context": {},
+ "fixture_id": "FX-STO-AZ-LC-FILTER-N02",
+ "polarity": "negative",
+ "provider": "azurerm",
+ "provider_version": "5.12.0",
+ "read": {
+  "completeness": "complete",
+  "not_read": [],
+  "withheld": []
+ },
+ "schema": "bo.pilot.sto.fixture/1",
+ "split": "calib",
+ "summary": "objeto de outro contêiner da conta alegado expirado pela regra do primeiro",
+ "terraform": {
+  "resource": {
+   "azurerm_storage_account": {
+    "acct": {
+     "account_replication_type": "LRS",
+     "account_tier": "Standard",
+     "allow_nested_items_to_be_public": false,
+     "location": "eastus",
+     "name": "fxacct",
+     "resource_group_name": "${var.resource_group_name}"
+    }
+   },
+   "azurerm_storage_container": {
+    "logs": {
+     "container_access_type": "private",
+     "name": "logs",
+     "storage_account_id": "${azurerm_storage_account.acct.id}"
+    },
+    "media": {
+     "container_access_type": "private",
+     "name": "media",
+     "storage_account_id": "${azurerm_storage_account.acct.id}"
+    }
+   },
+   "azurerm_storage_management_policy": {
+    "acct_policy": {
+     "rule": [
+      {
+       "actions": [
+        {
+         "base_blob": [
+          {
+           "delete_after_days_since_modification_greater_than": 9
+          }
+         ]
+        }
+       ],
+       "enabled": true,
+       "filters": [
+        {
+         "blob_types": [
+          "blockBlob"
+         ],
+         "prefix_match": [
+          "logs/logs/"
+         ]
+        }
+       ],
+       "name": "expire"
+      }
+     ],
+     "storage_account_id": "${azurerm_storage_account.acct.id}"
+    }
+   }
+  },
+  "variable": {
+   "resource_group_name": {
+    "type": "string"
+   }
+  }
+ },
+ "timeline": {
+  "container": "azurerm_storage_container.media",
+  "eval_day": 15,
+  "events": [
+   {
+    "day": 0,
+    "key": "logs/c.txt",
+    "op": "put"
+   }
+  ]
+ }
+}

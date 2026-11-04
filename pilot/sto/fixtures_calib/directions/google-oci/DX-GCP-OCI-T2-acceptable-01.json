@@ -1,0 +1,79 @@
+{
+ "container_map": {
+  "google_storage_bucket.src": "oci_objectstorage_bucket.dst"
+ },
+ "declared_losses": [],
+ "direction": "google->oci",
+ "entry_id": "DX-GCP-OCI-T2-acceptable-01",
+ "family": "T2-PUBLIC-READ",
+ "note": "",
+ "schema": "bo.pilot.sto.direction_entry/1",
+ "source": {
+  "context": {
+   "org_policy_public_access_prevention": false
+  },
+  "fixture_id": "DX-GCP-OCI-T2-acceptable-01-S",
+  "provider": "google",
+  "provider_version": "8.9.0",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "google_storage_bucket": {
+     "src": {
+      "location": "US",
+      "name": "fx-src",
+      "public_access_prevention": "inherited",
+      "uniform_bucket_level_access": true
+     }
+    },
+    "google_storage_bucket_iam_member": {
+     "src_public": {
+      "bucket": "${google_storage_bucket.src.name}",
+      "member": "allUsers",
+      "role": "roles/storage.legacyObjectReader"
+     }
+    }
+   }
+  }
+ },
+ "target": {
+  "context": {},
+  "fixture_id": "DX-GCP-OCI-T2-acceptable-01-T",
+  "provider": "oci",
+  "provider_version": "9.11.0",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "oci_objectstorage_bucket": {
+     "dst": {
+      "access_type": "ObjectReadWithoutList",
+      "compartment_id": "${var.compartment_id}",
+      "name": "fx-dst",
+      "namespace": "${var.namespace}"
+     }
+    }
+   },
+   "variable": {
+    "compartment_id": {
+     "type": "string"
+    },
+    "namespace": {
+     "type": "string"
+    }
+   }
+  }
+ },
+ "variant": "acceptable"
+}

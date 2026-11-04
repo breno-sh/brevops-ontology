@@ -1,0 +1,31 @@
+{
+ "case": "MC-DEC-PACK",
+ "context": {},
+ "fixture_id": "FX-STO-AWS-DEC-PACK-P01",
+ "invariant_group": "INV-AWS-VERSIONING",
+ "polarity": "positive",
+ "provider": "aws",
+ "provider_version": "6.71.0",
+ "read": {
+  "completeness": "complete",
+  "not_read": [],
+  "withheld": []
+ },
+ "schema": "bo.pilot.sto.fixture/1",
+ "split": "calib",
+ "summary": "versionamento inline",
+ "terraform": {
+  "resource": {
+   "aws_s3_bucket": {
+    "data": {
+     "bucket": "fx-data",
+     "versioning": [
+      {
+       "enabled": true
+      }
+     ]
+    }
+   }
+  }
+ }
+}

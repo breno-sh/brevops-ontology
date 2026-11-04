@@ -1,0 +1,47 @@
+{
+ "case": "MC-PUB-GRAN",
+ "context": {},
+ "fixture_id": "FX-STO-AZ-PUB-GRAN-U01",
+ "polarity": "unknown",
+ "provider": "azurerm",
+ "provider_version": "5.12.0",
+ "read": {
+  "completeness": "partial",
+  "not_read": [
+   {
+    "of": "azurerm_storage_account.acct",
+    "what": "allow_nested_items_to_be_public"
+   }
+  ],
+  "withheld": []
+ },
+ "schema": "bo.pilot.sto.fixture/1",
+ "split": "calib",
+ "summary": "configuração de público da conta não lida",
+ "terraform": {
+  "resource": {
+   "azurerm_storage_account": {
+    "acct": {
+     "account_replication_type": "LRS",
+     "account_tier": "Standard",
+     "allow_nested_items_to_be_public": true,
+     "location": "eastus",
+     "name": "fxacct",
+     "resource_group_name": "${var.resource_group_name}"
+    }
+   },
+   "azurerm_storage_container": {
+    "site": {
+     "container_access_type": "blob",
+     "name": "site",
+     "storage_account_id": "${azurerm_storage_account.acct.id}"
+    }
+   }
+  },
+  "variable": {
+   "resource_group_name": {
+    "type": "string"
+   }
+  }
+ }
+}

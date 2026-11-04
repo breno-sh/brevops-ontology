@@ -1,0 +1,142 @@
+{
+ "container_map": {
+  "azurerm_storage_container.src": "oci_objectstorage_bucket.dst"
+ },
+ "declared_losses": [],
+ "direction": "azurerm->oci",
+ "entry_id": "DX-AZ-OCI-T1-negative-01",
+ "family": "T1-VERSIONED",
+ "note": "alvo sem versionamento perde as versões sobrescritas e excluídas",
+ "schema": "bo.pilot.sto.direction_entry/1",
+ "source": {
+  "context": {},
+  "fixture_id": "DX-AZ-OCI-T1-negative-01-S",
+  "provider": "azurerm",
+  "provider_version": "5.12.0",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "azurerm_storage_account": {
+     "src_acct": {
+      "account_replication_type": "LRS",
+      "account_tier": "Standard",
+      "allow_nested_items_to_be_public": false,
+      "blob_properties": [
+       {
+        "versioning_enabled": true
+       }
+      ],
+      "location": "eastus",
+      "name": "fxsrcacct",
+      "resource_group_name": "${var.resource_group_name}"
+     }
+    },
+    "azurerm_storage_container": {
+     "src": {
+      "container_access_type": "private",
+      "name": "src",
+      "storage_account_id": "${azurerm_storage_account.src_acct.id}"
+     }
+    }
+   },
+   "variable": {
+    "resource_group_name": {
+     "type": "string"
+    }
+   }
+  },
+  "timeline": {
+   "container": "azurerm_storage_container.src",
+   "eval_day": 6,
+   "events": [
+    {
+     "day": 0,
+     "key": "doc.txt",
+     "op": "put"
+    },
+    {
+     "day": 1,
+     "key": "gone.txt",
+     "op": "put"
+    },
+    {
+     "day": 3,
+     "key": "doc.txt",
+     "op": "put"
+    },
+    {
+     "day": 4,
+     "key": "gone.txt",
+     "op": "delete"
+    }
+   ]
+  }
+ },
+ "target": {
+  "context": {},
+  "fixture_id": "DX-AZ-OCI-T1-negative-01-T",
+  "provider": "oci",
+  "provider_version": "9.11.0",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "oci_objectstorage_bucket": {
+     "dst": {
+      "access_type": "NoPublicAccess",
+      "compartment_id": "${var.compartment_id}",
+      "name": "fx-dst",
+      "namespace": "${var.namespace}",
+      "versioning": "Disabled"
+     }
+    }
+   },
+   "variable": {
+    "compartment_id": {
+     "type": "string"
+    },
+    "namespace": {
+     "type": "string"
+    }
+   }
+  },
+  "timeline": {
+   "container": "oci_objectstorage_bucket.dst",
+   "eval_day": 6,
+   "events": [
+    {
+     "day": 0,
+     "key": "doc.txt",
+     "op": "put"
+    },
+    {
+     "day": 1,
+     "key": "gone.txt",
+     "op": "put"
+    },
+    {
+     "day": 3,
+     "key": "doc.txt",
+     "op": "put"
+    },
+    {
+     "day": 4,
+     "key": "gone.txt",
+     "op": "delete"
+    }
+   ]
+  }
+ },
+ "variant": "negative"
+}

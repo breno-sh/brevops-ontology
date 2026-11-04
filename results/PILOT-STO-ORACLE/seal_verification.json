@@ -1,0 +1,12 @@
+{
+ "checked_at": "2026-11-04T02:37:49-03:00",
+ "ciphertext_sha256": "8d3d2bde1b1c272d1b2a9c6ccbf1ebc4bbde6086d7755b68c83de97242ad18b9",
+ "module": "PILOT-STO-ORACLE",
+ "plaintext_bytes_remote": "806418",
+ "plaintext_sha256_index": "a8e14c420914a3fb6060a57171ceda8335bb971196af61d40438131611e36975",
+ "plaintext_sha256_remote": "a8e14c420914a3fb6060a57171ceda8335bb971196af61d40438131611e36975",
+ "recipient_fingerprint_sha256": "3677203c7657c3b0043246f3ae13cc25b41ec29dac5a6a99134aad9f6bd43e26",
+ "result": "MATCH",
+ "schema": "bo.pilot.sto.seal_verification/1",
+ "where": "VM Oracle do Breno (D15); decifrado só num pipe remoto, nada gravado lá nem aqui"
+}

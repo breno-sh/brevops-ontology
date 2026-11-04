@@ -1,0 +1,61 @@
+{
+ "case": "MC-LC-FILTER",
+ "context": {},
+ "fixture_id": "FX-STO-GCP-LC-FILTER-U01",
+ "polarity": "unknown",
+ "provider": "google",
+ "provider_version": "8.9.0",
+ "read": {
+  "completeness": "complete",
+  "not_read": [],
+  "withheld": []
+ },
+ "schema": "bo.pilot.sto.fixture/1",
+ "split": "calib",
+ "summary": "condição por sufixo fora do modelo do oráculo",
+ "terraform": {
+  "resource": {
+   "google_storage_bucket": {
+    "data": {
+     "lifecycle_rule": [
+      {
+       "action": [
+        {
+         "type": "Delete"
+        }
+       ],
+       "condition": [
+        {
+         "age": 10,
+         "matches_suffix": [
+          ".txt"
+         ]
+        }
+       ]
+      }
+     ],
+     "location": "US",
+     "name": "fx-data",
+     "public_access_prevention": "inherited",
+     "uniform_bucket_level_access": true
+    }
+   }
+  }
+ },
+ "timeline": {
+  "container": "google_storage_bucket.data",
+  "eval_day": 15,
+  "events": [
+   {
+    "day": 0,
+    "key": "logs/a.txt",
+    "op": "put"
+   },
+   {
+    "day": 0,
+    "key": "keep/b.txt",
+    "op": "put"
+   }
+  ]
+ }
+}

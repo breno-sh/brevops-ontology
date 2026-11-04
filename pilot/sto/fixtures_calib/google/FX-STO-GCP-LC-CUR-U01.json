@@ -1,0 +1,69 @@
+{
+ "case": "MC-LC-CUR",
+ "context": {},
+ "fixture_id": "FX-STO-GCP-LC-CUR-U01",
+ "polarity": "unknown",
+ "provider": "google",
+ "provider_version": "8.9.0",
+ "read": {
+  "completeness": "partial",
+  "not_read": [
+   {
+    "of": "google_storage_bucket.data",
+    "what": "lifecycle"
+   }
+  ],
+  "withheld": []
+ },
+ "schema": "bo.pilot.sto.fixture/1",
+ "split": "calib",
+ "summary": "ciclo de vida do contêiner não lido",
+ "terraform": {
+  "resource": {
+   "google_storage_bucket": {
+    "data": {
+     "lifecycle_rule": [
+      {
+       "action": [
+        {
+         "type": "Delete"
+        }
+       ],
+       "condition": [
+        {
+         "age": 30,
+         "with_state": "LIVE"
+        }
+       ]
+      }
+     ],
+     "location": "US",
+     "name": "fx-data",
+     "public_access_prevention": "inherited",
+     "uniform_bucket_level_access": true
+    }
+   }
+  }
+ },
+ "timeline": {
+  "container": "google_storage_bucket.data",
+  "eval_day": 40,
+  "events": [
+   {
+    "day": 0,
+    "key": "old.bin",
+    "op": "put"
+   },
+   {
+    "day": 10,
+    "key": "edge.bin",
+    "op": "put"
+   },
+   {
+    "day": 11,
+    "key": "young.bin",
+    "op": "put"
+   }
+  ]
+ }
+}

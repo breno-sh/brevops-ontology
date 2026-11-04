@@ -1,0 +1,36 @@
+{
+ "case": "MC-PUB-GRAN",
+ "context": {},
+ "fixture_id": "FX-STO-OCI-PUB-GRAN-N01",
+ "polarity": "negative",
+ "provider": "oci",
+ "provider_version": "9.11.0",
+ "read": {
+  "completeness": "complete",
+  "not_read": [],
+  "withheld": []
+ },
+ "schema": "bo.pilot.sto.fixture/1",
+ "split": "calib",
+ "summary": "alegação de listagem anônima onde só há leitura",
+ "terraform": {
+  "resource": {
+   "oci_objectstorage_bucket": {
+    "site": {
+     "access_type": "ObjectReadWithoutList",
+     "compartment_id": "${var.compartment_id}",
+     "name": "fx-site",
+     "namespace": "${var.namespace}"
+    }
+   }
+  },
+  "variable": {
+   "compartment_id": {
+    "type": "string"
+   },
+   "namespace": {
+    "type": "string"
+   }
+  }
+ }
+}

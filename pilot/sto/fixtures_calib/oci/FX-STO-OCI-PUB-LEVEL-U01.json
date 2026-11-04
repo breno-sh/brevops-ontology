@@ -1,0 +1,41 @@
+{
+ "case": "MC-PUB-LEVEL",
+ "context": {},
+ "fixture_id": "FX-STO-OCI-PUB-LEVEL-U01",
+ "polarity": "unknown",
+ "provider": "oci",
+ "provider_version": "9.11.0",
+ "read": {
+  "completeness": "partial",
+  "not_read": [
+   {
+    "of": "oci_objectstorage_bucket.site",
+    "what": "public_access"
+   }
+  ],
+  "withheld": []
+ },
+ "schema": "bo.pilot.sto.fixture/1",
+ "split": "calib",
+ "summary": "concessões do contêiner não lidas",
+ "terraform": {
+  "resource": {
+   "oci_objectstorage_bucket": {
+    "site": {
+     "access_type": "ObjectRead",
+     "compartment_id": "${var.compartment_id}",
+     "name": "fx-site",
+     "namespace": "${var.namespace}"
+    }
+   }
+  },
+  "variable": {
+   "compartment_id": {
+    "type": "string"
+   },
+   "namespace": {
+    "type": "string"
+   }
+  }
+ }
+}

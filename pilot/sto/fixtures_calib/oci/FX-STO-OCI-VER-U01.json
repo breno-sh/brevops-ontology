@@ -1,0 +1,42 @@
+{
+ "case": "MC-VER",
+ "context": {},
+ "fixture_id": "FX-STO-OCI-VER-U01",
+ "polarity": "unknown",
+ "provider": "oci",
+ "provider_version": "9.11.0",
+ "read": {
+  "completeness": "partial",
+  "not_read": [
+   {
+    "of": "oci_objectstorage_bucket.data",
+    "what": "versioning"
+   }
+  ],
+  "withheld": []
+ },
+ "schema": "bo.pilot.sto.fixture/1",
+ "split": "calib",
+ "summary": "versionamento do contêiner não lido",
+ "terraform": {
+  "resource": {
+   "oci_objectstorage_bucket": {
+    "data": {
+     "access_type": "NoPublicAccess",
+     "compartment_id": "${var.compartment_id}",
+     "name": "fx-data",
+     "namespace": "${var.namespace}",
+     "versioning": "Enabled"
+    }
+   }
+  },
+  "variable": {
+   "compartment_id": {
+    "type": "string"
+   },
+   "namespace": {
+    "type": "string"
+   }
+  }
+ }
+}

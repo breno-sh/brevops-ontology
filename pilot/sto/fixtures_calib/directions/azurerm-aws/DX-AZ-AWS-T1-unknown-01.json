@@ -1,0 +1,145 @@
+{
+ "container_map": {
+  "azurerm_storage_container.src": "aws_s3_bucket.dst"
+ },
+ "declared_losses": [],
+ "direction": "azurerm->aws",
+ "entry_id": "DX-AZ-AWS-T1-unknown-01",
+ "family": "T1-VERSIONED",
+ "note": "",
+ "schema": "bo.pilot.sto.direction_entry/1",
+ "source": {
+  "context": {},
+  "fixture_id": "DX-AZ-AWS-T1-unknown-01-S",
+  "provider": "azurerm",
+  "provider_version": "5.12.0",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "azurerm_storage_account": {
+     "src_acct": {
+      "account_replication_type": "LRS",
+      "account_tier": "Standard",
+      "allow_nested_items_to_be_public": false,
+      "blob_properties": [
+       {
+        "versioning_enabled": true
+       }
+      ],
+      "location": "eastus",
+      "name": "fxsrcacct",
+      "resource_group_name": "${var.resource_group_name}"
+     }
+    },
+    "azurerm_storage_container": {
+     "src": {
+      "container_access_type": "private",
+      "name": "src",
+      "storage_account_id": "${azurerm_storage_account.src_acct.id}"
+     }
+    }
+   },
+   "variable": {
+    "resource_group_name": {
+     "type": "string"
+    }
+   }
+  },
+  "timeline": {
+   "container": "azurerm_storage_container.src",
+   "eval_day": 6,
+   "events": [
+    {
+     "day": 0,
+     "key": "doc.txt",
+     "op": "put"
+    },
+    {
+     "day": 1,
+     "key": "gone.txt",
+     "op": "put"
+    },
+    {
+     "day": 3,
+     "key": "doc.txt",
+     "op": "put"
+    },
+    {
+     "day": 4,
+     "key": "gone.txt",
+     "op": "delete"
+    }
+   ]
+  }
+ },
+ "target": {
+  "context": {},
+  "fixture_id": "DX-AZ-AWS-T1-unknown-01-T",
+  "provider": "aws",
+  "provider_version": "6.71.0",
+  "read": {
+   "completeness": "partial",
+   "not_read": [
+    {
+     "of": "aws_s3_bucket.dst",
+     "what": "versioning"
+    }
+   ],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "aws_s3_bucket": {
+     "dst": {
+      "bucket": "fx-dst"
+     }
+    },
+    "aws_s3_bucket_versioning": {
+     "dst": {
+      "bucket": "${aws_s3_bucket.dst.id}",
+      "versioning_configuration": [
+       {
+        "status": "Enabled"
+       }
+      ]
+     }
+    }
+   }
+  },
+  "timeline": {
+   "container": "aws_s3_bucket.dst",
+   "eval_day": 6,
+   "events": [
+    {
+     "day": 0,
+     "key": "doc.txt",
+     "op": "put"
+    },
+    {
+     "day": 1,
+     "key": "gone.txt",
+     "op": "put"
+    },
+    {
+     "day": 3,
+     "key": "doc.txt",
+     "op": "put"
+    },
+    {
+     "day": 4,
+     "key": "gone.txt",
+     "op": "delete"
+    }
+   ]
+  }
+ },
+ "variant": "unknown"
+}

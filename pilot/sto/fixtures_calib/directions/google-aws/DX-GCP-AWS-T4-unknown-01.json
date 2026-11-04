@@ -1,0 +1,227 @@
+{
+ "container_map": {
+  "google_storage_bucket.src": "aws_s3_bucket.dst"
+ },
+ "declared_losses": [],
+ "direction": "google->aws",
+ "entry_id": "DX-GCP-AWS-T4-unknown-01",
+ "family": "T4-NONCURRENT",
+ "note": "",
+ "schema": "bo.pilot.sto.direction_entry/1",
+ "source": {
+  "context": {},
+  "fixture_id": "DX-GCP-AWS-T4-unknown-01-S",
+  "provider": "google",
+  "provider_version": "8.9.0",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "google_storage_bucket": {
+     "src": {
+      "lifecycle_rule": [
+       {
+        "action": [
+         {
+          "type": "Delete"
+         }
+        ],
+        "condition": [
+         {
+          "days_since_noncurrent_time": 30,
+          "with_state": "ARCHIVED"
+         }
+        ]
+       }
+      ],
+      "location": "US",
+      "name": "fx-src",
+      "public_access_prevention": "inherited",
+      "uniform_bucket_level_access": true,
+      "versioning": [
+       {
+        "enabled": true
+       }
+      ]
+     }
+    }
+   }
+  },
+  "timeline": {
+   "container": "google_storage_bucket.src",
+   "eval_day": 35,
+   "events": [
+    {
+     "day": 0,
+     "key": "x.log",
+     "op": "put"
+    },
+    {
+     "day": 0,
+     "key": "y.log",
+     "op": "put"
+    },
+    {
+     "day": 2,
+     "key": "x.log",
+     "op": "put"
+    },
+    {
+     "day": 5,
+     "key": "v.log",
+     "op": "put"
+    },
+    {
+     "day": 6,
+     "key": "w.log",
+     "op": "put"
+    },
+    {
+     "day": 7,
+     "key": "v.log",
+     "op": "put"
+    },
+    {
+     "day": 8,
+     "key": "w.log",
+     "op": "put"
+    },
+    {
+     "day": 10,
+     "key": "z.log",
+     "op": "put"
+    },
+    {
+     "day": 20,
+     "key": "y.log",
+     "op": "put"
+    },
+    {
+     "day": 30,
+     "key": "z.log",
+     "op": "put"
+    }
+   ]
+  }
+ },
+ "target": {
+  "context": {},
+  "fixture_id": "DX-GCP-AWS-T4-unknown-01-T",
+  "provider": "aws",
+  "provider_version": "6.71.0",
+  "read": {
+   "completeness": "partial",
+   "not_read": [
+    {
+     "of": "aws_s3_bucket.dst",
+     "what": "lifecycle"
+    }
+   ],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "aws_s3_bucket": {
+     "dst": {
+      "bucket": "fx-dst"
+     }
+    },
+    "aws_s3_bucket_lifecycle_configuration": {
+     "dst": {
+      "bucket": "${aws_s3_bucket.dst.id}",
+      "rule": [
+       {
+        "filter": [
+         {
+          "prefix": ""
+         }
+        ],
+        "id": "noncurrent",
+        "noncurrent_version_expiration": [
+         {
+          "noncurrent_days": 30
+         }
+        ],
+        "status": "Enabled"
+       }
+      ]
+     }
+    },
+    "aws_s3_bucket_versioning": {
+     "dst": {
+      "bucket": "${aws_s3_bucket.dst.id}",
+      "versioning_configuration": [
+       {
+        "status": "Enabled"
+       }
+      ]
+     }
+    }
+   }
+  },
+  "timeline": {
+   "container": "aws_s3_bucket.dst",
+   "eval_day": 35,
+   "events": [
+    {
+     "day": 0,
+     "key": "x.log",
+     "op": "put"
+    },
+    {
+     "day": 0,
+     "key": "y.log",
+     "op": "put"
+    },
+    {
+     "day": 2,
+     "key": "x.log",
+     "op": "put"
+    },
+    {
+     "day": 5,
+     "key": "v.log",
+     "op": "put"
+    },
+    {
+     "day": 6,
+     "key": "w.log",
+     "op": "put"
+    },
+    {
+     "day": 7,
+     "key": "v.log",
+     "op": "put"
+    },
+    {
+     "day": 8,
+     "key": "w.log",
+     "op": "put"
+    },
+    {
+     "day": 10,
+     "key": "z.log",
+     "op": "put"
+    },
+    {
+     "day": 20,
+     "key": "y.log",
+     "op": "put"
+    },
+    {
+     "day": 30,
+     "key": "z.log",
+     "op": "put"
+    }
+   ]
+  }
+ },
+ "variant": "unknown"
+}

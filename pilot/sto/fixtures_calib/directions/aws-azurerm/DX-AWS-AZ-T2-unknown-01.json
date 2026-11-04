@@ -1,0 +1,100 @@
+{
+ "container_map": {
+  "aws_s3_bucket.src": "azurerm_storage_container.dst"
+ },
+ "declared_losses": [],
+ "direction": "aws->azurerm",
+ "entry_id": "DX-AWS-AZ-T2-unknown-01",
+ "family": "T2-PUBLIC-READ",
+ "note": "nível superior do alvo não lido",
+ "schema": "bo.pilot.sto.direction_entry/1",
+ "source": {
+  "context": {
+   "account_public_access_block": {
+    "status": "none_configured"
+   }
+  },
+  "fixture_id": "DX-AWS-AZ-T2-unknown-01-S",
+  "provider": "aws",
+  "provider_version": "6.71.0",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "aws_s3_bucket": {
+     "src": {
+      "bucket": "fx-src"
+     }
+    },
+    "aws_s3_bucket_policy": {
+     "src": {
+      "bucket": "${aws_s3_bucket.src.id}",
+      "depends_on": [
+       "aws_s3_bucket_public_access_block.src"
+      ],
+      "policy": "{\"Statement\": [{\"Action\": [\"s3:GetObject\"], \"Effect\": \"Allow\", \"Principal\": \"*\", \"Resource\": \"${aws_s3_bucket.src.arn}/*\", \"Sid\": \"PublicRead\"}], \"Version\": \"2012-10-17\"}"
+     }
+    },
+    "aws_s3_bucket_public_access_block": {
+     "src": {
+      "block_public_acls": false,
+      "block_public_policy": false,
+      "bucket": "${aws_s3_bucket.src.id}",
+      "ignore_public_acls": false,
+      "restrict_public_buckets": false
+     }
+    }
+   }
+  }
+ },
+ "target": {
+  "context": {},
+  "fixture_id": "DX-AWS-AZ-T2-unknown-01-T",
+  "provider": "azurerm",
+  "provider_version": "5.12.0",
+  "read": {
+   "completeness": "partial",
+   "not_read": [
+    {
+     "of": "azurerm_storage_account.dst_acct",
+     "what": "allow_nested_items_to_be_public"
+    }
+   ],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "azurerm_storage_account": {
+     "dst_acct": {
+      "account_replication_type": "LRS",
+      "account_tier": "Standard",
+      "allow_nested_items_to_be_public": true,
+      "location": "eastus",
+      "name": "fxdstacct",
+      "resource_group_name": "${var.resource_group_name}"
+     }
+    },
+    "azurerm_storage_container": {
+     "dst": {
+      "container_access_type": "blob",
+      "name": "dst",
+      "storage_account_id": "${azurerm_storage_account.dst_acct.id}"
+     }
+    }
+   },
+   "variable": {
+    "resource_group_name": {
+     "type": "string"
+    }
+   }
+  }
+ },
+ "variant": "unknown"
+}

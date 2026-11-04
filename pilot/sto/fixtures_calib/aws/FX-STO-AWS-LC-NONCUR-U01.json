@@ -1,0 +1,123 @@
+{
+ "case": "MC-LC-NONCUR",
+ "context": {},
+ "fixture_id": "FX-STO-AWS-LC-NONCUR-U01",
+ "polarity": "unknown",
+ "provider": "aws",
+ "provider_version": "6.71.0",
+ "read": {
+  "completeness": "complete",
+  "not_read": [],
+  "withheld": []
+ },
+ "schema": "bo.pilot.sto.fixture/1",
+ "split": "calib",
+ "summary": "lifecycle_rule embutido misturado com o recurso separado",
+ "terraform": {
+  "resource": {
+   "aws_s3_bucket": {
+    "data": {
+     "bucket": "fx-data",
+     "lifecycle_rule": [
+      {
+       "enabled": true,
+       "expiration": [
+        {
+         "days": 30
+        }
+       ],
+       "id": "inline"
+      }
+     ]
+    }
+   },
+   "aws_s3_bucket_lifecycle_configuration": {
+    "data": {
+     "bucket": "${aws_s3_bucket.data.id}",
+     "rule": [
+      {
+       "filter": [
+        {
+         "prefix": ""
+        }
+       ],
+       "id": "noncurrent",
+       "noncurrent_version_expiration": [
+        {
+         "noncurrent_days": 30
+        }
+       ],
+       "status": "Enabled"
+      }
+     ]
+    }
+   },
+   "aws_s3_bucket_versioning": {
+    "data": {
+     "bucket": "${aws_s3_bucket.data.id}",
+     "versioning_configuration": [
+      {
+       "status": "Enabled"
+      }
+     ]
+    }
+   }
+  }
+ },
+ "timeline": {
+  "container": "aws_s3_bucket.data",
+  "eval_day": 35,
+  "events": [
+   {
+    "day": 0,
+    "key": "x.log",
+    "op": "put"
+   },
+   {
+    "day": 0,
+    "key": "y.log",
+    "op": "put"
+   },
+   {
+    "day": 2,
+    "key": "x.log",
+    "op": "put"
+   },
+   {
+    "day": 5,
+    "key": "v.log",
+    "op": "put"
+   },
+   {
+    "day": 6,
+    "key": "w.log",
+    "op": "put"
+   },
+   {
+    "day": 7,
+    "key": "v.log",
+    "op": "put"
+   },
+   {
+    "day": 8,
+    "key": "w.log",
+    "op": "put"
+   },
+   {
+    "day": 10,
+    "key": "z.log",
+    "op": "put"
+   },
+   {
+    "day": 20,
+    "key": "y.log",
+    "op": "put"
+   },
+   {
+    "day": 30,
+    "key": "z.log",
+    "op": "put"
+   }
+  ]
+ }
+}

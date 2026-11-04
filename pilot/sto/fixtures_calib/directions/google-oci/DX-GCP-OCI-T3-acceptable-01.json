@@ -1,0 +1,143 @@
+{
+ "container_map": {
+  "google_storage_bucket.src": "oci_objectstorage_bucket.dst"
+ },
+ "declared_losses": [],
+ "direction": "google->oci",
+ "entry_id": "DX-GCP-OCI-T3-acceptable-01",
+ "family": "T3-EXPIRE",
+ "note": "limite convertido (>= E ≡ > E-1)",
+ "schema": "bo.pilot.sto.direction_entry/1",
+ "source": {
+  "context": {},
+  "fixture_id": "DX-GCP-OCI-T3-acceptable-01-S",
+  "provider": "google",
+  "provider_version": "8.9.0",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "google_storage_bucket": {
+     "src": {
+      "lifecycle_rule": [
+       {
+        "action": [
+         {
+          "type": "Delete"
+         }
+        ],
+        "condition": [
+         {
+          "age": 30,
+          "with_state": "LIVE"
+         }
+        ]
+       }
+      ],
+      "location": "US",
+      "name": "fx-src",
+      "public_access_prevention": "inherited",
+      "uniform_bucket_level_access": true
+     }
+    }
+   }
+  },
+  "timeline": {
+   "container": "google_storage_bucket.src",
+   "eval_day": 40,
+   "events": [
+    {
+     "day": 0,
+     "key": "old.bin",
+     "op": "put"
+    },
+    {
+     "day": 10,
+     "key": "edge.bin",
+     "op": "put"
+    },
+    {
+     "day": 11,
+     "key": "young.bin",
+     "op": "put"
+    }
+   ]
+  }
+ },
+ "target": {
+  "context": {},
+  "fixture_id": "DX-GCP-OCI-T3-acceptable-01-T",
+  "provider": "oci",
+  "provider_version": "9.11.0",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "oci_objectstorage_bucket": {
+     "dst": {
+      "access_type": "NoPublicAccess",
+      "compartment_id": "${var.compartment_id}",
+      "name": "fx-dst",
+      "namespace": "${var.namespace}"
+     }
+    },
+    "oci_objectstorage_object_lifecycle_policy": {
+     "dst": {
+      "bucket": "${oci_objectstorage_bucket.dst.name}",
+      "namespace": "${var.namespace}",
+      "rules": [
+       {
+        "action": "DELETE",
+        "is_enabled": true,
+        "name": "expire",
+        "target": "objects",
+        "time_amount": 30,
+        "time_unit": "DAYS"
+       }
+      ]
+     }
+    }
+   },
+   "variable": {
+    "compartment_id": {
+     "type": "string"
+    },
+    "namespace": {
+     "type": "string"
+    }
+   }
+  },
+  "timeline": {
+   "container": "oci_objectstorage_bucket.dst",
+   "eval_day": 40,
+   "events": [
+    {
+     "day": 0,
+     "key": "old.bin",
+     "op": "put"
+    },
+    {
+     "day": 10,
+     "key": "edge.bin",
+     "op": "put"
+    },
+    {
+     "day": 11,
+     "key": "young.bin",
+     "op": "put"
+    }
+   ]
+  }
+ },
+ "variant": "acceptable"
+}

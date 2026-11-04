@@ -1,0 +1,165 @@
+{
+ "container_map": {
+  "azurerm_storage_container.src": "aws_s3_bucket.dst"
+ },
+ "declared_losses": [
+  "RETAINED_LONGER"
+ ],
+ "direction": "azurerm->aws",
+ "entry_id": "DX-AZ-AWS-T3-acceptable_declared-01",
+ "family": "T3-EXPIRE",
+ "note": "um dia a mais declarado",
+ "schema": "bo.pilot.sto.direction_entry/1",
+ "source": {
+  "context": {},
+  "fixture_id": "DX-AZ-AWS-T3-acceptable_declared-01-S",
+  "provider": "azurerm",
+  "provider_version": "5.12.0",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "azurerm_storage_account": {
+     "src_acct": {
+      "account_replication_type": "LRS",
+      "account_tier": "Standard",
+      "allow_nested_items_to_be_public": false,
+      "location": "eastus",
+      "name": "fxsrcacct",
+      "resource_group_name": "${var.resource_group_name}"
+     }
+    },
+    "azurerm_storage_container": {
+     "src": {
+      "container_access_type": "private",
+      "name": "src",
+      "storage_account_id": "${azurerm_storage_account.src_acct.id}"
+     }
+    },
+    "azurerm_storage_management_policy": {
+     "src_acct_policy": {
+      "rule": [
+       {
+        "actions": [
+         {
+          "base_blob": [
+           {
+            "delete_after_days_since_modification_greater_than": 29
+           }
+          ]
+         }
+        ],
+        "enabled": true,
+        "filters": [
+         {
+          "blob_types": [
+           "blockBlob"
+          ]
+         }
+        ],
+        "name": "expire"
+       }
+      ],
+      "storage_account_id": "${azurerm_storage_account.src_acct.id}"
+     }
+    }
+   },
+   "variable": {
+    "resource_group_name": {
+     "type": "string"
+    }
+   }
+  },
+  "timeline": {
+   "container": "azurerm_storage_container.src",
+   "eval_day": 40,
+   "events": [
+    {
+     "day": 0,
+     "key": "old.bin",
+     "op": "put"
+    },
+    {
+     "day": 10,
+     "key": "edge.bin",
+     "op": "put"
+    },
+    {
+     "day": 11,
+     "key": "young.bin",
+     "op": "put"
+    }
+   ]
+  }
+ },
+ "target": {
+  "context": {},
+  "fixture_id": "DX-AZ-AWS-T3-acceptable_declared-01-T",
+  "provider": "aws",
+  "provider_version": "6.71.0",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "aws_s3_bucket": {
+     "dst": {
+      "bucket": "fx-dst"
+     }
+    },
+    "aws_s3_bucket_lifecycle_configuration": {
+     "dst": {
+      "bucket": "${aws_s3_bucket.dst.id}",
+      "rule": [
+       {
+        "expiration": [
+         {
+          "days": 31
+         }
+        ],
+        "filter": [
+         {
+          "prefix": ""
+         }
+        ],
+        "id": "expire",
+        "status": "Enabled"
+       }
+      ]
+     }
+    }
+   }
+  },
+  "timeline": {
+   "container": "aws_s3_bucket.dst",
+   "eval_day": 40,
+   "events": [
+    {
+     "day": 0,
+     "key": "old.bin",
+     "op": "put"
+    },
+    {
+     "day": 10,
+     "key": "edge.bin",
+     "op": "put"
+    },
+    {
+     "day": 11,
+     "key": "young.bin",
+     "op": "put"
+    }
+   ]
+  }
+ },
+ "variant": "acceptable_declared"
+}

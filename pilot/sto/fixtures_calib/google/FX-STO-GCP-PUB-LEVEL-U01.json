@@ -1,0 +1,35 @@
+{
+ "case": "MC-PUB-LEVEL",
+ "context": {},
+ "fixture_id": "FX-STO-GCP-PUB-LEVEL-U01",
+ "polarity": "unknown",
+ "provider": "google",
+ "provider_version": "8.9.0",
+ "read": {
+  "completeness": "complete",
+  "not_read": [],
+  "withheld": []
+ },
+ "schema": "bo.pilot.sto.fixture/1",
+ "split": "calib",
+ "summary": "prevenção herdada com a política da organização não lida",
+ "terraform": {
+  "resource": {
+   "google_storage_bucket": {
+    "site": {
+     "location": "US",
+     "name": "fx-site",
+     "public_access_prevention": "inherited",
+     "uniform_bucket_level_access": true
+    }
+   },
+   "google_storage_bucket_iam_member": {
+    "site_public": {
+     "bucket": "${google_storage_bucket.site.name}",
+     "member": "allUsers",
+     "role": "roles/storage.objectViewer"
+    }
+   }
+  }
+ }
+}

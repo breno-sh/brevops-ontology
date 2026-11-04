@@ -1,0 +1,64 @@
+{
+ "case": "MC-LC-CUR",
+ "context": {},
+ "fixture_id": "FX-STO-GCP-LC-CUR-N01",
+ "polarity": "negative",
+ "provider": "google",
+ "provider_version": "8.9.0",
+ "read": {
+  "completeness": "complete",
+  "not_read": [],
+  "withheld": []
+ },
+ "schema": "bo.pilot.sto.fixture/1",
+ "split": "calib",
+ "summary": "alegação de que o objeto com idade igual ao limite sobrevive",
+ "terraform": {
+  "resource": {
+   "google_storage_bucket": {
+    "data": {
+     "lifecycle_rule": [
+      {
+       "action": [
+        {
+         "type": "Delete"
+        }
+       ],
+       "condition": [
+        {
+         "age": 30,
+         "with_state": "LIVE"
+        }
+       ]
+      }
+     ],
+     "location": "US",
+     "name": "fx-data",
+     "public_access_prevention": "inherited",
+     "uniform_bucket_level_access": true
+    }
+   }
+  }
+ },
+ "timeline": {
+  "container": "google_storage_bucket.data",
+  "eval_day": 40,
+  "events": [
+   {
+    "day": 0,
+    "key": "old.bin",
+    "op": "put"
+   },
+   {
+    "day": 10,
+    "key": "edge.bin",
+    "op": "put"
+   },
+   {
+    "day": 11,
+    "key": "young.bin",
+    "op": "put"
+   }
+  ]
+ }
+}

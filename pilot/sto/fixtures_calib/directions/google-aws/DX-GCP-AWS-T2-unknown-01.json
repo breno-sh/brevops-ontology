@@ -1,0 +1,90 @@
+{
+ "container_map": {
+  "google_storage_bucket.src": "aws_s3_bucket.dst"
+ },
+ "declared_losses": [],
+ "direction": "google->aws",
+ "entry_id": "DX-GCP-AWS-T2-unknown-01",
+ "family": "T2-PUBLIC-READ",
+ "note": "nível superior do alvo não lido",
+ "schema": "bo.pilot.sto.direction_entry/1",
+ "source": {
+  "context": {
+   "org_policy_public_access_prevention": false
+  },
+  "fixture_id": "DX-GCP-AWS-T2-unknown-01-S",
+  "provider": "google",
+  "provider_version": "8.9.0",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "google_storage_bucket": {
+     "src": {
+      "location": "US",
+      "name": "fx-src",
+      "public_access_prevention": "inherited",
+      "uniform_bucket_level_access": true
+     }
+    },
+    "google_storage_bucket_iam_member": {
+     "src_public": {
+      "bucket": "${google_storage_bucket.src.name}",
+      "member": "allUsers",
+      "role": "roles/storage.legacyObjectReader"
+     }
+    }
+   }
+  }
+ },
+ "target": {
+  "context": {
+   "account_public_access_block": {
+    "status": "not_read"
+   }
+  },
+  "fixture_id": "DX-GCP-AWS-T2-unknown-01-T",
+  "provider": "aws",
+  "provider_version": "6.71.0",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "aws_s3_bucket": {
+     "dst": {
+      "bucket": "fx-dst"
+     }
+    },
+    "aws_s3_bucket_policy": {
+     "dst": {
+      "bucket": "${aws_s3_bucket.dst.id}",
+      "depends_on": [
+       "aws_s3_bucket_public_access_block.dst"
+      ],
+      "policy": "{\"Statement\": [{\"Action\": [\"s3:GetObject\"], \"Effect\": \"Allow\", \"Principal\": \"*\", \"Resource\": \"${aws_s3_bucket.dst.arn}/*\", \"Sid\": \"PublicRead\"}], \"Version\": \"2012-10-17\"}"
+     }
+    },
+    "aws_s3_bucket_public_access_block": {
+     "dst": {
+      "block_public_acls": false,
+      "block_public_policy": false,
+      "bucket": "${aws_s3_bucket.dst.id}",
+      "ignore_public_acls": false,
+      "restrict_public_buckets": false
+     }
+    }
+   }
+  }
+ },
+ "variant": "unknown"
+}

@@ -1,0 +1,160 @@
+{
+ "container_map": {
+  "google_storage_bucket.src": "azurerm_storage_container.dst"
+ },
+ "declared_losses": [],
+ "direction": "google->azurerm",
+ "entry_id": "DX-GCP-AZ-T3-negative-01",
+ "family": "T3-EXPIRE",
+ "note": "um dia antes apaga o objeto que a origem mantém",
+ "schema": "bo.pilot.sto.direction_entry/1",
+ "source": {
+  "context": {},
+  "fixture_id": "DX-GCP-AZ-T3-negative-01-S",
+  "provider": "google",
+  "provider_version": "8.9.0",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "google_storage_bucket": {
+     "src": {
+      "lifecycle_rule": [
+       {
+        "action": [
+         {
+          "type": "Delete"
+         }
+        ],
+        "condition": [
+         {
+          "age": 30,
+          "with_state": "LIVE"
+         }
+        ]
+       }
+      ],
+      "location": "US",
+      "name": "fx-src",
+      "public_access_prevention": "inherited",
+      "uniform_bucket_level_access": true
+     }
+    }
+   }
+  },
+  "timeline": {
+   "container": "google_storage_bucket.src",
+   "eval_day": 40,
+   "events": [
+    {
+     "day": 0,
+     "key": "old.bin",
+     "op": "put"
+    },
+    {
+     "day": 10,
+     "key": "edge.bin",
+     "op": "put"
+    },
+    {
+     "day": 11,
+     "key": "young.bin",
+     "op": "put"
+    }
+   ]
+  }
+ },
+ "target": {
+  "context": {},
+  "fixture_id": "DX-GCP-AZ-T3-negative-01-T",
+  "provider": "azurerm",
+  "provider_version": "5.12.0",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "azurerm_storage_account": {
+     "dst_acct": {
+      "account_replication_type": "LRS",
+      "account_tier": "Standard",
+      "allow_nested_items_to_be_public": false,
+      "location": "eastus",
+      "name": "fxdstacct",
+      "resource_group_name": "${var.resource_group_name}"
+     }
+    },
+    "azurerm_storage_container": {
+     "dst": {
+      "container_access_type": "private",
+      "name": "dst",
+      "storage_account_id": "${azurerm_storage_account.dst_acct.id}"
+     }
+    },
+    "azurerm_storage_management_policy": {
+     "dst_acct_policy": {
+      "rule": [
+       {
+        "actions": [
+         {
+          "base_blob": [
+           {
+            "delete_after_days_since_modification_greater_than": 28
+           }
+          ]
+         }
+        ],
+        "enabled": true,
+        "filters": [
+         {
+          "blob_types": [
+           "blockBlob"
+          ]
+         }
+        ],
+        "name": "expire"
+       }
+      ],
+      "storage_account_id": "${azurerm_storage_account.dst_acct.id}"
+     }
+    }
+   },
+   "variable": {
+    "resource_group_name": {
+     "type": "string"
+    }
+   }
+  },
+  "timeline": {
+   "container": "azurerm_storage_container.dst",
+   "eval_day": 40,
+   "events": [
+    {
+     "day": 0,
+     "key": "old.bin",
+     "op": "put"
+    },
+    {
+     "day": 10,
+     "key": "edge.bin",
+     "op": "put"
+    },
+    {
+     "day": 11,
+     "key": "young.bin",
+     "op": "put"
+    }
+   ]
+  }
+ },
+ "variant": "negative"
+}

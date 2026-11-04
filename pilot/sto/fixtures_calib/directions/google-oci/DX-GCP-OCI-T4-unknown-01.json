@@ -1,0 +1,224 @@
+{
+ "container_map": {
+  "google_storage_bucket.src": "oci_objectstorage_bucket.dst"
+ },
+ "declared_losses": [],
+ "direction": "google->oci",
+ "entry_id": "DX-GCP-OCI-T4-unknown-01",
+ "family": "T4-NONCURRENT",
+ "note": "",
+ "schema": "bo.pilot.sto.direction_entry/1",
+ "source": {
+  "context": {},
+  "fixture_id": "DX-GCP-OCI-T4-unknown-01-S",
+  "provider": "google",
+  "provider_version": "8.9.0",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "google_storage_bucket": {
+     "src": {
+      "lifecycle_rule": [
+       {
+        "action": [
+         {
+          "type": "Delete"
+         }
+        ],
+        "condition": [
+         {
+          "days_since_noncurrent_time": 30,
+          "with_state": "ARCHIVED"
+         }
+        ]
+       }
+      ],
+      "location": "US",
+      "name": "fx-src",
+      "public_access_prevention": "inherited",
+      "uniform_bucket_level_access": true,
+      "versioning": [
+       {
+        "enabled": true
+       }
+      ]
+     }
+    }
+   }
+  },
+  "timeline": {
+   "container": "google_storage_bucket.src",
+   "eval_day": 35,
+   "events": [
+    {
+     "day": 0,
+     "key": "x.log",
+     "op": "put"
+    },
+    {
+     "day": 0,
+     "key": "y.log",
+     "op": "put"
+    },
+    {
+     "day": 2,
+     "key": "x.log",
+     "op": "put"
+    },
+    {
+     "day": 5,
+     "key": "v.log",
+     "op": "put"
+    },
+    {
+     "day": 6,
+     "key": "w.log",
+     "op": "put"
+    },
+    {
+     "day": 7,
+     "key": "v.log",
+     "op": "put"
+    },
+    {
+     "day": 8,
+     "key": "w.log",
+     "op": "put"
+    },
+    {
+     "day": 10,
+     "key": "z.log",
+     "op": "put"
+    },
+    {
+     "day": 20,
+     "key": "y.log",
+     "op": "put"
+    },
+    {
+     "day": 30,
+     "key": "z.log",
+     "op": "put"
+    }
+   ]
+  }
+ },
+ "target": {
+  "context": {},
+  "fixture_id": "DX-GCP-OCI-T4-unknown-01-T",
+  "provider": "oci",
+  "provider_version": "9.11.0",
+  "read": {
+   "completeness": "partial",
+   "not_read": [
+    {
+     "of": "oci_objectstorage_bucket.dst",
+     "what": "lifecycle"
+    }
+   ],
+   "withheld": []
+  },
+  "schema": "bo.pilot.sto.fixture/1",
+  "summary": "",
+  "terraform": {
+   "resource": {
+    "oci_objectstorage_bucket": {
+     "dst": {
+      "access_type": "NoPublicAccess",
+      "compartment_id": "${var.compartment_id}",
+      "name": "fx-dst",
+      "namespace": "${var.namespace}",
+      "versioning": "Enabled"
+     }
+    },
+    "oci_objectstorage_object_lifecycle_policy": {
+     "dst": {
+      "bucket": "${oci_objectstorage_bucket.dst.name}",
+      "namespace": "${var.namespace}",
+      "rules": [
+       {
+        "action": "DELETE",
+        "is_enabled": true,
+        "name": "noncurrent",
+        "target": "previous-object-versions",
+        "time_amount": 30,
+        "time_unit": "DAYS"
+       }
+      ]
+     }
+    }
+   },
+   "variable": {
+    "compartment_id": {
+     "type": "string"
+    },
+    "namespace": {
+     "type": "string"
+    }
+   }
+  },
+  "timeline": {
+   "container": "oci_objectstorage_bucket.dst",
+   "eval_day": 35,
+   "events": [
+    {
+     "day": 0,
+     "key": "x.log",
+     "op": "put"
+    },
+    {
+     "day": 0,
+     "key": "y.log",
+     "op": "put"
+    },
+    {
+     "day": 2,
+     "key": "x.log",
+     "op": "put"
+    },
+    {
+     "day": 5,
+     "key": "v.log",
+     "op": "put"
+    },
+    {
+     "day": 6,
+     "key": "w.log",
+     "op": "put"
+    },
+    {
+     "day": 7,
+     "key": "v.log",
+     "op": "put"
+    },
+    {
+     "day": 8,
+     "key": "w.log",
+     "op": "put"
+    },
+    {
+     "day": 10,
+     "key": "z.log",
+     "op": "put"
+    },
+    {
+     "day": 20,
+     "key": "y.log",
+     "op": "put"
+    },
+    {
+     "day": 30,
+     "key": "z.log",
+     "op": "put"
+    }
+   ]
+  }
+ },
+ "variant": "unknown"
+}
