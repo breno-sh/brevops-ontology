@@ -1,0 +1,37 @@
+CONTRACT_CHANGE — HCL (2026-11-04T08:10-03:00, America/Recife)
+
+Situação: extração completa do TerraDS feita e validada (82.749 repositórios, 1.904.259 recursos,
+10.907.251 registros C06 validados inteiros pelo validador oficial, 0 erro; roundtrip de 400 repositórios
+com 74.957/74.957 termos de mesma estrutura). Três gates do catálogo não fecham por motivos que não estão
+no código do HCL. Nada foi afrouxado; o merge em bo/base NÃO foi feito.
+
+1. privacy_lint --strict sobre resources.parquet (G2, G8, e por tabela G5) — dono: REPO
+   O lint estrito lê binário pelas sequências imprimíveis. Um parquet de 1,9 milhão de linhas com ids
+   hexadecimais aleatórios só cabe em 50 MB comprimido, e bytes de zstd/lz4/snappy formam por acaso
+   padrões de e-mail e de dinheiro (falso positivo de ruído). Medido: 18 codificações tentadas em ordem
+   fixa (sem compressão, snappy, lz4, zstd níveis 1 a 22); nenhuma sai limpa e abaixo de 50 MB
+   (parse_stats.json, campo parquet_encoding.tried). Os valores DECODIFICADOS de todas as colunas de
+   texto passam pelas regras do privacy_lint antes da gravação (bo.hcl.extract.write_table_clean).
+   Proposta: o privacy_lint ler .parquet pelos valores decodificados (pyarrow, coluna a coluna), como já
+   faz com .gz desde 1d74cd8, em vez dos bytes comprimidos.
+   Tempo: o privacy_lint leva ~29 min de relógio para o symbolic_config.jsonl de 4,9 GB (medido com a
+   máquina carregada); o gate-check com --timeout 900 estoura antes. Proposta: varredura paralela por
+   pedaços (bo.hcl.privacy_stream faz isso com as mesmas regras em ~3 min) ou timeout maior para o HCL.
+
+2. crosscheck por tipo ±2% (G4, e por tabela G5) — decisão do coordenador
+   Critério fixado em bo/hcl/crosscheck.py antes do resultado: |nosso − sqlite| <= max(ceil(0,02·sqlite), 1)
+   para todo (Managed|Data, tipo) dos 4 provedores, e total dentro de ±2%.
+   Resultado: total 1.904.666 vs 1.918.818 (−0,74%, dentro); 6.169 de 6.426 tipos dentro; 257 fora.
+   Decomposição dos tipos fora (bo.hcl, varredura repositório a repositório contra Modules/Resources):
+   2.797 blocos faltam em módulos com arquivo que o python-hcl2 8.1.4 não lê (10.827 arquivos, 0,71%;
+   erros de gramática, sem padrão dominante); 994 blocos sobram (o sqlite conta menos; hipótese não
+   testada: a ferramenta do TerraDS indexa recurso por tipo.nome em cada módulo e duplicatas somem);
+   2 sem causa achada. Links simbólicos .tf já são lidos como o Terraform leria (7.131).
+   O brief exige parser HCL puro sem executar; com o python-hcl2 fixado, o critério por tipo não fecha.
+   Pedido: o coordenador decide se o gate passa a ser (a) total ±2% mais a taxa de tipos dentro, ou
+   (b) por tipo depois de alinhar a unidade à da tabela (tipo.nome único por diretório) — sem eu escolher
+   depois de ver o número.
+
+3. consume_check (G7) — dono: coordenador/SEMANTICS
+   FAIL manifestos_transitivos: o PLANO_BREVOPS_ONTOLOGY.html mudou depois que o SEMANTICS o consumiu.
+   Não é entrada do HCL; precisa do refresh/invalidate do SEMANTICS.

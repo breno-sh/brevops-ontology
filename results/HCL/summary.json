@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "HCL",
- "generated_at": "2026-11-04T02:39:24-03:00",
+ "generated_at": "2026-11-04T08:06:45-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/HCL.txt",
@@ -29,7 +29,7 @@
     "sha256": "728477a499dd949e4dd74ca6230318544839ac465d317ef743da093f3c2e96aa"
    }
   ],
-  "recorded_at": "2026-11-04T02:39:24-03:00"
+  "recorded_at": "2026-11-04T08:06:45-03:00"
  },
  "sources": [
   {
@@ -43,5 +43,5 @@
    "transformation": "parser usado só como biblioteca (parses_to_tree)"
   }
  ],
- "notes": "Extração completa: 82749 repos, 1520509 .tf (1509680 lidos, parse_rate 0.9929), 1904259 recursos, 10907251 registros C06 (validados inteiros: 0 erro). Crosscheck por tipo (critério fixado antes: |dif|<=max(ceil(2%),1)) reprova 257 de 6426 tipos; total -0,74%. Decomposição dos tipos fora: 2797 blocos faltam por arquivo que o python-hcl2 não parseia (0,71% dos arquivos; gramática), 994 sobram (sqlite conta menos), 2 sem causa. Links simbólicos .tf resolvidos dentro do repo (7131; 204 para fora/ausentes)."
+ "notes": "Extração completa: 82749 repos, 1520509 .tf (1509680 lidos, parse_rate 0.9929), 1904259 recursos, 10907251 registros C06 validados inteiros (0 erro). Roundtrip 400 repos: 74957/74957 termos com a mesma estrutura, 0 divergência. Crosscheck por tipo (critério fixado antes: |dif|<=max(ceil(2%),1)) reprova 257 de 6426 tipos; total -0,74%; nos tipos fora, 2797 blocos faltam por arquivo que o python-hcl2 não lê e 994 sobram (o sqlite conta menos). resources.parquet: valores decodificados limpos no privacy_lint; o binário comprimido dá falso positivo lexical (ver CONTRACT_CHANGE.txt)."
 }
