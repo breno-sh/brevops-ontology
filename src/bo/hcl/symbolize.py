@@ -524,6 +524,9 @@ class Symbolizer:
         for b in body.blocks:
             if b.type == "dynamic" and b.labels:
                 label = b.labels[0]
+                if not SCHEMA_ATTR.match(label):
+                    self.counts["invalid_attr_name"] = self.counts.get("invalid_attr_name", 0) + 1
+                    continue  # rótulo de dynamic que não é nome de bloco (ex.: vazio): fora do C06
                 i = seen.get(("dyn", label), 0)
                 seen[("dyn", label)] = i + 1
                 p = f'{prefix}dynamic["{label}"][{i}].'
