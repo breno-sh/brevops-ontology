@@ -14,7 +14,7 @@ from __future__ import annotations
 E1, E2, E2B, E3, E4, E5, E6, E7, E8 = ("3995e6a", "3c2141f", "513113d", "bdceb64", "469c4d7", "79d04b7", "2f3c0d3",
                                        "9919e4c", "4abc6e3")
 E9 = "emenda 9"   # substituído pelo sha do commit da emenda 9 no relatório (ver EMENDA9_COMMIT)
-EMENDA9_COMMIT = None
+EMENDA9_COMMIT = "85b8a6e"   # commit da emenda 9 (as mudanças de contrato)
 
 A, R, D, O = "ACEITO", "RECUSADO", "ADIADO_FASE_2", "DE_OUTRO_DONO"
 RES, ABE = "RESOLVIDO", "ABERTO"

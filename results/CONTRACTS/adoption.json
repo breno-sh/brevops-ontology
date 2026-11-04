@@ -1,7 +1,7 @@
 {
  "schema": "bo.contracts_adoption/1",
  "module": "CONTRACTS",
- "generated_at": "2026-11-04T13:31:00-03:00",
+ "generated_at": "2026-11-04T13:31:43-03:00",
  "adopted": [
   {
    "source": "results/REQUIREMENTS/C24_proposta/requirements.schema.json",

@@ -1,7 +1,7 @@
 {
  "schema": "bo.contracts_requests_ledger/1",
  "module": "CONTRACTS",
- "generated_at": "2026-11-04T13:31:00-03:00",
+ "generated_at": "2026-11-04T13:31:44-03:00",
  "scope": "CONTRACT_CHANGE.txt dos PILOT-* e dos módulos que eles consomem (bo/base)",
  "n": 114,
  "by_decision": {
@@ -537,7 +537,7 @@
    "decision": "ACEITO",
    "status": "FECHADO",
    "closes": "C00@3.2.0 (outcome.block_code)",
-   "commit": "emenda 9",
+   "commit": "85b8a6e",
    "why": ""
   },
   {
@@ -625,7 +625,7 @@
    "decision": "ACEITO",
    "status": "FECHADO",
    "closes": "C00@3.2.0 (outcome.block_code)",
-   "commit": "emenda 9",
+   "commit": "85b8a6e",
    "why": ""
   },
   {
@@ -790,7 +790,7 @@
    "decision": "ACEITO",
    "status": "FECHADO",
    "closes": "C00@3.2.0",
-   "commit": "emenda 9",
+   "commit": "85b8a6e",
    "why": ""
   },
   {
@@ -801,7 +801,7 @@
    "decision": "ACEITO",
    "status": "FECHADO",
    "closes": "C25@1.3.0",
-   "commit": "emenda 9",
+   "commit": "85b8a6e",
    "why": ""
   },
   {
@@ -812,7 +812,7 @@
    "decision": "ACEITO",
    "status": "FECHADO",
    "closes": "stub C05@3.1.0",
-   "commit": "emenda 9",
+   "commit": "85b8a6e",
    "why": "SEMANTICS adotou (ea53bcf); o TRANSFORMS ainda diverge (bo.units.crosscheck)"
   },
   {
@@ -823,7 +823,7 @@
    "decision": "ACEITO",
    "status": "FECHADO",
    "closes": "C05@3.1.0",
-   "commit": "emenda 9",
+   "commit": "85b8a6e",
    "why": ""
   },
   {
@@ -834,7 +834,7 @@
    "decision": "ACEITO",
    "status": "FECHADO",
    "closes": "C05@3.1.0",
-   "commit": "emenda 9",
+   "commit": "85b8a6e",
    "why": ""
   },
   {
@@ -845,7 +845,7 @@
    "decision": "ACEITO",
    "status": "FECHADO",
    "closes": "C05@3.1.0",
-   "commit": "emenda 9",
+   "commit": "85b8a6e",
    "why": ""
   },
   {
@@ -856,7 +856,7 @@
    "decision": "ACEITO",
    "status": "FECHADO",
    "closes": "C05@3.1.0 (allowed_values)",
-   "commit": "emenda 9",
+   "commit": "85b8a6e",
    "why": ""
   },
   {
@@ -867,7 +867,7 @@
    "decision": "ACEITO",
    "status": "FECHADO",
    "closes": "C05@3.1.0",
-   "commit": "emenda 9",
+   "commit": "85b8a6e",
    "why": "string com unidade no texto continua NOT_APPLICABLE (o tipo é texto)"
   },
   {
@@ -878,7 +878,7 @@
    "decision": "ACEITO",
    "status": "FECHADO",
    "closes": "C05@3.1.0 (counted)",
-   "commit": "emenda 9",
+   "commit": "85b8a6e",
    "why": ""
   },
   {
@@ -900,7 +900,7 @@
    "decision": "ACEITO",
    "status": "FECHADO",
    "closes": "C10@3.2.0",
-   "commit": "emenda 9",
+   "commit": "85b8a6e",
    "why": "any só como item_type de porta do C10; o value_type do C09 (alegação) continua sem any"
   },
   {
