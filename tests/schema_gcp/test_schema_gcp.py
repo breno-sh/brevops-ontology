@@ -1,4 +1,4 @@
-"""Testes do bo.schema_gcp: cadeia do pin, lock, h1, write_only sobre a biblioteca, mirror offline e beta_check."""
+"""Testes do bo.schema_gcp: cadeia do pin, lock, h1, átomos da biblioteca e mirror offline."""
 import base64
 import hashlib
 import json
@@ -9,7 +9,6 @@ import pytest
 
 from bo.schema import core, lockfile
 from bo.schema_gcp import atoms as A
-from bo.schema_gcp import beta_check as B
 from bo.schema_gcp import common as C
 from bo.schema_gcp import offline
 
@@ -116,26 +115,15 @@ def test_write_only_so_onde_o_schema_marca(schema_file, work):
     assert V.validate("C02_types", work / "t.jsonl").ok
 
 
-def test_sem_write_only_e_byte_a_byte_a_biblioteca(schema_file, work):
+def test_saida_e_byte_a_byte_a_da_biblioteca(schema_file, work):
     from bo.schema import build as LB
     A.build(schema_file, "8.9.0", work / "a.jsonl", work / "t.jsonl")
     LB.build(schema_file, "google", "8.9.0", work / "la.jsonl", work / "lt.jsonl")
     assert (work / "t.jsonl").read_bytes() == (work / "lt.jsonl").read_bytes()
-    mine = (work / "a.jsonl").read_text().splitlines()
-    lib = (work / "la.jsonl").read_text().splitlines()
-    diff = [(m, b) for m, b in zip(mine, lib) if m != b]
-    assert len(mine) == len(lib) and len(diff) == 2
-    for m, b in diff:
-        mm = json.loads(m)
-        assert mm.pop("write_only") is True and mm == json.loads(b)
-
-
-def test_write_only_reprova_percurso_fora_de_ordem(schema_file):
-    ps = core.providers(core.load(schema_file))["google"]
-    ts = next(t for t in core.iter_types(ps, "google", "8.9.0") if t.resource_type == "google_widget")
-    ts.atoms.reverse()
-    with pytest.raises(core.SchemaError):
-        A.annotate_write_only(ts)
+    assert (work / "a.jsonl").read_bytes() == (work / "la.jsonl").read_bytes()
+    lib = [json.loads(x) for x in (work / "la.jsonl").read_text().splitlines()]
+    assert sorted(x["atom_id"] for x in lib if x.get("write_only") is True) == [
+        "google:google_widget:conf.key_wo", "google:google_widget:secret_wo"]
 
 
 def test_regenerar_da_os_mesmos_bytes(schema_file, work):
@@ -145,36 +133,12 @@ def test_regenerar_da_os_mesmos_bytes(schema_file, work):
     assert (work / "t1.jsonl").read_bytes() == (work / "t2.jsonl").read_bytes()
 
 
-# ------------------------------------------------------------------ offline e beta_check
+# ------------------------------------------------------------------ offline
 
 def test_terraformrc_so_mirror_para_o_google(work):
     rc = offline.terraformrc(work)
     assert "filesystem_mirror" in rc and str(work.resolve()) in rc
     assert f'exclude = ["{C.ADDRESS}"]' in rc and f'include = ["{C.ADDRESS}"]' in rc
-
-
-def test_beta_check_classifica_paginas(work, monkeypatch):
-    monkeypatch.setattr(C, "prefetch_dir", lambda v: work / "pf")
-    r = work / "pf" / "docs" / "r"
-    r.mkdir(parents=True)
-    (r / "x_beta.html.markdown").write_text("~> **Warning:** This resource is in beta, and should be used with "
-                                            "the terraform-provider-google-beta provider.\n  provider = google-beta\n")
-    (r / "y_iam.html.markdown").write_text("sem aviso\n")
-    (r / "ga.html.markdown").write_text("These resources are in beta, and should be used with the "
-                                        "terraform-provider-google-beta provider.\n")
-    index = {"docs": [{"slug": s, "category": "resources", "language": "hcl"} for s in ("x_beta", "y_iam", "ga")]}
-    xc = {"veredito": "FAIL", "paginas_sem_tipo": ["google_x_beta", "google_y_iam"], "tipos_sem_pagina": []}
-    rep = B.analyse(xc, {"google_ga"}, {"google_ga", "google_x_beta", "google_y_iam_member"}, index, "8.9.0")
-    by = {p["pagina"]: p for p in rep["paginas"]}
-    assert by["google_x_beta"] == {"pagina": "google_x_beta", "em_google_beta": True,
-                                   "tipos_google_beta": ["google_x_beta"], "aviso_beta": True, "exemplo_beta": True}
-    assert by["google_y_iam"]["em_google_beta"] and not by["google_y_iam"]["aviso_beta"]
-    assert rep["contagens"]["sem_aviso_beta"] == ["google_y_iam"]
-    assert rep["controle_aviso_beta_com_tipo_no_google"] == [{"pagina": "google_ga", "tipos_google": ["google_ga"]}]
-    assert rep["conclusao"].startswith("todas")
-    rep2 = B.analyse(xc, {"google_ga"}, {"google_ga"}, index, "8.9.0")
-    assert rep2["contagens"]["fora_do_google_beta"] == ["google_x_beta", "google_y_iam"]
-    assert rep2["conclusao"].startswith("há página")
 
 
 def test_portable_troca_prefixo():

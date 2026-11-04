@@ -9,8 +9,8 @@
 4. sha256 da saída crua == schema_sha256 do pin; h1 da pasta do provider no plugin_cache == h1 do lock;
 5. o plugin_cache sozinho, offline (bo.schema_gcp.offline), refaz o schema com o mesmo sha e passa no validate;
 6. átomos e tipos pela biblioteca (bo.schema_gcp.atoms), validados no validador único (C01, C02);
-7. bo.schema.crosscheck --provider google (índice do Registry da versão); o veredito é registrado, não ajustado;
-   bo.schema_gcp.beta_check mede a causa das páginas sem tipo (google-beta da mesma versão), sem mudar o veredito;
+7. bo.schema.crosscheck --provider google (índice do Registry da versão; causa so_beta com o schema do google-beta
+   da mesma versão, que bo.schema_gcp.beta_schema extrai se faltar); o veredito é registrado, não ajustado;
 8. plugin_cache/SIGNED.sha256 (sha256 dos arquivos do provider, depois do h1 conferido), build_report.json e
    MANIFEST.sha256 da pasta do módulo.
 """
@@ -112,14 +112,9 @@ def run(do_extract: bool, fetch_index: bool) -> dict:
         if not res.ok:
             raise SystemExit(f"pipeline: {alias} reprovou: {res.errors[:5]}")
 
+    from . import beta_schema
+    beta_schema.ensure(v)
     xc = crosscheck(out / f"crosscheck_{C.PROVIDER}-{v}.json", fetch_index)
-    from . import beta_check
-    if beta_check.main([]) != 0:
-        raise SystemExit("pipeline: beta_check falhou")
-    bc = json.loads((out / f"crosscheck_beta_{C.PROVIDER}-{v}.json").read_text(encoding="utf-8"))
-    xc["causa_paginas_sem_tipo"] = {"relatorio": C.portable(out / f"crosscheck_beta_{C.PROVIDER}-{v}.json"),
-                                    "conclusao": bc["conclusao"], **{k: (len(x) if isinstance(x, list) else x)
-                                                                    for k, x in bc["contagens"].items()}}
 
     report = {
         "schema": "bo.schema_gcp.build_report/1", "module": C.ID, "started_at": started, "finished_at": now(),

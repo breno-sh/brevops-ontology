@@ -3,10 +3,8 @@
   python -I -m bo.schema_gcp.check
 
   1. pin: SHA256SUMS da pré-busca = pins.json; schema.json.sha256 = schema_sha256 do pin = sha da saída guardada;
-  2. biblioteca: types.jsonl é byte a byte o do bo.schema.build; atoms.jsonl só difere dele por "write_only": true,
-     e só nos átomos cujo atributo traz write_only no schema;
+  2. biblioteca: atoms.jsonl e types.jsonl são byte a byte os do bo.schema.build (write_only vem da biblioteca);
   3. build_report.json bate com os arquivos (contagens e sha256);
-  4. crosscheck_beta_google-<versão>.json regenera com os mesmos bytes (análise de causa, sem data).
 Sai 0 se tudo confere.
 """
 
@@ -18,7 +16,6 @@ import json
 import sys
 
 from . import atoms as A
-from . import beta_check as B
 from . import common as C
 
 
@@ -41,18 +38,9 @@ def main(argv=None) -> int:
     if (work / "lib_types.jsonl").read_bytes() != (out / "types.jsonl").read_bytes():
         fails.append("types.jsonl difere do bo.schema.build")
     mine = (out / "atoms.jsonl").read_text(encoding="utf-8").splitlines()
-    lib = (work / "lib_atoms.jsonl").read_text(encoding="utf-8").splitlines()
-    n_wo = 0
-    if len(mine) != len(lib):
-        fails.append(f"atoms.jsonl com {len(mine)} linhas, biblioteca {len(lib)}")
-    for m, b in zip(mine, lib):
-        if m == b:
-            continue
-        mm = json.loads(m)
-        if mm.pop("write_only", None) is not True or mm != json.loads(b):
-            fails.append(f"átomo difere da biblioteca além do write_only: {json.loads(b)['atom_id']}")
-            break
-        n_wo += 1
+    if (work / "lib_atoms.jsonl").read_bytes() != (out / "atoms.jsonl").read_bytes():
+        fails.append("atoms.jsonl difere do bo.schema.build")
+    n_wo = sum(1 for m in mine if json.loads(m).get("write_only") is True)
     A.build(sdir / "schema.json.gz", v, work / "a.jsonl", work / "t.jsonl")
     if C.sha256_file(work / "a.jsonl") != C.sha256_file(out / "atoms.jsonl"):
         fails.append("atoms.jsonl não regenera igual pelo bo.schema_gcp.atoms")
@@ -64,15 +52,8 @@ def main(argv=None) -> int:
     if rep["extract"]["schema_json_sha256"] != raw_sha or rep["pin"]["schema_sha256"] != pin["schema_sha256"]:
         fails.append("build_report.json com sha256 de schema diferente")
 
-    bpath = out / f"crosscheck_beta_{C.PROVIDER}-{v}.json"
-    before = bpath.read_bytes()
-    B.main([])
-    if bpath.read_bytes() != before:
-        bpath.write_bytes(before)
-        fails.append("crosscheck_beta não regenera com os mesmos bytes")
-
     print(f"check {C.ID} google {v}: schema {raw_sha[:12]}… = pin; {len(mine)} átomos, {b['types']} tipos; "
-          f"{n_wo} write_only (único acréscimo à biblioteca) -> {'OK' if not fails else 'FAIL'}")
+          f"{n_wo} write_only (da biblioteca) -> {'OK' if not fails else 'FAIL'}")
     for f in fails:
         print(f"  FAIL {f}")
     return 0 if not fails else 1

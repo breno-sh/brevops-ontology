@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "SCHEMA-GCP",
- "generated_at": "2026-11-03T07:29:27-03:00",
+ "generated_at": "2026-11-03T21:18:00-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/SCHEMA-GCP.txt",
@@ -17,7 +17,7 @@
    "terraform": "1.15.8",
    "os_arch": "darwin_arm64",
    "sandbox": "env -i, HOME temporario, sandbox-exec sem credenciais; schema e validate sem rede IP",
-   "write_only": "acrescentado sobre bo.schema.core (C01 2.1.0), so quando true"
+   "write_only": "da biblioteca bo.schema (C01 2.1.0), so quando true"
   },
   "inputs": [
    {
@@ -41,11 +41,6 @@
     "sha256": "2c44d6c64b4f8aef0b97152c8557405393acf614e3f87cef9a32786e0c7907bd"
    },
    {
-    "path": "$BO_DATA/downloads/prefetch/google/8.9.0/docs/r",
-    "kind": "dir",
-    "sha256": "1c2d0864dbdce1304b60b6c4c4856f980f3a5b62edb3b4ed8573611a50d4f83a"
-   },
-   {
     "path": "$BO_DATA/downloads/tfschema/google-8.9.0/schema.json.gz",
     "kind": "file",
     "sha256": "203424c12203c994b9f05ca7c74061e677a6a787f0f8f553b9cf172cc2fbd346"
@@ -66,7 +61,7 @@
     "sha256": "8861f2b39be897ab6291556ae9ee4639a7049081e01dccb95f3b9e6fb0d4a901"
    }
   ],
-  "recorded_at": "2026-11-03T07:29:27-03:00"
+  "recorded_at": "2026-11-03T21:18:00-03:00"
  },
  "sources": [
   {
@@ -82,13 +77,8 @@
   {
    "uri": "https://registry.terraform.io/providers/hashicorp/google-beta/8.9.0",
    "license": "MPL-2.0",
-   "transformation": "pacote assinado; so a lista de tipos, para medir a causa das paginas sem tipo"
-  },
-  {
-   "uri": "https://github.com/hashicorp/terraform-provider-google/tree/v8.9.0/website/docs",
-   "license": "MPL-2.0",
-   "transformation": "pre-busca; aviso beta e exemplos por pagina sem tipo"
+   "transformation": "pacote assinado; so a lista de tipos, evidencia da causa so_beta do crosscheck"
   }
  ],
- "notes": "G3 (crosscheck) e G7 (privacy_lint) ABANDON com motivo em results/SCHEMA-GCP/CONTRACT_CHANGE.txt; G4 por consequencia"
+ "notes": "G1-G11 verdes; achados e resolucoes em results/SCHEMA-GCP/CONTRACT_CHANGE.txt"
 }
