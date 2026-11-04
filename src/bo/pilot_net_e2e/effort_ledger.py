@@ -35,6 +35,10 @@ LEDGER = {
         {"step": "rerodada sobre o PILOT-NET-MAP 1b8325a, gates e merge", "start": "13:16", "end": "13:25",
          "agent_hours": 0.15},
     ],
+    "steps_final": [
+        {"step": "rodada final: GRAIN cbe1f08 e PILOT-NET-MAP bd7e770, gates e merge", "start": "14:30",
+         "end": "14:45", "agent_hours": 0.15},
+    ],
     "wait": [{"what": "PILOT-NET-MAP em bo/base (rebase sobre GRAIN 0.1.7/0.1.8 e oráculo regerado no meio)",
               "start": "10:29", "end": "11:03", "hours": 0.57}],
 }

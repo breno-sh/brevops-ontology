@@ -44,3 +44,9 @@ ADENDO 2026-11-04T13:09:00-03:00 (America/Recife), GRAIN 0.1.9 (071daf6..748b7f1
   (aws_instance.vpc_security_group_ids sem ocorrência de vínculo), 9 anexações azurerm (associação em
   G0-IDENTITY), 2 anexações OCI (create_vnic_details.nsg_ids) e 11 regras da security list OCI (G0-NEEDS
   api_resource).
+
+ADENDO 2026-11-04T14:40:00-03:00 (America/Recife), GRAIN final cbe1f08 e PILOT-NET-MAP bd7e770:
+  CC-NET-E2E-2: 26/42 fixtures iguais ao gabarito (anexações AWS por vpc_security_group_ids e nsg_ids da OCI
+  passaram a BINDING). Restam 21 tipos UNKNOWN: 11 regras da security list OCI (G0-NEEDS api_resource), 9
+  associações azurerm (G0-NEEDS lifecycle_controller, owner, effective_scope) e 1 anexação AWS por variável
+  (G0-IDENTITY, NETC-C08-AWS-ATTACH-SYM). Unidades, pais e chaves 42/42; reordenação 42/42; embalagem 3/3.
