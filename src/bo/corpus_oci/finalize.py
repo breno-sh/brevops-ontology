@@ -35,8 +35,8 @@ def main(argv=None) -> int:
     note = (
         f"[{stamp}] Uso real do oci no TerraDS, sem split. {c['repos_with_managed']} repositórios, "
         f"{c['families_with_managed']} famílias, {c['modules_with_managed']} módulos e {c['managed_blocks']} "
-        f"recursos gerenciados ({c['data_blocks']} blocos data fora). {c['managed_records']} valores lidos "
-        f"(= n_attrs do parquet); {c['attributed_records']} viram átomo; não atribuídos: "
+        f"recursos gerenciados ({c['data_blocks']} blocos data fora). {c['managed_records']} valores lidos pelas "
+        f"faixas do symbolic_config.index.json (= n_attrs do parquet, conferido); {c['attributed_records']} viram átomo; não atribuídos: "
         + ", ".join(f"{k} {v}" for k, v in ua.items())
         + f". Classes dos valores: literal {tc['literal']}, symbolic {tc['symbolic']}, withheld {tc['withheld']}. "
         f"Átomos configurados: {c['atoms_configured']} de {c['schema_atoms']} "

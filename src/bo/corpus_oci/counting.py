@@ -15,7 +15,8 @@ Definições (fixadas antes de olhar o resultado; o summary.json repete):
   resultado é caminho de átomo do tipo, é esse átomo; senão, o MAIOR prefixo próprio que é átomo de atributo
   (subchave de mapa ou objeto, ex. ``metadata.user_data`` → ``metadata``). O que sobra não vira átomo e é
   contado por causa: meta-argumento do Terraform, meta de bloco dynamic, bloco atribuído como atributo,
-  atributo fora do schema, tipo fora do schema.
+  atributo fora do schema, tipo fora do schema. Literal ``null`` resolve o átomo mas não o configura (para o
+  Terraform, ``attr = null`` é o mesmo que omitir): conta como ``explicit_null``.
 * Classe de um termo: ``withheld`` se o termo contém, em qualquer profundidade, um termo retido; ``literal``
   se é literal, ou documento sem nenhum identificador simbolizado e sem termo embutido; senão ``symbolic``
   (símbolo, expressão, referência, documento simbolizado).
@@ -50,7 +51,7 @@ _DATA = re.compile(r"(^|\.)data\.[a-z]")
 _LEAD = re.compile(r"[A-Za-z0-9_]+")
 
 UNATTRIBUTED = ("meta_argument", "dynamic_meta", "block_as_attribute", "attr_not_in_schema",
-                "type_not_in_schema")
+                "type_not_in_schema", "explicit_null")
 
 
 def worse(a: str | None, b: str) -> str:
@@ -113,6 +114,7 @@ class AtomIndex:
     paths: dict = field(default_factory=dict)       # tipo -> {caminho: atom_id}
     blocks: dict = field(default_factory=dict)      # tipo -> {caminho de bloco}
     configurable: dict = field(default_factory=dict)  # atom_id -> bool
+    vocab: set = field(default_factory=set)         # todo nome de atributo ou bloco do schema do provedor
     n_atoms: int = 0
 
     @classmethod
@@ -132,6 +134,7 @@ class AtomIndex:
                 for i in range(1, len(bp) + 1):
                     bl.add(".".join(bp[:i]))
                 ix.configurable[a["atom_id"]] = bool(a.get("configurable"))
+                ix.vocab.update(a["path"].split("."))
                 ix.n_atoms += 1
         return ix
 
@@ -158,6 +161,14 @@ class AtomIndex:
             if pre in self.blocks.get(rtype, ()):
                 break  # prefixo é bloco: o resto é atributo do bloco que o schema não tem
         return None, "attr_not_in_schema"
+
+
+def safe_report_path(ix: AtomIndex, norm_path: str) -> str:
+    """Caminho para o relatório só se todo segmento é nome do schema do provedor ou meta do Terraform; senão
+    um marcador (nome escrito pelo usuário fora do vocabulário nunca sai em claro)."""
+    segs = re.split(r"[.]", re.sub(r'\[[^\]]*\]', "", norm_path))
+    ok = all(x in ix.vocab or x in META_TOP or x in DYN_META or x == "dynamic" for x in segs if x)
+    return norm_path if ok else "<fora do vocabulário do schema>"
 
 
 @dataclass
@@ -210,6 +221,11 @@ class Tally:
         if atom is None:
             self.stats[f"unattributed:{cause}"] += 1
             self.unattributed[(cause, rec["resource_type"], normalize_path(rec["attr_path"]))] += 1
+            return
+        if rec["term"].get("kind") == "literal" and rec["term"].get("datatype") == "null":
+            # attr = null é, para o Terraform, o mesmo que não escrever: o átomo não fica configurado
+            self.stats["unattributed:explicit_null"] += 1
+            self.unattributed[("explicit_null", rec["resource_type"], normalize_path(rec["attr_path"]))] += 1
             return
         self.stats["attributed_records"] += 1
         cur = self.set_atoms[key]

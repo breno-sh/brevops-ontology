@@ -48,9 +48,15 @@ def test_expected_usage(built):
     assert len(u) == len(_usage(out))  # sem chave repetida
     c = rep["counts"]
     assert (c["managed_blocks"], c["data_blocks"], c["data_records"], c["repos_without_records"]) == (7, 1, 1, 1)
-    assert c["managed_records"] == c["managed_attrs_declared"] == 16
+    assert c["managed_records"] == c["managed_attrs_declared"] == 17
     assert rep["unattributed_records"] == {"meta_argument": 1, "dynamic_meta": 1, "block_as_attribute": 1,
-                                           "attr_not_in_schema": 1, "type_not_in_schema": 1}
+                                           "attr_not_in_schema": 1, "type_not_in_schema": 1, "explicit_null": 1}
+    # shape = null em R2 não configura o átomo
+    assert (R2, inst, "oci:oci_core_instance:shape") not in u
+    # nome fora do vocabulário do schema não sai em claro no relatório
+    paths = {x["path"] for x in rep["unattributed_top"]}
+    assert "removed_attr" not in paths and "<fora do vocabulário do schema>" in paths
+    assert 'dynamic["shape_config"].for_each' in paths and "ingress_security_rules" in paths
     assert c["modules_with_managed"] == 4 and c["repos_with_managed"] == 3 and c["families_with_managed"] == 2
 
 

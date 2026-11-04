@@ -44,6 +44,7 @@ ATOMS = [
 
 LIT = {"kind": "literal", "datatype": "string", "value": "x"}
 SYM = {"kind": "symbol", "symbol_id": "SYM-0000000000aa", "name_class": "variable", "scope": "repo"}
+NULL = {"kind": "literal", "datatype": "null", "value": None}
 WH = {"kind": "withheld", "reason": "boot_script"}
 EXPR_WH = {"kind": "expression", "op": "hcl_object", "args": [LIT, WH]}
 REF = {"kind": "reference", "target_type": "oci_core_vcn", "target_address": "oci_core_vcn.SYM-0000000000bb"}
@@ -78,6 +79,7 @@ def corpus():
         # R2 (outra família): uma instância com metadata em expressão que contém retido
         rec(R2, F2, "a/b.tf", INST, "oci_core_instance", "metadata", EXPR_WH),
         rec(R2, F2, "a/b.tf", INST, "oci_core_instance", "display_name", SYM),
+        rec(R2, F2, "a/b.tf", INST, "oci_core_instance", "shape", NULL),
     ]
     by_res = {}
     for r in recs:

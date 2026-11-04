@@ -120,6 +120,7 @@ def run(provider: str, out: Path) -> dict:
             "module": "(repo_id, dirname(file)) com o caminho já simbolizado pelo HCL",
             "atom_resolution": "sem [n]; dynamic[\"b\"][n].content. -> b.; caminho exato ou maior prefixo "
                                "que é átomo de atributo",
+            "explicit_null": "literal null resolve o átomo mas não o configura (Terraform: igual a omitir)",
             "class": "withheld se contém termo retido; literal se literal ou documento sem símbolo nem termo "
                      "embutido; senão symbolic; várias ocorrências: withheld > symbolic > literal",
             "type_record": "registro sem atom_id por (repo, tipo): n_set = recursos com >= 1 átomo",
@@ -151,7 +152,7 @@ def run(provider: str, out: Path) -> dict:
         "term_class_records": {c: st[f"term_class:{c}"] for c in counting.CLASSES},
         "unattributed_records": {c: st[f"unattributed:{c}"] for c in counting.UNATTRIBUTED},
         "unattributed_top": [
-            {"cause": c, "resource_type": rt, "path": p, "records": n}
+            {"cause": c, "resource_type": rt, "path": counting.safe_report_path(atoms, p), "records": n}
             for (c, rt, p), n in sorted(tally.unattributed.items(), key=lambda kv: (-kv[1], kv[0]))[:60]
         ],
     }

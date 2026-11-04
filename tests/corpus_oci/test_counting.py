@@ -76,3 +76,11 @@ def test_atoms_of_other_provider_rejected(data_root):
     p.write_text(p.read_text() + json.dumps({**ATOMS[0], "provider": "aws", "atom_id": "aws:x:y"}) + "\n")
     with pytest.raises(ValueError):
         counting.AtomIndex.load(str(p), "oci")
+
+
+def test_safe_report_path(ix):
+    assert counting.safe_report_path(ix, "metadata") == "metadata"
+    assert counting.safe_report_path(ix, "count") == "count"
+    assert counting.safe_report_path(ix, 'dynamic["shape_config"].iterator') == 'dynamic["shape_config"].iterator'
+    assert counting.safe_report_path(ix, "nome_da_empresa") == "<fora do vocabulário do schema>"
+    assert counting.safe_report_path(ix, "shape_config.nome_da_empresa") == "<fora do vocabulário do schema>"
