@@ -1,0 +1,588 @@
+{
+ "schema": "bo.hist_gcp.history_counts/1",
+ "module": "HIST-GCP",
+ "generated_at": "2026-11-04T02:09:10-03:00",
+ "provider": "google",
+ "source": "$BO_DATA/HIST-GCP/extraction.json",
+ "totals": {
+  "listed": 29,
+  "extracted": 28,
+  "unavailable": 1
+ },
+ "span": {
+  "first_extracted": "3.74.0",
+  "last_extracted": "8.9.0",
+  "types": [
+   416,
+   1392
+  ],
+  "atoms": [
+   6648,
+   32659
+  ]
+ },
+ "versions": [
+  {
+   "version": "3.62.0",
+   "released_at": "2021-03-29",
+   "status": "unavailable",
+   "reason": "sem build darwin_arm64 publicado: o índice v1 do Registry guardado pelo PINS ($BO_DATA/PINS/registry_index/providers/google/registry-v1-versions.json, sha256 d8d764a861ff…) lista para 3.62.0 só as plataformas [darwin_amd64, freebsd_386, freebsd_amd64, freebsd_arm, linux_386, linux_amd64, linux_arm, linux_arm64, windows_386, windows_amd64]; history_versions.json traz darwin_arm64=false; a rota https://registry.terraform.io/v1/providers/hashicorp/google/3.62.0/download/darwin/arm64 respondeu HTTP 404 (provider platform not found). A extração exige o binário assinado executado nesta máquina (darwin_arm64); nenhum schema foi produzido nem inferido para esta versão."
+  },
+  {
+   "version": "3.74.0",
+   "released_at": "2021-06-28",
+   "status": "extracted",
+   "types": 416,
+   "atoms": 6648,
+   "required": 1741,
+   "optional": 4173,
+   "computed": 1964,
+   "configurable": 5914,
+   "sensitive": 43,
+   "deprecated": 17,
+   "write_only": 0,
+   "data_sources": 88
+  },
+  {
+   "version": "3.86.0",
+   "released_at": "2021-09-27",
+   "status": "extracted",
+   "types": 440,
+   "atoms": 7264,
+   "required": 1878,
+   "optional": 4583,
+   "computed": 2112,
+   "configurable": 6461,
+   "sensitive": 47,
+   "deprecated": 17,
+   "write_only": 0,
+   "data_sources": 89,
+   "delta_vs_previous_extracted": {
+    "from": "3.74.0",
+    "types": 24,
+    "atoms": 616
+   }
+  },
+  {
+   "version": "4.0.0",
+   "released_at": "2021-11-02",
+   "status": "extracted",
+   "types": 438,
+   "atoms": 7285,
+   "required": 1877,
+   "optional": 4597,
+   "computed": 2113,
+   "configurable": 6474,
+   "sensitive": 44,
+   "deprecated": 8,
+   "write_only": 0,
+   "data_sources": 91,
+   "delta_vs_previous_extracted": {
+    "from": "3.86.0",
+    "types": -2,
+    "atoms": 21
+   }
+  },
+  {
+   "version": "4.5.0",
+   "released_at": "2021-12-20",
+   "status": "extracted",
+   "types": 453,
+   "atoms": 7724,
+   "required": 2032,
+   "optional": 4811,
+   "computed": 2242,
+   "configurable": 6843,
+   "sensitive": 44,
+   "deprecated": 9,
+   "write_only": 0,
+   "data_sources": 95,
+   "delta_vs_previous_extracted": {
+    "from": "4.0.0",
+    "types": 15,
+    "atoms": 439
+   }
+  },
+  {
+   "version": "4.15.0",
+   "released_at": "2022-03-21",
+   "status": "extracted",
+   "types": 460,
+   "atoms": 7922,
+   "required": 2095,
+   "optional": 4917,
+   "computed": 2299,
+   "configurable": 7012,
+   "sensitive": 45,
+   "deprecated": 9,
+   "write_only": 0,
+   "data_sources": 97,
+   "delta_vs_previous_extracted": {
+    "from": "4.5.0",
+    "types": 7,
+    "atoms": 198
+   }
+  },
+  {
+   "version": "4.27.0",
+   "released_at": "2022-06-27",
+   "status": "extracted",
+   "types": 479,
+   "atoms": 8267,
+   "required": 2185,
+   "optional": 5107,
+   "computed": 2422,
+   "configurable": 7292,
+   "sensitive": 48,
+   "deprecated": 10,
+   "write_only": 0,
+   "data_sources": 103,
+   "delta_vs_previous_extracted": {
+    "from": "4.15.0",
+    "types": 19,
+    "atoms": 345
+   }
+  },
+  {
+   "version": "4.38.0",
+   "released_at": "2022-09-26",
+   "status": "extracted",
+   "types": 521,
+   "atoms": 8951,
+   "required": 2397,
+   "optional": 5491,
+   "computed": 2640,
+   "configurable": 7888,
+   "sensitive": 56,
+   "deprecated": 12,
+   "write_only": 0,
+   "data_sources": 106,
+   "delta_vs_previous_extracted": {
+    "from": "4.27.0",
+    "types": 42,
+    "atoms": 684
+   }
+  },
+  {
+   "version": "4.47.0",
+   "released_at": "2022-12-21",
+   "status": "extracted",
+   "types": 560,
+   "atoms": 9802,
+   "required": 2599,
+   "optional": 5996,
+   "computed": 2932,
+   "configurable": 8595,
+   "sensitive": 56,
+   "deprecated": 14,
+   "write_only": 0,
+   "data_sources": 112,
+   "delta_vs_previous_extracted": {
+    "from": "4.38.0",
+    "types": 39,
+    "atoms": 851
+   }
+  },
+  {
+   "version": "4.59.0",
+   "released_at": "2023-03-28",
+   "status": "extracted",
+   "types": 617,
+   "atoms": 10837,
+   "required": 2899,
+   "optional": 6591,
+   "computed": 3231,
+   "configurable": 9490,
+   "sensitive": 60,
+   "deprecated": 14,
+   "write_only": 0,
+   "data_sources": 128,
+   "delta_vs_previous_extracted": {
+    "from": "4.47.0",
+    "types": 57,
+    "atoms": 1035
+   }
+  },
+  {
+   "version": "4.71.0",
+   "released_at": "2023-06-27",
+   "status": "extracted",
+   "types": 644,
+   "atoms": 11632,
+   "required": 3121,
+   "optional": 7083,
+   "computed": 3408,
+   "configurable": 10204,
+   "sensitive": 76,
+   "deprecated": 14,
+   "write_only": 0,
+   "data_sources": 212,
+   "delta_vs_previous_extracted": {
+    "from": "4.59.0",
+    "types": 27,
+    "atoms": 795
+   }
+  },
+  {
+   "version": "4.84.0",
+   "released_at": "2023-09-26",
+   "status": "extracted",
+   "types": 698,
+   "atoms": 12937,
+   "required": 3403,
+   "optional": 7921,
+   "computed": 3792,
+   "configurable": 11324,
+   "sensitive": 81,
+   "deprecated": 19,
+   "write_only": 0,
+   "data_sources": 220,
+   "delta_vs_previous_extracted": {
+    "from": "4.71.0",
+    "types": 54,
+    "atoms": 1305
+   }
+  },
+  {
+   "version": "5.0.0",
+   "released_at": "2023-10-02",
+   "status": "extracted",
+   "types": 690,
+   "atoms": 13101,
+   "required": 3406,
+   "optional": 7854,
+   "computed": 3987,
+   "configurable": 11260,
+   "sensitive": 81,
+   "deprecated": 14,
+   "write_only": 0,
+   "data_sources": 218,
+   "delta_vs_previous_extracted": {
+    "from": "4.84.0",
+    "types": -8,
+    "atoms": 164
+   }
+  },
+  {
+   "version": "5.10.0",
+   "released_at": "2023-12-18",
+   "status": "extracted",
+   "types": 727,
+   "atoms": 14235,
+   "required": 3676,
+   "optional": 8486,
+   "computed": 4370,
+   "configurable": 12162,
+   "sensitive": 89,
+   "deprecated": 16,
+   "write_only": 0,
+   "data_sources": 240,
+   "delta_vs_previous_extracted": {
+    "from": "5.0.0",
+    "types": 37,
+    "atoms": 1134
+   }
+  },
+  {
+   "version": "5.22.0",
+   "released_at": "2024-03-26",
+   "status": "extracted",
+   "types": 783,
+   "atoms": 15357,
+   "required": 3950,
+   "optional": 9125,
+   "computed": 4779,
+   "configurable": 13075,
+   "sensitive": 98,
+   "deprecated": 18,
+   "write_only": 0,
+   "data_sources": 255,
+   "delta_vs_previous_extracted": {
+    "from": "5.10.0",
+    "types": 56,
+    "atoms": 1122
+   }
+  },
+  {
+   "version": "5.35.0",
+   "released_at": "2024-06-24",
+   "status": "extracted",
+   "types": 827,
+   "atoms": 16301,
+   "required": 4156,
+   "optional": 9695,
+   "computed": 5069,
+   "configurable": 13851,
+   "sensitive": 98,
+   "deprecated": 21,
+   "write_only": 0,
+   "data_sources": 268,
+   "delta_vs_previous_extracted": {
+    "from": "5.22.0",
+    "types": 44,
+    "atoms": 944
+   }
+  },
+  {
+   "version": "6.0.0",
+   "released_at": "2024-08-26",
+   "status": "extracted",
+   "types": 861,
+   "atoms": 16864,
+   "required": 4325,
+   "optional": 9983,
+   "computed": 5250,
+   "configurable": 14308,
+   "sensitive": 101,
+   "deprecated": 17,
+   "write_only": 0,
+   "data_sources": 279,
+   "delta_vs_previous_extracted": {
+    "from": "5.35.0",
+    "types": 34,
+    "atoms": 563
+   }
+  },
+  {
+   "version": "6.5.0",
+   "released_at": "2024-09-30",
+   "status": "extracted",
+   "types": 881,
+   "atoms": 17264,
+   "required": 4395,
+   "optional": 10230,
+   "computed": 5392,
+   "configurable": 14625,
+   "sensitive": 102,
+   "deprecated": 17,
+   "write_only": 0,
+   "data_sources": 290,
+   "delta_vs_previous_extracted": {
+    "from": "6.0.0",
+    "types": 20,
+    "atoms": 400
+   }
+  },
+  {
+   "version": "6.14.1",
+   "released_at": "2024-12-18",
+   "status": "extracted",
+   "types": 911,
+   "atoms": 18381,
+   "required": 4573,
+   "optional": 10903,
+   "computed": 5864,
+   "configurable": 15476,
+   "sensitive": 104,
+   "deprecated": 19,
+   "write_only": 0,
+   "data_sources": 305,
+   "delta_vs_previous_extracted": {
+    "from": "6.5.0",
+    "types": 30,
+    "atoms": 1117
+   }
+  },
+  {
+   "version": "6.27.0",
+   "released_at": "2025-03-25",
+   "status": "extracted",
+   "types": 984,
+   "atoms": 19968,
+   "required": 4909,
+   "optional": 11783,
+   "computed": 6458,
+   "configurable": 16692,
+   "sensitive": 107,
+   "deprecated": 22,
+   "write_only": 3,
+   "data_sources": 330,
+   "delta_vs_previous_extracted": {
+    "from": "6.14.1",
+    "types": 73,
+    "atoms": 1587
+   }
+  },
+  {
+   "version": "6.41.0",
+   "released_at": "2025-06-24",
+   "status": "extracted",
+   "types": 1069,
+   "atoms": 22296,
+   "required": 5440,
+   "optional": 13123,
+   "computed": 7163,
+   "configurable": 18563,
+   "sensitive": 143,
+   "deprecated": 30,
+   "write_only": 4,
+   "data_sources": 358,
+   "delta_vs_previous_extracted": {
+    "from": "6.27.0",
+    "types": 85,
+    "atoms": 2328
+   }
+  },
+  {
+   "version": "7.0.0",
+   "released_at": "2025-08-26",
+   "status": "extracted",
+   "types": 1093,
+   "atoms": 23200,
+   "required": 5563,
+   "optional": 13791,
+   "computed": 7346,
+   "configurable": 19354,
+   "sensitive": 145,
+   "deprecated": 29,
+   "write_only": 4,
+   "data_sources": 374,
+   "delta_vs_previous_extracted": {
+    "from": "6.41.0",
+    "types": 24,
+    "atoms": 904
+   }
+  },
+  {
+   "version": "7.5.0",
+   "released_at": "2025-09-30",
+   "status": "extracted",
+   "types": 1108,
+   "atoms": 23562,
+   "required": 5636,
+   "optional": 14014,
+   "computed": 7468,
+   "configurable": 19650,
+   "sensitive": 146,
+   "deprecated": 30,
+   "write_only": 5,
+   "data_sources": 385,
+   "delta_vs_previous_extracted": {
+    "from": "7.0.0",
+    "types": 15,
+    "atoms": 362
+   }
+  },
+  {
+   "version": "7.14.1",
+   "released_at": "2025-12-17",
+   "status": "extracted",
+   "types": 1162,
+   "atoms": 25097,
+   "required": 5964,
+   "optional": 14944,
+   "computed": 7902,
+   "configurable": 20908,
+   "sensitive": 152,
+   "deprecated": 41,
+   "write_only": 7,
+   "data_sources": 397,
+   "delta_vs_previous_extracted": {
+    "from": "7.5.0",
+    "types": 54,
+    "atoms": 1535
+   }
+  },
+  {
+   "version": "7.26.0",
+   "released_at": "2026-03-31",
+   "status": "extracted",
+   "types": 1211,
+   "atoms": 26436,
+   "required": 6328,
+   "optional": 15725,
+   "computed": 8315,
+   "configurable": 22053,
+   "sensitive": 161,
+   "deprecated": 44,
+   "write_only": 13,
+   "data_sources": 416,
+   "delta_vs_previous_extracted": {
+    "from": "7.14.1",
+    "types": 49,
+    "atoms": 1339
+   }
+  },
+  {
+   "version": "7.39.0",
+   "released_at": "2026-06-30",
+   "status": "extracted",
+   "types": 1306,
+   "atoms": 29972,
+   "required": 6883,
+   "optional": 18263,
+   "computed": 9875,
+   "configurable": 25146,
+   "sensitive": 253,
+   "deprecated": 51,
+   "write_only": 16,
+   "data_sources": 455,
+   "delta_vs_previous_extracted": {
+    "from": "7.26.0",
+    "types": 95,
+    "atoms": 3536
+   }
+  },
+  {
+   "version": "8.0.0",
+   "released_at": "2026-08-26",
+   "status": "extracted",
+   "types": 1330,
+   "atoms": 30680,
+   "required": 7069,
+   "optional": 18654,
+   "computed": 10092,
+   "configurable": 25723,
+   "sensitive": 258,
+   "deprecated": 51,
+   "write_only": 21,
+   "data_sources": 459,
+   "delta_vs_previous_extracted": {
+    "from": "7.39.0",
+    "types": 24,
+    "atoms": 708
+   }
+  },
+  {
+   "version": "8.5.0",
+   "released_at": "2026-09-29",
+   "status": "extracted",
+   "types": 1369,
+   "atoms": 31698,
+   "required": 7335,
+   "optional": 19256,
+   "computed": 10428,
+   "configurable": 26591,
+   "sensitive": 262,
+   "deprecated": 52,
+   "write_only": 30,
+   "data_sources": 469,
+   "delta_vs_previous_extracted": {
+    "from": "8.0.0",
+    "types": 39,
+    "atoms": 1018
+   }
+  },
+  {
+   "version": "8.9.0",
+   "released_at": "2026-10-27",
+   "status": "extracted",
+   "types": 1392,
+   "atoms": 32659,
+   "required": 7565,
+   "optional": 19873,
+   "computed": 10668,
+   "configurable": 27438,
+   "sensitive": 272,
+   "deprecated": 66,
+   "write_only": 31,
+   "data_sources": 473,
+   "delta_vs_previous_extracted": {
+    "from": "8.5.0",
+    "types": 23,
+    "atoms": 961
+   }
+  }
+ ],
+ "note": "Contagens da superfície do provider Terraform (schema do plugin), não da nuvem. Deltas são diferenças de contagem entre versões amostradas consecutivas; eventos tipados ficam no DRIFT."
+}

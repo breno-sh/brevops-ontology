@@ -1,0 +1,63 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "HIST-GCP",
+ "generated_at": "2026-11-04T02:09:50-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/HIST-GCP.txt",
+  "brief_sha256": "03092d829b98ea9b41911f046dc3766868d3952d4ccd8d383b12e949c35969d1",
+  "params": {
+   "effort": "maximo",
+   "terraform": "1.15.8",
+   "os_arch": "darwin_arm64",
+   "biblioteca": "bo.schema",
+   "versoes_listadas": "29",
+   "extraidas": "28",
+   "indisponiveis": "3.62.0",
+   "binarios_apagados": "sim"
+  },
+  "inputs": [
+   {
+    "path": "$BO_REPO/universe/history_versions.json",
+    "kind": "file",
+    "sha256": "7186bdf94fb5764d84725f8c5560ee2a1cc505a9aa0f5bd02fef720e8fcea146"
+   },
+   {
+    "path": "$BO_REPO/universe/pins.json",
+    "kind": "file",
+    "sha256": "594a4e878ac489b3ed97cdd6344b9945a8fd3a5d22ae4d6f4bfebd264decfe3d"
+   },
+   {
+    "path": "$BO_DATA/PINS/registry_index/vendor_keys/hashicorp-pgp-key.txt",
+    "kind": "file",
+    "sha256": "c2f5bc1163bd8d15a711616b587bcede212d045a5b8b52df01c74095897cd065"
+   },
+   {
+    "path": "$BO_DATA/PINS/registry_index/verification.json",
+    "kind": "file",
+    "sha256": "75b35168cf4b67d0b6174b09b772435e986944f2641cad850b61f9ee96f0e4a8"
+   },
+   {
+    "path": "$BO_DATA/PINS/registry_index/providers/google/registry-v1-versions.json",
+    "kind": "file",
+    "sha256": "d8d764a861fff59c4eb5da5362f25d534701f679e1c33532533bfc1355ecb71f"
+   }
+  ],
+  "recorded_at": "2026-11-04T02:09:50-03:00"
+ },
+ "sources": [
+  {
+   "uri": "https://registry.terraform.io/v1/providers/hashicorp/google/{versão}/download/darwin/arm64",
+   "license": "termos de uso do Terraform Registry (metadado público)",
+   "transformation": "rota de download lida como JSON: nome do zip, shasum, URLs do SHA256SUMS e da assinatura"
+  },
+  {
+   "uri": "https://releases.hashicorp.com/terraform-provider-google/{versão}/",
+   "license": "MPL-2.0",
+   "transformation": "SHA256SUMS conferido com gpgv pela chave vigente da HashiCorp; zip conferido e lido para o h1; binário assinado executado só para terraform providers schema -json em sandbox sem credenciais e sem rede, depois apagado; átomos C01 pela biblioteca bo.schema"
+  }
+ ],
+ "notes": "2026-11-04T02:10-03:00 (America/Recife). 29 versões do google listadas pelo PINS (C13 3.1.0); 28 extraídas do binário assinado (3.74.0 a 8.9.0: 416 a 1392 tipos, 6648 a 32659 átomos); 3.62.0 indisponível: sem build darwin_arm64 no índice do Registry e rota de download HTTP 404 (motivo e evidência em $BO_DATA/HIST-GCP/extraction.json; no versions.json sem schema_sha256 e sem arquivo de átomos). Com isso a primeira observação de schema é 3.74.0, depois do truncamento à esquerda do PINS (3.51.0 em vigor em 2021-01-01). schema_sha256 da 8.9.0 = pins.json. Saída crua e somas assinadas em $BO_DATA/downloads/hist-gcp/ (pasta de download própria, regra do brief)."
+}
