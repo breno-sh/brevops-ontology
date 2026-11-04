@@ -10,11 +10,20 @@
     "SE-oci-ubus4j7ltxpdtqxg"
    ],
    "fact": "lifecycle_controller",
+   "kind": "doc_x_spec",
+   "observation_id": "SE-oci-x5i5qewnvgmjhurn",
    "provider": "oci",
+   "resolved_at": "2026-11-04T16:18:39-03:00",
+   "resolved_to": "spec",
+   "sides": [
+    "SE-oci-l7vx4ajpaevy2ecg",
+    "SE-oci-ubus4j7ltxpdtqxg"
+   ],
    "spec": {
     "kind": "parent",
     "rule": "R-LIFE-SPEC-PARENT"
    },
+   "status": "resolvida-por-observação",
    "terraform_resource_type": "oci_core_network_security_group_security_rule"
   },
   {
@@ -27,17 +36,26 @@
     "SE-oci-zj3vmaqgzxojxf3k"
    ],
    "fact": "owner",
+   "kind": "doc_x_spec",
+   "observation_id": "SE-oci-6nluro6igz6yr6tz",
    "provider": "oci",
+   "resolved_at": "2026-11-04T16:18:28-03:00",
+   "resolved_to": "spec",
+   "sides": [
+    "SE-oci-3uf5jwnkdj6kln7h",
+    "SE-oci-zj3vmaqgzxojxf3k"
+   ],
    "spec": {
     "kind": "parent",
     "rule": "R-OWN-SPEC"
    },
+   "status": "resolvida-por-observação",
    "terraform_resource_type": "oci_core_network_security_group_security_rule"
   }
  ],
  "module": "PILOT-NET-ORACLE",
- "rule": "disputa spec x doc sobre lifecycle_controller ou owner: a unidade vira UNKNOWN com o motivo (decisões de acesso não dependem desses fatos)",
+ "rule": "disputa ABERTA spec x doc sobre lifecycle_controller ou owner: a unidade vira UNKNOWN com o motivo; resolvida por observação (R2 do PREREG): fica o tipo do lado vencedor, com a observação na evidência (decisões de acesso não dependem desses fatos)",
  "schema": "bo.pilot_net.disputes/1",
  "source": "$BO_REPO/results/SERVICE-EVIDENCE/spec_disputes.json",
- "source_sha256": "e913932b1c8f925aa090ef467f86cfd1675f64d45f3dcc47f425817c09eaf90d"
+ "source_sha256": "513ba2fa2e11cb1d460e8cdeaa88223688159c25868511b5c3a1f9aada5f340b"
 }

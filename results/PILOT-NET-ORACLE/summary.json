@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "PILOT-NET-ORACLE",
- "generated_at": "2026-11-04T14:43:38-03:00",
+ "generated_at": "2026-11-04T18:19:26-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-NET-ORACLE.txt",
@@ -16,8 +16,10 @@
    "retained_fixtures": "28",
    "retained_translations": "24",
    "seal": "CMS-AES256-RSA4096-D15",
+   "seal_envelope_sha256": "99f53463cbeaeb38b5206344bef56b467c362d359ba85b6c5da58f7190816c29",
+   "reseals": "0",
    "contract": "C24-1.1.0",
-   "service_evidence": "28faee8",
+   "service_evidence": "365e6ed",
    "iteration": "2"
   },
   "inputs": [
@@ -34,15 +36,15 @@
    {
     "path": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl",
     "kind": "file",
-    "sha256": "d77a4f6ab71937a3a2f30729d721231f5ceaec764a15de79599d2653c0b83d9e"
+    "sha256": "0b5bdd079c88ae3d02f866623f7903d6d0cb6c8251d553aa72efe2decfb61123"
    },
    {
     "path": "$BO_REPO/results/SERVICE-EVIDENCE/spec_disputes.json",
     "kind": "file",
-    "sha256": "e913932b1c8f925aa090ef467f86cfd1675f64d45f3dcc47f425817c09eaf90d"
+    "sha256": "513ba2fa2e11cb1d460e8cdeaa88223688159c25868511b5c3a1f9aada5f340b"
    }
   ],
-  "recorded_at": "2026-11-04T14:43:38-03:00"
+  "recorded_at": "2026-11-04T18:19:26-03:00"
  },
  "sources": [
   {
@@ -52,14 +54,14 @@
   },
   {
    "uri": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl",
-   "license": "interno (SERVICE-EVIDENCE; frases MPL-2.0 dos providers Terraform)",
+   "license": "interno (SERVICE-EVIDENCE; frases MPL-2.0 dos providers Terraform e fatos observados R1–R5)",
    "transformation": "parâmetros de semântica por provedor, com nível"
   },
   {
    "uri": "results/SERVICE-EVIDENCE/spec_disputes.json",
    "license": "interno (SERVICE-EVIDENCE)",
-   "transformation": "disputas spec x doc da fatia viram unidade UNKNOWN"
+   "transformation": "disputa aberta vira UNKNOWN; resolvida por observação fica o lado vencedor"
   }
  ],
- "notes": "oráculo offline NET, re-verificação final (SE 28faee8): 0 respostas mudadas"
+ "notes": "oráculo offline NET, re-verificação final (SE 365e6ed): 3 regras de NSG OCI UNKNOWN->COMPONENT por disputa resolvida por observação; 0 decisões mudadas; retidas inalteradas, selo D15 original mantido (0 re-selagens)"
 }

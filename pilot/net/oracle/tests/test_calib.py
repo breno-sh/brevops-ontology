@@ -60,12 +60,20 @@ def test_compare_aponta_tipo_errado_e_falta():
     assert compare(exp, FX["NETC-C01-AWS-SEP"]["expected"]["decomposition"])["equal"]
 
 
-def test_disputa_spec_doc_vira_unknown_na_regra_de_nsg_oci():
-    from net_oracle.decomposing import apply_disputes, disputes
-    assert "oci_core_network_security_group_security_rule" in disputes()
+def test_disputa_resolvida_por_observacao_devolve_component_a_regra_de_nsg_oci():
+    from net_oracle.decomposing import apply_disputes, disputes, resolutions
+    assert "oci_core_network_security_group_security_rule" not in disputes()
+    assert "oci_core_network_security_group_security_rule" in resolutions()
     units = apply_disputes(FX["NETC-C03-OCI-NSG-REV"]["expected"]["decomposition"])
     rules = [u for u in units if u["tf"]["resource_type"] == "oci_core_network_security_group_security_rule"]
-    assert rules and all(u["kind"] == "UNKNOWN" and u["dispute"] and u["kind_without_dispute"] == "COMPONENT" for u in rules)
+    assert rules and all(u["kind"] == "COMPONENT" and u["dispute_resolved"] for u in rules)
     raw = FX["NETC-C03-OCI-NSG-REV"]["expected"]["decomposition"]
-    assert not compare(raw, raw)["equal"]  # quem afirma COMPONENT na regra disputada erra o tipo
-    assert compare(raw, units)["equal"]
+    assert compare(raw, raw)["equal"]
+    wrong = [dict(u, kind="ENTITY") if u["tf"]["resource_type"] == "oci_core_network_security_group_security_rule" else u for u in raw]
+    assert compare(raw, wrong)["wrong_kind"]
+
+
+def test_regras_identicas_sem_id_contam_duas_vezes():
+    raw = FX["NETC-C01-AWS-INLINE"]["expected"]["decomposition"]
+    assert not compare(raw + [raw[1]], raw)["equal"]
+    assert compare(raw + [raw[1]], raw + [raw[1]])["equal"]

@@ -77,7 +77,7 @@ def generate(check_only: bool = False) -> dict:
     files["pilot/net/oracle/disputes.json"] = _dump({"schema": "bo.pilot_net.disputes/1", "module": "PILOT-NET-ORACLE",
         "source": "$BO_REPO/results/SERVICE-EVIDENCE/spec_disputes.json",
         "source_sha256": _sha(R / "results/SERVICE-EVIDENCE/spec_disputes.json"),
-        "rule": "disputa spec x doc sobre lifecycle_controller ou owner: a unidade vira UNKNOWN com o motivo (decisões de acesso não dependem desses fatos)",
+        "rule": "disputa ABERTA spec x doc sobre lifecycle_controller ou owner: a unidade vira UNKNOWN com o motivo; resolvida por observação (R2 do PREREG): fica o tipo do lado vencedor, com a observação na evidência (decisões de acesso não dependem desses fatos)",
         "disputes": disp})
     if not check_only:
         (R / "pilot/net/oracle/disputes.json").write_text(files["pilot/net/oracle/disputes.json"], encoding="utf-8")
