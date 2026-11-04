@@ -50,7 +50,7 @@ def main(argv=None) -> int:
         print("uso: python -I -m bo.hcl.privacy_stream CAMINHO ...", file=sys.stderr)
         return 2
     lists, notes = privacy.load_lists()
-    jobs, n_files, n_bytes, missing = [], 0, 0, []
+    jobs, n_files, n_bytes, missing, parquet = [], 0, 0, [], []
     for root in map(Path, argv):
         if not root.exists():
             missing.append(str(root))
@@ -61,6 +61,9 @@ def main(argv=None) -> int:
                 continue
             n_files += 1
             n_bytes += p.stat().st_size
+            if p.suffix == ".parquet":
+                parquet.append(p)  # lido pelos valores decodificados, como o privacy_lint (COORD d4559dd)
+                continue
             for s, e in _chunks(p):
                 jobs.append((p, s, e, lists))
     res = []
@@ -68,6 +71,9 @@ def main(argv=None) -> int:
         res = pool.map(_scan, jobs, chunksize=1)
     res.sort(key=lambda r: (r[0], r[1]))
     findings, base, last = [], {}, None
+    if parquet:
+        found, _, _ = privacy.scan_paths(parquet, strict=True, lists=lists)
+        findings += [str(x) for x in found]
     for path, start, nl, fs in res:
         if path != last:
             base[path], last = 0, path
