@@ -1,4 +1,17 @@
 CONTRACT_CHANGE — PILOT-STO-GLOSS (piloto sto: grão mecânico e glossário da fatia)
+ATUALIZAÇÃO 2026-11-04T10:56:00-03:00 (America/Recife), RODADA FINAL dos pilotos: GRAIN 7749db1 (0.1.8, faceta
+implícita só com operação única da spec), BRIEFS 157a3d5, SE congelado (0a9e580).
+  Grão: 18/116 unidades decididas (aws 13, azurerm 2, google 2, oci 1). Novo: azurerm_storage_encryption_scope
+  COMPONENT (GRAIN-G2-CHILD) da conta.
+  Contêineres: aws_s3_bucket ENTITY, google_storage_bucket ENTITY, oci_objectstorage_bucket ENTITY;
+  azurerm_storage_container UNKNOWN (G0-IDENTITY, falta identity). 3 de 4.
+  E2 medível pelo glossarista: embalagem embutida × separada na aws 2/5 invariantes (versionamento e criptografia);
+  lifecycle_rule COMPONENT × UNKNOWN, regra de criptografia e grant UNKNOWN nas duas. A faceta implícita do 0.1.8
+  não alcançou as facetas embutidas do google (versioning, encryption, lifecycle_rule: G0-NEEDS por api_resource) nem
+  o blob_properties do azurerm: entre provedores a mesma faceta sai FACET na aws e UNKNOWN nos outros.
+  Estado para o PILOT-EXIT: E2 reprova por construção nestas entradas (contêiner Azure UNKNOWN; facetas embutidas
+  fora da aws UNKNOWN; lifecycle não invariante). O resto do E2 (casamento com o gabarito) mede o E2E/EXIT.
+
 ATUALIZAÇÃO 2026-11-04T10:19:00-03:00 (America/Recife), base com GRAIN c5ab882 (0.1.6), SE 767bb22, BRIEFS 0024ad9:
   Grão: 17/116 unidades decididas (aws 13, google 2, azurerm 1, oci 1).
   Contêineres: aws_s3_bucket ENTITY (G4); google_storage_bucket ENTITY (G4); oci_objectstorage_bucket ENTITY (G4);
