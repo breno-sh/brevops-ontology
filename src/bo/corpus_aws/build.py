@@ -284,11 +284,13 @@ def build(args) -> int:
         "unmatched_paths": top(unmatched, unmatched_f, ("resource_type", "path")),
         "types_not_in_schema": top(unknown_types, unknown_f, ("resource_type",)),
         "name_min_families": K.NAME_MIN_FAMILIES,
+        "alignment": K.ALIGNMENT,
     }
     report = {"module": K.MODULE, "provider": prov, "rules_version": RULES_VERSION,
               "inputs": [{"name": k, "path": K.portable(p), "sha256": K.sha256_file(p)} for k, p in
                          sorted(paths.items())],
-              "params": {"provider": prov, "name_min_families": K.NAME_MIN_FAMILIES, "top_n": K.TOP_N},
+              "params": {"provider": prov, "name_min_families": K.NAME_MIN_FAMILIES, "top_n": K.TOP_N,
+                         "alignment": K.ALIGNMENT},
               "diag": {k: diag[k] for k in sorted(diag)},
               "outputs": {n: K.sha256_file(out / n) for n in ("usage.jsonl", "atom_totals.jsonl")},
               "counts_ref": "counts.json"}

@@ -15,12 +15,16 @@ U5 bloco retido inteiro (o HCL retém `environment { ... }` sem abrir): atribuí
    exatamente um átomo configurável no schema (a única coisa que ele pode carregar); senão fica não atribuído e é
    relatado por (tipo, bloco).
 U6 classe de um valor: retido se há termo retido em qualquer ponto do termo; senão simbólico se o valor depende
-   de nome resolvido fora do atributo (var, local, módulo, data, referência a recurso, count/each, path,
-   workspace, iterador de dynamic, função de provedor ou função que lê arquivo, relógio ou acaso); senão literal
-   (inclui texto literal simbolizado só por privacidade, name_class 'unknown', e documento sem interpolação).
+   de nome resolvido fora do atributo (var, local, saída de módulo, data, referência a recurso, count/each,
+   workspace, iterador de dynamic, ou função avaliada no plano que lê arquivo, relógio ou acaso); senão literal
+   (inclui texto literal simbolizado só por privacidade, name_class 'unknown', path.*, funções puras sobre
+   literais e documento sem interpolação dependente). Alinhado entre os 4 CORPUS por decisão do coordenador
+   (04/11): a simbolização por privacidade é redação, não dependência.
 U7 classe por (recurso, átomo) com vários registros (blocos repetidos): retido > simbólico > literal.
 U8 linha de tipo (sem atom_id): n_resources = blocos gerenciados do tipo no repositório; n_set = 0 por
    definição (o uso por átomo está nas linhas com atom_id). Tipo ausente do schema só tem linha de tipo.
+U9 `attr = null` (termo literal null no topo do registro) não configura o átomo: para o Terraform é o mesmo que
+   omitir. Contado à parte (records_explicit_null). Alinhado entre os 4 CORPUS (coordenador, 04/11).
 """
 
 from __future__ import annotations
@@ -30,17 +34,16 @@ import posixpath
 import re
 from collections import Counter, defaultdict
 
-RULES_VERSION = "U1-U8/1"
+RULES_VERSION = "U1-U9/2"
 
 META_TOP = frozenset({"count", "for_each", "provider", "depends_on", "lifecycle", "provisioner", "connection"})
 DYNAMIC_META = frozenset({"for_each", "iterator", "labels"})
 SYMBOLIC_CLASSES = frozenset({"variable", "local", "module_output", "data_source", "resource_attribute",
-                              "count_index", "each_key", "path", "workspace"})
+                              "count_index", "each_key", "workspace"})
 # funções do Terraform cujo valor não sai do texto do atributo: leem arquivo/diretório, relógio ou acaso
 IMPURE_FUNCS = frozenset({"file", "fileexists", "fileset", "filebase64", "filebase64sha256", "filebase64sha512",
                           "filemd5", "filesha1", "filesha256", "filesha512", "templatefile", "abspath",
                           "pathexpand", "timestamp", "plantimestamp", "uuid", "bcrypt"})
-PROVIDER_FUNC_OP = "hcl_provider_function"
 
 CLASSES = ("literal", "symbolic", "withheld")
 _RANK = {"literal": 0, "symbolic": 1, "withheld": 2}
@@ -197,7 +200,7 @@ def term_rank(t: dict) -> int:
         return _doc_class(t.get("tree"))
     if k == "expression":
         op = t.get("op")
-        worst = 1 if (op == PROVIDER_FUNC_OP or op in IMPURE_FUNCS) else 0
+        worst = 1 if op in IMPURE_FUNCS else 0
         for a in t.get("args") or ():
             worst = max(worst, term_rank(a))
             if worst == 2:
@@ -258,7 +261,11 @@ class RepoAgg:
             self.diag["records_type_unknown"] += 1
             self.unknown_types[t] += 1
             return
-        rank = term_rank(r["term"])
+        term = r["term"]
+        if term.get("kind") == "literal" and term.get("datatype") == "null":
+            self.diag["records_explicit_null"] += 1  # U9
+            return
+        rank = term_rank(term)
         p, how = self.ix.match(t, segs)
         if p is None and rank == 2 and r["term"].get("kind") == "withheld":
             leaf = self.ix.single_leaf(t, segs)

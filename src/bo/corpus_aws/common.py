@@ -18,6 +18,10 @@ OUT_FILES = ("usage.jsonl", "atom_totals.jsonl", "build_report.json", "counts.js
 # aparece por nome se ocorre em >= N famílias (o resto entra só no total), como o vocabulário do HCL
 NAME_MIN_FAMILIES = 5
 TOP_N = 50
+# regras comuns aos 4 CORPUS, por decisão do coordenador (2026-11-04)
+ALIGNMENT = ("coordenador 2026-11-04, comum aos 4 CORPUS: literal = não depende de variável, recurso, data source, "
+             "local ou função avaliada no plano (lê arquivo, relógio ou acaso); cadeia simbolizada só por privacidade "
+             "é literal; attr = null não configura átomo; precedência withheld > symbolic > literal; blocos data fora")
 
 
 def bo_data() -> Path:

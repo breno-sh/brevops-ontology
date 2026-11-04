@@ -8,7 +8,7 @@ Confere, sem reutilizar o código de contagem:
      C06-USAGE, linha de tipo única por (repo, tipo) e linhas de átomo com o mesmo n_resources;
   2. recontagem pelo parquet (pyarrow, agrupado): recursos gerenciados por (repo, família, tipo) == linhas de tipo;
   3. átomos: atom_id do tipo da linha e presente no schema; atom_totals cobre o schema inteiro e é a soma do usage;
-  4. segunda implementação, numa amostra determinística de repositórios (sha256(repo) % M == 0): as regras U1-U8
+  4. segunda implementação, numa amostra determinística de repositórios (sha256(repo) % M == 0): as regras U1-U9
      reescritas de forma independente dão as mesmas linhas;
   5. build_report: sha256 das entradas == arquivos atuais e das saídas == arquivos da pasta; consistência zero.
 --deps confere o sha256 de cada entrada consumida com o MANIFEST.sha256 publicado pela dep (HCL, SCHEMA-AWS).
@@ -40,7 +40,7 @@ _IDX = re.compile(r"\[\d+\]")
 _DYN = re.compile(r'dynamic\["([^"]*)"\](?:\[\d+\])*\.')
 _META = {"count", "for_each", "provider", "depends_on", "lifecycle", "provisioner", "connection"}
 _SYMB = {"variable", "local", "module_output", "data_source", "resource_attribute", "count_index", "each_key",
-         "path", "workspace"}
+         "workspace"}
 _IMPURE = {"file", "fileexists", "fileset", "filebase64", "filebase64sha256", "filebase64sha512", "filemd5",
            "filesha1", "filesha256", "filesha512", "templatefile", "abspath", "pathexpand", "timestamp",
            "plantimestamp", "uuid", "bcrypt"}
@@ -76,7 +76,7 @@ def naive_class(t, found=None) -> set:
         if t["name_class"] in _SYMB:
             found.add("s")
     elif k == "expression":
-        if t["op"] == "hcl_provider_function" or t["op"] in _IMPURE:
+        if t["op"] in _IMPURE:
             found.add("s")
         for a in t["args"]:
             naive_class(a, found)
@@ -109,7 +109,7 @@ def naive_repo(lines, managed: dict, atoms: dict, configurable_under: dict):
             continue
         t = managed[key]
         segs = naive_path(r["attr_path"])
-        if segs is None or t not in atoms:
+        if segs is None or t not in atoms or r["term"] == {"kind": "literal", "datatype": "null", "value": None}:
             continue
         marks = naive_class(r["term"])
         cls = 2 if "w" in marks else (1 if "s" in marks else 0)

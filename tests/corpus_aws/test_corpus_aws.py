@@ -68,7 +68,10 @@ def test_normalize_rejects_garbage():
     (ex("max", lit(1, "number"), lit(2, "number")), "literal"),
     (ex("max", sym("variable"), lit(2, "number")), "symbolic"),
     (ex("file", lit("p.json")), "symbolic"),            # lê arquivo: o valor não sai do texto do atributo
-    (ex("hcl_provider_function", lit("provider::aws::x"), lit(1, "number")), "symbolic"),
+    (ex("hcl_provider_function", lit("provider::aws::x"), lit(1, "number")), "literal"),  # pura, sobre literal
+    (sym("path"), "literal"),                          # path.* não é dependência (alinhamento dos 4 CORPUS)
+    (sym("module_output"), "symbolic"),
+    (sym("local"), "symbolic"),
     (ex("hcl_object", lit("k"), WH), "withheld"),
     (ex("hcl_object", lit("k"), sym("local"), lit("j"), WH), "withheld"),
     ({"kind": "document", "format": "json", "tree": {"a": [1, {"kind": "symbol"}]}, "symbolized": []}, "literal"),
@@ -132,6 +135,7 @@ RECS = {
         rec(R1, "main.tf", A1, "aws_thing", 'dynamic["rule"][0].for_each', sym("variable")),
         rec(R1, "main.tf", A1, "aws_thing", 'dynamic["rule"][0].content.match[0].field', sym("each_key")),
         rec(R1, "main.tf", A1, "aws_thing", "foo", lit("x")),
+        rec(R1, "main.tf", A1, "aws_thing", "cfg[1].a", lit(None, "null")),   # attr = null não configura (U9)
         rec(R1, "mod/a.tf", A2, "aws_thing", "name", sym("unknown")),
         rec(R1, "mod/a.tf", A2, "aws_thing", "size", ex("max", lit(1, "number"), lit(2, "number"))),
         rec(R1, "main.tf", "data.aws_thing.SYM-00000000003a", "aws_thing", "name", lit("d")),
@@ -227,6 +231,7 @@ def test_end_to_end_counts_and_contract(fake_data, tmp_path):
     assert c["records"]["records_withheld_block_unattributed"] == 1
     assert c["records"]["records_unmatched"] == 1
     assert c["records"]["records_type_unknown"] == 1
+    assert c["records"]["records_explicit_null"] == 1
     assert c["records"]["records_meta:count"] == 1 and c["records"]["records_dynamic_meta"] == 1
     tot = {json.loads(x)["atom_id"]: json.loads(x) for x in (out / "atom_totals.jsonl").read_text().splitlines()}
     assert len(tot) == len(ATOMS)
