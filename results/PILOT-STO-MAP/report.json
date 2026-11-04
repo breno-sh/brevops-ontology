@@ -5,7 +5,11 @@
   "absence_kinds": {
    "ABSENCE_DEMONSTRATED": 15,
    "UNRESOLVED": 1420,
-   "UNSUPPORTED_BY_TRANSLATOR": 63
+   "UNSUPPORTED_BY_TRANSLATOR": 48
+  },
+  "absence_sides": {
+   "object": 645,
+   "subject": 838
   },
   "by_evidence_state": {
    "DOC_SUPPORTED": 78,
@@ -13,19 +17,19 @@
   },
   "by_pair": {
    "AWSAZ": {
-    "absence": 353,
-    "related": 15,
-    "transport": 9
+    "absence": 348,
+    "related": 11,
+    "transport": 13
    },
    "AWSGCP": {
-    "absence": 245,
-    "related": 28,
-    "transport": 8
+    "absence": 240,
+    "related": 24,
+    "transport": 12
    },
    "AWSOCI": {
-    "absence": 192,
-    "related": 12,
-    "transport": 7
+    "absence": 187,
+    "related": 8,
+    "transport": 11
    },
    "AZOCI": {
     "absence": 252,
@@ -45,40 +49,40 @@
   },
   "by_relation": {
    "close": 6,
-   "exact": 27,
-   "related": 77
+   "exact": 39,
+   "related": 65
   },
   "groups": 0,
-  "projections": 237,
-  "rows": 1608
+  "projections": 246,
+  "rows": 1593
  },
  "decided_at": "2026-11-04T09:00:00-03:00",
- "generated_at": "2026-11-04T11:51:18-03:00",
+ "generated_at": "2026-11-04T13:10:46-03:00",
  "inputs": {
   "bundle_files": {
-   "candidates.jsonl": "48579494bcc27703933e8b6505a24a55195923f104967a1d5f45920d437c3c77",
+   "candidates.jsonl": "bbdf734a7c7c47135e467a459399d50e2ba541f2ea4ccaad13ab6b8e7f87e1ad",
    "canonical_atoms.jsonl": "b29a9c37286b2346f7e7930da37e4c71c010b3c6839716e1ccbd50b549923282",
-   "canonical_units.jsonl": "4cfb46edfdcee55e206a0efe1c71bcb35d28c1d9eaef962e7643a76fd449950c",
-   "claims.jsonl": "83e510dfd1c203c21d77ecb5f378eede116c9513bbce5d16cbb6954dbcc13b6c",
-   "decisions.jsonl": "7ef77e48998f8d781041fa848821e7a6da2c9f39a55d49622f3627ee02901016",
+   "canonical_units.jsonl": "a1e9240c2240c621f343db1664d67dcfc838c4c1b0282802bc8881398fb0e9e9",
+   "claims.jsonl": "e318377811db13c1665c51c0264a45724762674f411aca4d10368e99a51f55c4",
+   "decisions.jsonl": "2fa8ba4218abbfd5cddcffb49d892862dd362332c6b1222051d3f510a163ed66",
    "glossary.jsonl": "5b5b92a5b3618249e818857a96384e7b5a64c1a200b04a4ec21a31d697a1174a",
    "value_space.jsonl": "ba90b632840ee34ab92f8561742c2d4283ccb0c11694986fe5d660f5c5564d5f"
   },
-  "bundle_manifest_sha256": "0f794556ac8b4a5c36586132cdd2b16db8fcf3c76f3e9de1007a902becd020a0",
+  "bundle_manifest_sha256": "88c09465b166347b5ff9afb426befcb48e06ee64348a60a25e1f2c5df7b8d643",
   "code": {
-   "src/bo/pilot_sto_map/build.py": "b05c6ed566fae2be476916755d1eb9afd953f71f90b3cac23202fc61b17a5aaa",
+   "src/bo/pilot_sto_map/build.py": "632cdfefced25a88f3a98c6017df81110f270f6ba05b9d43c386dad0531d3bd1",
    "src/bo/pilot_sto_map/common.py": "270152d9b392f766c25c041aac4cde7a522871c2f4160a61a702a6aec3c294be",
-   "src/bo/pilot_sto_map/decisions.py": "d51ee0d278034545140a27f08249436b1fff0c2b4df023573bc65d3143973de4"
+   "src/bo/pilot_sto_map/decisions.py": "7ce78e0201cbbb00b56fe7101f5cbb88f102d21905076994aee21ebdc7d0afd4"
   },
-  "mapper_brief_sha256": "65cbcea35653cdaa4e9f272279d86b19dc88c649aeec0de4fff60f17162cd3a9"
+  "mapper_brief_sha256": "751880c609ed7cf5efcf439ba75c2dfd4e6c1f8ec0055023414ecd1f2243d822"
  },
  "module": "PILOT-STO-MAP",
  "outputs": {
-  "build_record.json": "671e2fb8cfc03d85b80ecf621690e392a5f8654c28b2d266ac9cf233954ee716",
-  "mapping.sssom.tsv": "3ded03742f2af665eb872686b02f74f4b86e4f1f64352c05fdddba36e01a7754",
-  "verdicts.jsonl": "95e3faee9cb058821391736574e7307838eb87265359af07f10730fcdec658d6"
+  "build_record.json": "47a68cbdb8aecaa7f37b2322b37a68bf21c857ed7bac53a1ca73764aee604e01",
+  "mapping.sssom.tsv": "f99f5a463dc600b62f997577744157123246fed99e838dcd7fe6239dd3dfc39d",
+  "verdicts.jsonl": "21decdfcd9b749fbf71502fadd3339a5ce0f035eef6af9451070f601d2f1c95c"
  },
- "pipeline_generated_at": "2026-11-04T11:48:11-03:00",
+ "pipeline_generated_at": "2026-11-04T13:10:27-03:00",
  "schema": "bo.pilot_sto_map.report/1",
  "steps": [
   {
@@ -86,7 +90,7 @@
    "dropped": 0,
    "exhaustive_gaps": 0,
    "ok": true,
-   "rows": 1608,
+   "rows": 1593,
    "step": "build"
   },
   {
@@ -103,7 +107,7 @@
   {
    "c21_errors": [],
    "check_unproven": [
-    "check-unproven: 0 OK sem prova mínima; UNPROVEN = 1533"
+    "check-unproven: 0 OK sem prova mínima; UNPROVEN = 44"
    ],
    "freeze_drift": [],
    "frozen_checked": true,
@@ -123,25 +127,24 @@
  "timezone": "America/Recife",
  "verdicts": {
   "absences": {
-   "UNPROVEN": 1498
+   "OK": 63,
+   "UNPROVEN": 1420
   },
   "claims": {
    "AMBIGUOUS": 12,
-   "OK": 59,
-   "REFUTED_BY_RULE": 4,
-   "UNPROVEN": 35
+   "OK": 54,
+   "UNPROVEN": 44
   },
   "composites": {
-   "OK": 82,
+   "OK": 88,
    "UNPROVEN": 4
   },
   "rules_on_claims": {
    "ARB-REAL-MULTI": 12,
    "ARB-RELATED-EV": 27,
-   "EVIDENCE-DOC": 3,
-   "KIND-UNKNOWN": 7,
-   "TYPE-WF": 4,
-   "VDR-UNKNOWN": 2
+   "EVIDENCE-DOC": 5,
+   "KIND-UNKNOWN": 2,
+   "VDR-UNKNOWN": 12
   }
  }
 }

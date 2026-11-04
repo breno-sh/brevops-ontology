@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "PILOT-STO-MAP",
- "generated_at": "2026-11-04T11:48:27-03:00",
+ "generated_at": "2026-11-04T13:10:46-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-STO-MAP.txt",
@@ -11,33 +11,33 @@
   "params": {
    "role": "mapper",
    "role_brief": "briefs/MAPPER_BRIEF.txt",
-   "role_brief_version": "1.2.0",
-   "role_brief_sha256": "65cbcea35653cdaa4e9f272279d86b19dc88c649aeec0de4fff60f17162cd3a9",
+   "role_brief_version": "1.3.1",
+   "role_brief_sha256": "751880c609ed7cf5efcf439ba75c2dfd4e6c1f8ec0055023414ecd1f2243d822",
    "slice": "sto",
-   "bundle_sha256": "0f794556ac8b4a5c36586132cdd2b16db8fcf3c76f3e9de1007a902becd020a0",
-   "rows_n": "1608",
+   "bundle_sha256": "88c09465b166347b5ff9afb426befcb48e06ee64348a60a25e1f2c5df7b8d643",
+   "rows_n": "1593",
    "claims_n": "110",
-   "none_n": "1498",
+   "none_n": "1483",
    "groups_n": "0",
-   "projections_n": "237",
+   "projections_n": "246",
    "mapping_set_id": "https://w3id.org/brevops/mapping/PILOT-STO-MAP/1",
    "decided_at": "2026-11-04T09:00:00-03:00",
-   "base": "d3fde5d"
+   "base": "e22bf7a"
   },
   "inputs": [
    {
     "path": "$BO_DATA/PILOT-STO-GLOSS/bundle",
     "kind": "dir",
-    "sha256": "f076fa662dd471f577d3b240957e5de9e29f5f29155f7cd5058c8f76dd2b1af7"
+    "sha256": "c23166d7fadb34db552e50d8604282f550021c397f332a0b45482c52558f4df4"
    },
    {
     "path": "$BO_REPO/briefs/MAPPER_BRIEF.txt",
     "kind": "file",
-    "sha256": "65cbcea35653cdaa4e9f272279d86b19dc88c649aeec0de4fff60f17162cd3a9"
+    "sha256": "751880c609ed7cf5efcf439ba75c2dfd4e6c1f8ec0055023414ecd1f2243d822"
    }
   ],
-  "recorded_at": "2026-11-04T11:48:27-03:00"
+  "recorded_at": "2026-11-04T13:10:46-03:00"
  },
  "sources": [],
- "notes": "pipeline: python -I -m bo.pilot_sto_map.pipeline; achados em results/PILOT-STO-MAP/CONTRACT_CHANGE.txt"
+ "notes": "tentativa 2; pipeline: python -I -m bo.pilot_sto_map.pipeline; achados em results/PILOT-STO-MAP/CONTRACT_CHANGE.txt"
 }

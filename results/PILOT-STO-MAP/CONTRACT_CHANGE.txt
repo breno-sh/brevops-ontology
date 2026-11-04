@@ -9,6 +9,19 @@ os gates seguem com o comando do catálogo. Com eles corrigidos, a rerodada é u
   python -I -m bo.pilot_sto_map.pipeline            (staging, entradas por sha256 no pipeline_report.json)
   tools/lock.sh with merge-base --owner PILOT-STO-MAP --wait 600 -- python -I -m bo.pilot_sto_map.pipeline --promote-only
 
+ATUALIZAÇÃO 2026-11-04T13:12:00-03:00 (America/Recife), tentativa 2: base e22bf7a, pacote do STO-GLOSS e22bf7a
+(MANIFEST 88c09465), árbitro ARBITER-20261104-3 (cc57c0a), C09 3.2.0, SEMANTICS emenda 2, C10 com wrap_list.
+  RESOLVIDOS: CC-5 (BYTE em AmountOfData: as 2 alegações de tamanho com unidade conhecida saem OK), CC-6 (coleções:
+  38 átomos de lista e 13 de mapa com tipo do elemento pelo C05; as 3 lista->lista de prefixos saem OK; os 12
+  prefixos escalar->lista viraram exact por wrap_list), CC-7 (ausência com veredito próprio: 63 OK, 1420 UNPROVEN
+  = as UNRESOLVED), CC-9 (enum_to_bool com domínio calculado: as 2 bijeções lossless saem OK), CC-12 (G3 grava em
+  $BO_TMP). Ausência com absence.side: 645 do lado objeto (sujeito sssom:NoTermFound), 838 do lado sujeito.
+  CC-13 (novo, não bloqueante): o árbitro não calcula domínio de combinador de tupla do registro: os 12 prefixos
+  escalar->lista declarados lossless/subset (todo prefixo único cabe numa lista de um elemento) saem UNPROVEN por
+  VDR-UNKNOWN. Não troquei para partial: lossless é o que a tradução faz. Proposta: imagem de wrap_list calculada
+  (lista de um elemento do domínio do item) no SEMANTICS/ARBITERLIB.
+  Segue aberto: CC-8 (blocos repetidos sem chave no pacote: google lifecycle_rule, oci rules, grants).
+
 ATUALIZAÇÃO 2026-11-04T11:50:00-03:00 (America/Recife), base d3fde5d, pacote final do STO-GLOSS (MANIFEST 0f794556):
   Pipeline sem bloqueio; mesmas 1608 linhas e mesmos vereditos (nenhuma decisão largada).
   CC-12 (integração; comando do catálogo, fora do owns): o G3 (python -I -m bo.arbiter.run --frozen --in ...
