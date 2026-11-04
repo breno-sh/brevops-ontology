@@ -31,7 +31,8 @@
    {
     "path": "$BO_REPO/contracts",
     "kind": "dir",
-    "sha256": "db415bb8ae8f2efc96a8dd7e7d5728413ae086b6f042826335c6702b00325e5b"
+    "sha256": "3392fd0feb0a735b13ccd8dccc87de2f914502b983bb82c504c829bbe03dd43b",
+    "sha256_before_emenda5": "db415bb8ae8f2efc96a8dd7e7d5728413ae086b6f042826335c6702b00325e5b"
    },
    {
     "path": "$BO_REPO/semantics/SEMANTICS.html",
