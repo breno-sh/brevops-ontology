@@ -30,7 +30,7 @@ CLASS_OF_PILOT = {"PILOT-STO-GLOSS": "GLOSS", "PILOT-NET-GLOSS": "GLOSS", "PILOT
                   "PILOT-NET-MAP": "MAP", "PILOT-STO-E2E": "E2E", "PILOT-NET-E2E": "E2E",
                   "PILOT-STO-ORACLE": "ORACLE", "PILOT-NET-ORACLE": "ORACLE"}
 E2E_ANALOGS = ("OWL", "ABOX-LIFT", "GRAPH-LOWERING", "TRANSLATOR", "REASONING-PROOF")
-DURATION_KEYS = ("hours", "effort_h", "wall_h", "h", "minutes", "min", "seconds", "s", "elapsed_s", "wall_s",
+DURATION_KEYS = ("agent_hours", "hours", "effort_h", "wall_h", "h", "minutes", "min", "seconds", "s", "elapsed_s", "wall_s",
                  "duration_s", "elapsed_seconds", "duration_seconds")
 
 
@@ -95,7 +95,10 @@ def e2e_steps(results: Path, mid: str) -> dict:
     d = C.read_json(p)
     if d is None:
         return {"module": mid, "file": C.portable(p), "present": False, "steps": [], "without_effort": None}
-    raw = d.get("steps") if isinstance(d, dict) else d
+    raw = d
+    if isinstance(d, dict):
+        dd = d.get("data") or {}
+        raw = d.get("steps") or (dd.get("agent") or {}).get("steps") or dd.get("steps") or []
     if isinstance(raw, dict):
         raw = [dict(v, step=k) if isinstance(v, dict) else {"step": k, "hours": v} for k, v in raw.items()]
     steps = []
