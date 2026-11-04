@@ -77,7 +77,7 @@ def notes(r: dict) -> str:
             f"{rec['resource_records']} ({rec['matched_share']:.1%}); fora: "
             f"{rec['unmatched_by_category']['attr_not_in_schema']} atributo fora do schema, "
             f"{rec['unmatched_by_category']['type_not_in_schema']} de {t['n_types_used_not_in_schema']} tipos fora do "
-            f"schema (removidos antes da 5.12.0). Classe por recurso x átomo: literal {s['literal']}, simbólico "
+            f"schema 5.12.0 (ausentes do schema fixado). Classe por recurso x átomo: literal {s['literal']}, simbólico "
             f"{s['symbolic']}, retido {s['withheld']}. Sem split (é do SPLIT).")
 
 

@@ -1,0 +1,546 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "CORPUS-AZURE",
+ "generated_at": "2026-11-04T09:54:06-03:00",
+ "sources": [
+  {
+   "uri": "https://doi.org/10.5281/zenodo.20339474",
+   "license": "CC-BY-4.0 (dataset); licença por repositório em $BO_DATA/HCL/licenses.json",
+   "transformation": "só a configuração simbólica do HCL (ids sintéticos) agregada por repositório, tipo e átomo"
+  },
+  {
+   "uri": "https://registry.terraform.io/providers/hashicorp/azurerm/5.12.0",
+   "license": "MPL-2.0",
+   "transformation": "átomos do SCHEMA-AZURE usados como chave; nada copiado além de nomes de atributo"
+  }
+ ],
+ "counts": {
+  "atoms": {
+   "atoms_for_50pct_settings": 156,
+   "atoms_for_90pct_settings": 2382,
+   "configurable_used_share": 0.653846,
+   "n_atoms": 23351,
+   "n_configurable": 21736,
+   "n_configurable_used": 14212,
+   "n_nonconfigurable_used": 146,
+   "n_used": 14358,
+   "n_used_in_10plus_repos": 7749
+  },
+  "corpus": {
+   "n_data_blocks_skipped": 38521,
+   "n_families": 12127,
+   "n_modules": 58121,
+   "n_repos": 13990,
+   "n_repos_without_records": 1,
+   "n_resources": 308481,
+   "n_resources_type_in_schema": 296201
+  },
+  "frequent_unmatched_paths": [
+   {
+    "n_repos": 1801,
+    "path": "storage_account_name",
+    "resource_type": "azurerm_storage_container"
+   },
+   {
+    "n_repos": 1386,
+    "path": "service_endpoints",
+    "resource_type": "azurerm_subnet"
+   },
+   {
+    "n_repos": 1123,
+    "path": "private_dns_zone_name",
+    "resource_type": "azurerm_private_dns_zone_virtual_network_link"
+   },
+   {
+    "n_repos": 1123,
+    "path": "resource_group_name",
+    "resource_type": "azurerm_private_dns_zone_virtual_network_link"
+   },
+   {
+    "n_repos": 1092,
+    "path": "address_prefix",
+    "resource_type": "azurerm_subnet"
+   },
+   {
+    "n_repos": 969,
+    "path": "enable_https_traffic_only",
+    "resource_type": "azurerm_storage_account"
+   },
+   {
+    "n_repos": 800,
+    "path": "metric.category",
+    "resource_type": "azurerm_monitor_diagnostic_setting"
+   },
+   {
+    "n_repos": 674,
+    "path": "role_based_access_control.enabled",
+    "resource_type": "azurerm_kubernetes_cluster"
+   },
+   {
+    "n_repos": 674,
+    "path": "storage_account_name",
+    "resource_type": "azurerm_storage_blob"
+   },
+   {
+    "n_repos": 674,
+    "path": "storage_container_name",
+    "resource_type": "azurerm_storage_blob"
+   },
+   {
+    "n_repos": 627,
+    "path": "default_node_pool.enable_auto_scaling",
+    "resource_type": "azurerm_kubernetes_cluster"
+   },
+   {
+    "n_repos": 597,
+    "path": "addon_profile.oms_agent.enabled",
+    "resource_type": "azurerm_kubernetes_cluster"
+   },
+   {
+    "n_repos": 567,
+    "path": "enable_rbac_authorization",
+    "resource_type": "azurerm_key_vault"
+   },
+   {
+    "n_repos": 489,
+    "path": "addon_profile.kube_dashboard.enabled",
+    "resource_type": "azurerm_kubernetes_cluster"
+   },
+   {
+    "n_repos": 454,
+    "path": "metric.enabled",
+    "resource_type": "azurerm_monitor_diagnostic_setting"
+   },
+   {
+    "n_repos": 452,
+    "path": "storage_account_name",
+    "resource_type": "azurerm_storage_share"
+   },
+   {
+    "n_repos": 413,
+    "path": "resource_group_name",
+    "resource_type": "azurerm_lb_probe"
+   },
+   {
+    "n_repos": 412,
+    "path": "resource_group_name",
+    "resource_type": "azurerm_lb_rule"
+   },
+   {
+    "n_repos": 409,
+    "path": "network_security_group_id",
+    "resource_type": "azurerm_network_watcher_flow_log"
+   },
+   {
+    "n_repos": 403,
+    "path": "queue_properties.logging.delete",
+    "resource_type": "azurerm_storage_account"
+   },
+   {
+    "n_repos": 403,
+    "path": "queue_properties.logging.read",
+    "resource_type": "azurerm_storage_account"
+   },
+   {
+    "n_repos": 403,
+    "path": "queue_properties.logging.version",
+    "resource_type": "azurerm_storage_account"
+   },
+   {
+    "n_repos": 403,
+    "path": "queue_properties.logging.write",
+    "resource_type": "azurerm_storage_account"
+   },
+   {
+    "n_repos": 400,
+    "path": "queue_properties.logging.retention_policy_days",
+    "resource_type": "azurerm_storage_account"
+   },
+   {
+    "n_repos": 398,
+    "path": "metric.retention_policy.enabled",
+    "resource_type": "azurerm_monitor_diagnostic_setting"
+   }
+  ],
+  "module": "CORPUS-AZURE",
+  "params": {
+   "chunk_repos": 64,
+   "min_repos_unmatched_report": 5,
+   "top_n": 25
+  },
+  "provider": "azurerm",
+  "records": {
+   "data_source_records": 66785,
+   "matched_object_attr_records": 147177,
+   "matched_records": 2100026,
+   "matched_share": 0.856115,
+   "orphan_records": 0,
+   "provider_records": 2519758,
+   "resource_records": 2452973,
+   "type_mismatch_records": 0,
+   "unmatched_by_category": {
+    "attr_not_in_schema": 91935,
+    "block_without_leaf": 275,
+    "dynamic_meta": 50220,
+    "meta_argument": 113591,
+    "type_not_in_schema": 95553,
+    "unparsed_path": 0,
+    "withheld_block": 1373
+   }
+  },
+  "rows": {
+   "atom_rows": 1023245,
+   "type_rows": 145550,
+   "usage_rows": 1168795
+  },
+  "rules": {
+   "atom_row": "linha com atom_id só quando n_set > 0; n_resources = blocos do tipo no repositório",
+   "class": "withheld > symbolic > literal por recurso; literal = valor sai só do texto do atributo",
+   "module": "diretório do arquivo .tf no repositório",
+   "object_attr": "campo de atributo de tipo objeto escrito como bloco (security_rule { ... }) configura o átomo do atributo, se o campo existe no tf_type",
+   "resource": "bloco resource (não data) do azurerm; count/for_each contam uma vez",
+   "type_row": "linha sem atom_id por (repo, tipo): n_resources = blocos do tipo; n_set = blocos com >= 1 átomo configurado; classe do bloco = a mais fraca entre os seus átomos",
+   "unmatched": "caminho que não é path de átomo do tipo no atoms.jsonl não vira átomo (contado aqui)"
+  },
+  "settings_by_class": {
+   "literal": 661745,
+   "symbolic": 1212668,
+   "total": 1915365,
+   "withheld": 40952
+  },
+  "top_atoms_by_repos": [
+   {
+    "atom_id": "azurerm:azurerm_resource_group:location",
+    "n_modules": 25806,
+    "n_repos": 10814,
+    "n_resources_set": 28879
+   },
+   {
+    "atom_id": "azurerm:azurerm_resource_group:name",
+    "n_modules": 25811,
+    "n_repos": 10814,
+    "n_resources_set": 28888
+   },
+   {
+    "atom_id": "azurerm:azurerm_virtual_network:name",
+    "n_modules": 12933,
+    "n_repos": 7167,
+    "n_resources_set": 13893
+   },
+   {
+    "atom_id": "azurerm:azurerm_virtual_network:resource_group_name",
+    "n_modules": 12929,
+    "n_repos": 7166,
+    "n_resources_set": 13864
+   },
+   {
+    "atom_id": "azurerm:azurerm_virtual_network:location",
+    "n_modules": 12925,
+    "n_repos": 7163,
+    "n_resources_set": 13861
+   },
+   {
+    "atom_id": "azurerm:azurerm_virtual_network:address_space",
+    "n_modules": 12922,
+    "n_repos": 7162,
+    "n_resources_set": 13858
+   },
+   {
+    "atom_id": "azurerm:azurerm_subnet:name",
+    "n_modules": 12514,
+    "n_repos": 6897,
+    "n_resources_set": 20053
+   },
+   {
+    "atom_id": "azurerm:azurerm_subnet:resource_group_name",
+    "n_modules": 12512,
+    "n_repos": 6895,
+    "n_resources_set": 20051
+   },
+   {
+    "atom_id": "azurerm:azurerm_subnet:virtual_network_name",
+    "n_modules": 12510,
+    "n_repos": 6894,
+    "n_resources_set": 20048
+   },
+   {
+    "atom_id": "azurerm:azurerm_subnet:address_prefixes",
+    "n_modules": 10938,
+    "n_repos": 5914,
+    "n_resources_set": 17435
+   },
+   {
+    "atom_id": "azurerm:azurerm_public_ip:name",
+    "n_modules": 9481,
+    "n_repos": 5406,
+    "n_resources_set": 11904
+   },
+   {
+    "atom_id": "azurerm:azurerm_public_ip:location",
+    "n_modules": 9480,
+    "n_repos": 5405,
+    "n_resources_set": 11903
+   },
+   {
+    "atom_id": "azurerm:azurerm_public_ip:resource_group_name",
+    "n_modules": 9480,
+    "n_repos": 5405,
+    "n_resources_set": 11903
+   },
+   {
+    "atom_id": "azurerm:azurerm_public_ip:allocation_method",
+    "n_modules": 8975,
+    "n_repos": 5107,
+    "n_resources_set": 11262
+   },
+   {
+    "atom_id": "azurerm:azurerm_network_interface:location",
+    "n_modules": 9104,
+    "n_repos": 5051,
+    "n_resources_set": 13057
+   },
+   {
+    "atom_id": "azurerm:azurerm_network_interface:name",
+    "n_modules": 9104,
+    "n_repos": 5051,
+    "n_resources_set": 13058
+   },
+   {
+    "atom_id": "azurerm:azurerm_network_interface:resource_group_name",
+    "n_modules": 9104,
+    "n_repos": 5051,
+    "n_resources_set": 13058
+   },
+   {
+    "atom_id": "azurerm:azurerm_network_interface:ip_configuration.name",
+    "n_modules": 9103,
+    "n_repos": 5050,
+    "n_resources_set": 13057
+   },
+   {
+    "atom_id": "azurerm:azurerm_network_interface:ip_configuration.private_ip_address_allocation",
+    "n_modules": 9103,
+    "n_repos": 5050,
+    "n_resources_set": 13057
+   },
+   {
+    "atom_id": "azurerm:azurerm_network_interface:ip_configuration.subnet_id",
+    "n_modules": 9101,
+    "n_repos": 5049,
+    "n_resources_set": 13055
+   },
+   {
+    "atom_id": "azurerm:azurerm_network_security_group:name",
+    "n_modules": 7916,
+    "n_repos": 4784,
+    "n_resources_set": 10474
+   },
+   {
+    "atom_id": "azurerm:azurerm_network_security_group:resource_group_name",
+    "n_modules": 7917,
+    "n_repos": 4784,
+    "n_resources_set": 10475
+   },
+   {
+    "atom_id": "azurerm:azurerm_network_security_group:location",
+    "n_modules": 7916,
+    "n_repos": 4783,
+    "n_resources_set": 10474
+   },
+   {
+    "atom_id": "azurerm:azurerm_resource_group:tags",
+    "n_modules": 9081,
+    "n_repos": 4738,
+    "n_resources_set": 10006
+   },
+   {
+    "atom_id": "azurerm:azurerm_storage_account:location",
+    "n_modules": 7640,
+    "n_repos": 4706,
+    "n_resources_set": 8770
+   }
+  ],
+  "types": {
+   "n_types_schema": 1107,
+   "n_types_used": 1043,
+   "n_types_used_in_schema": 886,
+   "n_types_used_not_in_schema": 157,
+   "resources_type_not_in_schema": 12280,
+   "top_types_not_in_schema": [
+    {
+     "n_repos": 850,
+     "n_resources": 2119,
+     "resource_type": "azurerm_app_service"
+    },
+    {
+     "n_repos": 1008,
+     "n_resources": 1767,
+     "resource_type": "azurerm_app_service_plan"
+    },
+    {
+     "n_repos": 347,
+     "n_resources": 1094,
+     "resource_type": "azurerm_postgresql_configuration"
+    },
+    {
+     "n_repos": 567,
+     "n_resources": 858,
+     "resource_type": "azurerm_sql_server"
+    },
+    {
+     "n_repos": 520,
+     "n_resources": 829,
+     "resource_type": "azurerm_postgresql_server"
+    },
+    {
+     "n_repos": 495,
+     "n_resources": 731,
+     "resource_type": "azurerm_mysql_server"
+    },
+    {
+     "n_repos": 364,
+     "n_resources": 721,
+     "resource_type": "azurerm_policy_assignment"
+    },
+    {
+     "n_repos": 435,
+     "n_resources": 692,
+     "resource_type": "azurerm_sql_firewall_rule"
+    },
+    {
+     "n_repos": 303,
+     "n_resources": 513,
+     "resource_type": "azurerm_monitor_log_profile"
+    },
+    {
+     "n_repos": 166,
+     "n_resources": 366,
+     "resource_type": "azurerm_template_deployment"
+    },
+    {
+     "n_repos": 234,
+     "n_resources": 344,
+     "resource_type": "azurerm_function_app"
+    },
+    {
+     "n_repos": 230,
+     "n_resources": 247,
+     "resource_type": "azurerm_app_service_slot"
+    },
+    {
+     "n_repos": 176,
+     "n_resources": 210,
+     "resource_type": "azurerm_sql_database"
+    },
+    {
+     "n_repos": 179,
+     "n_resources": 199,
+     "resource_type": "azurerm_postgresql_database"
+    },
+    {
+     "n_repos": 157,
+     "n_resources": 183,
+     "resource_type": "azurerm_mysql_database"
+    },
+    {
+     "n_repos": 103,
+     "n_resources": 121,
+     "resource_type": "azurerm_postgresql_firewall_rule"
+    },
+    {
+     "n_repos": 97,
+     "n_resources": 117,
+     "resource_type": "azurerm_mysql_firewall_rule"
+    },
+    {
+     "n_repos": 57,
+     "n_resources": 92,
+     "resource_type": "azurerm_traffic_manager_endpoint"
+    },
+    {
+     "n_repos": 58,
+     "n_resources": 65,
+     "resource_type": "azurerm_postgresql_virtual_network_rule"
+    },
+    {
+     "n_repos": 19,
+     "n_resources": 55,
+     "resource_type": "azurerm_dashboard"
+    },
+    {
+     "n_repos": 44,
+     "n_resources": 55,
+     "resource_type": "azurerm_static_site"
+    },
+    {
+     "n_repos": 44,
+     "n_resources": 49,
+     "resource_type": "azurerm_mariadb_server"
+    },
+    {
+     "n_repos": 43,
+     "n_resources": 49,
+     "resource_type": "azurerm_mysql_virtual_network_rule"
+    },
+    {
+     "n_repos": 39,
+     "n_resources": 39,
+     "resource_type": "azurerm_mariadb_database"
+    },
+    {
+     "n_repos": 29,
+     "n_resources": 38,
+     "resource_type": "azurerm_sql_active_directory_administrator"
+    }
+   ]
+  },
+  "outputs_sha256": {
+   "usage.jsonl": "dd34fc5b291e9502e4def833dd68b7a250799535bca572f2b2cc069a8563ac20",
+   "atom_totals.jsonl": "30514334ede103e425046fe83a8aab5ec8c8e3861f57febc37eab0aab9d9f15c",
+   "type_totals.jsonl": "e3a5e50c3d00ffe8e85ca629db0a97e361d03964716f3b1a7089cf8ef605efdb",
+   "build_report.json": "3ca069c335058ceae89c51e329a8737d9c555c0c6d960d92ba2c397f4d617c09"
+  }
+ },
+ "notes": "azurerm no TerraDS: 13990 repositórios, 12127 famílias, 58121 módulos, 308481 recursos (38521 blocos data fora). 1168795 linhas usage (145550 por tipo, 1023245 por átomo). Átomos configuráveis usados: 14212/21736 (65.4%); 2382 átomos cobrem 90% das configurações. Registros de recurso casados com átomo do schema 5.12.0: 2100026/2452973 (85.6%); fora: 91935 atributo fora do schema, 95553 de 157 tipos fora do schema 5.12.0 (ausentes do schema fixado). Classe por recurso x átomo: literal 661745, simbólico 1212668, retido 40952. Sem split (é do SPLIT).",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/CORPUS-AZURE.txt",
+  "brief_sha256": "4991db90c2c94a3e72ff20f9759021a05865ce4dc38d643036084b8734f55127",
+  "params": {
+   "provider": "azurerm",
+   "provider_version_atoms": "5.12.0",
+   "hcl_branch_sha": "bb238ab",
+   "generator": "python -I -m bo.corpus_azure.build --workers 12",
+   "resource_unit": "bloco resource (sem data); count/for_each uma vez",
+   "module_unit": "diretório do .tf",
+   "class_precedence": "withheld>symbolic>literal",
+   "regen_sample_mod": "50",
+   "cloud": "none"
+  },
+  "inputs": [
+   {
+    "path": "$BO_DATA/HCL/resources.parquet",
+    "kind": "file",
+    "sha256": "4862e47b8fac5dbfca08ac725141e7e84c4915579b250504eaf7b417537c13c0"
+   },
+   {
+    "path": "$BO_DATA/HCL/symbolic_config.jsonl",
+    "kind": "file",
+    "sha256": "867340a28cb3a6c3a215ea9735c5308fdbf516954a896d0aae6d19db8e0c560f"
+   },
+   {
+    "path": "$BO_DATA/HCL/symbolic_config.index.json",
+    "kind": "file",
+    "sha256": "f20260ec47d07b89f32516867c5067611fe3859ea10789aacada4a61940316a3"
+   },
+   {
+    "path": "$BO_DATA/SCHEMA-AZURE/atoms.jsonl",
+    "kind": "file",
+    "sha256": "3e7a8160b3272bc0652427989d72860cb84cc198dfde1a9ae14405babfbbb915"
+   }
+  ],
+  "recorded_at": "2026-11-04T09:53:59-03:00"
+ }
+}
