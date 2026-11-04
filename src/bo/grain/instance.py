@@ -15,7 +15,8 @@ from dataclasses import dataclass, field
 
 from . import rules as R
 from .common import canon, sha256_text
-from .engine import Node, decide_graph
+from . import schema as S
+from .engine import EXT, Node, decide_graph
 from .evidence import PARENT, CandidateEvidence, from_dict
 
 
@@ -57,6 +58,8 @@ def normalize(norm: str, v):
 def _get(values: dict, path: str, index):
     if path == "$index":
         return index
+    if path == "$element":
+        return values.get("$element") if isinstance(values, dict) else None
     cur = values
     for part in path.split("."):
         if not isinstance(cur, dict) or part not in cur:
@@ -85,6 +88,10 @@ class Occurrence:
                 canon(self.key), canon(self.config), canon(self.refs), self.rule, tuple(self.missing))
 
 
+def path_el(m: dict) -> bool:
+    return m.get("path") == "$element"
+
+
 def build_nodes(config: dict, adapter, schema_blocks: dict) -> tuple[dict, dict, dict]:
     """schema_blocks: cid -> conjunto de nomes de bloco filhos (para saber o que é bloco e o que é atributo)."""
     provider = config["provider"]
@@ -96,10 +103,39 @@ def build_nodes(config: dict, adapter, schema_blocks: dict) -> tuple[dict, dict,
             evs[cid] = adapter.evidence(cid)
         return evs[cid]
 
+    has = getattr(adapter, "has", None)
+
     def walk(cid, rtype, nid, values, parent_nid, block_path, index):
+        ev = ev_of(cid)
+        if ev.out_of_domain:
+            return                                       # T45: configuração do Terraform, fora do domínio
+        if ev.implicit_facet and parent_nid is not None:
+            # T57: faceta implícita entre o pai e os blocos membros (uma por ocorrência do pai)
+            imp = ev.implicit_facet
+            pcid = raw[parent_nid]["cid"]
+            fcid, fnid = f"{pcid}:{imp['facet']}", f"{parent_nid}:{imp['facet']}"
+            if fcid not in evs:
+                evs[fcid] = from_dict(S.implicit_facet_evidence(imp))
+                evs[fcid].implicit_facet = dict(imp, implicit=True)
+            if fnid not in raw:
+                raw[fnid] = dict(cid=fcid, rt=rtype, values={}, parent=parent_nid, block_path=raw[parent_nid][
+                    "block_path"], index=None, group=imp["facet"])
+            parent_nid = fnid
         raw[nid] = dict(cid=cid, rt=rtype, values=values, parent=parent_nid, block_path=block_path, index=index,
                         group=None)
-        ev = ev_of(cid)
+        # T58: ligação por atributo-lista ou seleção: um nó por elemento (a posição não entra na identidade)
+        for attr, link in sorted(ev.links.items()):
+            v = values.get(attr) if isinstance(values, dict) else None
+            if not isinstance(v, list):
+                continue
+            lcid = f"{cid}:{attr}"
+            if lcid not in evs:
+                extra = adapter.evidence(lcid) if has and has(lcid) else None
+                evs[lcid] = from_dict(S.link_evidence(cid, attr, link, extra))
+            for i, el in enumerate(v):
+                raw[f"{nid}:{attr}#{i}"] = dict(cid=lcid, rt=rtype, values={"$element": el, "$attr": attr,
+                                                                           "$kind": link.get("kind")},
+                                                parent=nid, block_path=block_path, index=i, group=attr)
         for g, spec in sorted(ev.groups.items()):
             if any(_get(values, p, None) is not None for p in spec.get("paths", [])):
                 gcid = f"{cid}:{g}"
@@ -107,7 +143,12 @@ def build_nodes(config: dict, adapter, schema_blocks: dict) -> tuple[dict, dict,
                     evs[gcid] = from_dict(spec.get("evidence", {}))
                 raw[f"{nid}:{g}"] = dict(cid=gcid, rt=rtype, values=values, parent=nid, block_path=block_path,
                                          index=None, group=g)
-        for b in sorted(schema_blocks.get(cid, ())):
+        kids = set(schema_blocks.get(cid, ()))
+        if isinstance(values, dict) and has:
+            # T2 sem o schema do chamador: atributo com lista de objetos e evidência própria é bloco repetido
+            kids |= {k for k, x in values.items() if isinstance(x, list) and x and all(isinstance(y, dict) for y in x)
+                     and has(f"{cid}.{k}")}
+        for b in sorted(kids):
             v = values.get(b)
             if v is None:
                 continue
@@ -128,8 +169,19 @@ def build_nodes(config: dict, adapter, schema_blocks: dict) -> tuple[dict, dict,
         ev = ev_of(info["cid"])
         m = ev.field_map.get(f, {})
         v = _get(info["values"], m.get("path", f), info["index"])
+        if v is None and m.get("namespace") and info["parent"] is not None:
+            # T52b na instância: o bloco herda do pai o contêiner de namespace (o nome do pai o qualifica)
+            pinfo = raw[info["parent"]]
+            v = _get(pinfo["values"], m.get("path", f), pinfo["index"])
         if isinstance(v, dict) and "$ref" in v and v["$ref"] in raw:
             return v["$ref"]
+        if isinstance(v, dict) and "$ref" in v:
+            return EXT + v["$ref"]                       # T51: ocorrência referenciada fora da configuração
+        tgt = ev.references.get(f)
+        if path_el(m) and info["values"].get("$kind") == "selection" and isinstance(v, (str, int)):
+            return f"{EXT}{tgt}={v}"                     # seletor por valor (rótulo): externo, sem grão
+        if tgt and isinstance(v, (str, int)) and not isinstance(v, bool) and not m.get("by_name"):
+            return f"{EXT}{tgt}#{v}"                     # referência por id literal a objeto fora da configuração
         if m.get("by_name") and isinstance(v, str):
             # referência por nome a um elemento irmão dentro do mesmo recurso (sem endereço Terraform)
             tcid, root = ev.references.get(f), nid.split("/")[0].split(":")[0]
@@ -197,6 +249,10 @@ def decompose_config(config: dict, adapter, schema_blocks: dict, rs: R.RuleSet) 
     def ident(nid, stack=()):
         if nid in memo:
             return memo[nid]
+        if nid.startswith(EXT):
+            # T51 na instância: ocorrência externa referenciada, identidade = o endereço ou o valor citado
+            memo[nid] = sha256_text(canon({"external": nid[len(EXT):]}))
+            return memo[nid]
         if nid in stack:
             return None
         d = decs[nid]
@@ -207,10 +263,18 @@ def decompose_config(config: dict, adapter, schema_blocks: dict, rs: R.RuleSet) 
         key, parent, endpoints = {}, None, {}
         try:
             own = [f for f in d.identity.own if f != "$id"]
-            if "$id" in d.identity.own:
-                raise NormError("identidade só por id opaco: sem valor na configuração")
-            for f in own:
-                key[f] = field_val(nid, f)
+            try:
+                if "$id" in d.identity.own:
+                    raise NormError("identidade só por id opaco: sem valor na configuração")
+                for f in own:
+                    key[f] = field_val(nid, f)
+            except NormError as e0:
+                if nid not in raw or raw[nid]["parent"] is not None:
+                    raise                 # bloco: o endereço é posicional e não serve de identidade (reordenação)
+                # T59: recurso de topo de id opaco (ou chave sem valor na configuração): antes da criação não há
+                # id; a ocorrência declarada é identificada pelo endereço do recurso (símbolo por configuração)
+                key = {"$address": nid}
+                d.notes.append(f"identidade de ocorrência simbólica (endereço): {e0}")
             if d.grain in ("COMPONENT", "FACET"):
                 parent = ident(d.parent, st)
                 if parent is None:
@@ -299,4 +363,4 @@ def _ev(cid, adapter):
 
 def canonical_rows(occs: list[Occurrence]) -> list:
     """Forma comparável (sem camada Terraform): o que tem de ser igual entre embalagens."""
-    return sorted(o.row() for o in occs)
+    return sorted((o.row() for o in occs), key=lambda r: canon([str(x) for x in r]))

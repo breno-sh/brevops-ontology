@@ -106,9 +106,16 @@ TABLE = [
      "operation, member, single_operation}); a forma embutida ganha o candidato <pai>:<facet> (id determinístico "
      "por pai e faceta), FACET do pai com implicit=true e a citação, e os blocos passam a pender dele. Sem a "
      "operação citada, ou com operação própria de criar/apagar o bloco (spec_operation), não há faceta implícita"),
+    ("(atributo-lista ou seleção)", "reference_target | reference_phrase | attachment_scope", "R-GRAIN-T58",
+     "LIGAÇÃO POR ATRIBUTO: atributo lista/conjunto de valores (tipo cty) com referência (T44) ou alcance por "
+     "anexação vira o candidato <tipo[.bloco]>:<atributo>; na instância, um nó por elemento. Identidade = (o dono "
+     "do atributo, o alvo do elemento): referência tipada resolve o alvo; só a frase da doc deixa o alvo sem tipo "
+     "(UNRESOLVED); seleção por valor (rótulo) aponta um seletor externo, que não tem grão (G1 não decide). Ciclo de "
+     "vida, dono e alcance da ligação só vêm de fatos com attribute = o atributo; sem eles, UNKNOWN com o que falta"),
     ("api_resource", "(pontes equivalentes)", "R-GRAIN-T53",
-     "duas pontes que nomeiam o mesmo serviço/recurso só com grafia diferente (caixa, sublinhado, hífen) são uma "
-     "alegação só; nomes de fato diferentes continuam CONTRADICTORY (disputa)"),
+     "duas pontes que nomeiam o mesmo recurso só com grafia diferente (caixa, sublinhado, hífen), ainda que o "
+     "nome do serviço difira entre a doc e o SDK da spec, são uma alegação só; recursos de fato diferentes "
+     "continuam CONTRADICTORY (disputa)"),
     ("api_bridge", "spec_bridge_candidates", "R-GRAIN-T48",
      "sem tradução: a spec casa com mais de um tipo e o desempate não dá este tipo; UNKNOWN com o motivo"),
     ("identity", "api_reference", "R-GRAIN-T05", "sem tradução: página de referência da API, informativa"),
@@ -224,6 +231,7 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
     ns_fields: dict[str, set] = defaultdict(set)     # cid -> campos de referência ao contêiner de namespace
     api_identity: set = set()                         # cids com identidade afirmada na camada de API (T56)
     own_ops: set = set()                              # blocos com operação própria de criar/apagar (T57, negativo)
+    links: dict[str, dict] = defaultdict(dict)       # cid -> atributo -> ligação (T58)
     path_fields: dict[str, set] = defaultdict(set)   # cid -> campos de referência ao pai de caminho (T54)
     typed: dict[str, dict] = defaultdict(dict)       # cid -> {campo: tipo alvo ou None} (T44 reference_target)
     for cid, rs in sorted(by_cid.items()):
@@ -261,6 +269,18 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
                         "service") or "UNKNOWN"
                     put(cid, "api_resource", {"status": "resource", "label": res_, "service": svc, "resource": res_,
                                               "source": _src(r, "R-GRAIN-T04")})
+                continue
+            if a is None and isinstance(v, dict) and v.get("attribute") and fld in (
+                    "lifecycle_controller", "owner", "effective_scope", "identity"):
+                # T58: fato direto sobre UM atributo (ligação por atributo-lista ou seleção): vai para o candidato
+                # da ligação <tipo[.bloco]>:<atributo>
+                cid_l = f"{cid}:{_rel(v['attribute'], bp)}"
+                if v.get("layer") == "terraform":
+                    unknown(cid_l, fld, r, "camada Terraform")
+                    continue
+                cl = {k: x for k, x in v.items() if k not in ("attribute", "layer", "rule", "note", "block_path")}
+                cl["source"] = _src(r, "R-GRAIN-T58", "fato da ligação")
+                put(cid_l, fld, cl)
                 continue
             if a is None:
                 # fato sem aspecto: alegação direta na convenção anterior (T99), salvo camada Terraform (T98)
@@ -332,8 +352,13 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
                 else:
                     typed[cid][attr] = None
                     reasons[cid].append(f"identity: referência {attr} com alvo ambíguo {tt}")
+                links[cid][attr] = {"kind": "reference", "target": typed[cid][attr], "source": _src(r, rule)}
             elif a == "reference_phrase":
                 reasons[cid].append("identity: reference_phrase é frase da doc; o alvo vem de reference_target")
+                if v.get("attribute"):
+                    links[cid].setdefault(_rel(v["attribute"], bp), {
+                        "kind": "reference", "target": None, "why": "só reference_phrase (sem alvo tipado)",
+                        "source": _src(r, "R-GRAIN-T46")})
             elif a == "terraform_timeouts":
                 timeouts[rt] = r
                 reasons[cid].append("lifecycle_controller: terraform_timeouts é configuração do Terraform (fora do "
@@ -397,6 +422,10 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
                     attr = _rel(v["attribute"], bp)
                     typed[cid].setdefault(attr, None)
                     reasons[cid].append(f"effective_scope: anexação por {attr} (alvo: {v.get('applies_to')})")
+                    if not links[cid].get(attr, {}).get("target"):
+                        links[cid][attr] = {"kind": "selection" if v.get("applies_to") and not v.get("attach_to")
+                                            else "reference", "target": None, "applies_to": v.get("applies_to")
+                                            or v.get("attach_to"), "source": _src(r, rule)}
             elif rule == "R-GRAIN-T43":
                 if v.get("layer") == "terraform" or v.get("kind") not in ("self", "parent", "container", "global"):
                     unknown(cid, fld, r, "alcance derivado sem kind de API")
@@ -547,10 +576,13 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
     # T53: pontes que nomeiam o mesmo recurso com grafia diferente (caixa, sublinhado) são a mesma alegação; fica a
     # primeira (as divergências de verdade continuam CONTRADICTORY)
     def _k(c):
-        return tuple("".join(ch for ch in str(c.get(x) or "").lower() if ch.isalnum()) for x in ("service", "resource"))
+        # o nome do serviço varia entre a doc e o SDK da spec (ex. iaas × core); o recurso é o que identifica
+        return "".join(ch for ch in str(c.get("resource") or "").lower() if ch.isalnum())
     for cid, ent in out.items():
         br = [c for c in ent.get("api_resource", []) if c.get("status") == "resource" and c.get("resource")]
         if len(br) > 1 and len({_k(c) for c in br}) == 1 and len({(c.get("service"), c.get("resource")) for c in br}) > 1:
+            spec = [c for c in br if "R-BRIDGE-SPEC" in str((c.get("source") or {}).get("note", "")) or
+                    "SPEC" in str((c.get("source") or {}).get("ref", ""))]
             first = br[0]
             ent["api_resource"] = [c for c in ent["api_resource"] if c not in br[1:]]
             reasons[cid].append(f"api_resource: pontes equivalentes (grafia) unificadas em {first.get('service')}/"
@@ -636,6 +668,9 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
                 s["note"] = note + (" / " + s.get("note", "") if s.get("note") else "")
                 c2["source"] = s
                 put(cid, fld, c2)
+    for cid, ls in links.items():
+        if ls:
+            out.setdefault(cid, {})["links"] = {k: dict(x) for k, x in ls.items()}
     # T57, controle: bloco que a API aceita sozinho, por operação própria, não ganha faceta implícita
     for cid in own_ops:
         if out.get(cid, {}).pop("implicit_facet", None):

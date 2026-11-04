@@ -36,7 +36,7 @@ from . import schema as S
 from .common import data_dir, dump_json, dump_jsonl, now, repo, results_dir, rules_path, sha256_file, stamp
 from .evidence import FixtureAdapter
 
-AUTHORED_AT = "2026-11-04T11:00:00-03:00"
+AUTHORED_AT = "2026-11-04T13:00:00-03:00"
 
 
 def _strip(rep: dict) -> dict:
@@ -408,6 +408,15 @@ vida preso à instância, G1 e G2 aceitam a evidência, e trocar a ordem troca B
 referência <code>by_name</code>; sem ela, o grafo embutido perde relações que o separado tem.</li>
 <li>Emenda 0.1.1 (CC-1): a primeira versão lia uma convenção que o SERVICE-EVIDENCE nunca gravou; os testes
 sintéticos usavam a mesma convenção e não pegaram. Entraram o adaptador por aspecto e testes com o arquivo real.</li>
+<li>Emenda 0.1.9 (PILOT-EXIT 1/2: o E2 NET reprovou porque a camada de instância não tinha as regras 0.1.5–0.1.8): a
+instância aplica agora contêiner externo (T51: <code>$ref</code> fora da configuração ou id literal), faceta implícita
+(T57), fora do domínio (T45), bloco repetido de coleção de objetos detectado pela evidência (T2) e o namespace do pai
+herdado pelo bloco (T52b). Ligação por atributo-lista de referências e seleção por valor (rótulo) viram candidato
+<code>&lt;tipo&gt;:&lt;atributo&gt;</code> e uma ocorrência por elemento (T58): a identidade é (dono, alvo); a decisão só sai
+com fatos da ligação (attribute = o atributo) — sem eles, UNKNOWN com o que falta; seleção aponta um seletor externo,
+sem grão. Recurso de topo de id opaco é identificado pelo endereço do recurso (T59, símbolo por configuração); bloco
+de id opaco não (o endereço do bloco é posicional e quebraria a invariância à reordenação). Pontes que nomeiam o
+mesmo recurso com nomes de serviço diferentes entre a doc e o SDK da spec (iaas × core) são uma só (T53).</li>
 <li>Emenda 0.1.8 (faceta implícita, T3/T57, decisão do coordenador): quando a API só aceita os blocos como membros
 de um único objeto-faceta do pai, configurado por uma operação única sobre o pai (ex.: a configuração de ciclo de vida
 do contêiner, com as regras como membro, gravada por uma só operação sobre o contêiner), a forma embutida — que não
@@ -417,8 +426,7 @@ embutida poria as regras como componentes diretos do contêiner e o E2 divergiri
 fato da spec no bloco (<code>spec_facet_member</code> ou <code>implicit_facet</code>, com <code>operation</code> citada e
 <code>single_operation</code>); id determinístico por pai e faceta; <code>implicit=true</code> e a citação da spec nos
 itens de evidência do C19. Sem a operação citada não há faceta implícita; bloco que a API aceita sozinho, por operação
-própria de criar/apagar (<code>spec_operation</code> no bloco), também não (controles negativos nos testes). Por
-enquanto só na camada de schema; a camada de instância segue sem o nível.</li>
+própria de criar/apagar (<code>spec_operation</code> no bloco), também não (controles negativos nos testes). Na 0.1.9 a camada de instância também ganha o nível.</li>
 <li>Emenda 0.1.7 (regra nova G2-CHILD, decisão do coordenador): um sub-recurso com CRUD próprio na API continua
 sendo parte do pai; ter API própria não o torna entidade independente. Justificativa: a identidade dele só existe
 dentro do pai (o caminho da spec o põe abaixo do pai, …/pai/{p}/filho/{f}), o pai o apaga em cascata, e as operações

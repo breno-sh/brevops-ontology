@@ -28,6 +28,42 @@ class Candidate:
     parent: str | None
     group: str | None = None
     virtual: bool = False  # elemento de atributo lista/conjunto de objetos: campos derivados do tipo cty (T2)
+    attr_types: dict = field(default_factory=dict)    # atributo -> tipo cty (para T58)
+
+
+def scalar_list(tf_type) -> bool:
+    """lista ou conjunto de valores escalares (não de objetos): a forma das ligações por atributo (T58)."""
+    return isinstance(tf_type, list) and len(tf_type) >= 2 and tf_type[0] in ("list", "set") and \
+        isinstance(tf_type[1], str)
+
+
+def link_evidence(holder_cid: str, attr: str, link: dict, extra) -> dict:
+    """Evidência derivada (T58) do candidato de ligação <holder>:<attr>, mais os fatos próprios da ligação."""
+    sel = link.get("kind") == "selection"
+    fld = "selector" if sel else "target"
+    src = dict(link.get("source") or {"level": "derived", "ref": "T58"})
+    src["note"] = (src.get("note", "") + " (T58: ligação por atributo)").strip()
+    out = {"identity": [{"status": "present", "scope": "within_parent", "key_fields": [fld], "source": src}],
+           "field_map": {fld: {"path": "$element", "ref": True}}, "parent_role": "holder", "references": {}}
+    if sel:
+        out["references"][fld] = f"selector:{holder_cid}:{attr}"
+    elif link.get("target"):
+        out["references"][fld] = link["target"]
+    for k in ("lifecycle_controller", "owner", "effective_scope", "api_resource", "import_key"):
+        cl = (extra.claims.get(k) if extra is not None else None) or []
+        if cl:
+            out[k] = list(cl)
+    return out
+
+
+def implicit_facet_evidence(imp: dict) -> dict:
+    src = imp["source"]
+    note = (f"implicit=true; operação {imp['operation']}" + (f" ({imp['member']})" if imp.get("member") else "")
+            + " sobre o pai")
+    cl = lambda **kw: dict(kw, source=dict(src, note=note))  # noqa: E731
+    return {"identity": [cl(status="absent")], "lifecycle_controller": [cl(kind="parent")],
+            "owner": [cl(kind="parent")], "effective_scope": [cl(kind="parent")],
+            "api_resource": [cl(status="aspect", label=imp["label"])]}
 
 
 def collection_fields(tf_type):
@@ -63,7 +99,8 @@ def candidates_from_tf_schema(provider: str, resource_schemas: dict) -> list[Can
     def walk(rt, block, path, parent, nesting):
         cid = rt + ("." + ".".join(path) if path else "")
         attrs = block.get("attributes") or {}
-        out.append(Candidate(cid, provider, rt, tuple(path), nesting, sorted(attrs.keys()), parent))
+        out.append(Candidate(cid, provider, rt, tuple(path), nesting, sorted(attrs.keys()), parent,
+                             attr_types={k: v.get("type") for k, v in attrs.items()}))
         _add_collections(out, provider, rt, cid, path, {k: v.get("type") for k, v in attrs.items()})
         for bname, bt in sorted((block.get("block_types") or {}).items()):
             walk(rt, bt.get("block") or {}, path + [bname], cid, bt.get("nesting_mode", "single"))
@@ -88,6 +125,7 @@ def candidates_from_atoms(atoms: list[dict]) -> list[Candidate]:
         leaf = a["path"].split(".")[-1]
         owner = rt + ("." + ".".join(blocks) if blocks else "")
         by[owner].attrs.append(leaf)
+        by[owner].attr_types[leaf] = a.get("tf_type")
         extra: list = []
         _add_collections(extra, prov, rt, owner, blocks, {leaf: a.get("tf_type")})
         for c in extra:
@@ -127,6 +165,15 @@ def decompose_schema(cands: list[Candidate], adapter, rs: R.RuleSet) -> SchemaRe
             by[gid] = Candidate(gid, c.provider, c.resource_type, c.block_path, "group", paths, c.cid, group=g)
             evs[gid] = from_dict(spec.get("evidence", {}))
             by[c.cid].attrs = [a for a in by[c.cid].attrs if a not in paths]
+    # T58: ligação por atributo-lista de referências ou por seleção: candidato <dono>:<atributo>
+    for c in sorted(list(by.values()), key=lambda x: x.cid):
+        for attr, link in sorted((evs[c.cid].links if c.cid in evs else {}).items()):
+            if attr not in c.attrs or not scalar_list(c.attr_types.get(attr)):
+                continue
+            lid = f"{c.cid}:{attr}"
+            extra = adapter.evidence(lid) if getattr(adapter, "has", None) and adapter.has(lid) else None
+            by[lid] = Candidate(lid, c.provider, c.resource_type, c.block_path, "link", [], c.cid, group=attr)
+            evs[lid] = from_dict(link_evidence(c.cid, attr, link, extra))
     # T57: faceta implícita (só com fato da spec): um candidato <pai>:<faceta> entre o pai e os blocos membros
     for c in sorted(list(by.values()), key=lambda x: x.cid):
         imp = evs[c.cid].implicit_facet if c.cid in evs else None
@@ -137,14 +184,7 @@ def decompose_schema(cands: list[Candidate], adapter, rs: R.RuleSet) -> SchemaRe
             pc = by[c.parent]
             by[fid] = Candidate(fid, c.provider, c.resource_type, pc.block_path, "implicit", [], c.parent,
                                 group=imp["facet"])
-            src = imp["source"]
-            note = (f"implicit=true; operação {imp['operation']}" + (f" ({imp['member']})" if imp.get("member") else "")
-                    + " sobre o pai")
-            cl = lambda **kw: dict(kw, source=dict(src, note=note))  # noqa: E731
-            evs[fid] = from_dict({
-                "identity": [cl(status="absent")], "lifecycle_controller": [cl(kind="parent")],
-                "owner": [cl(kind="parent")], "effective_scope": [cl(kind="parent")],
-                "api_resource": [cl(status="aspect", label=imp["label"])]})
+            evs[fid] = from_dict(implicit_facet_evidence(imp))
             evs[fid].implicit_facet = dict(imp, implicit=True)
         c.parent = fid
     # T0: transparentes (carga útil da API do pai, sem identidade própria)

@@ -134,6 +134,8 @@ class CandidateEvidence:
     parent_is_path_parent: bool = False
     # faceta implícita (T57): {facet, label, operation, member, parent_resource, source}; só com fato da spec
     implicit_facet: dict | None = None
+    # ligações por atributo (T58): atributo -> {"kind": reference|selection, "target": tipo|None, "why", "source"}
+    links: dict = field(default_factory=dict)
 
     def fact(self, fld: str) -> Fact:
         return consolidate(fld, self.claims.get(fld, []))
@@ -157,7 +159,7 @@ def from_dict(d: dict) -> CandidateEvidence:
                              groups=dict(d.get("groups", {})), roles=dict(d.get("roles", {})),
                              twin=d.get("twin"), out_of_domain=d.get("out_of_domain"),
                              parent_is_path_parent=bool(d.get("parent_is_path_parent")),
-                             implicit_facet=d.get("implicit_facet"))
+                             implicit_facet=d.get("implicit_facet"), links=dict(d.get("links", {})))
 
 
 class FixtureAdapter:
@@ -168,6 +170,9 @@ class FixtureAdapter:
 
     def evidence(self, cid: str) -> CandidateEvidence:
         return from_dict(self.table.get(cid, {}))
+
+    def has(self, cid: str) -> bool:
+        return cid in self.table
 
 
 class C25Adapter:
@@ -259,3 +264,6 @@ class C25Adapter:
 
     def evidence(self, cid: str) -> CandidateEvidence:
         return from_dict(self.by_cid.get(cid, {}))
+
+    def has(self, cid: str) -> bool:
+        return cid in self.by_cid

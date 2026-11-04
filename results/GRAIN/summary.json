@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "GRAIN",
- "generated_at": "2026-11-04T10:29:40-03:00",
+ "generated_at": "2026-11-04T12:21:55-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/GRAIN.txt",
@@ -13,9 +13,9 @@
    "modo": "unlazy",
    "onda": "5",
    "fase": "F1",
-   "rules_version": "0.1.8",
+   "rules_version": "0.1.9",
    "rules_status": "PROVISIONAL",
-   "emendas": "GRAIN-A1..A11",
+   "emendas": "GRAIN-A1..A12",
    "c19": "3.1.0",
    "c25": "1.1.0",
    "pyyaml": "6.0.3",
@@ -31,7 +31,7 @@
    {
     "path": "$BO_REPO/contracts",
     "kind": "dir",
-    "sha256": "53a5c1f1fad4a1af88e30f4669f3a7a5f7e347f66143b69d3d6481459cbfd8fd"
+    "sha256": "92a1f9456185479b2529ca97d2805fb3176b61eda95dad6882c6c9d09bff14d0"
    },
    {
     "path": "$BO_REPO/semantics/SEMANTICS.html",
@@ -44,7 +44,7 @@
     "sha256": "038f73fcebedfbf3b5ff3d23b1ff0758a87e8be2616b141b232628e1a64d1438"
    }
   ],
-  "recorded_at": "2026-11-04T10:29:40-03:00"
+  "recorded_at": "2026-11-04T12:21:55-03:00"
  },
  "sources": [
   {
@@ -53,5 +53,5 @@
    "transformation": "mundos sintéticos escritos no módulo (provider_a..provider_h), sem dado real"
   }
  ],
- "notes": "Emendas 0.1.1-0.1.8: adaptador C25 por aspecto, contêiner externo, G4-NS, G2-CHILD, identidade de API primeiro, faceta implícita (T3/T57) só com fato da spec, E2 que desce ao bloco; coleções como bloco repetido e endpoints (C19 3.1.0). Testes de integração leem o dado real de $BO_DATA (volátil)."
+ "notes": "Emendas 0.1.1-0.1.9: adaptador C25 por aspecto, contêiner externo, G4-NS, G2-CHILD, identidade de API primeiro, faceta implícita, paridade da camada de instância (T58 ligações e seleções, T59 endereço), coleções e endpoints (C19 3.1.0). Testes de integração leem o dado real de $BO_DATA (volátil)."
 }
