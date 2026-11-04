@@ -251,6 +251,9 @@ def translate(lf, dst: str, claims, control: str, tbox_ix: dict, env: dict | Non
     tr_src, iri = A.abox_of(lf)
     closure = A.reason(tr_src, ix)
     blocked, justifying, clashes, contexts = [], {}, [], []
+    for nr in (lf.read or {}).get("not_read", []):
+        # configuração da origem não lida: a unidade não está completa e nada desce (nunca se supõe o padrão)
+        blocked.append(("UNKNOWN_INPUT", "T-NOT-READ", f"{nr.get('of')}/{nr.get('what')}: não lido na origem"))
     if level == "c3_full" and closure.clashes:
         clashes = closure.clashes
         blocked.append(("SHACL_VIOLATION", "T-C3-INCONSISTENT",

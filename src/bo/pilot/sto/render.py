@@ -183,24 +183,32 @@ def tf_dirs(r: dict) -> list[tuple[str, Path]]:
         return []
     if prov == "aws":
         from bo.harness.aws import render as R
-        d = r["dir"] / "validate"
+        d = r["dir"] / "validate" / "aws_all"
         if d.exists():
             shutil.rmtree(d)
-        d.mkdir()
+        d.mkdir(parents=True)
         for f in R.TEMPLATE_FILES:
             shutil.copyfile(out / f, d / f)
         for pid in rendered:
             shutil.copyfile(out / f"{pid}.tf", d / f"{pid}.tf")
         return [("aws:all", d)]
+    def copy(label: str, src: Path) -> tuple[str, Path]:
+        # valida numa cópia: a pasta de saída do harness fica intacta (o lock e o .terraform não entram nela)
+        d = r["dir"] / "validate" / label.replace(":", "_")
+        if d.exists():
+            shutil.rmtree(d)
+        shutil.copytree(src, d, ignore=shutil.ignore_patterns(".terraform", ".terraform.lock.hcl", "*.json"))
+        return label, d
+
     if prov == "google":
-        return [("google:all", out)]
+        return [copy("google:all", out)]
     if prov == "azurerm":
         rep = json.loads((out / "render_report.json").read_text(encoding="utf-8"))
         if rep["layout"] == "single":
-            return [("azurerm:" + rendered[0], out)]
-        return [("azurerm:" + pid, out / pid) for pid in rendered]
+            return [copy("azurerm:" + rendered[0], out)]
+        return [copy("azurerm:" + pid, out / pid) for pid in rendered]
     if prov == "oci":
-        return [("oci:all", out)]
+        return [copy("oci:all", out)]
     return []
 
 

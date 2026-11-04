@@ -83,6 +83,7 @@ class Lifted:
     refs: dict                      # endereço -> endereço resolvido do dono (arestas)
     components: dict                # id do componente -> {setting, occ_key, addr}
     notes: list = field(default_factory=list)
+    read: dict = field(default_factory=dict)   # completude da leitura da origem (fixture.read)
 
     def unit_of_container(self, addr: str) -> Unit | None:
         return self.units.get(f"container:{addr}")
@@ -452,7 +453,7 @@ def lift(fx: dict, claims, evidence) -> Lifted:
                                              "index": ri})
                 v.component = comp
             values.append(v)
-    return Lifted(prov, fid, res, units, values, refs, components, notes)
+    return Lifted(prov, fid, res, units, values, refs, components, notes, dict(fx.get("read") or {}))
 
 
 def decomposition(lf: Lifted) -> dict:

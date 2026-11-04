@@ -48,3 +48,12 @@ def test_unit_with_untransported_facet_is_blocked(ctx_syn):
     e = _entry("DX-GCP-AZ-T1-acceptable-01")        # origem com public_access_prevention sem alegação
     r = PL.run_entry(ctx_syn, e, "c3_full")
     assert r.status == "BLOCKED" and r.plan is None
+
+
+def test_unread_source_blocks_the_unit(ctx_syn):
+    e = _entry("DX-AWS-GCP-T1-acceptable-01")
+    src = dict(e["source"], read={"completeness": "partial", "not_read": [{"of": "aws_s3_bucket_versioning.src",
+                                                                          "what": "versioning_configuration"}],
+                                  "withheld": []})
+    r = PL.run_entry(ctx_syn, dict(e, source=src), "c3_full")
+    assert r.status == "BLOCKED" and r.block[1] == "T-NOT-READ" and r.plan is None
