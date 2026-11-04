@@ -1,29 +1,23 @@
 {
  "schema": "bo.contracts_requests_ledger/1",
  "module": "CONTRACTS",
- "generated_at": "2026-11-04T14:00:14-03:00",
+ "generated_at": "2026-11-04T14:59:39-03:00",
  "scope": "CONTRACT_CHANGE.txt dos PILOT-* e dos módulos que eles consomem (bo/base)",
  "n": 114,
  "by_decision": {
   "ACEITO": 59,
-  "ADIADO_FASE_2": 11,
-  "DE_OUTRO_DONO": 38,
-  "RECUSADO": 6
+  "ADIADO_FASE_2": 14,
+  "DE_OUTRO_DONO": 34,
+  "RECUSADO": 7
  },
  "by_status": {
-  "ABERTO (em curso)": 5,
-  "ADIADO": 11,
+  "ADIADO": 13,
+  "ADIADO (resolvido em parte)": 1,
   "FECHADO": 59,
-  "FECHADO (sem mudança)": 6,
-  "RESOLVIDO": 33
+  "FECHADO (sem mudança)": 7,
+  "RESOLVIDO": 34
  },
- "open": [
-  "PILOT-NET-E2E CC-NET-E2E-2 (GRAIN (b, c); SERVICE-EVIDENCE (a))",
-  "PILOT-NET-GLOSS CC-NET-3 (SERVICE-EVIDENCE; GRAIN; CAND)",
-  "PILOT-NET-MAP F-5 (PILOT-NET-GLOSS)",
-  "PILOT-STO-MAP CC-13 (SEMANTICS; ARBITERLIB)",
-  "PILOT-STO-MAP CC-8 (GRAIN)"
- ],
+ "open": [],
  "items": [
   {
    "module": "PILOT-NET-E2E",
@@ -40,12 +34,12 @@
    "module": "PILOT-NET-E2E",
    "item": "CC-NET-E2E-2",
    "summary": "tipo da anexação, seleção por rótulo e regras OCI saem UNKNOWN",
-   "owner": "GRAIN (b, c); SERVICE-EVIDENCE (a)",
-   "decision": "DE_OUTRO_DONO",
-   "status": "ABERTO (em curso)",
-   "closes": "-",
-   "commit": "SERVICE-EVIDENCE respondeu (a) no item 8 (regras OCI com dono, ciclo e alcance); (b) e (c) são do GRAIN",
-   "why": ""
+   "owner": "GRAIN; SERVICE-EVIDENCE",
+   "decision": "ADIADO_FASE_2",
+   "status": "ADIADO (resolvido em parte)",
+   "closes": "fase 2",
+   "commit": "cbe1f08, 28faee8 (parte)",
+   "why": "resolvido em parte (E2 da calibração de 11 para 26/42); o resto (11 regras de security list OCI sem identidade de item, 9 associações azurerm sem ciclo de vida publicado, 1 anexação por variável) é lacuna de evidência e vai como achado [decisão/conferência do coordenador, 2026-11-04]"
   },
   {
    "module": "PILOT-NET-E2E",
@@ -95,12 +89,12 @@
    "module": "PILOT-NET-GLOSS",
    "item": "CC-NET-3",
    "summary": "alvo das referências, timeouts, deletion_policy",
-   "owner": "SERVICE-EVIDENCE; GRAIN; CAND",
-   "decision": "DE_OUTRO_DONO",
-   "status": "ABERTO (em curso)",
-   "closes": "-",
+   "owner": "CAND",
+   "decision": "ADIADO_FASE_2",
+   "status": "ADIADO",
+   "closes": "fase 2",
    "commit": "-",
-   "why": "não é formato de contrato"
+   "why": "dono CAND, fase 2 [decisão/conferência do coordenador, 2026-11-04]"
   },
   {
    "module": "PILOT-NET-GLOSS",
@@ -216,12 +210,12 @@
    "module": "PILOT-NET-MAP",
    "item": "F-5",
    "summary": "efeito fixo (aws, oci só permitem) sem decisão nem sentença",
-   "owner": "PILOT-NET-GLOSS",
-   "decision": "DE_OUTRO_DONO",
-   "status": "ABERTO (em curso)",
+   "owner": "PILOT-NET-GLOSS; SERVICE-EVIDENCE",
+   "decision": "RECUSADO",
+   "status": "FECHADO (sem mudança)",
    "closes": "-",
-   "commit": "-",
-   "why": "decisão C20 (value_type com a semântica) cabe no contrato vigente; falta a decisão do glossarista"
+   "commit": "28faee8",
+   "why": "achado: nenhuma frase publicada nas fontes fixadas diz que as regras só permitem (SERVICE-EVIDENCE item 9); os AMBIGUOUS ficam [decisão/conferência do coordenador, 2026-11-04]"
   },
   {
    "module": "PILOT-NET-MAP",
@@ -459,11 +453,11 @@
    "item": "CC-8",
    "summary": "occurrence_key de bloco repetido",
    "owner": "GRAIN",
-   "decision": "DE_OUTRO_DONO",
-   "status": "ABERTO (em curso)",
-   "closes": "-",
+   "decision": "ADIADO_FASE_2",
+   "status": "ADIADO",
+   "closes": "fase 2",
    "commit": "-",
-   "why": ""
+   "why": "a spec não dá chave de ocorrência ao item (google lifecycle_rule, oci rules, grants de ACL): lacuna de evidência [decisão/conferência do coordenador, 2026-11-04]"
   },
   {
    "module": "PILOT-STO-MAP",
@@ -513,12 +507,12 @@
    "module": "PILOT-STO-MAP",
    "item": "CC-13",
    "summary": "domínio de wrap_list no árbitro (VDR-UNKNOWN)",
-   "owner": "SEMANTICS; ARBITERLIB",
+   "owner": "ARBITERLIB; SEMANTICS; PILOT-STO-MAP",
    "decision": "DE_OUTRO_DONO",
-   "status": "ABERTO (em curso)",
+   "status": "RESOLVIDO",
    "closes": "-",
-   "commit": "-",
-   "why": "o formato já existe (C10 3.1.0/3.2.0); falta a imagem calculada"
+   "commit": "ac0f446, 86cbcb3",
+   "why": "o árbitro calcula o domínio de wrap_list/unwrap_single pelo registro; o mapeador declarou partial nos 12 prefixos de texto aberto, pela política do SEMANTICS [decisão/conferência do coordenador, 2026-11-04]"
   },
   {
    "module": "PILOT-STO-MAP",

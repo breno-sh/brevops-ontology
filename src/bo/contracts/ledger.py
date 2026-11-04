@@ -215,9 +215,23 @@ COORD = {
                                "revisão de dado no DOCS-OCI; o piloto trata como ausência UNRESOLVED, sem efeito em E1–E4"),
     ("SCHEMALIB", "2"): ("SCHEMALIB", D, "-", "-", "lacuna conhecida da biblioteca, regenerada na fase 2"),
     ("SCHEMA-GCP", "3"): ("SCHEMALIB", D, "-", "-", "lacuna conhecida da biblioteca, regenerada na fase 2"),
+    # fechamento final antes do PILOT-EXIT 2/2 (conferido: commits em bo/base e results do dono)
+    ("PILOT-STO-MAP", "CC-13"): ("ARBITERLIB; SEMANTICS; PILOT-STO-MAP", O, RES, "ac0f446, 86cbcb3",
+                                 "o árbitro calcula o domínio de wrap_list/unwrap_single pelo registro; o mapeador "
+                                 "declarou partial nos 12 prefixos de texto aberto, pela política do SEMANTICS"),
+    ("PILOT-NET-MAP", "F-5"): ("PILOT-NET-GLOSS; SERVICE-EVIDENCE", R, "-", "28faee8",
+                               "achado: nenhuma frase publicada nas fontes fixadas diz que as regras só permitem "
+                               "(SERVICE-EVIDENCE item 9); os AMBIGUOUS ficam"),
+    ("PILOT-NET-E2E", "CC-NET-E2E-2"): ("GRAIN; SERVICE-EVIDENCE", D, "-", "cbe1f08, 28faee8 (parte)",
+                                        "resolvido em parte (E2 da calibração de 11 para 26/42); o resto (11 regras de "
+                                        "security list OCI sem identidade de item, 9 associações azurerm sem ciclo de "
+                                        "vida publicado, 1 anexação por variável) é lacuna de evidência e vai como achado"),
+    ("PILOT-STO-MAP", "CC-8"): ("GRAIN", D, "-", "-",
+                                "a spec não dá chave de ocorrência ao item (google lifecycle_rule, oci rules, grants de "
+                                "ACL): lacuna de evidência"),
+    ("PILOT-NET-GLOSS", "CC-NET-3"): ("CAND", D, "-", "-", "dono CAND, fase 2"),
 }
-IN_PROGRESS = {("PILOT-NET-E2E", "CC-NET-E2E-2"), ("PILOT-STO-MAP", "CC-8"), ("PILOT-STO-MAP", "CC-13"),
-               ("PILOT-NET-MAP", "F-5"), ("PILOT-NET-GLOSS", "CC-NET-3")}
+IN_PROGRESS: set = set()
 
 
 def _items() -> list:
@@ -241,7 +255,9 @@ def ledger(now: str, e9_commit: str | None = None) -> dict:
             if (mod, item) in IN_PROGRESS:
                 status = ABE + " (em curso)"
         elif dec == D:
-            status, closes_, commit_ = "ADIADO", "fase 2", "-"
+            status, closes_, commit_ = "ADIADO", "fase 2", commit
+            if commit != "-":
+                status = "ADIADO (resolvido em parte)"
         else:
             status, closes_, commit_ = ("FECHADO" if dec == A else "FECHADO (sem mudança)"), closes, commit
         if commit_ == E9:
