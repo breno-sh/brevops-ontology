@@ -32,7 +32,14 @@ MINP = {"google": 0, "azurerm": 100}
 
 
 def sym_id(*parts) -> str:
-    return "SYM-" + hashlib.sha256(json.dumps([SYM_NS, *parts]).encode()).hexdigest()[:16]
+    """SYM-<16 hex> estável; sal até não haver 12 dígitos seguidos (o privacy_lint reprova sequência assim)."""
+    import re
+    salt = 0
+    while True:
+        h = hashlib.sha256(json.dumps([SYM_NS, *parts, salt]).encode()).hexdigest()[:16]
+        if not re.search(r"[0-9]{12}", h):
+            return "SYM-" + h
+        salt += 1
 
 
 def lit(v) -> dict:
