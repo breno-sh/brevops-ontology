@@ -60,11 +60,13 @@ _TWELVE = re.compile(r"(?<!\d)\d{12}(?!\d)")
 
 
 def _hex_id(seed: str, n: int) -> str:
-    """Hex determinístico que nunca contém 12 dígitos seguidos (o privacy_lint leria como conta)."""
+    """Hex determinístico que nunca contém 12 dígitos seguidos (o privacy_lint leria como conta) e que termina
+    em letra: assim nenhum byte vizinho (o prefixo de tamanho do valor seguinte num parquet, por exemplo)
+    estende uma sequência de dígitos do id até 12."""
     k = 0
     while True:
         h = hashlib.sha256(f"{seed}#{k}".encode()).hexdigest()[:n]
-        if not _TWELVE.search("-" + h + "-") and not re.search(r"\d{12}", h):
+        if h[-1] in "abcdef" and not _TWELVE.search("-" + h + "-") and not re.search(r"\d{12}", h):
             return h
         k += 1
 

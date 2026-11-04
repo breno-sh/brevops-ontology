@@ -262,7 +262,71 @@ def write_parquet(rows, path: Path):
              "has_count", "has_for_each", "module_depth"]
     types = [pa.string()] * 6 + [pa.int64(), pa.bool_(), pa.bool_(), pa.int64()]
     t = pa.table({n: pa.array(list(c), type=ty) for n, c, ty in zip(names, cols, types)})
-    pq.write_table(t, path, compression="zstd")
+    return write_table_clean(t, path)
+
+
+def write_table_clean(t, path: Path) -> dict:
+    """Parquet com codificação que não cria texto falso para o lint estrito.
+
+    O privacy_lint --strict lê binário pelas sequências imprimíveis. Bytes de zstd/gzip são ruído e, em
+    dezenas de MB, formam por acaso padrões de e-mail, dinheiro ou 12 dígitos (falso positivo). Então:
+    linhas ordenadas por (repo_id, file, resource_address); repo_id, family_id, resource_type e provider em
+    dicionário; file e resource_address em DELTA_BYTE_ARRAY (prefixo compartilhado + sufixo); compressão só
+    se preciso para caber em 50 MB, e de bloco sem entropia (snappy, lz4) antes do zstd.
+    Os valores DECODIFICADOS de toda coluna de texto passam pelas regras do privacy_lint antes (senão: erro).
+    O resultado do lint sobre o binário vai para o relatório; o arquivo é gravado de qualquer forma."""
+    import pyarrow.compute as pc
+    import pyarrow.parquet as pq
+    from bo.repo import privacy
+    for c in t.column_names:
+        if str(t.schema.field(c).type) == "string":
+            for v in set(t.column(c).to_pylist()):
+                if privacy.scan_text(v, "v"):
+                    raise RuntimeError(f"valor da coluna {c} reprova no privacy_lint")
+    t = t.take(pc.sort_indices(t, sort_keys=[("repo_id", "ascending"), ("file", "ascending"),
+                                             ("resource_address", "ascending")]))
+    tmp = path.with_suffix(".part.parquet")
+    enc = {"file": "DELTA_BYTE_ARRAY", "resource_address": "DELTA_BYTE_ARRAY", "n_attrs": "DELTA_BINARY_PACKED",
+           "module_depth": "DELTA_BINARY_PACKED"}
+    dic = ["repo_id", "family_id", "resource_type", "provider"]
+    # ordem fixa de tentativas; fica a primeira com binário limpo e <= 50 MB (o lint estrito não lê acima)
+    plans = [("none", {}), ("snappy", {"file": "snappy", "resource_address": "snappy"}),
+             ("lz4", {"file": "lz4", "resource_address": "lz4"})] + \
+        [(f"zstd-{lv}", {"_zstd": lv}) for lv in (3, 1, 2, 4, 5, 6, 7, 8, 9, 10, 12, 15, 19, 22)]
+    tried = []
+    for name, per_col in plans:
+        kw = {}
+        if "_zstd" in per_col:
+            comp, kw = "zstd", {"compression_level": per_col["_zstd"]}
+        elif per_col:
+            comp = {c: per_col.get(c, "none") for c in t.column_names}
+        else:
+            comp = "none"
+        pq.write_table(t, tmp, compression=comp, use_dictionary=dic, column_encoding=enc, **kw)
+        if not pq.read_table(tmp).equals(t):
+            raise RuntimeError("parquet relido difere da tabela")
+        size = tmp.stat().st_size
+        found, _, _ = privacy.scan_paths([tmp], strict=True)
+        tried.append({"plan": name, "bytes": size, "binary_lint_n": len(found),
+                      "binary_lint_rules": sorted({x.rule for x in found})})
+        if not found and size <= privacy.TEXT_LIMIT:
+            break
+    os.replace(tmp, path)
+    return {"order": "repo_id,file,resource_address", "dictionary": dic, "encoding": enc,
+            "decoded_values_checked": True, "chosen": tried[-1], "tried": tried}
+
+
+def rewrite_parquet(out: Path) -> int:
+    """Regrava resources.parquet com write_table_clean (mesma tabela) e anota o nível em parse_stats.json."""
+    import json
+    import pyarrow.parquet as pq
+    t = pq.read_table(out / "resources.parquet")
+    info = write_table_clean(t, out / "resources.parquet")
+    st = json.load(open(out / "parse_stats.json", encoding="utf-8"))
+    st["parquet_encoding"] = info
+    write_json(out / "parse_stats.json", st)
+    print(f"[{now()}] resources.parquet regravado: {info}")
+    return 0
 
 
 def main(argv=None) -> int:
@@ -270,9 +334,12 @@ def main(argv=None) -> int:
     ap.add_argument("--limit", type=int, default=None)
     ap.add_argument("--workers", type=int, default=PARAMS["workers"])
     ap.add_argument("--out", default=None)
+    ap.add_argument("--rewrite-parquet", action="store_true", help="só regrava resources.parquet (mesma tabela)")
     a = ap.parse_args(argv)
     out = Path(a.out) if a.out else out_dir()
     out.mkdir(parents=True, exist_ok=True)
+    if a.rewrite_parquet:
+        return rewrite_parquet(out)
     tmp = tmp_dir()
     t0 = time.time()
     print(f"[{now()}] passada 1 (vocabulário), workers={a.workers}, limit={a.limit}", flush=True)
@@ -333,7 +400,7 @@ def main(argv=None) -> int:
     write_json(out / "symbolic_config.index.json", {
         "module": MODULE, "note": "repo_id -> [byte inicial, byte final, nº de registros] em symbolic_config.jsonl",
         "repos": index})
-    write_parquet(rows, out / "resources.parquet")
+    pq_info = write_parquet(rows, out / "resources.parquet")
     # licenças por repositório emitido
     con = source.sqlite_conn()
     lic = dict(con.execute("select Id, coalesce(License, 'NONE') from Repositories").fetchall())
@@ -369,6 +436,7 @@ def main(argv=None) -> int:
         "strings": {k.split(":", 1)[1]: v for k, v in sorted(stats.items()) if k.startswith("sym:")},
         "symbols": stats["symbols"], "vocab": vinfo,
         "blocks_by_type": dict(sorted(by_type.items())),
+        "parquet_encoding": pq_info,
         "seconds": round(time.time() - t0, 1)})
     print(f"[{now()}] fim: {stats['repos']} repos, {files_total} arquivos, {stats['files_ok']} ok, "
           f"{len(rows)} recursos, {stats['records']} registros ({time.time() - t0:.0f}s)", flush=True)

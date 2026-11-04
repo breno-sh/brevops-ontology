@@ -162,7 +162,7 @@ def test_ids_never_twelve_digits():
     for i in range(30000):
         s = sym_id(rid, i)
         assert re.fullmatch(r"SYM-[0-9a-f]{12}", s)
-        assert not re.search(r"\d{12}", s)
+        assert not re.search(r"\d{12}", s) and s[-1] in "abcdef"
     assert re.fullmatch(r"R-[0-9a-f]{12}", rid)
 
 
