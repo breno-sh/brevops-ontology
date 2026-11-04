@@ -23,7 +23,12 @@ PIECE = 400_000  # registros por pedaço
 
 
 def main(argv=None) -> int:
-    d = out_dir()
+    import argparse
+    from pathlib import Path
+    ap = argparse.ArgumentParser(prog="bo.hcl.validate_full")
+    ap.add_argument("--data", default=None, help="pasta das saídas (padrão $BO_DATA/HCL; ex.: a .staging)")
+    a = ap.parse_args(argv)
+    d = out_dir() if a.data is None else Path(a.data)
     idx = json.load(open(d / "symbolic_config.index.json", encoding="utf-8"))["repos"]
     spans = sorted(idx.values())
     pieces, cur, n = [], None, 0
