@@ -1,0 +1,151 @@
+{
+ "schema": "bo.pilot.sto.expected_answers/1",
+ "contract": "C24",
+ "contract_version": "1.1.0",
+ "module": "PILOT-STO-ORACLE",
+ "generated_at": "2026-11-03T08:00:00-03:00",
+ "note": "gabarito sintético mínimo do stub",
+ "oracle_sha256": "b00d2b75b197c8b6b97da541d76279739696cbe0d85918457fa7862ddb54ccd0",
+ "oracle_version": "1.0.0",
+ "providers": {
+  "aws": "6.71.0",
+  "azurerm": "5.12.0",
+  "google": "8.9.0",
+  "oci": "9.11.0"
+ },
+ "fixtures": {
+  "FX-STO-AWS-VER-P01": {
+   "case": "MC-VER",
+   "file": "pilot/sto/fixtures_calib/aws/FX-STO-AWS-VER-P01.json",
+   "invariant_group": null,
+   "polarity": "positive",
+   "provider": "aws",
+   "summary": "versionamento ligado no recurso separado",
+   "checks": [
+    {
+     "kind": "versioning",
+     "container": "c1",
+     "expect": "ENABLED"
+    },
+    {
+     "kind": "claim",
+     "claim": {
+      "about": "decomposition",
+      "value": {
+       "kind": "FACET"
+      }
+     },
+     "expect": {
+      "verdict": "ACCEPT"
+     }
+    }
+   ]
+  }
+ },
+ "directions": {
+  "DX-AWS-AZ-T1-acceptable-01": {
+   "c11_case_seed": {
+    "case_id": "CASE-PSTO-DX-01",
+    "group_id": "G-PSTO-T1-AWSAZ",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "side": "subject",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "forward",
+     "domain": "STO",
+     "pair": "AWSAZ"
+    },
+    "values": [
+     {
+      "var": "psto:versioning",
+      "term": {
+       "kind": "literal",
+       "datatype": "string",
+       "value": "ENABLED"
+      }
+     }
+    ],
+    "pending": {
+     "claim_id": "o oráculo não lê alegações",
+     "claim_version_id": "idem",
+     "frame_ref": "piloto não sorteia",
+     "lowering_plan": "plano C26 do E2E",
+     "stratum.relation": "sai da alegação",
+     "weight": "idem",
+     "origin": "pilot (C11 3.1.0)"
+    }
+   },
+   "declared_losses": [],
+   "direction": "aws->azurerm",
+   "expect": {
+    "verdict": "ACCEPT"
+   },
+   "family": "T1-VERSIONED",
+   "file": "pilot/sto/fixtures_calib/directions/aws-azurerm-T1.json",
+   "note": "",
+   "polarity": "positive",
+   "variant": "acceptable"
+  },
+  "DX-AWS-AZ-T1-negative-01": {
+   "c11_case_seed": {
+    "case_id": "CASE-PSTO-DX-02",
+    "group_id": "G-PSTO-T1-AWSAZ",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "side": "subject",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "forward",
+     "domain": "STO",
+     "pair": "AWSAZ"
+    },
+    "values": [
+     {
+      "var": "psto:versioning",
+      "term": {
+       "kind": "literal",
+       "datatype": "string",
+       "value": "ENABLED"
+      }
+     }
+    ],
+    "pending": {
+     "claim_id": "o oráculo não lê alegações",
+     "claim_version_id": "idem",
+     "frame_ref": "piloto não sorteia",
+     "lowering_plan": "plano C26 do E2E",
+     "stratum.relation": "sai da alegação",
+     "weight": "idem",
+     "origin": "pilot (C11 3.1.0)"
+    }
+   },
+   "declared_losses": [],
+   "direction": "aws->azurerm",
+   "expect": {
+    "verdict": "REJECT",
+    "code": "EARLY_DELETION"
+   },
+   "family": "T1-VERSIONED",
+   "file": "pilot/sto/fixtures_calib/directions/aws-azurerm-T1.json",
+   "note": "",
+   "polarity": "negative",
+   "variant": "negative"
+  }
+ },
+ "heldout": {
+  "ciphertext_sha256": "f8dcb34308e5c69f46a33cafa62bd922476b18c78a114eb144e34a5e374f7d60",
+  "plaintext_sha256": "e75b11da693d7bb5273985dcf9f02729455da7e7c80e54a0615e00ec2ae76d8e",
+  "recipient_fingerprint_sha256": "0b9cf00a584ce9ac5bd6e534f84d86d823902fb27423d8dfbd0b274b0ad34eb3",
+  "sealed_at": "2026-11-03T08:00:00-03:00",
+  "sealed_file": "$BO_DATA/PILOT-STO-ORACLE/sealed/heldout.cms.pem",
+  "counts": {
+   "fixtures": 1,
+   "direction_entries": 2
+  }
+ }
+}

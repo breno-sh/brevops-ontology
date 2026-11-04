@@ -89,6 +89,10 @@ FINDINGS = [
     "SERVICE-EVIDENCE (112.135 fatos) continua passando. protocol_support.jsonl (item 5 do SERVICE-EVIDENCE) e o "
     "CC-1/CC-NET-1/CC-NET-3 do PILOT-NET-GLOSS (adaptador de grão, atributos de coleção, referências) não são do C20/C25 "
     "e ficaram de fora.",
+    "Emenda 5: C24 1.1.0 com o tipo pilot_expected_answers (envelope e semente C11 comuns; corpo de cada fatia no "
+    "formato que o oráculo publicou: o schema do PILOT-NET-ORACLE adotado e o do STO a partir dos dados, com o id "
+    "bo.pilot.sto.expected_answers/1 como gravado); os dois gabaritos passam. C11 3.1.0 com origin pilot. C25 1.2.0 com "
+    "protocol_support.jsonl (os 24 registros do SERVICE-EVIDENCE passam).",
     "SCHEMALIB: nested_type (protocolo 6) como UM átomo com tf_type cty cabe no C01 sem mudança (tf_type aceita "
     "lista; stub C01 tem um); o write_only entra como campo opcional (átomos já gravados continuam válidos).",
 ]

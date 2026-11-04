@@ -256,7 +256,7 @@ def c11() -> dict:
                         "relation": enum(*SEMANTIC_RELATIONS), "direction": enum("forward", "inverse")},
                        ["pair", "domain", "cardinality", "relation", "direction"]),
         "frame_ref": c00("file_ref"), "weight": number(exclusiveMinimum=0),
-        "origin": enum("sample", "blocked", "dispute", "cq"), "cq_id": string(r"^CQ-[A-Z]{3,4}-\d{2}$"),
+        "origin": enum("sample", "blocked", "dispute", "cq", "pilot"), "cq_id": string(r"^CQ-[A-Z]{3,4}-\d{2}$"),
         "side": enum("subject", "object", "both"),
         "lowering_plan": obj({"plan_id": string(r"^LP-[A-Za-z0-9_\-]+$"), "graph_id": string(r"^GIR-[A-Za-z0-9_\-]+$")},
                              ["plan_id", "graph_id"]),
@@ -272,7 +272,7 @@ def c11() -> dict:
                {"if": {"properties": {"comparator": {"properties": {"name": const("numeric_tolerance")}}}},
                 "then": {"properties": {"comparator": {"required": ["tolerance"]}}}}])
     return contract_schema(
-        "C11", "cases", "3.0.1", "casos de implantação", status="amended",
+        "C11", "cases", "3.1.0", "casos de implantação", status="amended",
         description="case_id, group_id, claim_id, estrato (par, domínio, cardinalidade, relação, direção), frame_ref e "
                     "peso, origin (sample | blocked | dispute | cq), lado, plano de lowering (C26) em vez de lista de "
                     "caminhos, valores, comparador, classe de custo.",

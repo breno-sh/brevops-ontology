@@ -72,6 +72,16 @@ AMENDMENTS = [
      "requested_by": "SERVICE-EVIDENCE", "source": "bo-service-evidence/results/SERVICE-EVIDENCE/CONTRACT_CHANGE.txt",
      "change": "block_path; schema (fonte publicada do binário); consulted e level opcional em unknown; fact_kind "
                "api_bridge e default (com as_of)"},
+    # ---- emenda 5 (2026-11-04, oráculos dos pilotos e SERVICE-EVIDENCE)
+    {"contract": "C11", "from": "3.0.1", "to": "3.1.0", "at": "2026-11-04T09:00:00-03:00",
+     "requested_by": "PILOT-NET-ORACLE, PILOT-STO-ORACLE", "source": "results/PILOT-NET-ORACLE/CONTRACT_CHANGE.txt (2)",
+     "change": "origin pilot"},
+    {"contract": "C24", "from": "1.0.0", "to": "1.1.0", "at": "2026-11-04T09:00:00-03:00",
+     "requested_by": "PILOT-NET-ORACLE, PILOT-STO-ORACLE", "source": "results/PILOT-NET-ORACLE/CONTRACT_CHANGE.txt (1)",
+     "change": "tipo pilot_expected_answers (expected_answers.json das duas fatias), com semente C11 comum"},
+    {"contract": "C25", "from": "1.1.0", "to": "1.2.0", "at": "2026-11-04T09:00:00-03:00",
+     "requested_by": "SERVICE-EVIDENCE", "source": "bo-service-evidence/results/SERVICE-EVIDENCE/CONTRACT_CHANGE.txt (5)",
+     "change": "tipo protocol_support (protocol_support.jsonl, bo.protocol_support/1)"},
 ]
 
 

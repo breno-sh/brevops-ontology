@@ -1,7 +1,7 @@
 {
  "schema": "bo.contracts_adoption/1",
  "module": "CONTRACTS",
- "generated_at": "2026-11-04T02:30:56-03:00",
+ "generated_at": "2026-11-04T07:31:56-03:00",
  "adopted": [
   {
    "source": "results/REQUIREMENTS/C24_proposta/requirements.schema.json",
@@ -278,6 +278,33 @@
    "requested_by": "SERVICE-EVIDENCE",
    "source": "bo-service-evidence/results/SERVICE-EVIDENCE/CONTRACT_CHANGE.txt",
    "change": "block_path; schema (fonte publicada do binário); consulted e level opcional em unknown; fact_kind api_bridge e default (com as_of)"
+  },
+  {
+   "contract": "C11",
+   "from": "3.0.1",
+   "to": "3.1.0",
+   "at": "2026-11-04T09:00:00-03:00",
+   "requested_by": "PILOT-NET-ORACLE, PILOT-STO-ORACLE",
+   "source": "results/PILOT-NET-ORACLE/CONTRACT_CHANGE.txt (2)",
+   "change": "origin pilot"
+  },
+  {
+   "contract": "C24",
+   "from": "1.0.0",
+   "to": "1.1.0",
+   "at": "2026-11-04T09:00:00-03:00",
+   "requested_by": "PILOT-NET-ORACLE, PILOT-STO-ORACLE",
+   "source": "results/PILOT-NET-ORACLE/CONTRACT_CHANGE.txt (1)",
+   "change": "tipo pilot_expected_answers (expected_answers.json das duas fatias), com semente C11 comum"
+  },
+  {
+   "contract": "C25",
+   "from": "1.1.0",
+   "to": "1.2.0",
+   "at": "2026-11-04T09:00:00-03:00",
+   "requested_by": "SERVICE-EVIDENCE",
+   "source": "bo-service-evidence/results/SERVICE-EVIDENCE/CONTRACT_CHANGE.txt (5)",
+   "change": "tipo protocol_support (protocol_support.jsonl, bo.protocol_support/1)"
   }
  ],
  "findings": [
@@ -292,6 +319,7 @@
   "C01 2.1.0: a biblioteca que grava os átomos (src/bo/schema/, FLAGS em core.py) é posse do SCHEMALIB; ela ainda não grava write_only (campo opcional, os átomos 2.0.0 continuam válidos). Não mexi no código dele.",
   "Emenda 3: o formato provisório de decisions.jsonl do GLOSSARY_BRIEF entra sem mudança no C20 3.1.0 (com narrower acrescentado); os exemplos de results/BRIEFS/examples/decisions.jsonl passam no schema, mas reprovam na regra C20-DEC-REF proposta pelo próprio BRIEFS: o glossary.jsonl irmão não tem os conceitos citados. A ausência tipada do MAPPER_BRIEF (curation_rule bo:NONE_<tipo>) continua aceita; o mapper_examples.sssom.tsv passa.",
   "Emenda 4: C20 3.2.0 ancora em átomo, bloco ou tipo (anchor_kind) com implication fora do átomo; C25 1.1.0 (block_path, schema do binário, consulted em unknown, api_bridge, default): o service_evidence.jsonl do SERVICE-EVIDENCE (112.135 fatos) continua passando. protocol_support.jsonl (item 5 do SERVICE-EVIDENCE) e o CC-1/CC-NET-1/CC-NET-3 do PILOT-NET-GLOSS (adaptador de grão, atributos de coleção, referências) não são do C20/C25 e ficaram de fora.",
+  "Emenda 5: C24 1.1.0 com o tipo pilot_expected_answers (envelope e semente C11 comuns; corpo de cada fatia no formato que o oráculo publicou: o schema do PILOT-NET-ORACLE adotado e o do STO a partir dos dados, com o id bo.pilot.sto.expected_answers/1 como gravado); os dois gabaritos passam. C11 3.1.0 com origin pilot. C25 1.2.0 com protocol_support.jsonl (os 24 registros do SERVICE-EVIDENCE passam).",
   "SCHEMALIB: nested_type (protocolo 6) como UM átomo com tf_type cty cabe no C01 sem mudança (tf_type aceita lista; stub C01 tem um); o write_only entra como campo opcional (átomos já gravados continuam válidos)."
  ]
 }

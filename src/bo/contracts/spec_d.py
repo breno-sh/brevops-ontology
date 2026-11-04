@@ -14,11 +14,82 @@ SUPPORT = ("SUPPORTED", "OUT_OF_PIN", "UNSUPPORTED_BY_TRANSLATOR", "UNRESOLVED",
 
 
 # ------------------------------------------------------------------------------------------------- C24
+def pilot_defs() -> dict:
+    """Gabarito dos oráculos dos pilotos (expected_answers.json), emenda C24 1.1.0. O envelope e a semente de caso C11
+    são comuns às duas fatias; o corpo de cada fatia segue o formato que o oráculo publicou (o da NET é o schema do
+    PILOT-NET-ORACLE adotado; o da STO, o do PILOT-STO-ORACLE)."""
+    from .spec_b import _strip as strip
+    seed = obj({"case_id": string(r"^CASE-[A-Za-z0-9_\-]+$"), "group_id": string(r"^(GRP|G)-[A-Za-z0-9_\-]+$"),
+                "stratum_partial": obj({"pair": c00("pair"), "domain": c00("domain"),
+                                        "cardinality": enum("1:1", "1:N", "N:1", "N:M"),
+                                        "direction": enum("forward", "inverse"),
+                                        "relation": enum("exact", "close", "broad", "narrow", "related")},
+                                       ["pair", "domain", "cardinality", "direction"]),
+                "side": enum("subject", "object", "both"),
+                "comparator": obj({"name": enum("exact", "numeric_tolerance", "set_equal", "normalized_string",
+                                                "duration_equal", "cidr_equal"), "tolerance": number(minimum=0)},
+                                  ["name"]),
+                "cost_class": enum("free", "low", "medium", "high"),
+                "values": arr(obj({"var": string(r"^(\?[a-z][a-z0-9_]*|[a-z][a-z0-9_]*:\S+)$"), "term": c00("term")},
+                                  ["var", "term"])),
+                "pending": obj({}, extra=text(3), minProperties=1,
+                               propertyNames={"enum": ["claim_id", "claim_version_id", "frame_ref", "lowering_plan",
+                                                       "origin", "stratum.relation", "weight", "values"]})},
+               ["case_id", "group_id", "stratum_partial", "side", "comparator", "cost_class", "pending"],
+               description="semente de caso C11: o que o oráculo sabe, e em pending o motivo de cada campo que só o "
+                           "E2E preenche (o oráculo não lê alegações)")
+    net = strip(adopted("C24_pilot_net_expected_answers"))
+    net["properties"]["contract_version"] = enum("1.0.0", "1.1.0")
+    net["properties"]["translations"]["additionalProperties"]["properties"]["c11_case_seed"] = local("c11_case_seed")
+    net.pop("description", None)
+    hp = {"schema": const("bo.pilot.sto.expected_answers/1", description="como o PILOT-STO-ORACLE publicou"), "contract": const("C24"),
+          "contract_version": enum("1.0.0", "1.1.0"), "module": const("PILOT-STO-ORACLE")}
+    check = obj({"kind": enum("version_state", "public", "claim", "decomposition", "versioning", "timeline",
+                              "apply_rejection", "key_unknown"),
+                 "claim": {"type": "object"}, "version": text(1), "container": text(1), "axis": text(1),
+                 "unit": text(1), "key": text(1),
+                 "expect": {"description": "resposta do oráculo (estado, booleano, lista ou {verdict, code})"}},
+                ["kind", "expect"],
+                allOf=[{"if": {"properties": {"kind": const("claim")}},
+                        "then": {"required": ["claim"], "properties": {"expect": obj(
+                            {"verdict": enum("ACCEPT", "ACCEPT_WITH_DECLARED_LOSS", "REJECT", "UNKNOWN"),
+                             "code": string(r"^[A-Z][A-Z_]+$")}, ["verdict"])}}}])
+    sto_fx = obj({"case": string(r"^MC-[A-Z0-9-]+$"), "checks": arr(check, 1), "file": text(3),
+                  "invariant_group": nullable(text(1)), "polarity": enum("positive", "negative", "unknown"),
+                  "provider": enum("aws", "google", "azurerm", "oci"), "summary": text(5)},
+                 ["case", "checks", "file", "invariant_group", "polarity", "provider", "summary"])
+    sto_dx = obj({"c11_case_seed": local("c11_case_seed"), "declared_losses": arr(string(r"^[A-Z][A-Z_]+$")),
+                  "direction": string(r"^(aws|google|azurerm|oci)->(aws|google|azurerm|oci)$"),
+                  "expect": obj({"verdict": enum("ACCEPT", "ACCEPT_WITH_DECLARED_LOSS", "REJECT", "UNKNOWN"),
+                                 "code": string(r"^[A-Z][A-Z_]+$")}, ["verdict"], extra=True),
+                  "family": text(2), "file": text(3), "note": {"type": "string"},
+                  "polarity": enum("positive", "negative", "unknown"), "variant": text(2)},
+                 ["c11_case_seed", "declared_losses", "direction", "expect", "family", "file", "note", "polarity",
+                  "variant"])
+    sto = obj({**hp, "generated_at": c00("datetime"), "note": text(10), "oracle_sha256": c00("sha256"),
+               "oracle_version": c00("semver"),
+               "providers": obj({p: c00("semver") for p in ("aws", "google", "azurerm", "oci")},
+                                ["aws", "google", "azurerm", "oci"]),
+               "fixtures": obj({}, extra=sto_fx, minProperties=1, propertyNames={"pattern": r"^FX-STO-[A-Z0-9-]+$"}),
+               "directions": obj({}, extra=sto_dx, minProperties=1, propertyNames={"pattern": r"^DX-[A-Za-z0-9_-]+$"}),
+               "heldout": obj({"ciphertext_sha256": c00("sha256"), "plaintext_sha256": c00("sha256"),
+                               "recipient_fingerprint_sha256": c00("sha256"), "sealed_at": c00("datetime"),
+                               "sealed_file": string(r"^\$BO_DATA/PILOT-STO-ORACLE/sealed/\S+$"),
+                               "counts": obj({}, extra=integer(0))},
+                              ["ciphertext_sha256", "plaintext_sha256", "recipient_fingerprint_sha256", "sealed_at",
+                               "sealed_file", "counts"], description="retidas só cifradas: hashes, nunca respostas")},
+              ["schema", "contract", "contract_version", "module", "generated_at", "note", "oracle_sha256",
+               "oracle_version", "providers", "fixtures", "directions", "heldout"])
+    return {"c11_case_seed": seed, "pilot_net_expected_answers": net, "pilot_sto_expected_answers": sto,
+            "pilot_expected_answers": {"oneOf": [local("pilot_net_expected_answers"), local("pilot_sto_expected_answers")],
+                                       "description": "gabarito de oráculo de piloto (fatia net ou sto)"}}
+
+
 def c24() -> dict:
     defs = {"requirement": _strip(adopted("C24_requirements")), "commitment": _strip(adopted("C24_commitments")),
-            "cq_spec": _strip(adopted("C24_cq_spec"))}
+            "cq_spec": _strip(adopted("C24_cq_spec")), **pilot_defs()}
     return contract_schema(
-        "C24", "requirements", "1.0.0", "requisitos, compromissos e CQs", status="new_v3",
+        "C24", "requirements", "1.1.0", "requisitos, compromissos, CQs e gabaritos dos pilotos", status="amended",
         description="Requisito; compromisso {positive | negative | unknown, fixture, resposta esperada}; CQ em "
                     "vocabulário independente com família (CIS, identidade e ciclo de vida, composição, efeito de "
                     "autorização, caminho de rede, configuração × observação, perda, provedor novo) e fixtures "
@@ -26,19 +97,55 @@ def c24() -> dict:
                     "as regras que o schema não exprime são as de bo.requirements.model, chamadas pelo validador.",
         files=[file_kind("requirements", "requirements.jsonl", "jsonl", "requirement", "record"),
                file_kind("commitments", "commitments.jsonl", "jsonl", "commitment", "record"),
-               file_kind("cq_spec", "cq_spec.jsonl", "jsonl", "cq_spec", "record")],
+               file_kind("cq_spec", "cq_spec.jsonl", "jsonl", "cq_spec", "record"),
+               file_kind("pilot_expected_answers", "expected_answers.json", "json", "pilot_expected_answers",
+                         "document", "gabarito dos oráculos PILOT-NET-ORACLE e PILOT-STO-ORACLE (emenda 1.1.0)")],
         defs=defs, producers=["REQUIREMENTS", "SEMANTICS", "CQ", "CQFIX", "PILOT-{slice}-ORACLE"],
         adopted=["results/REQUIREMENTS/C24_proposta/requirements.schema.json",
                  "results/REQUIREMENTS/C24_proposta/commitments.schema.json",
                  "results/REQUIREMENTS/C24_proposta/cq_spec.schema.json"],
         rules=["C24-MODEL: regras de bo.requirements.model (polaridade × checagem, leitura completa para resposta "
                "definida, UNKNOWN com leitura parcial e o que falta, vocabulário de fixture, ids únicos)",
-               "C24-XREF: requirement_ids e commitment_ids existem nos arquivos irmãos quando presentes"])
+               "C24-XREF: requirement_ids e commitment_ids existem nos arquivos irmãos quando presentes",
+               "C24-PILOT-SEED: case_id único; um campo não está ao mesmo tempo na semente e em pending; semente + "
+               "pending cobrem os obrigatórios do C11",
+               "C24-PILOT-DIR: a direção liga dois provedores distintos e o par do estrato é o da direção",
+               "C24-PILOT-SEAL: retidas só por hash/arquivo cifrado (nenhuma resposta retida em claro)",
+               "C24-PILOT-CMT: commitment_ids citados têm o formato do C24 (e existem, com commitments.jsonl irmão)"])
 
 
 # ------------------------------------------------------------------------------------------------- C25
 FACTS = ("identity", "import_key", "lifecycle_controller", "owner", "effective_scope", "connection_state", "effect",
          "precedence", "tag_support", "ttl_support", "api_bridge", "default")
+
+
+def protocol_support() -> dict:
+    """protocol_support.jsonl do SERVICE-EVIDENCE (bo.protocol_support/1), adotado com as evidências tipadas."""
+    ev = obj({"level": c00("evidence_level"), "ref": text(1), "doc": c00("doc_source"), "citation": c00("web_citation"),
+              "schema": c00("schema_source"), "model_id": c00("model_id"), "note": text(3)}, ["level"],
+             allOf=[{"if": {"properties": {"level": const("interpreted")}}, "then": {"required": ["model_id", "note"]}},
+                    {"if": {"properties": {"level": const("published")}},
+                     "then": {"anyOf": [{"required": ["doc"]}, {"required": ["citation"]}, {"required": ["schema"]}],
+                              "not": {"required": ["model_id"]}}},
+                    {"if": {"properties": {"level": const("derived")}},
+                     "then": {"anyOf": [{"required": ["ref"]}, {"required": ["doc"]}, {"required": ["note"]}],
+                              "not": {"required": ["model_id"]}}}])
+    return obj({
+        "schema": const("bo.protocol_support/1"),
+        "probe_type": enum("item_ttl", "log_retention", "object_lifecycle", "object_versioning", "queue_retention",
+                           "rate_limit"),
+        "provider": enum("aws", "google", "azurerm", "oci"), "pin": obj({"provider_version": c00("semver")},
+                                                                       ["provider_version"]),
+        "terraform_resource_type": c00("resource_type"), "attributes": arr(string(r"^[A-Za-z0-9_]+(\.[A-Za-z0-9_]+)*$")),
+        "status": enum("documented_supported", "documented_unsupported", "unknown"),
+        "requirement": obj({"text": text(3), "max_seconds": nullable(integer(0))}, ["text", "max_seconds"]),
+        "documented": {"type": "object"}, "reason": text(3), "evidence": arr(ev, 1),
+        "validated": const(False, description="suporte só documentado; validar é do PROBEKIT")},
+        ["schema", "probe_type", "provider", "pin", "terraform_resource_type", "attributes", "status", "requirement",
+         "documented", "evidence", "validated"],
+        allOf=[{"if": {"properties": {"status": const("unknown")}}, "then": {"required": ["reason"]}},
+               {"if": {"properties": {"status": const("documented_supported")}},
+                "then": {"properties": {"attributes": {"minItems": 1}}}}])
 
 
 def c25() -> dict:
@@ -74,13 +181,15 @@ def c25() -> dict:
                {"if": {"properties": {"level": {"enum": ["published", "derived"]}}, "required": ["level"]},
                 "then": {"not": {"required": ["model_id"]}}}])
     return contract_schema(
-        "C25", "service_evidence", "1.1.0", "evidência de API e docs ligada ao pin", status="amended",
+        "C25", "service_evidence", "1.2.0", "evidência de API e docs ligada ao pin", status="amended",
         description="Fato de API/docs ligado ao pin: recurso de API, identidade, chave de importação, controlador de "
                     "ciclo de vida, dono, alcance, estado de conexão, efeito, precedência, suporte a tag/TTL; nível "
                     "(publicado | derivado | interpretado) e citação. Citação publicada separada de inferência; "
                     "desconhecido explícito.",
-        files=[file_kind("service_evidence", "service_evidence.jsonl", "jsonl", "service_evidence", "record")],
-        defs={"service_evidence": se}, producers=["SERVICE-EVIDENCE"],
+        files=[file_kind("service_evidence", "service_evidence.jsonl", "jsonl", "service_evidence", "record"),
+               file_kind("protocol_support", "protocol_support.jsonl", "jsonl", "protocol_support", "record",
+                         "suporte documentado de cada tipo de sonda por provedor (emenda 1.2.0; consumido pelo PROBEKIT)")],
+        defs={"service_evidence": se, "protocol_support": protocol_support()}, producers=["SERVICE-EVIDENCE"],
         rules=["C25-LEVEL: publicado cita a sentença (citation, doc ou schema do binário assinado); derivado aponta "
                "de quais fatos; interpretado tem model_id",
                "C25-UNKNOWN: unknown cita a publicação consultada (consulted, citation, doc ou schema); level é opcional",
@@ -88,6 +197,8 @@ def c25() -> dict:
                "C25-API: api_resource.resource aceita o marcador UNKNOWN quando a página não nomeia o recurso",
                "C25-BLOCK: block_path, quando há, é caminho de bloco do tipo e terraform_resource_type está presente",
                "C25-DERIVED: derived_from cita evidence_id do mesmo arquivo",
+               "C25-PS-UNIQ: (probe_type, provider, terraform_resource_type) único em protocol_support.jsonl",
+               "C25-PS-PUB: documented_* tem ao menos uma evidência published; validated é sempre false",
                "C25-UNIQ: evidence_id único"])
 
 

@@ -1243,6 +1243,48 @@ def _c24(kind: str):
 for _k in ("requirements", "commitments", "cq_spec"):
     RULES[("C24", _k)] = _c24(_k)
 
+C11_REQUIRED = ("case_id", "group_id", "claim_id", "claim_version_id", "stratum", "frame_ref", "weight", "origin",
+                "side", "lowering_plan", "values", "comparator", "cost_class")
+P_CMT = re.compile(r"^CMT-[A-Z]{2,8}-[PNU]\d{2}$")
+
+
+@rule("C24", "pilot_expected_answers")
+def r_pilot(objs, ctx, path):
+    d = objs[0]
+    errs = []
+    net = d["schema"].startswith("bo.pilot_net")
+    entries = d["translations"] if net else d["directions"]
+    seeds = [(k, e["c11_case_seed"], e["direction"]) for k, e in entries.items()]
+    errs += dup([s["case_id"] for _, s, _ in seeds], "case_id da semente C11")
+    for k, s, direction in seeds:
+        w = f"{k}"
+        pend = set(s["pending"])
+        both = (pend & set(s)) | ({"stratum.relation"} & pend if "relation" in s["stratum_partial"] else set())
+        if both:
+            errs.append(f"{w}: {sorted(both)} na semente e em pending ao mesmo tempo")
+        have = set(s) | {p.split(".")[0] for p in pend}
+        if "stratum_partial" in s and ("relation" in s["stratum_partial"] or "stratum.relation" in pend):
+            have.add("stratum")
+        falta = [f for f in C11_REQUIRED if f not in have]
+        if falta:
+            errs.append(f"{w}: semente + pending não cobrem {falta} do C11")
+        a, b = direction.split("->")
+        if a == b:
+            errs.append(f"{w}: direção {direction} de um provedor para ele mesmo")
+        pa, pb = _pair_sides(s["stratum_partial"]["pair"])
+        if {a, b} != {pa, pb}:
+            errs.append(f"{w}: par {s['stratum_partial']['pair']} não é o da direção {direction}")
+    cmt = load_sibling(path, "commitments.jsonl")
+    cids = {c["commitment_id"] for c in cmt} if cmt is not None else None
+    if net:
+        for k, f in d["fixtures"].items():
+            for c in f["commitment_ids"]:
+                if not P_CMT.match(c) or (cids is not None and c not in cids):
+                    errs.append(f"{k}: compromisso {c} fora do formato ou inexistente")
+        if not str(d.get("retained_index", "")).startswith(("$BO_REPO/", "$BO_DATA/")):
+            errs.append("retained_index não é caminho portátil (as retidas só por índice selado)")
+    return errs
+
 
 # ---------------------------------------------------------------------------------------------------- C25
 @rule("C25", "service_evidence")
@@ -1259,6 +1301,16 @@ def r_service(objs, ctx, path):
 
 
 # ---------------------------------------------------------------------------------------------------- C26
+@rule("C25", "protocol_support")
+def r_protocol(objs, ctx, path):
+    errs = dup([(p["probe_type"], p["provider"], p["terraform_resource_type"]) for p in objs],
+               "(probe_type, provider, terraform_resource_type)")
+    for i, p in enumerate(objs):
+        if p["status"].startswith("documented_") and not any(e["level"] == "published" for e in p["evidence"]):
+            errs.append(f"protocol_support[{i + 1}]: {p['status']} sem evidência published")
+    return errs
+
+
 @rule("C26", "graph_ir")
 def r_graph(objs, ctx, path):
     errs = dup([g["graph_id"] for g in objs], "graph_id")

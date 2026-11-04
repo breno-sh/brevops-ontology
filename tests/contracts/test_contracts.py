@@ -316,3 +316,20 @@ def test_c25_emenda_aceita_fatos_novos_e_antigos():
     assert {"api_bridge", "default"} <= {x["fact_kind"] for x in recs}
     assert any("schema" in x for x in recs) and any("block_path" in x for x in recs)
     assert any(x["status"] == "unknown" and "level" not in x for x in recs)
+
+
+# ----------------------------------------------------------------------------------- emenda 5
+@pytest.mark.parametrize("fatia", ["net", "sto"])
+def test_gabaritos_dos_oraculos(fatia):
+    p = ROOT / "pilot" / fatia / "expected_answers.json"
+    if not p.is_file():
+        pytest.skip("oráculo ainda não publicado")
+    for alias in ("C24", "requirements", "pilot_expected_answers"):
+        r = validate.validate(alias, p)
+        assert r.kind == "C24:pilot_expected_answers" and r.ok, r.errors[:3]
+
+
+def test_protocol_support_e_origem_pilot(sch):
+    assert validate.validate("C25", ROOT / "contracts/stubs/C25/protocol_support.jsonl").ok
+    assert "pilot" in sch["C11"]["$defs"]["case"]["properties"]["origin"]["enum"]
+    assert sch["C24"]["x-bo-contract"]["version"] == "1.1.0" and sch["C25"]["x-bo-contract"]["version"] == "1.2.0"

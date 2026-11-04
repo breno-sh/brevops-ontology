@@ -1,13 +1,13 @@
 {
  "$schema": "https://json-schema.org/draft/2020-12/schema",
  "$id": "https://w3id.org/brevops/contracts/C24/requirements.schema.json",
- "title": "C24 requirements 1.0.0: requisitos, compromissos e CQs",
+ "title": "C24 requirements 1.1.0: requisitos, compromissos, CQs e gabaritos dos pilotos",
  "description": "Requisito; compromisso {positive | negative | unknown, fixture, resposta esperada}; CQ em vocabulário independente com família (CIS, identidade e ciclo de vida, composição, efeito de autorização, caminho de rede, configuração × observação, perda, provedor novo) e fixtures conforme, não conforme e incompleta. Os três schemas são a proposta do REQUIREMENTS, sem mudança; as regras que o schema não exprime são as de bo.requirements.model, chamadas pelo validador.",
  "x-bo-contract": {
   "id": "C24",
   "name": "requirements",
-  "version": "1.0.0",
-  "status": "new_v3",
+  "version": "1.1.0",
+  "status": "amended",
   "owner": "CONTRACTS",
   "files": [
    {
@@ -30,11 +30,23 @@
     "format": "jsonl",
     "record": "cq_spec",
     "unit": "record"
+   },
+   {
+    "kind": "pilot_expected_answers",
+    "file": "expected_answers.json",
+    "format": "json",
+    "record": "pilot_expected_answers",
+    "unit": "document",
+    "note": "gabarito dos oráculos PILOT-NET-ORACLE e PILOT-STO-ORACLE (emenda 1.1.0)"
    }
   ],
   "semantic_rules": [
    "C24-MODEL: regras de bo.requirements.model (polaridade × checagem, leitura completa para resposta definida, UNKNOWN com leitura parcial e o que falta, vocabulário de fixture, ids únicos)",
-   "C24-XREF: requirement_ids e commitment_ids existem nos arquivos irmãos quando presentes"
+   "C24-XREF: requirement_ids e commitment_ids existem nos arquivos irmãos quando presentes",
+   "C24-PILOT-SEED: case_id único; um campo não está ao mesmo tempo na semente e em pending; semente + pending cobrem os obrigatórios do C11",
+   "C24-PILOT-DIR: a direção liga dois provedores distintos e o par do estrato é o da direção",
+   "C24-PILOT-SEAL: retidas só por hash/arquivo cifrado (nenhuma resposta retida em claro)",
+   "C24-PILOT-CMT: commitment_ids citados têm o formato do C24 (e existem, com commitments.jsonl irmão)"
   ],
   "producers": [
    "CQ",
@@ -2337,6 +2349,813 @@
    ],
    "title": "C24 cq_spec.jsonl (registro)",
    "type": "object"
+  },
+  "c11_case_seed": {
+   "type": "object",
+   "properties": {
+    "case_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^CASE-[A-Za-z0-9_\\-]+$"
+    },
+    "group_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^(GRP|G)-[A-Za-z0-9_\\-]+$"
+    },
+    "stratum_partial": {
+     "type": "object",
+     "properties": {
+      "pair": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/pair"
+      },
+      "domain": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/domain"
+      },
+      "cardinality": {
+       "enum": [
+        "1:1",
+        "1:N",
+        "N:1",
+        "N:M"
+       ]
+      },
+      "direction": {
+       "enum": [
+        "forward",
+        "inverse"
+       ]
+      },
+      "relation": {
+       "enum": [
+        "exact",
+        "close",
+        "broad",
+        "narrow",
+        "related"
+       ]
+      }
+     },
+     "required": [
+      "pair",
+      "domain",
+      "cardinality",
+      "direction"
+     ],
+     "additionalProperties": false
+    },
+    "side": {
+     "enum": [
+      "subject",
+      "object",
+      "both"
+     ]
+    },
+    "comparator": {
+     "type": "object",
+     "properties": {
+      "name": {
+       "enum": [
+        "exact",
+        "numeric_tolerance",
+        "set_equal",
+        "normalized_string",
+        "duration_equal",
+        "cidr_equal"
+       ]
+      },
+      "tolerance": {
+       "type": "number",
+       "minimum": 0
+      }
+     },
+     "required": [
+      "name"
+     ],
+     "additionalProperties": false
+    },
+    "cost_class": {
+     "enum": [
+      "free",
+      "low",
+      "medium",
+      "high"
+     ]
+    },
+    "values": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "var": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^(\\?[a-z][a-z0-9_]*|[a-z][a-z0-9_]*:\\S+)$"
+       },
+       "term": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/term"
+       }
+      },
+      "required": [
+       "var",
+       "term"
+      ],
+      "additionalProperties": false
+     }
+    },
+    "pending": {
+     "type": "object",
+     "properties": {},
+     "additionalProperties": {
+      "type": "string",
+      "minLength": 3
+     },
+     "minProperties": 1,
+     "propertyNames": {
+      "enum": [
+       "claim_id",
+       "claim_version_id",
+       "frame_ref",
+       "lowering_plan",
+       "origin",
+       "stratum.relation",
+       "weight",
+       "values"
+      ]
+     }
+    }
+   },
+   "required": [
+    "case_id",
+    "group_id",
+    "stratum_partial",
+    "side",
+    "comparator",
+    "cost_class",
+    "pending"
+   ],
+   "additionalProperties": false,
+   "description": "semente de caso C11: o que o oráculo sabe, e em pending o motivo de cada campo que só o E2E preenche (o oráculo não lê alegações)"
+  },
+  "pilot_net_expected_answers": {
+   "title": "Gabarito da fatia NET do piloto (PILOT-NET-ORACLE), rotulado C24 1.0.0",
+   "type": "object",
+   "required": [
+    "schema",
+    "contract",
+    "contract_version",
+    "module",
+    "slice",
+    "oracle",
+    "inputs_sha256",
+    "mandatory_cases",
+    "fixtures",
+    "translations",
+    "directions",
+    "counts",
+    "retained_index"
+   ],
+   "properties": {
+    "schema": {
+     "const": "bo.pilot_net.expected_answers/1"
+    },
+    "contract": {
+     "const": "C24"
+    },
+    "contract_version": {
+     "enum": [
+      "1.0.0",
+      "1.1.0"
+     ]
+    },
+    "module": {
+     "const": "PILOT-NET-ORACLE"
+    },
+    "slice": {
+     "const": "net"
+    },
+    "oracle": {
+     "type": "object",
+     "required": [
+      "path",
+      "version",
+      "reading",
+      "api"
+     ]
+    },
+    "inputs_sha256": {
+     "type": "object",
+     "additionalProperties": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+     },
+     "minProperties": 3
+    },
+    "mandatory_cases": {
+     "type": "object",
+     "minProperties": 10,
+     "propertyNames": {
+      "pattern": "^NET-C\\d{2}$"
+     },
+     "additionalProperties": {
+      "type": "object",
+      "required": [
+       "name",
+       "commitments",
+       "requirements",
+       "calib",
+       "retained"
+      ],
+      "properties": {
+       "commitments": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+         "pattern": "^CMT-[A-Z]{2,8}-[PNU]\\d{2}$"
+        }
+       },
+       "calib": {
+        "type": "object",
+        "required": [
+         "positive",
+         "negative",
+         "unknown"
+        ],
+        "additionalProperties": {
+         "type": "array",
+         "minItems": 1
+        }
+       },
+       "retained": {
+        "type": "object",
+        "required": [
+         "positive",
+         "negative",
+         "unknown"
+        ],
+        "additionalProperties": {
+         "type": "integer",
+         "minimum": 1
+        }
+       }
+      }
+     }
+    },
+    "fixtures": {
+     "type": "object",
+     "minProperties": 1,
+     "additionalProperties": {
+      "type": "object",
+      "required": [
+       "provider",
+       "case",
+       "polarity",
+       "commitment_ids",
+       "check",
+       "decisions",
+       "validity",
+       "decomposition"
+      ],
+      "properties": {
+       "provider": {
+        "enum": [
+         "aws",
+         "google",
+         "azurerm",
+         "oci"
+        ]
+       },
+       "polarity": {
+        "enum": [
+         "positive",
+         "negative",
+         "unknown"
+        ]
+       },
+       "check": {
+        "type": "object",
+        "required": [
+         "kind",
+         "assertion"
+        ],
+        "properties": {
+         "kind": {
+          "enum": [
+           "count",
+           "entails",
+           "invariant",
+           "not_entails",
+           "rejects",
+           "unknown"
+          ]
+         }
+        }
+       },
+       "decisions": {
+        "type": "object",
+        "minProperties": 1,
+        "additionalProperties": {
+         "type": "object",
+         "required": [
+          "value",
+          "why"
+         ],
+         "properties": {
+          "value": {
+           "enum": [
+            "ALLOW",
+            "DENY",
+            "UNKNOWN"
+           ]
+          },
+          "code": {
+           "enum": [
+            "MISSING_EVIDENCE",
+            "INCOMPLETE_READ",
+            "UNKNOWN_SYMBOLIC_INPUT"
+           ]
+          }
+         },
+         "if": {
+          "properties": {
+           "value": {
+            "const": "UNKNOWN"
+           }
+          }
+         },
+         "then": {
+          "required": [
+           "code"
+          ]
+         }
+        }
+       },
+       "validity": {
+        "type": "object",
+        "required": [
+         "value"
+        ],
+        "properties": {
+         "value": {
+          "enum": [
+           "VALID",
+           "INVALID",
+           "UNKNOWN"
+          ]
+         }
+        }
+       },
+       "decomposition": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "required": [
+          "domain_unit",
+          "kind",
+          "parent",
+          "occurrence",
+          "tf",
+          "evidence"
+         ],
+         "properties": {
+          "kind": {
+           "enum": [
+            "ENTITY",
+            "COMPONENT",
+            "FACET",
+            "BINDING",
+            "UNKNOWN"
+           ]
+          },
+          "evidence": {
+           "type": "array",
+           "minItems": 1
+          }
+         }
+        }
+       }
+      }
+     }
+    },
+    "translations": {
+     "type": "object",
+     "minProperties": 12,
+     "additionalProperties": {
+      "type": "object",
+      "required": [
+       "direction",
+       "polarity",
+       "source_fixture",
+       "declared_losses",
+       "expected",
+       "per_flow",
+       "c11_case_seed"
+      ],
+      "properties": {
+       "direction": {
+        "pattern": "^(aws|google|azurerm|oci)->(aws|google|azurerm|oci)$"
+       },
+       "expected": {
+        "type": "object",
+        "required": [
+         "verdict",
+         "why"
+        ],
+        "properties": {
+         "verdict": {
+          "enum": [
+           "ACCEPT",
+           "ACCEPT_WITH_DECLARED_LOSS",
+           "UNDETERMINED",
+           "REJECT"
+          ]
+         }
+        }
+       },
+       "c11_case_seed": {
+        "$ref": "#/$defs/c11_case_seed"
+       }
+      }
+     }
+    },
+    "directions": {
+     "type": "object",
+     "minProperties": 12,
+     "maxProperties": 12
+    },
+    "counts": {
+     "type": "object",
+     "required": [
+      "calib",
+      "retained"
+     ]
+    },
+    "retained_index": {
+     "type": "string"
+    }
+   }
+  },
+  "pilot_sto_expected_answers": {
+   "type": "object",
+   "properties": {
+    "schema": {
+     "const": "bo.pilot.sto.expected_answers/1",
+     "description": "como o PILOT-STO-ORACLE publicou"
+    },
+    "contract": {
+     "const": "C24"
+    },
+    "contract_version": {
+     "enum": [
+      "1.0.0",
+      "1.1.0"
+     ]
+    },
+    "module": {
+     "const": "PILOT-STO-ORACLE"
+    },
+    "generated_at": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/datetime"
+    },
+    "note": {
+     "type": "string",
+     "minLength": 10
+    },
+    "oracle_sha256": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/sha256"
+    },
+    "oracle_version": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/semver"
+    },
+    "providers": {
+     "type": "object",
+     "properties": {
+      "aws": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/semver"
+      },
+      "google": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/semver"
+      },
+      "azurerm": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/semver"
+      },
+      "oci": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/semver"
+      }
+     },
+     "required": [
+      "aws",
+      "google",
+      "azurerm",
+      "oci"
+     ],
+     "additionalProperties": false
+    },
+    "fixtures": {
+     "type": "object",
+     "properties": {},
+     "additionalProperties": {
+      "type": "object",
+      "properties": {
+       "case": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^MC-[A-Z0-9-]+$"
+       },
+       "checks": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "kind": {
+           "enum": [
+            "version_state",
+            "public",
+            "claim",
+            "decomposition",
+            "versioning",
+            "timeline",
+            "apply_rejection",
+            "key_unknown"
+           ]
+          },
+          "claim": {
+           "type": "object"
+          },
+          "version": {
+           "type": "string",
+           "minLength": 1
+          },
+          "container": {
+           "type": "string",
+           "minLength": 1
+          },
+          "axis": {
+           "type": "string",
+           "minLength": 1
+          },
+          "unit": {
+           "type": "string",
+           "minLength": 1
+          },
+          "key": {
+           "type": "string",
+           "minLength": 1
+          },
+          "expect": {
+           "description": "resposta do oráculo (estado, booleano, lista ou {verdict, code})"
+          }
+         },
+         "required": [
+          "kind",
+          "expect"
+         ],
+         "additionalProperties": false,
+         "allOf": [
+          {
+           "if": {
+            "properties": {
+             "kind": {
+              "const": "claim"
+             }
+            }
+           },
+           "then": {
+            "required": [
+             "claim"
+            ],
+            "properties": {
+             "expect": {
+              "type": "object",
+              "properties": {
+               "verdict": {
+                "enum": [
+                 "ACCEPT",
+                 "ACCEPT_WITH_DECLARED_LOSS",
+                 "REJECT",
+                 "UNKNOWN"
+                ]
+               },
+               "code": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "^[A-Z][A-Z_]+$"
+               }
+              },
+              "required": [
+               "verdict"
+              ],
+              "additionalProperties": false
+             }
+            }
+           }
+          }
+         ]
+        },
+        "minItems": 1
+       },
+       "file": {
+        "type": "string",
+        "minLength": 3
+       },
+       "invariant_group": {
+        "anyOf": [
+         {
+          "type": "null"
+         },
+         {
+          "type": "string",
+          "minLength": 1
+         }
+        ]
+       },
+       "polarity": {
+        "enum": [
+         "positive",
+         "negative",
+         "unknown"
+        ]
+       },
+       "provider": {
+        "enum": [
+         "aws",
+         "google",
+         "azurerm",
+         "oci"
+        ]
+       },
+       "summary": {
+        "type": "string",
+        "minLength": 5
+       }
+      },
+      "required": [
+       "case",
+       "checks",
+       "file",
+       "invariant_group",
+       "polarity",
+       "provider",
+       "summary"
+      ],
+      "additionalProperties": false
+     },
+     "minProperties": 1,
+     "propertyNames": {
+      "pattern": "^FX-STO-[A-Z0-9-]+$"
+     }
+    },
+    "directions": {
+     "type": "object",
+     "properties": {},
+     "additionalProperties": {
+      "type": "object",
+      "properties": {
+       "c11_case_seed": {
+        "$ref": "#/$defs/c11_case_seed"
+       },
+       "declared_losses": {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "minLength": 1,
+         "pattern": "^[A-Z][A-Z_]+$"
+        }
+       },
+       "direction": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^(aws|google|azurerm|oci)->(aws|google|azurerm|oci)$"
+       },
+       "expect": {
+        "type": "object",
+        "properties": {
+         "verdict": {
+          "enum": [
+           "ACCEPT",
+           "ACCEPT_WITH_DECLARED_LOSS",
+           "REJECT",
+           "UNKNOWN"
+          ]
+         },
+         "code": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[A-Z][A-Z_]+$"
+         }
+        },
+        "required": [
+         "verdict"
+        ]
+       },
+       "family": {
+        "type": "string",
+        "minLength": 2
+       },
+       "file": {
+        "type": "string",
+        "minLength": 3
+       },
+       "note": {
+        "type": "string"
+       },
+       "polarity": {
+        "enum": [
+         "positive",
+         "negative",
+         "unknown"
+        ]
+       },
+       "variant": {
+        "type": "string",
+        "minLength": 2
+       }
+      },
+      "required": [
+       "c11_case_seed",
+       "declared_losses",
+       "direction",
+       "expect",
+       "family",
+       "file",
+       "note",
+       "polarity",
+       "variant"
+      ],
+      "additionalProperties": false
+     },
+     "minProperties": 1,
+     "propertyNames": {
+      "pattern": "^DX-[A-Za-z0-9_-]+$"
+     }
+    },
+    "heldout": {
+     "type": "object",
+     "properties": {
+      "ciphertext_sha256": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/sha256"
+      },
+      "plaintext_sha256": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/sha256"
+      },
+      "recipient_fingerprint_sha256": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/sha256"
+      },
+      "sealed_at": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/datetime"
+      },
+      "sealed_file": {
+       "type": "string",
+       "minLength": 1,
+       "pattern": "^\\$BO_DATA/PILOT-STO-ORACLE/sealed/\\S+$"
+      },
+      "counts": {
+       "type": "object",
+       "properties": {},
+       "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+       }
+      }
+     },
+     "required": [
+      "ciphertext_sha256",
+      "plaintext_sha256",
+      "recipient_fingerprint_sha256",
+      "sealed_at",
+      "sealed_file",
+      "counts"
+     ],
+     "additionalProperties": false,
+     "description": "retidas só cifradas: hashes, nunca respostas"
+    }
+   },
+   "required": [
+    "schema",
+    "contract",
+    "contract_version",
+    "module",
+    "generated_at",
+    "note",
+    "oracle_sha256",
+    "oracle_version",
+    "providers",
+    "fixtures",
+    "directions",
+    "heldout"
+   ],
+   "additionalProperties": false
+  },
+  "pilot_expected_answers": {
+   "oneOf": [
+    {
+     "$ref": "#/$defs/pilot_net_expected_answers"
+    },
+    {
+     "$ref": "#/$defs/pilot_sto_expected_answers"
+    }
+   ],
+   "description": "gabarito de oráculo de piloto (fatia net ou sto)"
   }
  }
 }

@@ -851,8 +851,38 @@ def c23() -> dict:
 # ------------------------------------------------------------------------------------------------- C24–C29
 def c24() -> dict:
     d = adopted("C24_stub_records")
+    seed = lambda cid, pair, dom: {  # noqa: E731
+        "case_id": cid, "group_id": "G-PSTO-T1-AWSAZ", "comparator": {"name": "exact"}, "cost_class": "free",
+        "side": "subject", "stratum_partial": {"cardinality": "1:1", "direction": "forward", "domain": dom, "pair": pair},
+        "values": [{"var": "psto:versioning", "term": {"kind": "literal", "datatype": "string", "value": "ENABLED"}}],
+        "pending": {"claim_id": "o oráculo não lê alegações", "claim_version_id": "idem",
+                    "frame_ref": "piloto não sorteia", "lowering_plan": "plano C26 do E2E",
+                    "stratum.relation": "sai da alegação", "weight": "idem", "origin": "pilot (C11 3.1.0)"}}
+    sto = {"schema": "bo.pilot.sto.expected_answers/1", "contract": "C24", "contract_version": "1.1.0",
+           "module": "PILOT-STO-ORACLE", "generated_at": TS, "note": "gabarito sintético mínimo do stub",
+           "oracle_sha256": H("sto-oracle"), "oracle_version": "1.0.0",
+           "providers": {"aws": "6.71.0", "azurerm": "5.12.0", "google": "8.9.0", "oci": "9.11.0"},
+           "fixtures": {"FX-STO-AWS-VER-P01": {
+               "case": "MC-VER", "file": "pilot/sto/fixtures_calib/aws/FX-STO-AWS-VER-P01.json", "invariant_group": None,
+               "polarity": "positive", "provider": "aws", "summary": "versionamento ligado no recurso separado",
+               "checks": [{"kind": "versioning", "container": "c1", "expect": "ENABLED"},
+                          {"kind": "claim", "claim": {"about": "decomposition", "value": {"kind": "FACET"}},
+                           "expect": {"verdict": "ACCEPT"}}]}},
+           "directions": {"DX-AWS-AZ-T1-acceptable-01": {
+               "c11_case_seed": seed("CASE-PSTO-DX-01", "AWSAZ", "STO"), "declared_losses": [],
+               "direction": "aws->azurerm", "expect": {"verdict": "ACCEPT"}, "family": "T1-VERSIONED",
+               "file": "pilot/sto/fixtures_calib/directions/aws-azurerm-T1.json", "note": "", "polarity": "positive",
+               "variant": "acceptable"},
+               "DX-AWS-AZ-T1-negative-01": {
+               "c11_case_seed": seed("CASE-PSTO-DX-02", "AWSAZ", "STO"), "declared_losses": [],
+               "direction": "aws->azurerm", "expect": {"verdict": "REJECT", "code": "EARLY_DELETION"},
+               "family": "T1-VERSIONED", "file": "pilot/sto/fixtures_calib/directions/aws-azurerm-T1.json", "note": "",
+               "polarity": "negative", "variant": "negative"}},
+           "heldout": {"ciphertext_sha256": H("ct"), "plaintext_sha256": H("pt"), "recipient_fingerprint_sha256": H("rcpt"),
+                       "sealed_at": TS, "sealed_file": "$BO_DATA/PILOT-STO-ORACLE/sealed/heldout.cms.pem",
+                       "counts": {"fixtures": 1, "direction_entries": 2}}}
     return {"C24/requirements.jsonl": jsonl(d["requirements"]), "C24/commitments.jsonl": jsonl(d["commitments"]),
-            "C24/cq_spec.jsonl": jsonl(d["cq_spec"])}
+            "C24/cq_spec.jsonl": jsonl(d["cq_spec"]), "C24/expected_answers.json": dumps(sto)}
 
 
 def c25() -> dict:
@@ -887,7 +917,20 @@ def c25() -> dict:
     e7 = {"evidence_id": "SE-aws-0007", "provider": "aws", "pin": {"provider_version": "6.0.0"},
           "api_resource": {"service": "rds", "resource": "UNKNOWN"}, "fact_kind": "tag_support", "status": "unknown",
           "unknown_reason": "not_documented", "consulted": sch}
-    return {"C25/service_evidence.jsonl": jsonl([e1, e2, e3, e4, e5, e6, e7])}
+    ps = [{"schema": "bo.protocol_support/1", "probe_type": "object_versioning", "provider": "aws",
+           "pin": {"provider_version": "6.0.0"}, "terraform_resource_type": "aws_s3_bucket_versioning",
+           "attributes": ["versioning_configuration.status"], "status": "documented_supported",
+           "requirement": {"text": "atributo que liga o versionamento do contêiner", "max_seconds": None},
+           "documented": {}, "validated": False,
+           "evidence": [{"level": "published", "doc": EV_DOC["doc"]},
+                        {"level": "interpreted", "model_id": "claude-opus-5-5",
+                         "note": "escolha do tipo e dos atributos que realizam a sonda"}]},
+          {"schema": "bo.protocol_support/1", "probe_type": "rate_limit", "provider": "oci",
+           "pin": {"provider_version": "9.11.0"}, "terraform_resource_type": "oci_apigateway_deployment",
+           "attributes": [], "status": "unknown", "reason": "a documentação fixada não diz a janela do limite",
+           "requirement": {"text": "limite de taxa com janela declarada", "max_seconds": 60}, "documented": {},
+           "validated": False, "evidence": [{"level": "derived", "note": "busca nas páginas do tipo sem frase"}]}]
+    return {"C25/service_evidence.jsonl": jsonl([e1, e2, e3, e4, e5, e6, e7]), "C25/protocol_support.jsonl": jsonl(ps)}
 
 
 def c26() -> dict:
@@ -1009,7 +1052,9 @@ KIND_OF = {  # caminho do stub -> "Cnn:tipo"
     "C22/observations.jsonl": "C22:observations", "C22/pair_judgements.jsonl": "C22:pair_judgements",
     "C23/translation_trace.jsonl": "C23:translation_trace", "C24/requirements.jsonl": "C24:requirements",
     "C24/commitments.jsonl": "C24:commitments", "C24/cq_spec.jsonl": "C24:cq_spec",
-    "C25/service_evidence.jsonl": "C25:service_evidence", "C26/graph_ir.jsonl": "C26:graph_ir",
+    "C24/expected_answers.json": "C24:pilot_expected_answers",
+    "C25/service_evidence.jsonl": "C25:service_evidence",
+    "C25/protocol_support.jsonl": "C25:protocol_support", "C26/graph_ir.jsonl": "C26:graph_ir",
     "C26/lowering_plan.jsonl": "C26:lowering_plan", "C27/split.json": "C27:split", "C27/families.jsonl": "C27:families",
     "C28/comparators.yaml": "C28:comparators", "C28/h2h_fairness.yaml": "C28:h2h_fairness",
     "C29/domain_contracts.yaml": "C29:domain_contracts", "C29/fragments/FRG-NET-01.json": "C29:fragment",

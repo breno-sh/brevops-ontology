@@ -1,12 +1,12 @@
 {
  "$schema": "https://json-schema.org/draft/2020-12/schema",
  "$id": "https://w3id.org/brevops/contracts/C25/service_evidence.schema.json",
- "title": "C25 service_evidence 1.1.0: evidência de API e docs ligada ao pin",
+ "title": "C25 service_evidence 1.2.0: evidência de API e docs ligada ao pin",
  "description": "Fato de API/docs ligado ao pin: recurso de API, identidade, chave de importação, controlador de ciclo de vida, dono, alcance, estado de conexão, efeito, precedência, suporte a tag/TTL; nível (publicado | derivado | interpretado) e citação. Citação publicada separada de inferência; desconhecido explícito.",
  "x-bo-contract": {
   "id": "C25",
   "name": "service_evidence",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "status": "amended",
   "owner": "CONTRACTS",
   "files": [
@@ -16,6 +16,14 @@
     "format": "jsonl",
     "record": "service_evidence",
     "unit": "record"
+   },
+   {
+    "kind": "protocol_support",
+    "file": "protocol_support.jsonl",
+    "format": "jsonl",
+    "record": "protocol_support",
+    "unit": "record",
+    "note": "suporte documentado de cada tipo de sonda por provedor (emenda 1.2.0; consumido pelo PROBEKIT)"
    }
   ],
   "semantic_rules": [
@@ -25,6 +33,8 @@
    "C25-API: api_resource.resource aceita o marcador UNKNOWN quando a página não nomeia o recurso",
    "C25-BLOCK: block_path, quando há, é caminho de bloco do tipo e terraform_resource_type está presente",
    "C25-DERIVED: derived_from cita evidence_id do mesmo arquivo",
+   "C25-PS-UNIQ: (probe_type, provider, terraform_resource_type) único em protocol_support.jsonl",
+   "C25-PS-PUB: documented_* tem ao menos uma evidência published; validated é sempre false",
    "C25-UNIQ: evidence_id único"
   ],
   "producers": [
@@ -338,6 +348,263 @@
        "required": [
         "model_id"
        ]
+      }
+     }
+    }
+   ]
+  },
+  "protocol_support": {
+   "type": "object",
+   "properties": {
+    "schema": {
+     "const": "bo.protocol_support/1"
+    },
+    "probe_type": {
+     "enum": [
+      "item_ttl",
+      "log_retention",
+      "object_lifecycle",
+      "object_versioning",
+      "queue_retention",
+      "rate_limit"
+     ]
+    },
+    "provider": {
+     "enum": [
+      "aws",
+      "google",
+      "azurerm",
+      "oci"
+     ]
+    },
+    "pin": {
+     "type": "object",
+     "properties": {
+      "provider_version": {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/semver"
+      }
+     },
+     "required": [
+      "provider_version"
+     ],
+     "additionalProperties": false
+    },
+    "terraform_resource_type": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/resource_type"
+    },
+    "attributes": {
+     "type": "array",
+     "items": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_]+(\\.[A-Za-z0-9_]+)*$"
+     }
+    },
+    "status": {
+     "enum": [
+      "documented_supported",
+      "documented_unsupported",
+      "unknown"
+     ]
+    },
+    "requirement": {
+     "type": "object",
+     "properties": {
+      "text": {
+       "type": "string",
+       "minLength": 3
+      },
+      "max_seconds": {
+       "anyOf": [
+        {
+         "type": "null"
+        },
+        {
+         "type": "integer",
+         "minimum": 0
+        }
+       ]
+      }
+     },
+     "required": [
+      "text",
+      "max_seconds"
+     ],
+     "additionalProperties": false
+    },
+    "documented": {
+     "type": "object"
+    },
+    "reason": {
+     "type": "string",
+     "minLength": 3
+    },
+    "evidence": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "level": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/evidence_level"
+       },
+       "ref": {
+        "type": "string",
+        "minLength": 1
+       },
+       "doc": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/doc_source"
+       },
+       "citation": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/web_citation"
+       },
+       "schema": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/schema_source"
+       },
+       "model_id": {
+        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/model_id"
+       },
+       "note": {
+        "type": "string",
+        "minLength": 3
+       }
+      },
+      "required": [
+       "level"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+       {
+        "if": {
+         "properties": {
+          "level": {
+           "const": "interpreted"
+          }
+         }
+        },
+        "then": {
+         "required": [
+          "model_id",
+          "note"
+         ]
+        }
+       },
+       {
+        "if": {
+         "properties": {
+          "level": {
+           "const": "published"
+          }
+         }
+        },
+        "then": {
+         "anyOf": [
+          {
+           "required": [
+            "doc"
+           ]
+          },
+          {
+           "required": [
+            "citation"
+           ]
+          },
+          {
+           "required": [
+            "schema"
+           ]
+          }
+         ],
+         "not": {
+          "required": [
+           "model_id"
+          ]
+         }
+        }
+       },
+       {
+        "if": {
+         "properties": {
+          "level": {
+           "const": "derived"
+          }
+         }
+        },
+        "then": {
+         "anyOf": [
+          {
+           "required": [
+            "ref"
+           ]
+          },
+          {
+           "required": [
+            "doc"
+           ]
+          },
+          {
+           "required": [
+            "note"
+           ]
+          }
+         ],
+         "not": {
+          "required": [
+           "model_id"
+          ]
+         }
+        }
+       }
+      ]
+     },
+     "minItems": 1
+    },
+    "validated": {
+     "const": false,
+     "description": "suporte só documentado; validar é do PROBEKIT"
+    }
+   },
+   "required": [
+    "schema",
+    "probe_type",
+    "provider",
+    "pin",
+    "terraform_resource_type",
+    "attributes",
+    "status",
+    "requirement",
+    "documented",
+    "evidence",
+    "validated"
+   ],
+   "additionalProperties": false,
+   "allOf": [
+    {
+     "if": {
+      "properties": {
+       "status": {
+        "const": "unknown"
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "reason"
+      ]
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "status": {
+        "const": "documented_supported"
+       }
+      }
+     },
+     "then": {
+      "properties": {
+       "attributes": {
+        "minItems": 1
+       }
       }
      }
     }
