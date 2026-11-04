@@ -31,6 +31,7 @@ AWS = "aws_s3_bucket.SYM-abcdef00000f"
 LIT = {"kind": "literal", "datatype": "string", "value": "eastus"}
 VAR = {"kind": "symbol", "symbol_id": "SYM-0a1b2c3d4e5f", "name_class": "variable", "scope": "repo"}
 NULL = {"kind": "literal", "datatype": "null", "value": None}
+RED = {"kind": "symbol", "symbol_id": "SYM-0a1b2c3d4e6f", "name_class": "unknown", "scope": "repo"}
 WH = {"kind": "withheld", "reason": "secret"}
 
 
@@ -63,6 +64,7 @@ RECS = {
          rec(R1, F1, "main.tf", RG, "azurerm_resource_group", "location", VAR),
          rec(R1, F1, "main.tf", RG, "azurerm_resource_group", "managed_by", NULL),
          rec(R1, F1, "main.tf", RG, "azurerm_resource_group", "depends_on", LIT),
+         rec(R1, F1, "main.tf", NSG, "azurerm_network_security_group", "name", RED),
          rec(R1, F1, "main.tf", NSG, "azurerm_network_security_group", "security_rule[0].access", LIT),
          rec(R1, F1, "main.tf", NSG, "azurerm_network_security_group", "security_rule[1].priority", VAR),
          rec(R1, F1, "main.tf", NSG, "azurerm_network_security_group", 'dynamic["timeouts"][0].content.create',
@@ -133,6 +135,9 @@ def test_build_counts(data):
     assert (loc["n_set"], loc["n_symbolic"]) == (1, 1)
     # null explícito não configura o átomo
     assert (R1, "azurerm_resource_group", "azurerm:azurerm_resource_group:managed_by") not in rows
+    # cadeia constante simbolizada só por privacidade continua literal (regra comum dos 4 CORPUS)
+    nm = rows[(R1, "azurerm_network_security_group", "azurerm:azurerm_network_security_group:name")]
+    assert (nm["n_set"], nm["n_literal"]) == (1, 1)
     # atributo de objeto escrito como bloco: um recurso, a classe mais fraca das ocorrências
     sr = rows[(R1, "azurerm_network_security_group", "azurerm:azurerm_network_security_group:security_rule")]
     assert (sr["n_set"], sr["n_literal"], sr["n_symbolic"]) == (1, 0, 1)

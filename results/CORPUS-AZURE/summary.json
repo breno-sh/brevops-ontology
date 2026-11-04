@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "CORPUS-AZURE",
- "generated_at": "2026-11-04T10:54:19-03:00",
+ "generated_at": "2026-11-04T11:18:13-03:00",
  "sources": [
   {
    "uri": "https://doi.org/10.5281/zenodo.20339474",
@@ -50,8 +50,8 @@
    "records_read_in_ranges": 3847980,
    "resource_records": 2452973,
    "term_class_records": {
-    "literal": 716562,
-    "symbolic": 1685565,
+    "literal": 921831,
+    "symbolic": 1480296,
     "withheld": 50846
    },
    "unattributed_by_cause": {
@@ -71,7 +71,7 @@
   "rules": {
    "atom_resolution": "sem [n]; dynamic[\"b\"][n].content. -> b.; caminho exato ou maior prefixo que é átomo de atributo (ex.: security_rule { access = ... } -> security_rule)",
    "atom_row": "linha com atom_id só quando n_set > 0; n_resources = recursos do tipo no repositório",
-   "class": "withheld se contém termo retido; literal se literal ou documento sem símbolo nem termo embutido; senão symbolic; várias ocorrências: withheld > symbolic > literal",
+   "class": "regra comum dos 4 CORPUS (bo.corpus_oci.counting.term_class): withheld se contém termo retido; symbolic se depende de variável, recurso, data source, local, saída de módulo, count/each, workspace ou função de arquivo, relógio, acaso ou de provedor; senão literal (cadeia simbolizada só por privacidade continua literal); várias ocorrências: withheld > symbolic > literal",
    "explicit_null": "literal null resolve o átomo mas não o configura (Terraform: igual a omitir)",
    "library": "bo.corpus_oci.counting (a mesma dos CORPUS em bo/base), provedor azurerm",
    "module": "(repo_id, dirname(file)) com o caminho já simbolizado pelo HCL",
@@ -79,8 +79,8 @@
    "type_row": "linha sem atom_id por (repo, tipo): n_resources = recursos do tipo; n_set = recursos com >= 1 átomo configurado"
   },
   "settings_by_class": {
-   "literal": 501827,
-   "symbolic": 1372900,
+   "literal": 661637,
+   "symbolic": 1213090,
    "total": 1916215,
    "withheld": 41488
   },
@@ -548,13 +548,13 @@
    }
   ],
   "outputs_sha256": {
-   "usage.jsonl": "c5c5b863f9ab69dc20f97981edbf66478e7ce0748abd2793296c18aa083a4e93",
-   "atom_totals.jsonl": "d96a48a876decc4abb4094297488e771e62df4e0fbc270a4a125e40680ec2e21",
+   "usage.jsonl": "6a397a77b5f04d3bc80cce1c2f263892f4f5efc567d58cd3477cf7463a14bcd9",
+   "atom_totals.jsonl": "c6648c5f1844754faf46f5e24f28a958abd99ee19b93ccbf00449f692b52d861",
    "type_totals.jsonl": "8d3627775f3add3717bfb7ed6c6bb37eba618bcf85c9360aa71f5b7657468945",
-   "build_report.json": "42b016ed3b895117610457ba348a6bdcf0512a981285bd045fb928cc59fcd14d"
+   "build_report.json": "c09f2a5898ddaf6f1287b8c2ee939d1a9df09427fa7d0a7803015578355d6dd9"
   }
  },
- "notes": "azurerm no TerraDS: 13990 repositórios, 12127 famílias, 58121 módulos, 308481 recursos (38521 blocos data fora). 1169247 linhas usage (145550 por tipo, 1023697 por átomo), contadas pela biblioteca única bo.corpus_oci.counting. Átomos configuráveis usados: 14209/21736 (65.4%); 2378 átomos cobrem 90% das configurações. Registros de recurso atribuídos a átomo do schema 5.12.0: 2102546/2452973 (85.7%); fora: 88440 atributo fora do schema, 99637 de 157 tipos ausentes do schema 5.12.0, 111085 meta-argumento, 48642 meta de dynamic, 975 null explícito. Classe por recurso x átomo: literal 501827, simbólico 1372900, retido 41488. Sem split (é do SPLIT).",
+ "notes": "azurerm no TerraDS: 13990 repositórios, 12127 famílias, 58121 módulos, 308481 recursos (38521 blocos data fora). 1169247 linhas usage (145550 por tipo, 1023697 por átomo), contadas pela biblioteca única bo.corpus_oci.counting. Átomos configuráveis usados: 14209/21736 (65.4%); 2378 átomos cobrem 90% das configurações. Registros de recurso atribuídos a átomo do schema 5.12.0: 2102546/2452973 (85.7%); fora: 88440 atributo fora do schema, 99637 de 157 tipos ausentes do schema 5.12.0, 111085 meta-argumento, 48642 meta de dynamic, 975 null explícito. Classe por recurso x átomo: literal 661637, simbólico 1213090, retido 41488. Sem split (é do SPLIT).",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/CORPUS-AZURE.txt",
@@ -563,7 +563,7 @@
    "provider": "azurerm",
    "provider_version_atoms": "5.12.0",
    "hcl_commit_bo_base": "b5c256e",
-   "counting_library": "bo.corpus_oci.counting @ 4536d0e (biblioteca única dos CORPUS em bo/base)",
+   "counting_library": "bo.corpus_oci.counting @ 0497398 (biblioteca única e regra de classe comum dos 4 CORPUS)",
    "generator": "python -I -m bo.corpus_azure.build",
    "regen_sample_mod": "50",
    "cloud": "none"
@@ -590,6 +590,6 @@
     "sha256": "3e7a8160b3272bc0652427989d72860cb84cc198dfde1a9ae14405babfbbb915"
    }
   ],
-  "recorded_at": "2026-11-04T10:54:19-03:00"
+  "recorded_at": "2026-11-04T11:18:13-03:00"
  }
 }

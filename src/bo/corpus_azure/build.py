@@ -176,8 +176,11 @@ def summarize(tally: counting.Tally, read: dict, usage: list, atom_tot: list, ty
             "atom_resolution": "sem [n]; dynamic[\"b\"][n].content. -> b.; caminho exato ou maior prefixo que é "
                                "átomo de atributo (ex.: security_rule { access = ... } -> security_rule)",
             "explicit_null": "literal null resolve o átomo mas não o configura (Terraform: igual a omitir)",
-            "class": "withheld se contém termo retido; literal se literal ou documento sem símbolo nem termo "
-                     "embutido; senão symbolic; várias ocorrências: withheld > symbolic > literal",
+            "class": "regra comum dos 4 CORPUS (bo.corpus_oci.counting.term_class): withheld se contém termo "
+                     "retido; symbolic se depende de variável, recurso, data source, local, saída de módulo, "
+                     "count/each, workspace ou função de arquivo, relógio, acaso ou de provedor; senão literal "
+                     "(cadeia simbolizada só por privacidade continua literal); várias ocorrências: "
+                     "withheld > symbolic > literal",
             "type_row": "linha sem atom_id por (repo, tipo): n_resources = recursos do tipo; n_set = recursos "
                         "com >= 1 átomo configurado",
             "atom_row": "linha com atom_id só quando n_set > 0; n_resources = recursos do tipo no repositório",
