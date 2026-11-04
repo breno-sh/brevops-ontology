@@ -84,6 +84,11 @@ FINDINGS = [
     "narrower acrescentado); os exemplos de results/BRIEFS/examples/decisions.jsonl passam no schema, mas reprovam "
     "na regra C20-DEC-REF proposta pelo próprio BRIEFS: o glossary.jsonl irmão não tem os conceitos citados. A "
     "ausência tipada do MAPPER_BRIEF (curation_rule bo:NONE_<tipo>) continua aceita; o mapper_examples.sssom.tsv passa.",
+    "Emenda 4: C20 3.2.0 ancora em átomo, bloco ou tipo (anchor_kind) com implication fora do átomo; C25 1.1.0 "
+    "(block_path, schema do binário, consulted em unknown, api_bridge, default): o service_evidence.jsonl do "
+    "SERVICE-EVIDENCE (112.135 fatos) continua passando. protocol_support.jsonl (item 5 do SERVICE-EVIDENCE) e o "
+    "CC-1/CC-NET-1/CC-NET-3 do PILOT-NET-GLOSS (adaptador de grão, atributos de coleção, referências) não são do C20/C25 "
+    "e ficaram de fora.",
     "SCHEMALIB: nested_type (protocolo 6) como UM átomo com tf_type cty cabe no C01 sem mudança (tf_type aceita "
     "lista; stub C01 tem um); o write_only entra como campo opcional (átomos já gravados continuam válidos).",
 ]

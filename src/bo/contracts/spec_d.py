@@ -38,7 +38,7 @@ def c24() -> dict:
 
 # ------------------------------------------------------------------------------------------------- C25
 FACTS = ("identity", "import_key", "lifecycle_controller", "owner", "effective_scope", "connection_state", "effect",
-         "precedence", "tag_support", "ttl_support")
+         "precedence", "tag_support", "ttl_support", "api_bridge", "default")
 
 
 def c25() -> dict:
@@ -46,31 +46,47 @@ def c25() -> dict:
         "evidence_id": string(r"^SE-[A-Za-z0-9_\-]+$"), "provider": c00("provider"),
         "pin": obj({"provider_version": c00("semver"), "api_version": text(1)}, ["provider_version"]),
         "api_resource": obj({"service": text(1), "resource": text(1)}, ["service", "resource"]),
-        "terraform_resource_type": c00("resource_type"), "fact_kind": enum(*FACTS),
+        "terraform_resource_type": c00("resource_type"),
+        "block_path": string(r"^[A-Za-z0-9_]+(\.[A-Za-z0-9_]+)*$", description="bloco do tipo a que o fato se refere "
+                                                                              "(emenda 1.1.0)"),
+        "as_of": c00("date"), "schema": c00("schema_source"),
+        "consulted": {"anyOf": [c00("doc_source"), c00("web_citation"), c00("schema_source")],
+                      "description": "publicação consultada para um fato unknown (a busca pode ser refeita)"},
+        "fact_kind": enum(*FACTS),
         "status": enum("stated", "unknown"), "value": {},
         "unknown_reason": enum("not_documented", "ambiguous", "contradictory", "out_of_pin"),
         "level": c00("evidence_level"), "model_id": c00("model_id"), "citation": c00("web_citation"),
         "doc": c00("doc_source"), "derived_from": arr(string(r"^SE-[A-Za-z0-9_\-]+$"), 1)},
-        ["evidence_id", "provider", "pin", "api_resource", "fact_kind", "status", "level"],
-        allOf=[{"if": {"properties": {"status": const("stated")}}, "then": {"required": ["value"]}},
+        ["evidence_id", "provider", "pin", "api_resource", "fact_kind", "status"],
+        allOf=[{"if": {"properties": {"status": const("stated")}}, "then": {"required": ["value", "level"]}},
                {"if": {"properties": {"status": const("unknown")}},
-                "then": {"required": ["unknown_reason"], "not": {"required": ["value"]}}},
-               {"if": {"properties": {"level": const("published")}},
+                "then": {"required": ["unknown_reason"], "not": {"required": ["value"]},
+                         "anyOf": [{"required": [k]} for k in ("consulted", "citation", "doc", "schema")]}},
+               {"if": {"properties": {"fact_kind": const("default"), "status": const("stated")}},
+                "then": {"required": ["as_of"]}},
+               {"if": {"properties": {"level": const("published"), "status": const("stated")}, "required": ["level"]},
                 "then": {"anyOf": [{"required": ["citation"], "properties": {"citation": {"required": ["sentence"]}}},
-                                   {"required": ["doc"]}]}},
-               {"if": {"properties": {"level": const("derived")}}, "then": {"required": ["derived_from"]}},
-               {"if": {"properties": {"level": const("interpreted")}}, "then": {"required": ["model_id"]}},
-               {"if": {"properties": {"level": {"enum": ["published", "derived"]}}},
+                                   {"required": ["doc"]}, {"required": ["schema"]}]}},
+               {"if": {"properties": {"level": const("derived")}, "required": ["level"]},
+                "then": {"required": ["derived_from"]}},
+               {"if": {"properties": {"level": const("interpreted")}, "required": ["level"]},
+                "then": {"required": ["model_id"]}},
+               {"if": {"properties": {"level": {"enum": ["published", "derived"]}}, "required": ["level"]},
                 "then": {"not": {"required": ["model_id"]}}}])
     return contract_schema(
-        "C25", "service_evidence", "1.0.0", "evidência de API e docs ligada ao pin", status="new_v3",
+        "C25", "service_evidence", "1.1.0", "evidência de API e docs ligada ao pin", status="amended",
         description="Fato de API/docs ligado ao pin: recurso de API, identidade, chave de importação, controlador de "
                     "ciclo de vida, dono, alcance, estado de conexão, efeito, precedência, suporte a tag/TTL; nível "
                     "(publicado | derivado | interpretado) e citação. Citação publicada separada de inferência; "
                     "desconhecido explícito.",
         files=[file_kind("service_evidence", "service_evidence.jsonl", "jsonl", "service_evidence", "record")],
         defs={"service_evidence": se}, producers=["SERVICE-EVIDENCE"],
-        rules=["C25-LEVEL: publicado cita a sentença; derivado aponta de quais fatos; interpretado tem model_id",
+        rules=["C25-LEVEL: publicado cita a sentença (citation, doc ou schema do binário assinado); derivado aponta "
+               "de quais fatos; interpretado tem model_id",
+               "C25-UNKNOWN: unknown cita a publicação consultada (consulted, citation, doc ou schema); level é opcional",
+               "C25-DEFAULT: default afirmado tem as_of (como o C03-DEFAULT); api_bridge liga api_resource ao tipo",
+               "C25-API: api_resource.resource aceita o marcador UNKNOWN quando a página não nomeia o recurso",
+               "C25-BLOCK: block_path, quando há, é caminho de bloco do tipo e terraform_resource_type está presente",
                "C25-DERIVED: derived_from cita evidence_id do mesmo arquivo",
                "C25-UNIQ: evidence_id único"])
 

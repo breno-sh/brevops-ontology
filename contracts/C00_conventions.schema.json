@@ -1,12 +1,12 @@
 {
  "$schema": "https://json-schema.org/draft/2020-12/schema",
  "$id": "https://w3id.org/brevops/contracts/C00/conventions.schema.json",
- "title": "C00 conventions 3.0.2: convenções e definições comuns",
+ "title": "C00 conventions 3.0.3: convenções e definições comuns",
  "description": "ID = stable_id; onda calculada do DAG; código em $BO_REPO/src/bo/<pacote>/; dados em $BO_DATA/<ID>/; temporário em $BO_TMP=$BO_DATA/tmp/<ID> (nunca /tmp); caminhos só com índices declarados em index_sets; datas ISO-8601 com fuso America/Recife. $defs comuns a todos os contratos.",
  "x-bo-contract": {
   "id": "C00",
   "name": "conventions",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "status": "amended",
   "owner": "CONTRACTS",
   "files": [
@@ -462,6 +462,47 @@
     "retrieved_at"
    ],
    "additionalProperties": false
+  },
+  "schema_source": {
+   "type": "object",
+   "properties": {
+    "provider_source": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^registry\\.terraform\\.io/[a-z0-9-]+/[a-z0-9-]+$"
+    },
+    "schema_sha256": {
+     "$ref": "#/$defs/sha256"
+    },
+    "op": {
+     "enum": [
+      "node",
+      "keys"
+     ]
+    },
+    "pointer": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^(/[^/]*)+$"
+    },
+    "sentence": {
+     "type": "string",
+     "minLength": 2
+    },
+    "retrieved_at": {
+     "$ref": "#/$defs/datetime"
+    }
+   },
+   "required": [
+    "provider_source",
+    "schema_sha256",
+    "op",
+    "pointer",
+    "sentence",
+    "retrieved_at"
+   ],
+   "additionalProperties": false,
+   "description": "fonte publicada = saída de 'terraform providers schema -json' do binário assinado do pin; sentence = JSON canônico do nó (node) ou das chaves (keys) (emenda C00 3.0.3)"
   },
   "source_license": {
    "type": "object",

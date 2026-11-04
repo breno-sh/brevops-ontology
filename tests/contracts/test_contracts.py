@@ -275,7 +275,7 @@ def test_c03_tipo_por_arquivo(alias, path, kind):
 
 def test_emenda2_versoes():
     pub = catalog.schemas()
-    for cid, v in {"C00": "3.0.2", "C03": "3.1.0", "C12": "3.1.0", "C15": "3.1.0", "C19": "3.1.0", "C26": "1.1.0"}.items():
+    for cid, v in {"C03": "3.1.0", "C12": "3.1.0", "C15": "3.1.0", "C19": "3.1.0", "C26": "1.1.0"}.items():
         assert pub[cid]["x-bo-contract"]["version"] == v
         assert "3.0.0" in amendments.chain(cid) or "1.0.0" in amendments.chain(cid)
 
@@ -298,3 +298,21 @@ def test_decisoes_do_glossario_formato_do_brief():
                                             registry=reg)
         for line in ex.read_text(encoding="utf-8").splitlines():
             assert v.is_valid(json.loads(line))
+
+
+# ----------------------------------------------------------------------------------- emenda 4
+def test_ancora_em_bloco_e_tipo():
+    recs = [json.loads(l) for l in (ROOT / "contracts/stubs/C20/claims.jsonl").read_text().splitlines()]
+    kinds = {r.get("anchor_kind", "atom") for r in recs}
+    assert kinds == {"atom", "block", "type"}
+    assert all("implication" in r for r in recs if r.get("anchor_kind") in ("block", "type"))
+    assert validate.validate("claims", ROOT / "contracts/stubs/C20/claims.jsonl").ok
+
+
+def test_c25_emenda_aceita_fatos_novos_e_antigos():
+    r = validate.validate("service_evidence", ROOT / "contracts/stubs/C25/service_evidence.jsonl")
+    assert r.ok, r.errors[:3]
+    recs = [json.loads(l) for l in (ROOT / "contracts/stubs/C25/service_evidence.jsonl").read_text().splitlines()]
+    assert {"api_bridge", "default"} <= {x["fact_kind"] for x in recs}
+    assert any("schema" in x for x in recs) and any("block_path" in x for x in recs)
+    assert any(x["status"] == "unknown" and "level" not in x for x in recs)

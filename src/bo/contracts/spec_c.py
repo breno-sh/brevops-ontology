@@ -263,15 +263,36 @@ def c20() -> dict:
     claim = obj({
         "claim_id": c00("claim_id"), "claim_version_id": c00("claim_version_id"), "event_id": c00("event_id"),
         "supersedes": c00("claim_version_id"), "concept_id": c00("concept_id"), "atom_id": c00("atom_id"),
+        "anchor_kind": enum("atom", "block", "type", description="onde a âncora mora: átomo (padrão quando ausente), "
+                                                                 "bloco ou tipo (emenda 3.2.0)"),
+        "block_id": string(r"^[a-z][a-z0-9_]*:[a-z][a-z0-9_]*:[A-Za-z0-9_]+(\.[A-Za-z0-9_]+)*$",
+                           description="provider:resource_type:caminho.do.bloco"),
+        "type_id": string(r"^[a-z][a-z0-9_]*:[a-z][a-z0-9_]*$"),
+        "implication": obj({"realization": enum("block_choice", "type_choice"), "value": {}, "rule": text(10),
+                            "alternatives": arr(obj({"ref": text(3), "value": {}}, ["ref", "value"]))},
+                           ["realization", "value", "rule"],
+                           description="que valor do conceito o bloco/tipo implica (ex.: deny{} -> effect = deny)"),
         "sentence": text(10), "context": text(5),
         "counterexample_search": obj({"query": text(3), "found": boolean(), "result": text(3)},
                                      ["query", "found", "result"]),
         "extraction_method": enum("parser", "regex", "table", "manual", "model"),
         "evidence_level": c00("evidence_level"), "model_id": c00("model_id"), "source": c00("doc_source"),
         "evidence_state": c00("evidence_state"), "recorded_at": c00("datetime")},
-        ["claim_id", "claim_version_id", "event_id", "concept_id", "atom_id", "sentence", "context",
+        ["claim_id", "claim_version_id", "event_id", "concept_id", "sentence", "context",
          "counterexample_search", "extraction_method", "evidence_level", "evidence_state", "recorded_at"],
-        allOf=[{"if": {"properties": {"evidence_level": const("interpreted")}}, "then": {"required": ["model_id"]}},
+        allOf=[{"if": {"anyOf": [{"not": {"required": ["anchor_kind"]}},
+                                 {"properties": {"anchor_kind": const("atom")}}]},
+                "then": {"required": ["atom_id"],
+                         "not": {"anyOf": [{"required": [k]} for k in ("block_id", "type_id", "implication")]}}},
+               {"if": {"properties": {"anchor_kind": const("block")}, "required": ["anchor_kind"]},
+                "then": {"required": ["block_id", "implication"], "properties": {
+                    "implication": {"properties": {"realization": const("block_choice")}}},
+                         "not": {"anyOf": [{"required": ["atom_id"]}, {"required": ["type_id"]}]}}},
+               {"if": {"properties": {"anchor_kind": const("type")}, "required": ["anchor_kind"]},
+                "then": {"required": ["type_id", "implication"], "properties": {
+                    "implication": {"properties": {"realization": const("type_choice")}}},
+                         "not": {"anyOf": [{"required": ["atom_id"]}, {"required": ["block_id"]}]}}},
+               {"if": {"properties": {"evidence_level": const("interpreted")}}, "then": {"required": ["model_id"]}},
                {"if": {"properties": {"extraction_method": const("model")}},
                 "then": {"properties": {"evidence_level": const("interpreted")}}},
                {"if": {"properties": {"evidence_state": {"enum": ["DOC_SUPPORTED"]}}}, "then": {"required": ["source"]}}],
@@ -304,7 +325,7 @@ def c20() -> dict:
         description="decisão do glossarista; broader: concept_id é o mais estreito (concept_id skos:broader "
                     "related_concept); narrower: o inverso (emenda 3.1.0, formato provisório do GLOSSARY_BRIEF)")
     return contract_schema(
-        "C20", "glossary", "3.1.0", "glossário, âncoras como alegações, auditoria e decisões", status="amended",
+        "C20", "glossary", "3.2.0", "glossário, âncoras como alegações, auditoria e decisões", status="amended",
         description="Conceito com grandeza (IRI | NOT_APPLICABLE | UNKNOWN); âncora como alegação com sentença, contexto, "
                     "contraexemplo procurado, método de extração e evidence_state (STRUCTURALLY_VALID | DOC_SUPPORTED | "
                     "PERSISTENCE_VERIFIED | OBSERVATION_TESTED | UNRESOLVED).",
@@ -322,7 +343,10 @@ def c20() -> dict:
                "C20-UNIQ: concept_id único; decision_id único",
                "C20-DEC-DIR: broader = concept_id ⊂ related_concept (direção de skos:broader); narrower = o inverso",
                "C20-DEC-REF: concept_id e related_concept existem no glossary.jsonl irmão (quando há); nunca o mesmo",
-               "C20-DEC-ACYCLIC: a hierarquia (broader e narrower invertido) não tem ciclo"])
+               "C20-DEC-ACYCLIC: a hierarquia (broader e narrower invertido) não tem ciclo",
+               "C20-ANCHOR: anchor_kind atom (ou ausente) ancora em atom_id; block em block_id e type em type_id, "
+               "sempre com implication (que valor do conceito o bloco/tipo implica); as alternativas citadas são de "
+               "outro bloco/tipo, com valores distintos"])
 
 
 # ------------------------------------------------------------------------------------------------- C21

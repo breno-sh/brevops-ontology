@@ -1,13 +1,13 @@
 {
  "$schema": "https://json-schema.org/draft/2020-12/schema",
  "$id": "https://w3id.org/brevops/contracts/C25/service_evidence.schema.json",
- "title": "C25 service_evidence 1.0.0: evidência de API e docs ligada ao pin",
+ "title": "C25 service_evidence 1.1.0: evidência de API e docs ligada ao pin",
  "description": "Fato de API/docs ligado ao pin: recurso de API, identidade, chave de importação, controlador de ciclo de vida, dono, alcance, estado de conexão, efeito, precedência, suporte a tag/TTL; nível (publicado | derivado | interpretado) e citação. Citação publicada separada de inferência; desconhecido explícito.",
  "x-bo-contract": {
   "id": "C25",
   "name": "service_evidence",
-  "version": "1.0.0",
-  "status": "new_v3",
+  "version": "1.1.0",
+  "status": "amended",
   "owner": "CONTRACTS",
   "files": [
    {
@@ -19,7 +19,11 @@
    }
   ],
   "semantic_rules": [
-   "C25-LEVEL: publicado cita a sentença; derivado aponta de quais fatos; interpretado tem model_id",
+   "C25-LEVEL: publicado cita a sentença (citation, doc ou schema do binário assinado); derivado aponta de quais fatos; interpretado tem model_id",
+   "C25-UNKNOWN: unknown cita a publicação consultada (consulted, citation, doc ou schema); level é opcional",
+   "C25-DEFAULT: default afirmado tem as_of (como o C03-DEFAULT); api_bridge liga api_resource ao tipo",
+   "C25-API: api_resource.resource aceita o marcador UNKNOWN quando a página não nomeia o recurso",
+   "C25-BLOCK: block_path, quando há, é caminho de bloco do tipo e terraform_resource_type está presente",
    "C25-DERIVED: derived_from cita evidence_id do mesmo arquivo",
    "C25-UNIQ: evidence_id único"
   ],
@@ -78,6 +82,32 @@
     "terraform_resource_type": {
      "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/resource_type"
     },
+    "block_path": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^[A-Za-z0-9_]+(\\.[A-Za-z0-9_]+)*$",
+     "description": "bloco do tipo a que o fato se refere (emenda 1.1.0)"
+    },
+    "as_of": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/date"
+    },
+    "schema": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/schema_source"
+    },
+    "consulted": {
+     "anyOf": [
+      {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/doc_source"
+      },
+      {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/web_citation"
+      },
+      {
+       "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/schema_source"
+      }
+     ],
+     "description": "publicação consultada para um fato unknown (a busca pode ser refeita)"
+    },
     "fact_kind": {
      "enum": [
       "identity",
@@ -89,7 +119,9 @@
       "effect",
       "precedence",
       "tag_support",
-      "ttl_support"
+      "ttl_support",
+      "api_bridge",
+      "default"
      ]
     },
     "status": {
@@ -135,8 +167,7 @@
     "pin",
     "api_resource",
     "fact_kind",
-    "status",
-    "level"
+    "status"
    ],
    "additionalProperties": false,
    "allOf": [
@@ -150,7 +181,8 @@
      },
      "then": {
       "required": [
-       "value"
+       "value",
+       "level"
       ]
      }
     },
@@ -170,7 +202,46 @@
        "required": [
         "value"
        ]
+      },
+      "anyOf": [
+       {
+        "required": [
+         "consulted"
+        ]
+       },
+       {
+        "required": [
+         "citation"
+        ]
+       },
+       {
+        "required": [
+         "doc"
+        ]
+       },
+       {
+        "required": [
+         "schema"
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "fact_kind": {
+        "const": "default"
+       },
+       "status": {
+        "const": "stated"
+       }
       }
+     },
+     "then": {
+      "required": [
+       "as_of"
+      ]
      }
     },
     {
@@ -178,8 +249,14 @@
       "properties": {
        "level": {
         "const": "published"
+       },
+       "status": {
+        "const": "stated"
        }
-      }
+      },
+      "required": [
+       "level"
+      ]
      },
      "then": {
       "anyOf": [
@@ -199,6 +276,11 @@
         "required": [
          "doc"
         ]
+       },
+       {
+        "required": [
+         "schema"
+        ]
        }
       ]
      }
@@ -209,7 +291,10 @@
        "level": {
         "const": "derived"
        }
-      }
+      },
+      "required": [
+       "level"
+      ]
      },
      "then": {
       "required": [
@@ -223,7 +308,10 @@
        "level": {
         "const": "interpreted"
        }
-      }
+      },
+      "required": [
+       "level"
+      ]
      },
      "then": {
       "required": [
@@ -240,7 +328,10 @@
          "derived"
         ]
        }
-      }
+      },
+      "required": [
+       "level"
+      ]
      },
      "then": {
       "not": {

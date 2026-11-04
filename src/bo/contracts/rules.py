@@ -1098,7 +1098,20 @@ def r_glossary(objs, ctx, path):
 
 @rule("C20", "claims")
 def r_claims(objs, ctx, path):
-    return claim_lineage(objs, W("claims"))
+    errs = claim_lineage(objs, W("claims"))
+    for i, c in enumerate(objs):
+        w = f"claims[{i + 1}]"
+        k = c.get("anchor_kind", "atom")
+        ref = c.get("block_id") if k == "block" else c.get("type_id") if k == "type" else None
+        imp = c.get("implication") or {}
+        for alt in imp.get("alternatives") or []:
+            if alt["ref"] == ref:
+                errs.append(f"{w}: alternativa é o próprio {k} da âncora")
+            if alt["value"] == imp.get("value"):
+                errs.append(f"{w}: alternativa {alt['ref']} implica o mesmo valor (a escolha não decide nada)")
+        if k == "block" and ref and c.get("type_id"):
+            errs.append(f"{w}: âncora em bloco com type_id")
+    return errs
 
 
 @rule("C20", "decisions")
@@ -1237,6 +1250,8 @@ def r_service(objs, ctx, path):
     ids = [e["evidence_id"] for e in objs]
     errs = dup(ids, "evidence_id")
     for i, e in enumerate(objs):
+        if e.get("block_path") and not e.get("terraform_resource_type"):
+            errs.append(f"service_evidence[{i + 1}]: block_path sem terraform_resource_type")
         for d in e.get("derived_from") or []:
             if d not in ids or d == e["evidence_id"]:
                 errs.append(f"service_evidence[{i + 1}]: derived_from {d} não é outro fato do arquivo")

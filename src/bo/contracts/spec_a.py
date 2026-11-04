@@ -139,6 +139,14 @@ def c00_defs() -> dict:
                           ["repo", "tag", "file", "line", "sentence"]),
         "web_citation": obj({"uri": string(r"^https://\S+$"), "retrieved_at": local("datetime"),
                              "section": text(1), "sentence": text(5)}, ["uri", "retrieved_at"]),
+        "schema_source": obj({"provider_source": string(r"^registry\.terraform\.io/[a-z0-9-]+/[a-z0-9-]+$"),
+                              "schema_sha256": local("sha256"), "op": enum("node", "keys"),
+                              "pointer": string(r"^(/[^/]*)+$"), "sentence": text(2),
+                              "retrieved_at": local("datetime")},
+                             ["provider_source", "schema_sha256", "op", "pointer", "sentence", "retrieved_at"],
+                             description="fonte publicada = saída de 'terraform providers schema -json' do binário "
+                                         "assinado do pin; sentence = JSON canônico do nó (node) ou das chaves (keys) "
+                                         "(emenda C00 3.0.3)"),
         "source_license": obj({"uri": text(1), "license": text(2), "transformation": text(3)},
                               ["uri", "license", "transformation"]),
         "evidence_item": {
@@ -202,7 +210,7 @@ def c00_spec() -> dict:
         "modules": arr(local("module"), 1)},
         ["timezone", "env", "index_sets", "contracts", "modules"], extra=True)
     return contract_schema(
-        "C00", "conventions", "3.0.2", "convenções e definições comuns", status="amended",
+        "C00", "conventions", "3.0.3", "convenções e definições comuns", status="amended",
         description="ID = stable_id; onda calculada do DAG; código em $BO_REPO/src/bo/<pacote>/; dados em "
                     "$BO_DATA/<ID>/; temporário em $BO_TMP=$BO_DATA/tmp/<ID> (nunca /tmp); caminhos só com índices "
                     "declarados em index_sets; datas ISO-8601 com fuso America/Recife. $defs comuns a todos os contratos.",

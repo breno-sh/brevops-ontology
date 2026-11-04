@@ -757,6 +757,22 @@ def c20() -> dict:
           "recorded_at": TS}
     v2 = {**base, "claim_version_id": "ANC-aws-0001@2", "event_id": "EV-AUDIT-0007", "supersedes": "ANC-aws-0001@1",
           "evidence_state": "DOC_SUPPORTED", "recorded_at": TS2}
+    blk = {**{k: v for k, v in base.items() if k != "atom_id"}, "claim_id": "ANC-google-fw-0001",
+           "claim_version_id": "ANC-google-fw-0001@1", "event_id": "EV-GLOSS-0101", "concept_id": "concept:rule_effect",
+           "anchor_kind": "block", "block_id": "google:google_compute_firewall:deny",
+           "implication": {"realization": "block_choice", "value": "deny",
+                           "rule": "o bloco deny{} usado na regra implica efeito = deny",
+                           "alternatives": [{"ref": "google:google_compute_firewall:allow", "value": "allow"}]},
+           "sentence": "frase sintética: o bloco deny especifica as regras de negação",
+           "evidence_state": "DOC_SUPPORTED", "recorded_at": TS2}
+    typ = {**{k: v for k, v in base.items() if k != "atom_id"}, "claim_id": "ANC-aws-sg-0001",
+           "claim_version_id": "ANC-aws-sg-0001@1", "event_id": "EV-GLOSS-0102", "concept_id": "concept:rule_direction",
+           "anchor_kind": "type", "type_id": "aws:aws_vpc_security_group_egress_rule",
+           "implication": {"realization": "type_choice", "value": "egress",
+                           "rule": "o tipo *_egress_rule implica sentido = egress",
+                           "alternatives": [{"ref": "aws:aws_vpc_security_group_ingress_rule", "value": "ingress"}]},
+           "sentence": "frase sintética: o recurso gerencia uma regra de saída", "evidence_state": "DOC_SUPPORTED",
+           "recorded_at": TS2}
     aud = {"audit_id": "GA-0001", "claim_id": "ANC-aws-0001", "claim_version_id": "ANC-aws-0001@2",
            "event_id": "EV-AUDIT-0007", "check": "evidence_support", "result": "pass",
            "evidence_state_before": "STRUCTURALLY_VALID", "evidence_state_after": "DOC_SUPPORTED",
@@ -773,7 +789,7 @@ def c20() -> dict:
             {**dh, "decision_id": "GD-DB-0004", "kind": "same_kind_distinct", "concept_id": "concept:backup_retention",
              "related_concept": "concept:monitoring_interval", "evidence": [],
              "reason": "mesma grandeza (tempo), significados distintos"}]
-    return {"C20/glossary.jsonl": jsonl(con), "C20/claims.jsonl": jsonl([v1, v2]),
+    return {"C20/glossary.jsonl": jsonl(con), "C20/claims.jsonl": jsonl([v1, v2, blk, typ]),
             "C20/glossary_audit.jsonl": jsonl([aud]), "C20/decisions.jsonl": jsonl(decs)}
 
 
@@ -851,8 +867,27 @@ def c25() -> dict:
     e2.pop("citation")
     e3 = {"evidence_id": "SE-aws-0003", "provider": "aws", "pin": {"provider_version": "6.0.0"},
           "api_resource": {"service": "rds", "resource": "OptionGroupOption"}, "fact_kind": "ttl_support",
-          "status": "unknown", "unknown_reason": "not_documented", "level": "interpreted", "model_id": "claude-opus-5-5"}
-    return {"C25/service_evidence.jsonl": jsonl([e1, e2, e3])}
+          "status": "unknown", "unknown_reason": "not_documented", "level": "interpreted", "model_id": "claude-opus-5-5",
+          "consulted": {"uri": "https://docs.example.org/provider-a/db/option-groups", "retrieved_at": TS}}
+    sch = {"provider_source": "registry.terraform.io/hashicorp/aws", "schema_sha256": H("aws-schema"), "op": "keys",
+           "pointer": "/provider_schemas/registry.terraform.io~1hashicorp~1aws/resource_schemas/aws_db_instance/block",
+           "sentence": '["attributes","block_types"]', "retrieved_at": TS}
+    e4 = {"evidence_id": "SE-aws-0004", "provider": "aws", "pin": {"provider_version": "6.0.0"},
+          "api_resource": {"service": "rds", "resource": "UNKNOWN"}, "terraform_resource_type": "aws_db_instance",
+          "block_path": "blue_green_update", "fact_kind": "identity", "status": "stated",
+          "value": {"aspect": "block_schema"}, "level": "published", "schema": sch}
+    e5 = {"evidence_id": "SE-aws-0005", "provider": "aws", "pin": {"provider_version": "6.0.0"},
+          "api_resource": {"service": "rds", "resource": "DBInstance"}, "terraform_resource_type": "aws_db_instance",
+          "fact_kind": "api_bridge", "status": "stated", "value": {"api_resource": "DBInstance"}, "level": "published",
+          "citation": cit}
+    e6 = {"evidence_id": "SE-aws-0006", "provider": "aws", "pin": {"provider_version": "6.0.0"},
+          "api_resource": {"service": "rds", "resource": "DBInstance"}, "terraform_resource_type": "aws_db_instance",
+          "fact_kind": "default", "status": "stated", "value": {"attribute": "backup_retention_period", "default": 7},
+          "as_of": DAY, "level": "derived", "derived_from": ["SE-aws-0001"]}
+    e7 = {"evidence_id": "SE-aws-0007", "provider": "aws", "pin": {"provider_version": "6.0.0"},
+          "api_resource": {"service": "rds", "resource": "UNKNOWN"}, "fact_kind": "tag_support", "status": "unknown",
+          "unknown_reason": "not_documented", "consulted": sch}
+    return {"C25/service_evidence.jsonl": jsonl([e1, e2, e3, e4, e5, e6, e7])}
 
 
 def c26() -> dict:

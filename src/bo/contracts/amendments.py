@@ -61,6 +61,17 @@ AMENDMENTS = [
      "source": "results/BRIEFS/CONTRACT_CHANGE.txt (formato provisório do GLOSSARY_BRIEF)",
      "change": "tipo decisions (decisions.jsonl, bo.glossary_decision/1) com broader/narrower e regras de direção, "
                "referência e aciclicidade"},
+    # ---- emenda 4 (2026-11-04, PILOT-NET-GLOSS CC-NET-2 e SERVICE-EVIDENCE)
+    {"contract": "C00", "from": "3.0.2", "to": "3.0.3", "at": "2026-11-04T08:00:00-03:00",
+     "requested_by": "SERVICE-EVIDENCE", "source": "bo-service-evidence/results/SERVICE-EVIDENCE/CONTRACT_CHANGE.txt",
+     "change": "schema_source (citação do schema do binário assinado do pin)"},
+    {"contract": "C20", "from": "3.1.0", "to": "3.2.0", "at": "2026-11-04T08:00:00-03:00",
+     "requested_by": "PILOT-NET-GLOSS", "source": "bo-pilot-net-gloss/results/PILOT-NET-GLOSS/CONTRACT_CHANGE.txt (CC-NET-2)",
+     "change": "âncora em átomo, bloco ou tipo (anchor_kind, block_id, type_id) com implication obrigatória fora do átomo"},
+    {"contract": "C25", "from": "1.0.0", "to": "1.1.0", "at": "2026-11-04T08:00:00-03:00",
+     "requested_by": "SERVICE-EVIDENCE", "source": "bo-service-evidence/results/SERVICE-EVIDENCE/CONTRACT_CHANGE.txt",
+     "change": "block_path; schema (fonte publicada do binário); consulted e level opcional em unknown; fact_kind "
+               "api_bridge e default (com as_of)"},
 ]
 
 
