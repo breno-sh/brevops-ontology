@@ -328,5 +328,5 @@
  ],
  "schema": "bo.grain.commitment_suite/1",
  "source": "$BO_REPO/requirements/commitments.jsonl",
- "written_at": "2026-11-04T18:20:00-03:00"
+ "written_at": "2026-11-04T18:40:00-03:00"
 }
