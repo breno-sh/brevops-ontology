@@ -324,7 +324,7 @@ def _google():
     return out
 
 
-ARM_TAIL = re.compile(r"/providers/(?P<ns>Microsoft\.[A-Za-z]+)/(?P<rest>[^?]+)$")
+ARM_TAIL = re.compile(r"/providers/(?P<ns>[A-Za-z]+\.[A-Za-z]+)/(?P<rest>[^?]+)$")
 
 
 @lru_cache(maxsize=1)

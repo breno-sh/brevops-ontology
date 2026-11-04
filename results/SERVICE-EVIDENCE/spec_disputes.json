@@ -4,6 +4,74 @@
  "note": "conflito spec x doc registrado, não resolvido: os dois fatos ficam no C25",
  "disputes": [
   {
+   "provider": "azurerm",
+   "terraform_resource_type": "azurerm_app_service_slot_virtual_network_swift_connection",
+   "fact": "lifecycle_controller",
+   "doc": {
+    "kind": "self",
+    "rule": "R-LIFE-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-LIFE-SPEC-PARENT"
+   },
+   "evidence": [
+    "SE-azurerm-3dfmocltxf5mc4cj",
+    "SE-azurerm-lixot3rydhdy2dzt"
+   ]
+  },
+  {
+   "provider": "azurerm",
+   "terraform_resource_type": "azurerm_app_service_slot_virtual_network_swift_connection",
+   "fact": "owner",
+   "doc": {
+    "kind": "self",
+    "rule": "R-OWN-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-OWN-SPEC"
+   },
+   "evidence": [
+    "SE-azurerm-wnwgrfspqhhvqdfo",
+    "SE-azurerm-oe7uytj4cfpiaxzq"
+   ]
+  },
+  {
+   "provider": "azurerm",
+   "terraform_resource_type": "azurerm_app_service_virtual_network_swift_connection",
+   "fact": "lifecycle_controller",
+   "doc": {
+    "kind": "self",
+    "rule": "R-LIFE-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-LIFE-SPEC-PARENT"
+   },
+   "evidence": [
+    "SE-azurerm-q4lpgvwszypdfjmh",
+    "SE-azurerm-vhmf6a4cst3mjhjw"
+   ]
+  },
+  {
+   "provider": "azurerm",
+   "terraform_resource_type": "azurerm_app_service_virtual_network_swift_connection",
+   "fact": "owner",
+   "doc": {
+    "kind": "self",
+    "rule": "R-OWN-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-OWN-SPEC"
+   },
+   "evidence": [
+    "SE-azurerm-winwgr3vx3q2gjyr",
+    "SE-azurerm-ecbvcokfk62zcud7"
+   ]
+  },
+  {
    "provider": "google",
    "terraform_resource_type": "google_alloydb_backup",
    "fact": "api_bridge",
