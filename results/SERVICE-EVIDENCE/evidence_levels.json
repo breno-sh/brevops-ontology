@@ -3,13 +3,14 @@
  "module": "SERVICE-EVIDENCE",
  "contract": "C25",
  "contract_version": "1.0.0",
- "generated_at": "2026-11-04T16:24:02-03:00",
- "records": 200262,
+ "generated_at": "2026-11-04T17:04:20-03:00",
+ "records": 200267,
  "by_level": {
   "derived": 132581,
   "interpreted": 11,
+  "observed": 5,
   "published": 67670,
-  "status:stated": 194167,
+  "status:stated": 194172,
   "status:unknown": 6095
  },
  "by_provider": {
@@ -103,14 +104,17 @@
    "effect|published|unknown": 2,
    "identity|derived|stated": 4970,
    "identity|interpreted|stated": 2,
+   "identity|observed|stated": 3,
    "identity|published|stated": 4269,
    "identity|published|unknown": 32,
    "import_key|published|stated": 879,
    "import_key|published|unknown": 147,
    "lifecycle_controller|derived|stated": 6403,
+   "lifecycle_controller|observed|stated": 1,
    "lifecycle_controller|published|stated": 2232,
    "lifecycle_controller|published|unknown": 1,
    "owner|derived|stated": 6269,
+   "owner|observed|stated": 1,
    "owner|published|stated": 942,
    "owner|published|unknown": 52,
    "precedence|published|stated": 13,
@@ -196,13 +200,21 @@
  },
  "spec_disputes": 79,
  "observed": {
-  "observations": 127,
-  "facts": 5,
-  "accepted_by_c25": false,
+  "observations": 227,
+  "facts": 10,
+  "accepted_by_c25": true,
   "reports": [
-   "OBS-GAPS"
+   "OBS-GAPS",
+   "OBS-GAPS-AZ"
   ],
-  "pending": []
+  "pending": [
+   "azurerm_network_interface_security_group_association R-OBS-ASSOC-LIFE: observation_ref em $BO_DATA/OBS-GAPS-AZ/observations.jsonl fora do padrão do C25 1.4.0 ($BO_DATA/OBS-GAPS/)",
+   "azurerm_network_interface_security_group_association R-OBS-OWNER: observation_ref em $BO_DATA/OBS-GAPS-AZ/observations.jsonl fora do padrão do C25 1.4.0 ($BO_DATA/OBS-GAPS/)",
+   "azurerm_subnet_network_security_group_association R-OBS-ASSOC-LIFE: observation_ref em $BO_DATA/OBS-GAPS-AZ/observations.jsonl fora do padrão do C25 1.4.0 ($BO_DATA/OBS-GAPS/)",
+   "azurerm_subnet_network_security_group_association R-OBS-OWNER: observation_ref em $BO_DATA/OBS-GAPS-AZ/observations.jsonl fora do padrão do C25 1.4.0 ($BO_DATA/OBS-GAPS/)",
+   "azurerm_network_security_group R-OBS-BLOCK-DELETE: observation_ref em $BO_DATA/OBS-GAPS-AZ/observations.jsonl fora do padrão do C25 1.4.0 ($BO_DATA/OBS-GAPS/)"
+  ],
+  "emitted": 5
  },
  "spec_coverage": {
   "aws": {
@@ -1863,9 +1875,10 @@
   "R-TWIN-SPEC": "bloco embutido e bloco do tipo separado que caem no mesmo membro da spec (ex.: aws_s3_bucket.lifecycle_rule e aws_s3_bucket_lifecycle_configuration.rule -> BucketLifecycleConfiguration.Rules) são gêmeos: twin_type com twin e twin_block_path.",
   "R-ID-SPEC": "azure: parâmetros do caminho da instância (sem subscriptionId): último -> name, demais -> atributo de mesmo nome em snake_case. item de lista de bloco: a estrutura do item na spec tem membro ID/id (aws) ou id/name (google/azure) -> essa chave (within_parent) se o bloco tem o atributo; sem membro de identidade -> ausente. aws: regra criada por Authorize e removida por Revoke tem identidade própria quando a estrutura <Pai>Rule da spec tem o membro <Pai>RuleId (ex.: SecurityGroupRule.SecurityGroupRuleId) e o tipo tem o atributo de mesmo nome em snake_case. oci: os parâmetros do caminho do delete_<n> do recurso são a chave de identidade; o último é o próprio objeto (…Id -> atributo id; …Name -> name ou <coisa>), os demais casam com atributo de topo de mesmo nome; within_parent se algum dos demais é atributo REFERENCE. Parâmetro sem atributo: nada (UNKNOWN).",
   "R-OBS-ID": "experimento OBS-GAPS (2 repetições + controle): regra da security list OCI sem id (lista trocada inteira, aceita duplicata) -> identity absent; regra do NSG OCI listada com id e alterada/removida pelo id -> identity present (id).",
-  "R-OBS-OWNER": "a API recusa regra de NSG OCI com NSG inexistente ou sem nsg-id e não há comando de regra solta: dono = o NSG (kind parent). Divergência com a camada de API pela doc vira disputa observada × doc.",
+  "R-OBS-OWNER": "a API recusa regra de NSG OCI com NSG inexistente ou sem nsg-id e não há comando de regra solta: dono = o NSG (kind parent); azure: a referência ao NSG fica gravada na NIC/subnet -> dono da associação = NIC/subnet. Divergência com a camada de API pela doc vira disputa observada × doc.",
   "R-OBS-CASCADE": "regras do NSG OCI somem com o NSG (delete do NSG, list/update das regras depois falham): ciclo de vida = pai. Só com o report.json do OBS-GAPS fechando o experimento.",
-  "R-OBS-ASSOC-LIFE": "ciclo de vida da associação NSG<->NIC/subnet no Azure pelo OBS-GAPS-AZ (pendente).",
+  "R-OBS-ASSOC-LIFE": "OBS-GAPS-AZ: a associação NSG<->NIC/subnet não é recurso (sem tipo ARM nem comando próprio), some com a NIC/subnet: ciclo de vida = o do dono do campo (kind parent, via o atributo).",
+  "R-OBS-BLOCK-DELETE": "OBS-GAPS-AZ: apagar o NSG associado é recusado (InUseNetworkSecurityGroupCannotBeDeleted) e a dissociação não é automática.",
   "C-PILOT-LITERAL": "fato escolhido à mão numa frase da página fixada; o valor repete o que a frase diz.",
   "C-PILOT-GAP": "tipo das fatias dos pilotos sem frase para este tipo de fato na página fixada: UNKNOWN explícito (a lacuna é resultado; não se preenche com conhecimento de fora do pin).",
   "I-PILOT-READING": "leitura do modelo sobre a frase citada (granularidade, interação entre níveis, regra implícita); value.basis diz o que foi inferido além do texto."
@@ -2348,7 +2361,10 @@
     "R-SCOPE-SELF": 1019,
     "R-SCOPE-DOC_tipo": 7,
     "R-SCOPE-PARENT_api": 2837,
-    "R-SCOPE-PARENT": 2956
+    "R-SCOPE-PARENT": 2956,
+    "identity:observed:stated": 3,
+    "owner:observed:stated": 1,
+    "lifecycle_controller:observed:stated": 1
    }
   }
  }

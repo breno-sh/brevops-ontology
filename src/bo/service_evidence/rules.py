@@ -193,10 +193,14 @@ RULES = {
                 "inteira, aceita duplicata) -> identity absent; regra do NSG OCI listada com id e alterada/removida "
                 "pelo id -> identity present (id).",
     "R-OBS-OWNER": "a API recusa regra de NSG OCI com NSG inexistente ou sem nsg-id e não há comando de regra solta: "
-                   "dono = o NSG (kind parent). Divergência com a camada de API pela doc vira disputa observada × doc.",
+                   "dono = o NSG (kind parent); azure: a referência ao NSG fica gravada na NIC/subnet -> dono da "
+                   "associação = NIC/subnet. Divergência com a camada de API pela doc vira disputa observada × doc.",
     "R-OBS-CASCADE": "regras do NSG OCI somem com o NSG (delete do NSG, list/update das regras depois falham): "
                      "ciclo de vida = pai. Só com o report.json do OBS-GAPS fechando o experimento.",
-    "R-OBS-ASSOC-LIFE": "ciclo de vida da associação NSG<->NIC/subnet no Azure pelo OBS-GAPS-AZ (pendente).",
+    "R-OBS-ASSOC-LIFE": "OBS-GAPS-AZ: a associação NSG<->NIC/subnet não é recurso (sem tipo ARM nem comando próprio), "
+                        "some com a NIC/subnet: ciclo de vida = o do dono do campo (kind parent, via o atributo).",
+    "R-OBS-BLOCK-DELETE": "OBS-GAPS-AZ: apagar o NSG associado é recusado (InUseNetworkSecurityGroupCannotBeDeleted) e "
+                          "a dissociação não é automática.",
     # curadoria das fatias dos pilotos (curated.py): C-* publicado (o valor está escrito na frase), I-* interpretado
     "C-PILOT-LITERAL": "fato escolhido à mão numa frase da página fixada; o valor repete o que a frase diz.",
     "C-PILOT-GAP": "tipo das fatias dos pilotos sem frase para este tipo de fato na página fixada: UNKNOWN explícito "

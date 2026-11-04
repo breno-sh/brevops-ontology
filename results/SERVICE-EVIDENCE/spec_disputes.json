@@ -676,7 +676,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_core_network_security_group_security_rule",
    "fact": "lifecycle_controller",
-   "kind": "observed_x_doc",
+   "kind": "observed_x_derived",
    "doc": {
     "kind": "self",
     "rule": "R-LIFE-API"
@@ -711,7 +711,7 @@
    "provider": "oci",
    "terraform_resource_type": "oci_core_network_security_group_security_rule",
    "fact": "owner",
-   "kind": "observed_x_doc",
+   "kind": "observed_x_derived",
    "doc": {
     "kind": "self",
     "rule": "R-OWN-API"

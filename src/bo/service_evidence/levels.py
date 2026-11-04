@@ -105,9 +105,9 @@ def check_record(r: dict, ids: dict, bad: list, cnt: collections.Counter) -> Non
                 err(f"observado sem {k}")
         if (r.get("repetitions") or 0) < 2:
             err("observado com menos de 2 repetições")
-        miss = [x for x in r.get("observation_ref") or [] if x not in _obs_refs()]
-        if miss:
-            err(f"observation_ref sem observação no OBS-GAPS: {miss[:2]}")
+        ref = r.get("observation_ref") or {}
+        if ref.get("record_id") not in _obs_refs():
+            err(f"observation_ref sem observação no OBS-GAPS: {ref.get('record_id')}")
         if "model_id" in r:
             err("observado com model_id")
     elif lvl == "interpreted":

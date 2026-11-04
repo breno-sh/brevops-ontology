@@ -89,3 +89,13 @@ descrita abaixo e em results/SERVICE-EVIDENCE/evidence_levels.json (level_policy
    ec2 AuthorizeSecurityGroupIngress "An inbound rule permits instances to receive traffic from ..."; OCI
    IngressSecurityRule "A rule for allowing inbound IP packets."; SecurityRule "Set to `EGRESS` for rules to allow
    outbound IP packets ...". Nada publicado como effect (não há frase literal de exclusividade).
+
+10. Nível observed (C25 1.4.0, emenda 10) — 2026-11-04T16:45-03:00
+   Publicados 5 fatos observed da OCI ($BO_DATA/OBS-GAPS): R-OBS-ID (regras da security list sem id, nos dois blocos;
+   regra do NSG com id), R-OBS-OWNER (dono = NSG, em disputa com o R-OWN-API da camada de API pela doc) e
+   R-OBS-CASCADE (ciclo = NSG, em disputa com o R-LIFE-API; ressalva: a OCI dá o mesmo 404 para não autorizado e
+   inexistente). Os 5 fatos do Azure ($BO_DATA/OBS-GAPS-AZ: R-OBS-ASSOC-LIFE e R-OBS-OWNER nas duas associações,
+   R-OBS-BLOCK-DELETE no NSG) estão prontos mas NÃO entram: o padrão de observation_ref.path do C25 1.4.0 é
+   ^\$BO_DATA/OBS-GAPS/\S+$ e as observações do Azure estão em $BO_DATA/OBS-GAPS-AZ/. Mudança proposta: C25 1.4.1 com
+   ^\$BO_DATA/OBS-GAPS(-AZ)?/\S+$ (ou o coordenador copia o lote para $BO_DATA/OBS-GAPS/az/). Com isso, regerar e
+   promover sem mudar código.

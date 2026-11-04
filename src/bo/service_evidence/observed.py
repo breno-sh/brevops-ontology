@@ -25,8 +25,10 @@ DIRS = ("OBS-GAPS", "OBS-GAPS-AZ")
 
 
 def c25_accepts_observed() -> bool:
-    d = json.loads((common.bo_repo() / "contracts" / "C00_conventions.schema.json").read_text(encoding="utf-8"))
-    return "observed" in (d["$defs"].get("evidence_level") or {}).get("enum", [])
+    """O C25 (emenda 10, 1.4.0) aceita level observed no próprio campo level."""
+    d = json.loads((common.bo_repo() / "contracts" / "C25_service_evidence.schema.json").read_text(encoding="utf-8"))
+    lv = d["$defs"]["service_evidence"]["properties"].get("level") or {}
+    return "observed" in (lv.get("enum") or [])
 
 
 def load() -> tuple[list[dict], dict]:
@@ -47,7 +49,9 @@ def load() -> tuple[list[dict], dict]:
 
 
 def _ref(r: dict) -> str:
-    return f"{r['_src']}:{r['run']}:{r['experiment']}:{r['step']}:{r['repetition']}:{r.get('attempt', 0)}"
+    """record_id do C25 1.4.0: <run>/<passo>/<repetição> (mais #<tentativa> quando há mais de uma)."""
+    rid = f"{r['run']}/{r['step']}/{r['repetition']}"
+    return rid + (f"#{r['attempt']}" if (r.get("attempt") or 1) > 1 else "")
 
 
 def _steps(obs, exp, step):
@@ -77,10 +81,14 @@ def facts(obs: list[dict], reports: dict) -> list[dict]:
         if len(reps) < 2 or not control or any(c["rc"] != 0 for c in control):
             return
         used = treat + control
+        last = max(treat, key=lambda r: (r["at"], r["repetition"]))
         out.append({"provider": provider, "type": T, "block_path": bp, "fact_kind": kind, "rule": rule,
-                    "value": value, "observation_ref": sorted({_ref(r) for r in used}),
-                    "run_id": sorted({r["run"] for r in used}), "repetitions": len(reps),
-                    "control": sorted({f"{c['step']}:rc={c['rc']}" for c in control}),
+                    "value": dict(value, observation_refs=sorted({f"{r['_src']}:{_ref(r)}" for r in used})),
+                    "observation_ref": {"path": f"$BO_DATA/{last['_src']}/observations.jsonl",
+                                        "record_id": _ref(last)},
+                    "run_id": last["run"], "repetitions": len(reps),
+                    "control": {"description": f"passo de controle {control[0]['step']} do experimento",
+                                "result": f"rc={control[0]['rc']}"},
                     "observed_at": max(r["at"] for r in used)})
 
     e1 = "EXP1-oci-security-list"
@@ -152,16 +160,35 @@ def facts(obs: list[dict], reports: dict) -> list[dict]:
                       "observed": {"own_resource_type": False, "removed_with_holder": True,
                                    "blocks_nsg_delete_while_associated": True}},
                      types_ + bef + aft + blocked, ctrl, provider="azurerm")
+            rb = st_("a", "readback_nic" if "interface" in T else "readback_subnet")
+            if no_type and rb and all((r.get("result") or {}).get("networkSecurityGroup") for r in rb):
+                emit(T, None, "owner", "R-OBS-OWNER",
+                     {"kind": "parent", "via": [via], "rule": "R-OBS-OWNER", "layer": "api",
+                      "observed": {"reference_stored_on_holder": "networkSecurityGroup.id"}},
+                     types_ + rb, st_("control", "nic_show_before_assoc"), provider="azurerm")
+        if blocked and all(r["rc"] != 0 and "InUseNetworkSecurityGroupCannotBeDeleted" in
+                           json.dumps(r.get("error") or {}) for r in blocked):
+            emit("azurerm_network_security_group", None, "lifecycle_controller", "R-OBS-BLOCK-DELETE",
+                 {"aspect": "delete_blocked_while_referenced", "rule": "R-OBS-BLOCK-DELETE", "layer": "api",
+                  "error_code": "InUseNetworkSecurityGroupCannotBeDeleted",
+                  "by": ["azurerm_network_interface_security_group_association",
+                         "azurerm_subnet_network_security_group_association"], "auto_disassociation": False},
+                 blocked, ctrl, provider="azurerm")
     return out
 
 
+OBS_PATH = __import__("re").compile(r"^\$BO_DATA/OBS-GAPS/\S+$")  # padrão do C25 1.4.0 (observation_ref.path)
+
+
 def records(ctxs: dict, disputes: list) -> dict:
-    """Grava os fatos observados no contexto (se o C25 aceita observed) e as disputas observado × doc."""
+    """Grava os fatos observados (C25 1.4.0) e as disputas observado × publicado/derivado (campo disputes do
+    registro e lista spec_disputes.json). Fato cujo caminho de observação o C25 ainda não aceita fica só como
+    candidato (contado em pending)."""
     obs, reports = load()
     fs = facts(obs, reports)
     st = {"observations": len(obs), "facts": len(fs), "accepted_by_c25": c25_accepts_observed(),
-          "reports": sorted(reports), "pending": []}
-    if not any(r["experiment"] == "EXP2-oci-nsg" for r in obs) or not _closed(reports, "EXP2-oci-nsg"):
+          "reports": sorted(reports), "pending": [], "emitted": 0}
+    if not _closed(reports, "EXP2-oci-nsg"):
         st["pending"].append("R-OBS-CASCADE: experimento EXP2 sem report.json fechado")
     if "OBS-GAPS-AZ" not in reports:
         st["pending"].append("R-OBS-ASSOC-LIFE: OBS-GAPS-AZ sem report.json")
@@ -173,23 +200,32 @@ def records(ctxs: dict, disputes: list) -> dict:
         v = dict(f["value"])
         if f["block_path"]:
             v["block_path"] = f["block_path"]
-        rec_extra = {k: f[k] for k in ("observation_ref", "run_id", "repetitions", "control", "observed_at")}
+        extra = {k: f[k] for k in ("observation_ref", "run_id", "repetitions", "control", "observed_at")}
         cand.append({"type": f["type"], "block_path": f["block_path"], "fact_kind": f["fact_kind"], "value": v,
-                     **rec_extra})
-        if st["accepted_by_c25"]:
-            eid = ctx.add(f["type"], f["fact_kind"], f"obs:{f['rule']}:{f['block_path']}", api, "stated",
-                          "observed", value=v)
-            ctx.by_id[eid].update(rec_extra)
-        for r in ctx.recs:
-            rv = r.get("value") or {}
-            if r["terraform_resource_type"] == f["type"] and r["fact_kind"] == f["fact_kind"] and \
-                    r.get("block_path") == f["block_path"] and r["status"] == "stated" and r["level"] != "observed" \
-                    and rv.get("layer") == "api" and "kind" in rv and "kind" in v and rv["kind"] != v["kind"]:
-                disputes.append({"provider": p, "terraform_resource_type": f["type"], "fact": f["fact_kind"],
-                                 "kind": "observed_x_doc" if rv.get("rule", "").startswith("R-") and "SPEC" not in
-                                 rv.get("rule", "") else "observed_x_spec",
-                                 "doc": {"kind": rv["kind"], "rule": rv.get("rule")},
-                                 "spec": {"kind": v["kind"], "rule": f["rule"], "level": "observed"},
-                                 "evidence": [r["evidence_id"]]})
+                     **extra})
+        contra = [r for r in ctx.recs
+                  if r["terraform_resource_type"] == f["type"] and r["fact_kind"] == f["fact_kind"]
+                  and r.get("block_path") == f["block_path"] and r["status"] == "stated"
+                  and r["level"] in ("published", "derived") and (r.get("value") or {}).get("layer") == "api"
+                  and "kind" in (r.get("value") or {}) and "kind" in v and r["value"]["kind"] != v["kind"]]
+        for r in contra:
+            disputes.append({"provider": p, "terraform_resource_type": f["type"], "fact": f["fact_kind"],
+                             "kind": "observed_x_published" if r["level"] == "published" else "observed_x_derived",
+                             "doc": {"kind": r["value"]["kind"], "rule": r["value"].get("rule")},
+                             "spec": {"kind": v["kind"], "rule": f["rule"], "level": "observed"},
+                             "evidence": [r["evidence_id"]]})
+        if not st["accepted_by_c25"]:
+            continue
+        if not OBS_PATH.match(extra["observation_ref"]["path"]):
+            st["pending"].append(f"{f['type']} {f['rule']}: observation_ref em {extra['observation_ref']['path']} "
+                                 "fora do padrão do C25 1.4.0 ($BO_DATA/OBS-GAPS/)")
+            continue
+        eid = ctx.add(f["type"], f["fact_kind"], f"obs:{f['rule']}:{f['block_path']}", api, "stated",
+                      "observed", value=v)
+        ctx.by_id[eid].update(extra)
+        pub = sorted({r["evidence_id"] for r in contra if r["level"] == "published"})
+        if pub:  # o campo disputes do C25 só cita fato PUBLICADO; contra fato derivado a disputa fica na lista
+            ctx.by_id[eid]["disputes"] = pub
+        st["emitted"] += 1
     st["candidates"] = cand
     return st

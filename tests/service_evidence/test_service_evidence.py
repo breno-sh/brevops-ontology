@@ -282,7 +282,8 @@ def test_observed_rules_on_partial_obs_gaps():
         pytest.skip("OBS-GAPS ainda sem observações")
     fs = {(f["type"], f["block_path"], f["fact_kind"], f["rule"]): f for f in observed.facts(obs, reports)}
     sl = fs.get(("oci_core_security_list", "ingress_security_rules", "identity", "R-OBS-ID"))
-    assert sl and sl["value"]["status"] == "absent" and sl["repetitions"] >= 2 and sl["control"]
+    assert sl and sl["value"]["status"] == "absent" and sl["repetitions"] >= 2 and sl["control"]["result"]
+    assert sl["observation_ref"]["path"].startswith("$BO_DATA/OBS-GAPS")
     ng = fs.get(("oci_core_network_security_group_security_rule", None, "identity", "R-OBS-ID"))
     assert ng and ng["value"]["key_fields"] == ["id"]
     ow = fs.get(("oci_core_network_security_group_security_rule", None, "owner", "R-OBS-OWNER"))
