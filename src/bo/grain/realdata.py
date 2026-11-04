@@ -105,3 +105,35 @@ def main(argv=None) -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
+
+
+def block_pair_signature(res, cid):
+    """Assinatura de um bloco/unidade para o E2 que desce ao bloco correspondente: grão, regra, classe e chave
+    própria da identidade, kinds de ciclo de vida, dono e alcance, o que falta, e o grão do pai (o caminho do pai
+    sai à parte, porque a embalagem embutida pode não ter o nível intermediário)."""
+    d = res.decisions[cid]
+    keyf = tuple(sorted(f for f in d.identity.key_fields if not res.nodes[cid].ev.field_map.get(f, {}).get("ref")))
+    pg = res.decisions[d.parent].grain if d.parent in res.decisions else ("EXTERNAL" if d.parent else None)
+    return {"grain": d.grain, "rule": d.rule, "identity_class": d.identity.cls, "key": keyf,
+            "anonymous": d.identity.anonymous, "lifecycle": d.lifecycle["kind"], "owner": d.owner["kind"],
+            "scope": d.scope["kind"], "missing": tuple(d.missing), "parent_grain": pg}
+
+
+def e2_pair(res, inline: str, separate_top: str) -> dict:
+    """Desce do recurso separado ao bloco que corresponde ao embutido. Correspondência só por evidência: o
+    gêmeo (twin_type) do embutido aponta o tipo ou o bloco; se aponta o tipo e o tipo é FACET, o par é o bloco
+    filho do tipo que tem o mesmo gêmeo declarado. Sem fato de correspondência, o par fica sem alvo (motivo)."""
+    ev = res.nodes[inline].ev if inline in res.nodes else None
+    twin = ev.twin if ev else None
+    target, why = None, None
+    if twin and twin in res.decisions:
+        target = twin
+    elif twin and twin.split(".")[0] == separate_top:
+        why = f"gêmeo {twin} não é candidato"
+    else:
+        why = f"sem fato de correspondência (twin_type) do bloco {inline} para {separate_top} ou um bloco dele"
+    out = {"inline": inline, "separate": target, "reason": why, "inline_sig": block_pair_signature(res, inline)}
+    if target:
+        out["separate_sig"] = block_pair_signature(res, target)
+        out["equal"] = out["inline_sig"] == out["separate_sig"]
+    return out

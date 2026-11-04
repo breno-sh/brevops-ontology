@@ -101,3 +101,27 @@ def test_e2_real_decided_component_both_sides(real, prov, top, inline, sep, ref)
     res = real["providers"][prov]["_res"]
     a, b = res.decisions[inline], res.decisions[sep]
     assert a.grain == b.grain == "COMPONENT" and a.parent == b.parent == top, (a.grain, a.missing, b.grain, b.missing)
+
+
+def test_e2_sto_lifecycle_rule_pairing_descends_to_block(records):
+    """E2 STO: o lifecycle_rule embutido corresponde ao bloco rule DENTRO do recurso separado (que é a faceta do
+    conjunto de regras), não ao recurso inteiro. Hoje o SERVICE-EVIDENCE não declara a correspondência
+    (twin_type do bloco); com ela (controle), o par desce ao bloco e as assinaturas de bloco se comparam."""
+    sl = {"aws": ["aws_s3_bucket", "aws_s3_bucket_lifecycle_configuration"]}
+    res = RD.run(slice_types=sl, records=records)["providers"]["aws"]["_res"]
+    assert res.decisions["aws_s3_bucket_lifecycle_configuration"].grain == "FACET"
+    p = RD.e2_pair(res, "aws_s3_bucket.lifecycle_rule", "aws_s3_bucket_lifecycle_configuration")
+    assert p["separate"] is None and "twin_type" in p["reason"]
+    # controle: a correspondência do bloco declarada (twin_type de bloco para bloco)
+    extra = [{"evidence_id": "SE-ctl-lc1", "provider": "aws", "pin": {"provider_version": "0.0.1"},
+              "api_resource": {"service": "s3", "resource": "LifecycleRule"}, "terraform_resource_type": "aws_s3_bucket",
+              "block_path": "lifecycle_rule", "fact_kind": "identity", "status": "stated", "level": "derived",
+              "derived_from": ["SE-controle"],
+              "value": {"aspect": "twin_type", "twin": "aws_s3_bucket_lifecycle_configuration.rule"}}]
+    res2 = RD.run(slice_types=sl, records=list(records) + extra)["providers"]["aws"]["_res"]
+    p2 = RD.e2_pair(res2, "aws_s3_bucket.lifecycle_rule", "aws_s3_bucket_lifecycle_configuration")
+    assert p2["separate"] == "aws_s3_bucket_lifecycle_configuration.rule"
+    # com a evidência herdada do gêmeo, os dois lados têm a mesma assinatura de bloco; hoje os dois ficam UNKNOWN
+    # pelas mesmas faltas do bloco rule (alcance de API e ponte de API do bloco): falta de evidência, não de pareamento
+    a, b = p2["inline_sig"], p2["separate_sig"]
+    assert a == b and a["grain"] == "UNKNOWN" and set(a["missing"]) == {"effective_scope", "api_resource"}, (a, b)
