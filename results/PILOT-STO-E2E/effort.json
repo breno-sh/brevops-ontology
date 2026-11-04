@@ -3,8 +3,8 @@
  "contract_version": "3.1.0",
  "data": {
   "expected_h": 6,
-  "measured_h_total": 3.13,
-  "measured_minutes_total": 187.7,
+  "measured_h_total": 3.39,
+  "measured_minutes_total": 203.6,
   "recalibration": "o caminho offline levou bem menos que o previsto; o que dominou foi ler contratos e adaptar os quatro harness (interfaces diferentes), não o raciocínio; o custo real da escala está no mapeamento (transporte) e não no E2E",
   "steps": [
    {
@@ -126,10 +126,18 @@
     "start": "2026-11-04T14:30:04-03:00",
     "status": "done",
     "step": "rodada final: retirada dos contornos do HARNESS-GCP (9082eda), espera do PILOT-STO-MAP final (86cbcb3), corrida de ponta a ponta"
+   },
+   {
+    "end": "2026-11-04T18:44:46-03:00",
+    "evidence": "MAP visto 18:42:10; G1-G5 e ROBOT verdes 18:44:46",
+    "minutes": 15.9,
+    "start": "2026-11-04T18:28:51-03:00",
+    "status": "done",
+    "step": "rodada final 2/2: espera do PILOT-STO-MAP 0af7252 e corrida de ponta a ponta (oráculo 897bb79, árbitro 4bee77e)"
    }
   ]
  },
- "generated_at": "2026-11-04T14:43:33-03:00",
+ "generated_at": "2026-11-04T18:44:55-03:00",
  "metrics": [
   {
    "axis": "operational",
@@ -147,8 +155,8 @@
    "name": "passos do piloto concluídos (esforço medido)",
    "operational_coverage": {
     "est": 1.0,
-    "lower": 0.796117,
-    "n": 15,
+    "lower": 0.806392,
+    "n": 16,
     "upper": 1.0
    },
    "quantifier": "observed_fraction",
