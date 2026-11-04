@@ -70,11 +70,11 @@ def test_provider_and_template_changes_are_caught(work):
 def test_gate_run_default_inputs_is_not_vacuous(work):
     rep = N.run(N.default_inputs(), work / "nsi")
     assert rep["ok"], rep["errors"]
-    assert rep["modules_checked"] == 3  # 2 da referência + o plano azurerm do stub C26 (emenda 2)
-    assert rep["mutants"] == rep["mutants_caught"] >= 21
+    assert rep["modules_checked"] == 4  # 3 da referência + o plano azurerm do stub C26 (emenda 2)
+    assert rep["mutants"] == rep["mutants_caught"] >= 36  # 8 por módulo + 4 por lista de 2 itens do LP-AZREF-0004
     statuses = sorted(p["status"] for f in rep["files"] for p in f["plans"])
-    assert statuses == ["BLOCKED", "RENDERED", "RENDERED", "RENDERED", "WRONG_PROVIDER", "WRONG_PROVIDER",
-                        "WRONG_PROVIDER"]
+    assert statuses == ["BLOCKED", "RENDERED", "RENDERED", "RENDERED", "RENDERED", "WRONG_PROVIDER",
+                        "WRONG_PROVIDER", "WRONG_PROVIDER"]
 
 
 def test_gate_fails_when_nothing_renders(work):
@@ -99,3 +99,31 @@ def test_dotted_path_into_map_attribute(work):
     assert any("tags.extra" in e for e in errs), errs
     m = _mutate(work / "out", work, lambda t: t.replace('"bo"\n  }', '"xx"\n  }'))
     assert any("tags.team" in e for e in _check(m, plan, graph))
+
+
+def test_mutantes_de_lista_sao_pegos(work):
+    """Item removido, trocado, extra e ordem trocada numa lista (de literais e de referências) são pegos."""
+    rep = N.run([N.default_inputs()[0]], work / "nsi")
+    assert rep["ok"], rep["errors"]
+    from bo.harness.azurerm import render as R
+    from bo.harness.azurerm import schema as S
+    from azh_helpers import REF
+    from bo.harness.azurerm._common import read_jsonl
+    R.render_file(REF / "lowering_plan.jsonl", work / "out", plan_id="LP-AZREF-0004")
+    plan = next(p for p in read_jsonl(REF / "lowering_plan.jsonl") if p["plan_id"] == "LP-AZREF-0004")
+    graph = R.load_graphs(REF / "lowering_plan.jsonl", None)[plan["graph_id"]]
+    sch, tmpl = S.load(), S.templates_manifest()
+    main_tf = (work / "out" / "main.tf").read_text()
+    names = [n for n, _ in N.mutants(main_tf)]
+    for k in ("item de lista removido", "item de lista trocado", "item de lista extra", "ordem da lista trocada"):
+        assert names.count(k) == 2, (k, names)   # destination_port_ranges e source_application_security_group_ids
+    import shutil
+    for name, text in N.mutants(main_tf):
+        if "lista" not in name:
+            continue
+        d = work / "mut"
+        shutil.rmtree(d, ignore_errors=True)
+        shutil.copytree(work / "out", d)
+        (d / "main.tf").write_text(text, encoding="utf-8")
+        errs = N.check_module(d, plan, graph, sch, tmpl, {})
+        assert any("_ids" in e or "port_ranges" in e for e in errs), (name, errs)

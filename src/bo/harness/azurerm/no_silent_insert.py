@@ -13,8 +13,12 @@ INDEPENDENTE do escritor (python-hcl2 lê o HCL; o esperado sai do plano e do sc
     de uma tag de propriedade declarada; e cada valor do plano aparece (nada some);
   - meta-argumentos proibidos (count, for_each, lifecycle, provisioner, connection, dynamic, provider);
   - plano bloqueado ou inválido não gera nenhum .tf.
+Lista (C00 3.1.0): termo list e forma indexada antiga (attr.N, C26-LIST) viram a lista esperada na ordem do
+plano, calculada aqui a partir do plano; a ordem é conferida também em atributo set (o HCL guarda a ordem do plano,
+mesmo que o Terraform não a use).
 Antes de aceitar, roda o próprio verificador contra mutantes (atributo extra, valor trocado, valor removido,
-recurso extra, atributo extra no provider, variável extra, tag não declarada): todo mutante tem de ser pego,
+recurso extra, atributo extra no provider, variável extra, tag não declarada; e, em lista com dois ou mais itens,
+item removido, item trocado, item extra e ordem trocada): todo mutante tem de ser pego,
 senão o gate reprova (o verificador não passa por vacuidade). Exige ao menos um módulo renderizado.
 Relatório: $BO_DATA/HARNESS-AZURE/no_silent_insert.json. Saída 0 = tudo confere.
 """
@@ -143,8 +147,11 @@ class Expect:
         if k == "reference":
             want_data = t["target_address"].startswith("data.")
             c = [self.by_order[d] for d in s["depends_on"] if self.by_order[d]["resource_type"] == t["target_type"]
-                 and (self.by_order[d]["action"] == "reference") == want_data]
+                 and (self.by_order[d]["action"] == "reference") == want_data
+                 and (not t.get("target_node") or self.by_order[d]["node_id"] == t["target_node"])]
             return ("ref", self.addr(c[0]) + ("." + t["attribute"] if t.get("attribute") else ""))
+        if k == "list":
+            return ("list", tuple(self.term(s, x) for x in t["items"]))
         if k == "withheld":
             return ("withheld", None)
         if k == "expression":
@@ -167,6 +174,15 @@ class Expect:
             else:
                 return ".".join(out + [seg]), ("attr" if i == len(segs) - 1 else "objattr")
         raise HarnessError(f"campo vazio: {field!r}")
+
+    def attr_type(self, kind, s, p):
+        """Tipo do atributo no caminho de folha p (com [i] de bloco), lido do schema."""
+        node = self.sch.node(kind, s["resource_type"])
+        segs = re.sub(r"\[[0-9]+\]", "", p).split(".")
+        for seg in segs[:-1]:
+            node = S.blocks(node)[seg].node
+        a = S.attrs(node).get(segs[-1])
+        return a.type if a else None
 
     def step_leaves(self, s) -> dict:
         kind = "data" if s["action"] == "reference" else "resource"
@@ -208,6 +224,11 @@ class Expect:
             elif where == "objattr":
                 n_before = p.count(".") + 1  # segmentos do campo até o atributo-objeto (inclusive)
                 sub = v["field"].split(".")[n_before:]
+                ty = self.attr_type(kind, s, p)
+                if isinstance(ty, list) and ty and ty[0] in ("list", "set") and len(sub) == 1 and sub[0].isdigit():
+                    # forma indexada antiga (C26-LIST): item sub[0] da lista
+                    exp.setdefault(("__list__", p), {})[int(sub[0])] = t
+                    continue
                 exp.setdefault(("__obj__", p), []).append((sub, t))
             else:
                 exp[p] = t
@@ -221,6 +242,9 @@ class Expect:
                     for k2, v2 in self.tags.items():
                         base.setdefault(k2, ("lit", v2))
                     exp["tags"] = ("map", tuple(sorted(base.items())))
+        for key in [k for k in exp if isinstance(k, tuple) and k[0] == "__list__"]:
+            d = exp.pop(key)
+            exp[key[1]] = ("list", tuple(d[i] for i in sorted(d)))
         if s["depends_on"]:
             exp["depends_on"] = ("list", tuple(("ref", self.addr(self.by_order[d])) for d in s["depends_on"]))
         return exp
@@ -263,6 +287,8 @@ def _obj_leaves(v, prefix="") -> dict:
 def _match(actual, expected) -> bool:
     if expected[0] in ("expression", "document"):
         return actual[0] == "expr" and expected[1] in actual[1]
+    if expected[0] == "list" and actual[0] == "list":
+        return len(actual[1]) == len(expected[1]) and all(_match(a, e) for a, e in zip(actual[1], expected[1]))
     return actual == expected
 
 
@@ -402,6 +428,20 @@ def mutants(main_tf: str) -> list[tuple[str, str]]:
     idx = [i for i, ln in enumerate(lines) if re.match(r'^  [a-z_]+ += "', ln)]
     if idx:
         out.append(("valor removido", "\n".join(lines[:idx[0]] + lines[idx[0] + 1:])))
+    # lista de uma linha com dois ou mais itens: item removido, trocado, extra e ordem trocada
+    for ln in main_tf.split("\n"):
+        ml = re.match(r"^( +[a-z_0-9]+ += )\[(.+)\]$", ln)
+        if not ml or ml.group(1).strip().startswith("depends_on"):
+            continue
+        items = [x.strip() for x in ml.group(2).split(", ")]
+        if len(items) < 2:
+            continue
+        def sub(new_items, ln=ln, ml=ml):
+            return main_tf.replace(ln, ml.group(1) + "[" + ", ".join(new_items) + "]", 1)
+        out.append(("item de lista removido", sub(items[1:])))
+        out.append(("item de lista trocado", sub([items[1]] + items[1:])))
+        out.append(("item de lista extra", sub(items + [items[0]])))
+        out.append(("ordem da lista trocada", sub(list(reversed(items)))))
     out.append(("recurso extra", main_tf + '\nresource "azurerm_resource_group" "zz" {\n  location = "x"\n  name     = "y"\n}\n'))
     out.append(("variável extra", main_tf + '\nvariable "extra" {\n  type = string\n}\n'))
     out.append(("meta-argumento", main_tf.replace("\n}\n", "\n\n  lifecycle {\n    prevent_destroy = true\n  }\n}\n", 1)))

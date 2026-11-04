@@ -11,6 +11,11 @@ Regra central: o HCL é o plano mais o que está declarado. Entra no HCL só
       sintético da execução) e segredo withheld (gerado na hora pelo executor, nunca gravado);
   (5) o versions.tf dos templates (terraform/provider fixados, declarados em TEMPLATES.json);
   (6) tags de propriedade, só quando o executor pede (--ownership-tag), declaradas uma a uma.
+Lista (C00 3.1.0, C26 1.3.0): o termo list num atributo list/set vira `[e1, e2, ...]` na ordem dos itens, cada
+item pelo mesmo caminho do termo escalar (literal, referência, expressão; símbolo sem valor bloqueia; withheld,
+documento ou lista aninhada não cabem num item). A forma antiga `attr.0 = termo`, `attr.1 = termo` (C26-LIST:
+aceita com nota) vira a mesma lista na ordem dos índices; buraco nos índices é INDEX_GAP e misturar as duas formas
+no mesmo atributo é DUPLICATE_FIELD. Referência com target_node (C00 3.0.1) escolhe o passo pelo nó.
 Nada mais: o renderizador não completa campo. Campo obrigatório do schema que o plano não traz bloqueia o caso
 com UNKNOWN_INPUT; símbolo sem valor em posição de valor, UNKNOWN_SYMBOLIC_INPUT; escolha tipada sem seleção ou
 referência ambígua, AMBIGUOUS_TARGET (códigos de bloqueio do C00). Plano que contradiz o schema é INVALID_PLAN.
@@ -40,7 +45,7 @@ from ._common import (MODULE, PROVIDER, HarnessError, dumps, now, portable, read
 BLOCK_CODES = {"UNKNOWN_INPUT", "UNKNOWN_SYMBOLIC_INPUT", "AMBIGUOUS_TARGET", "OUT_OF_SUBSET"}
 INVALID_CODES = {"TYPE_NOT_IN_SCHEMA", "FIELD_NOT_IN_SCHEMA", "FIELD_NOT_CONFIGURABLE", "DUPLICATE_FIELD",
                  "NAME_FIELD_ABSENT", "NAME_CONFLICT", "TERM_DATATYPE", "TOO_MANY_BLOCKS", "BAD_EXPRESSION",
-                 "BAD_TEMPLATE", "BLOCK_VALUE_SHAPE", "GRAPH_MISSING"}
+                 "BAD_TEMPLATE", "BLOCK_VALUE_SHAPE", "GRAPH_MISSING", "INDEX_GAP"}
 REPORT_SCHEMA = "bo.harness_azurerm.render_report/1"
 MANIFEST_SCHEMA = "bo.harness_azurerm.render_manifest/1"
 TAG_KEY = re.compile(r"^bo-[a-z\-]+$")
@@ -70,6 +75,7 @@ class Rendered:
     issues: list = field(default_factory=list)
     main_tf: str | None = None
     manifest: dict | None = None
+    notes: list = field(default_factory=list)
 
 
 # ------------------------------------------------------------------------------------------------ termos
@@ -80,6 +86,7 @@ class Ctx:
         self.terms = {t["term_id"]: t["term"] for t in (graph or {}).get("terms", [])}
         self.sch = sch
         self.issues: list[Issue] = []
+        self.notes: list[str] = []
         self.inputs: dict[str, dict] = {}
         self.entries: list[dict] = []
         self.by_order = {s["order"]: s for s in plan["steps"]}
@@ -155,6 +162,18 @@ def term_expr(ctx: Ctx, step: dict, fld: str, term: dict, kinds: list):
         fn = "yamlencode" if term["format"] == "yaml" else "jsonencode"
         kinds.append("document")
         return H.Call(fn, (H.Lit(term["tree"]),))
+    if k == "list":
+        xs = []
+        for i, it in enumerate(term["items"]):
+            if it["kind"] not in ("literal", "reference", "expression", "symbol"):
+                ctx.issue("BAD_EXPRESSION", o, fld, f"item {i} da lista é {it['kind']}: não cabe numa lista no harness")
+                return None
+            x = term_expr(ctx, step, fld, it, kinds)
+            if x is None:
+                return None
+            xs.append(x)
+        kinds.append("list")
+        return H.ListE(tuple(xs))
     ctx.issue("BAD_EXPRESSION", o, fld, f"termo de tipo {k!r} sem forma HCL")
     return None
 
@@ -165,9 +184,13 @@ def ref_expr(ctx: Ctx, step: dict, fld: str, term: dict, kinds: list):
     cands = [ctx.by_order[d] for d in step["depends_on"] if d in ctx.by_order
              and ctx.by_order[d]["resource_type"] == term["target_type"]
              and (ctx.by_order[d]["action"] == "reference") == want_data]
+    tn = term.get("target_node")
+    if tn:
+        cands = [c for c in cands if c["node_id"] == tn]
     if not cands:
         ctx.issue("UNKNOWN_INPUT", o, fld,
-                  f"referência a {term['target_type']} sem passo correspondente em depends_on {step['depends_on']}")
+                  f"referência a {term['target_type']}{' nó ' + tn if tn else ''} sem passo correspondente em "
+                  f"depends_on {step['depends_on']}")
         return None
     if len(cands) > 1:
         ctx.issue("AMBIGUOUS_TARGET", o, fld,
@@ -257,7 +280,12 @@ def put_literal_block(ctx, o, fld, node, value, out_list):
     return True
 
 
-def place(ctx: Ctx, step: dict, root: dict, tree: dict, fld: str, expr, is_literal_value, raw_value):
+def _is_coll(ty) -> bool:
+    return isinstance(ty, list) and bool(ty) and ty[0] in ("list", "set")
+
+
+def place(ctx: Ctx, step: dict, root: dict, tree: dict, fld: str, expr, is_literal_value, raw_value,
+          term_kind: str = ""):
     o = step["order"]
     segs = fld.split(".")
     node, cur = root, tree
@@ -287,12 +315,36 @@ def place(ctx: Ctx, step: dict, root: dict, tree: dict, fld: str, expr, is_liter
                 ctx.issue("FIELD_NOT_CONFIGURABLE", o, fld, "atributo só computado")
                 return
             if last:
+                if term_kind == "list" and not _is_coll(a[seg].type):
+                    ctx.issue("TERM_DATATYPE", o, fld, f"termo list num atributo {a[seg].type!r} (não é list/set)")
+                    return
                 if seg in cur["attrs"]:
-                    ctx.issue("DUPLICATE_FIELD", o, fld, "atributo com dois valores no plano")
+                    prev = cur["attrs"][seg]
+                    why = ("termo inteiro e forma indexada (attr.N) no mesmo atributo"
+                           if isinstance(prev, dict) and "__list__" in prev else "atributo com dois valores no plano")
+                    ctx.issue("DUPLICATE_FIELD", o, fld, why)
                     return
                 cur["attrs"][seg] = expr
                 return
             ty = a[seg].type
+            if _is_coll(ty) and i == len(segs) - 2 and segs[-1].isdigit():
+                # forma antiga (C26-LIST): attr.N = termo vira item N da lista
+                if term_kind == "list":
+                    ctx.issue("BAD_EXPRESSION", o, fld, "item de lista indexada com termo list (lista aninhada)")
+                    return
+                lst = cur["attrs"].setdefault(seg, {"__list__": {}})
+                if not isinstance(lst, dict) or "__list__" not in lst:
+                    ctx.issue("DUPLICATE_FIELD", o, fld, "termo inteiro e forma indexada (attr.N) no mesmo atributo")
+                    return
+                n = int(segs[-1])
+                if n in lst["__list__"]:
+                    ctx.issue("DUPLICATE_FIELD", o, fld, f"índice {n} com dois valores no plano")
+                    return
+                lst["__list__"][n] = expr
+                note = f"passo {o}: {'.'.join(segs[:-1])} indexado (C26-LIST: prefira termo list)"
+                if note not in ctx.notes:
+                    ctx.notes.append(note)
+                return
             if not (isinstance(ty, list) and ty and ty[0] in ("object", "map")):
                 ctx.issue("FIELD_NOT_IN_SCHEMA", o, fld, f"{seg} é atributo {ty!r}, sem subcampo")
                 return
@@ -313,6 +365,22 @@ def place(ctx: Ctx, step: dict, root: dict, tree: dict, fld: str, expr, is_liter
             return
         ctx.issue("FIELD_NOT_IN_SCHEMA", o, fld, f"segmento {seg!r} não existe no schema fixado")
         return
+
+
+def close_lists(ctx: Ctx, o: int, tree: dict, prefix: str):
+    """Forma indexada -> lista na ordem dos índices; índices têm de ser 0..n-1 (buraco = INDEX_GAP)."""
+    for k in list(tree["attrs"]):
+        v = tree["attrs"][k]
+        if isinstance(v, dict) and "__list__" in v:
+            idx = sorted(v["__list__"])
+            if idx != list(range(len(idx))):
+                ctx.issue("INDEX_GAP", o, prefix + k, f"índices {idx} não são 0..{len(idx) - 1}")
+                del tree["attrs"][k]
+                continue
+            tree["attrs"][k] = H.ListE(tuple(v["__list__"][i] for i in idx))
+    for k, insts in tree["blocks"].items():
+        for i, t in enumerate(insts):
+            close_lists(ctx, o, t, f"{prefix}{k}[{i}].")
 
 
 def check_required(ctx: Ctx, o: int, node: dict, tree: dict, prefix: str, reported=frozenset()):
@@ -400,7 +468,7 @@ def render_plan(plan: dict, graph: dict | None, sch: S.Schema, tmpl: dict,
                 continue
             lit = v["term"]["kind"] == "literal"
             n_before = len(ctx.issues)
-            place(ctx, step, root, tree, v["field"], e, lit, v["term"].get("value"))
+            place(ctx, step, root, tree, v["field"], e, lit, v["term"].get("value"), v["term"]["kind"])
             if len(ctx.issues) == n_before:
                 ctx.entries.append({"address": addr, "field": v["field"], "origin": f"plan.values.{v['origin']}",
                                     "marked": v["marked"], "order": o, "term_kinds": sorted(set(kinds))})
@@ -422,6 +490,7 @@ def render_plan(plan: dict, graph: dict | None, sch: S.Schema, tmpl: dict,
                 for k in applied:
                     ctx.entries.append({"address": addr, "field": f"tags.{k}", "origin": "harness.ownership_tag",
                                         "order": o, "value": ownership_tags[k]})
+        close_lists(ctx, o, tree, "")
         check_required(ctx, o, root, tree, "", frozenset(reported))
         body = tree_body(tree)
         if step["depends_on"]:
@@ -431,6 +500,7 @@ def render_plan(plan: dict, graph: dict | None, sch: S.Schema, tmpl: dict,
                                 "value": deps})
         blocks_out.append(H.Block(kind, (step["resource_type"], ctx.labels[o]), body))
     r.issues = ctx.issues
+    r.notes = list(ctx.notes)
     codes = {i.code for i in ctx.issues}
     if codes & INVALID_CODES:
         r.status = "INVALID_PLAN"
@@ -461,6 +531,7 @@ def render_plan(plan: dict, graph: dict | None, sch: S.Schema, tmpl: dict,
         "typed_choices": [dict(ch, order=s["order"]) for s in plan["steps"] for ch in s["typed_choices"]],
         "symbolic_unknowns": [dict(u, order=s["order"]) for s in plan["steps"] for u in s["symbolic_unknowns"]],
         "main_tf_sha256": sha256_bytes(r.main_tf.encode()),
+        "notes": list(ctx.notes),
     }
     return r
 
@@ -505,7 +576,7 @@ def render_file(plan_path: Path, out: Path, graph_path: Path | None = None, plan
     for r in results:
         row = {"plan_id": r.plan_id, "graph_id": r.graph_id, "case_id": r.case_id,
                "target_provider": r.target_provider, "status": r.status,
-               "issues": [i.as_dict() for i in r.issues]}
+               "issues": [i.as_dict() for i in r.issues], "notes": list(r.notes)}
         if r.status == "RENDERED":
             d = out if single else out / r.plan_id
             d.mkdir(parents=True, exist_ok=True)

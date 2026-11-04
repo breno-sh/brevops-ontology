@@ -31,9 +31,10 @@ def sa_values(*drop):
 def test_reference_set_status_and_golden(work):
     rep = R.render_file(REF / "lowering_plan.jsonl", work / "out")
     st = {p["plan_id"]: p["status"] for p in rep["plans"]}
-    assert st == {"LP-AZREF-0001": "RENDERED", "LP-AZREF-0002": "RENDERED", "LP-AZREF-0003": "BLOCKED"}
+    assert st == {"LP-AZREF-0001": "RENDERED", "LP-AZREF-0002": "RENDERED", "LP-AZREF-0003": "BLOCKED",
+                  "LP-AZREF-0004": "RENDERED"}
     assert rep["layout"] == "per_plan"
-    for pid in ("LP-AZREF-0001", "LP-AZREF-0002"):
+    for pid in ("LP-AZREF-0001", "LP-AZREF-0002", "LP-AZREF-0004"):
         got = (work / "out" / pid / "main.tf").read_text()
         assert got == (FIX / "golden" / f"{pid}.main.tf").read_text(), pid
     assert not (work / "out" / "LP-AZREF-0003").exists()
@@ -297,3 +298,111 @@ def test_reference_modules_pass_offline_validate_with_pinned_provider(work):
     (bad / "main.tf").write_text(t)
     ok, msg = tf.validate_offline(bad, lock)
     assert not ok and "min_tls_versao" in msg
+
+
+# ------------------------------------------------------------------------------------------------ termo list (C00 3.1.0)
+ASG = "azurerm_application_security_group"
+
+
+def asg_ref(node, attr="id"):
+    return {"kind": "reference", "target_type": ASG, "target_address": f"{ASG}.SYM-0000eeee4444ff0{node[-1]}",
+            "attribute": attr, "target_node": node}
+
+
+def rule_steps(extra, drop=()):
+    base = [val("resource_group_name", RG_REF), val("network_security_group_name", lit("string", "nsg-x")),
+            val("priority", lit("number", 100)), val("direction", lit("string", "Inbound")),
+            val("access", lit("string", "Allow")), val("protocol", lit("string", "Tcp"))]
+    base = [v for v in base if v["field"] not in drop]
+    asg = [step(n, f"r{n}", ASG, [val("resource_group_name", RG_REF), val("location", lit("string", "brazilsouth"))],
+                deps=[1], name=f"bo-{{t1}}-asg{n}") for n in (2, 3)]
+    return [rg_step()] + asg + [step(4, "r4", "azurerm_network_security_rule", base + extra, deps=[1, 2, 3],
+                                     name="bo-{t1}-rule")]
+
+
+def rule_body(text):
+    k = '"azurerm_network_security_rule"'
+    return next(b[k]['"r4"'] for b in hcl2.loads(text)["resource"] if k in b)
+
+
+def rule_hcl(work, extra, **kw):
+    row, out = rend(work, rule_steps(extra), **kw)
+    return row, (out / "main.tf").read_text() if row["status"] == "RENDERED" else None
+
+
+def test_list_de_literais(work):
+    row, tf_ = rule_hcl(work, [val("destination_port_ranges", {"kind": "list", "items": [
+        lit("string", "22"), lit("string", "443")]})])
+    assert row["status"] == "RENDERED", row["issues"]
+    assert '["22", "443"]' in tf_
+    body = rule_body(tf_)
+    assert body["destination_port_ranges"] == ['"22"', '"443"']
+
+
+def test_list_de_referencias_por_no_e_vazia(work):
+    row, tf_ = rule_hcl(work, [val("source_application_security_group_ids", {"kind": "list", "items": [
+        asg_ref("r3"), asg_ref("r2")]}), val("destination_application_security_group_ids", {"kind": "list", "items": []})])
+    assert row["status"] == "RENDERED", row["issues"]
+    assert f"[{ASG}.r3.id, {ASG}.r2.id]" in tf_          # ordem do plano, alvo escolhido pelo nó
+    body = rule_body(tf_)
+    assert body["destination_application_security_group_ids"] == []
+
+
+def test_forma_indexada_antiga_vira_lista_com_nota(work):
+    row, tf_ = rule_hcl(work, [val("source_application_security_group_ids.1", asg_ref("r3")),
+                               val("source_application_security_group_ids.0", asg_ref("r2"))])
+    assert row["status"] == "RENDERED", row["issues"]
+    assert f"[{ASG}.r2.id, {ASG}.r3.id]" in tf_
+    assert any("C26-LIST" in n for n in row["notes"])
+
+
+def test_forma_indexada_com_buraco_e_recusada(work):
+    row, tf_ = rule_hcl(work, [val("source_application_security_group_ids.0", asg_ref("r2")),
+                               val("source_application_security_group_ids.2", asg_ref("r3"))])
+    assert row["status"] == "INVALID_PLAN" and tf_ is None
+    assert ("INDEX_GAP", "source_application_security_group_ids") in codes(row)
+
+
+def test_mistura_de_list_e_indice_e_duplicado(work):
+    for order in (0, 1):
+        vals = [val("source_application_security_group_ids", {"kind": "list", "items": [asg_ref("r2")]}),
+                val("source_application_security_group_ids.0", asg_ref("r3"))]
+        row, tf_ = rule_hcl(work, vals if order == 0 else vals[::-1])
+        assert row["status"] == "INVALID_PLAN" and tf_ is None
+        assert any(c == "DUPLICATE_FIELD" for c, _ in codes(row))
+
+
+def test_list_em_atributo_que_nao_e_lista(work):
+    row, tf_ = rule_hcl(work, [val("source_port_range", {"kind": "list", "items": [lit("string", "*")]})])
+    assert row["status"] == "INVALID_PLAN" and tf_ is None
+    assert ("TERM_DATATYPE", "source_port_range") in codes(row)
+
+
+@pytest.mark.parametrize("item,code", [
+    ({"kind": "withheld", "reason": "secret"}, "BAD_EXPRESSION"),
+    ({"kind": "list", "items": []}, "BAD_EXPRESSION"),
+    (SYM, "UNKNOWN_SYMBOLIC_INPUT"),
+])
+def test_item_que_nao_cabe_na_lista(work, item, code):
+    row, tf_ = rule_hcl(work, [val("destination_port_ranges", {"kind": "list", "items": [lit("string", "22"), item]})])
+    assert row["status"] != "RENDERED" and tf_ is None
+    assert ("%s" % code, "destination_port_ranges") in codes(row)
+
+
+def test_referencia_da_lista_obedece_depends_on(work):
+    steps = rule_steps([val("source_application_security_group_ids", {"kind": "list", "items": [asg_ref("r3")]})])
+    steps[-1]["depends_on"] = [1, 2]                     # r3 fora do depends_on do passo
+    plan, graph = plan_with(steps)
+    p = write_plan(work, plan, graph)
+    with pytest.raises(HarnessError, match="validador C26"):       # o C26-TARGET já recusa na entrada
+        R.render_file(p, work / "out")
+    rep = R.render_file(p, work / "out2", validate=False)          # e o renderizador recusa de novo
+    row = rep["plans"][0]
+    assert row["status"] == "BLOCKED" and ("UNKNOWN_INPUT", "source_application_security_group_ids") in codes(row)
+
+
+def test_lista_do_plano_de_referencia_valida_offline(work):
+    R.render_file(REF / "lowering_plan.jsonl", work / "out", plan_id="LP-AZREF-0004")
+    from bo.harness.azurerm._common import templates_dir
+    ok, msg = tf.validate_offline(work / "out", templates_dir() / "terraform.lock.hcl")
+    assert ok, msg
