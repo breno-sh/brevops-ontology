@@ -102,6 +102,10 @@ AMENDMENTS = [
     {"contract": "C26", "from": "1.2.0", "to": "1.3.0", "at": "2026-11-04T13:00:00-03:00", "requested_by": "PILOT-NET-E2E",
      "source": "results/PILOT-NET-E2E/CONTRACT_CHANGE.txt (CC-NET-E2E-1)",
      "change": "C26-LIST: lista de referências como termo list, não campo indexado"},
+    # ---- emenda 8 (2026-11-04, TRANSFORMS)
+    {"contract": "C10", "from": "3.0.0", "to": "3.1.0", "at": "2026-11-04T12:40:00-03:00", "requested_by": "TRANSFORMS",
+     "source": "bo-transforms/results/TRANSFORMS/CONTRACT_CHANGE.txt",
+     "change": "portas e domínio/codomínio aceitam list/set/map com item_type e key_type (C10-COLL)"},
 ]
 
 

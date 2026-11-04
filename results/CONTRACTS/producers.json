@@ -1,7 +1,7 @@
 {
  "schema": "bo.contracts_producers/1",
  "module": "CONTRACTS",
- "generated_at": "2026-11-04T12:18:13-03:00",
+ "generated_at": "2026-11-04T12:43:39-03:00",
  "checked": 21,
  "ok": 21,
  "files": [
@@ -55,7 +55,7 @@
    "file": "results/SEMANTICS/C09_proposta/examples.sssom.tsv",
    "kind": "C09:correspondences",
    "why": "C09 (proposta do SEMANTICS)",
-   "items": 20,
+   "items": 22,
    "ok": true,
    "errors": []
   },
@@ -145,7 +145,7 @@
    "file": "results/SEMANTICS/MANIFEST.sha256",
    "kind": "C17:manifest",
    "why": "C17",
-   "items": 18,
+   "items": 19,
    "ok": true,
    "errors": []
   },

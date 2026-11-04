@@ -444,7 +444,7 @@ def c09() -> dict:
 
 # ------------------------------------------------------------------------------------------------- C10
 def c10() -> dict:
-    tdoc = {**hdr("bo.transforms/1", "C10", "3.0.0", "TRANSFORMS"),
+    tdoc = {**hdr("bo.transforms/1", "C10", "3.1.0", "TRANSFORMS"),
             "scalar": [
                 {"name": "identity", "kind": "scalar",
                  "domain": {"datatype": "any", "quantity_kind": "NOT_APPLICABLE", "unit": "NOT_APPLICABLE"},
@@ -470,7 +470,18 @@ def c10() -> dict:
                 {"name": "join_port_range", "kind": "tuple",
                  "inputs": [{"name": "from_port", "datatype": "integer"}, {"name": "to_port", "datatype": "integer"}],
                  "outputs": [{"name": "ports", "datatype": "string"}], "precondition": "from_port <= to_port",
-                 "error": "OutOfDomain", "loss": "nenhuma", "inverse": {"name": "split_port_range", "partial": False}}]}
+                 "error": "OutOfDomain", "loss": "nenhuma", "inverse": {"name": "split_port_range", "partial": False}},
+                {"name": "wrap_list", "kind": "tuple", "inputs": [{"name": "value", "datatype": "string"}],
+                 "outputs": [{"name": "items", "datatype": "list",
+                              "item_type": {"datatype": "string", "quantity_kind": "NOT_APPLICABLE",
+                                            "unit": "NOT_APPLICABLE"}}],
+                 "precondition": "valor escalar presente", "error": "nunca", "loss": "nenhuma",
+                 "inverse": {"name": "unwrap_single", "partial": True}},
+                {"name": "unwrap_single", "kind": "tuple",
+                 "inputs": [{"name": "items", "datatype": "list",
+                             "item_type": {"datatype": "string", "quantity_kind": "NOT_APPLICABLE", "unit": "NOT_APPLICABLE"}}],
+                 "outputs": [{"name": "value", "datatype": "string"}], "precondition": "lista com um elemento",
+                 "error": "OutOfDomain", "loss": "nenhuma", "inverse": {"name": "wrap_list", "partial": False}}]}
     gram = adopted("C10_conditions_grammar")
     gram["sat_tests"] = [
         {"test_id": "SAT-EDITION-ONE", "guard": {"all": EDITION_STD}, "expected": "SAT"},

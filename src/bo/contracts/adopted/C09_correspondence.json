@@ -228,11 +228,26 @@
       "string",
       "enum",
       "duration",
-      "tuple"
+      "tuple",
+      "list",
+      "set",
+      "map"
      ]
     },
     "enum": {
      "type": "array"
+    },
+    "item_type": {
+     "description": "list/set/map: tipo do elemento (emenda 2; C09 3.2.0)",
+     "type": "object"
+    },
+    "key_type": {
+     "description": "map: tipo da chave",
+     "enum": [
+      "string",
+      "integer",
+      "enum"
+     ]
     },
     "quantity_kind": {
      "description": "IRI QUDT (quantitykind:...) | NOT_APPLICABLE | UNKNOWN",
@@ -340,11 +355,26 @@
       "string",
       "enum",
       "duration",
-      "tuple"
+      "tuple",
+      "list",
+      "set",
+      "map"
      ]
     },
     "enum": {
      "type": "array"
+    },
+    "item_type": {
+     "description": "list/set/map: tipo do elemento (emenda 2; C09 3.2.0)",
+     "type": "object"
+    },
+    "key_type": {
+     "description": "map: tipo da chave",
+     "enum": [
+      "string",
+      "integer",
+      "enum"
+     ]
     },
     "quantity_kind": {
      "description": "IRI QUDT (quantitykind:...) | NOT_APPLICABLE | UNKNOWN",

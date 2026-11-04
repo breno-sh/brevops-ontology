@@ -1,6 +1,6 @@
 schema: bo.transforms/1
 contract: C10
-contract_version: 3.0.0
+contract_version: 3.1.0
 module: TRANSFORMS
 generated_at: '2026-11-03T08:00:00-03:00'
 scalar:
@@ -90,4 +90,40 @@ combinators:
   loss: nenhuma
   inverse:
     name: split_port_range
+    partial: false
+- name: wrap_list
+  kind: tuple
+  inputs:
+  - name: value
+    datatype: string
+  outputs:
+  - name: items
+    datatype: list
+    item_type:
+      datatype: string
+      quantity_kind: NOT_APPLICABLE
+      unit: NOT_APPLICABLE
+  precondition: valor escalar presente
+  error: nunca
+  loss: nenhuma
+  inverse:
+    name: unwrap_single
+    partial: true
+- name: unwrap_single
+  kind: tuple
+  inputs:
+  - name: items
+    datatype: list
+    item_type:
+      datatype: string
+      quantity_kind: NOT_APPLICABLE
+      unit: NOT_APPLICABLE
+  outputs:
+  - name: value
+    datatype: string
+  precondition: lista com um elemento
+  error: OutOfDomain
+  loss: nenhuma
+  inverse:
+    name: wrap_list
     partial: false

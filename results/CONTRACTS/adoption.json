@@ -1,7 +1,7 @@
 {
  "schema": "bo.contracts_adoption/1",
  "module": "CONTRACTS",
- "generated_at": "2026-11-04T12:18:12-03:00",
+ "generated_at": "2026-11-04T12:43:38-03:00",
  "adopted": [
   {
    "source": "results/REQUIREMENTS/C24_proposta/requirements.schema.json",
@@ -45,9 +45,9 @@
   },
   {
    "source": "results/SEMANTICS/C09_proposta/correspondence.schema.json",
-   "source_sha256_now": "551887f87c5f130e04d2f9766ff7fd5e6e7881eb4c58f2a5aeda02cc1c483d8a",
+   "source_sha256_now": "dba6c2a3f4aaae6c3299782955fd96fb30f2c7ce3e3543d6c552bac93e268711",
    "frozen_copy": "src/bo/contracts/adopted/C09_correspondence.json",
-   "frozen_sha256": "551887f87c5f130e04d2f9766ff7fd5e6e7881eb4c58f2a5aeda02cc1c483d8a",
+   "frozen_sha256": "dba6c2a3f4aaae6c3299782955fd96fb30f2c7ce3e3543d6c552bac93e268711",
    "drift": false,
    "contract": "C09",
    "definition": "#/$defs/correspondence",
@@ -368,6 +368,15 @@
    "requested_by": "PILOT-NET-E2E",
    "source": "results/PILOT-NET-E2E/CONTRACT_CHANGE.txt (CC-NET-E2E-1)",
    "change": "C26-LIST: lista de referências como termo list, não campo indexado"
+  },
+  {
+   "contract": "C10",
+   "from": "3.0.0",
+   "to": "3.1.0",
+   "at": "2026-11-04T12:40:00-03:00",
+   "requested_by": "TRANSFORMS",
+   "source": "bo-transforms/results/TRANSFORMS/CONTRACT_CHANGE.txt",
+   "change": "portas e domínio/codomínio aceitam list/set/map com item_type e key_type (C10-COLL)"
   }
  ],
  "findings": [

@@ -210,8 +210,13 @@ def c10() -> dict:
                   ["schema", "contract", "contract_version", "form", "roles", "operators", "satisfiability",
                    "evaluation", "composition", "sat_tests"])
     assert set(gram["operators"]) == set(GUARD_OPS)
-    side = obj({"datatype": enum(*SCALARS, "tuple", "number", "any"), "quantity_kind": c00("quantity_kind"),
-                "unit": c00("unit_qudt")}, ["datatype", "quantity_kind"])
+    coll = [{"if": {"properties": {"datatype": {"enum": ["list", "set", "map"]}}}, "then": {"required": ["item_type"]},
+             "else": {"not": {"anyOf": [{"required": ["item_type"]}, {"required": ["key_type"]}]}}},
+            {"if": {"properties": {"datatype": const("map")}}, "then": {"required": ["key_type"]}}]
+    item = {"$ref": f"{BASE_URI}C09/correspondences.schema.json#/$defs/value_type"}
+    side = obj({"datatype": enum(*SCALARS, "tuple", "number", "any", "list", "set", "map"),
+                "item_type": item, "key_type": enum("string", "integer", "enum"), "quantity_kind": c00("quantity_kind"),
+                "unit": c00("unit_qudt")}, ["datatype", "quantity_kind"], allOf=coll)
     scalar = obj({"name": string(r"^[a-z][a-z0-9_]*$"), "kind": const("scalar"), "domain": side, "codomain": side,
                   "precondition": text(3), "error": text(3), "loss": text(3),
                   "inverse": obj({"name": nullable(string(r"^[a-z][a-z0-9_]*$")), "partial": boolean()},
@@ -221,20 +226,23 @@ def c10() -> dict:
                   "duration_calendar": enum("forbidden", "with_context",
                                             description="duração com mês/ano: recusada ou só com contexto de calendário")},
                  ["name", "kind", "domain", "codomain", "precondition", "error", "loss", "inverse"])
-    port = obj({"name": string(r"^[a-z][a-z0-9_]*$"), "datatype": enum(*SCALARS, "tuple", "number", "any")},
-               ["name", "datatype"])
+    port = obj({"name": string(r"^[a-z][a-z0-9_]*$"), "datatype": enum(*SCALARS, "tuple", "number", "any", "list", "set",
+                                                                         "map"),
+                "item_type": item, "key_type": enum("string", "integer", "enum")},
+               ["name", "datatype"], allOf=coll,
+               description="porta de combinador; list/set/map com item_type (value_type do C09 3.2.0) e key_type")
     comb = obj({"name": string(r"^[a-z][a-z0-9_]*$"), "kind": const("tuple"), "inputs": arr(port, 1),
                 "outputs": arr(port, 1), "precondition": text(3), "error": text(3), "loss": text(3),
                 "inverse": obj({"name": nullable(string(r"^[a-z][a-z0-9_]*$")), "partial": boolean()},
                                ["name", "partial"])},
                ["name", "kind", "inputs", "outputs", "precondition", "error", "loss", "inverse"])
-    hp, hr = header("bo.transforms/1", "C10", "3.0.0", module=True)
+    hp, hr = header("bo.transforms/1", "C10", "3.1.0", module=True)
     tdoc = obj({**hp, "scalar": arr(local("scalar_transform"), 1), "combinators": arr(local("combinator"))},
                hr + ["scalar", "combinators"])
     defs = {"guard": guard, "composition_table": comp, "conditions_grammar": grammar, "transforms": tdoc,
             "scalar_transform": scalar, "combinator": comb}
     return contract_schema(
-        "C10", "transforms", "3.0.0", "transformações, gramática de guarda e tabela de composição", status="changed_v3",
+        "C10", "transforms", "3.1.0", "transformações, gramática de guarda e tabela de composição", status="amended",
         description="Transformação escalar (grandeza de entrada = de saída) separada de combinador de tupla; domínio e "
                     "codomínio, pré-condições, erro, perda, inversa parcial; durações com mês/ano só com contexto; "
                     "gramática de guarda tipada e decidível (eq, in, present, refers_to_kind, region_in, edition_in, "
@@ -254,7 +262,9 @@ def c10() -> dict:
                "C10-SAT: cada sat_test dá o resultado esperado em bo.semantics.guards.satisfiable",
                "C10-TABLE: semantic_relation e value_domain_relation cobrem os 25 pares (r1, r2) uma vez cada; "
                "transport_fidelity os 16 pares (f1, f2)",
-               "C10-GUARD: guarda passa no typecheck da gramática"])
+               "C10-GUARD: guarda passa no typecheck da gramática",
+               "C10-COLL: porta (e domínio/codomínio) list/set/map declara item_type (value_type do C09 3.2.0) e map "
+               "declara key_type, espelhando a C09-COLL (emenda 3.1.0, pedido do TRANSFORMS)"])
 
 
 # ------------------------------------------------------------------------------------------------- C11

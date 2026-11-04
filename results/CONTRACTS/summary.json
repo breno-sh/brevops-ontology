@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "CONTRACTS",
- "generated_at": "2026-11-03T01:54:49-03:00",
+ "generated_at": "2026-11-04T12:43:38-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/CONTRACTS.txt",
@@ -16,7 +16,7 @@
    "jsonschema": "4.26.0",
    "draft": "2020-12",
    "generator": "python -I -m bo.contracts.build",
-   "emenda": "2026-11-03 emenda 1 (C01 2.1.0, C09 3.0.1, C11 3.0.1, C13 3.1.0, C18 2.0.1); emenda 2 (C00 3.0.1, C03 3.1.0, C12 3.1.0, C15 3.1.0, C19 3.1.0, C26 1.1.0)"
+   "emenda": "8 (2026-11-04): C10 3.1.0; emendas 1-7 em amendments.py"
   },
   "inputs": [
    {
@@ -27,11 +27,10 @@
    {
     "path": "$BO_REPO/semantics/SEMANTICS.html",
     "kind": "file",
-    "sha256": "28f849eb578fea685935a2499cd13710e8a96b6cd01e4bc34419ae0e51f29596",
-    "sha256_before_semantics_guard_fix": "3d679f40e26b13f7d98da835faa84e74fe9bcdbe7f6cecb507ed590287e409e5"
+    "sha256": "043777b7eb8a4362f267d5b563083d1e01f2811cb9a74de2377ae986252a2993"
    }
   ],
-  "recorded_at": "2026-11-03T01:54:49-03:00"
+  "recorded_at": "2026-11-04T12:43:38-03:00"
  },
  "sources": [
   {
@@ -45,15 +44,10 @@
    "transformation": "lista de slots padrão do sssom_schema 0.15 copiada para spec_b.SSSOM_SLOTS"
   },
   {
-   "uri": "$BO_REPO/results/{REQUIREMENTS,ONTPAT,SEMANTICS,SCHEMALIB}/C*",
-   "license": "interno (propostas e CONTRACT_CHANGE mergeados em bo/base)",
-   "transformation": "incorporadas aos schemas C01, C09, C10, C14 e C24"
-  },
-  {
-   "uri": "bo-pins/results/PINS/CONTRACT_CHANGE.txt",
-   "license": "interno (pedido do PINS via coordenador)",
-   "transformation": "mudança A no catalog.resolve e tipo history_versions no C13"
+   "uri": "$BO_REPO/results/{REQUIREMENTS,ONTPAT,SEMANTICS,SCHEMALIB,PILOT-*,TRANSFORMS}/C*",
+   "license": "interno (propostas e CONTRACT_CHANGE)",
+   "transformation": "incorporadas por emenda versionada (src/bo/contracts/amendments.py)"
   }
  ],
- "notes": "Contratos C00-C29 v3 com emendas 1 e 2 de 2026-11-03 (stubs C26 por provedor, subcategoria/importação C03, endpoints/refs C19, node_id C12, n_known C15, history_versions C13, write_only C01)"
+ "notes": "Contratos C00-C29 v3 com as emendas 1 a 8 (src/bo/contracts/amendments.py)"
 }
