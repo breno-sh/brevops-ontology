@@ -85,8 +85,8 @@ CC-1e (grão segue UNKNOWN nos três que rodam: aws 7, google 5, oci 22): os fat
   not_documented. E2: as assinaturas embutido × separado agora são iguais (aws 2/2), mas iguais em UNKNOWN, o que
   não prova invariância (o critério exige grão decidido).
 
-ADENDO 2026-11-04T09:22:00-03:00 (America/Recife), bo/base com GRAIN a296cd0 (0.1.4) e SERVICE-EVIDENCE 787ab84.
-CC-1d resolvido (build roda nos 4 provedores). Grão: 39 unidades, 2 ENTITY (G4) e 37 UNKNOWN (29 G0-IDENTITY,
+ADENDO 2026-11-04T09:22:00-03:00 (America/Recife), bo/base com GRAIN 0.1.5 (após a296cd0, 0.1.4) e SERVICE-EVIDENCE 787ab84.
+CC-1d resolvido (build roda nos 4 provedores). Grão: 39 unidades, 2 ENTITY (G4) e 37 UNKNOWN (28 G0-IDENTITY, 1 G0-NOMATCH,
 8 G0-NEEDS). E2 registrado como está, sem forçar: 0 de 3 pares com grão decidido; nos 3 pares a assinatura embutido
 × separado é igual (aws ingress/egress: UNKNOWN G0-NEEDS sem lifecycle_controller, owner e effective_scope; regra do
 NSG: UNKNOWN G0-IDENTITY sem identity). Primeiro merge feito com este estado, por decisão do coordenador (o

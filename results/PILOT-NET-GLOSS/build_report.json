@@ -74,7 +74,7 @@
    ]
   }
  ],
- "generated_at": "2026-11-04T09:25:03-03:00",
+ "generated_at": "2026-11-04T09:32:43-03:00",
  "glossary": {
   "anchors": 52,
   "anchors_by_kind": {
@@ -104,16 +104,17 @@
    "UNKNOWN": 37
   },
   "by_rule": {
-   "GRAIN-G0-IDENTITY": 29,
+   "GRAIN-G0-IDENTITY": 28,
    "GRAIN-G0-NEEDS": 8,
+   "GRAIN-G0-NOMATCH": 1,
    "GRAIN-G4-ENTITY": 2
   },
   "missing": {
    "api_resource": 4,
    "effective_scope": 27,
-   "identity": 29,
+   "identity": 28,
    "lifecycle_controller": 28,
-   "owner": 28
+   "owner": 27
   },
   "units": 39,
   "units_by_provider": {
