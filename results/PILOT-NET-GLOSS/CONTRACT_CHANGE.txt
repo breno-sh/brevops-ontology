@@ -112,3 +112,9 @@ nada de decisão C20: SN-NET-0001/0002 seguem notas e os AMBIGUOUS do mapeador f
 de permissão, ligado aos tipos da fatia; com ele, o glossário registra a decisão com evidence_ref C25.
 Também a partir daqui: o build grava em $BO_DATA/PILOT-NET-GLOSS/.staging e só `build --publish`, dentro da trava,
 troca o publicado.
+
+ADENDO 2026-11-04T14:32:00-03:00 (America/Recife), rodada final antes do PILOT-EXIT 2/2: GRAIN cbe1f08 (0.1.10, T63
+attachment_attribute), SE 28faee8, árbitro 7fc1a85, BRIEFS 49293d8. Grão: 40 unidades (1 BINDING, 6 COMPONENT,
+5 ENTITY, 2 FACET, 26 UNKNOWN; 20 G0-IDENTITY, 6 G0-NEEDS). E2: 3 de 3. As duas anexações do NSG passaram de
+G0-IDENTITY para G0-NEEDS (identidade resolvida; faltam ciclo de vida, dono e alcance). Glossário inalterado.
+F-5 segue sem frase publicada: SN-NET-0001/0002 continuam notas.

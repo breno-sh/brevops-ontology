@@ -54,7 +54,7 @@
    ]
   }
  ],
- "generated_at": "2026-11-04T14:00:58-03:00",
+ "generated_at": "2026-11-04T14:31:21-03:00",
  "glossary": {
   "anchors": 52,
   "anchors_by_kind": {
@@ -87,8 +87,8 @@
    "UNKNOWN": 26
   },
   "by_rule": {
-   "GRAIN-G0-IDENTITY": 22,
-   "GRAIN-G0-NEEDS": 4,
+   "GRAIN-G0-IDENTITY": 20,
+   "GRAIN-G0-NEEDS": 6,
    "GRAIN-G1-BINDING": 1,
    "GRAIN-G2-CHILD": 2,
    "GRAIN-G2-COMPONENT": 4,
@@ -99,9 +99,9 @@
   "missing": {
    "api_resource": 4,
    "effective_scope": 22,
-   "identity": 22,
-   "lifecycle_controller": 21,
-   "owner": 21
+   "identity": 20,
+   "lifecycle_controller": 22,
+   "owner": 22
   },
   "units": 40,
   "units_by_provider": {
@@ -110,7 +110,7 @@
    "google": 6,
    "oci": 22
   },
-  "unknown_reasons": 188
+  "unknown_reasons": 190
  },
  "module": "PILOT-NET-GLOSS",
  "schema": "bo.pilot_gloss_report/1"

@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "PILOT-NET-GLOSS",
- "generated_at": "2026-11-04T13:06:59-03:00",
+ "generated_at": "2026-11-04T14:31:02-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-NET-GLOSS.txt",
@@ -20,19 +20,19 @@
    "model_extracted_anchors_n": "0",
    "unresolved_anchors_n": "1",
    "training_projection_receipt": "none",
-   "grain_rules_version": "0.1.9",
+   "grain_rules_version": "0.1.10",
    "e2_inline_equal_decided": "3/3"
   },
   "inputs": [
    {
     "path": "$BO_REPO/grain/grain_rules.yaml",
     "kind": "file",
-    "sha256": "8b64e1da690c62a4edb2b05c1ec25585f8c24dc1fb99a375413a91797eb6efa0"
+    "sha256": "18ec9b34aba54dbb7378bee55a6f9431e665d349683e4f479a2a8e9c254cde9d"
    },
    {
     "path": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl",
     "kind": "file",
-    "sha256": "73047e02fdbe29ef9666b7a5e63773946b85e54c3a76e56b26e9210a5ea2af4a"
+    "sha256": "d77a4f6ab71937a3a2f30729d721231f5ceaec764a15de79599d2653c0b83d9e"
    },
    {
     "path": "$BO_DATA/UNITS/value_space.jsonl",
@@ -90,8 +90,8 @@
     "sha256": "99e3dc9d3434e48675fd71eb817145ae63c2159fd041f3c67dd1d308e814287c"
    }
   ],
-  "recorded_at": "2026-11-04T13:06:59-03:00"
+  "recorded_at": "2026-11-04T14:31:02-03:00"
  },
  "sources": [],
- "notes": "tentativa 2: E2 3/3; grão 40 unidades, 26 UNKNOWN"
+ "notes": "rodada final antes do PILOT-EXIT 2/2: E2 3/3; grão 40 unidades, 26 UNKNOWN"
 }
