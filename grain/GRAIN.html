@@ -26,9 +26,9 @@ code,.fx{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.8rem}
 nav a{margin-right:10px;font-size:.88rem;color:var(--accent)}
 ol li,ul li{margin:3px 0}</style></head><body><main>
 <h1>Procedimento de grão canônico</h1>
-<div class="meta">Módulo GRAIN · contrato de saída C19 3.0.0 · regras 0.1.1
+<div class="meta">Módulo GRAIN · contrato de saída C19 3.1.0 · regras 0.1.1
 <b class="unk">PROVISIONAL</b> (definitivas só depois de GRAIN-REPRO, PILOT-EXIT) · escrito em
-2026-11-04T03:00:00-03:00 (America/Recife) · grain_rules.yaml sha256 ee6e3efb33c78d91… · responde a R1-M2, R1-M7, R2-W2,
+2026-11-04T03:00:00-03:00 (America/Recife) · grain_rules.yaml sha256 73718615d5d4a898… · responde a R1-M2, R1-M7, R2-W2,
 Gemini A3/A6, GPT-6 F1/S1</div>
 <div class="kpis">
 <div class="kpi"><b>6</b>regras (G0–G4 e G0-NOMATCH)</div>
@@ -142,7 +142,7 @@ G3 falha e o resultado é UNKNOWN com <code>owner</code>. A alternativa "declara
 3.0.0 (owner é um só objeto); ver Achados.</li>
 <li>Pontas do vínculo (G1): papel → alvo, para cada referência da chave; <code>$parent</code> recebe o papel
 <code>parent_role</code>.</li>
-<li>Pai emitido: G2 = alvo do ciclo de vida; G3 = alvo do dono (depois da troca por vínculo); G1, G4 = nenhum.</li></ul><h2 id="c19">Saída C19 (camada de schema)</h2><div class="wrap"><table><thead><tr><th>campo</th><th>valor</th></tr></thead><tbody><tr><td><code>unit_id</code></td><td><code>CU-&lt;provider&gt;-&lt;candidato&gt;</code> (candidato com <code>:</code> para grupo)</td></tr><tr><td><code>kind</code></td><td>grão decidido</td></tr><tr><td><code>layers.terraform</code></td><td>resource_type e block_path (blocos separados por ponto; ausente no topo)</td></tr><tr><td><code>layers.domain_unit</code></td><td>rótulo da API (<code>api_resource.label</code>); sem ele, o último nome do candidato</td></tr><tr><td><code>layers.api_resource</code></td><td>service e resource da alegação de API, quando os dois existem</td></tr><tr><td><code>identity</code></td><td>evidence = fontes de identity/import_key/element_name_key, mais um item derivado por ponta de vínculo com <code>ref = endpoint:&lt;papel&gt;=&lt;unit_id&gt;</code>; key_fields, anonymous e occurrence_key = chave própria quando anônimo (senão vazio)</td></tr><tr><td><code>lifecycle_controller / owner / effective_scope</code></td><td>kind consolidado (UNKNOWN se está em missing) e ref = unit_id do alvo; owner leva o primeiro alvo (um só, depois da troca por vínculo)</td></tr><tr><td><code>evidence</code></td><td>fontes de todas as alegações do candidato (sem repetição)</td></tr><tr><td><code>rule_applied / missing_evidence</code></td><td>regra ou desfecho; campos que faltam na ordem identity, lifecycle_controller, owner, effective_scope, api_resource</td></tr><tr><td><code>canonical_atoms</code></td><td>um registro por atributo do schema: atom_id, unit_id da unidade (ou do pai efetivo do transparente), path_in_unit, role do C04 quando informado</td></tr></tbody></table></div><h2 id="instancia">Camada de instância e identidade de ocorrência</h2>
+<li>Pai emitido: G2 = alvo do ciclo de vida; G3 = alvo do dono (depois da troca por vínculo); G1, G4 = nenhum.</li></ul><h2 id="c19">Saída C19 (camada de schema)</h2><div class="wrap"><table><thead><tr><th>campo</th><th>valor</th></tr></thead><tbody><tr><td><code>unit_id</code></td><td><code>CU-&lt;provider&gt;-&lt;candidato&gt;</code> (candidato com <code>:</code> para grupo)</td></tr><tr><td><code>kind</code></td><td>grão decidido</td></tr><tr><td><code>layers.terraform</code></td><td>resource_type e block_path (blocos separados por ponto; ausente no topo)</td></tr><tr><td><code>layers.domain_unit</code></td><td>rótulo da API (<code>api_resource.label</code>); sem ele, o último nome do candidato</td></tr><tr><td><code>layers.api_resource</code></td><td>service e resource da alegação de API, quando os dois existem</td></tr><tr><td><code>identity</code></td><td>evidence = fontes de identity/import_key/element_name_key; key_fields, anonymous e occurrence_key = chave própria quando anônimo (senão vazio)</td></tr><tr><td><code>endpoints</code></td><td>só em BINDING: <code>[{role, unit_id}]</code> ordenado por papel; <code>$parent</code> leva o papel <code>parent_role</code> (C19 3.1.0)</td></tr><tr><td><code>lifecycle_controller / owner / effective_scope</code></td><td>kind consolidado (UNKNOWN se está em missing) e ref = unit_id do alvo; owner leva o primeiro alvo (um só, depois da troca por vínculo)</td></tr><tr><td><code>evidence</code></td><td>fontes de todas as alegações do candidato (sem repetição)</td></tr><tr><td><code>rule_applied / missing_evidence</code></td><td>regra ou desfecho; campos que faltam na ordem identity, lifecycle_controller, owner, effective_scope, api_resource</td></tr><tr><td><code>canonical_atoms</code></td><td>um registro por atributo do schema: atom_id, unit_id da unidade (ou do pai efetivo do transparente), path_in_unit, role do C04 quando informado</td></tr></tbody></table></div><h2 id="instancia">Camada de instância e identidade de ocorrência</h2>
 <p>Configuração: <code>{"provider", "resources": [{"type", "name", "values"}]}</code>; bloco single = objeto;
 list/set = lista; referência = <code>{"$ref": "tipo.nome"}</code>; valor não resolvido =
 <code>{"$unknown": motivo}</code>. Cada recurso, bloco presente e grupo com algum atributo presente vira um nó com a
@@ -228,10 +228,10 @@ sintéticos usavam a mesma convenção e não pegaram. Entraram o adaptador por 
 <li>Emenda 0.1.1 (CC-NET-1): regras embutidas como atributo lista/conjunto de objetos não viravam unidade; agora
 viram bloco repetido (T2) com sub-átomos virtuais, e embutido × separado dá a mesma decomposição com a mesma
 evidência de API.</li>
-<li>C19 3.0.0 não tem campo para as pontas do vínculo nem para uma lista de donos. As pontas vão em
-<code>identity.evidence</code> (<code>endpoint:&lt;papel&gt;=&lt;unit_id&gt;</code>); faceta de vários donos sem vínculo
-entre eles sai UNKNOWN com <code>owner</code>. Proposta de emenda (não bloqueante, para o coordenador):
-<code>endpoints [{role, unit_id}]</code> e <code>owner.refs []</code>. O C25 1.0.0 não tem fact_kind para chave de nome
+<li>A emenda 3.1.0 do C19 (CONTRACTS) trouxe <code>endpoints</code> e <code>owner.refs</code>, propostos aqui: as pontas
+do vínculo saem em <code>endpoints</code> (antes iam em <code>identity.evidence</code>). Faceta de vários donos SEM vínculo
+entre eles continua UNKNOWN com <code>owner</code> nas regras 0.1.1; usar <code>owner.refs</code> para ela é decisão de
+regra (G3 tem um só pai) e fica para emenda depois do GRAIN-REPRO. O C25 1.0.0 não tem fact_kind para chave de nome
 nem para alvo de referência; a convenção de <code>value</code> acima os carrega.</li></ul><h2 id="limites">Limites</h2><ul>
 <li>Tudo aqui roda em mundos sintéticos (provedores <code>provider_a</code> a <code>provider_h</code>); os 4 schemas reais
 entram no DECOMPOSE, e o GRAIN-REPRO roda os gabaritos adversariais reais.</li>

@@ -6,7 +6,7 @@ Toda referência resolvida da camada Terraform (campo de referência com alvo) t
 domínio de exatamente uma forma: como pai (componente ou faceta), como ponta de vínculo, como dono/alcance,
 ou como referência simples entre unidades (átomo de referência atribuído à unidade de origem). Nenhuma some
 porque o grão mudou de embalagem. Nas entradas do DECOMPOSE, as unidades C19 publicadas são conferidas
-contra as relações recalculadas (pai, dono, alcance, pontas em identity.evidence).
+contra as relações recalculadas (pai, dono, alcance, pontas em endpoints).
 --fixtures roda nos mundos sintéticos, confere a mesma assinatura de relações entre as embalagens do
 contêiner e entre anexação embutida e separada, e um controle quebrado (relação apagada) tem de reprovar.
 """
@@ -79,7 +79,7 @@ def relations(res: S.SchemaResult, keep=None) -> tuple[list, list]:
 def c19_relations(units: list[dict]) -> dict:
     out = {}
     for u in units:
-        ends = sorted(e["ref"] for e in u["identity"]["evidence"] if str(e.get("ref", "")).startswith("endpoint:"))
+        ends = sorted(f"{e['role']}={e['unit_id']}" for e in u.get("endpoints", []))
         out[u["unit_id"]] = (u["owner"].get("ref"), u["lifecycle_controller"].get("ref"),
                              u["effective_scope"].get("ref"), tuple(ends))
     return out

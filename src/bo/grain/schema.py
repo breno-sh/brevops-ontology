@@ -208,14 +208,10 @@ def _evidence_items(n: Node, d: Decision) -> list:
     return items
 
 
-ENDPOINT_REF = "endpoint:{role}={unit}"
-
-
 def to_c19(res: SchemaResult, atom_roles: dict | None = None) -> tuple[list[dict], list[dict]]:
     """Registros C19 (canonical_units, canonical_atoms) da decomposição de schema.
 
-    As pontas de um vínculo vão em identity.evidence como itens derivados com ref = endpoint:<papel>=<unit_id>
-    (o C19 3.0.0 não tem campo próprio para elas). atom_roles: atom_id -> papel do C04 (ROLES), opcional."""
+    As pontas de um vínculo vão no campo endpoints [{role, unit_id}] (C19 3.1.0). atom_roles: atom_id -> papel do C04 (ROLES), opcional."""
     units, atoms = [], []
     uid = {cid: unit_id(res.provider, cid) for cid in res.nodes}
     for cid in sorted(res.nodes):
@@ -226,9 +222,6 @@ def to_c19(res: SchemaResult, atom_roles: dict | None = None) -> tuple[list[dict
         if d.api and d.api.get("service") and d.api.get("resource"):
             layers["api_resource"] = {"service": d.api["service"], "resource": d.api["resource"]}
         ident_ev = n.ev.sources(("identity", "import_key", "element_name_key"))
-        for role, t in sorted(d.endpoints.items()):
-            ident_ev.append({"level": "derived", "ref": ENDPOINT_REF.format(role=role, unit=uid[t]),
-                             "note": "ponta do vínculo (identidade = tupla das pontas)"})
         rec = {
             "unit_id": uid[cid], "provider": res.provider, "kind": d.grain, "layers": layers,
             "identity": {"evidence": ident_ev, "key_fields": list(d.identity.key_fields),
@@ -239,6 +232,8 @@ def to_c19(res: SchemaResult, atom_roles: dict | None = None) -> tuple[list[dict
             "effective_scope": _ref(d.scope["kind"], d.scope.get("target"), uid),
             "evidence": _evidence_items(n, d), "rule_applied": d.rule, "missing_evidence": list(d.missing),
         }
+        if d.grain == "BINDING" and d.endpoints:
+            rec["endpoints"] = [{"role": role, "unit_id": uid[t]} for role, t in sorted(d.endpoints.items())]
         units.append(rec)
     for aid in sorted(res.atom_owner):
         unit, rel = res.atom_owner[aid]

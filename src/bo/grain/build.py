@@ -295,9 +295,10 @@ G3 falha e o resultado é UNKNOWN com <code>owner</code>. A alternativa "declara
         [_code("layers.terraform"), "resource_type e block_path (blocos separados por ponto; ausente no topo)"],
         [_code("layers.domain_unit"), "rótulo da API (<code>api_resource.label</code>); sem ele, o último nome do candidato"],
         [_code("layers.api_resource"), "service e resource da alegação de API, quando os dois existem"],
-        [_code("identity"), "evidence = fontes de identity/import_key/element_name_key, mais um item derivado por ponta de "
-                            "vínculo com <code>ref = endpoint:&lt;papel&gt;=&lt;unit_id&gt;</code>; key_fields, anonymous e "
+        [_code("identity"), "evidence = fontes de identity/import_key/element_name_key; key_fields, anonymous e "
                             "occurrence_key = chave própria quando anônimo (senão vazio)"],
+        [_code("endpoints"), "só em BINDING: <code>[{role, unit_id}]</code> ordenado por papel; <code>$parent</code> leva o "
+                             "papel <code>parent_role</code> (C19 3.1.0)"],
         [_code("lifecycle_controller / owner / effective_scope"), "kind consolidado (UNKNOWN se está em missing) e ref = unit_id do "
                                                                  "alvo; owner leva o primeiro alvo (um só, depois da troca por vínculo)"],
         [_code("evidence"), "fontes de todas as alegações do candidato (sem repetição)"],
@@ -410,10 +411,10 @@ sintéticos usavam a mesma convenção e não pegaram. Entraram o adaptador por 
 <li>Emenda 0.1.1 (CC-NET-1): regras embutidas como atributo lista/conjunto de objetos não viravam unidade; agora
 viram bloco repetido (T2) com sub-átomos virtuais, e embutido × separado dá a mesma decomposição com a mesma
 evidência de API.</li>
-<li>C19 3.0.0 não tem campo para as pontas do vínculo nem para uma lista de donos. As pontas vão em
-<code>identity.evidence</code> (<code>endpoint:&lt;papel&gt;=&lt;unit_id&gt;</code>); faceta de vários donos sem vínculo
-entre eles sai UNKNOWN com <code>owner</code>. Proposta de emenda (não bloqueante, para o coordenador):
-<code>endpoints [{role, unit_id}]</code> e <code>owner.refs []</code>. O C25 1.0.0 não tem fact_kind para chave de nome
+<li>A emenda 3.1.0 do C19 (CONTRACTS) trouxe <code>endpoints</code> e <code>owner.refs</code>, propostos aqui: as pontas
+do vínculo saem em <code>endpoints</code> (antes iam em <code>identity.evidence</code>). Faceta de vários donos SEM vínculo
+entre eles continua UNKNOWN com <code>owner</code> nas regras 0.1.1; usar <code>owner.refs</code> para ela é decisão de
+regra (G3 tem um só pai) e fica para emenda depois do GRAIN-REPRO. O C25 1.0.0 não tem fact_kind para chave de nome
 nem para alvo de referência; a convenção de <code>value</code> acima os carrega.</li></ul>""")
     P.append("""<h2 id="limites">Limites</h2><ul>
 <li>Tudo aqui roda em mundos sintéticos (provedores <code>provider_a</code> a <code>provider_h</code>); os 4 schemas reais

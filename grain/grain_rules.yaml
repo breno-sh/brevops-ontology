@@ -6,7 +6,7 @@
 # cada provedor fica nos adaptadores de evidência, fora deste arquivo.
 schema: bo.grain.rules/1
 contract: C19
-contract_version: 3.0.0
+contract_version: 3.1.0
 rules_version: 0.1.1
 status: PROVISIONAL
 written_at: "2026-11-03T02:00:00-03:00"
@@ -168,6 +168,10 @@ amendments:
     version: 0.1.1
     origin: CC-NET-1 do piloto de rede
     text: passo T2 da normalização (atributo lista ou conjunto de objetos vira bloco repetido com sub-átomos virtuais derivados do tipo cty), para que a regra embutida e a regra separada tenham o mesmo grão
+  - id: GRAIN-A3
+    version: 0.1.1
+    origin: emenda 3.1.0 do contrato de saída
+    text: pontas do vínculo no campo endpoints do contrato de saída, em vez de itens de evidência da identidade
 
 procedural_outcomes:
   # Desfechos do procedimento que não são regras de grão, mas aparecem em rule_applied.
