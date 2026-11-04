@@ -93,6 +93,10 @@ def check_extracted(r: Report, v: str, row: dict, vrow: dict, key: dict | None, 
          f"{v}: GOODSIG da chave vigente da HashiCorp", f"{v}: assinatura sem GOODSIG da chave da HashiCorp")
     r.ok(rec["provider_binary"]["h1"] == rec["lock"]["h1_from_signed_zip"],
          f"{v}: h1 da pasta = h1 do zip assinado", f"{v}: h1 da pasta diverge do zip assinado")
+    lk = C.unportable(rec["lock"].get("path", ""))
+    r.ok(lk.is_file() and C.sha256_file(lk) == rec["lock"].get("sha256")
+         and rec["lock"]["h1_from_signed_zip"] in lk.read_text(encoding="utf-8"),
+         f"{v}: lock guardado com o h1 do zip", f"{v}: lock ausente, alterado ou sem o h1 do zip")
     r.ok(not E.provider_dir(v).exists() and not E.work_dir(v).exists() and rec["provider_binary"]["deleted_after_extract"],
          f"{v}: binário apagado", f"{v}: binário ou pasta de trabalho ainda no disco")
     if key is not None:

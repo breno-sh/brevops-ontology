@@ -221,11 +221,12 @@ def world(monkeypatch, work, schema_file):
     sums = C.download_dir("1.1.0") / "terraform-provider-google_1.1.0_SHA256SUMS"
     sums.write_text("aa" * 32 + "  terraform-provider-google_1.1.0_darwin_arm64.zip\n")
     at = A.write(rd / "schema.json.gz", "1.1.0", C.atoms_path("1.1.0"))
+    lk = S.write_lock(S.locked_provider("1.1.0", {"darwin_arm64": "aa" * 32}, "h1:x="), C.lock_path("1.1.0"))
     rec = {"schema_json": {"sha256": raw_sha},
            "atoms": {**at, "C01_validate": {"ok": True, "records": at["atoms"]}},
            "signed": {"sha256sums": C.portable(sums), "sha256sums_sha256": _sha(sums.read_bytes()),
                       "gpg": {"good": True, "primary_fingerprint": fpr}},
-           "lock": {"h1_from_signed_zip": "h1:x="},
+           "lock": {"path": C.portable(lk), "sha256": _sha(lk.read_bytes()), "h1_from_signed_zip": "h1:x="},
            "provider_binary": {"h1": "h1:x=", "sha256": "e" * 64, "deleted_after_extract": True}}
     C.write_json(C.receipt_path("1.1.0"), rec)
     h = C.history()
@@ -321,6 +322,12 @@ def test_check_reprova_binario_esquecido(world):
     d.mkdir(parents=True)
     (d / "terraform-provider-google_v1.1.0_x5").write_bytes(b"x")
     assert any("ainda no disco" in f for f in _fails())
+
+
+def test_check_reprova_lock_alterado(world):
+    p = C.lock_path("1.1.0")
+    p.write_text(p.read_text().replace("h1:x=", "h1:y="))
+    assert any("lock ausente, alterado" in f for f in _fails())
 
 
 def test_check_reprova_schema_cru_trocado(world):
