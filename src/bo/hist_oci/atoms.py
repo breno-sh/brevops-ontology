@@ -1,9 +1,8 @@
 """Átomos C01 (2.1.0) de uma versão histórica, pela biblioteca única (bo.schema.build).
 
-A bo.schema (SCHEMALIB) grava os campos do C01 2.0.0; o C01 2.1.0 acrescentou o campo opcional write_only
-(ausente = false). Aqui se acrescenta só esse campo, lido do mesmo schema pelo mesmo caminho do átomo, e só nos
-átomos que o schema marca com "write_only": true; sem nenhum marcado, o arquivo sai byte a byte igual ao da
-biblioteca. É a mesma regra do SCHEMA-OCI, para que o átomo do pin seja comparável ao da versão histórica.
+A bo.schema (SCHEMALIB) grava o C01 2.1.0 inteiro, inclusive write_only (só quando o schema o marca, e a regra
+C01-WRITEONLY é conferida lá); aqui nada é reinterpretado: só se conferem as contagens contra o schema cru.
+É a mesma biblioteca do SCHEMA-OCI, para que o átomo do pin seja comparável ao da versão histórica.
 Os tipos (C02) são gerados para contar e conferir, mas não são saída do módulo.
 """
 
@@ -18,33 +17,6 @@ from bo.schema import core
 from . import common
 
 
-def raw_attribute(block: dict, atom: dict) -> dict:
-    b = block
-    for e in atom["block_path"]:
-        b = ((b.get("block_types") or {})[e["block"]]).get("block") or {}
-    return (b.get("attributes") or {})[atom["path"].rsplit(".", 1)[-1]]
-
-
-def write_only_pass(atoms_path: Path, provider_schema: dict) -> dict:
-    rs = provider_schema.get("resource_schemas") or {}
-    out, n_wo, bad = [], 0, []
-    with open(atoms_path, encoding="utf-8") as f:
-        for line in f:
-            a = json.loads(line)
-            raw = raw_attribute(rs[a["resource_type"]].get("block") or {}, a)
-            if raw.get("write_only"):
-                if not a["configurable"] or a["computed"]:
-                    bad.append(a["atom_id"])
-                a["write_only"] = True
-                n_wo += 1
-            out.append(a)
-    if bad:
-        raise core.SchemaError(f"C01-WRITEONLY violada em {len(bad)} átomo(s): {bad[:5]}")
-    if n_wo:
-        core.write_jsonl(atoms_path, out)
-    return {"write_only": n_wo, "atoms_checked": len(out)}
-
-
 def count_schema_attributes(provider_schema: dict) -> int:
     """Nº de entradas 'attributes' em toda a profundidade dos resource_schemas (conferência independente)."""
     def walk(b: dict) -> int:
@@ -54,12 +26,10 @@ def count_schema_attributes(provider_schema: dict) -> int:
 
 
 def make(schema_gz: Path, version: str, atoms_out: Path, types_out: Path) -> dict:
-    """bo.schema.build (C01 2.0.0 + C02) e a passada write_only (C01 2.1.0); confere as contagens."""
+    """bo.schema.build (C01 2.1.0 + C02); confere as contagens contra o schema cru."""
     r = libbuild.build(schema_gz, common.PROVIDER, version, atoms_out, types_out)
     ps = core.providers(core.load(schema_gz))[common.PROVIDER]
-    r.update(write_only_pass(atoms_out, ps))
-    if r.pop("atoms_checked") != r["atoms"]:
-        raise core.SchemaError("passada write_only leu um número de átomos diferente do gravado")
+    r["write_only"] = flag_totals(atoms_out)["write_only"]
     r["data_sources"] = len(ps.get("data_source_schemas") or {})
     r["resource_schemas"] = len(ps.get("resource_schemas") or {})
     r["schema_attributes"] = count_schema_attributes(ps)

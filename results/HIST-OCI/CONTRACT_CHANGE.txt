@@ -1,0 +1,29 @@
+HIST-OCI — mudança proposta numa FERRAMENTA do REPO (tools/privacy_lint.py / src/bo/repo/privacy.py)
+Registrado em 2026-11-04T02:15-03:00 (America/Recife). Nenhum contrato (C01, C13, C17) está errado para o
+HIST-OCI; o canal é este porque é o que o driver lê. Nenhum comando de gate foi trocado ou afrouxado, e os
+atoms_<versão>.jsonl.gz NÃO foram recomprimidos para fugir do achado (isso seria ajustar dado para passar gate).
+
+1. Fato
+   G6 (privacy_lint --strict $BO_REPO/results/HIST-OCI $BO_DATA/HIST-OCI) reprova com 1 achado:
+     atoms_4.114.0.jsonl.gz (binário):286: email (máscara do lint, 9 caracteres)
+   O C01/catálogo pede o formato .jsonl.gz. No modo estrito, um binário é varrido pelas sequências imprimíveis
+   de 6+ bytes. Num gzip essas sequências são ruído do deflate: o "e-mail" é uma sequência de 9 bytes
+   imprimíveis isolada no meio dos bytes comprimidos, que por acaso casa com a regex de e-mail. O conteúdo
+   real foi conferido descomprimido: python -I -m bo.hist_oci.atoms_check passa as 24 versões no C01 e nas
+   MESMAS regras do privacy_lint (bo.repo.privacy.scan_large_text), com 0 achado em cada uma (gate do módulo).
+
+2. Por que é defeito da ferramenta, e não só falso positivo
+   A varredura de imprimíveis num .gz não prova nada nos dois sentidos: acha ruído (este caso) e não vê um
+   e-mail ou ocid1. de verdade que esteja no texto comprimido. Para .gz o --strict passa por vacuidade.
+
+3. Mudança proposta (deixa o lint mais forte, não mais fraco)
+   Em scan_paths, arquivo com sufixo .gz (ou com os bytes mágicos 1f 8b) é descomprimido em fluxo e o texto
+   passa por scan_large_text, linha a linha, como um texto grande; gzip corrompido/ilegível reprova como
+   "ilegivel" no --strict. Só depois, se o conteúdo descomprimido for binário, vale a regra atual de binário.
+   Selftest: um e-mail plantado dentro de um .gz tem de reprovar; um .gz limpo cujo fluxo comprimido contenha
+   uma sequência imprimível parecida com e-mail tem de passar.
+
+4. Estado do HIST-OCI enquanto isso
+   Todos os outros gates passam (ledger no relatório). G6 fica REPROVADO e o G10 (merge) não foi feito: a
+   regra é merge só com todos os gates verdes. Depois da correção no bo/base: rebase, gates de novo e merge
+   sob a trava, sem nenhuma mudança nos dados.
