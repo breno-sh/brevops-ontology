@@ -1,0 +1,458 @@
+{
+ "atoms_used": {
+  "any": 24513,
+  "configurable": 24155,
+  "in_ge5_families": 9949,
+  "not_configurable": 358
+ },
+ "cells_resource_atom": {
+  "literal": 1967463,
+  "symbolic": 2730480,
+  "total": 4797500,
+  "withheld": 99557
+ },
+ "consistency": {
+  "parquet_duplicate_resource": 0,
+  "records_type_mismatch": 0,
+  "records_without_resource": 0,
+  "resources_n_attrs_mismatch": 0
+ },
+ "corpus": {
+  "data_blocks_excluded": 208158,
+  "families": 39961,
+  "managed_resources": 1076821,
+  "managed_resources_type_in_schema": 1076471,
+  "managed_types_present": 1708,
+  "managed_types_present_in_schema": 1567,
+  "managed_types_present_not_in_schema": 141,
+  "modules": 135994,
+  "repos": 44605,
+  "repos_any_block": 46035
+ },
+ "module": "CORPUS-AWS",
+ "name_min_families": 5,
+ "provider": "aws",
+ "records": {
+  "records_data": 687732,
+  "records_dynamic_meta": 74256,
+  "records_embedded_withheld": 31657,
+  "records_exact": 4792714,
+  "records_managed": 5914530,
+  "records_meta": 370976,
+  "records_meta:connection": 2992,
+  "records_meta:count": 174449,
+  "records_meta:depends_on": 69991,
+  "records_meta:for_each": 41288,
+  "records_meta:lifecycle": 46672,
+  "records_meta:provider": 25488,
+  "records_meta:provisioner": 10096,
+  "records_prefix": 637349,
+  "records_type_unknown": 2386,
+  "records_unmatched": 26360,
+  "records_withheld_block_attributed": 8516,
+  "records_withheld_block_unattributed": 1973
+ },
+ "rules_version": "U1-U8/1",
+ "schema": {
+  "atoms": 112893,
+  "atoms_configurable": 108266,
+  "atoms_of_present_types": 109329,
+  "types": 1746,
+  "types_present_in_corpus": 1567
+ },
+ "types_not_in_schema": {
+  "distinct": 136,
+  "records": 2386,
+  "records_not_named": 1688,
+  "top": [
+   {
+    "families": 9,
+    "records": 46,
+    "resource_type": "aws_db_security_group"
+   },
+   {
+    "families": 8,
+    "records": 156,
+    "resource_type": "aws_opsworks_stack"
+   },
+   {
+    "families": 6,
+    "records": 67,
+    "resource_type": "aws_s3_bucket_encryption"
+   },
+   {
+    "families": 5,
+    "records": 168,
+    "resource_type": "aws_opsworks_application"
+   },
+   {
+    "families": 5,
+    "records": 114,
+    "resource_type": "aws_opsworks_instance"
+   },
+   {
+    "families": 5,
+    "records": 98,
+    "resource_type": "aws_opsworks_custom_layer"
+   },
+   {
+    "families": 5,
+    "records": 38,
+    "resource_type": "aws_ce_anomaly_detector"
+   },
+   {
+    "families": 5,
+    "records": 6,
+    "resource_type": "aws_simpledb_domain"
+   },
+   {
+    "families": 5,
+    "records": 5,
+    "resource_type": "aws_macie_member_account_association"
+   }
+  ]
+ },
+ "unmatched_paths": {
+  "distinct": 1284,
+  "records": 26360,
+  "records_not_named": 2274,
+  "top": [
+   {
+    "families": 4048,
+    "path": "vpc",
+    "records": 11008,
+    "resource_type": "aws_eip"
+   },
+   {
+    "families": 1085,
+    "path": "name",
+    "records": 2666,
+    "resource_type": "aws_db_instance"
+   },
+   {
+    "families": 628,
+    "path": "stage_name",
+    "records": 794,
+    "resource_type": "aws_api_gateway_deployment"
+   },
+   {
+    "families": 417,
+    "path": "enable_classiclink",
+    "records": 687,
+    "resource_type": "aws_vpc"
+   },
+   {
+    "families": 337,
+    "path": "tags",
+    "records": 533,
+    "resource_type": "aws_autoscaling_group"
+   },
+   {
+    "families": 229,
+    "path": "enable_classiclink_dns_support",
+    "records": 343,
+    "resource_type": "aws_vpc"
+   },
+   {
+    "families": 208,
+    "path": "resolve_conflicts",
+    "records": 553,
+    "resource_type": "aws_eks_addon"
+   },
+   {
+    "families": 175,
+    "path": "capacity_providers",
+    "records": 236,
+    "resource_type": "aws_ecs_cluster"
+   },
+   {
+    "families": 145,
+    "path": "alb_target_group_arn",
+    "records": 277,
+    "resource_type": "aws_autoscaling_attachment"
+   },
+   {
+    "families": 140,
+    "path": "roles",
+    "records": 239,
+    "resource_type": "aws_iam_instance_profile"
+   },
+   {
+    "families": 133,
+    "path": "elastic_inference_accelerator.type",
+    "records": 272,
+    "resource_type": "aws_launch_template"
+   },
+   {
+    "families": 127,
+    "path": "elastic_gpu_specifications.type",
+    "records": 261,
+    "resource_type": "aws_launch_template"
+   },
+   {
+    "families": 127,
+    "path": "vpc_id",
+    "records": 164,
+    "resource_type": "aws_route53_zone"
+   },
+   {
+    "families": 124,
+    "path": "replication_group_description",
+    "records": 194,
+    "resource_type": "aws_elasticache_replication_group"
+   },
+   {
+    "families": 102,
+    "path": "number_cache_clusters",
+    "records": 165,
+    "resource_type": "aws_elasticache_replication_group"
+   },
+   {
+    "families": 93,
+    "path": "root_block_device",
+    "records": 226,
+    "resource_type": "aws_instance"
+   },
+   {
+    "families": 87,
+    "path": "s3_configuration.bucket_arn",
+    "records": 153,
+    "resource_type": "aws_kinesis_firehose_delivery_stream"
+   },
+   {
+    "families": 87,
+    "path": "s3_configuration.role_arn",
+    "records": 153,
+    "resource_type": "aws_kinesis_firehose_delivery_stream"
+   },
+   {
+    "families": 86,
+    "path": "condition.field",
+    "records": 317,
+    "resource_type": "aws_lb_listener_rule"
+   },
+   {
+    "families": 85,
+    "path": "condition.values",
+    "records": 316,
+    "resource_type": "aws_lb_listener_rule"
+   },
+   {
+    "families": 84,
+    "path": "enable_classiclink",
+    "records": 112,
+    "resource_type": "aws_default_vpc"
+   },
+   {
+    "families": 78,
+    "path": "stage_description",
+    "records": 106,
+    "resource_type": "aws_api_gateway_deployment"
+   },
+   {
+    "families": 76,
+    "path": "cpu_core_count",
+    "records": 232,
+    "resource_type": "aws_instance"
+   },
+   {
+    "families": 74,
+    "path": "cpu_threads_per_core",
+    "records": 230,
+    "resource_type": "aws_instance"
+   },
+   {
+    "families": 71,
+    "path": "default_capacity_provider_strategy.capacity_provider",
+    "records": 89,
+    "resource_type": "aws_ecs_cluster"
+   },
+   {
+    "families": 68,
+    "path": "broker_node_group_info.ebs_volume_size",
+    "records": 192,
+    "resource_type": "aws_msk_cluster"
+   },
+   {
+    "families": 66,
+    "path": "compute_environment_name",
+    "records": 103,
+    "resource_type": "aws_batch_compute_environment"
+   },
+   {
+    "families": 64,
+    "path": "block_duration_minutes",
+    "records": 102,
+    "resource_type": "aws_spot_instance_request"
+   },
+   {
+    "families": 63,
+    "path": "compute_environments",
+    "records": 95,
+    "resource_type": "aws_batch_job_queue"
+   },
+   {
+    "families": 55,
+    "path": "cpu_core_count",
+    "records": 88,
+    "resource_type": "aws_spot_instance_request"
+   },
+   {
+    "families": 55,
+    "path": "cpu_threads_per_core",
+    "records": 88,
+    "resource_type": "aws_spot_instance_request"
+   },
+   {
+    "families": 54,
+    "path": "availability_zones",
+    "records": 88,
+    "resource_type": "aws_elasticache_replication_group"
+   },
+   {
+    "families": 53,
+    "path": "default_capacity_provider_strategy.weight",
+    "records": 62,
+    "resource_type": "aws_ecs_cluster"
+   },
+   {
+    "families": 52,
+    "path": "s3_configuration.buffer_interval",
+    "records": 97,
+    "resource_type": "aws_kinesis_firehose_delivery_stream"
+   },
+   {
+    "families": 52,
+    "path": "condition.field",
+    "records": 89,
+    "resource_type": "aws_alb_listener_rule"
+   },
+   {
+    "families": 52,
+    "path": "condition.values",
+    "records": 89,
+    "resource_type": "aws_alb_listener_rule"
+   },
+   {
+    "families": 49,
+    "path": "s3_configuration.buffer_size",
+    "records": 94,
+    "resource_type": "aws_kinesis_firehose_delivery_stream"
+   },
+   {
+    "families": 49,
+    "path": "extended_s3_configuration.buffer_size",
+    "records": 56,
+    "resource_type": "aws_kinesis_firehose_delivery_stream"
+   },
+   {
+    "families": 47,
+    "path": "extended_s3_configuration.buffer_interval",
+    "records": 54,
+    "resource_type": "aws_kinesis_firehose_delivery_stream"
+   },
+   {
+    "families": 40,
+    "path": "s3_configuration.compression_format",
+    "records": 82,
+    "resource_type": "aws_kinesis_firehose_delivery_stream"
+   },
+   {
+    "families": 34,
+    "path": "s3_configuration.prefix",
+    "records": 60,
+    "resource_type": "aws_kinesis_firehose_delivery_stream"
+   },
+   {
+    "families": 30,
+    "path": "root_block_device",
+    "records": 72,
+    "resource_type": "aws_launch_configuration"
+   },
+   {
+    "families": 29,
+    "path": "versioning",
+    "records": 154,
+    "resource_type": "aws_s3_bucket"
+   },
+   {
+    "families": 28,
+    "path": "log_group_name",
+    "records": 37,
+    "resource_type": "aws_flow_log"
+   },
+   {
+    "families": 26,
+    "path": "ebs_block_device",
+    "records": 125,
+    "resource_type": "aws_instance"
+   },
+   {
+    "families": 26,
+    "path": "rule.statement.managed_rule_group_statement.excluded_rule.name",
+    "records": 49,
+    "resource_type": "aws_wafv2_web_acl"
+   },
+   {
+    "families": 25,
+    "path": "auto_enable",
+    "records": 52,
+    "resource_type": "aws_guardduty_organization_configuration"
+   },
+   {
+    "families": 24,
+    "path": "compute_environment_name_prefix",
+    "records": 39,
+    "resource_type": "aws_batch_compute_environment"
+   },
+   {
+    "families": 24,
+    "path": "default_capacity_provider_strategy.base",
+    "records": 26,
+    "resource_type": "aws_ecs_cluster"
+   },
+   {
+    "families": 24,
+    "path": "inference_accelerator.device_name",
+    "records": 25,
+    "resource_type": "aws_ecs_task_definition"
+   }
+  ]
+ },
+ "usage_rows": {
+  "atom_rows": 2314354,
+  "total": 2788858,
+  "type_rows": 474504
+ },
+ "withheld_blocks_unattributed": {
+  "distinct": 16,
+  "records": 1973,
+  "records_not_named": 27,
+  "top": [
+   {
+    "block": "environment",
+    "families": 735,
+    "records": 1901,
+    "resource_type": "aws_codebuild_project"
+   },
+   {
+    "block": "auth_parameters.api_key",
+    "families": 28,
+    "records": 30,
+    "resource_type": "aws_cloudwatch_event_connection"
+   },
+   {
+    "block": "auth_parameters.oauth.oauth_http_parameters.body",
+    "families": 8,
+    "records": 9,
+    "resource_type": "aws_cloudwatch_event_connection"
+   },
+   {
+    "block": "auth_parameters.invocation_http_parameters.body",
+    "families": 6,
+    "records": 6,
+    "resource_type": "aws_cloudwatch_event_connection"
+   }
+  ]
+ }
+}

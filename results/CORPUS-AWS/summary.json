@@ -1,0 +1,56 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "CORPUS-AWS",
+ "generated_at": "2026-11-04T09:53:53-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/CORPUS-AWS.txt",
+  "brief_sha256": "46686579efafea35dd3b71475c8d6bc8885242c99c85ef276f55126dd0cabd8e",
+  "params": {
+   "rules_version": "U1-U8/1",
+   "provider": "aws",
+   "schema_provider_version": "6.71.0",
+   "workers": "8",
+   "regen_workers": "5",
+   "chunk_bytes": "33554432",
+   "name_min_families": "5",
+   "top_n": "50",
+   "check_sample_mod": "61",
+   "unidade_recurso": "bloco resource (Managed); data fora",
+   "unidade_modulo": "diretório do .tf no repositório"
+  },
+  "inputs": [
+   {
+    "path": "$BO_DATA/HCL/resources.parquet",
+    "kind": "file",
+    "sha256": "4862e47b8fac5dbfca08ac725141e7e84c4915579b250504eaf7b417537c13c0"
+   },
+   {
+    "path": "$BO_DATA/HCL/symbolic_config.jsonl",
+    "kind": "file",
+    "sha256": "867340a28cb3a6c3a215ea9735c5308fdbf516954a896d0aae6d19db8e0c560f"
+   },
+   {
+    "path": "$BO_DATA/SCHEMA-AWS/atoms.jsonl",
+    "kind": "file",
+    "sha256": "5c6aba0585cb0e30f26877fd0ed6ba1a471092c792ecfa0b38f22d43d1e862a7"
+   }
+  ],
+  "recorded_at": "2026-11-04T09:53:53-03:00"
+ },
+ "sources": [
+  {
+   "uri": "https://doi.org/10.5281/zenodo.20339474",
+   "license": "CC-BY-4.0 (dataset); licença por repositório em $BO_DATA/HCL/licenses.json",
+   "transformation": "contagem agregada sobre a configuração simbólica do HCL; só ids sintéticos e contagens gravados"
+  },
+  {
+   "uri": "https://registry.terraform.io/providers/hashicorp/aws/6.71.0",
+   "license": "MPL-2.0",
+   "transformation": "átomos do schema (SCHEMA-AWS) como denominador e alvo do casamento de caminhos"
+  }
+ ],
+ "notes": "Uso real dos átomos aws no TerraDS (sem split). 44.605 repositórios, 39.961 famílias, 135.994 módulos (diretórios), 1.076.821 recursos gerenciados (208.158 blocos data fora). usage.jsonl: 2.788.858 linhas (474.504 de tipo, 2.314.354 de átomo), validador oficial 0 erro. Átomos: 24.513 de 112.893 configurados ao menos uma vez (21,7%; 22,4% dos átomos dos 1.567 tipos presentes); 9.949 em >= 5 famílias. Células recurso×átomo: 4.797.500 (literal 41,0%, simbólico 56,9%, retido 2,1%). Registros gerenciados: 5.914.530; casamento exato 4.792.714, por prefixo 637.349, meta-argumento 370.976, meta de dynamic 74.256, bloco retido atribuído (U5) 8.516; não atribuídos: caminho fora do schema 6.71.0 26.360 (0,45%; ex. aws_eip.vpc, aws_db_instance.name, removidos no provider), tipo fora do schema 2.386 (141 tipos), bloco retido com vários átomos 1.973 (1.901 é environment do aws_codebuild_project, retido inteiro pelo HCL). Consistência: 0 registro sem recurso, 0 recurso com n_attrs divergente. 2ª implementação na amostra (725 repositórios, 96.555 células): 0 divergência. Detalhe em results/CORPUS-AWS/counts.json e $BO_DATA/CORPUS-AWS/atom_totals.jsonl."
+}
