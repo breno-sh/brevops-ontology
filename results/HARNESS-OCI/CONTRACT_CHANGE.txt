@@ -80,3 +80,28 @@ RESOLUÇÃO DO ACHADO DO STUB OCI (2026-11-03T17:43:10-03:00)
   de OCID, e o renderizador não precisa do valor para escrever o HCL. O render_report.json registra
   bindings.synthetic = true, as chaves usadas e values_written = false, e cada atributo ligado sai com origem
   binding:<chave>. Com isso o plano oci do stub sai RENDERED no G2, com fmt -check e terraform validate verdes.
+
+ACHADO 4 (2026-11-04T07:54:33-03:00) — chave da tag de execução: bo_run (OCI) x bo-run (C16 e plan_guard)
+  Pedido: trocar a chave freeform "bo_run" por "bo-run", como o C16 exige (contracts/C16_run_manifest.schema.json, propertyNames
+  ^bo-[a-z\-]+$) e como o plan_guard do SAFETY confere (PG-TAG: tags.get("bo-run") == run_tag; nota 4 de
+  results/SAFETY/CROSS_MODULE_NOTES.txt). Não dá para fazer só dentro deste módulo:
+  - no OCI a tag NÃO é inserção do harness: vem do plano de lowering, como valor marcado
+    {"field": "freeform_tags.bo_run", "origin": "synthesized", "term": símbolo do run_tag}, tanto nos exemplos
+    deste módulo (deploy/fixtures/oci/_templates/examples/lowering_plan.jsonl) quanto no stub do CONTRACTS
+    (contracts/stubs/C26/lowering_plan.jsonl, LP-OCI-NET-0001);
+  - o C26 não aceita '-' em caminho de campo: steps[].values[].field segue ^[A-Za-z0-9_]+(\.[A-Za-z0-9_]+)*$.
+    Medido nesta lane: com "freeform_tags.bo-run" nos exemplos, o validador único reprova os 2 planos
+    ("'freeform_tags.bo-run' does not match ..."), o render recusa a entrada (fora do C26) e nem o
+    rendered_example nem as gravações regeneram. A troca foi desfeita; nada do módulo mudou.
+  Mudança proposta ao CONTRACTS (escolher uma):
+    A) C26/C00: caminho de campo aceita chave de mapa com '-', na forma com colchetes que o C06 já usa
+       (freeform_tags["bo-run"]) ou com segmento [A-Za-z0-9_-]+; o stub LP-OCI-NET-0001 passa a trazer
+       "bo-run". Depois disso este módulo troca a chave nos exemplos, regera rendered_example/ e as gravações
+       (bo.harness.oci.example e tests/harness/oci/make_recordings.py) e confere o render do caminho novo;
+    B) a tag de execução sai do plano (stub e exemplos) e vira inserção declarada do harness, como no AWS
+       (default_tags) e no Google (HI-GCP-01: labels["bo-run"] = var.<plano>_bo_run): o harness OCI poria
+       freeform_tags["bo-run"] = var.bo_ctx_run_tag nos tipos com trace = tag da tabela de SKUs do SAFETY
+       (tag_attribute freeform_tags), declarado no no_silent_insert. Exige tirar o valor do stub do CONTRACTS;
+       sem isso o HCL do stub teria as duas chaves.
+  Até a decisão, o plano OCI com a tag "bo_run" é recusado pelo plan_guard (PG-TAG) antes de qualquer apply,
+  que é o comportamento seguro. Nada aplicado, nenhuma nuvem.
