@@ -36,3 +36,11 @@ CC-NET-E2E-3 (achado sobre os controles, não é mudança de contrato)
   NETC-C05-AZ-DUP (prioridade repetida no mesmo sentido) para o google e o juiz reprova (UNKNOWN -> DENY sem perda);
   o c3_full recusa a origem pela forma SHACL do AX-NET-06. É resultado do controle (o que os axiomas acrescentam), e
   fica no controls.json; o gate do oráculo é sobre o c3_full.
+
+ADENDO 2026-11-04T13:09:00-03:00 (America/Recife), GRAIN 0.1.9 (071daf6..748b7f1) e C19 do NET-GLOSS de 13:07:
+  CC-NET-E2E-2 encolhe: conjuntos agora ENTITY (C19), seleções por rótulo BINDING (G1-BINDING na instância) e a
+  anexação por security_list_ids da sub-rede OCI BINDING. Calibração: 11/42 fixtures iguais ao gabarito; unidades,
+  pais e chaves 42/42; reordenação 42/42; embalagem 3/3. Restam 37 tipos UNKNOWN: 15 anexações AWS
+  (aws_instance.vpc_security_group_ids sem ocorrência de vínculo), 9 anexações azurerm (associação em
+  G0-IDENTITY), 2 anexações OCI (create_vnic_details.nsg_ids) e 11 regras da security list OCI (G0-NEEDS
+  api_resource).
