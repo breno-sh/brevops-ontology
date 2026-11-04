@@ -30,7 +30,8 @@
    {
     "path": "$BO_REPO/deploy/safety/allowlist_skus.yaml",
     "kind": "file",
-    "sha256": "20d7bf9f8f65e4b6537ae212ef76d0e6a2124a74b330e04de8a1e705b3ebb78c"
+    "sha256": "9da6a88cf36ed51f8cb3b3618443bc26f41933b8287f6ee651c9367509063033",
+    "sha256_before_emenda7": "20d7bf9f8f65e4b6537ae212ef76d0e6a2124a74b330e04de8a1e705b3ebb78c"
    },
    {
     "path": "$BO_REPO/universe/pins.json",
