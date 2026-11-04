@@ -1,5 +1,8 @@
 HIST-OCI — mudança proposta numa FERRAMENTA do REPO (tools/privacy_lint.py / src/bo/repo/privacy.py)
-Registrado em 2026-11-04T02:15-03:00 (America/Recife). Nenhum contrato (C01, C13, C17) está errado para o
+Registrado em 2026-11-04T02:15-03:00 (America/Recife).
+RESOLVIDO em 2026-11-04 pelo coordenador ([COORD] 8056c2d, "privacy_lint varre .gz descomprimido"): depois
+do rebase, privacy_lint --strict em results/HIST-OCI e $BO_DATA/HIST-OCI sai OK, sem mudança nos dados.
+Registro do que foi achado e proposto: Nenhum contrato (C01, C13, C17) está errado para o
 HIST-OCI; o canal é este porque é o que o driver lê. Nenhum comando de gate foi trocado ou afrouxado, e os
 atoms_<versão>.jsonl.gz NÃO foram recomprimidos para fugir do achado (isso seria ajustar dado para passar gate).
 
