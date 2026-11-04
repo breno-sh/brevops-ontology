@@ -92,6 +92,14 @@ TABLE = [
      "marca de PAI DE CAMINHO: contenção que não é namespace, com referência tipada ao pai (T21), cujo tipo de API "
      "da ponte do candidato está aninhado no parent_api_type (…/pai/filho): a referência é marcada path_parent "
      "(G2-CHILD); no bloco gêmeo, o pai estrutural herda a marca. Também o fato explícito path_parent {attribute}"),
+    ("(ciclo de vida, dono, alcance)", "(kind parent, sem via, com parent_resource)", "R-GRAIN-T55",
+     "o via é o único campo de referência tipada (T44) cujo alvo tem ponte de API para o parent_resource da spec; "
+     "nenhum ou mais de um: segue sem via (não resolve)"),
+    ("identity", "(layer api, R-ID-SPEC)", "R-GRAIN-T56",
+     "identidade afirmada na camada de API prevalece: resource_identity_schema (T01) e import_formats (T10), que são "
+     "da camada Terraform, não são traduzidos para o mesmo candidato (nomes de campo diferentes do mesmo objeto não "
+     "viram contradição); T56b: referência tipada num campo da chave de API não vale (é o identificador da "
+     "própria unidade)"),
     ("api_resource", "(pontes equivalentes)", "R-GRAIN-T53",
      "duas pontes que nomeiam o mesmo serviço/recurso só com grafia diferente (caixa, sublinhado, hífen) são uma "
      "alegação só; nomes de fato diferentes continuam CONTRADICTORY (disputa)"),
@@ -204,6 +212,7 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
 
     pending_ids, shared, containers, scopes, twins, timeouts = {}, {}, {}, {}, {}, {}
     ns_fields: dict[str, set] = defaultdict(set)     # cid -> campos de referência ao contêiner de namespace
+    api_identity: set = set()                         # cids com identidade afirmada na camada de API (T56)
     path_fields: dict[str, set] = defaultdict(set)   # cid -> campos de referência ao pai de caminho (T54)
     typed: dict[str, dict] = defaultdict(dict)       # cid -> {campo: tipo alvo ou None} (T44 reference_target)
     for cid, rs in sorted(by_cid.items()):
@@ -269,6 +278,8 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
                     if claim.get("via") == []:
                         claim.pop("via")
                 claim["source"] = _src(r, "R-GRAIN-T99", "alegação direta")
+                if fld == "identity" and isinstance(v, dict) and v.get("layer") == "api":
+                    api_identity.add(cid)
                 put(cid, fld, claim)
                 continue
             rule = RULE_OF.get((fld, a))
@@ -459,6 +470,12 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
     # identidade e chave de importação
     for key, (r, fields) in sorted(pending_ids.items()):
         cid = key.split("#")[0]
+        if cid in api_identity:
+            # T56: a identidade da camada de API prevalece sobre a identidade de recurso e o formato de importação
+            # do Terraform (campos de nome diferentes do mesmo objeto não viram contradição)
+            reasons[cid].append(f"identity: {'import_key' if key.endswith('#import') else 'resource_identity_schema'} "
+                                "da camada Terraform substituída pela identidade de API (T56)")
+            continue
         kr = key_refs.get(cid, {})
         kf = list(fields) + [f for f in kr if f not in fields]
         is_ref = {f for f, m in out.get(cid, {}).get("field_map", {}).items() if m.get("ref")}
@@ -477,6 +494,33 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
             rf = [f for f in key_refs.get(cid, {}) if not f.startswith("$")]
             put(cid, "effective_scope", {"kind": "parent", "via": rf[0], "source": _src(r, rule)} if len(rf) == 1
                 else {"kind": "self", "source": _src(r, rule)})
+    # T56b: campo da chave de identidade de API é o identificador da própria unidade: referência tipada nele (alvo
+    # de outro tipo pela frase da doc) não vale para a chave
+    for cid in api_identity:
+        ent = out.get(cid, {})
+        keyf = {f for c in ent.get("identity", []) for f in (c.get("key_fields") or [])}
+        fm = ent.get("field_map", {})
+        for f in sorted(keyf):
+            if fm.get(f, {}).get("ref"):
+                fm[f] = {"path": fm[f].get("path", f), "norm": "str"}
+                ent.get("references", {}).pop(f, None)
+                typed.get(cid, {}).pop(f, None)
+                reasons[cid].append(f"identity: {f} é o identificador de API da unidade; a referência tipada nele "
+                                    "não vale para a chave (T56b)")
+    # T55: alegação de kind parent/container sem via, com parent_resource da spec: o via é o único campo de
+    # referência tipada cujo alvo tem ponte (T04) para esse recurso
+    for cid, ent in out.items():
+        for fld_ in ("lifecycle_controller", "owner", "effective_scope"):
+            for c in ent.get(fld_, []):
+                pr = c.get("parent_resource")
+                if not pr or c.get("kind") not in ("parent", "container") or c.get("via") not in (None, []):
+                    continue
+                hits = [f for f, tt in typed.get(cid, {}).items() if tt and any(
+                    str(b.get("resource", "")).lower() == str(pr).lower() and b.get("status") == "resource"
+                    for b in out.get(tt, {}).get("api_resource", []))]
+                if len(hits) == 1:
+                    c["via"] = hits[0]
+                    reasons[cid].append(f"{fld_}: pai {pr} resolvido pela referência {hits[0]} (T55)")
     # T53: pontes que nomeiam o mesmo recurso com grafia diferente (caixa, sublinhado) são a mesma alegação; fica a
     # primeira (as divergências de verdade continuam CONTRADICTORY)
     def _k(c):

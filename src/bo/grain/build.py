@@ -420,6 +420,11 @@ C19). Junto: G1 passa a contar as pontas sem os contêineres de namespace (senã
 pai e o grupo de recursos), e T52b leva a marca de namespace do pai ao filho. Controles negativos: a entidade sob
 namespace (G4-NS) continua ENTITY; faceta sem CRUD próprio continua FACET; filho sem ciclo de vida self segue a G2
 comum; sem a marca de caminho, segue UNKNOWN.</li>
+<li>Emenda 0.1.7, ainda (fatos de API da regra de SG da AWS, SE ce1e590): a identidade de API da regra
+(SecurityGroupRuleId) contradizia a identidade de recurso do Terraform (<code>id</code>), e uma referência tipada tirada
+da frase da doc punha o próprio identificador como referência a outro tipo. A identidade da camada de API agora
+prevalece (T56, T56b), e o pai sem via é resolvido pelo recurso pai da spec (T55). Resultado: regra embutida e regra
+separada saem COMPONENT do SG pela G2 comum (ciclo de vida do pai), e o E2 decide igual nos três pares.</li>
 <li>Emenda 0.1.6, ainda: com o SERVICE-EVIDENCE do CC-10 (767bb22), pontes que nomeiam o mesmo recurso com grafia
 diferente (doc "objectstorage/Bucket" e spec "object_storage/bucket") contradiziam-se; T53 as unifica. Blocos que
 herdam do gêmeo (T09) podem sair FACET quando o gêmeo tem ligação de API de aspecto: é evidência herdada, não

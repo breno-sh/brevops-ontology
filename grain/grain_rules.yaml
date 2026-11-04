@@ -197,6 +197,10 @@ amendments:
     version: 0.1.7
     origin: decisão do coordenador sobre a regra de rede filha do conjunto
     text: regra nova G2-CHILD (entre G2 e G3); marca de caminho pai pela evidência (tipo de API da ponte aninhado no tipo de API do pai de contenção, ou fato explícito path_parent); G1 conta pontas sem os contêineres de namespace
+  - id: GRAIN-A10
+    version: 0.1.7
+    origin: fatos de API das regras de rede (Authorize e Revoke sobre o conjunto)
+    text: pai sem via resolvido pelo recurso pai da especificação contra a ponte do alvo da referência tipada; identidade da camada de API prevalece sobre a identidade de recurso e o formato de importação do Terraform, e referência tipada num campo dessa chave não vale
   - id: GRAIN-A8
     version: 0.1.6
     origin: decisão do coordenador sobre o achado do contêiner de namespace

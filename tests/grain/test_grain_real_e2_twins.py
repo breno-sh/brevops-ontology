@@ -92,3 +92,12 @@ def test_e2_control_twin_facts_decide_both(records, prov, top, inline, sep, ref)
     assert S.signature(res, [top, inline]) == S.signature(res, [top, sep])
     ra, rb = _rel(res, top, inline), _rel(res, top, sep)
     assert not ra[1] and not rb[1] and ra[0] == rb[0] and ("parent", (res.decisions[top].label,)) in ra[0]
+
+
+@pytest.mark.parametrize("prov,top,inline,sep,ref", PAIRS)
+def test_e2_real_decided_component_both_sides(real, prov, top, inline, sep, ref):
+    """Com os fatos de API da regra (SE ce1e590: spec da AWS; G2-CHILD no Azure), embutido e separado decidem
+    COMPONENT do conjunto, com o mesmo pai, e não iguais em UNKNOWN."""
+    res = real["providers"][prov]["_res"]
+    a, b = res.decisions[inline], res.decisions[sep]
+    assert a.grain == b.grain == "COMPONENT" and a.parent == b.parent == top, (a.grain, a.missing, b.grain, b.missing)
