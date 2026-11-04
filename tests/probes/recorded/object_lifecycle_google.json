@@ -1,0 +1,533 @@
+{
+ "calls": {
+  "case/1": {
+   "act": [
+    [
+     {
+      "rc": 0,
+      "stdout": "{}"
+     },
+     {
+      "rc": 0,
+      "stdout": "{}"
+     },
+     {
+      "rc": 0,
+      "stdout": "{}"
+     }
+    ]
+   ],
+   "observe": [
+    {
+     "at_s": 21600,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r1/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/case/r1/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/case/r1/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 43200,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r1/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/case/r1/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/case/r1/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 64800,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r1/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/case/r1/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/case/r1/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 86400,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r1/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/case/r1/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/case/r1/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 108000,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r1/obj-1\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 129600,
+     "raw": {
+      "rc": 1,
+      "stderr_tail": "ERROR: (gcloud.storage.objects.list) One or more URLs matched no objects.",
+      "stdout": ""
+     }
+    },
+    {
+     "at_s": 151200,
+     "raw": {
+      "rc": 1,
+      "stderr_tail": "ERROR: (gcloud.storage.objects.list) One or more URLs matched no objects.",
+      "stdout": ""
+     }
+    }
+   ]
+  },
+  "case/2": {
+   "act": [
+    [
+     {
+      "rc": 0,
+      "stdout": "{}"
+     },
+     {
+      "rc": 0,
+      "stdout": "{}"
+     },
+     {
+      "rc": 0,
+      "stdout": "{}"
+     }
+    ]
+   ],
+   "observe": [
+    {
+     "at_s": 21600,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r2/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/case/r2/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/case/r2/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 43200,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r2/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/case/r2/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/case/r2/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 64800,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r2/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/case/r2/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/case/r2/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 86400,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r2/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/case/r2/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/case/r2/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 108000,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r2/obj-1\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 129600,
+     "raw": {
+      "rc": 1,
+      "stderr_tail": "ERROR: (gcloud.storage.objects.list) One or more URLs matched no objects.",
+      "stdout": ""
+     }
+    },
+    {
+     "at_s": 151200,
+     "raw": {
+      "rc": 1,
+      "stderr_tail": "ERROR: (gcloud.storage.objects.list) One or more URLs matched no objects.",
+      "stdout": ""
+     }
+    }
+   ]
+  },
+  "case/3": {
+   "act": [
+    [
+     {
+      "rc": 0,
+      "stdout": "{}"
+     },
+     {
+      "rc": 0,
+      "stdout": "{}"
+     },
+     {
+      "rc": 0,
+      "stdout": "{}"
+     }
+    ]
+   ],
+   "observe": [
+    {
+     "at_s": 21600,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r3/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/case/r3/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/case/r3/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 43200,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r3/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/case/r3/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/case/r3/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 64800,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r3/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/case/r3/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/case/r3/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 86400,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r3/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/case/r3/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/case/r3/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 108000,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/case/r3/obj-1\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 129600,
+     "raw": {
+      "rc": 1,
+      "stderr_tail": "ERROR: (gcloud.storage.objects.list) One or more URLs matched no objects.",
+      "stdout": ""
+     }
+    },
+    {
+     "at_s": 151200,
+     "raw": {
+      "rc": 1,
+      "stderr_tail": "ERROR: (gcloud.storage.objects.list) One or more URLs matched no objects.",
+      "stdout": ""
+     }
+    }
+   ]
+  },
+  "control/1": {
+   "act": [
+    [
+     {
+      "rc": 0,
+      "stdout": "{}"
+     },
+     {
+      "rc": 0,
+      "stdout": "{}"
+     },
+     {
+      "rc": 0,
+      "stdout": "{}"
+     }
+    ]
+   ],
+   "observe": [
+    {
+     "at_s": 21600,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/control/r1/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/control/r1/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 43200,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/control/r1/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/control/r1/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 64800,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/control/r1/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/control/r1/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 86400,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/control/r1/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/control/r1/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 108000,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/control/r1/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/control/r1/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 129600,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/control/r1/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/control/r1/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 151200,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/control/r1/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/control/r1/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 172800,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/control/r1/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/control/r1/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 194400,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/control/r1/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/control/r1/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 216000,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/control/r1/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/control/r1/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 237600,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/control/r1/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/control/r1/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 259200,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r1/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/control/r1/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/control/r1/obj-3\", \"size\": 1024}]"
+     }
+    }
+   ]
+  },
+  "control/2": {
+   "act": [
+    [
+     {
+      "rc": 0,
+      "stdout": "{}"
+     },
+     {
+      "rc": 0,
+      "stdout": "{}"
+     },
+     {
+      "rc": 0,
+      "stdout": "{}"
+     }
+    ]
+   ],
+   "observe": [
+    {
+     "at_s": 21600,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/control/r2/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/control/r2/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 43200,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/control/r2/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/control/r2/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 64800,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/control/r2/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/control/r2/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 86400,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/control/r2/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/control/r2/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 108000,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/control/r2/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/control/r2/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 129600,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/control/r2/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/control/r2/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 151200,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/control/r2/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/control/r2/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 172800,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/control/r2/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/control/r2/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 194400,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/control/r2/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/control/r2/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 216000,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/control/r2/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/control/r2/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 237600,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/control/r2/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/control/r2/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 259200,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r2/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/control/r2/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/control/r2/obj-3\", \"size\": 1024}]"
+     }
+    }
+   ]
+  },
+  "control/3": {
+   "act": [
+    [
+     {
+      "rc": 0,
+      "stdout": "{}"
+     },
+     {
+      "rc": 0,
+      "stdout": "{}"
+     },
+     {
+      "rc": 0,
+      "stdout": "{}"
+     }
+    ]
+   ],
+   "observe": [
+    {
+     "at_s": 21600,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/control/r3/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/control/r3/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 43200,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/control/r3/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/control/r3/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 64800,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/control/r3/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/control/r3/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 86400,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/control/r3/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/control/r3/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 108000,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/control/r3/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/control/r3/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 129600,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/control/r3/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/control/r3/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 151200,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/control/r3/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/control/r3/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 172800,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/control/r3/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/control/r3/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 194400,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/control/r3/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/control/r3/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 216000,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/control/r3/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/control/r3/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 237600,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/control/r3/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/control/r3/obj-3\", \"size\": 1024}]"
+     }
+    },
+    {
+     "at_s": 259200,
+     "raw": {
+      "rc": 0,
+      "stdout": "[{\"name\": \"bo-probe/control/r3/obj-1\", \"size\": 1024}, {\"name\": \"bo-probe/control/r3/obj-2\", \"size\": 1024}, {\"name\": \"bo-probe/control/r3/obj-3\", \"size\": 1024}]"
+     }
+    }
+   ]
+  }
+ },
+ "cell": "object_lifecycle/google",
+ "note": "expiração assíncrona depois de 1 dia; controle sem regra continua com os 3",
+ "schema": "bo.probe_recording/1",
+ "synthetic": true
+}

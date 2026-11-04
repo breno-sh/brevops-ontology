@@ -106,14 +106,16 @@ class RecordedBackend:
         self.pos[k] = i + 1
         return seq[i]
 
-    def act(self, role, rep, ctx):
+    def act(self, role, rep, ctx, retries=0):
+        """Uma entrada gravada por tentativa (lista = uma resposta por item); falhou, consome a próxima."""
         if self.t0 is None and self.clock is not None:
             self.t0 = self.clock.monotonic()
-        raw = self._next(role, rep, "act")
-        items = raw if isinstance(raw, list) else [raw]
-        for r in items:
-            if not (r.get("rc") == 0 or r.get("status") in (200, 201)):
-                raise BackendError("ação gravada falhou", "ACT")
+        for _ in range(1 + retries):
+            raw = self._next(role, rep, "act")
+            items = raw if isinstance(raw, list) else [raw]
+            if all(r.get("rc") == 0 or r.get("status") in (200, 201) for r in items):
+                return
+        raise BackendError("ação gravada falhou", "ACT")
 
     def observe(self, role, rep):
         rec = self._next(role, rep, "observe")
@@ -170,8 +172,14 @@ class SimBackend:
         if op == "observe" and self.error_rate and self.rng.random() < self.error_rate:
             raise BackendError("falha simulada", "OBSERVE")
 
-    def act(self, role, rep, ctx):
-        self._maybe_fail(role, rep, "act")
+    def act(self, role, rep, ctx, retries=0):
+        for k in range(1 + retries):
+            try:
+                self._maybe_fail(role, rep, "act")
+                break
+            except BackendError:
+                if k == retries:
+                    raise
         t = self.clock.monotonic()
         if self.family == "versions":
             self.state[(role, rep)] = {"t": t, "writes": self.n}
@@ -272,7 +280,9 @@ class LiveBackend:
                 "since_utc": self.started_utc or now}
         return runner_ctx(self.cell, role, rep, base)
 
-    def act(self, role, rep, ctx):
+    def act(self, role, rep, ctx, retries=0):
+        """Cada operação atômica (uma gravação, um item, uma mensagem) tem as suas novas tentativas; as já feitas
+        não se repetem. Itens e documentos são gravados com chave fixa (put-item, PATCH): repetir é idempotente."""
         self.started_utc = self.started_utc or _utc(datetime.now(timezone.utc))
         op = self.ops["act"]
         exp = float(ctx["now_epoch"]) + float(ctx["ttl_s"])
@@ -281,9 +291,12 @@ class LiveBackend:
         c = self._ctx(role, rep, extra)
         times = ctx["n"] if (op.per_item or op.repeat) else 1
         for i in range(1, times + 1):
-            raw = self._call(op, {**c, "i": i})
-            if not (raw.get("rc") == 0 or raw.get("status") in (200, 201)):
-                raise BackendError("ação falhou", "ACT")
+            for k in range(1 + retries):
+                raw = self._call(op, {**c, "i": i})
+                if raw.get("rc") == 0 or raw.get("status") in (200, 201):
+                    break
+                if k == retries:
+                    raise BackendError(f"ação {i} de {times} falhou", "ACT")
 
     def observe(self, role, rep):
         op = self.ops["observe"]

@@ -145,3 +145,11 @@ def test_recorded_failure_is_backend_error():
 
 def test_kit_params_are_declared():
     assert KIT_PARAMS["confirmations"] >= 2 and KIT_PARAMS["object_size_bytes"] == 1024
+
+
+def test_every_prereg_precondition_has_an_enforcement_point(protos):
+    from bo.probes.protocol import precondition_problems
+    assert precondition_problems(protos) == []
+    from dataclasses import replace
+    extra = {**protos, "item_ttl": replace(protos["item_ttl"], preconditions=protos["item_ttl"].preconditions + ("x",))}
+    assert precondition_problems(extra)

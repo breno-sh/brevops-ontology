@@ -96,8 +96,8 @@ class Runner:
         self.kind = Kind(case.probe_type, protocol.tolerance_kind, protocol.tolerance_value, n)
         self.reps = [Rep(r, i) for i in range(1, protocol.repetitions + 1) for r in ROLES]
         self.events: list[dict] = []
-        self._beat_fail_since: float | None = None
         self.beats: list[float] = []  # instantes (monotônicos) das batidas aceitas
+        self.t0 = self.t_obs = 0.0
 
     # ----------------------------------------------------------------------------------- pré-condições
     def preflight(self) -> list[str]:
@@ -133,16 +133,14 @@ class Runner:
             return
         try:
             self.sup.beat()
-            self._beat_fail_since = None
             self.beats.append(self.clock.monotonic())
         except Exception as e:  # noqa: BLE001
             now = self.clock.monotonic()
-            if self._beat_fail_since is None:
-                self._beat_fail_since = now
             self.events.append({"t_s": round(now - self.t0, 3), "event": "heartbeat_failed",
                                 "error": type(e).__name__})
-            if now - self._beat_fail_since > self.grace_s:
-                raise SupervisorLost("supervisor sem heartbeat além da carência") from None
+            last_ok = self.beats[-1] if self.beats else self.t0
+            if now - last_ok >= self.grace_s:  # mesma régua do supervisor_heartbeat: intervalo < carência
+                raise SupervisorLost("supervisor sem heartbeat aceito durante a carência") from None
 
     def wait_until(self, t: float):
         every = float(KIT_PARAMS["heartbeat_every_s"])
@@ -189,14 +187,18 @@ class Runner:
         ctx = {"ttl_s": self.case.ttl_s, "now_epoch": self.clock.wall_epoch(), "n": self.kind.n}
         for r in self.reps:
             try:
-                self._retry(self.b.act, r.role, r.rep, ctx)
+                # sem nova tentativa da ação inteira (repetir gravações já feitas mudaria a contagem); o backend
+                # tenta de novo só a operação atômica que falhou
+                self.b.act(r.role, r.rep, ctx, retries=KIT_PARAMS["op_retries"])
             except BackendError as e:
                 r.open, r.result, r.reason = False, "error", f"ação falhou: {e.code}"
+            if self.long_window():
+                self._beat()
 
     def _ticks(self) -> list[float]:
         n = int(self.p.max_wait_s // self.p.poll_interval_s)
-        ticks = [self.t0 + i * self.p.poll_interval_s for i in range(1, n + 1)]
-        end = self.t0 + self.p.max_wait_s
+        ticks = [self.t_obs + i * self.p.poll_interval_s for i in range(1, n + 1)]
+        end = self.t_obs + self.p.max_wait_s
         if not ticks or ticks[-1] < end - 1e-9:
             ticks.append(end)
         return ticks
@@ -205,15 +207,23 @@ class Runner:
         if self.long_window():
             self._beat()
         self._act_all()
+        self.t_obs = self.clock.monotonic()  # o polling conta a partir do fim das ações
         ticks = self._ticks()
         for i, t in enumerate(ticks):
             if not any(r.open for r in self.reps):
                 break
-            self.wait_until(t)
             final = i == len(ticks) - 1
+            if not final and self.clock.monotonic() > t + self.p.poll_interval_s / 2:
+                # leitura anterior atrasou: pular o tick vencido em vez de ler duas vezes colado
+                self.events.append({"t_s": round(self.clock.monotonic() - self.t_obs, 3), "event": "tick_skipped",
+                                    "tick_s": round(t - self.t_obs, 3)})
+                continue
+            self.wait_until(t)
             for r in self.reps:
                 if r.open:
-                    self._poll(r, t - self.t0, final)
+                    self._poll(r, self.clock.monotonic() - self.t_obs, final)
+                    if self.long_window():
+                        self._beat()
         for r in self.reps:
             if r.open:  # janela fechada sem decisão: não acontece com a leitura final, mas fica explícito
                 self._close_at_deadline(r, final_lost=True)
@@ -224,6 +234,8 @@ class Runner:
         except (BackendError, ValueError) as e:
             r.lost += 1
             r.polls.append({"t_s": round(t_s, 3), "lost": True, "code": getattr(e, "code", "PARSE")})
+            if r.role == "case" and r.run_effect:
+                r.run_effect, r.first_effect_s = 0, None  # leitura perdida quebra "leituras seguidas"
             if final:
                 self._close_at_deadline(r, final_lost=True)
             return
@@ -290,9 +302,16 @@ class Runner:
                         "controle não coube na janela"
                     continue
                 try:
-                    s = self.kind.check_sample(self._retry(self.b.burst, r.role, r.rep, self.kind.n, spec.window_s))
+                    # sem nova tentativa: repetir a rajada mudaria o estado do balde
+                    s = self.kind.check_sample(self.b.burst(r.role, r.rep, self.kind.n, spec.window_s))
                 except (BackendError, ValueError) as e:
                     r.open, r.result, r.reason = False, "error", f"rajada falhou: {getattr(e, 'code', 'PARSE')}"
+                    continue
+                if s["accepted"] + s["throttled"] + s.get("other", 0) != self.kind.n:
+                    r.open, r.result = False, "error"
+                    r.reason = "rajada com contagens que não somam N"
+                    r.polls.append({"t_s": round(self.clock.monotonic() - self.t0, 3), "lost": True,
+                                    "code": "COUNT"})
                     continue
                 st = self.kind.state(s, expected_accepted=expected)
                 r.polls.append({"t_s": round(self.clock.monotonic() - self.t0, 3), "state": st,

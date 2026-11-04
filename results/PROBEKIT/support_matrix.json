@@ -50,7 +50,7 @@
     },
     {
      "demonstrated": false,
-     "detail": "operações e parsers no kit",
+     "detail": "operações no kit; parser separa efeito de oposto nas amostras canônicas",
      "id": "S9",
      "ok": true
     }
@@ -131,7 +131,7 @@
     },
     {
      "demonstrated": false,
-     "detail": "operações e parsers no kit",
+     "detail": "operações no kit; parser separa efeito de oposto nas amostras canônicas",
      "id": "S9",
      "ok": true
     }
@@ -204,7 +204,7 @@
     },
     {
      "demonstrated": false,
-     "detail": "operações e parsers no kit",
+     "detail": "operações no kit; parser separa efeito de oposto nas amostras canônicas",
      "id": "S9",
      "ok": true
     }
@@ -290,7 +290,7 @@
     },
     {
      "demonstrated": false,
-     "detail": "operações e parsers no kit",
+     "detail": "operações no kit; parser separa efeito de oposto nas amostras canônicas",
      "id": "S9",
      "ok": true
     }
@@ -363,7 +363,7 @@
     },
     {
      "demonstrated": false,
-     "detail": "operações e parsers no kit",
+     "detail": "operações no kit; parser separa efeito de oposto nas amostras canônicas",
      "id": "S9",
      "ok": true
     }
@@ -445,7 +445,7 @@
     },
     {
      "demonstrated": false,
-     "detail": "operações e parsers no kit",
+     "detail": "operações no kit; parser separa efeito de oposto nas amostras canônicas",
      "id": "S9",
      "ok": true
     }
@@ -518,7 +518,7 @@
     },
     {
      "demonstrated": false,
-     "detail": "sem operações de plano de dados no kit",
+     "detail": "sem operações ou sem amostras canônicas",
      "id": "S9",
      "ok": false
     }
@@ -589,7 +589,7 @@
     },
     {
      "demonstrated": false,
-     "detail": "sem operações de plano de dados no kit",
+     "detail": "sem operações ou sem amostras canônicas",
      "id": "S9",
      "ok": false
     }
@@ -661,7 +661,7 @@
     },
     {
      "demonstrated": false,
-     "detail": "operações e parsers no kit",
+     "detail": "operações no kit; parser separa efeito de oposto nas amostras canônicas",
      "id": "S9",
      "ok": true
     }
@@ -734,7 +734,7 @@
     },
     {
      "demonstrated": false,
-     "detail": "operações e parsers no kit",
+     "detail": "operações no kit; parser separa efeito de oposto nas amostras canônicas",
      "id": "S9",
      "ok": true
     }
@@ -810,7 +810,7 @@
     },
     {
      "demonstrated": false,
-     "detail": "sem operações de plano de dados no kit",
+     "detail": "sem operações ou sem amostras canônicas",
      "id": "S9",
      "ok": false
     }
@@ -877,7 +877,7 @@
     },
     {
      "demonstrated": false,
-     "detail": "sem operações de plano de dados no kit",
+     "detail": "sem operações ou sem amostras canônicas",
      "id": "S9",
      "ok": false
     }
@@ -946,7 +946,7 @@
     },
     {
      "demonstrated": false,
-     "detail": "operações e parsers no kit",
+     "detail": "operações no kit; parser separa efeito de oposto nas amostras canônicas",
      "id": "S9",
      "ok": true
     }
@@ -1027,7 +1027,7 @@
     },
     {
      "demonstrated": false,
-     "detail": "operações e parsers no kit",
+     "detail": "operações no kit; parser separa efeito de oposto nas amostras canônicas",
      "id": "S9",
      "ok": true
     }
@@ -1123,7 +1123,7 @@
     },
     {
      "demonstrated": false,
-     "detail": "sem operações de plano de dados no kit",
+     "detail": "sem operações ou sem amostras canônicas",
      "id": "S9",
      "ok": false
     }
@@ -1193,7 +1193,7 @@
     },
     {
      "demonstrated": false,
-     "detail": "sem operações de plano de dados no kit",
+     "detail": "sem operações ou sem amostras canônicas",
      "id": "S9",
      "ok": false
     }
@@ -1270,7 +1270,7 @@
     },
     {
      "demonstrated": false,
-     "detail": "sem operações de plano de dados no kit",
+     "detail": "sem operações ou sem amostras canônicas",
      "id": "S9",
      "ok": false
     }
@@ -1349,7 +1349,7 @@
     },
     {
      "demonstrated": false,
-     "detail": "sem operações de plano de dados no kit",
+     "detail": "sem operações ou sem amostras canônicas",
      "id": "S9",
      "ok": false
     }
@@ -1426,7 +1426,7 @@
     },
     {
      "demonstrated": false,
-     "detail": "sem operações de plano de dados no kit",
+     "detail": "sem operações ou sem amostras canônicas",
      "id": "S9",
      "ok": false
     }
@@ -1504,7 +1504,7 @@
     },
     {
      "demonstrated": false,
-     "detail": "sem operações de plano de dados no kit",
+     "detail": "sem operações ou sem amostras canônicas",
      "id": "S9",
      "ok": false
     }
@@ -1575,7 +1575,7 @@
     },
     {
      "demonstrated": false,
-     "detail": "sem operações de plano de dados no kit",
+     "detail": "sem operações ou sem amostras canônicas",
      "id": "S9",
      "ok": false
     }
@@ -1644,7 +1644,7 @@
     },
     {
      "demonstrated": false,
-     "detail": "sem operações de plano de dados no kit",
+     "detail": "sem operações ou sem amostras canônicas",
      "id": "S9",
      "ok": false
     }
@@ -1714,7 +1714,7 @@
     },
     {
      "demonstrated": false,
-     "detail": "sem operações de plano de dados no kit",
+     "detail": "sem operações ou sem amostras canônicas",
      "id": "S9",
      "ok": false
     }
@@ -1786,7 +1786,7 @@
     },
     {
      "demonstrated": false,
-     "detail": "sem operações de plano de dados no kit",
+     "detail": "sem operações ou sem amostras canônicas",
      "id": "S9",
      "ok": false
     }
@@ -1821,7 +1821,7 @@
   "queue_retention/aws",
   "queue_retention/google"
  ],
- "generated_at": "2026-11-04T08:59:07-03:00",
+ "generated_at": "2026-11-04T09:26:40-03:00",
  "inputs": [
   {
    "path": "$BO_REPO/prereg/probe_types.yaml",
@@ -1833,7 +1833,7 @@
   },
   {
    "path": "$BO_REPO/deploy/safety/allowlist_skus.yaml",
-   "sha256": "da426ef166267ee3fe7a91c704a9e0a23a7b4ffe3f1032e432f5ffd4699bf6ed"
+   "sha256": "20d7bf9f8f65e4b6537ae212ef76d0e6a2124a74b330e04de8a1e705b3ebb78c"
   },
   {
    "path": "$BO_DATA/downloads/prefetch/aws/6.71.0/providers-schema.json",
@@ -1871,6 +1871,166 @@
   "path": "$BO_REPO/prereg/probe_types.yaml",
   "protocol_version": "1.0.0",
   "sha256": "a218997eda71942414c09a3f3d2de2d4c6c8d94cfa7a7f16145722deb4b20fca"
+ },
+ "protocols": {
+  "item_ttl": {
+   "margin_over_ttl_s": 255600.0,
+   "max_wait_s": 259200.0,
+   "needs_supervisor": true,
+   "poll_interval_s": 7200.0,
+   "polls_until_max_wait": 36,
+   "preconditions": [
+    {
+     "enforced_by": "template: TTL no atributo bo_expire_at (S8) + runner.preflight: PERSISTED",
+     "text": "tabela ou coleção com TTL habilitado no atributo declarado, lida de volta como PERSISTED"
+    },
+    {
+     "enforced_by": "ops: expiração = t0 + ttl_s (3600 s) gravada em cada item",
+     "text": "itens sintéticos com expiração 1 h depois da gravação"
+    },
+    {
+     "enforced_by": "runner.preflight: supervisor com heartbeat para janela longa (D16); batida a cada heartbeat_every_s",
+     "text": "supervisor independente com heartbeat ativo (D16); sem ele, o tipo sai da amostra"
+    }
+   ],
+   "repetitions": 3,
+   "tolerance": {
+    "kind": "exact",
+    "value": 0.0
+   },
+   "window_s": 259200.0
+  },
+  "log_retention": {
+   "margin_over_ttl_s": 259200.0,
+   "max_wait_s": 345600.0,
+   "needs_supervisor": true,
+   "poll_interval_s": 21600.0,
+   "polls_until_max_wait": 16,
+   "preconditions": [
+    {
+     "enforced_by": "support_matrix S2: mínimo > 3 dias => fora do sorteio; S5: janela > máximo do SAFETY => fora",
+     "text": "grupo ou bucket de log com a retenção do caso no menor valor permitido (1 dia onde existe); se o mínimo passa de 3 dias, PROTOCOL_UNSUPPORTED antes do sorteio"
+    },
+    {
+     "enforced_by": "kinds/ops: só contagens e datas; conteúdo de log nunca é lido para gravação",
+     "text": "eventos sintéticos sem conteúdo real; o conteúdo dos logs nunca é gravado, só contagens e datas"
+    },
+    {
+     "enforced_by": "runner.preflight: supervisor com heartbeat para janela longa (D16); batida a cada heartbeat_every_s",
+     "text": "supervisor independente com heartbeat ativo (D16); sem ele, o tipo sai da amostra"
+    }
+   ],
+   "repetitions": 3,
+   "tolerance": {
+    "kind": "exact",
+    "value": 0.0
+   },
+   "window_s": 345600.0
+  },
+  "object_lifecycle": {
+   "margin_over_ttl_s": 172800.0,
+   "max_wait_s": 259200.0,
+   "needs_supervisor": true,
+   "poll_interval_s": 21600.0,
+   "polls_until_max_wait": 12,
+   "preconditions": [
+    {
+     "enforced_by": "template: expiração de 1 dia (S8 confere o TTL do plano) + runner.preflight: PERSISTED",
+     "text": "regra de ciclo de vida do caso com a menor idade permitida pelo provedor (1 dia onde a unidade é dia), lida de volta como PERSISTED"
+    },
+    {
+     "enforced_by": "ops: N objetos gravados no t0 da repetição (idade conhecida = tempo desde t0)",
+     "text": "objetos sintéticos com idade conhecida"
+    },
+    {
+     "enforced_by": "runner.preflight: supervisor com heartbeat para janela longa (D16); batida a cada heartbeat_every_s",
+     "text": "supervisor independente com heartbeat ativo (D16); sem ele, o tipo sai da amostra"
+    }
+   ],
+   "repetitions": 3,
+   "tolerance": {
+    "kind": "exact",
+    "value": 0.0
+   },
+   "window_s": 259200.0
+  },
+  "object_versioning": {
+   "margin_over_ttl_s": 1800.0,
+   "max_wait_s": 1800.0,
+   "needs_supervisor": false,
+   "poll_interval_s": 60.0,
+   "polls_until_max_wait": 30,
+   "preconditions": [
+    {
+     "enforced_by": "template (bucket/contêiner novo da execução) + runner.preflight: leitura de volta PERSISTED dos dois lados",
+     "text": "bucket ou contêiner novo da execução, com a configuração de versionamento do caso aplicada e lida de volta como PERSISTED"
+    },
+    {
+     "enforced_by": "KIT_PARAMS.object_size_bytes = 1024 (zeros) e writes_per_key = 3; ops: mesma chave por repetição",
+     "text": "objeto sintético de 1 KiB, sem conteúdo real; gravado 3 vezes com a mesma chave"
+    }
+   ],
+   "repetitions": 3,
+   "tolerance": {
+    "kind": "exact",
+    "value": 0.0
+   },
+   "window_s": 3600.0
+  },
+  "queue_retention": {
+   "margin_over_ttl_s": 86400.0,
+   "max_wait_s": 172800.0,
+   "needs_supervisor": true,
+   "poll_interval_s": 3600.0,
+   "polls_until_max_wait": 48,
+   "preconditions": [
+    {
+     "enforced_by": "template: retenção no mínimo documentado; support_matrix S2: mínimo > 24 h => fora do sorteio",
+     "text": "fila com a retenção do caso no menor valor permitido pelo provedor; se o mínimo passa de 24 h, PROTOCOL_UNSUPPORTED antes do sorteio"
+    },
+    {
+     "enforced_by": "ops: mensagem sintética fixa; leitura por contagem sem consumir (atributos da fila / métrica)",
+     "text": "mensagens sintéticas sem conteúdo real; nenhum consumidor durante a janela"
+    },
+    {
+     "enforced_by": "runner.preflight: supervisor com heartbeat para janela longa (D16); batida a cada heartbeat_every_s",
+     "text": "supervisor independente com heartbeat ativo (D16); sem ele, o tipo sai da amostra"
+    }
+   ],
+   "repetitions": 3,
+   "tolerance": {
+    "kind": "exact",
+    "value": 0.0
+   },
+   "window_s": 172800.0
+  },
+  "rate_limit": {
+   "margin_over_ttl_s": 300.0,
+   "max_wait_s": 600.0,
+   "needs_supervisor": false,
+   "poll_interval_s": 1.0,
+   "polls_until_max_wait": 600,
+   "preconditions": [
+    {
+     "enforced_by": "support_matrix S3 + rate_limit_spec: janela, chave, rajada e mecanismo declarados ou PROTOCOL_UNSUPPORTED",
+     "text": "limite de taxa do caso declarado com JANELA (período de renovação), CHAVE (por chave de assinatura, por IP de origem ou total), RAJADA (capacidade do balde) e MECANISMO (balde de fichas ou janela fixa), lidos do SERVICE-EVIDENCE"
+    },
+    {
+     "enforced_by": "backend: uma chave de cliente por repetição; repetições em sequência com recarga de 2 janelas",
+     "text": "endpoint sintético sem backend real; uma única chave de cliente por repetição"
+    },
+    {
+     "enforced_by": "RateLimitSpec.n_requests = 3 × (rajada + taxa × janela)",
+     "text": "N = 3 × (rajada + taxa × janela) pedidos enviados numa janela"
+    }
+   ],
+   "repetitions": 3,
+   "tolerance": {
+    "kind": "relative",
+    "value": 0.2
+   },
+   "window_s": 600.0
+  }
  },
  "schema": "bo.probekit.support_matrix/1",
  "summary": {

@@ -232,3 +232,26 @@ def test_unsupported_cell_has_no_template_and_says_why():
 def test_probe_error_code():
     with pytest.raises(ProbeError):
         T.load_doc(T.template_dir("item_ttl/aws"), "lado-errado")
+
+
+def test_run_context_for_safe_run(protos):
+    from bo.safety import skus
+    t = skus.load_table()
+    c = K.run_context("object_lifecycle/aws", protos["object_lifecycle"], t, "case")
+    assert c["ttl_hours"] == 72 and c["needs_supervisor"] and c["region"] == "us-east-1"
+    assert "aws_s3_bucket.probe" in c["usage"] and c["runner_inputs"] == ["bo_allowed_account_ids"]
+    c = K.run_context("object_versioning/oci", protos["object_versioning"], t, "control")
+    assert c["ttl_hours"] == 1 and not c["needs_supervisor"]
+    with pytest.raises(ValueError):
+        K.run_context("object_versioning/oci", protos["object_versioning"], t, "outro")
+
+
+def test_parser_selftest_gates_s9():
+    from bo.probes import ops
+    for c in C.IMPL:
+        assert ops.parser_selftest(c) == [], c
+    broken = dict(ops.SAMPLES)
+    broken["object_versioning/azurerm"] = (broken["object_versioning/azurerm"][0], {"rc": 0, "stdout": "[]"})
+    import unittest.mock as m
+    with m.patch.object(ops, "SAMPLES", broken):
+        assert ops.parser_selftest("object_versioning/azurerm")

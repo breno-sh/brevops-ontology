@@ -88,9 +88,10 @@ def p_gcs_versions(raw, ctx):
 
 
 def p_az_versions(raw, ctx):
+    """az storage blob list --include v: uma entrada por versão (com versionId) quando o versionamento está ligado;
+    sem versionamento, o blob atual vem com versionId nulo e conta como 1 (a versão única)."""
     d = _stdout_json(raw)
-    items = [x for x in (d or []) if isinstance(x, dict) and x.get("versionId")]
-    return {"versions": _key_count(items, ctx["key"], "name")}
+    return {"versions": _key_count(d if d is not None else [], ctx["key"], "name")}
 
 
 def p_oci_versions(raw, ctx):
@@ -216,9 +217,9 @@ OPS: dict[str, dict[str, Op]] = {
                               "pk = :p", "--expression-attribute-values", '{{":p":{{"S":"{pk}"}}}}', "--select",
                               "COUNT", "--consistent-read", "--output", "json"), parse=p_dynamo_count)},
     "item_ttl/google": {
-        "act": Op("http", method="POST",
+        "act": Op("http", method="PATCH",
                   url="https://firestore.googleapis.com/v1/projects/{project}/databases/{database}/documents/"
-                      "bo-probe?documentId={pk}-i{i}",
+                      "bo-probe/{pk}-i{i}",
                   body={"fields": {"bo_expire_at": {"timestampValue": "{expire_iso}"}}}, per_item=True),
         "observe": Op("http", method="GET",
                       url="https://firestore.googleapis.com/v1/projects/{project}/databases/{database}/documents/"
@@ -245,6 +246,56 @@ OPS: dict[str, dict[str, Op]] = {
 # filas: uma fila (aws) ou um tópico com assinatura (google) por repetição e por lado, porque a leitura conta a fila
 # inteira; os alvos dessas chegam como lista (um por repetição).
 PER_REP_TARGETS = {"queue_retention/aws", "queue_retention/google"}
+
+
+# amostras canônicas (formato documentado de cada saída, valores sintéticos): efeito e efeito oposto de uma
+# repetição com N = 3. O support_matrix (S9) passa cada uma pelo parser e pelo estado do tipo; parser que não
+# separa efeito de oposto deixa o caso fora do sorteio.
+def _c(obj):
+    return {"rc": 0, "stdout": json.dumps(obj)}
+
+
+_K = "bo-probe/case/r1/obj"
+_P = "bo-probe/case/r1/"
+SAMPLES = {
+    "object_versioning/aws": (_c({"Versions": [{"Key": _K, "VersionId": f"v{i}"} for i in range(3)]}),
+                              _c({"Versions": [{"Key": _K, "VersionId": "null"}]})),
+    "object_versioning/google": (_c([{"name": _K, "generation": str(i)} for i in range(3)]),
+                                 _c([{"name": _K, "generation": "1"}])),
+    "object_versioning/azurerm": (_c([{"name": _K, "versionId": f"t{i}"} for i in range(3)]),
+                                  _c([{"name": _K, "versionId": None}])),
+    "object_versioning/oci": (_c({"data": [{"name": _K, "version-id": f"v{i}"} for i in range(3)]}),
+                              _c({"data": [{"name": _K, "version-id": "v0"}]})),
+    "object_lifecycle/aws": (_c({"KeyCount": 0}), _c({"KeyCount": 3, "Contents": [{}, {}, {}]})),
+    "object_lifecycle/google": ({"rc": 1, "stdout": "", "stderr_tail": "ERROR: One or more URLs matched no objects."},
+                                _c([{"name": f"{_P}obj-{i}"} for i in (1, 2, 3)])),
+    "item_ttl/aws": (_c({"Count": 0, "ScannedCount": 0}), _c({"Count": 3, "ScannedCount": 3})),
+    "item_ttl/google": ([{"status": 404}] * 3, [{"status": 200, "body": {}}] * 3),
+    "queue_retention/aws": (_c({"Attributes": {"ApproximateNumberOfMessages": "0"}}),
+                            _c({"Attributes": {"ApproximateNumberOfMessages": "3"}})),
+    "queue_retention/google": ({"status": 200, "body": {"timeSeries": [{"points": [{"value": {"int64Value": "0"}}]}]}},
+                               {"status": 200, "body": {"timeSeries": [{"points": [{"value": {"int64Value": "3"}}]}]}}),
+}
+
+
+def parser_selftest(cell: str) -> list[str]:
+    """Problemas do parser do caso nas amostras canônicas (vazio = separa efeito de oposto)."""
+    from .kinds import EFFECT, OPPOSITE, Kind
+    if cell not in OPS or cell not in SAMPLES:
+        return ["sem operações ou sem amostras canônicas"]
+    t = cell.split("/")[0]
+    kind = Kind(t, "exact", 0, 3)
+    ctx = runner_ctx(cell, "case", 1, {"n": 3})
+    out = []
+    for raw, want in zip(SAMPLES[cell], (EFFECT, OPPOSITE)):
+        try:
+            got = kind.state(OPS[cell]["observe"].parse(raw, ctx))
+        except (ParseError, ValueError) as e:
+            out.append(f"amostra {want}: parser recusou ({e})")
+            continue
+        if got != want:
+            out.append(f"amostra {want}: parser deu {got}")
+    return out
 
 
 def ops_for(cell: str) -> dict[str, Op]:

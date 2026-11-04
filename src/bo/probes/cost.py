@@ -119,3 +119,19 @@ def estimate(cell: str, p: Protocol, table: dict, now=None) -> dict:
             "plan_guard_ok": all(sides[s]["ok"] for s in T.SIDES),
             "sides": {s: {k: v for k, v in sides[s].items() if k != "insts"} for s in T.SIDES},
             "_insts": {s: sides[s]["insts"] for s in T.SIDES}}
+
+
+def run_context(cell: str, p: Protocol, table: dict, side: str) -> dict:
+    """Peças do contexto do SafeRun (SAFETY) para um lado de um caso sorteado: TTL do runner >= janela (o supervisor
+    destrói no prazo), janela, região permitida, uso por endereço (o mesmo da estimativa) e se a janela é longa
+    (supervisor obrigatório, D16). O PROBE-* junta identidade, canal efêmero, manifesto e supervisor."""
+    if side not in T.SIDES:
+        raise ValueError(f"lado inválido: {side}")
+    impl = IMPL[cell]
+    provider = cell.split("/")[1]
+    region = regions(table)[provider]
+    _, insts = T.synthetic_plan(cell, side, T.synthetic_vars(cell, "b-ctx", {}, region, impl.runner_inputs))
+    ttl_h = int(math.ceil(p.window_s / 3600.0))
+    return {"ttl_hours": ttl_h, "window_hours": p.window_s / 3600.0, "region": region,
+            "usage": usage_for(cell, p, insts), "needs_supervisor": ttl_h > table["budget"]["short_window_hours"]
+            or p.needs_supervisor, "runner_inputs": list(impl.runner_inputs), "targets": list(impl.targets)}

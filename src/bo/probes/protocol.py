@@ -37,6 +37,44 @@ KIT_PARAMS = {
 }
 
 
+# onde cada pré-condição do PREREG é cumprida, na ordem do probe_types.yaml (mudou o PREREG, isto reprova)
+SUP = "runner.preflight: supervisor com heartbeat para janela longa (D16); batida a cada heartbeat_every_s"
+PRECONDITIONS = {
+    "object_versioning": [
+        "template (bucket/contêiner novo da execução) + runner.preflight: leitura de volta PERSISTED dos dois lados",
+        "KIT_PARAMS.object_size_bytes = 1024 (zeros) e writes_per_key = 3; ops: mesma chave por repetição"],
+    "object_lifecycle": [
+        "template: expiração de 1 dia (S8 confere o TTL do plano) + runner.preflight: PERSISTED",
+        "ops: N objetos gravados no t0 da repetição (idade conhecida = tempo desde t0)",
+        SUP],
+    "item_ttl": [
+        "template: TTL no atributo bo_expire_at (S8) + runner.preflight: PERSISTED",
+        "ops: expiração = t0 + ttl_s (3600 s) gravada em cada item",
+        SUP],
+    "queue_retention": [
+        "template: retenção no mínimo documentado; support_matrix S2: mínimo > 24 h => fora do sorteio",
+        "ops: mensagem sintética fixa; leitura por contagem sem consumir (atributos da fila / métrica)",
+        SUP],
+    "rate_limit": [
+        "support_matrix S3 + rate_limit_spec: janela, chave, rajada e mecanismo declarados ou PROTOCOL_UNSUPPORTED",
+        "backend: uma chave de cliente por repetição; repetições em sequência com recarga de 2 janelas",
+        "RateLimitSpec.n_requests = 3 × (rajada + taxa × janela)"],
+    "log_retention": [
+        "support_matrix S2: mínimo > 3 dias => fora do sorteio; S5: janela > máximo do SAFETY => fora",
+        "kinds/ops: só contagens e datas; conteúdo de log nunca é lido para gravação",
+        SUP],
+}
+
+
+def precondition_problems(protos: dict) -> list[str]:
+    out = []
+    for t, p in protos.items():
+        want = PRECONDITIONS.get(t, [])
+        if len(want) != len(p.preconditions):
+            out.append(f"{t}: {len(p.preconditions)} pré-condição(ões) no PREREG, {len(want)} cumprida(s) no kit")
+    return out
+
+
 @dataclass(frozen=True)
 class Protocol:
     probe_type: str

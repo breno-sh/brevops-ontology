@@ -111,7 +111,7 @@ def test_supervisor_lost_mid_window_turns_open_reps_into_errors(protos):
     obs, trace = run.run()
     assert obs["counts"]["errors"] == 3 and obs["negative_control_ok"] is False
     hb = run.heartbeat_summary()
-    assert hb["max_gap_s"] > hb["grace_s"]
+    assert hb["max_gap_s"] >= hb["grace_s"]
     assert clock.monotonic() < 11 * 3600  # parou logo depois da carência, sem esperar a janela inteira
 
 
@@ -186,3 +186,96 @@ def test_rate_limit_repetitions_that_do_not_fit_are_censored(protos):
     obs, _, _, _ = sim_run(protos, "rate_limit/provider_x", support={"rate_limit/provider_x": "validated"},
                            rate_limit=slow, sim={"rate": 0.1, "burst_cap": 0})
     assert obs["counts"]["not_observed"] >= 1  # janela de 10 min não comporta 3 renovações de 4 min com recarga
+
+
+def test_lost_poll_breaks_the_confirmation_sequence(protos):
+    # efeito, perdida, efeito, efeito: a confirmação só vem nas duas últimas (a perdida zera a sequência)
+    clock = FakeClock()
+    be = SimBackend("versions", clock, n=3)
+    real = be.observe
+
+    def observe(role, rep):
+        if role == "case" and rep == 1 and clock.monotonic() == 120:  # as 3 tentativas da 2ª leitura falham
+            from bo.probes.backends import BackendError
+            raise BackendError("perdida", "OBSERVE")
+        return real(role, rep)
+    be.observe = observe
+    run = Runner(ProbeCase("PC-l", "A", "object_versioning", "aws"), protos["object_versioning"], be, clock=clock,
+                 support=ALL_VALIDATED, readback={"case": "PERSISTED", "control": "PERSISTED"})
+    obs, trace = run.run()
+    r1 = [t for t in trace if t["role"] == "case" and t["rep"] == 1][0]
+    assert r1["result"] == "observed" and r1["effect_at_s"] == 180 and r1["lost_polls"] == 1
+
+
+def test_slow_reads_skip_overdue_ticks_instead_of_bunching(protos):
+    clock = FakeClock()
+    be = SimBackend("versions", clock, n=3, list_lag_s=10 ** 9)
+    real = be.observe
+
+    def slow(role, rep):
+        clock.sleep(20)  # 6 leituras de 20 s por tick: 120 s por rodada, intervalo de 60 s
+        return real(role, rep)
+    be.observe = slow
+    run = Runner(ProbeCase("PC-t", "A", "object_versioning", "aws"), protos["object_versioning"], be, clock=clock,
+                 support=ALL_VALIDATED, readback={"case": "PERSISTED", "control": "PERSISTED"})
+    obs, trace = run.run()
+    ts = [p["t_s"] for p in trace[0]["polls"]]
+    assert all(b - a >= 60 - 1e-9 for a, b in zip(ts, ts[1:]))  # nunca duas leituras coladas
+    assert any(e["event"] == "tick_skipped" for e in run.events)
+    assert ts[-1] >= protos["object_versioning"].max_wait_s  # a leitura final é no fim da janela
+
+
+def test_act_retry_only_repeats_the_failed_write(protos):
+    """Backend ao vivo com execução falsa (construído sem __init__: só teste, nada roda fora da memória)."""
+    from bo.probes.backends import LiveBackend
+    from bo.probes.ops import ops_for
+    calls = []
+    fails = {3: 1}
+
+    def exec_fn(argv):
+        calls.append(argv)
+        n = sum(1 for a in calls if a[2] == "put-object")
+        if fails.get(n):
+            fails.pop(n)
+            return {"rc": 255, "stdout": ""}
+        return {"rc": 0, "stdout": "{}"}
+    lb = object.__new__(LiveBackend)
+    lb.cell, lb.ops, lb.targets = "object_versioning/aws", ops_for("object_versioning/aws"), {
+        "case": {"bucket": "bo-x-0001"}, "control": {"bucket": "bo-x-0002"}}
+    lb.exec_fn, lb.http_fn, lb.started_utc, lb.payload = exec_fn, None, None, "payload.bin"
+    lb.act("case", 1, {"ttl_s": 0, "now_epoch": 0, "n": 3}, retries=2)
+    puts = [a for a in calls if a[2] == "put-object"]
+    assert len(puts) == 4  # 3 gravações + 1 nova tentativa da que falhou (nunca 5 versões)
+
+
+def test_burst_counts_must_add_up(protos):
+    class Empty(SimBackend):
+        def burst(self, role, rep, n, window_s):
+            return {"accepted": 0, "throttled": 0, "other": 0}
+    clock = FakeClock()
+    run = Runner(ProbeCase("PC-e", "A", "rate_limit", "provider_x", rate_limit=SPEC), protos["rate_limit"],
+                 Empty("throttle", clock), clock=clock, support={"rate_limit/provider_x": "validated"},
+                 readback={"case": "PERSISTED", "control": "PERSISTED"})
+    obs, _ = run.run()
+    assert obs["counts"]["errors"] == 3 and obs["negative_control_ok"] is False
+
+
+def test_heartbeat_rule_matches_gate(protos):
+    from bo.probes.checks import heartbeat_problems
+    clock = FakeClock()
+    # 500 s fora: a última batida aceita foi 60 s antes da queda, então o intervalo fica em 540 s < 600 s
+    sup = FakeSupervisor(clock, down_from=3600, down_until=3600 + 500)
+    be = SimBackend("expiry", clock, ttl_s=86400, n=3, expiry_lag_s=3600)
+    run = Runner(ProbeCase("PC-h", "A", "object_lifecycle", "aws", ttl_s=86400), protos["object_lifecycle"], be,
+                 clock=clock, support=ALL_VALIDATED, supervisor=sup,
+                 readback={"case": "PERSISTED", "control": "PERSISTED"})
+    obs, trace = run.run()
+    assert obs["counts"]["observed"] == 3 and heartbeat_problems(trace) == []
+    clock = FakeClock()
+    sup = FakeSupervisor(clock, down_from=3600, down_until=3600 + 700)  # 700 s fora: perdeu
+    be = SimBackend("expiry", clock, ttl_s=86400, n=3, expiry_lag_s=3600)
+    run = Runner(ProbeCase("PC-h2", "A", "object_lifecycle", "aws", ttl_s=86400), protos["object_lifecycle"], be,
+                 clock=clock, support=ALL_VALIDATED, supervisor=sup,
+                 readback={"case": "PERSISTED", "control": "PERSISTED"})
+    obs, trace = run.run()
+    assert obs["counts"]["errors"] == 3 and heartbeat_problems(trace) == []

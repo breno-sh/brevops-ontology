@@ -1,0 +1,29 @@
+PROBEKIT: notas para outros módulos (2026-11-04T09:26:37-03:00, America/Recife)
+Achados da validação offline de suporte (results/PROBEKIT/support_matrix.json). Nenhum foi ajustado para
+melhorar número; são resultado.
+
+1. PREREG x SAFETY (D12): log_retention tem janela de 96 h no protocolo congelado e o SAFETY limita a janela a
+   72 h (budget.max_window_hours). Por isso log_retention/aws e log_retention/google ficam "unsupported" (S5) e o
+   tipo inteiro está fora do sorteio. Mudar a janela é decisão do PREREG/Breno, não do kit.
+2. SERVICE-EVIDENCE (rate_limit): nenhum provedor declara os quatro parâmetros (janela, chave, rajada e
+   mecanismo). Sem eles o protocolo é PROTOCOL_UNSUPPORTED (P4/S3), e rate_limit fica fora do sorteio nos 4. Os
+   tipos que realizam a sonda também estão fora da allowlist do SAFETY (aws_api_gateway_usage_plan,
+   google_compute_security_policy, azurerm_api_management_api_policy, oci_apigateway_deployment).
+3. SAFETY (allowlist): object_lifecycle/azurerm (azurerm_storage_management_policy), item_ttl/azurerm
+   (azurerm_cosmosdb_sql_container) e object_lifecycle/oci (oci_objectstorage_object_lifecycle_policy) não estão
+   na tabela de SKUs. Ficam "unknown" (S6). Se entrarem, o kit ainda precisa de template, operações e gravações.
+4. SERVICE-EVIDENCE (unknown): item_ttl/oci, queue_retention/azurerm, queue_retention/oci e object_lifecycle/oci
+   estão com status unknown ou sem mínimo documentado. Ficam fora até haver evidência publicada.
+5. CONTRACTS/PROBE-JOIN (C22, não bloqueia nada hoje): as contagens da observação só têm observed, not_observed e
+   errors. Um efeito visto fora da tolerância (rajada limitada com aceitos fora de 20%, 2 de 3 versões no fim da
+   janela) cai em not_observed, e o PROBE-JOIN não consegue distinguir isso de censura. Hoje só pode acontecer em
+   object_versioning (estado partial no fim da janela, registrado no probe_trace.jsonl). Proposta para uma
+   emenda futura do C22: contagem observed_out_of_tolerance. O kit não muda o contrato.
+6. SAFETY (custo): a tabela dá tráfego 0 para aws_dynamodb_table e google_firestore_database, e as leituras do
+   Cloud Monitoring (queue_retention/google) não têm preço na tabela. O cost_cap usa a tabela como está. Mesmo
+   com folga, todo template fica abaixo de 1% do limite do tipo.
+
+Para o PROBE-*: use bo.probes.cost.run_context(cell, protocolo, tabela, lado) no contexto do SafeRun,
+templates.render_run_dir(cell, lado, dir) como tf_dir de cada lado, runner.Runner com backends.LiveBackend (ele
+recusa sem as pré-condições de nuvem do SAFETY) e runner.write_local na pasta do módulo. O kit nunca julga: o
+desfecho de comportamento é só do PROBE-JOIN.

@@ -97,3 +97,21 @@ def test_observation_is_local_c22_and_has_no_judgement(protos, work):
                               "other", "expected_accepted"}
     with pytest.raises(Exception, match="já gravada"):
         write_local(work, obs, trace)
+
+
+@pytest.mark.parametrize("name", ["object_versioning_azurerm.json", "object_versioning_oci.json",
+                                  "object_lifecycle_aws.json", "object_lifecycle_google.json"])
+def test_other_validated_cells_end_to_end(protos, name):
+    obs, trace, _, rb = recorded_run(protos, name)
+    assert obs["counts"] == {"attempts": 3, "observed": 3, "not_observed": 0, "errors": 0}
+    assert obs["negative_control_ok"] is True  # controle sem versionamento/sem regra dá o efeito oposto
+    for k, n in rb.pos.items():
+        role, rep, op = k
+        assert n == len(rb.calls[f"{role}/{rep}"][op])
+
+
+def test_every_validated_cell_has_a_recorded_run():
+    from bo.probes.support_matrix import drawable
+    from probes_helpers import RECORDED
+    recorded = {json.loads(p.read_text())["cell"] for p in RECORDED.glob("*.json") if p.name != "parsers.json"}
+    assert set(drawable()) <= recorded

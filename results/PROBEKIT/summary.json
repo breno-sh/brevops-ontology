@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "PROBEKIT",
- "generated_at": "2026-11-04T09:08:52-03:00",
+ "generated_at": "2026-11-04T09:26:43-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PROBEKIT.txt",
@@ -30,7 +30,7 @@
    {
     "path": "$BO_REPO/deploy/safety/allowlist_skus.yaml",
     "kind": "file",
-    "sha256": "da426ef166267ee3fe7a91c704a9e0a23a7b4ffe3f1032e432f5ffd4699bf6ed"
+    "sha256": "20d7bf9f8f65e4b6537ae212ef76d0e6a2124a74b330e04de8a1e705b3ebb78c"
    },
    {
     "path": "$BO_REPO/universe/pins.json",
@@ -38,7 +38,7 @@
     "sha256": "594a4e878ac489b3ed97cdd6344b9945a8fd3a5d22ae4d6f4bfebd264decfe3d"
    }
   ],
-  "recorded_at": "2026-11-04T09:08:52-03:00"
+  "recorded_at": "2026-11-04T09:26:43-03:00"
  },
  "sources": [],
  "notes": "fase 1 offline: nenhuma nuvem, nenhuma credencial, nenhum apply; respostas gravadas sintéticas e simulação; validação de suporte offline (S1–S9); schema dos providers da pré-busca conferido por sha256 contra universe/pins.json"

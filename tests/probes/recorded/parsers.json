@@ -126,7 +126,16 @@
    [
     {
      "rc": 0,
-     "stdout": "[{\"name\": \"bo-probe/case/r1/obj\"}]"
+     "stdout": "[{\"name\": \"bo-probe/case/r1/obj\", \"versionId\": null, \"isCurrentVersion\": null}]"
+    },
+    {
+     "versions": 1
+    }
+   ],
+   [
+    {
+     "rc": 0,
+     "stdout": "[{\"name\": \"bo-probe/case/r1/objx\"}]"
     },
     {
      "versions": 0

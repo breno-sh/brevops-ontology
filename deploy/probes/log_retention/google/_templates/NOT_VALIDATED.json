@@ -6,13 +6,13 @@
   "S8",
   "S9"
  ],
- "generated_at": "2026-11-04T08:59:07-03:00",
+ "generated_at": "2026-11-04T09:26:40-03:00",
  "join_outcome_if_drawn": "PROTOCOL_UNSUPPORTED",
  "reasons": [
   "S5: janela 96 h; máximo 72 h (D12 e tipos)",
   "S6: google_logging_project_bucket_config fora da allowlist do SAFETY",
   "S8: sem template no kit",
-  "S9: sem operações de plano de dados no kit"
+  "S9: sem operações ou sem amostras canônicas"
  ],
  "schema": "bo.probekit.not_validated/1",
  "status": "unsupported"

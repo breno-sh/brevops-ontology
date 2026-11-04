@@ -1,0 +1,527 @@
+{
+ "calls": {
+  "case/1": {
+   "act": [
+    [
+     {
+      "rc": 0,
+      "stdout": "{}"
+     },
+     {
+      "rc": 0,
+      "stdout": "{}"
+     },
+     {
+      "rc": 0,
+      "stdout": "{}"
+     }
+    ]
+   ],
+   "observe": [
+    {
+     "at_s": 21600,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 43200,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 64800,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 86400,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 108000,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 1, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 129600,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 0, \"Contents\": []}"
+     }
+    },
+    {
+     "at_s": 151200,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 0, \"Contents\": []}"
+     }
+    }
+   ]
+  },
+  "case/2": {
+   "act": [
+    [
+     {
+      "rc": 0,
+      "stdout": "{}"
+     },
+     {
+      "rc": 0,
+      "stdout": "{}"
+     },
+     {
+      "rc": 0,
+      "stdout": "{}"
+     }
+    ]
+   ],
+   "observe": [
+    {
+     "at_s": 21600,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 43200,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 64800,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 86400,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 108000,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 1, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 129600,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 0, \"Contents\": []}"
+     }
+    },
+    {
+     "at_s": 151200,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 0, \"Contents\": []}"
+     }
+    }
+   ]
+  },
+  "case/3": {
+   "act": [
+    [
+     {
+      "rc": 0,
+      "stdout": "{}"
+     },
+     {
+      "rc": 0,
+      "stdout": "{}"
+     },
+     {
+      "rc": 0,
+      "stdout": "{}"
+     }
+    ]
+   ],
+   "observe": [
+    {
+     "at_s": 21600,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 43200,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 64800,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 86400,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 108000,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 1, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 129600,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 0, \"Contents\": []}"
+     }
+    },
+    {
+     "at_s": 151200,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 0, \"Contents\": []}"
+     }
+    }
+   ]
+  },
+  "control/1": {
+   "act": [
+    [
+     {
+      "rc": 0,
+      "stdout": "{}"
+     },
+     {
+      "rc": 0,
+      "stdout": "{}"
+     },
+     {
+      "rc": 0,
+      "stdout": "{}"
+     }
+    ]
+   ],
+   "observe": [
+    {
+     "at_s": 21600,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 43200,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 64800,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 86400,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 108000,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 129600,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 151200,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 172800,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 194400,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 216000,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 237600,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 259200,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    }
+   ]
+  },
+  "control/2": {
+   "act": [
+    [
+     {
+      "rc": 0,
+      "stdout": "{}"
+     },
+     {
+      "rc": 0,
+      "stdout": "{}"
+     },
+     {
+      "rc": 0,
+      "stdout": "{}"
+     }
+    ]
+   ],
+   "observe": [
+    {
+     "at_s": 21600,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 43200,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 64800,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 86400,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 108000,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 129600,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 151200,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 172800,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 194400,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 216000,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 237600,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 259200,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    }
+   ]
+  },
+  "control/3": {
+   "act": [
+    [
+     {
+      "rc": 0,
+      "stdout": "{}"
+     },
+     {
+      "rc": 0,
+      "stdout": "{}"
+     },
+     {
+      "rc": 0,
+      "stdout": "{}"
+     }
+    ]
+   ],
+   "observe": [
+    {
+     "at_s": 21600,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 43200,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 64800,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 86400,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 108000,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 129600,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 151200,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 172800,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 194400,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 216000,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 237600,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    },
+    {
+     "at_s": 259200,
+     "raw": {
+      "rc": 0,
+      "stdout": "{\"KeyCount\": 3, \"Contents\": [{\"Key\": \"k0\", \"Size\": 1024}, {\"Key\": \"k1\", \"Size\": 1024}, {\"Key\": \"k2\", \"Size\": 1024}]}"
+     }
+    }
+   ]
+  }
+ },
+ "cell": "object_lifecycle/aws",
+ "note": "expiração assíncrona depois de 1 dia; controle sem regra continua com os 3",
+ "schema": "bo.probe_recording/1",
+ "synthetic": true
+}

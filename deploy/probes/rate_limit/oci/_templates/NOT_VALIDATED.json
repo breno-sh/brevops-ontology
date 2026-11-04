@@ -7,14 +7,14 @@
   "S8",
   "S9"
  ],
- "generated_at": "2026-11-04T08:59:07-03:00",
+ "generated_at": "2026-11-04T09:26:40-03:00",
  "join_outcome_if_drawn": "PROTOCOL_UNSUPPORTED",
  "reasons": [
   "S1: SERVICE-EVIDENCE unknown; 2 evidência(s) publicada(s)",
   "S3: não declarado(s) no SERVICE-EVIDENCE: burst, mechanism",
   "S6: oci_apigateway_deployment fora da allowlist do SAFETY",
   "S8: sem template no kit",
-  "S9: sem operações de plano de dados no kit"
+  "S9: sem operações ou sem amostras canônicas"
  ],
  "schema": "bo.probekit.not_validated/1",
  "status": "unknown"

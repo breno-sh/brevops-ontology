@@ -16,7 +16,8 @@ caso tipo/provedor passa por:
   S7 pin            versão citada pelo SERVICE-EVIDENCE = versão fixada (universe/pins.json)
   S8 template       existe; schema fixado confere nos dois lados; caso configura os atributos da sonda; caso e
                     controle só diferem neles; TTL do plano = TTL do kit; plan_guard sem achado; custo <= limite
-  S9 operações      o kit tem as operações de plano de dados e os parsers do caso
+  S9 operações      o kit tem as operações de plano de dados e o parser separa efeito de oposto nas amostras
+                    canônicas (ops.SAMPLES)
 validated = todos passam. unsupported = falha demonstrada (S1 documented_unsupported, S2 com mínimo documentado
 acima do requisito, S5). O resto é unknown (falta evidência, SKU fora da allowlist, sem template). Só validated entra no sorteio (DEPSAMPLE lê drawable()).
 """
@@ -141,9 +142,10 @@ def evaluate_cell(cell: str, se: dict | None, protos: dict, table: dict, pins: d
         s8, sku = template_checks(cell, se, proto, table)
     checks.append(_chk("S8", not s8, "; ".join(s8) if s8 else "template confere (schema, atributos, controle, "
                                                                "TTL, plan_guard, custo)"))
-    from .ops import OPS
-    checks.append(_chk("S9", cell in OPS, "operações e parsers no kit" if cell in OPS else
-                       "sem operações de plano de dados no kit"))
+    from .ops import parser_selftest
+    s9 = parser_selftest(cell)
+    checks.append(_chk("S9", not s9, "operações no kit; parser separa efeito de oposto nas amostras canônicas"
+                       if not s9 else "; ".join(s9)))
     return _verdict(cell, checks, sku, se)
 
 
@@ -242,7 +244,8 @@ def build(now_iso: str | None = None) -> tuple[dict, dict, dict]:
                "module": MODULE_ID, "generated_at": stamp, "probe_types": out_types}
     matrix = {"schema": "bo.probekit.support_matrix/1", "module": MODULE_ID, "kit_version": KIT_VERSION,
               "generated_at": stamp, "protocol": PR.source_info(), "kit_params": PR.KIT_PARAMS,
-              "inputs": inputs_info(), "cells": [cells[c] for c in C.all_cells()],
+              "inputs": inputs_info(), "protocols": protocols_view(protos),
+              "cells": [cells[c] for c in C.all_cells()],
               "drawable": [c for c in C.all_cells() if cells[c]["drawable"]],
               "summary": {s: sum(1 for c in cells.values() if c["status"] == s)
                           for s in ("validated", "unsupported", "unknown")},
@@ -254,6 +257,19 @@ def build(now_iso: str | None = None) -> tuple[dict, dict, dict]:
                      "generated_at": stamp}
                  for c, v in cells.items() if v["status"] != "validated"}
     return support, matrix, not_valid
+
+
+def protocols_view(protos: dict) -> dict:
+    """Por tipo: polling efetivo (leituras até max_wait), janela, margem e onde cada pré-condição é cumprida."""
+    out = {}
+    for t, p in protos.items():
+        out[t] = {"polls_until_max_wait": K.n_ticks(p), "poll_interval_s": p.poll_interval_s,
+                  "max_wait_s": p.max_wait_s, "window_s": p.window_s, "margin_over_ttl_s": p.margin_over_ttl_s,
+                  "repetitions": p.repetitions, "tolerance": {"kind": p.tolerance_kind, "value": p.tolerance_value},
+                  "needs_supervisor": p.needs_supervisor,
+                  "preconditions": [{"text": txt, "enforced_by": by} for txt, by in
+                                    zip(p.preconditions, PR.PRECONDITIONS.get(t, []))]}
+    return out
 
 
 def evidence_items(cell: str, v: dict, se: dict | None) -> list[dict]:
@@ -345,7 +361,7 @@ def main(argv=None) -> int:
     except ProbeError as e:
         print(f"support_matrix: RECUSA ({e.code}): {e}")
         return 1
-    probs = invariants(support, matrix)
+    probs = invariants(support, matrix) + PR.precondition_problems(PR.load())
     if not probs:
         probs += write(support, matrix, not_valid, write_mode)
     if not probs:

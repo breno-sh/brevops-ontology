@@ -46,6 +46,17 @@ def az_versions(key: str, n: int) -> dict:
                 for i in range(1, n + 1)])
 
 
+def az_versions_or_plain(key: str, n: int) -> dict:
+    """Com 1 versão (controle sem versionamento) o blob atual vem com versionId nulo."""
+    if n == 1:
+        return cli([{"name": key, "versionId": None, "isCurrentVersion": None}])
+    return az_versions(key, n)
+
+
+NO_MATCH = {"rc": 1, "stdout": "", "stderr_tail": "ERROR: (gcloud.storage.objects.list) One or more URLs matched no "
+                                                  "objects."}
+
+
 def oci_versions(key: str, n: int) -> dict:
     return cli({"data": {"items": [{"name": key, "version-id": f"v{i}", "size": 1024} for i in range(1, n + 1)]},
                 "prefixes": []})
@@ -181,11 +192,41 @@ def build() -> dict[str, dict]:
                                  "observe": seq(T, lambda i, t: monitoring(3))}
     out["queue_retention_google.json"] = rec("queue_retention/google", calls, "série ausente = leitura perdida")
 
+    # ------------------------------------------------ versionamento azurerm e oci: corrida inteira
+    T = ticks(60, 1800)
+    for cell, fn, fname in (("object_versioning/azurerm", az_versions_or_plain, "object_versioning_azurerm.json"),
+                            ("object_versioning/oci", oci_versions, "object_versioning_oci.json")):
+        calls = {}
+        for r in (1, 2, 3):
+            calls[f"case/{r}"] = {"act": [cli({})], "observe": seq(T[:3], lambda i, t, r=r, fn=fn:
+                                                                   fn(key("case", r), 1 if i == 0 else 3))}
+            calls[f"control/{r}"] = {"act": [cli({})], "observe": seq(T, lambda i, t, r=r, fn=fn:
+                                                                      fn(key("control", r), 1))}
+        out[fname] = rec(cell, calls, "versões aparecem na segunda leitura; controle com versão única")
+
+    # ------------------------------------------------ ciclo de vida aws e google: 72 h, leitura a cada 6 h
+    T = ticks(21600, 259200)
+    for cell, fn, fname in (("object_lifecycle/aws", lambda role, rep, n: s3_keycount(n), "object_lifecycle_aws.json"),
+                            ("object_lifecycle/google", lambda role, rep, n: gcs_list(prefix(role, rep), n) if n
+                             else NO_MATCH, "object_lifecycle_google.json")):
+        calls = {}
+        for r in (1, 2, 3):
+            # expira entre 24 h e 36 h (regra de 1 dia + atraso assíncrono do provedor)
+            calls[f"case/{r}"] = {"act": [[cli({})] * 3],
+                                  "observe": seq(T[:7], lambda i, t, r=r, fn=fn:
+                                                 fn("case", r, [3, 3, 3, 3, 1, 0, 0][i]))}
+            calls[f"control/{r}"] = {"act": [[cli({})] * 3],
+                                     "observe": seq(T, lambda i, t, r=r, fn=fn: fn("control", r, 3))}
+        out[fname] = rec(cell, calls, "expiração assíncrona depois de 1 dia; controle sem regra continua com os 3")
+
     # ------------------------------------------------ parsers soltos (azurerm, oci, lifecycle)
     out["parsers.json"] = {"schema": "bo.probe_recording/1", "synthetic": True, "cell": "*", "calls": {},
                            "parsers": {
                                "object_versioning/azurerm": [[az_versions(key("case", 1), 3), {"versions": 3}],
-                                                             [cli([{"name": key("case", 1)}]), {"versions": 0}]],
+                                                             [cli([{"name": key("case", 1), "versionId": None,
+                                                                    "isCurrentVersion": None}]), {"versions": 1}],
+                                                             [cli([{"name": "bo-probe/case/r1/objx"}]),
+                                                              {"versions": 0}]],
                                "object_versioning/oci": [[oci_versions(key("case", 1), 2), {"versions": 2}],
                                                          [cli({"data": []}), {"versions": 0}]],
                                "object_lifecycle/aws": [[s3_keycount(2), {"present": 2}],
