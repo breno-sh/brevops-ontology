@@ -125,6 +125,8 @@ ROLE_REQUIRED = {
         "pacote do piloto": [r"candidates\.jsonl \(C08\)", r"canonical_atoms", r"value_space", r"MANIFEST\.sha256",
                              r"sem uso, valor, deploy, teste nem ouro"],
         "documentação dos átomos": [r"docs_facts\.jsonl", r"atoms\.jsonl"],
+        "âncora UNRESOLVED e evidence_ref": [r"C20-UNRESOLVED", r"evidence_ref", r"motivo no context",
+                                             r"sem sentence"],
         "C20": [r"python -I -m bo\.contracts\.validate glossary", r"claims\.jsonl", r"decisions\.jsonl",
               r"validate decisions", r"narrower"],
     },
@@ -137,6 +139,7 @@ ROLE_REQUIRED = {
         "ausência tipada": [r"sssom:NoTermFound", r"\babsence\b", r"ABSENCE_DEMONSTRATED", r"searched"],
         "registro fechado": [r"transforms\.yaml", r"registry_only"],
         "grupo": [r"bo_group_id", r"variáveis nomeadas"],
+        "âncora UNRESOLVED e evidence_ref": [r"evidence_ref", r"Âncora UNRESOLVED pode vir sem sentença"],
     },
     "hunter": {
         "adversarial": [r"descobertas adversariais", r"não é amostra", r"nunca extrapol"],
@@ -151,6 +154,7 @@ ROLE_REQUIRED = {
         "publicado × interpretado": [r"published", r"interpreted", r"model_id"],
         "não escreveu glossário": [r"não escreveu"],
         "C20": [r"glossary_audit\.jsonl", r"supersedes"],
+        "evidence_ref": [r"evidence_ref", r"UNRESOLVED sem sentença"],
     },
     "evaluator": {
         "código congelado": [r"código congelado", r"sha"],

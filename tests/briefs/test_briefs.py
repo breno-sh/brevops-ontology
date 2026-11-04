@@ -158,3 +158,20 @@ def test_decisions_reference_rule_rejects_unknown_concept():
 def test_none_row_uses_absence_and_dispute_uses_disputes():
     assert E.NONE_ROW["absence"]["kind"] == "ABSENCE_DEMONSTRATED" and "curation_rule" not in E.NONE_ROW
     assert E.dispute_example()["disputes"] == [E.NONE_ROW["claim_id"]] and "see_also" not in E.dispute_example()
+
+
+def test_unresolved_anchor_without_sentence_c20_330():
+    """C20 3.3.0 (C20-UNRESOLVED): UNRESOLVED sem sentence passa com motivo no context; estado maior sem sentence reprova."""
+    import subprocess, sys
+    d = common.tmp_dir() / "tests" / "unres"
+    E.validate_files(d)
+
+    def run(rec):
+        (d / "claims.jsonl").write_text(common.canon(rec) + "\n", encoding="utf-8")
+        return subprocess.run([sys.executable, "-I", "-m", "bo.contracts.validate", "claims", str(d / "claims.jsonl")],
+                              capture_output=True, text=True).returncode
+    assert "sentence" not in E.ANCHOR_UNRESOLVED and len(E.ANCHOR_UNRESOLVED["context"]) >= 15
+    assert run(E.ANCHOR_UNRESOLVED) == 0
+    bad = copy.deepcopy(E.ANCHOR_UNRESOLVED)
+    bad["evidence_state"] = "STRUCTURALLY_VALID"
+    assert run(bad) != 0

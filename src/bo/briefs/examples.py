@@ -275,7 +275,14 @@ def anchor(cid, atom, n, state="STRUCTURALLY_VALID", method="parser", level="pub
     return r
 
 
-ANCHOR_PA = anchor("ANC-BRF-pa-01", "pa:pa_widget:keep_days", 1)
+ANCHOR_PA = anchor("ANC-BRF-pa-01", "pa:pa_widget:keep_days", 1,
+                   evidence_ref={"contract": "C03", "id": "DF-brf-pa-0012"})
+ANCHOR_UNRESOLVED = anchor("ANC-BRF-pc-01", "pc:pc_gizmo:keep_days", 1, state="UNRESOLVED", method="manual",
+                           level="derived",
+                           context="procurado nos fatos de documentação do tipo pc_gizmo: o atributo não tem descrição "
+                                   "própria na tag fixada; nenhuma sentença do próprio átomo")
+for _k in ("sentence", "source"):
+    del ANCHOR_UNRESOLVED[_k]
 ANCHOR_PB = anchor("ANC-BRF-pb-01", "pb:pb_gadget:keep_days", 1, method="model", level="interpreted",
                    model_id=common.MODEL_ID,
                    source={"repo": "example-org/provider-b-docs", "tag": "v2.0.0", "file": "docs/gadget.md",
@@ -487,7 +494,8 @@ def validate_files(out_dir) -> dict:
     files["glossary"].write_text("".join(common.canon(x) + "\n"
                                          for x in [GLOSSARY_CONCEPT, GLOSSARY_CONCEPT_NA] + GLOSSARY_EXTRA),
                                  encoding="utf-8")
-    files["claims"].write_text("".join(common.canon(x) + "\n" for x in (ANCHOR_PA, ANCHOR_PB, ANCHOR_PA_AUDITED)),
+    files["claims"].write_text("".join(common.canon(x) + "\n"
+                                       for x in (ANCHOR_PA, ANCHOR_PB, ANCHOR_PA_AUDITED, ANCHOR_UNRESOLVED)),
                                encoding="utf-8")
     files["glossary_audit"].write_text("".join(common.canon(x) + "\n" for x in (AUDIT_PASS, AUDIT_INDIRECT)),
                                        encoding="utf-8")

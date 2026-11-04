@@ -16,8 +16,8 @@ MODEL_ID = "claude-opus-5-5"
 # Versão dos briefs e data de congelamento: constantes (a regeneração tem de ser idêntica byte a byte).
 # Mudar qualquer brief depois do FREEZE0 é emenda: nova versão aqui, motivo no CHANGELOG do brief e
 # tools/invalidate.py check --apply para marcar os consumidores (PILOT-EXIT, E6).
-BRIEF_VERSION = "1.2.0"
-FROZEN_AT = "2026-11-04T08:00:00-03:00"
+BRIEF_VERSION = "1.3.0"
+FROZEN_AT = "2026-11-04T13:00:00-03:00"
 
 BRIEF_FILES = {  # papel -> brief (o mesmo de content.BRIEF_OF)
     "glossarist": "GLOSSARY_BRIEF.txt",

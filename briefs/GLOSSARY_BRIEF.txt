@@ -1,7 +1,7 @@
 BRIEF DO GLOSSARISTA — BrevOps Ontology (briefs/GLOSSARY_BRIEF.txt)
-Versão 1.2.0 · congelado em 2026-11-04T08:00:00-03:00 (America/Recife) · produtor: módulo BRIEFS
-Contratos: C09 3.1.0, C20 3.1.0 (versões lidas dos schemas em contracts/)
-Fontes normativas (sha256, 16 primeiros): semantics/SEMANTICS.html 28f849eb578fea68; transforms/transforms.yaml 93a32350718f56fa; grain/GRAIN.html ae75e3f2468f96a6; ontology/patterns/ONTPAT.html c0e2b37b55e8ed93; prereg/PREREG.html 6eeb9b18a5d9512d; contracts/ 94f3b4e25c5791a1
+Versão 1.3.0 · congelado em 2026-11-04T13:00:00-03:00 (America/Recife) · produtor: módulo BRIEFS
+Contratos: C09 3.2.0, C20 3.3.0 (versões lidas dos schemas em contracts/)
+Fontes normativas (sha256, 16 primeiros): semantics/SEMANTICS.html 28f849eb578fea68; transforms/transforms.yaml 93a32350718f56fa; grain/GRAIN.html 27553697c43d4d22; ontology/patterns/ONTPAT.html c0e2b37b55e8ed93; prereg/PREREG.html 6eeb9b18a5d9512d; contracts/ 92a1f9456185479b
 Quem usa: PILOT-STO-GLOSS, PILOT-NET-GLOSS, GLOSSARY-CMP, GLOSSARY-NET, GLOSSARY-STO, GLOSSARY-DB, GLOSSARY-SEC, GLOSSARY-OPS; papel glossarist (glossarista) no bo-lane.
 Precedência: este brief de papel complementa o brief de lançamento do seu módulo; em conflito vale o mais
 restritivo, e o conflito vai para o relatório. Mudar este texto depois do FREEZE0 é emenda (versão nova, motivo
@@ -13,7 +13,8 @@ Histórico: 1.0.0 (2026-11-03) primeira versão congelada; 1.1.0 (2026-11-03) em
 3.1.0 e C20 3.1.0): ausência tipada no campo absence, contestação no campo disputes, decisions.jsonl com
 validador e o kind narrower; 1.2.0 (2026-11-04) achados CC-2/CC-3 do PILOT-STO-GLOSS: o glossarista lê
 os fatos de documentação e os átomos do schema, a fatia inteira vale como treino nos pilotos e o conteúdo do
-pacote do piloto fica declarado.
+pacote do piloto fica declarado; 1.3.0 (2026-11-04) C20 3.3.0 (CC-6 do PILOT-STO-GLOSS): âncora UNRESOLVED
+sem sentença com o motivo no context, evidence_ref e âncora de bloco/tipo.
 
 SEU PAPEL EM UMA FRASE
 Você é o glossarista de uma fatia (PILOT-STO-GLOSS, PILOT-NET-GLOSS) ou de um domínio (GLOSSARY-CMP, -NET, -STO,
@@ -152,12 +153,21 @@ G1. O QUE VOCÊ ENTREGA (C20 3.1.0; caminhos exatos no brief do seu módulo)
 - claims.jsonl (registro anchor_claim): uma linha por âncora átomo→conceito. claim_id imutável (ANC-<provedor>-
   <n>), claim_version_id (<claim_id>@1), event_id (EV-...), concept_id, atom_id (provider:resource_type:caminho,
   átomo canônico da projeção de treino), sentence (a frase que sustenta), context (onde ela está), source
-  {repo, tag, file, line, sentence} da documentação na tag fixada, counterexample_search {query, found, result},
-  extraction_method, evidence_level, evidence_state e recorded_at (America/Recife).
-  EX| {"atom_id": "pa:pa_widget:keep_days", "claim_id": "ANC-BRF-pa-01", "claim_version_id": "ANC-BRF-pa-01@1", "concept_id": "concept:item_keep_period", "context": "seção de argumentos do tipo sintético", "counterexample_search": {"found": false, "query": "keep days retain hold period", "result": "nenhum uso com outro significado no pacote"}, "event_id": "EV-ANC-BRF-pa-01-1", "evidence_level": "published", "evidence_state": "STRUCTURALLY_VALID", "extraction_method": "parser", "recorded_at": "2026-11-03T08:00:00-03:00", "sentence": "frase sintética: dias durante os quais o item é mantido", "source": {"file": "docs/widget.md", "line": 12, "repo": "example-org/provider-a-docs", "sentence": "frase sintética de documentação que sustenta o fato", "tag": "v1.0.0"}}
+  {repo, tag, file, line, sentence} da documentação na tag fixada, evidence_ref {contract, id} (o fato de onde a
+  sentença veio: C03 do átomo, id DF-..., ou C25 do tipo, id SE-...; regra C20-EVREF), counterexample_search
+  {query, found, result}, extraction_method, evidence_level, evidence_state e recorded_at (America/Recife).
+  anchor_kind atom (padrão) ancora em atom_id; block e type ancoram em block_id ou type_id, sempre com
+  implication (que valor do conceito o bloco ou o tipo implica; regra C20-ANCHOR).
+  EX| {"atom_id": "pa:pa_widget:keep_days", "claim_id": "ANC-BRF-pa-01", "claim_version_id": "ANC-BRF-pa-01@1", "concept_id": "concept:item_keep_period", "context": "seção de argumentos do tipo sintético", "counterexample_search": {"found": false, "query": "keep days retain hold period", "result": "nenhum uso com outro significado no pacote"}, "event_id": "EV-ANC-BRF-pa-01-1", "evidence_level": "published", "evidence_ref": {"contract": "C03", "id": "DF-brf-pa-0012"}, "evidence_state": "STRUCTURALLY_VALID", "extraction_method": "parser", "recorded_at": "2026-11-03T08:00:00-03:00", "sentence": "frase sintética: dias durante os quais o item é mantido", "source": {"file": "docs/widget.md", "line": 12, "repo": "example-org/provider-a-docs", "sentence": "frase sintética de documentação que sustenta o fato", "tag": "v1.0.0"}}
   EX= C20 anchor_claim
   EX| {"atom_id": "pb:pb_gadget:keep_days", "claim_id": "ANC-BRF-pb-01", "claim_version_id": "ANC-BRF-pb-01@1", "concept_id": "concept:item_keep_period", "context": "seção de argumentos do tipo sintético", "counterexample_search": {"found": false, "query": "keep days retain hold period", "result": "nenhum uso com outro significado no pacote"}, "event_id": "EV-ANC-BRF-pb-01-1", "evidence_level": "interpreted", "evidence_state": "STRUCTURALLY_VALID", "extraction_method": "model", "model_id": "claude-opus-5-5", "recorded_at": "2026-11-03T08:00:00-03:00", "sentence": "frase sintética: dias durante os quais o item é mantido", "source": {"file": "docs/gadget.md", "line": 40, "repo": "example-org/provider-b-docs", "sentence": "frase sintética de documentação que sustenta o fato", "tag": "v2.0.0"}}
   EX= C20 anchor_claim
+- Âncora sem sentença: só com evidence_state UNRESOLVED (C20 3.3.0, regra C20-UNRESOLVED). sentence, source e
+  evidence_ref ficam de fora e o MOTIVO vai no context (≥ 15 caracteres: o que você procurou e por que não há
+  sentença do próprio átomo). Nunca uma sentença inventada, emprestada de outro átomo ou do SERVICE-EVIDENCE para
+  "fechar" a âncora. Toda âncora com estado acima de UNRESOLVED tem sentence.
+  EX| {"atom_id": "pc:pc_gizmo:keep_days", "claim_id": "ANC-BRF-pc-01", "claim_version_id": "ANC-BRF-pc-01@1", "concept_id": "concept:item_keep_period", "context": "procurado nos fatos de documentação do tipo pc_gizmo: o atributo não tem descrição própria na tag fixada; nenhuma sentença do próprio átomo", "counterexample_search": {"found": false, "query": "keep days retain hold period", "result": "nenhum uso com outro significado no pacote"}, "event_id": "EV-ANC-BRF-pc-01-1", "evidence_level": "derived", "evidence_state": "UNRESOLVED", "extraction_method": "manual", "recorded_at": "2026-11-03T08:00:00-03:00"}
+  EX= C20 anchor_claim (UNRESOLVED sem sentença, C20 3.3.0)
 - decisions.jsonl (C20 3.1.0, registro decision): o registro de decisões do domínio, um objeto por linha:
   schema "bo.glossary_decision/1", decision_id (GD-...), kind (broader | narrower | value_type |
   same_kind_distinct | merge | split | exclusive | ungrounded), concept_id, related_concept (obrigatório em
@@ -236,7 +246,8 @@ A sentença de cada âncora vem da documentação do PRÓPRIO átomo: os fatos d
 ($BO_DATA/DOCS-*/docs_facts.jsonl, com nível publicado, derivado ou interpretado) e os átomos do schema fixado
 ($BO_DATA/SCHEMA-*/atoms.jsonl, com o caminho dos blocos e o modo de aninhamento que a biblioteca de grão usa).
 As sentenças do SERVICE-EVIDENCE descrevem o serviço, não a definição do atributo: não sustentam âncora sozinhas.
-Átomo sem fato de documentação: âncora UNRESOLVED com o motivo no context, nunca uma sentença inventada.
+Átomo sem fato de documentação, ou com descrição que não serve (ex.: copiada de outra página): âncora UNRESOLVED
+sem sentence, com o motivo no context (G1), ou não ancore; nunca uma sentença inventada.
 
 G7. CONFERIR ANTES DO COMMIT
   python -I -m bo.contracts.validate glossary <seu glossary.jsonl>
@@ -314,14 +325,14 @@ PROVENIÊNCIA A PREENCHER (C17; vai para results/<ID>/summary.json, nunca para o
 - model_id: claude-opus-5-5 (padrão do tools/provenance.py; nunca outro modelo, nunca Fable).
 - brief_sha256: o sha256 do brief de lançamento do seu módulo (passado em --brief). O sha deste brief de papel
   vai em --param role_brief_sha256, copiado da linha GLOSSARY_BRIEF.txt de briefs/MANIFEST.sha256.
-- params: --param role=glossarist --param role_brief=briefs/GLOSSARY_BRIEF.txt --param role_brief_version=1.2.0
+- params: --param role=glossarist --param role_brief=briefs/GLOSSARY_BRIEF.txt --param role_brief_version=1.3.0
   --param role_brief_sha256=<sha> e mais: --param domain=<CMP|NET|STO|DB|SEC|OPS> (ou --param slice=<sto|net> nos pilotos), --param concepts_n=<n>,
   --param anchors_n=<n>, --param multi_provider_anchor_paths_n=<n>, --param model_extracted_anchors_n=<n>,
   --param training_projection_receipt=<digest do comprovante SPLIT, quando houver>
 - entradas: as do catálogo (o provenance.py grava o sha256 de cada uma); não passe --input para esconder entrada.
 - comando:
   python -I $BO_REPO/tools/provenance.py record <ID> --brief <brief de lançamento do módulo> \
-    --param role=glossarist --param role_brief=briefs/GLOSSARY_BRIEF.txt --param role_brief_version=1.2.0 \
+    --param role=glossarist --param role_brief=briefs/GLOSSARY_BRIEF.txt --param role_brief_version=1.3.0 \
     --param role_brief_sha256=<sha> ...
   python -I $BO_REPO/tools/provenance.py verify <ID>
 - por registro: toda âncora com extraction_method model leva evidence_level interpreted e model_id claude-opus-5-5; recorded_at

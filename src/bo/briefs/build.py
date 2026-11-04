@@ -50,6 +50,7 @@ EXAMPLES = {
     "GLOSSARY_CONCEPT": (E.GLOSSARY_CONCEPT, "C20 concept"), "GLOSSARY_CONCEPT_NA": (E.GLOSSARY_CONCEPT_NA, "C20 concept"),
     "ANCHOR_PA": (E.ANCHOR_PA, "C20 anchor_claim"), "ANCHOR_PB": (E.ANCHOR_PB, "C20 anchor_claim"),
     "ANCHOR_PA_AUDITED": (E.ANCHOR_PA_AUDITED, "C20 anchor_claim"),
+    "ANCHOR_UNRESOLVED": (E.ANCHOR_UNRESOLVED, "C20 anchor_claim (UNRESOLVED sem sentença, C20 3.3.0)"),
     "AUDIT_PASS": (E.AUDIT_PASS, "C20 audit"), "AUDIT_INDIRECT": (E.AUDIT_INDIRECT, "C20 audit"),
     "DECISION_BROADER": (E.DECISION_BROADER, "C20 decision"),
     "DECISION_SAME_KIND": (E.DECISION_SAME_KIND, "C20 decision"),
@@ -235,7 +236,8 @@ def brief_text(role: str, rep: dict, reg: dict, norm: str, cver: str) -> str:
         "3.1.0 e C20 3.1.0): ausência tipada no campo absence, contestação no campo disputes, decisions.jsonl com",
         "validador e o kind narrower; 1.2.0 (2026-11-04) achados CC-2/CC-3 do PILOT-STO-GLOSS: o glossarista lê",
         "os fatos de documentação e os átomos do schema, a fatia inteira vale como treino nos pilotos e o conteúdo do",
-        "pacote do piloto fica declarado.",
+        "pacote do piloto fica declarado; 1.3.0 (2026-11-04) C20 3.3.0 (CC-6 do PILOT-STO-GLOSS): âncora UNRESOLVED",
+        "sem sentença com o motivo no context, evidence_ref e âncora de bloco/tipo.",
     ])
     body = render("\n\n".join([parts["INTRO"], (tdir / "core.txt").read_text(encoding="utf-8").rstrip("\n"),
                                "PAPEL: " + common.ROLE_PT[role].upper() + "\n" + parts["BODY"],
@@ -295,9 +297,10 @@ def generate(root: Path) -> dict:
     (rdir / "examples_report.json").write_text(common.pretty(report), encoding="utf-8")
     # manifesto dos resultados (C17): tudo em results/BRIEFS menos o próprio manifesto e o summary.json (que o
     # tools/provenance.py grava com hora). CONTRACT_CHANGE.txt é lido do repositório quando root é uma cópia.
-    src_cc = common.repo() / "results" / common.MODULE / "CONTRACT_CHANGE.txt"
-    if src_cc.is_file() and (rdir / "CONTRACT_CHANGE.txt") != src_cc:
-        shutil.copyfile(src_cc, rdir / "CONTRACT_CHANGE.txt")
+    for name in HANDWRITTEN:          # escritos à mão (não gerados): entram no manifesto como estão no repositório
+        src = common.repo() / "results" / common.MODULE / name
+        if src.is_file() and (rdir / name) != src:
+            shutil.copyfile(src, rdir / name)
     rel = sorted(p.relative_to(root).as_posix() for p in rdir.rglob("*")
                  if p.is_file() and p.name not in ("MANIFEST.sha256", "summary.json"))
     (rdir / "MANIFEST.sha256").write_text("".join(f"{common.sha256_file(root / r)}  {r}\n" for r in rel),
@@ -305,6 +308,7 @@ def generate(root: Path) -> dict:
     return report
 
 
+HANDWRITTEN = ["CONTRACT_CHANGE.txt", "requests.json"]
 GENERATED = ["briefs/" + f for f in sorted(common.BRIEF_FILES.values())] + \
             ["briefs/read_allowlists.json", "briefs/MANIFEST.sha256", "results/BRIEFS/examples_report.json",
              "results/BRIEFS/MANIFEST.sha256"]

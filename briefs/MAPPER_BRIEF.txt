@@ -1,7 +1,7 @@
 BRIEF DO MAPEADOR — BrevOps Ontology (briefs/MAPPER_BRIEF.txt)
-Versão 1.2.0 · congelado em 2026-11-04T08:00:00-03:00 (America/Recife) · produtor: módulo BRIEFS
-Contratos: C09 3.1.0, C20 3.1.0 (versões lidas dos schemas em contracts/)
-Fontes normativas (sha256, 16 primeiros): semantics/SEMANTICS.html 28f849eb578fea68; transforms/transforms.yaml 93a32350718f56fa; grain/GRAIN.html ae75e3f2468f96a6; ontology/patterns/ONTPAT.html c0e2b37b55e8ed93; prereg/PREREG.html 6eeb9b18a5d9512d; contracts/ 94f3b4e25c5791a1
+Versão 1.3.0 · congelado em 2026-11-04T13:00:00-03:00 (America/Recife) · produtor: módulo BRIEFS
+Contratos: C09 3.2.0, C20 3.3.0 (versões lidas dos schemas em contracts/)
+Fontes normativas (sha256, 16 primeiros): semantics/SEMANTICS.html 28f849eb578fea68; transforms/transforms.yaml 93a32350718f56fa; grain/GRAIN.html 27553697c43d4d22; ontology/patterns/ONTPAT.html c0e2b37b55e8ed93; prereg/PREREG.html 6eeb9b18a5d9512d; contracts/ 92a1f9456185479b
 Quem usa: PILOT-STO-MAP, PILOT-NET-MAP, MAP-{pair}-{domain} (36: 6 pares × 6 domínios) e RELIAB (lançado com --role mapper); papel mapper (mapeador) no bo-lane.
 Precedência: este brief de papel complementa o brief de lançamento do seu módulo; em conflito vale o mais
 restritivo, e o conflito vai para o relatório. Mudar este texto depois do FREEZE0 é emenda (versão nova, motivo
@@ -13,7 +13,8 @@ Histórico: 1.0.0 (2026-11-03) primeira versão congelada; 1.1.0 (2026-11-03) em
 3.1.0 e C20 3.1.0): ausência tipada no campo absence, contestação no campo disputes, decisions.jsonl com
 validador e o kind narrower; 1.2.0 (2026-11-04) achados CC-2/CC-3 do PILOT-STO-GLOSS: o glossarista lê
 os fatos de documentação e os átomos do schema, a fatia inteira vale como treino nos pilotos e o conteúdo do
-pacote do piloto fica declarado.
+pacote do piloto fica declarado; 1.3.0 (2026-11-04) C20 3.3.0 (CC-6 do PILOT-STO-GLOSS): âncora UNRESOLVED
+sem sentença com o motivo no context, evidence_ref e âncora de bloco/tipo.
 
 SEU PAPEL EM UMA FRASE
 Você é o mapeador de um par×domínio (MAP-<PAR>-<DOMÍNIO>), de uma fatia piloto (PILOT-STO-MAP, PILOT-NET-MAP) ou o
@@ -254,7 +255,10 @@ M9. EVIDÊNCIA E ESTADO
   STRUCTURALLY_VALID. Nunca PERSISTENCE_VERIFIED nem OBSERVATION_TESTED.
 - basis shared_concept (a alegação se apoia nas âncoras do glossário) exige anchors com as duas âncoras e o estado
   delas no glossário congelado; com âncora abaixo de DOC_SUPPORTED, o árbitro devolve UNPROVEN (ANCHOR-NOT-PROOF).
-  O mesmo conceito nos dois lados é ponto de partida, não prova.
+  O mesmo conceito nos dois lados é ponto de partida, não prova. Âncora UNRESOLVED pode vir sem sentença (C20
+  3.3.0, motivo no context): ela nunca sustenta transporte, e você não completa a sentença que ela não tem.
+- A sentença que você cita em proof.evidence sai do fato de documentação do pacote; quando a âncora do glossário
+  traz evidence_ref (C03 DF-... ou C25 SE-...), cite o mesmo fato, sem reescrever a frase.
 - Não infle o estado para "passar": o árbitro confere, e o UNPROVEN honesto é resultado.
 
 M10. GRAVAR E CONFERIR
@@ -346,14 +350,14 @@ PROVENIÊNCIA A PREENCHER (C17; vai para results/<ID>/summary.json, nunca para o
 - model_id: claude-opus-5-5 (padrão do tools/provenance.py; nunca outro modelo, nunca Fable).
 - brief_sha256: o sha256 do brief de lançamento do seu módulo (passado em --brief). O sha deste brief de papel
   vai em --param role_brief_sha256, copiado da linha MAPPER_BRIEF.txt de briefs/MANIFEST.sha256.
-- params: --param role=mapper --param role_brief=briefs/MAPPER_BRIEF.txt --param role_brief_version=1.2.0
+- params: --param role=mapper --param role_brief=briefs/MAPPER_BRIEF.txt --param role_brief_version=1.3.0
   --param role_brief_sha256=<sha> e mais: --param pair=<PAR> --param domain=<DOMÍNIO> (ou --param slice=<sto|net>), --param bundle_sha256=<sha do pacote>,
   --param glossary_freeze=<digest do comprovante FREEZE-G, na escala>, --param rows_n=<n>, --param none_n=<n>,
   --param groups_n=<n>, --param mapping_set_id=<IRI>
 - entradas: as do catálogo (o provenance.py grava o sha256 de cada uma); não passe --input para esconder entrada.
 - comando:
   python -I $BO_REPO/tools/provenance.py record <ID> --brief <brief de lançamento do módulo> \
-    --param role=mapper --param role_brief=briefs/MAPPER_BRIEF.txt --param role_brief_version=1.2.0 \
+    --param role=mapper --param role_brief=briefs/MAPPER_BRIEF.txt --param role_brief_version=1.3.0 \
     --param role_brief_sha256=<sha> ...
   python -I $BO_REPO/tools/provenance.py verify <ID>
 - por registro: toda linha leva mapping_tool claude-opus-5-5 e creator_id = o seu ID; mapping_date = a data do mapeamento

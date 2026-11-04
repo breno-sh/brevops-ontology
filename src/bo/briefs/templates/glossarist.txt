@@ -17,10 +17,18 @@ G1. O QUE VOCÊ ENTREGA (C20 3.1.0; caminhos exatos no brief do seu módulo)
 - claims.jsonl (registro anchor_claim): uma linha por âncora átomo→conceito. claim_id imutável (ANC-<provedor>-
   <n>), claim_version_id (<claim_id>@1), event_id (EV-...), concept_id, atom_id (provider:resource_type:caminho,
   átomo canônico da projeção de treino), sentence (a frase que sustenta), context (onde ela está), source
-  {repo, tag, file, line, sentence} da documentação na tag fixada, counterexample_search {query, found, result},
-  extraction_method, evidence_level, evidence_state e recorded_at (America/Recife).
+  {repo, tag, file, line, sentence} da documentação na tag fixada, evidence_ref {contract, id} (o fato de onde a
+  sentença veio: C03 do átomo, id DF-..., ou C25 do tipo, id SE-...; regra C20-EVREF), counterexample_search
+  {query, found, result}, extraction_method, evidence_level, evidence_state e recorded_at (America/Recife).
+  anchor_kind atom (padrão) ancora em atom_id; block e type ancoram em block_id ou type_id, sempre com
+  implication (que valor do conceito o bloco ou o tipo implica; regra C20-ANCHOR).
 {{EX:ANCHOR_PA}}
 {{EX:ANCHOR_PB}}
+- Âncora sem sentença: só com evidence_state UNRESOLVED (C20 3.3.0, regra C20-UNRESOLVED). sentence, source e
+  evidence_ref ficam de fora e o MOTIVO vai no context (≥ 15 caracteres: o que você procurou e por que não há
+  sentença do próprio átomo). Nunca uma sentença inventada, emprestada de outro átomo ou do SERVICE-EVIDENCE para
+  "fechar" a âncora. Toda âncora com estado acima de UNRESOLVED tem sentence.
+{{EX:ANCHOR_UNRESOLVED}}
 - decisions.jsonl (C20 3.1.0, registro decision): o registro de decisões do domínio, um objeto por linha:
   schema "bo.glossary_decision/1", decision_id (GD-...), kind (broader | narrower | value_type |
   same_kind_distinct | merge | split | exclusive | ungrounded), concept_id, related_concept (obrigatório em
@@ -95,7 +103,8 @@ A sentença de cada âncora vem da documentação do PRÓPRIO átomo: os fatos d
 ($BO_DATA/DOCS-*/docs_facts.jsonl, com nível publicado, derivado ou interpretado) e os átomos do schema fixado
 ($BO_DATA/SCHEMA-*/atoms.jsonl, com o caminho dos blocos e o modo de aninhamento que a biblioteca de grão usa).
 As sentenças do SERVICE-EVIDENCE descrevem o serviço, não a definição do atributo: não sustentam âncora sozinhas.
-Átomo sem fato de documentação: âncora UNRESOLVED com o motivo no context, nunca uma sentença inventada.
+Átomo sem fato de documentação, ou com descrição que não serve (ex.: copiada de outra página): âncora UNRESOLVED
+sem sentence, com o motivo no context (G1), ou não ancore; nunca uma sentença inventada.
 
 G7. CONFERIR ANTES DO COMMIT
   python -I -m bo.contracts.validate glossary <seu glossary.jsonl>

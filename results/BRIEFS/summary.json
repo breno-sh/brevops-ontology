@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "BRIEFS",
- "generated_at": "2026-11-04T02:17:00-03:00",
+ "generated_at": "2026-11-04T12:22:12-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/BRIEFS.txt",
@@ -13,22 +13,20 @@
    "modo": "unlazy",
    "onda": "6",
    "fase": "F1",
-   "brief_version": "1.2.0",
-   "frozen_at": "2026-11-04T08:00:00-03:00",
+   "brief_version": "1.3.0",
+   "frozen_at": "2026-11-04T13:00:00-03:00",
    "examples": "13",
    "semantics_reference": "bo.semantics.obligations",
-   "c09": "3.1.0",
-   "c20": "3.1.0",
-   "emenda": "PILOT-STO-GLOSS-CC2-CC3"
+   "c09": "3.2.0",
+   "c20": "3.3.0",
+   "emenda": "CONTRACTS-7-9919e4c",
+   "request": "PILOT-STO-GLOSS-CC-6"
   },
   "inputs": [
    {
     "path": "$BO_REPO/contracts",
     "kind": "dir",
-    "sha256": "53a5c1f1fad4a1af88e30f4669f3a7a5f7e347f66143b69d3d6481459cbfd8fd",
-    "sha256_before_emendas_4_grain_se": "94f3b4e25c5791a1a8bf55b1151804d251b77d719024235d73bafb1492eacee3",
-    "sha256_before_grain012": "db415bb8ae8f2efc96a8dd7e7d5728413ae086b6f042826335c6702b00325e5b",
-    "sha256_before_emenda6": "3392fd0feb0a735b13ccd8dccc87de2f914502b983bb82c504c829bbe03dd43b"
+    "sha256": "92a1f9456185479b2529ca97d2805fb3176b61eda95dad6882c6c9d09bff14d0"
    },
    {
     "path": "$BO_REPO/transforms/transforms.yaml",
@@ -48,15 +46,7 @@
    {
     "path": "$BO_REPO/grain/GRAIN.html",
     "kind": "file",
-    "sha256": "27553697c43d4d22cdb9298c2004f0f01983617081580307db1d9b9a6b10d589",
-    "sha256_before_emendas_4_grain_se": "ae75e3f2468f96a660415cd305e6b19757e93bf21948310e917360e2d3754b0b",
-    "sha256_before_grain012": "a39b6bb8e21803c9502671f465dcc63dec233d2567a526608bbd2e1f2bc14412",
-    "sha256_before_emenda6": "90ec8e96e36501acfe24dc741b59b4af6332a93d28c08467902c60a2fcccda95",
-    "sha256_before_grain014": "f77d9a66e5854ad82ce0c0afed9ec51b0c3341ff9787d04b93f4d233f3acc96a",
-    "sha256_before_grain015": "1e503e2e0412d40c3de6614a491c71594d9a6510efdc03899c3359e310b2808e",
-    "sha256_before_grain016": "2250a0aebdc2b2f0fa31f253a1e1b1250b7bdc5e115d8106269d7a103b7d733a",
-    "sha256_before_grain017": "8219b5397f9af8008a93fd72c8606ac4b89e9b9bef1a288c88e0f85e07a156f6",
-    "sha256_before_grain018": "ebbd160a181dc8ec2cd082edf8c9dcbaaa364c7288be1c35f771f5e68a755de6"
+    "sha256": "27553697c43d4d22cdb9298c2004f0f01983617081580307db1d9b9a6b10d589"
    },
    {
     "path": "$BO_REPO/semantics/SEMANTICS.html",
@@ -64,7 +54,7 @@
     "sha256": "28f849eb578fea685935a2499cd13710e8a96b6cd01e4bc34419ae0e51f29596"
    }
   ],
-  "recorded_at": "2026-11-04T02:17:00-03:00"
+  "recorded_at": "2026-11-04T12:22:12-03:00"
  },
  "sources": [
   {

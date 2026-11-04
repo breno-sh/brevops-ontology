@@ -15,7 +15,9 @@ sintéticas: {{HUB}}
 A2. AUDITE CADA ALEGAÇÃO ÁTOMO→CONCEITO (uma linha de glossary_audit.jsonl por checagem)
 Para cada versão de âncora (claims.jsonl dos glossários), registre as checagens do C20 (campo check):
 - evidence_support: a sentença existe na documentação da tag fixada (source: repo, tag, arquivo, linha) e sustenta
-  ESTE conceito, não um vizinho. Confira no fato de documentação; não confie no texto copiado na âncora.
+  ESTE conceito, não um vizinho. Confira no fato apontado por evidence_ref (C03 DF-... ou C25 SE-...); não confie
+  no texto copiado na âncora. Âncora UNRESOLVED sem sentença (C20 3.3.0): confira que o context dá o motivo e que
+  de fato não há sentença do próprio átomo; se houver, registre result fail com a sentença achada no note.
 - counterexample: refaça a busca (query própria, não só a do glossarista) por uso com outro significado; mesma
   grandeza, conceitos diferentes é o caso típico (esperar depois de escalar × aquecer antes de medir; dias de
   retenção × número de cópias retidas).

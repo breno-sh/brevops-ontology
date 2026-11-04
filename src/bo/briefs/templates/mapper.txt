@@ -116,7 +116,10 @@ M9. EVIDÊNCIA E ESTADO
   STRUCTURALLY_VALID. Nunca PERSISTENCE_VERIFIED nem OBSERVATION_TESTED.
 - basis shared_concept (a alegação se apoia nas âncoras do glossário) exige anchors com as duas âncoras e o estado
   delas no glossário congelado; com âncora abaixo de DOC_SUPPORTED, o árbitro devolve UNPROVEN (ANCHOR-NOT-PROOF).
-  O mesmo conceito nos dois lados é ponto de partida, não prova.
+  O mesmo conceito nos dois lados é ponto de partida, não prova. Âncora UNRESOLVED pode vir sem sentença (C20
+  3.3.0, motivo no context): ela nunca sustenta transporte, e você não completa a sentença que ela não tem.
+- A sentença que você cita em proof.evidence sai do fato de documentação do pacote; quando a âncora do glossário
+  traz evidence_ref (C03 DF-... ou C25 SE-...), cite o mesmo fato, sem reescrever a frase.
 - Não infle o estado para "passar": o árbitro confere, e o UNPROVEN honesto é resultado.
 
 M10. GRAVAR E CONFERIR
