@@ -1,12 +1,12 @@
 {
  "$schema": "https://json-schema.org/draft/2020-12/schema",
  "$id": "https://w3id.org/brevops/contracts/C25/service_evidence.schema.json",
- "title": "C25 service_evidence 1.4.0: evidência de API e docs ligada ao pin",
+ "title": "C25 service_evidence 1.5.0: evidência de API e docs ligada ao pin",
  "description": "Fato de API/docs ligado ao pin: recurso de API, identidade, chave de importação, controlador de ciclo de vida, dono, alcance, estado de conexão, efeito, precedência, suporte a tag/TTL; nível (publicado | derivado | interpretado) e citação. Citação publicada separada de inferência; desconhecido explícito.",
  "x-bo-contract": {
   "id": "C25",
   "name": "service_evidence",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "status": "amended",
   "owner": "CONTRACTS",
   "files": [
@@ -24,6 +24,14 @@
     "record": "protocol_support",
     "unit": "record",
     "note": "suporte documentado de cada tipo de sonda por provedor (emenda 1.2.0; consumido pelo PROBEKIT)"
+   },
+   {
+    "kind": "spec_disputes",
+    "file": "spec_disputes.json",
+    "format": "json",
+    "record": "spec_disputes",
+    "unit": "document",
+    "note": "disputas spec x doc e a resolução por observação (emenda 1.5.0)"
    }
   ],
   "semantic_rules": [
@@ -31,6 +39,8 @@
    "C25-OBSERVED: observed (experimento reprodutível na API real) tem observation_ref em $BO_DATA/OBS-GAPS, run_id, repetitions >= 2, control e observed_at; fica acima de interpreted e é distinto de published (emenda 1.4.0, adendo de 04/11 §2)",
    "C25-DISPUTE: observed e published do mesmo fato com valores diferentes viram disputa (o observed cita o publicado em disputes; os dois ficam no arquivo, nada é sobrescrito)",
    "C25-SYNTH: fato observado só com rótulos sintéticos (nenhum ocid1., arn, conta de 12 dígitos, GUID de assinatura nem e-mail no valor, no controle ou na referência)",
+   "C25-DISPUTE-REG: spec_disputes.json registra cada disputa; resolvida-por-observação exige os dois lados (sides), resolved_to (spec, doc ou o id do lado) e observation_id; o lado vencedor é um dos lados e a observação não é um deles; uma disputa por (fato, natureza) (emenda 1.5.0)",
+   "C25-ITEM: item_identity tem has_id; com id, requires_parent; exigindo o pai, parent_attribute e parent_type; namespace_cascade tem cascade booleano (GRAIN 0.1.11)",
    "C25-UNKNOWN: unknown cita a publicação consultada (consulted, citation, doc ou schema); level é opcional",
    "C25-DEFAULT: default afirmado tem as_of (como o C03-DEFAULT); api_bridge liga api_resource ao tipo",
    "C25-API: api_resource.resource aceita o marcador UNKNOWN quando a página não nomeia o recurso",
@@ -191,7 +201,7 @@
       "path": {
        "type": "string",
        "minLength": 1,
-       "pattern": "^\\$BO_DATA/OBS-GAPS/\\S+$"
+       "pattern": "^\\$BO_DATA/OBS-GAPS(-AZ)?/\\S+$"
       },
       "record_id": {
        "type": "string",
@@ -245,7 +255,7 @@
      },
      "minItems": 1,
      "uniqueItems": true,
-     "description": "fatos publicados que este contradiz: a divergência vira disputa, nunca sobrescreve"
+     "description": "fatos publicados ou derivados que este contradiz: a divergência vira disputa, nunca sobrescreve (R2 corrigida do PREREG, b95403a)"
     }
    },
    "required": [
@@ -478,6 +488,78 @@
          ]
         }
        ]
+      }
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "status": {
+        "const": "stated"
+       },
+       "value": {
+        "type": "object",
+        "properties": {
+         "aspect": {
+          "const": "item_identity"
+         }
+        },
+        "required": [
+         "aspect"
+        ]
+       }
+      },
+      "required": [
+       "value"
+      ]
+     },
+     "then": {
+      "properties": {
+       "value": {
+        "$ref": "#/$defs/item_identity"
+       }
+      }
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "status": {
+        "const": "stated"
+       },
+       "value": {
+        "type": "object",
+        "properties": {
+         "aspect": {
+          "const": "namespace_cascade"
+         }
+        },
+        "required": [
+         "aspect"
+        ]
+       }
+      },
+      "required": [
+       "value"
+      ]
+     },
+     "then": {
+      "properties": {
+       "value": {
+        "type": "object",
+        "properties": {
+         "aspect": {
+          "const": "namespace_cascade"
+         },
+         "cascade": {
+          "type": "boolean"
+         }
+        },
+        "required": [
+         "aspect",
+         "cascade"
+        ]
+       }
       }
      }
     }
@@ -739,6 +821,258 @@
      }
     }
    ]
+  },
+  "item_identity": {
+   "type": "object",
+   "properties": {
+    "aspect": {
+     "const": "item_identity"
+    },
+    "has_id": {
+     "type": "boolean"
+    },
+    "requires_parent": {
+     "type": "boolean"
+    },
+    "parent_attribute": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^[A-Za-z0-9_]+(\\.[A-Za-z0-9_]+)*$"
+    },
+    "parent_type": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/resource_type"
+    }
+   },
+   "required": [
+    "aspect",
+    "has_id"
+   ],
+   "allOf": [
+    {
+     "if": {
+      "properties": {
+       "has_id": {
+        "const": true
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "requires_parent"
+      ]
+     },
+     "else": {
+      "not": {
+       "anyOf": [
+        {
+         "required": [
+          "requires_parent"
+         ]
+        },
+        {
+         "required": [
+          "parent_attribute"
+         ]
+        },
+        {
+         "required": [
+          "parent_type"
+         ]
+        }
+       ]
+      }
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "requires_parent": {
+        "const": true
+       }
+      },
+      "required": [
+       "requires_parent"
+      ]
+     },
+     "then": {
+      "required": [
+       "parent_attribute",
+       "parent_type"
+      ]
+     }
+    }
+   ],
+   "description": "identidade do item de bloco/coleção (GRAIN T64): com id, diz se exige o pai"
+  },
+  "spec_dispute": {
+   "type": "object",
+   "properties": {
+    "provider": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/provider"
+    },
+    "terraform_resource_type": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/resource_type"
+    },
+    "block_path": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^[A-Za-z0-9_]+(\\.[A-Za-z0-9_]+)*$"
+    },
+    "fact": {
+     "enum": [
+      "identity",
+      "import_key",
+      "lifecycle_controller",
+      "owner",
+      "effective_scope",
+      "connection_state",
+      "effect",
+      "precedence",
+      "tag_support",
+      "ttl_support",
+      "api_bridge",
+      "default"
+     ]
+    },
+    "doc": {
+     "type": "object",
+     "description": "o que cada lado afirma (kind/rule, ou service/resource)"
+    },
+    "spec": {
+     "type": "object",
+     "description": "o que cada lado afirma (kind/rule, ou service/resource)"
+    },
+    "evidence": {
+     "type": "array",
+     "items": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^SE-[A-Za-z0-9_\\-]+$"
+     },
+     "minItems": 1,
+     "uniqueItems": true
+    },
+    "kind": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^[a-z]+_x_[a-z]+$",
+     "description": "natureza da disputa (ex.: observed_x_derived)"
+    },
+    "status": {
+     "enum": [
+      "aberta",
+      "resolvida-por-observação"
+     ],
+     "description": "ausente = aberta (registros anteriores à emenda 1.5.0)"
+    },
+    "sides": {
+     "type": "array",
+     "items": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^SE-[A-Za-z0-9_\\-]+$"
+     },
+     "minItems": 2,
+     "uniqueItems": true,
+     "maxItems": 2,
+     "description": "ids dos dois lados (PUBLISHED ou DERIVED, R2 corrigida)"
+    },
+    "resolved_to": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^(spec|doc|SE-[A-Za-z0-9_\\-]+)$"
+    },
+    "observation_id": {
+     "type": "string",
+     "minLength": 1,
+     "pattern": "^SE-[A-Za-z0-9_\\-]+$"
+    },
+    "resolved_at": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/datetime"
+    }
+   },
+   "required": [
+    "provider",
+    "terraform_resource_type",
+    "fact",
+    "evidence"
+   ],
+   "additionalProperties": false,
+   "allOf": [
+    {
+     "if": {
+      "properties": {
+       "status": {
+        "const": "resolvida-por-observação"
+       }
+      },
+      "required": [
+       "status"
+      ]
+     },
+     "then": {
+      "required": [
+       "sides",
+       "resolved_to",
+       "observation_id"
+      ]
+     },
+     "else": {
+      "not": {
+       "anyOf": [
+        {
+         "required": [
+          "resolved_to"
+         ]
+        },
+        {
+         "required": [
+          "observation_id"
+         ]
+        }
+       ]
+      }
+     }
+    }
+   ]
+  },
+  "spec_disputes": {
+   "type": "object",
+   "properties": {
+    "schema": {
+     "const": "bo.spec_disputes/1"
+    },
+    "module": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/stable_id"
+    },
+    "note": {
+     "type": "string",
+     "minLength": 3
+    },
+    "contract": {
+     "const": "C25"
+    },
+    "contract_version": {
+     "enum": [
+      "1.5.0"
+     ]
+    },
+    "generated_at": {
+     "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/datetime"
+    },
+    "disputes": {
+     "type": "array",
+     "items": {
+      "$ref": "#/$defs/spec_dispute"
+     }
+    }
+   },
+   "required": [
+    "schema",
+    "module",
+    "disputes"
+   ],
+   "additionalProperties": false
   }
  }
 }

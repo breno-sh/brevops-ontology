@@ -1,0 +1,52 @@
+{
+ "schema": "bo.spec_disputes/1",
+ "module": "SERVICE-EVIDENCE",
+ "contract": "C25",
+ "contract_version": "1.5.0",
+ "generated_at": "2026-11-03T11:00:00-03:00",
+ "note": "conflito spec x doc: os dois fatos ficam no C25",
+ "disputes": [
+  {
+   "provider": "azurerm",
+   "terraform_resource_type": "azurerm_network_interface_security_group_association",
+   "fact": "owner",
+   "doc": {
+    "kind": "self",
+    "rule": "R-OWN-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-OWN-SPEC"
+   },
+   "evidence": [
+    "SE-aws-0001",
+    "SE-aws-0002"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_core_network_security_group_security_rule",
+   "fact": "lifecycle_controller",
+   "doc": {
+    "kind": "self",
+    "rule": "R-LIFE-API"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-LIFE-SPEC-PARENT"
+   },
+   "evidence": [
+    "SE-oci-0008",
+    "SE-oci-0010"
+   ],
+   "status": "resolvida-por-observação",
+   "sides": [
+    "SE-oci-0008",
+    "SE-oci-0010"
+   ],
+   "resolved_to": "spec",
+   "observation_id": "SE-oci-0009",
+   "resolved_at": "2026-11-03T11:00:00-03:00"
+  }
+ ]
+}

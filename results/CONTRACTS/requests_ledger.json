@@ -1,7 +1,7 @@
 {
  "schema": "bo.contracts_requests_ledger/1",
  "module": "CONTRACTS",
- "generated_at": "2026-11-04T16:29:51-03:00",
+ "generated_at": "2026-11-04T17:21:45-03:00",
  "scope": "CONTRACT_CHANGE.txt dos PILOT-* e dos módulos que eles consomem (bo/base)",
  "n": 114,
  "by_decision": {

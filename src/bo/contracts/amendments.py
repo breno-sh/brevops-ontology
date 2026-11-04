@@ -125,6 +125,10 @@ AMENDMENTS = [
      "source": "ADENDO_2026-11-04_OBSERVADO_ALIBABA.html §2",
      "change": "nível observed (observation_ref, run_id, repetitions >= 2, control, observed_at); disputa com o "
                "publicado em disputes; só rótulos sintéticos"},
+    {"contract": "C25", "from": "1.4.0", "to": "1.5.0", "at": "2026-11-04T17:45:00-03:00",
+     "requested_by": "SERVICE-EVIDENCE, COORD", "source": "SERVICE-EVIDENCE itens 10 e 11 (795bffc); PREREG b95403a",
+     "change": "observation_ref em OBS-GAPS(-AZ); tipo spec_disputes com status e resolução por observação; disputes "
+               "cita publicado ou derivado; aspectos item_identity e namespace_cascade"},
 ]
 
 

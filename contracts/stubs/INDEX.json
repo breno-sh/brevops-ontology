@@ -62,6 +62,7 @@
   "C24/requirements.jsonl": "C24:requirements",
   "C25/protocol_support.jsonl": "C25:protocol_support",
   "C25/service_evidence.jsonl": "C25:service_evidence",
+  "C25/spec_disputes.json": "C25:spec_disputes",
   "C26/graph_ir.jsonl": "C26:graph_ir",
   "C26/lowering_plan.jsonl": "C26:lowering_plan",
   "C27/families.jsonl": "C27:families",

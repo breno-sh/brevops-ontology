@@ -1342,8 +1342,8 @@ def r_service(objs, ctx, path):
                         break
             for d in e.get("disputes") or []:
                 t = byid.get(d)
-                if t is None or t.get("level") != "published":
-                    errs.append(f"{w}: disputes cita {d}, que não é fato publicado do arquivo")
+                if t is None or t.get("level") not in ("published", "derived"):
+                    errs.append(f"{w}: disputes cita {d}, que não é fato publicado nem derivado do arquivo")
             if e["status"] == "stated":
                 for p in pub.get(_fact_key(e), []):
                     if _value_core(p) != _value_core(e) and p["evidence_id"] not in (e.get("disputes") or []):
@@ -1358,6 +1358,25 @@ def r_service(objs, ctx, path):
 
 
 # ---------------------------------------------------------------------------------------------------- C26
+@rule("C25", "spec_disputes")
+def r_spec_disputes(objs, ctx, path):
+    errs = []
+    keys = []
+    for i, d in enumerate(objs[0]["disputes"]):
+        w = f"disputes[{i + 1}] {d['terraform_resource_type']}/{d['fact']}"
+        keys.append((d["provider"], d["terraform_resource_type"], d.get("block_path"), d["fact"], d.get("kind")))
+        if d.get("status") == "resolvida-por-observação":
+            sides = d["sides"]
+            if d["resolved_to"].startswith("SE-") and d["resolved_to"] not in sides:
+                errs.append(f"{w}: resolved_to {d['resolved_to']} não é um dos lados")
+            if d["observation_id"] in sides:
+                errs.append(f"{w}: a observação é um dos lados da disputa")
+            if not set(sides) <= set(d["evidence"]) | set(sides):
+                errs.append(f"{w}: lados fora da evidência")
+    errs += dup(keys, "disputa (provider, tipo, bloco, fato, natureza)")
+    return errs
+
+
 @rule("C25", "protocol_support")
 def r_protocol(objs, ctx, path):
     errs = dup([(p["probe_type"], p["provider"], p["terraform_resource_type"]) for p in objs],

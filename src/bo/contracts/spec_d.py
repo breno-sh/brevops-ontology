@@ -170,13 +170,14 @@ def c25() -> dict:
                                   "e distinto de published"),
         "model_id": c00("model_id"), "citation": c00("web_citation"),
         "doc": c00("doc_source"), "derived_from": arr(string(r"^SE-[A-Za-z0-9_\-]+$"), 1),
-        "observation_ref": obj({"path": string(r"^\$BO_DATA/OBS-GAPS/\S+$"), "record_id": text(1)},
+        "observation_ref": obj({"path": string(r"^\$BO_DATA/OBS-GAPS(-AZ)?/\S+$"), "record_id": text(1)},
                                ["path", "record_id"], description="registro do experimento em $BO_DATA/OBS-GAPS"),
         "run_id": string(r"^[A-Za-z0-9][A-Za-z0-9_.:\-]{2,63}$", description="rótulo sintético da execução"),
         "repetitions": integer(2), "observed_at": c00("datetime"),
         "control": obj({"description": text(5), "result": text(2)}, ["description", "result"]),
         "disputes": arr(string(r"^SE-[A-Za-z0-9_\-]+$"), 1, unique=True,
-                        description="fatos publicados que este contradiz: a divergência vira disputa, nunca sobrescreve")},
+                        description="fatos publicados ou derivados que este contradiz: a divergência vira disputa, "
+                                    "nunca sobrescreve (R2 corrigida do PREREG, b95403a)")},
         ["evidence_id", "provider", "pin", "api_resource", "fact_kind", "status"],
         allOf=[{"if": {"properties": {"status": const("stated")}}, "then": {"required": ["value", "level"]}},
                {"if": {"properties": {"status": const("unknown")}},
@@ -196,17 +197,60 @@ def c25() -> dict:
                {"if": {"properties": {"level": const("observed")}, "required": ["level"]},
                 "then": {"required": ["observation_ref", "run_id", "repetitions", "control", "observed_at"]},
                 "else": {"not": {"anyOf": [{"required": [k]} for k in ("observation_ref", "run_id", "repetitions",
-                                                                       "control", "observed_at")]}}}])
+                                                                       "control", "observed_at")]}}},
+               # aspectos que o GRAIN 0.1.11 consome (emenda 1.5.0)
+               {"if": {"properties": {"status": const("stated"),
+                                      "value": {"type": "object", "properties": {"aspect": const("item_identity")}, "required": ["aspect"]}},
+                       "required": ["value"]},
+                "then": {"properties": {"value": local("item_identity")}}},
+               {"if": {"properties": {"status": const("stated"),
+                                      "value": {"type": "object", "properties": {"aspect": const("namespace_cascade")},
+                                                "required": ["aspect"]}},
+                       "required": ["value"]},
+                "then": {"properties": {"value": obj({"aspect": const("namespace_cascade"), "cascade": boolean()},
+                                                     ["aspect", "cascade"], extra=True)}}}])
+    item_identity = obj({"aspect": const("item_identity"), "has_id": boolean(), "requires_parent": boolean(),
+                         "parent_attribute": string(r"^[A-Za-z0-9_]+(\.[A-Za-z0-9_]+)*$"),
+                         "parent_type": c00("resource_type")}, ["aspect", "has_id"], extra=True,
+                        allOf=[{"if": {"properties": {"has_id": const(True)}}, "then": {"required": ["requires_parent"]},
+                                "else": {"not": {"anyOf": [{"required": [k]} for k in
+                                                           ("requires_parent", "parent_attribute", "parent_type")]}}},
+                               {"if": {"properties": {"requires_parent": const(True)}, "required": ["requires_parent"]},
+                                "then": {"required": ["parent_attribute", "parent_type"]}}],
+                        description="identidade do item de bloco/coleção (GRAIN T64): com id, diz se exige o pai")
+    side = {"type": "object", "description": "o que cada lado afirma (kind/rule, ou service/resource)"}
+    dispute = obj({"provider": c00("provider"), "terraform_resource_type": c00("resource_type"),
+                   "block_path": string(r"^[A-Za-z0-9_]+(\.[A-Za-z0-9_]+)*$"), "fact": enum(*FACTS),
+                   "doc": side, "spec": side, "evidence": arr(string(r"^SE-[A-Za-z0-9_\-]+$"), 1, unique=True),
+                   "kind": string(r"^[a-z]+_x_[a-z]+$", description="natureza da disputa (ex.: observed_x_derived)"),
+                   "status": enum("aberta", "resolvida-por-observação",
+                                  description="ausente = aberta (registros anteriores à emenda 1.5.0)"),
+                   "sides": arr(string(r"^SE-[A-Za-z0-9_\-]+$"), 2, unique=True, maxItems=2,
+                                description="ids dos dois lados (PUBLISHED ou DERIVED, R2 corrigida)"),
+                   "resolved_to": string(r"^(spec|doc|SE-[A-Za-z0-9_\-]+)$"),
+                   "observation_id": string(r"^SE-[A-Za-z0-9_\-]+$"), "resolved_at": c00("datetime")},
+                  ["provider", "terraform_resource_type", "fact", "evidence"],
+                  allOf=[{"if": {"properties": {"status": const("resolvida-por-observação")}, "required": ["status"]},
+                          "then": {"required": ["sides", "resolved_to", "observation_id"]},
+                          "else": {"not": {"anyOf": [{"required": ["resolved_to"]}, {"required": ["observation_id"]}]}}}])
+    dp, dr = header("bo.spec_disputes/1", "C25", "1.5.0", module=False, generated=False)
+    dp.pop("contract_version"); dp.pop("contract")
+    disputes_doc = obj({**dp, "module": c00("stable_id"), "note": text(3), "contract": const("C25"),
+                        "contract_version": enum("1.5.0"), "generated_at": c00("datetime"),
+                        "disputes": arr(local("spec_dispute"))}, ["schema", "module", "disputes"])
     return contract_schema(
-        "C25", "service_evidence", "1.4.0", "evidência de API e docs ligada ao pin", status="amended",
+        "C25", "service_evidence", "1.5.0", "evidência de API e docs ligada ao pin", status="amended",
         description="Fato de API/docs ligado ao pin: recurso de API, identidade, chave de importação, controlador de "
                     "ciclo de vida, dono, alcance, estado de conexão, efeito, precedência, suporte a tag/TTL; nível "
                     "(publicado | derivado | interpretado) e citação. Citação publicada separada de inferência; "
                     "desconhecido explícito.",
         files=[file_kind("service_evidence", "service_evidence.jsonl", "jsonl", "service_evidence", "record"),
                file_kind("protocol_support", "protocol_support.jsonl", "jsonl", "protocol_support", "record",
-                         "suporte documentado de cada tipo de sonda por provedor (emenda 1.2.0; consumido pelo PROBEKIT)")],
-        defs={"service_evidence": se, "protocol_support": protocol_support()}, producers=["SERVICE-EVIDENCE"],
+                         "suporte documentado de cada tipo de sonda por provedor (emenda 1.2.0; consumido pelo PROBEKIT)"),
+               file_kind("spec_disputes", "spec_disputes.json", "json", "spec_disputes", "document",
+                         "disputas spec x doc e a resolução por observação (emenda 1.5.0)")],
+        defs={"service_evidence": se, "protocol_support": protocol_support(), "item_identity": item_identity,
+              "spec_dispute": dispute, "spec_disputes": disputes_doc}, producers=["SERVICE-EVIDENCE"],
         rules=["C25-LEVEL: publicado cita a sentença (citation, doc ou schema do binário assinado); derivado aponta "
                "de quais fatos; interpretado tem model_id",
                "C25-OBSERVED: observed (experimento reprodutível na API real) tem observation_ref em $BO_DATA/OBS-GAPS, "
@@ -216,6 +260,11 @@ def c25() -> dict:
                "publicado em disputes; os dois ficam no arquivo, nada é sobrescrito)",
                "C25-SYNTH: fato observado só com rótulos sintéticos (nenhum ocid1., arn, conta de 12 dígitos, GUID de "
                "assinatura nem e-mail no valor, no controle ou na referência)",
+               "C25-DISPUTE-REG: spec_disputes.json registra cada disputa; resolvida-por-observação exige os dois "
+               "lados (sides), resolved_to (spec, doc ou o id do lado) e observation_id; o lado vencedor é um dos lados "
+               "e a observação não é um deles; uma disputa por (fato, natureza) (emenda 1.5.0)",
+               "C25-ITEM: item_identity tem has_id; com id, requires_parent; exigindo o pai, parent_attribute e "
+               "parent_type; namespace_cascade tem cascade booleano (GRAIN 0.1.11)",
                "C25-UNKNOWN: unknown cita a publicação consultada (consulted, citation, doc ou schema); level é opcional",
                "C25-DEFAULT: default afirmado tem as_of (como o C03-DEFAULT); api_bridge liga api_resource ao tipo",
                "C25-API: api_resource.resource aceita o marcador UNKNOWN quando a página não nomeia o recurso",

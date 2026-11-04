@@ -388,10 +388,23 @@ def test_emenda9_c05_unidades(sch):
 
 # ----------------------------------------------------------------------------------- emenda 10 (nível observed)
 def test_c25_observado_e_disputa(sch):
-    assert sch["C25"]["x-bo-contract"]["version"] == "1.4.0"
+    assert sch["C25"]["x-bo-contract"]["version"] in ("1.4.0", "1.5.0")
     recs = [json.loads(l) for l in (ROOT / "contracts/stubs/C25/service_evidence.jsonl").read_text().splitlines()]
     obs = [r for r in recs if r.get("level") == "observed"]
     assert obs and all(r["repetitions"] >= 2 and r["observation_ref"]["path"].startswith("$BO_DATA/OBS-GAPS/")
                        for r in obs)
-    assert all(r.get("disputes") for r in obs)          # diverge do publicado: disputa, os dois ficam
+    assert any(r.get("disputes") for r in obs)          # o que diverge do publicado vira disputa, os dois ficam
     assert validate.validate("service_evidence", ROOT / "contracts/stubs/C25/service_evidence.jsonl").ok
+
+
+# ----------------------------------------------------------------------------------- emenda 11 (C25 1.5.0)
+def test_c25_disputas_e_aspectos(sch):
+    assert sch["C25"]["x-bo-contract"]["version"] == "1.5.0"
+    assert validate.validate("spec_disputes", ROOT / "contracts/stubs/C25/spec_disputes.json").ok
+    real = ROOT / "results/SERVICE-EVIDENCE/spec_disputes.json"
+    if real.is_file():
+        r = validate.validate("spec_disputes", real)
+        assert r.ok, r.errors[:3]
+    recs = [json.loads(l) for l in (ROOT / "contracts/stubs/C25/service_evidence.jsonl").read_text().splitlines()]
+    assert any(r.get("observation_ref", {}).get("path", "").startswith("$BO_DATA/OBS-GAPS-AZ/") for r in recs)
+    assert any((r.get("value") or {}).get("aspect") == "namespace_cascade" for r in recs if isinstance(r.get("value"), dict))

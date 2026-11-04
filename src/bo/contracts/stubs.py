@@ -1002,7 +1002,7 @@ def c25() -> dict:
     e8 = {"evidence_id": "SE-oci-0008", "provider": "oci", "pin": {"provider_version": "9.11.0"},
           "api_resource": {"service": "core", "resource": "SecurityList"}, "terraform_resource_type": "oci_core_security_list",
           "block_path": "ingress_security_rules", "fact_kind": "identity", "status": "stated",
-          "value": {"aspect": "item_identity", "has_id": True}, "level": "published",
+          "value": {"aspect": "item_identity", "has_id": True, "requires_parent": False}, "level": "published",
           "citation": {"uri": "https://docs.example.org/provider-d/security-list", "retrieved_at": TS,
                        "sentence": "frase sintética: cada regra da lista é um item"}}
     e9 = {"evidence_id": "SE-oci-0009", "provider": "oci", "pin": {"provider_version": "9.11.0"},
@@ -1014,8 +1014,40 @@ def c25() -> dict:
           "run_id": "obs-gaps-20261104-1548", "repetitions": 2, "observed_at": TS2,
           "control": {"description": "lista sem regras lida antes e depois", "result": "sem itens, sem id"},
           "disputes": ["SE-oci-0008"]}
-    return {"C25/service_evidence.jsonl": jsonl([e1, e2, e3, e4, e5, e6, e7, e8, e9]),
-            "C25/protocol_support.jsonl": jsonl(ps)}
+    e10 = {"evidence_id": "SE-oci-0010", "provider": "oci", "pin": {"provider_version": "9.11.0"},
+           "api_resource": {"service": "core", "resource": "NetworkSecurityGroupSecurityRule"},
+           "terraform_resource_type": "oci_core_network_security_group_security_rule", "fact_kind": "identity",
+           "status": "stated", "value": {"aspect": "item_identity", "has_id": True, "requires_parent": True,
+                                         "parent_attribute": "network_security_group_id",
+                                         "parent_type": "oci_core_network_security_group"},
+           "level": "derived", "derived_from": ["SE-oci-0008"], "rule_id": "R-OWN-SPEC"}
+    e11 = {"evidence_id": "SE-azurerm-0011", "provider": "azurerm", "pin": {"provider_version": "5.12.0"},
+           "api_resource": {"service": "network", "resource": "NetworkInterfaceSecurityGroupAssociation"},
+           "terraform_resource_type": "azurerm_network_interface_security_group_association",
+           "fact_kind": "lifecycle_controller", "status": "stated", "value": {"kind": "self"}, "level": "observed",
+           "observation_ref": {"path": "$BO_DATA/OBS-GAPS-AZ/observations.jsonl", "record_id": "obs-az-01/assoc_life/2"},
+           "run_id": "obs-az-01", "repetitions": 2, "observed_at": TS3,
+           "control": {"description": "NIC sem associação lida antes e depois", "result": "sem associação"},
+           "rule_id": "R-OBS-ASSOC-LIFE"}
+    e12 = {"evidence_id": "SE-oci-0012", "provider": "oci", "pin": {"provider_version": "9.11.0"},
+           "api_resource": {"service": "objectstorage", "resource": "Namespace"},
+           "terraform_resource_type": "oci_objectstorage_bucket", "fact_kind": "lifecycle_controller",
+           "status": "stated", "value": {"aspect": "namespace_cascade", "cascade": False}, "level": "published",
+           "citation": {"uri": "https://docs.example.org/provider-d/object-storage", "retrieved_at": TS,
+                        "sentence": "frase sintética: o contêiner precisa estar vazio para ser apagado"}}
+    disp = {"schema": "bo.spec_disputes/1", "module": "SERVICE-EVIDENCE", "contract": "C25", "contract_version": "1.5.0",
+            "generated_at": TS3, "note": "conflito spec x doc: os dois fatos ficam no C25",
+            "disputes": [
+                {"provider": "azurerm", "terraform_resource_type": "azurerm_network_interface_security_group_association",
+                 "fact": "owner", "doc": {"kind": "self", "rule": "R-OWN-API"},
+                 "spec": {"kind": "parent", "rule": "R-OWN-SPEC"}, "evidence": ["SE-aws-0001", "SE-aws-0002"]},
+                {"provider": "oci", "terraform_resource_type": "oci_core_network_security_group_security_rule",
+                 "fact": "lifecycle_controller", "doc": {"kind": "self", "rule": "R-LIFE-API"},
+                 "spec": {"kind": "parent", "rule": "R-LIFE-SPEC-PARENT"}, "evidence": ["SE-oci-0008", "SE-oci-0010"],
+                 "status": "resolvida-por-observação", "sides": ["SE-oci-0008", "SE-oci-0010"],
+                 "resolved_to": "spec", "observation_id": "SE-oci-0009", "resolved_at": TS3}]}
+    return {"C25/service_evidence.jsonl": jsonl([e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12]),
+            "C25/protocol_support.jsonl": jsonl(ps), "C25/spec_disputes.json": dumps(disp)}
 
 
 def c26() -> dict:
@@ -1139,7 +1171,8 @@ KIND_OF = {  # caminho do stub -> "Cnn:tipo"
     "C24/commitments.jsonl": "C24:commitments", "C24/cq_spec.jsonl": "C24:cq_spec",
     "C24/expected_answers.json": "C24:pilot_expected_answers",
     "C25/service_evidence.jsonl": "C25:service_evidence",
-    "C25/protocol_support.jsonl": "C25:protocol_support", "C26/graph_ir.jsonl": "C26:graph_ir",
+    "C25/protocol_support.jsonl": "C25:protocol_support",
+    "C25/spec_disputes.json": "C25:spec_disputes", "C26/graph_ir.jsonl": "C26:graph_ir",
     "C26/lowering_plan.jsonl": "C26:lowering_plan", "C27/split.json": "C27:split", "C27/families.jsonl": "C27:families",
     "C28/comparators.yaml": "C28:comparators", "C28/h2h_fairness.yaml": "C28:h2h_fairness",
     "C29/domain_contracts.yaml": "C29:domain_contracts", "C29/fragments/FRG-NET-01.json": "C29:fragment",
