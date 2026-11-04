@@ -1,0 +1,396 @@
+# Política curada de tipos e SKUs do SAFETY (entrada do build; a tabela publicada é deploy/safety/allowlist_skus.yaml,
+# que junta esta política com o suporte a tag e a TTL lido do SERVICE-EVIDENCE).
+#
+# Custos: teto conservador em dólares (lista pública da região permitida, arredondada para cima), por unidade:
+#   hourly                enquanto o recurso existe (inclui taxa mensal fixa / 730 h)
+#   storage_gb_month      armazenamento, rateado pela janela
+#   egress_gb             tráfego de saída / processado
+#   per_million_requests  requisições, operações, mensagens
+#   one_time              cobrança mínima ao criar (ex.: zona DNS que passa de 12 h é cobrada no mês)
+# O kit confere o preço na hora (plan_guard --live-prices): preço vivo acima deste teto recusa o lote.
+# Regras (rules) sobre change.after do plano: in / max / eq / absent. Caminho com ".0." entra no 1º bloco.
+#   sku: true marca regra de SKU (valor desconhecido no plano também recusa).
+# removal: estados que o teardown percorre e o resíduo permitido depois dele (C16: removal_requested ->
+#   removal_pending -> purge_scheduled -> absent); purge_days = prazo de expurgo; max_residual_usd = custo
+#   residual máximo do tipo depois do teardown (até o expurgo).
+# class_c: Classe C do §10.1 (fora da amostra salvo OK do Breno, por lote); tipo fora de "types" é recusado sempre.
+# trace: tag (filtro pela tag da execução), name (nome sintético + linha de manifesto), ref (só a linha do
+#   manifesto, com a referência do provedor; tipo de vínculo sem nome próprio).
+schema: bo.safety.sku_policy/1
+budget:
+  currency: USD
+  total_cap: 100            # D3: inclui armazenamento, tráfego, requisições e sondas
+  providers: {aws: 30, google: 30, azurerm: 30, oci: 6}
+  hours_per_month: 730
+  short_window_hours: 2     # acima disso é janela longa: exige supervisor com heartbeat vivo (D16)
+  max_window_hours: 72      # D12: só lotes de sonda, e só com supervisor
+  default_usage: {storage_gb: 1, egress_gb: 1, requests_millions: 0.1}
+  identity_fresh_seconds: 300
+  heartbeat_interval_seconds: 60
+  heartbeat_grace_seconds: 600
+providers:
+  aws:
+    regions_allowed: [us-east-1]
+    tag_attribute: tags
+    class_c: ["^aws_opensearch", "^aws_elasticsearch", "^aws_msk_", "^aws_redshift", "^aws_organizations_"]
+    types:
+      aws_vpc: {cost: {hourly: 0}, trace: tag, delete_order: 10}
+      aws_subnet: {cost: {hourly: 0}, trace: tag, delete_order: 20}
+      aws_internet_gateway: {cost: {hourly: 0}, trace: tag, delete_order: 25}
+      aws_route_table: {cost: {hourly: 0}, trace: tag, delete_order: 30}
+      aws_route_table_association: {cost: {hourly: 0}, trace: ref, delete_order: 60}
+      aws_security_group: {cost: {hourly: 0}, trace: tag, delete_order: 30}
+      aws_vpc_security_group_ingress_rule: {cost: {hourly: 0}, trace: tag, delete_order: 60}
+      aws_vpc_security_group_egress_rule: {cost: {hourly: 0}, trace: tag, delete_order: 60}
+      aws_iam_role: {cost: {hourly: 0}, trace: tag, delete_order: 30}
+      aws_iam_policy: {cost: {hourly: 0}, trace: tag, delete_order: 30}
+      aws_iam_role_policy_attachment: {cost: {hourly: 0}, trace: ref, delete_order: 70}
+      aws_s3_bucket:
+        cost: {storage_gb_month: 0.023, egress_gb: 0.09, per_million_requests: 5.0}
+        rules: {force_destroy: {eq: true, why: "bucket com objeto não sai no destroy e vira resíduo"}}
+        trace: tag
+        delete_order: 40
+      aws_s3_bucket_versioning: {cost: {hourly: 0}, trace: ref, delete_order: 65}
+      aws_s3_bucket_lifecycle_configuration: {cost: {hourly: 0}, trace: ref, delete_order: 65}
+      aws_s3_bucket_public_access_block: {cost: {hourly: 0}, trace: ref, delete_order: 65}
+      aws_s3_bucket_server_side_encryption_configuration: {cost: {hourly: 0}, trace: ref, delete_order: 65}
+      aws_sqs_queue: {cost: {per_million_requests: 0.40, egress_gb: 0.09}, trace: tag, delete_order: 40}
+      aws_sns_topic: {cost: {per_million_requests: 0.50}, trace: tag, delete_order: 40}
+      aws_cloudwatch_log_group:
+        cost: {storage_gb_month: 0.03, egress_gb: 0.50}
+        rules:
+          retention_in_days: {max: 7, why: "log sem retenção curta acumula armazenamento"}
+          skip_destroy: {absent: [true], why: "skip_destroy deixa o grupo de log para trás"}
+        trace: tag
+        delete_order: 35
+      aws_cloudwatch_metric_alarm: {cost: {hourly: 0.000137}, trace: tag, delete_order: 50}
+      aws_lambda_function:
+        cost: {per_million_requests: 0.40, storage_gb_month: 0.0}
+        rules:
+          memory_size: {max: 256, sku: true}
+          timeout: {max: 60}
+        trace: tag
+        delete_order: 50
+      aws_dynamodb_table:
+        cost: {storage_gb_month: 0.25, per_million_requests: 1.25}
+        rules:
+          billing_mode: {in: [PAY_PER_REQUEST], sku: true, why: "capacidade provisionada cobra por hora"}
+          deletion_protection_enabled: {absent: [true]}
+        trace: tag
+        delete_order: 40
+      aws_kms_key:
+        cost: {hourly: 0.00137, per_million_requests: 3.0}
+        rules:
+          deletion_window_in_days: {eq: 7, why: "janela mínima de exclusão agendada (resíduo com prazo)"}
+          customer_master_key_spec: {in: [SYMMETRIC_DEFAULT], sku: true}
+        removal: {mode: scheduled, purge_days: 7, residual_state: purge_scheduled, max_residual_usd: 1.0}
+        trace: tag
+        delete_order: 20
+      aws_kms_alias: {cost: {hourly: 0}, trace: name, delete_order: 60}
+      aws_route53_zone:
+        cost: {hourly: 0, one_time: 0.50, per_million_requests: 0.40}
+        rules: {force_destroy: {eq: true}}
+        max_window_hours: 12
+        trace: tag
+        delete_order: 30
+      aws_db_subnet_group: {cost: {hourly: 0}, trace: tag, delete_order: 30}
+      aws_db_instance:
+        cost: {hourly: 0.016, storage_gb_month: 0.115, egress_gb: 0.09}
+        rules:
+          instance_class: {in: [db.t4g.micro], sku: true}
+          allocated_storage: {max: 20, sku: true}
+          max_allocated_storage: {absent: [], max: 20}
+          multi_az: {absent: [true], sku: true}
+          storage_type: {in: [gp2, gp3], sku: true}
+          iops: {absent: [], max: 3000}
+          skip_final_snapshot: {eq: true, why: "snapshot final fica cobrando depois do destroy"}
+          deletion_protection: {absent: [true]}
+          delete_automated_backups: {absent: [false]}
+          backup_retention_period: {max: 7}
+        removal: {mode: async, pending_hours: 1, residual_state: absent, max_residual_usd: 0.05}
+        trace: tag
+        delete_order: 50
+      aws_lb:
+        cost: {hourly: 0.031, egress_gb: 0.09}
+        rules:
+          load_balancer_type: {in: [application], sku: true}
+          enable_deletion_protection: {absent: [true]}
+        trace: tag
+        delete_order: 50
+      aws_lb_target_group: {cost: {hourly: 0}, trace: tag, delete_order: 40}
+      aws_lb_listener: {cost: {hourly: 0}, trace: tag, delete_order: 60}
+      aws_eip: {cost: {hourly: 0.005}, trace: tag, delete_order: 35}
+      aws_nat_gateway:
+        cost: {hourly: 0.045, egress_gb: 0.045}
+        rules: {connectivity_type: {in: [public], sku: true}}
+        removal: {mode: async, pending_hours: 1, residual_state: absent, max_residual_usd: 0.05}
+        trace: tag
+        delete_order: 55
+      aws_elasticache_subnet_group: {cost: {hourly: 0}, trace: tag, delete_order: 30}
+      aws_elasticache_cluster:
+        cost: {hourly: 0.017, egress_gb: 0.09}
+        rules:
+          node_type: {in: [cache.t4g.micro], sku: true}
+          num_cache_nodes: {max: 1, sku: true}
+          engine: {in: [redis, valkey, memcached]}
+          snapshot_retention_limit: {absent: [], max: 0, why: "snapshot automático fica depois do destroy"}
+          final_snapshot_identifier: {absent: []}
+        removal: {mode: async, pending_hours: 1, residual_state: absent, max_residual_usd: 0.05}
+        trace: tag
+        delete_order: 50
+      aws_efs_file_system:
+        cost: {storage_gb_month: 0.30, per_million_requests: 0.0}
+        rules: {throughput_mode: {in: [bursting, elastic], sku: true}}
+        trace: tag
+        delete_order: 40
+      aws_efs_mount_target: {cost: {hourly: 0}, trace: ref, delete_order: 55}
+      aws_api_gateway_rest_api: {cost: {per_million_requests: 3.5, egress_gb: 0.09}, trace: tag, delete_order: 45}
+      aws_apigatewayv2_api: {cost: {per_million_requests: 1.0, egress_gb: 0.09}, trace: tag, delete_order: 45}
+  google:
+    regions_allowed: [us-central1]
+    tag_attribute: labels
+    class_c: ["^google_filestore", "^google_bigtable", "^google_alloydb", "^google_folder", "^google_organization",
+              "^google_org_policy", "^google_access_context_manager", "^google_cloud_identity_group",
+              "^google_spanner_instance$"]
+    types:
+      google_compute_network: {cost: {hourly: 0}, trace: name, delete_order: 10}
+      google_compute_subnetwork: {cost: {hourly: 0}, trace: name, delete_order: 20}
+      google_compute_firewall: {cost: {hourly: 0}, trace: name, delete_order: 40}
+      google_compute_router: {cost: {hourly: 0}, trace: name, delete_order: 30}
+      google_compute_router_nat:
+        cost: {hourly: 0.0014, egress_gb: 0.045}
+        trace: name
+        delete_order: 50
+      google_compute_address: {cost: {hourly: 0.01}, trace: tag, delete_order: 35}
+      google_compute_global_address: {cost: {hourly: 0.01}, trace: tag, delete_order: 35}
+      google_compute_forwarding_rule: {cost: {hourly: 0.025, egress_gb: 0.12}, trace: tag, delete_order: 55}
+      google_storage_bucket:
+        cost: {storage_gb_month: 0.026, egress_gb: 0.12, per_million_requests: 5.0}
+        rules:
+          force_destroy: {eq: true}
+          storage_class: {in: [STANDARD], sku: true}
+          retention_policy.0.is_locked: {absent: [true], why: "retenção travada impede apagar o bucket"}
+        trace: tag
+        delete_order: 40
+      google_pubsub_topic: {cost: {per_million_requests: 0.04}, trace: tag, delete_order: 40}
+      google_pubsub_subscription: {cost: {per_million_requests: 0.04}, trace: tag, delete_order: 50}
+      google_cloud_run_v2_service:
+        cost: {per_million_requests: 0.40, egress_gb: 0.12}
+        rules:
+          deletion_protection: {absent: [true]}
+          template.0.scaling.0.max_instance_count: {max: 2}
+        trace: tag
+        delete_order: 50
+      google_cloudfunctions2_function: {cost: {per_million_requests: 0.40, egress_gb: 0.12}, trace: tag, delete_order: 50}
+      google_logging_metric: {cost: {hourly: 0}, trace: name, delete_order: 50}
+      google_service_account: {cost: {hourly: 0}, trace: name, delete_order: 30}
+      google_project_iam_member: {cost: {hourly: 0}, trace: ref, delete_order: 70}
+      google_kms_key_ring:
+        cost: {hourly: 0}
+        removal: {mode: retained, purge_days: 0, residual_state: purge_scheduled, max_residual_usd: 0.0}
+        trace: name
+        delete_order: 10
+      google_kms_crypto_key:
+        cost: {hourly: 0.0001, per_million_requests: 3.0}
+        rules:
+          destroy_scheduled_duration: {in: ["86400s"], why: "versões destruídas em 1 dia (mínimo)"}
+          purpose: {in: [ENCRYPT_DECRYPT], sku: true}
+          version_template.0.protection_level: {absent: [HSM, EXTERNAL, EXTERNAL_VPC], sku: true}
+        removal: {mode: retained, purge_days: 1, residual_state: purge_scheduled, max_residual_usd: 0.1}
+        trace: tag
+        delete_order: 20
+      google_sql_database_instance:
+        cost: {hourly: 0.0105, storage_gb_month: 0.17, egress_gb: 0.12}
+        rules:
+          settings.0.tier: {in: [db-f1-micro], sku: true}
+          settings.0.disk_size: {max: 10, sku: true}
+          settings.0.availability_type: {absent: [REGIONAL], sku: true}
+          settings.0.edition: {absent: [ENTERPRISE_PLUS], sku: true}
+          deletion_protection: {eq: false}
+          settings.0.deletion_protection_enabled: {absent: [true]}
+        removal: {mode: async, pending_hours: 1, residual_state: absent, max_residual_usd: 0.05}
+        trace: name
+        delete_order: 50
+      google_redis_instance:
+        cost: {hourly: 0.049}
+        rules:
+          tier: {in: [BASIC], sku: true}
+          memory_size_gb: {max: 1, sku: true}
+        trace: tag
+        delete_order: 50
+      google_firestore_database:
+        cost: {storage_gb_month: 0.18, per_million_requests: 1.8}
+        rules:
+          delete_protection_state: {absent: [DELETE_PROTECTION_ENABLED]}
+          deletion_policy: {eq: DELETE, why: "o padrão ABANDON deixa o banco depois do destroy"}
+        trace: name
+        delete_order: 40
+      google_firestore_field: {cost: {hourly: 0}, trace: ref, delete_order: 60}
+  azurerm:
+    regions_allowed: [eastus]
+    tag_attribute: tags
+    class_c: ["^azurerm_firewall", "^azurerm_application_gateway", "^azurerm_web_application_firewall",
+              "^azurerm_frontdoor", "^azurerm_management_group"]
+    types:
+      azurerm_resource_group: {cost: {hourly: 0}, removal: {mode: async, pending_hours: 1, residual_state: absent, max_residual_usd: 0.0}, trace: tag, delete_order: 0}
+      azurerm_virtual_network: {cost: {hourly: 0}, trace: tag, delete_order: 10}
+      azurerm_subnet: {cost: {hourly: 0}, trace: name, delete_order: 20}
+      azurerm_network_security_group: {cost: {hourly: 0}, trace: tag, delete_order: 30}
+      azurerm_network_security_rule: {cost: {hourly: 0}, trace: name, delete_order: 60}
+      azurerm_subnet_network_security_group_association: {cost: {hourly: 0}, trace: ref, delete_order: 65}
+      azurerm_storage_account:
+        cost: {storage_gb_month: 0.021, egress_gb: 0.087, per_million_requests: 6.5}
+        rules:
+          account_tier: {in: [Standard], sku: true}
+          account_replication_type: {in: [LRS], sku: true}
+          account_kind: {in: [StorageV2], sku: true}
+          access_tier: {absent: [Premium], sku: true}
+        trace: tag
+        delete_order: 40
+      azurerm_storage_container: {cost: {hourly: 0}, trace: name, delete_order: 50}
+      azurerm_servicebus_namespace:
+        cost: {hourly: 0.0137, per_million_requests: 0.80}
+        rules: {sku: {in: [Basic, Standard], sku: true}}
+        trace: tag
+        delete_order: 40
+      azurerm_servicebus_queue: {cost: {hourly: 0}, trace: name, delete_order: 50}
+      azurerm_key_vault:
+        cost: {per_million_requests: 3.0}
+        rules:
+          sku_name: {in: [standard], sku: true}
+          purge_protection_enabled: {absent: [true], why: "com purge protection o cofre fica 90 dias"}
+          soft_delete_retention_days: {eq: 7}
+        removal: {mode: soft_delete, purge_days: 7, residual_state: purge_scheduled, max_residual_usd: 0.0}
+        trace: tag
+        delete_order: 40
+      azurerm_service_plan:
+        cost: {hourly: 0}
+        rules: {sku_name: {in: [Y1], sku: true, why: "só consumo"}}
+        trace: tag
+        delete_order: 30
+      azurerm_linux_function_app: {cost: {per_million_requests: 0.20, egress_gb: 0.087}, trace: tag, delete_order: 50}
+      azurerm_log_analytics_workspace:
+        cost: {storage_gb_month: 0.10, egress_gb: 2.76}
+        rules: {sku: {in: [PerGB2018], sku: true}, retention_in_days: {max: 30}}
+        trace: tag
+        delete_order: 40
+      azurerm_postgresql_flexible_server:
+        cost: {hourly: 0.03, storage_gb_month: 0.115, egress_gb: 0.087}
+        rules:
+          sku_name: {in: [B_Standard_B1ms], sku: true}
+          storage_mb: {max: 32768, sku: true}
+          high_availability.0.mode: {absent: [ZoneRedundant, SameZone], sku: true}
+          backup_retention_days: {max: 7}
+          geo_redundant_backup_enabled: {absent: [true], sku: true}
+        removal: {mode: async, pending_hours: 1, residual_state: absent, max_residual_usd: 0.05}
+        trace: tag
+        delete_order: 50
+      azurerm_mssql_server: {cost: {hourly: 0}, trace: tag, delete_order: 40}
+      azurerm_mssql_database:
+        cost: {hourly: 0.0069, storage_gb_month: 0.0, egress_gb: 0.087}
+        rules:
+          sku_name: {in: [Basic], sku: true}
+          max_size_gb: {max: 2, sku: true}
+          zone_redundant: {absent: [true], sku: true}
+        trace: tag
+        delete_order: 50
+      azurerm_public_ip:
+        cost: {hourly: 0.005}
+        rules: {sku: {in: [Standard], sku: true}}
+        trace: tag
+        delete_order: 35
+      azurerm_lb:
+        cost: {hourly: 0.025, egress_gb: 0.005}
+        rules: {sku: {in: [Standard], sku: true}}
+        trace: tag
+        delete_order: 50
+      azurerm_nat_gateway:
+        cost: {hourly: 0.045, egress_gb: 0.045}
+        rules: {sku_name: {in: [Standard], sku: true}}
+        trace: tag
+        delete_order: 55
+      azurerm_cdn_frontdoor_profile:
+        cost: {hourly: 0.048, egress_gb: 0.083, per_million_requests: 0.01}
+        rules: {sku_name: {in: [Standard_AzureFrontDoor], sku: true, why: "Premium é Classe C"}}
+        trace: tag
+        delete_order: 50
+      azurerm_cosmosdb_account:
+        cost: {storage_gb_month: 0.25, per_million_requests: 0.25}
+        rules:
+          offer_type: {in: [Standard], sku: true}
+          capabilities.0.name: {in: [EnableServerless], sku: true, why: "só serverless (sem RU provisionado)"}
+          geo_location.1.location: {absent: [], sku: true}
+        trace: tag
+        delete_order: 50
+      azurerm_api_management:
+        cost: {per_million_requests: 3.5, egress_gb: 0.087}
+        rules: {sku_name: {in: [Consumption_0], sku: true}}
+        removal: {mode: soft_delete, purge_days: 2, residual_state: purge_scheduled, max_residual_usd: 0.0}
+        trace: tag
+        delete_order: 50
+  oci:
+    regions_allowed: [sa-saopaulo-1]
+    tag_attribute: freeform_tags
+    class_c: ["^oci_identity_domains_", "^oci_database_db_system$"]
+    types:
+      oci_identity_compartment:
+        cost: {hourly: 0}
+        rules: {enable_delete: {eq: true, why: "sem enable_delete o destroy só esquece o compartment"}}
+        removal: {mode: async, pending_hours: 2, residual_state: absent, max_residual_usd: 0.0}
+        trace: tag
+        delete_order: 0
+      oci_core_vcn: {cost: {hourly: 0}, trace: tag, delete_order: 10}
+      oci_core_subnet: {cost: {hourly: 0}, trace: tag, delete_order: 20}
+      oci_core_internet_gateway: {cost: {hourly: 0}, trace: tag, delete_order: 25}
+      oci_core_route_table: {cost: {hourly: 0}, trace: tag, delete_order: 30}
+      oci_core_security_list: {cost: {hourly: 0}, trace: tag, delete_order: 30}
+      oci_core_network_security_group: {cost: {hourly: 0}, trace: tag, delete_order: 30}
+      oci_core_network_security_group_security_rule: {cost: {hourly: 0}, trace: ref, delete_order: 60}
+      oci_objectstorage_bucket:
+        cost: {storage_gb_month: 0.0255, egress_gb: 0.0, per_million_requests: 0.34}
+        rules:
+          storage_tier: {in: [Standard], sku: true}
+          retention_rules.0.time_rule_locked: {absent: [], why: "regra de retenção travada impede apagar"}
+        trace: tag
+        delete_order: 40
+      oci_kms_vault:
+        cost: {hourly: 0}
+        rules: {vault_type: {in: [DEFAULT], sku: true, why: "VIRTUAL_PRIVATE é Classe C"}}
+        removal: {mode: scheduled, purge_days: 7, residual_state: purge_scheduled, max_residual_usd: 0.0}
+        trace: tag
+        delete_order: 20
+      oci_kms_key:
+        cost: {hourly: 0}
+        rules: {protection_mode: {in: [SOFTWARE, HSM], sku: true}}
+        removal: {mode: scheduled, purge_days: 7, residual_state: purge_scheduled, max_residual_usd: 0.0}
+        trace: tag
+        delete_order: 30
+      oci_functions_application: {cost: {hourly: 0}, trace: tag, delete_order: 40}
+      oci_functions_function:
+        cost: {per_million_requests: 0.20}
+        rules: {memory_in_mbs: {max: 256, sku: true}}
+        trace: tag
+        delete_order: 50
+      oci_logging_log_group: {cost: {hourly: 0}, trace: tag, delete_order: 40}
+      oci_logging_log:
+        cost: {storage_gb_month: 0.05}
+        rules: {retention_duration: {max: 30}}
+        trace: tag
+        delete_order: 50
+      oci_ons_notification_topic: {cost: {per_million_requests: 0.0}, trace: tag, delete_order: 40}
+      oci_ons_subscription: {cost: {per_million_requests: 0.0}, trace: tag, delete_order: 50}
+      oci_nosql_table:
+        cost: {hourly: 0}
+        rules:
+          table_limits.0.capacity_mode: {in: [PROVISIONED], sku: true}
+          table_limits.0.max_read_units: {max: 50, sku: true, why: "Always Free: até 50 leituras"}
+          table_limits.0.max_write_units: {max: 50, sku: true}
+          table_limits.0.max_storage_in_gbs: {max: 25, sku: true}
+          is_auto_reclaimable: {eq: true, why: "tabela Always Free"}
+        trace: tag
+        delete_order: 40
+      oci_queue_queue:
+        cost: {per_million_requests: 0.0}
+        rules: {retention_in_seconds: {max: 86400}}
+        trace: tag
+        delete_order: 40
