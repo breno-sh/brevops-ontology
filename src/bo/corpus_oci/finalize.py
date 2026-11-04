@@ -57,7 +57,8 @@ def main(argv=None) -> int:
         "class_precedence": "withheld>symbolic>literal",
         "term_class": "regra comum dos 4 CORPUS, alinhamento entre lanes decidido pelo coordenador em 2026-11-04 "
                       "(não motivado por número): literal = não depende de variável, recurso, data source, local "
-                      "ou função avaliada no plano; cadeia simbolizada só por privacidade continua literal",
+                      "ou função avaliada no plano; cadeia simbolizada só por privacidade continua literal; path.* e "
+                      "função de provedor são simbólicos (decisão do coordenador sobre as divergências restantes)",
         "explicit_null": "attr = null não configura o átomo (comum aos 4 CORPUS)",
         "zero_rows": "átomo não configurado num (repo, tipo) não tem registro; denominador no registro do tipo",
         "hcl_branch_data": "bo/hcl, dados em $BO_DATA/HCL (sha nas entradas)",

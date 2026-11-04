@@ -123,7 +123,7 @@ def run(provider: str, out: Path) -> dict:
             "explicit_null": "literal null resolve o átomo mas não o configura (Terraform: igual a omitir)",
             "class": "regra comum dos 4 CORPUS (coordenador, 2026-11-04): withheld se contém termo retido; "
                      "symbolic se depende de variável, recurso, data source, local, saída de módulo, count/each, "
-                     "workspace ou função avaliada no plano; senão literal, inclusive cadeia simbolizada só por "
+                     "path.*, workspace ou função avaliada no plano (inclusive de provedor); senão literal, inclusive cadeia simbolizada só por "
                      "privacidade; várias ocorrências: withheld > symbolic > literal",
             "type_record": "registro sem atom_id por (repo, tipo): n_set = recursos com >= 1 átomo",
         },

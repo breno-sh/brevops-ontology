@@ -19,8 +19,8 @@ Definições (fixadas antes de olhar o resultado; o summary.json repete):
   Terraform, ``attr = null`` é o mesmo que omitir): conta como ``explicit_null``.
 * Classe de um termo (regra comum dos 4 CORPUS, decisão do coordenador de 2026-11-04): ``withheld`` se o
   termo contém, em qualquer profundidade, um termo retido; ``symbolic`` se o valor depende de variável,
-  recurso, data source, local, saída de módulo, count/each, workspace ou função avaliada no plano; senão
-  ``literal`` (inclusive cadeia constante simbolizada só por privacidade: redação não é dependência).
+  recurso, data source, local, saída de módulo, count/each, path.*, workspace ou função avaliada no plano
+  (inclusive função de provedor); senão ``literal`` (inclusive cadeia constante simbolizada só por privacidade: redação não é dependência).
 * Classe de (recurso, átomo) com várias ocorrências (blocos repetidos, subchaves): withheld > symbolic >
   literal. Literal quer dizer valor inteiro conhecido.
 * usage por (repo, família, tipo, átomo): n_resources = recursos do tipo no repositório; n_set = recursos
@@ -71,8 +71,10 @@ def module_key(file: str) -> str:
 # Regra comum dos 4 CORPUS (decisão do coordenador, 2026-11-04): literal = valor que não depende de variável,
 # recurso, data source, local ou função avaliada em tempo de plano. Cadeia constante que o HCL simbolizou só por
 # privacidade (símbolo name_class 'unknown') continua literal: simbolização é redação, não dependência.
+# path.* é simbólico (depende de onde o módulo está e é resolvido no plano) e função de provedor também
+# (decisão do coordenador, 2026-11-04, para as divergências que sobraram entre os 4 CORPUS).
 NONGROUND_CLASSES = frozenset({"variable", "local", "module_output", "data_source", "resource_attribute",
-                               "count_index", "each_key", "workspace"})
+                               "count_index", "each_key", "path", "workspace"})
 NONGROUND_FUNCS = frozenset({"file", "filebase64", "filebase64sha256", "filebase64sha512", "filemd5", "filesha1",
                              "filesha256", "filesha512", "fileexists", "fileset", "templatefile", "abspath",
                              "pathexpand", "timestamp", "plantimestamp", "uuid", "bcrypt"})
@@ -103,7 +105,7 @@ def term_class(term: dict) -> str:
 
     withheld: há termo retido em qualquer nível (argumentos de expressão, termos embutidos em documento).
     symbolic: há referência a recurso, símbolo de variável, local, saída de módulo, data source, atributo de
-    recurso, count.index, each/iterador de dynamic ou workspace, ou função de arquivo, relógio, acaso ou de
+    recurso, count.index, each/iterador de dynamic, path.* ou workspace, ou função de arquivo, relógio, acaso ou de
     provedor. literal: o resto, inclusive cadeias, números, CIDR e IP simbolizados por privacidade, documento sem
     interpolação dependente e funções puras sobre literais."""
     worst = "literal"

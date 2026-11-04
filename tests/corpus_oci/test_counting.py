@@ -49,7 +49,7 @@ def test_term_class():
     redacted = {"kind": "symbol", "symbol_id": "SYM-0000000000cc", "name_class": "unknown", "scope": "repo"}
     assert c(redacted) == "literal"  # cadeia constante simbolizada por privacidade: redação, não dependência
     for nc in ("local", "module_output", "data_source", "resource_attribute", "count_index", "each_key",
-               "workspace"):
+               "path", "workspace"):
         assert c({**redacted, "name_class": nc}) == "symbolic", nc
     assert c({"kind": "expression", "op": "tolist", "args": [LIT, redacted]}) == "literal"  # função pura
     assert c({"kind": "expression", "op": "upper", "args": [SYM]}) == "symbolic"
