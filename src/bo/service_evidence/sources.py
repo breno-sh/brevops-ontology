@@ -34,11 +34,26 @@ def schema_dir(provider: str):
     return common.bo_data() / f"SCHEMA-{DM[provider]}"
 
 
+@lru_cache(maxsize=4)
+def references(provider: str) -> dict:
+    """resource_type -> conjunto de caminhos com papel REFERENCE no $BO_DATA/ROLES/roles.jsonl (C04)."""
+    out = collections.defaultdict(set)
+    with open(common.bo_data() / "ROLES" / "roles.jsonl", encoding="utf-8") as f:
+        for line in f:
+            r = json.loads(line)
+            if r.get("role") == "REFERENCE" and r["atom_id"].startswith(provider + ":"):
+                _p, T, path = r["atom_id"].split(":", 2)
+                out[T].add(path)
+                EXTRA_ATOMS.add(r["atom_id"])
+    return dict(out)
+
+
 def input_paths(provider: str) -> list:
     d, s = docs_dir(provider), schema_dir(provider)
     out = [d / "docs_facts.jsonl", d / "type_subcategory.jsonl", s / "atoms.jsonl", s / "types.jsonl"]
     if (d / "shared_block_map.jsonl").exists():
         out.append(d / "shared_block_map.jsonl")
+    out.append(common.bo_data() / "ROLES" / "roles.jsonl")
     return out
 
 

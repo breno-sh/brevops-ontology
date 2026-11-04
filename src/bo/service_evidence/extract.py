@@ -13,7 +13,7 @@ from __future__ import annotations
 import collections
 import re
 
-from . import blocks, common, rules, sources
+from . import blocks, common, grainfacts, rules, sources
 
 UNKNOWN = "UNKNOWN"
 GCP_CONTAINERS = {"projects": "project", "organizations": "organization", "folders": "folder",
@@ -27,6 +27,7 @@ class Ctx:
         self.v = common.version(provider)
         self.recs: list[dict] = []
         self.ids: set[str] = set()
+        self.by_id: dict[str, dict] = {}
         self.st = collections.Counter()
 
     def add(self, T: str, kind: str, key: str, api: dict, status: str, level: str, value=None,
@@ -52,8 +53,11 @@ class Ctx:
             r["derived_from"] = sorted(set(derived))
         if model:
             r["model_id"] = model
+        if isinstance(value, dict) and value.get("block_path"):
+            r["block_path"] = value["block_path"]  # C25 1.1.0 (C25-BLOCK); também fica em value.block_path
         self.ids.add(eid)
         self.recs.append(r)
+        self.by_id[eid] = r
         self.st[f"{kind}:{level}:{status}"] += 1
         return eid
 
@@ -87,6 +91,8 @@ GCP_API = re.compile(r"\[API documentation\]\((https://cloud\.google\.com/[^)\s]
 OCI_API = re.compile(r"Api doc link for the resource: (https://docs\.oracle\.com/iaas/api/#/en/([^/\s]+)/([^/\s]+)/"
                      r"([A-Za-z0-9_]+))")
 AWS_API = re.compile(r"https://docs\.aws\.amazon\.com/([A-Za-z0-9_-]+)/latest/APIReference/API_([A-Za-z0-9_]+)\.html")
+GCP_INTRO = re.compile(r"https://cloud\.google\.com/[^)\s]*(?:reference|json_api|/rest/)[^)\s]*")
+AWS_CREATE = re.compile(r"^(Create|Put|Register|Allocate|Associate|Enable|Start|Run|Import|Request)([A-Z][A-Za-z0-9]+)$")
 GCP_VER = re.compile(r"^v\d+(?:p\d+)?(?:alpha|beta)?\d*$")
 
 
@@ -123,17 +129,28 @@ def bridge(ctx: Ctx, T: str, tsr: dict | None, page: str | None) -> tuple[dict, 
             if m:
                 svc, res, ver = gcp_bridge(m.group(1))
                 api = {"service": svc, "resource": res}
-                eid = ctx.add(T, "identity", "bridge", api, "stated", "published",
+                eid = ctx.add(T, "api_bridge", "bridge", api, "stated", "published",
                               value={"aspect": "api_resource_bridge", "rule": "R-BRIDGE-GCP-APIDOC",
                                      "url": m.group(1), "service": svc, "resource": res, "api_version": ver},
                               doc=common.doc_cite(p, page, i + 1), api_version=ver)
+                return api, eid, ver
+    if p == "google" and page:
+        for ln_no, ln in intro_lines(p, page):
+            m = GCP_INTRO.search(ln)
+            if m:
+                svc, res, ver = gcp_bridge(m.group(0))
+                api = {"service": svc, "resource": res}
+                eid = ctx.add(T, "api_bridge", "bridge", api, "stated", "published",
+                              value={"aspect": "api_resource_bridge", "rule": "R-BRIDGE-DOC",
+                                     "url": m.group(0), "service": svc, "resource": res, "api_version": ver},
+                              doc=common.doc_cite(p, page, ln_no), api_version=ver)
                 return api, eid, ver
     if p == "oci" and page:
         for i, ln in enumerate(common.page_lines(p, page)):
             m = OCI_API.search(ln)
             if m:
                 api = {"service": m.group(2), "resource": m.group(4)}
-                eid = ctx.add(T, "identity", "bridge", api, "stated", "published",
+                eid = ctx.add(T, "api_bridge", "bridge", api, "stated", "published",
                               value={"aspect": "api_resource_bridge", "rule": "R-BRIDGE-OCI-APIDOC",
                                      "url": m.group(1), "service": m.group(2), "resource": m.group(4),
                                      "doc_link_version": m.group(3)},
@@ -146,14 +163,14 @@ def bridge(ctx: Ctx, T: str, tsr: dict | None, page: str | None) -> tuple[dict, 
             ns, tps, _names, _scope = parsed
             api = {"service": ns, "resource": "/".join(tps)}
             imp_id = import_id(ctx, T)
-            eid = ctx.add(T, "identity", "bridge", api, "stated", "derived",
+            eid = ctx.add(T, "api_bridge", "bridge", api, "stated", "derived",
                           value={"aspect": "api_resource_bridge", "rule": "R-BRIDGE-AZ-ARMID", "service": ns,
                                  "resource": "/".join(tps)},
                           derived=[imp_id])
             return api, eid, None
     if p == "aws" and sub:
         api = fallback
-        eid = ctx.add(T, "identity", "bridge", api, "stated", "published",
+        eid = ctx.add(T, "api_bridge", "bridge", api, "stated", "published",
                       value={"aspect": "api_resource_bridge", "rule": "R-BRIDGE-AWS-SUBCAT", "service": sub["value"],
                              "resource": UNKNOWN},
                       doc=dict(sub["source"]))
@@ -598,22 +615,38 @@ def run(provider: str) -> tuple["Ctx", dict, dict]:
         if bridges[T] is None and not sid and not tid:
             unknown(ctx, T, "identity", api, page)
         if provider == "aws" and page:
-            seen = set()
+            seen, aws_doc_bridge = set(), False
+            pl = common.page_lines(provider, page)
+            intro_end = next((k for k, x in enumerate(pl) if x.startswith("## ")), len(pl))
             for i, ln in enumerate(common.page_lines(provider, page)):
                 for m in AWS_API.finditer(ln):
                     if m.group(0) in seen:
                         continue
                     seen.add(m.group(0))
-                    ctx.add(T, "identity", f"apiref:{m.group(0)}", {"service": m.group(1), "resource": UNKNOWN},
-                            "stated", "published",
-                            value={"aspect": "api_reference", "rule": "R-APIREF-AWS", "doc_service": m.group(1),
-                                   "name": m.group(2), "url": m.group(0)},
-                            doc=common.doc_cite(provider, page, i + 1))
+                    rid = ctx.add(T, "identity", f"apiref:{m.group(0)}",
+                                  {"service": m.group(1), "resource": UNKNOWN}, "stated", "published",
+                                  value={"aspect": "api_reference", "rule": "R-APIREF-AWS", "doc_service": m.group(1),
+                                         "name": m.group(2), "url": m.group(0)},
+                                  doc=common.doc_cite(provider, page, i + 1))
+                    mc = AWS_CREATE.match(m.group(2))
+                    if mc and i < intro_end and not aws_doc_bridge:
+                        aws_doc_bridge = True
+                        res = mc.group(2)
+                        ctx.add(T, "api_bridge", "bridge_doc", {"service": m.group(1), "resource": res},
+                                "stated", "derived",
+                                value={"aspect": "api_resource_bridge", "rule": "R-BRIDGE-DOC",
+                                       "service": m.group(1), "resource": res, "operation": m.group(2)},
+                                derived=[rid])
+                        ctx.st["aws_ponte_por_operacao"] += 1
         owner(ctx, T, api, template, tid, sid, id_schema, bridges, page)
         scope_and_life(ctx, T, api, page)
         attributes(ctx, T, api, page)
         blocks.run(ctx, T, api, ctx.st)
+        grainfacts.own_top(ctx, T, api, imp_eid)
+        grainfacts.life_tf(ctx, T, api)
+        grainfacts.references(ctx, T, api)
     blocks.shared_identity(ctx, bridges, ctx.st)
+    grainfacts.twins(ctx, pages, info)
     out_of_pin = sorted(t for t in ts if t not in set(all_types))
     stats = {"types": len(all_types), "types_with_page": sum(1 for t in all_types if pages[t]),
              "types_with_bridge": sum(1 for t in all_types if bridges[t] is not None),

@@ -54,3 +54,13 @@ descrita abaixo e em results/SERVICE-EVIDENCE/evidence_levels.json (level_policy
    Mudança proposta: C25 1.1.0 com campo de topo opcional block_path (string, padrão
    ^[a-z0-9_]+(\.[a-z0-9_]+)*$), permitido também em status=unknown; C25-BLOCK: block_path só com
    terraform_resource_type.
+
+7. Adoção do C25 1.1.0 (469c4d7) — 2026-11-04T02:55-03:00
+   Adotado: block_path no registro (C25-BLOCK; também mantido em value.block_path para quem lê a forma antiga);
+   fact_kind api_bridge para toda ponte API <-> tipo (antes identity/api_resource_bridge; o aspecto continua).
+   Não adotado ainda: o campo schema (schema_source) só aceita op node|keys, e a forma do bloco aninhado usa a
+   projeção op=shape; as citações de schema seguem em web_citation (permitido no 1.1.0) com o mesmo ponteiro e
+   a mesma frase. Mudança proposta: C00 schema_source.op += "shape" (nesting_mode, min/max_items, atributos com
+   flags r/o/c, sub-blocos); depois disso as citações passam para o campo schema sem mudar a frase.
+   Fatos de grão sem aspect (R-OWN-TOP, R-LIFE-TF): value = alegação direta {kind, via} mais rule e layer, que o
+   GRAIN não normaliza; se o C25 ganhar um campo rule_id de topo, rule sai de value.

@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "SERVICE-EVIDENCE",
- "generated_at": "2026-11-04T02:20:43-03:00",
+ "generated_at": "2026-11-04T02:52:30-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/SERVICE-EVIDENCE.txt",
@@ -12,7 +12,8 @@
    "effort": "maximo",
    "providers": "aws,google,azurerm,oci",
    "versions": "6.71.0,8.9.0,5.12.0,9.11.0",
-   "block_max_depth": "4"
+   "block_max_depth": "4",
+   "c25": "1.1.0"
   },
   "inputs": [
    {
@@ -81,12 +82,17 @@
     "sha256": "99e3dc9d3434e48675fd71eb817145ae63c2159fd041f3c67dd1d308e814287c"
    },
    {
+    "path": "$BO_DATA/ROLES/roles.jsonl",
+    "kind": "file",
+    "sha256": "ed9356faacc1b2c91230af13ea20c76b90d3372bb250b7b1a98e354281fb43b6"
+   },
+   {
     "path": "$BO_REPO/universe/pins.json",
     "kind": "file",
     "sha256": "594a4e878ac489b3ed97cdd6344b9945a8fd3a5d22ae4d6f4bfebd264decfe3d"
    }
   ],
-  "recorded_at": "2026-11-04T02:20:43-03:00"
+  "recorded_at": "2026-11-04T02:52:30-03:00"
  },
  "sources": [
   {
@@ -112,8 +118,8 @@
   {
    "uri": "https://registry.terraform.io (providers schema -json dos 4 binários assinados do pin)",
    "license": "MPL-2.0",
-   "transformation": "nós de resource_identity_schemas, chaves e forma dos blocos citados por ponteiro JSON"
+   "transformation": "nós de resource_identity_schemas, chaves, timeouts e forma dos blocos citados por ponteiro JSON"
   }
  ],
- "notes": "fatos mecânicos por regra declarada (rules.py), inclusive por bloco aninhado (block_path); 6 interpretados e a seleção de tipo do protocol_support feitos por claude-opus-5-5"
+ "notes": "fatos mecânicos por regra declarada (rules.py), por bloco (block_path) e de grão (R-OWN-TOP, R-LIFE-TF, R-BRIDGE-DOC, R-TWIN, R-REF-*), todos derivados; 6 interpretados e a seleção de tipo do protocol_support feitos por claude-opus-5-5"
 }

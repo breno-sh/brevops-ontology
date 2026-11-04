@@ -73,7 +73,8 @@ RULES = {
     # blocos aninhados (blocks.py)
     "R-BLOCK-SCHEMA": "forma do bloco aninhado no schema fixado (nesting_mode, min/max_items, atributos com flags "
                       "r/o/c, sub-blocos), citada pelo ponteiro com op=shape.",
-    "R-BLOCK-ID": "schema_identity = present se o bloco tem atributo computed id/arn/self_link/ocid, senão absent "
+    "R-BLOCK-ID": "schema_identity = present se o bloco tem atributo computed id/arn/self_link/ocid (numa coleção "
+                  "de objeto em atributo, só a presença do campo, sem flags), senão absent "
                   "(só o schema; nada sobre a API); element_name_candidates = atributos obrigatórios name/key do "
                   "bloco; max_per_parent = 1 se nesting single ou max_items 1.",
     "R-BLOCK-OWNER": "o bloco só existe dentro da configuração do pai no schema fixado: a configuração é gravada "
@@ -83,6 +84,26 @@ RULES = {
     "R-ID-SHARED": "tipos cujo resource_identity_schema tem o mesmo conjunto de campos obrigatórios, fora os "
                    "genéricos (id, name, arn, region, account_id, project, location, zone, subscription_id, "
                    "resource_group_name, compartment_id), são endereçados pela mesma chave de identidade.",
+    # fatos de grão pedidos pelo GRAIN (grainfacts.py); value sem aspect = alegação direta (kind/via)
+    "R-OWN-TOP": "tipo de recurso Terraform de topo com ID de importação publicado (import_key afirmado e não "
+                 "'does not support import') é dono da própria configuração: {kind: self} (camada terraform).",
+    "R-LIFE-TIMEOUTS": "o bloco timeouts do tipo no schema fixado lista as operações do provider (create, read, "
+                       "update, delete), citado pelas chaves (op=keys).",
+    "R-LIFE-TF": "tipo de topo cujo timeouts tem create e delete tem ciclo de vida próprio NO TERRAFORM: {kind: "
+                 "self, layer: terraform}. Não diz quem cria ou apaga o objeto na API.",
+    "R-BRIDGE-DOC": "ponte só quando a página cita a API: link de referência de API na introdução (google: "
+                    "cloud.google.com/.../reference|json_api|rest; aws: APIReference/API_<Op>, recurso = o que vem "
+                    "depois do verbo Create|Put|Register|Allocate|Associate|Enable|Start|Run|Import|Request). Sem "
+                    "citação, a ponte continua UNKNOWN.",
+    "R-TWIN": "bloco (ou coleção) B do tipo T tem gêmeo separado U quando uma linha da página de T ou de U cita `B` "
+              "e `U` (ou `T`) entre crases e o nome passa na regra declarada (termos de B no nome de U; U tem um "
+              "termo próprio de T; o resto de U fora de B e T é só rule/configuration/vpc); o bloco herda de U a "
+              "ponte de API e "
+              "a identidade do schema (derived_from = o vínculo publicado + o fato de U).",
+    "R-REF-PHRASE": "descrição literal de atributo de papel REFERENCE (ROLES) no padrão '<ID|ARN|OCID|name|...> "
+                    "of the <coisa>': a coisa nomeada.",
+    "R-REF-TARGET": "tipo-alvo da referência: <provedor>_<coisa> (termos com _) se existe no schema fixado; "
+                    "senão os tipos que terminam em _<coisa> (até 3); mais que isso, sem alvo.",
     # curadoria das fatias dos pilotos (curated.py): C-* publicado (o valor está escrito na frase), I-* interpretado
     "C-PILOT-LITERAL": "fato escolhido à mão numa frase da página fixada; o valor repete o que a frase diz.",
     "C-PILOT-GAP": "tipo das fatias dos pilotos sem frase para este tipo de fato na página fixada: UNKNOWN explícito "

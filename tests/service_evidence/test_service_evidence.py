@@ -135,3 +135,24 @@ def test_shared_identity_links_separate_facets():
     peers = [r["value"]["peers"] for r in got["aws_s3_bucket_versioning"]
              if r["status"] == "stated" and r["value"].get("aspect") == "shared_identity_key"]
     assert peers and "aws_s3_bucket" in peers[0]
+
+
+def test_twin_name_rule():
+    from bo.service_evidence.grainfacts import twin_name_ok
+    assert twin_name_ok("aws", "aws_security_group", "ingress", "aws_vpc_security_group_ingress_rule")
+    assert not twin_name_ok("aws", "aws_security_group", "ingress", "aws_vpc_security_group_egress_rule")
+    assert twin_name_ok("azurerm", "azurerm_network_security_group", "security_rule", "azurerm_network_security_rule")
+    assert not twin_name_ok("aws", "aws_autoscaling_group", "launch_template", "aws_launch_template")
+    assert not twin_name_ok("aws", "aws_instance", "network_interface", "aws_network_interface_attachment")
+
+
+def test_grain_facts_for_containers():
+    got = _out_by_type({"aws_s3_bucket", "azurerm_storage_account", "aws_security_group"})
+    def has(T, kind, rule, bp=None):
+        return any(r["status"] == "stated" and r["fact_kind"] == kind and r["value"].get("rule") == rule
+                   and r.get("block_path") == bp and r["level"] == "derived" for r in got[T])
+    assert has("aws_s3_bucket", "owner", "R-OWN-TOP") and has("aws_s3_bucket", "lifecycle_controller", "R-LIFE-TF")
+    assert has("azurerm_storage_account", "lifecycle_controller", "R-LIFE-TF")
+    assert has("aws_security_group", "identity", "R-TWIN", "ingress")
+    assert all(r["value"].get("layer") == "terraform" for r in got["aws_s3_bucket"]
+               if r.get("value") and r["value"].get("rule") == "R-LIFE-TF")

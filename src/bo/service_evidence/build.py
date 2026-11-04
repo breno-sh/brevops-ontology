@@ -23,6 +23,8 @@ from . import blocks, common, curated, extract, protocol, rules, sources
 
 
 def _protocol_atoms():
+    for p in common.PROVIDERS:
+        sources.references(p)  # papel REFERENCE do ROLES: os fatos desses átomos são guardados do docs_facts
     for probe, p, T, attrs, *_ in protocol.ENTRIES:
         for a in attrs:
             sources.EXTRA_ATOMS.add(f"{p}:{T}:{a}")

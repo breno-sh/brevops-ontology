@@ -6,6 +6,8 @@ Cobertura: todo bloco aninhado (menos timeouts) até a profundidade MAX_DEPTH; a
 caminho tem palavra de faceta (FACET_RX: versionamento, ciclo de vida, criptografia, acesso público, regras de
 rede, retenção). O corte é declarado em evidence_levels.json (inputs.blocks).
 
+Coleções de objeto em atributo (list/set/map de object, "coleção como bloco") entram como bloco: a forma é o
+nó do atributo (op=node) e, sem flags por campo, id/name contam só pela presença.
 Por bloco:
   identity/block_schema           PUBLICADO: forma do bloco no schema fixado (citação op=shape)
   identity/block_identity         DERIVADO (R-BLOCK-ID): o schema expõe ou não atributo de identidade no bloco;
@@ -40,20 +42,35 @@ GENERIC_ID = {"id", "name", "arn", "region", "account_id", "project", "location"
               "resource_group_name", "compartment_id"}
 
 
+def object_collection(t) -> tuple[str, list] | None:
+    """Tipo cty list/set/map de object -> (coleção, chaves do objeto); senão None."""
+    if isinstance(t, list) and len(t) == 2 and t[0] in ("list", "set", "map") and isinstance(t[1], list) \
+            and len(t[1]) >= 2 and t[1][0] == "object" and isinstance(t[1][1], dict):
+        return t[0], sorted(t[1][1].keys())
+    return None
+
+
 def walk(block: dict, prefix: str, ptr_parts: list, depth: int):
+    """Blocos aninhados (block_types) e coleções de objeto em atributo ("coleção como bloco", como o GRAIN
+    trata: ex. ingress do aws_security_group, security_rule do azurerm_network_security_group)."""
+    for name, a in sorted((block.get("attributes") or {}).items()):
+        oc = object_collection(a.get("type"))
+        if oc:
+            path = f"{prefix}.{name}" if prefix else name
+            yield path, ptr_parts + ["attributes", name], a, depth, "attribute"
     for name, bt in sorted((block.get("block_types") or {}).items()):
         if name == "timeouts":
             continue
         path = f"{prefix}.{name}" if prefix else name
         parts = ptr_parts + ["block_types", name]
-        yield path, parts, bt, depth
+        yield path, parts, bt, depth, "block"
         yield from walk(bt.get("block") or {}, path, parts + ["block"], depth + 1)
 
 
 def run(ctx, T: str, api: dict, st: collections.Counter) -> None:
     p = ctx.p
     root = common.schema(p)["resource_schemas"][T]["block"]
-    for path, parts, bt, depth in walk(root, "", [], 1):
+    for path, parts, bt, depth, form in walk(root, "", [], 1):
         facet = bool(FACET_RX.search(path))
         if depth > MAX_DEPTH and not facet:
             st["blocos_abaixo_do_corte"] += 1
@@ -62,15 +79,29 @@ def run(ctx, T: str, api: dict, st: collections.Counter) -> None:
         if facet:
             st["blocos_de_faceta"] += 1
         ptr = common.schema_pointer(p, "resource_schemas", T, "block", *parts)
-        shape = common.block_shape(bt)
         parent = T + ("." + path.rsplit(".", 1)[0] if "." in path else "")
+        if form == "block":
+            shape = common.block_shape(bt)
+            cit = common.schema_cite(p, ptr, "shape")
+            attrs = dict(x.rsplit(":", 1) for x in shape["attributes"])
+        else:
+            coll, keys = object_collection(bt["type"])
+            # objeto de atributo não tem flags por campo: só o nome; required/computed do atributo inteiro
+            shape = {"nesting_mode": coll, "attributes": [f"{k}:" for k in keys], "block_types": [],
+                     "collection_attribute": True}
+            cit = common.schema_cite(p, ptr, "node")
+            attrs = {k: "" for k in keys}
+            st["colecoes_como_bloco"] += 1
         sid = ctx.add(T, "identity", f"block:{path}:schema", api, "stated", "published",
                       value={"aspect": "block_schema", "rule": "R-BLOCK-SCHEMA", "block_path": path,
                              "depth": depth, "facet_word": facet, **shape},
-                      cit=common.schema_cite(p, ptr, "shape"))
-        attrs = dict(x.rsplit(":", 1) for x in shape["attributes"])
-        idl = sorted(a for a in ID_ATTRS if a in attrs and "c" in attrs[a])
-        names = sorted(a for a in NAME_KEYS if a in attrs and "r" in attrs[a])
+                      cit=cit)
+        if form == "block":
+            idl = sorted(a for a in ID_ATTRS if a in attrs and "c" in attrs[a])
+            names = sorted(a for a in NAME_KEYS if a in attrs and "r" in attrs[a])
+        else:  # sem flags por campo no objeto: id/name presentes, sem saber se computed/required
+            idl = sorted(a for a in ID_ATTRS if a in attrs)
+            names = sorted(a for a in NAME_KEYS if a in attrs)
         one = shape["nesting_mode"] == "single" or shape.get("max_items") == 1
         v = {"aspect": "block_identity", "rule": "R-BLOCK-ID", "block_path": path,
              "schema_identity": "present" if idl else "absent", "key_fields": idl,

@@ -3,33 +3,35 @@
  "module": "SERVICE-EVIDENCE",
  "contract": "C25",
  "contract_version": "1.0.0",
- "generated_at": "2026-11-04T02:23:32-03:00",
- "records": 112135,
+ "generated_at": "2026-11-04T02:50:08-03:00",
+ "records": 138111,
  "by_level": {
-  "derived": 57279,
+  "derived": 74574,
   "interpreted": 6,
-  "published": 54850,
-  "status:stated": 95060,
-  "status:unknown": 17075
+  "published": 63531,
+  "status:stated": 125920,
+  "status:unknown": 12191
  },
  "by_provider": {
   "aws": {
+   "api_bridge|derived|stated": 16,
+   "api_bridge|published|stated": 1746,
    "connection_state|published|stated": 18,
    "connection_state|published|unknown": 5,
    "effective_scope|published|stated": 22,
    "effective_scope|published|unknown": 1725,
    "effect|published|stated": 17,
    "effect|published|unknown": 3,
-   "identity|derived|stated": 7091,
-   "identity|published|stated": 8463,
+   "identity|derived|stated": 8898,
+   "identity|published|stated": 10131,
    "import_key|published|stated": 1654,
    "import_key|published|unknown": 92,
-   "lifecycle_controller|derived|stated": 5910,
-   "lifecycle_controller|published|stated": 59,
-   "lifecycle_controller|published|unknown": 1691,
-   "owner|derived|stated": 6285,
+   "lifecycle_controller|derived|stated": 6643,
+   "lifecycle_controller|published|stated": 708,
+   "lifecycle_controller|published|unknown": 1067,
+   "owner|derived|stated": 8144,
    "owner|published|stated": 27,
-   "owner|published|unknown": 1355,
+   "owner|published|unknown": 90,
    "precedence|published|stated": 2527,
    "precedence|published|unknown": 7,
    "tag_support|published|stated": 1746,
@@ -37,6 +39,8 @@
    "ttl_support|published|unknown": 1656
   },
   "google": {
+   "api_bridge|derived|stated": 1,
+   "api_bridge|published|stated": 679,
    "connection_state|published|stated": 9,
    "connection_state|published|unknown": 1,
    "effective_scope|interpreted|stated": 1,
@@ -44,17 +48,17 @@
    "effective_scope|published|unknown": 1342,
    "effect|interpreted|stated": 1,
    "effect|published|stated": 16,
-   "identity|derived|stated": 7198,
-   "identity|published|stated": 7236,
-   "identity|published|unknown": 19,
+   "identity|derived|stated": 8745,
+   "identity|published|stated": 8704,
+   "identity|published|unknown": 5,
    "import_key|published|stated": 1386,
    "import_key|published|unknown": 6,
-   "lifecycle_controller|derived|stated": 5638,
-   "lifecycle_controller|published|stated": 884,
-   "lifecycle_controller|published|unknown": 520,
-   "owner|derived|stated": 6679,
+   "lifecycle_controller|derived|stated": 6897,
+   "lifecycle_controller|published|stated": 1814,
+   "lifecycle_controller|published|unknown": 442,
+   "owner|derived|stated": 8374,
    "owner|published|stated": 203,
-   "owner|published|unknown": 334,
+   "owner|published|unknown": 36,
    "precedence|published|stated": 44,
    "precedence|published|unknown": 1,
    "tag_support|published|stated": 1392,
@@ -62,6 +66,7 @@
    "ttl_support|published|unknown": 1312
   },
   "azurerm": {
+   "api_bridge|derived|stated": 1065,
    "connection_state|published|stated": 6,
    "connection_state|published|unknown": 2,
    "effective_scope|interpreted|stated": 1,
@@ -69,17 +74,16 @@
    "effective_scope|published|unknown": 1103,
    "effect|published|stated": 52,
    "effect|published|unknown": 1,
-   "identity|derived|stated": 4682,
-   "identity|published|stated": 2702,
-   "identity|published|unknown": 48,
+   "identity|derived|stated": 5113,
+   "identity|published|stated": 5075,
+   "identity|published|unknown": 10,
    "import_key|published|stated": 1102,
    "import_key|published|unknown": 5,
-   "lifecycle_controller|derived|stated": 2504,
-   "lifecycle_controller|published|stated": 3,
-   "lifecycle_controller|published|unknown": 1104,
-   "owner|derived|stated": 3549,
+   "lifecycle_controller|derived|stated": 3718,
+   "lifecycle_controller|published|stated": 1110,
+   "owner|derived|stated": 4758,
    "owner|published|stated": 103,
-   "owner|published|unknown": 55,
+   "owner|published|unknown": 4,
    "precedence|published|stated": 77,
    "precedence|published|unknown": 3,
    "tag_support|published|stated": 1107,
@@ -87,23 +91,24 @@
    "ttl_support|published|unknown": 990
   },
   "oci": {
+   "api_bridge|published|stated": 887,
    "connection_state|interpreted|stated": 3,
    "connection_state|published|stated": 2,
    "effective_scope|published|stated": 26,
    "effective_scope|published|unknown": 1008,
    "effect|published|stated": 3,
    "effect|published|unknown": 2,
-   "identity|derived|stated": 3167,
-   "identity|published|stated": 3175,
-   "identity|published|unknown": 50,
+   "identity|derived|stated": 4393,
+   "identity|published|stated": 4208,
+   "identity|published|unknown": 32,
    "import_key|published|stated": 879,
    "import_key|published|unknown": 147,
-   "lifecycle_controller|derived|stated": 2288,
-   "lifecycle_controller|published|stated": 6,
-   "lifecycle_controller|published|unknown": 1021,
-   "owner|derived|stated": 2288,
+   "lifecycle_controller|derived|stated": 3974,
+   "lifecycle_controller|published|stated": 1031,
+   "lifecycle_controller|published|unknown": 1,
+   "owner|derived|stated": 3835,
    "owner|published|stated": 560,
-   "owner|published|unknown": 506,
+   "owner|published|unknown": 132,
    "precedence|published|stated": 13,
    "precedence|published|unknown": 3,
    "tag_support|published|stated": 1628,
@@ -113,49 +118,53 @@
  },
  "types_with_stated_fact": {
   "aws": {
+   "api_bridge": 1746,
    "connection_state": 2,
    "effect": 14,
    "effective_scope": 21,
-   "identity": 1746,
+   "identity": 1617,
    "import_key": 1654,
-   "lifecycle_controller": 824,
-   "owner": 987,
+   "lifecycle_controller": 1138,
+   "owner": 1688,
    "precedence": 43,
    "tag_support": 1746,
    "ttl_support": 90
   },
   "google": {
+   "api_bridge": 679,
    "connection_state": 5,
    "effect": 12,
    "effective_scope": 50,
-   "identity": 1380,
+   "identity": 1389,
    "import_key": 1386,
-   "lifecycle_controller": 1199,
-   "owner": 1252,
+   "lifecycle_controller": 1241,
+   "owner": 1375,
    "precedence": 42,
    "tag_support": 1392,
    "ttl_support": 80
   },
   "azurerm": {
+   "api_bridge": 1058,
    "connection_state": 5,
    "effect": 34,
    "effective_scope": 4,
-   "identity": 1075,
+   "identity": 1098,
    "import_key": 1102,
-   "lifecycle_controller": 510,
-   "owner": 1070,
+   "lifecycle_controller": 1107,
+   "owner": 1104,
    "precedence": 55,
    "tag_support": 1107,
    "ttl_support": 117
   },
   "oci": {
+   "api_bridge": 887,
    "connection_state": 2,
    "effect": 3,
    "effective_scope": 18,
-   "identity": 991,
+   "identity": 959,
    "import_key": 879,
-   "lifecycle_controller": 533,
-   "owner": 750,
+   "lifecycle_controller": 1025,
+   "owner": 943,
    "precedence": 11,
    "tag_support": 1026,
    "ttl_support": 68
@@ -209,28 +218,13 @@
   },
   {
    "provider": "aws",
-   "terraform_resource_type": "aws_security_group",
-   "fact_kind": "lifecycle_controller"
-  },
-  {
-   "provider": "aws",
    "terraform_resource_type": "aws_vpc_security_group_egress_rule",
    "fact_kind": "effective_scope"
   },
   {
    "provider": "aws",
-   "terraform_resource_type": "aws_s3_bucket",
-   "fact_kind": "lifecycle_controller"
-  },
-  {
-   "provider": "aws",
    "terraform_resource_type": "aws_s3_bucket_versioning",
    "fact_kind": "effective_scope"
-  },
-  {
-   "provider": "aws",
-   "terraform_resource_type": "aws_security_group_rule",
-   "fact_kind": "lifecycle_controller"
   },
   {
    "provider": "aws",
@@ -241,11 +235,6 @@
    "provider": "aws",
    "terraform_resource_type": "aws_s3_bucket_versioning",
    "fact_kind": "precedence"
-  },
-  {
-   "provider": "aws",
-   "terraform_resource_type": "aws_security_group_rule",
-   "fact_kind": "owner"
   },
   {
    "provider": "aws",
@@ -384,11 +373,6 @@
   },
   {
    "provider": "azurerm",
-   "terraform_resource_type": "azurerm_network_security_rule",
-   "fact_kind": "lifecycle_controller"
-  },
-  {
-   "provider": "azurerm",
    "terraform_resource_type": "azurerm_storage_account",
    "fact_kind": "precedence"
   },
@@ -405,27 +389,12 @@
   {
    "provider": "azurerm",
    "terraform_resource_type": "azurerm_storage_container",
-   "fact_kind": "lifecycle_controller"
-  },
-  {
-   "provider": "azurerm",
-   "terraform_resource_type": "azurerm_storage_container",
    "fact_kind": "ttl_support"
   },
   {
    "provider": "azurerm",
    "terraform_resource_type": "azurerm_network_security_group",
    "fact_kind": "effective_scope"
-  },
-  {
-   "provider": "azurerm",
-   "terraform_resource_type": "azurerm_storage_account",
-   "fact_kind": "lifecycle_controller"
-  },
-  {
-   "provider": "azurerm",
-   "terraform_resource_type": "azurerm_network_security_group",
-   "fact_kind": "lifecycle_controller"
   },
   {
    "provider": "azurerm",
@@ -454,11 +423,6 @@
   },
   {
    "provider": "google",
-   "terraform_resource_type": "google_storage_bucket",
-   "fact_kind": "owner"
-  },
-  {
-   "provider": "google",
    "terraform_resource_type": "google_compute_firewall",
    "fact_kind": "ttl_support"
   },
@@ -495,22 +459,7 @@
   {
    "provider": "oci",
    "terraform_resource_type": "oci_core_network_security_group_security_rule",
-   "fact_kind": "lifecycle_controller"
-  },
-  {
-   "provider": "oci",
-   "terraform_resource_type": "oci_core_network_security_group_security_rule",
    "fact_kind": "effective_scope"
-  },
-  {
-   "provider": "oci",
-   "terraform_resource_type": "oci_objectstorage_bucket",
-   "fact_kind": "lifecycle_controller"
-  },
-  {
-   "provider": "oci",
-   "terraform_resource_type": "oci_core_security_list",
-   "fact_kind": "lifecycle_controller"
   },
   {
    "provider": "oci",
@@ -536,11 +485,6 @@
    "provider": "oci",
    "terraform_resource_type": "oci_objectstorage_bucket",
    "fact_kind": "precedence"
-  },
-  {
-   "provider": "oci",
-   "terraform_resource_type": "oci_core_network_security_group_security_rule",
-   "fact_kind": "owner"
   }
  ],
  "level_policy": {
@@ -578,10 +522,17 @@
   "R-ABSENT-PAGE": "a página fixada do tipo (citada pelo título) foi lida inteira e nenhuma regra acima casou: UNKNOWN/not_documented (ausência de frase não é ausência do recurso).",
   "R-ABSENT-NOPAGE": "o tipo está no schema fixado mas não tem página na tag fixada: UNKNOWN/not_documented, citando as chaves do bloco do tipo no schema.",
   "R-BLOCK-SCHEMA": "forma do bloco aninhado no schema fixado (nesting_mode, min/max_items, atributos com flags r/o/c, sub-blocos), citada pelo ponteiro com op=shape.",
-  "R-BLOCK-ID": "schema_identity = present se o bloco tem atributo computed id/arn/self_link/ocid, senão absent (só o schema; nada sobre a API); element_name_candidates = atributos obrigatórios name/key do bloco; max_per_parent = 1 se nesting single ou max_items 1.",
+  "R-BLOCK-ID": "schema_identity = present se o bloco tem atributo computed id/arn/self_link/ocid (numa coleção de objeto em atributo, só a presença do campo, sem flags), senão absent (só o schema; nada sobre a API); element_name_candidates = atributos obrigatórios name/key do bloco; max_per_parent = 1 se nesting single ou max_items 1.",
   "R-BLOCK-OWNER": "o bloco só existe dentro da configuração do pai no schema fixado: a configuração é gravada pelo recurso Terraform do pai (kind parent, via = pai estrutural, camada terraform).",
   "R-BLOCK-LIFE": "o bloco não tem recurso Terraform próprio: nasce e some com o pai (kind parent, camada terraform); o ciclo do objeto na API não é dito.",
   "R-ID-SHARED": "tipos cujo resource_identity_schema tem o mesmo conjunto de campos obrigatórios, fora os genéricos (id, name, arn, region, account_id, project, location, zone, subscription_id, resource_group_name, compartment_id), são endereçados pela mesma chave de identidade.",
+  "R-OWN-TOP": "tipo de recurso Terraform de topo com ID de importação publicado (import_key afirmado e não 'does not support import') é dono da própria configuração: {kind: self} (camada terraform).",
+  "R-LIFE-TIMEOUTS": "o bloco timeouts do tipo no schema fixado lista as operações do provider (create, read, update, delete), citado pelas chaves (op=keys).",
+  "R-LIFE-TF": "tipo de topo cujo timeouts tem create e delete tem ciclo de vida próprio NO TERRAFORM: {kind: self, layer: terraform}. Não diz quem cria ou apaga o objeto na API.",
+  "R-BRIDGE-DOC": "ponte só quando a página cita a API: link de referência de API na introdução (google: cloud.google.com/.../reference|json_api|rest; aws: APIReference/API_<Op>, recurso = o que vem depois do verbo Create|Put|Register|Allocate|Associate|Enable|Start|Run|Import|Request). Sem citação, a ponte continua UNKNOWN.",
+  "R-TWIN": "bloco (ou coleção) B do tipo T tem gêmeo separado U quando uma linha da página de T ou de U cita `B` e `U` (ou `T`) entre crases e o nome passa na regra declarada (termos de B no nome de U; U tem um termo próprio de T; o resto de U fora de B e T é só rule/configuration/vpc); o bloco herda de U a ponte de API e a identidade do schema (derived_from = o vínculo publicado + o fato de U).",
+  "R-REF-PHRASE": "descrição literal de atributo de papel REFERENCE (ROLES) no padrão '<ID|ARN|OCID|name|...> of the <coisa>': a coisa nomeada.",
+  "R-REF-TARGET": "tipo-alvo da referência: <provedor>_<coisa> (termos com _) se existe no schema fixado; senão os tipos que terminam em _<coisa> (até 3); mais que isso, sem alvo.",
   "C-PILOT-LITERAL": "fato escolhido à mão numa frase da página fixada; o valor repete o que a frase diz.",
   "C-PILOT-GAP": "tipo das fatias dos pilotos sem frase para este tipo de fato na página fixada: UNKNOWN explícito (a lacuna é resultado; não se preenche com conhecimento de fora do pin).",
   "I-PILOT-READING": "leitura do modelo sobre a frase citada (granularidade, interação entre níveis, regra implícita); value.basis diz o que foi inferido além do texto."
@@ -609,6 +560,10 @@
     "sha256": "e6e90db53b3440d78799e260095dba5e2f24e2b011a1fd230f58e82c3c90eab7"
    },
    {
+    "path": "$BO_DATA/ROLES/roles.jsonl",
+    "sha256": "ed9356faacc1b2c91230af13ea20c76b90d3372bb250b7b1a98e354281fb43b6"
+   },
+   {
     "path": "$BO_DATA/DOCS-GCP/docs_facts.jsonl",
     "sha256": "f9a43bef915e80e27f30f694d2fafc2639b072546742cf328baa1f64e7b5c603"
    },
@@ -623,6 +578,10 @@
    {
     "path": "$BO_DATA/SCHEMA-GCP/types.jsonl",
     "sha256": "4a0f69adc9a44dcdbd02c742f349044ad8ae531e3a90e926a50d3d459878c689"
+   },
+   {
+    "path": "$BO_DATA/ROLES/roles.jsonl",
+    "sha256": "ed9356faacc1b2c91230af13ea20c76b90d3372bb250b7b1a98e354281fb43b6"
    },
    {
     "path": "$BO_DATA/DOCS-AZURE/docs_facts.jsonl",
@@ -641,6 +600,10 @@
     "sha256": "b30c4fb755616a554b4b4b2280a01f1fcb29826c85ed7a5c4e9d6d9863e88a42"
    },
    {
+    "path": "$BO_DATA/ROLES/roles.jsonl",
+    "sha256": "ed9356faacc1b2c91230af13ea20c76b90d3372bb250b7b1a98e354281fb43b6"
+   },
+   {
     "path": "$BO_DATA/DOCS-OCI/docs_facts.jsonl",
     "sha256": "a016f68e90104e0cd48472e0d2b86f982722ca889be9e9ff9591f61405e2fa34"
    },
@@ -655,6 +618,10 @@
    {
     "path": "$BO_DATA/SCHEMA-OCI/types.jsonl",
     "sha256": "11bee8d45fe06fac6ac76dddb3e5ca60f2f024eddbfc954ace2ef5073995aadc"
+   },
+   {
+    "path": "$BO_DATA/ROLES/roles.jsonl",
+    "sha256": "ed9356faacc1b2c91230af13ea20c76b90d3372bb250b7b1a98e354281fb43b6"
    },
    {
     "path": "$BO_REPO/universe/pins.json",
@@ -690,31 +657,31 @@
    "facet_regex": "version|lifecycle|encrypt|kms|cmek|sse|server_side|public_access|access_block|acl|cors|ingress|egress|security_rule|firewall|retention|expiration|object_lock|immutab",
    "per_provider": {
     "aws": {
-     "blocos": 5910,
-     "blocos_de_faceta": 227,
+     "blocos": 6115,
+     "blocos_de_faceta": 244,
      "blocos_abaixo_do_corte": 68926,
      "tipos_com_identidade_compartilhada": 97
     },
     "google": {
-     "blocos": 5638,
-     "blocos_de_faceta": 308,
-     "blocos_abaixo_do_corte": 875,
+     "blocos": 5978,
+     "blocos_de_faceta": 317,
+     "blocos_abaixo_do_corte": 882,
      "tipos_com_identidade_compartilhada": 205
     },
     "azurerm": {
-     "blocos": 2504,
-     "blocos_de_faceta": 133,
+     "blocos": 2611,
+     "blocos_de_faceta": 140,
      "blocos_abaixo_do_corte": 7,
      "tipos_com_identidade_compartilhada": 75
     },
     "oci": {
-     "blocos": 2288,
-     "blocos_de_faceta": 189,
-     "blocos_abaixo_do_corte": 111,
+     "blocos": 2956,
+     "blocos_de_faceta": 236,
+     "blocos_abaixo_do_corte": 112,
      "tipos_com_identidade_compartilhada": 0
     }
    },
-   "reading": "Fatos por bloco aninhado (value.block_path), pedidos pelo GRAIN para decidir facetas embutidas (CC-1 do\nPILOT-STO-GLOSS). O formato por aspecto não muda; só se acrescentam aspectos com block_path.\n\nCandidato = tipo + \".\" + block_path (blocos separados por ponto, sem o tipo), a convenção do GRAIN.\nCobertura: todo bloco aninhado (menos timeouts) até a profundidade MAX_DEPTH; abaixo dela, só os blocos cujo\ncaminho tem palavra de faceta (FACET_RX: versionamento, ciclo de vida, criptografia, acesso público, regras de\nrede, retenção). O corte é declarado em evidence_levels.json (inputs.blocks).\n\nPor bloco:\n  identity/block_schema           PUBLICADO: forma do bloco no schema fixado (citação op=shape)\n  identity/block_identity         DERIVADO (R-BLOCK-ID): o schema expõe ou não atributo de identidade no bloco;\n                                  candidatos a chave de nome (atributos obrigatórios name/key); no máximo um\n                                  por pai quando nesting single ou max_items 1. \"absent\" quer dizer só que o\n                                  schema não expõe; nada sobre a API.\n  owner/block_config_owner        DERIVADO (R-BLOCK-OWNER): a configuração do bloco é gravada pelo recurso\n                                  Terraform do pai (camada terraform)\n  lifecycle_controller/block_lifecycle  DERIVADO (R-BLOCK-LIFE): o bloco não tem recurso próprio; nasce e some\n                                  com o pai no Terraform (camada terraform; o ciclo na API não é dito)\nAlcance efetivo do bloco: só por frase (effective_scope/attribute_scope com block_path, do extract). Sem frase\nnão há registro: o C25 proíbe value em status=unknown, então um UNKNOWN por bloco não tem onde levar o\nblock_path (registrado no CONTRACT_CHANGE); para o GRAIN, campo sem alegação já é UNKNOWN.\nTipos separados de faceta: identity/shared_identity_key (DERIVADO, R-ID-SHARED) liga tipos cujo\nresource_identity_schema tem os mesmos campos obrigatórios não genéricos (ex.: aws_s3_bucket e\naws_s3_bucket_versioning, ambos por bucket), para a invariância embutido × separado (E2)."
+   "reading": "Fatos por bloco aninhado (value.block_path), pedidos pelo GRAIN para decidir facetas embutidas (CC-1 do\nPILOT-STO-GLOSS). O formato por aspecto não muda; só se acrescentam aspectos com block_path.\n\nCandidato = tipo + \".\" + block_path (blocos separados por ponto, sem o tipo), a convenção do GRAIN.\nCobertura: todo bloco aninhado (menos timeouts) até a profundidade MAX_DEPTH; abaixo dela, só os blocos cujo\ncaminho tem palavra de faceta (FACET_RX: versionamento, ciclo de vida, criptografia, acesso público, regras de\nrede, retenção). O corte é declarado em evidence_levels.json (inputs.blocks).\n\nColeções de objeto em atributo (list/set/map de object, \"coleção como bloco\") entram como bloco: a forma é o\nnó do atributo (op=node) e, sem flags por campo, id/name contam só pela presença.\nPor bloco:\n  identity/block_schema           PUBLICADO: forma do bloco no schema fixado (citação op=shape)\n  identity/block_identity         DERIVADO (R-BLOCK-ID): o schema expõe ou não atributo de identidade no bloco;\n                                  candidatos a chave de nome (atributos obrigatórios name/key); no máximo um\n                                  por pai quando nesting single ou max_items 1. \"absent\" quer dizer só que o\n                                  schema não expõe; nada sobre a API.\n  owner/block_config_owner        DERIVADO (R-BLOCK-OWNER): a configuração do bloco é gravada pelo recurso\n                                  Terraform do pai (camada terraform)\n  lifecycle_controller/block_lifecycle  DERIVADO (R-BLOCK-LIFE): o bloco não tem recurso próprio; nasce e some\n                                  com o pai no Terraform (camada terraform; o ciclo na API não é dito)\nAlcance efetivo do bloco: só por frase (effective_scope/attribute_scope com block_path, do extract). Sem frase\nnão há registro: o C25 proíbe value em status=unknown, então um UNKNOWN por bloco não tem onde levar o\nblock_path (registrado no CONTRACT_CHANGE); para o GRAIN, campo sem alegação já é UNKNOWN.\nTipos separados de faceta: identity/shared_identity_key (DERIVADO, R-ID-SHARED) liga tipos cujo\nresource_identity_schema tem os mesmos campos obrigatórios não genéricos (ex.: aws_s3_bucket e\naws_s3_bucket_versioning, ambos por bucket), para a invariância embutido × separado (E2)."
   },
   "notes": [
    "DOCS-AWS: docs_facts.jsonl lido com 163851 fatos (versão completa, com os blocos repetidos). O shared_block_map.jsonl também é lido: átomo repetido sem fato próprio usaria os do canônico (mesma frase e linha); usos nesta geração: 0",
@@ -734,46 +701,57 @@
     "subcategory:block;import{id_attributes,id_text,identity,methods,separators,source,status,supported}": 1
    },
    "out_of_pin_examples": [],
-   "unknown_dropped_because_stated": 0,
+   "unknown_dropped_because_stated": 1889,
    "docs_facts_read": {
     "lidos": 163851,
-    "guardados": 6341,
-    "guardado_sem_fonte": 2181
+    "guardados": 13230,
+    "guardado_sem_fonte": 4273
    },
    "shared_block_map": {
     "blocos": 471,
     "repetidos": 37002
    },
    "extract_counters": {
-    "identity:published:stated": 8462,
+    "api_bridge:published:stated": 1746,
     "import_key:published:stated": 1654,
-    "identity:derived:stated": 7091,
+    "identity:derived:stated": 8898,
+    "identity:published:stated": 10130,
     "owner:published:unknown": 1355,
     "effective_scope:published:stated": 22,
     "lifecycle_controller:published:unknown": 1691,
     "tag_support:published:stated": 1746,
     "ttl_support:published:unknown": 1656,
-    "blocos": 5910,
-    "owner:derived:stated": 6285,
-    "lifecycle_controller:derived:stated": 5910,
+    "blocos": 6115,
+    "owner:derived:stated": 8144,
+    "lifecycle_controller:derived:stated": 6643,
+    "R-OWN-TOP": 1654,
     "effective_scope:published:unknown": 1725,
+    "lifecycle_controller:published:stated": 707,
+    "R-LIFE-TF": 528,
+    "R-REF-PHRASE": 3197,
+    "R-REF-TARGET_sem_alvo": 1605,
+    "R-REF-TARGET": 1592,
+    "colecoes_como_bloco": 205,
     "import_key:published:unknown": 92,
     "ttl_support:published:stated": 118,
     "blocos_abaixo_do_corte": 68926,
-    "blocos_de_faceta": 227,
+    "blocos_de_faceta": 244,
     "precedence:published:stated": 2527,
     "owner:published:stated": 27,
-    "lifecycle_controller:published:stated": 58,
     "ttl_aninhado_sem_frase": 9,
     "effect:published:stated": 16,
+    "api_bridge:derived:stated": 16,
+    "aws_ponte_por_operacao": 16,
     "connection_state:published:stated": 18,
-    "tipos_com_identidade_compartilhada": 97
+    "tipos_com_identidade_compartilhada": 97,
+    "R-TWIN_vinculos": 12,
+    "R-TWIN_herdados": 10
    }
   },
   "google": {
    "types": 1392,
    "types_with_page": 1392,
-   "types_with_bridge": 648,
+   "types_with_bridge": 679,
    "type_subcategory_resources_out_of_pin_schema": 0,
    "type_subcategory_variants": {
     "subcategory:block;import{identity,key_sentence,methods,placeholders,source,statements,status,supported,value}": 831,
@@ -782,40 +760,50 @@
     "subcategory:block;import{status,unknown_reason}": 6
    },
    "out_of_pin_examples": [],
-   "unknown_dropped_because_stated": 0,
+   "unknown_dropped_because_stated": 381,
    "docs_facts_read": {
     "lidos": 42822,
-    "guardados": 4021,
-    "guardado_sem_fonte": 51
+    "guardados": 6120,
+    "guardado_sem_fonte": 70
    },
    "shared_block_map": {
     "arquivo": "ausente"
    },
    "extract_counters": {
-    "identity:published:stated": 7236,
+    "api_bridge:published:stated": 679,
     "import_key:published:stated": 1386,
-    "identity:derived:stated": 7198,
+    "identity:published:stated": 8704,
+    "identity:derived:stated": 8745,
     "owner:published:unknown": 334,
-    "lifecycle_controller:published:stated": 884,
+    "lifecycle_controller:published:stated": 1814,
     "effective_scope:published:unknown": 1342,
     "tag_support:published:stated": 1392,
     "ttl_support:published:unknown": 1312,
-    "blocos": 5638,
-    "owner:derived:stated": 6679,
-    "lifecycle_controller:derived:stated": 5638,
-    "blocos_abaixo_do_corte": 875,
+    "blocos": 5978,
+    "owner:derived:stated": 8374,
+    "lifecycle_controller:derived:stated": 6897,
+    "R-OWN-TOP": 1355,
+    "R-LIFE-TF": 919,
+    "R-REF-PHRASE": 1775,
+    "R-REF-TARGET_sem_alvo": 568,
+    "blocos_abaixo_do_corte": 882,
     "lifecycle_controller:published:unknown": 520,
     "owner:published:stated": 203,
     "effective_scope:published:stated": 61,
-    "blocos_de_faceta": 308,
+    "blocos_de_faceta": 317,
+    "R-REF-TARGET": 1207,
+    "colecoes_como_bloco": 340,
     "ttl_support:published:stated": 132,
     "effect:published:stated": 14,
     "precedence:published:stated": 42,
     "ttl_aninhado_sem_frase": 14,
-    "identity:published:unknown": 19,
     "import_key:published:unknown": 6,
     "connection_state:published:stated": 9,
-    "tipos_com_identidade_compartilhada": 205
+    "identity:published:unknown": 10,
+    "tipos_com_identidade_compartilhada": 205,
+    "R-TWIN_vinculos": 1,
+    "api_bridge:derived:stated": 1,
+    "R-TWIN_herdados": 1
    }
   },
   "azurerm": {
@@ -829,29 +817,37 @@
     "subcategory:block;import{status,unknown_reason}": 5
    },
    "out_of_pin_examples": [],
-   "unknown_dropped_because_stated": 2,
+   "unknown_dropped_because_stated": 1195,
    "docs_facts_read": {
     "lidos": 42571,
-    "guardados": 5402,
-    "guardado_sem_fonte": 195
+    "guardados": 7738,
+    "guardado_sem_fonte": 204
    },
    "shared_block_map": {
     "arquivo": "ausente"
    },
    "extract_counters": {
-    "identity:derived:stated": 4682,
+    "api_bridge:derived:stated": 1065,
     "import_key:published:stated": 1102,
-    "owner:derived:stated": 3549,
+    "identity:derived:stated": 5113,
+    "owner:derived:stated": 4758,
     "effective_scope:published:unknown": 1105,
     "lifecycle_controller:published:unknown": 1104,
     "tag_support:published:stated": 1107,
     "ttl_support:published:unknown": 990,
-    "blocos": 2504,
-    "identity:published:stated": 2702,
-    "lifecycle_controller:derived:stated": 2504,
+    "R-OWN-TOP": 1102,
+    "lifecycle_controller:published:stated": 1110,
+    "lifecycle_controller:derived:stated": 3718,
+    "R-LIFE-TF": 1107,
+    "identity:published:stated": 5075,
+    "R-REF-PHRASE": 2259,
+    "R-REF-TARGET_sem_alvo": 881,
+    "R-REF-TARGET": 1378,
+    "blocos": 2611,
     "owner:published:stated": 103,
     "ttl_support:published:stated": 198,
-    "blocos_de_faceta": 133,
+    "blocos_de_faceta": 140,
+    "colecoes_como_bloco": 107,
     "identity:published:unknown": 48,
     "owner:published:unknown": 55,
     "precedence:published:stated": 77,
@@ -859,9 +855,10 @@
     "import_key:published:unknown": 5,
     "effective_scope:published:stated": 2,
     "blocos_abaixo_do_corte": 7,
-    "lifecycle_controller:published:stated": 3,
     "connection_state:published:stated": 6,
-    "tipos_com_identidade_compartilhada": 75
+    "tipos_com_identidade_compartilhada": 75,
+    "R-TWIN_vinculos": 7,
+    "R-TWIN_herdados": 11
    }
   },
   "oci": {
@@ -875,36 +872,43 @@
     "subcategory:block;import{status,unknown_reason}": 55
    },
    "out_of_pin_examples": [],
-   "unknown_dropped_because_stated": 0,
+   "unknown_dropped_because_stated": 1412,
    "docs_facts_read": {
     "lidos": 63840,
-    "guardados": 16944,
-    "guardado_sem_fonte": 143
+    "guardados": 19283,
+    "guardado_sem_fonte": 161
    },
    "shared_block_map": {
     "arquivo": "ausente"
    },
    "extract_counters": {
-    "identity:published:stated": 3175,
+    "api_bridge:published:stated": 887,
     "import_key:published:stated": 879,
-    "identity:derived:stated": 3167,
+    "identity:derived:stated": 4393,
     "owner:published:stated": 560,
     "effective_scope:published:unknown": 1008,
     "lifecycle_controller:published:unknown": 1021,
     "tag_support:published:stated": 1628,
     "ttl_support:published:unknown": 958,
-    "blocos": 2288,
-    "owner:derived:stated": 2288,
-    "lifecycle_controller:derived:stated": 2288,
+    "owner:derived:stated": 3835,
+    "R-OWN-TOP": 879,
+    "lifecycle_controller:published:stated": 1031,
+    "lifecycle_controller:derived:stated": 3974,
+    "R-LIFE-TF": 1018,
+    "blocos": 2956,
+    "identity:published:stated": 4208,
+    "R-REF-PHRASE": 1252,
+    "R-REF-TARGET_sem_alvo": 694,
     "owner:published:unknown": 506,
+    "colecoes_como_bloco": 668,
+    "R-REF-TARGET": 558,
     "ttl_support:published:stated": 116,
-    "blocos_abaixo_do_corte": 111,
-    "blocos_de_faceta": 189,
+    "blocos_abaixo_do_corte": 112,
+    "blocos_de_faceta": 236,
     "precedence:published:stated": 13,
     "import_key:published:unknown": 147,
     "identity:published:unknown": 50,
     "effective_scope:published:stated": 26,
-    "lifecycle_controller:published:stated": 6,
     "connection_state:published:stated": 2,
     "effect:published:stated": 2
    }
