@@ -174,8 +174,10 @@ def main(argv=None) -> int:
         C.say(f"heldout_run: falhou: {e}")
         return 2
     finally:
-        if not a.keep_workdir and workdir.exists():
-            shutil.rmtree(workdir, ignore_errors=True)
+        if not a.keep_workdir:
+            for d in (workdir, C.tmp() / "t"):      # t = BO_TMP do código avaliado (render, OWL das retidas)
+                if d.exists():
+                    shutil.rmtree(d, ignore_errors=True)
     stage = C.staging_dir() / "heldout"
     evid = {}
     for s in slices:

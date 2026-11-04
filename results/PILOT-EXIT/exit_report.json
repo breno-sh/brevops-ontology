@@ -1,0 +1,553 @@
+{
+ "contract": "C15",
+ "contract_version": "3.1.0",
+ "data": {
+  "attempt": 1,
+  "criteria": {
+   "E1": {
+    "name": "caminho completo",
+    "pass": false,
+    "pass_rule": "directions_covered == 12 and values_without_trace == 0 and silent_insertions == 0",
+    "per_slice": {
+     "net": {
+      "measures": {
+       "directions_covered": 10,
+       "silent_insertions": 0,
+       "values_without_trace": 57
+      },
+      "pass": false
+     },
+     "sto": {
+      "measures": {
+       "directions_covered": 12,
+       "silent_insertions": 0,
+       "values_without_trace": 0
+      },
+      "pass": true
+     }
+    }
+   },
+   "E2": {
+    "name": "grão",
+    "pass": false,
+    "pass_rule": "grain_mismatches == 0 and invariance_failures == 0",
+    "per_slice": {
+     "net": {
+      "measures": {
+       "grain_mismatches": 28,
+       "invariance_failures": 0
+      },
+      "pass": false
+     },
+     "sto": {
+      "measures": {
+       "grain_mismatches": 0,
+       "invariance_failures": 0
+      },
+      "pass": true
+     }
+    }
+   },
+   "E3": {
+    "name": "correspondências",
+    "pass": true,
+    "pass_rule": "claims_incomplete == 0 and unproven_misjudged == 0 and off_table_compositions == 0 and skos_roundtrip_ok",
+    "per_slice": {
+     "net": {
+      "measures": {
+       "claims_incomplete": 0,
+       "off_table_compositions": 0,
+       "skos_roundtrip_ok": true,
+       "unproven_misjudged": 0
+      },
+      "pass": true
+     },
+     "sto": {
+      "measures": {
+       "claims_incomplete": 0,
+       "off_table_compositions": 0,
+       "skos_roundtrip_ok": true,
+       "unproven_misjudged": 0
+      },
+      "pass": true
+     }
+    }
+   },
+   "E4": {
+    "name": "oráculo",
+    "pass": true,
+    "pass_rule": "silent_losses == 0 and negatives_carried == 0",
+    "per_slice": {
+     "net": {
+      "measures": {
+       "negatives_carried": 0,
+       "silent_losses": 0
+      },
+      "pass": true
+     },
+     "sto": {
+      "measures": {
+       "negatives_carried": 0,
+       "silent_losses": 0
+      },
+      "pass": true
+     }
+    }
+   },
+   "E5": {
+    "measures": {
+     "addendum_written_before_scale": true,
+     "consequences_counted": true,
+     "controls_same_input": true
+    },
+    "name": "controles",
+    "pass": true,
+    "pass_rule": "controls_same_input and consequences_counted and addendum_written_before_scale"
+   },
+   "E6": {
+    "measures": {
+     "catalog_ok": true,
+     "stale_not_marked": 0,
+     "unversioned_changes": 27
+    },
+    "name": "delta de contrato",
+    "pass": false,
+    "pass_rule": "unversioned_changes == 0 and stale_not_marked == 0 and catalog_ok"
+   },
+   "E7": {
+    "measures": {
+     "schedule_recomputed": true,
+     "steps_without_effort": 0
+    },
+    "name": "esforço",
+    "pass": true,
+    "pass_rule": "steps_without_effort == 0 and schedule_recomputed"
+   },
+   "E8": {
+    "measures": {
+     "attempts": 1,
+     "breno_notified": true,
+     "expansion_blocked": true,
+     "plan_returned_v4": false
+    },
+    "name": "limite de tentativas",
+    "pass": true,
+    "pass_rule": "attempts <= 2 or (expansion_blocked and plan_returned_v4 and breno_notified)"
+   }
+  },
+  "criteria_file": {
+   "path": "$BO_REPO/prereg/pilot_exit.yaml",
+   "sha256": "17132a424cf68a222c3534b154949d3dabb00973cdaf120ea584542301dc4f09"
+  },
+  "decision": "SAÍDA REPROVADA (tentativa 1): E1, E2, E6 reprovam; a expansão não começa",
+  "e5": {
+   "addendum": {
+    "has_r_ctrl_lines": true,
+    "path": "$BO_REPO/prereg/ADDENDUM_PILOTS.html",
+    "scale_modules_started": [],
+    "written_before_scale": true
+   },
+   "r_ctrl": {
+    "net": "R-CTRL-4",
+    "sto": "R-CTRL-4"
+   }
+  },
+  "e6": {
+   "catalog": {
+    "catalog_ok": true,
+    "contracts_all_stubs": {
+     "rc": 0,
+     "tail": "[2026-11-04T12:04:52-03:00] --all-stubs: 68/68 stubs conferem; 67 tipos de arquivo em 30 contratos; 0 problema(s)"
+    },
+    "core_integration": {
+     "rc": 0,
+     "tail": "8 passed, 6 skipped in 10.21s"
+    }
+   },
+   "ledger": {
+    "n_requests": 33,
+    "requests": [
+     {
+      "file": "$BO_REPO/results/PILOT-NET-E2E/CONTRACT_CHANGE.txt",
+      "item": "CC-NET-E2E-1",
+      "module": "PILOT-NET-E2E",
+      "status": "OPEN",
+      "versioned_by": ""
+     },
+     {
+      "file": "$BO_REPO/results/PILOT-NET-E2E/CONTRACT_CHANGE.txt",
+      "item": "CC-NET-E2E-2",
+      "module": "PILOT-NET-E2E",
+      "status": "OPEN",
+      "versioned_by": ""
+     },
+     {
+      "file": "$BO_REPO/results/PILOT-NET-E2E/CONTRACT_CHANGE.txt",
+      "item": "CC-NET-E2E-3",
+      "module": "PILOT-NET-E2E",
+      "status": "OPEN",
+      "versioned_by": ""
+     },
+     {
+      "file": "$BO_REPO/results/PILOT-NET-GLOSS/CONTRACT_CHANGE.txt",
+      "item": "CC-1",
+      "module": "PILOT-NET-GLOSS",
+      "status": "OPEN",
+      "versioned_by": ""
+     },
+     {
+      "file": "$BO_REPO/results/PILOT-NET-GLOSS/CONTRACT_CHANGE.txt",
+      "item": "CC-NET-1",
+      "module": "PILOT-NET-GLOSS",
+      "status": "OPEN",
+      "versioned_by": ""
+     },
+     {
+      "file": "$BO_REPO/results/PILOT-NET-GLOSS/CONTRACT_CHANGE.txt",
+      "item": "CC-NET-2",
+      "module": "PILOT-NET-GLOSS",
+      "status": "VERSIONED",
+      "versioned_by": "registro de emendas: C20 3.1.0->3.2.0"
+     },
+     {
+      "file": "$BO_REPO/results/PILOT-NET-GLOSS/CONTRACT_CHANGE.txt",
+      "item": "CC-NET-3",
+      "module": "PILOT-NET-GLOSS",
+      "status": "OPEN",
+      "versioned_by": ""
+     },
+     {
+      "file": "$BO_REPO/results/PILOT-NET-GLOSS/CONTRACT_CHANGE.txt",
+      "item": "CC-NET-4",
+      "module": "PILOT-NET-GLOSS",
+      "status": "OPEN",
+      "versioned_by": ""
+     },
+     {
+      "file": "$BO_REPO/results/PILOT-NET-MAP/CONTRACT_CHANGE.txt",
+      "item": "CC-MAP-NET-1",
+      "module": "PILOT-NET-MAP",
+      "status": "OPEN",
+      "versioned_by": ""
+     },
+     {
+      "file": "$BO_REPO/results/PILOT-NET-MAP/CONTRACT_CHANGE.txt",
+      "item": "CC-MAP-NET-2",
+      "module": "PILOT-NET-MAP",
+      "status": "OPEN",
+      "versioned_by": ""
+     },
+     {
+      "file": "$BO_REPO/results/PILOT-NET-MAP/CONTRACT_CHANGE.txt",
+      "item": "CC-MAP-NET-4",
+      "module": "PILOT-NET-MAP",
+      "status": "OPEN",
+      "versioned_by": ""
+     },
+     {
+      "file": "$BO_REPO/results/PILOT-NET-ORACLE/CONTRACT_CHANGE.txt",
+      "item": "1",
+      "module": "PILOT-NET-ORACLE",
+      "status": "VERSIONED",
+      "versioned_by": "registro de emendas: C24 1.0.0->1.1.0"
+     },
+     {
+      "file": "$BO_REPO/results/PILOT-NET-ORACLE/CONTRACT_CHANGE.txt",
+      "item": "2",
+      "module": "PILOT-NET-ORACLE",
+      "status": "VERSIONED",
+      "versioned_by": "registro de emendas: C11 3.0.1->3.1.0"
+     },
+     {
+      "file": "$BO_REPO/results/PILOT-NET-ORACLE/CONTRACT_CHANGE.txt",
+      "item": "3",
+      "module": "PILOT-NET-ORACLE",
+      "status": "OPEN",
+      "versioned_by": ""
+     },
+     {
+      "file": "$BO_REPO/results/PILOT-NET-ORACLE/CONTRACT_CHANGE.txt",
+      "item": "4",
+      "module": "PILOT-NET-ORACLE",
+      "status": "OPEN",
+      "versioned_by": ""
+     },
+     {
+      "file": "$BO_REPO/results/PILOT-NET-ORACLE/CONTRACT_CHANGE.txt",
+      "item": "5",
+      "module": "PILOT-NET-ORACLE",
+      "status": "OPEN",
+      "versioned_by": ""
+     },
+     {
+      "file": "$BO_REPO/results/PILOT-STO-GLOSS/CONTRACT_CHANGE.txt",
+      "item": "CC-7",
+      "module": "PILOT-STO-GLOSS",
+      "status": "OPEN",
+      "versioned_by": ""
+     },
+     {
+      "file": "$BO_REPO/results/PILOT-STO-GLOSS/CONTRACT_CHANGE.txt",
+      "item": "CC-5",
+      "module": "PILOT-STO-GLOSS",
+      "status": "OPEN",
+      "versioned_by": ""
+     },
+     {
+      "file": "$BO_REPO/results/PILOT-STO-GLOSS/CONTRACT_CHANGE.txt",
+      "item": "CC-6",
+      "module": "PILOT-STO-GLOSS",
+      "status": "OPEN",
+      "versioned_by": ""
+     },
+     {
+      "file": "$BO_REPO/results/PILOT-STO-GLOSS/CONTRACT_CHANGE.txt",
+      "item": "CC-1",
+      "module": "PILOT-STO-GLOSS",
+      "status": "VERSIONED",
+      "versioned_by": "pedido marca RESOLVIDO com versão/commit"
+     },
+     {
+      "file": "$BO_REPO/results/PILOT-STO-GLOSS/CONTRACT_CHANGE.txt",
+      "item": "CC-2",
+      "module": "PILOT-STO-GLOSS",
+      "status": "VERSIONED",
+      "versioned_by": "pedido marca RESOLVIDO com versão/commit"
+     },
+     {
+      "file": "$BO_REPO/results/PILOT-STO-GLOSS/CONTRACT_CHANGE.txt",
+      "item": "CC-3",
+      "module": "PILOT-STO-GLOSS",
+      "status": "VERSIONED",
+      "versioned_by": "pedido marca RESOLVIDO com versão/commit"
+     },
+     {
+      "file": "$BO_REPO/results/PILOT-STO-GLOSS/CONTRACT_CHANGE.txt",
+      "item": "CC-4",
+      "module": "PILOT-STO-GLOSS",
+      "status": "OPEN",
+      "versioned_by": ""
+     },
+     {
+      "file": "$BO_REPO/results/PILOT-STO-MAP/CONTRACT_CHANGE.txt",
+      "item": "CC-1",
+      "module": "PILOT-STO-MAP",
+      "status": "OPEN",
+      "versioned_by": ""
+     },
+     {
+      "file": "$BO_REPO/results/PILOT-STO-MAP/CONTRACT_CHANGE.txt",
+      "item": "CC-2",
+      "module": "PILOT-STO-MAP",
+      "status": "OPEN",
+      "versioned_by": ""
+     },
+     {
+      "file": "$BO_REPO/results/PILOT-STO-MAP/CONTRACT_CHANGE.txt",
+      "item": "CC-3",
+      "module": "PILOT-STO-MAP",
+      "status": "OPEN",
+      "versioned_by": ""
+     },
+     {
+      "file": "$BO_REPO/results/PILOT-STO-MAP/CONTRACT_CHANGE.txt",
+      "item": "CC-4",
+      "module": "PILOT-STO-MAP",
+      "status": "OPEN",
+      "versioned_by": ""
+     },
+     {
+      "file": "$BO_REPO/results/PILOT-STO-MAP/CONTRACT_CHANGE.txt",
+      "item": "CC-10",
+      "module": "PILOT-STO-MAP",
+      "status": "OPEN",
+      "versioned_by": ""
+     },
+     {
+      "file": "$BO_REPO/results/PILOT-STO-MAP/CONTRACT_CHANGE.txt",
+      "item": "CC-5",
+      "module": "PILOT-STO-MAP",
+      "status": "OPEN",
+      "versioned_by": ""
+     },
+     {
+      "file": "$BO_REPO/results/PILOT-STO-MAP/CONTRACT_CHANGE.txt",
+      "item": "CC-6",
+      "module": "PILOT-STO-MAP",
+      "status": "OPEN",
+      "versioned_by": ""
+     },
+     {
+      "file": "$BO_REPO/results/PILOT-STO-MAP/CONTRACT_CHANGE.txt",
+      "item": "CC-7",
+      "module": "PILOT-STO-MAP",
+      "status": "OPEN",
+      "versioned_by": ""
+     },
+     {
+      "file": "$BO_REPO/results/PILOT-STO-MAP/CONTRACT_CHANGE.txt",
+      "item": "CC-8",
+      "module": "PILOT-STO-MAP",
+      "status": "OPEN",
+      "versioned_by": ""
+     },
+     {
+      "file": "$BO_REPO/results/PILOT-STO-MAP/CONTRACT_CHANGE.txt",
+      "item": "CC-9",
+      "module": "PILOT-STO-MAP",
+      "status": "OPEN",
+      "versioned_by": ""
+     }
+    ],
+    "unversioned_changes": 27
+   },
+   "stale": {
+    "missing": [],
+    "receipts": 0,
+    "should_be_stale": [],
+    "stale_not_marked": 0
+   }
+  },
+  "e7": {
+   "class_ratio": {
+    "E2E": 0.4083,
+    "GLOSS": 3.645,
+    "MAP": 0.8333,
+    "ORACLE": 0.7438
+   },
+   "makespan_plan_h": 249.0,
+   "makespan_recalibrated_h": 256.55,
+   "steps_without_effort": 0
+  },
+  "e8": {
+   "attempts": 1,
+   "breno_notified": true,
+   "expansion_blocked": true,
+   "plan_returned_v4": false
+  },
+  "evaluated_code": {
+   "net": "12f2fc0b898dd47d8d76b2a44cf767da650f2f713af25f3dba0d121c3674a191",
+   "sto": "b85f46ff14a5774737f32f9396ddadfd9d0497a42a8b399cbcc5dd0b90f07862"
+  },
+  "passed": false,
+  "problems": []
+ },
+ "generated_at": "2026-11-04T12:04:11-03:00",
+ "metrics": [
+  {
+   "axis": "operational",
+   "frame": {
+    "description": "itens retidos da fatia net (selo do PILOT-NET-ORACLE)"
+   },
+   "inclusion": {
+    "rule_id": "INC-PILOT-HELDOUT-01",
+    "text": "todo item retido julgado pelo oráculo; relatado, não é limiar"
+   },
+   "joint_uncertainty": {
+    "level": 0.95,
+    "method": "wilson"
+   },
+   "metric_id": "M-PILOT-ORACLE-ACC-NET",
+   "name": "fração de acerto do pipeline nas retidas (net)",
+   "operational_coverage": {
+    "est": 0.1373,
+    "lower": 0.0836,
+    "n": 102,
+    "n_known": 102,
+    "upper": 0.2173
+   },
+   "quantifier": "observed_fraction",
+   "reading": "decision",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "operational",
+   "frame": {
+    "description": "as 12 direções ordenadas"
+   },
+   "inclusion": {
+    "rule_id": "INC-PILOT-DIRS-01",
+    "text": "cada direção A->B com A != B"
+   },
+   "joint_uncertainty": {
+    "level": 0.95,
+    "method": "wilson"
+   },
+   "metric_id": "M-PILOT-DIRS-NET",
+   "name": "direções com saída ou UNSUPPORTED declarado (net)",
+   "operational_coverage": {
+    "est": 0.8333,
+    "lower": 0.552,
+    "n": 12,
+    "n_known": 12,
+    "upper": 0.953
+   },
+   "quantifier": "observed_fraction",
+   "reading": "decision",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "operational",
+   "frame": {
+    "description": "itens retidos da fatia sto (selo do PILOT-STO-ORACLE)"
+   },
+   "inclusion": {
+    "rule_id": "INC-PILOT-HELDOUT-01",
+    "text": "todo item retido julgado pelo oráculo; relatado, não é limiar"
+   },
+   "joint_uncertainty": {
+    "level": 0.95,
+    "method": "wilson"
+   },
+   "metric_id": "M-PILOT-ORACLE-ACC-STO",
+   "name": "fração de acerto do pipeline nas retidas (sto)",
+   "operational_coverage": {
+    "est": 0.0,
+    "lower": 0.0,
+    "n": 181,
+    "n_known": 181,
+    "upper": 0.0208
+   },
+   "quantifier": "observed_fraction",
+   "reading": "decision",
+   "weights": {
+    "scheme": "uniform"
+   }
+  },
+  {
+   "axis": "operational",
+   "frame": {
+    "description": "as 12 direções ordenadas"
+   },
+   "inclusion": {
+    "rule_id": "INC-PILOT-DIRS-01",
+    "text": "cada direção A->B com A != B"
+   },
+   "joint_uncertainty": {
+    "level": 0.95,
+    "method": "wilson"
+   },
+   "metric_id": "M-PILOT-DIRS-STO",
+   "name": "direções com saída ou UNSUPPORTED declarado (sto)",
+   "operational_coverage": {
+    "est": 1.0,
+    "lower": 0.7575,
+    "n": 12,
+    "n_known": 12,
+    "upper": 1.0
+   },
+   "quantifier": "observed_fraction",
+   "reading": "decision",
+   "weights": {
+    "scheme": "uniform"
+   }
+  }
+ ],
+ "module": "PILOT-EXIT",
+ "notes": "PILOT-EXIT: E1–E8 do prereg/pilot_exit.yaml aplicados ao código congelado nas retidas",
+ "schema": "bo.result/1"
+}

@@ -1,0 +1,83 @@
+<!doctype html><html lang='pt-BR'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Adendo dos pilotos</title><style>
+:root{--bg:#fbfaf7;--fg:#1d1d1b;--mut:#5d5b55;--line:#d9d5cc;--ok:#1f6f43;--bad:#9b2c2c;--card:#ffffff}
+@media (prefers-color-scheme: dark){:root{--bg:#161614;--fg:#eceae4;--mut:#a9a59b;--line:#3a3833;--ok:#7fd1a2;--bad:#f0a0a0;--card:#1f1f1c}}
+body{background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;margin:0;padding:24px 16px}
+main{max-width:980px;margin:0 auto}h1{font-size:1.5rem;margin:.2rem 0}h2{font-size:1.15rem;margin-top:2rem;border-bottom:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;margin:.6rem 0;font-size:.92rem;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:4px 8px;text-align:left;vertical-align:top}th{background:var(--card)}
+.mut{color:var(--mut)}.ok{color:var(--ok);font-weight:600}.bad{color:var(--bad);font-weight:600}code{font-size:.88em}
+</style></head><body><main>
+<h1>Adendo do pré-registro: saída dos pilotos</h1>
+<p class='mut'>Escrito por PILOT-EXIT em 2026-11-04T12:04:53-03:00 (America/Recife), antes de qualquer módulo de escala. Critérios: <code>prereg/pilot_exit.yaml</code> sha256 17132a424cf68a22; tentativa 1 de 2. Leitura dos pilotos: só contagem descritiva; a decisão sobre H9 é tomada na partição de teste depois do UNSEAL.</p>
+<h2>1. Os 3 controles nas fixtures retidas</h2>
+<h3>Fatia net</h3>
+<p>Entrada idêntica nos 3 controles: <b>sim</b> (sha da entrada: 020b47887370dcea21f090c636bb159b9250ecbe4cf00467ad53d51b05711967, 7a977957e2a511). Casos: 102. Consequências de c3 contadas sem axioma: 0 de 131; traços c3 com justifying_axioms sobrepostos a consulted_metadata: 0 de 211.</p>
+<table><tr><th>controle</th><th>polaridade</th><th>corretas</th><th>incorretas</th><th>ausentes</th></tr><tr><td>c1</td><td>positive</td><td>0</td><td>0</td><td>48</td></tr><tr><td>c1</td><td>negative</td><td>0</td><td>0</td><td>27</td></tr><tr><td>c1</td><td>unknown</td><td>0</td><td>0</td><td>27</td></tr><tr><td>c2</td><td>positive</td><td>0</td><td>0</td><td>48</td></tr><tr><td>c2</td><td>negative</td><td>0</td><td>0</td><td>27</td></tr><tr><td>c2</td><td>unknown</td><td>0</td><td>0</td><td>27</td></tr><tr><td>c3</td><td>positive</td><td>8</td><td>0</td><td>40</td></tr><tr><td>c3</td><td>negative</td><td>5</td><td>0</td><td>22</td></tr><tr><td>c3</td><td>unknown</td><td>1</td><td>0</td><td>26</td></tr></table>
+<table><tr><th>família</th><th>n</th><th>c3×c1 (só c3 / só c1)</th><th>c3×c2</th><th>c2×c1</th></tr><tr><td>NET-C01</td><td>12</td><td>2/0 (p=0.25)</td><td>2/0 (p=0.25)</td><td>0/0 (p=1)</td></tr><tr><td>NET-C02</td><td>9</td><td>1/0 (p=0.5)</td><td>1/0 (p=0.5)</td><td>0/0 (p=1)</td></tr><tr><td>NET-C03</td><td>9</td><td>0/0 (p=1)</td><td>0/0 (p=1)</td><td>0/0 (p=1)</td></tr><tr><td>NET-C04</td><td>9</td><td>2/0 (p=0.25)</td><td>2/0 (p=0.25)</td><td>0/0 (p=1)</td></tr><tr><td>NET-C05</td><td>9</td><td>4/0 (p=0.0625)</td><td>4/0 (p=0.0625)</td><td>0/0 (p=1)</td></tr><tr><td>NET-C06</td><td>9</td><td>1/0 (p=0.5)</td><td>1/0 (p=0.5)</td><td>0/0 (p=1)</td></tr><tr><td>NET-C07</td><td>9</td><td>0/0 (p=1)</td><td>0/0 (p=1)</td><td>0/0 (p=1)</td></tr><tr><td>NET-C08</td><td>9</td><td>0/0 (p=1)</td><td>0/0 (p=1)</td><td>0/0 (p=1)</td></tr><tr><td>NET-C09</td><td>9</td><td>0/0 (p=1)</td><td>0/0 (p=1)</td><td>0/0 (p=1)</td></tr><tr><td>NET-C10-SRC</td><td>18</td><td>4/0 (p=0.0625)</td><td>4/0 (p=0.0625)</td><td>0/0 (p=1)</td></tr></table>
+<p>Justificativa das contagens: correto = igual à resposta esperada do oráculo independente (retidas seladas do PILOT-NET-ORACLE); incorreto = consequência diferente dela; ausente = nenhuma consequência emitida. c3 &#x27;correto&#x27; em fixture negativa do tipo rejects = REFUSED; nas demais = veredito ACCEPT ou ACCEPT_WITH_DECLARED_LOSS do juiz do oráculo; REJECT = incorreto; sem julgamento = ausente</p>
+<h3>Fatia sto</h3>
+<p>Entrada idêntica nos 3 controles: <b>sim</b> (sha da entrada: 2efd3376792e2b2cf3b83713ff2fb4db8f3d7758fcead4fef68e8567a57bc1b1). Casos: 219. Consequências de c3 contadas sem axioma: 0 de 0; traços c3 com justifying_axioms sobrepostos a consulted_metadata: 0 de 210.</p>
+<table><tr><th>controle</th><th>polaridade</th><th>corretas</th><th>incorretas</th><th>ausentes</th></tr><tr><td>c1</td><td>positive</td><td>0</td><td>0</td><td>75</td></tr><tr><td>c1</td><td>negative</td><td>0</td><td>0</td><td>96</td></tr><tr><td>c1</td><td>unknown</td><td>0</td><td>0</td><td>48</td></tr><tr><td>c2</td><td>positive</td><td>0</td><td>0</td><td>75</td></tr><tr><td>c2</td><td>negative</td><td>9</td><td>1</td><td>86</td></tr><tr><td>c2</td><td>unknown</td><td>0</td><td>0</td><td>48</td></tr><tr><td>c3</td><td>positive</td><td>0</td><td>0</td><td>75</td></tr><tr><td>c3</td><td>negative</td><td>10</td><td>0</td><td>86</td></tr><tr><td>c3</td><td>unknown</td><td>0</td><td>0</td><td>48</td></tr></table>
+<table><tr><th>família</th><th>n</th><th>c3×c1 (só c3 / só c1)</th><th>c3×c2</th><th>c2×c1</th></tr><tr><td>MC-DEC-PACK</td><td>5</td><td>5/0 (p=0.03125)</td><td>0/0 (p=1)</td><td>5/0 (p=0.03125)</td></tr><tr><td>MC-DEC-SCOPE</td><td>5</td><td>5/0 (p=0.03125)</td><td>1/0 (p=0.5)</td><td>4/0 (p=0.0625)</td></tr><tr><td>MC-LC-CUR</td><td>4</td><td>0/0 (p=1)</td><td>0/0 (p=1)</td><td>0/0 (p=1)</td></tr><tr><td>MC-LC-FILTER</td><td>5</td><td>0/0 (p=1)</td><td>0/0 (p=1)</td><td>0/0 (p=1)</td></tr><tr><td>MC-LC-NONCUR</td><td>4</td><td>0/0 (p=1)</td><td>0/0 (p=1)</td><td>0/0 (p=1)</td></tr><tr><td>MC-PUB-GRAN</td><td>4</td><td>0/0 (p=1)</td><td>0/0 (p=1)</td><td>0/0 (p=1)</td></tr><tr><td>MC-PUB-LEVEL</td><td>5</td><td>0/0 (p=1)</td><td>0/0 (p=1)</td><td>0/0 (p=1)</td></tr><tr><td>MC-VER</td><td>6</td><td>0/0 (p=1)</td><td>0/0 (p=1)</td><td>0/0 (p=1)</td></tr><tr><td>T1-VERSIONED</td><td>42</td><td>0/0 (p=1)</td><td>0/0 (p=1)</td><td>0/0 (p=1)</td></tr><tr><td>T2-PUBLIC-READ</td><td>48</td><td>0/0 (p=1)</td><td>0/0 (p=1)</td><td>0/0 (p=1)</td></tr><tr><td>T3-EXPIRE</td><td>51</td><td>0/0 (p=1)</td><td>0/0 (p=1)</td><td>0/0 (p=1)</td></tr><tr><td>T4-NONCURRENT</td><td>40</td><td>0/0 (p=1)</td><td>0/0 (p=1)</td><td>0/0 (p=1)</td></tr></table>
+<p>Justificativa das contagens: correto = igual à resposta esperada do oráculo independente (retidas seladas do PILOT-STO-ORACLE); incorreto = consequência diferente dela; ausente = nenhuma consequência emitida. entrada de direção: correto = a tradução que desceu é aceita pelo juiz do oráculo (com ou sem perda declarada), incorreto = REJECT, ausente = não desceu; alegação-contraexemplo das fixtures: correto = REJECT, incorreto = ACCEPT, ausente = ABSTAIN</p>
+<h2>2. Linha R-CTRL aplicada e consequência pré-declarada para H9</h2>
+<p><b>Fatia net: R-CTRL-4</b> — condição: n por família abaixo do necessário e nenhuma família significativa. Por quê: n por família abaixo de 41 em 10 de 10 família(s); nenhuma família elegível significativa.<br>Consequência pré-declarada: H9 &#x27;inconclusiva&#x27; (nunca &#x27;nula&#x27;); contagens e justificativas descritivas; o papel dos axiomas é rebaixado do mesmo jeito, porque benefício exige evidência positiva</p>
+<p><b>R-CTRL-6</b> (3 caso(s)): contado como efeito em DETECÇÃO DE ERRO, em linha própria, nunca somado ao transporte</p>
+<p><b>Fatia sto: R-CTRL-4</b> — condição: n por família abaixo do necessário e nenhuma família significativa. Por quê: n por família abaixo de 41 em 9 de 12 família(s); nenhuma família elegível significativa.<br>Consequência pré-declarada: H9 &#x27;inconclusiva&#x27; (nunca &#x27;nula&#x27;); contagens e justificativas descritivas; o papel dos axiomas é rebaixado do mesmo jeito, porque benefício exige evidência positiva</p>
+<p><b>R-CTRL-6</b> (10 caso(s)): contado como efeito em DETECÇÃO DE ERRO, em linha própria, nunca somado ao transporte</p>
+<p class='mut'>nos pilotos (fixtures retidas, n pequeno) a regra é aplicada só como contagem descritiva e o resultado vai para o adendo antes da escala; a decisão sobre H9 é tomada só na partição de teste, depois do UNSEAL</p>
+<h2>3. Emendas exigidas pelos pilotos (E6)</h2><table><tr><th>módulo</th><th>item</th><th>situação</th><th>leitura primária (congelada)</th><th>leitura emendada</th></tr>
+<tr><td>PILOT-NET-E2E</td><td>CC-NET-E2E-1</td><td class='bad'>OPEN</td><td>sem a mudança (vale esta)</td><td>não existe: pedido aberto, sem emenda versionada</td></tr>
+<tr><td>PILOT-NET-E2E</td><td>CC-NET-E2E-2</td><td class='bad'>OPEN</td><td>sem a mudança (vale esta)</td><td>não existe: pedido aberto, sem emenda versionada</td></tr>
+<tr><td>PILOT-NET-E2E</td><td>CC-NET-E2E-3</td><td class='bad'>OPEN</td><td>sem a mudança (vale esta)</td><td>não existe: pedido aberto, sem emenda versionada</td></tr>
+<tr><td>PILOT-NET-GLOSS</td><td>CC-1</td><td class='bad'>OPEN</td><td>sem a mudança (vale esta)</td><td>não existe: pedido aberto, sem emenda versionada</td></tr>
+<tr><td>PILOT-NET-GLOSS</td><td>CC-NET-1</td><td class='bad'>OPEN</td><td>sem a mudança (vale esta)</td><td>não existe: pedido aberto, sem emenda versionada</td></tr>
+<tr><td>PILOT-NET-GLOSS</td><td>CC-NET-2</td><td class='ok'>VERSIONED</td><td>sem a mudança (versão anterior)</td><td>com a emenda: registro de emendas: C20 3.1.0-&gt;3.2.0</td></tr>
+<tr><td>PILOT-NET-GLOSS</td><td>CC-NET-3</td><td class='bad'>OPEN</td><td>sem a mudança (vale esta)</td><td>não existe: pedido aberto, sem emenda versionada</td></tr>
+<tr><td>PILOT-NET-GLOSS</td><td>CC-NET-4</td><td class='bad'>OPEN</td><td>sem a mudança (vale esta)</td><td>não existe: pedido aberto, sem emenda versionada</td></tr>
+<tr><td>PILOT-NET-MAP</td><td>CC-MAP-NET-1</td><td class='bad'>OPEN</td><td>sem a mudança (vale esta)</td><td>não existe: pedido aberto, sem emenda versionada</td></tr>
+<tr><td>PILOT-NET-MAP</td><td>CC-MAP-NET-2</td><td class='bad'>OPEN</td><td>sem a mudança (vale esta)</td><td>não existe: pedido aberto, sem emenda versionada</td></tr>
+<tr><td>PILOT-NET-MAP</td><td>CC-MAP-NET-4</td><td class='bad'>OPEN</td><td>sem a mudança (vale esta)</td><td>não existe: pedido aberto, sem emenda versionada</td></tr>
+<tr><td>PILOT-NET-ORACLE</td><td>1</td><td class='ok'>VERSIONED</td><td>sem a mudança (versão anterior)</td><td>com a emenda: registro de emendas: C24 1.0.0-&gt;1.1.0</td></tr>
+<tr><td>PILOT-NET-ORACLE</td><td>2</td><td class='ok'>VERSIONED</td><td>sem a mudança (versão anterior)</td><td>com a emenda: registro de emendas: C11 3.0.1-&gt;3.1.0</td></tr>
+<tr><td>PILOT-NET-ORACLE</td><td>3</td><td class='bad'>OPEN</td><td>sem a mudança (vale esta)</td><td>não existe: pedido aberto, sem emenda versionada</td></tr>
+<tr><td>PILOT-NET-ORACLE</td><td>4</td><td class='bad'>OPEN</td><td>sem a mudança (vale esta)</td><td>não existe: pedido aberto, sem emenda versionada</td></tr>
+<tr><td>PILOT-NET-ORACLE</td><td>5</td><td class='bad'>OPEN</td><td>sem a mudança (vale esta)</td><td>não existe: pedido aberto, sem emenda versionada</td></tr>
+<tr><td>PILOT-STO-GLOSS</td><td>CC-7</td><td class='bad'>OPEN</td><td>sem a mudança (vale esta)</td><td>não existe: pedido aberto, sem emenda versionada</td></tr>
+<tr><td>PILOT-STO-GLOSS</td><td>CC-5</td><td class='bad'>OPEN</td><td>sem a mudança (vale esta)</td><td>não existe: pedido aberto, sem emenda versionada</td></tr>
+<tr><td>PILOT-STO-GLOSS</td><td>CC-6</td><td class='bad'>OPEN</td><td>sem a mudança (vale esta)</td><td>não existe: pedido aberto, sem emenda versionada</td></tr>
+<tr><td>PILOT-STO-GLOSS</td><td>CC-1</td><td class='ok'>VERSIONED</td><td>sem a mudança (versão anterior)</td><td>com a emenda: pedido marca RESOLVIDO com versão/commit</td></tr>
+<tr><td>PILOT-STO-GLOSS</td><td>CC-2</td><td class='ok'>VERSIONED</td><td>sem a mudança (versão anterior)</td><td>com a emenda: pedido marca RESOLVIDO com versão/commit</td></tr>
+<tr><td>PILOT-STO-GLOSS</td><td>CC-3</td><td class='ok'>VERSIONED</td><td>sem a mudança (versão anterior)</td><td>com a emenda: pedido marca RESOLVIDO com versão/commit</td></tr>
+<tr><td>PILOT-STO-GLOSS</td><td>CC-4</td><td class='bad'>OPEN</td><td>sem a mudança (vale esta)</td><td>não existe: pedido aberto, sem emenda versionada</td></tr>
+<tr><td>PILOT-STO-MAP</td><td>CC-1</td><td class='bad'>OPEN</td><td>sem a mudança (vale esta)</td><td>não existe: pedido aberto, sem emenda versionada</td></tr>
+<tr><td>PILOT-STO-MAP</td><td>CC-2</td><td class='bad'>OPEN</td><td>sem a mudança (vale esta)</td><td>não existe: pedido aberto, sem emenda versionada</td></tr>
+<tr><td>PILOT-STO-MAP</td><td>CC-3</td><td class='bad'>OPEN</td><td>sem a mudança (vale esta)</td><td>não existe: pedido aberto, sem emenda versionada</td></tr>
+<tr><td>PILOT-STO-MAP</td><td>CC-4</td><td class='bad'>OPEN</td><td>sem a mudança (vale esta)</td><td>não existe: pedido aberto, sem emenda versionada</td></tr>
+<tr><td>PILOT-STO-MAP</td><td>CC-10</td><td class='bad'>OPEN</td><td>sem a mudança (vale esta)</td><td>não existe: pedido aberto, sem emenda versionada</td></tr>
+<tr><td>PILOT-STO-MAP</td><td>CC-5</td><td class='bad'>OPEN</td><td>sem a mudança (vale esta)</td><td>não existe: pedido aberto, sem emenda versionada</td></tr>
+<tr><td>PILOT-STO-MAP</td><td>CC-6</td><td class='bad'>OPEN</td><td>sem a mudança (vale esta)</td><td>não existe: pedido aberto, sem emenda versionada</td></tr>
+<tr><td>PILOT-STO-MAP</td><td>CC-7</td><td class='bad'>OPEN</td><td>sem a mudança (vale esta)</td><td>não existe: pedido aberto, sem emenda versionada</td></tr>
+<tr><td>PILOT-STO-MAP</td><td>CC-8</td><td class='bad'>OPEN</td><td>sem a mudança (vale esta)</td><td>não existe: pedido aberto, sem emenda versionada</td></tr>
+<tr><td>PILOT-STO-MAP</td><td>CC-9</td><td class='bad'>OPEN</td><td>sem a mudança (vale esta)</td><td>não existe: pedido aberto, sem emenda versionada</td></tr>
+</table><p class='mut'>Motivo de cada item: o texto do pedido em <code>results/&lt;módulo&gt;/CONTRACT_CHANGE.txt</code>, citado pelo rótulo.</p>
+<h2>4. Esforço medido (E7)</h2><table><tr><th>módulo do piloto</th><th>medido (h)</th><th>plano (h)</th><th>retrabalho (h)</th></tr>
+<tr><td>PILOT-NET-E2E</td><td>2.2</td><td>6</td><td>0.0</td></tr>
+<tr><td>PILOT-NET-GLOSS</td><td>11.54</td><td>3</td><td>1.43</td></tr>
+<tr><td>PILOT-NET-MAP</td><td>1.82</td><td>3</td><td>0.09</td></tr>
+<tr><td>PILOT-NET-ORACLE</td><td>1.26</td><td>4</td><td>7.5</td></tr>
+<tr><td>PILOT-STO-E2E</td><td>2.7</td><td>6</td><td>0.02</td></tr>
+<tr><td>PILOT-STO-GLOSS</td><td>10.33</td><td>3</td><td>3.32</td></tr>
+<tr><td>PILOT-STO-MAP</td><td>3.18</td><td>3</td><td>0.05</td></tr>
+<tr><td>PILOT-STO-ORACLE</td><td>4.69</td><td>4</td><td>8.15</td></tr>
+</table><p>Razão medida por classe: {&#x27;GLOSS&#x27;: 3.645, &#x27;MAP&#x27;: 0.8333, &#x27;E2E&#x27;: 0.4083, &#x27;ORACLE&#x27;: 0.7438}. Passos do E2E sem esforço medido: 0. Cronograma: plano 249.0 h, recalibrado 256.55 h (teto de 12 agentes).</p>
+<h2>5. Resultado dos critérios</h2><table><tr><th>critério</th><th>resultado</th></tr>
+<tr><td>E1 caminho completo</td><td class='bad'>reprova</td></tr>
+<tr><td>E2 grão</td><td class='bad'>reprova</td></tr>
+<tr><td>E3 correspondências</td><td class='ok'>passa</td></tr>
+<tr><td>E4 oráculo</td><td class='ok'>passa</td></tr>
+<tr><td>E5 controles</td><td class='ok'>passa</td></tr>
+<tr><td>E6 delta de contrato</td><td class='bad'>reprova</td></tr>
+<tr><td>E7 esforço</td><td class='ok'>passa</td></tr>
+<tr><td>E8 limite de tentativas</td><td class='ok'>passa</td></tr>
+</table><p><b>SAÍDA REPROVADA (tentativa 1): E1, E2, E6 reprovam; a expansão não começa</b></p></main></body></html>

@@ -20,7 +20,9 @@ step "execução registrada: código congelado = código do E2E, selo = índice 
 $py -I -m bo.pilot_exit.heldout_run --slices sto,net --verify-only
 
 step "nenhum texto claro das retidas ficou na caixa temporária"
-if [ -d "$BO_TMP/run" ]; then echo "sobrou $BO_TMP/run (árvore com retidas materializadas)"; exit 1; fi
+for d in run t; do
+  if [ -d "$BO_TMP/$d" ]; then echo "sobrou $BO_TMP/$d (árvore com retidas materializadas)"; exit 1; fi
+done
 $py -I -B -c '
 import json, os, sys
 from pathlib import Path
@@ -55,8 +57,8 @@ $py -I -B -c '
 import json, sys
 from pathlib import Path
 from bo.pilot_exit import reestimate as R
-root = Path(".")
-new = R.c15(R.build(root / "results", root.resolve()))
+import os; root = Path(os.environ["BO_REPO"])
+new = R.c15(R.build(root / "results", root))
 old = json.loads(Path("results/PILOT-EXIT/effort_calibration.json").read_text(encoding="utf-8"))
 if new != old:
     sys.exit("effort_calibration.json não é o que o código regenera agora")

@@ -25,7 +25,8 @@ def test_sandbox_nega_escrita_fora_e_rede(work):
             "except OSError: print('REDE_NEGADA')\n")
     script = work / "probe.py"
     script.write_text(code)
-    res = runner.run_commands([f"{sys.executable} -I {script}"], work, work / "data", "PILOT-STO-E2E", work / "logs")
+    res = runner.run_commands([f"{sys.executable} -I {script}"], work, work / "data", "PILOT-STO-E2E", work / "logs",
+                              tmp_root=work / "t")
     out = (work / "logs" / "01.out").read_text()
     assert res[0]["rc"] == 0 and "FORA_NEGADO" in out and "REDE_NEGADA" in out and dentro.exists()
     assert not fora.exists()

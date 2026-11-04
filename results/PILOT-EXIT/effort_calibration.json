@@ -1,0 +1,1253 @@
+{
+ "contract": "C15",
+ "contract_version": "3.1.0",
+ "data": {
+  "as_of_base": "559b0bd2be951863d627d9d1bfe2c0e6e938e8ef",
+  "class_ratio": {
+   "E2E": 0.4083,
+   "GLOSS": 3.645,
+   "MAP": 0.8333,
+   "ORACLE": 0.7438
+  },
+  "e2e_steps": {
+   "PILOT-NET-E2E": {
+    "file": "$BO_REPO/results/PILOT-NET-E2E/effort.json",
+    "module": "PILOT-NET-E2E",
+    "present": true,
+    "steps": [
+     {
+      "hours": 0.27,
+      "step": "leitura do brief, plano, contratos, oráculo, harnesses e biblioteca de grão; desenho"
+     },
+     {
+      "hours": 0.2,
+      "step": "vocabulário de realização, lifting, catálogo de axiomas, gerador OWL/C14 e os 3 controles"
+     },
+     {
+      "hours": 0.23,
+      "step": "alegações (C09/C21), alegações sintéticas, transporte e tradução para IR de grafo e plano"
+     },
+     {
+      "hours": 0.13,
+      "step": "lowering nos 4 provedores, render pelos HARNESS-*, releitura para o oráculo, política de perda"
+     },
+     {
+      "hours": 0.1,
+      "step": "pipeline das 12 direções e comandos run/oracle_eval"
+     },
+     {
+      "hours": 0.08,
+      "step": "gates grain_check, no_silent_insert, tf_validate"
+     },
+     {
+      "hours": 0.07,
+      "step": "testes, gate do módulo, achados de contrato, primeiro commit"
+     },
+     {
+      "hours": 0.23,
+      "step": "segunda passada: guardas C10, traço por valor completo, perfil DL, pista da tabela, defeitos"
+     },
+     {
+      "hours": 0.2,
+      "step": "integração com o mapeamento real (PILOT-NET-MAP), resultados e rerodada dos gates"
+     }
+    ],
+    "without_effort": 0
+   },
+   "PILOT-STO-E2E": {
+    "file": "$BO_REPO/results/PILOT-STO-E2E/effort.json",
+    "module": "PILOT-STO-E2E",
+    "present": true,
+    "steps": [
+     {
+      "hours": 0.2217,
+      "step": "leitura: brief, plano (§0 §3b §4), contratos C14 C15 C23 C26, oráculo, entradas e harness"
+     },
+     {
+      "hours": 0.1483,
+      "step": "alegações (C09/C21) por direção, evidência C25, TBox da fatia, lifting e decomposição (21/21 do gabarito)"
+     },
+     {
+      "hours": 0.0517,
+      "step": "ABox, raciocinador RL e gerador do módulo OWL (C14) a partir das alegações OK"
+     },
+     {
+      "hours": 0.1083,
+      "step": "tradução pelos três controles, política de perda, IR de grafo e plano de lowering (C26)"
+     },
+     {
+      "hours": 0.0317,
+      "step": "alegações sintéticas e primeiro caminho completo julgado pelo oráculo (c2 REJECT × c3 perda declarada)"
+     },
+     {
+      "hours": 0.05,
+      "step": "render pelos quatro harness, conferência sem inserção silenciosa e terraform validate offline"
+     },
+     {
+      "hours": 0.0983,
+      "step": "avaliação pelo oráculo, canário de 12 direções, staging e comandos dos gates G1–G5"
+     },
+     {
+      "hours": 0.085,
+      "step": "conferência do módulo pelo ROBOT/HermiT fixado (perfil DL, consequências iguais às do RL)"
+     },
+     {
+      "hours": 0.05,
+      "step": "testes (19) com alegações sintéticas e saídas atuais do mapeador"
+     },
+     {
+      "hours": 0.1683,
+      "step": "gate do módulo, publicação sob trava, esforço, proveniência e commit"
+     },
+     {
+      "hours": 1.6367,
+      "step": "espera do PILOT-STO-MAP (sem trabalho do módulo), com rebase e testes a cada avanço da base"
+     },
+     {
+      "hours": 0.0633,
+      "step": "rebase sobre o PILOT-STO-MAP final, corrida de ponta a ponta, gates de novo e merge"
+     }
+    ],
+    "without_effort": 0
+   }
+  },
+  "method": "python -I -m bo.plan.reestimate --from $BO_REPO/results     (despacha para bo.pilot_exit.reestimate)\n\nMedida (fixada antes de ver os números, declarada no arquivo de saída):\n  módulo do piloto   esforço = hora do 1º commit '[ID]' em bo/base − hora de criação da branch bo/<id> (reflog);\n                     retrabalho (commits [ID] depois da 1ª entrega) é relatado à parte, não entra na razão\n  passo do E2E       results/PILOT-*-E2E/effort.json (o que o E2E mediu de cada passo); passo sem número conta em\n                     steps_without_effort\n  razão por classe   média das duas fatias de (medido ÷ effort_h do catálogo)\nClasses (por papel, como na §3b): GLOSS -> GLOSSARY-<domínio> e DECOMPOSE; MAP -> MAP-*; E2E -> OWL, ABOX-LIFT,\nGRAPH-LOWERING, TRANSLATOR, REASONING-PROOF. Módulo de escala sem análogo medido fica com o esforço do plano e\né listado como tal (nunca extrapolado). Cronograma: lista com teto de 12 agentes, travas do catálogo (lock) e\nwall_h, igual para o plano e para o recalibrado; caminho crítico sem teto também.",
+  "n_recalibrated": 48,
+  "n_scale_modules": 117,
+  "pilot_modules": {
+   "PILOT-NET-E2E": {
+    "branch_created": "2026-11-04T09:11:57-03:00",
+    "first_delivery": "2026-11-04T11:24:12-03:00",
+    "last_commit": "2026-11-04T11:24:12-03:00",
+    "measured_h": 2.2,
+    "module": "PILOT-NET-E2E",
+    "n_commits": 14,
+    "rework_span_h": 0.0
+   },
+   "PILOT-NET-GLOSS": {
+    "branch_created": "2026-11-03T22:01:03-03:00",
+    "first_delivery": "2026-11-04T09:33:25-03:00",
+    "last_commit": "2026-11-04T10:59:10-03:00",
+    "measured_h": 11.54,
+    "module": "PILOT-NET-GLOSS",
+    "n_commits": 7,
+    "rework_span_h": 1.43
+   },
+   "PILOT-NET-MAP": {
+    "branch_created": "2026-11-04T09:11:17-03:00",
+    "first_delivery": "2026-11-04T11:00:16-03:00",
+    "last_commit": "2026-11-04T11:05:33-03:00",
+    "measured_h": 1.82,
+    "module": "PILOT-NET-MAP",
+    "n_commits": 4,
+    "rework_span_h": 0.09
+   },
+   "PILOT-NET-ORACLE": {
+    "branch_created": "2026-11-04T02:08:34-03:00",
+    "first_delivery": "2026-11-04T03:24:26-03:00",
+    "last_commit": "2026-11-04T10:54:10-03:00",
+    "measured_h": 1.26,
+    "module": "PILOT-NET-ORACLE",
+    "n_commits": 6,
+    "rework_span_h": 7.5
+   },
+   "PILOT-STO-E2E": {
+    "branch_created": "2026-11-04T09:11:43-03:00",
+    "first_delivery": "2026-11-04T11:53:43-03:00",
+    "last_commit": "2026-11-04T11:55:01-03:00",
+    "measured_h": 2.7,
+    "module": "PILOT-STO-E2E",
+    "n_commits": 7,
+    "rework_span_h": 0.02
+   },
+   "PILOT-STO-GLOSS": {
+    "branch_created": "2026-11-03T22:00:39-03:00",
+    "first_delivery": "2026-11-04T08:20:18-03:00",
+    "last_commit": "2026-11-04T11:39:36-03:00",
+    "measured_h": 10.33,
+    "module": "PILOT-STO-GLOSS",
+    "n_commits": 7,
+    "rework_span_h": 3.32
+   },
+   "PILOT-STO-MAP": {
+    "branch_created": "2026-11-04T08:37:13-03:00",
+    "first_delivery": "2026-11-04T11:48:01-03:00",
+    "last_commit": "2026-11-04T11:51:18-03:00",
+    "measured_h": 3.18,
+    "module": "PILOT-STO-MAP",
+    "n_commits": 9,
+    "rework_span_h": 0.05
+   },
+   "PILOT-STO-ORACLE": {
+    "branch_created": "2026-11-03T22:02:59-03:00",
+    "first_delivery": "2026-11-04T02:44:37-03:00",
+    "last_commit": "2026-11-04T10:53:43-03:00",
+    "measured_h": 4.69,
+    "module": "PILOT-STO-ORACLE",
+    "n_commits": 6,
+    "rework_span_h": 8.15
+   }
+  },
+  "scale_modules": [
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 6.0,
+    "effort_h_recalibrated": 6.0,
+    "factor": null,
+    "module": "ABLATION"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "E2E",
+    "effort_h_plan": 5.0,
+    "effort_h_recalibrated": 2.04,
+    "factor": 0.4083,
+    "module": "ABOX-LIFT"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 4.0,
+    "effort_h_recalibrated": 4.0,
+    "factor": null,
+    "module": "ADVREVIEW"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 4.0,
+    "effort_h_recalibrated": 4.0,
+    "factor": null,
+    "module": "ARBITER"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 5.0,
+    "effort_h_recalibrated": 5.0,
+    "factor": null,
+    "module": "ARTIFACT"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 3.0,
+    "factor": null,
+    "module": "ASYM"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 5.0,
+    "effort_h_recalibrated": 5.0,
+    "factor": null,
+    "module": "AXIOMS"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 6.0,
+    "effort_h_recalibrated": 6.0,
+    "factor": null,
+    "module": "BASELINE-ADAPT"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 5.0,
+    "effort_h_recalibrated": 5.0,
+    "factor": null,
+    "module": "BENCH-CONTRACT"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 5.0,
+    "effort_h_recalibrated": 5.0,
+    "factor": null,
+    "module": "CAND"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 4.0,
+    "effort_h_recalibrated": 4.0,
+    "factor": null,
+    "module": "CATEG"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 6.0,
+    "effort_h_recalibrated": 6.0,
+    "factor": null,
+    "module": "CLASS"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 5.0,
+    "effort_h_recalibrated": 5.0,
+    "factor": null,
+    "module": "CQ"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 3.0,
+    "factor": null,
+    "module": "CQRUN"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "GLOSS",
+    "effort_h_plan": 6.0,
+    "effort_h_recalibrated": 21.87,
+    "factor": 3.645,
+    "module": "DECOMPOSE"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 5.0,
+    "effort_h_recalibrated": 5.0,
+    "factor": null,
+    "module": "DEP-AWS-A"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 6.0,
+    "effort_h_recalibrated": 6.0,
+    "factor": null,
+    "module": "DEP-AWS-B"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 5.0,
+    "effort_h_recalibrated": 5.0,
+    "factor": null,
+    "module": "DEP-AZURE-A"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 6.0,
+    "effort_h_recalibrated": 6.0,
+    "factor": null,
+    "module": "DEP-AZURE-B"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 5.0,
+    "effort_h_recalibrated": 5.0,
+    "factor": null,
+    "module": "DEP-GCP-A"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 6.0,
+    "effort_h_recalibrated": 6.0,
+    "factor": null,
+    "module": "DEP-GCP-B"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 5.0,
+    "effort_h_recalibrated": 5.0,
+    "factor": null,
+    "module": "DEP-OCI-A"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 6.0,
+    "effort_h_recalibrated": 6.0,
+    "factor": null,
+    "module": "DEP-OCI-B"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 4.0,
+    "effort_h_recalibrated": 4.0,
+    "factor": null,
+    "module": "DEPSAMPLE"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 3.0,
+    "factor": null,
+    "module": "DISPUTE-SAMPLE"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 6.0,
+    "effort_h_recalibrated": 6.0,
+    "factor": null,
+    "module": "DOMAIN-CONTRACTS"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 5.0,
+    "effort_h_recalibrated": 5.0,
+    "factor": null,
+    "module": "DRIFTMAP"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 5.0,
+    "effort_h_recalibrated": 5.0,
+    "factor": null,
+    "module": "GLOSSARY-AUDIT"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "GLOSS",
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 10.94,
+    "factor": 3.645,
+    "module": "GLOSSARY-CMP"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "GLOSS",
+    "effort_h_plan": 4.0,
+    "effort_h_recalibrated": 14.58,
+    "factor": 3.645,
+    "module": "GLOSSARY-DB"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 4.0,
+    "effort_h_recalibrated": 4.0,
+    "factor": null,
+    "module": "GLOSSARY-FREEZE"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "GLOSS",
+    "effort_h_plan": 4.0,
+    "effort_h_recalibrated": 14.58,
+    "factor": 3.645,
+    "module": "GLOSSARY-NET"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "GLOSS",
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 10.94,
+    "factor": 3.645,
+    "module": "GLOSSARY-OPS"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "GLOSS",
+    "effort_h_plan": 4.0,
+    "effort_h_recalibrated": 14.58,
+    "factor": 3.645,
+    "module": "GLOSSARY-SEC"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "GLOSS",
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 10.94,
+    "factor": 3.645,
+    "module": "GLOSSARY-STO"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 4.0,
+    "effort_h_recalibrated": 4.0,
+    "factor": null,
+    "module": "GOLD-AUDIT"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 3.0,
+    "factor": null,
+    "module": "GOLDEVAL"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 6.0,
+    "effort_h_recalibrated": 6.0,
+    "factor": null,
+    "module": "GRAIN-REPRO"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "E2E",
+    "effort_h_plan": 6.0,
+    "effort_h_recalibrated": 2.45,
+    "factor": 0.4083,
+    "module": "GRAPH-LOWERING"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 6.0,
+    "effort_h_recalibrated": 6.0,
+    "factor": null,
+    "module": "HEAD2HEAD"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 6.0,
+    "effort_h_recalibrated": 6.0,
+    "factor": null,
+    "module": "HOLDOUT"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 3.0,
+    "factor": null,
+    "module": "JUDGE"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 6.0,
+    "effort_h_recalibrated": 6.0,
+    "factor": null,
+    "module": "KALININ-RECON"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "MAP",
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 2.5,
+    "factor": 0.8333,
+    "module": "MAP-AWSAZ-CMP"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "MAP",
+    "effort_h_plan": 4.0,
+    "effort_h_recalibrated": 3.33,
+    "factor": 0.8333,
+    "module": "MAP-AWSAZ-DB"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "MAP",
+    "effort_h_plan": 4.0,
+    "effort_h_recalibrated": 3.33,
+    "factor": 0.8333,
+    "module": "MAP-AWSAZ-NET"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "MAP",
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 2.5,
+    "factor": 0.8333,
+    "module": "MAP-AWSAZ-OPS"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "MAP",
+    "effort_h_plan": 4.0,
+    "effort_h_recalibrated": 3.33,
+    "factor": 0.8333,
+    "module": "MAP-AWSAZ-SEC"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "MAP",
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 2.5,
+    "factor": 0.8333,
+    "module": "MAP-AWSAZ-STO"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "MAP",
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 2.5,
+    "factor": 0.8333,
+    "module": "MAP-AWSGCP-CMP"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "MAP",
+    "effort_h_plan": 4.0,
+    "effort_h_recalibrated": 3.33,
+    "factor": 0.8333,
+    "module": "MAP-AWSGCP-DB"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "MAP",
+    "effort_h_plan": 4.0,
+    "effort_h_recalibrated": 3.33,
+    "factor": 0.8333,
+    "module": "MAP-AWSGCP-NET"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "MAP",
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 2.5,
+    "factor": 0.8333,
+    "module": "MAP-AWSGCP-OPS"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "MAP",
+    "effort_h_plan": 4.0,
+    "effort_h_recalibrated": 3.33,
+    "factor": 0.8333,
+    "module": "MAP-AWSGCP-SEC"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "MAP",
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 2.5,
+    "factor": 0.8333,
+    "module": "MAP-AWSGCP-STO"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "MAP",
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 2.5,
+    "factor": 0.8333,
+    "module": "MAP-AWSOCI-CMP"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "MAP",
+    "effort_h_plan": 4.0,
+    "effort_h_recalibrated": 3.33,
+    "factor": 0.8333,
+    "module": "MAP-AWSOCI-DB"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "MAP",
+    "effort_h_plan": 4.0,
+    "effort_h_recalibrated": 3.33,
+    "factor": 0.8333,
+    "module": "MAP-AWSOCI-NET"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "MAP",
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 2.5,
+    "factor": 0.8333,
+    "module": "MAP-AWSOCI-OPS"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "MAP",
+    "effort_h_plan": 4.0,
+    "effort_h_recalibrated": 3.33,
+    "factor": 0.8333,
+    "module": "MAP-AWSOCI-SEC"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "MAP",
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 2.5,
+    "factor": 0.8333,
+    "module": "MAP-AWSOCI-STO"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "MAP",
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 2.5,
+    "factor": 0.8333,
+    "module": "MAP-AZOCI-CMP"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "MAP",
+    "effort_h_plan": 4.0,
+    "effort_h_recalibrated": 3.33,
+    "factor": 0.8333,
+    "module": "MAP-AZOCI-DB"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "MAP",
+    "effort_h_plan": 4.0,
+    "effort_h_recalibrated": 3.33,
+    "factor": 0.8333,
+    "module": "MAP-AZOCI-NET"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "MAP",
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 2.5,
+    "factor": 0.8333,
+    "module": "MAP-AZOCI-OPS"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "MAP",
+    "effort_h_plan": 4.0,
+    "effort_h_recalibrated": 3.33,
+    "factor": 0.8333,
+    "module": "MAP-AZOCI-SEC"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "MAP",
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 2.5,
+    "factor": 0.8333,
+    "module": "MAP-AZOCI-STO"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "MAP",
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 2.5,
+    "factor": 0.8333,
+    "module": "MAP-GCPAZ-CMP"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "MAP",
+    "effort_h_plan": 4.0,
+    "effort_h_recalibrated": 3.33,
+    "factor": 0.8333,
+    "module": "MAP-GCPAZ-DB"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "MAP",
+    "effort_h_plan": 4.0,
+    "effort_h_recalibrated": 3.33,
+    "factor": 0.8333,
+    "module": "MAP-GCPAZ-NET"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "MAP",
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 2.5,
+    "factor": 0.8333,
+    "module": "MAP-GCPAZ-OPS"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "MAP",
+    "effort_h_plan": 4.0,
+    "effort_h_recalibrated": 3.33,
+    "factor": 0.8333,
+    "module": "MAP-GCPAZ-SEC"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "MAP",
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 2.5,
+    "factor": 0.8333,
+    "module": "MAP-GCPAZ-STO"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "MAP",
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 2.5,
+    "factor": 0.8333,
+    "module": "MAP-GCPOCI-CMP"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "MAP",
+    "effort_h_plan": 4.0,
+    "effort_h_recalibrated": 3.33,
+    "factor": 0.8333,
+    "module": "MAP-GCPOCI-DB"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "MAP",
+    "effort_h_plan": 4.0,
+    "effort_h_recalibrated": 3.33,
+    "factor": 0.8333,
+    "module": "MAP-GCPOCI-NET"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "MAP",
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 2.5,
+    "factor": 0.8333,
+    "module": "MAP-GCPOCI-OPS"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "MAP",
+    "effort_h_plan": 4.0,
+    "effort_h_recalibrated": 3.33,
+    "factor": 0.8333,
+    "module": "MAP-GCPOCI-SEC"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "MAP",
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 2.5,
+    "factor": 0.8333,
+    "module": "MAP-GCPOCI-STO"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 6.0,
+    "effort_h_recalibrated": 6.0,
+    "factor": null,
+    "module": "MATRIX"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 4.0,
+    "effort_h_recalibrated": 4.0,
+    "factor": null,
+    "module": "NAMING"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 3.0,
+    "factor": null,
+    "module": "NONEHUNT-AWS"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 3.0,
+    "factor": null,
+    "module": "NONEHUNT-AZURE"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 3.0,
+    "factor": null,
+    "module": "NONEHUNT-GCP"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 3.0,
+    "factor": null,
+    "module": "NONEHUNT-OCI"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 3.0,
+    "factor": null,
+    "module": "ONTQA"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "E2E",
+    "effort_h_plan": 6.0,
+    "effort_h_recalibrated": 2.45,
+    "factor": 0.4083,
+    "module": "OWL"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 5.0,
+    "effort_h_recalibrated": 5.0,
+    "factor": null,
+    "module": "PAIRWISE"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 4.0,
+    "effort_h_recalibrated": 4.0,
+    "factor": null,
+    "module": "PAPER-DISC"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 5.0,
+    "effort_h_recalibrated": 5.0,
+    "factor": null,
+    "module": "PAPER-FRONT"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 5.0,
+    "effort_h_recalibrated": 5.0,
+    "factor": null,
+    "module": "PAPER-RESULTS"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 3.0,
+    "factor": null,
+    "module": "PROBE-AWS"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 3.0,
+    "factor": null,
+    "module": "PROBE-AZURE"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 3.0,
+    "factor": null,
+    "module": "PROBE-GCP"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 3.0,
+    "factor": null,
+    "module": "PROBE-JOIN"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 3.0,
+    "factor": null,
+    "module": "PROBE-OCI"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 6.0,
+    "effort_h_recalibrated": 6.0,
+    "factor": null,
+    "module": "PROP"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "E2E",
+    "effort_h_plan": 6.0,
+    "effort_h_recalibrated": 2.45,
+    "factor": 0.4083,
+    "module": "REASONING-PROOF"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 3.0,
+    "factor": null,
+    "module": "RECONCILE"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 4.0,
+    "effort_h_recalibrated": 4.0,
+    "factor": null,
+    "module": "RELEASE-CORRECTED"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 4.0,
+    "effort_h_recalibrated": 4.0,
+    "factor": null,
+    "module": "RELIAB"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 6.0,
+    "effort_h_recalibrated": 6.0,
+    "factor": null,
+    "module": "REPAIR"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 4.0,
+    "effort_h_recalibrated": 4.0,
+    "factor": null,
+    "module": "REUSE-MAINTENANCE"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 2.0,
+    "effort_h_recalibrated": 2.0,
+    "factor": null,
+    "module": "SCHEMA-POST"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 5.0,
+    "effort_h_recalibrated": 5.0,
+    "factor": null,
+    "module": "SEMANTIC-REGRESSION"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 4.0,
+    "effort_h_recalibrated": 4.0,
+    "factor": null,
+    "module": "SHACL"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 1.5,
+    "effort_h_recalibrated": 1.5,
+    "factor": null,
+    "module": "SMOKE-AWS"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 1.5,
+    "effort_h_recalibrated": 1.5,
+    "factor": null,
+    "module": "SMOKE-AZURE"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 1.5,
+    "effort_h_recalibrated": 1.5,
+    "factor": null,
+    "module": "SMOKE-GCP"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 1.5,
+    "effort_h_recalibrated": 1.5,
+    "factor": null,
+    "module": "SMOKE-OCI"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 4.0,
+    "effort_h_recalibrated": 4.0,
+    "factor": null,
+    "module": "SPLIT"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 6.0,
+    "effort_h_recalibrated": 6.0,
+    "factor": null,
+    "module": "STATS"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 3.0,
+    "effort_h_recalibrated": 3.0,
+    "factor": null,
+    "module": "STATS-SUPP"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 5.0,
+    "effort_h_recalibrated": 5.0,
+    "factor": null,
+    "module": "TOOL-ACCURACY"
+   },
+   {
+    "basis": "razão medida da classe",
+    "class": "E2E",
+    "effort_h_plan": 6.0,
+    "effort_h_recalibrated": 2.45,
+    "factor": 0.4083,
+    "module": "TRANSLATOR"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 5.0,
+    "effort_h_recalibrated": 5.0,
+    "factor": null,
+    "module": "UNIVERSE"
+   },
+   {
+    "basis": "sem análogo medido nos pilotos: esforço do plano",
+    "class": null,
+    "effort_h_plan": 1.0,
+    "effort_h_recalibrated": 1.0,
+    "factor": null,
+    "module": "UNSEAL"
+   }
+  ],
+  "schedule": {
+   "concurrency_cap": 12,
+   "merged_modules": 57,
+   "plan": {
+    "critical_path": [
+     "PILOT-EXIT",
+     "DECOMPOSE",
+     "GRAIN-REPRO",
+     "DOMAIN-CONTRACTS",
+     "UNIVERSE",
+     "GLOSSARY-SEC",
+     "GLOSSARY-AUDIT",
+     "GLOSSARY-FREEZE",
+     "CAND",
+     "MAP-GCPOCI-SEC",
+     "ARBITER",
+     "RECONCILE",
+     "CLASS",
+     "PROP",
+     "NAMING",
+     "OWL",
+     "AXIOMS",
+     "ONTQA",
+     "REPAIR",
+     "SEMANTIC-REGRESSION",
+     "ABOX-LIFT",
+     "GRAPH-LOWERING",
+     "TRANSLATOR",
+     "REASONING-PROOF",
+     "DEPSAMPLE",
+     "DEP-OCI-A",
+     "PROBE-OCI",
+     "PROBE-JOIN",
+     "JUDGE",
+     "MATRIX",
+     "CATEG",
+     "STATS",
+     "PAPER-RESULTS",
+     "PAPER-DISC",
+     "ADVREVIEW",
+     "RELEASE-CORRECTED"
+    ],
+    "critical_path_h": 242.0,
+    "makespan_h": 249.0
+   },
+   "recalibrated": {
+    "critical_path": [
+     "PILOT-EXIT",
+     "DECOMPOSE",
+     "GRAIN-REPRO",
+     "DOMAIN-CONTRACTS",
+     "UNIVERSE",
+     "GLOSSARY-SEC",
+     "GLOSSARY-AUDIT",
+     "GLOSSARY-FREEZE",
+     "CAND",
+     "MAP-GCPOCI-SEC",
+     "ARBITER",
+     "RECONCILE",
+     "CLASS",
+     "PROP",
+     "NAMING",
+     "OWL",
+     "AXIOMS",
+     "ONTQA",
+     "REPAIR",
+     "SEMANTIC-REGRESSION",
+     "ABOX-LIFT",
+     "GRAPH-LOWERING",
+     "PAIRWISE",
+     "DEPSAMPLE",
+     "DEP-OCI-A",
+     "PROBE-OCI",
+     "PROBE-JOIN",
+     "JUDGE",
+     "MATRIX",
+     "CATEG",
+     "STATS",
+     "PAPER-RESULTS",
+     "PAPER-DISC",
+     "ADVREVIEW",
+     "RELEASE-CORRECTED"
+    ],
+    "critical_path_h": 250.72,
+    "makespan_h": 256.55
+   }
+  },
+  "schedule_recomputed": true,
+  "steps_without_effort": 0
+ },
+ "generated_at": "2026-11-04T11:55:01-03:00",
+ "metrics": [
+  {
+   "axis": "operational",
+   "frame": {
+    "description": "passos registrados em results/PILOT-*-E2E/effort.json"
+   },
+   "inclusion": {
+    "rule_id": "INC-EFFORT-01",
+    "text": "todo passo listado pelo E2E"
+   },
+   "joint_uncertainty": {
+    "level": 0.95,
+    "method": "wilson"
+   },
+   "metric_id": "M-PILOT-EFFORT-MEASURED",
+   "name": "fração dos passos do E2E com esforço medido",
+   "operational_coverage": {
+    "est": 1.0,
+    "lower": 0.8454,
+    "n": 21,
+    "n_known": 21,
+    "upper": 1.0
+   },
+   "quantifier": "observed_fraction",
+   "reading": "complete_unit",
+   "weights": {
+    "scheme": "uniform"
+   }
+  }
+ ],
+ "module": "PILOT-EXIT",
+ "notes": "E7 do PILOT-EXIT: esforço medido, razão por classe, esforço recalibrado e cronograma refeito",
+ "schema": "bo.result/1"
+}

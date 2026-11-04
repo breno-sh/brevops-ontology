@@ -1,0 +1,169 @@
+{
+ "attempt": 1,
+ "criteria": {
+  "path": "$BO_REPO/prereg/pilot_exit.yaml",
+  "sha256": "17132a424cf68a222c3534b154949d3dabb00973cdaf120ea584542301dc4f09"
+ },
+ "decryption": {
+  "command": "openssl cms -decrypt -inform PEM -inkey ~/brevops-keys/seal_private.pem -recip ~/brevops-keys/seal_cert.pem",
+  "where": "VM Oracle do Breno (D15), pipe ssh; chave privada nunca saiu de lá"
+ },
+ "evidence": {
+  "net": {
+   "path": "$BO_DATA/PILOT-EXIT/heldout/net/evidence.json",
+   "sha256": "961d77ddd52ed0101088c948d6d56cdf8ac9e8c0791f0d0ad4b09e3ebb7bbc69"
+  },
+  "sto": {
+   "path": "$BO_DATA/PILOT-EXIT/heldout/sto/evidence.json",
+   "sha256": "b8e54d2a3a057f3929b38912f1c10e3f449fdd46cfb952e52768d9f14a109364"
+  }
+ },
+ "finished_at": "2026-11-04T12:04:11-03:00",
+ "frozen_code": {
+  "net": {
+   "base_head": "559b0bd2be951863d627d9d1bfe2c0e6e938e8ef",
+   "code_sha256": "12f2fc0b898dd47d8d76b2a44cf767da650f2f713af25f3dba0d121c3674a191",
+   "delivery_at": "2026-11-04T11:24:12-03:00",
+   "delivery_commit": "76757dd77c12a8da168706ee7202285134c8525d",
+   "files": 29,
+   "match": true,
+   "module": "PILOT-NET-E2E",
+   "n_delivery_commits": 14,
+   "problems": [],
+   "recorded": {
+    "manifest_files": 0,
+    "params": []
+   },
+   "slice": "net"
+  },
+  "sto": {
+   "base_head": "559b0bd2be951863d627d9d1bfe2c0e6e938e8ef",
+   "code_sha256": "b85f46ff14a5774737f32f9396ddadfd9d0497a42a8b399cbcc5dd0b90f07862",
+   "delivery_at": "2026-11-04T11:55:01-03:00",
+   "delivery_commit": "559b0bd2be951863d627d9d1bfe2c0e6e938e8ef",
+   "files": 28,
+   "match": true,
+   "module": "PILOT-STO-E2E",
+   "n_delivery_commits": 7,
+   "problems": [],
+   "recorded": {
+    "manifest_files": 0,
+    "params": []
+   },
+   "slice": "sto"
+  }
+ },
+ "isolation": "cópia congelada em $BO_TMP/run; BO_DATA sobreposto; sandbox-exec sem escrita fora de $BO_TMP e sem rede; árvore apagada no fim (texto claro nunca gravado fora dela)",
+ "key": "cb23e600169a572cd4d465adf091fffb281a127d1c7f5168714400357dc6ad7c",
+ "kind": "attempt",
+ "module": "PILOT-EXIT",
+ "runs": {
+  "net": {
+   "commands": [
+    {
+     "cmd": "python -I -m bo.pilot.grain_check --slice net --fixtures /Users/breno/doutorado/brevops-data/tmp/PILOT-EXIT/run/net/repo/pilot/net/fixtures_calib --out /Users/breno/doutorado/brevops-data/tmp/PILOT-EXIT/run/net/out_grain",
+     "i": 1,
+     "rc": 1,
+     "seconds": 4.0
+    },
+    {
+     "cmd": "python -I -m bo.pilot.run --slice net --controls c1_table,c2_taxonomy,c3_full --fixtures /Users/breno/doutorado/brevops-data/tmp/PILOT-EXIT/run/net/repo/pilot/net/fixtures_calib --out /Users/breno/doutorado/brevops-data/tmp/PILOT-EXIT/run/net/out",
+     "i": 2,
+     "rc": 0,
+     "seconds": 4.2
+    },
+    {
+     "cmd": "python -I -m bo.pilot.oracle_eval --slice net --set calib --fixtures /Users/breno/doutorado/brevops-data/tmp/PILOT-EXIT/run/net/repo/pilot/net/fixtures_calib --out /Users/breno/doutorado/brevops-data/tmp/PILOT-EXIT/run/net/out",
+     "i": 3,
+     "rc": 0,
+     "seconds": 1.2
+    },
+    {
+     "cmd": "python -I -m bo.lower.no_silent_insert --slice net --fixtures /Users/breno/doutorado/brevops-data/tmp/PILOT-EXIT/run/net/repo/pilot/net/fixtures_calib --out /Users/breno/doutorado/brevops-data/tmp/PILOT-EXIT/run/net/out",
+     "i": 4,
+     "rc": 0,
+     "seconds": 0.2
+    },
+    {
+     "cmd": "python -I -m bo.pilot.tf_validate --slice net --plugin-cache $BO_DATA --fixtures /Users/breno/doutorado/brevops-data/tmp/PILOT-EXIT/run/net/repo/pilot/net/fixtures_calib --out /Users/breno/doutorado/brevops-data/tmp/PILOT-EXIT/run/net/out",
+     "i": 5,
+     "rc": 0,
+     "seconds": 3.0
+    }
+   ],
+   "materialized": {
+    "fixtures": 34,
+    "oracle_manifest_lines": 60,
+    "translations": 24
+   },
+   "module": "PILOT-NET-E2E",
+   "seconds": 16.8
+  },
+  "sto": {
+   "commands": [
+    {
+     "cmd": "python -I -m bo.pilot.grain_check --slice sto",
+     "i": 1,
+     "rc": 0,
+     "seconds": 3.6
+    },
+    {
+     "cmd": "python -I -m bo.pilot.run --slice sto --controls c1_table,c2_taxonomy,c3_full --fixtures calib",
+     "i": 2,
+     "rc": 0,
+     "seconds": 4.7
+    },
+    {
+     "cmd": "python -I -m bo.pilot.oracle_eval --slice sto --set calib",
+     "i": 3,
+     "rc": 0,
+     "seconds": 3.7
+    },
+    {
+     "cmd": "python -I -m bo.lower.no_silent_insert --slice sto",
+     "i": 4,
+     "rc": 0,
+     "seconds": 7.5
+    },
+    {
+     "cmd": "python -I -m bo.pilot.tf_validate --slice sto --plugin-cache $BO_DATA",
+     "i": 5,
+     "rc": 0,
+     "seconds": 19.9
+    },
+    {
+     "cmd": "python -I /Users/breno/doutorado/brevops-data/tmp/PILOT-EXIT/run/sto/out/sto_probe.py /Users/breno/doutorado/brevops-data/tmp/PILOT-EXIT/run/sto/out/sto_probe.json",
+     "i": 6,
+     "rc": 0,
+     "seconds": 3.7
+    }
+   ],
+   "materialized": {
+    "direction_entries": 181,
+    "fixtures": 123,
+    "oracle_manifest_lines": 305
+   },
+   "module": "PILOT-STO-E2E",
+   "seconds": 50.4
+  }
+ },
+ "schema": "bo.pilot_exit.heldout_run/1",
+ "seal": {
+  "net": {
+   "ciphertext_sha256": "99f53463cbeaeb38b5206344bef56b467c362d359ba85b6c5da58f7190816c29",
+   "envelope": "$BO_DATA/PILOT-NET-ORACLE/sealed/retained.cms.pem",
+   "n_items": 58,
+   "plaintext_bytes": 266240,
+   "plaintext_sha256": "262eb5a53c8f38140114c39b07b9a07124ac51c86443f679ca1f5e044bafbc7d"
+  },
+  "sto": {
+   "ciphertext_sha256": "572f133361bc21d79ae225ba98c42d3f7fa5eba0b6a472c6292264ea735a8ce0",
+   "envelope": "$BO_DATA/PILOT-STO-ORACLE/sealed/heldout.cms.pem",
+   "n_items": 304,
+   "plaintext_bytes": 810495,
+   "plaintext_sha256": "cb9d9d1187cfe78e5db722b80dc275dfe2b92749c94cdc334395631c2e98fc3b"
+  }
+ },
+ "started_at": "2026-11-04T12:03:03-03:00",
+ "status": "COMPLETE"
+}

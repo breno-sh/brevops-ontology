@@ -64,10 +64,10 @@ def profile(write_root: Path, home: Path) -> str:
 
 
 def run_commands(cmds: list[str], frozen_repo: Path, data_root: Path, mid: str, logdir: Path,
-                 timeout: int = 1500, sandbox: bool = True) -> list[dict]:
+                 timeout: int = 1500, sandbox: bool = True, tmp_root: Path | None = None) -> list[dict]:
     """Roda cada comando; grava stdout/stderr em logdir (fica em $BO_TMP, nunca em results/)."""
     # BO_TMP curto: o socket unix do provider Terraform não cabe nos 104 caracteres do macOS com caminho longo
-    tmpd = C.tmp() / "t"
+    tmpd = tmp_root or C.tmp() / "t"
     if tmpd.exists():
         shutil.rmtree(tmpd)
     tmpd.mkdir(parents=True)
