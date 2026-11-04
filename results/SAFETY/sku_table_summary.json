@@ -24,7 +24,7 @@
   "policy": "src/bo/safety/sku_policy.yaml",
   "policy_sha256": "d554f4d3ed7b6b08f9bd0436b7cc1bc6a825c858174a2e7bf565ef7ae0f7a415",
   "service_evidence": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl",
-  "service_evidence_sha256": "cc5260d3ed4a8db4ddbf50f429b9d7d4060f67a43593b127e01e571a49979074"
+  "service_evidence_sha256": "6bc9f724ca4629f9dd73c3921a39919e88fed5f4f3b290a13655ec0b92b05772"
  },
  "providers": {
   "aws": {
