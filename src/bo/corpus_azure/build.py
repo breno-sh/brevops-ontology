@@ -178,7 +178,8 @@ def summarize(tally: counting.Tally, read: dict, usage: list, atom_tot: list, ty
             "explicit_null": "literal null resolve o átomo mas não o configura (Terraform: igual a omitir)",
             "class": "regra comum dos 4 CORPUS (bo.corpus_oci.counting.term_class): withheld se contém termo "
                      "retido; symbolic se depende de variável, recurso, data source, local, saída de módulo, "
-                     "count/each, workspace ou função de arquivo, relógio, acaso ou de provedor; senão literal "
+                     "count/each, path.*, workspace ou função de arquivo, relógio, acaso ou de provedor; senão "
+                     "literal "
                      "(cadeia simbolizada só por privacidade continua literal); várias ocorrências: "
                      "withheld > symbolic > literal",
             "type_row": "linha sem atom_id por (repo, tipo): n_resources = recursos do tipo; n_set = recursos "
