@@ -12,7 +12,7 @@
  },
  "module": "GRAIN",
  "ok": true,
- "rules_version": "0.1.3",
+ "rules_version": "0.1.4",
  "schema": "bo.grain.unknown_exit/1",
  "stats": {
   "became_unknown": 587,
@@ -23,5 +23,5 @@
   "worlds": 9
  },
  "violations": [],
- "written_at": "2026-11-04T08:30:00-03:00"
+ "written_at": "2026-11-04T09:15:00-03:00"
 }

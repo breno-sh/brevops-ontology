@@ -40,8 +40,9 @@ TABLE = [
      "algum campo da chave é referência (T02, T21), senão independent; optional não entra"),
     ("identity", "shared_identity_key", "R-GRAIN-T02",
      "se o próprio candidato tem ciclo de vida consolidado self, os campos são chave própria; senão são "
-     "referência ao objeto compartilhado: alvo = o único par (peers) com ciclo de vida self; nenhum ou mais de um: "
-     "alvo não resolvido"),
+     "referência ao objeto compartilhado: alvo = o único par (peers) com ciclo de vida self; com mais de um, "
+     "desempata o parent_resource dos fatos de API do próprio candidato contra a ponte de cada par; nenhum ou mais "
+     "de um: alvo não resolvido"),
     ("identity", "id_template", "R-GRAIN-T03",
      "sem tradução: formato do id Terraform, pode incluir atributos opcionais; não é chave natural"),
     ("identity", "api_resource_bridge", "R-GRAIN-T04",
@@ -68,6 +69,15 @@ TABLE = [
     ("(qualquer)", "(sem aspect, layer terraform)", "R-GRAIN-T98",
      "lifecycle_controller e effective_scope: UNKNOWN (create/delete do provider, não o objeto na API); owner "
      "de tipo de topo: UNKNOWN (onde o código escreve); owner de bloco aninhado com kind parent: aceito"),
+    ("api_resource", "(ponte + ciclo de vida do pai)", "R-GRAIN-T49",
+     "objeto de API ligado pela ponte (T04) cujo ciclo de vida consolidado é parent não tem vida própria na API: "
+     "a ligação vira {status: aspect} com o rótulo da ponte; a alegação de aspecto sem rótulo do suspend é "
+     "absorvida (não há conflito resource × aspect)"),
+    ("(ciclo de vida, dono, alcance)", "(via implícito)", "R-GRAIN-T50",
+     "num tipo de topo, alegação de kind parent/container sem via e alegação do mesmo kind com um único via "
+     "explícito, de outra fonte, dizem o mesmo: a implícita recebe o via explícito"),
+    ("api_bridge", "spec_bridge_candidates", "R-GRAIN-T48",
+     "sem tradução: a spec casa com mais de um tipo e o desempate não dá este tipo; UNKNOWN com o motivo"),
     ("identity", "api_reference", "R-GRAIN-T05", "sem tradução: página de referência da API, informativa"),
     ("identity", "cardinality", "R-GRAIN-T06",
      "sem tradução: singular por escopo do provedor; o escopo não é unidade da decomposição"),
@@ -168,6 +178,7 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
         return v.get("aspect") if isinstance(v, dict) else None
 
     def unknown(cid, fld, r, why):
+        fld = "api_resource" if fld == "api_bridge" else fld
         reasons[cid].append(f"{fld}: {why}")
         put(cid, fld, {"status": "unknown", "source": _src(r, RULE_OF.get((r["fact_kind"], aspect_of(r)),
                                                                           "R-GRAIN-UNK"), why)})
@@ -350,6 +361,14 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
         if lc_self(cid):
             continue                                          # tem ciclo de vida próprio: a chave é própria
         roots = [p for p in sorted(set(peers)) if lc_self(p)]
+        # desempate pela spec (T02b): o fato de API do próprio candidato nomeia o recurso pai (parent_resource);
+        # vale o par cuja ponte (T04) liga a esse recurso
+        parents = {c.get("parent_resource") for fld_ in ("lifecycle_controller", "owner")
+                   for c in out.get(cid, {}).get(fld_, []) if c.get("parent_resource")}
+        if len(roots) > 1 and len(parents) == 1:
+            pr = next(iter(parents))
+            roots = [p for p in roots if any(c.get("resource") == pr and c.get("status") == "resource"
+                                             for c in out.get(p, {}).get("api_resource", []))]
         tgt = roots[0] if len(roots) == 1 else None
         for f in fields:
             if f in typed.get(cid, {}):
@@ -397,6 +416,41 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
             rf = [f for f in key_refs.get(cid, {}) if not f.startswith("$")]
             put(cid, "effective_scope", {"kind": "parent", "via": rf[0], "source": _src(r, rule)} if len(rf) == 1
                 else {"kind": "self", "source": _src(r, rule)})
+    # T50: via implícito (ausente) e via explícito do mesmo kind, de fontes diferentes, dizem a mesma coisa quando
+    # só há um via explícito: o implícito recebe o explícito (sem isso, suspend sem via contradiria a spec)
+    for cid, ent in out.items():
+        for fld_ in ("lifecycle_controller", "owner", "effective_scope"):
+            cl = ent.get(fld_, [])
+            for kind in ("parent", "container"):
+                explicit = {tuple(c["via"]) if isinstance(c.get("via"), list) else (c["via"],)
+                            for c in cl if c.get("kind") == kind and c.get("via") not in (None, [], "$parent")}
+                if len(explicit) != 1:
+                    continue
+                v = list(next(iter(explicit)))
+                for c in cl:
+                    if c.get("kind") == kind and c.get("via") in (None, []) and "." not in cid:
+                        c["via"] = v if len(v) > 1 else v[0]
+    # T49: objeto de API ligado pela ponte cujo ciclo de vida consolidado é o pai não tem vida própria na API:
+    # é aspecto do pai. A ponte dá rótulo/serviço/recurso e o status vira aspect (uma alegação só, sem conflito
+    # com a de suspend, que não tem rótulo)
+    for cid, ent in out.items():
+        lc = consolidate("lifecycle_controller", ent.get("lifecycle_controller", []))
+        if not (lc.known and lc.value["kind"] == "parent"):
+            continue
+        apis = ent.get("api_resource", [])
+        bridged = [c for c in apis if c.get("status") == "resource" and c.get("label")]
+        if not bridged:
+            continue
+        keep = []
+        for c in apis:
+            if c.get("status") == "aspect" and not c.get("label"):
+                continue                                          # o suspend sem rótulo é absorvido
+            if c in bridged:
+                c = dict(c, status="aspect")
+                c["source"] = dict(c["source"], note=c["source"].get("note", "") + " (T49: ciclo de vida do pai)")
+            keep.append(c)
+        ent["api_resource"] = keep
+        reasons[cid].append("api_resource: objeto da ponte com ciclo de vida do pai: aspecto (T49)")
     # T09: bloco embutido herda a evidência da camada de API do gêmeo; a referência do gêmeo ao tipo do bloco
     # vira o pai estrutural ($parent)
     for cid, (r, twin) in sorted(twins.items()):

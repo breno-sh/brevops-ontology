@@ -36,7 +36,7 @@ from . import schema as S
 from .common import data_dir, dump_json, dump_jsonl, now, repo, results_dir, rules_path, sha256_file, stamp
 from .evidence import FixtureAdapter
 
-AUTHORED_AT = "2026-11-04T08:30:00-03:00"
+AUTHORED_AT = "2026-11-04T09:15:00-03:00"
 
 
 def _strip(rep: dict) -> dict:
@@ -408,6 +408,13 @@ vida preso à instância, G1 e G2 aceitam a evidência, e trocar a ordem troca B
 referência <code>by_name</code>; sem ela, o grafo embutido perde relações que o separado tem.</li>
 <li>Emenda 0.1.1 (CC-1): a primeira versão lia uma convenção que o SERVICE-EVIDENCE nunca gravou; os testes
 sintéticos usavam a mesma convenção e não pegaram. Entraram o adaptador por aspecto e testes com o arquivo real.</li>
+<li>Emenda 0.1.4 (CC-8): com os fatos da spec (R-BRIDGE-SPEC, R-LIFE-SPEC, R-LIFE-SPEC-PARENT, R-OWN-SPEC, camada de
+API) o contêiner da AWS decide (ENTITY) e o bloqueio de acesso público separado decide FACET dele. Três defeitos do
+adaptador apareceram só com esse dado: a ponte (status resource) contradizia o suspend (status aspect) — T49; o
+suspend sem via contradizia a spec com via bucket — T50; e a chave compartilhada tinha duas raízes com ciclo de vida
+próprio — o desempate pelo parent_resource da spec (T02). As 12 disputas spec × doc saem CONTRADICTORY, de
+propósito. As demais facetas separadas da AWS ficam UNKNOWN só por effective_scope (o alcance de API ainda não é
+publicado para elas).</li>
 <li>Emenda 0.1.3 (CC-1d, CC-1e): a herança do gêmeo testava <code>via in conjunto</code> antes de ver se via era
 lista (TypeError no azurerm). Fatos de API sem aspecto (R-OWN-API, R-LIFE-API, R-SCOPE-SELF com layer api) são
 consumidos; com layer terraform continuam recusados. Achado no caminho: com a referência tipada ao contêiner fora

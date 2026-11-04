@@ -102,7 +102,10 @@ def test_positive_control_decides_when_the_missing_facts_exist(records):
     v = top["aws_s3_bucket_versioning"]
     assert v["grain"] == "FACET" and v["identity_class"] == "BORROWED", v
     # e sem o fato de ciclo de vida do contêiner, volta a UNKNOWN (não há default)
-    rep2 = RD.run(slice_types=sl, records=list(records) + [e for e in extra if e["evidence_id"] != "SE-ctl-02"])
+    # (o SERVICE-EVIDENCE já publica o ciclo de vida de API do contêiner: tira-se esse fato também)
+    no_lc = [r for r in records if not (r.get("terraform_resource_type") == "aws_s3_bucket"
+                                        and r.get("fact_kind") == "lifecycle_controller")]
+    rep2 = RD.run(slice_types=sl, records=no_lc + [e for e in extra if e["evidence_id"] != "SE-ctl-02"])
     assert rep2["providers"]["aws"]["top_level"]["aws_s3_bucket"]["grain"] == "UNKNOWN"
 
 
@@ -111,8 +114,12 @@ def test_identity_scope_never_becomes_config_owner(records):
     recs = [r for r in records if r.get("provider") == "aws" and r.get("terraform_resource_type") == "aws_s3_bucket"]
     assert any((r.get("value") or {}).get("aspect") == "identity_scope" for r in recs if isinstance(r.get("value"),
                                                                                                     dict))
-    ev = C25Adapter(recs).evidence("aws_s3_bucket")
+    only_scope = [r for r in recs if r.get("fact_kind") == "owner" and isinstance(r.get("value"), dict)
+                  and r["value"].get("aspect") == "identity_scope"]
+    ev = C25Adapter(only_scope).evidence("aws_s3_bucket")
     assert ev.fact("owner").state != "KNOWN"
+    # e com a spec (R-OWN-SPEC, camada de API) o dono é o próprio contêiner
+    assert C25Adapter(recs).evidence("aws_s3_bucket").fact("owner").value["kind"] == "self"
 
 
 def test_suspend_destroy_effect_means_facet_of_parent():
@@ -185,3 +192,30 @@ def test_cc1e_attachment_scope():
     ev = ad.evidence("x_acl")
     assert ev.fact("effective_scope").value["kind"] == "self"
     assert ev.field_map["subnet_ids"]["ref"] is True
+
+
+def test_cc8_spec_disputes_are_contradictory(records):
+    """CC-8: as disputas spec × doc do SERVICE-EVIDENCE viram campo CONTRADITÓRIO (nem decisão, nem escolha)."""
+    import json as _j
+    from bo.grain.common import repo
+    p = repo() / "results" / "SERVICE-EVIDENCE" / "spec_disputes.json"
+    assert p.is_file(), p
+    disputes = _j.loads(p.read_text())["disputes"]
+    assert disputes
+    by = {}
+    for r in records:
+        by.setdefault((r.get("provider"), r.get("terraform_resource_type")), []).append(r)
+    for d in disputes:
+        fld = "api_resource" if d["fact"] == "api_bridge" else d["fact"]
+        ev = C25Adapter(by[(d["provider"], d["terraform_resource_type"])]).evidence(d["terraform_resource_type"])
+        assert ev.fact(fld).state == "CONTRADICTORY", d
+
+
+def test_cc8_s3_container_and_facet_from_spec(records):
+    """CC-8: com a spec, o contêiner da AWS é ENTITY e o bloqueio de acesso público separado é FACET dele."""
+    rep = RD.run(slice_types={"aws": RD.STO_SLICE["aws"]}, records=records)
+    top = rep["providers"]["aws"]["top_level"]
+    assert top["aws_s3_bucket"]["grain"] == "ENTITY"
+    assert top["aws_s3_bucket_public_access_block"]["grain"] == "FACET"
+    for c in ("aws_s3_bucket_versioning", "aws_s3_bucket_policy", "aws_s3_bucket_acl"):
+        assert top[c]["identity_class"] == "BORROWED", (c, top[c])     # ligado ao contêiner pela chave bucket
