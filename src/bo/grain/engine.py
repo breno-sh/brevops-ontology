@@ -277,7 +277,10 @@ def decide_node(n: Node, rs: R.RuleSet, decided: dict, bindings: dict) -> Decisi
                    "target": None if "effective_scope" in d.missing else ctx.scope_target}
         if ctx.owner_via_binding:
             d.notes.append("faceta com vários donos: fica no vínculo entre eles")
-        d.cascade = sorted({t for f, t in ident.refs.items() if f in ctx.namespace_fields})
+        # cascade_delete_by por namespace só com evidência de cascata do tipo de namespace (campo marcado cascade);
+        # namespace sem essa evidência continua namespace (G4-NS), sem a relação (emenda 0.1.11)
+        d.cascade = sorted({t for f, t in ident.refs.items() if f in ctx.namespace_fields
+                            and n.ev.field_map.get(f, {}).get("cascade")})
         if d.rule == "GRAIN-G2-CHILD" and ctx.path_parent and ctx.path_parent not in d.cascade:
             d.cascade = sorted(d.cascade + [ctx.path_parent])
         d.trace = trace

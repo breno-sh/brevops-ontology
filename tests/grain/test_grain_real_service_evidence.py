@@ -263,20 +263,31 @@ def test_t51_external_parent_grain_needed_only_when_rule_reads_it():
 
 def test_g4ns_real_azure_namespace_entity_with_cascade(records):
     """G4-NS (0.1.6): identidade qualificada pelo grupo de recursos (marca de namespace: owner/parent com
-    scope_kind resource_group) + ciclo de vida de API self = ENTITY; o grupo vira cascade_delete_by."""
-    rep = RD.run(slice_types={"azurerm": ["azurerm_network_security_group", "azurerm_storage_account"]},
-                 records=records)
-    res = rep["providers"]["azurerm"]["_res"]
-    units = {u["unit_id"]: u for u in S.to_c19(res)[0]}
-    for cid in ("azurerm_network_security_group", "azurerm_storage_account"):
-        d = res.decisions[cid]
-        assert d.grain == "ENTITY" and d.rule == "GRAIN-G4-NS", (cid, d.grain, d.rule, d.missing)
-        assert d.cascade == ["EXT:azurerm_resource_group"] and d.parent is None
-        assert d.owner["kind"] == "self" and d.lifecycle["kind"] == "self"
-        u = units[f"CU-azurerm-{cid}"]
-        assert any(e.get("ref") == "cascade_delete_by=CU-azurerm-azurerm_resource_group" for e in u["evidence"])
-    rels, errs = REL.relations(res, ["azurerm_network_security_group"])
-    assert not errs and any(h == "cascade_delete_by" for _, h, _ in rels)
+    scope_kind resource_group) + ciclo de vida de API self = ENTITY. Desde a 0.1.11, cascade_delete_by só com
+    evidência de cascata do TIPO de namespace (namespace_cascade ou destroy_effect cascade); sem ela, sem a relação.
+    O controle positivo acrescenta só esse fato (marcado como controle)."""
+    def run(recs):
+        rep = RD.run(slice_types={"azurerm": ["azurerm_network_security_group", "azurerm_storage_account"]},
+                     records=recs)
+        return rep["providers"]["azurerm"]["_res"]
+    has = any(r.get("terraform_resource_type") == "azurerm_resource_group" and isinstance(r.get("value"), dict)
+              and r["value"].get("aspect") in ("namespace_cascade", "destroy_effect") for r in records)
+    ctl = _fact("SE-ctl-casc", "azurerm", "azurerm_resource_group", "lifecycle_controller",
+                {"aspect": "namespace_cascade", "cascade": True, "rule": "R-CONTROLE"})
+    for recs, casc in ((records, has), (records + [ctl], True)):
+        res = run(recs)
+        units = {u["unit_id"]: u for u in S.to_c19(res)[0]}
+        for cid in ("azurerm_network_security_group", "azurerm_storage_account"):
+            d = res.decisions[cid]
+            assert d.grain == "ENTITY" and d.rule == "GRAIN-G4-NS", (cid, d.grain, d.rule, d.missing)
+            assert d.cascade == (["EXT:azurerm_resource_group"] if casc else []) and d.parent is None
+            assert d.owner["kind"] == "self" and d.lifecycle["kind"] == "self"
+            u = units[f"CU-azurerm-{cid}"]
+            assert any(e.get("ref") == "cascade_delete_by=CU-azurerm-azurerm_resource_group"
+                       for e in u["evidence"]) == casc
+        if casc:
+            rels, errs = REL.relations(res, ["azurerm_network_security_group"])
+            assert not errs and any(h == "cascade_delete_by" for _, h, _ in rels)
 
 
 def test_g4ns_without_namespace_mark_stays_unknown(records):

@@ -81,7 +81,7 @@ TABLE = [
      "explícito, de outra fonte, dizem o mesmo: a implícita recebe o via explícito"),
     ("(referência)", "(alvo fora da decomposição)", "R-GRAIN-T51",
      "referência tipada a tipo que não está entre os candidatos (ex. pai fora da fatia) continua referência: o "
-     "alvo vira CONTÊINER EXTERNO (grão EXTERNAL): resolve identidade, ciclo de vida, dono e alcance; só os guards "
+     "alvo vira CONTÊINER EXTERNO (nó de ponta EXTERNAL, não é grão): resolve identidade, ciclo de vida, dono e alcance; só os guards "
      "que exigem o grão do alvo (G1 pontas, G3 dono) falham, e aí o resultado é UNKNOWN"),
     ("owner", "parent (scope_kind resource_group | compartment)", "R-GRAIN-T52",
      "marca de NAMESPACE: a referência tipada ao contêiner (T21) é marcada namespace; qualifica o nome mas não "
@@ -130,17 +130,15 @@ TABLE = [
      "R-GRAIN-LISTELEM. Elemento literal ou simbólico não cria ligação (UNKNOWN sem ocorrência); fato do SE no "
      "atributo prevalece; sem o átomo citável, nada. A ponta FACET do vínculo é lida como a unidade dona da faceta"),
     ("identity", "item_identity", "R-GRAIN-T64",
-     "identidade do item da coleção (emenda 0.1.11). has_id false com lista substituída inteira ou duplicata aceita: "
-     "OBJETO-VALOR membro da coleção do pai; identity present within_parent anônima com chave = conteúdo ($content: "
-     "valores configurados do item, símbolos como símbolos); duplicata aceita = outro membro (ordinal entre os de "
-     "conteúdo igual, independente da posição); com a ponte para o campo-lista (T62), api_resource = carga útil "
-     "(item). has_id true: identidade própria (id_field ou id); requires_parent com parent_attribute: a referência "
-     "ao pai entra na chave e marca o pai de caminho (G2-CHILD)"),
-    ("(qualquer)", "(nível observed)", "R-GRAIN-OBS",
-     "OBSERVED (C25 1.4.0) entra com o nível na citação. Disputa: observada repetível (2+ repetições) e com controle "
-     "prevalece sobre doc publicada, derivação e interpretação do mesmo campo, se as observadas qualificadas "
-     "concordam; a disputa fica registrada (disputes e a citação vencida continua na evidência); sem repetição ou "
-     "controle, ou observadas divergentes: CONTRADICTORY"),
+     "identidade do item da coleção (emenda 0.1.11). has_id false: identity absent; com a ponte para o campo-lista "
+     "(T62), api_resource = carga útil do pai e a procedura T0 torna o item transparente: VALOR-LISTA DO DONO, sem "
+     "unidade própria (não há chave declarada; conteúdo não é chave). has_id true: identidade própria (id_field ou "
+     "id); requires_parent com parent_attribute: a referência ao pai entra na chave e marca o pai de caminho (G2-CHILD)"),
+    ("(qualquer)", "(nível observed)", "R-GRAIN-R1..R5",
+     "OBSERVED (C25 1.4.0) entra com o nível na citação; consolidação pela regra R1–R5 do PREREG (04/11 17:05): R1 "
+     "nada é sobrescrito; R2 disputa PUBLISHED x PUBLISHED já existente com status resolvida-por-observação vale o "
+     "lado reproduzido (o vencido continua citado, sem voto); R3 OBSERVED x PUBLISHED sem disputa prévia: "
+     "CONTRADICTORY; R4 OBSERVED sozinho preenche o campo; R5 vale para qualquer resultado"),
     ("identity", "attachment_attribute", "R-GRAIN-T63",
      "campo da spec que liga o dono a objetos do tipo binds_to, casado ao atributo pela leitura do modelo: ligação "
      "por atributo (T58) com alvo tipado; o nível INTERPRETED do fato vai para a citação (com model_id) e não é "
@@ -246,6 +244,38 @@ def _rel(attr: str, block_path: str | None) -> str:
     return attr
 
 
+RESOLVED = "resolvida-por-observação"
+
+
+def _dispute_file():
+    import json
+    from .common import repo
+    p = repo() / "results" / "SERVICE-EVIDENCE" / "spec_disputes.json"
+    return json.loads(p.read_text(encoding="utf-8")).get("disputes", []) if p.is_file() else []
+
+
+def load_resolved_disputes(items: list | None = None) -> dict:
+    """R2 da regra de consolidação do PREREG (17:05): disputa PUBLISHED x PUBLISHED já existente com status
+    'resolvida-por-observação' vale o lado que a observação reproduz. Devolve (provedor, tipo, fato) ->
+    {"losing_rule", "winning_rule", "observation"}. Sem lado vencedor identificável, a disputa não conta como
+    resolvida (segue CONTRADICTORY)."""
+    out = {}
+    for d in (items if items is not None else _dispute_file()):
+        if d.get("status") != RESOLVED:
+            continue
+        win = d.get("resolved_to") or d.get("reproduces") or d.get("winner")
+        if win not in ("doc", "spec") or not isinstance(d.get(win), dict):
+            continue
+        lose = "spec" if win == "doc" else "doc"
+        lr, wr = (d.get(lose) or {}).get("rule"), d[win].get("rule")
+        if not lr or lr == wr:
+            continue
+        out[(d.get("provider"), d.get("terraform_resource_type"), d.get("fact"))] = {
+            "losing_rule": lr, "winning_rule": wr,
+            "observation": d.get("observation") or d.get("resolved_by") or d.get("observation_id")}
+    return out
+
+
 def load_disputes() -> set:
     """(provedor, tipo, campo) das disputas spec × doc publicadas pelo SERVICE-EVIDENCE: nunca unificadas (T53)."""
     import json
@@ -255,12 +285,15 @@ def load_disputes() -> set:
         return set()
     out = set()
     for d in json.loads(p.read_text(encoding="utf-8")).get("disputes", []):
+        if d.get("status") == RESOLVED:
+            continue                                  # R2: resolvida por observação, não é mais disputa aberta
         fld = "api_resource" if d.get("fact") == "api_bridge" else d.get("fact")
         out.add((d.get("provider"), d.get("terraform_resource_type"), fld))
     return out
 
 
-def translate(records: list[dict], candidates: set[str] | None = None, disputes: set | None = None) -> tuple[dict, dict]:
+def translate(records: list[dict], candidates: set[str] | None = None, disputes: set | None = None,
+              resolved: dict | None = None) -> tuple[dict, dict]:
     """records: C25 de UM provedor (todos os tipos, para os pares de T02 e os gêmeos de T09). candidates: ids de
     candidato da decomposição (alvos de referência só valem se existem). Devolve ({cid: evidência}, {cid: motivos})."""
     by_cid: dict[str, list[dict]] = defaultdict(list)
@@ -296,7 +329,7 @@ def translate(records: list[dict], candidates: set[str] | None = None, disputes:
     links: dict[str, dict] = defaultdict(dict)       # cid -> atributo -> ligação (T58)
     path_fields: dict[str, set] = defaultdict(set)   # cid -> campos de referência ao pai de caminho (T54)
     list_items: dict[str, dict] = {}                  # cid -> ponte para campo-lista de itens (T62)
-    value_objects: dict[str, dict] = {}               # cid -> objeto-valor observado (T64)
+    item_facts: dict[str, dict] = {}                  # cid -> item sem id observado/publicado (T64)
     typed: dict[str, dict] = defaultdict(dict)       # cid -> {campo: tipo alvo ou None} (T44 reference_target)
     for cid, rs in sorted(by_cid.items()):
         rt = cid.split(".")[0]
@@ -318,6 +351,14 @@ def translate(records: list[dict], candidates: set[str] | None = None, disputes:
                 st = "contradictory" if r.get("unknown_reason") == "contradictory" else "unknown"
                 reasons[cid].append(f"{fld}: {r.get('unknown_reason')}")
                 put(cid, fld, {"status": st, "source": _src(r, "R-GRAIN-UNK", r.get("unknown_reason") or "")})
+                continue
+            rd = (resolved or {}).get((r.get("provider"), r.get("terraform_resource_type"), fld))
+            if rd and not nested and isinstance(v, dict) and v.get("rule") == rd["losing_rule"]:
+                # R2: disputa resolvida por observação; o fato publicado vencido continua citado (R1), sem voto
+                why = f"lado vencido da disputa resolvida por observação {rd['observation']} (R2)"
+                reasons[cid].append(f"{fld}: {why}")
+                put(cid, "api_resource" if fld == "api_bridge" else fld,
+                    {"status": "unknown", "source": _src(r, "R-GRAIN-R2", why)})
                 continue
             if isinstance(v, dict) and v.get("inherited_from"):
                 # fato herdado do gêmeo (R-TWIN): coberto por twin_type (T09), que copia a evidência traduzida
@@ -439,16 +480,13 @@ def translate(records: list[dict], candidates: set[str] | None = None, disputes:
                 elif not (prev.get("target") and prev["target"] == typed[cid][attr]):
                     links[cid][attr] = {"kind": "reference", "target": typed[cid][attr], "source": _src(r, rule)}
             elif a == "item_identity":
-                # T64: identidade do item (fato do experimento ou da doc). Sem id, lista substituída inteira e/ou
-                # duplicata aceita: objeto-valor membro da coleção do pai, identidade = conteúdo (anônima), cada
-                # duplicata é um membro. Com id: identidade própria; requires_parent marca o pai de caminho.
+                # T64: identidade do item (fato do experimento ou da doc). Sem id: identity absent (o item não tem
+                # identidade própria nem chave declarada; a lista é valor do dono). Com id: identidade própria;
+                # requires_parent com parent_attribute: a referência ao pai entra na chave como pai de caminho.
                 src = _src(r, "R-GRAIN-T64")
-                if v.get("has_id") is False and nested and (v.get("replaced_whole") or v.get("duplicates_accepted")):
-                    put(cid, "identity", {"status": "present", "scope": "within_parent", "key_fields": ["$content"],
-                                          "anonymous": True, "source": src})
-                    put(cid, "element_name_key", {"status": "absent", "source": src})
-                    value_objects[cid] = {"duplicates": bool(v.get("duplicates_accepted")),
-                                          "replaced_whole": bool(v.get("replaced_whole")), "source": src}
+                if v.get("has_id") is False:
+                    put(cid, "identity", {"status": "absent", "source": src})
+                    item_facts[cid] = v
                 elif v.get("has_id") is True:
                     kf = [v.get("id_field") or "id"]
                     pa = _rel(v.get("parent_attribute") or "", bp) if v.get("requires_parent") else ""
@@ -641,10 +679,26 @@ def translate(records: list[dict], candidates: set[str] | None = None, disputes:
         for f in fs:
             fm.setdefault(f, {"path": f, "ref": True})["path_parent"] = True
         reasons[cid].append(f"identity: {sorted(fs)} referencia o pai de caminho da spec (G2-CHILD)")
+    # cascata do namespace (emenda 0.1.11): cascade_delete_by só quando o TIPO de namespace tem evidência de que
+    # apagá-lo apaga o conteúdo (namespace_cascade cascade=true, ou destroy_effect cascade); exigir contêiner vazio
+    # (cascade=false / requires_empty) ou nenhuma evidência: namespace sem a relação
+    casc = {}
+    for r in records:
+        v = r.get("value") if isinstance(r.get("value"), dict) else {}
+        a = v.get("aspect")
+        if a == "namespace_cascade" and isinstance(v.get("cascade"), bool):
+            casc.setdefault(r.get("terraform_resource_type"), set()).add(v["cascade"])
+        elif a == "destroy_effect" and v.get("effect") in ("cascade", "requires_empty"):
+            casc.setdefault(r.get("terraform_resource_type"), set()).add(v["effect"] == "cascade")
     for cid, fs in ns_fields.items():
         fm = out.setdefault(cid, {}).setdefault("field_map", {})
         for f in fs:
             fm.setdefault(f, {"path": f, "ref": True})["namespace"] = True
+            tt = typed.get(cid, {}).get(f)
+            if casc.get(tt) == {True}:
+                fm[f]["cascade"] = True
+            else:
+                reasons[cid].append(f"identity: namespace {f} ({tt}) sem evidência de cascata: sem cascade_delete_by")
         reasons[cid].append(f"identity: {sorted(fs)} referencia contêiner de namespace (cascade_delete_by)")
     # identidade e chave de importação
     for key, (r, fields) in sorted(pending_ids.items()):
@@ -816,17 +870,15 @@ def translate(records: list[dict], candidates: set[str] | None = None, disputes:
                 put(cid, fld, c2)
     for cid, r in sorted(list_items.items()):
         v = r["value"]
-        if cid in value_objects:
+        if cid in item_facts:
+            # item sem id da coleção do pai (T64): carga útil da API do pai; com identity absent, a procedura T0 o
+            # torna transparente: valor-lista do dono, sem unidade própria
             put(cid, "api_resource", {"status": "payload", "label": v.get("item_model"),
-                                      "source": _src(r, "R-GRAIN-T62", "item da coleção do pai (T64)")})
+                                      "source": _src(r, "R-GRAIN-T62", "item sem id da coleção do pai (T64)")})
+            reasons[cid].append("api_resource: item sem id da lista do pai: carga útil, valor-lista do dono (T0)")
         else:
             unknown(cid, "api_resource", r, f"ponte para campo-lista de itens ({v.get('field_type')}): o item não "
                     "é aspecto do pai e a identidade do item não tem evidência (T62)")
-    for cid, vo in sorted(value_objects.items()):
-        ent = out.setdefault(cid, {})
-        ent["value_object"] = {k: x for k, x in vo.items() if k != "source"}
-        ent.setdefault("field_map", {})["$content"] = {"path": "$content", "norm": "content"}
-        reasons[cid].append("identity: objeto-valor (sem id; conteúdo é a chave; duplicata é outro membro) (T64)")
     for cid, ls in links.items():
         if ls:
             out.setdefault(cid, {})["links"] = {k: dict(x) for k, x in ls.items()}

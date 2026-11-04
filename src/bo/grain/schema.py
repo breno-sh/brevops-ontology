@@ -338,15 +338,7 @@ def unit_id(provider: str, cid: str) -> str:
 
 
 def _evidence_items(n: Node, d: Decision) -> list:
-    from .evidence import FIELDS, disputes
-    items = n.ev.sources()
-    for fld in FIELDS:
-        lost = disputes(fld, n.ev.claims.get(fld, []))
-        if lost and n.ev.fact(fld).known:
-            # R-GRAIN-OBS: a disputa fica registrada; a alegação vencida continua citada acima
-            items.append({"level": "derived", "ref": f"dispute:{fld}",
-                          "note": f"R-GRAIN-OBS: observação repetível com controle prevalece sobre {', '.join(lost)}"})
-    return items
+    return n.ev.sources()
 
 
 def to_c19(res: SchemaResult, atom_roles: dict | None = None) -> tuple[list[dict], list[dict]]:

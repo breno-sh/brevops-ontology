@@ -1,15 +1,16 @@
 """Nível OBSERVED (C25 1.4.0, adendo de 04/11 §2) e emenda 0.1.11 do GRAIN, com fatos sintéticos no formato do C25.
 
-R-GRAIN-OBS: observação repetível (2+ repetições) e com controle prevalece sobre a doc na disputa, que fica registrada;
-sem repetição ou controle, ou observações divergentes, CONTRADICTORY.
-T64: item sem id, lista substituída inteira e duplicata aceita = objeto-valor: COMPONENT anônimo, chave = conteúdo,
-duplicata = outro membro. Item com id que não existe sem o pai = COMPONENT do pai (G2-CHILD)."""
+Consolidação R1–R5 do PREREG (04/11 17:05): R1 nada é sobrescrito; R2 disputa já existente resolvida por observação
+vale o lado reproduzido; R3 observação contra publicado sem disputa prévia é CONTRADICTORY; R4 observação sozinha
+preenche. T64: item sem id da lista do pai = valor-lista do dono, sem unidade (T0). Item com id que não existe sem o
+pai = COMPONENT do pai (G2-CHILD). Cascata do namespace só com evidência por tipo."""
 
 import random
 
 from bo.grain import instance as I
 from bo.grain import rules as R
-from bo.grain.evidence import C25Adapter, consolidate, disputes
+from bo.grain import c25_aspects as A
+from bo.grain.evidence import C25Adapter, consolidate, from_dict
 
 RS = R.load()
 PROV = "oci"
@@ -64,21 +65,49 @@ def test_observed_level_is_read_and_cited():
     assert items[0]["level"] == "observed" and "qualified" not in items[0]     # citação no formato do C00
 
 
-def test_observed_repeatable_with_control_wins_dispute_and_records_it():
+def test_r3_observed_against_published_without_prior_dispute_is_contradictory():
     for order in ((0, 1), (1, 0)):
         pub, obs = _claims()
         recs = [(pub, obs)[i] for i in order]
         ev = C25Adapter(recs).evidence("t_a")
-        f = ev.fact("lifecycle_controller")
-        assert f.known and f.value["kind"] == "self"
-        assert disputes("lifecycle_controller", ev.claims["lifecycle_controller"]) == [pub["evidence_id"]]
-        assert any(c["source"]["level"] != "observed" for c in ev.claims["lifecycle_controller"])  # nada apagado
+        assert ev.fact("lifecycle_controller").state == "CONTRADICTORY"
+        assert len(ev.claims["lifecycle_controller"]) == 2                  # R1: os dois continuam citados
 
 
-def test_observed_without_repetition_or_control_stays_contradictory():
-    for kw in ({"rep": 1}, {"control": False}):
-        pub, obs = _claims(**kw)
-        assert C25Adapter([pub, obs]).evidence("t_a").fact("lifecycle_controller").state == "CONTRADICTORY"
+def test_r4_observed_alone_fills_the_field_with_observed_level():
+    obs = api("t_a", "lifecycle_controller", "self", level="observed")
+    ev = C25Adapter([obs]).evidence("t_a")
+    f = ev.fact("lifecycle_controller")
+    assert f.known and f.value["kind"] == "self" and ev.sources()[0]["level"] == "observed"
+
+
+def _dispute(status=None, win="spec"):
+    d = {"provider": PROV, "terraform_resource_type": "t_a", "fact": "lifecycle_controller",
+         "doc": {"kind": "self", "rule": "R-DOC"}, "spec": {"kind": "parent", "rule": "R-SPEC"}, "evidence": []}
+    if status:
+        d.update(status=status, resolved_to=win, observation="SE-obs-1")
+    return d
+
+
+def _translate(dispute):
+    doc = rec("t_a", "lifecycle_controller", {"kind": "self", "layer": "api", "rule": "R-DOC"})
+    spec = rec("t_a", "lifecycle_controller", {"kind": "parent", "layer": "api", "rule": "R-SPEC"})
+    obs = api("t_a", "lifecycle_controller", "parent", level="observed")
+    out, why = A.translate([doc, spec, obs], None, set(), A.load_resolved_disputes([dispute]))
+    return from_dict(out["t_a"]), why.get("t_a", [])
+
+
+def test_r2_resolved_dispute_takes_reproduced_side_and_keeps_loser_cited():
+    ev, why = _translate(_dispute(A.RESOLVED, "spec"))
+    f = ev.fact("lifecycle_controller")
+    assert f.known and f.value["kind"] == "parent"
+    lost = [c for c in ev.claims["lifecycle_controller"] if c.get("status") == "unknown"]
+    assert lost and "R-GRAIN-R2" in lost[0]["source"]["note"] and any("R2" in w for w in why)
+
+
+def test_r2_open_dispute_stays_contradictory():
+    ev, _ = _translate(_dispute())
+    assert ev.fact("lifecycle_controller").state == "CONTRADICTORY"
 
 
 def test_two_observations_diverging_stay_contradictory():
@@ -104,10 +133,8 @@ def _sl_records(observed=True):
         recs.append(rec(SL, k, {"kind": "parent", "layer": "api", "rule": "R-OWN-SPEC-BLOCK",
                                 "configured_by": "update do pai"}, bp=BP))
     if observed:
-        pub = recs[-4]                       # block_identity da doc: sem identidade
         recs.append(rec(SL, "identity", {"aspect": "item_identity", "has_id": False, "replaced_whole": True,
-                                         "duplicates_accepted": True}, level="observed", bp=BP,
-                        disputes=[pub["evidence_id"]]))
+                                         "duplicates_accepted": True}, level="observed", bp=BP))
     return recs
 
 
@@ -127,22 +154,13 @@ def _occs(recs, cfg):
     return I.decompose_config(cfg, C25Adapter(recs), {SL: {BP}}, RS)
 
 
-def test_value_object_rules_are_anonymous_components_keyed_by_content():
+def test_item_without_id_is_value_list_of_the_owner_without_unit():
+    """T64 + T0: item sem id da lista do pai é carga útil do pai e some como unidade (valor-lista do dono)."""
     oc = _occs(_sl_records(), _sl_cfg(RULES))
-    rules = [o for o in oc if any(f"/{BP}#" in n for n in o.tf)]
     top = [o for o in oc if o.tf == [f"{SL}.web"]][0]
     assert top.grain == "ENTITY"
-    assert len(rules) == 3 and all(o.grain == "COMPONENT" and o.parent == top.occ_id for o in rules)
-    assert len({o.occ_id for o in rules}) == 3                     # a duplicata é outro membro
-    assert all("$content" in o.key for o in rules)
-
-
-def test_value_object_identity_does_not_depend_on_position():
-    ids = []
-    for seed in (None, 1, 2, 3):
-        oc = _occs(_sl_records(), _sl_cfg(RULES, seed))
-        ids.append(sorted(o.occ_id for o in oc if any(f"/{BP}#" in n for n in o.tf)))
-    assert all(x == ids[0] for x in ids)
+    assert not any(o for o in oc if any(f"/{BP}#" in n for n in o.tf) and o.grain != "UNKNOWN")
+    assert not any(o.grain == "COMPONENT" for o in oc)                  # não força COMPONENT
 
 
 def test_without_observation_list_item_stays_unknown():
@@ -189,9 +207,9 @@ def test_nsg_rule_without_parent_dependency_is_not_component():
     assert r.grain != "COMPONENT"
 
 
-def test_official_c25_stub_pair_observed_wins_over_published():
-    """Par do stub oficial do C25 1.4.0 (SE-oci-0008 publicado has_id=true x SE-oci-0009 observado has_id=false):
-    a observação repetível com controle prevalece e a disputa fica registrada."""
+def test_official_c25_stub_pair_opens_new_dispute_contradictory():
+    """Par do stub oficial do C25 1.4.0 (SE-oci-0008 publicado has_id=true x SE-oci-0009 observado has_id=false, sem
+    disputa prévia no spec_disputes): R3, o campo fica CONTRADICTORY e os dois continuam citados."""
     import json
     from pathlib import Path
     stub = Path(__file__).resolve().parents[2] / "contracts" / "stubs" / "C25" / "service_evidence.jsonl"
@@ -199,6 +217,43 @@ def test_official_c25_stub_pair_observed_wins_over_published():
     pair = [r for r in recs if r.get("evidence_id") in ("SE-oci-0008", "SE-oci-0009")]
     assert len(pair) == 2
     ev = C25Adapter(pair).evidence("oci_core_security_list.ingress_security_rules")
-    f = ev.fact("identity")
-    assert f.known and f.value.get("anonymous") is True and f.value["key_fields"] == ["$content"]
-    assert disputes("identity", ev.claims["identity"]) == ["SE-oci-0008"]
+    assert ev.fact("identity").state == "CONTRADICTORY"
+    assert {s["ref"] for s in ev.sources()} >= {"SE-oci-0008", "SE-oci-0009"}
+
+
+# ------------------------------------------------------------------ cascata do namespace só com evidência
+
+def _ns_records(cascade=None):
+    recs = entity("t_ns", "Group") + entity("t_db", "Db") + [
+        rec("t_db", "owner", {"aspect": "parent", "scope_kind": "compartment", "parent_terraform_types": ["t_ns"],
+                              "parent_api_type": "svc/groups", "rule": "R-OWN-PARENT"}),
+        rec("t_db", "identity", {"aspect": "reference_target", "attribute": "ns_id", "resolved": "t_ns",
+                                 "target_types": ["t_ns"], "references": {"ns_id": "t_ns"}, "rule": "R-REF-TARGET"})]
+    recs[5]["value"]["key_fields"] = ["name", "ns_id"]                  # identidade de API com o namespace na chave
+    if cascade is not None:
+        recs.append(rec("t_ns", "lifecycle_controller", {"aspect": "namespace_cascade", "cascade": cascade,
+                                                         "rule": "R-OBS"}, level="observed"))
+    return recs
+
+
+def _ns_cfg():
+    return {"provider": PROV, "resources": [
+        {"type": "t_ns", "name": "g", "values": {"name": "g"}},
+        {"type": "t_db", "name": "d", "values": {"name": "d", "ns_id": {"$ref": "t_ns.g"}}}]}
+
+
+def _db_decision(recs):
+    from bo.grain import engine as E
+    nodes, _, _ = I.build_nodes(_ns_cfg(), C25Adapter(recs), {})
+    return E.decide_graph(list(nodes.values()), RS)["t_db.d"]
+
+
+def test_namespace_without_cascade_evidence_has_no_cascade_delete_by():
+    for c in (None, False):
+        d = _db_decision(_ns_records(c))
+        assert d.grain == "ENTITY" and d.cascade == [], (c, d.grain, d.rule, d.cascade)
+
+
+def test_namespace_with_cascade_evidence_has_cascade_delete_by():
+    d = _db_decision(_ns_records(True))
+    assert d.grain == "ENTITY" and d.cascade == ["t_ns.g"], (d.grain, d.rule, d.cascade)
