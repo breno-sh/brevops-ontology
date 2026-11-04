@@ -1,0 +1,59 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "PILOT-STO-GLOSS",
+ "generated_at": "2026-11-04T02:13:13-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-STO-GLOSS.txt",
+  "brief_sha256": "85a47d79322603c3cc6abd6e77f5e34f19420b63c58d359529b7c313a3973614",
+  "params": {
+   "role": "glossarist",
+   "role_brief": "briefs/GLOSSARY_BRIEF.txt",
+   "role_brief_version": "1.1.0",
+   "role_brief_sha256": "4a5cc1dacf0099f1bd3e2fabd953ba837410423be6acdcf861c9e3df0cabbdf2",
+   "slice": "sto",
+   "status": "STOPPED_CONTRACT_CHANGE",
+   "concepts_n": "0",
+   "anchors_n": "0",
+   "multi_provider_anchor_paths_n": "0",
+   "model_extracted_anchors_n": "0",
+   "training_projection_receipt": "NONE_SPLIT_POSTERIOR",
+   "slice_types_n": "23",
+   "slice_atoms_n": "562",
+   "grain_outcome": "EVIDENCE_ERROR_4_of_4",
+   "c25_grain_convention": "0_of_20098",
+   "own_doc_sentence_config": "22_of_452"
+  },
+  "inputs": [
+   {
+    "path": "$BO_REPO/grain/grain_rules.yaml",
+    "kind": "file",
+    "sha256": "e80155ef23e266096a3d1426579380164d4e141ea7c5ad2efe80f0f95f20f778"
+   },
+   {
+    "path": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl",
+    "kind": "file",
+    "sha256": "c15a1bd27efc14d7c1457bf360886fa5cf34f6875f837f26ead9efc02115c984"
+   },
+   {
+    "path": "$BO_DATA/UNITS/value_space.jsonl",
+    "kind": "file",
+    "sha256": "ab698af55202de1e3e469353bbdec2b423252d45970a69d1dc814938c0c520e5"
+   },
+   {
+    "path": "$BO_DATA/ROLES/roles.jsonl",
+    "kind": "file",
+    "sha256": "ed9356faacc1b2c91230af13ea20c76b90d3372bb250b7b1a98e354281fb43b6"
+   },
+   {
+    "path": "$BO_REPO/briefs/GLOSSARY_BRIEF.txt",
+    "kind": "file",
+    "sha256": "4a5cc1dacf0099f1bd3e2fabd953ba837410423be6acdcf861c9e3df0cabbdf2"
+   }
+  ],
+  "recorded_at": "2026-11-04T02:13:13-03:00"
+ },
+ "sources": []
+}

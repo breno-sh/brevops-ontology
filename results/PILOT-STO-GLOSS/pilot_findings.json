@@ -1,0 +1,301 @@
+{
+ "c25_shape": {
+  "corpus": {
+   "grain_fact_records": 32229,
+   "stated": 20098,
+   "stated_by_aspect": {
+    "effective_scope/attribute_scope": 60,
+    "effective_scope/effective_public_access": 1,
+    "effective_scope/effective_public_access_prevention": 1,
+    "effective_scope/type_scope": 52,
+    "identity/api_reference": 244,
+    "identity/api_resource_bridge": 4339,
+    "identity/cardinality": 1,
+    "identity/id_template": 4363,
+    "identity/resource_identity_schema": 1710,
+    "import_key/import_formats": 5021,
+    "lifecycle_controller/deletion_policy": 865,
+    "lifecycle_controller/destroy_effect": 87,
+    "owner/identity_scope": 375,
+    "owner/parent": 2086,
+    "owner/parent_attribute": 893
+   },
+   "stated_in_grain_convention": 0,
+   "status_unknown": 12131,
+   "with_block_path": 0
+  },
+  "slice": {
+   "grain_fact_records": 149,
+   "stated": 104,
+   "stated_by_aspect": {
+    "effective_scope/attribute_scope": 2,
+    "effective_scope/effective_public_access": 1,
+    "effective_scope/effective_public_access_prevention": 1,
+    "effective_scope/type_scope": 3,
+    "identity/api_resource_bridge": 17,
+    "identity/cardinality": 1,
+    "identity/id_template": 17,
+    "identity/resource_identity_schema": 16,
+    "import_key/import_formats": 22,
+    "lifecycle_controller/deletion_policy": 3,
+    "lifecycle_controller/destroy_effect": 6,
+    "owner/identity_scope": 9,
+    "owner/parent": 5,
+    "owner/parent_attribute": 1
+   },
+   "stated_in_grain_convention": 0,
+   "status_unknown": 45,
+   "with_block_path": 0
+  }
+ },
+ "excluded": {
+  "aws_s3_bucket_object": "objeto: conteúdo é Withheld",
+  "aws_s3_bucket_object_lock_configuration": "retenção imutável: fora das quatro facetas",
+  "aws_s3_bucket_replication_configuration": "replicação: fora das quatro facetas",
+  "aws_s3_object": "objeto: conteúdo é Withheld",
+  "aws_s3_object_copy": "objeto: conteúdo é Withheld",
+  "azurerm_storage_account_network_rules": "acesso de rede, não acesso público ao conteúdo",
+  "azurerm_storage_blob": "objeto: conteúdo é Withheld",
+  "azurerm_storage_container_immutability_policy": "retenção imutável: fora das quatro facetas",
+  "azurerm_storage_object_replication": "replicação: fora das quatro facetas",
+  "google_storage_bucket_object": "objeto: conteúdo é Withheld",
+  "oci_objectstorage_object": "objeto: conteúdo é Withheld",
+  "oci_objectstorage_preauthrequest": "delegação temporária de acesso, não configuração do contêiner",
+  "oci_objectstorage_private_endpoint": "acesso de rede, não acesso público ao conteúdo",
+  "oci_objectstorage_replication_policy": "replicação: fora das quatro facetas"
+ },
+ "generated_at": "2026-11-04T02:10:35-03:00",
+ "grain": {
+  "atoms_reconstructed_from": "ROLES atom_id (C01 fora das entradas)",
+  "library": "bo.grain.schema.decompose_schema + bo.grain.evidence.C25Adapter (sem alteração)",
+  "prefix_collisions": 0,
+  "providers": {
+   "aws": {
+    "candidates": 53,
+    "candidates_with_evidence_error": 9,
+    "candidates_without_any_claim": 44,
+    "error": "identity: status None",
+    "evidence_records": 84,
+    "field_states": {
+     "api_resource:UNKNOWN": 53,
+     "effective_scope:EVIDENCE_ERROR": 2,
+     "effective_scope:UNKNOWN": 51,
+     "element_name_key:UNKNOWN": 53,
+     "identity:EVIDENCE_ERROR": 9,
+     "identity:UNKNOWN": 44,
+     "import_key:EVIDENCE_ERROR": 9,
+     "import_key:UNKNOWN": 44,
+     "lifecycle_controller:EVIDENCE_ERROR": 3,
+     "lifecycle_controller:UNKNOWN": 50,
+     "owner:EVIDENCE_ERROR": 9,
+     "owner:UNKNOWN": 44
+    },
+    "nested_blocks": 44,
+    "nested_blocks_with_any_claim": 0,
+    "outcome": "EVIDENCE_ERROR",
+    "top_level": 9
+   },
+   "azurerm": {
+    "candidates": 36,
+    "candidates_with_evidence_error": 5,
+    "candidates_without_any_claim": 31,
+    "error": "identity: status None",
+    "evidence_records": 53,
+    "field_states": {
+     "api_resource:UNKNOWN": 36,
+     "effective_scope:EVIDENCE_ERROR": 2,
+     "effective_scope:UNKNOWN": 34,
+     "element_name_key:UNKNOWN": 36,
+     "identity:EVIDENCE_ERROR": 5,
+     "identity:UNKNOWN": 31,
+     "import_key:EVIDENCE_ERROR": 5,
+     "import_key:UNKNOWN": 31,
+     "lifecycle_controller:UNKNOWN": 36,
+     "owner:EVIDENCE_ERROR": 5,
+     "owner:UNKNOWN": 31
+    },
+    "nested_blocks": 31,
+    "nested_blocks_with_any_claim": 0,
+    "outcome": "EVIDENCE_ERROR",
+    "top_level": 5
+   },
+   "google": {
+    "candidates": 32,
+    "candidates_with_evidence_error": 6,
+    "candidates_without_any_claim": 26,
+    "error": "identity: status None",
+    "evidence_records": 51,
+    "field_states": {
+     "api_resource:UNKNOWN": 32,
+     "effective_scope:EVIDENCE_ERROR": 2,
+     "effective_scope:UNKNOWN": 30,
+     "element_name_key:UNKNOWN": 32,
+     "identity:EVIDENCE_ERROR": 5,
+     "identity:UNKNOWN": 27,
+     "import_key:EVIDENCE_ERROR": 6,
+     "import_key:UNKNOWN": 26,
+     "lifecycle_controller:EVIDENCE_ERROR": 3,
+     "lifecycle_controller:UNKNOWN": 29,
+     "owner:UNKNOWN": 32
+    },
+    "nested_blocks": 26,
+    "nested_blocks_with_any_claim": 0,
+    "outcome": "EVIDENCE_ERROR",
+    "top_level": 6
+   },
+   "oci": {
+    "candidates": 10,
+    "candidates_with_evidence_error": 2,
+    "candidates_without_any_claim": 7,
+    "error": "identity: status None",
+    "evidence_records": 26,
+    "field_states": {
+     "api_resource:UNKNOWN": 10,
+     "effective_scope:UNKNOWN": 10,
+     "element_name_key:UNKNOWN": 10,
+     "identity:EVIDENCE_ERROR": 2,
+     "identity:UNKNOWN": 8,
+     "import_key:EVIDENCE_ERROR": 2,
+     "import_key:UNKNOWN": 8,
+     "lifecycle_controller:UNKNOWN": 10,
+     "owner:EVIDENCE_ERROR": 1,
+     "owner:UNKNOWN": 9
+    },
+    "nested_blocks": 7,
+    "nested_blocks_with_any_claim": 0,
+    "outcome": "EVIDENCE_ERROR",
+    "top_level": 3
+   }
+  }
+ },
+ "module": "PILOT-STO-GLOSS",
+ "schema": "bo.pilot_findings/1",
+ "sentences": {
+  "atoms": 562,
+  "by_provider": {
+   "aws": {
+    "atoms": 161,
+    "own_published_sentence": 5,
+    "own_sentence_any_level": 5
+   },
+   "azurerm": {
+    "atoms": 232,
+    "own_published_sentence": 11,
+    "own_sentence_any_level": 12
+   },
+   "google": {
+    "atoms": 112,
+    "own_published_sentence": 8,
+    "own_sentence_any_level": 9
+   },
+   "oci": {
+    "atoms": 57,
+    "own_published_sentence": 4,
+    "own_sentence_any_level": 4
+   }
+  },
+  "by_role": {
+   "CONFIG": {
+    "atoms": 452,
+    "own_published_sentence": 22,
+    "own_sentence_any_level": 24
+   },
+   "IDENTIFIER": {
+    "atoms": 26,
+    "own_published_sentence": 0,
+    "own_sentence_any_level": 0
+   },
+   "NAME": {
+    "atoms": 6,
+    "own_published_sentence": 0,
+    "own_sentence_any_level": 0
+   },
+   "REFERENCE": {
+    "atoms": 49,
+    "own_published_sentence": 1,
+    "own_sentence_any_level": 1
+   },
+   "SECRET": {
+    "atoms": 6,
+    "own_published_sentence": 0,
+    "own_sentence_any_level": 0
+   },
+   "TAG": {
+    "atoms": 13,
+    "own_published_sentence": 5,
+    "own_sentence_any_level": 5
+   },
+   "TIMESTAMP": {
+    "atoms": 10,
+    "own_published_sentence": 0,
+    "own_sentence_any_level": 0
+   }
+  },
+  "config_by_facet": {
+   "encryption": {
+    "atoms": 28,
+    "own_published_sentence": 0,
+    "own_sentence_any_level": 0
+   },
+   "lifecycle": {
+    "atoms": 107,
+    "own_published_sentence": 9,
+    "own_sentence_any_level": 9
+   },
+   "other": {
+    "atoms": 220,
+    "own_published_sentence": 4,
+    "own_sentence_any_level": 4
+   },
+   "public_access": {
+    "atoms": 79,
+    "own_published_sentence": 9,
+    "own_sentence_any_level": 11
+   },
+   "versioning": {
+    "atoms": 18,
+    "own_published_sentence": 0,
+    "own_sentence_any_level": 0
+   }
+  },
+  "facet_rule": "diagnóstico: tipo separado ou palavra do caminho",
+  "rule": "GLOSSARY_BRIEF G2: ancorar só com sentença da documentação do PRÓPRIO átomo, na tag fixada",
+  "source_in_inputs": "SERVICE-EVIDENCE value.attribute + doc (único texto de documentação nas entradas)"
+ },
+ "slice": {
+  "aws": [
+   "aws_s3_account_public_access_block",
+   "aws_s3_bucket",
+   "aws_s3_bucket_acl",
+   "aws_s3_bucket_lifecycle_configuration",
+   "aws_s3_bucket_ownership_controls",
+   "aws_s3_bucket_policy",
+   "aws_s3_bucket_public_access_block",
+   "aws_s3_bucket_server_side_encryption_configuration",
+   "aws_s3_bucket_versioning"
+  ],
+  "azurerm": [
+   "azurerm_storage_account",
+   "azurerm_storage_account_customer_managed_key",
+   "azurerm_storage_container",
+   "azurerm_storage_encryption_scope",
+   "azurerm_storage_management_policy"
+  ],
+  "google": [
+   "google_storage_bucket",
+   "google_storage_bucket_access_control",
+   "google_storage_bucket_acl",
+   "google_storage_bucket_iam_binding",
+   "google_storage_bucket_iam_member",
+   "google_storage_bucket_iam_policy"
+  ],
+  "oci": [
+   "oci_objectstorage_bucket",
+   "oci_objectstorage_namespace_metadata",
+   "oci_objectstorage_object_lifecycle_policy"
+  ]
+ },
+ "slice_atoms": 562,
+ "slice_evidence_records": 214,
+ "slice_types": 23
+}
