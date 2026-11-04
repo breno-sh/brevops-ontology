@@ -7,10 +7,10 @@
 schema: bo.grain.rules/1
 contract: C19
 contract_version: 3.1.0
-rules_version: 0.1.7
+rules_version: 0.1.8
 status: PROVISIONAL
 written_at: "2026-11-03T02:00:00-03:00"
-amended_at: "2026-11-04T10:45:00-03:00"
+amended_at: "2026-11-04T11:00:00-03:00"
 definitive_after: [GRAIN-REPRO, PILOT-EXIT]
 
 layers:
@@ -90,6 +90,8 @@ procedure:
     text: blocos e recursos marcados pela evidência como carga útil da API do pai (api_resource=payload, sem identidade própria) são transparentes; os átomos sobem para o pai e os blocos filhos passam a ter como pai estrutural o pai dele
   - step: T1
     text: grupos de atributos que a evidência liga a um aspecto da API viram candidatos próprios, como se fossem blocos
+  - step: T3
+    text: faceta implícita (emenda 0.1.8), só com fato da especificação de API que diga que os blocos só são aceitos como membros de um único objeto-faceta do pai, configurado por uma operação única sobre o pai; a forma embutida ganha o candidato pai mais faceta (id determinístico), faceta do pai com implicit e a citação, e os blocos passam a pender dele; sem a operação citada, ou se o bloco tem operação própria de criar ou apagar, não há faceta implícita
   - step: T2
     text: atributo cujo tipo cty é lista ou conjunto de objetos vira bloco repetido; os campos saem do próprio tipo como sub-átomos virtuais (caminho atributo.campo), marcados como derivados do tipo e não do schema de blocos; o átomo da coleção fica com o contêiner
   - step: R
@@ -197,6 +199,10 @@ amendments:
     version: 0.1.7
     origin: decisão do coordenador sobre a regra de rede filha do conjunto
     text: regra nova G2-CHILD (entre G2 e G3); marca de caminho pai pela evidência (tipo de API da ponte aninhado no tipo de API do pai de contenção, ou fato explícito path_parent); G1 conta pontas sem os contêineres de namespace
+  - id: GRAIN-A11
+    version: 0.1.8
+    origin: decisão do coordenador sobre o par embutido e separado do conjunto de regras do contêiner
+    text: passo T3 da normalização (faceta implícita), condicionado a fato da especificação com a operação única citada
   - id: GRAIN-A10
     version: 0.1.7
     origin: fatos de API das regras de rede (Authorize e Revoke sobre o conjunto)

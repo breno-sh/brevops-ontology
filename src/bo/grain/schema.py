@@ -127,6 +127,26 @@ def decompose_schema(cands: list[Candidate], adapter, rs: R.RuleSet) -> SchemaRe
             by[gid] = Candidate(gid, c.provider, c.resource_type, c.block_path, "group", paths, c.cid, group=g)
             evs[gid] = from_dict(spec.get("evidence", {}))
             by[c.cid].attrs = [a for a in by[c.cid].attrs if a not in paths]
+    # T57: faceta implícita (só com fato da spec): um candidato <pai>:<faceta> entre o pai e os blocos membros
+    for c in sorted(list(by.values()), key=lambda x: x.cid):
+        imp = evs[c.cid].implicit_facet if c.cid in evs else None
+        if not imp or c.parent is None:
+            continue
+        fid = f"{c.parent}:{imp['facet']}"
+        if fid not in by:
+            pc = by[c.parent]
+            by[fid] = Candidate(fid, c.provider, c.resource_type, pc.block_path, "implicit", [], c.parent,
+                                group=imp["facet"])
+            src = imp["source"]
+            note = (f"implicit=true; operação {imp['operation']}" + (f" ({imp['member']})" if imp.get("member") else "")
+                    + " sobre o pai")
+            cl = lambda **kw: dict(kw, source=dict(src, note=note))  # noqa: E731
+            evs[fid] = from_dict({
+                "identity": [cl(status="absent")], "lifecycle_controller": [cl(kind="parent")],
+                "owner": [cl(kind="parent")], "effective_scope": [cl(kind="parent")],
+                "api_resource": [cl(status="aspect", label=imp["label"])]})
+            evs[fid].implicit_facet = dict(imp, implicit=True)
+        c.parent = fid
     # T0: transparentes (carga útil da API do pai, sem identidade própria)
     transparent: dict[str, str | None] = {}
 
@@ -250,6 +270,12 @@ def to_c19(res: SchemaResult, atom_roles: dict | None = None) -> tuple[list[dict
             "effective_scope": _ref(d.scope["kind"], d.scope.get("target"), uid),
             "evidence": _evidence_items(n, d), "rule_applied": d.rule, "missing_evidence": list(d.missing),
         }
+        if n.ev.implicit_facet and n.ev.implicit_facet.get("implicit"):
+            imp = n.ev.implicit_facet
+            rec["evidence"] = list(rec["evidence"]) + [{
+                "level": "derived", "ref": "implicit=true",
+                "note": f"faceta implícita {imp['facet']}: operação única {imp['operation']} sobre o pai "
+                        f"(citação {imp['source'].get('ref')})"}]
         if d.own_api_lifecycle:
             rec["evidence"] = list(rec["evidence"]) + [{"level": "derived", "ref": "own_api_lifecycle=true",
                                                          "note": "componente com operações próprias na API (G2-CHILD)"}]

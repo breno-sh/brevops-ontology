@@ -132,6 +132,8 @@ class CandidateEvidence:
     out_of_domain: str | None = None
     # o pai estrutural é o pai de caminho da spec (herdado do gêmeo, G2-CHILD)
     parent_is_path_parent: bool = False
+    # faceta implícita (T57): {facet, label, operation, member, parent_resource, source}; só com fato da spec
+    implicit_facet: dict | None = None
 
     def fact(self, fld: str) -> Fact:
         return consolidate(fld, self.claims.get(fld, []))
@@ -154,7 +156,8 @@ def from_dict(d: dict) -> CandidateEvidence:
                              parent_role=d.get("parent_role", "parent"),
                              groups=dict(d.get("groups", {})), roles=dict(d.get("roles", {})),
                              twin=d.get("twin"), out_of_domain=d.get("out_of_domain"),
-                             parent_is_path_parent=bool(d.get("parent_is_path_parent")))
+                             parent_is_path_parent=bool(d.get("parent_is_path_parent")),
+                             implicit_facet=d.get("implicit_facet"))
 
 
 class FixtureAdapter:

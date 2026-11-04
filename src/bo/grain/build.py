@@ -36,7 +36,7 @@ from . import schema as S
 from .common import data_dir, dump_json, dump_jsonl, now, repo, results_dir, rules_path, sha256_file, stamp
 from .evidence import FixtureAdapter
 
-AUTHORED_AT = "2026-11-04T10:45:00-03:00"
+AUTHORED_AT = "2026-11-04T11:00:00-03:00"
 
 
 def _strip(rep: dict) -> dict:
@@ -408,6 +408,17 @@ vida preso à instância, G1 e G2 aceitam a evidência, e trocar a ordem troca B
 referência <code>by_name</code>; sem ela, o grafo embutido perde relações que o separado tem.</li>
 <li>Emenda 0.1.1 (CC-1): a primeira versão lia uma convenção que o SERVICE-EVIDENCE nunca gravou; os testes
 sintéticos usavam a mesma convenção e não pegaram. Entraram o adaptador por aspecto e testes com o arquivo real.</li>
+<li>Emenda 0.1.8 (faceta implícita, T3/T57, decisão do coordenador): quando a API só aceita os blocos como membros
+de um único objeto-faceta do pai, configurado por uma operação única sobre o pai (ex.: a configuração de ciclo de vida
+do contêiner, com as regras como membro, gravada por uma só operação sobre o contêiner), a forma embutida — que não
+tem esse nível — ganha a faceta implícita <code>&lt;pai&gt;:&lt;faceta&gt;</code>, FACET do pai, e os blocos pendem
+dela, como na forma separada. Justificativa: o objeto da API é o mesmo nas duas embalagens; sem o nível, a forma
+embutida poria as regras como componentes diretos do contêiner e o E2 divergiria por construção. Condições: só com
+fato da spec no bloco (<code>spec_facet_member</code> ou <code>implicit_facet</code>, com <code>operation</code> citada e
+<code>single_operation</code>); id determinístico por pai e faceta; <code>implicit=true</code> e a citação da spec nos
+itens de evidência do C19. Sem a operação citada não há faceta implícita; bloco que a API aceita sozinho, por operação
+própria de criar/apagar (<code>spec_operation</code> no bloco), também não (controles negativos nos testes). Por
+enquanto só na camada de schema; a camada de instância segue sem o nível.</li>
 <li>Emenda 0.1.7 (regra nova G2-CHILD, decisão do coordenador): um sub-recurso com CRUD próprio na API continua
 sendo parte do pai; ter API própria não o torna entidade independente. Justificativa: a identidade dele só existe
 dentro do pai (o caminho da spec o põe abaixo do pai, …/pai/{p}/filho/{f}), o pai o apaga em cascata, e as operações

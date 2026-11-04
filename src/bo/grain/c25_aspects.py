@@ -100,6 +100,12 @@ TABLE = [
      "da camada Terraform, não são traduzidos para o mesmo candidato (nomes de campo diferentes do mesmo objeto não "
      "viram contradição); T56b: referência tipada num campo da chave de API não vale (é o identificador da "
      "própria unidade)"),
+    ("identity", "implicit_facet | spec_facet_member (bloco)", "R-GRAIN-T57",
+     "FACETA IMPLÍCITA (emenda 0.1.8): fato da spec, no bloco, que diz que a API só aceita os blocos como membros "
+     "de um único objeto-faceta do pai, configurado por uma operação única sobre o pai ({facet, facet_resource, "
+     "operation, member, single_operation}); a forma embutida ganha o candidato <pai>:<facet> (id determinístico "
+     "por pai e faceta), FACET do pai com implicit=true e a citação, e os blocos passam a pender dele. Sem a "
+     "operação citada, ou com operação própria de criar/apagar o bloco (spec_operation), não há faceta implícita"),
     ("api_resource", "(pontes equivalentes)", "R-GRAIN-T53",
      "duas pontes que nomeiam o mesmo serviço/recurso só com grafia diferente (caixa, sublinhado, hífen) são uma "
      "alegação só; nomes de fato diferentes continuam CONTRADICTORY (disputa)"),
@@ -156,6 +162,10 @@ TABLE = [
     ("(qualquer)", "(aspecto fora da tabela)", "R-GRAIN-UNK", "alegação UNKNOWN com o motivo 'sem tradução'"),
 ]
 RULE_OF = {(f, a): r for f, a, r, _ in TABLE}
+# aspectos cujo nome na tabela é descritivo: chaves de busca explícitas
+for _f in GRAIN_FACTS:
+    RULE_OF[(_f, "implicit_facet")] = RULE_OF[(_f, "spec_facet_member")] = "R-GRAIN-T57"
+RULE_OF[("lifecycle_controller", "spec_operation")] = "R-GRAIN-T57"
 
 
 def is_aspect_record(r: dict) -> bool:
@@ -213,6 +223,7 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
     pending_ids, shared, containers, scopes, twins, timeouts = {}, {}, {}, {}, {}, {}
     ns_fields: dict[str, set] = defaultdict(set)     # cid -> campos de referência ao contêiner de namespace
     api_identity: set = set()                         # cids com identidade afirmada na camada de API (T56)
+    own_ops: set = set()                              # blocos com operação própria de criar/apagar (T57, negativo)
     path_fields: dict[str, set] = defaultdict(set)   # cid -> campos de referência ao pai de caminho (T54)
     typed: dict[str, dict] = defaultdict(dict)       # cid -> {campo: tipo alvo ou None} (T44 reference_target)
     for cid, rs in sorted(by_cid.items()):
@@ -291,6 +302,18 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
                 pending_ids[cid] = (r, [f for f in v.get("required", []) if f not in loc_scope])
             elif a == "shared_identity_key":
                 shared[cid] = (r, [f for f in v.get("fields", []) if f not in loc_scope], list(v.get("peers", [])))
+            elif a in ("implicit_facet", "spec_facet_member"):
+                # T57: a API só aceita os blocos como membros de UM objeto-faceta do pai, configurado por UMA
+                # operação sobre o pai (fato da spec com a operação citada)
+                if nested and v.get("operation") and v.get("facet") and v.get("single_operation", True) is True:
+                    out.setdefault(cid, {})["implicit_facet"] = {
+                        "facet": v["facet"], "label": v.get("facet_resource") or v["facet"],
+                        "operation": v["operation"], "member": v.get("member"),
+                        "parent_resource": v.get("parent_resource"), "source": _src(r, rule, "faceta implícita")}
+                else:
+                    reasons[cid].append("identity: fato de faceta implícita sem operação única citada (T57)")
+            elif a == "spec_operation" and nested and v.get("role") in ("create", "delete"):
+                own_ops.add(cid)
             elif a == "path_parent":
                 if v.get("attribute"):
                     path_fields[cid].add(_rel(v["attribute"], bp))
@@ -613,6 +636,10 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
                 s["note"] = note + (" / " + s.get("note", "") if s.get("note") else "")
                 c2["source"] = s
                 put(cid, fld, c2)
+    # T57, controle: bloco que a API aceita sozinho, por operação própria, não ganha faceta implícita
+    for cid in own_ops:
+        if out.get(cid, {}).pop("implicit_facet", None):
+            reasons[cid].append("identity: bloco com operação própria na API: sem faceta implícita (T57)")
     # T45: bloco timeouts é configuração do Terraform: fora do domínio
     for rt, r in sorted(timeouts.items()):
         out.setdefault(f"{rt}.timeouts", {})["out_of_domain"] = "terraform_timeouts"
