@@ -111,3 +111,6 @@ Testes do diff (cópia em $BO_DATA/tmp/HIST-AZURE/contract_change/b, 2026-11-04T
 2. (registro, sem mudança pedida) o gate do módulo já varre o conteúdo descomprimido
    gates/HIST-AZURE.sh descomprime todo atoms_<v>/types_<v> em $BO_TMP/validate/ (para o validador, que lê
    JSONL) e passa o privacy_lint --strict nesse conteúdo: privacy_lint --strict: 54 arquivo(s) varrido(s) RESULTADO: OK (54 JSONL descomprimidos).
+
+RESOLVIDO 2026-11-04T02:33-03:00: o coordenador aplicou a mudança em bo/base (8056c2d, privacy_lint varre .gz
+descomprimido); privacy_lint --strict results/HIST-AZURE $BO_DATA/HIST-AZURE sai OK depois do rebase.
