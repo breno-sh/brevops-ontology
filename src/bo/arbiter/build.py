@@ -56,8 +56,9 @@ CONVENTIONS = [
                        "depois, o SEMANTICS 61d6fae (CC-3: invert aceita função do registro) mudou claims.py e "
                        "transforms.py do fecho e o árbitro foi recongelado de novo (ARBITER-20261104-2); depois da emenda 7 "
                        "do CONTRACTS e dos merges do SEMANTICS e do TRANSFORMS que ela pediu, recongelado pela "
-                       "terceira vez (ARBITER-20261104-3), e pela quarta (ARBITER-20261104-4) sobre a emenda 9 do "
-                       "CONTRACTS e o último SERVICE-EVIDENCE e GRAIN da rodada, sempre com o HEAD de bo/base conferido "
+                       "terceira vez (ARBITER-20261104-3), pela quarta (ARBITER-20261104-4) sobre a emenda 9 do "
+                       "CONTRACTS e o último SERVICE-EVIDENCE e GRAIN da rodada, e pela quinta (ARBITER-20261104-5) "
+                       "sobre a emenda 10 do CONTRACTS e os fatos OBSERVED do SERVICE-EVIDENCE consumidos pelo GRAIN, sempre com o HEAD de bo/base conferido "
                        "dentro da trava. Comprovante vigente: o de nome mais recente em "
                        "results/ARBITERLIB/freeze_receipt_ARBITER-*.json; os anteriores ficam como histórico. Motivo: contrato e referência a montante, "
                        "não ajuste de resultado (CC-1 do PILOT-STO-MAP)."),
