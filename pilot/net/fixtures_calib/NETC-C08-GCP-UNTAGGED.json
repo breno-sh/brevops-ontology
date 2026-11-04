@@ -1,0 +1,320 @@
+{
+ "case": "NET-C08",
+ "check": {
+  "assertion": "NOT decision(f2) = allow",
+  "kind": "not_entails"
+ },
+ "commitment_ids": [
+  "CMT-FW-P05"
+ ],
+ "config": {
+  "resources": [
+   {
+    "name": "net",
+    "type": "google_compute_network",
+    "values": {
+     "auto_create_subnetworks": false,
+     "name": "fx-net"
+    }
+   },
+   {
+    "name": "allow-web",
+    "type": "google_compute_firewall",
+    "values": {
+     "allow": [
+      {
+       "ports": [
+        "443"
+       ],
+       "protocol": "tcp"
+      }
+     ],
+     "direction": "INGRESS",
+     "name": "fx-allow-web",
+     "network": "ref:google_compute_network.net",
+     "priority": 1000,
+     "source_ranges": [
+      "203.0.113.0/24"
+     ],
+     "target_tags": [
+      "web"
+     ]
+    }
+   },
+   {
+    "name": "deny-in",
+    "type": "google_compute_firewall",
+    "values": {
+     "deny": [
+      {
+       "protocol": "all"
+      }
+     ],
+     "direction": "INGRESS",
+     "name": "fx-deny-in",
+     "network": "ref:google_compute_network.net",
+     "priority": 65534,
+     "source_ranges": [
+      "0.0.0.0/0"
+     ],
+     "target_tags": [
+      "web",
+      "app"
+     ]
+    }
+   },
+   {
+    "name": "deny-out",
+    "type": "google_compute_firewall",
+    "values": {
+     "deny": [
+      {
+       "protocol": "all"
+      }
+     ],
+     "destination_ranges": [
+      "0.0.0.0/0"
+     ],
+     "direction": "EGRESS",
+     "name": "fx-deny-out",
+     "network": "ref:google_compute_network.net",
+     "priority": 65534,
+     "target_tags": [
+      "web",
+      "app"
+     ]
+    }
+   },
+   {
+    "name": "vm1",
+    "type": "google_compute_instance",
+    "values": {
+     "network_interface": [
+      {
+       "network": "ref:google_compute_network.net"
+      }
+     ],
+     "tags": [
+      "web"
+     ]
+    }
+   },
+   {
+    "name": "vm2",
+    "type": "google_compute_instance",
+    "values": {
+     "network_interface": [
+      {
+       "network": "ref:google_compute_network.net"
+      }
+     ],
+     "tags": [
+      "app"
+     ]
+    }
+   }
+  ]
+ },
+ "expected": {
+  "decisions": {
+   "f2": {
+    "value": "DENY",
+    "why": "vm2 não tem o rótulo web; só a negação (rótulo app) se aplica"
+   }
+  },
+  "decomposition": [
+   {
+    "domain_unit": "rule_set",
+    "evidence": [
+     "C24:CMT-FW-P01"
+    ],
+    "kind": "ENTITY",
+    "occurrence": {
+     "set": "google_compute_network.net"
+    },
+    "parent": null,
+    "tf": {
+     "resource_type": "google_compute_network"
+    }
+   },
+   {
+    "accepted_kinds": [
+     "COMPONENT",
+     "ENTITY"
+    ],
+    "domain_unit": "filter_rule",
+    "evidence": [
+     "C24:CMT-FW-P01",
+     "SE-google-mhidfw4xa7sokciu",
+     "SE-google-mjuxwfic7ez6bfii"
+    ],
+    "kind": "COMPONENT",
+    "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+    "occurrence": {
+     "name": "fx-allow-web"
+    },
+    "parent": "google_compute_network.net",
+    "tf": {
+     "resource_type": "google_compute_firewall"
+    }
+   },
+   {
+    "domain_unit": "selection",
+    "evidence": [
+     "C24:CMT-FW-P05"
+    ],
+    "kind": "BINDING",
+    "occurrence": {
+     "label": "web",
+     "rule": "fx-allow-web"
+    },
+    "parent": null,
+    "tf": {
+     "block_path": "target_tags",
+     "resource_type": "google_compute_firewall"
+    }
+   },
+   {
+    "accepted_kinds": [
+     "COMPONENT",
+     "ENTITY"
+    ],
+    "domain_unit": "filter_rule",
+    "evidence": [
+     "C24:CMT-FW-P01",
+     "SE-google-mhidfw4xa7sokciu",
+     "SE-google-mjuxwfic7ez6bfii"
+    ],
+    "kind": "COMPONENT",
+    "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+    "occurrence": {
+     "name": "fx-deny-in"
+    },
+    "parent": "google_compute_network.net",
+    "tf": {
+     "resource_type": "google_compute_firewall"
+    }
+   },
+   {
+    "domain_unit": "selection",
+    "evidence": [
+     "C24:CMT-FW-P05"
+    ],
+    "kind": "BINDING",
+    "occurrence": {
+     "label": "web",
+     "rule": "fx-deny-in"
+    },
+    "parent": null,
+    "tf": {
+     "block_path": "target_tags",
+     "resource_type": "google_compute_firewall"
+    }
+   },
+   {
+    "domain_unit": "selection",
+    "evidence": [
+     "C24:CMT-FW-P05"
+    ],
+    "kind": "BINDING",
+    "occurrence": {
+     "label": "app",
+     "rule": "fx-deny-in"
+    },
+    "parent": null,
+    "tf": {
+     "block_path": "target_tags",
+     "resource_type": "google_compute_firewall"
+    }
+   },
+   {
+    "accepted_kinds": [
+     "COMPONENT",
+     "ENTITY"
+    ],
+    "domain_unit": "filter_rule",
+    "evidence": [
+     "C24:CMT-FW-P01",
+     "SE-google-mhidfw4xa7sokciu",
+     "SE-google-mjuxwfic7ez6bfii"
+    ],
+    "kind": "COMPONENT",
+    "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+    "occurrence": {
+     "name": "fx-deny-out"
+    },
+    "parent": "google_compute_network.net",
+    "tf": {
+     "resource_type": "google_compute_firewall"
+    }
+   },
+   {
+    "domain_unit": "selection",
+    "evidence": [
+     "C24:CMT-FW-P05"
+    ],
+    "kind": "BINDING",
+    "occurrence": {
+     "label": "web",
+     "rule": "fx-deny-out"
+    },
+    "parent": null,
+    "tf": {
+     "block_path": "target_tags",
+     "resource_type": "google_compute_firewall"
+    }
+   },
+   {
+    "domain_unit": "selection",
+    "evidence": [
+     "C24:CMT-FW-P05"
+    ],
+    "kind": "BINDING",
+    "occurrence": {
+     "label": "app",
+     "rule": "fx-deny-out"
+    },
+    "parent": null,
+    "tf": {
+     "block_path": "target_tags",
+     "resource_type": "google_compute_firewall"
+    }
+   }
+  ],
+  "validity": {
+   "value": "VALID"
+  }
+ },
+ "fixture_id": "NETC-C08-GCP-UNTAGGED",
+ "flows": [
+  {
+   "direction": "ingress",
+   "flow_id": "f2",
+   "port": 443,
+   "protocol": "tcp",
+   "remote": "203.0.113.10",
+   "state": "new",
+   "target": "vm2"
+  }
+ ],
+ "polarity": "negative",
+ "provider": "google",
+ "read": {
+  "completeness": "complete",
+  "not_read": [],
+  "withheld": []
+ },
+ "schema": "bo.pilot_net.fixture/1",
+ "split": "calib",
+ "summary": "seleção por rótulo: instância sem o rótulo",
+ "targets": {
+  "vm1": {
+   "ip": "10.0.1.10",
+   "ref": "google_compute_instance.vm1"
+  },
+  "vm2": {
+   "ip": "10.0.1.12",
+   "ref": "google_compute_instance.vm2"
+  }
+ }
+}

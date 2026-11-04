@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Oráculo NET</title>
+<style>
+:root{--bg:#fbfaf7;--fg:#1d1d1b;--muted:#5d5b55;--line:#dedad0;--code:#f1eee6}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#171716;--fg:#e9e6df;--muted:#a8a49a;--line:#34332f;--code:#23221f}}
+:root[data-theme="dark"]{--bg:#171716;--fg:#e9e6df;--muted:#a8a49a;--line:#34332f;--code:#23221f}
+body{background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,sans-serif;margin:0;padding:0 16px}
+main{max-width:920px;margin:0 auto;padding:32px 0 64px}
+code,pre{font-family:ui-monospace,Menlo,monospace;font-size:.88em;background:var(--code);border-radius:4px}
+code{padding:.1em .3em}pre{padding:12px 14px;overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.93em}th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+p.lead{color:var(--muted)}
+</style></head><body><main>
+<h1>Oráculo offline da fatia NET</h1>
+<p class="lead">PILOT-NET-ORACLE. Avaliador de decisão de acesso para security group AWS, firewall GCP, NSG Azure,
+security list e NSG OCI; juiz de tradução para as 12 direções; gabarito de decomposição. Escrito sem ler
+mapeamento, glossário nem saída de pipeline. Só biblioteca padrão.</p>
+
+<h2>Uso</h2>
+<pre>import sys; sys.path.insert(0, "$BO_REPO/pilot/net/oracle")
+import net_oracle as no
+no.evaluate_fixture(fx)                          # {"decisions": {flow_id: {value, code, splits}}, "validity": {...}}
+no.judge(src_fx, alvo, perdas, "aws->google")    # veredito ACCEPT | ACCEPT_WITH_DECLARED_LOSS | UNDETERMINED | REJECT
+no.compare_decomposition(esperado, produzido)    # unidades faltando, sobrando, tipo errado (camada Terraform ignorada)</pre>
+<p>CLI: <code>python -I -m bo.pilot_net_oracle.judge --source FX.json --target ALVO.json --losses PERDAS.json</code>.</p>
+
+<h2>Formato</h2>
+<p>Configuração = recursos Terraform como JSON: <code>{"resources": [{"type", "name", "values"}]}</code>. Referência é
+<code>"ref:TIPO.NOME"</code>; valor simbólico (variável, saída computada, referência não resolvida) é
+<code>"sym:rótulo"</code>. <code>targets</code> liga o alvo abstrato (vm1) à instância. Fluxo:
+<code>{flow_id, target, direction, protocol, port, remote, state: new}</code> ou
+<code>{flow_id, target, state: return, of, reply_port}</code>; a porta de origem do fluxo novo é 49152 (parte do fluxo
+sintético, não default de provedor). <code>read.not_read</code> marca o que não foi lido
+(<code>{"of": endereço, "what": "rules" | "attachment" | "state_tracking"}</code>). HCL precisa ser convertido para esse
+JSON por quem o produz; o oráculo não executa nada.</p>
+
+<h2>Semântica</h2>
+<p><code>semantics_profile.json</code>: cada parâmetro com valor, nível e evidência do SERVICE-EVIDENCE. O que não tem
+evidência na leitura é ponto de escolha: o avaliador decide sob todos os valores e só responde se todos concordam;
+senão UNKNOWN com o código do ponto que dividiu (INCOMPLETE_READ, UNKNOWN_SYMBOLIC_INPUT, MISSING_EVIDENCE). Leituras:
+<code>strict</code> (published, derived), <code>default</code> (+ oracle_derived, usada no gabarito) e
+<code>lenient</code> (+ interpreted).</p>
+<table><tr><th>Provedor</th><th>Avaliação</th><th>Sem regra que case</th><th>Estado de conexão</th></tr>
+<tr><td>AWS SG</td><td>só permissão (oracle_derived)</td><td>nega (publicado)</td><td>sem evidência: retorno UNKNOWN quando depende dele</td></tr>
+<tr><td>GCP firewall</td><td>prioridade 0–65535, padrão 1000, menor primeiro, empate deny (publicado)</td><td>regras implícitas só interpretadas: UNKNOWN</td><td>sem evidência</td></tr>
+<tr><td>Azure NSG</td><td>prioridade 100–4096, única, menor primeiro (publicado)</td><td>regras padrão sem evidência: UNKNOWN</td><td>sem evidência</td></tr>
+<tr><td>OCI security list / NSG</td><td>só permissão (oracle_derived)</td><td>nega (oracle_derived)</td><td>por regra, padrão com estado (publicado na security list; derivado no NSG)</td></tr></table>
+
+<h2>Juiz</h2>
+<p>Negado na origem e permitido no alvo reprova sempre (perda declarada não cobre). Divergência só passa coberta por
+perda do catálogo da direção (<code>directions.json</code>) que cubra aquele tipo; senão é perda silenciosa. Origem
+UNKNOWN e alvo permitido é UNDETERMINED (só LOSS-NET-UNKNOWN-INPUT cobre). Alvo inválido reprova. O juiz julga pelos
+fluxos da fixture: o que nenhum fluxo amostra não é visto.</p>
+
+<h2>Retidas</h2>
+<p>Cifradas para o certificado D15 (<code>seal_cert.pem</code>) em <code>$BO_DATA/PILOT-NET-ORACLE/sealed/</code>;
+<code>sealed_index.json</code> guarda só contagens e resumos com sal. Abertura pelo PILOT-EXIT, na VM:
+<code>ssh ubuntu@136.248.69.238 'openssl cms -decrypt -inform PEM -inkey ~/brevops-keys/seal_private.pem' &lt; retained.cms.pem &gt; retained.tar</code>.</p>
+</main></body></html>

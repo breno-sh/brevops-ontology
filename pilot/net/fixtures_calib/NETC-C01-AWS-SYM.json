@@ -1,0 +1,147 @@
+{
+ "case": "NET-C01",
+ "check": {
+  "assertion": "decision(f1) = UNKNOWN; parent(regra) = UNKNOWN",
+  "kind": "unknown"
+ },
+ "commitment_ids": [
+  "CMT-FW-P01",
+  "CMT-NIC-U02"
+ ],
+ "config": {
+  "resources": [
+   {
+    "name": "web",
+    "type": "aws_security_group",
+    "values": {
+     "description": "fixture sintética",
+     "name": "fx-web"
+    }
+   },
+   {
+    "name": "web_r1",
+    "type": "aws_vpc_security_group_ingress_rule",
+    "values": {
+     "cidr_ipv4": "203.0.113.0/24",
+     "from_port": 443,
+     "ip_protocol": "tcp",
+     "security_group_id": "sym:sg_id_not_resolved",
+     "to_port": 443
+    }
+   },
+   {
+    "name": "vm1",
+    "type": "aws_instance",
+    "values": {
+     "vpc_security_group_ids": [
+      "ref:aws_security_group.web"
+     ]
+    }
+   }
+  ]
+ },
+ "expected": {
+  "decisions": {
+   "f1": {
+    "code": "UNKNOWN_SYMBOLIC_INPUT",
+    "value": "UNKNOWN",
+    "why": "a pertença da regra 443 ao grupo não se resolve"
+   },
+   "f2": {
+    "value": "DENY",
+    "why": "nenhuma regra, lida ou não resolvida, cobre 22"
+   }
+  },
+  "decomposition": [
+   {
+    "domain_unit": "rule_set",
+    "evidence": [
+     "C24:CMT-FW-P01",
+     "SE-aws-rouky47ej4w3me2k"
+    ],
+    "kind": "ENTITY",
+    "occurrence": {
+     "set": "aws_security_group.web"
+    },
+    "parent": null,
+    "tf": {
+     "resource_type": "aws_security_group"
+    }
+   },
+   {
+    "domain_unit": "filter_rule",
+    "evidence": [
+     "C24:CMT-FW-P01",
+     "C24:CMT-NIC-U02"
+    ],
+    "kind": "COMPONENT",
+    "occurrence": {
+     "rule": "aws_vpc_security_group_ingress_rule.web_r1"
+    },
+    "parent": "UNKNOWN",
+    "tf": {
+     "resource_type": "aws_vpc_security_group_ingress_rule"
+    },
+    "unknown": [
+     "owner"
+    ]
+   },
+   {
+    "domain_unit": "attachment",
+    "evidence": [
+     "C24:CMT-FW-P05"
+    ],
+    "kind": "BINDING",
+    "occurrence": {
+     "set": "aws_security_group.web",
+     "target": "aws_instance.vm1"
+    },
+    "parent": null,
+    "tf": {
+     "block_path": "vpc_security_group_ids",
+     "resource_type": "aws_instance"
+    }
+   }
+  ],
+  "validity": {
+   "value": "VALID"
+  }
+ },
+ "fixture_id": "NETC-C01-AWS-SYM",
+ "flows": [
+  {
+   "direction": "ingress",
+   "flow_id": "f1",
+   "port": 443,
+   "protocol": "tcp",
+   "remote": "203.0.113.10",
+   "state": "new",
+   "target": "vm1"
+  },
+  {
+   "direction": "ingress",
+   "flow_id": "f2",
+   "port": 22,
+   "protocol": "tcp",
+   "remote": "203.0.113.10",
+   "state": "new",
+   "target": "vm1"
+  }
+ ],
+ "polarity": "unknown",
+ "provider": "aws",
+ "read": {
+  "completeness": "complete",
+  "not_read": [],
+  "withheld": []
+ },
+ "schema": "bo.pilot_net.fixture/1",
+ "split": "calib",
+ "summary": "regra separada com security_group_id não resolvido",
+ "targets": {
+  "vm1": {
+   "ip": "10.0.1.10",
+   "ref": "aws_instance.vm1"
+  }
+ }
+}

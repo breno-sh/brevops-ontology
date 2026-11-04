@@ -1,0 +1,157 @@
+{
+ "case": "NET-C01",
+ "check": {
+  "assertion": "NOT decision(f1) = allow AND parent(regra) != web",
+  "kind": "not_entails"
+ },
+ "commitment_ids": [
+  "CMT-FW-P01"
+ ],
+ "config": {
+  "resources": [
+   {
+    "name": "web",
+    "type": "aws_security_group",
+    "values": {
+     "description": "fixture sintética",
+     "name": "fx-web"
+    }
+   },
+   {
+    "name": "other",
+    "type": "aws_security_group",
+    "values": {
+     "description": "fixture sintética",
+     "name": "fx-other"
+    }
+   },
+   {
+    "name": "other_r1",
+    "type": "aws_vpc_security_group_ingress_rule",
+    "values": {
+     "cidr_ipv4": "203.0.113.0/24",
+     "from_port": 443,
+     "ip_protocol": "tcp",
+     "security_group_id": "ref:aws_security_group.other",
+     "to_port": 443
+    }
+   },
+   {
+    "name": "vm1",
+    "type": "aws_instance",
+    "values": {
+     "vpc_security_group_ids": [
+      "ref:aws_security_group.web"
+     ]
+    }
+   }
+  ]
+ },
+ "expected": {
+  "decisions": {
+   "f1": {
+    "value": "DENY",
+    "why": "a regra separada é do grupo 'other', que não está anexado a vm1"
+   }
+  },
+  "decomposition": [
+   {
+    "domain_unit": "rule_set",
+    "evidence": [
+     "C24:CMT-FW-P01",
+     "SE-aws-rouky47ej4w3me2k"
+    ],
+    "kind": "ENTITY",
+    "occurrence": {
+     "set": "aws_security_group.web"
+    },
+    "parent": null,
+    "tf": {
+     "resource_type": "aws_security_group"
+    }
+   },
+   {
+    "domain_unit": "rule_set",
+    "evidence": [
+     "C24:CMT-FW-P01",
+     "SE-aws-rouky47ej4w3me2k"
+    ],
+    "kind": "ENTITY",
+    "occurrence": {
+     "set": "aws_security_group.other"
+    },
+    "parent": null,
+    "tf": {
+     "resource_type": "aws_security_group"
+    }
+   },
+   {
+    "domain_unit": "filter_rule",
+    "evidence": [
+     "C24:CMT-FW-P01",
+     "SE-aws-jyr4g6yuka5h7son"
+    ],
+    "kind": "COMPONENT",
+    "occurrence": {
+     "direction": "ingress",
+     "ports": "443-443",
+     "protocol": "tcp",
+     "remote": [
+      "203.0.113.0/24"
+     ]
+    },
+    "parent": "aws_security_group.other",
+    "tf": {
+     "resource_type": "aws_vpc_security_group_ingress_rule"
+    }
+   },
+   {
+    "domain_unit": "attachment",
+    "evidence": [
+     "C24:CMT-FW-P05"
+    ],
+    "kind": "BINDING",
+    "occurrence": {
+     "set": "aws_security_group.web",
+     "target": "aws_instance.vm1"
+    },
+    "parent": null,
+    "tf": {
+     "block_path": "vpc_security_group_ids",
+     "resource_type": "aws_instance"
+    }
+   }
+  ],
+  "validity": {
+   "value": "VALID"
+  }
+ },
+ "fixture_id": "NETC-C01-AWS-OTHER",
+ "flows": [
+  {
+   "direction": "ingress",
+   "flow_id": "f1",
+   "port": 443,
+   "protocol": "tcp",
+   "remote": "203.0.113.10",
+   "state": "new",
+   "target": "vm1"
+  }
+ ],
+ "polarity": "negative",
+ "provider": "aws",
+ "read": {
+  "completeness": "complete",
+  "not_read": [],
+  "withheld": []
+ },
+ "schema": "bo.pilot_net.fixture/1",
+ "split": "calib",
+ "summary": "regra separada ligada a outro grupo: não é a mesma decomposição",
+ "targets": {
+  "vm1": {
+   "ip": "10.0.1.10",
+   "ref": "aws_instance.vm1"
+  }
+ }
+}

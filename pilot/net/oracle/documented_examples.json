@@ -1,0 +1,1450 @@
+{
+ "examples": [
+  {
+   "evidence_id": "SE-google-n2ccqgtmt4jm72sp",
+   "example_id": "DOC-GCP-01",
+   "expected": {
+    "decisions": {
+     "x1": {
+      "value": "ALLOW",
+      "why": "prioridade 0 vence 1"
+     }
+    },
+    "validity": {
+     "value": "VALID"
+    }
+   },
+   "fixture": {
+    "config": {
+     "resources": [
+      {
+       "name": "net",
+       "type": "google_compute_network",
+       "values": {
+        "auto_create_subnetworks": false,
+        "name": "fx-net"
+       }
+      },
+      {
+       "name": "p0",
+       "type": "google_compute_firewall",
+       "values": {
+        "allow": [
+         {
+          "ports": [
+           "22"
+          ],
+          "protocol": "tcp"
+         }
+        ],
+        "direction": "INGRESS",
+        "name": "fx-p0",
+        "network": "ref:google_compute_network.net",
+        "priority": 0,
+        "source_ranges": [
+         "0.0.0.0/0"
+        ],
+        "target_tags": [
+         "web"
+        ]
+       }
+      },
+      {
+       "name": "p1",
+       "type": "google_compute_firewall",
+       "values": {
+        "deny": [
+         {
+          "ports": [
+           "22"
+          ],
+          "protocol": "tcp"
+         }
+        ],
+        "direction": "INGRESS",
+        "name": "fx-p1",
+        "network": "ref:google_compute_network.net",
+        "priority": 1,
+        "source_ranges": [
+         "0.0.0.0/0"
+        ],
+        "target_tags": [
+         "web"
+        ]
+       }
+      },
+      {
+       "name": "vm1",
+       "type": "google_compute_instance",
+       "values": {
+        "network_interface": [
+         {
+          "network": "ref:google_compute_network.net"
+         }
+        ],
+        "tags": [
+         "web"
+        ]
+       }
+      }
+     ]
+    },
+    "fixture_id": "DOC-GCP-01",
+    "flows": [
+     {
+      "direction": "ingress",
+      "flow_id": "x1",
+      "port": 22,
+      "protocol": "tcp",
+      "remote": "203.0.113.5",
+      "state": "new",
+      "target": "vm1"
+     }
+    ],
+    "provider": "google",
+    "read": {
+     "completeness": "complete",
+     "not_read": [],
+     "withheld": []
+    },
+    "targets": {
+     "vm1": {
+      "ip": "10.0.1.10",
+      "ref": "google_compute_instance.vm1"
+     }
+    }
+   },
+   "provider": "google",
+   "quote": "a rule with priority 0 has higher precedence than a rule with priority 1"
+  },
+  {
+   "evidence_id": "SE-google-t45d32hahm5ikdc3",
+   "example_id": "DOC-GCP-02",
+   "expected": {
+    "decisions": {
+     "x1": {
+      "value": "DENY",
+      "why": "empate: deny"
+     }
+    },
+    "validity": {
+     "value": "VALID"
+    }
+   },
+   "fixture": {
+    "config": {
+     "resources": [
+      {
+       "name": "net",
+       "type": "google_compute_network",
+       "values": {
+        "auto_create_subnetworks": false,
+        "name": "fx-net"
+       }
+      },
+      {
+       "name": "a",
+       "type": "google_compute_firewall",
+       "values": {
+        "allow": [
+         {
+          "ports": [
+           "22"
+          ],
+          "protocol": "tcp"
+         }
+        ],
+        "direction": "INGRESS",
+        "name": "fx-a",
+        "network": "ref:google_compute_network.net",
+        "priority": 700,
+        "source_ranges": [
+         "0.0.0.0/0"
+        ],
+        "target_tags": [
+         "web"
+        ]
+       }
+      },
+      {
+       "name": "d",
+       "type": "google_compute_firewall",
+       "values": {
+        "deny": [
+         {
+          "ports": [
+           "22"
+          ],
+          "protocol": "tcp"
+         }
+        ],
+        "direction": "INGRESS",
+        "name": "fx-d",
+        "network": "ref:google_compute_network.net",
+        "priority": 700,
+        "source_ranges": [
+         "0.0.0.0/0"
+        ],
+        "target_tags": [
+         "web"
+        ]
+       }
+      },
+      {
+       "name": "vm1",
+       "type": "google_compute_instance",
+       "values": {
+        "network_interface": [
+         {
+          "network": "ref:google_compute_network.net"
+         }
+        ],
+        "tags": [
+         "web"
+        ]
+       }
+      }
+     ]
+    },
+    "fixture_id": "DOC-GCP-02",
+    "flows": [
+     {
+      "direction": "ingress",
+      "flow_id": "x1",
+      "port": 22,
+      "protocol": "tcp",
+      "remote": "203.0.113.5",
+      "state": "new",
+      "target": "vm1"
+     }
+    ],
+    "provider": "google",
+    "read": {
+     "completeness": "complete",
+     "not_read": [],
+     "withheld": []
+    },
+    "targets": {
+     "vm1": {
+      "ip": "10.0.1.10",
+      "ref": "google_compute_instance.vm1"
+     }
+    }
+   },
+   "provider": "google",
+   "quote": "DENY rules take precedence over ALLOW rules having equal priority"
+  },
+  {
+   "evidence_id": "SE-google-dcmc4qigsgr3wxue",
+   "example_id": "DOC-GCP-03",
+   "expected": {
+    "decisions": {
+     "x1": {
+      "value": "ALLOW",
+      "why": "allow sem prioridade = 1000 < 1001"
+     }
+    },
+    "validity": {
+     "value": "VALID"
+    }
+   },
+   "fixture": {
+    "config": {
+     "resources": [
+      {
+       "name": "net",
+       "type": "google_compute_network",
+       "values": {
+        "auto_create_subnetworks": false,
+        "name": "fx-net"
+       }
+      },
+      {
+       "name": "a",
+       "type": "google_compute_firewall",
+       "values": {
+        "allow": [
+         {
+          "ports": [
+           "22"
+          ],
+          "protocol": "tcp"
+         }
+        ],
+        "direction": "INGRESS",
+        "name": "fx-a",
+        "network": "ref:google_compute_network.net",
+        "source_ranges": [
+         "0.0.0.0/0"
+        ],
+        "target_tags": [
+         "web"
+        ]
+       }
+      },
+      {
+       "name": "d",
+       "type": "google_compute_firewall",
+       "values": {
+        "deny": [
+         {
+          "ports": [
+           "22"
+          ],
+          "protocol": "tcp"
+         }
+        ],
+        "direction": "INGRESS",
+        "name": "fx-d",
+        "network": "ref:google_compute_network.net",
+        "priority": 1001,
+        "source_ranges": [
+         "0.0.0.0/0"
+        ],
+        "target_tags": [
+         "web"
+        ]
+       }
+      },
+      {
+       "name": "vm1",
+       "type": "google_compute_instance",
+       "values": {
+        "network_interface": [
+         {
+          "network": "ref:google_compute_network.net"
+         }
+        ],
+        "tags": [
+         "web"
+        ]
+       }
+      }
+     ]
+    },
+    "fixture_id": "DOC-GCP-03",
+    "flows": [
+     {
+      "direction": "ingress",
+      "flow_id": "x1",
+      "port": 22,
+      "protocol": "tcp",
+      "remote": "203.0.113.5",
+      "state": "new",
+      "target": "vm1"
+     }
+    ],
+    "provider": "google",
+    "read": {
+     "completeness": "complete",
+     "not_read": [],
+     "withheld": []
+    },
+    "targets": {
+     "vm1": {
+      "ip": "10.0.1.10",
+      "ref": "google_compute_instance.vm1"
+     }
+    }
+   },
+   "provider": "google",
+   "quote": "When not specified, the value assumed is 1000"
+  },
+  {
+   "evidence_id": "SE-google-dcmc4qigsgr3wxue",
+   "example_id": "DOC-GCP-04",
+   "expected": {
+    "decisions": {
+     "x1": {
+      "value": "DENY",
+      "why": "deny 999 < 1000"
+     }
+    },
+    "validity": {
+     "value": "VALID"
+    }
+   },
+   "fixture": {
+    "config": {
+     "resources": [
+      {
+       "name": "net",
+       "type": "google_compute_network",
+       "values": {
+        "auto_create_subnetworks": false,
+        "name": "fx-net"
+       }
+      },
+      {
+       "name": "a",
+       "type": "google_compute_firewall",
+       "values": {
+        "allow": [
+         {
+          "ports": [
+           "22"
+          ],
+          "protocol": "tcp"
+         }
+        ],
+        "direction": "INGRESS",
+        "name": "fx-a",
+        "network": "ref:google_compute_network.net",
+        "source_ranges": [
+         "0.0.0.0/0"
+        ],
+        "target_tags": [
+         "web"
+        ]
+       }
+      },
+      {
+       "name": "d",
+       "type": "google_compute_firewall",
+       "values": {
+        "deny": [
+         {
+          "ports": [
+           "22"
+          ],
+          "protocol": "tcp"
+         }
+        ],
+        "direction": "INGRESS",
+        "name": "fx-d",
+        "network": "ref:google_compute_network.net",
+        "priority": 999,
+        "source_ranges": [
+         "0.0.0.0/0"
+        ],
+        "target_tags": [
+         "web"
+        ]
+       }
+      },
+      {
+       "name": "vm1",
+       "type": "google_compute_instance",
+       "values": {
+        "network_interface": [
+         {
+          "network": "ref:google_compute_network.net"
+         }
+        ],
+        "tags": [
+         "web"
+        ]
+       }
+      }
+     ]
+    },
+    "fixture_id": "DOC-GCP-04",
+    "flows": [
+     {
+      "direction": "ingress",
+      "flow_id": "x1",
+      "port": 22,
+      "protocol": "tcp",
+      "remote": "203.0.113.5",
+      "state": "new",
+      "target": "vm1"
+     }
+    ],
+    "provider": "google",
+    "read": {
+     "completeness": "complete",
+     "not_read": [],
+     "withheld": []
+    },
+    "targets": {
+     "vm1": {
+      "ip": "10.0.1.10",
+      "ref": "google_compute_instance.vm1"
+     }
+    }
+   },
+   "provider": "google",
+   "quote": "When not specified, the value assumed is 1000"
+  },
+  {
+   "evidence_id": "SE-google-n2ccqgtmt4jm72sp",
+   "example_id": "DOC-GCP-05",
+   "expected": {
+    "decisions": {
+     "x1": {
+      "value": "ALLOW",
+      "why": "única regra casa (a validade é que reprova)"
+     }
+    },
+    "validity": {
+     "value": "INVALID"
+    }
+   },
+   "fixture": {
+    "config": {
+     "resources": [
+      {
+       "name": "net",
+       "type": "google_compute_network",
+       "values": {
+        "auto_create_subnetworks": false,
+        "name": "fx-net"
+       }
+      },
+      {
+       "name": "a",
+       "type": "google_compute_firewall",
+       "values": {
+        "allow": [
+         {
+          "ports": [
+           "22"
+          ],
+          "protocol": "tcp"
+         }
+        ],
+        "direction": "INGRESS",
+        "name": "fx-a",
+        "network": "ref:google_compute_network.net",
+        "priority": 70000,
+        "source_ranges": [
+         "0.0.0.0/0"
+        ],
+        "target_tags": [
+         "web"
+        ]
+       }
+      },
+      {
+       "name": "vm1",
+       "type": "google_compute_instance",
+       "values": {
+        "network_interface": [
+         {
+          "network": "ref:google_compute_network.net"
+         }
+        ],
+        "tags": [
+         "web"
+        ]
+       }
+      }
+     ]
+    },
+    "fixture_id": "DOC-GCP-05",
+    "flows": [
+     {
+      "direction": "ingress",
+      "flow_id": "x1",
+      "port": 22,
+      "protocol": "tcp",
+      "remote": "203.0.113.5",
+      "state": "new",
+      "target": "vm1"
+     }
+    ],
+    "provider": "google",
+    "read": {
+     "completeness": "complete",
+     "not_read": [],
+     "withheld": []
+    },
+    "targets": {
+     "vm1": {
+      "ip": "10.0.1.10",
+      "ref": "google_compute_instance.vm1"
+     }
+    }
+   },
+   "provider": "google",
+   "quote": "This is an integer between 0 and 65535, both inclusive"
+  },
+  {
+   "evidence_id": "SE-azurerm-hfppj5whireqkdcl",
+   "example_id": "DOC-AZ-01",
+   "expected": {
+    "decisions": {
+     "x1": {
+      "value": "DENY",
+      "why": "100 antes de 200"
+     }
+    },
+    "validity": {
+     "value": "VALID"
+    }
+   },
+   "fixture": {
+    "config": {
+     "resources": [
+      {
+       "name": "web",
+       "type": "azurerm_network_security_group",
+       "values": {
+        "location": "fixture",
+        "name": "fx-web",
+        "resource_group_name": "fx-rg",
+        "security_rule": [
+         {
+          "access": "Deny",
+          "destination_address_prefix": "*",
+          "destination_port_range": "22",
+          "direction": "Inbound",
+          "name": "d",
+          "priority": 100,
+          "protocol": "Tcp",
+          "source_address_prefix": "*",
+          "source_port_range": "*"
+         },
+         {
+          "access": "Allow",
+          "destination_address_prefix": "*",
+          "destination_port_range": "22",
+          "direction": "Inbound",
+          "name": "a",
+          "priority": 200,
+          "protocol": "Tcp",
+          "source_address_prefix": "203.0.113.0/24",
+          "source_port_range": "*"
+         }
+        ]
+       }
+      },
+      {
+       "name": "sa",
+       "type": "azurerm_subnet",
+       "values": {
+        "name": "fx-sa"
+       }
+      },
+      {
+       "name": "nic1",
+       "type": "azurerm_network_interface",
+       "values": {
+        "ip_configuration": [
+         {
+          "name": "ipc",
+          "subnet_id": "ref:azurerm_subnet.sa"
+         }
+        ]
+       }
+      },
+      {
+       "name": "vm1",
+       "type": "azurerm_linux_virtual_machine",
+       "values": {
+        "network_interface_ids": [
+         "ref:azurerm_network_interface.nic1"
+        ]
+       }
+      },
+      {
+       "name": "nic_web",
+       "type": "azurerm_network_interface_security_group_association",
+       "values": {
+        "network_interface_id": "ref:azurerm_network_interface.nic1",
+        "network_security_group_id": "ref:azurerm_network_security_group.web"
+       }
+      }
+     ]
+    },
+    "fixture_id": "DOC-AZ-01",
+    "flows": [
+     {
+      "direction": "ingress",
+      "flow_id": "x1",
+      "port": 22,
+      "protocol": "tcp",
+      "remote": "203.0.113.5",
+      "state": "new",
+      "target": "vm1"
+     }
+    ],
+    "provider": "azurerm",
+    "read": {
+     "completeness": "complete",
+     "not_read": [],
+     "withheld": []
+    },
+    "targets": {
+     "vm1": {
+      "ip": "10.0.1.10",
+      "ref": "azurerm_linux_virtual_machine.vm1"
+     }
+    }
+   },
+   "provider": "azurerm",
+   "quote": "The lower the priority number, the higher the priority of the rule"
+  },
+  {
+   "evidence_id": "SE-azurerm-hfppj5whireqkdcl",
+   "example_id": "DOC-AZ-02",
+   "expected": {
+    "decisions": {
+     "x1": {
+      "value": "ALLOW",
+      "why": "única regra casa (a validade é que reprova)"
+     }
+    },
+    "validity": {
+     "value": "INVALID"
+    }
+   },
+   "fixture": {
+    "config": {
+     "resources": [
+      {
+       "name": "web",
+       "type": "azurerm_network_security_group",
+       "values": {
+        "location": "fixture",
+        "name": "fx-web",
+        "resource_group_name": "fx-rg",
+        "security_rule": [
+         {
+          "access": "Allow",
+          "destination_address_prefix": "*",
+          "destination_port_range": "22",
+          "direction": "Inbound",
+          "name": "a",
+          "priority": 50,
+          "protocol": "Tcp",
+          "source_address_prefix": "*",
+          "source_port_range": "*"
+         }
+        ]
+       }
+      },
+      {
+       "name": "sa",
+       "type": "azurerm_subnet",
+       "values": {
+        "name": "fx-sa"
+       }
+      },
+      {
+       "name": "nic1",
+       "type": "azurerm_network_interface",
+       "values": {
+        "ip_configuration": [
+         {
+          "name": "ipc",
+          "subnet_id": "ref:azurerm_subnet.sa"
+         }
+        ]
+       }
+      },
+      {
+       "name": "vm1",
+       "type": "azurerm_linux_virtual_machine",
+       "values": {
+        "network_interface_ids": [
+         "ref:azurerm_network_interface.nic1"
+        ]
+       }
+      },
+      {
+       "name": "nic_web",
+       "type": "azurerm_network_interface_security_group_association",
+       "values": {
+        "network_interface_id": "ref:azurerm_network_interface.nic1",
+        "network_security_group_id": "ref:azurerm_network_security_group.web"
+       }
+      }
+     ]
+    },
+    "fixture_id": "DOC-AZ-02",
+    "flows": [
+     {
+      "direction": "ingress",
+      "flow_id": "x1",
+      "port": 22,
+      "protocol": "tcp",
+      "remote": "203.0.113.5",
+      "state": "new",
+      "target": "vm1"
+     }
+    ],
+    "provider": "azurerm",
+    "read": {
+     "completeness": "complete",
+     "not_read": [],
+     "withheld": []
+    },
+    "targets": {
+     "vm1": {
+      "ip": "10.0.1.10",
+      "ref": "azurerm_linux_virtual_machine.vm1"
+     }
+    }
+   },
+   "provider": "azurerm",
+   "quote": "The value can be between 100 and 4096"
+  },
+  {
+   "evidence_id": "SE-azurerm-hfppj5whireqkdcl",
+   "example_id": "DOC-AZ-03",
+   "expected": {
+    "decisions": {
+     "x1": {
+      "value": "ALLOW",
+      "why": "só a regra 22 casa"
+     }
+    },
+    "validity": {
+     "value": "INVALID"
+    }
+   },
+   "fixture": {
+    "config": {
+     "resources": [
+      {
+       "name": "web",
+       "type": "azurerm_network_security_group",
+       "values": {
+        "location": "fixture",
+        "name": "fx-web",
+        "resource_group_name": "fx-rg",
+        "security_rule": [
+         {
+          "access": "Allow",
+          "destination_address_prefix": "*",
+          "destination_port_range": "22",
+          "direction": "Inbound",
+          "name": "a",
+          "priority": 300,
+          "protocol": "Tcp",
+          "source_address_prefix": "*",
+          "source_port_range": "*"
+         },
+         {
+          "access": "Allow",
+          "destination_address_prefix": "*",
+          "destination_port_range": "443",
+          "direction": "Inbound",
+          "name": "b",
+          "priority": 300,
+          "protocol": "Tcp",
+          "source_address_prefix": "*",
+          "source_port_range": "*"
+         }
+        ]
+       }
+      },
+      {
+       "name": "sa",
+       "type": "azurerm_subnet",
+       "values": {
+        "name": "fx-sa"
+       }
+      },
+      {
+       "name": "nic1",
+       "type": "azurerm_network_interface",
+       "values": {
+        "ip_configuration": [
+         {
+          "name": "ipc",
+          "subnet_id": "ref:azurerm_subnet.sa"
+         }
+        ]
+       }
+      },
+      {
+       "name": "vm1",
+       "type": "azurerm_linux_virtual_machine",
+       "values": {
+        "network_interface_ids": [
+         "ref:azurerm_network_interface.nic1"
+        ]
+       }
+      },
+      {
+       "name": "nic_web",
+       "type": "azurerm_network_interface_security_group_association",
+       "values": {
+        "network_interface_id": "ref:azurerm_network_interface.nic1",
+        "network_security_group_id": "ref:azurerm_network_security_group.web"
+       }
+      }
+     ]
+    },
+    "fixture_id": "DOC-AZ-03",
+    "flows": [
+     {
+      "direction": "ingress",
+      "flow_id": "x1",
+      "port": 22,
+      "protocol": "tcp",
+      "remote": "203.0.113.5",
+      "state": "new",
+      "target": "vm1"
+     }
+    ],
+    "provider": "azurerm",
+    "read": {
+     "completeness": "complete",
+     "not_read": [],
+     "withheld": []
+    },
+    "targets": {
+     "vm1": {
+      "ip": "10.0.1.10",
+      "ref": "azurerm_linux_virtual_machine.vm1"
+     }
+    }
+   },
+   "provider": "azurerm",
+   "quote": "The priority number must be unique for each rule in the collection"
+  },
+  {
+   "evidence_id": "SE-azurerm-x42gvfavlctlsm6r",
+   "example_id": "DOC-AZ-04",
+   "expected": {
+    "decisions": {
+     "x1": {
+      "value": "DENY",
+      "why": "access = Deny"
+     }
+    },
+    "validity": {
+     "value": "VALID"
+    }
+   },
+   "fixture": {
+    "config": {
+     "resources": [
+      {
+       "name": "web",
+       "type": "azurerm_network_security_group",
+       "values": {
+        "location": "fixture",
+        "name": "fx-web",
+        "resource_group_name": "fx-rg",
+        "security_rule": [
+         {
+          "access": "Deny",
+          "destination_address_prefix": "*",
+          "destination_port_range": "22",
+          "direction": "Inbound",
+          "name": "d",
+          "priority": 100,
+          "protocol": "Tcp",
+          "source_address_prefix": "*",
+          "source_port_range": "*"
+         }
+        ]
+       }
+      },
+      {
+       "name": "sa",
+       "type": "azurerm_subnet",
+       "values": {
+        "name": "fx-sa"
+       }
+      },
+      {
+       "name": "nic1",
+       "type": "azurerm_network_interface",
+       "values": {
+        "ip_configuration": [
+         {
+          "name": "ipc",
+          "subnet_id": "ref:azurerm_subnet.sa"
+         }
+        ]
+       }
+      },
+      {
+       "name": "vm1",
+       "type": "azurerm_linux_virtual_machine",
+       "values": {
+        "network_interface_ids": [
+         "ref:azurerm_network_interface.nic1"
+        ]
+       }
+      },
+      {
+       "name": "nic_web",
+       "type": "azurerm_network_interface_security_group_association",
+       "values": {
+        "network_interface_id": "ref:azurerm_network_interface.nic1",
+        "network_security_group_id": "ref:azurerm_network_security_group.web"
+       }
+      }
+     ]
+    },
+    "fixture_id": "DOC-AZ-04",
+    "flows": [
+     {
+      "direction": "ingress",
+      "flow_id": "x1",
+      "port": 22,
+      "protocol": "tcp",
+      "remote": "203.0.113.5",
+      "state": "new",
+      "target": "vm1"
+     }
+    ],
+    "provider": "azurerm",
+    "read": {
+     "completeness": "complete",
+     "not_read": [],
+     "withheld": []
+    },
+    "targets": {
+     "vm1": {
+      "ip": "10.0.1.10",
+      "ref": "azurerm_linux_virtual_machine.vm1"
+     }
+    }
+   },
+   "provider": "azurerm",
+   "quote": "Possible values are `Allow` and `Deny`"
+  },
+  {
+   "evidence_id": "SE-oci-bp7mulbmn76camow",
+   "example_id": "DOC-OCI-01",
+   "expected": {
+    "decisions": {
+     "x1": {
+      "value": "ALLOW",
+      "why": "entrada 80"
+     },
+     "x1r": {
+      "value": "ALLOW",
+      "why": "a regra de saída com porta de origem 80 deixa o retorno passar"
+     }
+    },
+    "validity": {
+     "value": "VALID"
+    }
+   },
+   "fixture": {
+    "config": {
+     "resources": [
+      {
+       "name": "web",
+       "type": "oci_core_security_list",
+       "values": {
+        "compartment_id": "ref:oci_identity_compartment.fx",
+        "egress_security_rules": [
+         {
+          "destination": "203.0.113.0/24",
+          "protocol": "6",
+          "stateless": true,
+          "tcp_options": {
+           "source_port_range": {
+            "max": 80,
+            "min": 80
+           }
+          }
+         }
+        ],
+        "ingress_security_rules": [
+         {
+          "protocol": "6",
+          "source": "203.0.113.0/24",
+          "stateless": true,
+          "tcp_options": {
+           "max": 80,
+           "min": 80
+          }
+         }
+        ],
+        "vcn_id": "ref:oci_core_vcn.fx"
+       }
+      },
+      {
+       "name": "sa",
+       "type": "oci_core_subnet",
+       "values": {
+        "security_list_ids": [
+         "ref:oci_core_security_list.web"
+        ]
+       }
+      },
+      {
+       "name": "vm1",
+       "type": "oci_core_instance",
+       "values": {
+        "create_vnic_details": {
+         "subnet_id": "ref:oci_core_subnet.sa"
+        }
+       }
+      }
+     ]
+    },
+    "fixture_id": "DOC-OCI-01",
+    "flows": [
+     {
+      "direction": "ingress",
+      "flow_id": "x1",
+      "port": 80,
+      "protocol": "tcp",
+      "remote": "203.0.113.5",
+      "state": "new",
+      "target": "vm1"
+     },
+     {
+      "flow_id": "x1r",
+      "of": "x1",
+      "reply_port": 49152,
+      "state": "return",
+      "target": "vm1"
+     }
+    ],
+    "provider": "oci",
+    "read": {
+     "completeness": "complete",
+     "not_read": [],
+     "withheld": []
+    },
+    "targets": {
+     "vm1": {
+      "ip": "10.0.1.10",
+      "ref": "oci_core_instance.vm1"
+     }
+    }
+   },
+   "provider": "oci",
+   "quote": "if ingress traffic allows TCP destination port 80, there should be an egress rule to allow TCP source port 80"
+  },
+  {
+   "evidence_id": "SE-oci-bp7mulbmn76camow",
+   "example_id": "DOC-OCI-02",
+   "expected": {
+    "decisions": {
+     "x1": {
+      "value": "ALLOW",
+      "why": "entrada 80"
+     },
+     "x1r": {
+      "value": "DENY",
+      "why": "sem a regra inversa, o retorno não passa"
+     }
+    },
+    "validity": {
+     "value": "VALID"
+    }
+   },
+   "fixture": {
+    "config": {
+     "resources": [
+      {
+       "name": "web",
+       "type": "oci_core_security_list",
+       "values": {
+        "compartment_id": "ref:oci_identity_compartment.fx",
+        "egress_security_rules": [],
+        "ingress_security_rules": [
+         {
+          "protocol": "6",
+          "source": "203.0.113.0/24",
+          "stateless": true,
+          "tcp_options": {
+           "max": 80,
+           "min": 80
+          }
+         }
+        ],
+        "vcn_id": "ref:oci_core_vcn.fx"
+       }
+      },
+      {
+       "name": "sa",
+       "type": "oci_core_subnet",
+       "values": {
+        "security_list_ids": [
+         "ref:oci_core_security_list.web"
+        ]
+       }
+      },
+      {
+       "name": "vm1",
+       "type": "oci_core_instance",
+       "values": {
+        "create_vnic_details": {
+         "subnet_id": "ref:oci_core_subnet.sa"
+        }
+       }
+      }
+     ]
+    },
+    "fixture_id": "DOC-OCI-02",
+    "flows": [
+     {
+      "direction": "ingress",
+      "flow_id": "x1",
+      "port": 80,
+      "protocol": "tcp",
+      "remote": "203.0.113.5",
+      "state": "new",
+      "target": "vm1"
+     },
+     {
+      "flow_id": "x1r",
+      "of": "x1",
+      "reply_port": 49152,
+      "state": "return",
+      "target": "vm1"
+     }
+    ],
+    "provider": "oci",
+    "read": {
+     "completeness": "complete",
+     "not_read": [],
+     "withheld": []
+    },
+    "targets": {
+     "vm1": {
+      "ip": "10.0.1.10",
+      "ref": "oci_core_instance.vm1"
+     }
+    }
+   },
+   "provider": "oci",
+   "quote": "A stateless rule allows traffic in one direction"
+  },
+  {
+   "evidence_id": "SE-oci-3ihxku562hxrgq4b",
+   "example_id": "DOC-OCI-03",
+   "expected": {
+    "decisions": {
+     "x1": {
+      "value": "ALLOW",
+      "why": "saída 80"
+     },
+     "x1r": {
+      "value": "ALLOW",
+      "why": "regra com estado: não precisa da regra inversa"
+     }
+    },
+    "validity": {
+     "value": "VALID"
+    }
+   },
+   "fixture": {
+    "config": {
+     "resources": [
+      {
+       "name": "web",
+       "type": "oci_core_security_list",
+       "values": {
+        "compartment_id": "ref:oci_identity_compartment.fx",
+        "egress_security_rules": [
+         {
+          "destination": "0.0.0.0/0",
+          "protocol": "6",
+          "tcp_options": {
+           "max": 80,
+           "min": 80
+          }
+         }
+        ],
+        "ingress_security_rules": [],
+        "vcn_id": "ref:oci_core_vcn.fx"
+       }
+      },
+      {
+       "name": "sa",
+       "type": "oci_core_subnet",
+       "values": {
+        "security_list_ids": [
+         "ref:oci_core_security_list.web"
+        ]
+       }
+      },
+      {
+       "name": "vm1",
+       "type": "oci_core_instance",
+       "values": {
+        "create_vnic_details": {
+         "subnet_id": "ref:oci_core_subnet.sa"
+        }
+       }
+      }
+     ]
+    },
+    "fixture_id": "DOC-OCI-03",
+    "flows": [
+     {
+      "direction": "egress",
+      "flow_id": "x1",
+      "port": 80,
+      "protocol": "tcp",
+      "remote": "198.51.100.7",
+      "state": "new",
+      "target": "vm1"
+     },
+     {
+      "flow_id": "x1r",
+      "of": "x1",
+      "reply_port": 49152,
+      "state": "return",
+      "target": "vm1"
+     }
+    ],
+    "provider": "oci",
+    "read": {
+     "completeness": "complete",
+     "not_read": [],
+     "withheld": []
+    },
+    "targets": {
+     "vm1": {
+      "ip": "10.0.1.10",
+      "ref": "oci_core_instance.vm1"
+     }
+    }
+   },
+   "provider": "oci",
+   "quote": "Defaults to false, which means the rule is stateful and a corresponding rule is not necessary"
+  },
+  {
+   "evidence_id": "SE-aws-jcsq5zrpnuvxzaxv",
+   "example_id": "DOC-AWS-01",
+   "expected": {
+    "decisions": {
+     "x1": {
+      "value": "DENY",
+      "why": "bloco sem cidr_blocks bloqueia"
+     }
+    },
+    "validity": {
+     "value": "VALID"
+    }
+   },
+   "fixture": {
+    "config": {
+     "resources": [
+      {
+       "name": "web",
+       "type": "aws_security_group",
+       "values": {
+        "description": "fixture sintética",
+        "ingress": [
+         {
+          "from_port": 22,
+          "protocol": "tcp",
+          "to_port": 22
+         }
+        ],
+        "name": "fx-web"
+       }
+      },
+      {
+       "name": "vm1",
+       "type": "aws_instance",
+       "values": {
+        "vpc_security_group_ids": [
+         "ref:aws_security_group.web"
+        ]
+       }
+      }
+     ]
+    },
+    "fixture_id": "DOC-AWS-01",
+    "flows": [
+     {
+      "direction": "ingress",
+      "flow_id": "x1",
+      "port": 22,
+      "protocol": "tcp",
+      "remote": "203.0.113.5",
+      "state": "new",
+      "target": "vm1"
+     }
+    ],
+    "provider": "aws",
+    "read": {
+     "completeness": "complete",
+     "not_read": [],
+     "withheld": []
+    },
+    "targets": {
+     "vm1": {
+      "ip": "10.0.1.10",
+      "ref": "aws_instance.vm1"
+     }
+    }
+   },
+   "provider": "aws",
+   "quote": "If nothing is specified, traffic will be blocked"
+  },
+  {
+   "evidence_id": "SE-aws-jcsq5zrpnuvxzaxv",
+   "example_id": "DOC-AWS-02",
+   "expected": {
+    "decisions": {
+     "x1": {
+      "value": "DENY",
+      "why": "sem bloco egress, a saída padrão foi removida"
+     }
+    },
+    "validity": {
+     "value": "VALID"
+    }
+   },
+   "fixture": {
+    "config": {
+     "resources": [
+      {
+       "name": "web",
+       "type": "aws_security_group",
+       "values": {
+        "description": "fixture sintética",
+        "ingress": [
+         {
+          "cidr_blocks": [
+           "203.0.113.0/24"
+          ],
+          "from_port": 22,
+          "protocol": "tcp",
+          "to_port": 22
+         }
+        ],
+        "name": "fx-web"
+       }
+      },
+      {
+       "name": "vm1",
+       "type": "aws_instance",
+       "values": {
+        "vpc_security_group_ids": [
+         "ref:aws_security_group.web"
+        ]
+       }
+      }
+     ]
+    },
+    "fixture_id": "DOC-AWS-02",
+    "flows": [
+     {
+      "direction": "egress",
+      "flow_id": "x1",
+      "port": 443,
+      "protocol": "tcp",
+      "remote": "198.51.100.7",
+      "state": "new",
+      "target": "vm1"
+     }
+    ],
+    "provider": "aws",
+    "read": {
+     "completeness": "complete",
+     "not_read": [],
+     "withheld": []
+    },
+    "targets": {
+     "vm1": {
+      "ip": "10.0.1.10",
+      "ref": "aws_instance.vm1"
+     }
+    }
+   },
+   "provider": "aws",
+   "quote": "Terraform removes this default rule"
+  }
+ ],
+ "schema": "bo.pilot_net.documented_examples/1"
+}

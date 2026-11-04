@@ -1,0 +1,458 @@
+{
+  "schema": "bo.pilot_net.semantics_profile/1",
+  "module": "PILOT-NET-ORACLE",
+  "note": "Semântica de decisão por provedor usada pelo oráculo. Cada parâmetro tem valor, nível e evidência. Nível 'published' e 'derived' vêm do SERVICE-EVIDENCE (C25) como estão lá; 'oracle_derived' é derivação deste módulo a partir de linhas publicadas, com a base escrita; 'interpreted' vem do SERVICE-EVIDENCE e 'unknown' é ausência de evidência. Parâmetro com nível fora da leitura vira ponto de escolha: o avaliador decide sob todos os valores possíveis e só responde se todos concordam (senão UNKNOWN, código MISSING_EVIDENCE). Nenhum valor é assumido por omissão.",
+  "readings": {
+    "strict": [
+      "published",
+      "derived"
+    ],
+    "default": [
+      "published",
+      "derived",
+      "oracle_derived"
+    ],
+    "lenient": [
+      "published",
+      "derived",
+      "oracle_derived",
+      "interpreted"
+    ]
+  },
+  "expected_answers_reading": "default",
+  "params": {
+    "neutral": {
+      "doc": "vocabulário independente dos compromissos C24 (rule_set, filter_rule, flow); a semântica vem dos atributos da fixture",
+      "allow_only.effect": {
+        "value": "allow",
+        "level": "published",
+        "evidence": [
+          "C24:REQ-NET-01"
+        ],
+        "basis": "avaliação allow_only = lista de permissão (definição do REQ-NET-01)"
+      },
+      "allow_only.no_match": {
+        "value": "deny",
+        "level": "published",
+        "evidence": [
+          "C24:REQ-NET-01",
+          "C24:CMT-FW-N03"
+        ],
+        "basis": "lista de permissão: o que nenhuma regra permite não é permitido (CMT-FW-N03)"
+      },
+      "priority.order": {
+        "value": "lower_value_first",
+        "level": "published",
+        "evidence": [
+          "C24:CMT-FW-P04"
+        ],
+        "basis": "o compromisso chama de maior precedência a regra de número 100 frente à de 200"
+      },
+      "priority.tie_break": {
+        "value": null,
+        "level": "unknown",
+        "evidence": [
+          "C24:CMT-FW-U02"
+        ],
+        "values": [
+          "deny_over_allow",
+          "allow_over_deny"
+        ]
+      },
+      "priority.no_match": {
+        "value": null,
+        "level": "unknown",
+        "evidence": [],
+        "values": [
+          "allow",
+          "deny"
+        ]
+      },
+      "state.default": {
+        "value": null,
+        "level": "unknown",
+        "evidence": [
+          "C24:CMT-FW-U03"
+        ],
+        "values": [
+          "stateful",
+          "stateless"
+        ]
+      },
+      "combination": {
+        "value": null,
+        "level": "unknown",
+        "evidence": [],
+        "values": [
+          "all_must_allow",
+          "any_allows"
+        ]
+      }
+    },
+    "aws": {
+      "doc": "aws_security_group e regras separadas (aws_vpc_security_group_ingress_rule/egress_rule, aws_security_group_rule)",
+      "evaluation": {
+        "value": "allow_only",
+        "level": "oracle_derived",
+        "evidence": [
+          "SE-aws-bsnn5lqnhwnjfh23",
+          "SE-aws-jcsq5zrpnuvxzaxv"
+        ],
+        "basis": "o bloco de regra referencia IpPermission (permissão) e não tem atributo de efeito; a única regra padrão citada é 'ALLOW ALL egress rule', escrita no mesmo bloco egress; as linhas de efeito das regras separadas estão unknown (SE-aws-wzlaqxutpngxcu2k, SE-aws-q6fiit3gttied36j)",
+        "values": [
+          "allow_only",
+          "priority_allow_deny"
+        ]
+      },
+      "allow_only.no_match": {
+        "value": "deny",
+        "level": "published",
+        "evidence": [
+          "SE-aws-jcsq5zrpnuvxzaxv"
+        ],
+        "basis": "'If nothing is specified, traffic will be blocked'",
+        "values": [
+          "allow",
+          "deny"
+        ]
+      },
+      "default_egress_rule": {
+        "value": "removed_by_terraform",
+        "level": "published",
+        "evidence": [
+          "SE-aws-jcsq5zrpnuvxzaxv"
+        ],
+        "basis": "'Terraform removes this default rule': sem bloco egress, não há permissão de saída"
+      },
+      "precedence": {
+        "value": null,
+        "level": "unknown",
+        "evidence": [
+          "SE-aws-j2ng7j2efz55qh6h",
+          "SE-aws-nm6n3a3sczx3ob7z",
+          "SE-aws-xvqcliw4wicvlghf"
+        ],
+        "values": [
+          "union"
+        ],
+        "basis": "sem evidência, mas com só permissão a decisão não depende de ordem: o único valor possível do efeito combinado é a união"
+      },
+      "state.default": {
+        "value": null,
+        "level": "unknown",
+        "evidence": [
+          "SE-aws-ys4irutgmpm2h6os",
+          "SE-aws-uz6oqvxnc7cofhvp",
+          "SE-aws-tapxdlgs26uifflt"
+        ],
+        "values": [
+          "stateful",
+          "stateless"
+        ],
+        "basis": "o SERVICE-EVIDENCE não documenta o estado de conexão do grupo de segurança; o oráculo não assume 'com estado'"
+      },
+      "combination": {
+        "value": null,
+        "level": "unknown",
+        "evidence": [],
+        "values": [
+          "all_must_allow",
+          "any_allows"
+        ]
+      },
+      "no_set_applies": {
+        "value": null,
+        "level": "unknown",
+        "evidence": [],
+        "values": [
+          "allow",
+          "deny"
+        ]
+      }
+    },
+    "google": {
+      "doc": "google_compute_firewall: uma regra por recurso; o conjunto é a rede",
+      "evaluation": {
+        "value": "priority_allow_deny",
+        "level": "published",
+        "evidence": [
+          "SE-google-iasfqf3ocxmoevym",
+          "SE-google-xdqcqcyrrh2jrehq",
+          "SE-google-n2ccqgtmt4jm72sp"
+        ]
+      },
+      "priority.order": {
+        "value": "lower_value_first",
+        "level": "published",
+        "evidence": [
+          "SE-google-n2ccqgtmt4jm72sp"
+        ]
+      },
+      "priority.range": {
+        "value": [
+          0,
+          65535
+        ],
+        "level": "published",
+        "evidence": [
+          "SE-google-dcmc4qigsgr3wxue"
+        ]
+      },
+      "priority.default": {
+        "value": 1000,
+        "level": "published",
+        "evidence": [
+          "SE-google-dcmc4qigsgr3wxue"
+        ]
+      },
+      "priority.tie_break": {
+        "value": "deny_over_allow",
+        "level": "published",
+        "evidence": [
+          "SE-google-t45d32hahm5ikdc3"
+        ]
+      },
+      "priority.no_match.ingress": {
+        "value": "deny",
+        "level": "interpreted",
+        "evidence": [
+          "SE-google-yz5xmhx36uyxkd2x"
+        ],
+        "values": [
+          "allow",
+          "deny"
+        ],
+        "basis": "regras implícitas são leitura interpretada: a frase não diz a prioridade"
+      },
+      "priority.no_match.egress": {
+        "value": "allow",
+        "level": "interpreted",
+        "evidence": [
+          "SE-google-yz5xmhx36uyxkd2x"
+        ],
+        "values": [
+          "allow",
+          "deny"
+        ]
+      },
+      "state.default": {
+        "value": null,
+        "level": "unknown",
+        "evidence": [
+          "SE-google-zpvpswcdzblhsngy"
+        ],
+        "values": [
+          "stateful",
+          "stateless"
+        ]
+      },
+      "target.no_selector": {
+        "value": null,
+        "level": "unknown",
+        "evidence": [],
+        "values": [
+          "applies",
+          "not_applies"
+        ],
+        "basis": "regra sem target_tags: a aplicação a todas as instâncias da rede não tem evidência aqui"
+      },
+      "combination": {
+        "value": "single_set",
+        "level": "oracle_derived",
+        "evidence": [
+          "SE-google-n2ccqgtmt4jm72sp"
+        ],
+        "basis": "todas as regras da mesma rede competem numa só ordem de prioridade",
+        "values": [
+          "single_set",
+          "all_must_allow",
+          "any_allows"
+        ]
+      }
+    },
+    "azurerm": {
+      "doc": "azurerm_network_security_group (security_rule embutido) e azurerm_network_security_rule; associação à NIC ou à sub-rede",
+      "evaluation": {
+        "value": "priority_allow_deny",
+        "level": "published",
+        "evidence": [
+          "SE-azurerm-x42gvfavlctlsm6r",
+          "SE-azurerm-hfppj5whireqkdcl"
+        ]
+      },
+      "priority.order": {
+        "value": "lower_value_first",
+        "level": "published",
+        "evidence": [
+          "SE-azurerm-hfppj5whireqkdcl"
+        ]
+      },
+      "priority.range": {
+        "value": [
+          100,
+          4096
+        ],
+        "level": "published",
+        "evidence": [
+          "SE-azurerm-hfppj5whireqkdcl"
+        ]
+      },
+      "priority.unique": {
+        "value": "collection",
+        "level": "published",
+        "evidence": [
+          "SE-azurerm-hfppj5whireqkdcl"
+        ],
+        "basis": "'must be unique for each rule in the collection': mesma prioridade na mesma direção é inválida; em direções diferentes a frase não decide se 'coleção' é o NSG ou a direção (validade UNKNOWN)"
+      },
+      "priority.tie_break": {
+        "value": null,
+        "level": "unknown",
+        "evidence": [
+          "SE-azurerm-hfppj5whireqkdcl"
+        ],
+        "values": [
+          "deny_over_allow",
+          "allow_over_deny"
+        ],
+        "basis": "prioridade repetida é configuração inválida pela doc; se o provedor aceitasse, o desempate não tem evidência"
+      },
+      "priority.no_match": {
+        "value": null,
+        "level": "unknown",
+        "evidence": [
+          "SE-azurerm-yelp5ccfl34shpfr",
+          "SE-azurerm-2hs367zqbbxryvni"
+        ],
+        "values": [
+          "allow",
+          "deny"
+        ],
+        "basis": "regras padrão do NSG não estão no SERVICE-EVIDENCE"
+      },
+      "service_tag": {
+        "value": null,
+        "level": "unknown",
+        "evidence": [],
+        "values": [
+          "matches",
+          "not_matches"
+        ],
+        "basis": "prefixo por etiqueta de serviço (VirtualNetwork, Internet, ...) sem evidência de extensão"
+      },
+      "state.default": {
+        "value": null,
+        "level": "unknown",
+        "evidence": [
+          "SE-azurerm-x6ikfm2ljwnl4tca",
+          "SE-azurerm-dho4keyi7qtwpcsd"
+        ],
+        "values": [
+          "stateful",
+          "stateless"
+        ]
+      },
+      "combination": {
+        "value": null,
+        "level": "unknown",
+        "evidence": [],
+        "values": [
+          "all_must_allow",
+          "any_allows"
+        ],
+        "basis": "NSG na NIC e na sub-rede ao mesmo tempo: a combinação não tem evidência aqui"
+      }
+    },
+    "oci": {
+      "doc": "oci_core_security_list (regras embutidas, ligada à sub-rede) e oci_core_network_security_group(_security_rule) (regras separadas, ligado à VNIC)",
+      "evaluation": {
+        "value": "allow_only",
+        "level": "oracle_derived",
+        "evidence": [
+          "SE-oci-bp7mulbmn76camow",
+          "SE-oci-3ihxku562hxrgq4b"
+        ],
+        "basis": "'A stateless rule allows traffic in one direction': regra permite; não há atributo de efeito; as linhas de efeito estão unknown (SE-oci-bspv6mnqo62q4rry, SE-oci-lxk4kh66cqaee2kd)",
+        "values": [
+          "allow_only",
+          "priority_allow_deny"
+        ]
+      },
+      "allow_only.no_match": {
+        "value": "deny",
+        "level": "oracle_derived",
+        "evidence": [
+          "SE-oci-bp7mulbmn76camow",
+          "SE-oci-3ihxku562hxrgq4b"
+        ],
+        "basis": "'Remember to add a corresponding stateless rule in the other direction if you need to support bidirectional traffic': sem regra, o tráfego não passa",
+        "values": [
+          "allow",
+          "deny"
+        ]
+      },
+      "state.security_list": {
+        "value": "per_rule_default_stateful",
+        "level": "published",
+        "evidence": [
+          "SE-oci-bp7mulbmn76camow",
+          "SE-oci-3ihxku562hxrgq4b"
+        ],
+        "basis": "'Defaults to false, which means the rule is stateful'"
+      },
+      "state.nsg_rule": {
+        "value": "per_rule_default_stateful",
+        "level": "oracle_derived",
+        "evidence": [
+          "SE-oci-cxwuvxzhyrwz3j6f",
+          "SE-oci-3ihxku562hxrgq4b"
+        ],
+        "values": [
+          "per_rule_default_stateful",
+          "UNKNOWN"
+        ],
+        "basis": "a linha do NSG é interpretada no SERVICE-EVIDENCE; a frase da doc do NSG é idêntica à da security list, publicada em SE-oci-3ihxku562hxrgq4b. Na leitura strict o estado da regra de NSG é UNKNOWN"
+      },
+      "stateless_reverse_rule": {
+        "value": "required",
+        "level": "published",
+        "evidence": [
+          "SE-oci-bp7mulbmn76camow",
+          "SE-oci-3ihxku562hxrgq4b"
+        ],
+        "basis": "'if ingress traffic allows TCP destination port 80, there should be an egress rule to allow TCP source port 80'"
+      },
+      "overlap_stateful_stateless": {
+        "value": null,
+        "level": "unknown",
+        "evidence": [],
+        "values": [
+          "tracked",
+          "untracked"
+        ],
+        "basis": "pacote que casa regra com estado e regra sem estado: o rastreio não tem evidência aqui"
+      },
+      "combination": {
+        "value": null,
+        "level": "unknown",
+        "evidence": [],
+        "values": [
+          "all_must_allow",
+          "any_allows"
+        ],
+        "basis": "security list na sub-rede e NSG na VNIC ao mesmo tempo"
+      },
+      "precedence": {
+        "value": null,
+        "level": "unknown",
+        "evidence": [
+          "SE-oci-rbvbgcr2q3u6qx22",
+          "SE-oci-5llse36ktmmaij6k"
+        ],
+        "values": [
+          "union"
+        ]
+      }
+    }
+  }
+}

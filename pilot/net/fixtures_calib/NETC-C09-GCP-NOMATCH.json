@@ -1,0 +1,167 @@
+{
+ "case": "NET-C09",
+ "check": {
+  "assertion": "decision(f2) = UNKNOWN AND decision(f4) = UNKNOWN",
+  "kind": "unknown"
+ },
+ "commitment_ids": [
+  "CMT-FW-U01"
+ ],
+ "config": {
+  "resources": [
+   {
+    "name": "net",
+    "type": "google_compute_network",
+    "values": {
+     "auto_create_subnetworks": false,
+     "name": "fx-net"
+    }
+   },
+   {
+    "name": "allow-web",
+    "type": "google_compute_firewall",
+    "values": {
+     "allow": [
+      {
+       "ports": [
+        "443"
+       ],
+       "protocol": "tcp"
+      }
+     ],
+     "direction": "INGRESS",
+     "name": "fx-allow-web",
+     "network": "ref:google_compute_network.net",
+     "priority": 1000,
+     "source_ranges": [
+      "203.0.113.0/24"
+     ],
+     "target_tags": [
+      "web"
+     ]
+    }
+   },
+   {
+    "name": "vm1",
+    "type": "google_compute_instance",
+    "values": {
+     "network_interface": [
+      {
+       "network": "ref:google_compute_network.net"
+      }
+     ],
+     "tags": [
+      "web"
+     ]
+    }
+   }
+  ]
+ },
+ "expected": {
+  "decisions": {
+   "f2": {
+    "code": "MISSING_EVIDENCE",
+    "value": "UNKNOWN",
+    "why": "regra implícita de entrada só interpretada (SE-google-yz5xmhx36uyxkd2x)"
+   },
+   "f4": {
+    "code": "MISSING_EVIDENCE",
+    "value": "UNKNOWN",
+    "why": "regra implícita de saída só interpretada"
+   }
+  },
+  "decomposition": [
+   {
+    "domain_unit": "rule_set",
+    "evidence": [
+     "C24:CMT-FW-P01"
+    ],
+    "kind": "ENTITY",
+    "occurrence": {
+     "set": "google_compute_network.net"
+    },
+    "parent": null,
+    "tf": {
+     "resource_type": "google_compute_network"
+    }
+   },
+   {
+    "accepted_kinds": [
+     "COMPONENT",
+     "ENTITY"
+    ],
+    "domain_unit": "filter_rule",
+    "evidence": [
+     "C24:CMT-FW-P01",
+     "SE-google-mhidfw4xa7sokciu",
+     "SE-google-mjuxwfic7ez6bfii"
+    ],
+    "kind": "COMPONENT",
+    "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+    "occurrence": {
+     "name": "fx-allow-web"
+    },
+    "parent": "google_compute_network.net",
+    "tf": {
+     "resource_type": "google_compute_firewall"
+    }
+   },
+   {
+    "domain_unit": "selection",
+    "evidence": [
+     "C24:CMT-FW-P05"
+    ],
+    "kind": "BINDING",
+    "occurrence": {
+     "label": "web",
+     "rule": "fx-allow-web"
+    },
+    "parent": null,
+    "tf": {
+     "block_path": "target_tags",
+     "resource_type": "google_compute_firewall"
+    }
+   }
+  ],
+  "validity": {
+   "value": "VALID"
+  }
+ },
+ "fixture_id": "NETC-C09-GCP-NOMATCH",
+ "flows": [
+  {
+   "direction": "ingress",
+   "flow_id": "f2",
+   "port": 22,
+   "protocol": "tcp",
+   "remote": "203.0.113.10",
+   "state": "new",
+   "target": "vm1"
+  },
+  {
+   "direction": "egress",
+   "flow_id": "f4",
+   "port": 443,
+   "protocol": "tcp",
+   "remote": "198.51.100.7",
+   "state": "new",
+   "target": "vm1"
+  }
+ ],
+ "polarity": "unknown",
+ "provider": "google",
+ "read": {
+  "completeness": "complete",
+  "not_read": [],
+  "withheld": []
+ },
+ "schema": "bo.pilot_net.fixture/1",
+ "split": "calib",
+ "summary": "firewall sem negação explícita",
+ "targets": {
+  "vm1": {
+   "ip": "10.0.1.10",
+   "ref": "google_compute_instance.vm1"
+  }
+ }
+}

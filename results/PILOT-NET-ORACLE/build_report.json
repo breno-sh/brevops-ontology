@@ -1,0 +1,502 @@
+{
+ "counts": {
+  "calib": {
+   "by_case": {
+    "NET-C01": {
+     "negative": 1,
+     "positive": 4,
+     "unknown": 1
+    },
+    "NET-C02": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 3
+    },
+    "NET-C03": {
+     "negative": 1,
+     "positive": 2,
+     "unknown": 2
+    },
+    "NET-C04": {
+     "negative": 1,
+     "positive": 3,
+     "unknown": 1
+    },
+    "NET-C05": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "NET-C06": {
+     "negative": 2,
+     "positive": 1,
+     "unknown": 1
+    },
+    "NET-C07": {
+     "negative": 1,
+     "positive": 2,
+     "unknown": 1
+    },
+    "NET-C08": {
+     "negative": 2,
+     "positive": 2,
+     "unknown": 2
+    },
+    "NET-C09": {
+     "negative": 1,
+     "positive": 2,
+     "unknown": 1
+    }
+   },
+   "by_direction": {
+    "aws->azurerm": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "aws->google": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "aws->oci": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "azurerm->aws": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "azurerm->google": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "azurerm->oci": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "google->aws": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "google->azurerm": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "google->oci": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "oci->aws": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "oci->azurerm": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "oci->google": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    }
+   },
+   "by_provider": {
+    "aws": 14,
+    "azurerm": 8,
+    "google": 11,
+    "oci": 9
+   },
+   "fixtures_in_cases": 42,
+   "fixtures_total": 42,
+   "flows_total": 97,
+   "translations_total": 36
+  },
+  "retained": {
+   "by_case": {
+    "NET-C01": {
+     "negative": 1,
+     "positive": 2,
+     "unknown": 1
+    },
+    "NET-C02": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "NET-C03": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "NET-C04": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "NET-C05": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "NET-C06": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "NET-C07": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "NET-C08": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "NET-C09": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    }
+   },
+   "by_direction": {
+    "aws->azurerm": {
+     "negative": 1,
+     "positive": 0,
+     "unknown": 1
+    },
+    "aws->google": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 0
+    },
+    "aws->oci": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 0
+    },
+    "azurerm->aws": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 0
+    },
+    "azurerm->google": {
+     "negative": 1,
+     "positive": 0,
+     "unknown": 1
+    },
+    "azurerm->oci": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 0
+    },
+    "google->aws": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 0
+    },
+    "google->azurerm": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 0
+    },
+    "google->oci": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 0
+    },
+    "oci->aws": {
+     "negative": 1,
+     "positive": 0,
+     "unknown": 1
+    },
+    "oci->azurerm": {
+     "negative": 1,
+     "positive": 0,
+     "unknown": 1
+    },
+    "oci->google": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 0
+    }
+   },
+   "by_provider": {
+    "aws": 2,
+    "azurerm": 13,
+    "google": 6,
+    "oci": 13
+   },
+   "fixtures_in_cases": 28,
+   "fixtures_total": 34,
+   "flows_total": 80,
+   "translations_total": 24
+  }
+ },
+ "documented_examples": 14,
+ "errors": [],
+ "module": "PILOT-NET-ORACLE",
+ "schema": "bo.pilot_net.build_report/1",
+ "sensitivity": {
+  "flips": [
+   {
+    "default": "ALLOW",
+    "fixture": "NETC-C01-AWS-INLINE",
+    "flow": "f1",
+    "other": "UNKNOWN",
+    "reading": "strict"
+   },
+   {
+    "default": "ALLOW",
+    "fixture": "NETC-C01-AWS-INLINE",
+    "flow": "f2",
+    "other": "UNKNOWN",
+    "reading": "strict"
+   },
+   {
+    "default": "ALLOW",
+    "fixture": "NETC-C01-AWS-SEP",
+    "flow": "f1",
+    "other": "UNKNOWN",
+    "reading": "strict"
+   },
+   {
+    "default": "ALLOW",
+    "fixture": "NETC-C01-AWS-SEP",
+    "flow": "f2",
+    "other": "UNKNOWN",
+    "reading": "strict"
+   },
+   {
+    "default": "ALLOW",
+    "fixture": "NETC-C02-OCI-STATEFUL",
+    "flow": "f1",
+    "other": "UNKNOWN",
+    "reading": "strict"
+   },
+   {
+    "default": "DENY",
+    "fixture": "NETC-C02-OCI-STATEFUL",
+    "flow": "f2",
+    "other": "UNKNOWN",
+    "reading": "strict"
+   },
+   {
+    "default": "DENY",
+    "fixture": "NETC-C02-OCI-STATEFUL",
+    "flow": "f3",
+    "other": "UNKNOWN",
+    "reading": "strict"
+   },
+   {
+    "default": "DENY",
+    "fixture": "NETC-C02-OCI-STATEFUL",
+    "flow": "f4",
+    "other": "UNKNOWN",
+    "reading": "strict"
+   },
+   {
+    "default": "ALLOW",
+    "fixture": "NETC-C02-OCI-STATEFUL",
+    "flow": "f1r",
+    "other": "UNKNOWN",
+    "reading": "strict"
+   },
+   {
+    "default": "ALLOW",
+    "fixture": "NETC-C02-AWS-RET",
+    "flow": "f1",
+    "other": "UNKNOWN",
+    "reading": "strict"
+   },
+   {
+    "default": "ALLOW",
+    "fixture": "NETC-C02-OCI-STATELESS",
+    "flow": "f1",
+    "other": "UNKNOWN",
+    "reading": "strict"
+   },
+   {
+    "default": "DENY",
+    "fixture": "NETC-C02-OCI-STATELESS",
+    "flow": "f1r",
+    "other": "UNKNOWN",
+    "reading": "strict"
+   },
+   {
+    "default": "ALLOW",
+    "fixture": "NETC-C03-OCI-MIXED-REV",
+    "flow": "f1",
+    "other": "UNKNOWN",
+    "reading": "strict"
+   },
+   {
+    "default": "ALLOW",
+    "fixture": "NETC-C03-OCI-MIXED-REV",
+    "flow": "f2",
+    "other": "UNKNOWN",
+    "reading": "strict"
+   },
+   {
+    "default": "ALLOW",
+    "fixture": "NETC-C03-OCI-MIXED-REV",
+    "flow": "f1r",
+    "other": "UNKNOWN",
+    "reading": "strict"
+   },
+   {
+    "default": "ALLOW",
+    "fixture": "NETC-C03-OCI-MIXED-REV",
+    "flow": "f2r",
+    "other": "UNKNOWN",
+    "reading": "strict"
+   },
+   {
+    "default": "ALLOW",
+    "fixture": "NETC-C03-OCI-MIXED",
+    "flow": "f1",
+    "other": "UNKNOWN",
+    "reading": "strict"
+   },
+   {
+    "default": "ALLOW",
+    "fixture": "NETC-C03-OCI-MIXED",
+    "flow": "f2",
+    "other": "UNKNOWN",
+    "reading": "strict"
+   },
+   {
+    "default": "ALLOW",
+    "fixture": "NETC-C03-OCI-MIXED",
+    "flow": "f1r",
+    "other": "UNKNOWN",
+    "reading": "strict"
+   },
+   {
+    "default": "DENY",
+    "fixture": "NETC-C03-OCI-MIXED",
+    "flow": "f2r",
+    "other": "UNKNOWN",
+    "reading": "strict"
+   },
+   {
+    "default": "ALLOW",
+    "fixture": "NETC-C03-OCI-OVERLAP",
+    "flow": "f1",
+    "other": "UNKNOWN",
+    "reading": "strict"
+   },
+   {
+    "default": "ALLOW",
+    "fixture": "NETC-C03-OCI-NSG-SYM",
+    "flow": "f1",
+    "other": "UNKNOWN",
+    "reading": "strict"
+   },
+   {
+    "default": "ALLOW",
+    "fixture": "NETC-C03-OCI-NSG-REV",
+    "flow": "f1",
+    "other": "UNKNOWN",
+    "reading": "strict"
+   },
+   {
+    "default": "ALLOW",
+    "fixture": "NETC-C03-OCI-NSG-REV",
+    "flow": "f1r",
+    "other": "UNKNOWN",
+    "reading": "strict"
+   },
+   {
+    "default": "DENY",
+    "fixture": "NETC-C03-OCI-NSG-REV",
+    "flow": "f5",
+    "other": "UNKNOWN",
+    "reading": "strict"
+   },
+   {
+    "default": "ALLOW",
+    "fixture": "NETC-C06-AWS-EGRESS",
+    "flow": "f4",
+    "other": "UNKNOWN",
+    "reading": "strict"
+   },
+   {
+    "default": "DENY",
+    "fixture": "NETC-C06-OCI-INGRESS-NEW",
+    "flow": "f1",
+    "other": "UNKNOWN",
+    "reading": "strict"
+   },
+   {
+    "default": "ALLOW",
+    "fixture": "NETC-C06-OCI-INGRESS-NEW",
+    "flow": "f4",
+    "other": "UNKNOWN",
+    "reading": "strict"
+   },
+   {
+    "default": "UNKNOWN",
+    "fixture": "NETC-C06-GCP-INGRESS-NOMATCH",
+    "flow": "f1",
+    "other": "DENY",
+    "reading": "lenient"
+   },
+   {
+    "default": "ALLOW",
+    "fixture": "NETC-C07-AWS-PARTIAL-ALLOW",
+    "flow": "f1",
+    "other": "UNKNOWN",
+    "reading": "strict"
+   },
+   {
+    "default": "ALLOW",
+    "fixture": "NETC-C08-AWS-ATTACH",
+    "flow": "f1",
+    "other": "UNKNOWN",
+    "reading": "strict"
+   },
+   {
+    "default": "ALLOW",
+    "fixture": "NETC-C08-AWS-OTHER-VM",
+    "flow": "f2",
+    "other": "UNKNOWN",
+    "reading": "strict"
+   },
+   {
+    "default": "UNKNOWN",
+    "fixture": "NETC-C09-GCP-NOMATCH",
+    "flow": "f2",
+    "other": "DENY",
+    "reading": "lenient"
+   },
+   {
+    "default": "UNKNOWN",
+    "fixture": "NETC-C09-GCP-NOMATCH",
+    "flow": "f4",
+    "other": "ALLOW",
+    "reading": "lenient"
+   },
+   {
+    "default": "DENY",
+    "fixture": "NETC-C09-OCI-NOMATCH",
+    "flow": "f2",
+    "other": "UNKNOWN",
+    "reading": "strict"
+   }
+  ],
+  "flips_lenient": 3,
+  "flips_strict": 32,
+  "flows": 97
+ }
+}

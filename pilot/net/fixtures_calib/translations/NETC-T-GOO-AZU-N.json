@@ -1,0 +1,164 @@
+{
+ "case": "NET-C10",
+ "case_id": "NETC-T-GOO-AZU-N",
+ "commitment_ids": [
+  "CMT-FW-N01"
+ ],
+ "declared_losses": [],
+ "direction": "google->azurerm",
+ "expected": {
+  "negatives_carried": [
+   "f3"
+  ],
+  "verdict": "REJECT",
+  "why": "443 aberto para qualquer origem: f3 era negado"
+ },
+ "polarity": "negative",
+ "schema": "bo.pilot_net.translation_case/1",
+ "source_fixture": "NETC-C02-GCP-RET",
+ "split": "calib",
+ "target": {
+  "config": {
+   "resources": [
+    {
+     "name": "web",
+     "type": "azurerm_network_security_group",
+     "values": {
+      "location": "fixture",
+      "name": "fx-web",
+      "resource_group_name": "fx-rg",
+      "security_rule": [
+       {
+        "access": "Allow",
+        "destination_address_prefix": "*",
+        "destination_port_range": "443",
+        "direction": "Inbound",
+        "name": "allow-web",
+        "priority": 100,
+        "protocol": "Tcp",
+        "source_address_prefix": "*",
+        "source_port_range": "*"
+       },
+       {
+        "access": "Deny",
+        "destination_address_prefix": "*",
+        "destination_port_range": "*",
+        "direction": "Inbound",
+        "name": "deny-in",
+        "priority": 4095,
+        "protocol": "*",
+        "source_address_prefix": "*",
+        "source_port_range": "*"
+       },
+       {
+        "access": "Deny",
+        "destination_address_prefix": "*",
+        "destination_port_range": "*",
+        "direction": "Outbound",
+        "name": "deny-out",
+        "priority": 4096,
+        "protocol": "*",
+        "source_address_prefix": "*",
+        "source_port_range": "*"
+       }
+      ]
+     }
+    },
+    {
+     "name": "sa",
+     "type": "azurerm_subnet",
+     "values": {
+      "name": "fx-sa"
+     }
+    },
+    {
+     "name": "nic1",
+     "type": "azurerm_network_interface",
+     "values": {
+      "ip_configuration": [
+       {
+        "name": "ipc",
+        "subnet_id": "ref:azurerm_subnet.sa"
+       }
+      ]
+     }
+    },
+    {
+     "name": "vm1",
+     "type": "azurerm_linux_virtual_machine",
+     "values": {
+      "network_interface_ids": [
+       "ref:azurerm_network_interface.nic1"
+      ]
+     }
+    },
+    {
+     "name": "nic_web",
+     "type": "azurerm_network_interface_security_group_association",
+     "values": {
+      "network_interface_id": "ref:azurerm_network_interface.nic1",
+      "network_security_group_id": "ref:azurerm_network_security_group.web"
+     }
+    }
+   ]
+  },
+  "fixture_id": "NETC-T-GOO-AZU-N-TARGET",
+  "flows": [
+   {
+    "direction": "ingress",
+    "flow_id": "f1",
+    "port": 443,
+    "protocol": "tcp",
+    "remote": "203.0.113.10",
+    "state": "new",
+    "target": "vm1"
+   },
+   {
+    "direction": "ingress",
+    "flow_id": "f2",
+    "port": 22,
+    "protocol": "tcp",
+    "remote": "203.0.113.10",
+    "state": "new",
+    "target": "vm1"
+   },
+   {
+    "direction": "ingress",
+    "flow_id": "f3",
+    "port": 443,
+    "protocol": "tcp",
+    "remote": "198.51.100.7",
+    "state": "new",
+    "target": "vm1"
+   },
+   {
+    "direction": "egress",
+    "flow_id": "f4",
+    "port": 443,
+    "protocol": "tcp",
+    "remote": "198.51.100.7",
+    "state": "new",
+    "target": "vm1"
+   },
+   {
+    "flow_id": "f1r",
+    "of": "f1",
+    "reply_port": 49152,
+    "state": "return",
+    "target": "vm1"
+   }
+  ],
+  "provider": "azurerm",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "targets": {
+   "vm1": {
+    "ip": "10.0.1.10",
+    "ref": "azurerm_linux_virtual_machine.vm1"
+   }
+  }
+ }
+}

@@ -1,0 +1,139 @@
+{
+ "case": "NET-C07",
+ "check": {
+  "assertion": "decision(f1) = allow",
+  "kind": "entails"
+ },
+ "commitment_ids": [
+  "CMT-FW-U01"
+ ],
+ "config": {
+  "resources": [
+   {
+    "name": "web",
+    "type": "aws_security_group",
+    "values": {
+     "description": "fixture sintética",
+     "ingress": [
+      {
+       "cidr_blocks": [
+        "203.0.113.0/24"
+       ],
+       "from_port": 443,
+       "protocol": "tcp",
+       "to_port": 443
+      }
+     ],
+     "name": "fx-web"
+    }
+   },
+   {
+    "name": "vm1",
+    "type": "aws_instance",
+    "values": {
+     "vpc_security_group_ids": [
+      "ref:aws_security_group.web"
+     ]
+    }
+   }
+  ]
+ },
+ "expected": {
+  "decisions": {
+   "f1": {
+    "value": "ALLOW",
+    "why": "só permissão: regra não lida não tira a permissão lida"
+   }
+  },
+  "decomposition": [
+   {
+    "domain_unit": "rule_set",
+    "evidence": [
+     "C24:CMT-FW-P01",
+     "SE-aws-rouky47ej4w3me2k"
+    ],
+    "kind": "ENTITY",
+    "occurrence": {
+     "set": "aws_security_group.web"
+    },
+    "parent": null,
+    "tf": {
+     "resource_type": "aws_security_group"
+    }
+   },
+   {
+    "domain_unit": "filter_rule",
+    "evidence": [
+     "C24:CMT-FW-P01",
+     "SE-aws-jyr4g6yuka5h7son"
+    ],
+    "kind": "COMPONENT",
+    "occurrence": {
+     "direction": "ingress",
+     "ports": "443-443",
+     "protocol": "tcp",
+     "remote": [
+      "203.0.113.0/24"
+     ]
+    },
+    "parent": "aws_security_group.web",
+    "tf": {
+     "block_path": "ingress",
+     "resource_type": "aws_security_group"
+    }
+   },
+   {
+    "domain_unit": "attachment",
+    "evidence": [
+     "C24:CMT-FW-P05"
+    ],
+    "kind": "BINDING",
+    "occurrence": {
+     "set": "aws_security_group.web",
+     "target": "aws_instance.vm1"
+    },
+    "parent": null,
+    "tf": {
+     "block_path": "vpc_security_group_ids",
+     "resource_type": "aws_instance"
+    }
+   }
+  ],
+  "validity": {
+   "value": "VALID"
+  }
+ },
+ "fixture_id": "NETC-C07-AWS-PARTIAL-ALLOW",
+ "flows": [
+  {
+   "direction": "ingress",
+   "flow_id": "f1",
+   "port": 443,
+   "protocol": "tcp",
+   "remote": "203.0.113.10",
+   "state": "new",
+   "target": "vm1"
+  }
+ ],
+ "polarity": "positive",
+ "provider": "aws",
+ "read": {
+  "completeness": "partial",
+  "not_read": [
+   {
+    "of": "aws_security_group.web",
+    "what": "rules"
+   }
+  ],
+  "withheld": []
+ },
+ "schema": "bo.pilot_net.fixture/1",
+ "split": "calib",
+ "summary": "grupo lido pela metade; fluxo coberto por regra lida",
+ "targets": {
+  "vm1": {
+   "ip": "10.0.1.10",
+   "ref": "aws_instance.vm1"
+  }
+ }
+}

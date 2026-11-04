@@ -1,0 +1,167 @@
+{
+ "case": "NET-C06",
+ "check": {
+  "assertion": "decision(f1) = UNKNOWN (não ALLOW)",
+  "kind": "unknown"
+ },
+ "commitment_ids": [
+  "CMT-FW-N03",
+  "CMT-FW-U01"
+ ],
+ "config": {
+  "resources": [
+   {
+    "name": "net",
+    "type": "google_compute_network",
+    "values": {
+     "auto_create_subnetworks": false,
+     "name": "fx-net"
+    }
+   },
+   {
+    "name": "allow-out",
+    "type": "google_compute_firewall",
+    "values": {
+     "allow": [
+      {
+       "ports": [
+        "443"
+       ],
+       "protocol": "tcp"
+      }
+     ],
+     "destination_ranges": [
+      "0.0.0.0/0"
+     ],
+     "direction": "EGRESS",
+     "name": "fx-allow-out",
+     "network": "ref:google_compute_network.net",
+     "priority": 1000,
+     "target_tags": [
+      "web"
+     ]
+    }
+   },
+   {
+    "name": "vm1",
+    "type": "google_compute_instance",
+    "values": {
+     "network_interface": [
+      {
+       "network": "ref:google_compute_network.net"
+      }
+     ],
+     "tags": [
+      "web"
+     ]
+    }
+   }
+  ]
+ },
+ "expected": {
+  "decisions": {
+   "f1": {
+    "code": "MISSING_EVIDENCE",
+    "value": "UNKNOWN",
+    "why": "nenhuma regra de entrada; regra implícita de entrada só interpretada"
+   },
+   "f4": {
+    "value": "ALLOW",
+    "why": "regra de saída 443"
+   }
+  },
+  "decomposition": [
+   {
+    "domain_unit": "rule_set",
+    "evidence": [
+     "C24:CMT-FW-P01"
+    ],
+    "kind": "ENTITY",
+    "occurrence": {
+     "set": "google_compute_network.net"
+    },
+    "parent": null,
+    "tf": {
+     "resource_type": "google_compute_network"
+    }
+   },
+   {
+    "accepted_kinds": [
+     "COMPONENT",
+     "ENTITY"
+    ],
+    "domain_unit": "filter_rule",
+    "evidence": [
+     "C24:CMT-FW-P01",
+     "SE-google-mhidfw4xa7sokciu",
+     "SE-google-mjuxwfic7ez6bfii"
+    ],
+    "kind": "COMPONENT",
+    "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+    "occurrence": {
+     "name": "fx-allow-out"
+    },
+    "parent": "google_compute_network.net",
+    "tf": {
+     "resource_type": "google_compute_firewall"
+    }
+   },
+   {
+    "domain_unit": "selection",
+    "evidence": [
+     "C24:CMT-FW-P05"
+    ],
+    "kind": "BINDING",
+    "occurrence": {
+     "label": "web",
+     "rule": "fx-allow-out"
+    },
+    "parent": null,
+    "tf": {
+     "block_path": "target_tags",
+     "resource_type": "google_compute_firewall"
+    }
+   }
+  ],
+  "validity": {
+   "value": "VALID"
+  }
+ },
+ "fixture_id": "NETC-C06-GCP-INGRESS-NOMATCH",
+ "flows": [
+  {
+   "direction": "ingress",
+   "flow_id": "f1",
+   "port": 443,
+   "protocol": "tcp",
+   "remote": "198.51.100.7",
+   "state": "new",
+   "target": "vm1"
+  },
+  {
+   "direction": "egress",
+   "flow_id": "f4",
+   "port": 443,
+   "protocol": "tcp",
+   "remote": "198.51.100.7",
+   "state": "new",
+   "target": "vm1"
+  }
+ ],
+ "polarity": "unknown",
+ "provider": "google",
+ "read": {
+  "completeness": "complete",
+  "not_read": [],
+  "withheld": []
+ },
+ "schema": "bo.pilot_net.fixture/1",
+ "split": "calib",
+ "summary": "firewall só de saída",
+ "targets": {
+  "vm1": {
+   "ip": "10.0.1.10",
+   "ref": "google_compute_instance.vm1"
+  }
+ }
+}

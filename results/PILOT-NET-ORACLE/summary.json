@@ -1,0 +1,52 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "PILOT-NET-ORACLE",
+ "generated_at": "2026-11-04T02:40:00-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-NET-ORACLE.txt",
+  "brief_sha256": "7ac51852326a246a62d2f52f6a68ff500e74d4d40c814a44a176b580b3cbddd3",
+  "params": {
+   "slice": "net",
+   "reading": "default",
+   "calib_fixtures": "42",
+   "calib_translations": "36",
+   "retained_fixtures": "28",
+   "retained_translations": "24",
+   "seal": "CMS-AES256-RSA4096-D15"
+  },
+  "inputs": [
+   {
+    "path": "$BO_REPO/requirements/commitments.jsonl",
+    "kind": "file",
+    "sha256": "038f73fcebedfbf3b5ff3d23b1ff0758a87e8be2616b141b232628e1a64d1438"
+   },
+   {
+    "path": "$BO_REPO/semantics/SEMANTICS.html",
+    "kind": "file",
+    "sha256": "28f849eb578fea685935a2499cd13710e8a96b6cd01e4bc34419ae0e51f29596"
+   },
+   {
+    "path": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl",
+    "kind": "file",
+    "sha256": "50bc893ff48a2ce45b76e4260d6642b5a5014ad71a1067b34d70b1933ee5653b"
+   }
+  ],
+  "recorded_at": "2026-11-04T02:40:00-03:00"
+ },
+ "sources": [
+  {
+   "uri": "requirements/commitments.jsonl",
+   "license": "interno (REQUIREMENTS)",
+   "transformation": "compromissos FIREWALL viram casos obrigatórios e testes do avaliador"
+  },
+  {
+   "uri": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl",
+   "license": "interno (SERVICE-EVIDENCE; frases MPL-2.0 dos providers Terraform)",
+   "transformation": "parâmetros de semântica por provedor, com nível"
+  }
+ ],
+ "notes": "oráculo offline NET: avaliador por supervaluação, juiz de tradução, 42+36 calibração, 28+24 retidas seladas (D15)"
+}

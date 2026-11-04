@@ -1,0 +1,33 @@
+CONTRACT_CHANGE — PILOT-NET-ORACLE — 2026-11-04T02:39-03:00 (America/Recife)
+
+Proposta NÃO bloqueante (mesmo regime do CQFIX, UNITS e SCHEMALIB). Nada mergeado está errado a ponto de impedir o
+oráculo; são lacunas de formato e de evidência que o PILOT-EXIT deve aplicar como emenda (E6) ou registrar.
+Donos: CONTRACTS (C11, C24) e SERVICE-EVIDENCE (C25).
+
+1. C24 não tem tipo de arquivo para o gabarito do piloto
+   O catálogo diz $BO_REPO/pilot/net/expected_answers.json = C24@1.0.0, mas o C24 só define requirements.jsonl,
+   commitments.jsonl e cq_spec.jsonl. O módulo grava schema "bo.pilot_net.expected_answers/1" com rótulo C24 1.0.0 e
+   confere com pilot/net/oracle/expected_answers.schema.json (gate do módulo). Proposta: C24 1.1.0 com o tipo
+   pilot_expected_answers e esse schema (vale para as duas fatias).
+
+2. C11 sem origem para caso de piloto e com campos que o oráculo não pode preencher
+   O oráculo é independente do mapeamento: não tem claim_id, claim_version_id, stratum.relation, frame_ref, weight,
+   lowering_plan nem values. Cada tradução traz c11_case_seed com os campos conhecidos e "pending" com o motivo de cada
+   um (como o CQFIX fez). O enum origin (sample | blocked | dispute | cq) não tem valor para caso de piloto.
+   Proposta: origin "pilot" no C11 3.1.0; o PILOT-NET-E2E completa a semente com a alegação e o plano C26.
+
+3. Estado de conexão sem evidência em AWS, GCP e Azure (C25)
+   SE-aws-ys4irutgmpm2h6os, SE-google-zpvpswcdzblhsngy e SE-azurerm-x6ikfm2ljwnl4tca estão unknown/not_documented.
+   O objetivo do módulo fala em "com estado" no SG, no firewall GCP e no NSG: o oráculo NÃO assume isso; o retorno de
+   conexão nesses três é UNKNOWN (MISSING_EVIDENCE) quando a resposta depende do estado. Achado contra o enunciado,
+   registrado como resultado. Proposta: o SERVICE-EVIDENCE citar a documentação de API fixada desses serviços, se o
+   pin permitir; até lá, LOSS-NET-STATE no catálogo de perdas das direções para esses destinos.
+
+4. Estado da regra de NSG OCI só interpretado
+   SE-oci-cxwuvxzhyrwz3j6f é interpretado, mas a frase é idêntica à da security list publicada (SE-oci-3ihxku562hxrgq4b).
+   O oráculo usa nível oracle_derived (leitura default) e mostra o efeito na leitura strict. Proposta: o
+   SERVICE-EVIDENCE publicar a linha do NSG com a mesma regra R-CONN-DOC.
+
+5. Prioridade única do NSG Azure: "unique for each rule in the collection"
+   A frase (SE-azurerm-hfppj5whireqkdcl) não diz se a coleção é o NSG ou a direção. Mesma prioridade na mesma direção
+   = INVALID; em direções diferentes = validade UNKNOWN. O alvo aceitável usa prioridades distintas (REQ-T-AZ-PRIORITY).

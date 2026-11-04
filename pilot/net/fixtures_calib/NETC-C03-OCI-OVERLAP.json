@@ -1,0 +1,184 @@
+{
+ "case": "NET-C03",
+ "check": {
+  "assertion": "decision(retorno de f1) = UNKNOWN",
+  "kind": "unknown"
+ },
+ "commitment_ids": [
+  "CMT-FW-P03"
+ ],
+ "config": {
+  "resources": [
+   {
+    "name": "web",
+    "type": "oci_core_security_list",
+    "values": {
+     "compartment_id": "ref:oci_identity_compartment.fx",
+     "egress_security_rules": [],
+     "ingress_security_rules": [
+      {
+       "protocol": "6",
+       "source": "203.0.113.0/24",
+       "tcp_options": {
+        "max": 443,
+        "min": 443
+       }
+      },
+      {
+       "protocol": "6",
+       "source": "0.0.0.0/0",
+       "stateless": true,
+       "tcp_options": {
+        "max": 443,
+        "min": 443
+       }
+      }
+     ],
+     "vcn_id": "ref:oci_core_vcn.fx"
+    }
+   },
+   {
+    "name": "sa",
+    "type": "oci_core_subnet",
+    "values": {
+     "security_list_ids": [
+      "ref:oci_core_security_list.web"
+     ]
+    }
+   },
+   {
+    "name": "vm1",
+    "type": "oci_core_instance",
+    "values": {
+     "create_vnic_details": {
+      "subnet_id": "ref:oci_core_subnet.sa"
+     }
+    }
+   }
+  ]
+ },
+ "expected": {
+  "decisions": {
+   "f1": {
+    "value": "ALLOW",
+    "why": "as duas regras permitem"
+   },
+   "f1r": {
+    "code": "MISSING_EVIDENCE",
+    "value": "UNKNOWN",
+    "why": "o pacote casa regra com estado e regra sem estado: o rastreio não tem evidência"
+   }
+  },
+  "decomposition": [
+   {
+    "domain_unit": "rule_set",
+    "evidence": [
+     "C24:CMT-FW-P01",
+     "SE-oci-lq2gnnmrobz7ft7h"
+    ],
+    "kind": "ENTITY",
+    "occurrence": {
+     "set": "oci_core_security_list.web"
+    },
+    "parent": null,
+    "tf": {
+     "resource_type": "oci_core_security_list"
+    }
+   },
+   {
+    "domain_unit": "filter_rule",
+    "evidence": [
+     "C24:CMT-FW-P01",
+     "SE-oci-bp7mulbmn76camow"
+    ],
+    "kind": "COMPONENT",
+    "occurrence": {
+     "direction": "ingress",
+     "ports": "443-443",
+     "protocol": "6",
+     "remote": "203.0.113.0/24",
+     "stateless": false
+    },
+    "parent": "oci_core_security_list.web",
+    "tf": {
+     "block_path": "ingress_security_rules",
+     "resource_type": "oci_core_security_list"
+    }
+   },
+   {
+    "domain_unit": "filter_rule",
+    "evidence": [
+     "C24:CMT-FW-P01",
+     "SE-oci-bp7mulbmn76camow"
+    ],
+    "kind": "COMPONENT",
+    "occurrence": {
+     "direction": "ingress",
+     "ports": "443-443",
+     "protocol": "6",
+     "remote": "0.0.0.0/0",
+     "stateless": true
+    },
+    "parent": "oci_core_security_list.web",
+    "tf": {
+     "block_path": "ingress_security_rules",
+     "resource_type": "oci_core_security_list"
+    }
+   },
+   {
+    "domain_unit": "attachment",
+    "evidence": [
+     "C24:CMT-FW-P05"
+    ],
+    "kind": "BINDING",
+    "occurrence": {
+     "set": "oci_core_security_list.web",
+     "target": "oci_core_subnet.sa"
+    },
+    "parent": null,
+    "tf": {
+     "block_path": "security_list_ids",
+     "resource_type": "oci_core_subnet"
+    }
+   }
+  ],
+  "validity": {
+   "value": "VALID"
+  }
+ },
+ "fixture_id": "NETC-C03-OCI-OVERLAP",
+ "flows": [
+  {
+   "direction": "ingress",
+   "flow_id": "f1",
+   "port": 443,
+   "protocol": "tcp",
+   "remote": "203.0.113.10",
+   "state": "new",
+   "target": "vm1"
+  },
+  {
+   "flow_id": "f1r",
+   "of": "f1",
+   "reply_port": 49152,
+   "state": "return",
+   "target": "vm1"
+  }
+ ],
+ "polarity": "unknown",
+ "provider": "oci",
+ "read": {
+  "completeness": "complete",
+  "not_read": [],
+  "withheld": []
+ },
+ "schema": "bo.pilot_net.fixture/1",
+ "split": "calib",
+ "summary": "sobreposição de regra com estado e sem estado",
+ "targets": {
+  "vm1": {
+   "ip": "10.0.1.10",
+   "ref": "oci_core_instance.vm1"
+  }
+ }
+}

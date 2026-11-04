@@ -1,0 +1,122 @@
+{
+ "case": "NET-C10",
+ "case_id": "NETC-T-GOO-OCI-U",
+ "commitment_ids": [
+  "CMT-FW-N01"
+ ],
+ "declared_losses": [],
+ "direction": "google->oci",
+ "expected": {
+  "silent_losses": [
+   "f1",
+   "f3"
+  ],
+  "verdict": "REJECT",
+  "why": "CIDR simbólico inventado no destino: decisões definidas viram UNKNOWN sem perda declarável"
+ },
+ "polarity": "unknown",
+ "schema": "bo.pilot_net.translation_case/1",
+ "source_fixture": "NETC-C02-GCP-RET",
+ "split": "calib",
+ "target": {
+  "config": {
+   "resources": [
+    {
+     "name": "web",
+     "type": "oci_core_security_list",
+     "values": {
+      "compartment_id": "ref:oci_identity_compartment.fx",
+      "egress_security_rules": [],
+      "ingress_security_rules": [
+       {
+        "protocol": "6",
+        "source": "sym:var.allowed_cidr",
+        "tcp_options": {
+         "max": 443,
+         "min": 443
+        }
+       }
+      ],
+      "vcn_id": "ref:oci_core_vcn.fx"
+     }
+    },
+    {
+     "name": "sa",
+     "type": "oci_core_subnet",
+     "values": {
+      "security_list_ids": [
+       "ref:oci_core_security_list.web"
+      ]
+     }
+    },
+    {
+     "name": "vm1",
+     "type": "oci_core_instance",
+     "values": {
+      "create_vnic_details": {
+       "subnet_id": "ref:oci_core_subnet.sa"
+      }
+     }
+    }
+   ]
+  },
+  "fixture_id": "NETC-T-GOO-OCI-U-TARGET",
+  "flows": [
+   {
+    "direction": "ingress",
+    "flow_id": "f1",
+    "port": 443,
+    "protocol": "tcp",
+    "remote": "203.0.113.10",
+    "state": "new",
+    "target": "vm1"
+   },
+   {
+    "direction": "ingress",
+    "flow_id": "f2",
+    "port": 22,
+    "protocol": "tcp",
+    "remote": "203.0.113.10",
+    "state": "new",
+    "target": "vm1"
+   },
+   {
+    "direction": "ingress",
+    "flow_id": "f3",
+    "port": 443,
+    "protocol": "tcp",
+    "remote": "198.51.100.7",
+    "state": "new",
+    "target": "vm1"
+   },
+   {
+    "direction": "egress",
+    "flow_id": "f4",
+    "port": 443,
+    "protocol": "tcp",
+    "remote": "198.51.100.7",
+    "state": "new",
+    "target": "vm1"
+   },
+   {
+    "flow_id": "f1r",
+    "of": "f1",
+    "reply_port": 49152,
+    "state": "return",
+    "target": "vm1"
+   }
+  ],
+  "provider": "oci",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "targets": {
+   "vm1": {
+    "ip": "10.0.1.10",
+    "ref": "oci_core_instance.vm1"
+   }
+  }
+ }
+}

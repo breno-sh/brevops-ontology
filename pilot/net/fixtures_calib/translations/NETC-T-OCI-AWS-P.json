@@ -1,0 +1,115 @@
+{
+ "case": "NET-C10",
+ "case_id": "NETC-T-OCI-AWS-P",
+ "commitment_ids": [
+  "CMT-FW-N01"
+ ],
+ "declared_losses": [
+  {
+   "flows": [
+    "f1r"
+   ],
+   "loss_id": "LOSS-NET-STATE"
+  }
+ ],
+ "direction": "oci->aws",
+ "expected": {
+  "verdict": "ACCEPT_WITH_DECLARED_LOSS",
+  "why": "retorno permitido na origem fica UNKNOWN no destino: declarado"
+ },
+ "polarity": "positive",
+ "schema": "bo.pilot_net.translation_case/1",
+ "source_fixture": "NETC-C02-OCI-STATEFUL",
+ "split": "calib",
+ "target": {
+  "config": {
+   "resources": [
+    {
+     "name": "web",
+     "type": "aws_security_group",
+     "values": {
+      "description": "fixture sintética",
+      "ingress": [
+       {
+        "cidr_blocks": [
+         "203.0.113.0/24"
+        ],
+        "from_port": 443,
+        "protocol": "tcp",
+        "to_port": 443
+       }
+      ],
+      "name": "fx-web"
+     }
+    },
+    {
+     "name": "vm1",
+     "type": "aws_instance",
+     "values": {
+      "vpc_security_group_ids": [
+       "ref:aws_security_group.web"
+      ]
+     }
+    }
+   ]
+  },
+  "fixture_id": "NETC-T-OCI-AWS-P-TARGET",
+  "flows": [
+   {
+    "direction": "ingress",
+    "flow_id": "f1",
+    "port": 443,
+    "protocol": "tcp",
+    "remote": "203.0.113.10",
+    "state": "new",
+    "target": "vm1"
+   },
+   {
+    "direction": "ingress",
+    "flow_id": "f2",
+    "port": 22,
+    "protocol": "tcp",
+    "remote": "203.0.113.10",
+    "state": "new",
+    "target": "vm1"
+   },
+   {
+    "direction": "ingress",
+    "flow_id": "f3",
+    "port": 443,
+    "protocol": "tcp",
+    "remote": "198.51.100.7",
+    "state": "new",
+    "target": "vm1"
+   },
+   {
+    "direction": "egress",
+    "flow_id": "f4",
+    "port": 443,
+    "protocol": "tcp",
+    "remote": "198.51.100.7",
+    "state": "new",
+    "target": "vm1"
+   },
+   {
+    "flow_id": "f1r",
+    "of": "f1",
+    "reply_port": 49152,
+    "state": "return",
+    "target": "vm1"
+   }
+  ],
+  "provider": "aws",
+  "read": {
+   "completeness": "complete",
+   "not_read": [],
+   "withheld": []
+  },
+  "targets": {
+   "vm1": {
+    "ip": "10.0.1.10",
+    "ref": "aws_instance.vm1"
+   }
+  }
+ }
+}

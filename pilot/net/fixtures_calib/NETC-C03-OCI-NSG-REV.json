@@ -1,0 +1,211 @@
+{
+ "case": "NET-C03",
+ "check": {
+  "assertion": "decision(retorno de f1) = allow",
+  "kind": "entails"
+ },
+ "commitment_ids": [
+  "CMT-FW-P03"
+ ],
+ "config": {
+  "resources": [
+   {
+    "name": "web",
+    "type": "oci_core_network_security_group",
+    "values": {
+     "compartment_id": "ref:oci_identity_compartment.fx",
+     "vcn_id": "ref:oci_core_vcn.fx"
+    }
+   },
+   {
+    "name": "web_r1",
+    "type": "oci_core_network_security_group_security_rule",
+    "values": {
+     "direction": "INGRESS",
+     "network_security_group_id": "ref:oci_core_network_security_group.web",
+     "protocol": "6",
+     "source": "203.0.113.0/24",
+     "source_type": "CIDR_BLOCK",
+     "stateless": true,
+     "tcp_options": {
+      "destination_port_range": {
+       "max": 22,
+       "min": 22
+      }
+     }
+    }
+   },
+   {
+    "name": "web_r2",
+    "type": "oci_core_network_security_group_security_rule",
+    "values": {
+     "destination": "203.0.113.0/24",
+     "destination_type": "CIDR_BLOCK",
+     "direction": "EGRESS",
+     "network_security_group_id": "ref:oci_core_network_security_group.web",
+     "protocol": "6",
+     "stateless": true,
+     "tcp_options": {
+      "source_port_range": {
+       "max": 22,
+       "min": 22
+      }
+     }
+    }
+   },
+   {
+    "name": "sa",
+    "type": "oci_core_subnet",
+    "values": {
+     "security_list_ids": []
+    }
+   },
+   {
+    "name": "vm1",
+    "type": "oci_core_instance",
+    "values": {
+     "create_vnic_details": {
+      "nsg_ids": [
+       "ref:oci_core_network_security_group.web"
+      ],
+      "subnet_id": "ref:oci_core_subnet.sa"
+     }
+    }
+   }
+  ]
+ },
+ "expected": {
+  "decisions": {
+   "f1": {
+    "value": "ALLOW",
+    "why": "regra 22 sem estado"
+   },
+   "f1r": {
+    "value": "ALLOW",
+    "why": "regra inversa com porta de origem 22"
+   },
+   "f5": {
+    "value": "DENY",
+    "why": "a regra de saída exige porta de origem 22; o fluxo novo sai da 49152"
+   }
+  },
+  "decomposition": [
+   {
+    "domain_unit": "rule_set",
+    "evidence": [
+     "C24:CMT-FW-P01",
+     "SE-oci-gm5xlnh42tjbc5ou"
+    ],
+    "kind": "ENTITY",
+    "occurrence": {
+     "set": "oci_core_network_security_group.web"
+    },
+    "parent": null,
+    "tf": {
+     "resource_type": "oci_core_network_security_group"
+    }
+   },
+   {
+    "domain_unit": "filter_rule",
+    "evidence": [
+     "C24:CMT-FW-P01",
+     "SE-oci-bp7mulbmn76camow"
+    ],
+    "kind": "COMPONENT",
+    "occurrence": {
+     "direction": "ingress",
+     "ports": "22-22",
+     "protocol": "6",
+     "remote": "203.0.113.0/24",
+     "stateless": true
+    },
+    "parent": "oci_core_network_security_group.web",
+    "tf": {
+     "resource_type": "oci_core_network_security_group_security_rule"
+    }
+   },
+   {
+    "domain_unit": "filter_rule",
+    "evidence": [
+     "C24:CMT-FW-P01",
+     "SE-oci-bp7mulbmn76camow"
+    ],
+    "kind": "COMPONENT",
+    "occurrence": {
+     "direction": "egress",
+     "protocol": "6",
+     "remote": "203.0.113.0/24",
+     "src_ports": "22-22",
+     "stateless": true
+    },
+    "parent": "oci_core_network_security_group.web",
+    "tf": {
+     "resource_type": "oci_core_network_security_group_security_rule"
+    }
+   },
+   {
+    "domain_unit": "attachment",
+    "evidence": [
+     "C24:CMT-FW-P05"
+    ],
+    "kind": "BINDING",
+    "occurrence": {
+     "set": "oci_core_network_security_group.web",
+     "target": "oci_core_instance.vm1"
+    },
+    "parent": null,
+    "tf": {
+     "block_path": "create_vnic_details.nsg_ids",
+     "resource_type": "oci_core_instance"
+    }
+   }
+  ],
+  "validity": {
+   "value": "VALID"
+  }
+ },
+ "fixture_id": "NETC-C03-OCI-NSG-REV",
+ "flows": [
+  {
+   "direction": "ingress",
+   "flow_id": "f1",
+   "port": 22,
+   "protocol": "tcp",
+   "remote": "203.0.113.10",
+   "state": "new",
+   "target": "vm1"
+  },
+  {
+   "flow_id": "f1r",
+   "of": "f1",
+   "reply_port": 49152,
+   "state": "return",
+   "target": "vm1"
+  },
+  {
+   "direction": "egress",
+   "flow_id": "f5",
+   "port": 443,
+   "protocol": "tcp",
+   "remote": "203.0.113.10",
+   "state": "new",
+   "target": "vm1"
+  }
+ ],
+ "polarity": "positive",
+ "provider": "oci",
+ "read": {
+  "completeness": "complete",
+  "not_read": [],
+  "withheld": []
+ },
+ "schema": "bo.pilot_net.fixture/1",
+ "split": "calib",
+ "summary": "NSG: regra sem estado e a regra inversa",
+ "targets": {
+  "vm1": {
+   "ip": "10.0.1.10",
+   "ref": "oci_core_instance.vm1"
+  }
+ }
+}

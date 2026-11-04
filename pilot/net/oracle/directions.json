@@ -1,0 +1,511 @@
+{
+ "directions": {
+  "aws->azurerm": {
+   "acceptable_target": [
+    "REQ-T-DECISIONS",
+    "REQ-T-NO-DENY-TO-ALLOW",
+    "REQ-T-ATTACH",
+    "REQ-T-CATCHALL",
+    "REQ-T-AZ-PRIORITY"
+   ],
+   "calib_cases": [
+    "NETC-T-AWS-AZU-N",
+    "NETC-T-AWS-AZU-P",
+    "NETC-T-AWS-AZU-U"
+   ],
+   "expected_losses": [
+    "LOSS-NET-STATE",
+    "LOSS-NET-DEFAULT",
+    "LOSS-NET-UNKNOWN-INPUT"
+   ],
+   "negatives": [
+    "DENY na origem nunca vira ALLOW no destino (CMT-FW-N01)",
+    "regra de saída não autoriza entrada nova no destino (CMT-FW-N03)",
+    "regra sem estado não ganha retorno automático no destino (CMT-FW-P03)",
+    "egress do grupo de segurança AWS sem bloco egress não é permissão total (SE-aws-jcsq5zrpnuvxzaxv)"
+   ],
+   "source": "aws",
+   "target": "azurerm",
+   "unknowns": [
+    "retorno de conexão no destino: UNKNOWN (estado sem evidência)",
+    "retorno de conexão na origem: UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
+    "fluxo sem regra no destino: UNKNOWN sem negação explícita",
+    "NSG na NIC e na sub-rede com decisões diferentes: UNKNOWN (combinação sem evidência)"
+   ]
+  },
+  "aws->google": {
+   "acceptable_target": [
+    "REQ-T-DECISIONS",
+    "REQ-T-NO-DENY-TO-ALLOW",
+    "REQ-T-ATTACH",
+    "REQ-T-CATCHALL",
+    "REQ-T-GCP-TIE"
+   ],
+   "calib_cases": [
+    "NETC-T-AWS-GOO-N",
+    "NETC-T-AWS-GOO-P",
+    "NETC-T-AWS-GOO-U"
+   ],
+   "expected_losses": [
+    "LOSS-NET-STATE",
+    "LOSS-NET-DEFAULT",
+    "LOSS-NET-UNKNOWN-INPUT"
+   ],
+   "negatives": [
+    "DENY na origem nunca vira ALLOW no destino (CMT-FW-N01)",
+    "regra de saída não autoriza entrada nova no destino (CMT-FW-N03)",
+    "regra sem estado não ganha retorno automático no destino (CMT-FW-P03)",
+    "egress do grupo de segurança AWS sem bloco egress não é permissão total (SE-aws-jcsq5zrpnuvxzaxv)"
+   ],
+   "source": "aws",
+   "target": "google",
+   "unknowns": [
+    "retorno de conexão no destino: UNKNOWN (estado sem evidência)",
+    "retorno de conexão na origem: UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
+    "fluxo sem regra no destino: UNKNOWN sem negação explícita"
+   ]
+  },
+  "aws->oci": {
+   "acceptable_target": [
+    "REQ-T-DECISIONS",
+    "REQ-T-NO-DENY-TO-ALLOW",
+    "REQ-T-ATTACH"
+   ],
+   "calib_cases": [
+    "NETC-T-AWS-OCI-N",
+    "NETC-T-AWS-OCI-P",
+    "NETC-T-AWS-OCI-U"
+   ],
+   "expected_losses": [
+    "LOSS-NET-UNKNOWN-INPUT"
+   ],
+   "negatives": [
+    "DENY na origem nunca vira ALLOW no destino (CMT-FW-N01)",
+    "regra de saída não autoriza entrada nova no destino (CMT-FW-N03)",
+    "regra sem estado não ganha retorno automático no destino (CMT-FW-P03)",
+    "egress do grupo de segurança AWS sem bloco egress não é permissão total (SE-aws-jcsq5zrpnuvxzaxv)"
+   ],
+   "source": "aws",
+   "target": "oci",
+   "unknowns": [
+    "retorno de conexão na origem: UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
+    "security list e NSG no mesmo alvo com decisões diferentes: UNKNOWN (combinação sem evidência)"
+   ]
+  },
+  "azurerm->aws": {
+   "acceptable_target": [
+    "REQ-T-DECISIONS",
+    "REQ-T-NO-DENY-TO-ALLOW",
+    "REQ-T-ATTACH",
+    "REQ-T-EFFECTIVE-SET"
+   ],
+   "calib_cases": [
+    "NETC-T-AZU-AWS-N",
+    "NETC-T-AZU-AWS-P",
+    "NETC-T-AZU-AWS-U"
+   ],
+   "expected_losses": [
+    "LOSS-NET-EFFECT-DENY",
+    "LOSS-NET-STATE",
+    "LOSS-NET-SRCPORT",
+    "LOSS-NET-UNKNOWN-INPUT"
+   ],
+   "negatives": [
+    "DENY na origem nunca vira ALLOW no destino (CMT-FW-N01)",
+    "regra de saída não autoriza entrada nova no destino (CMT-FW-N03)",
+    "regra sem estado não ganha retorno automático no destino (CMT-FW-P03)",
+    "egress do grupo de segurança AWS sem bloco egress não é permissão total (SE-aws-jcsq5zrpnuvxzaxv)"
+   ],
+   "source": "azurerm",
+   "target": "aws",
+   "unknowns": [
+    "retorno de conexão no destino: UNKNOWN (estado sem evidência)",
+    "retorno de conexão na origem: UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
+    "fluxo sem regra na origem: UNKNOWN"
+   ]
+  },
+  "azurerm->google": {
+   "acceptable_target": [
+    "REQ-T-DECISIONS",
+    "REQ-T-NO-DENY-TO-ALLOW",
+    "REQ-T-ATTACH",
+    "REQ-T-CATCHALL",
+    "REQ-T-GCP-TIE"
+   ],
+   "calib_cases": [
+    "NETC-T-AZU-GOO-N",
+    "NETC-T-AZU-GOO-P",
+    "NETC-T-AZU-GOO-U"
+   ],
+   "expected_losses": [
+    "LOSS-NET-STATE",
+    "LOSS-NET-DEFAULT",
+    "LOSS-NET-SRCPORT",
+    "LOSS-NET-UNKNOWN-INPUT"
+   ],
+   "negatives": [
+    "DENY na origem nunca vira ALLOW no destino (CMT-FW-N01)",
+    "regra de saída não autoriza entrada nova no destino (CMT-FW-N03)",
+    "regra sem estado não ganha retorno automático no destino (CMT-FW-P03)",
+    "egress do grupo de segurança AWS sem bloco egress não é permissão total (SE-aws-jcsq5zrpnuvxzaxv)"
+   ],
+   "source": "azurerm",
+   "target": "google",
+   "unknowns": [
+    "retorno de conexão no destino: UNKNOWN (estado sem evidência)",
+    "retorno de conexão na origem: UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
+    "fluxo sem regra no destino: UNKNOWN sem negação explícita",
+    "fluxo sem regra na origem: UNKNOWN"
+   ]
+  },
+  "azurerm->oci": {
+   "acceptable_target": [
+    "REQ-T-DECISIONS",
+    "REQ-T-NO-DENY-TO-ALLOW",
+    "REQ-T-ATTACH",
+    "REQ-T-EFFECTIVE-SET"
+   ],
+   "calib_cases": [
+    "NETC-T-AZU-OCI-N",
+    "NETC-T-AZU-OCI-P",
+    "NETC-T-AZU-OCI-U"
+   ],
+   "expected_losses": [
+    "LOSS-NET-EFFECT-DENY",
+    "LOSS-NET-UNKNOWN-INPUT"
+   ],
+   "negatives": [
+    "DENY na origem nunca vira ALLOW no destino (CMT-FW-N01)",
+    "regra de saída não autoriza entrada nova no destino (CMT-FW-N03)",
+    "regra sem estado não ganha retorno automático no destino (CMT-FW-P03)",
+    "egress do grupo de segurança AWS sem bloco egress não é permissão total (SE-aws-jcsq5zrpnuvxzaxv)"
+   ],
+   "source": "azurerm",
+   "target": "oci",
+   "unknowns": [
+    "retorno de conexão na origem: UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
+    "fluxo sem regra na origem: UNKNOWN",
+    "security list e NSG no mesmo alvo com decisões diferentes: UNKNOWN (combinação sem evidência)"
+   ]
+  },
+  "google->aws": {
+   "acceptable_target": [
+    "REQ-T-DECISIONS",
+    "REQ-T-NO-DENY-TO-ALLOW",
+    "REQ-T-ATTACH",
+    "REQ-T-EFFECTIVE-SET"
+   ],
+   "calib_cases": [
+    "NETC-T-GOO-AWS-N",
+    "NETC-T-GOO-AWS-P",
+    "NETC-T-GOO-AWS-U"
+   ],
+   "expected_losses": [
+    "LOSS-NET-EFFECT-DENY",
+    "LOSS-NET-STATE",
+    "LOSS-NET-SELECTOR",
+    "LOSS-NET-UNKNOWN-INPUT"
+   ],
+   "negatives": [
+    "DENY na origem nunca vira ALLOW no destino (CMT-FW-N01)",
+    "regra de saída não autoriza entrada nova no destino (CMT-FW-N03)",
+    "regra sem estado não ganha retorno automático no destino (CMT-FW-P03)",
+    "egress do grupo de segurança AWS sem bloco egress não é permissão total (SE-aws-jcsq5zrpnuvxzaxv)"
+   ],
+   "source": "google",
+   "target": "aws",
+   "unknowns": [
+    "retorno de conexão no destino: UNKNOWN (estado sem evidência)",
+    "retorno de conexão na origem: UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
+    "fluxo sem regra na origem: UNKNOWN"
+   ]
+  },
+  "google->azurerm": {
+   "acceptable_target": [
+    "REQ-T-DECISIONS",
+    "REQ-T-NO-DENY-TO-ALLOW",
+    "REQ-T-ATTACH",
+    "REQ-T-CATCHALL",
+    "REQ-T-AZ-PRIORITY"
+   ],
+   "calib_cases": [
+    "NETC-T-GOO-AZU-N",
+    "NETC-T-GOO-AZU-P",
+    "NETC-T-GOO-AZU-U"
+   ],
+   "expected_losses": [
+    "LOSS-NET-STATE",
+    "LOSS-NET-DEFAULT",
+    "LOSS-NET-SELECTOR",
+    "LOSS-NET-UNKNOWN-INPUT"
+   ],
+   "negatives": [
+    "DENY na origem nunca vira ALLOW no destino (CMT-FW-N01)",
+    "regra de saída não autoriza entrada nova no destino (CMT-FW-N03)",
+    "regra sem estado não ganha retorno automático no destino (CMT-FW-P03)",
+    "egress do grupo de segurança AWS sem bloco egress não é permissão total (SE-aws-jcsq5zrpnuvxzaxv)"
+   ],
+   "source": "google",
+   "target": "azurerm",
+   "unknowns": [
+    "retorno de conexão no destino: UNKNOWN (estado sem evidência)",
+    "retorno de conexão na origem: UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
+    "fluxo sem regra no destino: UNKNOWN sem negação explícita",
+    "fluxo sem regra na origem: UNKNOWN",
+    "NSG na NIC e na sub-rede com decisões diferentes: UNKNOWN (combinação sem evidência)"
+   ]
+  },
+  "google->oci": {
+   "acceptable_target": [
+    "REQ-T-DECISIONS",
+    "REQ-T-NO-DENY-TO-ALLOW",
+    "REQ-T-ATTACH",
+    "REQ-T-EFFECTIVE-SET"
+   ],
+   "calib_cases": [
+    "NETC-T-GOO-OCI-N",
+    "NETC-T-GOO-OCI-P",
+    "NETC-T-GOO-OCI-U"
+   ],
+   "expected_losses": [
+    "LOSS-NET-EFFECT-DENY",
+    "LOSS-NET-SELECTOR",
+    "LOSS-NET-UNKNOWN-INPUT"
+   ],
+   "negatives": [
+    "DENY na origem nunca vira ALLOW no destino (CMT-FW-N01)",
+    "regra de saída não autoriza entrada nova no destino (CMT-FW-N03)",
+    "regra sem estado não ganha retorno automático no destino (CMT-FW-P03)",
+    "egress do grupo de segurança AWS sem bloco egress não é permissão total (SE-aws-jcsq5zrpnuvxzaxv)"
+   ],
+   "source": "google",
+   "target": "oci",
+   "unknowns": [
+    "retorno de conexão na origem: UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
+    "fluxo sem regra na origem: UNKNOWN",
+    "security list e NSG no mesmo alvo com decisões diferentes: UNKNOWN (combinação sem evidência)"
+   ]
+  },
+  "oci->aws": {
+   "acceptable_target": [
+    "REQ-T-DECISIONS",
+    "REQ-T-NO-DENY-TO-ALLOW",
+    "REQ-T-ATTACH"
+   ],
+   "calib_cases": [
+    "NETC-T-OCI-AWS-N",
+    "NETC-T-OCI-AWS-P",
+    "NETC-T-OCI-AWS-U"
+   ],
+   "expected_losses": [
+    "LOSS-NET-STATE",
+    "LOSS-NET-SRCPORT",
+    "LOSS-NET-UNKNOWN-INPUT"
+   ],
+   "negatives": [
+    "DENY na origem nunca vira ALLOW no destino (CMT-FW-N01)",
+    "regra de saída não autoriza entrada nova no destino (CMT-FW-N03)",
+    "regra sem estado não ganha retorno automático no destino (CMT-FW-P03)",
+    "egress do grupo de segurança AWS sem bloco egress não é permissão total (SE-aws-jcsq5zrpnuvxzaxv)"
+   ],
+   "source": "oci",
+   "target": "aws",
+   "unknowns": [
+    "retorno de conexão no destino: UNKNOWN (estado sem evidência)"
+   ]
+  },
+  "oci->azurerm": {
+   "acceptable_target": [
+    "REQ-T-DECISIONS",
+    "REQ-T-NO-DENY-TO-ALLOW",
+    "REQ-T-ATTACH",
+    "REQ-T-CATCHALL",
+    "REQ-T-AZ-PRIORITY"
+   ],
+   "calib_cases": [
+    "NETC-T-OCI-AZU-N",
+    "NETC-T-OCI-AZU-P",
+    "NETC-T-OCI-AZU-U"
+   ],
+   "expected_losses": [
+    "LOSS-NET-STATE",
+    "LOSS-NET-DEFAULT",
+    "LOSS-NET-UNKNOWN-INPUT"
+   ],
+   "negatives": [
+    "DENY na origem nunca vira ALLOW no destino (CMT-FW-N01)",
+    "regra de saída não autoriza entrada nova no destino (CMT-FW-N03)",
+    "regra sem estado não ganha retorno automático no destino (CMT-FW-P03)",
+    "egress do grupo de segurança AWS sem bloco egress não é permissão total (SE-aws-jcsq5zrpnuvxzaxv)"
+   ],
+   "source": "oci",
+   "target": "azurerm",
+   "unknowns": [
+    "retorno de conexão no destino: UNKNOWN (estado sem evidência)",
+    "fluxo sem regra no destino: UNKNOWN sem negação explícita",
+    "NSG na NIC e na sub-rede com decisões diferentes: UNKNOWN (combinação sem evidência)"
+   ]
+  },
+  "oci->google": {
+   "acceptable_target": [
+    "REQ-T-DECISIONS",
+    "REQ-T-NO-DENY-TO-ALLOW",
+    "REQ-T-ATTACH",
+    "REQ-T-CATCHALL",
+    "REQ-T-GCP-TIE"
+   ],
+   "calib_cases": [
+    "NETC-T-OCI-GOO-N",
+    "NETC-T-OCI-GOO-P",
+    "NETC-T-OCI-GOO-U"
+   ],
+   "expected_losses": [
+    "LOSS-NET-STATE",
+    "LOSS-NET-DEFAULT",
+    "LOSS-NET-SRCPORT",
+    "LOSS-NET-UNKNOWN-INPUT"
+   ],
+   "negatives": [
+    "DENY na origem nunca vira ALLOW no destino (CMT-FW-N01)",
+    "regra de saída não autoriza entrada nova no destino (CMT-FW-N03)",
+    "regra sem estado não ganha retorno automático no destino (CMT-FW-P03)",
+    "egress do grupo de segurança AWS sem bloco egress não é permissão total (SE-aws-jcsq5zrpnuvxzaxv)"
+   ],
+   "source": "oci",
+   "target": "google",
+   "unknowns": [
+    "retorno de conexão no destino: UNKNOWN (estado sem evidência)",
+    "fluxo sem regra no destino: UNKNOWN sem negação explícita"
+   ]
+  }
+ },
+ "loss_catalog": {
+  "LOSS-NET-DEFAULT": {
+   "code": "MISSING_EVIDENCE",
+   "covers": [
+    "ALLOW->UNKNOWN",
+    "DENY->UNKNOWN"
+   ],
+   "text": "o padrão do destino para fluxo sem regra não tem evidência publicada (GCP: regras implícitas só interpretadas; Azure: regras padrão ausentes); evitável com negação explícita de menor precedência",
+   "when": {
+    "source": [
+     "aws",
+     "google",
+     "azurerm",
+     "oci"
+    ],
+    "target": [
+     "google",
+     "azurerm"
+    ]
+   }
+  },
+  "LOSS-NET-EFFECT-DENY": {
+   "code": "DECLARED_LOSS",
+   "covers": [
+    "ALLOW->DENY"
+   ],
+   "text": "o destino só exprime permissão: regra de negação e precedência não viram regra; o alvo aceitável permite só o conjunto efetivo (negação compilada fora) ou bloqueia; nunca permite o que a origem nega",
+   "when": {
+    "source": [
+     "google",
+     "azurerm"
+    ],
+    "target": [
+     "aws",
+     "oci"
+    ]
+   }
+  },
+  "LOSS-NET-SELECTOR": {
+   "code": "DECLARED_LOSS",
+   "covers": [
+    "ALLOW->UNKNOWN",
+    "DENY->UNKNOWN",
+    "ALLOW->DENY"
+   ],
+   "text": "seleção por rótulo vira anexação: sem a lista de instâncias, a aplicação no destino é desconhecida ou fica fechada",
+   "when": {
+    "source": [
+     "google"
+    ],
+    "target": [
+     "aws",
+     "azurerm",
+     "oci"
+    ]
+   }
+  },
+  "LOSS-NET-SRCPORT": {
+   "code": "DECLARED_LOSS",
+   "covers": [
+    "ALLOW->DENY"
+   ],
+   "text": "o destino não filtra porta de origem: a regra que depende dela só pode ser omitida (bloqueio conservador), nunca alargada",
+   "when": {
+    "source": [
+     "azurerm",
+     "oci"
+    ],
+    "target": [
+     "aws",
+     "google"
+    ]
+   }
+  },
+  "LOSS-NET-STATE": {
+   "code": "MISSING_EVIDENCE",
+   "covers": [
+    "ALLOW->UNKNOWN",
+    "DENY->UNKNOWN"
+   ],
+   "text": "o estado de conexão do destino não tem evidência no SERVICE-EVIDENCE: a decisão do tráfego de retorno no destino é UNKNOWN",
+   "when": {
+    "source": [
+     "aws",
+     "google",
+     "azurerm",
+     "oci"
+    ],
+    "target": [
+     "aws",
+     "google",
+     "azurerm"
+    ]
+   }
+  },
+  "LOSS-NET-UNKNOWN-INPUT": {
+   "code": "UNKNOWN_INPUT",
+   "covers": [
+    "UNKNOWN->ALLOW",
+    "UNKNOWN->DENY"
+   ],
+   "text": "a decisão de origem é UNKNOWN (semântica sem evidência ou entrada simbólica): o destino escolhe e declara; nunca conta como transporte correto",
+   "when": {
+    "source": [
+     "aws",
+     "google",
+     "azurerm",
+     "oci"
+    ],
+    "target": [
+     "aws",
+     "google",
+     "azurerm",
+     "oci"
+    ]
+   }
+  }
+ },
+ "module": "PILOT-NET-ORACLE",
+ "schema": "bo.pilot_net.directions/1",
+ "target_requirements": {
+  "REQ-T-ATTACH": "o conjunto do destino aplica-se aos mesmos alvos (anexação ou rótulo equivalente)",
+  "REQ-T-AZ-PRIORITY": "prioridades entre 100 e 4096, distintas entre si (também entre direções, para a validade não ficar UNKNOWN)",
+  "REQ-T-CATCHALL": "negação explícita de entrada e de saída na menor precedência, para não depender do padrão sem evidência",
+  "REQ-T-DECISIONS": "decisão igual à da origem em todo fluxo da fixture, salvo divergência coberta por perda declarada do catálogo da direção",
+  "REQ-T-EFFECTIVE-SET": "destino só-permissão: permitir só o conjunto efetivo da origem (permissões menos negações de precedência maior)",
+  "REQ-T-GCP-TIE": "nenhuma permissão na mesma prioridade da negação que deveria perder para ela (empate: deny vence)",
+  "REQ-T-NO-DENY-TO-ALLOW": "nenhum fluxo negado na origem é permitido no destino (perda declarada não cobre)"
+ }
+}

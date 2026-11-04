@@ -1,0 +1,8245 @@
+{
+ "contract": "C24",
+ "contract_version": "1.0.0",
+ "counts": {
+  "calib": {
+   "by_case": {
+    "NET-C01": {
+     "negative": 1,
+     "positive": 4,
+     "unknown": 1
+    },
+    "NET-C02": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 3
+    },
+    "NET-C03": {
+     "negative": 1,
+     "positive": 2,
+     "unknown": 2
+    },
+    "NET-C04": {
+     "negative": 1,
+     "positive": 3,
+     "unknown": 1
+    },
+    "NET-C05": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "NET-C06": {
+     "negative": 2,
+     "positive": 1,
+     "unknown": 1
+    },
+    "NET-C07": {
+     "negative": 1,
+     "positive": 2,
+     "unknown": 1
+    },
+    "NET-C08": {
+     "negative": 2,
+     "positive": 2,
+     "unknown": 2
+    },
+    "NET-C09": {
+     "negative": 1,
+     "positive": 2,
+     "unknown": 1
+    }
+   },
+   "by_direction": {
+    "aws->azurerm": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "aws->google": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "aws->oci": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "azurerm->aws": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "azurerm->google": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "azurerm->oci": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "google->aws": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "google->azurerm": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "google->oci": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "oci->aws": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "oci->azurerm": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "oci->google": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    }
+   },
+   "by_provider": {
+    "aws": 14,
+    "azurerm": 8,
+    "google": 11,
+    "oci": 9
+   },
+   "fixtures_in_cases": 42,
+   "fixtures_total": 42,
+   "flows_total": 97,
+   "translations_total": 36
+  },
+  "retained": {
+   "by_case": {
+    "NET-C01": {
+     "negative": 1,
+     "positive": 2,
+     "unknown": 1
+    },
+    "NET-C02": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "NET-C03": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "NET-C04": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "NET-C05": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "NET-C06": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "NET-C07": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "NET-C08": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    },
+    "NET-C09": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 1
+    }
+   },
+   "by_direction": {
+    "aws->azurerm": {
+     "negative": 1,
+     "positive": 0,
+     "unknown": 1
+    },
+    "aws->google": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 0
+    },
+    "aws->oci": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 0
+    },
+    "azurerm->aws": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 0
+    },
+    "azurerm->google": {
+     "negative": 1,
+     "positive": 0,
+     "unknown": 1
+    },
+    "azurerm->oci": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 0
+    },
+    "google->aws": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 0
+    },
+    "google->azurerm": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 0
+    },
+    "google->oci": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 0
+    },
+    "oci->aws": {
+     "negative": 1,
+     "positive": 0,
+     "unknown": 1
+    },
+    "oci->azurerm": {
+     "negative": 1,
+     "positive": 0,
+     "unknown": 1
+    },
+    "oci->google": {
+     "negative": 1,
+     "positive": 1,
+     "unknown": 0
+    }
+   },
+   "by_provider": {
+    "aws": 2,
+    "azurerm": 13,
+    "google": 6,
+    "oci": 13
+   },
+   "fixtures_in_cases": 28,
+   "fixtures_total": 34,
+   "flows_total": 80,
+   "translations_total": 24
+  }
+ },
+ "directions": {
+  "aws->azurerm": {
+   "acceptable_target": [
+    "REQ-T-DECISIONS",
+    "REQ-T-NO-DENY-TO-ALLOW",
+    "REQ-T-ATTACH",
+    "REQ-T-CATCHALL",
+    "REQ-T-AZ-PRIORITY"
+   ],
+   "calib_cases": [
+    "NETC-T-AWS-AZU-N",
+    "NETC-T-AWS-AZU-P",
+    "NETC-T-AWS-AZU-U"
+   ],
+   "expected_losses": [
+    "LOSS-NET-STATE",
+    "LOSS-NET-DEFAULT",
+    "LOSS-NET-UNKNOWN-INPUT"
+   ],
+   "negatives": [
+    "DENY na origem nunca vira ALLOW no destino (CMT-FW-N01)",
+    "regra de saída não autoriza entrada nova no destino (CMT-FW-N03)",
+    "regra sem estado não ganha retorno automático no destino (CMT-FW-P03)",
+    "egress do grupo de segurança AWS sem bloco egress não é permissão total (SE-aws-jcsq5zrpnuvxzaxv)"
+   ],
+   "source": "aws",
+   "target": "azurerm",
+   "unknowns": [
+    "retorno de conexão no destino: UNKNOWN (estado sem evidência)",
+    "retorno de conexão na origem: UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
+    "fluxo sem regra no destino: UNKNOWN sem negação explícita",
+    "NSG na NIC e na sub-rede com decisões diferentes: UNKNOWN (combinação sem evidência)"
+   ]
+  },
+  "aws->google": {
+   "acceptable_target": [
+    "REQ-T-DECISIONS",
+    "REQ-T-NO-DENY-TO-ALLOW",
+    "REQ-T-ATTACH",
+    "REQ-T-CATCHALL",
+    "REQ-T-GCP-TIE"
+   ],
+   "calib_cases": [
+    "NETC-T-AWS-GOO-N",
+    "NETC-T-AWS-GOO-P",
+    "NETC-T-AWS-GOO-U"
+   ],
+   "expected_losses": [
+    "LOSS-NET-STATE",
+    "LOSS-NET-DEFAULT",
+    "LOSS-NET-UNKNOWN-INPUT"
+   ],
+   "negatives": [
+    "DENY na origem nunca vira ALLOW no destino (CMT-FW-N01)",
+    "regra de saída não autoriza entrada nova no destino (CMT-FW-N03)",
+    "regra sem estado não ganha retorno automático no destino (CMT-FW-P03)",
+    "egress do grupo de segurança AWS sem bloco egress não é permissão total (SE-aws-jcsq5zrpnuvxzaxv)"
+   ],
+   "source": "aws",
+   "target": "google",
+   "unknowns": [
+    "retorno de conexão no destino: UNKNOWN (estado sem evidência)",
+    "retorno de conexão na origem: UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
+    "fluxo sem regra no destino: UNKNOWN sem negação explícita"
+   ]
+  },
+  "aws->oci": {
+   "acceptable_target": [
+    "REQ-T-DECISIONS",
+    "REQ-T-NO-DENY-TO-ALLOW",
+    "REQ-T-ATTACH"
+   ],
+   "calib_cases": [
+    "NETC-T-AWS-OCI-N",
+    "NETC-T-AWS-OCI-P",
+    "NETC-T-AWS-OCI-U"
+   ],
+   "expected_losses": [
+    "LOSS-NET-UNKNOWN-INPUT"
+   ],
+   "negatives": [
+    "DENY na origem nunca vira ALLOW no destino (CMT-FW-N01)",
+    "regra de saída não autoriza entrada nova no destino (CMT-FW-N03)",
+    "regra sem estado não ganha retorno automático no destino (CMT-FW-P03)",
+    "egress do grupo de segurança AWS sem bloco egress não é permissão total (SE-aws-jcsq5zrpnuvxzaxv)"
+   ],
+   "source": "aws",
+   "target": "oci",
+   "unknowns": [
+    "retorno de conexão na origem: UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
+    "security list e NSG no mesmo alvo com decisões diferentes: UNKNOWN (combinação sem evidência)"
+   ]
+  },
+  "azurerm->aws": {
+   "acceptable_target": [
+    "REQ-T-DECISIONS",
+    "REQ-T-NO-DENY-TO-ALLOW",
+    "REQ-T-ATTACH",
+    "REQ-T-EFFECTIVE-SET"
+   ],
+   "calib_cases": [
+    "NETC-T-AZU-AWS-N",
+    "NETC-T-AZU-AWS-P",
+    "NETC-T-AZU-AWS-U"
+   ],
+   "expected_losses": [
+    "LOSS-NET-EFFECT-DENY",
+    "LOSS-NET-STATE",
+    "LOSS-NET-SRCPORT",
+    "LOSS-NET-UNKNOWN-INPUT"
+   ],
+   "negatives": [
+    "DENY na origem nunca vira ALLOW no destino (CMT-FW-N01)",
+    "regra de saída não autoriza entrada nova no destino (CMT-FW-N03)",
+    "regra sem estado não ganha retorno automático no destino (CMT-FW-P03)",
+    "egress do grupo de segurança AWS sem bloco egress não é permissão total (SE-aws-jcsq5zrpnuvxzaxv)"
+   ],
+   "source": "azurerm",
+   "target": "aws",
+   "unknowns": [
+    "retorno de conexão no destino: UNKNOWN (estado sem evidência)",
+    "retorno de conexão na origem: UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
+    "fluxo sem regra na origem: UNKNOWN"
+   ]
+  },
+  "azurerm->google": {
+   "acceptable_target": [
+    "REQ-T-DECISIONS",
+    "REQ-T-NO-DENY-TO-ALLOW",
+    "REQ-T-ATTACH",
+    "REQ-T-CATCHALL",
+    "REQ-T-GCP-TIE"
+   ],
+   "calib_cases": [
+    "NETC-T-AZU-GOO-N",
+    "NETC-T-AZU-GOO-P",
+    "NETC-T-AZU-GOO-U"
+   ],
+   "expected_losses": [
+    "LOSS-NET-STATE",
+    "LOSS-NET-DEFAULT",
+    "LOSS-NET-SRCPORT",
+    "LOSS-NET-UNKNOWN-INPUT"
+   ],
+   "negatives": [
+    "DENY na origem nunca vira ALLOW no destino (CMT-FW-N01)",
+    "regra de saída não autoriza entrada nova no destino (CMT-FW-N03)",
+    "regra sem estado não ganha retorno automático no destino (CMT-FW-P03)",
+    "egress do grupo de segurança AWS sem bloco egress não é permissão total (SE-aws-jcsq5zrpnuvxzaxv)"
+   ],
+   "source": "azurerm",
+   "target": "google",
+   "unknowns": [
+    "retorno de conexão no destino: UNKNOWN (estado sem evidência)",
+    "retorno de conexão na origem: UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
+    "fluxo sem regra no destino: UNKNOWN sem negação explícita",
+    "fluxo sem regra na origem: UNKNOWN"
+   ]
+  },
+  "azurerm->oci": {
+   "acceptable_target": [
+    "REQ-T-DECISIONS",
+    "REQ-T-NO-DENY-TO-ALLOW",
+    "REQ-T-ATTACH",
+    "REQ-T-EFFECTIVE-SET"
+   ],
+   "calib_cases": [
+    "NETC-T-AZU-OCI-N",
+    "NETC-T-AZU-OCI-P",
+    "NETC-T-AZU-OCI-U"
+   ],
+   "expected_losses": [
+    "LOSS-NET-EFFECT-DENY",
+    "LOSS-NET-UNKNOWN-INPUT"
+   ],
+   "negatives": [
+    "DENY na origem nunca vira ALLOW no destino (CMT-FW-N01)",
+    "regra de saída não autoriza entrada nova no destino (CMT-FW-N03)",
+    "regra sem estado não ganha retorno automático no destino (CMT-FW-P03)",
+    "egress do grupo de segurança AWS sem bloco egress não é permissão total (SE-aws-jcsq5zrpnuvxzaxv)"
+   ],
+   "source": "azurerm",
+   "target": "oci",
+   "unknowns": [
+    "retorno de conexão na origem: UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
+    "fluxo sem regra na origem: UNKNOWN",
+    "security list e NSG no mesmo alvo com decisões diferentes: UNKNOWN (combinação sem evidência)"
+   ]
+  },
+  "google->aws": {
+   "acceptable_target": [
+    "REQ-T-DECISIONS",
+    "REQ-T-NO-DENY-TO-ALLOW",
+    "REQ-T-ATTACH",
+    "REQ-T-EFFECTIVE-SET"
+   ],
+   "calib_cases": [
+    "NETC-T-GOO-AWS-N",
+    "NETC-T-GOO-AWS-P",
+    "NETC-T-GOO-AWS-U"
+   ],
+   "expected_losses": [
+    "LOSS-NET-EFFECT-DENY",
+    "LOSS-NET-STATE",
+    "LOSS-NET-SELECTOR",
+    "LOSS-NET-UNKNOWN-INPUT"
+   ],
+   "negatives": [
+    "DENY na origem nunca vira ALLOW no destino (CMT-FW-N01)",
+    "regra de saída não autoriza entrada nova no destino (CMT-FW-N03)",
+    "regra sem estado não ganha retorno automático no destino (CMT-FW-P03)",
+    "egress do grupo de segurança AWS sem bloco egress não é permissão total (SE-aws-jcsq5zrpnuvxzaxv)"
+   ],
+   "source": "google",
+   "target": "aws",
+   "unknowns": [
+    "retorno de conexão no destino: UNKNOWN (estado sem evidência)",
+    "retorno de conexão na origem: UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
+    "fluxo sem regra na origem: UNKNOWN"
+   ]
+  },
+  "google->azurerm": {
+   "acceptable_target": [
+    "REQ-T-DECISIONS",
+    "REQ-T-NO-DENY-TO-ALLOW",
+    "REQ-T-ATTACH",
+    "REQ-T-CATCHALL",
+    "REQ-T-AZ-PRIORITY"
+   ],
+   "calib_cases": [
+    "NETC-T-GOO-AZU-N",
+    "NETC-T-GOO-AZU-P",
+    "NETC-T-GOO-AZU-U"
+   ],
+   "expected_losses": [
+    "LOSS-NET-STATE",
+    "LOSS-NET-DEFAULT",
+    "LOSS-NET-SELECTOR",
+    "LOSS-NET-UNKNOWN-INPUT"
+   ],
+   "negatives": [
+    "DENY na origem nunca vira ALLOW no destino (CMT-FW-N01)",
+    "regra de saída não autoriza entrada nova no destino (CMT-FW-N03)",
+    "regra sem estado não ganha retorno automático no destino (CMT-FW-P03)",
+    "egress do grupo de segurança AWS sem bloco egress não é permissão total (SE-aws-jcsq5zrpnuvxzaxv)"
+   ],
+   "source": "google",
+   "target": "azurerm",
+   "unknowns": [
+    "retorno de conexão no destino: UNKNOWN (estado sem evidência)",
+    "retorno de conexão na origem: UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
+    "fluxo sem regra no destino: UNKNOWN sem negação explícita",
+    "fluxo sem regra na origem: UNKNOWN",
+    "NSG na NIC e na sub-rede com decisões diferentes: UNKNOWN (combinação sem evidência)"
+   ]
+  },
+  "google->oci": {
+   "acceptable_target": [
+    "REQ-T-DECISIONS",
+    "REQ-T-NO-DENY-TO-ALLOW",
+    "REQ-T-ATTACH",
+    "REQ-T-EFFECTIVE-SET"
+   ],
+   "calib_cases": [
+    "NETC-T-GOO-OCI-N",
+    "NETC-T-GOO-OCI-P",
+    "NETC-T-GOO-OCI-U"
+   ],
+   "expected_losses": [
+    "LOSS-NET-EFFECT-DENY",
+    "LOSS-NET-SELECTOR",
+    "LOSS-NET-UNKNOWN-INPUT"
+   ],
+   "negatives": [
+    "DENY na origem nunca vira ALLOW no destino (CMT-FW-N01)",
+    "regra de saída não autoriza entrada nova no destino (CMT-FW-N03)",
+    "regra sem estado não ganha retorno automático no destino (CMT-FW-P03)",
+    "egress do grupo de segurança AWS sem bloco egress não é permissão total (SE-aws-jcsq5zrpnuvxzaxv)"
+   ],
+   "source": "google",
+   "target": "oci",
+   "unknowns": [
+    "retorno de conexão na origem: UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
+    "fluxo sem regra na origem: UNKNOWN",
+    "security list e NSG no mesmo alvo com decisões diferentes: UNKNOWN (combinação sem evidência)"
+   ]
+  },
+  "oci->aws": {
+   "acceptable_target": [
+    "REQ-T-DECISIONS",
+    "REQ-T-NO-DENY-TO-ALLOW",
+    "REQ-T-ATTACH"
+   ],
+   "calib_cases": [
+    "NETC-T-OCI-AWS-N",
+    "NETC-T-OCI-AWS-P",
+    "NETC-T-OCI-AWS-U"
+   ],
+   "expected_losses": [
+    "LOSS-NET-STATE",
+    "LOSS-NET-SRCPORT",
+    "LOSS-NET-UNKNOWN-INPUT"
+   ],
+   "negatives": [
+    "DENY na origem nunca vira ALLOW no destino (CMT-FW-N01)",
+    "regra de saída não autoriza entrada nova no destino (CMT-FW-N03)",
+    "regra sem estado não ganha retorno automático no destino (CMT-FW-P03)",
+    "egress do grupo de segurança AWS sem bloco egress não é permissão total (SE-aws-jcsq5zrpnuvxzaxv)"
+   ],
+   "source": "oci",
+   "target": "aws",
+   "unknowns": [
+    "retorno de conexão no destino: UNKNOWN (estado sem evidência)"
+   ]
+  },
+  "oci->azurerm": {
+   "acceptable_target": [
+    "REQ-T-DECISIONS",
+    "REQ-T-NO-DENY-TO-ALLOW",
+    "REQ-T-ATTACH",
+    "REQ-T-CATCHALL",
+    "REQ-T-AZ-PRIORITY"
+   ],
+   "calib_cases": [
+    "NETC-T-OCI-AZU-N",
+    "NETC-T-OCI-AZU-P",
+    "NETC-T-OCI-AZU-U"
+   ],
+   "expected_losses": [
+    "LOSS-NET-STATE",
+    "LOSS-NET-DEFAULT",
+    "LOSS-NET-UNKNOWN-INPUT"
+   ],
+   "negatives": [
+    "DENY na origem nunca vira ALLOW no destino (CMT-FW-N01)",
+    "regra de saída não autoriza entrada nova no destino (CMT-FW-N03)",
+    "regra sem estado não ganha retorno automático no destino (CMT-FW-P03)",
+    "egress do grupo de segurança AWS sem bloco egress não é permissão total (SE-aws-jcsq5zrpnuvxzaxv)"
+   ],
+   "source": "oci",
+   "target": "azurerm",
+   "unknowns": [
+    "retorno de conexão no destino: UNKNOWN (estado sem evidência)",
+    "fluxo sem regra no destino: UNKNOWN sem negação explícita",
+    "NSG na NIC e na sub-rede com decisões diferentes: UNKNOWN (combinação sem evidência)"
+   ]
+  },
+  "oci->google": {
+   "acceptable_target": [
+    "REQ-T-DECISIONS",
+    "REQ-T-NO-DENY-TO-ALLOW",
+    "REQ-T-ATTACH",
+    "REQ-T-CATCHALL",
+    "REQ-T-GCP-TIE"
+   ],
+   "calib_cases": [
+    "NETC-T-OCI-GOO-N",
+    "NETC-T-OCI-GOO-P",
+    "NETC-T-OCI-GOO-U"
+   ],
+   "expected_losses": [
+    "LOSS-NET-STATE",
+    "LOSS-NET-DEFAULT",
+    "LOSS-NET-SRCPORT",
+    "LOSS-NET-UNKNOWN-INPUT"
+   ],
+   "negatives": [
+    "DENY na origem nunca vira ALLOW no destino (CMT-FW-N01)",
+    "regra de saída não autoriza entrada nova no destino (CMT-FW-N03)",
+    "regra sem estado não ganha retorno automático no destino (CMT-FW-P03)",
+    "egress do grupo de segurança AWS sem bloco egress não é permissão total (SE-aws-jcsq5zrpnuvxzaxv)"
+   ],
+   "source": "oci",
+   "target": "google",
+   "unknowns": [
+    "retorno de conexão no destino: UNKNOWN (estado sem evidência)",
+    "fluxo sem regra no destino: UNKNOWN sem negação explícita"
+   ]
+  }
+ },
+ "fixtures": {
+  "NETC-C01-AWS-INLINE": {
+   "case": "NET-C01",
+   "check": {
+    "assertion": "unidades(embutida) == unidades(separada) e decisões iguais",
+    "kind": "invariant"
+   },
+   "commitment_ids": [
+    "CMT-FW-P01"
+   ],
+   "decisions": {
+    "f1": {
+     "value": "ALLOW",
+     "why": "regra 443"
+    },
+    "f2": {
+     "value": "ALLOW",
+     "why": "faixa 8000-8080 da 198.51.100.0/24"
+    },
+    "f3": {
+     "value": "DENY",
+     "why": "nada permite 22"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-aws-rouky47ej4w3me2k"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "aws_security_group.web"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "aws_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-aws-jyr4g6yuka5h7son"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "direction": "ingress",
+      "ports": "443-443",
+      "protocol": "tcp",
+      "remote": [
+       "203.0.113.0/24"
+      ]
+     },
+     "parent": "aws_security_group.web",
+     "tf": {
+      "block_path": "ingress",
+      "resource_type": "aws_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-aws-jyr4g6yuka5h7son"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "direction": "ingress",
+      "ports": "8000-8080",
+      "protocol": "tcp",
+      "remote": [
+       "198.51.100.0/24"
+      ]
+     },
+     "parent": "aws_security_group.web",
+     "tf": {
+      "block_path": "ingress",
+      "resource_type": "aws_security_group"
+     }
+    },
+    {
+     "domain_unit": "attachment",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "set": "aws_security_group.web",
+      "target": "aws_instance.vm1"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "vpc_security_group_ids",
+      "resource_type": "aws_instance"
+     }
+    }
+   ],
+   "decomposition_invariant_with": "NETC-C01-AWS-SEP",
+   "polarity": "positive",
+   "provider": "aws",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C01-AWS-OTHER": {
+   "case": "NET-C01",
+   "check": {
+    "assertion": "NOT decision(f1) = allow AND parent(regra) != web",
+    "kind": "not_entails"
+   },
+   "commitment_ids": [
+    "CMT-FW-P01"
+   ],
+   "decisions": {
+    "f1": {
+     "value": "DENY",
+     "why": "a regra separada é do grupo 'other', que não está anexado a vm1"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-aws-rouky47ej4w3me2k"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "aws_security_group.web"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "aws_security_group"
+     }
+    },
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-aws-rouky47ej4w3me2k"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "aws_security_group.other"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "aws_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-aws-jyr4g6yuka5h7son"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "direction": "ingress",
+      "ports": "443-443",
+      "protocol": "tcp",
+      "remote": [
+       "203.0.113.0/24"
+      ]
+     },
+     "parent": "aws_security_group.other",
+     "tf": {
+      "resource_type": "aws_vpc_security_group_ingress_rule"
+     }
+    },
+    {
+     "domain_unit": "attachment",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "set": "aws_security_group.web",
+      "target": "aws_instance.vm1"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "vpc_security_group_ids",
+      "resource_type": "aws_instance"
+     }
+    }
+   ],
+   "polarity": "negative",
+   "provider": "aws",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C01-AWS-SEP": {
+   "case": "NET-C01",
+   "check": {
+    "assertion": "unidades(embutida) == unidades(separada) e decisões iguais",
+    "kind": "invariant"
+   },
+   "commitment_ids": [
+    "CMT-FW-P01"
+   ],
+   "decisions": {
+    "f1": {
+     "value": "ALLOW",
+     "why": "regra 443"
+    },
+    "f2": {
+     "value": "ALLOW",
+     "why": "faixa 8000-8080 da 198.51.100.0/24"
+    },
+    "f3": {
+     "value": "DENY",
+     "why": "nada permite 22"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-aws-rouky47ej4w3me2k"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "aws_security_group.web"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "aws_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-aws-jyr4g6yuka5h7son"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "direction": "ingress",
+      "ports": "443-443",
+      "protocol": "tcp",
+      "remote": [
+       "203.0.113.0/24"
+      ]
+     },
+     "parent": "aws_security_group.web",
+     "tf": {
+      "resource_type": "aws_vpc_security_group_ingress_rule"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-aws-jyr4g6yuka5h7son"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "direction": "ingress",
+      "ports": "8000-8080",
+      "protocol": "tcp",
+      "remote": [
+       "198.51.100.0/24"
+      ]
+     },
+     "parent": "aws_security_group.web",
+     "tf": {
+      "resource_type": "aws_vpc_security_group_ingress_rule"
+     }
+    },
+    {
+     "domain_unit": "attachment",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "set": "aws_security_group.web",
+      "target": "aws_instance.vm1"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "vpc_security_group_ids",
+      "resource_type": "aws_instance"
+     }
+    }
+   ],
+   "decomposition_invariant_with": "NETC-C01-AWS-INLINE",
+   "polarity": "positive",
+   "provider": "aws",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C01-AWS-SYM": {
+   "case": "NET-C01",
+   "check": {
+    "assertion": "decision(f1) = UNKNOWN; parent(regra) = UNKNOWN",
+    "kind": "unknown"
+   },
+   "commitment_ids": [
+    "CMT-FW-P01",
+    "CMT-NIC-U02"
+   ],
+   "decisions": {
+    "f1": {
+     "code": "UNKNOWN_SYMBOLIC_INPUT",
+     "value": "UNKNOWN",
+     "why": "a pertença da regra 443 ao grupo não se resolve"
+    },
+    "f2": {
+     "value": "DENY",
+     "why": "nenhuma regra, lida ou não resolvida, cobre 22"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-aws-rouky47ej4w3me2k"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "aws_security_group.web"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "aws_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "C24:CMT-NIC-U02"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "rule": "aws_vpc_security_group_ingress_rule.web_r1"
+     },
+     "parent": "UNKNOWN",
+     "tf": {
+      "resource_type": "aws_vpc_security_group_ingress_rule"
+     },
+     "unknown": [
+      "owner"
+     ]
+    },
+    {
+     "domain_unit": "attachment",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "set": "aws_security_group.web",
+      "target": "aws_instance.vm1"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "vpc_security_group_ids",
+      "resource_type": "aws_instance"
+     }
+    }
+   ],
+   "polarity": "unknown",
+   "provider": "aws",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C01-AZ-INLINE": {
+   "case": "NET-C01",
+   "check": {
+    "assertion": "unidades(embutida) == unidades(separada) e decisões iguais",
+    "kind": "invariant"
+   },
+   "commitment_ids": [
+    "CMT-FW-P01"
+   ],
+   "decisions": {
+    "f1": {
+     "value": "ALLOW",
+     "why": "permissão de prioridade 100"
+    },
+    "f2": {
+     "value": "DENY",
+     "why": "negação explícita 4095"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-zvfleucvpmt7gzna"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "azurerm_network_security_group.web"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-qvepgdtxoh7qzmyl",
+      "SE-azurerm-xexh22d7kybt736y"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "name": "allow-web"
+     },
+     "parent": "azurerm_network_security_group.web",
+     "tf": {
+      "block_path": "security_rule",
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-qvepgdtxoh7qzmyl",
+      "SE-azurerm-xexh22d7kybt736y"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "name": "deny-in"
+     },
+     "parent": "azurerm_network_security_group.web",
+     "tf": {
+      "block_path": "security_rule",
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-qvepgdtxoh7qzmyl",
+      "SE-azurerm-xexh22d7kybt736y"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "name": "deny-out"
+     },
+     "parent": "azurerm_network_security_group.web",
+     "tf": {
+      "block_path": "security_rule",
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "attachment",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "set": "azurerm_network_security_group.web",
+      "target": "azurerm_network_interface.nic1"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "azurerm_network_interface_security_group_association"
+     }
+    }
+   ],
+   "decomposition_invariant_with": "NETC-C01-AZ-SEP",
+   "polarity": "positive",
+   "provider": "azurerm",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C01-AZ-SEP": {
+   "case": "NET-C01",
+   "check": {
+    "assertion": "unidades(embutida) == unidades(separada) e decisões iguais",
+    "kind": "invariant"
+   },
+   "commitment_ids": [
+    "CMT-FW-P01"
+   ],
+   "decisions": {
+    "f1": {
+     "value": "ALLOW",
+     "why": "permissão de prioridade 100"
+    },
+    "f2": {
+     "value": "DENY",
+     "why": "negação explícita 4095"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-zvfleucvpmt7gzna"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "azurerm_network_security_group.web"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-qvepgdtxoh7qzmyl",
+      "SE-azurerm-xexh22d7kybt736y"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "name": "allow-web"
+     },
+     "parent": "azurerm_network_security_group.web",
+     "tf": {
+      "resource_type": "azurerm_network_security_rule"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-qvepgdtxoh7qzmyl",
+      "SE-azurerm-xexh22d7kybt736y"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "name": "deny-in"
+     },
+     "parent": "azurerm_network_security_group.web",
+     "tf": {
+      "resource_type": "azurerm_network_security_rule"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-qvepgdtxoh7qzmyl",
+      "SE-azurerm-xexh22d7kybt736y"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "name": "deny-out"
+     },
+     "parent": "azurerm_network_security_group.web",
+     "tf": {
+      "resource_type": "azurerm_network_security_rule"
+     }
+    },
+    {
+     "domain_unit": "attachment",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "set": "azurerm_network_security_group.web",
+      "target": "azurerm_network_interface.nic1"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "azurerm_network_interface_security_group_association"
+     }
+    }
+   ],
+   "decomposition_invariant_with": "NETC-C01-AZ-INLINE",
+   "polarity": "positive",
+   "provider": "azurerm",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C02-AWS-RET": {
+   "case": "NET-C02",
+   "check": {
+    "assertion": "decision(retorno de f1) = UNKNOWN",
+    "kind": "unknown"
+   },
+   "commitment_ids": [
+    "CMT-FW-P02",
+    "CMT-FW-U03"
+   ],
+   "decisions": {
+    "f1": {
+     "value": "ALLOW",
+     "why": "regra 443 cobre a origem"
+    },
+    "f1r": {
+     "code": "MISSING_EVIDENCE",
+     "value": "UNKNOWN",
+     "why": "estado de conexão do provedor sem evidência: com estado permite, sem estado nega"
+    },
+    "f2": {
+     "value": "DENY",
+     "why": "nenhuma regra permite 22"
+    },
+    "f3": {
+     "value": "DENY",
+     "why": "origem fora da /24"
+    },
+    "f4": {
+     "value": "DENY",
+     "why": "nenhuma permissão de saída"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-aws-rouky47ej4w3me2k"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "aws_security_group.web"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "aws_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-aws-jyr4g6yuka5h7son"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "direction": "ingress",
+      "ports": "443-443",
+      "protocol": "tcp",
+      "remote": [
+       "203.0.113.0/24"
+      ]
+     },
+     "parent": "aws_security_group.web",
+     "tf": {
+      "block_path": "ingress",
+      "resource_type": "aws_security_group"
+     }
+    },
+    {
+     "domain_unit": "attachment",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "set": "aws_security_group.web",
+      "target": "aws_instance.vm1"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "vpc_security_group_ids",
+      "resource_type": "aws_instance"
+     }
+    }
+   ],
+   "polarity": "unknown",
+   "provider": "aws",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C02-AZ-RET": {
+   "case": "NET-C02",
+   "check": {
+    "assertion": "decision(retorno de f1) = UNKNOWN",
+    "kind": "unknown"
+   },
+   "commitment_ids": [
+    "CMT-FW-P02",
+    "CMT-FW-U03"
+   ],
+   "decisions": {
+    "f1": {
+     "value": "ALLOW",
+     "why": "regra 443 cobre a origem"
+    },
+    "f1r": {
+     "code": "MISSING_EVIDENCE",
+     "value": "UNKNOWN",
+     "why": "estado de conexão do provedor sem evidência: com estado permite, sem estado nega"
+    },
+    "f2": {
+     "value": "DENY",
+     "why": "nenhuma regra permite 22"
+    },
+    "f3": {
+     "value": "DENY",
+     "why": "origem fora da /24"
+    },
+    "f4": {
+     "value": "DENY",
+     "why": "nenhuma permissão de saída"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-zvfleucvpmt7gzna"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "azurerm_network_security_group.web"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-qvepgdtxoh7qzmyl",
+      "SE-azurerm-xexh22d7kybt736y"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "name": "allow-web"
+     },
+     "parent": "azurerm_network_security_group.web",
+     "tf": {
+      "block_path": "security_rule",
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-qvepgdtxoh7qzmyl",
+      "SE-azurerm-xexh22d7kybt736y"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "name": "deny-in"
+     },
+     "parent": "azurerm_network_security_group.web",
+     "tf": {
+      "block_path": "security_rule",
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-qvepgdtxoh7qzmyl",
+      "SE-azurerm-xexh22d7kybt736y"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "name": "deny-out"
+     },
+     "parent": "azurerm_network_security_group.web",
+     "tf": {
+      "block_path": "security_rule",
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "attachment",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "set": "azurerm_network_security_group.web",
+      "target": "azurerm_network_interface.nic1"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "azurerm_network_interface_security_group_association"
+     }
+    }
+   ],
+   "polarity": "unknown",
+   "provider": "azurerm",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C02-GCP-RET": {
+   "case": "NET-C02",
+   "check": {
+    "assertion": "decision(retorno de f1) = UNKNOWN",
+    "kind": "unknown"
+   },
+   "commitment_ids": [
+    "CMT-FW-P02",
+    "CMT-FW-U03"
+   ],
+   "decisions": {
+    "f1": {
+     "value": "ALLOW",
+     "why": "regra 443 cobre a origem"
+    },
+    "f1r": {
+     "code": "MISSING_EVIDENCE",
+     "value": "UNKNOWN",
+     "why": "estado de conexão do provedor sem evidência: com estado permite, sem estado nega"
+    },
+    "f2": {
+     "value": "DENY",
+     "why": "nenhuma regra permite 22"
+    },
+    "f3": {
+     "value": "DENY",
+     "why": "origem fora da /24"
+    },
+    "f4": {
+     "value": "DENY",
+     "why": "nenhuma permissão de saída"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "google_compute_network.net"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "google_compute_network"
+     }
+    },
+    {
+     "accepted_kinds": [
+      "COMPONENT",
+      "ENTITY"
+     ],
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-google-mhidfw4xa7sokciu",
+      "SE-google-mjuxwfic7ez6bfii"
+     ],
+     "kind": "COMPONENT",
+     "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+     "occurrence": {
+      "name": "fx-allow-web"
+     },
+     "parent": "google_compute_network.net",
+     "tf": {
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "web",
+      "rule": "fx-allow-web"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "accepted_kinds": [
+      "COMPONENT",
+      "ENTITY"
+     ],
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-google-mhidfw4xa7sokciu",
+      "SE-google-mjuxwfic7ez6bfii"
+     ],
+     "kind": "COMPONENT",
+     "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+     "occurrence": {
+      "name": "fx-deny-in"
+     },
+     "parent": "google_compute_network.net",
+     "tf": {
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "web",
+      "rule": "fx-deny-in"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "accepted_kinds": [
+      "COMPONENT",
+      "ENTITY"
+     ],
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-google-mhidfw4xa7sokciu",
+      "SE-google-mjuxwfic7ez6bfii"
+     ],
+     "kind": "COMPONENT",
+     "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+     "occurrence": {
+      "name": "fx-deny-out"
+     },
+     "parent": "google_compute_network.net",
+     "tf": {
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "web",
+      "rule": "fx-deny-out"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    }
+   ],
+   "polarity": "unknown",
+   "provider": "google",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C02-OCI-STATEFUL": {
+   "case": "NET-C02",
+   "check": {
+    "assertion": "decision(retorno de f1) = allow",
+    "kind": "entails"
+   },
+   "commitment_ids": [
+    "CMT-FW-P02",
+    "CMT-FW-U03"
+   ],
+   "decisions": {
+    "f1": {
+     "value": "ALLOW",
+     "why": "regra 443 cobre a origem"
+    },
+    "f1r": {
+     "value": "ALLOW",
+     "why": "security list: regra com estado por padrão ('Defaults to false, which means the rule is stateful')"
+    },
+    "f2": {
+     "value": "DENY",
+     "why": "nenhuma regra permite 22"
+    },
+    "f3": {
+     "value": "DENY",
+     "why": "origem fora da /24"
+    },
+    "f4": {
+     "value": "DENY",
+     "why": "nenhuma permissão de saída"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-oci-lq2gnnmrobz7ft7h"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "oci_core_security_list.web"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "oci_core_security_list"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-oci-bp7mulbmn76camow"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "direction": "ingress",
+      "ports": "443-443",
+      "protocol": "6",
+      "remote": "203.0.113.0/24",
+      "stateless": false
+     },
+     "parent": "oci_core_security_list.web",
+     "tf": {
+      "block_path": "ingress_security_rules",
+      "resource_type": "oci_core_security_list"
+     }
+    },
+    {
+     "domain_unit": "attachment",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "set": "oci_core_security_list.web",
+      "target": "oci_core_subnet.sa"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "security_list_ids",
+      "resource_type": "oci_core_subnet"
+     }
+    }
+   ],
+   "polarity": "positive",
+   "provider": "oci",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C02-OCI-STATELESS": {
+   "case": "NET-C02",
+   "check": {
+    "assertion": "NOT decision(retorno de f1) = allow",
+    "kind": "not_entails"
+   },
+   "commitment_ids": [
+    "CMT-FW-P03"
+   ],
+   "decisions": {
+    "f1": {
+     "value": "ALLOW",
+     "why": "regra 443 sem estado"
+    },
+    "f1r": {
+     "value": "DENY",
+     "why": "'A stateless rule allows traffic in one direction': sem regra de saída, o retorno não passa"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-oci-lq2gnnmrobz7ft7h"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "oci_core_security_list.web"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "oci_core_security_list"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-oci-bp7mulbmn76camow"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "direction": "ingress",
+      "ports": "443-443",
+      "protocol": "6",
+      "remote": "203.0.113.0/24",
+      "stateless": true
+     },
+     "parent": "oci_core_security_list.web",
+     "tf": {
+      "block_path": "ingress_security_rules",
+      "resource_type": "oci_core_security_list"
+     }
+    },
+    {
+     "domain_unit": "attachment",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "set": "oci_core_security_list.web",
+      "target": "oci_core_subnet.sa"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "security_list_ids",
+      "resource_type": "oci_core_subnet"
+     }
+    }
+   ],
+   "polarity": "negative",
+   "provider": "oci",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C03-OCI-MIXED": {
+   "case": "NET-C03",
+   "check": {
+    "assertion": "NOT decision(retorno de f2) = allow",
+    "kind": "not_entails"
+   },
+   "commitment_ids": [
+    "CMT-FW-P03"
+   ],
+   "decisions": {
+    "f1": {
+     "value": "ALLOW",
+     "why": "regra 443"
+    },
+    "f1r": {
+     "value": "ALLOW",
+     "why": "regra com estado"
+    },
+    "f2": {
+     "value": "ALLOW",
+     "why": "regra 8080"
+    },
+    "f2r": {
+     "value": "DENY",
+     "why": "regra sem estado e nenhuma regra de saída"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-oci-lq2gnnmrobz7ft7h"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "oci_core_security_list.web"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "oci_core_security_list"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-oci-bp7mulbmn76camow"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "direction": "ingress",
+      "ports": "443-443",
+      "protocol": "6",
+      "remote": "203.0.113.0/24",
+      "stateless": false
+     },
+     "parent": "oci_core_security_list.web",
+     "tf": {
+      "block_path": "ingress_security_rules",
+      "resource_type": "oci_core_security_list"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-oci-bp7mulbmn76camow"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "direction": "ingress",
+      "ports": "8080-8080",
+      "protocol": "6",
+      "remote": "203.0.113.0/24",
+      "stateless": true
+     },
+     "parent": "oci_core_security_list.web",
+     "tf": {
+      "block_path": "ingress_security_rules",
+      "resource_type": "oci_core_security_list"
+     }
+    },
+    {
+     "domain_unit": "attachment",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "set": "oci_core_security_list.web",
+      "target": "oci_core_subnet.sa"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "security_list_ids",
+      "resource_type": "oci_core_subnet"
+     }
+    }
+   ],
+   "polarity": "negative",
+   "provider": "oci",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C03-OCI-MIXED-REV": {
+   "case": "NET-C03",
+   "check": {
+    "assertion": "decision(retorno de f1) = allow AND decision(retorno de f2) = allow",
+    "kind": "entails"
+   },
+   "commitment_ids": [
+    "CMT-FW-P03"
+   ],
+   "decisions": {
+    "f1": {
+     "value": "ALLOW",
+     "why": "regra 443"
+    },
+    "f1r": {
+     "value": "ALLOW",
+     "why": "regra 443 com estado (padrão)"
+    },
+    "f2": {
+     "value": "ALLOW",
+     "why": "regra 8080"
+    },
+    "f2r": {
+     "value": "ALLOW",
+     "why": "regra de saída sem estado com porta de origem 8080, como a doc pede"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-oci-lq2gnnmrobz7ft7h"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "oci_core_security_list.web"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "oci_core_security_list"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-oci-bp7mulbmn76camow"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "direction": "ingress",
+      "ports": "443-443",
+      "protocol": "6",
+      "remote": "203.0.113.0/24",
+      "stateless": false
+     },
+     "parent": "oci_core_security_list.web",
+     "tf": {
+      "block_path": "ingress_security_rules",
+      "resource_type": "oci_core_security_list"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-oci-bp7mulbmn76camow"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "direction": "ingress",
+      "ports": "8080-8080",
+      "protocol": "6",
+      "remote": "203.0.113.0/24",
+      "stateless": true
+     },
+     "parent": "oci_core_security_list.web",
+     "tf": {
+      "block_path": "ingress_security_rules",
+      "resource_type": "oci_core_security_list"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-oci-bp7mulbmn76camow"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "direction": "egress",
+      "protocol": "6",
+      "remote": "203.0.113.0/24",
+      "src_ports": "8080-8080",
+      "stateless": true
+     },
+     "parent": "oci_core_security_list.web",
+     "tf": {
+      "block_path": "egress_security_rules",
+      "resource_type": "oci_core_security_list"
+     }
+    },
+    {
+     "domain_unit": "attachment",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "set": "oci_core_security_list.web",
+      "target": "oci_core_subnet.sa"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "security_list_ids",
+      "resource_type": "oci_core_subnet"
+     }
+    }
+   ],
+   "polarity": "positive",
+   "provider": "oci",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C03-OCI-NSG-REV": {
+   "case": "NET-C03",
+   "check": {
+    "assertion": "decision(retorno de f1) = allow",
+    "kind": "entails"
+   },
+   "commitment_ids": [
+    "CMT-FW-P03"
+   ],
+   "decisions": {
+    "f1": {
+     "value": "ALLOW",
+     "why": "regra 22 sem estado"
+    },
+    "f1r": {
+     "value": "ALLOW",
+     "why": "regra inversa com porta de origem 22"
+    },
+    "f5": {
+     "value": "DENY",
+     "why": "a regra de saída exige porta de origem 22; o fluxo novo sai da 49152"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-oci-gm5xlnh42tjbc5ou"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "oci_core_network_security_group.web"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "oci_core_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-oci-bp7mulbmn76camow"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "direction": "ingress",
+      "ports": "22-22",
+      "protocol": "6",
+      "remote": "203.0.113.0/24",
+      "stateless": true
+     },
+     "parent": "oci_core_network_security_group.web",
+     "tf": {
+      "resource_type": "oci_core_network_security_group_security_rule"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-oci-bp7mulbmn76camow"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "direction": "egress",
+      "protocol": "6",
+      "remote": "203.0.113.0/24",
+      "src_ports": "22-22",
+      "stateless": true
+     },
+     "parent": "oci_core_network_security_group.web",
+     "tf": {
+      "resource_type": "oci_core_network_security_group_security_rule"
+     }
+    },
+    {
+     "domain_unit": "attachment",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "set": "oci_core_network_security_group.web",
+      "target": "oci_core_instance.vm1"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "create_vnic_details.nsg_ids",
+      "resource_type": "oci_core_instance"
+     }
+    }
+   ],
+   "polarity": "positive",
+   "provider": "oci",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C03-OCI-NSG-SYM": {
+   "case": "NET-C03",
+   "check": {
+    "assertion": "decision(retorno de f1) = UNKNOWN",
+    "kind": "unknown"
+   },
+   "commitment_ids": [
+    "CMT-FW-P03",
+    "CMT-CFG-U01"
+   ],
+   "decisions": {
+    "f1": {
+     "value": "ALLOW",
+     "why": "regra 22 do NSG"
+    },
+    "f1r": {
+     "code": "UNKNOWN_SYMBOLIC_INPUT",
+     "value": "UNKNOWN",
+     "why": "stateless vem de variável"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-oci-gm5xlnh42tjbc5ou"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "oci_core_network_security_group.web"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "oci_core_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-oci-bp7mulbmn76camow"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "direction": "ingress",
+      "ports": "22-22",
+      "protocol": "6",
+      "remote": "203.0.113.0/24",
+      "stateless": true
+     },
+     "parent": "oci_core_network_security_group.web",
+     "tf": {
+      "resource_type": "oci_core_network_security_group_security_rule"
+     }
+    },
+    {
+     "domain_unit": "attachment",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "set": "oci_core_network_security_group.web",
+      "target": "oci_core_instance.vm1"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "create_vnic_details.nsg_ids",
+      "resource_type": "oci_core_instance"
+     }
+    }
+   ],
+   "polarity": "unknown",
+   "provider": "oci",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C03-OCI-OVERLAP": {
+   "case": "NET-C03",
+   "check": {
+    "assertion": "decision(retorno de f1) = UNKNOWN",
+    "kind": "unknown"
+   },
+   "commitment_ids": [
+    "CMT-FW-P03"
+   ],
+   "decisions": {
+    "f1": {
+     "value": "ALLOW",
+     "why": "as duas regras permitem"
+    },
+    "f1r": {
+     "code": "MISSING_EVIDENCE",
+     "value": "UNKNOWN",
+     "why": "o pacote casa regra com estado e regra sem estado: o rastreio não tem evidência"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-oci-lq2gnnmrobz7ft7h"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "oci_core_security_list.web"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "oci_core_security_list"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-oci-bp7mulbmn76camow"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "direction": "ingress",
+      "ports": "443-443",
+      "protocol": "6",
+      "remote": "203.0.113.0/24",
+      "stateless": false
+     },
+     "parent": "oci_core_security_list.web",
+     "tf": {
+      "block_path": "ingress_security_rules",
+      "resource_type": "oci_core_security_list"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-oci-bp7mulbmn76camow"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "direction": "ingress",
+      "ports": "443-443",
+      "protocol": "6",
+      "remote": "0.0.0.0/0",
+      "stateless": true
+     },
+     "parent": "oci_core_security_list.web",
+     "tf": {
+      "block_path": "ingress_security_rules",
+      "resource_type": "oci_core_security_list"
+     }
+    },
+    {
+     "domain_unit": "attachment",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "set": "oci_core_security_list.web",
+      "target": "oci_core_subnet.sa"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "security_list_ids",
+      "resource_type": "oci_core_subnet"
+     }
+    }
+   ],
+   "polarity": "unknown",
+   "provider": "oci",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C04-AZ-DENY-WINS": {
+   "case": "NET-C04",
+   "check": {
+    "assertion": "decision(f1) = deny",
+    "kind": "entails"
+   },
+   "commitment_ids": [
+    "CMT-FW-P04"
+   ],
+   "decisions": {
+    "f1": {
+     "value": "DENY",
+     "why": "negação de prioridade 100 vence a permissão de 200 (menor número, maior precedência)"
+    },
+    "f2": {
+     "value": "ALLOW",
+     "why": "443 permitido de qualquer origem"
+    },
+    "f2r": {
+     "code": "MISSING_EVIDENCE",
+     "value": "UNKNOWN",
+     "why": "estado de conexão sem evidência"
+    },
+    "f3": {
+     "value": "DENY",
+     "why": "negação explícita de menor precedência"
+    },
+    "f4": {
+     "value": "DENY",
+     "why": "negação explícita de saída"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-zvfleucvpmt7gzna"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "azurerm_network_security_group.web"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-qvepgdtxoh7qzmyl",
+      "SE-azurerm-xexh22d7kybt736y"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "name": "deny-ssh"
+     },
+     "parent": "azurerm_network_security_group.web",
+     "tf": {
+      "block_path": "security_rule",
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-qvepgdtxoh7qzmyl",
+      "SE-azurerm-xexh22d7kybt736y"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "name": "allow-ssh"
+     },
+     "parent": "azurerm_network_security_group.web",
+     "tf": {
+      "block_path": "security_rule",
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-qvepgdtxoh7qzmyl",
+      "SE-azurerm-xexh22d7kybt736y"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "name": "allow-web"
+     },
+     "parent": "azurerm_network_security_group.web",
+     "tf": {
+      "block_path": "security_rule",
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-qvepgdtxoh7qzmyl",
+      "SE-azurerm-xexh22d7kybt736y"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "name": "deny-in"
+     },
+     "parent": "azurerm_network_security_group.web",
+     "tf": {
+      "block_path": "security_rule",
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-qvepgdtxoh7qzmyl",
+      "SE-azurerm-xexh22d7kybt736y"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "name": "deny-out"
+     },
+     "parent": "azurerm_network_security_group.web",
+     "tf": {
+      "block_path": "security_rule",
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "attachment",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "set": "azurerm_network_security_group.web",
+      "target": "azurerm_network_interface.nic1"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "azurerm_network_interface_security_group_association"
+     }
+    }
+   ],
+   "polarity": "positive",
+   "provider": "azurerm",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C04-AZ-NOCATCH": {
+   "case": "NET-C04",
+   "check": {
+    "assertion": "decision(f2) = UNKNOWN",
+    "kind": "unknown"
+   },
+   "commitment_ids": [
+    "CMT-FW-U01"
+   ],
+   "decisions": {
+    "f1": {
+     "value": "ALLOW",
+     "why": "permissão 100"
+    },
+    "f2": {
+     "code": "MISSING_EVIDENCE",
+     "value": "UNKNOWN",
+     "why": "sem regra que case; regras padrão do NSG sem evidência"
+    },
+    "f4": {
+     "code": "MISSING_EVIDENCE",
+     "value": "UNKNOWN",
+     "why": "sem regra de saída; padrão sem evidência"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-zvfleucvpmt7gzna"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "azurerm_network_security_group.web"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-qvepgdtxoh7qzmyl",
+      "SE-azurerm-xexh22d7kybt736y"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "name": "allow-web"
+     },
+     "parent": "azurerm_network_security_group.web",
+     "tf": {
+      "block_path": "security_rule",
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "attachment",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "set": "azurerm_network_security_group.web",
+      "target": "azurerm_network_interface.nic1"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "azurerm_network_interface_security_group_association"
+     }
+    }
+   ],
+   "polarity": "unknown",
+   "provider": "azurerm",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C04-GCP-ALLOW-FIRST": {
+   "case": "NET-C04",
+   "check": {
+    "assertion": "NOT decision(f1) = deny (negação não vence sempre)",
+    "kind": "not_entails"
+   },
+   "commitment_ids": [
+    "CMT-FW-P04"
+   ],
+   "decisions": {
+    "f1": {
+     "value": "ALLOW",
+     "why": "allow de prioridade 100 vence deny de 200"
+    },
+    "f2": {
+     "value": "DENY",
+     "why": "fora da /24 só a negação casa"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "google_compute_network.net"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "google_compute_network"
+     }
+    },
+    {
+     "accepted_kinds": [
+      "COMPONENT",
+      "ENTITY"
+     ],
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-google-mhidfw4xa7sokciu",
+      "SE-google-mjuxwfic7ez6bfii"
+     ],
+     "kind": "COMPONENT",
+     "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+     "occurrence": {
+      "name": "fx-allow-ssh"
+     },
+     "parent": "google_compute_network.net",
+     "tf": {
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "web",
+      "rule": "fx-allow-ssh"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "accepted_kinds": [
+      "COMPONENT",
+      "ENTITY"
+     ],
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-google-mhidfw4xa7sokciu",
+      "SE-google-mjuxwfic7ez6bfii"
+     ],
+     "kind": "COMPONENT",
+     "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+     "occurrence": {
+      "name": "fx-deny-ssh"
+     },
+     "parent": "google_compute_network.net",
+     "tf": {
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "web",
+      "rule": "fx-deny-ssh"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "accepted_kinds": [
+      "COMPONENT",
+      "ENTITY"
+     ],
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-google-mhidfw4xa7sokciu",
+      "SE-google-mjuxwfic7ez6bfii"
+     ],
+     "kind": "COMPONENT",
+     "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+     "occurrence": {
+      "name": "fx-deny-in"
+     },
+     "parent": "google_compute_network.net",
+     "tf": {
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "web",
+      "rule": "fx-deny-in"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "accepted_kinds": [
+      "COMPONENT",
+      "ENTITY"
+     ],
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-google-mhidfw4xa7sokciu",
+      "SE-google-mjuxwfic7ez6bfii"
+     ],
+     "kind": "COMPONENT",
+     "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+     "occurrence": {
+      "name": "fx-deny-out"
+     },
+     "parent": "google_compute_network.net",
+     "tf": {
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "web",
+      "rule": "fx-deny-out"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    }
+   ],
+   "polarity": "negative",
+   "provider": "google",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C04-GCP-DENY-WINS": {
+   "case": "NET-C04",
+   "check": {
+    "assertion": "decision(f1) = deny",
+    "kind": "entails"
+   },
+   "commitment_ids": [
+    "CMT-FW-P04",
+    "CMT-FW-P06"
+   ],
+   "decisions": {
+    "f1": {
+     "value": "DENY",
+     "why": "negação de prioridade 100 vence a permissão de 200 (menor número, maior precedência)"
+    },
+    "f2": {
+     "value": "ALLOW",
+     "why": "443 permitido de qualquer origem"
+    },
+    "f2r": {
+     "code": "MISSING_EVIDENCE",
+     "value": "UNKNOWN",
+     "why": "estado de conexão sem evidência"
+    },
+    "f3": {
+     "value": "DENY",
+     "why": "negação explícita de menor precedência"
+    },
+    "f4": {
+     "value": "DENY",
+     "why": "negação explícita de saída"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "google_compute_network.net"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "google_compute_network"
+     }
+    },
+    {
+     "accepted_kinds": [
+      "COMPONENT",
+      "ENTITY"
+     ],
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-google-mhidfw4xa7sokciu",
+      "SE-google-mjuxwfic7ez6bfii"
+     ],
+     "kind": "COMPONENT",
+     "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+     "occurrence": {
+      "name": "fx-deny-ssh"
+     },
+     "parent": "google_compute_network.net",
+     "tf": {
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "web",
+      "rule": "fx-deny-ssh"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "accepted_kinds": [
+      "COMPONENT",
+      "ENTITY"
+     ],
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-google-mhidfw4xa7sokciu",
+      "SE-google-mjuxwfic7ez6bfii"
+     ],
+     "kind": "COMPONENT",
+     "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+     "occurrence": {
+      "name": "fx-allow-ssh"
+     },
+     "parent": "google_compute_network.net",
+     "tf": {
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "web",
+      "rule": "fx-allow-ssh"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "accepted_kinds": [
+      "COMPONENT",
+      "ENTITY"
+     ],
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-google-mhidfw4xa7sokciu",
+      "SE-google-mjuxwfic7ez6bfii"
+     ],
+     "kind": "COMPONENT",
+     "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+     "occurrence": {
+      "name": "fx-allow-web"
+     },
+     "parent": "google_compute_network.net",
+     "tf": {
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "web",
+      "rule": "fx-allow-web"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "accepted_kinds": [
+      "COMPONENT",
+      "ENTITY"
+     ],
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-google-mhidfw4xa7sokciu",
+      "SE-google-mjuxwfic7ez6bfii"
+     ],
+     "kind": "COMPONENT",
+     "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+     "occurrence": {
+      "name": "fx-deny-in"
+     },
+     "parent": "google_compute_network.net",
+     "tf": {
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "web",
+      "rule": "fx-deny-in"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "accepted_kinds": [
+      "COMPONENT",
+      "ENTITY"
+     ],
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-google-mhidfw4xa7sokciu",
+      "SE-google-mjuxwfic7ez6bfii"
+     ],
+     "kind": "COMPONENT",
+     "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+     "occurrence": {
+      "name": "fx-deny-out"
+     },
+     "parent": "google_compute_network.net",
+     "tf": {
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "web",
+      "rule": "fx-deny-out"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    }
+   ],
+   "decomposition_invariant_with": "NETC-C04-GCP-DENY-WINS-SWAP",
+   "polarity": "positive",
+   "provider": "google",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C04-GCP-DENY-WINS-SWAP": {
+   "case": "NET-C04",
+   "check": {
+    "assertion": "decision(f1, base) == decision(f1, invertida) == deny",
+    "kind": "invariant"
+   },
+   "commitment_ids": [
+    "CMT-FW-P06"
+   ],
+   "decisions": {
+    "f1": {
+     "value": "DENY",
+     "why": "negação de prioridade 100 vence a permissão de 200 (menor número, maior precedência)"
+    },
+    "f2": {
+     "value": "ALLOW",
+     "why": "443 permitido de qualquer origem"
+    },
+    "f2r": {
+     "code": "MISSING_EVIDENCE",
+     "value": "UNKNOWN",
+     "why": "estado de conexão sem evidência"
+    },
+    "f3": {
+     "value": "DENY",
+     "why": "negação explícita de menor precedência"
+    },
+    "f4": {
+     "value": "DENY",
+     "why": "negação explícita de saída"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "google_compute_network.net"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "google_compute_network"
+     }
+    },
+    {
+     "accepted_kinds": [
+      "COMPONENT",
+      "ENTITY"
+     ],
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-google-mhidfw4xa7sokciu",
+      "SE-google-mjuxwfic7ez6bfii"
+     ],
+     "kind": "COMPONENT",
+     "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+     "occurrence": {
+      "name": "fx-deny-out"
+     },
+     "parent": "google_compute_network.net",
+     "tf": {
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "web",
+      "rule": "fx-deny-out"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "accepted_kinds": [
+      "COMPONENT",
+      "ENTITY"
+     ],
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-google-mhidfw4xa7sokciu",
+      "SE-google-mjuxwfic7ez6bfii"
+     ],
+     "kind": "COMPONENT",
+     "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+     "occurrence": {
+      "name": "fx-deny-in"
+     },
+     "parent": "google_compute_network.net",
+     "tf": {
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "web",
+      "rule": "fx-deny-in"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "accepted_kinds": [
+      "COMPONENT",
+      "ENTITY"
+     ],
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-google-mhidfw4xa7sokciu",
+      "SE-google-mjuxwfic7ez6bfii"
+     ],
+     "kind": "COMPONENT",
+     "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+     "occurrence": {
+      "name": "fx-allow-web"
+     },
+     "parent": "google_compute_network.net",
+     "tf": {
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "web",
+      "rule": "fx-allow-web"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "accepted_kinds": [
+      "COMPONENT",
+      "ENTITY"
+     ],
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-google-mhidfw4xa7sokciu",
+      "SE-google-mjuxwfic7ez6bfii"
+     ],
+     "kind": "COMPONENT",
+     "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+     "occurrence": {
+      "name": "fx-allow-ssh"
+     },
+     "parent": "google_compute_network.net",
+     "tf": {
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "web",
+      "rule": "fx-allow-ssh"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "accepted_kinds": [
+      "COMPONENT",
+      "ENTITY"
+     ],
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-google-mhidfw4xa7sokciu",
+      "SE-google-mjuxwfic7ez6bfii"
+     ],
+     "kind": "COMPONENT",
+     "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+     "occurrence": {
+      "name": "fx-deny-ssh"
+     },
+     "parent": "google_compute_network.net",
+     "tf": {
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "web",
+      "rule": "fx-deny-ssh"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    }
+   ],
+   "decomposition_invariant_with": "NETC-C04-GCP-DENY-WINS",
+   "polarity": "positive",
+   "provider": "google",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C05-AZ-DUP": {
+   "case": "NET-C05",
+   "check": {
+    "assertion": "configuração com prioridade repetida na mesma direção é inválida",
+    "kind": "rejects"
+   },
+   "commitment_ids": [
+    "CMT-FW-U02"
+   ],
+   "decisions": {
+    "f1": {
+     "code": "MISSING_EVIDENCE",
+     "value": "UNKNOWN",
+     "why": "configuração recusada pela doc; desempate também sem evidência"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-zvfleucvpmt7gzna"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "azurerm_network_security_group.web"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-qvepgdtxoh7qzmyl",
+      "SE-azurerm-xexh22d7kybt736y"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "name": "allow-ssh"
+     },
+     "parent": "azurerm_network_security_group.web",
+     "tf": {
+      "block_path": "security_rule",
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-qvepgdtxoh7qzmyl",
+      "SE-azurerm-xexh22d7kybt736y"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "name": "deny-ssh"
+     },
+     "parent": "azurerm_network_security_group.web",
+     "tf": {
+      "block_path": "security_rule",
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-qvepgdtxoh7qzmyl",
+      "SE-azurerm-xexh22d7kybt736y"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "name": "deny-in"
+     },
+     "parent": "azurerm_network_security_group.web",
+     "tf": {
+      "block_path": "security_rule",
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-qvepgdtxoh7qzmyl",
+      "SE-azurerm-xexh22d7kybt736y"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "name": "deny-out"
+     },
+     "parent": "azurerm_network_security_group.web",
+     "tf": {
+      "block_path": "security_rule",
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "attachment",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "set": "azurerm_network_security_group.web",
+      "target": "azurerm_network_interface.nic1"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "azurerm_network_interface_security_group_association"
+     }
+    }
+   ],
+   "polarity": "negative",
+   "provider": "azurerm",
+   "validity": {
+    "code": "INCONSISTENT",
+    "value": "INVALID"
+   }
+  },
+  "NETC-C05-AZ-DUP-DIRS": {
+   "case": "NET-C05",
+   "check": {
+    "assertion": "validade = UNKNOWN ('unique for each rule in the collection')",
+    "kind": "unknown"
+   },
+   "commitment_ids": [
+    "CMT-FW-U02"
+   ],
+   "decisions": {
+    "f1": {
+     "value": "ALLOW",
+     "why": "permissão 300 de entrada"
+    },
+    "f4": {
+     "value": "ALLOW",
+     "why": "permissão 300 de saída"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-zvfleucvpmt7gzna"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "azurerm_network_security_group.web"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-qvepgdtxoh7qzmyl",
+      "SE-azurerm-xexh22d7kybt736y"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "name": "allow-web"
+     },
+     "parent": "azurerm_network_security_group.web",
+     "tf": {
+      "block_path": "security_rule",
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-qvepgdtxoh7qzmyl",
+      "SE-azurerm-xexh22d7kybt736y"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "name": "allow-out"
+     },
+     "parent": "azurerm_network_security_group.web",
+     "tf": {
+      "block_path": "security_rule",
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-qvepgdtxoh7qzmyl",
+      "SE-azurerm-xexh22d7kybt736y"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "name": "deny-in"
+     },
+     "parent": "azurerm_network_security_group.web",
+     "tf": {
+      "block_path": "security_rule",
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-qvepgdtxoh7qzmyl",
+      "SE-azurerm-xexh22d7kybt736y"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "name": "deny-out"
+     },
+     "parent": "azurerm_network_security_group.web",
+     "tf": {
+      "block_path": "security_rule",
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "attachment",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "set": "azurerm_network_security_group.web",
+      "target": "azurerm_network_interface.nic1"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "azurerm_network_interface_security_group_association"
+     }
+    }
+   ],
+   "polarity": "unknown",
+   "provider": "azurerm",
+   "validity": {
+    "code": "MISSING_EVIDENCE",
+    "value": "UNKNOWN"
+   }
+  },
+  "NETC-C05-GCP-TIE": {
+   "case": "NET-C05",
+   "check": {
+    "assertion": "decision(f1) = deny",
+    "kind": "entails"
+   },
+   "commitment_ids": [
+    "CMT-FW-U02"
+   ],
+   "decisions": {
+    "f1": {
+     "value": "DENY",
+     "why": "'DENY rules take precedence over ALLOW rules having equal priority'"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "google_compute_network.net"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "google_compute_network"
+     }
+    },
+    {
+     "accepted_kinds": [
+      "COMPONENT",
+      "ENTITY"
+     ],
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-google-mhidfw4xa7sokciu",
+      "SE-google-mjuxwfic7ez6bfii"
+     ],
+     "kind": "COMPONENT",
+     "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+     "occurrence": {
+      "name": "fx-allow-ssh"
+     },
+     "parent": "google_compute_network.net",
+     "tf": {
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "web",
+      "rule": "fx-allow-ssh"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "accepted_kinds": [
+      "COMPONENT",
+      "ENTITY"
+     ],
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-google-mhidfw4xa7sokciu",
+      "SE-google-mjuxwfic7ez6bfii"
+     ],
+     "kind": "COMPONENT",
+     "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+     "occurrence": {
+      "name": "fx-deny-ssh"
+     },
+     "parent": "google_compute_network.net",
+     "tf": {
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "web",
+      "rule": "fx-deny-ssh"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "accepted_kinds": [
+      "COMPONENT",
+      "ENTITY"
+     ],
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-google-mhidfw4xa7sokciu",
+      "SE-google-mjuxwfic7ez6bfii"
+     ],
+     "kind": "COMPONENT",
+     "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+     "occurrence": {
+      "name": "fx-deny-in"
+     },
+     "parent": "google_compute_network.net",
+     "tf": {
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "web",
+      "rule": "fx-deny-in"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "accepted_kinds": [
+      "COMPONENT",
+      "ENTITY"
+     ],
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-google-mhidfw4xa7sokciu",
+      "SE-google-mjuxwfic7ez6bfii"
+     ],
+     "kind": "COMPONENT",
+     "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+     "occurrence": {
+      "name": "fx-deny-out"
+     },
+     "parent": "google_compute_network.net",
+     "tf": {
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "web",
+      "rule": "fx-deny-out"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    }
+   ],
+   "polarity": "positive",
+   "provider": "google",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C06-AWS-EGRESS": {
+   "case": "NET-C06",
+   "check": {
+    "assertion": "decision(f4) = allow",
+    "kind": "entails"
+   },
+   "commitment_ids": [
+    "CMT-FW-N03"
+   ],
+   "decisions": {
+    "f4": {
+     "value": "ALLOW",
+     "why": "regra de saída 443"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-aws-rouky47ej4w3me2k"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "aws_security_group.web"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "aws_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-aws-jyr4g6yuka5h7son"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "direction": "egress",
+      "ports": "443-443",
+      "protocol": "tcp",
+      "remote": [
+       "0.0.0.0/0"
+      ]
+     },
+     "parent": "aws_security_group.web",
+     "tf": {
+      "block_path": "egress",
+      "resource_type": "aws_security_group"
+     }
+    },
+    {
+     "domain_unit": "attachment",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "set": "aws_security_group.web",
+      "target": "aws_instance.vm1"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "vpc_security_group_ids",
+      "resource_type": "aws_instance"
+     }
+    }
+   ],
+   "polarity": "positive",
+   "provider": "aws",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C06-AWS-INGRESS-NEW": {
+   "case": "NET-C06",
+   "check": {
+    "assertion": "NOT decision(f1) = allow",
+    "kind": "not_entails"
+   },
+   "commitment_ids": [
+    "CMT-FW-N03"
+   ],
+   "decisions": {
+    "f1": {
+     "value": "DENY",
+     "why": "a regra é de saída"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-aws-rouky47ej4w3me2k"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "aws_security_group.web"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "aws_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-aws-jyr4g6yuka5h7son"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "direction": "egress",
+      "ports": "443-443",
+      "protocol": "tcp",
+      "remote": [
+       "0.0.0.0/0"
+      ]
+     },
+     "parent": "aws_security_group.web",
+     "tf": {
+      "block_path": "egress",
+      "resource_type": "aws_security_group"
+     }
+    },
+    {
+     "domain_unit": "attachment",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "set": "aws_security_group.web",
+      "target": "aws_instance.vm1"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "vpc_security_group_ids",
+      "resource_type": "aws_instance"
+     }
+    }
+   ],
+   "polarity": "negative",
+   "provider": "aws",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C06-GCP-INGRESS-NOMATCH": {
+   "case": "NET-C06",
+   "check": {
+    "assertion": "decision(f1) = UNKNOWN (não ALLOW)",
+    "kind": "unknown"
+   },
+   "commitment_ids": [
+    "CMT-FW-N03",
+    "CMT-FW-U01"
+   ],
+   "decisions": {
+    "f1": {
+     "code": "MISSING_EVIDENCE",
+     "value": "UNKNOWN",
+     "why": "nenhuma regra de entrada; regra implícita de entrada só interpretada"
+    },
+    "f4": {
+     "value": "ALLOW",
+     "why": "regra de saída 443"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "google_compute_network.net"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "google_compute_network"
+     }
+    },
+    {
+     "accepted_kinds": [
+      "COMPONENT",
+      "ENTITY"
+     ],
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-google-mhidfw4xa7sokciu",
+      "SE-google-mjuxwfic7ez6bfii"
+     ],
+     "kind": "COMPONENT",
+     "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+     "occurrence": {
+      "name": "fx-allow-out"
+     },
+     "parent": "google_compute_network.net",
+     "tf": {
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "web",
+      "rule": "fx-allow-out"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    }
+   ],
+   "polarity": "unknown",
+   "provider": "google",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C06-OCI-INGRESS-NEW": {
+   "case": "NET-C06",
+   "check": {
+    "assertion": "NOT decision(f1) = allow",
+    "kind": "not_entails"
+   },
+   "commitment_ids": [
+    "CMT-FW-N03"
+   ],
+   "decisions": {
+    "f1": {
+     "value": "DENY",
+     "why": "a regra é de saída"
+    },
+    "f4": {
+     "value": "ALLOW",
+     "why": "regra de saída"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-oci-lq2gnnmrobz7ft7h"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "oci_core_security_list.web"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "oci_core_security_list"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-oci-bp7mulbmn76camow"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "direction": "egress",
+      "ports": "443-443",
+      "protocol": "6",
+      "remote": "0.0.0.0/0",
+      "stateless": false
+     },
+     "parent": "oci_core_security_list.web",
+     "tf": {
+      "block_path": "egress_security_rules",
+      "resource_type": "oci_core_security_list"
+     }
+    },
+    {
+     "domain_unit": "attachment",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "set": "oci_core_security_list.web",
+      "target": "oci_core_subnet.sa"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "security_list_ids",
+      "resource_type": "oci_core_subnet"
+     }
+    }
+   ],
+   "polarity": "negative",
+   "provider": "oci",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C07-AWS-PARTIAL-22": {
+   "case": "NET-C07",
+   "check": {
+    "assertion": "decision(f2) = UNKNOWN",
+    "kind": "unknown"
+   },
+   "commitment_ids": [
+    "CMT-FW-U01"
+   ],
+   "decisions": {
+    "f2": {
+     "code": "INCOMPLETE_READ",
+     "value": "UNKNOWN",
+     "why": "negação implícita só vale sob leitura completa"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-aws-rouky47ej4w3me2k"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "aws_security_group.web"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "aws_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-aws-jyr4g6yuka5h7son"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "direction": "ingress",
+      "ports": "443-443",
+      "protocol": "tcp",
+      "remote": [
+       "203.0.113.0/24"
+      ]
+     },
+     "parent": "aws_security_group.web",
+     "tf": {
+      "block_path": "ingress",
+      "resource_type": "aws_security_group"
+     }
+    },
+    {
+     "domain_unit": "attachment",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "set": "aws_security_group.web",
+      "target": "aws_instance.vm1"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "vpc_security_group_ids",
+      "resource_type": "aws_instance"
+     }
+    }
+   ],
+   "polarity": "unknown",
+   "provider": "aws",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C07-AWS-PARTIAL-ALLOW": {
+   "case": "NET-C07",
+   "check": {
+    "assertion": "decision(f1) = allow",
+    "kind": "entails"
+   },
+   "commitment_ids": [
+    "CMT-FW-U01"
+   ],
+   "decisions": {
+    "f1": {
+     "value": "ALLOW",
+     "why": "só permissão: regra não lida não tira a permissão lida"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-aws-rouky47ej4w3me2k"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "aws_security_group.web"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "aws_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-aws-jyr4g6yuka5h7son"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "direction": "ingress",
+      "ports": "443-443",
+      "protocol": "tcp",
+      "remote": [
+       "203.0.113.0/24"
+      ]
+     },
+     "parent": "aws_security_group.web",
+     "tf": {
+      "block_path": "ingress",
+      "resource_type": "aws_security_group"
+     }
+    },
+    {
+     "domain_unit": "attachment",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "set": "aws_security_group.web",
+      "target": "aws_instance.vm1"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "vpc_security_group_ids",
+      "resource_type": "aws_instance"
+     }
+    }
+   ],
+   "polarity": "positive",
+   "provider": "aws",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C07-GCP-PARTIAL": {
+   "case": "NET-C07",
+   "check": {
+    "assertion": "NOT decision(f1) = allow",
+    "kind": "not_entails"
+   },
+   "commitment_ids": [
+    "CMT-FW-U01"
+   ],
+   "decisions": {
+    "f1": {
+     "code": "INCOMPLETE_READ",
+     "value": "UNKNOWN",
+     "why": "regra não lida de prioridade maior pode negar"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "google_compute_network.net"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "google_compute_network"
+     }
+    },
+    {
+     "accepted_kinds": [
+      "COMPONENT",
+      "ENTITY"
+     ],
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-google-mhidfw4xa7sokciu",
+      "SE-google-mjuxwfic7ez6bfii"
+     ],
+     "kind": "COMPONENT",
+     "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+     "occurrence": {
+      "name": "fx-allow-web"
+     },
+     "parent": "google_compute_network.net",
+     "tf": {
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "web",
+      "rule": "fx-allow-web"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "accepted_kinds": [
+      "COMPONENT",
+      "ENTITY"
+     ],
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-google-mhidfw4xa7sokciu",
+      "SE-google-mjuxwfic7ez6bfii"
+     ],
+     "kind": "COMPONENT",
+     "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+     "occurrence": {
+      "name": "fx-deny-in"
+     },
+     "parent": "google_compute_network.net",
+     "tf": {
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "web",
+      "rule": "fx-deny-in"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "accepted_kinds": [
+      "COMPONENT",
+      "ENTITY"
+     ],
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-google-mhidfw4xa7sokciu",
+      "SE-google-mjuxwfic7ez6bfii"
+     ],
+     "kind": "COMPONENT",
+     "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+     "occurrence": {
+      "name": "fx-deny-out"
+     },
+     "parent": "google_compute_network.net",
+     "tf": {
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "web",
+      "rule": "fx-deny-out"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    }
+   ],
+   "polarity": "negative",
+   "provider": "google",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C07-GCP-PARTIAL-DENY0": {
+   "case": "NET-C07",
+   "check": {
+    "assertion": "decision(f1) = deny",
+    "kind": "entails"
+   },
+   "commitment_ids": [
+    "CMT-FW-U01",
+    "CMT-FW-U02"
+   ],
+   "decisions": {
+    "f1": {
+     "value": "DENY",
+     "why": "negação na prioridade 0: regra não lida no máximo empata, e no empate deny vence"
+    },
+    "f2": {
+     "code": "INCOMPLETE_READ",
+     "value": "UNKNOWN",
+     "why": "regra não lida de prioridade maior que 1000 pode negar"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "google_compute_network.net"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "google_compute_network"
+     }
+    },
+    {
+     "accepted_kinds": [
+      "COMPONENT",
+      "ENTITY"
+     ],
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-google-mhidfw4xa7sokciu",
+      "SE-google-mjuxwfic7ez6bfii"
+     ],
+     "kind": "COMPONENT",
+     "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+     "occurrence": {
+      "name": "fx-deny-ssh"
+     },
+     "parent": "google_compute_network.net",
+     "tf": {
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "web",
+      "rule": "fx-deny-ssh"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "accepted_kinds": [
+      "COMPONENT",
+      "ENTITY"
+     ],
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-google-mhidfw4xa7sokciu",
+      "SE-google-mjuxwfic7ez6bfii"
+     ],
+     "kind": "COMPONENT",
+     "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+     "occurrence": {
+      "name": "fx-allow-web"
+     },
+     "parent": "google_compute_network.net",
+     "tf": {
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "web",
+      "rule": "fx-allow-web"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    }
+   ],
+   "polarity": "positive",
+   "provider": "google",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C08-AWS-ATTACH": {
+   "case": "NET-C08",
+   "check": {
+    "assertion": "applies(web) = {vm1}",
+    "kind": "entails"
+   },
+   "commitment_ids": [
+    "CMT-FW-P05"
+   ],
+   "decisions": {
+    "f1": {
+     "value": "ALLOW",
+     "why": "grupo anexado a vm1"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-aws-rouky47ej4w3me2k"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "aws_security_group.web"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "aws_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-aws-jyr4g6yuka5h7son"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "direction": "ingress",
+      "ports": "443-443",
+      "protocol": "tcp",
+      "remote": [
+       "203.0.113.0/24"
+      ]
+     },
+     "parent": "aws_security_group.web",
+     "tf": {
+      "block_path": "ingress",
+      "resource_type": "aws_security_group"
+     }
+    },
+    {
+     "domain_unit": "attachment",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "set": "aws_security_group.web",
+      "target": "aws_instance.vm1"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "vpc_security_group_ids",
+      "resource_type": "aws_instance"
+     }
+    }
+   ],
+   "polarity": "positive",
+   "provider": "aws",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C08-AWS-ATTACH-SYM": {
+   "case": "NET-C08",
+   "check": {
+    "assertion": "applies(web) = UNKNOWN",
+    "kind": "unknown"
+   },
+   "commitment_ids": [
+    "CMT-FW-P05",
+    "CMT-NIC-U02"
+   ],
+   "decisions": {
+    "f1": {
+     "code": "UNKNOWN_SYMBOLIC_INPUT",
+     "value": "UNKNOWN",
+     "why": "o grupo da instância vem de variável"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-aws-rouky47ej4w3me2k"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "aws_security_group.web"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "aws_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-aws-jyr4g6yuka5h7son"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "direction": "ingress",
+      "ports": "443-443",
+      "protocol": "tcp",
+      "remote": [
+       "203.0.113.0/24"
+      ]
+     },
+     "parent": "aws_security_group.web",
+     "tf": {
+      "block_path": "ingress",
+      "resource_type": "aws_security_group"
+     }
+    },
+    {
+     "domain_unit": "attachment",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "set": "var.sg_id",
+      "target": "aws_instance.vm1"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "vpc_security_group_ids",
+      "resource_type": "aws_instance"
+     }
+    }
+   ],
+   "polarity": "unknown",
+   "provider": "aws",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C08-AWS-OTHER-VM": {
+   "case": "NET-C08",
+   "check": {
+    "assertion": "NOT decision(f1) = allow",
+    "kind": "not_entails"
+   },
+   "commitment_ids": [
+    "CMT-FW-P05"
+   ],
+   "decisions": {
+    "f1": {
+     "value": "DENY",
+     "why": "vm1 só tem o grupo base, sem regras"
+    },
+    "f2": {
+     "value": "ALLOW",
+     "why": "vm2 tem o grupo web"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-aws-rouky47ej4w3me2k"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "aws_security_group.web"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "aws_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-aws-jyr4g6yuka5h7son"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "direction": "ingress",
+      "ports": "443-443",
+      "protocol": "tcp",
+      "remote": [
+       "203.0.113.0/24"
+      ]
+     },
+     "parent": "aws_security_group.web",
+     "tf": {
+      "block_path": "ingress",
+      "resource_type": "aws_security_group"
+     }
+    },
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-aws-rouky47ej4w3me2k"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "aws_security_group.base"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "aws_security_group"
+     }
+    },
+    {
+     "domain_unit": "attachment",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "set": "aws_security_group.base",
+      "target": "aws_instance.vm1"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "vpc_security_group_ids",
+      "resource_type": "aws_instance"
+     }
+    },
+    {
+     "domain_unit": "attachment",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "set": "aws_security_group.web",
+      "target": "aws_instance.vm2"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "vpc_security_group_ids",
+      "resource_type": "aws_instance"
+     }
+    }
+   ],
+   "polarity": "negative",
+   "provider": "aws",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C08-AZ-NIC-SUBNET": {
+   "case": "NET-C08",
+   "check": {
+    "assertion": "decision(f1) = UNKNOWN",
+    "kind": "unknown"
+   },
+   "commitment_ids": [
+    "CMT-FW-P05"
+   ],
+   "decisions": {
+    "f1": {
+     "code": "MISSING_EVIDENCE",
+     "value": "UNKNOWN",
+     "why": "NSG da NIC permite e o da sub-rede nega: combinação sem evidência"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-zvfleucvpmt7gzna"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "azurerm_network_security_group.web"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-qvepgdtxoh7qzmyl",
+      "SE-azurerm-xexh22d7kybt736y"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "name": "allow-web"
+     },
+     "parent": "azurerm_network_security_group.web",
+     "tf": {
+      "block_path": "security_rule",
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-qvepgdtxoh7qzmyl",
+      "SE-azurerm-xexh22d7kybt736y"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "name": "deny-in"
+     },
+     "parent": "azurerm_network_security_group.web",
+     "tf": {
+      "block_path": "security_rule",
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-qvepgdtxoh7qzmyl",
+      "SE-azurerm-xexh22d7kybt736y"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "name": "deny-out"
+     },
+     "parent": "azurerm_network_security_group.web",
+     "tf": {
+      "block_path": "security_rule",
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-zvfleucvpmt7gzna"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "azurerm_network_security_group.sub"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-qvepgdtxoh7qzmyl",
+      "SE-azurerm-xexh22d7kybt736y"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "name": "deny-in"
+     },
+     "parent": "azurerm_network_security_group.sub",
+     "tf": {
+      "block_path": "security_rule",
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "attachment",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "set": "azurerm_network_security_group.web",
+      "target": "azurerm_network_interface.nic1"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "azurerm_network_interface_security_group_association"
+     }
+    },
+    {
+     "domain_unit": "attachment",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "set": "azurerm_network_security_group.sub",
+      "target": "azurerm_subnet.sa"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "azurerm_subnet_network_security_group_association"
+     }
+    }
+   ],
+   "polarity": "unknown",
+   "provider": "azurerm",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C08-GCP-TAG": {
+   "case": "NET-C08",
+   "check": {
+    "assertion": "applies(allow-web) = {vm1}; decision(f1) = allow",
+    "kind": "entails"
+   },
+   "commitment_ids": [
+    "CMT-FW-P05"
+   ],
+   "decisions": {
+    "f1": {
+     "value": "ALLOW",
+     "why": "vm1 tem o rótulo web"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "google_compute_network.net"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "google_compute_network"
+     }
+    },
+    {
+     "accepted_kinds": [
+      "COMPONENT",
+      "ENTITY"
+     ],
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-google-mhidfw4xa7sokciu",
+      "SE-google-mjuxwfic7ez6bfii"
+     ],
+     "kind": "COMPONENT",
+     "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+     "occurrence": {
+      "name": "fx-allow-web"
+     },
+     "parent": "google_compute_network.net",
+     "tf": {
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "web",
+      "rule": "fx-allow-web"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "accepted_kinds": [
+      "COMPONENT",
+      "ENTITY"
+     ],
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-google-mhidfw4xa7sokciu",
+      "SE-google-mjuxwfic7ez6bfii"
+     ],
+     "kind": "COMPONENT",
+     "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+     "occurrence": {
+      "name": "fx-deny-in"
+     },
+     "parent": "google_compute_network.net",
+     "tf": {
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "web",
+      "rule": "fx-deny-in"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "app",
+      "rule": "fx-deny-in"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "accepted_kinds": [
+      "COMPONENT",
+      "ENTITY"
+     ],
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-google-mhidfw4xa7sokciu",
+      "SE-google-mjuxwfic7ez6bfii"
+     ],
+     "kind": "COMPONENT",
+     "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+     "occurrence": {
+      "name": "fx-deny-out"
+     },
+     "parent": "google_compute_network.net",
+     "tf": {
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "web",
+      "rule": "fx-deny-out"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "app",
+      "rule": "fx-deny-out"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    }
+   ],
+   "polarity": "positive",
+   "provider": "google",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C08-GCP-UNTAGGED": {
+   "case": "NET-C08",
+   "check": {
+    "assertion": "NOT decision(f2) = allow",
+    "kind": "not_entails"
+   },
+   "commitment_ids": [
+    "CMT-FW-P05"
+   ],
+   "decisions": {
+    "f2": {
+     "value": "DENY",
+     "why": "vm2 não tem o rótulo web; só a negação (rótulo app) se aplica"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "google_compute_network.net"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "google_compute_network"
+     }
+    },
+    {
+     "accepted_kinds": [
+      "COMPONENT",
+      "ENTITY"
+     ],
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-google-mhidfw4xa7sokciu",
+      "SE-google-mjuxwfic7ez6bfii"
+     ],
+     "kind": "COMPONENT",
+     "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+     "occurrence": {
+      "name": "fx-allow-web"
+     },
+     "parent": "google_compute_network.net",
+     "tf": {
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "web",
+      "rule": "fx-allow-web"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "accepted_kinds": [
+      "COMPONENT",
+      "ENTITY"
+     ],
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-google-mhidfw4xa7sokciu",
+      "SE-google-mjuxwfic7ez6bfii"
+     ],
+     "kind": "COMPONENT",
+     "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+     "occurrence": {
+      "name": "fx-deny-in"
+     },
+     "parent": "google_compute_network.net",
+     "tf": {
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "web",
+      "rule": "fx-deny-in"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "app",
+      "rule": "fx-deny-in"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "accepted_kinds": [
+      "COMPONENT",
+      "ENTITY"
+     ],
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-google-mhidfw4xa7sokciu",
+      "SE-google-mjuxwfic7ez6bfii"
+     ],
+     "kind": "COMPONENT",
+     "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+     "occurrence": {
+      "name": "fx-deny-out"
+     },
+     "parent": "google_compute_network.net",
+     "tf": {
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "web",
+      "rule": "fx-deny-out"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "app",
+      "rule": "fx-deny-out"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    }
+   ],
+   "polarity": "negative",
+   "provider": "google",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C09-AWS-NO-EGRESS": {
+   "case": "NET-C09",
+   "check": {
+    "assertion": "NOT decision(f4) = allow",
+    "kind": "not_entails"
+   },
+   "commitment_ids": [
+    "CMT-FW-N03"
+   ],
+   "decisions": {
+    "f4": {
+     "value": "DENY",
+     "why": "'Terraform removes this default rule': sem bloco egress não há saída"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-aws-rouky47ej4w3me2k"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "aws_security_group.web"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "aws_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-aws-jyr4g6yuka5h7son"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "direction": "ingress",
+      "ports": "443-443",
+      "protocol": "tcp",
+      "remote": [
+       "203.0.113.0/24"
+      ]
+     },
+     "parent": "aws_security_group.web",
+     "tf": {
+      "block_path": "ingress",
+      "resource_type": "aws_security_group"
+     }
+    },
+    {
+     "domain_unit": "attachment",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "set": "aws_security_group.web",
+      "target": "aws_instance.vm1"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "vpc_security_group_ids",
+      "resource_type": "aws_instance"
+     }
+    }
+   ],
+   "polarity": "negative",
+   "provider": "aws",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C09-AWS-NOMATCH": {
+   "case": "NET-C09",
+   "check": {
+    "assertion": "decision(f2) = deny",
+    "kind": "entails"
+   },
+   "commitment_ids": [
+    "CMT-FW-N03"
+   ],
+   "decisions": {
+    "f2": {
+     "value": "DENY",
+     "why": "'If nothing is specified, traffic will be blocked'"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-aws-rouky47ej4w3me2k"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "aws_security_group.web"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "aws_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-aws-jyr4g6yuka5h7son"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "direction": "ingress",
+      "ports": "443-443",
+      "protocol": "tcp",
+      "remote": [
+       "203.0.113.0/24"
+      ]
+     },
+     "parent": "aws_security_group.web",
+     "tf": {
+      "block_path": "ingress",
+      "resource_type": "aws_security_group"
+     }
+    },
+    {
+     "domain_unit": "attachment",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "set": "aws_security_group.web",
+      "target": "aws_instance.vm1"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "vpc_security_group_ids",
+      "resource_type": "aws_instance"
+     }
+    }
+   ],
+   "polarity": "positive",
+   "provider": "aws",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C09-GCP-NOMATCH": {
+   "case": "NET-C09",
+   "check": {
+    "assertion": "decision(f2) = UNKNOWN AND decision(f4) = UNKNOWN",
+    "kind": "unknown"
+   },
+   "commitment_ids": [
+    "CMT-FW-U01"
+   ],
+   "decisions": {
+    "f2": {
+     "code": "MISSING_EVIDENCE",
+     "value": "UNKNOWN",
+     "why": "regra implícita de entrada só interpretada (SE-google-yz5xmhx36uyxkd2x)"
+    },
+    "f4": {
+     "code": "MISSING_EVIDENCE",
+     "value": "UNKNOWN",
+     "why": "regra implícita de saída só interpretada"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "google_compute_network.net"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "google_compute_network"
+     }
+    },
+    {
+     "accepted_kinds": [
+      "COMPONENT",
+      "ENTITY"
+     ],
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-google-mhidfw4xa7sokciu",
+      "SE-google-mjuxwfic7ez6bfii"
+     ],
+     "kind": "COMPONENT",
+     "note": "o compromisso pede COMPONENT do conjunto; o dono publicado é o projeto e a identidade é projects/{project}/global/firewalls/{name}: ENTITY ligada à rede também é aceita",
+     "occurrence": {
+      "name": "fx-allow-web"
+     },
+     "parent": "google_compute_network.net",
+     "tf": {
+      "resource_type": "google_compute_firewall"
+     }
+    },
+    {
+     "domain_unit": "selection",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "label": "web",
+      "rule": "fx-allow-web"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "target_tags",
+      "resource_type": "google_compute_firewall"
+     }
+    }
+   ],
+   "polarity": "unknown",
+   "provider": "google",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C09-OCI-NOMATCH": {
+   "case": "NET-C09",
+   "check": {
+    "assertion": "decision(f2) = deny",
+    "kind": "entails"
+   },
+   "commitment_ids": [
+    "CMT-FW-N03"
+   ],
+   "decisions": {
+    "f2": {
+     "value": "DENY",
+     "why": "sem regra, o tráfego não passa (derivado da frase do atributo stateless)"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-oci-lq2gnnmrobz7ft7h"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "oci_core_security_list.web"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "oci_core_security_list"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-oci-bp7mulbmn76camow"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "direction": "ingress",
+      "ports": "443-443",
+      "protocol": "6",
+      "remote": "203.0.113.0/24",
+      "stateless": false
+     },
+     "parent": "oci_core_security_list.web",
+     "tf": {
+      "block_path": "ingress_security_rules",
+      "resource_type": "oci_core_security_list"
+     }
+    },
+    {
+     "domain_unit": "attachment",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "set": "oci_core_security_list.web",
+      "target": "oci_core_subnet.sa"
+     },
+     "parent": null,
+     "tf": {
+      "block_path": "security_list_ids",
+      "resource_type": "oci_core_subnet"
+     }
+    }
+   ],
+   "polarity": "positive",
+   "provider": "oci",
+   "validity": {
+    "value": "VALID"
+   }
+  }
+ },
+ "inputs_sha256": {
+  "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl": "50bc893ff48a2ce45b76e4260d6642b5a5014ad71a1067b34d70b1933ee5653b",
+  "requirements/commitments.jsonl": "038f73fcebedfbf3b5ff3d23b1ff0758a87e8be2616b141b232628e1a64d1438",
+  "semantics/SEMANTICS.html": "28f849eb578fea685935a2499cd13710e8a96b6cd01e4bc34419ae0e51f29596"
+ },
+ "mandatory_cases": {
+  "NET-C01": {
+   "calib": {
+    "negative": [
+     "NETC-C01-AWS-OTHER"
+    ],
+    "positive": [
+     "NETC-C01-AWS-INLINE",
+     "NETC-C01-AWS-SEP",
+     "NETC-C01-AZ-INLINE",
+     "NETC-C01-AZ-SEP"
+    ],
+    "unknown": [
+     "NETC-C01-AWS-SYM"
+    ]
+   },
+   "commitments": [
+    "CMT-FW-P01"
+   ],
+   "layer": "decomposition",
+   "name": "embalagem: regra embutida x recurso separado",
+   "requirements": [
+    "REQ-NET-01",
+    "REQ-ENT-01"
+   ],
+   "retained": {
+    "negative": 1,
+    "positive": 2,
+    "unknown": 1
+   }
+  },
+  "NET-C02": {
+   "calib": {
+    "negative": [
+     "NETC-C02-OCI-STATELESS"
+    ],
+    "positive": [
+     "NETC-C02-OCI-STATEFUL"
+    ],
+    "unknown": [
+     "NETC-C02-AWS-RET",
+     "NETC-C02-AZ-RET",
+     "NETC-C02-GCP-RET"
+    ]
+   },
+   "commitments": [
+    "CMT-FW-P02",
+    "CMT-FW-U03"
+   ],
+   "layer": "evaluation",
+   "name": "estado de conexão do conjunto e tráfego de retorno",
+   "requirements": [
+    "REQ-NET-01",
+    "REQ-NET-02",
+    "REQ-CFG-02"
+   ],
+   "retained": {
+    "negative": 1,
+    "positive": 1,
+    "unknown": 1
+   }
+  },
+  "NET-C03": {
+   "calib": {
+    "negative": [
+     "NETC-C03-OCI-MIXED"
+    ],
+    "positive": [
+     "NETC-C03-OCI-MIXED-REV",
+     "NETC-C03-OCI-NSG-REV"
+    ],
+    "unknown": [
+     "NETC-C03-OCI-NSG-SYM",
+     "NETC-C03-OCI-OVERLAP"
+    ]
+   },
+   "commitments": [
+    "CMT-FW-P03",
+    "CMT-FW-N02",
+    "CMT-TAX-N03"
+   ],
+   "layer": "evaluation",
+   "name": "estado de conexão por regra (security list e NSG OCI)",
+   "requirements": [
+    "REQ-NET-01"
+   ],
+   "retained": {
+    "negative": 1,
+    "positive": 1,
+    "unknown": 1
+   }
+  },
+  "NET-C04": {
+   "calib": {
+    "negative": [
+     "NETC-C04-GCP-ALLOW-FIRST"
+    ],
+    "positive": [
+     "NETC-C04-AZ-DENY-WINS",
+     "NETC-C04-GCP-DENY-WINS",
+     "NETC-C04-GCP-DENY-WINS-SWAP"
+    ],
+    "unknown": [
+     "NETC-C04-AZ-NOCATCH"
+    ]
+   },
+   "commitments": [
+    "CMT-FW-P04",
+    "CMT-FW-P06"
+   ],
+   "layer": "evaluation",
+   "name": "precedência numérica e efeito permitir/negar; ordem textual irrelevante",
+   "requirements": [
+    "REQ-NET-01",
+    "REQ-NET-02",
+    "REQ-ID-01"
+   ],
+   "retained": {
+    "negative": 1,
+    "positive": 1,
+    "unknown": 1
+   }
+  },
+  "NET-C05": {
+   "calib": {
+    "negative": [
+     "NETC-C05-AZ-DUP"
+    ],
+    "positive": [
+     "NETC-C05-GCP-TIE"
+    ],
+    "unknown": [
+     "NETC-C05-AZ-DUP-DIRS"
+    ]
+   },
+   "commitments": [
+    "CMT-FW-U02"
+   ],
+   "layer": "evaluation",
+   "name": "desempate e prioridade repetida",
+   "requirements": [
+    "REQ-NET-01",
+    "REQ-ABS-01"
+   ],
+   "retained": {
+    "negative": 1,
+    "positive": 1,
+    "unknown": 1
+   }
+  },
+  "NET-C06": {
+   "calib": {
+    "negative": [
+     "NETC-C06-AWS-INGRESS-NEW",
+     "NETC-C06-OCI-INGRESS-NEW"
+    ],
+    "positive": [
+     "NETC-C06-AWS-EGRESS"
+    ],
+    "unknown": [
+     "NETC-C06-GCP-INGRESS-NOMATCH"
+    ]
+   },
+   "commitments": [
+    "CMT-FW-N03"
+   ],
+   "layer": "evaluation",
+   "name": "direção: regra de saída não autoriza entrada",
+   "requirements": [
+    "REQ-NET-01",
+    "REQ-NET-02"
+   ],
+   "retained": {
+    "negative": 1,
+    "positive": 1,
+    "unknown": 1
+   }
+  },
+  "NET-C07": {
+   "calib": {
+    "negative": [
+     "NETC-C07-GCP-PARTIAL"
+    ],
+    "positive": [
+     "NETC-C07-AWS-PARTIAL-ALLOW",
+     "NETC-C07-GCP-PARTIAL-DENY0"
+    ],
+    "unknown": [
+     "NETC-C07-AWS-PARTIAL-22"
+    ]
+   },
+   "commitments": [
+    "CMT-FW-U01"
+   ],
+   "layer": "evaluation",
+   "name": "leitura parcial do conjunto",
+   "requirements": [
+    "REQ-ABS-01",
+    "REQ-NET-02"
+   ],
+   "retained": {
+    "negative": 1,
+    "positive": 1,
+    "unknown": 1
+   }
+  },
+  "NET-C08": {
+   "calib": {
+    "negative": [
+     "NETC-C08-AWS-OTHER-VM",
+     "NETC-C08-GCP-UNTAGGED"
+    ],
+    "positive": [
+     "NETC-C08-AWS-ATTACH",
+     "NETC-C08-GCP-TAG"
+    ],
+    "unknown": [
+     "NETC-C08-AWS-ATTACH-SYM",
+     "NETC-C08-AZ-NIC-SUBNET"
+    ]
+   },
+   "commitments": [
+    "CMT-FW-P05"
+   ],
+   "layer": "domain",
+   "name": "alvo por anexação ou seleção; vários conjuntos no mesmo alvo",
+   "requirements": [
+    "REQ-NET-01"
+   ],
+   "retained": {
+    "negative": 1,
+    "positive": 1,
+    "unknown": 1
+   }
+  },
+  "NET-C09": {
+   "calib": {
+    "negative": [
+     "NETC-C09-AWS-NO-EGRESS"
+    ],
+    "positive": [
+     "NETC-C09-AWS-NOMATCH",
+     "NETC-C09-OCI-NOMATCH"
+    ],
+    "unknown": [
+     "NETC-C09-GCP-NOMATCH"
+    ]
+   },
+   "commitments": [
+    "CMT-FW-N03",
+    "CMT-FW-U01"
+   ],
+   "layer": "evaluation",
+   "name": "fluxo que nenhuma regra casa (padrão do provedor)",
+   "requirements": [
+    "REQ-ABS-01",
+    "REQ-LOSS-01"
+   ],
+   "retained": {
+    "negative": 1,
+    "positive": 1,
+    "unknown": 1
+   }
+  },
+  "NET-C10": {
+   "calib": {
+    "negative": [
+     "NETC-T-AWS-AZU-N",
+     "NETC-T-AWS-GOO-N",
+     "NETC-T-AWS-OCI-N",
+     "NETC-T-AZU-AWS-N",
+     "NETC-T-AZU-GOO-N",
+     "NETC-T-AZU-OCI-N",
+     "NETC-T-GOO-AWS-N",
+     "NETC-T-GOO-AZU-N",
+     "NETC-T-GOO-OCI-N",
+     "NETC-T-OCI-AWS-N",
+     "NETC-T-OCI-AZU-N",
+     "NETC-T-OCI-GOO-N"
+    ],
+    "positive": [
+     "NETC-T-AWS-AZU-P",
+     "NETC-T-AWS-GOO-P",
+     "NETC-T-AWS-OCI-P",
+     "NETC-T-AZU-AWS-P",
+     "NETC-T-AZU-GOO-P",
+     "NETC-T-AZU-OCI-P",
+     "NETC-T-GOO-AWS-P",
+     "NETC-T-GOO-AZU-P",
+     "NETC-T-GOO-OCI-P",
+     "NETC-T-OCI-AWS-P",
+     "NETC-T-OCI-AZU-P",
+     "NETC-T-OCI-GOO-P"
+    ],
+    "unknown": [
+     "NETC-T-AWS-AZU-U",
+     "NETC-T-AWS-GOO-U",
+     "NETC-T-AWS-OCI-U",
+     "NETC-T-AZU-AWS-U",
+     "NETC-T-AZU-GOO-U",
+     "NETC-T-AZU-OCI-U",
+     "NETC-T-GOO-AWS-U",
+     "NETC-T-GOO-AZU-U",
+     "NETC-T-GOO-OCI-U",
+     "NETC-T-OCI-AWS-U",
+     "NETC-T-OCI-AZU-U",
+     "NETC-T-OCI-GOO-U"
+    ]
+   },
+   "commitments": [
+    "CMT-FW-N01"
+   ],
+   "layer": "translation",
+   "name": "tradução entre provedores: negação não vira permissão; perda declarada",
+   "requirements": [
+    "REQ-NET-01",
+    "REQ-LOSS-01",
+    "REQ-METH-02"
+   ],
+   "retained": {
+    "negative": 12,
+    "positive": 8,
+    "unknown": 4
+   }
+  }
+ },
+ "module": "PILOT-NET-ORACLE",
+ "note": "gabarito escrito à mão a partir de compromissos e requisitos (C24) e da evidência do SERVICE-EVIDENCE; nunca de mapeador. Leitura de evidência: default (published, derived, oracle_derived). Retidas: só contagens aqui; conteúdo cifrado em $BO_DATA/PILOT-NET-ORACLE/sealed/.",
+ "oracle": {
+  "api": "net_oracle.evaluate_fixture(fx) / net_oracle.judge(src, tgt, losses, direction) / net_oracle.compare_decomposition(exp, act)",
+  "path": "$BO_REPO/pilot/net/oracle/net_oracle",
+  "reading": "default",
+  "version": "1.0.0"
+ },
+ "retained_index": "$BO_REPO/pilot/net/oracle/sealed_index.json",
+ "schema": "bo.pilot_net.expected_answers/1",
+ "slice": "net",
+ "translations": {
+  "NETC-T-AWS-AZU-N": {
+   "c11_case_seed": {
+    "case_id": "CASE-NETC-T-AWS-AZU-N",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "group_id": "G-NET-AWS-AZ",
+    "pending": {
+     "claim_id": "o oráculo não lê alegação de correspondência (independência do mapeamento)",
+     "claim_version_id": "idem",
+     "frame_ref": "frame do DEPSAMPLE",
+     "lowering_plan": "plano C26 do PILOT-NET-E2E",
+     "origin": "o C11 não tem origem para caso de piloto (ver CONTRACT_CHANGE.txt)",
+     "stratum.relation": "sai da alegação",
+     "values": "termos do plano C26",
+     "weight": "peso do frame do DEPSAMPLE"
+    },
+    "side": "both",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "forward",
+     "domain": "NET",
+     "pair": "AWSAZ"
+    }
+   },
+   "declared_losses": [],
+   "direction": "aws->azurerm",
+   "expected": {
+    "negatives_carried": [
+     "f3"
+    ],
+    "verdict": "REJECT",
+    "why": "443 aberto para qualquer origem: f3 era negado"
+   },
+   "per_flow": {
+    "f1": {
+     "result": "equal",
+     "source": "ALLOW",
+     "target": "ALLOW"
+    },
+    "f1r": {
+     "result": "equal",
+     "source": "UNKNOWN",
+     "target": "UNKNOWN"
+    },
+    "f2": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f3": {
+     "result": "negative_carried",
+     "source": "DENY",
+     "target": "ALLOW"
+    },
+    "f4": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    }
+   },
+   "polarity": "negative",
+   "source_fixture": "NETC-C02-AWS-RET"
+  },
+  "NETC-T-AWS-AZU-P": {
+   "c11_case_seed": {
+    "case_id": "CASE-NETC-T-AWS-AZU-P",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "group_id": "G-NET-AWS-AZ",
+    "pending": {
+     "claim_id": "o oráculo não lê alegação de correspondência (independência do mapeamento)",
+     "claim_version_id": "idem",
+     "frame_ref": "frame do DEPSAMPLE",
+     "lowering_plan": "plano C26 do PILOT-NET-E2E",
+     "origin": "o C11 não tem origem para caso de piloto (ver CONTRACT_CHANGE.txt)",
+     "stratum.relation": "sai da alegação",
+     "values": "termos do plano C26",
+     "weight": "peso do frame do DEPSAMPLE"
+    },
+    "side": "both",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "forward",
+     "domain": "NET",
+     "pair": "AWSAZ"
+    }
+   },
+   "declared_losses": [],
+   "direction": "aws->azurerm",
+   "expected": {
+    "verdict": "ACCEPT",
+    "why": "decisões iguais em todos os fluxos"
+   },
+   "per_flow": {
+    "f1": {
+     "result": "equal",
+     "source": "ALLOW",
+     "target": "ALLOW"
+    },
+    "f1r": {
+     "result": "equal",
+     "source": "UNKNOWN",
+     "target": "UNKNOWN"
+    },
+    "f2": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f3": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f4": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    }
+   },
+   "polarity": "positive",
+   "source_fixture": "NETC-C02-AWS-RET"
+  },
+  "NETC-T-AWS-AZU-U": {
+   "c11_case_seed": {
+    "case_id": "CASE-NETC-T-AWS-AZU-U",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "group_id": "G-NET-AWS-AZ",
+    "pending": {
+     "claim_id": "o oráculo não lê alegação de correspondência (independência do mapeamento)",
+     "claim_version_id": "idem",
+     "frame_ref": "frame do DEPSAMPLE",
+     "lowering_plan": "plano C26 do PILOT-NET-E2E",
+     "origin": "o C11 não tem origem para caso de piloto (ver CONTRACT_CHANGE.txt)",
+     "stratum.relation": "sai da alegação",
+     "values": "termos do plano C26",
+     "weight": "peso do frame do DEPSAMPLE"
+    },
+    "side": "both",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "forward",
+     "domain": "NET",
+     "pair": "AWSAZ"
+    }
+   },
+   "declared_losses": [
+    {
+     "flows": [
+      "f2",
+      "f3",
+      "f4"
+     ],
+     "loss_id": "LOSS-NET-DEFAULT"
+    }
+   ],
+   "direction": "aws->azurerm",
+   "expected": {
+    "covered": [
+     "f2",
+     "f3",
+     "f4"
+    ],
+    "verdict": "ACCEPT_WITH_DECLARED_LOSS",
+    "why": "sem negação explícita o destino fica UNKNOWN em f2, f3 e f4; a perda está declarada"
+   },
+   "per_flow": {
+    "f1": {
+     "result": "equal",
+     "source": "ALLOW",
+     "target": "ALLOW"
+    },
+    "f1r": {
+     "result": "equal",
+     "source": "UNKNOWN",
+     "target": "UNKNOWN"
+    },
+    "f2": {
+     "result": "covered",
+     "source": "DENY",
+     "target": "UNKNOWN"
+    },
+    "f3": {
+     "result": "covered",
+     "source": "DENY",
+     "target": "UNKNOWN"
+    },
+    "f4": {
+     "result": "covered",
+     "source": "DENY",
+     "target": "UNKNOWN"
+    }
+   },
+   "polarity": "unknown",
+   "source_fixture": "NETC-C02-AWS-RET"
+  },
+  "NETC-T-AWS-GOO-N": {
+   "c11_case_seed": {
+    "case_id": "CASE-NETC-T-AWS-GOO-N",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "group_id": "G-NET-AWS-GCP",
+    "pending": {
+     "claim_id": "o oráculo não lê alegação de correspondência (independência do mapeamento)",
+     "claim_version_id": "idem",
+     "frame_ref": "frame do DEPSAMPLE",
+     "lowering_plan": "plano C26 do PILOT-NET-E2E",
+     "origin": "o C11 não tem origem para caso de piloto (ver CONTRACT_CHANGE.txt)",
+     "stratum.relation": "sai da alegação",
+     "values": "termos do plano C26",
+     "weight": "peso do frame do DEPSAMPLE"
+    },
+    "side": "both",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "forward",
+     "domain": "NET",
+     "pair": "AWSGCP"
+    }
+   },
+   "declared_losses": [],
+   "direction": "aws->google",
+   "expected": {
+    "negatives_carried": [
+     "f3"
+    ],
+    "verdict": "REJECT",
+    "why": "443 aberto para qualquer origem: f3 era negado"
+   },
+   "per_flow": {
+    "f1": {
+     "result": "equal",
+     "source": "ALLOW",
+     "target": "ALLOW"
+    },
+    "f1r": {
+     "result": "equal",
+     "source": "UNKNOWN",
+     "target": "UNKNOWN"
+    },
+    "f2": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f3": {
+     "result": "negative_carried",
+     "source": "DENY",
+     "target": "ALLOW"
+    },
+    "f4": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    }
+   },
+   "polarity": "negative",
+   "source_fixture": "NETC-C02-AWS-RET"
+  },
+  "NETC-T-AWS-GOO-P": {
+   "c11_case_seed": {
+    "case_id": "CASE-NETC-T-AWS-GOO-P",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "group_id": "G-NET-AWS-GCP",
+    "pending": {
+     "claim_id": "o oráculo não lê alegação de correspondência (independência do mapeamento)",
+     "claim_version_id": "idem",
+     "frame_ref": "frame do DEPSAMPLE",
+     "lowering_plan": "plano C26 do PILOT-NET-E2E",
+     "origin": "o C11 não tem origem para caso de piloto (ver CONTRACT_CHANGE.txt)",
+     "stratum.relation": "sai da alegação",
+     "values": "termos do plano C26",
+     "weight": "peso do frame do DEPSAMPLE"
+    },
+    "side": "both",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "forward",
+     "domain": "NET",
+     "pair": "AWSGCP"
+    }
+   },
+   "declared_losses": [],
+   "direction": "aws->google",
+   "expected": {
+    "verdict": "ACCEPT",
+    "why": "decisões iguais em todos os fluxos"
+   },
+   "per_flow": {
+    "f1": {
+     "result": "equal",
+     "source": "ALLOW",
+     "target": "ALLOW"
+    },
+    "f1r": {
+     "result": "equal",
+     "source": "UNKNOWN",
+     "target": "UNKNOWN"
+    },
+    "f2": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f3": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f4": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    }
+   },
+   "polarity": "positive",
+   "source_fixture": "NETC-C02-AWS-RET"
+  },
+  "NETC-T-AWS-GOO-U": {
+   "c11_case_seed": {
+    "case_id": "CASE-NETC-T-AWS-GOO-U",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "group_id": "G-NET-AWS-GCP",
+    "pending": {
+     "claim_id": "o oráculo não lê alegação de correspondência (independência do mapeamento)",
+     "claim_version_id": "idem",
+     "frame_ref": "frame do DEPSAMPLE",
+     "lowering_plan": "plano C26 do PILOT-NET-E2E",
+     "origin": "o C11 não tem origem para caso de piloto (ver CONTRACT_CHANGE.txt)",
+     "stratum.relation": "sai da alegação",
+     "values": "termos do plano C26",
+     "weight": "peso do frame do DEPSAMPLE"
+    },
+    "side": "both",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "forward",
+     "domain": "NET",
+     "pair": "AWSGCP"
+    }
+   },
+   "declared_losses": [
+    {
+     "flows": [
+      "f2",
+      "f3",
+      "f4"
+     ],
+     "loss_id": "LOSS-NET-DEFAULT"
+    }
+   ],
+   "direction": "aws->google",
+   "expected": {
+    "covered": [
+     "f2",
+     "f3",
+     "f4"
+    ],
+    "verdict": "ACCEPT_WITH_DECLARED_LOSS",
+    "why": "sem negação explícita o destino fica UNKNOWN em f2, f3 e f4; a perda está declarada"
+   },
+   "per_flow": {
+    "f1": {
+     "result": "equal",
+     "source": "ALLOW",
+     "target": "ALLOW"
+    },
+    "f1r": {
+     "result": "equal",
+     "source": "UNKNOWN",
+     "target": "UNKNOWN"
+    },
+    "f2": {
+     "result": "covered",
+     "source": "DENY",
+     "target": "UNKNOWN"
+    },
+    "f3": {
+     "result": "covered",
+     "source": "DENY",
+     "target": "UNKNOWN"
+    },
+    "f4": {
+     "result": "covered",
+     "source": "DENY",
+     "target": "UNKNOWN"
+    }
+   },
+   "polarity": "unknown",
+   "source_fixture": "NETC-C02-AWS-RET"
+  },
+  "NETC-T-AWS-OCI-N": {
+   "c11_case_seed": {
+    "case_id": "CASE-NETC-T-AWS-OCI-N",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "group_id": "G-NET-AWS-OCI",
+    "pending": {
+     "claim_id": "o oráculo não lê alegação de correspondência (independência do mapeamento)",
+     "claim_version_id": "idem",
+     "frame_ref": "frame do DEPSAMPLE",
+     "lowering_plan": "plano C26 do PILOT-NET-E2E",
+     "origin": "o C11 não tem origem para caso de piloto (ver CONTRACT_CHANGE.txt)",
+     "stratum.relation": "sai da alegação",
+     "values": "termos do plano C26",
+     "weight": "peso do frame do DEPSAMPLE"
+    },
+    "side": "both",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "forward",
+     "domain": "NET",
+     "pair": "AWSOCI"
+    }
+   },
+   "declared_losses": [],
+   "direction": "aws->oci",
+   "expected": {
+    "negatives_carried": [
+     "f3"
+    ],
+    "verdict": "REJECT",
+    "why": "443 aberto para qualquer origem: f3 era negado"
+   },
+   "per_flow": {
+    "f1": {
+     "result": "equal",
+     "source": "ALLOW",
+     "target": "ALLOW"
+    },
+    "f1r": {
+     "result": "undetermined",
+     "source": "UNKNOWN",
+     "target": "ALLOW"
+    },
+    "f2": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f3": {
+     "result": "negative_carried",
+     "source": "DENY",
+     "target": "ALLOW"
+    },
+    "f4": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    }
+   },
+   "polarity": "negative",
+   "source_fixture": "NETC-C02-AWS-RET"
+  },
+  "NETC-T-AWS-OCI-P": {
+   "c11_case_seed": {
+    "case_id": "CASE-NETC-T-AWS-OCI-P",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "group_id": "G-NET-AWS-OCI",
+    "pending": {
+     "claim_id": "o oráculo não lê alegação de correspondência (independência do mapeamento)",
+     "claim_version_id": "idem",
+     "frame_ref": "frame do DEPSAMPLE",
+     "lowering_plan": "plano C26 do PILOT-NET-E2E",
+     "origin": "o C11 não tem origem para caso de piloto (ver CONTRACT_CHANGE.txt)",
+     "stratum.relation": "sai da alegação",
+     "values": "termos do plano C26",
+     "weight": "peso do frame do DEPSAMPLE"
+    },
+    "side": "both",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "forward",
+     "domain": "NET",
+     "pair": "AWSOCI"
+    }
+   },
+   "declared_losses": [
+    {
+     "flows": [
+      "f1r"
+     ],
+     "loss_id": "LOSS-NET-UNKNOWN-INPUT"
+    }
+   ],
+   "direction": "aws->oci",
+   "expected": {
+    "verdict": "ACCEPT_WITH_DECLARED_LOSS",
+    "why": "retorno UNKNOWN na origem vira com estado no destino: declarado"
+   },
+   "per_flow": {
+    "f1": {
+     "result": "equal",
+     "source": "ALLOW",
+     "target": "ALLOW"
+    },
+    "f1r": {
+     "result": "covered",
+     "source": "UNKNOWN",
+     "target": "ALLOW"
+    },
+    "f2": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f3": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f4": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    }
+   },
+   "polarity": "positive",
+   "source_fixture": "NETC-C02-AWS-RET"
+  },
+  "NETC-T-AWS-OCI-U": {
+   "c11_case_seed": {
+    "case_id": "CASE-NETC-T-AWS-OCI-U",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "group_id": "G-NET-AWS-OCI",
+    "pending": {
+     "claim_id": "o oráculo não lê alegação de correspondência (independência do mapeamento)",
+     "claim_version_id": "idem",
+     "frame_ref": "frame do DEPSAMPLE",
+     "lowering_plan": "plano C26 do PILOT-NET-E2E",
+     "origin": "o C11 não tem origem para caso de piloto (ver CONTRACT_CHANGE.txt)",
+     "stratum.relation": "sai da alegação",
+     "values": "termos do plano C26",
+     "weight": "peso do frame do DEPSAMPLE"
+    },
+    "side": "both",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "forward",
+     "domain": "NET",
+     "pair": "AWSOCI"
+    }
+   },
+   "declared_losses": [],
+   "direction": "aws->oci",
+   "expected": {
+    "silent_losses": [
+     "f1",
+     "f3"
+    ],
+    "verdict": "REJECT",
+    "why": "CIDR simbólico inventado no destino: decisões definidas viram UNKNOWN sem perda declarável"
+   },
+   "per_flow": {
+    "f1": {
+     "result": "silent_loss",
+     "source": "ALLOW",
+     "target": "UNKNOWN"
+    },
+    "f1r": {
+     "result": "equal",
+     "source": "UNKNOWN",
+     "target": "UNKNOWN"
+    },
+    "f2": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f3": {
+     "result": "silent_loss",
+     "source": "DENY",
+     "target": "UNKNOWN"
+    },
+    "f4": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    }
+   },
+   "polarity": "unknown",
+   "source_fixture": "NETC-C02-AWS-RET"
+  },
+  "NETC-T-AZU-AWS-N": {
+   "c11_case_seed": {
+    "case_id": "CASE-NETC-T-AZU-AWS-N",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "group_id": "G-NET-AZ-AWS",
+    "pending": {
+     "claim_id": "o oráculo não lê alegação de correspondência (independência do mapeamento)",
+     "claim_version_id": "idem",
+     "frame_ref": "frame do DEPSAMPLE",
+     "lowering_plan": "plano C26 do PILOT-NET-E2E",
+     "origin": "o C11 não tem origem para caso de piloto (ver CONTRACT_CHANGE.txt)",
+     "stratum.relation": "sai da alegação",
+     "values": "termos do plano C26",
+     "weight": "peso do frame do DEPSAMPLE"
+    },
+    "side": "both",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "inverse",
+     "domain": "NET",
+     "pair": "AWSAZ"
+    }
+   },
+   "declared_losses": [
+    {
+     "flows": [
+      "f1"
+     ],
+     "loss_id": "LOSS-NET-EFFECT-DENY"
+    }
+   ],
+   "direction": "azurerm->aws",
+   "expected": {
+    "negatives_carried": [
+     "f1"
+    ],
+    "verdict": "REJECT",
+    "why": "a negação de 22 sumiu e a permissão da /24 passou: deny virou allow (CMT-FW-N01)"
+   },
+   "per_flow": {
+    "f1": {
+     "result": "negative_carried",
+     "source": "DENY",
+     "target": "ALLOW"
+    },
+    "f2": {
+     "result": "equal",
+     "source": "ALLOW",
+     "target": "ALLOW"
+    },
+    "f2r": {
+     "result": "equal",
+     "source": "UNKNOWN",
+     "target": "UNKNOWN"
+    },
+    "f3": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f4": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    }
+   },
+   "polarity": "negative",
+   "source_fixture": "NETC-C04-AZ-DENY-WINS"
+  },
+  "NETC-T-AZU-AWS-P": {
+   "c11_case_seed": {
+    "case_id": "CASE-NETC-T-AZU-AWS-P",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "group_id": "G-NET-AZ-AWS",
+    "pending": {
+     "claim_id": "o oráculo não lê alegação de correspondência (independência do mapeamento)",
+     "claim_version_id": "idem",
+     "frame_ref": "frame do DEPSAMPLE",
+     "lowering_plan": "plano C26 do PILOT-NET-E2E",
+     "origin": "o C11 não tem origem para caso de piloto (ver CONTRACT_CHANGE.txt)",
+     "stratum.relation": "sai da alegação",
+     "values": "termos do plano C26",
+     "weight": "peso do frame do DEPSAMPLE"
+    },
+    "side": "both",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "inverse",
+     "domain": "NET",
+     "pair": "AWSAZ"
+    }
+   },
+   "declared_losses": [
+    {
+     "flows": [],
+     "loss_id": "LOSS-NET-EFFECT-DENY"
+    }
+   ],
+   "direction": "azurerm->aws",
+   "expected": {
+    "verdict": "ACCEPT",
+    "why": "conjunto efetivo (443 de qualquer origem) sem a negação: decisões iguais"
+   },
+   "per_flow": {
+    "f1": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f2": {
+     "result": "equal",
+     "source": "ALLOW",
+     "target": "ALLOW"
+    },
+    "f2r": {
+     "result": "equal",
+     "source": "UNKNOWN",
+     "target": "UNKNOWN"
+    },
+    "f3": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f4": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    }
+   },
+   "polarity": "positive",
+   "source_fixture": "NETC-C04-AZ-DENY-WINS"
+  },
+  "NETC-T-AZU-AWS-U": {
+   "c11_case_seed": {
+    "case_id": "CASE-NETC-T-AZU-AWS-U",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "group_id": "G-NET-AZ-AWS",
+    "pending": {
+     "claim_id": "o oráculo não lê alegação de correspondência (independência do mapeamento)",
+     "claim_version_id": "idem",
+     "frame_ref": "frame do DEPSAMPLE",
+     "lowering_plan": "plano C26 do PILOT-NET-E2E",
+     "origin": "o C11 não tem origem para caso de piloto (ver CONTRACT_CHANGE.txt)",
+     "stratum.relation": "sai da alegação",
+     "values": "termos do plano C26",
+     "weight": "peso do frame do DEPSAMPLE"
+    },
+    "side": "both",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "inverse",
+     "domain": "NET",
+     "pair": "AWSAZ"
+    }
+   },
+   "declared_losses": [],
+   "direction": "azurerm->aws",
+   "expected": {
+    "silent_losses": [
+     "f1",
+     "f3"
+    ],
+    "verdict": "REJECT",
+    "why": "CIDR simbólico inventado no destino: decisões definidas viram UNKNOWN sem perda declarável"
+   },
+   "per_flow": {
+    "f1": {
+     "result": "silent_loss",
+     "source": "ALLOW",
+     "target": "UNKNOWN"
+    },
+    "f1r": {
+     "result": "equal",
+     "source": "UNKNOWN",
+     "target": "UNKNOWN"
+    },
+    "f2": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f3": {
+     "result": "silent_loss",
+     "source": "DENY",
+     "target": "UNKNOWN"
+    },
+    "f4": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    }
+   },
+   "polarity": "unknown",
+   "source_fixture": "NETC-C02-AZ-RET"
+  },
+  "NETC-T-AZU-GOO-N": {
+   "c11_case_seed": {
+    "case_id": "CASE-NETC-T-AZU-GOO-N",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "group_id": "G-NET-AZ-GCP",
+    "pending": {
+     "claim_id": "o oráculo não lê alegação de correspondência (independência do mapeamento)",
+     "claim_version_id": "idem",
+     "frame_ref": "frame do DEPSAMPLE",
+     "lowering_plan": "plano C26 do PILOT-NET-E2E",
+     "origin": "o C11 não tem origem para caso de piloto (ver CONTRACT_CHANGE.txt)",
+     "stratum.relation": "sai da alegação",
+     "values": "termos do plano C26",
+     "weight": "peso do frame do DEPSAMPLE"
+    },
+    "side": "both",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "inverse",
+     "domain": "NET",
+     "pair": "GCPAZ"
+    }
+   },
+   "declared_losses": [],
+   "direction": "azurerm->google",
+   "expected": {
+    "negatives_carried": [
+     "f3"
+    ],
+    "verdict": "REJECT",
+    "why": "443 aberto para qualquer origem: f3 era negado"
+   },
+   "per_flow": {
+    "f1": {
+     "result": "equal",
+     "source": "ALLOW",
+     "target": "ALLOW"
+    },
+    "f1r": {
+     "result": "equal",
+     "source": "UNKNOWN",
+     "target": "UNKNOWN"
+    },
+    "f2": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f3": {
+     "result": "negative_carried",
+     "source": "DENY",
+     "target": "ALLOW"
+    },
+    "f4": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    }
+   },
+   "polarity": "negative",
+   "source_fixture": "NETC-C02-AZ-RET"
+  },
+  "NETC-T-AZU-GOO-P": {
+   "c11_case_seed": {
+    "case_id": "CASE-NETC-T-AZU-GOO-P",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "group_id": "G-NET-AZ-GCP",
+    "pending": {
+     "claim_id": "o oráculo não lê alegação de correspondência (independência do mapeamento)",
+     "claim_version_id": "idem",
+     "frame_ref": "frame do DEPSAMPLE",
+     "lowering_plan": "plano C26 do PILOT-NET-E2E",
+     "origin": "o C11 não tem origem para caso de piloto (ver CONTRACT_CHANGE.txt)",
+     "stratum.relation": "sai da alegação",
+     "values": "termos do plano C26",
+     "weight": "peso do frame do DEPSAMPLE"
+    },
+    "side": "both",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "inverse",
+     "domain": "NET",
+     "pair": "GCPAZ"
+    }
+   },
+   "declared_losses": [],
+   "direction": "azurerm->google",
+   "expected": {
+    "verdict": "ACCEPT",
+    "why": "decisões iguais em todos os fluxos"
+   },
+   "per_flow": {
+    "f1": {
+     "result": "equal",
+     "source": "ALLOW",
+     "target": "ALLOW"
+    },
+    "f1r": {
+     "result": "equal",
+     "source": "UNKNOWN",
+     "target": "UNKNOWN"
+    },
+    "f2": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f3": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f4": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    }
+   },
+   "polarity": "positive",
+   "source_fixture": "NETC-C02-AZ-RET"
+  },
+  "NETC-T-AZU-GOO-U": {
+   "c11_case_seed": {
+    "case_id": "CASE-NETC-T-AZU-GOO-U",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "group_id": "G-NET-AZ-GCP",
+    "pending": {
+     "claim_id": "o oráculo não lê alegação de correspondência (independência do mapeamento)",
+     "claim_version_id": "idem",
+     "frame_ref": "frame do DEPSAMPLE",
+     "lowering_plan": "plano C26 do PILOT-NET-E2E",
+     "origin": "o C11 não tem origem para caso de piloto (ver CONTRACT_CHANGE.txt)",
+     "stratum.relation": "sai da alegação",
+     "values": "termos do plano C26",
+     "weight": "peso do frame do DEPSAMPLE"
+    },
+    "side": "both",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "inverse",
+     "domain": "NET",
+     "pair": "GCPAZ"
+    }
+   },
+   "declared_losses": [
+    {
+     "flows": [
+      "f2",
+      "f3",
+      "f4"
+     ],
+     "loss_id": "LOSS-NET-DEFAULT"
+    }
+   ],
+   "direction": "azurerm->google",
+   "expected": {
+    "covered": [
+     "f2",
+     "f3",
+     "f4"
+    ],
+    "verdict": "ACCEPT_WITH_DECLARED_LOSS",
+    "why": "sem negação explícita o destino fica UNKNOWN em f2, f3 e f4; a perda está declarada"
+   },
+   "per_flow": {
+    "f1": {
+     "result": "equal",
+     "source": "ALLOW",
+     "target": "ALLOW"
+    },
+    "f1r": {
+     "result": "equal",
+     "source": "UNKNOWN",
+     "target": "UNKNOWN"
+    },
+    "f2": {
+     "result": "covered",
+     "source": "DENY",
+     "target": "UNKNOWN"
+    },
+    "f3": {
+     "result": "covered",
+     "source": "DENY",
+     "target": "UNKNOWN"
+    },
+    "f4": {
+     "result": "covered",
+     "source": "DENY",
+     "target": "UNKNOWN"
+    }
+   },
+   "polarity": "unknown",
+   "source_fixture": "NETC-C02-AZ-RET"
+  },
+  "NETC-T-AZU-OCI-N": {
+   "c11_case_seed": {
+    "case_id": "CASE-NETC-T-AZU-OCI-N",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "group_id": "G-NET-AZ-OCI",
+    "pending": {
+     "claim_id": "o oráculo não lê alegação de correspondência (independência do mapeamento)",
+     "claim_version_id": "idem",
+     "frame_ref": "frame do DEPSAMPLE",
+     "lowering_plan": "plano C26 do PILOT-NET-E2E",
+     "origin": "o C11 não tem origem para caso de piloto (ver CONTRACT_CHANGE.txt)",
+     "stratum.relation": "sai da alegação",
+     "values": "termos do plano C26",
+     "weight": "peso do frame do DEPSAMPLE"
+    },
+    "side": "both",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "forward",
+     "domain": "NET",
+     "pair": "AZOCI"
+    }
+   },
+   "declared_losses": [
+    {
+     "flows": [
+      "f1"
+     ],
+     "loss_id": "LOSS-NET-EFFECT-DENY"
+    }
+   ],
+   "direction": "azurerm->oci",
+   "expected": {
+    "negatives_carried": [
+     "f1"
+    ],
+    "verdict": "REJECT",
+    "why": "a negação de 22 sumiu e a permissão da /24 passou: deny virou allow (CMT-FW-N01)"
+   },
+   "per_flow": {
+    "f1": {
+     "result": "negative_carried",
+     "source": "DENY",
+     "target": "ALLOW"
+    },
+    "f2": {
+     "result": "equal",
+     "source": "ALLOW",
+     "target": "ALLOW"
+    },
+    "f2r": {
+     "result": "undetermined",
+     "source": "UNKNOWN",
+     "target": "ALLOW"
+    },
+    "f3": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f4": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    }
+   },
+   "polarity": "negative",
+   "source_fixture": "NETC-C04-AZ-DENY-WINS"
+  },
+  "NETC-T-AZU-OCI-P": {
+   "c11_case_seed": {
+    "case_id": "CASE-NETC-T-AZU-OCI-P",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "group_id": "G-NET-AZ-OCI",
+    "pending": {
+     "claim_id": "o oráculo não lê alegação de correspondência (independência do mapeamento)",
+     "claim_version_id": "idem",
+     "frame_ref": "frame do DEPSAMPLE",
+     "lowering_plan": "plano C26 do PILOT-NET-E2E",
+     "origin": "o C11 não tem origem para caso de piloto (ver CONTRACT_CHANGE.txt)",
+     "stratum.relation": "sai da alegação",
+     "values": "termos do plano C26",
+     "weight": "peso do frame do DEPSAMPLE"
+    },
+    "side": "both",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "forward",
+     "domain": "NET",
+     "pair": "AZOCI"
+    }
+   },
+   "declared_losses": [
+    {
+     "flows": [],
+     "loss_id": "LOSS-NET-EFFECT-DENY"
+    },
+    {
+     "flows": [
+      "f2r"
+     ],
+     "loss_id": "LOSS-NET-UNKNOWN-INPUT"
+    }
+   ],
+   "direction": "azurerm->oci",
+   "expected": {
+    "verdict": "ACCEPT_WITH_DECLARED_LOSS",
+    "why": "conjunto efetivo (443 de qualquer origem) sem a negação: decisões iguais; retorno UNKNOWN na origem declarado"
+   },
+   "per_flow": {
+    "f1": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f2": {
+     "result": "equal",
+     "source": "ALLOW",
+     "target": "ALLOW"
+    },
+    "f2r": {
+     "result": "covered",
+     "source": "UNKNOWN",
+     "target": "ALLOW"
+    },
+    "f3": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f4": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    }
+   },
+   "polarity": "positive",
+   "source_fixture": "NETC-C04-AZ-DENY-WINS"
+  },
+  "NETC-T-AZU-OCI-U": {
+   "c11_case_seed": {
+    "case_id": "CASE-NETC-T-AZU-OCI-U",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "group_id": "G-NET-AZ-OCI",
+    "pending": {
+     "claim_id": "o oráculo não lê alegação de correspondência (independência do mapeamento)",
+     "claim_version_id": "idem",
+     "frame_ref": "frame do DEPSAMPLE",
+     "lowering_plan": "plano C26 do PILOT-NET-E2E",
+     "origin": "o C11 não tem origem para caso de piloto (ver CONTRACT_CHANGE.txt)",
+     "stratum.relation": "sai da alegação",
+     "values": "termos do plano C26",
+     "weight": "peso do frame do DEPSAMPLE"
+    },
+    "side": "both",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "forward",
+     "domain": "NET",
+     "pair": "AZOCI"
+    }
+   },
+   "declared_losses": [],
+   "direction": "azurerm->oci",
+   "expected": {
+    "silent_losses": [
+     "f1",
+     "f3"
+    ],
+    "verdict": "REJECT",
+    "why": "CIDR simbólico inventado no destino: decisões definidas viram UNKNOWN sem perda declarável"
+   },
+   "per_flow": {
+    "f1": {
+     "result": "silent_loss",
+     "source": "ALLOW",
+     "target": "UNKNOWN"
+    },
+    "f1r": {
+     "result": "equal",
+     "source": "UNKNOWN",
+     "target": "UNKNOWN"
+    },
+    "f2": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f3": {
+     "result": "silent_loss",
+     "source": "DENY",
+     "target": "UNKNOWN"
+    },
+    "f4": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    }
+   },
+   "polarity": "unknown",
+   "source_fixture": "NETC-C02-AZ-RET"
+  },
+  "NETC-T-GOO-AWS-N": {
+   "c11_case_seed": {
+    "case_id": "CASE-NETC-T-GOO-AWS-N",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "group_id": "G-NET-GCP-AWS",
+    "pending": {
+     "claim_id": "o oráculo não lê alegação de correspondência (independência do mapeamento)",
+     "claim_version_id": "idem",
+     "frame_ref": "frame do DEPSAMPLE",
+     "lowering_plan": "plano C26 do PILOT-NET-E2E",
+     "origin": "o C11 não tem origem para caso de piloto (ver CONTRACT_CHANGE.txt)",
+     "stratum.relation": "sai da alegação",
+     "values": "termos do plano C26",
+     "weight": "peso do frame do DEPSAMPLE"
+    },
+    "side": "both",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "inverse",
+     "domain": "NET",
+     "pair": "AWSGCP"
+    }
+   },
+   "declared_losses": [
+    {
+     "flows": [
+      "f1"
+     ],
+     "loss_id": "LOSS-NET-EFFECT-DENY"
+    }
+   ],
+   "direction": "google->aws",
+   "expected": {
+    "negatives_carried": [
+     "f1"
+    ],
+    "verdict": "REJECT",
+    "why": "a negação de 22 sumiu e a permissão da /24 passou: deny virou allow (CMT-FW-N01)"
+   },
+   "per_flow": {
+    "f1": {
+     "result": "negative_carried",
+     "source": "DENY",
+     "target": "ALLOW"
+    },
+    "f2": {
+     "result": "equal",
+     "source": "ALLOW",
+     "target": "ALLOW"
+    },
+    "f2r": {
+     "result": "equal",
+     "source": "UNKNOWN",
+     "target": "UNKNOWN"
+    },
+    "f3": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f4": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    }
+   },
+   "polarity": "negative",
+   "source_fixture": "NETC-C04-GCP-DENY-WINS"
+  },
+  "NETC-T-GOO-AWS-P": {
+   "c11_case_seed": {
+    "case_id": "CASE-NETC-T-GOO-AWS-P",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "group_id": "G-NET-GCP-AWS",
+    "pending": {
+     "claim_id": "o oráculo não lê alegação de correspondência (independência do mapeamento)",
+     "claim_version_id": "idem",
+     "frame_ref": "frame do DEPSAMPLE",
+     "lowering_plan": "plano C26 do PILOT-NET-E2E",
+     "origin": "o C11 não tem origem para caso de piloto (ver CONTRACT_CHANGE.txt)",
+     "stratum.relation": "sai da alegação",
+     "values": "termos do plano C26",
+     "weight": "peso do frame do DEPSAMPLE"
+    },
+    "side": "both",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "inverse",
+     "domain": "NET",
+     "pair": "AWSGCP"
+    }
+   },
+   "declared_losses": [
+    {
+     "flows": [],
+     "loss_id": "LOSS-NET-EFFECT-DENY"
+    }
+   ],
+   "direction": "google->aws",
+   "expected": {
+    "verdict": "ACCEPT",
+    "why": "conjunto efetivo (443 de qualquer origem) sem a negação: decisões iguais"
+   },
+   "per_flow": {
+    "f1": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f2": {
+     "result": "equal",
+     "source": "ALLOW",
+     "target": "ALLOW"
+    },
+    "f2r": {
+     "result": "equal",
+     "source": "UNKNOWN",
+     "target": "UNKNOWN"
+    },
+    "f3": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f4": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    }
+   },
+   "polarity": "positive",
+   "source_fixture": "NETC-C04-GCP-DENY-WINS"
+  },
+  "NETC-T-GOO-AWS-U": {
+   "c11_case_seed": {
+    "case_id": "CASE-NETC-T-GOO-AWS-U",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "group_id": "G-NET-GCP-AWS",
+    "pending": {
+     "claim_id": "o oráculo não lê alegação de correspondência (independência do mapeamento)",
+     "claim_version_id": "idem",
+     "frame_ref": "frame do DEPSAMPLE",
+     "lowering_plan": "plano C26 do PILOT-NET-E2E",
+     "origin": "o C11 não tem origem para caso de piloto (ver CONTRACT_CHANGE.txt)",
+     "stratum.relation": "sai da alegação",
+     "values": "termos do plano C26",
+     "weight": "peso do frame do DEPSAMPLE"
+    },
+    "side": "both",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "inverse",
+     "domain": "NET",
+     "pair": "AWSGCP"
+    }
+   },
+   "declared_losses": [],
+   "direction": "google->aws",
+   "expected": {
+    "silent_losses": [
+     "f1",
+     "f3"
+    ],
+    "verdict": "REJECT",
+    "why": "CIDR simbólico inventado no destino: decisões definidas viram UNKNOWN sem perda declarável"
+   },
+   "per_flow": {
+    "f1": {
+     "result": "silent_loss",
+     "source": "ALLOW",
+     "target": "UNKNOWN"
+    },
+    "f1r": {
+     "result": "equal",
+     "source": "UNKNOWN",
+     "target": "UNKNOWN"
+    },
+    "f2": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f3": {
+     "result": "silent_loss",
+     "source": "DENY",
+     "target": "UNKNOWN"
+    },
+    "f4": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    }
+   },
+   "polarity": "unknown",
+   "source_fixture": "NETC-C02-GCP-RET"
+  },
+  "NETC-T-GOO-AZU-N": {
+   "c11_case_seed": {
+    "case_id": "CASE-NETC-T-GOO-AZU-N",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "group_id": "G-NET-GCP-AZ",
+    "pending": {
+     "claim_id": "o oráculo não lê alegação de correspondência (independência do mapeamento)",
+     "claim_version_id": "idem",
+     "frame_ref": "frame do DEPSAMPLE",
+     "lowering_plan": "plano C26 do PILOT-NET-E2E",
+     "origin": "o C11 não tem origem para caso de piloto (ver CONTRACT_CHANGE.txt)",
+     "stratum.relation": "sai da alegação",
+     "values": "termos do plano C26",
+     "weight": "peso do frame do DEPSAMPLE"
+    },
+    "side": "both",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "forward",
+     "domain": "NET",
+     "pair": "GCPAZ"
+    }
+   },
+   "declared_losses": [],
+   "direction": "google->azurerm",
+   "expected": {
+    "negatives_carried": [
+     "f3"
+    ],
+    "verdict": "REJECT",
+    "why": "443 aberto para qualquer origem: f3 era negado"
+   },
+   "per_flow": {
+    "f1": {
+     "result": "equal",
+     "source": "ALLOW",
+     "target": "ALLOW"
+    },
+    "f1r": {
+     "result": "equal",
+     "source": "UNKNOWN",
+     "target": "UNKNOWN"
+    },
+    "f2": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f3": {
+     "result": "negative_carried",
+     "source": "DENY",
+     "target": "ALLOW"
+    },
+    "f4": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    }
+   },
+   "polarity": "negative",
+   "source_fixture": "NETC-C02-GCP-RET"
+  },
+  "NETC-T-GOO-AZU-P": {
+   "c11_case_seed": {
+    "case_id": "CASE-NETC-T-GOO-AZU-P",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "group_id": "G-NET-GCP-AZ",
+    "pending": {
+     "claim_id": "o oráculo não lê alegação de correspondência (independência do mapeamento)",
+     "claim_version_id": "idem",
+     "frame_ref": "frame do DEPSAMPLE",
+     "lowering_plan": "plano C26 do PILOT-NET-E2E",
+     "origin": "o C11 não tem origem para caso de piloto (ver CONTRACT_CHANGE.txt)",
+     "stratum.relation": "sai da alegação",
+     "values": "termos do plano C26",
+     "weight": "peso do frame do DEPSAMPLE"
+    },
+    "side": "both",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "forward",
+     "domain": "NET",
+     "pair": "GCPAZ"
+    }
+   },
+   "declared_losses": [],
+   "direction": "google->azurerm",
+   "expected": {
+    "verdict": "ACCEPT",
+    "why": "decisões iguais em todos os fluxos"
+   },
+   "per_flow": {
+    "f1": {
+     "result": "equal",
+     "source": "ALLOW",
+     "target": "ALLOW"
+    },
+    "f1r": {
+     "result": "equal",
+     "source": "UNKNOWN",
+     "target": "UNKNOWN"
+    },
+    "f2": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f3": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f4": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    }
+   },
+   "polarity": "positive",
+   "source_fixture": "NETC-C02-GCP-RET"
+  },
+  "NETC-T-GOO-AZU-U": {
+   "c11_case_seed": {
+    "case_id": "CASE-NETC-T-GOO-AZU-U",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "group_id": "G-NET-GCP-AZ",
+    "pending": {
+     "claim_id": "o oráculo não lê alegação de correspondência (independência do mapeamento)",
+     "claim_version_id": "idem",
+     "frame_ref": "frame do DEPSAMPLE",
+     "lowering_plan": "plano C26 do PILOT-NET-E2E",
+     "origin": "o C11 não tem origem para caso de piloto (ver CONTRACT_CHANGE.txt)",
+     "stratum.relation": "sai da alegação",
+     "values": "termos do plano C26",
+     "weight": "peso do frame do DEPSAMPLE"
+    },
+    "side": "both",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "forward",
+     "domain": "NET",
+     "pair": "GCPAZ"
+    }
+   },
+   "declared_losses": [
+    {
+     "flows": [
+      "f2",
+      "f3",
+      "f4"
+     ],
+     "loss_id": "LOSS-NET-DEFAULT"
+    }
+   ],
+   "direction": "google->azurerm",
+   "expected": {
+    "covered": [
+     "f2",
+     "f3",
+     "f4"
+    ],
+    "verdict": "ACCEPT_WITH_DECLARED_LOSS",
+    "why": "sem negação explícita o destino fica UNKNOWN em f2, f3 e f4; a perda está declarada"
+   },
+   "per_flow": {
+    "f1": {
+     "result": "equal",
+     "source": "ALLOW",
+     "target": "ALLOW"
+    },
+    "f1r": {
+     "result": "equal",
+     "source": "UNKNOWN",
+     "target": "UNKNOWN"
+    },
+    "f2": {
+     "result": "covered",
+     "source": "DENY",
+     "target": "UNKNOWN"
+    },
+    "f3": {
+     "result": "covered",
+     "source": "DENY",
+     "target": "UNKNOWN"
+    },
+    "f4": {
+     "result": "covered",
+     "source": "DENY",
+     "target": "UNKNOWN"
+    }
+   },
+   "polarity": "unknown",
+   "source_fixture": "NETC-C02-GCP-RET"
+  },
+  "NETC-T-GOO-OCI-N": {
+   "c11_case_seed": {
+    "case_id": "CASE-NETC-T-GOO-OCI-N",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "group_id": "G-NET-GCP-OCI",
+    "pending": {
+     "claim_id": "o oráculo não lê alegação de correspondência (independência do mapeamento)",
+     "claim_version_id": "idem",
+     "frame_ref": "frame do DEPSAMPLE",
+     "lowering_plan": "plano C26 do PILOT-NET-E2E",
+     "origin": "o C11 não tem origem para caso de piloto (ver CONTRACT_CHANGE.txt)",
+     "stratum.relation": "sai da alegação",
+     "values": "termos do plano C26",
+     "weight": "peso do frame do DEPSAMPLE"
+    },
+    "side": "both",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "forward",
+     "domain": "NET",
+     "pair": "GCPOCI"
+    }
+   },
+   "declared_losses": [
+    {
+     "flows": [
+      "f1"
+     ],
+     "loss_id": "LOSS-NET-EFFECT-DENY"
+    }
+   ],
+   "direction": "google->oci",
+   "expected": {
+    "negatives_carried": [
+     "f1"
+    ],
+    "verdict": "REJECT",
+    "why": "a negação de 22 sumiu e a permissão da /24 passou: deny virou allow (CMT-FW-N01)"
+   },
+   "per_flow": {
+    "f1": {
+     "result": "negative_carried",
+     "source": "DENY",
+     "target": "ALLOW"
+    },
+    "f2": {
+     "result": "equal",
+     "source": "ALLOW",
+     "target": "ALLOW"
+    },
+    "f2r": {
+     "result": "undetermined",
+     "source": "UNKNOWN",
+     "target": "ALLOW"
+    },
+    "f3": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f4": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    }
+   },
+   "polarity": "negative",
+   "source_fixture": "NETC-C04-GCP-DENY-WINS"
+  },
+  "NETC-T-GOO-OCI-P": {
+   "c11_case_seed": {
+    "case_id": "CASE-NETC-T-GOO-OCI-P",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "group_id": "G-NET-GCP-OCI",
+    "pending": {
+     "claim_id": "o oráculo não lê alegação de correspondência (independência do mapeamento)",
+     "claim_version_id": "idem",
+     "frame_ref": "frame do DEPSAMPLE",
+     "lowering_plan": "plano C26 do PILOT-NET-E2E",
+     "origin": "o C11 não tem origem para caso de piloto (ver CONTRACT_CHANGE.txt)",
+     "stratum.relation": "sai da alegação",
+     "values": "termos do plano C26",
+     "weight": "peso do frame do DEPSAMPLE"
+    },
+    "side": "both",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "forward",
+     "domain": "NET",
+     "pair": "GCPOCI"
+    }
+   },
+   "declared_losses": [
+    {
+     "flows": [],
+     "loss_id": "LOSS-NET-EFFECT-DENY"
+    },
+    {
+     "flows": [
+      "f2r"
+     ],
+     "loss_id": "LOSS-NET-UNKNOWN-INPUT"
+    }
+   ],
+   "direction": "google->oci",
+   "expected": {
+    "verdict": "ACCEPT_WITH_DECLARED_LOSS",
+    "why": "conjunto efetivo (443 de qualquer origem) sem a negação: decisões iguais; retorno UNKNOWN na origem declarado"
+   },
+   "per_flow": {
+    "f1": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f2": {
+     "result": "equal",
+     "source": "ALLOW",
+     "target": "ALLOW"
+    },
+    "f2r": {
+     "result": "covered",
+     "source": "UNKNOWN",
+     "target": "ALLOW"
+    },
+    "f3": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f4": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    }
+   },
+   "polarity": "positive",
+   "source_fixture": "NETC-C04-GCP-DENY-WINS"
+  },
+  "NETC-T-GOO-OCI-U": {
+   "c11_case_seed": {
+    "case_id": "CASE-NETC-T-GOO-OCI-U",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "group_id": "G-NET-GCP-OCI",
+    "pending": {
+     "claim_id": "o oráculo não lê alegação de correspondência (independência do mapeamento)",
+     "claim_version_id": "idem",
+     "frame_ref": "frame do DEPSAMPLE",
+     "lowering_plan": "plano C26 do PILOT-NET-E2E",
+     "origin": "o C11 não tem origem para caso de piloto (ver CONTRACT_CHANGE.txt)",
+     "stratum.relation": "sai da alegação",
+     "values": "termos do plano C26",
+     "weight": "peso do frame do DEPSAMPLE"
+    },
+    "side": "both",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "forward",
+     "domain": "NET",
+     "pair": "GCPOCI"
+    }
+   },
+   "declared_losses": [],
+   "direction": "google->oci",
+   "expected": {
+    "silent_losses": [
+     "f1",
+     "f3"
+    ],
+    "verdict": "REJECT",
+    "why": "CIDR simbólico inventado no destino: decisões definidas viram UNKNOWN sem perda declarável"
+   },
+   "per_flow": {
+    "f1": {
+     "result": "silent_loss",
+     "source": "ALLOW",
+     "target": "UNKNOWN"
+    },
+    "f1r": {
+     "result": "equal",
+     "source": "UNKNOWN",
+     "target": "UNKNOWN"
+    },
+    "f2": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f3": {
+     "result": "silent_loss",
+     "source": "DENY",
+     "target": "UNKNOWN"
+    },
+    "f4": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    }
+   },
+   "polarity": "unknown",
+   "source_fixture": "NETC-C02-GCP-RET"
+  },
+  "NETC-T-OCI-AWS-N": {
+   "c11_case_seed": {
+    "case_id": "CASE-NETC-T-OCI-AWS-N",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "group_id": "G-NET-OCI-AWS",
+    "pending": {
+     "claim_id": "o oráculo não lê alegação de correspondência (independência do mapeamento)",
+     "claim_version_id": "idem",
+     "frame_ref": "frame do DEPSAMPLE",
+     "lowering_plan": "plano C26 do PILOT-NET-E2E",
+     "origin": "o C11 não tem origem para caso de piloto (ver CONTRACT_CHANGE.txt)",
+     "stratum.relation": "sai da alegação",
+     "values": "termos do plano C26",
+     "weight": "peso do frame do DEPSAMPLE"
+    },
+    "side": "both",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "inverse",
+     "domain": "NET",
+     "pair": "AWSOCI"
+    }
+   },
+   "declared_losses": [],
+   "direction": "oci->aws",
+   "expected": {
+    "negatives_carried": [
+     "f3"
+    ],
+    "verdict": "REJECT",
+    "why": "443 aberto para qualquer origem: f3 era negado"
+   },
+   "per_flow": {
+    "f1": {
+     "result": "equal",
+     "source": "ALLOW",
+     "target": "ALLOW"
+    },
+    "f1r": {
+     "result": "silent_loss",
+     "source": "ALLOW",
+     "target": "UNKNOWN"
+    },
+    "f2": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f3": {
+     "result": "negative_carried",
+     "source": "DENY",
+     "target": "ALLOW"
+    },
+    "f4": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    }
+   },
+   "polarity": "negative",
+   "source_fixture": "NETC-C02-OCI-STATEFUL"
+  },
+  "NETC-T-OCI-AWS-P": {
+   "c11_case_seed": {
+    "case_id": "CASE-NETC-T-OCI-AWS-P",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "group_id": "G-NET-OCI-AWS",
+    "pending": {
+     "claim_id": "o oráculo não lê alegação de correspondência (independência do mapeamento)",
+     "claim_version_id": "idem",
+     "frame_ref": "frame do DEPSAMPLE",
+     "lowering_plan": "plano C26 do PILOT-NET-E2E",
+     "origin": "o C11 não tem origem para caso de piloto (ver CONTRACT_CHANGE.txt)",
+     "stratum.relation": "sai da alegação",
+     "values": "termos do plano C26",
+     "weight": "peso do frame do DEPSAMPLE"
+    },
+    "side": "both",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "inverse",
+     "domain": "NET",
+     "pair": "AWSOCI"
+    }
+   },
+   "declared_losses": [
+    {
+     "flows": [
+      "f1r"
+     ],
+     "loss_id": "LOSS-NET-STATE"
+    }
+   ],
+   "direction": "oci->aws",
+   "expected": {
+    "verdict": "ACCEPT_WITH_DECLARED_LOSS",
+    "why": "retorno permitido na origem fica UNKNOWN no destino: declarado"
+   },
+   "per_flow": {
+    "f1": {
+     "result": "equal",
+     "source": "ALLOW",
+     "target": "ALLOW"
+    },
+    "f1r": {
+     "result": "covered",
+     "source": "ALLOW",
+     "target": "UNKNOWN"
+    },
+    "f2": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f3": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f4": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    }
+   },
+   "polarity": "positive",
+   "source_fixture": "NETC-C02-OCI-STATEFUL"
+  },
+  "NETC-T-OCI-AWS-U": {
+   "c11_case_seed": {
+    "case_id": "CASE-NETC-T-OCI-AWS-U",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "group_id": "G-NET-OCI-AWS",
+    "pending": {
+     "claim_id": "o oráculo não lê alegação de correspondência (independência do mapeamento)",
+     "claim_version_id": "idem",
+     "frame_ref": "frame do DEPSAMPLE",
+     "lowering_plan": "plano C26 do PILOT-NET-E2E",
+     "origin": "o C11 não tem origem para caso de piloto (ver CONTRACT_CHANGE.txt)",
+     "stratum.relation": "sai da alegação",
+     "values": "termos do plano C26",
+     "weight": "peso do frame do DEPSAMPLE"
+    },
+    "side": "both",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "inverse",
+     "domain": "NET",
+     "pair": "AWSOCI"
+    }
+   },
+   "declared_losses": [],
+   "direction": "oci->aws",
+   "expected": {
+    "silent_losses": [
+     "f1",
+     "f3",
+     "f1r"
+    ],
+    "verdict": "REJECT",
+    "why": "CIDR simbólico inventado no destino: decisões definidas viram UNKNOWN sem perda declarável"
+   },
+   "per_flow": {
+    "f1": {
+     "result": "silent_loss",
+     "source": "ALLOW",
+     "target": "UNKNOWN"
+    },
+    "f1r": {
+     "result": "silent_loss",
+     "source": "ALLOW",
+     "target": "UNKNOWN"
+    },
+    "f2": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f3": {
+     "result": "silent_loss",
+     "source": "DENY",
+     "target": "UNKNOWN"
+    },
+    "f4": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    }
+   },
+   "polarity": "unknown",
+   "source_fixture": "NETC-C02-OCI-STATEFUL"
+  },
+  "NETC-T-OCI-AZU-N": {
+   "c11_case_seed": {
+    "case_id": "CASE-NETC-T-OCI-AZU-N",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "group_id": "G-NET-OCI-AZ",
+    "pending": {
+     "claim_id": "o oráculo não lê alegação de correspondência (independência do mapeamento)",
+     "claim_version_id": "idem",
+     "frame_ref": "frame do DEPSAMPLE",
+     "lowering_plan": "plano C26 do PILOT-NET-E2E",
+     "origin": "o C11 não tem origem para caso de piloto (ver CONTRACT_CHANGE.txt)",
+     "stratum.relation": "sai da alegação",
+     "values": "termos do plano C26",
+     "weight": "peso do frame do DEPSAMPLE"
+    },
+    "side": "both",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "inverse",
+     "domain": "NET",
+     "pair": "AZOCI"
+    }
+   },
+   "declared_losses": [],
+   "direction": "oci->azurerm",
+   "expected": {
+    "negatives_carried": [
+     "f3"
+    ],
+    "verdict": "REJECT",
+    "why": "443 aberto para qualquer origem: f3 era negado"
+   },
+   "per_flow": {
+    "f1": {
+     "result": "equal",
+     "source": "ALLOW",
+     "target": "ALLOW"
+    },
+    "f1r": {
+     "result": "silent_loss",
+     "source": "ALLOW",
+     "target": "UNKNOWN"
+    },
+    "f2": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f3": {
+     "result": "negative_carried",
+     "source": "DENY",
+     "target": "ALLOW"
+    },
+    "f4": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    }
+   },
+   "polarity": "negative",
+   "source_fixture": "NETC-C02-OCI-STATEFUL"
+  },
+  "NETC-T-OCI-AZU-P": {
+   "c11_case_seed": {
+    "case_id": "CASE-NETC-T-OCI-AZU-P",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "group_id": "G-NET-OCI-AZ",
+    "pending": {
+     "claim_id": "o oráculo não lê alegação de correspondência (independência do mapeamento)",
+     "claim_version_id": "idem",
+     "frame_ref": "frame do DEPSAMPLE",
+     "lowering_plan": "plano C26 do PILOT-NET-E2E",
+     "origin": "o C11 não tem origem para caso de piloto (ver CONTRACT_CHANGE.txt)",
+     "stratum.relation": "sai da alegação",
+     "values": "termos do plano C26",
+     "weight": "peso do frame do DEPSAMPLE"
+    },
+    "side": "both",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "inverse",
+     "domain": "NET",
+     "pair": "AZOCI"
+    }
+   },
+   "declared_losses": [
+    {
+     "flows": [
+      "f1r"
+     ],
+     "loss_id": "LOSS-NET-STATE"
+    }
+   ],
+   "direction": "oci->azurerm",
+   "expected": {
+    "verdict": "ACCEPT_WITH_DECLARED_LOSS",
+    "why": "retorno permitido na origem fica UNKNOWN no destino: declarado"
+   },
+   "per_flow": {
+    "f1": {
+     "result": "equal",
+     "source": "ALLOW",
+     "target": "ALLOW"
+    },
+    "f1r": {
+     "result": "covered",
+     "source": "ALLOW",
+     "target": "UNKNOWN"
+    },
+    "f2": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f3": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f4": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    }
+   },
+   "polarity": "positive",
+   "source_fixture": "NETC-C02-OCI-STATEFUL"
+  },
+  "NETC-T-OCI-AZU-U": {
+   "c11_case_seed": {
+    "case_id": "CASE-NETC-T-OCI-AZU-U",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "group_id": "G-NET-OCI-AZ",
+    "pending": {
+     "claim_id": "o oráculo não lê alegação de correspondência (independência do mapeamento)",
+     "claim_version_id": "idem",
+     "frame_ref": "frame do DEPSAMPLE",
+     "lowering_plan": "plano C26 do PILOT-NET-E2E",
+     "origin": "o C11 não tem origem para caso de piloto (ver CONTRACT_CHANGE.txt)",
+     "stratum.relation": "sai da alegação",
+     "values": "termos do plano C26",
+     "weight": "peso do frame do DEPSAMPLE"
+    },
+    "side": "both",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "inverse",
+     "domain": "NET",
+     "pair": "AZOCI"
+    }
+   },
+   "declared_losses": [
+    {
+     "flows": [
+      "f2",
+      "f3",
+      "f4"
+     ],
+     "loss_id": "LOSS-NET-DEFAULT"
+    },
+    {
+     "flows": [
+      "f1r"
+     ],
+     "loss_id": "LOSS-NET-STATE"
+    }
+   ],
+   "direction": "oci->azurerm",
+   "expected": {
+    "covered": [
+     "f2",
+     "f3",
+     "f4",
+     "f1r"
+    ],
+    "verdict": "ACCEPT_WITH_DECLARED_LOSS",
+    "why": "sem negação explícita o destino fica UNKNOWN em f2, f3 e f4; a perda está declarada"
+   },
+   "per_flow": {
+    "f1": {
+     "result": "equal",
+     "source": "ALLOW",
+     "target": "ALLOW"
+    },
+    "f1r": {
+     "result": "covered",
+     "source": "ALLOW",
+     "target": "UNKNOWN"
+    },
+    "f2": {
+     "result": "covered",
+     "source": "DENY",
+     "target": "UNKNOWN"
+    },
+    "f3": {
+     "result": "covered",
+     "source": "DENY",
+     "target": "UNKNOWN"
+    },
+    "f4": {
+     "result": "covered",
+     "source": "DENY",
+     "target": "UNKNOWN"
+    }
+   },
+   "polarity": "unknown",
+   "source_fixture": "NETC-C02-OCI-STATEFUL"
+  },
+  "NETC-T-OCI-GOO-N": {
+   "c11_case_seed": {
+    "case_id": "CASE-NETC-T-OCI-GOO-N",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "group_id": "G-NET-OCI-GCP",
+    "pending": {
+     "claim_id": "o oráculo não lê alegação de correspondência (independência do mapeamento)",
+     "claim_version_id": "idem",
+     "frame_ref": "frame do DEPSAMPLE",
+     "lowering_plan": "plano C26 do PILOT-NET-E2E",
+     "origin": "o C11 não tem origem para caso de piloto (ver CONTRACT_CHANGE.txt)",
+     "stratum.relation": "sai da alegação",
+     "values": "termos do plano C26",
+     "weight": "peso do frame do DEPSAMPLE"
+    },
+    "side": "both",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "inverse",
+     "domain": "NET",
+     "pair": "GCPOCI"
+    }
+   },
+   "declared_losses": [],
+   "direction": "oci->google",
+   "expected": {
+    "negatives_carried": [
+     "f3"
+    ],
+    "verdict": "REJECT",
+    "why": "443 aberto para qualquer origem: f3 era negado"
+   },
+   "per_flow": {
+    "f1": {
+     "result": "equal",
+     "source": "ALLOW",
+     "target": "ALLOW"
+    },
+    "f1r": {
+     "result": "silent_loss",
+     "source": "ALLOW",
+     "target": "UNKNOWN"
+    },
+    "f2": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f3": {
+     "result": "negative_carried",
+     "source": "DENY",
+     "target": "ALLOW"
+    },
+    "f4": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    }
+   },
+   "polarity": "negative",
+   "source_fixture": "NETC-C02-OCI-STATEFUL"
+  },
+  "NETC-T-OCI-GOO-P": {
+   "c11_case_seed": {
+    "case_id": "CASE-NETC-T-OCI-GOO-P",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "group_id": "G-NET-OCI-GCP",
+    "pending": {
+     "claim_id": "o oráculo não lê alegação de correspondência (independência do mapeamento)",
+     "claim_version_id": "idem",
+     "frame_ref": "frame do DEPSAMPLE",
+     "lowering_plan": "plano C26 do PILOT-NET-E2E",
+     "origin": "o C11 não tem origem para caso de piloto (ver CONTRACT_CHANGE.txt)",
+     "stratum.relation": "sai da alegação",
+     "values": "termos do plano C26",
+     "weight": "peso do frame do DEPSAMPLE"
+    },
+    "side": "both",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "inverse",
+     "domain": "NET",
+     "pair": "GCPOCI"
+    }
+   },
+   "declared_losses": [
+    {
+     "flows": [
+      "f1r"
+     ],
+     "loss_id": "LOSS-NET-STATE"
+    }
+   ],
+   "direction": "oci->google",
+   "expected": {
+    "verdict": "ACCEPT_WITH_DECLARED_LOSS",
+    "why": "retorno permitido na origem fica UNKNOWN no destino: declarado"
+   },
+   "per_flow": {
+    "f1": {
+     "result": "equal",
+     "source": "ALLOW",
+     "target": "ALLOW"
+    },
+    "f1r": {
+     "result": "covered",
+     "source": "ALLOW",
+     "target": "UNKNOWN"
+    },
+    "f2": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f3": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    },
+    "f4": {
+     "result": "equal",
+     "source": "DENY",
+     "target": "DENY"
+    }
+   },
+   "polarity": "positive",
+   "source_fixture": "NETC-C02-OCI-STATEFUL"
+  },
+  "NETC-T-OCI-GOO-U": {
+   "c11_case_seed": {
+    "case_id": "CASE-NETC-T-OCI-GOO-U",
+    "comparator": {
+     "name": "exact"
+    },
+    "cost_class": "free",
+    "group_id": "G-NET-OCI-GCP",
+    "pending": {
+     "claim_id": "o oráculo não lê alegação de correspondência (independência do mapeamento)",
+     "claim_version_id": "idem",
+     "frame_ref": "frame do DEPSAMPLE",
+     "lowering_plan": "plano C26 do PILOT-NET-E2E",
+     "origin": "o C11 não tem origem para caso de piloto (ver CONTRACT_CHANGE.txt)",
+     "stratum.relation": "sai da alegação",
+     "values": "termos do plano C26",
+     "weight": "peso do frame do DEPSAMPLE"
+    },
+    "side": "both",
+    "stratum_partial": {
+     "cardinality": "1:1",
+     "direction": "inverse",
+     "domain": "NET",
+     "pair": "GCPOCI"
+    }
+   },
+   "declared_losses": [
+    {
+     "flows": [
+      "f2",
+      "f3",
+      "f4"
+     ],
+     "loss_id": "LOSS-NET-DEFAULT"
+    },
+    {
+     "flows": [
+      "f1r"
+     ],
+     "loss_id": "LOSS-NET-STATE"
+    }
+   ],
+   "direction": "oci->google",
+   "expected": {
+    "covered": [
+     "f2",
+     "f3",
+     "f4",
+     "f1r"
+    ],
+    "verdict": "ACCEPT_WITH_DECLARED_LOSS",
+    "why": "sem negação explícita o destino fica UNKNOWN em f2, f3 e f4; a perda está declarada"
+   },
+   "per_flow": {
+    "f1": {
+     "result": "equal",
+     "source": "ALLOW",
+     "target": "ALLOW"
+    },
+    "f1r": {
+     "result": "covered",
+     "source": "ALLOW",
+     "target": "UNKNOWN"
+    },
+    "f2": {
+     "result": "covered",
+     "source": "DENY",
+     "target": "UNKNOWN"
+    },
+    "f3": {
+     "result": "covered",
+     "source": "DENY",
+     "target": "UNKNOWN"
+    },
+    "f4": {
+     "result": "covered",
+     "source": "DENY",
+     "target": "UNKNOWN"
+    }
+   },
+   "polarity": "unknown",
+   "source_fixture": "NETC-C02-OCI-STATEFUL"
+  }
+ }
+}
