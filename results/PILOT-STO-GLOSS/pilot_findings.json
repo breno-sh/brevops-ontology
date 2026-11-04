@@ -1,52 +1,35 @@
 {
  "c25_shape": {
-  "corpus": {
-   "grain_fact_records": 32229,
-   "stated": 20098,
-   "stated_by_aspect": {
-    "effective_scope/attribute_scope": 60,
-    "effective_scope/effective_public_access": 1,
-    "effective_scope/effective_public_access_prevention": 1,
-    "effective_scope/type_scope": 52,
-    "identity/api_reference": 244,
-    "identity/api_resource_bridge": 4339,
-    "identity/cardinality": 1,
-    "identity/id_template": 4363,
-    "identity/resource_identity_schema": 1710,
-    "import_key/import_formats": 5021,
-    "lifecycle_controller/deletion_policy": 865,
-    "lifecycle_controller/destroy_effect": 87,
-    "owner/identity_scope": 375,
-    "owner/parent": 2086,
-    "owner/parent_attribute": 893
-   },
-   "stated_in_grain_convention": 0,
-   "status_unknown": 12131,
-   "with_block_path": 0
+  "grain_fact_records": 594,
+  "stated": 569,
+  "stated_by_aspect": {
+   "effective_scope/attribute_scope": 2,
+   "effective_scope/effective_public_access": 1,
+   "effective_scope/effective_public_access_prevention": 1,
+   "effective_scope/type_scope": 3,
+   "identity/block_identity": 93,
+   "identity/block_schema": 93,
+   "identity/cardinality": 1,
+   "identity/id_template": 17,
+   "identity/reference_phrase": 25,
+   "identity/reference_target": 15,
+   "identity/resource_identity_schema": 21,
+   "identity/shared_identity_key": 12,
+   "identity/twin_type": 7,
+   "import_key/import_formats": 22,
+   "lifecycle_controller/None": 10,
+   "lifecycle_controller/block_lifecycle": 93,
+   "lifecycle_controller/deletion_policy": 3,
+   "lifecycle_controller/destroy_effect": 6,
+   "lifecycle_controller/terraform_timeouts": 15,
+   "owner/None": 21,
+   "owner/block_config_owner": 93,
+   "owner/identity_scope": 9,
+   "owner/parent": 5,
+   "owner/parent_attribute": 1
   },
-  "slice": {
-   "grain_fact_records": 149,
-   "stated": 104,
-   "stated_by_aspect": {
-    "effective_scope/attribute_scope": 2,
-    "effective_scope/effective_public_access": 1,
-    "effective_scope/effective_public_access_prevention": 1,
-    "effective_scope/type_scope": 3,
-    "identity/api_resource_bridge": 17,
-    "identity/cardinality": 1,
-    "identity/id_template": 17,
-    "identity/resource_identity_schema": 16,
-    "import_key/import_formats": 22,
-    "lifecycle_controller/deletion_policy": 3,
-    "lifecycle_controller/destroy_effect": 6,
-    "owner/identity_scope": 9,
-    "owner/parent": 5,
-    "owner/parent_attribute": 1
-   },
-   "stated_in_grain_convention": 0,
-   "status_unknown": 45,
-   "with_block_path": 0
-  }
+  "status_unknown": 25,
+  "with_block_path": 396
  },
  "excluded": {
   "aws_s3_bucket_object": "objeto: conteúdo é Withheld",
@@ -64,203 +47,641 @@
   "oci_objectstorage_private_endpoint": "acesso de rede, não acesso público ao conteúdo",
   "oci_objectstorage_replication_policy": "replicação: fora das quatro facetas"
  },
- "generated_at": "2026-11-04T02:10:35-03:00",
+ "generated_at": "2026-11-04T03:22:41-03:00",
  "grain": {
-  "atoms_reconstructed_from": "ROLES atom_id (C01 fora das entradas)",
-  "library": "bo.grain.schema.decompose_schema + bo.grain.evidence.C25Adapter (sem alteração)",
-  "prefix_collisions": 0,
-  "providers": {
-   "aws": {
-    "candidates": 53,
-    "candidates_with_evidence_error": 9,
-    "candidates_without_any_claim": 44,
-    "error": "identity: status None",
-    "evidence_records": 84,
-    "field_states": {
-     "api_resource:UNKNOWN": 53,
-     "effective_scope:EVIDENCE_ERROR": 2,
-     "effective_scope:UNKNOWN": 51,
-     "element_name_key:UNKNOWN": 53,
-     "identity:EVIDENCE_ERROR": 9,
-     "identity:UNKNOWN": 44,
-     "import_key:EVIDENCE_ERROR": 9,
-     "import_key:UNKNOWN": 44,
-     "lifecycle_controller:EVIDENCE_ERROR": 3,
-     "lifecycle_controller:UNKNOWN": 50,
-     "owner:EVIDENCE_ERROR": 9,
-     "owner:UNKNOWN": 44
-    },
-    "nested_blocks": 44,
-    "nested_blocks_with_any_claim": 0,
-    "outcome": "EVIDENCE_ERROR",
-    "top_level": 9
+  "aws": {
+   "atoms": 161,
+   "candidates": 53,
+   "canonical_atoms": 161,
+   "container": {
+    "grain": "UNKNOWN",
+    "identity_class": "INDEPENDENT",
+    "missing": [
+     "effective_scope"
+    ],
+    "reasons": [
+     "api_resource: ponte sem recurso de API",
+     "effective_scope: not_documented",
+     "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
+     "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela",
+     "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)"
+    ],
+    "rule": "GRAIN-G0-NEEDS",
+    "type": "aws_s3_bucket"
    },
-   "azurerm": {
-    "candidates": 36,
-    "candidates_with_evidence_error": 5,
-    "candidates_without_any_claim": 31,
-    "error": "identity: status None",
-    "evidence_records": 53,
-    "field_states": {
-     "api_resource:UNKNOWN": 36,
-     "effective_scope:EVIDENCE_ERROR": 2,
-     "effective_scope:UNKNOWN": 34,
-     "element_name_key:UNKNOWN": 36,
-     "identity:EVIDENCE_ERROR": 5,
-     "identity:UNKNOWN": 31,
-     "import_key:EVIDENCE_ERROR": 5,
-     "import_key:UNKNOWN": 31,
-     "lifecycle_controller:UNKNOWN": 36,
-     "owner:EVIDENCE_ERROR": 5,
-     "owner:UNKNOWN": 31
-    },
-    "nested_blocks": 31,
-    "nested_blocks_with_any_claim": 0,
-    "outcome": "EVIDENCE_ERROR",
-    "top_level": 5
+   "evidence_records": 291,
+   "grains": {
+    "UNKNOWN": 53
    },
-   "google": {
-    "candidates": 32,
-    "candidates_with_evidence_error": 6,
-    "candidates_without_any_claim": 26,
-    "error": "identity: status None",
-    "evidence_records": 51,
-    "field_states": {
-     "api_resource:UNKNOWN": 32,
-     "effective_scope:EVIDENCE_ERROR": 2,
-     "effective_scope:UNKNOWN": 30,
-     "element_name_key:UNKNOWN": 32,
-     "identity:EVIDENCE_ERROR": 5,
-     "identity:UNKNOWN": 27,
-     "import_key:EVIDENCE_ERROR": 6,
-     "import_key:UNKNOWN": 26,
-     "lifecycle_controller:EVIDENCE_ERROR": 3,
-     "lifecycle_controller:UNKNOWN": 29,
-     "owner:UNKNOWN": 32
-    },
-    "nested_blocks": 26,
-    "nested_blocks_with_any_claim": 0,
-    "outcome": "EVIDENCE_ERROR",
-    "top_level": 6
+   "missing": {
+    "effective_scope": 52,
+    "identity": 52,
+    "lifecycle_controller": 52,
+    "owner": 44
    },
-   "oci": {
-    "candidates": 10,
-    "candidates_with_evidence_error": 2,
-    "candidates_without_any_claim": 7,
-    "error": "identity: status None",
-    "evidence_records": 26,
-    "field_states": {
-     "api_resource:UNKNOWN": 10,
-     "effective_scope:UNKNOWN": 10,
-     "element_name_key:UNKNOWN": 10,
-     "identity:EVIDENCE_ERROR": 2,
-     "identity:UNKNOWN": 8,
-     "import_key:EVIDENCE_ERROR": 2,
-     "import_key:UNKNOWN": 8,
-     "lifecycle_controller:UNKNOWN": 10,
-     "owner:EVIDENCE_ERROR": 1,
-     "owner:UNKNOWN": 9
+   "rules": {
+    "GRAIN-G0-IDENTITY": 52,
+    "GRAIN-G0-NEEDS": 1
+   },
+   "top_level": {
+    "aws_s3_account_public_access_block": {
+     "grain": "UNKNOWN",
+     "identity_class": "ORPHAN",
+     "missing": [
+      "identity",
+      "lifecycle_controller"
+     ],
+     "reasons": [
+      "api_resource: ponte sem recurso de API",
+      "identity: aspecto cardinality: sem tradução (R-GRAIN-T06)",
+      "identity: aspecto reference_phrase sem tradução na tabela",
+      "lifecycle_controller: not_documented",
+      "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)"
+     ],
+     "rule": "GRAIN-G0-IDENTITY"
     },
-    "nested_blocks": 7,
-    "nested_blocks_with_any_claim": 0,
-    "outcome": "EVIDENCE_ERROR",
-    "top_level": 3
-   }
+    "aws_s3_bucket": {
+     "grain": "UNKNOWN",
+     "identity_class": "INDEPENDENT",
+     "missing": [
+      "effective_scope"
+     ],
+     "reasons": [
+      "api_resource: ponte sem recurso de API",
+      "effective_scope: not_documented",
+      "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
+      "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela",
+      "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)"
+     ],
+     "rule": "GRAIN-G0-NEEDS"
+    },
+    "aws_s3_bucket_acl": {
+     "grain": "UNKNOWN",
+     "identity_class": "UNRESOLVED",
+     "missing": [
+      "identity",
+      "lifecycle_controller",
+      "effective_scope"
+     ],
+     "reasons": [
+      "api_resource: ponte sem recurso de API",
+      "effective_scope: not_documented",
+      "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
+      "identity: aspecto reference_phrase sem tradução na tabela",
+      "lifecycle_controller: destroy_effect state_only: não diz quem apaga",
+      "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)"
+     ],
+     "rule": "GRAIN-G0-IDENTITY"
+    },
+    "aws_s3_bucket_lifecycle_configuration": {
+     "grain": "UNKNOWN",
+     "identity_class": "UNRESOLVED",
+     "missing": [
+      "identity",
+      "lifecycle_controller",
+      "effective_scope"
+     ],
+     "reasons": [
+      "api_resource: ponte sem recurso de API",
+      "effective_scope: not_documented",
+      "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
+      "identity: aspecto reference_phrase sem tradução na tabela",
+      "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela",
+      "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)"
+     ],
+     "rule": "GRAIN-G0-IDENTITY"
+    },
+    "aws_s3_bucket_ownership_controls": {
+     "grain": "UNKNOWN",
+     "identity_class": "UNRESOLVED",
+     "missing": [
+      "identity",
+      "lifecycle_controller",
+      "effective_scope"
+     ],
+     "reasons": [
+      "api_resource: ponte sem recurso de API",
+      "effective_scope: not_documented",
+      "lifecycle_controller: not_documented",
+      "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)"
+     ],
+     "rule": "GRAIN-G0-IDENTITY"
+    },
+    "aws_s3_bucket_policy": {
+     "grain": "UNKNOWN",
+     "identity_class": "UNRESOLVED",
+     "missing": [
+      "identity",
+      "lifecycle_controller",
+      "effective_scope"
+     ],
+     "reasons": [
+      "api_resource: ponte sem recurso de API",
+      "effective_scope: not_documented",
+      "lifecycle_controller: not_documented",
+      "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)"
+     ],
+     "rule": "GRAIN-G0-IDENTITY"
+    },
+    "aws_s3_bucket_public_access_block": {
+     "grain": "UNKNOWN",
+     "identity_class": "UNRESOLVED",
+     "missing": [
+      "identity",
+      "lifecycle_controller",
+      "effective_scope"
+     ],
+     "reasons": [
+      "api_resource: ponte sem recurso de API",
+      "lifecycle_controller: destroy_effect not_deleted: não diz quem apaga",
+      "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)"
+     ],
+     "rule": "GRAIN-G0-IDENTITY"
+    },
+    "aws_s3_bucket_server_side_encryption_configuration": {
+     "grain": "UNKNOWN",
+     "identity_class": "UNRESOLVED",
+     "missing": [
+      "identity",
+      "lifecycle_controller",
+      "effective_scope"
+     ],
+     "reasons": [
+      "api_resource: ponte sem recurso de API",
+      "effective_scope: not_documented",
+      "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
+      "identity: aspecto reference_phrase sem tradução na tabela",
+      "lifecycle_controller: not_documented",
+      "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)"
+     ],
+     "rule": "GRAIN-G0-IDENTITY"
+    },
+    "aws_s3_bucket_versioning": {
+     "grain": "UNKNOWN",
+     "identity_class": "UNRESOLVED",
+     "missing": [
+      "identity",
+      "lifecycle_controller",
+      "effective_scope"
+     ],
+     "reasons": [
+      "api_resource: ponte sem recurso de API",
+      "effective_scope: not_documented",
+      "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
+      "identity: aspecto reference_phrase sem tradução na tabela",
+      "lifecycle_controller: destroy_effect state_only: não diz quem apaga",
+      "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)"
+     ],
+     "rule": "GRAIN-G0-IDENTITY"
+    }
+   },
+   "units": 53
+  },
+  "azurerm": {
+   "atoms": 232,
+   "candidates": 36,
+   "canonical_atoms": 232,
+   "container": {
+    "grain": "UNKNOWN",
+    "identity_class": "UNRESOLVED",
+    "missing": [
+     "identity",
+     "effective_scope"
+    ],
+    "reasons": [
+     "effective_scope: aspecto effective_public_access: sem tradução (R-GRAIN-T42)",
+     "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
+     "identity: aspecto reference_phrase sem tradução na tabela",
+     "identity: aspecto reference_target sem tradução na tabela",
+     "identity: chave compartilhada ['name', 'resource_group_name', 'storage_account_name'] sem raiz única com ciclo de vida self entre os pares (2 raiz(es))",
+     "identity: contido em resource (sem tipo Terraform) sem atributo de referência ao contêiner na identidade",
+     "import_key: formato de importação sem atributos nomeados",
+     "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela",
+     "owner: owner/parent é contenção da identidade, não dono da configuração"
+    ],
+    "rule": "GRAIN-G0-IDENTITY",
+    "type": "azurerm_storage_container"
+   },
+   "evidence_records": 194,
+   "grains": {
+    "UNKNOWN": 36
+   },
+   "missing": {
+    "effective_scope": 36,
+    "identity": 36,
+    "lifecycle_controller": 31,
+    "owner": 31
+   },
+   "rules": {
+    "GRAIN-G0-IDENTITY": 36
+   },
+   "top_level": {
+    "azurerm_storage_account": {
+     "grain": "UNKNOWN",
+     "identity_class": "UNRESOLVED",
+     "missing": [
+      "identity",
+      "effective_scope"
+     ],
+     "reasons": [
+      "effective_scope: aspecto attribute_scope: sem tradução (R-GRAIN-T41)",
+      "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
+      "identity: aspecto reference_phrase sem tradução na tabela",
+      "identity: aspecto reference_target sem tradução na tabela",
+      "identity: contido em resource_group (['azurerm_resource_group']) sem atributo de referência ao contêiner na identidade",
+      "import_key: formato de importação sem atributos nomeados",
+      "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela",
+      "owner: owner/parent é contenção da identidade, não dono da configuração"
+     ],
+     "rule": "GRAIN-G0-IDENTITY"
+    },
+    "azurerm_storage_account_customer_managed_key": {
+     "grain": "UNKNOWN",
+     "identity_class": "UNRESOLVED",
+     "missing": [
+      "identity",
+      "effective_scope"
+     ],
+     "reasons": [
+      "effective_scope: not_documented",
+      "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
+      "identity: aspecto reference_phrase sem tradução na tabela",
+      "identity: aspecto reference_target sem tradução na tabela",
+      "identity: contido em resource_group (['azurerm_resource_group']) sem atributo de referência ao contêiner na identidade",
+      "import_key: formato de importação sem atributos nomeados",
+      "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela",
+      "owner: owner/parent é contenção da identidade, não dono da configuração"
+     ],
+     "rule": "GRAIN-G0-IDENTITY"
+    },
+    "azurerm_storage_container": {
+     "grain": "UNKNOWN",
+     "identity_class": "UNRESOLVED",
+     "missing": [
+      "identity",
+      "effective_scope"
+     ],
+     "reasons": [
+      "effective_scope: aspecto effective_public_access: sem tradução (R-GRAIN-T42)",
+      "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
+      "identity: aspecto reference_phrase sem tradução na tabela",
+      "identity: aspecto reference_target sem tradução na tabela",
+      "identity: chave compartilhada ['name', 'resource_group_name', 'storage_account_name'] sem raiz única com ciclo de vida self entre os pares (2 raiz(es))",
+      "identity: contido em resource (sem tipo Terraform) sem atributo de referência ao contêiner na identidade",
+      "import_key: formato de importação sem atributos nomeados",
+      "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela",
+      "owner: owner/parent é contenção da identidade, não dono da configuração"
+     ],
+     "rule": "GRAIN-G0-IDENTITY"
+    },
+    "azurerm_storage_encryption_scope": {
+     "grain": "UNKNOWN",
+     "identity_class": "UNRESOLVED",
+     "missing": [
+      "identity",
+      "effective_scope"
+     ],
+     "reasons": [
+      "effective_scope: not_documented",
+      "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
+      "identity: aspecto reference_phrase sem tradução na tabela",
+      "identity: aspecto reference_target sem tradução na tabela",
+      "identity: chave compartilhada ['name', 'resource_group_name', 'storage_account_name'] sem raiz única com ciclo de vida self entre os pares (2 raiz(es))",
+      "identity: contido em resource (['azurerm_security_center_storage_defender', 'azurerm_storage_account', 'azurerm_storage_account_customer_managed_key', 'azurerm_storage_account_network_rules', 'azurerm_storage_account_queue_properties', 'azurerm_storage_account_static_website', 'azurerm_storage_account_table_properties', 'azurerm_storage_blob_inventory_policy']) sem atributo de referência ao contêiner na identidade",
+      "import_key: formato de importação sem atributos nomeados",
+      "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela",
+      "owner: owner/parent é contenção da identidade, não dono da configuração"
+     ],
+     "rule": "GRAIN-G0-IDENTITY"
+    },
+    "azurerm_storage_management_policy": {
+     "grain": "UNKNOWN",
+     "identity_class": "ABSENT",
+     "missing": [
+      "identity",
+      "effective_scope"
+     ],
+     "reasons": [
+      "effective_scope: not_documented",
+      "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
+      "identity: contido em resource (['azurerm_security_center_storage_defender', 'azurerm_storage_account', 'azurerm_storage_account_customer_managed_key', 'azurerm_storage_account_network_rules', 'azurerm_storage_account_queue_properties', 'azurerm_storage_account_static_website', 'azurerm_storage_account_table_properties', 'azurerm_storage_blob_inventory_policy']) sem atributo de referência ao contêiner na identidade",
+      "import_key: formato de importação sem atributos nomeados",
+      "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela",
+      "owner: owner/parent é contenção da identidade, não dono da configuração"
+     ],
+     "rule": "GRAIN-G0-IDENTITY"
+    }
+   },
+   "units": 36
+  },
+  "google": {
+   "atoms": 112,
+   "candidates": 32,
+   "canonical_atoms": 112,
+   "container": {
+    "grain": "UNKNOWN",
+    "identity_class": "INDEPENDENT",
+    "missing": [
+     "lifecycle_controller",
+     "effective_scope"
+    ],
+    "reasons": [
+     "effective_scope: aspecto attribute_scope: sem tradução (R-GRAIN-T41)",
+     "effective_scope: aspecto effective_public_access_prevention: sem tradução (R-GRAIN-T42)",
+     "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
+     "identity: aspecto reference_phrase sem tradução na tabela",
+     "identity: aspecto reference_target sem tradução na tabela",
+     "import_key: formato de importação sem atributos nomeados",
+     "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela",
+     "lifecycle_controller: política de remoção sem valores documentados"
+    ],
+    "rule": "GRAIN-G0-NEEDS",
+    "type": "google_storage_bucket"
+   },
+   "evidence_records": 144,
+   "grains": {
+    "UNKNOWN": 32
+   },
+   "missing": {
+    "effective_scope": 31,
+    "identity": 29,
+    "lifecycle_controller": 31,
+    "owner": 27
+   },
+   "rules": {
+    "GRAIN-G0-IDENTITY": 29,
+    "GRAIN-G0-NEEDS": 3
+   },
+   "top_level": {
+    "google_storage_bucket": {
+     "grain": "UNKNOWN",
+     "identity_class": "INDEPENDENT",
+     "missing": [
+      "lifecycle_controller",
+      "effective_scope"
+     ],
+     "reasons": [
+      "effective_scope: aspecto attribute_scope: sem tradução (R-GRAIN-T41)",
+      "effective_scope: aspecto effective_public_access_prevention: sem tradução (R-GRAIN-T42)",
+      "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
+      "identity: aspecto reference_phrase sem tradução na tabela",
+      "identity: aspecto reference_target sem tradução na tabela",
+      "import_key: formato de importação sem atributos nomeados",
+      "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela",
+      "lifecycle_controller: política de remoção sem valores documentados"
+     ],
+     "rule": "GRAIN-G0-NEEDS"
+    },
+    "google_storage_bucket_access_control": {
+     "grain": "UNKNOWN",
+     "identity_class": "INDEPENDENT",
+     "missing": [
+      "effective_scope"
+     ],
+     "reasons": [
+      "effective_scope: not_documented",
+      "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
+      "identity: aspecto reference_phrase sem tradução na tabela",
+      "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela",
+      "lifecycle_controller: política de remoção sem valores documentados"
+     ],
+     "rule": "GRAIN-G0-NEEDS"
+    },
+    "google_storage_bucket_acl": {
+     "grain": "UNKNOWN",
+     "identity_class": "ORPHAN",
+     "missing": [
+      "identity",
+      "lifecycle_controller",
+      "owner"
+     ],
+     "reasons": [
+      "identity: aspecto reference_phrase sem tradução na tabela",
+      "lifecycle_controller: destroy_effect not_deleted: não diz quem apaga",
+      "lifecycle_controller: política de remoção sem valores documentados",
+      "owner: not_documented"
+     ],
+     "rule": "GRAIN-G0-IDENTITY"
+    },
+    "google_storage_bucket_iam_binding": {
+     "grain": "UNKNOWN",
+     "identity_class": "ABSENT",
+     "missing": [
+      "identity",
+      "lifecycle_controller",
+      "effective_scope"
+     ],
+     "reasons": [
+      "effective_scope: not_documented",
+      "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
+      "import_key: formato de importação sem atributos nomeados",
+      "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela"
+     ],
+     "rule": "GRAIN-G0-IDENTITY"
+    },
+    "google_storage_bucket_iam_member": {
+     "grain": "UNKNOWN",
+     "identity_class": "INDEPENDENT",
+     "missing": [
+      "lifecycle_controller",
+      "effective_scope"
+     ],
+     "reasons": [
+      "effective_scope: not_documented",
+      "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
+      "import_key: formato de importação sem atributos nomeados",
+      "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela"
+     ],
+     "rule": "GRAIN-G0-NEEDS"
+    },
+    "google_storage_bucket_iam_policy": {
+     "grain": "UNKNOWN",
+     "identity_class": "ABSENT",
+     "missing": [
+      "identity",
+      "lifecycle_controller",
+      "effective_scope"
+     ],
+     "reasons": [
+      "effective_scope: not_documented",
+      "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
+      "import_key: formato de importação sem atributos nomeados",
+      "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela"
+     ],
+     "rule": "GRAIN-G0-IDENTITY"
+    }
+   },
+   "units": 32
+  },
+  "oci": {
+   "atoms": 57,
+   "candidates": 10,
+   "canonical_atoms": 57,
+   "container": {
+    "grain": "UNKNOWN",
+    "identity_class": "ABSENT",
+    "missing": [
+     "identity",
+     "effective_scope"
+    ],
+    "reasons": [
+     "effective_scope: not_documented",
+     "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
+     "identity: aspecto reference_phrase sem tradução na tabela",
+     "identity: aspecto reference_target sem tradução na tabela",
+     "import_key: formato de importação sem atributos nomeados",
+     "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela",
+     "owner: aspecto parent_attribute: sem tradução (R-GRAIN-T22)"
+    ],
+    "rule": "GRAIN-G0-IDENTITY",
+    "type": "oci_objectstorage_bucket"
+   },
+   "evidence_records": 50,
+   "grains": {
+    "UNKNOWN": 10
+   },
+   "missing": {
+    "effective_scope": 10,
+    "identity": 10,
+    "lifecycle_controller": 7,
+    "owner": 8
+   },
+   "rules": {
+    "GRAIN-G0-IDENTITY": 10
+   },
+   "top_level": {
+    "oci_objectstorage_bucket": {
+     "grain": "UNKNOWN",
+     "identity_class": "ABSENT",
+     "missing": [
+      "identity",
+      "effective_scope"
+     ],
+     "reasons": [
+      "effective_scope: not_documented",
+      "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
+      "identity: aspecto reference_phrase sem tradução na tabela",
+      "identity: aspecto reference_target sem tradução na tabela",
+      "import_key: formato de importação sem atributos nomeados",
+      "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela",
+      "owner: aspecto parent_attribute: sem tradução (R-GRAIN-T22)"
+     ],
+     "rule": "GRAIN-G0-IDENTITY"
+    },
+    "oci_objectstorage_namespace_metadata": {
+     "grain": "UNKNOWN",
+     "identity_class": "ABSENT",
+     "missing": [
+      "identity",
+      "owner",
+      "effective_scope"
+     ],
+     "reasons": [
+      "effective_scope: not_documented",
+      "identity: not_documented",
+      "import_key: not_documented",
+      "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela",
+      "owner: not_documented"
+     ],
+     "rule": "GRAIN-G0-IDENTITY"
+    },
+    "oci_objectstorage_object_lifecycle_policy": {
+     "grain": "UNKNOWN",
+     "identity_class": "ABSENT",
+     "missing": [
+      "identity",
+      "effective_scope"
+     ],
+     "reasons": [
+      "effective_scope: not_documented",
+      "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
+      "identity: aspecto reference_phrase sem tradução na tabela",
+      "identity: aspecto reference_target sem tradução na tabela",
+      "import_key: formato de importação sem atributos nomeados",
+      "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela"
+     ],
+     "rule": "GRAIN-G0-IDENTITY"
+    }
+   },
+   "units": 10
   }
  },
  "module": "PILOT-STO-GLOSS",
- "schema": "bo.pilot_findings/1",
+ "schema": "bo.pilot_findings/2",
  "sentences": {
   "atoms": 562,
   "by_provider": {
    "aws": {
     "atoms": 161,
-    "own_published_sentence": 5,
-    "own_sentence_any_level": 5
+    "with_own_description": 153
    },
    "azurerm": {
     "atoms": 232,
-    "own_published_sentence": 11,
-    "own_sentence_any_level": 12
+    "with_own_description": 231
    },
    "google": {
     "atoms": 112,
-    "own_published_sentence": 8,
-    "own_sentence_any_level": 9
+    "with_own_description": 104
    },
    "oci": {
     "atoms": 57,
-    "own_published_sentence": 4,
-    "own_sentence_any_level": 4
+    "with_own_description": 48
    }
   },
   "by_role": {
    "CONFIG": {
     "atoms": 452,
-    "own_published_sentence": 22,
-    "own_sentence_any_level": 24
+    "with_own_description": 439
    },
    "IDENTIFIER": {
     "atoms": 26,
-    "own_published_sentence": 0,
-    "own_sentence_any_level": 0
+    "with_own_description": 17
    },
    "NAME": {
     "atoms": 6,
-    "own_published_sentence": 0,
-    "own_sentence_any_level": 0
+    "with_own_description": 6
    },
    "REFERENCE": {
     "atoms": 49,
-    "own_published_sentence": 1,
-    "own_sentence_any_level": 1
+    "with_own_description": 47
    },
    "SECRET": {
     "atoms": 6,
-    "own_published_sentence": 0,
-    "own_sentence_any_level": 0
+    "with_own_description": 6
    },
    "TAG": {
     "atoms": 13,
-    "own_published_sentence": 5,
-    "own_sentence_any_level": 5
+    "with_own_description": 11
    },
    "TIMESTAMP": {
     "atoms": 10,
-    "own_published_sentence": 0,
-    "own_sentence_any_level": 0
+    "with_own_description": 10
    }
   },
   "config_by_facet": {
    "encryption": {
     "atoms": 28,
-    "own_published_sentence": 0,
-    "own_sentence_any_level": 0
+    "with_own_description": 28
    },
    "lifecycle": {
     "atoms": 107,
-    "own_published_sentence": 9,
-    "own_sentence_any_level": 9
+    "with_own_description": 105
    },
    "other": {
     "atoms": 220,
-    "own_published_sentence": 4,
-    "own_sentence_any_level": 4
+    "with_own_description": 211
    },
    "public_access": {
     "atoms": 79,
-    "own_published_sentence": 9,
-    "own_sentence_any_level": 11
+    "with_own_description": 77
    },
    "versioning": {
     "atoms": 18,
-    "own_published_sentence": 0,
-    "own_sentence_any_level": 0
+    "with_own_description": 18
    }
   },
-  "facet_rule": "diagnóstico: tipo separado ou palavra do caminho",
   "rule": "GLOSSARY_BRIEF G2: ancorar só com sentença da documentação do PRÓPRIO átomo, na tag fixada",
-  "source_in_inputs": "SERVICE-EVIDENCE value.attribute + doc (único texto de documentação nas entradas)"
+  "source": "DOCS-*/docs_facts.jsonl, fact_kind description, status stated, com source"
  },
  "slice": {
   "aws": [
@@ -296,6 +717,6 @@
   ]
  },
  "slice_atoms": 562,
- "slice_evidence_records": 214,
+ "slice_evidence_records": 679,
  "slice_types": 23
 }

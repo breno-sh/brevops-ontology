@@ -82,17 +82,18 @@ def check(d: Path, validate=True) -> tuple[list[str], dict]:
         want = min(with_sentence, key=ORDER.index) if with_sentence else "UNRESOLVED"
         if c.get("evidence_state") != want:
             errs.append(f"{cid}: evidence_state {c.get('evidence_state')} ≠ menor das âncoras ({want})")
-    paths = unproven = 0
+    paths = unproven = hypothesis = 0
     for cid, cls in sorted(by_concept.items()):
         for a, b in itertools.combinations(sorted(cls, key=lambda x: x["claim_id"]), 2):
             if a["atom_id"].split(":")[0] == b["atom_id"].split(":")[0]:
                 continue
             paths += 1
+            hypothesis += "UNRESOLVED" in (a.get("evidence_state"), b.get("evidence_state"))
             if not (has_evidence(a) and has_evidence(b)):
                 unproven += 1
                 errs.append(f"caminho {a['claim_id']}→{cid}←{b['claim_id']}: âncora sem evidência (sentença com fonte)")
     stats = {"concepts": len(concepts), "anchors": len(claims), "multi_provider_paths": paths,
-             "paths_without_evidence": unproven}
+             "paths_without_evidence": unproven, "paths_with_unresolved_anchor": hypothesis}
     return errs, stats
 
 

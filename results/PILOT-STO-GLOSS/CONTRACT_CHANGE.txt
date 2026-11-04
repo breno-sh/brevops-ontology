@@ -1,4 +1,43 @@
 CONTRACT_CHANGE — PILOT-STO-GLOSS (piloto sto: grão mecânico e glossário da fatia)
+ATUALIZAÇÃO 2026-11-04T03:21:44-03:00 (America/Recife), base b952d98:
+  CC-1 RESOLVIDO na interface (GRAIN d8ada03 lê o C25 por aspecto; SERVICE-EVIDENCE b952d98 com fatos de bloco):
+       a biblioteca roda sem EvidenceError nos 4 provedores. CC-2 e CC-3 RESOLVIDOS (briefs 1.2.0, 91bef3f:
+       docs_facts e atoms nas entradas; 439/452 átomos CONFIG da fatia com descrição própria). CC-4 RESOLVIDO
+       (catálogo e conteúdo do bundle declarados). Saídas geradas; ver CC-5 e CC-6 abaixo (não bloqueiam este
+       módulo, bloqueiam o critério E2 do PILOT-EXIT).
+
+CC-5 (NÃO BLOQUEANTE AQUI; bloqueia E2): o grão da fatia sai 100% UNKNOWN (131/131 candidatos)
+  Contêineres: aws_s3_bucket UNKNOWN (GRAIN-G0-NEEDS, falta effective_scope; identidade INDEPENDENT);
+  google_storage_bucket UNKNOWN (G0-NEEDS, falta lifecycle_controller e effective_scope; INDEPENDENT);
+  azurerm_storage_container UNKNOWN (G0-IDENTITY, falta identity e effective_scope; UNRESOLVED);
+  oci_objectstorage_bucket UNKNOWN (G0-IDENTITY, falta identity e effective_scope; ABSENT).
+  Faltas na fatia: effective_scope 129/131, identity 127/131, lifecycle_controller 121/131, owner 110/131.
+  Causas que o adaptador devolve (results/PILOT-STO-GLOSS/pilot_findings.json, grain.*.top_level.*.reasons):
+   (a) todas as regras G1–G4 exigem effective_scope, e o SERVICE-EVIDENCE quase não o tem: nos tipos de topo
+       é not_documented, e os aspectos que existem (attribute_scope R-GRAIN-T41, effective_public_access e
+       effective_public_access_prevention R-GRAIN-T42) estão "sem tradução" na tabela do GRAIN;
+   (b) os aspectos novos do b952d98, identity/reference_phrase (25 na fatia) e identity/reference_target (15),
+       saem "sem tradução na tabela": o SERVICE-EVIDENCE e o GRAIN foram emendados em paralelo e não se cruzaram
+       de novo; o contêiner do Azure e o da OCI caem em identidade UNRESOLVED/ABSENT por isso;
+   (c) identity/id_template (R-GRAIN-T03) segue sem tradução, e owner/identity_scope (R-GRAIN-T20) não alimenta
+       o dono (decisão certa do GRAIN: dono da identidade ≠ dono da configuração).
+  Proposta: (1) GRAIN traduzir reference_phrase/reference_target (ou o SERVICE-EVIDENCE parar de emiti-los);
+  (2) decidir quem fornece effective_scope dos contêineres e das facetas (sem isso nenhuma regra decide); (3) teste
+  de integração: na fatia sto, os 4 contêineres saem com grão diferente de UNKNOWN, ou o teste lista a falta e
+  reprova. Não forcei nada: as unidades ficaram UNKNOWN com o missing_evidence da biblioteca.
+
+CC-6 (menor, C20 3.2.0 × GLOSSARY_BRIEF 1.2.0)
+  - O brief 1.2.0 diz "átomo sem fato de documentação: âncora UNRESOLVED com o motivo no context, nunca uma
+    sentença inventada", mas o C20 3.2.0 exige sentence (minLength 10) em toda âncora. Nesta fatia não ocorreu
+    (todo átomo ancorado tem descrição), mas é contradição: tornar sentence/source opcionais quando
+    evidence_state = UNRESOLVED e o context disser o motivo, ou o brief mandar não ancorar.
+  - Âncora de bloco/tipo (emenda 4) exige sentença, e os DOCS-* não têm fato de nível de bloco (0 fatos com
+    atom_id de bloco na fatia): na prática, só se ancora bloco com sentença de um atributo dele. Não usei âncora
+    de bloco/tipo nesta fatia.
+  - Achado na própria documentação: a descrição de grant.permission da ACL separada fala em permissão de log
+    (parece cópia de outra página); a âncora ficou UNRESOLVED com o motivo.
+
+--- texto original (2026-11-04T02:12:13-03:00) ---
 Escrito em 2026-11-04T02:12:13-03:00 (America/Recife). Base: bo/base af99548. Medidas reprodutíveis:
   python -I -m bo.pilot_sto_gloss.diagnose        (grava results/PILOT-STO-GLOSS/pilot_findings.json)
   python -I -m bo.pilot_sto_gloss.diagnose --check (refaz das entradas e compara)

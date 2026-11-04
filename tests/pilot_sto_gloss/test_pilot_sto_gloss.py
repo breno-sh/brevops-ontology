@@ -10,7 +10,10 @@ import pytest
 
 from bo.pilot_sto_gloss import anchor_claims as A
 from bo.pilot_sto_gloss import common as C
+from bo.pilot_sto_gloss import build as B
+from bo.pilot_sto_gloss import decompose as DEC
 from bo.pilot_sto_gloss import diagnose as D
+from bo.pilot_sto_gloss import spec as SP
 
 T = "2026-11-04T02:00:00-03:00"
 
@@ -127,45 +130,34 @@ def test_slice_is_provider_neutral_in_shape():
     assert not set(st) & set(C.EXCLUDED)
 
 
-def test_atoms_from_roles_rebuilds_blocks_and_counts_collisions():
-    roles = {"provider_a:a_bucket:name": {}, "provider_a:a_bucket:versioning.enabled": {},
-             "provider_a:a_bucket:rule": {}, "provider_a:a_bucket:rule.days": {}}
-    atoms = {a["atom_id"]: a for a in D.atoms_from_roles(roles)}
-    assert [b["block"] for b in atoms["provider_a:a_bucket:versioning.enabled"]["block_path"]] == ["versioning"]
-    assert atoms["provider_a:a_bucket:name"]["block_path"] == []
-    assert D.prefix_collisions(roles) == 1  # rule é átomo e prefixo de rule.days
-
-
-def test_shape_counts_grain_convention_vs_aspect():
-    recs = [{"fact_kind": "owner", "status": "stated", "value": "parent"},
-            {"fact_kind": "identity", "status": "stated", "value": {"status": "present", "key_fields": ["n"]}},
-            {"fact_kind": "identity", "status": "stated", "value": {"aspect": "id_template", "template": "x"}},
+def test_facet_rule_and_shape():
+    assert D.facet_of("aws:aws_s3_bucket_versioning:versioning_configuration.status") == "versioning"
+    assert D.facet_of("google:google_storage_bucket:encryption.default_kms_key_name") == "encryption"
+    recs = [{"fact_kind": "owner", "status": "stated", "value": {"aspect": "parent"}},
+            {"fact_kind": "identity", "status": "stated", "value": {"aspect": "id_template"}, "block_path": "x"},
             {"fact_kind": "owner", "status": "unknown", "value": None},
             {"fact_kind": "tag_support", "status": "stated", "value": {"aspect": "terraform_attribute"}}]
     s = D.shape(recs)
-    assert (s["grain_fact_records"], s["stated"], s["stated_in_grain_convention"]) == (4, 3, 2)
-    assert s["stated_by_aspect"] == {"identity/None": 1, "identity/id_template": 1}
+    assert (s["grain_fact_records"], s["stated"], s["with_block_path"]) == (3, 2, 1)
+    assert s["stated_by_aspect"] == {"identity/id_template": 1, "owner/parent": 1}
 
 
-def test_grain_library_as_is_on_aspect_form_raises_and_is_recorded():
-    """Controle: o mesmo fato na forma por aspecto (a do SERVICE-EVIDENCE) faz a biblioteca levantar erro, e o
-    diagnóstico registra o erro em vez de decidir unidade (nada de conserto local)."""
-    roles = {"aws:a_bucket:name": {"role": "NAME"}}
-    ev = [{"provider": "aws", "terraform_resource_type": "a_bucket", "fact_kind": "identity", "status": "stated",
-           "level": "derived", "evidence_id": "SE-fixture-1", "value": {"aspect": "id_template", "template": "{name}"}}]
+def _with_slice(fn):
     old = C.SLICE
     try:
         C.SLICE = {"aws": {"a_bucket": "fixture"}}
-        out = D.grain_as_is(roles, ev)
+        return fn()
     finally:
         C.SLICE = old
-    assert out["providers"]["aws"]["outcome"] == "EVIDENCE_ERROR"
-    assert out["providers"]["aws"]["candidates_with_evidence_error"] == 1
 
 
-def test_grain_library_as_is_on_grain_convention_decides():
-    """Controle positivo: a mesma entidade na convenção do GRAIN.html é decidida (ENTITY) pela biblioteca."""
-    roles = {"aws:a_bucket:name": {"role": "NAME"}}
+def _atom(path, blocks=()):
+    return {"atom_id": f"aws:a_bucket:{path}", "provider": "aws", "resource_type": "a_bucket", "path": path,
+            "block_path": [{"block": b, "nesting_mode": "single"} for b in blocks]}
+
+
+def test_decompose_uses_library_and_decides_with_full_evidence():
+    """Controle positivo: evidência completa na forma neutra do GRAIN dá ENTITY pela biblioteca."""
     ev = [
         {"provider": "aws", "terraform_resource_type": "a_bucket", "fact_kind": "identity", "status": "stated",
          "level": "published", "evidence_id": "SE-f-1", "api_resource": {"service": "s", "resource": "Bucket"},
@@ -176,14 +168,72 @@ def test_grain_library_as_is_on_grain_convention_decides():
     ] + [{"provider": "aws", "terraform_resource_type": "a_bucket", "fact_kind": k, "status": "stated",
           "level": "published", "evidence_id": f"SE-f-{i}", "value": "self"}
          for i, k in enumerate(("lifecycle_controller", "owner", "effective_scope"), start=3)]
-    old = C.SLICE
-    try:
-        C.SLICE = {"aws": {"a_bucket": "fixture"}}
-        out = D.grain_as_is(roles, ev)
-    finally:
-        C.SLICE = old
-    p = out["providers"]["aws"]
-    assert p["outcome"] == "DECIDED" and p["kinds"] == {"ENTITY": 1}
+    roles = {"aws:a_bucket:name": {"role": "NAME"}}
+    out = _with_slice(lambda: DEC.run(roles, ev, {"aws": [_atom("name")]}))
+    assert out["report"]["aws"]["grains"] == {"ENTITY": 1}
+    assert out["units"][0]["kind"] == "ENTITY" and out["atoms"][0]["unit_id"] == out["units"][0]["unit_id"]
+
+
+def test_decompose_keeps_unknown_when_scope_missing():
+    """Controle negativo: sem o alcance efetivo, a biblioteca devolve UNKNOWN e o piloto não muda isso."""
+    ev = [
+        {"provider": "aws", "terraform_resource_type": "a_bucket", "fact_kind": "identity", "status": "stated",
+         "level": "published", "evidence_id": "SE-f-1", "api_resource": {"service": "s", "resource": "Bucket"},
+         "value": {"status": "present", "scope": "independent", "key_fields": ["name"], "api_status": "resource",
+                   "label": "contêiner"}},
+        {"provider": "aws", "terraform_resource_type": "a_bucket", "fact_kind": "import_key", "status": "stated",
+         "level": "published", "evidence_id": "SE-f-2", "value": {"status": "present", "fields": ["name"]}},
+    ] + [{"provider": "aws", "terraform_resource_type": "a_bucket", "fact_kind": k, "status": "stated",
+          "level": "published", "evidence_id": f"SE-f-{i}", "value": "self"}
+         for i, k in enumerate(("lifecycle_controller", "owner"), start=3)]
+    roles = {"aws:a_bucket:name": {"role": "NAME"}, "aws:a_bucket:versioning.enabled": {"role": "CONFIG"}}
+    atoms = [_atom("name"), _atom("versioning.enabled", ["versioning"])]
+    out = _with_slice(lambda: DEC.run(roles, ev, {"aws": atoms}))
+    r = out["report"]["aws"]
+    top = r["top_level"]["a_bucket"]
+    assert top["grain"] == "UNKNOWN" and "effective_scope" in top["missing"]
+    assert set(r["grains"]) == {"UNKNOWN"}
+
+
+def test_spec_is_provider_neutral_and_consistent():
+    import re
+
+    toks = ["aws", "amazon", "gcp", "google", "azure", "azurerm", "microsoft", "oci", "oracle", "ec2", "s3", "vpc",
+            "vnet", "vcn", "arn", "ocid", "gke", "eks", "aks", "lambda", "dynamodb", "cosmosdb", "bigquery",
+            "cloudwatch", "stackdriver", "nsg", "elb", "alb"]
+    ids = [c[0] for c in SP.CONCEPTS]
+    assert len(ids) == len(set(ids))
+    for c in SP.CONCEPTS:
+        for text in (c[0], c[1], c[2]):
+            words = set(re.split(r"[^a-z0-9]+", text.lower()))
+            assert not words & set(toks), (c[0], words & set(toks))
+        assert all(m in ("SV", "UR") for _, m, _ in c[8])
+        assert c[2].count(" ") >= 6  # definição com gênero e diferença, não um rótulo
+    atoms = [a for c in SP.CONCEPTS for a, _, _ in c[8]]
+    assert len(atoms) == len(set(atoms))
+    for a, b, _ in SP.HIERARCHY + SP.DISTINCT:
+        assert a in ids and b in ids and a != b
+
+
+def test_counterexample_search_is_recorded_even_without_hits():
+    concept = SP.CONCEPTS[0]
+    descs = {"aws:x_type:other": [{"source": {"sentence": "nothing related here"}}]}
+    r = B.counterexample(concept, {}, descs)
+    assert r["found"] is False and r["query"]
+    descs2 = {"aws:x_type:other": [{"source": {"sentence": "the name of the bucket owner"}}]}
+    r2 = B.counterexample(concept, {}, descs2)
+    assert r2["found"] is True and "aws:x_type:other" in r2["result"]
+
+
+def test_decisions_mark_single_provider_concepts_exclusive():
+    claims = [{"concept_id": SP.CONCEPTS[0][0], "atom_id": "aws:t:a"},
+              {"concept_id": SP.CONCEPTS[1][0], "atom_id": "aws:t:b"},
+              {"concept_id": SP.CONCEPTS[1][0], "atom_id": "google:t:c"}]
+    dec = B.build_decisions(claims)
+    excl = {d["concept_id"] for d in dec if d["kind"] == "exclusive"}
+    assert SP.CONCEPTS[0][0] in excl and SP.CONCEPTS[1][0] not in excl
+    assert sum(d["kind"] == "value_type" for d in dec) == len(SP.CONCEPTS)
+    assert len({d["decision_id"] for d in dec}) == len(dec)
 
 
 def test_valid_package_passes_official_validator(pkg):
