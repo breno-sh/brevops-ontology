@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "SCHEMA-AZURE",
- "generated_at": "2026-11-03T07:25:23-03:00",
+ "generated_at": "2026-11-03T21:16:35-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/SCHEMA-AZURE.txt",
@@ -13,7 +13,7 @@
    "provider_version": "5.12.0",
    "terraform_cli": "1.15.8",
    "platform": "darwin_arm64",
-   "library": "bo.schema (SCHEMALIB) build+extract+crosscheck; write_only do C01 2.1.0 em bo.schema_azure.atoms",
+   "library": "bo.schema (SCHEMALIB) build+extract+crosscheck; write_only do C01 2.1.0 gravado pela própria biblioteca",
    "sandbox": "env -i, HOME temporário, sandbox-exec; schema/validate sem rede IP; sem credenciais",
    "network": "registry.terraform.io,releases.hashicorp.com (init e zip assinado; índice de docs do Registry)",
    "cloud": "none",
@@ -46,7 +46,7 @@
     "sha256": "a69ca2429c0b3df1ddec38336dbe0a60bae70e550c96555ec34a9365b2c51511"
    }
   ],
-  "recorded_at": "2026-11-03T07:25:23-03:00"
+  "recorded_at": "2026-11-03T21:16:35-03:00"
  },
  "sources": [
   {

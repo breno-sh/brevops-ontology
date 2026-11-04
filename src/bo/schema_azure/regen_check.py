@@ -4,7 +4,7 @@
   python -I -m bo.schema_azure.regen_check [--no-schema] [--out ARQ]
 
   1. o schema guardado: schema.json.gz descomprime no sha256 de schema.json.sha256, que é o do pins.json;
-  2. duas execuções independentes de átomos e tipos (bo.schema.build + passada write_only) em
+  2. duas execuções independentes de átomos e tipos (bo.schema.build, que já grava write_only) em
      $BO_TMP/regen/run1 e run2: os sha256 de atoms.jsonl e types.jsonl batem entre si e com os publicados;
   3. (a menos de --no-schema) o schema cru é refeito SEM rede a partir do binário fixado no plugin_cache/
      (bo.schema_azure.offline, que também roda o validate offline) e o sha256 bate com o do pins.json.

@@ -125,18 +125,16 @@ def _write_gz(path: Path, doc: dict) -> Path:
     return path
 
 
-def test_write_only_only_where_marked_and_rest_untouched(work):
+def test_write_only_from_library_only_where_marked(work):
     gz = _write_gz(work / "schema.json.gz", _schema({"write_only": True, "sensitive": True}))
     r = atoms.make(gz, "9.9.9", work / "atoms.jsonl", work / "types.jsonl")
     got = {json.loads(x)["path"]: json.loads(x) for x in (work / "atoms.jsonl").read_text().splitlines()}
     assert r["write_only"] == 2
     assert sorted(p for p, a in got.items() if a.get("write_only")) == ["conn.secret_wo", "value_wo"]
     assert all("write_only" not in a for p, a in got.items() if p not in ("value_wo", "conn.secret_wo"))
-    # tirando write_only, cada átomo é byte a byte o da biblioteca
+    # sem passada própria: átomos e tipos são byte a byte os da biblioteca (que já grava write_only)
     libbuild.build(gz, "azurerm", "9.9.9", work / "lib_a.jsonl", work / "lib_t.jsonl")
-    lib = [json.loads(x) for x in (work / "lib_a.jsonl").read_text().splitlines()]
-    ours = [json.loads(x) for x in (work / "atoms.jsonl").read_text().splitlines()]
-    assert [{k: v for k, v in a.items() if k != "write_only"} for a in ours] == lib
+    assert (work / "atoms.jsonl").read_bytes() == (work / "lib_a.jsonl").read_bytes()
     assert (work / "types.jsonl").read_bytes() == (work / "lib_t.jsonl").read_bytes()
     assert V.validate("C01_atoms", work / "atoms.jsonl").ok
     assert V.validate("C02_types", work / "types.jsonl").ok

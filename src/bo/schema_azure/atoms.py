@@ -1,10 +1,7 @@
-"""Átomos (C01 2.1.0) e tipos (C02) do schema extraído, pela biblioteca única (bo.schema.build).
+"""Átomos (C01 2.1.0) e tipos (C02) do schema extraído, só pela biblioteca única (bo.schema.build).
 
-A bo.schema (SCHEMALIB) grava os campos do C01 2.0.0. O C01 2.1.0 acrescentou o campo opcional write_only
-(ausente = false), que a biblioteca ainda não emite. Aqui só se acrescenta esse campo, lido do mesmo schema
-pelo mesmo caminho do átomo, sem tocar em nenhum outro campo nem em contagem: write_only aparece (true)
-apenas nos átomos que o schema marca com "write_only": true, como no stub do C01. A regra C01-WRITEONLY
-(write_only implica configurable e não computed) é conferida aqui; violação reprova.
+A bo.schema grava o campo write_only do C01 2.1.0 (só quando o schema o marca) e confere a regra
+C01-WRITEONLY; aqui não há passada própria: só se contam as flags para o relatório.
 """
 
 from __future__ import annotations
@@ -18,40 +15,14 @@ from bo.schema import core
 from . import common
 
 
-def raw_attribute(block: dict, atom: dict) -> dict:
-    """O atributo do schema cru que gerou o átomo, seguindo block_path e o último nome de path."""
-    b = block
-    for e in atom["block_path"]:
-        b = ((b.get("block_types") or {})[e["block"]]).get("block") or {}
-    name = atom["path"].rsplit(".", 1)[-1]
-    return (b.get("attributes") or {})[name]
-
-
-def write_only_pass(atoms_path: Path, provider_schema: dict) -> dict:
-    """Acrescenta write_only aos átomos marcados no schema; reescreve com a serialização da biblioteca."""
-    rs = provider_schema.get("resource_schemas") or {}
-    out, wo, bad = [], [], []
-    with open(atoms_path, encoding="utf-8") as f:
-        for line in f:
-            a = json.loads(line)
-            raw = raw_attribute(rs[a["resource_type"]].get("block") or {}, a)
-            if raw.get("write_only"):
-                if not a["configurable"] or a["computed"]:
-                    bad.append(a["atom_id"])
-                a["write_only"] = True
-                wo.append(a["atom_id"])
-            out.append(a)
-    if bad:
-        raise core.SchemaError(f"C01-WRITEONLY violada em {len(bad)} átomo(s): {bad[:5]}")
-    core.write_jsonl(atoms_path, out)
-    return {"write_only": len(wo), "write_only_atoms": wo}
-
-
 def make(schema_gz: Path, version: str, atoms_out: Path, types_out: Path) -> dict:
-    """bo.schema.build (C01 2.0.0 + C02) e depois a passada write_only (C01 2.1.0)."""
+    """bo.schema.build (C01 2.1.0 + C02) e as contagens que o relatório usa."""
     r = libbuild.build(schema_gz, common.PROVIDER, version, atoms_out, types_out)
     ps = core.providers(core.load(schema_gz))[common.PROVIDER]
-    r.update(write_only_pass(atoms_out, ps))
+    with open(atoms_out, encoding="utf-8") as f:
+        wo = [a["atom_id"] for a in map(json.loads, f) if a.get("write_only")]
+    r["write_only"] = len(wo)
+    r["write_only_atoms"] = wo
     r["data_sources"] = len(ps.get("data_source_schemas") or {})
     r["outras_familias"] = {k: len(ps.get(k) or {}) for k in sorted(ps)
                             if k.endswith("_schemas") and k not in ("resource_schemas", "data_source_schemas")}
