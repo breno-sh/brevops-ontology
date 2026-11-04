@@ -129,7 +129,8 @@ RULES = {
                  "como texto), citada por arquivo, ponteiro e nome da operação.",
     "R-BRIDGE-SPEC": "ponte tipo Terraform <-> recurso da spec só com casamento ÚNICO: aws nome do tipo sem aws_ "
                      "(e sem s3_/ec2_/vpc_) = substantivo da operação em snake_case (faceta: pai_faceta); google "
-                     "<serviço>_<coleção no singular>; azure tipos ARM da ponte da doc = tipos do caminho da spec; "
+                     "<prefixo>_<coleção folha no singular>, prefixo = nome da API ou o termo do tipo que a regra de "
+                     "seleção do lote ligou a ela (selection.json); coleção com insert/create e delete; azure tipos ARM da ponte da doc = tipos do caminho da spec; "
                      "oci: módulo do SDK cujo nome é o começo do tipo (o mais longo) ou o 1º termo sem _, e o resto do "
                      "nome (ou a ponte da doc) = substantivo do método. Mais de um: candidatos, "
                      "sem fato de camada API. Recurso da spec que casa com mais de um tipo: fica com a ponte só o "

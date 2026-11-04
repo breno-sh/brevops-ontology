@@ -27,6 +27,27 @@ def singular(s: str) -> str:
     return s[:-1] if s.endswith("s") else s
 
 
+_GALIAS: dict = {}
+
+
+def google_aliases(api: str) -> set[str]:
+    """Prefixos de tipo Terraform (t1 ou t1_t2) que a regra de seleção (selection.json do lote CC-9) ligou à API;
+    a própria API sempre vale (CC-8: storage, compute)."""
+    if not _GALIAS:
+        import json
+        from . import common
+        for d in ("apispec-google-cc9", "apispec-google-cc9.staging"):
+            fp = common.bo_data() / "downloads" / d / "selection.json"
+            if fp.exists():
+                for pair, apis in json.loads(fp.read_text(encoding="utf-8"))["token_pairs"].items():
+                    t1, t2 = (pair.split("_", 1) + [""])[:2]
+                    for a in apis:
+                        al = _GALIAS.setdefault(a, set())
+                        al.add(t1 if a in (t1, "cloud" + t1, t1 + "admin") and a != t1 + t2 else f"{t1}_{t2}")
+                break
+    return {api} | _GALIAS.get(api, set())
+
+
 def names_of(p: str, key, r) -> set[str]:
     n = r["resource"]
     if p == "aws":
@@ -39,7 +60,8 @@ def names_of(p: str, key, r) -> set[str]:
             out |= {x + "_rule" for x in list(out)}
         return out
     if p == "google":
-        return {f"{r['service']}_{singular(A.snake(n))}"}
+        leaf = singular(A.snake(r.get("leaf") or n))
+        return {f"{al}_{leaf}" for al in google_aliases(r["service"])}
     if p == "oci":
         return {n, singular(n)}
     return set()

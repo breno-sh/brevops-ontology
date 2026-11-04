@@ -5,6 +5,246 @@
  "disputes": [
   {
    "provider": "google",
+   "terraform_resource_type": "google_alloydb_backup",
+   "fact": "api_bridge",
+   "doc": {
+    "service": "alloydb",
+    "resource": "projects.locations.backups/create"
+   },
+   "spec": {
+    "service": "alloydb",
+    "resource": "projects.locations.backups"
+   },
+   "evidence": [
+    "SE-google-yky2gb7y4u44rukz"
+   ]
+  },
+  {
+   "provider": "google",
+   "terraform_resource_type": "google_alloydb_cluster",
+   "fact": "api_bridge",
+   "doc": {
+    "service": "alloydb",
+    "resource": "projects.locations.clusters/create"
+   },
+   "spec": {
+    "service": "alloydb",
+    "resource": "projects.locations.clusters"
+   },
+   "evidence": [
+    "SE-google-gg4kdt5ywwmidnt6"
+   ]
+  },
+  {
+   "provider": "google",
+   "terraform_resource_type": "google_alloydb_instance",
+   "fact": "api_bridge",
+   "doc": {
+    "service": "alloydb",
+    "resource": "projects.locations.clusters.instances/create"
+   },
+   "spec": {
+    "service": "alloydb",
+    "resource": "projects.locations.clusters.instances"
+   },
+   "evidence": [
+    "SE-google-ktpxnmrtgo2odfxa"
+   ]
+  },
+  {
+   "provider": "google",
+   "terraform_resource_type": "google_alloydb_user",
+   "fact": "api_bridge",
+   "doc": {
+    "service": "alloydb",
+    "resource": "projects.locations.clusters.users/create"
+   },
+   "spec": {
+    "service": "alloydb",
+    "resource": "projects.locations.clusters.users"
+   },
+   "evidence": [
+    "SE-google-4wlvnzjeoa65pmp4"
+   ]
+  },
+  {
+   "provider": "google",
+   "terraform_resource_type": "google_apigee_dns_zone",
+   "fact": "api_bridge",
+   "doc": {
+    "service": "apigee",
+    "resource": "organizations.dnsZones/create"
+   },
+   "spec": {
+    "service": "apigee",
+    "resource": "organizations.dnsZones"
+   },
+   "evidence": [
+    "SE-google-7yz2bjytfrvytqu7"
+   ]
+  },
+  {
+   "provider": "google",
+   "terraform_resource_type": "google_apigee_endpoint_attachment",
+   "fact": "api_bridge",
+   "doc": {
+    "service": "apigee",
+    "resource": "organizations.endpointAttachments/create"
+   },
+   "spec": {
+    "service": "apigee",
+    "resource": "organizations.endpointAttachments"
+   },
+   "evidence": [
+    "SE-google-25nha4rm325ol7g4"
+   ]
+  },
+  {
+   "provider": "google",
+   "terraform_resource_type": "google_apigee_envgroup",
+   "fact": "api_bridge",
+   "doc": {
+    "service": "apigee",
+    "resource": "organizations.envgroups/create"
+   },
+   "spec": {
+    "service": "apigee",
+    "resource": "organizations.envgroups"
+   },
+   "evidence": [
+    "SE-google-wrfmbapfzbhyey7l"
+   ]
+  },
+  {
+   "provider": "google",
+   "terraform_resource_type": "google_apigee_instance",
+   "fact": "api_bridge",
+   "doc": {
+    "service": "apigee",
+    "resource": "organizations.instances/create"
+   },
+   "spec": {
+    "service": "apigee",
+    "resource": "organizations.instances"
+   },
+   "evidence": [
+    "SE-google-k75aboxd7bm3o53f"
+   ]
+  },
+  {
+   "provider": "google",
+   "terraform_resource_type": "google_apigee_security_action",
+   "fact": "api_bridge",
+   "doc": {
+    "service": "apigee",
+    "resource": "organizations.environments.securityActions/create"
+   },
+   "spec": {
+    "service": "apigee",
+    "resource": "organizations.environments.securityActions"
+   },
+   "evidence": [
+    "SE-google-d2vhccgiwdwd7vqj"
+   ]
+  },
+  {
+   "provider": "google",
+   "terraform_resource_type": "google_apigee_security_feedback",
+   "fact": "api_bridge",
+   "doc": {
+    "service": "apigee",
+    "resource": "organizations.securityFeedback/create"
+   },
+   "spec": {
+    "service": "apigee",
+    "resource": "organizations.securityFeedback"
+   },
+   "evidence": [
+    "SE-google-a6tq6z2oolblejnh"
+   ]
+  },
+  {
+   "provider": "google",
+   "terraform_resource_type": "google_apigee_security_monitoring_condition",
+   "fact": "api_bridge",
+   "doc": {
+    "service": "apigee",
+    "resource": "organizations.securityMonitoringConditions/create"
+   },
+   "spec": {
+    "service": "apigee",
+    "resource": "organizations.securityMonitoringConditions"
+   },
+   "evidence": [
+    "SE-google-dh2q7vzfhgwgnc4i"
+   ]
+  },
+  {
+   "provider": "google",
+   "terraform_resource_type": "google_bigquery_datapolicy_data_policy",
+   "fact": "api_bridge",
+   "doc": {
+    "service": "bigquery",
+    "resource": "projects.locations.dataPolicies/create"
+   },
+   "spec": {
+    "service": "bigquerydatapolicy",
+    "resource": "projects.locations.dataPolicies"
+   },
+   "evidence": [
+    "SE-google-amgjfrtyn6wdztd6"
+   ]
+  },
+  {
+   "provider": "google",
+   "terraform_resource_type": "google_bigtable_instance",
+   "fact": "api_bridge",
+   "doc": {
+    "service": "bigtable",
+    "resource": "projects.instances.clusters"
+   },
+   "spec": {
+    "service": "bigtableadmin",
+    "resource": "projects.instances"
+   },
+   "evidence": [
+    "SE-google-wzjoy267ziwq5zda"
+   ]
+  },
+  {
+   "provider": "google",
+   "terraform_resource_type": "google_certificate_manager_trust_config",
+   "fact": "api_bridge",
+   "doc": {
+    "service": "certificate-manager",
+    "resource": "projects.locations.trustConfigs/create"
+   },
+   "spec": {
+    "service": "certificatemanager",
+    "resource": "projects.locations.trustConfigs"
+   },
+   "evidence": [
+    "SE-google-zmklmj6fe3yai3fx"
+   ]
+  },
+  {
+   "provider": "google",
+   "terraform_resource_type": "google_cloud_run_service",
+   "fact": "api_bridge",
+   "doc": {
+    "service": "run",
+    "resource": "namespaces.services"
+   },
+   "spec": {
+    "service": "run",
+    "resource": "projects.locations.services"
+   },
+   "evidence": [
+    "SE-google-nyhuflsarc2lhsaz"
+   ]
+  },
+  {
+   "provider": "google",
    "terraform_resource_type": "google_compute_interconnect_attachment_group",
    "fact": "api_bridge",
    "doc": {
@@ -65,6 +305,150 @@
    },
    "evidence": [
     "SE-google-ugtccryuz6o3drsw"
+   ]
+  },
+  {
+   "provider": "google",
+   "terraform_resource_type": "google_dialogflow_generator",
+   "fact": "api_bridge",
+   "doc": {
+    "service": "dialogflow",
+    "resource": "projects.locations.generators"
+   },
+   "spec": {
+    "service": "dialogflow",
+    "resource": "projects.locations.agents.generators"
+   },
+   "evidence": [
+    "SE-google-ux6nxn4vqjy3aufr"
+   ]
+  },
+  {
+   "provider": "google",
+   "terraform_resource_type": "google_dialogflow_tool",
+   "fact": "api_bridge",
+   "doc": {
+    "service": "dialogflow",
+    "resource": "projects.locations.tools"
+   },
+   "spec": {
+    "service": "dialogflow",
+    "resource": "projects.locations.agents.tools"
+   },
+   "evidence": [
+    "SE-google-lqm67br7dghdmo4x"
+   ]
+  },
+  {
+   "provider": "google",
+   "terraform_resource_type": "google_gke_hub_feature",
+   "fact": "api_bridge",
+   "doc": {
+    "service": "anthos",
+    "resource": "projects.locations.features"
+   },
+   "spec": {
+    "service": "gkehub",
+    "resource": "projects.locations.memberships.features"
+   },
+   "evidence": [
+    "SE-google-lfbybjcqfabtj6jr"
+   ]
+  },
+  {
+   "provider": "google",
+   "terraform_resource_type": "google_logging_metric",
+   "fact": "api_bridge",
+   "doc": {
+    "service": "logging",
+    "resource": "rest/v2/projects.metrics/create"
+   },
+   "spec": {
+    "service": "logging",
+    "resource": "projects.metrics"
+   },
+   "evidence": [
+    "SE-google-zrmryihbhk5fu6q2"
+   ]
+  },
+  {
+   "provider": "google",
+   "terraform_resource_type": "google_securityposture_posture",
+   "fact": "api_bridge",
+   "doc": {
+    "service": "security-command-center",
+    "resource": "Posture"
+   },
+   "spec": {
+    "service": "securityposture",
+    "resource": "organizations.locations.postures"
+   },
+   "evidence": [
+    "SE-google-4lam3o2byyoporpa"
+   ]
+  },
+  {
+   "provider": "google",
+   "terraform_resource_type": "google_storage_hmac_key",
+   "fact": "api_bridge",
+   "doc": {
+    "service": "storage",
+    "resource": "projects/hmacKeys"
+   },
+   "spec": {
+    "service": "storage",
+    "resource": "projects.hmacKeys"
+   },
+   "evidence": [
+    "SE-google-ixoqp6tisoyi22ha"
+   ]
+  },
+  {
+   "provider": "google",
+   "terraform_resource_type": "google_vmwareengine_network_peering",
+   "fact": "api_bridge",
+   "doc": {
+    "service": "compute",
+    "resource": "networks/addPeering"
+   },
+   "spec": {
+    "service": "vmwareengine",
+    "resource": "projects.locations.networkPeerings"
+   },
+   "evidence": [
+    "SE-google-nf6vevc27zo6jufg"
+   ]
+  },
+  {
+   "provider": "google",
+   "terraform_resource_type": "google_workstations_workstation_cluster",
+   "fact": "api_bridge",
+   "doc": {
+    "service": "workstations",
+    "resource": "projects.locations.workstationClusters/create"
+   },
+   "spec": {
+    "service": "workstations",
+    "resource": "projects.locations.workstationClusters"
+   },
+   "evidence": [
+    "SE-google-y3qzslkqqrlfmzsp"
+   ]
+  },
+  {
+   "provider": "google",
+   "terraform_resource_type": "google_workstations_workstation_config",
+   "fact": "api_bridge",
+   "doc": {
+    "service": "workstations",
+    "resource": "projects.locations.workstationClusters.workstationConfigs/create"
+   },
+   "spec": {
+    "service": "workstations",
+    "resource": "projects.locations.workstationClusters.workstationConfigs"
+   },
+   "evidence": [
+    "SE-google-vbfe7432wklpdf3q"
    ]
   },
   {

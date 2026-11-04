@@ -22,6 +22,7 @@ FILES = [
     "$BO_REPO/results/SERVICE-EVIDENCE/spec_coverage.json",
     "$BO_DATA/downloads/apispec-oci-cc9/SHA256SUMS",
     "$BO_DATA/downloads/apispec-aws-cc9/SHA256SUMS",
+    "$BO_DATA/downloads/apispec-google-cc9/SHA256SUMS",
     "$BO_DATA/downloads/apispec-aws/SHA256SUMS",
     "$BO_DATA/downloads/apispec-google/SHA256SUMS",
     "$BO_DATA/downloads/apispec-azurerm/SHA256SUMS",

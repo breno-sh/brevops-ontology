@@ -311,13 +311,15 @@ def _google():
             for name, r in (res or {}).items():
                 ms = r.get("methods") or {}
                 base = f"{ptr}/resources/{esc(name)}"
-                if "insert" in ms and "delete" in ms:
+                dotted = f"{prefix}.{name}" if prefix else name
+                ins = "insert" if "insert" in ms else ("create" if "create" in ms else None)
+                if ins and "delete" in ms:
                     upd = next((f"{base}/methods/{m}" for m in ("patch", "update") if m in ms), None)
-                    out[(svc, name)] = {"service": svc, "resource": name, "file": f,
-                                        "create": f"{base}/methods/insert", "delete": f"{base}/methods/delete",
+                    out[(svc, dotted)] = {"service": svc, "resource": dotted, "leaf": name, "file": f,
+                                        "create": f"{base}/methods/{ins}", "delete": f"{base}/methods/delete",
                                         "parent": None, "config": [], "update": upd,
-                                        "schema": ((ms["insert"].get("request") or {}).get("$ref"))}
-                walk(r.get("resources"), name, base)
+                                        "schema": ((ms[ins].get("request") or {}).get("$ref"))}
+                walk(r.get("resources"), dotted, base)
         walk(doc.get("resources"), "", "")
     return out
 
