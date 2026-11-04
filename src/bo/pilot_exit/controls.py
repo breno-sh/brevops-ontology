@@ -76,17 +76,21 @@ def r_ctrl(cases: list[dict], n_required: int, n_families: int = 7, alpha: float
             "extra": extra, "regression_cases": sorted(regress), "error_detection_cases": sorted(detect)}
 
 
-def justified(c3_traces: list[dict]) -> dict:
-    """Consequência de c3 contada tem justifying_axioms e é disjunta de consulted_metadata (C23-SEP)."""
-    n = bad = 0
+def justified(c3_traces: list[dict], c3_consequences: list[dict]) -> dict:
+    """Toda consequência de c3 CONTADA (as do caso) traz axiomas; em todo traço c3, justifying_axioms e
+    consulted_metadata são disjuntos (C23-SEP). Valor descido por codec de realização não é consequência de
+    axioma: traço dele pode ter justifying_axioms vazio."""
+    n = sep = 0
     for t in c3_traces:
         if t.get("result") != "carried":
             continue
         n += 1
         ja, cm = t.get("justifying_axioms"), t.get("consulted_metadata")
-        if not isinstance(ja, list) or not ja or not isinstance(cm, list) or set(ja) & set(cm):
-            bad += 1
-    return {"c3_carried": n, "c3_bad_justification": bad}
+        if not isinstance(ja, list) or not isinstance(cm, list) or set(ja) & set(cm):
+            sep += 1
+    noax = sum(1 for c in c3_consequences if not c.get("axioms"))
+    return {"c3_carried": n, "c3_sep_violations": sep, "c3_consequences": len(c3_consequences),
+            "c3_consequences_without_axioms": noax, "c3_bad_justification": sep + noax}
 
 
 def n_required(root) -> int:

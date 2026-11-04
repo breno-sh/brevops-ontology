@@ -64,8 +64,10 @@ def render(doc: dict, yaml_rule: dict) -> str:
             continue
         parts.append(f"<p>Entrada idêntica nos 3 controles: <b>{'sim' if c['same_input'] else 'não'}</b> "
                      f"(sha da entrada: {e(', '.join(sorted(set(c['input_sha'].values())))[:80])}). "
-                     f"Casos: {c['n_cases']}. Consequências de c3 com justifying_axioms separados de consulted_metadata: "
-                     f"{c['justified']['c3_carried'] - c['justified']['c3_bad_justification']} de {c['justified']['c3_carried']}.</p>")
+                     f"Casos: {c['n_cases']}. Consequências de c3 contadas sem axioma: "
+                     f"{c['justified']['c3_consequences_without_axioms']} de {c['justified']['c3_consequences']}; "
+                     f"traços c3 com justifying_axioms sobrepostos a consulted_metadata: "
+                     f"{c['justified']['c3_sep_violations']} de {c['justified']['c3_carried']}.</p>")
         parts.append(_ctrl_table(c["counts"]))
         parts.append(_fam_table(c["rule"]["families"]))
         parts.append(f"<p>Justificativa das contagens: correto = igual à resposta esperada do oráculo independente "

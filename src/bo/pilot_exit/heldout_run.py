@@ -88,9 +88,10 @@ def run_slice(slice_: str, ident: dict, root: Path, workdir: Path, decrypt_argv=
     else:
         opened = unseal.open_slice(slice_, decrypt_argv=decrypt_argv, root=root)
     counts = materialize.materialize(slice_, opened["bundle"], frozen_repo)
-    cmds = runner.catalog_gates(mid)
+    out = rdir / "out"
+    cmds = collect.commands(slice_, runner.catalog_gates(mid), frozen_repo, out)
     res = runner.run_commands(cmds, frozen_repo, data_root, mid, rdir / "logs")
-    ev = collect.collect(slice_, opened["bundle"], frozen_repo, data_root, res, rdir / "logs")
+    ev = collect.collect(slice_, opened["bundle"], frozen_repo, data_root, res, rdir / "logs", out=out)
     del opened["bundle"]
     return {"slice": slice_, "module": mid, "commands": res, "materialized": counts,
             "seal": {k: opened[k] for k in ("ciphertext_sha256", "plaintext_sha256", "plaintext_bytes", "n_items")},

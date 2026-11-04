@@ -46,6 +46,9 @@ def test_contagens_por_controle_e_polaridade():
 def test_justificativa_c23_sep():
     ok = {"result": "carried", "justifying_axioms": ["ax1"], "consulted_metadata": ["m1"]}
     sobrepoe = {"result": "carried", "justifying_axioms": ["m1"], "consulted_metadata": ["m1"]}
-    vazio = {"result": "carried", "justifying_axioms": [], "consulted_metadata": []}
+    vazio = {"result": "carried", "justifying_axioms": [], "consulted_metadata": ["codec"]}
     bloqueado = {"result": "blocked", "justifying_axioms": [], "consulted_metadata": []}
-    assert K.justified([ok, sobrepoe, vazio, bloqueado]) == {"c3_carried": 3, "c3_bad_justification": 2}
+    cons = [{"kind": "x", "axioms": ["AX-1"]}, {"kind": "y", "axioms": []}]
+    j = K.justified([ok, sobrepoe, vazio, bloqueado], cons)
+    assert j["c3_carried"] == 3 and j["c3_sep_violations"] == 1          # codec sem axioma não é violação
+    assert j["c3_consequences_without_axioms"] == 1 and j["c3_bad_justification"] == 2

@@ -5,7 +5,8 @@ Isolamento (o avaliador não pode estragar nada de ninguém nem deixar o código
   BO_DATA  = sobreposição em $BO_TMP/run/<fatia>/data: ligação simbólica para cada pasta de $BO_DATA (só
              leitura na prática, ver abaixo), menos a do próprio E2E (cópia, para a escrita dele ficar aqui),
              tmp/ (novo), PILOT-EXIT/ e SPLIT/ (fora)
-  sandbox-exec: escrita negada em toda a HOME salvo $BO_TMP do PILOT-EXIT; rede de saída negada (offline)
+  sandbox-exec: escrita negada em toda a HOME salvo $BO_TMP do PILOT-EXIT; rede de saída negada (offline),
+             salvo localhost e soquete unix (o terraform fala com o provider por gRPC local)
 Os comandos são os gates do próprio E2E no catálogo (bo.pilot.*, bo.lower.*), na ordem, com o mesmo texto.
 """
 from __future__ import annotations
@@ -55,6 +56,8 @@ def profile(write_root: Path, home: Path) -> str:
     return "\n".join([
         "(version 1)", "(allow default)",
         "(deny network-outbound (remote ip))",
+        '(allow network-outbound (remote ip "localhost:*"))',
+        '(allow network-outbound (remote unix-socket))',
         f'(deny file-write* (subpath "{home}"))',
         f'(allow file-write* (subpath "{write_root}"))',
         '(allow file-write* (literal "/dev/null"))', ""])
@@ -63,8 +66,11 @@ def profile(write_root: Path, home: Path) -> str:
 def run_commands(cmds: list[str], frozen_repo: Path, data_root: Path, mid: str, logdir: Path,
                  timeout: int = 1500, sandbox: bool = True) -> list[dict]:
     """Roda cada comando; grava stdout/stderr em logdir (fica em $BO_TMP, nunca em results/)."""
-    tmpd = data_root / "tmp" / mid
-    tmpd.mkdir(parents=True, exist_ok=True)
+    # BO_TMP curto: o socket unix do provider Terraform não cabe nos 104 caracteres do macOS com caminho longo
+    tmpd = C.tmp() / "t"
+    if tmpd.exists():
+        shutil.rmtree(tmpd)
+    tmpd.mkdir(parents=True)
     env = {k: v for k, v in os.environ.items() if k in ("PATH", "HOME", "LANG", "LC_ALL", "USER", "SHELL", "TERM")}
     env.update({"BO_REPO": str(frozen_repo), "BO_DATA": str(data_root), "BO_ID": mid, "BO_TMP": str(tmpd),
                 "TMPDIR": str(tmpd), "BO_MODULES": os.environ.get("BO_MODULES") or

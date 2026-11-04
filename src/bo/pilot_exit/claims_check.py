@@ -60,16 +60,26 @@ def check(sssom: Path, verdicts: Path) -> dict:
         if a == "UNPROVEN" and v != "UNPROVEN":
             arbiter_diff.append(r.get("claim_id"))
     table = semantic_table()
-    rel = {r.get("claim_id"): r.get("semantic_relation") for r in recs}
+    base_rel = {r.get("claim_id"): r.get("semantic_relation") for r in recs}
+    inv = {"broad": "narrow", "narrow": "broad"}
+
+    def rel_of(cid):
+        """relação da perna; '<id>~inv' é a inversa calculada (broad<->narrow; as demais ficam)."""
+        if cid in base_rel:
+            return base_rel[cid]
+        if isinstance(cid, str) and cid.endswith("~inv"):
+            r = base_rel.get(cid[:-4])
+            return inv.get(r, r)
+        return None
     off = []
     for cid, v in last.items():
         legs = v.get("composition_used") or []
         if len(legs) < 2:
             continue
-        cur = rel.get(legs[0])
+        cur = rel_of(legs[0])
         for leg in legs[1:]:
-            cur = (table.get((cur, rel.get(leg))) or {}).get("result") if cur else None
-        declared = rel.get(cid)
+            cur = (table.get((cur, rel_of(leg))) or {}).get("result") if cur else None
+        declared = base_rel.get(cid)
         if (cur is None and v.get("verdict") == "OK") or (declared is not None and cur is not None and declared != cur):
             off.append(cid)
     try:
