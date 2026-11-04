@@ -17,7 +17,8 @@
    {
     "path": "$BO_REPO/contracts",
     "kind": "dir",
-    "sha256": "999f2a2f0445b22ddbda929a15ec8e7fe029ef775ed4f3db44e3d0756eca7b31"
+    "sha256": "94f3b4e25c5791a1a8bf55b1151804d251b77d719024235d73bafb1492eacee3",
+    "sha256_before_emenda3_e_skosfix": "999f2a2f0445b22ddbda929a15ec8e7fe029ef775ed4f3db44e3d0756eca7b31"
    },
    {
     "path": "$BO_REPO/transforms/transforms.yaml",
