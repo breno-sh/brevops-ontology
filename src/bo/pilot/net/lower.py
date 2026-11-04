@@ -43,22 +43,11 @@ class Builder:
 
     # ------------------------------------------------------------ contexto das guardas (C10)
     def guard_ctx(self, tr) -> dict:
-        """Contexto da guarda: 'subject.<campo>' = valor cru da ocorrência de origem (com e sem o prefixo do bloco),
-        presença de bloco (allow/deny) como valor ou ABSENT; 'object.<campo>' = o que o lowering já decidiu para
-        a ocorrência de destino. Termo que não está aqui fica não lido (guarda INDETERMINATE, nunca TRUE)."""
-        from bo.semantics.vocab import ABSENT
-        ctx = {}
+        """Contexto da guarda: lado da origem (translate.subject_ctx) + 'object.<campo>' = o que o lowering já
+        decidiu para a ocorrência de destino. Termo ausente fica não lido (guarda INDETERMINATE, nunca TRUE)."""
+        from .translate import subject_ctx
         r = tr.get("src_rule")
-        if r is not None:
-            for a, raw in r.atoms.items():
-                path = a.split(":", 2)[2]
-                for key in {path, path.split(".", 1)[1] if "." in path and "block_path" in r.tf
-                            and path.startswith(r.tf["block_path"] + ".") else path}:
-                    ctx[f"subject.{key}"] = ABSENT if raw is None else raw
-            if r.provider == "google":
-                effs = {m["effect"].value for m in r.matches if m.get("effect") is not None}
-                for b in ("allow", "deny"):
-                    ctx[f"subject.{b}"] = {"present": True} if b in effs else ABSENT
+        ctx = subject_ctx(r) if r is not None else {}
         for k, v in (tr.get("object") or {}).items():
             ctx[f"object.{k}"] = v
         return ctx
@@ -105,6 +94,8 @@ class Builder:
             if out is None:
                 raise Blocked("NO_REALIZATION", f"{prop}={neutral!r} sem realização em {self.provider}")
             why = tr.get("why") or (T.K.justification(ind, prop) if ind else [])
+            if not why and ind and (ind, prop) in T.hints and T.hints[(ind, prop)][0] is not None:
+                why = [f"tabela: alegação {c}" for c in T.hints[(ind, prop)][1][:3]]
             T.trace(atom=(f.atom if f is not None and f.atom else _construct_atom(tr, T)), raw=_raw_of(f, tr),
                     result="carried", out_atom=target_atom, out_value=out, prop=V.PROPERTY_IRI.get(prop),
                     individual=ind, axioms=[w for w in why if w.startswith("AX-")],
@@ -134,7 +125,7 @@ class Builder:
             return e if e in ("allow", "deny") else None
         if prop == "direction":
             v = T.knows(r.rid, "direction") if T.K.structural else None
-            return v
+            return v or T.table_hint(r, "direction")
         if prop == "protocol":
             m = tr["match"]["protocol"]
             return m.value if T.K.structural and m.known() else None

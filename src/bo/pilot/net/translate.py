@@ -170,6 +170,7 @@ class Translator:
         self.ntr = 0
         self.loss_codes: list = []
         self.consumed: dict = {}      # (indivíduo, átomo) -> como o valor foi usado sem saída própria
+        self.hints: dict = {}         # (indivíduo, efeito|sentido) -> (valor pela tabela, alegações)
 
     # ---------------------------------------------------------------- traço C23
     def trace(self, *, atom, raw, result, code=None, out_atom=None, out_value=None, claim_id=None, prop=None,
@@ -434,7 +435,56 @@ class Translator:
             self.out.consequences.append({"kind": "effect_entailed", "individual": r.rid, "value": v,
                                           "axioms": self.K.justification(r.rid, "effect")})
             return v
-        return None
+        return self.table_hint(r, "effect")
+
+    # ---------------------------------------------------------------- pista da tabela (os três controles)
+    def table_hint(self, r, kind):
+        """O que a TABELA de alegações diz sem inferência: o caminho do átomo de destino das alegações OK que saem
+        dos átomos desta regra, com guarda verdadeira só pelo lado da origem, aponta o bloco do destino
+        (allow{}/deny{}, ingress/egress_security_rules) ou que a regra vai para um destino só-permissão. Vale nos
+        três controles (a tabela é a mesma entrada); só é usada quando o controle não sabe o valor."""
+        key = (r.rid, kind)
+        if key in self.hints:
+            return self.hints[key][0]
+        from bo.semantics import guards as G
+        from .claims import strip_index
+        ctx = subject_ctx(r)
+        hits, ids = set(), []
+        for a, raw in r.atoms.items():
+            if raw is None or self.cs is None:
+                continue
+            for ref in self.cs.from_source(strip_index(a), self.tgt):
+                if not ref.ok:
+                    continue
+                g = ref.claim.get("guard") or {"all": []}
+                if isinstance(g, str):
+                    g = json.loads(g)
+                if ref.direction == "inverse":
+                    g = G.flip(g)
+                if G.evaluate(g, ctx)[0] != G.TRUE:
+                    continue
+                path = ref.target_atom.split(":", 2)[2]
+                rtype = ref.target_atom.split(":", 2)[1]
+                v = None
+                if kind == "effect":
+                    if self.tgt == "google" and path.split(".")[0] in ("allow", "deny"):
+                        v = path.split(".")[0]
+                    elif self.tgt in ("aws", "oci") and (rtype == "aws_security_group_rule" or
+                                                       path.split(".")[0] in ("ingress_security_rules",
+                                                                              "egress_security_rules")):
+                        v = "allow"
+                elif kind == "direction" and self.tgt == "oci":
+                    b = path.split(".")[0]
+                    v = {"ingress_security_rules": "ingress", "egress_security_rules": "egress"}.get(b)
+                if v:
+                    hits.add(v)
+                    ids.append(ref.claim_id)
+        val_ = hits.pop() if len(hits) == 1 else None
+        self.hints[key] = (val_, sorted(set(ids)))
+        if val_:
+            self.out.consequences.append({"kind": f"table_{kind}", "individual": r.rid, "value": val_,
+                                          "claims": sorted(set(ids))[:5], "axioms": []})
+        return val_
 
     def _expand(self, r, effect) -> list:
         """Uma regra de origem -> ocorrências de destino (uma por combinação de protocolo, faixa e alcance quando o
@@ -601,6 +651,24 @@ def _sub(a, b):
     if ha > hb:
         out.append((da, pa, (hb + 1, ha), inter))
     return out
+
+
+def subject_ctx(r) -> dict:
+    """Contexto de guarda do lado da origem: 'subject.<campo>' (com e sem o prefixo do bloco) e presença de bloco."""
+    from bo.semantics.vocab import ABSENT
+    ctx = {}
+    for a, raw in r.atoms.items():
+        path = a.split(":", 2)[2]
+        keys = {path}
+        if "block_path" in r.tf and path.startswith(r.tf["block_path"] + "."):
+            keys.add(path.split(".", 1)[1])
+        for k in keys:
+            ctx[f"subject.{k}"] = ABSENT if raw is None else raw
+    if r.provider == "google":
+        effs = {m["effect"].value for m in r.matches if m.get("effect") is not None}
+        for b in ("allow", "deny"):
+            ctx[f"subject.{b}"] = {"present": True} if b in effs else ABSENT
+    return ctx
 
 
 def _rule_atom(r) -> str:
