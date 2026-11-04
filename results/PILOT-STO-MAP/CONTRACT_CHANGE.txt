@@ -1,0 +1,67 @@
+CONTRACT_CHANGE — PILOT-STO-MAP (piloto sto: mapeamento dos 6 pares da fatia e árbitro)
+2026-11-04T09:00:00-03:00 (America/Recife), base 787ab84 (SERVICE-EVIDENCE CC-8 mergeado; pacote do PILOT-STO-GLOSS
+ainda o de cf404be, MANIFEST 7d2efa60171faf24).
+
+O mapeamento e o pipeline estão completos sobre o pacote de hoje (1608 linhas C09, 110 alegações + 1498
+ausências tipadas; validador oficial do C09: 0 erro). Quatro defeitos em código ou contrato já mergeado, fora do
+meu owns, deixam gates do catálogo vermelhos. Não contornei nenhum: as alegações ficaram como o mapeamento manda e
+os gates seguem com o comando do catálogo. Com eles corrigidos, a rerodada é um comando:
+  python -I -m bo.pilot_sto_map.pipeline            (staging, entradas por sha256 no pipeline_report.json)
+  tools/lock.sh with merge-base --owner PILOT-STO-MAP --wait 600 -- python -I -m bo.pilot_sto_map.pipeline --promote-only
+
+BLOQUEANTES
+CC-1 (G3, G4) O árbitro não é mais o congelado. arbiter/ARBITER.sha256 é de 5c5662d; as emendas 3 a 6 do CONTRACTS
+  mudaram 9 arquivos do fecho congelado (C00, C09 e C20 schema; src/bo/contracts/rules.py, spec_a..d.py, sssom.py).
+  python -I -m bo.arbiter.run --frozen ... sai 3 antes de julgar ("o código não é o congelado").
+  Proposta: o ARBITERLIB recongela sobre o fecho atual (ARBITER.sha256 novo, versão nova das RULES, arbiter_sha256
+  novo nos vereditos) e o tools/invalidate.py marca os consumidores; ou o CONTRACTS passa a recongelar o árbitro
+  na mesma emenda que muda arquivo do fecho (teste: emenda que toca arquivo listado em ARBITER.sha256 reprova sem
+  o recongelamento).
+
+CC-2 (G3, G4) O árbitro grava vereditos que o validador oficial do C21 reprova. A regra EVIDENCE do SEMANTICS
+  (rules.py, sem hífen) não casa com o padrão de id de regra do C21 '^[A-Z][A-Z0-9]*(-[A-Z0-9]+)+$'. Toda alegação
+  que transporta e está abaixo de DOC_SUPPORTED sai com rules ["EVIDENCE"] e o bo.arbiter.run termina com 1
+  ("FALHA C21: schema rules/0"). Aqui: 3 vereditos (CLM-AWSAZ-STO-0005, CLM-AWSGCP-STO-0025, CLM-AWSOCI-STO-0004).
+  Proposta: C21 aceitar id de uma palavra ('^[A-Z][A-Z0-9]*(-[A-Z0-9]+)*$'), ou o SEMANTICS renomear a regra
+  (ex. EVIDENCE-DOC) com recongelamento do árbitro (CC-1). Teste: o árbitro sobre a própria bateria passa no C21.
+
+CC-3 (G2) bo.semantics.skos_roundtrip --file cai com exceção em função do registro. claims.invert chama
+  transforms.inverse_chain, que só conhece o núcleo, e enum_to_bool (listada no MAPPER_BRIEF M4 como função do
+  registro) levanta TypeError_ "função de tradução fora do núcleo". 4 alegações usam enum_to_bool (status
+  Enabled/Suspended/Disabled ou Enabled/Disabled do aws para booleano). Não troquei a função: é a do registro e a
+  tradução certa. Proposta: invert usar o inverse declarado em transforms/transforms.yaml (enum_to_bool ->
+  bool_to_enum, partial: true; a volta sai com inverse_missing quando parcial), ou file_checks tratar etapa do
+  registro como inversa parcial sem executá-la. Teste: --file com uma linha enum_to_bool passa.
+
+CC-4 (G6) consume_check reprova manifestos_transitivos: o PILOT-STO-GLOSS consumiu grain/grain_rules.yaml e
+  SERVICE-EVIDENCE/service_evidence.jsonl antes do GRAIN 0.1.3 (d435e39) e do SERVICE-EVIDENCE CC-8 (787ab84).
+  É o caminho já previsto: GRAIN -> PILOT-STO-GLOSS -> pacote novo. O build relê o pacote pelo MANIFEST, refaz tipos,
+  conceitos, sentenças e estados, larga (dropped) decisão cujo átomo saiu e mantém a exaustividade; o consume_check
+  precisa de --reset depois.
+
+NÃO BLOQUEANTES (resultado; nada forçado)
+CC-5 UNITS x SEMANTICS: o C05 do pacote dá quantitykind:AmountOfData com unit:BYTE em 6 átomos de tamanho de objeto;
+  o núcleo do SEMANTICS (valuetypes.UNITS) põe unit:BYTE em quantitykind:InformationEntropy. Transcrevi o C05 como
+  está: 4 alegações de tamanho mínimo/máximo saem REFUTED_BY_RULE (TYPE-WF), e a projeção de bloco desses átomos
+  seria C09 inválido (P-EXEC), por isso ficou fora (build_record.projection_skipped). Proposta: uma grandeza só
+  (QUDT tem BYTE em InformationEntropy), decidida no UNITS ou no SEMANTICS, com teste cruzado.
+CC-6 O tipo de valor do C09 não tem lista, conjunto nem mapa (só escalares e tuple). As 3 alegações lista->lista de
+  prefixos (GCPAZ, GCPOCI, AZOCI) ficam sem tipo e saem UNPROVEN (KIND-UNKNOWN); átomo de lista em bloco repetido
+  não ganha projeção; prefixo escalar -> lista não tem combinador no registro. Proposta: datatype list/set com
+  item_type no C05/C09 e combinadores wrap_list/unwrap_single no C10.
+CC-7 O árbitro (congelado antes da emenda 3) não reconhece a linha sssom:NoTermFound como ausência: as 1498
+  ausências saem UNPROVEN por ARB-RELATED-EV, misturadas às related no relatório. Proposta (já apontada pelo
+  BRIEFS): ausência tipada fora da contagem de related, com veredito próprio.
+CC-8 Ocorrência de bloco repetido: o pacote só declara key_fields de aws_s3_bucket.lifecycle_rule (['id']). Usei
+  'id' em aws_s3_bucket_lifecycle_configuration.rule e 'name' em azurerm_storage_management_policy.rule porque a
+  sentença publicada da âncora diz que são únicos. Ficaram sem chave e sem projeção: google lifecycle_rule (nenhum
+  campo de identidade), oci rules (name sem sentença de unicidade) e grants da ACL do aws. Com --atoms (C01) no
+  árbitro, esses campos viram ARB-OCC-ID. Proposta: o GRAIN/glossarista declarar occurrence_key de todo bloco
+  repetido (ou ABSENT com motivo).
+CC-9 Função do registro não tem domínio calculável no árbitro: a bijeção Enabled/Disabled <-> true/false declarada
+  lossless sai UNPROVEN (VDR-UNKNOWN) em 2 alegações. Proposta: imagem calculada para escalar do registro com tabela
+  finita (enum_to_bool, bool_to_enum).
+
+DESVIO DO MAPPER_BRIEF (registrado, não contrato)
+D-1 Linha de ausência de átomo do SEGUNDO provedor do par tem esse átomo como sujeito (o C09-NONE fixa
+  sssom:NoTermFound como objeto); o par fica no claim_id (CLM-<PAR>-STO-NONE-<átomo>). Exaustividade por par.
