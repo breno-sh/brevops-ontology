@@ -46,7 +46,8 @@
    {
     "path": "$BO_REPO/grain/GRAIN.html",
     "kind": "file",
-    "sha256": "27553697c43d4d22cdb9298c2004f0f01983617081580307db1d9b9a6b10d589"
+    "sha256": "695f7161df695ce5102ad54aa20c7e46e195e1bbec9fca4244d6116595959257",
+    "sha256_before_grain019": "27553697c43d4d22cdb9298c2004f0f01983617081580307db1d9b9a6b10d589"
    },
    {
     "path": "$BO_REPO/semantics/SEMANTICS.html",
