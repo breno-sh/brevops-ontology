@@ -7,8 +7,13 @@ decide sai UNKNOWN com a evidência que falta. Este módulo só (1) diz que cons
 unidade neutra do vocabulário dos compromissos (rule_set, filter_rule, attachment, selection) e (2) escreve a chave
 de ocorrência na forma do gabarito: elemento com nome -> {"name"}; anônimo -> campos de identidade normalizados.
 
-Anexação por atributo-lista (vpc_security_group_ids, security_list_ids, nsg_ids) não é bloco nem recurso: a camada
-de instância do GRAIN não a torna ocorrência; a unidade sai UNKNOWN com missing = ["grain_occurrence"].
+Fonte do TIPO, em ordem: (1) a unidade canônica C19 oficial do PILOT-NET-GLOSS ($BO_DATA/PILOT-NET-GLOSS/
+canonical_units.jsonl: a mesma biblioteca aplicada no nível de esquema) da construção (tipo[.bloco]); (2) para
+construção fora dos tipos da fatia do GLOSS, a camada de instância do GRAIN. A camada de instância, sozinha, devolve
+UNKNOWN mesmo onde decide o tipo, porque a identidade de ocorrência da entidade de id opaco não tem valor na
+configuração (achado CC-NET-E2E-2). Anexação por atributo-lista (vpc_security_group_ids, security_list_ids,
+nsg_ids) e seleção por rótulo não são bloco nem recurso: sem unidade C19 nem ocorrência, saem UNKNOWN com
+missing = ["grain_occurrence"].
 """
 
 from __future__ import annotations
@@ -105,6 +110,29 @@ def _content_key(r: LF.Rule) -> dict:
     return {k: v for k, v in key.items() if v is not None}
 
 
+def c19_kinds() -> dict:
+    import os
+    from pathlib import Path
+    p = Path(os.environ.get("BO_DATA", "/Users/breno/doutorado/brevops-data")) / "PILOT-NET-GLOSS" / "canonical_units.jsonl"
+    if "c19" not in _cache:
+        out = {}
+        if p.exists():
+            for line in p.read_text(encoding="utf-8").splitlines():
+                if line.strip():
+                    u = json.loads(line)
+                    cid = u["unit_id"][3:].split("-", 1)[1] if u["unit_id"].startswith("CU-") else u["unit_id"]
+                    out[cid] = u
+        _cache["c19"] = out
+    return _cache["c19"]
+
+
+def _kind_c19(go, nid, cid):
+    u = c19_kinds().get(cid)
+    if u is not None:
+        return u["kind"], list(u.get("missing_evidence") or []) if u["kind"] == "UNKNOWN" else [], None
+    return _kind(go, nid)
+
+
 def _kind(go, nid):
     o = go["by_nid"].get(nid)
     if o is None:
@@ -117,7 +145,7 @@ def decompose(fx: dict) -> list:
     go = grain_occurrences(fx)
     units = []
     for sid, s in L.sets.items():
-        k, miss, _ = _kind(go, s.tf["address"])
+        k, miss, _ = _kind_c19(go, s.tf["address"], s.kind)
         u = {"domain_unit": "rule_set", "kind": k, "parent": None, "occurrence": {"set": s.tf["address"]},
              "tf": {"resource_type": s.kind}}
         if k == "UNKNOWN":
@@ -130,7 +158,8 @@ def decompose(fx: dict) -> list:
         else:
             nid = r.tf["address"]
             tf = {"resource_type": r.tf["resource_type"]}
-        k, miss, o = _kind(go, nid)
+        cid = f"{r.tf['resource_type']}.{r.tf['block_path']}" if "block_path" in r.tf else r.tf["resource_type"]
+        k, miss, o = _kind_c19(go, nid, cid)
         parent = L.sets[r.set_id].tf["address"] if r.set_id else "UNKNOWN"
         name = r.facts.get("name")
         if r.set_id is None:
@@ -151,7 +180,7 @@ def decompose(fx: dict) -> list:
         if a.tf["resource_type"] in ("oci_core_subnet",):
             ep = a.tf["address"]
         nid = a.tf["address"]
-        k, miss, _ = _kind(go, nid)
+        k, miss, _ = _kind_c19(go, nid, a.tf["resource_type"])
         if "block_path" in a.tf:
             k, miss = "UNKNOWN", ["grain_occurrence"]
         u = {"domain_unit": "attachment", "kind": k, "parent": None,
