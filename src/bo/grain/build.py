@@ -36,7 +36,7 @@ from . import schema as S
 from .common import data_dir, dump_json, dump_jsonl, now, repo, results_dir, rules_path, sha256_file, stamp
 from .evidence import FixtureAdapter
 
-AUTHORED_AT = "2026-11-04T09:15:00-03:00"
+AUTHORED_AT = "2026-11-04T09:45:00-03:00"
 
 
 def _strip(rep: dict) -> dict:
@@ -408,6 +408,11 @@ vida preso à instância, G1 e G2 aceitam a evidência, e trocar a ordem troca B
 referência <code>by_name</code>; sem ela, o grafo embutido perde relações que o separado tem.</li>
 <li>Emenda 0.1.1 (CC-1): a primeira versão lia uma convenção que o SERVICE-EVIDENCE nunca gravou; os testes
 sintéticos usavam a mesma convenção e não pegaram. Entraram o adaptador por aspecto e testes com o arquivo real.</li>
+<li>Emenda 0.1.5 (T51, pai fora da fatia): o grupo de recursos do Azure deixou de impedir a identidade (contêiner
+externo). Achado: o NSG e a conta de armazenamento passam de UNRESOLVED a G0-NOMATCH com lifecycle_controller,
+porque a identidade é relativa ao grupo de recursos e o ciclo de vida de API publicado é self; G2 pede ciclo de vida
+preso ao pai e G4 pede identidade independente. A evidência não exprime "apagado pela própria operação E em cascata
+pelo grupo"; fica UNKNOWN até a evidência ou uma emenda de regra (depois do GRAIN-REPRO) decidir.</li>
 <li>Emenda 0.1.4 (CC-8): com os fatos da spec (R-BRIDGE-SPEC, R-LIFE-SPEC, R-LIFE-SPEC-PARENT, R-OWN-SPEC, camada de
 API) o contêiner da AWS decide (ENTITY) e o bloqueio de acesso público separado decide FACET dele. Três defeitos do
 adaptador apareceram só com esse dado: a ponte (status resource) contradizia o suspend (status aspect) — T49; o

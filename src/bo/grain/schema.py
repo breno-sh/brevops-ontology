@@ -13,7 +13,7 @@ from dataclasses import dataclass, field
 
 from . import rules as R
 from .common import sha256_text, canon
-from .engine import Decision, Node, decide_graph
+from .engine import EXT, Decision, Node, decide_graph
 from .evidence import PARENT, CandidateEvidence, from_dict
 
 
@@ -171,7 +171,12 @@ def decompose_schema(cands: list[Candidate], adapter, rs: R.RuleSet) -> SchemaRe
         for f, m in ev.field_map.items():
             if m.get("ref"):
                 t = ev.references.get(f)
-                rt[f] = t if t in by and t not in transparent else (transparent.get(t) if t in transparent else None)
+                if t in transparent:
+                    rt[f] = transparent.get(t)
+                elif t in by:
+                    rt[f] = t
+                else:
+                    rt[f] = EXT + t if t else None      # T51: contêiner externo referenciado
         nodes[cid] = Node(nid=cid, provider=c.provider, cid=cid, resource_type=c.resource_type,
                           block_path=c.block_path, group=c.group, parent=eff_parent(cid), ev=ev, ref_targets=rt,
                           by_role=True)
@@ -226,7 +231,7 @@ def to_c19(res: SchemaResult, atom_roles: dict | None = None) -> tuple[list[dict
 
     As pontas de um vínculo vão no campo endpoints [{role, unit_id}] (C19 3.1.0). atom_roles: atom_id -> papel do C04 (ROLES), opcional."""
     units, atoms = [], []
-    uid = {cid: unit_id(res.provider, cid) for cid in res.nodes}
+    uid = _Uid(res.provider, {cid: unit_id(res.provider, cid) for cid in res.nodes})
     for cid in sorted(res.nodes):
         n, d = res.nodes[cid], res.decisions[cid]
         layers = {"terraform": {"resource_type": n.resource_type}, "domain_unit": d.label if len(d.label) >= 2 else cid}
@@ -268,6 +273,22 @@ def _ref(kind, target, uid) -> dict:
     return out
 
 
+class _Uid(dict):
+    """unit_id dos candidatos, e o unit_id que o contêiner externo teria na decomposição completa (T51)."""
+
+    def __init__(self, provider, m):
+        super().__init__(m)
+        self.provider = provider
+
+    def __contains__(self, k):
+        return dict.__contains__(self, k) or (isinstance(k, str) and k.startswith(EXT))
+
+    def __getitem__(self, k):
+        if isinstance(k, str) and k.startswith(EXT) and not dict.__contains__(self, k):
+            return unit_id(self.provider, k[len(EXT):])
+        return dict.__getitem__(self, k)
+
+
 def signature(res: SchemaResult, cids=None, *, with_tf=False) -> list:
     """Assinatura estrutural neutra (sem camada Terraform e sem provedor): base das comparações de invariância.
 
@@ -279,6 +300,8 @@ def signature(res: SchemaResult, cids=None, *, with_tf=False) -> list:
     def path(nid, seen=()):
         if nid is None or nid in seen:
             return ()
+        if nid.startswith(EXT):
+            return ("EXTERNAL:" + nid[len(EXT):],)
         d = decs[nid]
         return path(d.parent, seen + (nid,)) + (d.label,)
 
@@ -312,7 +335,7 @@ def _closure(res: SchemaResult, cids) -> set:
         d = res.decisions[x]
         for y in [d.parent, d.lifecycle.get("target"), d.scope.get("target"), *d.owner.get("targets", []),
                   *d.endpoints.values()]:
-            if y and y not in keep:
+            if y and y not in keep and y in res.decisions:
                 stack.append(y)
     return keep
 

@@ -76,6 +76,10 @@ TABLE = [
     ("(ciclo de vida, dono, alcance)", "(via implícito)", "R-GRAIN-T50",
      "num tipo de topo, alegação de kind parent/container sem via e alegação do mesmo kind com um único via "
      "explícito, de outra fonte, dizem o mesmo: a implícita recebe o via explícito"),
+    ("(referência)", "(alvo fora da decomposição)", "R-GRAIN-T51",
+     "referência tipada a tipo que não está entre os candidatos (ex. pai fora da fatia) continua referência: o "
+     "alvo vira CONTÊINER EXTERNO (grão EXTERNAL): resolve identidade, ciclo de vida, dono e alcance; só os guards "
+     "que exigem o grão do alvo (G1 pontas, G3 dono) falham, e aí o resultado é UNKNOWN"),
     ("api_bridge", "spec_bridge_candidates", "R-GRAIN-T48",
      "sem tradução: a spec casa com mais de um tipo e o desempate não dá este tipo; UNKNOWN com o motivo"),
     ("identity", "api_reference", "R-GRAIN-T05", "sem tradução: página de referência da API, informativa"),
@@ -354,7 +358,8 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
         return f.known and f.value["kind"] == "self"
 
     def ok_target(tgt):
-        return tgt is not None and (candidates is None or tgt in candidates)
+        # alvo fora da decomposição continua alvo: contêiner externo referenciado (T51), decidido na camada de schema
+        return tgt is not None
 
     key_refs: dict[str, dict] = defaultdict(dict)   # referências que ENTRAM na chave (T02, T21)
     for cid, (r, fields, peers) in sorted(shared.items()):

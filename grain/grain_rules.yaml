@@ -7,10 +7,10 @@
 schema: bo.grain.rules/1
 contract: C19
 contract_version: 3.1.0
-rules_version: 0.1.4
+rules_version: 0.1.5
 status: PROVISIONAL
 written_at: "2026-11-03T02:00:00-03:00"
-amended_at: "2026-11-04T09:15:00-03:00"
+amended_at: "2026-11-04T09:45:00-03:00"
 definitive_after: [GRAIN-REPRO, PILOT-EXIT]
 
 layers:
@@ -168,6 +168,10 @@ amendments:
     version: 0.1.1
     origin: CC-NET-1 do piloto de rede
     text: passo T2 da normalização (atributo lista ou conjunto de objetos vira bloco repetido com sub-átomos virtuais derivados do tipo cty), para que a regra embutida e a regra separada tenham o mesmo grão
+  - id: GRAIN-A7
+    version: 0.1.5
+    origin: pedido do coordenador (pai fora da fatia)
+    text: referência tipada a um tipo fora da decomposição vira contêiner externo referenciado, com grão EXTERNAL; resolve identidade, ciclo de vida, dono e alcance; só a regra que lê o grão do alvo (pontas do vínculo, dono da faceta) falha e dá UNKNOWN
   - id: GRAIN-A6
     version: 0.1.4
     origin: CC-8 da evidência de serviço (fatos da especificação de API)

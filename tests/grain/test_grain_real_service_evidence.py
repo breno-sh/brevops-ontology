@@ -219,3 +219,36 @@ def test_cc8_s3_container_and_facet_from_spec(records):
     assert top["aws_s3_bucket_public_access_block"]["grain"] == "FACET"
     for c in ("aws_s3_bucket_versioning", "aws_s3_bucket_policy", "aws_s3_bucket_acl"):
         assert top[c]["identity_class"] == "BORROWED", (c, top[c])     # ligado ao contêiner pela chave bucket
+
+
+def test_t51_external_container_real_azure(records):
+    """T51: pai fora da fatia (grupo de recursos) é contêiner externo referenciado: a identidade resolve, sem
+    exigir o pai na decomposição. O que faltar depois é evidência, não a fatia."""
+    rep = RD.run(slice_types={"azurerm": ["azurerm_network_security_group", "azurerm_storage_account"]},
+                 records=records)
+    res = rep["providers"]["azurerm"]["_res"]
+    for cid in ("azurerm_network_security_group", "azurerm_storage_account"):
+        n, d = res.nodes[cid], res.decisions[cid]
+        assert n.ref_targets.get("resource_group_name") == "EXT:azurerm_resource_group", n.ref_targets
+        assert d.identity.cls == "WITHIN" and "identity" not in d.missing, (cid, d.identity.cls, d.missing)
+    units, _ = S.to_c19(res)
+    assert all("CU-azurerm-azurerm_resource_group" not in json.dumps(u["unit_id"]) for u in units)
+
+
+def test_t51_external_parent_grain_needed_only_when_rule_reads_it():
+    from bo.grain import fixtures as F
+    from bo.grain import rules as R2
+    rs = R2.load()
+    # componente de um contêiner externo: G2 não lê o grão do pai -> decide
+    comp = F.ev_element("rule", "nm", "name", {}, via="set_id", ref_field="set_id", ref_target="z_set_outside")
+    # faceta de um dono externo: G3 lê o grão do dono -> UNKNOWN
+    fac = F.ev_aspect("setting", {}, via="set_id", ref_field="set_id", ref_target="z_set_outside")
+    w = {"provider": "provider_z", "schema": {"z_rule": F.res(["set_id", "name"]), "z_setting": F.res(["set_id"])},
+         "evidence": {"z_rule": comp, "z_setting": fac}}
+    from bo.grain import battery as B
+    d = B.run_schema(w, rs).decisions
+    assert d["z_rule"].grain == "COMPONENT" and d["z_rule"].parent == "EXT:z_set_outside"
+    assert d["z_setting"].grain == "UNKNOWN" and "owner" in d["z_setting"].missing
+    units, _ = S.to_c19(B.run_schema(w, rs))
+    r = next(u for u in units if u["unit_id"].endswith("z_rule"))
+    assert r["lifecycle_controller"]["ref"] == "CU-provider_z-z_set_outside"

@@ -34,6 +34,8 @@ def relations(res: S.SchemaResult, keep=None) -> tuple[list, list]:
     def lab(nid, seen=()):
         if nid is None or nid in seen:
             return ()
+        if nid.startswith("EXT:"):
+            return ("EXTERNAL:" + nid[4:],)
         d = decs[nid]
         return lab(d.parent, seen + (nid,)) + (d.label,)
 
