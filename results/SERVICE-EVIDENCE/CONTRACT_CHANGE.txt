@@ -99,3 +99,23 @@ descrita abaixo e em results/SERVICE-EVIDENCE/evidence_levels.json (level_policy
    ^\$BO_DATA/OBS-GAPS/\S+$ e as observações do Azure estão em $BO_DATA/OBS-GAPS-AZ/. Mudança proposta: C25 1.4.1 com
    ^\$BO_DATA/OBS-GAPS(-AZ)?/\S+$ (ou o coordenador copia o lote para $BO_DATA/OBS-GAPS/az/). Com isso, regerar e
    promover sem mudar código.
+
+11. Consolidação OBSERVED (PREREG aa797ca, R1–R5) — BLOQUEANTE, 2026-11-04T17:25-03:00. Nada foi promovido.
+   (a) O C25 1.4.0 não tem onde gravar o status 'resolvida-por-observação': o registro só tem disputes (lista de SE
+       ids de fatos publicados) e status stated|unknown. A disputa existente vive só em
+       results/SERVICE-EVIDENCE/spec_disputes.json (formato do módulo, sem contrato). Mudança proposta: C25 1.5.0 com
+       um campo de disputa por registro observado, por exemplo dispute_resolution {status: aberta |
+       resolvida-por-observação, resolves: [SE ids dos dois lados], observation: SE id} (ou um arquivo
+       disputes.jsonl com contrato próprio); e observation_ref.path aceitando $BO_DATA/OBS-GAPS-AZ/ (item 10).
+   (b) A premissa da aplicação conhecida do R2 não confere com o arquivo: dono e ciclo de vida da regra do NSG OCI
+       NÃO são disputa PUBLISHED x PUBLISHED. Os dois lados são DERIVADOS: R-OWN-API/R-LIFE-API (camada de API pela
+       doc: ponte única, kind self) e R-OWN-SPEC/R-LIFE-SPEC-PARENT (spec do SDK, kind parent). Nenhum fato publicado
+       afirma kind para esses campos (os publicados do tipo são spec_operation, block_schema e terraform_timeouts,
+       sem valor de dono/ciclo). Lidas à risca, R2 e R3 não se aplicam e o caso cai em R4. Contagem à risca, com o
+       arquivo de hoje: R1 5/5 (nenhum publicado sobrescrito); R2 0; R3 0; R4 5 na OCI (security list: identidade
+       dos 2 blocos; regra do NSG: identidade, dono, ciclo — estes 2 também em disputa DERIVADO x DERIVADO com o
+       R-OWN-API/R-LIFE-API, que a observação reproduz do lado da spec) e 5 no Azure, ainda bloqueados pelo
+       padrão do caminho (item 10).
+   Pedido ao coordenador/PREREG: decidir se a disputa DERIVADO x DERIVADO conta como a "disputa existente" do R2
+   (e onde gravar o status), antes de eu promover. O staging está pronto e validado (testes, níveis e pins sem
+   falha); a promoção espera essa decisão.
