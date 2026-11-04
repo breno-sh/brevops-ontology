@@ -231,9 +231,16 @@ def test_cli_backend_full_cycle_with_fake_terraform(work, rendered, schema, monk
 def test_cli_run_refused_without_kit_redactor_or_allowlist(work, rendered, schema, monkeypatch):
     monkeypatch.setenv("BO_CLOUD_GO", "RUN-HAWS-009")
     be = backends.TerraformCLIBackend("/bin/false", backends.GoToken("RUN-HAWS-009", True))
-    r, _, _ = run(work, rendered, "db02_persisted", schema, backend=be)
-    assert r.outcome["outcome"]["value"] == "INFRA_ERROR" and "redator do kit" in r.outcome["outcome"]["detail"]
-    assert r.intents == []
+    r, _, sink = run(work, rendered, "db02_persisted", schema, backend=be)
+    o = r.outcome["outcome"]
+    # Duas recusas válidas, na ordem do executor: sem o redator do kit (deploy/safety/redactor.py ausente) ou,
+    # com o kit presente, pela allowlist de contas vazia do kit offline. Cada estado do kit tem a sua.
+    esperado = "redator do kit" if sink.red.kit_fn is None else "allowlist de contas vazia"
+    assert o["value"] == "INFRA_ERROR" and r.outcome["rule_id"] == "HAWS-IDENT-01"
+    assert esperado in o["detail"] and "nada foi criado" in o["detail"]
+    # nada criado: nenhuma intenção, nenhum manifesto de intenção (só o desfecho foi gravado)
+    assert r.intents == [] and "intent_manifest.jsonl" not in sink.written
+    assert set(sink.written) == {"outcomes.jsonl"}
 
 
 def test_object_literal_missing_required_key_is_unknown_input(work):
