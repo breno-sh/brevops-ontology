@@ -1,15 +1,15 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://w3id.org/brevops/pilot/net/expected_answers.schema.json",
-  "title": "Gabarito da fatia NET do piloto (PILOT-NET-ORACLE), rotulado C24 1.0.0",
-  "description": "O C24 1.0.0 não define este arquivo (ver results/PILOT-NET-ORACLE/CONTRACT_CHANGE.txt); este schema é o do módulo até a emenda.",
+  "title": "Gabarito da fatia NET do piloto (PILOT-NET-ORACLE), C24 1.1.0",
+  "description": "Adotado pelo C24 1.1.0 (emenda 5 do CONTRACTS, tipo pilot_expected_answers); o gate do módulo confere este e o validador único.",
   "type": "object",
   "required": ["schema", "contract", "contract_version", "module", "slice", "oracle", "inputs_sha256", "mandatory_cases",
                "fixtures", "translations", "directions", "counts", "retained_index"],
   "properties": {
     "schema": {"const": "bo.pilot_net.expected_answers/1"},
     "contract": {"const": "C24"},
-    "contract_version": {"const": "1.0.0"},
+    "contract_version": {"enum": ["1.0.0", "1.1.0"]},
     "module": {"const": "PILOT-NET-ORACLE"},
     "slice": {"const": "net"},
     "oracle": {"type": "object", "required": ["path", "version", "reading", "api"]},

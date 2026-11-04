@@ -1,0 +1,15 @@
+{
+ "schema": "bo.pilot_net.evidence_recheck/1",
+ "module": "PILOT-NET-ORACLE",
+ "at": "2026-11-04T08:17:44-03:00",
+ "service_evidence": {"path": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl", "base_commit": "69fb76e",
+   "sha256_before": "9ca6eaabab91e52e4cb605559f742bd4266cace83659647862cb2f5c3944eb60",
+   "sha256_after": "cc5260d3ed4a8db4ddbf50f429b9d7d4060f67a43593b127e01e571a49979074"},
+ "cited_evidence_present_same_level": true,
+ "connection_state_effect_precedence_changed": false,
+ "new_cited": ["SE-google-inutw2r3ripq2kl3", "SE-google-547hnybz4swuk7bd", "SE-aws-navjbo6alteaoask", "SE-azurerm-vuuzxoml6azv6jc2"],
+ "new_cited_note": "linhas novas de alcance efetivo (attachment_scope, publicadas) citadas no perfil como base da seleção por rótulo e da anexação; o avaliador já usava essa semântica (CMT-FW-P05)",
+ "answers_changed": 0,
+ "answers_compared": "42 fixtures (decisão, código, validade, decomposição) e 36 traduções (veredito e por fluxo), contra o gabarito anterior (sha do SE 9ca6eaab...)",
+ "contract": "C24 1.1.0 (emenda 5): expected_answers.json validado por bo.contracts.validate pilot_expected_answers, 0 erro"
+}

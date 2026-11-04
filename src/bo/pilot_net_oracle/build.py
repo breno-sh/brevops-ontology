@@ -44,7 +44,7 @@ def c11_seed(t: dict) -> dict:
             "side": "both", "comparator": {"name": "exact"}, "cost_class": "free",
             "pending": {"claim_id": "o oráculo não lê alegação de correspondência (independência do mapeamento)",
                         "claim_version_id": "idem", "stratum.relation": "sai da alegação",
-                        "origin": "o C11 não tem origem para caso de piloto (ver CONTRACT_CHANGE.txt)",
+                        "origin": "pilot (C11 3.1.0); o PILOT-NET-E2E grava ao completar o caso",
                         "frame_ref": "frame do DEPSAMPLE", "weight": "peso do frame do DEPSAMPLE",
                         "lowering_plan": "plano C26 do PILOT-NET-E2E", "values": "termos do plano C26"}}
 
@@ -140,7 +140,7 @@ def generate(check_only: bool = False) -> dict:
     se = Path(__import__("os").environ.get("BO_DATA", "/Users/breno/doutorado/brevops-data")) / "SERVICE-EVIDENCE/service_evidence.jsonl"
     inputs["$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl"] = _sha(se)
     expected = {
-        "schema": "bo.pilot_net.expected_answers/1", "contract": "C24", "contract_version": "1.0.0",
+        "schema": "bo.pilot_net.expected_answers/1", "contract": "C24", "contract_version": "1.1.0",
         "module": "PILOT-NET-ORACLE", "slice": "net",
         "note": "gabarito escrito à mão a partir de compromissos e requisitos (C24) e da evidência do SERVICE-EVIDENCE; nunca de mapeador. Leitura de evidência: default (published, derived, oracle_derived). Retidas: só contagens aqui; conteúdo cifrado em $BO_DATA/PILOT-NET-ORACLE/sealed/.",
         "oracle": {"path": "$BO_REPO/pilot/net/oracle/net_oracle", "version": no.ORACLE_VERSION, "reading": "default",

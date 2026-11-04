@@ -23,6 +23,7 @@ d = json.load(open("pilot/net/expected_answers.json", encoding="utf-8"))
 jsonschema.Draft202012Validator(s).validate(d)
 print("expected_answers.json confere com o schema")
 '
+$py -I -m bo.contracts.validate pilot_expected_answers pilot/net/expected_answers.json | tail -1
 
 step "envelope selado das retidas (sem decifrar)"
 $py -I -B -m bo.pilot_net_oracle.seal verify

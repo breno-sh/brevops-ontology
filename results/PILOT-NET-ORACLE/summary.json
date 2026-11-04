@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "PILOT-NET-ORACLE",
- "generated_at": "2026-11-04T03:09:36-03:00",
+ "generated_at": "2026-11-04T08:17:44-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-NET-ORACLE.txt",
@@ -15,7 +15,8 @@
    "calib_translations": "36",
    "retained_fixtures": "28",
    "retained_translations": "24",
-   "seal": "CMS-AES256-RSA4096-D15"
+   "seal": "CMS-AES256-RSA4096-D15",
+   "contract": "C24-1.1.0"
   },
   "inputs": [
    {
@@ -31,10 +32,10 @@
    {
     "path": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl",
     "kind": "file",
-    "sha256": "9ca6eaabab91e52e4cb605559f742bd4266cace83659647862cb2f5c3944eb60"
+    "sha256": "cc5260d3ed4a8db4ddbf50f429b9d7d4060f67a43593b127e01e571a49979074"
    }
   ],
-  "recorded_at": "2026-11-04T03:09:36-03:00"
+  "recorded_at": "2026-11-04T08:17:44-03:00"
  },
  "sources": [
   {
@@ -48,5 +49,5 @@
    "transformation": "parâmetros de semântica por provedor, com nível"
   }
  ],
- "notes": "oráculo offline NET: avaliador por supervaluação, juiz de tradução, 42+36 calibração, 28+24 retidas seladas (D15)"
+ "notes": "oráculo offline NET; gabarito reconferido sobre o SE de 69fb76e: 0 respostas mudadas"
 }

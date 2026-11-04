@@ -168,6 +168,14 @@
           "allow",
           "deny"
         ]
+      },
+      "attachment": {
+        "value": "associated_resources",
+        "level": "published",
+        "evidence": [
+          "SE-aws-navjbo6alteaoask"
+        ],
+        "basis": "o grupo vale para os recursos associados a ele (vpc_security_group_ids da instância ou da interface)"
       }
     },
     "google": {
@@ -268,6 +276,22 @@
           "all_must_allow",
           "any_allows"
         ]
+      },
+      "target.tags": {
+        "value": "instances_with_any_tag",
+        "level": "published",
+        "evidence": [
+          "SE-google-inutw2r3ripq2kl3"
+        ],
+        "basis": "'sets of instances located in the network (by instance tag)': a regra com target_tags vale para as instâncias da rede com o rótulo (CMT-FW-P05)"
+      },
+      "network_attachment": {
+        "value": "network",
+        "level": "published",
+        "evidence": [
+          "SE-google-547hnybz4swuk7bd"
+        ],
+        "basis": "a regra de firewall se liga à rede pelo atributo network"
       }
     },
     "azurerm": {
@@ -361,6 +385,14 @@
           "any_allows"
         ],
         "basis": "NSG na NIC e na sub-rede ao mesmo tempo: a combinação não tem evidência aqui"
+      },
+      "rule_attachment": {
+        "value": "network_security_group_name",
+        "level": "published",
+        "evidence": [
+          "SE-azurerm-vuuzxoml6azv6jc2"
+        ],
+        "basis": "a regra separada se liga ao NSG por network_security_group_name"
       }
     },
     "oci": {

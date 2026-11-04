@@ -4,6 +4,11 @@ Proposta NÃO bloqueante (mesmo regime do CQFIX, UNITS e SCHEMALIB). Nada mergea
 oráculo; são lacunas de formato e de evidência que o PILOT-EXIT deve aplicar como emenda (E6) ou registrar.
 Donos: CONTRACTS (C11, C24) e SERVICE-EVIDENCE (C25).
 
+ATUALIZAÇÃO 2026-11-04T08:20-03:00: os itens 1 e 2 foram adotados pela emenda 5 do CONTRACTS (79d04b7: C24 1.1.0 com
+pilot_expected_answers e C11 3.1.0 com origin=pilot). O gabarito passou a contract_version 1.1.0, a semente C11 diz em
+pending que a origem é "pilot" (o schema da semente põe origin em pending) e o gate do módulo roda o validador único. Os itens 3, 4 e 5 seguem abertos (C25 regravado em
+69fb76e: estado de conexão, efeito e precedência dos recursos de rede sem mudança; alcance efetivo novo citado).
+
 1. C24 não tem tipo de arquivo para o gabarito do piloto
    O catálogo diz $BO_REPO/pilot/net/expected_answers.json = C24@1.0.0, mas o C24 só define requirements.jsonl,
    commitments.jsonl e cq_spec.jsonl. O módulo grava schema "bo.pilot_net.expected_answers/1" com rótulo C24 1.0.0 e
