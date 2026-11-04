@@ -20,9 +20,14 @@ CC-NET-E2E-2 (achado para o GRAIN/SERVICE-EVIDENCE; mantém o gate G1 reprovado)
   o GRAIN devolve UNKNOWN para quase todo candidato da fatia (só o conjunto AWS e o firewall GCP saem ENTITY), pelos
   motivos já registrados no PILOT-NET-GLOSS (CC-1b/1c: lifecycle_controller, owner e effective_scope sem fato
   decidível; identity sem chave). Anexação por atributo-lista (vpc_security_group_ids, security_list_ids, nsg_ids)
-  nem chega a ser ocorrência na camada de instância. O piloto não decide grão por conta própria (seria regra local).
+  nem chega a ser ocorrência na camada de instância. Com o GRAIN 0.1.7 (902dc95/121a4bd) a camada de instância
+  ainda devolve UNKNOWN em toda ocorrência da calibração: o conjunto AWS, que no esquema sai ENTITY, cai em
+  GRAIN-G0-IDENTITY na instância ("identidade só por id opaco: sem valor na configuração") porque a fixture não tem
+  id (e não pode ter: é configuração antes da criação); o resto falha em identity/lifecycle_controller/owner/
+  effective_scope ou api_resource. O piloto não decide grão por conta própria (seria regra local).
   Proposta: (a) SERVICE-EVIDENCE emite alcance e controlador de ciclo de vida da regra e da anexação; (b) GRAIN trata
-  atributo-lista de referências como vínculo (BINDING) na camada de instância.
+  atributo-lista de referências como vínculo (BINDING) na camada de instância; (c) a camada de instância dá
+  identidade de ocorrência (endereço do recurso) à entidade cujo id é opaco e só existe depois da criação.
 
 CC-NET-E2E-3 (achado sobre os controles, não é mudança de contrato)
   Com alegações sintéticas que passam nas obrigações de prova, o c2_taxonomy traduz a fixture inválida
