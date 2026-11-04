@@ -1,0 +1,166 @@
+{
+ "blocked": [
+  "skos_roundtrip",
+  "arbiter",
+  "privacy_lint"
+ ],
+ "contract_change": "results/PILOT-STO-MAP/CONTRACT_CHANGE.txt",
+ "counts": {
+  "absence_kinds": {
+   "ABSENCE_DEMONSTRATED": 15,
+   "UNRESOLVED": 1420,
+   "UNSUPPORTED_BY_TRANSLATOR": 63
+  },
+  "by_evidence_state": {
+   "DOC_SUPPORTED": 78,
+   "STRUCTURALLY_VALID": 32
+  },
+  "by_pair": {
+   "AWSAZ": {
+    "absence": 353,
+    "related": 15,
+    "transport": 9
+   },
+   "AWSGCP": {
+    "absence": 245,
+    "related": 28,
+    "transport": 8
+   },
+   "AWSOCI": {
+    "absence": 192,
+    "related": 12,
+    "transport": 7
+   },
+   "AZOCI": {
+    "absence": 252,
+    "related": 9,
+    "transport": 4
+   },
+   "GCPAZ": {
+    "absence": 309,
+    "related": 8,
+    "transport": 3
+   },
+   "GCPOCI": {
+    "absence": 147,
+    "related": 5,
+    "transport": 2
+   }
+  },
+  "by_relation": {
+   "close": 6,
+   "exact": 27,
+   "related": 77
+  },
+  "groups": 0,
+  "projections": 237,
+  "rows": 1608
+ },
+ "decided_at": "2026-11-04T09:00:00-03:00",
+ "generated_at": "2026-11-04T09:21:28-03:00",
+ "inputs": {
+  "bundle_files": {
+   "candidates.jsonl": "f0b745dfdd59010e2f47a113f6b0f4d872df62317d27675ef1aefbb5a3d72d45",
+   "canonical_atoms.jsonl": "b29a9c37286b2346f7e7930da37e4c71c010b3c6839716e1ccbd50b549923282",
+   "canonical_units.jsonl": "507e006202920b24daad564c3501e53a98b0504fffc216adf975addcd77894f4",
+   "claims.jsonl": "83e510dfd1c203c21d77ecb5f378eede116c9513bbce5d16cbb6954dbcc13b6c",
+   "decisions.jsonl": "7ef77e48998f8d781041fa848821e7a6da2c9f39a55d49622f3627ee02901016",
+   "glossary.jsonl": "5b5b92a5b3618249e818857a96384e7b5a64c1a200b04a4ec21a31d697a1174a",
+   "value_space.jsonl": "ba90b632840ee34ab92f8561742c2d4283ccb0c11694986fe5d660f5c5564d5f"
+  },
+  "bundle_manifest_sha256": "d853e9f9ea27082f7f56a5b5da13d31b658c3de16ffe7b60719ce333c920a3ec",
+  "code": {
+   "src/bo/pilot_sto_map/build.py": "b05c6ed566fae2be476916755d1eb9afd953f71f90b3cac23202fc61b17a5aaa",
+   "src/bo/pilot_sto_map/common.py": "270152d9b392f766c25c041aac4cde7a522871c2f4160a61a702a6aec3c294be",
+   "src/bo/pilot_sto_map/decisions.py": "d51ee0d278034545140a27f08249436b1fff0c2b4df023573bc65d3143973de4"
+  },
+  "mapper_brief_sha256": "65cbcea35653cdaa4e9f272279d86b19dc88c649aeec0de4fff60f17162cd3a9"
+ },
+ "module": "PILOT-STO-MAP",
+ "outputs": {
+  "build_record.json": "5d265e072704dd61a2dbd23acd09a101903bacdfcb6ba4f72d5bb9beea2e1fb1",
+  "mapping.sssom.tsv": "3ded03742f2af665eb872686b02f74f4b86e4f1f64352c05fdddba36e01a7754",
+  "verdicts.jsonl": "eef7701e356b555b4d9ff5d324bc07ebb793e0c85c963f261f5ac451214851f2"
+ },
+ "pipeline_generated_at": "2026-11-04T09:21:07-03:00",
+ "schema": "bo.pilot_sto_map.report/1",
+ "steps": [
+  {
+   "downgraded": 32,
+   "dropped": 0,
+   "exhaustive_gaps": 0,
+   "ok": true,
+   "rows": 1608,
+   "step": "build"
+  },
+  {
+   "ok": true,
+   "rc": 0,
+   "step": "c09_validate"
+  },
+  {
+   "error": "TypeError_: função de tradução fora do núcleo: 'enum_to_bool'",
+   "ok": false,
+   "step": "skos_roundtrip"
+  },
+  {
+   "c21_errors": [
+    "linha 5: schema rules/0: 'EVIDENCE' does not match '^[A-Z][A-Z0-9]*(-[A-Z0-9]+)+$'",
+    "linha 402: schema rules/0: 'EVIDENCE' does not match '^[A-Z][A-Z0-9]*(-[A-Z0-9]+)+$'",
+    "linha 662: schema rules/0: 'EVIDENCE' does not match '^[A-Z][A-Z0-9]*(-[A-Z0-9]+)+$'"
+   ],
+   "check_unproven": [
+    "check-unproven: 0 OK sem prova mínima; UNPROVEN = 1533"
+   ],
+   "freeze_drift": [
+    "contracts/C00_conventions.schema.json: sha256 diferente do congelado",
+    "contracts/C09_correspondences.schema.json: sha256 diferente do congelado",
+    "contracts/C20_glossary.schema.json: sha256 diferente do congelado",
+    "src/bo/contracts/rules.py: sha256 diferente do congelado",
+    "src/bo/contracts/spec_a.py: sha256 diferente do congelado",
+    "src/bo/contracts/spec_b.py: sha256 diferente do congelado",
+    "src/bo/contracts/spec_c.py: sha256 diferente do congelado",
+    "src/bo/contracts/spec_d.py: sha256 diferente do congelado",
+    "src/bo/contracts/sssom.py: sha256 diferente do congelado"
+   ],
+   "frozen_checked": false,
+   "n_c21_errors": 3,
+   "ok": false,
+   "rc": 1,
+   "step": "arbiter"
+  },
+  {
+   "files": [
+    "verdicts.jsonl"
+   ],
+   "findings": 10,
+   "ok": false,
+   "rc": 1,
+   "step": "privacy_lint"
+  }
+ ],
+ "timezone": "America/Recife",
+ "verdicts": {
+  "absences": {
+   "UNPROVEN": 1498
+  },
+  "claims": {
+   "AMBIGUOUS": 12,
+   "OK": 59,
+   "REFUTED_BY_RULE": 4,
+   "UNPROVEN": 35
+  },
+  "composites": {
+   "OK": 82,
+   "UNPROVEN": 4
+  },
+  "rules_on_claims": {
+   "ARB-REAL-MULTI": 12,
+   "ARB-RELATED-EV": 27,
+   "EVIDENCE": 3,
+   "KIND-UNKNOWN": 7,
+   "TYPE-WF": 4,
+   "VDR-UNKNOWN": 2
+  }
+ }
+}
