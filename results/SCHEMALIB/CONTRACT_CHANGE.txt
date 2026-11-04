@@ -42,3 +42,7 @@ ATUALIZAÇÃO — 2026-11-03 (America/Recife), pedidos do driver depois da emend
   Re-medido nas versões fixadas dos SCHEMA-*: aws 6.71.0 PASS, azurerm 5.12.0 PASS, google 8.9.0 PASS (89 so_beta),
   oci 9.11.0 FAIL com 1 página sem causa (oci_database_migration_agent: a página não tem título '# ...').
   Não acrescentei regra para esse caso (seria regra sob medida para o número); a decisão é do plano.
+- 2026-11-03 (America/Recife), pedido do driver: causa nova pagina_sem_titulo = página sem nenhuma linha '# ' cujo
+  nome de arquivo (<provedor>_<slug>) é tipo do schema da versão. No oci 9.11.0 ela NÃO explica
+  oci_database_migration_agent: esse nome não é recurso nem data source do schema 9.11.0 (a própria página diz que
+  o suporte saiu na v5.28.0). A página continua sem causa e o oci 9.11.0 continua FAIL; não criei exceção por nome.

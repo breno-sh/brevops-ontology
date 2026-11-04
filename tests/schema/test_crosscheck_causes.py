@@ -220,3 +220,23 @@ def test_type_named_by_title_of_a_matched_page_has_no_cause(work):
     """Um título de recurso nomeia o tipo (numa página casada por slug com outro tipo): não é 'sem documentação'."""
     rep, _ = run(work, "oci", "9.11.0", ["oci_x", "oci_y"], {("resources", "x"): page("# oci_y")})
     assert rep["tipos_sem_pagina"] == ["oci_y"] and rep["veredito"] == "FAIL"
+
+
+def test_untitled_page_whose_file_names_a_schema_type(work):
+    """Sem nenhuma linha '# ' e com o nome do arquivo = data source do schema: pagina_sem_titulo."""
+    untitled = "---\npage_title: \"P\"\n---\n\n### sem título de nível 1\n"
+    rep, _ = run(work, "oci", "9.11.0", ["oci_x"],
+                 {("resources", "x"): page("# oci_x"), ("resources", "cg_items"): untitled},
+                 data_sources=["oci_cg_items"])
+    assert rep["veredito"] == "PASS" and causes(rep) == [("oci_cg_items", "pagina_sem_titulo")]
+
+
+def test_untitled_rule_is_not_a_name_exception(work):
+    """Sem título e arquivo que não é tipo do schema: sem causa. Com linha '# ' (mesmo fora de TITLE): sem causa."""
+    untitled = "---\npage_title: \"P\"\n---\n\nsó texto\n"
+    rep, _ = run(work, "oci", "9.11.0", ["oci_x"],
+                 {("resources", "x"): page("# oci_x"), ("resources", "gone_agent"): untitled,
+                  ("resources", "cg_items"): page("# Um Título Qualquer")},
+                 data_sources=["oci_cg_items"])
+    assert rep["veredito"] == "FAIL" and rep["paginas_sem_tipo"] == ["oci_cg_items", "oci_gone_agent"]
+    assert "pagina_sem_titulo" not in rep["por_causa"]

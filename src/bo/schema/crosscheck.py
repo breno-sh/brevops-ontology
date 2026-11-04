@@ -45,6 +45,7 @@ REGISTRY = {"aws": "hashicorp/aws", "google": "hashicorp/google", "azurerm": "ha
 PRODUCER = {"aws": "SCHEMA-AWS", "azurerm": "SCHEMA-AZURE", "google": "SCHEMA-GCP", "oci": "SCHEMA-OCI"}
 BETA = {"google": "registry.terraform.io/hashicorp/google-beta"}
 IAM_SUFFIXES = ("_iam_binding", "_iam_member", "_iam_policy", "_iam_audit_config")
+H1_LINE = re.compile(r"^# ", re.M)
 TITLE = re.compile(r"^#\s+(?:(Resource|Data Source|Ephemeral Resource|List Resource|Action):\s*)?"
                    r"`?([a-z][a-z0-9_]*)`?\s*$", re.M)
 
@@ -60,6 +61,9 @@ CAUSES = {
     "data_source_publicado_como_recurso": "[página] título 'Data Source: X' com X em data_source_schemas do schema",
     "pagina_sem_tipo_no_schema": "[página] o título nomeia X, e X não é recurso nem data source do schema da versão "
                                  "(nem do google-beta, quando conferido)",
+    "pagina_sem_titulo": "[página] o arquivo não tem nenhuma linha que comece com '# ', e o nome do arquivo "
+                         "(<provedor>_<slug>) é um tipo do schema da versão (data source, ou recurso do "
+                         "google-beta quando conferido)",
     "tipo_sem_documentacao": "[tipo] nenhuma página do índice com o slug dele e nenhum título de página de recurso "
                              "(em todas as páginas do índice com arquivo em --docs) que o nomeie",
 }
@@ -190,6 +194,7 @@ class Evidence:
     data_sources: set
     resources: set
     titles: dict = field(default_factory=dict)        # nome da página (índice resources/hcl) -> (tipo, nome)
+    untitled: set = field(default_factory=set)        # páginas de recurso sem nenhuma linha '# '
     resource_titles: dict = field(default_factory=dict)  # nome nomeado por título de recurso -> [páginas]
     beta_types: set | None = None
     proof: dict = field(default_factory=dict)
@@ -200,8 +205,8 @@ def parse_title(text: str) -> tuple[str, str] | None:
     return (m.group(1) or "Resource", m.group(2)) if m else None
 
 
-def read_docs(docs: Path, index: dict, provider: str, version: str) -> tuple[dict, dict, dict]:
-    """(títulos das páginas de recurso, títulos de recurso de todas as páginas, prova). Confere o MANIFEST.json."""
+def read_docs(docs: Path, index: dict, provider: str, version: str) -> tuple[dict, dict, set, dict]:
+    """(títulos das páginas de recurso, títulos de recurso de todas as páginas, páginas sem linha '# ', prova). Confere o MANIFEST.json."""
     man = docs.parent / "MANIFEST.json"
     if not man.exists():
         raise EvidenceError(f"crosscheck: {docs} sem MANIFEST.json na pasta-mãe")
@@ -210,7 +215,7 @@ def read_docs(docs: Path, index: dict, provider: str, version: str) -> tuple[dic
     if m.get("provider") != addr or m.get("version") != version:
         raise EvidenceError(f"crosscheck: MANIFEST.json de {m.get('provider')} {m.get('version')}")
     shas = {f["path"]: f["sha256"] for f in m.get("files") or []}
-    page_titles, res_titles, n = {}, {}, 0
+    page_titles, res_titles, untitled, n = {}, {}, set(), 0
     for d in index.get("docs") or []:
         if d.get("language") != "hcl" or not str(d.get("path", "")).startswith("website/docs/"):
             continue
@@ -222,12 +227,15 @@ def read_docs(docs: Path, index: dict, provider: str, version: str) -> tuple[dic
         if hashlib.sha256(data).hexdigest() != shas[rel]:
             raise EvidenceError(f"crosscheck: {rel} diverge do sha256 do MANIFEST.json")
         n += 1
-        t = parse_title(data.decode("utf-8", errors="replace"))
+        text = data.decode("utf-8", errors="replace")
+        t = parse_title(text)
         if d.get("category") == "resources":
             page_titles[_name(provider, d["slug"])] = t
+            if not H1_LINE.search(text):
+                untitled.add(_name(provider, d["slug"]))
         if t and t[0] != "Data Source":
             res_titles.setdefault(t[1], []).append(_name(provider, d["slug"]))
-    return page_titles, res_titles, {"docs": str(docs), "manifest_sha256": _sha_file(man), "paginas_lidas": n}
+    return page_titles, res_titles, untitled, {"docs": str(docs), "manifest_sha256": _sha_file(man), "paginas_lidas": n}
 
 
 # ------------------------------------------------------------------------------------------------ comparação
@@ -279,9 +287,15 @@ def _with_evidence(types_left: list, pages_left: list, ev: Evidence, explained: 
             if hit:
                 explained.append({"pagina": p, "causa": "so_beta", "tipos_google_beta": hit})
                 continue
+        if p in ev.untitled:
+            if p in ev.data_sources or (ev.beta_types and p in ev.beta_types):
+                explained.append({"pagina": p, "causa": "pagina_sem_titulo", "arquivo_nomeia": p})
+            else:
+                pages_out.append(p)              # sem título e o nome do arquivo não é tipo do schema: sem causa
+            continue
         t = ev.titles.get(p)
         if t is None:
-            pages_out.append(p)                  # sem arquivo conferido ou sem título: sem causa
+            pages_out.append(p)                  # sem arquivo conferido ou título fora de TITLE: sem causa
             continue
         kind, named = t
         if kind == "Data Source":
@@ -318,8 +332,8 @@ def gather(provider: str, version: str, types: dict, index: dict, schema_dir: Pa
     res = set(ps.get("resource_schemas") or {})
     if res != set(types):
         raise EvidenceError(f"crosscheck: o schema de {schema_dir} não tem os mesmos tipos do types.jsonl")
-    page_titles, res_titles, dproof = read_docs(docs, index, provider, version)
-    ev = Evidence(set(ps.get("data_source_schemas") or {}), res, page_titles, res_titles,
+    page_titles, res_titles, untitled, dproof = read_docs(docs, index, provider, version)
+    ev = Evidence(set(ps.get("data_source_schemas") or {}), res, page_titles, untitled, res_titles,
                   proof={"schema": sproof, "docs": dproof})
     if beta_dir and provider in BETA and (beta_dir / "receipt.json").exists():
         bps, bproof = verified_schema(beta_dir, BETA[provider], version, cache)
