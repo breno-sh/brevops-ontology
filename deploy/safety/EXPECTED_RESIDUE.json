@@ -1,0 +1,133 @@
+{
+ "owned": [
+  {
+   "max_residual_usd": 1.0,
+   "provider": "aws",
+   "purge_days": 7,
+   "removal_mode": "scheduled",
+   "resource_type": "aws_kms_key",
+   "states": [
+    "pending_deletion"
+   ],
+   "why": "exclusão agendada pelo provedor; some no fim do prazo"
+  },
+  {
+   "max_residual_usd": 0.1,
+   "provider": "google",
+   "purge_days": 1,
+   "removal_mode": "retained",
+   "resource_type": "google_kms_crypto_key",
+   "states": [
+    "retained"
+   ],
+   "why": "o provedor não apaga o tipo; fica com custo zero"
+  },
+  {
+   "max_residual_usd": 0.0,
+   "provider": "google",
+   "purge_days": 0,
+   "removal_mode": "retained",
+   "resource_type": "google_kms_key_ring",
+   "states": [
+    "retained"
+   ],
+   "why": "o provedor não apaga o tipo; fica com custo zero"
+  },
+  {
+   "max_residual_usd": 0.0,
+   "provider": "azurerm",
+   "purge_days": 2,
+   "removal_mode": "soft_delete",
+   "resource_type": "azurerm_api_management",
+   "states": [
+    "soft_deleted"
+   ],
+   "why": "soft delete; o teardown expurga (purge) e confere vazio"
+  },
+  {
+   "max_residual_usd": 0.0,
+   "provider": "azurerm",
+   "purge_days": 7,
+   "removal_mode": "soft_delete",
+   "resource_type": "azurerm_key_vault",
+   "states": [
+    "soft_deleted"
+   ],
+   "why": "soft delete; o teardown expurga (purge) e confere vazio"
+  },
+  {
+   "max_residual_usd": 0.0,
+   "provider": "oci",
+   "purge_days": 7,
+   "removal_mode": "scheduled",
+   "resource_type": "oci_kms_key",
+   "states": [
+    "pending_deletion"
+   ],
+   "why": "exclusão agendada pelo provedor; some no fim do prazo"
+  },
+  {
+   "max_residual_usd": 0.0,
+   "provider": "oci",
+   "purge_days": 7,
+   "removal_mode": "scheduled",
+   "resource_type": "oci_kms_vault",
+   "states": [
+    "pending_deletion"
+   ],
+   "why": "exclusão agendada pelo provedor; some no fim do prazo"
+  }
+ ],
+ "platform": [
+  {
+   "kind": "default_vpc",
+   "match": {
+    "is_default": true,
+    "tag_or_name": "^default$|default-vpc"
+   },
+   "max_residual_usd": 0.0,
+   "provider": "aws",
+   "why": "VPC padrão de cada região (e suas sub-redes, IGW, tabela de rotas, SG e NACL): existe antes do lote"
+  },
+  {
+   "kind": "default_network",
+   "match": {
+    "name": "^default$|^default-allow-"
+   },
+   "max_residual_usd": 0.0,
+   "provider": "google",
+   "why": "rede default e regras default-allow-* de projeto novo"
+  },
+  {
+   "kind": "service_agent",
+   "match": {
+    "name": "compute@developer|gserviceaccount",
+    "type": "^google_service_account$"
+   },
+   "max_residual_usd": 0.0,
+   "provider": "google",
+   "why": "contas de serviço padrão e agentes de serviço criados ao ligar uma API"
+  },
+  {
+   "kind": "network_watcher",
+   "match": {
+    "name": "^NetworkWatcherRG$|^NetworkWatcher_"
+   },
+   "max_residual_usd": 0.0,
+   "provider": "azurerm",
+   "why": "grupo e Network Watcher criados pela Azure ao criar a primeira VNet da região"
+  },
+  {
+   "kind": "deleted_compartment",
+   "match": {
+    "lifecycle": "^DELETED$",
+    "type": "^oci_identity_compartment$"
+   },
+   "max_residual_usd": 0.0,
+   "provider": "oci",
+   "why": "compartment apagado continua listado em DELETED (sem custo)"
+  }
+ ],
+ "rule": "item fora desta lista reprova o gate e é investigado, não apagado às cegas (§10.3)",
+ "schema": "bo.safety.expected_residue/1"
+}

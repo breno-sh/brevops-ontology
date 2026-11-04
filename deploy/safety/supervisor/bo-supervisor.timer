@@ -1,0 +1,12 @@
+# Tick a cada 60 s (heartbeat_interval_seconds da allowlist); Persistent para recuperar depois de reinício da VM.
+[Unit]
+Description=BrevOps supervisor: tick a cada minuto
+
+[Timer]
+OnBootSec=60
+OnUnitActiveSec=60
+AccuracySec=5
+Persistent=true
+
+[Install]
+WantedBy=timers.target

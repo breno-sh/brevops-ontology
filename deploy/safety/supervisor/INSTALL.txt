@@ -1,0 +1,23 @@
+Supervisor independente com heartbeat (D16) — instalação na VM do Breno. NADA disto foi feito nesta etapa.
+
+Pré-requisitos (decisão e ação do Breno):
+  1. Credenciais na VM SÓ das contas sandbox (as mesmas da allowlist), com permissão de listar e apagar recursos
+     com a tag bo-run; nunca conta da empresa. Allowlist da VM em ~/.config/bo/allowlist (chmod 600).
+  2. Um par de chaves ssh dedicado ao runner (no Mac), cuja pública entra no authorized_keys da VM com o forced
+     command de authorized_keys.example. O host da VM fica no canal privado do Mac (~/.config/bo/supervisor),
+     nunca no repositório.
+
+Montagem (no Mac):  bash deploy/safety/supervisor/bundle.sh $BO_DATA/tmp/SAFETY/bundle
+Cópia (Breno):      scp do bo-supervisor.tgz; na VM: mkdir -p ~/bo-supervisor && tar -C ~/bo-supervisor -xzf ...
+Conferência:        shasum -a 256 do tgz igual ao impresso pelo bundle.sh
+Timer (Breno):      copiar bo-supervisor.service e bo-supervisor.timer para ~/.config/systemd/user/,
+                    systemctl --user daemon-reload && systemctl --user enable --now bo-supervisor.timer
+                    loginctl enable-linger <usuário> (o timer roda sem sessão aberta)
+Teste de fumaça:    o SMOKE-<provedor> registra uma execução, para o heartbeat de propósito e confere que o tick
+                    destruiu o recurso (heartbeat perdido -> destruição), como pede o plano.
+
+Protocolo: register (prazo = TTL do runner, tolerância = heartbeat_grace_seconds) -> beat a cada
+heartbeat_interval_seconds com as linhas novas do manifesto privado -> close quando o teardown do runner termina.
+Tick: heartbeat parado além da tolerância OU prazo vencido -> teardown com identidade conferida, trava
+cleanup-global da VM e filtro de posse (tag da execução ou linha do manifesto recebido). Sem ack do supervisor,
+o plan_guard recusa janela longa (acima de short_window_hours).

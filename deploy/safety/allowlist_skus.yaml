@@ -1,0 +1,4113 @@
+# GERADO por python -I -m bo.safety.build (não editar à mão): política curada src/bo/safety/sku_policy.yaml
+# + suporte a tag e a TTL por tipo do SERVICE-EVIDENCE (C25). Lido pelo plan_guard, pelo manifesto de
+# intenção (tag_supported, ttl_supported), pela varredura e pelo DEPSAMPLE (tipo fora daqui não é sorteado).
+budget:
+  currency: USD
+  default_usage:
+    egress_gb: 1
+    requests_millions: 0.1
+    storage_gb: 1
+  heartbeat_grace_seconds: 600
+  heartbeat_interval_seconds: 60
+  hours_per_month: 730
+  identity_fresh_seconds: 300
+  max_window_hours: 72
+  providers:
+    aws: 30
+    azurerm: 30
+    google: 30
+    oci: 6
+  short_window_hours: 2
+  total_cap: 100
+generated_from:
+  policy: src/bo/safety/sku_policy.yaml
+  policy_sha256: d554f4d3ed7b6b08f9bd0436b7cc1bc6a825c858174a2e7bf565ef7ae0f7a415
+  service_evidence: $BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl
+  service_evidence_sha256: 9ca6eaabab91e52e4cb605559f742bd4266cace83659647862cb2f5c3944eb60
+providers:
+  aws:
+    class_c:
+    - ^aws_opensearch
+    - ^aws_elasticsearch
+    - ^aws_msk_
+    - ^aws_redshift
+    - ^aws_organizations_
+    regions_allowed:
+    - us-east-1
+    tag_attribute: tags
+    types:
+      aws_api_gateway_rest_api:
+        cost:
+          egress_gb: 0.09
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 3.5
+          storage_gb_month: 0.0
+        delete_order: 45
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-aws-qhcw2fcctmmwvwlk
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-aws-mhxck4cthqmzeuwl
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      aws_apigatewayv2_api:
+        cost:
+          egress_gb: 0.09
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 1.0
+          storage_gb_month: 0.0
+        delete_order: 45
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-aws-fox3ktk6q2xn2yxv
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-aws-odq37h3ye5yz4ove
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      aws_cloudwatch_log_group:
+        cost:
+          egress_gb: 0.5
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.03
+        delete_order: 35
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules:
+          retention_in_days:
+            max: 7
+            why: log sem retenção curta acumula armazenamento
+          skip_destroy:
+            absent:
+            - true
+            why: skip_destroy deixa o grupo de log para trás
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-aws-3hfii6pypcnletgs
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes:
+          - retention_in_days
+          evidence_ids:
+          - SE-aws-7igrrfvjhj4kr3vq
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: stated
+          supported: true
+      aws_cloudwatch_metric_alarm:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.000137
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 50
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-aws-jzpyvrtdumxqrdny
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-aws-co7x7jscumt2vhhy
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      aws_db_instance:
+        cost:
+          egress_gb: 0.09
+          hourly: 0.016
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.115
+        delete_order: 50
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.05
+          mode: async
+          pending_hours: 1
+          purge_days: 0
+          residual_state: absent
+        rules:
+          allocated_storage:
+            max: 20
+            sku: true
+          backup_retention_period:
+            max: 7
+          delete_automated_backups:
+            absent:
+            - false
+          deletion_protection:
+            absent:
+            - true
+          instance_class:
+            in:
+            - db.t4g.micro
+            sku: true
+          iops:
+            absent: []
+            max: 3000
+          max_allocated_storage:
+            absent: []
+            max: 20
+          multi_az:
+            absent:
+            - true
+            sku: true
+          skip_final_snapshot:
+            eq: true
+            why: snapshot final fica cobrando depois do destroy
+          storage_type:
+            in:
+            - gp2
+            - gp3
+            sku: true
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-aws-j2lpc5ru6aoltca6
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes:
+          - backup_retention_period
+          - performance_insights_retention_period
+          evidence_ids:
+          - SE-aws-s2yoddxq2vrts23l
+          - SE-aws-zumm6hedx3w42mpx
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: stated
+          supported: true
+      aws_db_subnet_group:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 30
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-aws-fkjwkip4flc3w2vg
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-aws-2jb5lfpwvzgyk3tw
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      aws_dynamodb_table:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 1.25
+          storage_gb_month: 0.25
+        delete_order: 40
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules:
+          billing_mode:
+            in:
+            - PAY_PER_REQUEST
+            sku: true
+            why: capacidade provisionada cobra por hora
+          deletion_protection_enabled:
+            absent:
+            - true
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-aws-hxfrtwuxheystgzm
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-aws-mdogomsj3guoilkq
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      aws_efs_file_system:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.3
+        delete_order: 40
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules:
+          throughput_mode:
+            in:
+            - bursting
+            - elastic
+            sku: true
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-aws-ajkr6qwpnaobybsf
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-aws-2useplqatraj24l5
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      aws_efs_mount_target:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 55
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes: []
+          evidence_ids:
+          - SE-aws-pvebf5byxxbbbwbs
+          level:
+          - published
+          status: stated
+          supported: false
+        trace: ref
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-aws-ofrzhemlsldbxok4
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      aws_eip:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.005
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 35
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-aws-d3gp6zhoute7mhbw
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-aws-atbva5bvxfcd3nhc
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      aws_elasticache_cluster:
+        cost:
+          egress_gb: 0.09
+          hourly: 0.017
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 50
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.05
+          mode: async
+          pending_hours: 1
+          purge_days: 0
+          residual_state: absent
+        rules:
+          engine:
+            in:
+            - redis
+            - valkey
+            - memcached
+          final_snapshot_identifier:
+            absent: []
+          node_type:
+            in:
+            - cache.t4g.micro
+            sku: true
+          num_cache_nodes:
+            max: 1
+            sku: true
+          snapshot_retention_limit:
+            absent: []
+            max: 0
+            why: snapshot automático fica depois do destroy
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-aws-3jfovpu4ynsqbkm4
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes:
+          - snapshot_retention_limit
+          evidence_ids:
+          - SE-aws-zulyzx2oy4tmmtoc
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: stated
+          supported: true
+      aws_elasticache_subnet_group:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 30
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-aws-vltdm6swvo53nto5
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-aws-c7enj7yo5latnxw2
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      aws_iam_policy:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 30
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-aws-lmznvnrso6xasdt4
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-aws-tppzzdzijpo5oru6
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      aws_iam_role:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 30
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-aws-nr5vfvyeg4zoy4ei
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-aws-jberqrp6o3zikr3u
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      aws_iam_role_policy_attachment:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 70
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes: []
+          evidence_ids:
+          - SE-aws-qywrn2nvholb5gha
+          level:
+          - published
+          status: stated
+          supported: false
+        trace: ref
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-aws-muacw4hxylsvek4b
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      aws_internet_gateway:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 25
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-aws-xppxfz6mbkwf2zb4
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-aws-7gcqj4fijaf25n4q
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      aws_kms_alias:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 60
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes: []
+          evidence_ids:
+          - SE-aws-hv7z4h7jtsmy6mmi
+          level:
+          - published
+          status: stated
+          supported: false
+        trace: name
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-aws-niku7ffkliys623t
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      aws_kms_key:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.00137
+          one_time: 0.0
+          per_million_requests: 3.0
+          storage_gb_month: 0.0
+        delete_order: 20
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 1.0
+          mode: scheduled
+          pending_hours: 0
+          purge_days: 7
+          residual_state: purge_scheduled
+        rules:
+          customer_master_key_spec:
+            in:
+            - SYMMETRIC_DEFAULT
+            sku: true
+          deletion_window_in_days:
+            eq: 7
+            why: janela mínima de exclusão agendada (resíduo com prazo)
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-aws-zbkrsfjr7gsduoog
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-aws-pnxhxe5lqvqhviql
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      aws_lambda_function:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.4
+          storage_gb_month: 0.0
+        delete_order: 50
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules:
+          memory_size:
+            max: 256
+            sku: true
+          timeout:
+            max: 60
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-aws-r4qeju3oy6spdi6t
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes:
+          - durable_config.retention_period
+          evidence_ids:
+          - SE-aws-z47mzx4g4xmadg3n
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: stated
+          supported: true
+      aws_lb:
+        cost:
+          egress_gb: 0.09
+          hourly: 0.031
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 50
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules:
+          enable_deletion_protection:
+            absent:
+            - true
+          load_balancer_type:
+            in:
+            - application
+            sku: true
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-aws-qmqagddjamqbcmtq
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-aws-ohgb5utr5vrdz4kr
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      aws_lb_listener:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 60
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-aws-mfwv4mev7jjo6o3p
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-aws-tfe2bj64vzmm5asb
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      aws_lb_target_group:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 40
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-aws-rl367wwhg5xne3bc
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-aws-lwfms6gha2uuqj7w
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      aws_nat_gateway:
+        cost:
+          egress_gb: 0.045
+          hourly: 0.045
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 55
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.05
+          mode: async
+          pending_hours: 1
+          purge_days: 0
+          residual_state: absent
+        rules:
+          connectivity_type:
+            in:
+            - public
+            sku: true
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-aws-lpnr67pdq3fbernv
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-aws-boepmmerm4u5ygdg
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      aws_route53_zone:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.5
+          per_million_requests: 0.4
+          storage_gb_month: 0.0
+        delete_order: 30
+        max_window_hours: 12
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules:
+          force_destroy:
+            eq: true
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-aws-nbgi4okanu2wopmt
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-aws-zefzcz4mycaeq4v4
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      aws_route_table:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 30
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-aws-qr7k27t7rgbs7gm6
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-aws-3zkcuv73rpfh4izg
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      aws_route_table_association:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 60
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes: []
+          evidence_ids:
+          - SE-aws-7s4g6kyrixrxwkwx
+          level:
+          - published
+          status: stated
+          supported: false
+        trace: ref
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-aws-hvb3dlstgskxligh
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      aws_s3_bucket:
+        cost:
+          egress_gb: 0.09
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 5.0
+          storage_gb_month: 0.023
+        delete_order: 40
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules:
+          force_destroy:
+            eq: true
+            why: bucket com objeto não sai no destroy e vira resíduo
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-aws-6dqnnvj4zxkbd4uy
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes:
+          - lifecycle_rule.expiration.expired_object_delete_marker
+          evidence_ids:
+          - SE-aws-d4f4ntwndfd76tqn
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: stated
+          supported: true
+      aws_s3_bucket_lifecycle_configuration:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 65
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes: []
+          evidence_ids:
+          - SE-aws-4iawrl6tu66ycc2m
+          level:
+          - published
+          status: stated
+          supported: false
+        trace: ref
+        trace_reason: política
+        ttl:
+          attributes:
+          - rule.expiration.expired_object_delete_marker
+          evidence_ids:
+          - SE-aws-zyo4zwyxmkz4p2k7
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: stated
+          supported: true
+      aws_s3_bucket_public_access_block:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 65
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes: []
+          evidence_ids:
+          - SE-aws-fa4mblcfyrlib3jf
+          level:
+          - published
+          status: stated
+          supported: false
+        trace: ref
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-aws-5gcwqnz2dkostsx4
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      aws_s3_bucket_server_side_encryption_configuration:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 65
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes: []
+          evidence_ids:
+          - SE-aws-d7quude4suebk4gs
+          level:
+          - published
+          status: stated
+          supported: false
+        trace: ref
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-aws-756awntqoougrgq7
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      aws_s3_bucket_versioning:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 65
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes: []
+          evidence_ids:
+          - SE-aws-jvgucrjdq3fiohi5
+          level:
+          - published
+          status: stated
+          supported: false
+        trace: ref
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-aws-jjmvuu3xeygtgnte
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      aws_security_group:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 30
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-aws-27pslixxakggcls6
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-aws-yyz26vi6snslzeps
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      aws_sns_topic:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.5
+          storage_gb_month: 0.0
+        delete_order: 40
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-aws-h3wz3k24q4rsth5w
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-aws-udnuz56jxoftl5il
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      aws_sqs_queue:
+        cost:
+          egress_gb: 0.09
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.4
+          storage_gb_month: 0.0
+        delete_order: 40
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-aws-juw2f5ofo2cvhvy6
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes:
+          - message_retention_seconds
+          evidence_ids:
+          - SE-aws-fwjedjnkgsnsg7lt
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: stated
+          supported: true
+      aws_subnet:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 20
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-aws-3wiq7baz2vdminrs
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-aws-wxdznofig7czlk6l
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      aws_vpc:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 10
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-aws-ahjek3fjodj5ocvr
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-aws-pqbb5yv2puxfajt4
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      aws_vpc_security_group_egress_rule:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 60
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-aws-zsprt6dprnp4m3r7
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-aws-y7tadhjjbdcsu4wt
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      aws_vpc_security_group_ingress_rule:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 60
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-aws-ez3deguqbsxp3yt3
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-aws-a5kbmjbvbwii4lnp
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+  azurerm:
+    class_c:
+    - ^azurerm_firewall
+    - ^azurerm_application_gateway
+    - ^azurerm_web_application_firewall
+    - ^azurerm_frontdoor
+    - ^azurerm_management_group
+    regions_allowed:
+    - eastus
+    tag_attribute: tags
+    types:
+      azurerm_api_management:
+        cost:
+          egress_gb: 0.087
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 3.5
+          storage_gb_month: 0.0
+        delete_order: 50
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: soft_delete
+          pending_hours: 0
+          purge_days: 2
+          residual_state: purge_scheduled
+        rules:
+          sku_name:
+            in:
+            - Consumption_0
+            sku: true
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-azurerm-y7jgfivs54bqj2ql
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-azurerm-rl7htf56ll3wityr
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      azurerm_cdn_frontdoor_profile:
+        cost:
+          egress_gb: 0.083
+          hourly: 0.048
+          one_time: 0.0
+          per_million_requests: 0.01
+          storage_gb_month: 0.0
+        delete_order: 50
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules:
+          sku_name:
+            in:
+            - Standard_AzureFrontDoor
+            sku: true
+            why: Premium é Classe C
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-azurerm-cahfwrzehmtsbuqw
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-azurerm-soi5ts6ajdg5ihov
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      azurerm_cosmosdb_account:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.25
+          storage_gb_month: 0.25
+        delete_order: 50
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules:
+          capabilities.0.name:
+            in:
+            - EnableServerless
+            sku: true
+            why: só serverless (sem RU provisionado)
+          geo_location.1.location:
+            absent: []
+            sku: true
+          offer_type:
+            in:
+            - Standard
+            sku: true
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-azurerm-t2n2qugbzgfsgvdj
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes:
+          - backup.retention_in_hours
+          evidence_ids:
+          - SE-azurerm-k4gubezh3dxccw4u
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: stated
+          supported: true
+      azurerm_key_vault:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 3.0
+          storage_gb_month: 0.0
+        delete_order: 40
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: soft_delete
+          pending_hours: 0
+          purge_days: 7
+          residual_state: purge_scheduled
+        rules:
+          purge_protection_enabled:
+            absent:
+            - true
+            why: com purge protection o cofre fica 90 dias
+          sku_name:
+            in:
+            - standard
+            sku: true
+          soft_delete_retention_days:
+            eq: 7
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-azurerm-h65ha6zzuruhsjzs
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes:
+          - soft_delete_retention_days
+          evidence_ids:
+          - SE-azurerm-7sddvlprlsxkzz47
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: stated
+          supported: true
+      azurerm_lb:
+        cost:
+          egress_gb: 0.005
+          hourly: 0.025
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 50
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules:
+          sku:
+            in:
+            - Standard
+            sku: true
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-azurerm-rvnqq2m5on4naczn
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-azurerm-dfndbnmnpmquonss
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      azurerm_linux_function_app:
+        cost:
+          egress_gb: 0.087
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.2
+          storage_gb_month: 0.0
+        delete_order: 50
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-azurerm-j5gbna3ssfa65g7o
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes:
+          - backup.schedule.retention_period_days
+          - site_config.app_service_logs.retention_period_days
+          evidence_ids:
+          - SE-azurerm-sofeylbg7d7dij2t
+          - SE-azurerm-twsaerlp3fpz5djy
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: stated
+          supported: true
+      azurerm_log_analytics_workspace:
+        cost:
+          egress_gb: 2.76
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.1
+        delete_order: 40
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules:
+          retention_in_days:
+            max: 30
+          sku:
+            in:
+            - PerGB2018
+            sku: true
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-azurerm-nleqmncn7bd2vi53
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes:
+          - retention_in_days
+          evidence_ids:
+          - SE-azurerm-essktkqlbdywryug
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: stated
+          supported: true
+      azurerm_mssql_database:
+        cost:
+          egress_gb: 0.087
+          hourly: 0.0069
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 50
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules:
+          max_size_gb:
+            max: 2
+            sku: true
+          sku_name:
+            in:
+            - Basic
+            sku: true
+          zone_redundant:
+            absent:
+            - true
+            sku: true
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-azurerm-3nl6uldcwqfmsbz2
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes:
+          - long_term_retention_policy.monthly_retention
+          - long_term_retention_policy.weekly_retention
+          - long_term_retention_policy.yearly_retention
+          - restore_long_term_retention_backup_id
+          - short_term_retention_policy.retention_days
+          - threat_detection_policy.retention_days
+          evidence_ids:
+          - SE-azurerm-gdi6p2tzcuyj6s7f
+          - SE-azurerm-gj66hplkl6rzmsjv
+          - SE-azurerm-k6q55r3t3o546flr
+          - SE-azurerm-mfxmpdu7g6fsaqpb
+          - SE-azurerm-mmhjxvgkxfbm2r5a
+          - SE-azurerm-td3ucvp3iospkfra
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: stated
+          supported: true
+      azurerm_mssql_server:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 40
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-azurerm-6nobnbbe5xavvohh
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-azurerm-kgrq6ugoim4btf2n
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      azurerm_nat_gateway:
+        cost:
+          egress_gb: 0.045
+          hourly: 0.045
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 55
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules:
+          sku_name:
+            in:
+            - Standard
+            sku: true
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-azurerm-pko2xwbxy3tjekbw
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-azurerm-ashrppktzcubfc66
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      azurerm_network_security_group:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 30
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-azurerm-ztb4vgfglpwtu7lt
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-azurerm-xpxsc5e62bhspbqr
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      azurerm_network_security_rule:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 60
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes: []
+          evidence_ids:
+          - SE-azurerm-zzprfzti2f5azs47
+          level:
+          - published
+          status: stated
+          supported: false
+        trace: name
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-azurerm-26giub2lg4y6vuvk
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      azurerm_postgresql_flexible_server:
+        cost:
+          egress_gb: 0.087
+          hourly: 0.03
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.115
+        delete_order: 50
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.05
+          mode: async
+          pending_hours: 1
+          purge_days: 0
+          residual_state: absent
+        rules:
+          backup_retention_days:
+            max: 7
+          geo_redundant_backup_enabled:
+            absent:
+            - true
+            sku: true
+          high_availability.0.mode:
+            absent:
+            - ZoneRedundant
+            - SameZone
+            sku: true
+          sku_name:
+            in:
+            - B_Standard_B1ms
+            sku: true
+          storage_mb:
+            max: 32768
+            sku: true
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-azurerm-kvd6rwf272bv2jhb
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes:
+          - backup_retention_days
+          evidence_ids:
+          - SE-azurerm-ecruvr6e74z5b5sr
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: stated
+          supported: true
+      azurerm_public_ip:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.005
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 35
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules:
+          sku:
+            in:
+            - Standard
+            sku: true
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-azurerm-z7nfo7nmdmv67yeu
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-azurerm-hgmxvt2yfjw2aaer
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      azurerm_resource_group:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 0
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: async
+          pending_hours: 1
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-azurerm-etfqmsczubxpcejt
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-azurerm-54ciwglai3oll3up
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      azurerm_service_plan:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 30
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules:
+          sku_name:
+            in:
+            - Y1
+            sku: true
+            why: só consumo
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-azurerm-kljddqphrne2gg6m
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-azurerm-qrbokpfvcakwlptw
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      azurerm_servicebus_namespace:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0137
+          one_time: 0.0
+          per_million_requests: 0.8
+          storage_gb_month: 0.0
+        delete_order: 40
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules:
+          sku:
+            in:
+            - Basic
+            - Standard
+            sku: true
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-azurerm-c2mtfcmx666f3uwl
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-azurerm-ahalbheatdgb2efy
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      azurerm_servicebus_queue:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 50
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes: []
+          evidence_ids:
+          - SE-azurerm-qrfa5d4rngdkrqkx
+          level:
+          - published
+          status: stated
+          supported: false
+        trace: name
+        trace_reason: política
+        ttl:
+          attributes:
+          - auto_delete_on_idle
+          - dead_lettering_on_message_expiration
+          - default_message_ttl
+          evidence_ids:
+          - SE-azurerm-3kpytkcsgtp3mpj2
+          - SE-azurerm-tqjm6bwsecnkknhn
+          - SE-azurerm-ycau5v4h667qtkbq
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: stated
+          supported: true
+      azurerm_storage_account:
+        cost:
+          egress_gb: 0.087
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 6.5
+          storage_gb_month: 0.021
+        delete_order: 40
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules:
+          access_tier:
+            absent:
+            - Premium
+            sku: true
+          account_kind:
+            in:
+            - StorageV2
+            sku: true
+          account_replication_type:
+            in:
+            - LRS
+            sku: true
+          account_tier:
+            in:
+            - Standard
+            sku: true
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-azurerm-44uu22yiaeqn22oj
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes:
+          - blob_properties.change_feed_retention_in_days
+          - sas_policy.expiration_action
+          - sas_policy.expiration_period
+          evidence_ids:
+          - SE-azurerm-pm3adhuslu5bq45c
+          - SE-azurerm-q4zlir2mlzywfkl6
+          - SE-azurerm-q5q72e6bjwmmcxmq
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: stated
+          supported: true
+      azurerm_storage_container:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 50
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes: []
+          evidence_ids:
+          - SE-azurerm-kepyumtjkbz4fi4v
+          level:
+          - published
+          status: stated
+          supported: false
+        trace: name
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-azurerm-fvv42g7uu7eglqxf
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      azurerm_subnet:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 20
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes: []
+          evidence_ids:
+          - SE-azurerm-tkvu3ledqyf3jven
+          level:
+          - published
+          status: stated
+          supported: false
+        trace: name
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-azurerm-h3jcaxj4zjeghwq3
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      azurerm_subnet_network_security_group_association:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 65
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes: []
+          evidence_ids:
+          - SE-azurerm-d2g7s6hwyzantcps
+          level:
+          - published
+          status: stated
+          supported: false
+        trace: ref
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-azurerm-omxhbolvwgnuagxh
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      azurerm_virtual_network:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 10
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - tags
+          evidence_ids:
+          - SE-azurerm-sq4fbxcvwjdtdu3z
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-azurerm-dtrpsowht4akms5p
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+  google:
+    class_c:
+    - ^google_filestore
+    - ^google_bigtable
+    - ^google_alloydb
+    - ^google_folder
+    - ^google_organization
+    - ^google_org_policy
+    - ^google_access_context_manager
+    - ^google_cloud_identity_group
+    - ^google_spanner_instance$
+    regions_allowed:
+    - us-central1
+    tag_attribute: labels
+    types:
+      google_cloud_run_v2_service:
+        cost:
+          egress_gb: 0.12
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.4
+          storage_gb_month: 0.0
+        delete_order: 50
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules:
+          deletion_protection:
+            absent:
+            - true
+          template.0.scaling.0.max_instance_count:
+            max: 2
+        tag:
+          attributes:
+          - labels
+          evidence_ids:
+          - SE-google-4w6xmdp5jpznnmii
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-google-54auhcmyslcscfrv
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      google_cloudfunctions2_function:
+        cost:
+          egress_gb: 0.12
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.4
+          storage_gb_month: 0.0
+        delete_order: 50
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - labels
+          evidence_ids:
+          - SE-google-an7hof6oohcqaq2u
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-google-fnwblgxfx2jvfrec
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      google_compute_address:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.01
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 35
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - labels
+          evidence_ids:
+          - SE-google-szwb7pd3hdolv2fa
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-google-7bd7ymaq4o4xwcap
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      google_compute_firewall:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 40
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes: []
+          evidence_ids:
+          - SE-google-olddfqh4slbbauj7
+          level:
+          - published
+          status: stated
+          supported: false
+        trace: name
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-google-lnwrvwfzhe4iubeo
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      google_compute_forwarding_rule:
+        cost:
+          egress_gb: 0.12
+          hourly: 0.025
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 55
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - labels
+          evidence_ids:
+          - SE-google-u6tzji4bbj4bx5yt
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-google-au2efjmrqrv55sua
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      google_compute_global_address:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.01
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 35
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - labels
+          evidence_ids:
+          - SE-google-k7obisa6d3sk6qrf
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-google-hpz4dwekxqhlkyv4
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      google_compute_network:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 10
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes: []
+          evidence_ids:
+          - SE-google-uolp3xg7fthxr37c
+          level:
+          - published
+          status: stated
+          supported: false
+        trace: name
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-google-bwkvlyhno5ekgs3z
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      google_compute_router:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 30
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes: []
+          evidence_ids:
+          - SE-google-kfvpe35aaer5nepo
+          level:
+          - published
+          status: stated
+          supported: false
+        trace: name
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-google-r2hmesft3gnilw3w
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      google_compute_router_nat:
+        cost:
+          egress_gb: 0.045
+          hourly: 0.0014
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 50
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes: []
+          evidence_ids:
+          - SE-google-zyxi2iwkwyn6jxvi
+          level:
+          - published
+          status: stated
+          supported: false
+        trace: name
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-google-4aizzvu6pvdshur6
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      google_compute_subnetwork:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 20
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes: []
+          evidence_ids:
+          - SE-google-2vkhe7bqtpc6uhuf
+          level:
+          - published
+          status: stated
+          supported: false
+        trace: name
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-google-7xqja25vr2yah26q
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      google_firestore_database:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 1.8
+          storage_gb_month: 0.18
+        delete_order: 40
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules:
+          delete_protection_state:
+            absent:
+            - DELETE_PROTECTION_ENABLED
+          deletion_policy:
+            eq: DELETE
+            why: o padrão ABANDON deixa o banco depois do destroy
+        tag:
+          attributes: []
+          evidence_ids:
+          - SE-google-vemxbltlbrrnxbwu
+          level:
+          - published
+          status: stated
+          supported: false
+        trace: name
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-google-sacxvwb2hiyrexvy
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      google_firestore_field:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 60
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes: []
+          evidence_ids:
+          - SE-google-rqzrmsnyycnrhuen
+          level:
+          - published
+          status: stated
+          supported: false
+        trace: ref
+        trace_reason: política
+        ttl:
+          attributes:
+          - ttl_config.expiration_offset
+          evidence_ids:
+          - SE-google-nszsnbzfhshv53bc
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: stated
+          supported: true
+      google_kms_crypto_key:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0001
+          one_time: 0.0
+          per_million_requests: 3.0
+          storage_gb_month: 0.0
+        delete_order: 20
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.1
+          mode: retained
+          pending_hours: 0
+          purge_days: 1
+          residual_state: purge_scheduled
+        rules:
+          destroy_scheduled_duration:
+            in:
+            - 86400s
+            why: versões destruídas em 1 dia (mínimo)
+          purpose:
+            in:
+            - ENCRYPT_DECRYPT
+            sku: true
+          version_template.0.protection_level:
+            absent:
+            - HSM
+            - EXTERNAL
+            - EXTERNAL_VPC
+            sku: true
+        tag:
+          attributes:
+          - labels
+          evidence_ids:
+          - SE-google-ybqoq6r3ehmtcwm4
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-google-u7uvq2hz63e2w6yq
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      google_kms_key_ring:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 10
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: retained
+          pending_hours: 0
+          purge_days: 0
+          residual_state: purge_scheduled
+        rules: {}
+        tag:
+          attributes: []
+          evidence_ids:
+          - SE-google-zjrklcq3ic7m4pig
+          level:
+          - published
+          status: stated
+          supported: false
+        trace: name
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-google-6j3xglqkikk7fano
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      google_logging_metric:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 50
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes: []
+          evidence_ids:
+          - SE-google-c4nnieagqpppebef
+          level:
+          - published
+          status: stated
+          supported: false
+        trace: name
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-google-njzrtsyyzgc3o6sz
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      google_project_iam_member:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 70
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes: []
+          evidence_ids:
+          - SE-google-xjge3nnpgcuo6mcu
+          level:
+          - published
+          status: stated
+          supported: false
+        trace: ref
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-google-zikuds6uditqgrup
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      google_pubsub_subscription:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.04
+          storage_gb_month: 0.0
+        delete_order: 50
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - labels
+          evidence_ids:
+          - SE-google-y7bq6rtq55orprcv
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes:
+          - expiration_policy.ttl
+          - message_retention_duration
+          evidence_ids:
+          - SE-google-4syngjvrqywf4unb
+          - SE-google-stctggnnbfxicllt
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: stated
+          supported: true
+      google_pubsub_topic:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.04
+          storage_gb_month: 0.0
+        delete_order: 40
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - labels
+          evidence_ids:
+          - SE-google-k63qzjw7sfdlidiq
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes:
+          - message_retention_duration
+          evidence_ids:
+          - SE-google-tkmuyuwk6f3eak2r
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: stated
+          supported: true
+      google_redis_instance:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.049
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 50
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules:
+          memory_size_gb:
+            max: 1
+            sku: true
+          tier:
+            in:
+            - BASIC
+            sku: true
+        tag:
+          attributes:
+          - labels
+          evidence_ids:
+          - SE-google-rfphnhpzcndq3b6t
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-google-zsrhudjvnr7r7bpl
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      google_service_account:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 30
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes: []
+          evidence_ids:
+          - SE-google-a6t7zsnw3rhaxdtp
+          level:
+          - published
+          status: stated
+          supported: false
+        trace: name
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-google-ooqiktw5cvm3lu33
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      google_sql_database_instance:
+        cost:
+          egress_gb: 0.12
+          hourly: 0.0105
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.17
+        delete_order: 50
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.05
+          mode: async
+          pending_hours: 1
+          purge_days: 0
+          residual_state: absent
+        rules:
+          deletion_protection:
+            eq: false
+          settings.0.availability_type:
+            absent:
+            - REGIONAL
+            sku: true
+          settings.0.deletion_protection_enabled:
+            absent:
+            - true
+          settings.0.disk_size:
+            max: 10
+            sku: true
+          settings.0.edition:
+            absent:
+            - ENTERPRISE_PLUS
+            sku: true
+          settings.0.tier:
+            in:
+            - db-f1-micro
+            sku: true
+        tag:
+          attributes: []
+          evidence_ids:
+          - SE-google-ij6qyw2plrrs246i
+          level:
+          - published
+          status: stated
+          supported: false
+        trace: name
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-google-w6mveskcl3ndrq35
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      google_storage_bucket:
+        cost:
+          egress_gb: 0.12
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 5.0
+          storage_gb_month: 0.026
+        delete_order: 40
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules:
+          force_destroy:
+            eq: true
+          retention_policy.0.is_locked:
+            absent:
+            - true
+            why: retenção travada impede apagar o bucket
+          storage_class:
+            in:
+            - STANDARD
+            sku: true
+        tag:
+          attributes:
+          - labels
+          evidence_ids:
+          - SE-google-rfpup5ekmoafklkt
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes:
+          - enable_object_retention
+          - retention_policy.retention_period
+          - soft_delete_policy.retention_duration_seconds
+          evidence_ids:
+          - SE-google-6svhovhmprfa2zbs
+          - SE-google-aszt673a4wgrrg7d
+          - SE-google-p2ht5ewxrl52qrhc
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: stated
+          supported: true
+  oci:
+    class_c:
+    - ^oci_identity_domains_
+    - ^oci_database_db_system$
+    regions_allowed:
+    - sa-saopaulo-1
+    tag_attribute: freeform_tags
+    types:
+      oci_core_internet_gateway:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 25
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - defined_tags
+          - freeform_tags
+          evidence_ids:
+          - SE-oci-cyfmvs5mvdguhhx7
+          - SE-oci-jmgzt4abjitbomex
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-oci-ejjrhpcqfydpccup
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      oci_core_network_security_group:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 30
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - defined_tags
+          - freeform_tags
+          evidence_ids:
+          - SE-oci-bk2zgyawhk77itr3
+          - SE-oci-kac5nkibxa7flazb
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-oci-dhfnxsy4g6vh7yrp
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      oci_core_network_security_group_security_rule:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 60
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes: []
+          evidence_ids:
+          - SE-oci-hoprwfinq67pnxtn
+          level:
+          - published
+          status: stated
+          supported: false
+        trace: ref
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-oci-3p27uvs5oyyx2bjq
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      oci_core_route_table:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 30
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - defined_tags
+          - freeform_tags
+          evidence_ids:
+          - SE-oci-5pvvojyoragb5d4f
+          - SE-oci-u54yx2lzv5xjyefu
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-oci-i2wzqxnhnq42cscq
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      oci_core_security_list:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 30
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - defined_tags
+          - freeform_tags
+          evidence_ids:
+          - SE-oci-s6hhbd5q6gejahu2
+          - SE-oci-tdtcrloss4yygs6i
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-oci-q5ljcjeqy2cwdch5
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      oci_core_subnet:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 20
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - defined_tags
+          - freeform_tags
+          evidence_ids:
+          - SE-oci-6mqwccajvuad5gkv
+          - SE-oci-rz2gb6xkcs3cit4r
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-oci-zfowbube5ob7jsjd
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      oci_core_vcn:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 10
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - defined_tags
+          - freeform_tags
+          evidence_ids:
+          - SE-oci-n2tdgihmdmyvunme
+          - SE-oci-vyjvb43nwu7d24j2
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-oci-2vqdtd3sar75ahnf
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      oci_functions_application:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 40
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - defined_tags
+          - freeform_tags
+          evidence_ids:
+          - SE-oci-6gc2ds7a2fdvxu3d
+          - SE-oci-ujxevjglism472ea
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-oci-gnqwv7jt62lgqsvc
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      oci_functions_function:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.2
+          storage_gb_month: 0.0
+        delete_order: 50
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules:
+          memory_in_mbs:
+            max: 256
+            sku: true
+        tag:
+          attributes:
+          - defined_tags
+          - freeform_tags
+          evidence_ids:
+          - SE-oci-4erzgkp7k2leevxq
+          - SE-oci-byuj5kqnmnul4d6n
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-oci-xkcl253kw6aikqio
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      oci_identity_compartment:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 0
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: async
+          pending_hours: 2
+          purge_days: 0
+          residual_state: absent
+        rules:
+          enable_delete:
+            eq: true
+            why: sem enable_delete o destroy só esquece o compartment
+        tag:
+          attributes:
+          - defined_tags
+          - freeform_tags
+          evidence_ids:
+          - SE-oci-jy2jgcoyvp53wmjx
+          - SE-oci-vjfvtjrrs2gy5xcq
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-oci-wltu6bitrhme54ym
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      oci_kms_key:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 30
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: scheduled
+          pending_hours: 0
+          purge_days: 7
+          residual_state: purge_scheduled
+        rules:
+          protection_mode:
+            in:
+            - SOFTWARE
+            - HSM
+            sku: true
+        tag:
+          attributes:
+          - defined_tags
+          - freeform_tags
+          evidence_ids:
+          - SE-oci-kwxhl5zf4fdbh5co
+          - SE-oci-ns65prjubzh5luhi
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-oci-hbnj7vnh6typ6mmd
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      oci_kms_vault:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 20
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: scheduled
+          pending_hours: 0
+          purge_days: 7
+          residual_state: purge_scheduled
+        rules:
+          vault_type:
+            in:
+            - DEFAULT
+            sku: true
+            why: VIRTUAL_PRIVATE é Classe C
+        tag:
+          attributes:
+          - defined_tags
+          - freeform_tags
+          evidence_ids:
+          - SE-oci-ixdws6jgsyhc6ayh
+          - SE-oci-xnnksm66ksfemjdw
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-oci-4ezuxc3l4xdg5l7y
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      oci_logging_log:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.05
+        delete_order: 50
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules:
+          retention_duration:
+            max: 30
+        tag:
+          attributes:
+          - defined_tags
+          - freeform_tags
+          evidence_ids:
+          - SE-oci-pwfgpf7oqg47kw7g
+          - SE-oci-xzmu7wz535lsyzxa
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes:
+          - retention_duration
+          evidence_ids:
+          - SE-oci-yxzufwyiqczyaspb
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: stated
+          supported: true
+      oci_logging_log_group:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 40
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - defined_tags
+          - freeform_tags
+          evidence_ids:
+          - SE-oci-f3ctadq6moupyj2u
+          - SE-oci-noag5ez5ceiwlhdg
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-oci-lnobsfd3yld5jmvj
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      oci_nosql_table:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 40
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules:
+          is_auto_reclaimable:
+            eq: true
+            why: tabela Always Free
+          table_limits.0.capacity_mode:
+            in:
+            - PROVISIONED
+            sku: true
+          table_limits.0.max_read_units:
+            max: 50
+            sku: true
+            why: 'Always Free: até 50 leituras'
+          table_limits.0.max_storage_in_gbs:
+            max: 25
+            sku: true
+          table_limits.0.max_write_units:
+            max: 50
+            sku: true
+        tag:
+          attributes:
+          - defined_tags
+          - freeform_tags
+          evidence_ids:
+          - SE-oci-mdo3qepf54tyoxuh
+          - SE-oci-owcvdo4zfo7tdkl4
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-oci-2dyeybtw7iwomnps
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      oci_objectstorage_bucket:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.34
+          storage_gb_month: 0.0255
+        delete_order: 40
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules:
+          retention_rules.0.time_rule_locked:
+            absent: []
+            why: regra de retenção travada impede apagar
+          storage_tier:
+            in:
+            - Standard
+            sku: true
+        tag:
+          attributes:
+          - defined_tags
+          - freeform_tags
+          evidence_ids:
+          - SE-oci-gonkmyekaupiwe2d
+          - SE-oci-lrgfeunotckrca4z
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-oci-ap25hznvunmf5jy4
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      oci_ons_notification_topic:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 40
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - defined_tags
+          - freeform_tags
+          evidence_ids:
+          - SE-oci-26sptsquf24yxgpo
+          - SE-oci-mn2we4lzp4b4rgxi
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-oci-xr2znn5wbqvtntx3
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      oci_ons_subscription:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 50
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules: {}
+        tag:
+          attributes:
+          - defined_tags
+          - freeform_tags
+          evidence_ids:
+          - SE-oci-r6zt2f32xocjaa3i
+          - SE-oci-stvv3p2lubjhvt3g
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes: []
+          evidence_ids:
+          - SE-oci-qbbbfbk5yxukys6k
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: unknown
+          supported: false
+      oci_queue_queue:
+        cost:
+          egress_gb: 0.0
+          hourly: 0.0
+          one_time: 0.0
+          per_million_requests: 0.0
+          storage_gb_month: 0.0
+        delete_order: 40
+        max_window_hours: 72
+        removal:
+          max_residual_usd: 0.0
+          mode: sync
+          pending_hours: 0
+          purge_days: 0
+          residual_state: absent
+        rules:
+          retention_in_seconds:
+            max: 86400
+        tag:
+          attributes:
+          - defined_tags
+          - freeform_tags
+          evidence_ids:
+          - SE-oci-5wpcbdoqdhm2scq3
+          - SE-oci-hzk375kwvdpfcy5u
+          level:
+          - published
+          status: stated
+          supported: true
+        trace: tag
+        trace_reason: política
+        ttl:
+          attributes:
+          - retention_in_seconds
+          evidence_ids:
+          - SE-oci-zsomjgezzynhjdj2
+          native_resource_destruction: false
+          note: atributo de expiração do tipo (dado, item, mensagem, backup); não destrói o recurso. O prazo do
+            runner é cumprido pelo supervisor e pelo teardown.
+          status: stated
+          supported: true
+schema: bo.safety.allowlist_skus/1

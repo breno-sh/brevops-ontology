@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kit de segurança de nuvem</title>
+<style>
+:root{--bg:#fbfaf7;--fg:#1d1f22;--muted:#5d636b;--line:#dcd8cf;--card:#ffffff;--accent:#1f6f5c;--warn:#9a5b00;--code:#f1eee8}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#15171a;--fg:#e6e4df;--muted:#a3a7ad;--line:#33363b;--card:#1c1f23;--accent:#5fbfa5;--warn:#e0a24a;--code:#24272c}}
+:root[data-theme="dark"]{--bg:#15171a;--fg:#e6e4df;--muted:#a3a7ad;--line:#33363b;--card:#1c1f23;--accent:#5fbfa5;--warn:#e0a24a;--code:#24272c}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:980px;margin:0 auto;padding:28px 16px 64px}
+h1{font-size:1.7rem;margin:0 0 4px}
+h2{font-size:1.2rem;margin:36px 0 10px;padding-top:8px;border-top:1px solid var(--line)}
+h3{font-size:1rem;margin:20px 0 6px}
+p,li{max-width:76ch}
+.meta{color:var(--muted);font-size:.9rem}
+code{background:var(--code);padding:1px 5px;border-radius:4px;font-size:.88em;overflow-wrap:anywhere}
+pre{background:var(--code);padding:12px;border-radius:6px;overflow-x:auto;font-size:.85rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem;margin:8px 0}
+th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:600}
+.wrap{overflow-x:auto}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px 16px;margin:12px 0}
+.warn{border-left:4px solid var(--warn)}
+.ok{border-left:4px solid var(--accent)}
+</style>
+</head>
+<body>
+<main>
+<h1>Kit de segurança de nuvem (SAFETY)</h1>
+<p class="meta">BrevOps Ontology, fase F1, contrato C16 3.0.0. Escrito e testado offline em 2026-11-04 (America/Recife), sem
+nenhuma conta, credencial ou chamada de nuvem. Responde ao S16 e ao S9 da revisão GPT-6 e às objeções R2-W8 e R3-M8.</p>
+
+<div class="card warn"><strong>Lição embutida.</strong> Uma campanha anterior deixou duas VMs de 16 vCPU ligadas por 55 h
+(cerca de 90 dólares) porque o "zero instâncias rodando" olhou um provedor, duas regiões fixas e um tipo de recurso. Aqui:
+toda criação nasce com intenção gravada e com remoção; a varredura lê as regiões da conta (nunca uma lista fixa), cobre
+todos os tipos com uma fonte "todos os tipos" por provedor mais as listas por natureza que costumam escapar (instância,
+disco, snapshot, imagem, IP reservado, NAT, ENI, banco, LB, log, função, chave em exclusão, cofre em soft delete), roda
+sempre os quatro provedores e nunca conclui "zero" a partir de uma fonte que não respondeu.</div>
+
+<h2>As oito exigências e onde estão</h2>
+<div class="wrap"><table>
+<tr><th>#</th><th>Exigência (§10.2)</th><th>Implementação</th><th>Prova offline</th></tr>
+<tr><td>1</td><td>Redator antes da 1ª serialização; state e plan num canal privado efêmero</td>
+<td><code>redaction.py</code> (retém sensível do Terraform, variáveis, segredos, conteúdo Withheld, ids em texto; porta
+única <code>write_redacted</code> que só aceita objeto redigido); <code>ephemeral.py</code> (disco de RAM com volume APFS
+cifrado, senha aleatória só em memória, apagado no fim; Linux: tmpfs e recusa com swap)</td>
+<td>tests/safety/test_redactor.py; disco de RAM cifrado aberto e fechado uma vez neste Mac (<code>python -I -m
+bo.safety.ephemeral</code>)</td></tr>
+<tr><td>2</td><td>Identidade efetiva contra a allowlist privada, imediatamente antes do apply</td>
+<td><code>identity.py</code>: sts / gcloud config / az account show / perfil oci + iam user get; hash sha256 da identidade;
+allowlist em <code>~/.config/bo/allowlist</code> (600, dono, fora de repositório, sem link); conferência vale 300 s;
+variáveis que mudariam a identidade do provider (chave GCP, ARM_CLIENT_*, auth OCI) recusam; usuário root recusa</td>
+<td>tests/safety/test_identity.py</td></tr>
+<tr><td>3</td><td>Intenção antes da criação, depois criação, confirmação e remoção, com reconciliação e falha em cada etapa</td>
+<td><code>manifest.py</code> (C16, cópia privada com referência e pública redigida, fsync por linha, cauda rasgada
+detectada e cortada); <code>ownership.reconcile</code> adota o que foi criado antes da morte do runner</td>
+<td><code>python -I -m bo.safety.failure_injection</code>: 472 execuções mortas por SIGKILL em cada passo, 0 falhas</td></tr>
+<tr><td>4</td><td>Tabela de SKUs com tag e TTL por tipo (SERVICE-EVIDENCE); sem tag = nome sintético; TTL do runner não é
+destruição nativa</td>
+<td><code>allowlist_skus.yaml</code> gerado de <code>src/bo/safety/sku_policy.yaml</code> + fatos tag_support e
+ttl_support do SERVICE-EVIDENCE, com os evidence_id; tipo sem fato de tag vira <code>trace: name</code>;
+<code>native_resource_destruction: false</code> em todo tipo</td>
+<td>tests/safety/test_skus_and_gates.py; <code>python -I -m bo.safety.build --check</code></td></tr>
+<tr><td>5</td><td>Supervisor independente com heartbeat; sem ele, nenhuma janela longa</td>
+<td><code>supervisor.py</code> + <code>deploy/safety/supervisor/</code> (entrada, systemd service e timer, forced command
+ssh, bundle); plan_guard recusa TTL ou janela acima de 2 h sem ack fresco do supervisor</td>
+<td>tests/safety/test_supervisor.py (heartbeat parado e prazo vencido destroem só o da execução)</td></tr>
+<tr><td>6</td><td>Limpeza paralela só com trava global e filtro de propriedade; nunca por diferença de baseline</td>
+<td><code>ownership.cleanup</code> sob <code>cleanup-global</code> (formato do tools/lock.sh), candidatos derivados lá dentro
+(tag bo-run da execução, referência ou nome sintético de uma linha do manifesto próprio);
+<code>delete_candidates</code> recusa lista de fora</td>
+<td><code>python -I -m bo.safety.no_baseline_delete</code>: 7 tipos de alheio fora do baseline, 0 apagados</td></tr>
+<tr><td>7</td><td>Estados de remoção, prazo de expurgo e custo residual máximo por tipo</td>
+<td>C16: removal_requested → removal_pending → purge_scheduled → absent; <code>removal</code> por tipo na tabela;
+<code>EXPECTED_RESIDUE.json</code> gerado dos modos agendado, soft delete e retido</td>
+<td>tests/safety/test_ownership_and_sweep.py; intent_reconciled</td></tr>
+<tr><td>8</td><td>Limite de custo com armazenamento, tráfego e requisições</td>
+<td><code>plan_check._cost</code>: computação, armazenamento rateado, tráfego, requisições, cobrança única e resíduo;
+teto do lote, do provedor e total (100, D3) já descontado o gasto anterior; preço vivo acima do teto recusa</td>
+<td>tests/safety/test_plan_guard.py (bucket sem custo por hora estoura só por tráfego, requisições ou armazenamento)</td></tr>
+</table></div>
+
+<h2>Sequência de um lote (o que os módulos de nuvem chamam)</h2>
+<pre>runner.SafeRun
+  preflight     GO do Breno (BO_CLOUD_GO=1), módulo de nuvem no catálogo, trava cloud-&lt;provedor&gt;, canal de RAM cifrado,
+                TF_LOG desligado, nenhum state/plano cru na pasta persistente
+  plano 1       init + plan no canal; show -json só em memória
+  intenção      uma linha por recurso (nome sintético para tipo sem tag)       &lt;- antes de qualquer criação
+  plano 2       bo_run_id + bo_names; plan_guard; recusa fecha as intenções como absent, sem apply
+  supervisor    register + beat (janela longa exige ack)
+  identidade    conferida de novo, &lt;= 300 s antes do apply
+  creating      para todos; apply do MESMO plano checado
+  created       referência do state (só na cópia privada); confirmed pela leitura direta
+  persistência  só redigido (write_redacted)
+teardown_&lt;provedor&gt;.sh --apply
+  terraform destroy + state list vazio -&gt; identidade -&gt; cleanup-global -&gt; varredura de todas as regiões ->
+  remoção só do que é da execução, em ordem de dependência, removal_requested ANTES de cada chamada ->
+  espera ausente ou agendado -&gt; teardown completo contra o EXPECTED_RESIDUE -&gt; cópia pública regerada
+sweep_all.sh --run M --expect-empty    (os quatro, sempre; item fora do esperado reprova e é investigado)
+python -I -m bo.safety.intent_reconciled M</pre>
+
+<h2>Arquivos</h2>
+<div class="wrap"><table>
+<tr><th>Caminho</th><th>Papel</th></tr>
+<tr><td><code>deploy/safety/allowlist_skus.yaml</code></td><td>Tabela gerada: 102 tipos (aws 38, google 22, azurerm 23, oci 19),
+regras de SKU e de resíduo, custo por unidade, remoção, janela, rastreio, tag e TTL com evidence_id</td></tr>
+<tr><td><code>deploy/safety/plan_guard.py</code></td><td>CLI do checador (plano pela entrada padrão, direto do canal)</td></tr>
+<tr><td><code>deploy/safety/redactor.py</code></td><td><code>redact(obj, context)</code> dos harnesses e filtro de linha de comando</td></tr>
+<tr><td><code>deploy/safety/identity_guard.py</code></td><td>check / hash (para o Breno montar a allowlist) / verify-allowlist</td></tr>
+<tr><td><code>deploy/safety/intent_manifest.py</code></td><td>status, publish e check do manifesto de um módulo</td></tr>
+<tr><td><code>deploy/safety/supervisor/</code></td><td>bo_supervisor.py, bo-supervisor.service, bo-supervisor.timer, authorized_keys.example, bundle.sh, INSTALL.txt</td></tr>
+<tr><td><code>deploy/safety/teardown_{provider}.sh</code>, <code>sweep_{provider}.sh</code>, <code>sweep_all.sh</code></td><td>Teardown e varredura por provedor e dos quatro</td></tr>
+<tr><td><code>deploy/safety/EXPECTED_RESIDUE.json</code></td><td>Resíduo previsto: da execução (KMS agendado, cofre em soft delete, anel de chaves retido) e da plataforma (VPC padrão, rede default, NetworkWatcherRG, compartment DELETED)</td></tr>
+<tr><td><code>src/bo/safety/</code>, <code>tests/safety/</code></td><td>Implementação (biblioteca padrão nas partes que vão para a VM) e testes</td></tr>
+</table></div>
+
+<h2>Números medidos nesta lane</h2>
+<div class="wrap"><table>
+<tr><th>Medida</th><th>aws</th><th>google</th><th>azurerm</th><th>oci</th></tr>
+<tr><td>Tipos na allowlist</td><td>38</td><td>22</td><td>23</td><td>19</td></tr>
+<tr><td>Com tag pelo SERVICE-EVIDENCE</td><td>30</td><td>10</td><td>18</td><td>18</td></tr>
+<tr><td>Com atributo de expiração declarado (não é destruição)</td><td>7</td><td>4</td><td>8</td><td>2</td></tr>
+<tr><td>Rastreio tag / nome sintético / referência</td><td>30 / 1 / 7</td><td>10 / 10 / 2</td><td>18 / 4 / 1</td><td>18 / 0 / 1</td></tr>
+<tr><td>Execuções mortas por SIGKILL (antes, linha rasgada, entre cópias)</td><td>128</td><td>128</td><td>108</td><td>108</td></tr>
+<tr><td>Falhas de reconciliação ou teardown depois da morte</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>Adoções (criado antes de gravar created)</td><td>10</td><td>10</td><td>8</td><td>8</td></tr>
+<tr><td>Alheios fora do baseline que a diferença de baseline apagaria / apagados pelo kit</td><td>6 / 0</td><td>6 / 0</td><td>6 / 0</td><td>6 / 0</td></tr>
+</table></div>
+<p class="meta">Fontes: results/SAFETY/sku_table_summary.json, failure_injection.json, no_baseline_delete.json.
+No Google, 12 dos 22 tipos não têm rótulo pela evidência (rede, firewall, Cloud SQL na raiz do recurso, anel de chaves, conta
+de serviço): o rastreio deles é nome sintético mais linha do manifesto, nunca filtro por rótulo.</p>
+
+<h2>Limites declarados</h2>
+<div class="card warn"><ul>
+<li>Nenhum comando de nuvem rodou. Os comandos de leitura, varredura e remoção de <code>providers.py</code> foram checados
+estruturalmente (todo tipo tem caminho de remoção ou cascata; toda fonte tem parser testado com saída gravada); a primeira
+execução real deles é o SMOKE-&lt;provedor&gt;, com o GO do Breno (D9).</li>
+<li><code>sweep_all.sh --dry-run</code> não pode ler regiões sem conta: imprime, por provedor, o comando que lê as regiões da
+conta e as fontes por região e globais, e confere a cobertura de tipos. A leitura de regiões da conta é testada com
+saída gravada que inclui regiões fora de qualquer lista fixa.</li>
+<li>Os preços da tabela são tetos conservadores de lista pública, não preço conferido: o runner passa o preço vivo ao
+plan_guard (<code>--live-prices</code>) e preço vivo acima do teto recusa.</li>
+<li>O supervisor não foi instalado na VM (D16 é do Breno); o pacote monta e importa só com a biblioteca padrão.</li>
+<li>Vínculo sem nome nem tag (associações, regras, anexos) só pode ser rastreado pela referência gravada; se o runner morre
+entre a criação e o created, ele some com o pai. Por isso a política exige custo zero para esses tipos.</li>
+<li>AWS: a Tagging API só vê o que tem tag; tipo sem tag tem lista por natureza. Resource Explorer entra como fonte de
+melhor esforço (só se o índice existir na conta).</li>
+</ul></div>
+
+<h2>Comandos</h2>
+<pre>python -I -m pytest $BO_REPO/tests/safety -q
+python -I -m bo.safety.failure_injection
+python -I -m bo.safety.no_baseline_delete
+bash $BO_REPO/deploy/safety/sweep_all.sh --dry-run
+python -I -m bo.safety.build --check
+python -I -m bo.safety.intent_reconciled &lt;MODULO&gt;        (gate dos módulos de nuvem)
+bash deploy/safety/supervisor/bundle.sh $BO_DATA/tmp/SAFETY/bundle</pre>
+</main>
+</body>
+</html>

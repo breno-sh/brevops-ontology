@@ -1,0 +1,15 @@
+# systemd (usuário) do supervisor: um tick por vez. Instalar só com a decisão do Breno (D16); nada aqui é
+# instalado automaticamente. Caminhos relativos ao HOME do usuário da VM.
+[Unit]
+Description=BrevOps supervisor independente (heartbeat -> teardown)
+After=network-online.target
+
+[Service]
+Type=oneshot
+Environment=BO_SUPERVISOR_HOME=%h/bo-supervisor
+Environment=BO_DATA=%h/bo-supervisor/data
+WorkingDirectory=%h/bo-supervisor
+ExecStart=/usr/bin/python3 -I -B %h/bo-supervisor/pkg/bo_supervisor.py tick
+TimeoutStartSec=3600
+NoNewPrivileges=yes
+PrivateTmp=yes
