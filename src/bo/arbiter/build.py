@@ -26,7 +26,7 @@ from .common import dump_json, dump_jsonl, emit, now, repo, sha256_bytes
 from .freeze import MANIFEST, RULES_HTML, frozen_files, manifest_text
 from .rules import ARB_RULES, PRECEDENCE, RULE_ALIASES, RULE_ID_PATTERN, SEM_RULES, published_id
 
-AUTHORED_AT = "2026-11-04T09:45:00-03:00"
+AUTHORED_AT = "2026-11-04T10:25:00-03:00"
 RES = "results/ARBITERLIB"
 
 CONVENTIONS = [
@@ -53,8 +53,11 @@ CONVENTIONS = [
                      "só o nome publicado (CC-2 do PILOT-STO-MAP, 04/11/2026)."),
     ("Recongelamento", "2026-11-04: o fecho congelado mudou a montante (emendas 3 a 6 do CONTRACTS: esquemas C00, C09, C20 e "
                        "src/bo/contracts/rules.py, spec_a..d.py, sssom.py) e o árbitro foi recongelado sobre bo/base; "
-                       "comprovante em results/ARBITERLIB/freeze_receipt.json. Motivo: contrato a montante, não "
-                       "ajuste de resultado (CC-1 do PILOT-STO-MAP)."),
+                       "depois, o SEMANTICS 61d6fae (CC-3: invert aceita função do registro) mudou claims.py e "
+                       "transforms.py do fecho e o árbitro foi recongelado de novo (ARBITER-20261104-2). Comprovante "
+                       "vigente em results/ARBITERLIB/freeze_receipt_ARBITER-20261104-2.json (o anterior, "
+                       "freeze_receipt.json, fica como histórico). Motivo: contrato e referência a montante, "
+                       "não ajuste de resultado (CC-1 do PILOT-STO-MAP)."),
     ("Ciclo", "cycle do C21 é a rodada do árbitro (1; com --previous, 1 + a maior já gravada). Os ciclos do grafo K4 "
               "vão em cycles.jsonl (cada tentativa de composição e as diretas conferidas)."),
     ("Compostos", "Todo composto COMPOSED do K4 sai em verdicts.jsonl com claim_id = pernas ligadas por ∘ e "

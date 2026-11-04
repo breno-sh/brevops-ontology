@@ -17,7 +17,7 @@
    "rule": "ARB-REAL-MULTI"
   }
  ],
- "arbiter_sha256": "b7becd9d914406aa109965263423c341c066ee2c19d68f92405f158c2f10294d",
+ "arbiter_sha256": "5cc92436df74c1fcb28f9c8d0703ac415fb2b9e52c00f723d54b3138ea7e9f87",
  "by_domain": {
   "?": {
    "AMBIGUOUS": 2,
@@ -109,7 +109,7 @@
    ]
   }
  ],
- "generated_at": "2026-11-04T09:45:00-03:00",
+ "generated_at": "2026-11-04T10:25:00-03:00",
  "genuine_conflicts": [
   {
    "claims": [
