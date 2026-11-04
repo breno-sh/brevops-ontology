@@ -1,14 +1,14 @@
 {
  "calib": {
-  "checks": 201,
+  "checks": 202,
   "direction_entries": 181,
-  "fixtures": 122
+  "fixtures": 123
  },
- "generated_at": "2026-11-04T08:20:07-03:00",
+ "generated_at": "2026-11-04T09:01:43-03:00",
  "heldout": {
-  "checks": 201,
+  "checks": 204,
   "direction_entries": 181,
-  "fixtures": 122
+  "fixtures": 123
  },
  "module": "PILOT-STO-ORACLE",
  "schema": "bo.pilot.sto.build_report/1",

@@ -1,5 +1,5 @@
 PILOT-STO-ORACLE: notas do oráculo offline do piloto de armazenamento de objeto
-gravado em 2026-11-03T22:00-03:00, revisto em 2026-11-04T08:18:49-03:00 (America/Recife)
+gravado em 2026-11-03T22:00-03:00, revisto em 2026-11-04T09:02:45-03:00 (America/Recife)
 
 O QUE ESTÁ AQUI
 - Avaliador: pilot/sto/oracle/sto_oracle.py (só biblioteca padrão; não importa nada do pipeline). Estado efetivo
@@ -10,9 +10,9 @@ O QUE ESTÁ AQUI
   de vida, evidência que falta) e julgamento de configuração-alvo (ACCEPT, ACCEPT_WITH_DECLARED_LOSS, REJECT, UNKNOWN).
 - Regras: 78 em RULES (49 publicadas, 13 derivadas, 16 interpretadas com base declarada); toda frase citada está na
   linha declarada dos docs fixados (aws 6.71.0, google 8.9.0, azurerm 5.12.0, oci 9.11.0), conferido por teste.
-- Calibração (git): 122 fixtures de um provedor em 8 casos obrigatórios e 181 entradas de direção (12 direções x 4
-  famílias), 201 conferências; resposta em pilot/sto/expected_answers.json.
-- Retidas: 122 fixtures e 181 entradas novas, sorteadas com o gerador do sistema (nomes, dias, chaves, variantes);
+- Calibração (git): 123 fixtures de um provedor em 8 casos obrigatórios e 181 entradas de direção (12 direções x 4
+  famílias), 202 conferências; resposta em pilot/sto/expected_answers.json.
+- Retidas: 123 fixtures e 181 entradas novas, sorteadas com o gerador do sistema (nomes, dias, chaves, variantes);
   só existem cifradas (openssl cms, AES-256) em $BO_DATA/PILOT-STO-ORACLE/sealed/heldout.cms.pem com o certificado
   público da VM Oracle (D15). O texto claro nunca foi gravado: saiu do gerador direto para o openssl por pipe. A
   decifração na VM foi provada uma vez (seal_verification.json: sha do texto claro remoto = sha do índice).
@@ -48,10 +48,11 @@ ACHADOS (resultado, não ajuste)
    política já existente (frase publicada) e a ordem de aplicação decide.
 5. OCI: DELETE na versão corrente de contêiner versionado fica UNKNOWN: a frase fixada diz 'permanently delete
    objects' sem tratar versões.
-7. Tensão com o SERVICE-EVIDENCE: R-OWN-API dá dono self na API às políticas separadas (managementPolicies do Azure,
-   objectLifecyclePolicy da OCI). O oráculo mantém essas políticas como faceta do contêiner/conta, porque o CMT-BKT-P01
-   (protegido) diz que configuração cujo dono é o contêiner é faceta também como recurso separado. Para o
-   SERVICE-EVIDENCE/GRAIN decidirem: objeto de API próprio não deveria decidir a faceta (seria embalagem de API).
+7. Tensão com o SERVICE-EVIDENCE: doc e spec dão dono e ciclo de vida self à managementPolicies do Azure. O oráculo
+   mantém a política como faceta da conta, porque o CMT-BKT-P01 (protegido) diz que configuração cujo dono é o
+   contêiner é faceta também como recurso separado, e a frase publicada diz que a política é 'aplicada à conta'.
+   Na AWS a spec (CC-8) confirma: versionamento, ciclo de vida, bloqueio, política, ACL e propriedade têm dono e
+   ciclo de vida = Bucket. Na OCI a política de ciclo de vida está EM DISPUTA (ver revisão CC-8): fica UNKNOWN.
 6. S3 newer_noncurrent_versions K equivale a GCS num_newer_versions K+1 (a viva conta como versão mais nova), mas o
    S3 exige noncurrent_days >= 1: contagem pura não se traduz sem atraso.
 
@@ -77,3 +78,19 @@ FORA DO ESCOPO DO ORÁCULO
 - Criptografia (faceta da fatia em §3b) não está no objetivo do oráculo deste módulo; transição de classe de
   armazenamento é simulada mas não comparada entre provedores (sem equivalência publicada de classes).
 - Estado de conexão (UNKNOWN no SERVICE-EVIDENCE) não entra na fatia STO; nada o assume.
+
+REVISÃO 2026-11-04 09h (SERVICE-EVIDENCE CC-8, 787ab84: fatos de spec de API e 12 disputas)
+- Rerodei o gabarito sobre o service_evidence.jsonl novo (sha256 6bc9f724...). Das 12 disputas de
+  results/SERVICE-EVIDENCE/spec_disputes.json, duas são da fatia: oci_objectstorage_object_lifecycle_policy, dono
+  (doc self SE-oci-ly3dxhupemtm3r2k x spec parent SE-oci-kkzc3zme53bcjzl4) e controlador de ciclo de vida (doc self
+  SE-oci-2iam25lrjrqv3hu6 x spec parent SE-oci-7o3wovj6unfbibgi). Disputa vira UNKNOWN com motivo, sem escolha.
+- Mudou 1 resposta: a política de ciclo de vida OCI deixa de ser FACET do contêiner (antiga FX-STO-OCI-DEC-SCOPE-P01,
+  removida) e vira a unidade setting:lifecycle@DISPUTED:<política>, kind/owner/lifecycle_controller UNKNOWN, campos
+  'disputed' e 'dispute' com os dois lados; o alcance efetivo (o contêiner referenciado) não está em disputa e fica.
+  Fixture nova FX-STO-OCI-DEC-SCOPE-U01 (unknown) e contraexemplo FX-STO-OCI-DEC-SCOPE-N01 (escolher 'faceta do
+  contêiner' é rejeitado). As fixtures do namespace OCI só mudaram de número (N02, U02).
+- A spec confirmou sem mudar resposta: facetas da AWS com dono e ciclo de vida = Bucket; contêiner Azure, contêiner
+  GCS e contêiner OCI self/self. Efeito de versionamento, acesso público e ciclo de vida vem dos docs fixados e não
+  mudou; nenhum veredito das 181 entradas de direção mudou. Oráculo 1.2.0 (regra DEC-DISPUTED).
+- As retidas mudaram de conteúdo (a mesma família de fixture está nelas): novo sorteio, novo selo D15, decifração
+  conferida na VM.

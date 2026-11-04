@@ -28,7 +28,7 @@ import json
 import math
 import re
 
-ORACLE_VERSION = "1.1.0"
+ORACLE_VERSION = "1.2.0"
 PROVIDERS = ("aws", "google", "azurerm", "oci")
 PINS = {"aws": "6.71.0", "google": "8.9.0", "azurerm": "5.12.0", "oci": "9.11.0"}
 
@@ -213,6 +213,7 @@ RULES = {
     "DEC-FACET-REF": {"level": "derived", "basis": "recurso separado identificado pelo contêiner (identity schema: bucket obrigatório) é faceta do contêiner (CMT-BKT-P01)", "evidence": []},
     "DEC-AZ-CONTAINER": {"level": "derived", "basis": "SE-azurerm-qvoe5bsgpg3atfy2 (controlador de ciclo de vida self na camada de API, R-LIFE-API) e SE-azurerm-si55lp2kgnkl4qun (dono self na API); a identidade fica dentro da conta (SE-azurerm-n2yvw45ffqgp2565, SE-azurerm-xxozs3v2tmjpca2z). Componente exige controlador = pai (CMT-BKT-P03, CMT-LC-P01): com controlador self o contêiner é entidade no namespace da conta. Se a conta apaga o contêiner junto continua sem evidência", "evidence": []},
     "DEC-OCI-NAMESPACE": {"level": "derived", "basis": "oci_objectstorage_namespace_metadata: dono não documentado (SE-oci-esq4tizacudkvhhx); ciclo de vida e alcance só na camada Terraform (SE-oci-2jyxv2tqy5eg2i2g, SE-oci-r34zohdkd44rvbid), que pela nota da própria regra não diz quem cria ou apaga o objeto na API: na unidade de domínio continuam UNKNOWN", "evidence": []},
+    "DEC-DISPUTED": {"level": "derived", "basis": "fato em disputa no SERVICE-EVIDENCE (results/SERVICE-EVIDENCE/spec_disputes.json, CC-8): a doc dá um valor e a spec do provedor outro; o oráculo não escolhe, o campo fica UNKNOWN com o motivo", "evidence": []},
     "DEC-OCI-BUCKET": {"level": "derived", "basis": "o namespace é escopo de unicidade do nome (bucket_scope NAMESPACE), não pai com ciclo de vida: contêiner é entidade com chave composta (SE-oci-bqtq3hd3wukbga5o dono self e SE-oci-bjc4cjf3tka6ongc ciclo de vida self na API)", "evidence": [
         _ev(D_OCI + "objectstorage_bucket.html.markdown", 66, "Bucket names must be unique within an Object Storage namespace")]},
 }
@@ -1197,6 +1198,20 @@ def _setting_units(fx):
     return out
 
 
+# Fatos em disputa no SERVICE-EVIDENCE (spec × doc), por (tipo Terraform, campo): ids dos dois lados.
+DISPUTED = {
+    ("oci_objectstorage_object_lifecycle_policy", "owner"): {
+        "doc": {"kind": "self", "evidence": "SE-oci-ly3dxhupemtm3r2k"}, "spec": {"kind": "parent", "evidence": "SE-oci-kkzc3zme53bcjzl4"}},
+    ("oci_objectstorage_object_lifecycle_policy", "lifecycle_controller"): {
+        "doc": {"kind": "self", "evidence": "SE-oci-2iam25lrjrqv3hu6"}, "spec": {"kind": "parent", "evidence": "SE-oci-7o3wovj6unfbibgi"}},
+}
+
+
+def _disputes_of(by):
+    rtype = by.split("/", 1)[0].split(".", 1)[0]
+    return {f: d for (t, f), d in DISPUTED.items() if t == rtype}
+
+
 def decompose(fx):
     """Unidades neutras da fixture. Ids: container:<addr>, namespace:<addr>, setting:<tipo>@<dono>."""
     p = fx["provider"]
@@ -1228,6 +1243,16 @@ def decompose(fx):
             owner = "account:context"
             scope = {"all_in": "account:context", "known": sorted(f"container:{c}" for c in cs)}
             rules = ["AWS-PAB-ACCOUNT-SCOPE"]
+        elif target is not None and _disputes_of(by):
+            ds = _disputes_of(by)
+            units[f"setting:{kind}@DISPUTED:{by}"] = {
+                "kind": "UNKNOWN", "owner": "UNKNOWN" if "owner" in ds else f"container:{target}",
+                "effective_scope": [f"container:{target}"],
+                "lifecycle_controller": "UNKNOWN" if "lifecycle_controller" in ds else "parent",
+                "realized_by": [by], "missing_evidence": [], "disputed": sorted(ds),
+                "dispute": {f: {"doc": d["doc"], "spec": d["spec"]} for f, d in sorted(ds.items())},
+                "rules": ["DEC-DISPUTED"]}
+            continue
         elif target is None:
             units[f"setting:{kind}@UNRESOLVED:{by}"] = {"kind": "UNKNOWN", "owner": "UNKNOWN", "effective_scope": "UNKNOWN",
                                                         "lifecycle_controller": "UNKNOWN", "realized_by": [by],

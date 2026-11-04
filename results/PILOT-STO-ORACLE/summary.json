@@ -3,19 +3,19 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "PILOT-STO-ORACLE",
- "generated_at": "2026-11-04T08:18:52-03:00",
+ "generated_at": "2026-11-04T09:03:03-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-STO-ORACLE.txt",
   "brief_sha256": "dcc0cad3880b87ac5e3efb55c1feb1b019f4e455d371d3fb8242169c5e6db1d3",
   "params": {
-   "oracle_version": "1.1.0",
-   "calib_fixtures": "122",
+   "oracle_version": "1.2.0",
+   "calib_fixtures": "123",
    "calib_direction_entries": "181",
-   "heldout_items": "303",
+   "heldout_items": "304",
    "providers": "aws:6.71.0,google:8.9.0,azurerm:5.12.0,oci:9.11.0",
    "seal": "openssl-cms-aes256-D15",
-   "rules": "78"
+   "rules": "79"
   },
   "inputs": [
    {
@@ -31,10 +31,10 @@
    {
     "path": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl",
     "kind": "file",
-    "sha256": "cc5260d3ed4a8db4ddbf50f429b9d7d4060f67a43593b127e01e571a49979074"
+    "sha256": "6bc9f724ca4629f9dd73c3921a39919e88fed5f4f3b290a13655ec0b92b05772"
    }
   ],
-  "recorded_at": "2026-11-04T08:18:52-03:00"
+  "recorded_at": "2026-11-04T09:03:03-03:00"
  },
  "sources": [
   {
@@ -70,8 +70,13 @@
   {
    "uri": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl",
    "license": "interno (SERVICE-EVIDENCE)",
-   "transformation": "dono, alcance e ciclo de vida citados por evidence_id; gabarito rerodado sobre CC-1c/CC-1d (69fb76e)"
+   "transformation": "dono, alcance e ciclo de vida citados por evidence_id; gabarito rerodado sobre CC-8 (787ab84)"
+  },
+  {
+   "uri": "results/SERVICE-EVIDENCE/spec_disputes.json",
+   "license": "interno (SERVICE-EVIDENCE)",
+   "transformation": "disputas spec x doc da fatia viram UNKNOWN com os dois lados"
   }
  ],
- "notes": "oráculo offline STO 1.1.0; retidas só cifradas com o certificado da VM (D15); nada lido do glossário ou do mapeamento"
+ "notes": "oráculo offline STO 1.2.0; retidas só cifradas com o certificado da VM (D15); nada lido do glossário ou do mapeamento"
 }

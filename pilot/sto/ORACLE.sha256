@@ -1,6 +1,6 @@
 f4c8bb118924c27362afbb2dc48c7aee00fa39216587f3803c2ee9005cc80aa8  pilot/sto/oracle/MANDATORY.json
-1cd98f1de0b49e8694566d7a0f835c7c21488d2b731d69d9d66edaf2c5c04f4c  pilot/sto/oracle/RULES.json
-884b4f941a5e6b12a14324c09396662b6fa5d2f91f289e1edd66c7def852d16f  pilot/sto/oracle/sto_oracle.py
+cf5c94644cf0e17fc0a9f2b0a9c676cd2e24e78ac2d860f52d537241c700929e  pilot/sto/oracle/RULES.json
+3e4a549ce30d8d3d574d42e170799d2c7a6abc65e4f627e8c8b7d45b7b8241e0  pilot/sto/oracle/sto_oracle.py
 dbd35ad347765fdd2c65bced49fa6b664d684259ab093f5ad7a2e7b24fe2f544  pilot/sto/oracle/test_calibration.py
 e3ac6e82968ba8360c99a0afaa156841198998301179a35df77f9afed75716af  pilot/sto/oracle/test_documented_examples.py
 854ec9da5eeff41fd576840f3156d6d0ac2a06a7fe63cda4b987e7d94d1bb978  pilot/sto/fixtures_calib/aws/FX-STO-AWS-DEC-PACK-N01.json
@@ -282,9 +282,10 @@ f5bfee7c79851f124c7c9debbc9791edc57824125f1e3914ab7fdb4f389353de  pilot/sto/fixt
 621aba538ab123fb1c52e57b0f724b00112e60fe85b16c3d2cfe30ed8f8377d3  pilot/sto/fixtures_calib/google/FX-STO-GCP-VER-U01.json
 270413fbd6e4ffbd83237c60a4b0488ec45c5e2abca98f676046ea8ec0ea748f  pilot/sto/fixtures_calib/oci/FX-STO-OCI-DEC-PACK-N01.json
 a15ebc0f529a82a8891f2401b678a7000d779bbd05c3d03ef73d2cfd47145196  pilot/sto/fixtures_calib/oci/FX-STO-OCI-DEC-PACK-P01.json
-2fde5f559acbeb730b00a80c28cd15c2b020206577b07c748d324d671c40005f  pilot/sto/fixtures_calib/oci/FX-STO-OCI-DEC-SCOPE-N01.json
-b296a4de942c8eb76a6df86dc94f8f98141596b3334f2ee18cf50556fc88db81  pilot/sto/fixtures_calib/oci/FX-STO-OCI-DEC-SCOPE-P01.json
-46e72769f96b1e0abc8351a29e5a17a98230c47f73b8d2bbab98544f8006a382  pilot/sto/fixtures_calib/oci/FX-STO-OCI-DEC-SCOPE-U01.json
+542e6f88b1e3c34e53c6d719625d2ed395463ae1dc70dd4ea1018ba0c33c4932  pilot/sto/fixtures_calib/oci/FX-STO-OCI-DEC-SCOPE-N01.json
+2f754a6abd090277181abecc8457f0d1a6df3ea58607052d1af1e980daed351f  pilot/sto/fixtures_calib/oci/FX-STO-OCI-DEC-SCOPE-N02.json
+f2afe6a44c7f9f094233f34cd187a0adc24ece36e1221245c3ef10a8468222f5  pilot/sto/fixtures_calib/oci/FX-STO-OCI-DEC-SCOPE-U01.json
+59a4c02f04bc546d89d839b3a5fa6143b740f471fe3e10ae3ecc15631327e272  pilot/sto/fixtures_calib/oci/FX-STO-OCI-DEC-SCOPE-U02.json
 af48f1a24f49dd394c3fd0ae1272e731c14cb93af6fcc145a6224ad3fd63d647  pilot/sto/fixtures_calib/oci/FX-STO-OCI-LC-CUR-N01.json
 c9e7181cb94a2be33542aa3403477fad13f0b1e2784b2539d7fb90aa866241de  pilot/sto/fixtures_calib/oci/FX-STO-OCI-LC-CUR-P01.json
 abf069ddef401d5bd5a6a3706e43000d07b05d3552276877a58d2647e85b757e  pilot/sto/fixtures_calib/oci/FX-STO-OCI-LC-CUR-U01.json
@@ -306,7 +307,7 @@ bfefa5f2409643a1ef7079174255a086c193b45709f28e79ca2250ba568aff9a  pilot/sto/fixt
 c86d349c3a83ea2063dfeeb4271ffce5510915e33a0a4ba2add7424cded1239f  pilot/sto/fixtures_calib/oci/FX-STO-OCI-VER-N02.json
 79a34e92b58e6cb710648ae7aade4763d5e296e2e741a187eee07f81a60aa3f3  pilot/sto/fixtures_calib/oci/FX-STO-OCI-VER-P01.json
 ca43f4e5c597caa35ee602310afe02e4281259bd9e946671c31343b5283480d3  pilot/sto/fixtures_calib/oci/FX-STO-OCI-VER-U01.json
-a00ad9570cc850e823c251cd83099e5394e278b7258956ab4f8c8d13cb2303c0  pilot/sto/expected_answers.json
-95945627050269f346713758448a918b8079c58c362d361ac208cca4781d72c3  /Users/breno/doutorado/brevops-data/PILOT-STO-ORACLE/sealed/heldout.cms.pem
-ca32f2bb1dd2fadc25eebca2bbee895baaeae1f40425bd4bd552195e4f6ee68b  /Users/breno/doutorado/brevops-data/PILOT-STO-ORACLE/sealed/SEALED_INDEX.json
+9dfc58e25e9efbfa0369f0ecaf13a6cb5053482f843d38facb2d2db1d1b738fd  pilot/sto/expected_answers.json
+572f133361bc21d79ae225ba98c42d3f7fa5eba0b6a472c6292264ea735a8ce0  /Users/breno/doutorado/brevops-data/PILOT-STO-ORACLE/sealed/heldout.cms.pem
+c3669d6cc032a300a36d3e90a23d7654cd7c6277c6b7caac29994c4378c45f69  /Users/breno/doutorado/brevops-data/PILOT-STO-ORACLE/sealed/SEALED_INDEX.json
 eb95ac5241b1056bb547087bc80a40f5706f4c6e5f598a1ba640dfc54c986934  /Users/breno/doutorado/brevops-data/PILOT-STO-ORACLE/sealed/recipient_cert.pem

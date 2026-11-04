@@ -11139,6 +11139,30 @@
     {
      "claim": {
       "about": "decomposition",
+      "unit": "setting:lifecycle@container:oci_objectstorage_bucket.logs",
+      "value": {
+       "kind": "FACET"
+      }
+     },
+     "expect": {
+      "code": "NO_SUCH_UNIT",
+      "verdict": "REJECT"
+     },
+     "kind": "claim"
+    }
+   ],
+   "file": "pilot/sto/fixtures_calib/oci/FX-STO-OCI-DEC-SCOPE-N01.json",
+   "invariant_group": null,
+   "polarity": "negative",
+   "provider": "oci",
+   "summary": "disputa resolvida por escolha (faceta do contêiner) tem de ser rejeitada"
+  },
+  "FX-STO-OCI-DEC-SCOPE-N02": {
+   "case": "MC-DEC-SCOPE",
+   "checks": [
+    {
+     "claim": {
+      "about": "decomposition",
       "unit": "setting:namespace_defaults@namespace:context",
       "value": {
        "kind": "FACET"
@@ -11151,36 +11175,39 @@
      "kind": "claim"
     }
    ],
-   "file": "pilot/sto/fixtures_calib/oci/FX-STO-OCI-DEC-SCOPE-N01.json",
+   "file": "pilot/sto/fixtures_calib/oci/FX-STO-OCI-DEC-SCOPE-N02.json",
    "invariant_group": null,
    "polarity": "negative",
    "provider": "oci",
    "summary": "metadados do namespace alegados faceta do contêiner"
   },
-  "FX-STO-OCI-DEC-SCOPE-P01": {
+  "FX-STO-OCI-DEC-SCOPE-U01": {
    "case": "MC-DEC-SCOPE",
    "checks": [
     {
      "expect": {
+      "disputed": [
+       "lifecycle_controller",
+       "owner"
+      ],
       "effective_scope": [
        "container:oci_objectstorage_bucket.logs"
       ],
-      "kind": "FACET",
-      "lifecycle_controller": "parent",
-      "missing_evidence": [],
-      "owner": "container:oci_objectstorage_bucket.logs"
+      "kind": "UNKNOWN",
+      "lifecycle_controller": "UNKNOWN",
+      "owner": "UNKNOWN"
      },
      "kind": "decomposition",
-     "unit": "setting:lifecycle@container:oci_objectstorage_bucket.logs"
+     "unit": "setting:lifecycle@DISPUTED:oci_objectstorage_object_lifecycle_policy.logs"
     }
    ],
-   "file": "pilot/sto/fixtures_calib/oci/FX-STO-OCI-DEC-SCOPE-P01.json",
+   "file": "pilot/sto/fixtures_calib/oci/FX-STO-OCI-DEC-SCOPE-U01.json",
    "invariant_group": null,
-   "polarity": "positive",
+   "polarity": "unknown",
    "provider": "oci",
-   "summary": "ciclo de vida do contêiner: faceta com alcance próprio"
+   "summary": "política de ciclo de vida separada: dono e ciclo de vida em disputa spec x doc"
   },
-  "FX-STO-OCI-DEC-SCOPE-U01": {
+  "FX-STO-OCI-DEC-SCOPE-U02": {
    "case": "MC-DEC-SCOPE",
    "checks": [
     {
@@ -11198,7 +11225,7 @@
      "unit": "setting:namespace_defaults@namespace:context"
     }
    ],
-   "file": "pilot/sto/fixtures_calib/oci/FX-STO-OCI-DEC-SCOPE-U01.json",
+   "file": "pilot/sto/fixtures_calib/oci/FX-STO-OCI-DEC-SCOPE-U02.json",
    "invariant_group": null,
    "polarity": "unknown",
    "provider": "oci",
@@ -11667,23 +11694,23 @@
    "summary": "versionamento do contêiner não lido"
   }
  },
- "generated_at": "2026-11-04T08:20:07-03:00",
+ "generated_at": "2026-11-04T09:01:42-03:00",
  "heldout": {
-  "ciphertext_sha256": "95945627050269f346713758448a918b8079c58c362d361ac208cca4781d72c3",
+  "ciphertext_sha256": "572f133361bc21d79ae225ba98c42d3f7fa5eba0b6a472c6292264ea735a8ce0",
   "counts": {
-   "checks": 201,
+   "checks": 204,
    "direction_entries": 181,
-   "fixtures": 122
+   "fixtures": 123
   },
-  "plaintext_sha256": "9805cdee75ca524f8e9a6e22bf8d754af7315464bc9f74858921e4a0317b5c46",
+  "plaintext_sha256": "cb9d9d1187cfe78e5db722b80dc275dfe2b92749c94cdc334395631c2e98fc3b",
   "recipient_fingerprint_sha256": "3677203c7657c3b0043246f3ae13cc25b41ec29dac5a6a99134aad9f6bd43e26",
-  "sealed_at": "2026-11-04T08:18:18-03:00",
+  "sealed_at": "2026-11-04T09:01:42-03:00",
   "sealed_file": "$BO_DATA/PILOT-STO-ORACLE/sealed/heldout.cms.pem"
  },
  "module": "PILOT-STO-ORACLE",
  "note": "resposta esperada escrita a partir dos compromissos (C24), da evidência publicada (SERVICE-EVIDENCE e docs fixados) e das fórmulas de cases.py; conferida contra o avaliador antes de gravar; nunca saída de mapeador. Retidas: só o índice abaixo; o conteúdo existe só cifrado.",
- "oracle_sha256": "884b4f941a5e6b12a14324c09396662b6fa5d2f91f289e1edd66c7def852d16f",
- "oracle_version": "1.1.0",
+ "oracle_sha256": "3e4a549ce30d8d3d574d42e170799d2c7a6abc65e4f627e8c8b7d45b7b8241e0",
+ "oracle_version": "1.2.0",
  "providers": {
   "aws": "6.71.0",
   "azurerm": "5.12.0",

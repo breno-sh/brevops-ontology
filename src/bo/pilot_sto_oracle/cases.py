@@ -308,14 +308,25 @@ def mc_dec_scope(g):
     g.add("aws", "MC-DEC-SCOPE", "negative", "bloqueio de conta alegado faceta de um contêiner", merge(ra, rb, acc),
           [{"kind": "claim", "claim": {"about": "decomposition", "unit": f"setting:public_access_block@container:{ca}", "value": {"kind": "FACET"}},
             "expect": {"verdict": "REJECT", "code": "NO_SUCH_UNIT"}}])
-    # Google e OCI: configuração de contêiner tem alcance do próprio contêiner
-    for p in ("google", "oci"):
-        nb = g.name("logs")
-        r, c = bucket(p, g, nb)
-        r = merge(r, expire_current(p, nb, 30))
-        cu = f"container:{c}"
-        g.add(p, "MC-DEC-SCOPE", "positive", "ciclo de vida do contêiner: faceta com alcance próprio", r,
-              [{"kind": "decomposition", "unit": f"setting:lifecycle@{cu}", "expect": _facet(cu, [cu])}])
+    # Google: configuração embutida no contêiner tem alcance do próprio contêiner
+    nb = g.name("logs")
+    r, c = bucket("google", g, nb)
+    r = merge(r, expire_current("google", nb, 30))
+    cu = f"container:{c}"
+    g.add("google", "MC-DEC-SCOPE", "positive", "ciclo de vida do contêiner: faceta com alcance próprio", r,
+          [{"kind": "decomposition", "unit": f"setting:lifecycle@{cu}", "expect": _facet(cu, [cu])}])
+    # OCI: dono e controlador da política separada estão em disputa (doc self x spec parent): UNKNOWN, sem escolha
+    r, c = bucket("oci", g, nb)
+    r = merge(r, expire_current("oci", nb, 30))
+    cu = f"container:{c}"
+    pol = f"oci_objectstorage_object_lifecycle_policy.{nb}"
+    g.add("oci", "MC-DEC-SCOPE", "unknown", "política de ciclo de vida separada: dono e ciclo de vida em disputa spec x doc", r,
+          [{"kind": "decomposition", "unit": f"setting:lifecycle@DISPUTED:{pol}",
+            "expect": {"kind": "UNKNOWN", "owner": "UNKNOWN", "lifecycle_controller": "UNKNOWN", "effective_scope": [cu],
+                       "disputed": ["lifecycle_controller", "owner"]}}])
+    g.add("oci", "MC-DEC-SCOPE", "negative", "disputa resolvida por escolha (faceta do contêiner) tem de ser rejeitada", r,
+          [{"kind": "claim", "claim": {"about": "decomposition", "unit": f"setting:lifecycle@{cu}", "value": {"kind": "FACET"}},
+            "expect": {"verdict": "REJECT", "code": "NO_SUCH_UNIT"}}])
     nb = g.name("logs")
     r, c = bucket("oci", g, nb)
     r["oci_objectstorage_namespace_metadata"] = {"this": {"namespace": "${var.namespace}",

@@ -1,6 +1,6 @@
 {
  "docs_root": "$BO_DATA/downloads/",
- "oracle_version": "1.1.0",
+ "oracle_version": "1.2.0",
  "rules": {
   "AWS-ACL-PUBLIC-READ": {
    "evidence": [
@@ -429,6 +429,11 @@
   },
   "DEC-AZ-CONTAINER": {
    "basis": "SE-azurerm-qvoe5bsgpg3atfy2 (controlador de ciclo de vida self na camada de API, R-LIFE-API) e SE-azurerm-si55lp2kgnkl4qun (dono self na API); a identidade fica dentro da conta (SE-azurerm-n2yvw45ffqgp2565, SE-azurerm-xxozs3v2tmjpca2z). Componente exige controlador = pai (CMT-BKT-P03, CMT-LC-P01): com controlador self o contêiner é entidade no namespace da conta. Se a conta apaga o contêiner junto continua sem evidência",
+   "evidence": [],
+   "level": "derived"
+  },
+  "DEC-DISPUTED": {
+   "basis": "fato em disputa no SERVICE-EVIDENCE (results/SERVICE-EVIDENCE/spec_disputes.json, CC-8): a doc dá um valor e a spec do provedor outro; o oráculo não escolhe, o campo fica UNKNOWN com o motivo",
    "evidence": [],
    "level": "derived"
   },
