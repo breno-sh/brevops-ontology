@@ -1,0 +1,53 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "CORPUS-OCI",
+ "generated_at": "2026-11-04T09:26:53-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/CORPUS-OCI.txt",
+  "brief_sha256": "b5cf0432b1067919c25735e3dc6317115480be57c0d852c9b0b108b11dd97815",
+  "params": {
+   "provider": "oci",
+   "provider_version": "9.11.0",
+   "resource_unit": "bloco resource (sem data), chave (repo_id, file, resource_address)",
+   "module_unit": "(repo_id, dirname(file))",
+   "atom_resolution": "sem [n]; dynamic content desdobrado; caminho exato ou maior prefixo atributo",
+   "class_precedence": "withheld>symbolic>literal",
+   "zero_rows": "átomo não configurado num (repo, tipo) não tem registro; denominador no registro do tipo",
+   "hcl_branch_data": "bo/hcl, dados em $BO_DATA/HCL (sha nas entradas)"
+  },
+  "inputs": [
+   {
+    "path": "$BO_DATA/HCL/resources.parquet",
+    "kind": "file",
+    "sha256": "4862e47b8fac5dbfca08ac725141e7e84c4915579b250504eaf7b417537c13c0"
+   },
+   {
+    "path": "$BO_DATA/HCL/symbolic_config.jsonl",
+    "kind": "file",
+    "sha256": "867340a28cb3a6c3a215ea9735c5308fdbf516954a896d0aae6d19db8e0c560f"
+   },
+   {
+    "path": "$BO_DATA/HCL/symbolic_config.index.json",
+    "kind": "file",
+    "sha256": "f20260ec47d07b89f32516867c5067611fe3859ea10789aacada4a61940316a3"
+   },
+   {
+    "path": "$BO_DATA/SCHEMA-OCI/atoms.jsonl",
+    "kind": "file",
+    "sha256": "99e3dc9d3434e48675fd71eb817145ae63c2159fd041f3c67dd1d308e814287c"
+   }
+  ],
+  "recorded_at": "2026-11-04T09:26:53-03:00"
+ },
+ "sources": [
+  {
+   "uri": "https://doi.org/10.5281/zenodo.20339474",
+   "license": "CC-BY-4.0 (dataset); licença por repositório em $BO_DATA/HCL/licenses.json",
+   "transformation": "só contagens agregadas por id sintético, via configuração simbólica do HCL"
+  }
+ ],
+ "notes": "[2026-11-04T09:26:48-03:00] Uso real do oci no TerraDS, sem split. 1554 repositórios, 1308 famílias, 4880 módulos e 39289 recursos gerenciados (13066 blocos data fora). 332373 valores lidos (= n_attrs do parquet); 299681 viram átomo; não atribuídos: attr_not_in_schema 232, block_as_attribute 404, dynamic_meta 5436, meta_argument 24613, type_not_in_schema 2007. Classes dos valores: literal 81980, symbolic 245660, withheld 4733. Átomos configurados: 4503 de 27172 (4497 de 19986 configuráveis); em 2+ famílias: 2991. Tipos no corpus: 356, 19 fora do schema 9.11.0. 140131 registros usage (122662 por átomo). Mais difundidos (famílias): oci:oci_core_subnet:compartment_id 902; oci:oci_core_subnet:vcn_id 902; oci:oci_core_subnet:cidr_block 901; oci:oci_core_subnet:display_name 879; oci:oci_core_internet_gateway:compartment_id 782. Definições em build_report.json (definitions) e na docstring de bo.corpus_oci.counting. Contagem por repositório, módulo e recurso em atom_totals.jsonl e type_totals.jsonl."
+}
