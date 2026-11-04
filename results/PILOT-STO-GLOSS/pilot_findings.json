@@ -1,8 +1,9 @@
 {
  "c25_shape": {
-  "grain_fact_records": 594,
-  "stated": 569,
+  "grain_fact_records": 690,
+  "stated": 682,
   "stated_by_aspect": {
+   "effective_scope/None": 113,
    "effective_scope/attribute_scope": 2,
    "effective_scope/effective_public_access": 1,
    "effective_scope/effective_public_access_prevention": 1,
@@ -28,8 +29,8 @@
    "owner/parent": 5,
    "owner/parent_attribute": 1
   },
-  "status_unknown": 25,
-  "with_block_path": 396
+  "status_unknown": 8,
+  "with_block_path": 489
  },
  "excluded": {
   "aws_s3_bucket_object": "objeto: conteúdo é Withheld",
@@ -47,41 +48,46 @@
   "oci_objectstorage_private_endpoint": "acesso de rede, não acesso público ao conteúdo",
   "oci_objectstorage_replication_policy": "replicação: fora das quatro facetas"
  },
- "generated_at": "2026-11-04T03:22:41-03:00",
+ "generated_at": "2026-11-04T08:00:05-03:00",
  "grain": {
   "aws": {
    "atoms": 161,
    "candidates": 53,
-   "canonical_atoms": 161,
+   "canonical_atoms": 155,
    "container": {
     "grain": "UNKNOWN",
-    "identity_class": "INDEPENDENT",
+    "identity_class": "UNRESOLVED",
     "missing": [
+     "identity",
+     "lifecycle_controller",
+     "owner",
      "effective_scope"
     ],
     "reasons": [
      "api_resource: ponte sem recurso de API",
-     "effective_scope: not_documented",
+     "effective_scope: camada Terraform: não é o alcance na API",
      "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
-     "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela",
-     "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)"
+     "identity: chave compartilhada ['bucket'] sem raiz única com ciclo de vida self entre os pares (0 raiz(es))",
+     "lifecycle_controller: camada Terraform: create/delete do provider, não o objeto na API",
+     "lifecycle_controller: terraform_timeouts é configuração do Terraform (fora do domínio)",
+     "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)",
+     "owner: camada Terraform: onde o código escreve, não o dono da configuração"
     ],
-    "rule": "GRAIN-G0-NEEDS",
+    "rule": "GRAIN-G0-IDENTITY",
     "type": "aws_s3_bucket"
    },
-   "evidence_records": 291,
+   "evidence_records": 333,
    "grains": {
-    "UNKNOWN": 53
+    "UNKNOWN": 51
    },
    "missing": {
-    "effective_scope": 52,
-    "identity": 52,
-    "lifecycle_controller": 52,
-    "owner": 44
+    "effective_scope": 50,
+    "identity": 51,
+    "lifecycle_controller": 51,
+    "owner": 51
    },
    "rules": {
-    "GRAIN-G0-IDENTITY": 52,
-    "GRAIN-G0-NEEDS": 1
+    "GRAIN-G0-IDENTITY": 51
    },
    "top_level": {
     "aws_s3_account_public_access_block": {
@@ -89,31 +95,39 @@
      "identity_class": "ORPHAN",
      "missing": [
       "identity",
-      "lifecycle_controller"
+      "lifecycle_controller",
+      "owner"
      ],
      "reasons": [
       "api_resource: ponte sem recurso de API",
       "identity: aspecto cardinality: sem tradução (R-GRAIN-T06)",
-      "identity: aspecto reference_phrase sem tradução na tabela",
+      "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
       "lifecycle_controller: not_documented",
-      "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)"
+      "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)",
+      "owner: camada Terraform: onde o código escreve, não o dono da configuração"
      ],
      "rule": "GRAIN-G0-IDENTITY"
     },
     "aws_s3_bucket": {
      "grain": "UNKNOWN",
-     "identity_class": "INDEPENDENT",
+     "identity_class": "UNRESOLVED",
      "missing": [
+      "identity",
+      "lifecycle_controller",
+      "owner",
       "effective_scope"
      ],
      "reasons": [
       "api_resource: ponte sem recurso de API",
-      "effective_scope: not_documented",
+      "effective_scope: camada Terraform: não é o alcance na API",
       "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
-      "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela",
-      "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)"
+      "identity: chave compartilhada ['bucket'] sem raiz única com ciclo de vida self entre os pares (0 raiz(es))",
+      "lifecycle_controller: camada Terraform: create/delete do provider, não o objeto na API",
+      "lifecycle_controller: terraform_timeouts é configuração do Terraform (fora do domínio)",
+      "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)",
+      "owner: camada Terraform: onde o código escreve, não o dono da configuração"
      ],
-     "rule": "GRAIN-G0-NEEDS"
+     "rule": "GRAIN-G0-IDENTITY"
     },
     "aws_s3_bucket_acl": {
      "grain": "UNKNOWN",
@@ -121,15 +135,18 @@
      "missing": [
       "identity",
       "lifecycle_controller",
+      "owner",
       "effective_scope"
      ],
      "reasons": [
       "api_resource: ponte sem recurso de API",
-      "effective_scope: not_documented",
+      "effective_scope: camada Terraform: não é o alcance na API",
       "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
-      "identity: aspecto reference_phrase sem tradução na tabela",
+      "identity: chave compartilhada ['bucket'] sem raiz única com ciclo de vida self entre os pares (0 raiz(es))",
+      "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
       "lifecycle_controller: destroy_effect state_only: não diz quem apaga",
-      "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)"
+      "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)",
+      "owner: camada Terraform: onde o código escreve, não o dono da configuração"
      ],
      "rule": "GRAIN-G0-IDENTITY"
     },
@@ -139,15 +156,18 @@
      "missing": [
       "identity",
       "lifecycle_controller",
+      "owner",
       "effective_scope"
      ],
      "reasons": [
       "api_resource: ponte sem recurso de API",
-      "effective_scope: not_documented",
+      "effective_scope: camada Terraform: não é o alcance na API",
       "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
-      "identity: aspecto reference_phrase sem tradução na tabela",
-      "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela",
-      "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)"
+      "identity: chave compartilhada ['bucket'] sem raiz única com ciclo de vida self entre os pares (0 raiz(es))",
+      "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
+      "lifecycle_controller: terraform_timeouts é configuração do Terraform (fora do domínio)",
+      "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)",
+      "owner: camada Terraform: onde o código escreve, não o dono da configuração"
      ],
      "rule": "GRAIN-G0-IDENTITY"
     },
@@ -157,13 +177,16 @@
      "missing": [
       "identity",
       "lifecycle_controller",
+      "owner",
       "effective_scope"
      ],
      "reasons": [
       "api_resource: ponte sem recurso de API",
-      "effective_scope: not_documented",
+      "effective_scope: camada Terraform: não é o alcance na API",
+      "identity: chave compartilhada ['bucket'] sem raiz única com ciclo de vida self entre os pares (0 raiz(es))",
       "lifecycle_controller: not_documented",
-      "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)"
+      "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)",
+      "owner: camada Terraform: onde o código escreve, não o dono da configuração"
      ],
      "rule": "GRAIN-G0-IDENTITY"
     },
@@ -173,13 +196,16 @@
      "missing": [
       "identity",
       "lifecycle_controller",
+      "owner",
       "effective_scope"
      ],
      "reasons": [
       "api_resource: ponte sem recurso de API",
-      "effective_scope: not_documented",
+      "effective_scope: camada Terraform: não é o alcance na API",
+      "identity: chave compartilhada ['bucket'] sem raiz única com ciclo de vida self entre os pares (0 raiz(es))",
       "lifecycle_controller: not_documented",
-      "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)"
+      "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)",
+      "owner: camada Terraform: onde o código escreve, não o dono da configuração"
      ],
      "rule": "GRAIN-G0-IDENTITY"
     },
@@ -189,12 +215,15 @@
      "missing": [
       "identity",
       "lifecycle_controller",
+      "owner",
       "effective_scope"
      ],
      "reasons": [
       "api_resource: ponte sem recurso de API",
+      "identity: chave compartilhada ['bucket'] sem raiz única com ciclo de vida self entre os pares (0 raiz(es))",
       "lifecycle_controller: destroy_effect not_deleted: não diz quem apaga",
-      "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)"
+      "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)",
+      "owner: camada Terraform: onde o código escreve, não o dono da configuração"
      ],
      "rule": "GRAIN-G0-IDENTITY"
     },
@@ -204,15 +233,18 @@
      "missing": [
       "identity",
       "lifecycle_controller",
+      "owner",
       "effective_scope"
      ],
      "reasons": [
       "api_resource: ponte sem recurso de API",
-      "effective_scope: not_documented",
+      "effective_scope: camada Terraform: não é o alcance na API",
       "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
-      "identity: aspecto reference_phrase sem tradução na tabela",
+      "identity: chave compartilhada ['bucket'] sem raiz única com ciclo de vida self entre os pares (0 raiz(es))",
+      "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
       "lifecycle_controller: not_documented",
-      "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)"
+      "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)",
+      "owner: camada Terraform: onde o código escreve, não o dono da configuração"
      ],
      "rule": "GRAIN-G0-IDENTITY"
     },
@@ -222,58 +254,65 @@
      "missing": [
       "identity",
       "lifecycle_controller",
+      "owner",
       "effective_scope"
      ],
      "reasons": [
       "api_resource: ponte sem recurso de API",
-      "effective_scope: not_documented",
+      "effective_scope: camada Terraform: não é o alcance na API",
       "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
-      "identity: aspecto reference_phrase sem tradução na tabela",
+      "identity: chave compartilhada ['bucket'] sem raiz única com ciclo de vida self entre os pares (0 raiz(es))",
+      "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
       "lifecycle_controller: destroy_effect state_only: não diz quem apaga",
-      "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)"
+      "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)",
+      "owner: camada Terraform: onde o código escreve, não o dono da configuração"
      ],
      "rule": "GRAIN-G0-IDENTITY"
     }
    },
-   "units": 53
+   "units": 51
   },
   "azurerm": {
    "atoms": 232,
    "candidates": 36,
-   "canonical_atoms": 232,
+   "canonical_atoms": 212,
    "container": {
     "grain": "UNKNOWN",
     "identity_class": "UNRESOLVED",
     "missing": [
      "identity",
+     "lifecycle_controller",
+     "owner",
      "effective_scope"
     ],
     "reasons": [
      "effective_scope: aspecto effective_public_access: sem tradução (R-GRAIN-T42)",
+     "effective_scope: camada Terraform: não é o alcance na API",
      "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
-     "identity: aspecto reference_phrase sem tradução na tabela",
-     "identity: aspecto reference_target sem tradução na tabela",
-     "identity: chave compartilhada ['name', 'resource_group_name', 'storage_account_name'] sem raiz única com ciclo de vida self entre os pares (2 raiz(es))",
+     "identity: chave compartilhada ['name', 'resource_group_name', 'storage_account_name'] sem raiz única com ciclo de vida self entre os pares (0 raiz(es))",
      "identity: contido em resource (sem tipo Terraform) sem atributo de referência ao contêiner na identidade",
+     "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
      "import_key: formato de importação sem atributos nomeados",
-     "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela",
+     "lifecycle_controller: camada Terraform: create/delete do provider, não o objeto na API",
+     "lifecycle_controller: terraform_timeouts é configuração do Terraform (fora do domínio)",
+     "owner: camada Terraform: onde o código escreve, não o dono da configuração",
      "owner: owner/parent é contenção da identidade, não dono da configuração"
     ],
     "rule": "GRAIN-G0-IDENTITY",
     "type": "azurerm_storage_container"
    },
-   "evidence_records": 194,
+   "evidence_records": 222,
    "grains": {
-    "UNKNOWN": 36
+    "UNKNOWN": 31
    },
    "missing": {
-    "effective_scope": 36,
-    "identity": 36,
+    "effective_scope": 31,
+    "identity": 31,
     "lifecycle_controller": 31,
     "owner": 31
    },
    "rules": {
-    "GRAIN-G0-IDENTITY": 36
+    "GRAIN-G0-IDENTITY": 31
    },
    "top_level": {
     "azurerm_storage_account": {
@@ -281,16 +320,19 @@
      "identity_class": "UNRESOLVED",
      "missing": [
       "identity",
+      "lifecycle_controller",
+      "owner",
       "effective_scope"
      ],
      "reasons": [
       "effective_scope: aspecto attribute_scope: sem tradução (R-GRAIN-T41)",
+      "effective_scope: camada Terraform: não é o alcance na API",
       "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
-      "identity: aspecto reference_phrase sem tradução na tabela",
-      "identity: aspecto reference_target sem tradução na tabela",
-      "identity: contido em resource_group (['azurerm_resource_group']) sem atributo de referência ao contêiner na identidade",
+      "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
       "import_key: formato de importação sem atributos nomeados",
-      "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela",
+      "lifecycle_controller: camada Terraform: create/delete do provider, não o objeto na API",
+      "lifecycle_controller: terraform_timeouts é configuração do Terraform (fora do domínio)",
+      "owner: camada Terraform: onde o código escreve, não o dono da configuração",
       "owner: owner/parent é contenção da identidade, não dono da configuração"
      ],
      "rule": "GRAIN-G0-IDENTITY"
@@ -300,16 +342,20 @@
      "identity_class": "UNRESOLVED",
      "missing": [
       "identity",
+      "lifecycle_controller",
+      "owner",
       "effective_scope"
      ],
      "reasons": [
-      "effective_scope: not_documented",
+      "effective_scope: camada Terraform: não é o alcance na API",
       "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
-      "identity: aspecto reference_phrase sem tradução na tabela",
-      "identity: aspecto reference_target sem tradução na tabela",
+      "identity: chave compartilhada ['resource_group_name', 'storage_account_name'] sem raiz única com ciclo de vida self entre os pares (0 raiz(es))",
       "identity: contido em resource_group (['azurerm_resource_group']) sem atributo de referência ao contêiner na identidade",
+      "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
       "import_key: formato de importação sem atributos nomeados",
-      "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela",
+      "lifecycle_controller: camada Terraform: create/delete do provider, não o objeto na API",
+      "lifecycle_controller: terraform_timeouts é configuração do Terraform (fora do domínio)",
+      "owner: camada Terraform: onde o código escreve, não o dono da configuração",
       "owner: owner/parent é contenção da identidade, não dono da configuração"
      ],
      "rule": "GRAIN-G0-IDENTITY"
@@ -319,17 +365,21 @@
      "identity_class": "UNRESOLVED",
      "missing": [
       "identity",
+      "lifecycle_controller",
+      "owner",
       "effective_scope"
      ],
      "reasons": [
       "effective_scope: aspecto effective_public_access: sem tradução (R-GRAIN-T42)",
+      "effective_scope: camada Terraform: não é o alcance na API",
       "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
-      "identity: aspecto reference_phrase sem tradução na tabela",
-      "identity: aspecto reference_target sem tradução na tabela",
-      "identity: chave compartilhada ['name', 'resource_group_name', 'storage_account_name'] sem raiz única com ciclo de vida self entre os pares (2 raiz(es))",
+      "identity: chave compartilhada ['name', 'resource_group_name', 'storage_account_name'] sem raiz única com ciclo de vida self entre os pares (0 raiz(es))",
       "identity: contido em resource (sem tipo Terraform) sem atributo de referência ao contêiner na identidade",
+      "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
       "import_key: formato de importação sem atributos nomeados",
-      "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela",
+      "lifecycle_controller: camada Terraform: create/delete do provider, não o objeto na API",
+      "lifecycle_controller: terraform_timeouts é configuração do Terraform (fora do domínio)",
+      "owner: camada Terraform: onde o código escreve, não o dono da configuração",
       "owner: owner/parent é contenção da identidade, não dono da configuração"
      ],
      "rule": "GRAIN-G0-IDENTITY"
@@ -339,17 +389,19 @@
      "identity_class": "UNRESOLVED",
      "missing": [
       "identity",
+      "lifecycle_controller",
+      "owner",
       "effective_scope"
      ],
      "reasons": [
-      "effective_scope: not_documented",
+      "effective_scope: camada Terraform: não é o alcance na API",
       "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
-      "identity: aspecto reference_phrase sem tradução na tabela",
-      "identity: aspecto reference_target sem tradução na tabela",
-      "identity: chave compartilhada ['name', 'resource_group_name', 'storage_account_name'] sem raiz única com ciclo de vida self entre os pares (2 raiz(es))",
-      "identity: contido em resource (['azurerm_security_center_storage_defender', 'azurerm_storage_account', 'azurerm_storage_account_customer_managed_key', 'azurerm_storage_account_network_rules', 'azurerm_storage_account_queue_properties', 'azurerm_storage_account_static_website', 'azurerm_storage_account_table_properties', 'azurerm_storage_blob_inventory_policy']) sem atributo de referência ao contêiner na identidade",
+      "identity: chave compartilhada ['name', 'resource_group_name', 'storage_account_name'] sem raiz única com ciclo de vida self entre os pares (0 raiz(es))",
+      "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
       "import_key: formato de importação sem atributos nomeados",
-      "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela",
+      "lifecycle_controller: camada Terraform: create/delete do provider, não o objeto na API",
+      "lifecycle_controller: terraform_timeouts é configuração do Terraform (fora do domínio)",
+      "owner: camada Terraform: onde o código escreve, não o dono da configuração",
       "owner: owner/parent é contenção da identidade, não dono da configuração"
      ],
      "rule": "GRAIN-G0-IDENTITY"
@@ -359,58 +411,64 @@
      "identity_class": "ABSENT",
      "missing": [
       "identity",
+      "lifecycle_controller",
+      "owner",
       "effective_scope"
      ],
      "reasons": [
-      "effective_scope: not_documented",
+      "effective_scope: camada Terraform: não é o alcance na API",
       "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
       "identity: contido em resource (['azurerm_security_center_storage_defender', 'azurerm_storage_account', 'azurerm_storage_account_customer_managed_key', 'azurerm_storage_account_network_rules', 'azurerm_storage_account_queue_properties', 'azurerm_storage_account_static_website', 'azurerm_storage_account_table_properties', 'azurerm_storage_blob_inventory_policy']) sem atributo de referência ao contêiner na identidade",
       "import_key: formato de importação sem atributos nomeados",
-      "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela",
+      "lifecycle_controller: camada Terraform: create/delete do provider, não o objeto na API",
+      "lifecycle_controller: terraform_timeouts é configuração do Terraform (fora do domínio)",
+      "owner: camada Terraform: onde o código escreve, não o dono da configuração",
       "owner: owner/parent é contenção da identidade, não dono da configuração"
      ],
      "rule": "GRAIN-G0-IDENTITY"
     }
    },
-   "units": 36
+   "units": 31
   },
   "google": {
    "atoms": 112,
    "candidates": 32,
-   "canonical_atoms": 112,
+   "canonical_atoms": 103,
    "container": {
     "grain": "UNKNOWN",
     "identity_class": "INDEPENDENT",
     "missing": [
      "lifecycle_controller",
+     "owner",
      "effective_scope"
     ],
     "reasons": [
      "effective_scope: aspecto attribute_scope: sem tradução (R-GRAIN-T41)",
      "effective_scope: aspecto effective_public_access_prevention: sem tradução (R-GRAIN-T42)",
+     "effective_scope: camada Terraform: não é o alcance na API",
      "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
-     "identity: aspecto reference_phrase sem tradução na tabela",
-     "identity: aspecto reference_target sem tradução na tabela",
+     "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
      "import_key: formato de importação sem atributos nomeados",
-     "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela",
-     "lifecycle_controller: política de remoção sem valores documentados"
+     "lifecycle_controller: política de remoção sem valores documentados",
+     "lifecycle_controller: terraform_timeouts é configuração do Terraform (fora do domínio)",
+     "owner: camada Terraform: onde o código escreve, não o dono da configuração"
     ],
     "rule": "GRAIN-G0-NEEDS",
     "type": "google_storage_bucket"
    },
-   "evidence_records": 144,
+   "evidence_records": 166,
    "grains": {
-    "UNKNOWN": 32
+    "UNKNOWN": 27
    },
    "missing": {
-    "effective_scope": 31,
-    "identity": 29,
-    "lifecycle_controller": 31,
+    "effective_scope": 26,
+    "identity": 25,
+    "lifecycle_controller": 27,
     "owner": 27
    },
    "rules": {
-    "GRAIN-G0-IDENTITY": 29,
-    "GRAIN-G0-NEEDS": 3
+    "GRAIN-G0-IDENTITY": 25,
+    "GRAIN-G0-NEEDS": 2
    },
    "top_level": {
     "google_storage_bucket": {
@@ -418,34 +476,42 @@
      "identity_class": "INDEPENDENT",
      "missing": [
       "lifecycle_controller",
+      "owner",
       "effective_scope"
      ],
      "reasons": [
       "effective_scope: aspecto attribute_scope: sem tradução (R-GRAIN-T41)",
       "effective_scope: aspecto effective_public_access_prevention: sem tradução (R-GRAIN-T42)",
+      "effective_scope: camada Terraform: não é o alcance na API",
       "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
-      "identity: aspecto reference_phrase sem tradução na tabela",
-      "identity: aspecto reference_target sem tradução na tabela",
+      "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
       "import_key: formato de importação sem atributos nomeados",
-      "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela",
-      "lifecycle_controller: política de remoção sem valores documentados"
+      "lifecycle_controller: política de remoção sem valores documentados",
+      "lifecycle_controller: terraform_timeouts é configuração do Terraform (fora do domínio)",
+      "owner: camada Terraform: onde o código escreve, não o dono da configuração"
      ],
      "rule": "GRAIN-G0-NEEDS"
     },
     "google_storage_bucket_access_control": {
      "grain": "UNKNOWN",
-     "identity_class": "INDEPENDENT",
+     "identity_class": "UNRESOLVED",
      "missing": [
+      "identity",
+      "lifecycle_controller",
+      "owner",
       "effective_scope"
      ],
      "reasons": [
-      "effective_scope: not_documented",
+      "effective_scope: camada Terraform: não é o alcance na API",
       "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
-      "identity: aspecto reference_phrase sem tradução na tabela",
-      "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela",
-      "lifecycle_controller: política de remoção sem valores documentados"
+      "identity: chave compartilhada ['bucket', 'entity'] sem raiz única com ciclo de vida self entre os pares (0 raiz(es))",
+      "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
+      "lifecycle_controller: camada Terraform: create/delete do provider, não o objeto na API",
+      "lifecycle_controller: política de remoção sem valores documentados",
+      "lifecycle_controller: terraform_timeouts é configuração do Terraform (fora do domínio)",
+      "owner: camada Terraform: onde o código escreve, não o dono da configuração"
      ],
-     "rule": "GRAIN-G0-NEEDS"
+     "rule": "GRAIN-G0-IDENTITY"
     },
     "google_storage_bucket_acl": {
      "grain": "UNKNOWN",
@@ -456,7 +522,7 @@
       "owner"
      ],
      "reasons": [
-      "identity: aspecto reference_phrase sem tradução na tabela",
+      "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
       "lifecycle_controller: destroy_effect not_deleted: não diz quem apaga",
       "lifecycle_controller: política de remoção sem valores documentados",
       "owner: not_documented"
@@ -469,13 +535,15 @@
      "missing": [
       "identity",
       "lifecycle_controller",
+      "owner",
       "effective_scope"
      ],
      "reasons": [
-      "effective_scope: not_documented",
+      "effective_scope: camada Terraform: não é o alcance na API",
       "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
       "import_key: formato de importação sem atributos nomeados",
-      "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela"
+      "lifecycle_controller: terraform_timeouts é configuração do Terraform (fora do domínio)",
+      "owner: camada Terraform: onde o código escreve, não o dono da configuração"
      ],
      "rule": "GRAIN-G0-IDENTITY"
     },
@@ -484,13 +552,15 @@
      "identity_class": "INDEPENDENT",
      "missing": [
       "lifecycle_controller",
+      "owner",
       "effective_scope"
      ],
      "reasons": [
-      "effective_scope: not_documented",
+      "effective_scope: camada Terraform: não é o alcance na API",
       "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
       "import_key: formato de importação sem atributos nomeados",
-      "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela"
+      "lifecycle_controller: terraform_timeouts é configuração do Terraform (fora do domínio)",
+      "owner: camada Terraform: onde o código escreve, não o dono da configuração"
      ],
      "rule": "GRAIN-G0-NEEDS"
     },
@@ -500,54 +570,60 @@
      "missing": [
       "identity",
       "lifecycle_controller",
+      "owner",
       "effective_scope"
      ],
      "reasons": [
-      "effective_scope: not_documented",
+      "effective_scope: camada Terraform: não é o alcance na API",
       "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
       "import_key: formato de importação sem atributos nomeados",
-      "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela"
+      "lifecycle_controller: terraform_timeouts é configuração do Terraform (fora do domínio)",
+      "owner: camada Terraform: onde o código escreve, não o dono da configuração"
      ],
      "rule": "GRAIN-G0-IDENTITY"
     }
    },
-   "units": 32
+   "units": 27
   },
   "oci": {
    "atoms": 57,
    "candidates": 10,
-   "canonical_atoms": 57,
+   "canonical_atoms": 48,
    "container": {
     "grain": "UNKNOWN",
     "identity_class": "ABSENT",
     "missing": [
      "identity",
+     "lifecycle_controller",
+     "owner",
      "effective_scope"
     ],
     "reasons": [
-     "effective_scope: not_documented",
+     "effective_scope: camada Terraform: não é o alcance na API",
      "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
-     "identity: aspecto reference_phrase sem tradução na tabela",
-     "identity: aspecto reference_target sem tradução na tabela",
+     "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
+     "identity: referência compartment_id com alvo ambíguo ['oci_announcements_service_announcement_subscriptions_actions_change_compartment', 'oci_identity_compartment']",
      "import_key: formato de importação sem atributos nomeados",
-     "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela",
-     "owner: aspecto parent_attribute: sem tradução (R-GRAIN-T22)"
+     "lifecycle_controller: camada Terraform: create/delete do provider, não o objeto na API",
+     "lifecycle_controller: terraform_timeouts é configuração do Terraform (fora do domínio)",
+     "owner: aspecto parent_attribute: sem tradução (R-GRAIN-T22)",
+     "owner: camada Terraform: onde o código escreve, não o dono da configuração"
     ],
     "rule": "GRAIN-G0-IDENTITY",
     "type": "oci_objectstorage_bucket"
    },
-   "evidence_records": 50,
+   "evidence_records": 54,
    "grains": {
-    "UNKNOWN": 10
+    "UNKNOWN": 7
    },
    "missing": {
-    "effective_scope": 10,
-    "identity": 10,
+    "effective_scope": 7,
+    "identity": 7,
     "lifecycle_controller": 7,
-    "owner": 8
+    "owner": 7
    },
    "rules": {
-    "GRAIN-G0-IDENTITY": 10
+    "GRAIN-G0-IDENTITY": 7
    },
    "top_level": {
     "oci_objectstorage_bucket": {
@@ -555,16 +631,20 @@
      "identity_class": "ABSENT",
      "missing": [
       "identity",
+      "lifecycle_controller",
+      "owner",
       "effective_scope"
      ],
      "reasons": [
-      "effective_scope: not_documented",
+      "effective_scope: camada Terraform: não é o alcance na API",
       "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
-      "identity: aspecto reference_phrase sem tradução na tabela",
-      "identity: aspecto reference_target sem tradução na tabela",
+      "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
+      "identity: referência compartment_id com alvo ambíguo ['oci_announcements_service_announcement_subscriptions_actions_change_compartment', 'oci_identity_compartment']",
       "import_key: formato de importação sem atributos nomeados",
-      "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela",
-      "owner: aspecto parent_attribute: sem tradução (R-GRAIN-T22)"
+      "lifecycle_controller: camada Terraform: create/delete do provider, não o objeto na API",
+      "lifecycle_controller: terraform_timeouts é configuração do Terraform (fora do domínio)",
+      "owner: aspecto parent_attribute: sem tradução (R-GRAIN-T22)",
+      "owner: camada Terraform: onde o código escreve, não o dono da configuração"
      ],
      "rule": "GRAIN-G0-IDENTITY"
     },
@@ -573,14 +653,16 @@
      "identity_class": "ABSENT",
      "missing": [
       "identity",
+      "lifecycle_controller",
       "owner",
       "effective_scope"
      ],
      "reasons": [
-      "effective_scope: not_documented",
+      "effective_scope: camada Terraform: não é o alcance na API",
       "identity: not_documented",
       "import_key: not_documented",
-      "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela",
+      "lifecycle_controller: camada Terraform: create/delete do provider, não o objeto na API",
+      "lifecycle_controller: terraform_timeouts é configuração do Terraform (fora do domínio)",
       "owner: not_documented"
      ],
      "rule": "GRAIN-G0-IDENTITY"
@@ -590,20 +672,23 @@
      "identity_class": "ABSENT",
      "missing": [
       "identity",
+      "lifecycle_controller",
+      "owner",
       "effective_scope"
      ],
      "reasons": [
-      "effective_scope: not_documented",
+      "effective_scope: camada Terraform: não é o alcance na API",
       "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
-      "identity: aspecto reference_phrase sem tradução na tabela",
-      "identity: aspecto reference_target sem tradução na tabela",
+      "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
       "import_key: formato de importação sem atributos nomeados",
-      "lifecycle_controller: aspecto terraform_timeouts sem tradução na tabela"
+      "lifecycle_controller: camada Terraform: create/delete do provider, não o objeto na API",
+      "lifecycle_controller: terraform_timeouts é configuração do Terraform (fora do domínio)",
+      "owner: camada Terraform: onde o código escreve, não o dono da configuração"
      ],
      "rule": "GRAIN-G0-IDENTITY"
     }
    },
-   "units": 10
+   "units": 7
   }
  },
  "module": "PILOT-STO-GLOSS",
@@ -717,6 +802,6 @@
   ]
  },
  "slice_atoms": 562,
- "slice_evidence_records": 679,
+ "slice_evidence_records": 775,
  "slice_types": 23
 }

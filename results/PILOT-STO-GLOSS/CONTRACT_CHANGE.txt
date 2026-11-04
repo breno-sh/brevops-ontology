@@ -1,4 +1,25 @@
 CONTRACT_CHANGE — PILOT-STO-GLOSS (piloto sto: grão mecânico e glossário da fatia)
+ATUALIZAÇÃO 2026-11-04T08:01:00-03:00 (America/Recife), base a9af398 (GRAIN 0.1.2 e580e22, SERVICE-EVIDENCE a9af398):
+CC-7 (achado; não forçado): depois das duas emendas, os 4 contêineres AINDA saem UNKNOWN; 116/116 unidades UNKNOWN
+  (131 candidatos; 15 transparentes; 44 átomos timeouts.* saem do C19 porque o GRAIN 0.1.2 os põe fora do domínio).
+  aws_s3_bucket       G0-IDENTITY, classe UNRESOLVED, falta identity+lifecycle_controller+owner+effective_scope
+                      ("chave compartilhada ['bucket'] sem raiz única com ciclo de vida self entre os pares")
+  google_storage_bucket G0-NEEDS, classe INDEPENDENT, falta lifecycle_controller+owner+effective_scope
+  azurerm_storage_container G0-IDENTITY, UNRESOLVED, falta os quatro (chave compartilhada sem raiz; "contido em
+                      resource sem tipo Terraform"; owner/parent é contenção da identidade)
+  oci_objectstorage_bucket G0-IDENTITY, ABSENT, falta os quatro ("referência compartment_id com alvo ambíguo")
+  Faltas na fatia: lifecycle_controller 116, owner 116, identity 114, effective_scope 114.
+  Causa principal, nos motivos do próprio adaptador: os fatos novos de ciclo de vida, dono e alcance que o
+  SERVICE-EVIDENCE a9af398 emite saem da CAMADA TERRAFORM (create/delete do provider, onde o código escreve,
+  timeouts) e o GRAIN 0.1.2 os recusa de propósito ("camada Terraform: não é o alcance na API", "não o objeto na
+  API", "não o dono da configuração"). As duas emendas foram feitas em paralelo e se anulam: nenhuma fonte de
+  ciclo de vida/dono/alcance NA CAMADA DE API chegou para os contêineres. Restam também sem tradução
+  id_template (T03), identity_scope (T20), parent_attribute (T22), attribute_scope (T41) e
+  effective_public_access(_prevention) (T42).
+  Proposta: decidir num lugar só (GRAIN + SERVICE-EVIDENCE juntos, com teste de integração na fatia sto) qual fato
+  dá ciclo de vida, dono e alcance NA API para contêiner e faceta; o teste reprova enquanto os 4 contêineres não
+  decidirem. Enquanto isso, E2 do PILOT-EXIT não é atingível por construção.
+
 ATUALIZAÇÃO 2026-11-04T03:21:44-03:00 (America/Recife), base b952d98:
   CC-1 RESOLVIDO na interface (GRAIN d8ada03 lê o C25 por aspecto; SERVICE-EVIDENCE b952d98 com fatos de bloco):
        a biblioteca roda sem EvidenceError nos 4 provedores. CC-2 e CC-3 RESOLVIDOS (briefs 1.2.0, 91bef3f:
