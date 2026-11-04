@@ -196,6 +196,8 @@ class Builder:
         T = self.T
         lo, hi = (100, 4094) if self.provider == "azurerm" else (0, 65534)
         real = [tr for tr in rules if not tr.get("synth")]
+        if not real:
+            return {}
         facts = [_src_fact(tr, "priority") for tr in real]
         res = {}
         if real and all(f is not None and f.origin == "atom" and f.status == "known" for f in facts):
