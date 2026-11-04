@@ -209,3 +209,14 @@ def test_cc10_scope_encryption_oci_identity():
     ids = [r["value"]["key_fields"] for r in got["oci_objectstorage_bucket"]
            if r["status"] == "stated" and r["value"].get("rule") == "R-ID-SPEC"]
     assert ids == [["namespace", "name"]]
+
+
+def test_cc11_sg_rules_and_blocks():
+    got = _out_by_type({"aws_vpc_security_group_ingress_rule", "aws_security_group"})
+    def rk(T, bp=None):
+        return {(r["fact_kind"], r["value"].get("rule")) for r in got[T] if r["status"] == "stated"
+                and r.get("block_path") == bp}
+    want = {("owner", "R-OWN-SPEC"), ("lifecycle_controller", "R-LIFE-SPEC-PARENT"),
+            ("effective_scope", "R-SCOPE-SPEC")}
+    assert want <= rk("aws_vpc_security_group_ingress_rule") and want <= rk("aws_security_group", "ingress")
+    assert ("identity", "R-ID-SPEC") in rk("aws_vpc_security_group_ingress_rule")

@@ -35,6 +35,8 @@ def names_of(p: str, key, r) -> set[str]:
             out.add(A.snake(r["parent"]) + "_" + A.snake(n))
         for pl in r.get("payload") or []:  # faceta pelo membro de payload da operação (ServerSideEncryptionConfiguration)
             out.add(A.snake(r["parent"]) + "_" + A.snake(pl))
+        if {"Authorize", "Revoke"} <= set(r.get("verbs") or []):  # Authorize/Revoke criam e removem REGRAS
+            out |= {x + "_rule" for x in list(out)}
         return out
     if p == "google":
         return {f"{r['service']}_{singular(A.snake(n))}"}
@@ -175,8 +177,12 @@ def run(ctx, bridges: dict, disputes: list) -> None:
             via = via_attr(p, T, r)
         if not r["create"]:
             new["effective_scope"] = ("parent", "R-SCOPE-SPEC")
-        elif p == "oci" and r.get("path"):
-            _oci_identity(ctx, T, r, api, ops, bid)
+            if p == "aws" and {"Authorize", "Revoke"} <= set(r.get("verbs") or []):
+                _aws_rule_identity(ctx, T, r, api, ops, bid)
+        else:
+            _blocks(ctx, T, r, m, api, bid)
+            if p == "oci" and r.get("path"):
+                _oci_identity(ctx, T, r, api, ops, bid)
         for kind, (k, rule) in new.items():
             v = {"kind": k, "rule": rule, "layer": "api", "spec_resource": f"{r['service']}:{r['resource']}"}
             if k == "parent":
@@ -193,8 +199,9 @@ def run(ctx, bridges: dict, disputes: list) -> None:
 
 def _op(ctx, T: str, p: str, r: dict, role: str) -> str:
     ptr = r[role] if role != "config" else r["config"][0]
+    kind_role = role
     proj = A.project(p, r["file"], ptr)
-    kind = "owner" if role == "config" else "lifecycle_controller"
+    kind = "owner" if role in ("config", "update") else "lifecycle_controller"
     return ctx.add(T, kind, f"specop:{r['file']}:{ptr}", {"service": r["service"], "resource": r["resource"]},
                    "stated", "published",
                    value={"aspect": "spec_operation", "rule": "R-SPEC-OP", "role": role,
@@ -228,4 +235,68 @@ def _oci_identity(ctx, T: str, r: dict, api: dict, ops: list, bid: str) -> None:
             value={"status": "present", "scope": scope, "key_fields": keys, "rule": "R-ID-SPEC", "layer": "api",
                    "spec_path": r["path"]},
             derived=ops + [bid])
+    ctx.st["R-ID-SPEC"] += 1
+
+
+def _camel(b: str) -> str:
+    return "".join(x[:1].upper() + x[1:] for x in b.split("_"))
+
+
+def _blocks(ctx, T: str, r: dict, m: dict, api: dict, bid: str) -> None:
+    """Blocos/coleções de topo de um tipo cujo recurso tem create/delete próprios na spec.
+    Há faceta <Recurso><Bloco> na spec (ex.: SecurityGroup + Ingress): o bloco é essa faceta (ponte, dono, ciclo e
+    alcance = pai, R-OWN-SPEC / R-LIFE-SPEC-PARENT / R-SCOPE-SPEC). Não há, mas o recurso tem operação de update
+    própria: o bloco é configurado por ela (R-OWN-SPEC-BLOCK, dono/ciclo/alcance = pai, camada api)."""
+    from .grainfacts import _collections
+    p = ctx.p
+    for B in sorted(_collections(p, T)):
+        fk = (r["service"], r["resource"] + _camel(B)) if p == "aws" else None
+        fr = m.get(fk) if fk else None
+        if fr and fr.get("parent") == r["resource"]:
+            op = _op(ctx, T, p, fr, "config")
+            ctx.add(T, "api_bridge", f"spec_block:{B}", {"service": fr["service"], "resource": fr["resource"]},
+                    "stated", "derived",
+                    value={"aspect": "api_resource_bridge", "rule": "R-BRIDGE-SPEC", "block_path": B,
+                           "service": fr["service"], "resource": fr["resource"], "spec_file": fr["file"]},
+                    derived=[op, bid])
+            rules_ = (("owner", "R-OWN-SPEC"), ("lifecycle_controller", "R-LIFE-SPEC-PARENT"),
+                      ("effective_scope", "R-SCOPE-SPEC"))
+            der, extra = [op, bid], {"spec_resource": f"{fr['service']}:{fr['resource']}"}
+            ctx.st["R-OWN-SPEC_bloco_faceta"] += 1
+        elif r.get("update"):
+            op = _op(ctx, T, p, r, "update")
+            rules_ = (("owner", "R-OWN-SPEC-BLOCK"), ("lifecycle_controller", "R-OWN-SPEC-BLOCK"),
+                      ("effective_scope", "R-OWN-SPEC-BLOCK"))
+            der, extra = [op, bid], {"configured_by": "update do pai"}
+            ctx.st["R-OWN-SPEC-BLOCK"] += 1
+        else:
+            continue
+        for kind, rule in rules_:
+            ctx.add(T, kind, f"spec_block:{B}:{rule}", api, "stated", "derived",
+                    value={"kind": "parent", "rule": rule, "layer": "api", "block_path": B, **extra},
+                    derived=der)
+
+
+def _aws_rule_identity(ctx, T: str, r: dict, api: dict, ops: list, bid: str) -> None:
+    """Regra criada por Authorize e removida por Revoke: a spec dá a ela identidade própria se a estrutura
+    <Pai>Rule tem membro <Pai>RuleId (ex.: SecurityGroupRule.SecurityGroupRuleId, o sgr-). Atributo Terraform
+    de mesmo nome em snake_case é a chave (R-ID-SPEC)."""
+    p = ctx.p
+    sh = f"com.amazonaws.{r['service']}#{r['parent']}Rule"
+    shapes = A.load_json(p, r["file"])["shapes"]
+    mem = f"{r['parent']}RuleId"
+    if mem not in (shapes.get(sh, {}).get("members") or {}):
+        return
+    top = {path for path, depth, *_ in sources.atoms(p).get(T, []) if not depth and "." not in path}
+    attr = A.snake(mem)
+    if attr not in top:
+        return
+    ptr = f"/shapes/{A.esc(sh)}/members/{A.esc(mem)}"
+    mid = ctx.add(T, "identity", f"specmember:{r['file']}:{ptr}", api, "stated", "published",
+                  value={"aspect": "spec_member", "rule": "R-SPEC-OP", "shape": sh.split("#")[1], "member": mem},
+                  cit=A.cite(p, r["file"], ptr))
+    ctx.add(T, "identity", "spec_identity", api, "stated", "derived",
+            value={"status": "present", "scope": "independent", "key_fields": [attr], "rule": "R-ID-SPEC",
+                   "layer": "api", "spec_member": f"{sh.split('#')[1]}.{mem}"},
+            derived=ops + [bid, mid])
     ctx.st["R-ID-SPEC"] += 1

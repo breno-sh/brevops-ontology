@@ -79,6 +79,8 @@ def _build_spec() -> dict:
         sets = [{"dir": c["dir"], "pin": c["pin"], "date": c["date"]}]
         versions = dict(c["versions"])
         fj = common.bo_data() / "downloads" / CC9_DIRS[p] / "FILES.json"
+        if not fj.exists():
+            fj = common.bo_data() / "downloads" / (CC9_DIRS[p] + ".staging") / "FILES.json"
         if fj.exists():
             j = json.loads(fj.read_text(encoding="utf-8"))
             seen = set(urls.values())
@@ -108,7 +110,13 @@ def ddir(p: str):
 
 
 def path(f: str):
-    return common.bo_data() / "downloads" / f
+    """Arquivo pelo fid (pasta do lote/arquivo). Lote ainda não promovido: lê de <pasta>.staging, com o MESMO fid
+    (a citação não muda quando o lote é promovido dentro da trava)."""
+    p0 = common.bo_data() / "downloads" / f
+    if p0.exists():
+        return p0
+    d, rest = f.split("/", 1)
+    return common.bo_data() / "downloads" / (d + ".staging") / rest
 
 
 def url(p: str, f: str) -> str:
@@ -125,6 +133,8 @@ def sums_ok(p: str) -> tuple:
     bad = []
     for st in SPEC[p]["sets"]:
         d = common.bo_data() / "downloads" / st["dir"]
+        if not d.exists():
+            d = common.bo_data() / "downloads" / (st["dir"] + ".staging")
         for line in (d / "SHA256SUMS").read_text(encoding="utf-8").splitlines():
             h, f = line.split("  ", 1)
             if hashlib.sha256((d / f).read_bytes()).hexdigest() != h:
@@ -160,6 +170,10 @@ def unesc(s: str) -> str:
 def project(p: str, f: str, ptr: str) -> dict:
     if p == "aws":
         shapes = load_json(p, f)["shapes"]
+        if "/members/" in ptr:  # membro de estrutura (ex.: SecurityGroupRule.SecurityGroupRuleId)
+            sh, mem = ptr[len("/shapes/"):].split("/members/")
+            node = shapes[unesc(sh)]["members"][unesc(mem)]
+            return {"shape": unesc(sh).split("#")[1], "member": unesc(mem), "target": node.get("target")}
         name = unesc(ptr[len("/shapes/"):])
         o = shapes[name]
         http = (o.get("traits") or {}).get("smithy.api#http") or {}
@@ -233,7 +247,7 @@ def _aws():
                 own_by_labels.setdefault(lb, []).append(n)
         for n, o in own.items():
             out[(svc, n)] = {"service": svc, "resource": n, "file": f, "create": o["Create"], "delete": o["Delete"],
-                             "parent": None, "config": []}
+                             "parent": None, "config": [], "update": o.get("Modify") or o.get("Update")}
         for n, o in ops.items():
             if n in own:
                 continue
@@ -257,7 +271,9 @@ def _aws():
                 payload = [m for m, v in (inp.get("members") or {}).items()
                            if "smithy.api#httpPayload" in (v.get("traits") or {})]
                 out[(svc, n)] = {"service": svc, "resource": n, "file": f, "create": None, "delete": None,
-                                 "parent": par, "config": cfg, "parent_labels": list(lb), "payload": payload}
+                                 "parent": par, "config": cfg, "parent_labels": list(lb), "payload": payload,
+                                 "verbs": sorted(v for v in ("Put", "Authorize", "Revoke", "Update", "Modify")
+                                                 if v in o)}
     return out
 
 
@@ -272,9 +288,10 @@ def _google():
                 ms = r.get("methods") or {}
                 base = f"{ptr}/resources/{esc(name)}"
                 if "insert" in ms and "delete" in ms:
+                    upd = next((f"{base}/methods/{m}" for m in ("patch", "update") if m in ms), None)
                     out[(svc, name)] = {"service": svc, "resource": name, "file": f,
                                         "create": f"{base}/methods/insert", "delete": f"{base}/methods/delete",
-                                        "parent": None, "config": []}
+                                        "parent": None, "config": [], "update": upd}
                 walk(r.get("resources"), name, base)
         walk(doc.get("resources"), "", "")
     return out
@@ -300,7 +317,8 @@ def _azure():
             ptr_put = f"/paths/{esc(path)}/put"
             if "delete" in ops:
                 out[key] = {"service": ns, "resource": "/".join(types), "file": f, "create": ptr_put,
-                            "delete": f"/paths/{esc(path)}/delete", "parent": None, "config": []}
+                            "delete": f"/paths/{esc(path)}/delete", "parent": None, "config": [],
+                            "update": f"/paths/{esc(path)}/patch" if "patch" in ops else ptr_put}
             elif not names[-1].startswith("{") and len(types) > 1:
                 out[key] = {"service": ns, "resource": "/".join(types), "file": f, "create": None, "delete": None,
                             "parent": "/".join(types[:-1]), "config": [ptr_put], "constant_name": names[-1]}
@@ -342,7 +360,8 @@ def _oci():
             if "create" not in o:
                 o = dict(o, create=o["put"])
             out[(svc, n)] = {"service": svc, "resource": n, "file": f, "create": o["create"][0],
-                             "delete": o["delete"][0], "parent": None, "config": [], "path": o["delete"][1]}
+                             "delete": o["delete"][0], "parent": None, "config": [], "path": o["delete"][1],
+                             "update": (o.get("update") or (None,))[0]}
         for n, o in ops.items():
             if n in own:
                 continue

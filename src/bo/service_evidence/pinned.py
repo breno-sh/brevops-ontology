@@ -65,6 +65,8 @@ def main(argv=None) -> int:
         listed = set()
         for st in apispec.SPEC[p]["sets"]:
             d = common.bo_data() / "downloads" / st["dir"]
+            if not d.exists():
+                d = common.bo_data() / "downloads" / (st["dir"] + ".staging")
             if not (d / "SOURCE.txt").exists() or not DATE.match(st["date"]):
                 bad.append(f"{p}: lote {st['dir']} sem SOURCE.txt ou sem data")
             for line in (d / "SHA256SUMS").read_text(encoding="utf-8").splitlines():

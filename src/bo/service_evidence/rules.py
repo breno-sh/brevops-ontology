@@ -147,9 +147,14 @@ RULES = {
                   "que estende o do delete do pai): {kind: parent, layer: api, via: atributo de referência}.",
     "R-LIFE-SPEC-PARENT": "faceta de R-OWN-SPEC: sem create/delete próprios, o objeto nasce e some com o pai na "
                           "API: {kind: parent, layer: api}.",
-    "R-SCOPE-SPEC": "faceta de R-OWN-SPEC (configurada só por operação sobre o identificador do pai): o alcance "
+    "R-SCOPE-SPEC": "faceta de R-OWN-SPEC (inclusive bloco que é faceta da spec, como ingress do aws_security_group = SecurityGroupIngress) (configurada só por operação sobre o identificador do pai): o alcance "
                     "efetivo é o pai, {kind: parent, layer: api, via: atributo de referência}.",
-    "R-ID-SPEC": "oci: os parâmetros do caminho do delete_<n> do recurso são a chave de identidade; o último é o "
+    "R-OWN-SPEC-BLOCK": "bloco/coleção de topo de um tipo cujo recurso tem create/delete próprios na spec, sem "
+                        "faceta própria na spec mas com operação de update/modify/patch do recurso: o bloco é "
+                        "configurado por ela; dono, ciclo e alcance = pai, {kind: parent, layer: api}.",
+    "R-ID-SPEC": "aws: regra criada por Authorize e removida por Revoke tem identidade própria quando a estrutura "
+                 "<Pai>Rule da spec tem o membro <Pai>RuleId (ex.: SecurityGroupRule.SecurityGroupRuleId) e o tipo "
+                 "tem o atributo de mesmo nome em snake_case. oci: os parâmetros do caminho do delete_<n> do recurso são a chave de identidade; o último é o "
                  "próprio objeto (…Id -> atributo id; …Name -> name ou <coisa>), os demais casam com atributo de topo "
                  "de mesmo nome; within_parent se algum dos demais é atributo REFERENCE. Parâmetro sem atributo: "
                  "nada (UNKNOWN).",
