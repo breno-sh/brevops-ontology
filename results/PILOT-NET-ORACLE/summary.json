@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "PILOT-NET-ORACLE",
- "generated_at": "2026-11-04T02:40:00-03:00",
+ "generated_at": "2026-11-04T02:41:40-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-NET-ORACLE.txt",
@@ -34,7 +34,7 @@
     "sha256": "50bc893ff48a2ce45b76e4260d6642b5a5014ad71a1067b34d70b1933ee5653b"
    }
   ],
-  "recorded_at": "2026-11-04T02:40:00-03:00"
+  "recorded_at": "2026-11-04T02:41:40-03:00"
  },
  "sources": [
   {
