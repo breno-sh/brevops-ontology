@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "CORPUS-AZURE",
- "generated_at": "2026-11-04T09:54:06-03:00",
+ "generated_at": "2026-11-04T10:37:39-03:00",
  "sources": [
   {
    "uri": "https://doi.org/10.5281/zenodo.20339474",
@@ -511,7 +511,7 @@
   "params": {
    "provider": "azurerm",
    "provider_version_atoms": "5.12.0",
-   "hcl_branch_sha": "bb238ab",
+   "hcl_commit_bo_base": "b5c256e",
    "generator": "python -I -m bo.corpus_azure.build --workers 12",
    "resource_unit": "bloco resource (sem data); count/for_each uma vez",
    "module_unit": "diretório do .tf",
@@ -541,6 +541,6 @@
     "sha256": "3e7a8160b3272bc0652427989d72860cb84cc198dfde1a9ae14405babfbbb915"
    }
   ],
-  "recorded_at": "2026-11-04T09:53:59-03:00"
+  "recorded_at": "2026-11-04T10:37:39-03:00"
  }
 }
