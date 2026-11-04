@@ -22,6 +22,7 @@ ALLOWED_EMAIL_DOMAINS = re.compile(r"@(example\.(com|org|net)|[a-z0-9-]+\.(examp
 TEXT_LIMIT = 50 * 1024 * 1024
 
 HEX_TOKEN = re.compile(r"[0-9A-Fa-f]{32,}")
+HEX_ID = re.compile(r"(?<![0-9A-Za-z])[0-9A-Fa-f]{16,}(?![0-9A-Za-z])")
 
 RULES: list[tuple[str, re.Pattern]] = [
     ("arn", re.compile(r"\barn:(aws|aws-cn|aws-us-gov|aws-iso[a-z-]*|partition|\$\{[^}]*\}):", re.I)),
@@ -94,6 +95,8 @@ def load_lists() -> tuple[dict[str, list[str]], list[str]]:
 def twelve_digit_hits(line: str) -> list[str]:
     """12 dígitos seguidos (conta AWS), fora de tokens hex longos (hashes)."""
     hex_spans = [m.span() for m in HEX_TOKEN.finditer(line)]
+    # id curto em hex (16+ caracteres, com ao menos uma letra a-f, ex. event_id truncado de sha256)
+    hex_spans += [m.span() for m in HEX_ID.finditer(line) if re.search(r"[A-Fa-f]", m.group(0))]
     out = []
     for m in re.finditer(r"(?<!\d)\d{12}(?!\d)", line):
         a, b = m.span()
