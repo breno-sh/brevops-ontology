@@ -1,0 +1,118 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "SERVICE-EVIDENCE",
+ "generated_at": "2026-11-03T21:03:48-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/SERVICE-EVIDENCE.txt",
+  "brief_sha256": "829e89a3466506fdedcde2ae54e86fd8d8075b7ea03ea4d2ba3e883b2710cb5f",
+  "params": {
+   "effort": "maximo",
+   "providers": "aws,google,azurerm,oci",
+   "versions": "6.71.0,8.9.0,5.12.0,9.11.0"
+  },
+  "inputs": [
+   {
+    "path": "$BO_DATA/DOCS-AWS/docs_facts.jsonl",
+    "kind": "file",
+    "sha256": "0e60c72f0e407cb698731ca109a14c88a844e8923cb1e8797807a96fd8bffa12"
+   },
+   {
+    "path": "$BO_DATA/DOCS-GCP/docs_facts.jsonl",
+    "kind": "file",
+    "sha256": "f9a43bef915e80e27f30f694d2fafc2639b072546742cf328baa1f64e7b5c603"
+   },
+   {
+    "path": "$BO_DATA/DOCS-AZURE/docs_facts.jsonl",
+    "kind": "file",
+    "sha256": "23efd739b2bd9f16a1088c29b4bc1dacaa78bbd4d91cfd7c26bfa38351763ced"
+   },
+   {
+    "path": "$BO_DATA/DOCS-OCI/docs_facts.jsonl",
+    "kind": "file",
+    "sha256": "a016f68e90104e0cd48472e0d2b86f982722ca889be9e9ff9591f61405e2fa34"
+   },
+   {
+    "path": "$BO_DATA/DOCS-AWS/type_subcategory.jsonl",
+    "kind": "file",
+    "sha256": "c0433f58335f504e757ee3bd83a31212e5378e7cf15d3d2fbbc921a819f40440"
+   },
+   {
+    "path": "$BO_DATA/DOCS-GCP/type_subcategory.jsonl",
+    "kind": "file",
+    "sha256": "3fbdbd52ae4a5f0c9c6c7193b3e17315b92b308ecc787648f7ad95cecbb8ed30"
+   },
+   {
+    "path": "$BO_DATA/DOCS-AZURE/type_subcategory.jsonl",
+    "kind": "file",
+    "sha256": "2c50571b0f1e12239e706e67ac07f844fa50c49d29e979f8aa9f9f3bef233824"
+   },
+   {
+    "path": "$BO_DATA/DOCS-OCI/type_subcategory.jsonl",
+    "kind": "file",
+    "sha256": "1ee2cfa06fdadd11ee06f8ac97ed7a02826ef2d3a7c2e550f88264f0f0a80b07"
+   },
+   {
+    "path": "$BO_DATA/DOCS-AWS/shared_block_map.jsonl",
+    "kind": "file",
+    "sha256": "e6e90db53b3440d78799e260095dba5e2f24e2b011a1fd230f58e82c3c90eab7"
+   },
+   {
+    "path": "$BO_DATA/SCHEMA-AWS/atoms.jsonl",
+    "kind": "file",
+    "sha256": "5c6aba0585cb0e30f26877fd0ed6ba1a471092c792ecfa0b38f22d43d1e862a7"
+   },
+   {
+    "path": "$BO_DATA/SCHEMA-GCP/atoms.jsonl",
+    "kind": "file",
+    "sha256": "a00b9d3fb50a717fe3ba17ec0f4b2012f89ee7a3cb65e7ea5f21298afc75e4e1"
+   },
+   {
+    "path": "$BO_DATA/SCHEMA-AZURE/atoms.jsonl",
+    "kind": "file",
+    "sha256": "3e7a8160b3272bc0652427989d72860cb84cc198dfde1a9ae14405babfbbb915"
+   },
+   {
+    "path": "$BO_DATA/SCHEMA-OCI/atoms.jsonl",
+    "kind": "file",
+    "sha256": "99e3dc9d3434e48675fd71eb817145ae63c2159fd041f3c67dd1d308e814287c"
+   },
+   {
+    "path": "$BO_REPO/universe/pins.json",
+    "kind": "file",
+    "sha256": "594a4e878ac489b3ed97cdd6344b9945a8fd3a5d22ae4d6f4bfebd264decfe3d"
+   }
+  ],
+  "recorded_at": "2026-11-03T21:03:48-03:00"
+ },
+ "sources": [
+  {
+   "uri": "https://github.com/hashicorp/terraform-provider-aws/tree/v6.71.0/website/docs",
+   "license": "MPL-2.0",
+   "transformation": "páginas lidas como texto; frases citadas por arquivo e linha"
+  },
+  {
+   "uri": "https://github.com/hashicorp/terraform-provider-google/tree/v8.9.0/website/docs",
+   "license": "MPL-2.0",
+   "transformation": "páginas lidas como texto; frases citadas por arquivo e linha"
+  },
+  {
+   "uri": "https://github.com/hashicorp/terraform-provider-azurerm/tree/v5.12.0/website/docs",
+   "license": "MPL-2.0",
+   "transformation": "páginas lidas como texto; frases citadas por arquivo e linha"
+  },
+  {
+   "uri": "https://github.com/oracle/terraform-provider-oci/tree/v9.11.0/website/docs",
+   "license": "MPL-2.0",
+   "transformation": "páginas lidas como texto; frases citadas por arquivo e linha"
+  },
+  {
+   "uri": "https://registry.terraform.io (providers schema -json dos 4 binários assinados do pin)",
+   "license": "MPL-2.0",
+   "transformation": "nós de resource_identity_schemas e chaves de atributos citados por ponteiro JSON"
+  }
+ ],
+ "notes": "fatos mecânicos por regra declarada (rules.py); 6 fatos interpretados e a seleção de tipo do protocol_support feitos por claude-opus-5-5"
+}

@@ -1,0 +1,136 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "title": "SERVICE-EVIDENCE protocol_support 1.0.0 (sem contrato C*; formato do módulo)",
+ "type": "object",
+ "properties": {
+  "schema": {
+   "const": "bo.protocol_support/1"
+  },
+  "probe_type": {
+   "enum": [
+    "item_ttl",
+    "log_retention",
+    "object_lifecycle",
+    "object_versioning",
+    "queue_retention",
+    "rate_limit"
+   ]
+  },
+  "provider": {
+   "enum": [
+    "aws",
+    "google",
+    "azurerm",
+    "oci"
+   ]
+  },
+  "pin": {
+   "type": "object",
+   "properties": {
+    "provider_version": {
+     "type": "string"
+    }
+   },
+   "required": [
+    "provider_version"
+   ],
+   "additionalProperties": false
+  },
+  "terraform_resource_type": {
+   "type": "string",
+   "pattern": "^[a-z][a-z0-9_]*$"
+  },
+  "attributes": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  },
+  "status": {
+   "enum": [
+    "documented_supported",
+    "documented_unsupported",
+    "unknown"
+   ]
+  },
+  "requirement": {
+   "type": "object",
+   "properties": {
+    "text": {
+     "type": "string"
+    },
+    "max_seconds": {
+     "type": [
+      "integer",
+      "null"
+     ]
+    }
+   },
+   "required": [
+    "text",
+    "max_seconds"
+   ],
+   "additionalProperties": false
+  },
+  "documented": {
+   "type": "object"
+  },
+  "reason": {
+   "type": "string",
+   "minLength": 3
+  },
+  "evidence": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "level": {
+      "enum": [
+       "published",
+       "derived",
+       "interpreted"
+      ]
+     },
+     "ref": {
+      "type": "string"
+     },
+     "doc": {
+      "type": "object"
+     },
+     "citation": {
+      "type": "object"
+     },
+     "model_id": {
+      "type": "string"
+     },
+     "note": {
+      "type": "string",
+      "minLength": 3
+     }
+    },
+    "required": [
+     "level"
+    ],
+    "additionalProperties": false
+   },
+   "minItems": 1
+  },
+  "validated": {
+   "const": false
+  }
+ },
+ "required": [
+  "schema",
+  "probe_type",
+  "provider",
+  "pin",
+  "terraform_resource_type",
+  "attributes",
+  "status",
+  "requirement",
+  "documented",
+  "evidence",
+  "validated"
+ ],
+ "additionalProperties": false
+}

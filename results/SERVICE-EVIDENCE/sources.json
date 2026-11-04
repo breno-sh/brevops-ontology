@@ -1,0 +1,94 @@
+{
+ "schema": "bo.service_evidence_sources/1",
+ "module": "SERVICE-EVIDENCE",
+ "providers": {
+  "aws": {
+   "pin": {
+    "provider_version": "6.71.0",
+    "source": "registry.terraform.io/hashicorp/aws",
+    "shasums_sha256": "5ec758085857f8d05d98043738a0c69632ec6dc54cc3561cd196936ce55728a9"
+   },
+   "docs": {
+    "repo": "hashicorp/terraform-provider-aws",
+    "tag": "v6.71.0",
+    "commit": "d5f4cd8a1d0a8ab528685adba1dfbd4595368e9d",
+    "commit_date": "2026-10-28",
+    "root": "$BO_DATA/downloads/docs-aws/v6.71.0",
+    "source_txt": "$BO_DATA/downloads/docs-aws/SOURCE.txt",
+    "source_txt_sha256": "3defc81889587d09d3dc954724bb1129cabb9be5a9471c50631e6b2b1e89e1d4"
+   },
+   "schema": {
+    "uri": "https://releases.hashicorp.com/terraform-provider-aws/6.71.0/terraform-provider-aws_6.71.0_darwin_arm64.zip",
+    "sha256": "ee012f92aeab529dc2abd73c2932261694da877dc116e2320ce7cc986bcdee7e",
+    "retrieved_at": "2026-11-02T21:32:39-03:00",
+    "path": "$BO_DATA/downloads/prefetch/aws/6.71.0/providers-schema.json"
+   }
+  },
+  "google": {
+   "pin": {
+    "provider_version": "8.9.0",
+    "source": "registry.terraform.io/hashicorp/google",
+    "shasums_sha256": "259099fb04f7cfda6fae304bfb7c1f7a840bfd09f74ea7855b3d458ac40254ba"
+   },
+   "docs": {
+    "repo": "hashicorp/terraform-provider-google",
+    "tag": "v8.9.0",
+    "commit": "ffc5d7f2c4af44558f1b6a7c66142fac3a7abd80",
+    "commit_date": "2026-10-26",
+    "root": "$BO_DATA/downloads/docs-google",
+    "source_txt": "$BO_DATA/downloads/docs-google/SOURCE.txt",
+    "source_txt_sha256": "ed86c244664962d9d79d74b71bb87d91b33b414d07f58a65ce9b43b1625c81a7"
+   },
+   "schema": {
+    "uri": "https://releases.hashicorp.com/terraform-provider-google/8.9.0/terraform-provider-google_8.9.0_darwin_arm64.zip",
+    "sha256": "239c0eae0e0ae9453cfe8cb7690646882f8ac0f9387ba4a67b5168917ecb8345",
+    "retrieved_at": "2026-11-02T21:32:39-03:00",
+    "path": "$BO_DATA/downloads/prefetch/google/8.9.0/providers-schema.json"
+   }
+  },
+  "azurerm": {
+   "pin": {
+    "provider_version": "5.12.0",
+    "source": "registry.terraform.io/hashicorp/azurerm",
+    "shasums_sha256": "496bf13fde1cfa927a585fedfcb14743dd64ee35f9ebab9b8db57499be02c04c"
+   },
+   "docs": {
+    "repo": "hashicorp/terraform-provider-azurerm",
+    "tag": "v5.12.0",
+    "commit": "e4304e154034d27313432fa98dee2184fb6d8519",
+    "commit_date": "2026-10-29",
+    "root": "$BO_DATA/downloads/docs-azurerm/v5.12.0",
+    "source_txt": "$BO_DATA/downloads/docs-azurerm/SOURCE.txt",
+    "source_txt_sha256": "5e3a302e2002fb6dc11f56d766112bd542a80058e63d8a768b5217474b290b4c"
+   },
+   "schema": {
+    "uri": "https://releases.hashicorp.com/terraform-provider-azurerm/5.12.0/terraform-provider-azurerm_5.12.0_darwin_arm64.zip",
+    "sha256": "d6c6ad1c8347a81c4cdf36abd7d07990046adbc0695691f4ca6d54284bb81cdb",
+    "retrieved_at": "2026-11-02T21:32:39-03:00",
+    "path": "$BO_DATA/downloads/prefetch/azurerm/5.12.0/providers-schema.json"
+   }
+  },
+  "oci": {
+   "pin": {
+    "provider_version": "9.11.0",
+    "source": "registry.terraform.io/oracle/oci",
+    "shasums_sha256": "02b240477f7ac618ea249461b8bf8f4b0be0e2d43fd78a16144b858313633956"
+   },
+   "docs": {
+    "repo": "oracle/terraform-provider-oci",
+    "tag": "v9.11.0",
+    "commit": "6015ea78c08f3f71d711d4262fdac8d01271cdaf",
+    "commit_date": "2026-10-21",
+    "root": "$BO_DATA/downloads/docs-oci",
+    "source_txt": "$BO_DATA/downloads/docs-oci/SOURCE.txt",
+    "source_txt_sha256": "104087316bf6b5a8e1a3ede2333464c3dd319093355591ddbcfe7ee2a1d78fdf"
+   },
+   "schema": {
+    "uri": "https://github.com/oracle/terraform-provider-oci/releases/download/v9.11.0/terraform-provider-oci_9.11.0_darwin_arm64.zip",
+    "sha256": "ae0101e5473f7adfd65993dfc335c99285df2bc88ed97fe74c712fb704f55237",
+    "retrieved_at": "2026-11-02T21:32:39-03:00",
+    "path": "$BO_DATA/downloads/prefetch/oci/9.11.0/providers-schema.json"
+   }
+  }
+ }
+}

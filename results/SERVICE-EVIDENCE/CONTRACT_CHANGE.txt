@@ -1,0 +1,43 @@
+CONTRACT_CHANGE — SERVICE-EVIDENCE — gravado em 2026-11-03T21:05:00-03:00 (America/Recife)
+
+Proposta NÃO bloqueante. O service_evidence.jsonl passa no C25 1.0.0 pelo validador único e nada foi afrouxado.
+São quatro pontos em que o C25 1.0.0 obriga a uma convenção que o contrato não diz; a convenção usada está
+descrita abaixo e em results/SERVICE-EVIDENCE/evidence_levels.json (level_policy, rules).
+
+1. Fonte publicada "schema do binário assinado"
+   Fato: identidade de importação (resource_identity_schemas) e presença/ausência de atributo de tag vêm da
+   saída de `terraform providers schema -json` do binário assinado do pin (sha256 = schema_sha256 do
+   universe/pins.json). Não é página de repositório, então doc_source (repo/tag/file/line) não serve.
+   Convenção usada: web_citation com uri = pacote assinado da pré-busca (verification.json zip_url),
+   retrieved_at = generated_at_america_recife da pré-busca, section = "providers-schema sha256 <h> node|keys
+   <json-pointer>", sentence = JSON canônico do nó (node) ou da lista ordenada das chaves do nó (keys).
+   O resolver (bo.service_evidence.common.resolve_schema) recalcula a frase do arquivo fixado.
+   Mudança proposta: em C00, $defs.schema_source {provider_source, schema_sha256, op: node|keys, pointer,
+   sentence, retrieved_at}; em C25, level published aceita citation | doc | schema.
+
+2. Nível de um fato UNKNOWN
+   Fato: o C25 exige level em todo registro, inclusive status=unknown, e só define o que cada nível exige
+   quando há valor. Convenção usada: unknown leva level=published e cita a publicação CONSULTADA (linha de
+   título da página fixada; sem página, as chaves do bloco do tipo no schema), para que a busca possa ser
+   refeita; a ausência de frase não é afirmada como ausência do recurso.
+   Mudança proposta: C25-UNKNOWN: status=unknown exige consulted (doc ou citation) e não leva model_id;
+   level passa a ser opcional (ou um valor "consulted") quando status=unknown.
+
+3. fact_kind para a ponte e para defaults
+   Fato: o objetivo pede "recurso de API correspondente" (ponte API <-> Terraform) e "defaults datados", mas o
+   enum de fact_kind não tem api_bridge nem default. Convenção usada: a ponte é fact_kind=identity com
+   value.aspect="api_resource_bridge" (e "api_reference" para links de API da AWS); default datado vai dentro do
+   value do fato a que pertence (value.default {value, as_of, c03_fact_id}) ou como value.as_of nos fatos curados.
+   Mudança proposta: fact_kind += "api_bridge", "default"; default exige as_of (como o C03-DEFAULT).
+
+4. api_resource quando a página não nomeia o recurso
+   Fato: api_resource.service e .resource são obrigatórios; na AWS a página do tipo não nomeia o recurso de
+   API. Convenção usada: service = subcategoria literal da página; resource = "UNKNOWN" (marcador do C00).
+   Mudança proposta: api_resource.resource aceita o marcador UNKNOWN explicitamente (ou api_resource opcional
+   com status unknown do fato de ponte).
+
+5. protocol_support.jsonl sem contrato
+   O catálogo lista $BO_DATA/SERVICE-EVIDENCE/protocol_support.jsonl como saída, mas nenhum C* o define.
+   Formato usado: bo.protocol_support/1 em results/SERVICE-EVIDENCE/protocol_support.schema.json (evidências no
+   formato C00 evidence_item). Mudança proposta: incorporar ao C22 (consumido pelo PROBEKIT) ou ao C25 como
+   segundo tipo de arquivo.
