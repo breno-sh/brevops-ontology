@@ -28,6 +28,7 @@ PREDICATES = {
     "lifecycle_target_consistent": "lifecycle_controller",
     "lifecycle_target_resolved": "lifecycle_controller",
     "api_resource_status_in": "api_resource",
+    "identity_targets_all_namespace": "identity",
 }
 NEEDS = ("lifecycle_controller", "owner", "effective_scope", "api_resource")
 RULE_KEYS = {"id", "priority", "grain", "text", "match", "needs", "guard", "emit", "missing",
@@ -154,6 +155,10 @@ def eval_pred(name: str, arg, ctx) -> bool:
         return (ctx.lifecycle_target is not None) == bool(arg)
     if name == "lifecycle_target_consistent":
         ok = (not ctx.targets) or (ctx.lifecycle_target in ctx.targets)
+        return ok == bool(arg)
+    if name == "identity_targets_all_namespace":
+        ns = ctx.namespace_fields
+        ok = bool(ctx.ident.own) and bool(ctx.ident.refs) and all(f in ns for f in ctx.ident.refs)
         return ok == bool(arg)
     if name == "api_resource_status_in":
         return ctx.api.known and ctx.api.value["status"] in arg

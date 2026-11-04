@@ -15,6 +15,7 @@ import pytest
 
 from bo.grain import realdata as RD
 from bo.grain import rules as R
+from bo.grain import relations as REL
 from bo.grain import schema as S
 from bo.grain.common import data_root
 from bo.grain.evidence import C25Adapter
@@ -252,3 +253,54 @@ def test_t51_external_parent_grain_needed_only_when_rule_reads_it():
     units, _ = S.to_c19(B.run_schema(w, rs))
     r = next(u for u in units if u["unit_id"].endswith("z_rule"))
     assert r["lifecycle_controller"]["ref"] == "CU-provider_z-z_set_outside"
+
+
+def test_g4ns_real_azure_namespace_entity_with_cascade(records):
+    """G4-NS (0.1.6): identidade qualificada pelo grupo de recursos (marca de namespace: owner/parent com
+    scope_kind resource_group) + ciclo de vida de API self = ENTITY; o grupo vira cascade_delete_by."""
+    rep = RD.run(slice_types={"azurerm": ["azurerm_network_security_group", "azurerm_storage_account"]},
+                 records=records)
+    res = rep["providers"]["azurerm"]["_res"]
+    units = {u["unit_id"]: u for u in S.to_c19(res)[0]}
+    for cid in ("azurerm_network_security_group", "azurerm_storage_account"):
+        d = res.decisions[cid]
+        assert d.grain == "ENTITY" and d.rule == "GRAIN-G4-NS", (cid, d.grain, d.rule, d.missing)
+        assert d.cascade == ["EXT:azurerm_resource_group"] and d.parent is None
+        assert d.owner["kind"] == "self" and d.lifecycle["kind"] == "self"
+        u = units[f"CU-azurerm-{cid}"]
+        assert any(e.get("ref") == "cascade_delete_by=CU-azurerm-azurerm_resource_group" for e in u["evidence"])
+    rels, errs = REL.relations(res, ["azurerm_network_security_group"])
+    assert not errs and any(h == "cascade_delete_by" for _, h, _ in rels)
+
+
+def test_g4ns_without_namespace_mark_stays_unknown(records):
+    """Sem a marca de namespace (tira o fato owner/parent do grupo), a mesma unidade segue UNKNOWN."""
+    recs = [r for r in records if not (r.get("terraform_resource_type") == "azurerm_network_security_group"
+                                       and isinstance(r.get("value"), dict) and r["value"].get("aspect") == "parent")]
+    rep = RD.run(slice_types={"azurerm": ["azurerm_network_security_group"]}, records=recs)
+    d = rep["providers"]["azurerm"]["_res"].decisions["azurerm_network_security_group"]
+    assert d.grain != "ENTITY", (d.grain, d.rule)
+
+
+def test_g4ns_negative_control_true_facet_never_entity(records):
+    """Controle negativo: faceta verdadeira (ciclo de vida do pai) não vira ENTITY, nem com marca de namespace."""
+    rep = RD.run(slice_types={"aws": RD.STO_SLICE["aws"]}, records=records)
+    for c, d in rep["providers"]["aws"]["top_level"].items():
+        if c != "aws_s3_bucket":
+            assert d["grain"] != "ENTITY", (c, d)
+    from bo.grain import battery as B
+    from bo.grain import fixtures as F
+    from bo.grain import rules as R2
+    fac = F.ev_aspect("setting", {}, via="grp", ref_field="grp", ref_target="z_grp_outside")
+    fac["field_map"]["grp"]["namespace"] = True
+    fac["identity"] = [F.c(status="present", scope="within_parent", key_fields=["nm", "grp"], tag="ns")]
+    fac["field_map"]["nm"] = {"path": "name", "norm": "str"}
+    fac["api_resource"] = [F.c(status="resource", label="setting", service="s", resource="Setting", tag="ns")]
+    w = {"provider": "provider_z", "schema": {"z_setting": F.res(["grp", "name"])}, "evidence": {"z_setting": fac}}
+    d = B.run_schema(w, R2.load()).decisions["z_setting"]
+    assert d.grain != "ENTITY", (d.grain, d.rule)
+    fac["lifecycle_controller"] = [F.c(kind="self", tag="ns")]
+    fac["owner"] = [F.c(kind="self", tag="ns")]
+    fac["effective_scope"] = [F.c(kind="self", tag="ns")]
+    d2 = B.run_schema(w, R2.load()).decisions["z_setting"]
+    assert d2.grain == "ENTITY" and d2.rule == "GRAIN-G4-NS"            # o mesmo, com ciclo de vida self: entidade

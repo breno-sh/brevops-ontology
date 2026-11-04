@@ -36,7 +36,7 @@ from . import schema as S
 from .common import data_dir, dump_json, dump_jsonl, now, repo, results_dir, rules_path, sha256_file, stamp
 from .evidence import FixtureAdapter
 
-AUTHORED_AT = "2026-11-04T09:45:00-03:00"
+AUTHORED_AT = "2026-11-04T10:15:00-03:00"
 
 
 def _strip(rep: dict) -> dict:
@@ -155,7 +155,7 @@ def render(doc: dict, rs: R.RuleSet, reps: dict) -> str:
 {e(AUTHORED_AT)} (America/Recife) · grain_rules.yaml sha256 {rules_sha[:16]}… · responde a R1-M2, R1-M7, R2-W2,
 Gemini A3/A6, GPT-6 F1/S1</div>
 <div class="kpis">
-<div class="kpi"><b>{len(rs.rules)}</b>regras (G0–G4 e G0-NOMATCH)</div>
+<div class="kpi"><b>{len(rs.rules)}</b>regras (G0–G4, G4-NS e G0-NOMATCH)</div>
 <div class="kpi"><b>{len(R.IDENTITY_CLASSES)}</b>classes de identidade</div>
 <div class="kpi"><b>{len(R.PREDICATES)}</b>predicados (vocabulário fechado)</div>
 <div class="kpi"><b>{'4/4' if pk['instance_decompositions_equal'] and pk['schema_signatures_equal'] else 'NÃO'}</b>embalagens do contêiner com a mesma decomposição</div>
@@ -408,6 +408,15 @@ vida preso à instância, G1 e G2 aceitam a evidência, e trocar a ordem troca B
 referência <code>by_name</code>; sem ela, o grafo embutido perde relações que o separado tem.</li>
 <li>Emenda 0.1.1 (CC-1): a primeira versão lia uma convenção que o SERVICE-EVIDENCE nunca gravou; os testes
 sintéticos usavam a mesma convenção e não pegaram. Entraram o adaptador por aspecto e testes com o arquivo real.</li>
+<li>Emenda 0.1.6 (regra nova G4-NS, decisão do coordenador): identidade qualificada por um contêiner de NAMESPACE
+(grupo de recursos, compartimento; conta, região e projeto já eram escopo do provedor) não é composição. Justificativa:
+o contêiner de namespace só dá unicidade ao nome; a configuração e o ciclo de vida de API da unidade são dela, e o
+apagamento em cascata pelo namespace é efeito do contêiner, registrado como relação <code>cascade_delete_by</code>
+(item de evidência <code>cascade_delete_by=&lt;unit_id&gt;</code> no C19 e relação nos verificadores), nunca como dono nem
+como ciclo de vida do pai. A regra exige: classe WITHIN ou REF_TUPLE_PLUS com TODAS as referências da chave marcadas
+namespace pela evidência (T52), ciclo de vida de API self, dono self e ligação de API de recurso. Sem a marca, a
+contenção segue composição e o resultado segue UNKNOWN; uma faceta verdadeira (ciclo de vida do pai) nunca passa,
+porque o guard pede self (controle negativo nos testes).</li>
 <li>Emenda 0.1.5 (T51, pai fora da fatia): o grupo de recursos do Azure deixou de impedir a identidade (contêiner
 externo). Achado: o NSG e a conta de armazenamento passam de UNRESOLVED a G0-NOMATCH com lifecycle_controller,
 porque a identidade é relativa ao grupo de recursos e o ciclo de vida de API publicado é self; G2 pede ciclo de vida

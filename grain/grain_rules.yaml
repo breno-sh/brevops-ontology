@@ -7,10 +7,10 @@
 schema: bo.grain.rules/1
 contract: C19
 contract_version: 3.1.0
-rules_version: 0.1.5
+rules_version: 0.1.6
 status: PROVISIONAL
 written_at: "2026-11-03T02:00:00-03:00"
-amended_at: "2026-11-04T09:45:00-03:00"
+amended_at: "2026-11-04T10:15:00-03:00"
 definitive_after: [GRAIN-REPRO, PILOT-EXIT]
 
 layers:
@@ -79,6 +79,7 @@ predicates:
   lifecycle_target_consistent: se T não é vazio, o controlador de ciclo de vida é uma das unidades de T
   lifecycle_target_resolved: o controlador de ciclo de vida resolve a uma unidade decidida
   api_resource_status_in: estado da ligação com a API está na lista
+  identity_targets_all_namespace: toda referência da chave aponta para contêiner de namespace marcado pela evidência (e há chave própria)
 
 procedure:
   # Normalização recursiva de cima para baixo: um candidato só é decidido depois do pai estrutural e dos alvos
@@ -151,8 +152,20 @@ rules:
       api_resource_status_in: [resource]
     emit: {parent: none}
 
-  - id: GRAIN-G0-NOMATCH
+  - id: GRAIN-G4-NS
     priority: 5
+    grain: ENTITY
+    text: emenda 0.1.6; identidade qualificada por um contêiner de namespace marcado pela evidência não é composição; com ciclo de vida de API próprio e a identidade independente módulo o namespace, a unidade é entidade; o apagamento em cascata pelo namespace vira a relação cascade_delete_by, nunca dono nem ciclo de vida do pai; sem a marca de namespace, segue UNKNOWN
+    match: {identity_class_in: [WITHIN, REF_TUPLE_PLUS], identity_targets_all_namespace: true}
+    needs: [lifecycle_controller, owner, effective_scope, api_resource]
+    guard:
+      lifecycle_kind_in: [self]
+      owner_kind_in: [self]
+      api_resource_status_in: [resource]
+    emit: {parent: none}
+
+  - id: GRAIN-G0-NOMATCH
+    priority: 6
     grain: UNKNOWN
     text: a evidência está completa mas nenhuma regra a aceita (ex. identidade dentro do pai com ciclo de vida próprio); UNKNOWN com os campos cujos guards falharam
     match: {}
@@ -168,6 +181,10 @@ amendments:
     version: 0.1.1
     origin: CC-NET-1 do piloto de rede
     text: passo T2 da normalização (atributo lista ou conjunto de objetos vira bloco repetido com sub-átomos virtuais derivados do tipo cty), para que a regra embutida e a regra separada tenham o mesmo grão
+  - id: GRAIN-A8
+    version: 0.1.6
+    origin: decisão do coordenador sobre o achado do contêiner de namespace
+    text: regra nova G4-NS (prioridade entre G4 e G0-NOMATCH); marca de namespace por fato da evidência (contenção com scope_kind de namespace ou fato explícito); relação cascade_delete_by
   - id: GRAIN-A7
     version: 0.1.5
     origin: pedido do coordenador (pai fora da fatia)

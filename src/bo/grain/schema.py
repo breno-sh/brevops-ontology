@@ -250,6 +250,10 @@ def to_c19(res: SchemaResult, atom_roles: dict | None = None) -> tuple[list[dict
             "effective_scope": _ref(d.scope["kind"], d.scope.get("target"), uid),
             "evidence": _evidence_items(n, d), "rule_applied": d.rule, "missing_evidence": list(d.missing),
         }
+        for tc in d.cascade:
+            rec["evidence"] = list(rec["evidence"]) + [{"level": "derived", "ref": f"cascade_delete_by={uid[tc]}",
+                                                         "note": "apagado em cascata pelo contêiner de namespace "
+                                                                 "(relação, não dono nem ciclo de vida)"}]
         if d.grain == "BINDING" and d.endpoints:
             rec["endpoints"] = [{"role": role, "unit_id": uid[t]} for role, t in sorted(d.endpoints.items())]
         units.append(rec)

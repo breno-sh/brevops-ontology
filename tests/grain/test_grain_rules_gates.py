@@ -22,7 +22,7 @@ RAW = yaml.safe_load(rules_path().read_text(encoding="utf-8"))
 def test_rules_load_and_order():
     rs = R.load()
     assert [r.id for r in rs.rules] == ["GRAIN-G0-IDENTITY", "GRAIN-G1-BINDING", "GRAIN-G2-COMPONENT",
-                                        "GRAIN-G3-FACET", "GRAIN-G4-ENTITY", "GRAIN-G0-NOMATCH"]
+                                        "GRAIN-G3-FACET", "GRAIN-G4-ENTITY", "GRAIN-G4-NS", "GRAIN-G0-NOMATCH"]
     assert rs.status == "PROVISIONAL"
 
 

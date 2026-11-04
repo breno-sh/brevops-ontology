@@ -29,6 +29,9 @@ PROVIDER_SCOPE_FIELDS = {
     "azurerm": {"subscription_id"},
     "oci": set(),
 }
+# contenção de NAMESPACE (G4-NS): o contêiner qualifica o nome, mas não compõe a unidade; a marca vem do fato
+# owner/parent (scope_kind) ou de um fato explícito namespace_container
+NAMESPACE_KINDS = {"resource_group", "compartment"}
 # escopos de contenção que são do provedor (não há unidade Terraform para eles na decomposição)
 PROVIDER_SCOPE_KINDS = {"account", "region", "project", "organization", "folder", "subscription", "tenancy",
                         "billing_account", "extension_scope"}
@@ -80,6 +83,10 @@ TABLE = [
      "referência tipada a tipo que não está entre os candidatos (ex. pai fora da fatia) continua referência: o "
      "alvo vira CONTÊINER EXTERNO (grão EXTERNAL): resolve identidade, ciclo de vida, dono e alcance; só os guards "
      "que exigem o grão do alvo (G1 pontas, G3 dono) falham, e aí o resultado é UNKNOWN"),
+    ("owner", "parent (scope_kind resource_group | compartment)", "R-GRAIN-T52",
+     "marca de NAMESPACE: a referência tipada ao contêiner (T21) é marcada namespace; qualifica o nome mas não "
+     "compõe a unidade (G4-NS) e vira a relação cascade_delete_by. Também o fato explícito namespace_container "
+     "{attribute}. Sem a marca, a contenção segue composição (T21) e a regra G4-NS não se aplica"),
     ("api_bridge", "spec_bridge_candidates", "R-GRAIN-T48",
      "sem tradução: a spec casa com mais de um tipo e o desempate não dá este tipo; UNKNOWN com o motivo"),
     ("identity", "api_reference", "R-GRAIN-T05", "sem tradução: página de referência da API, informativa"),
@@ -188,6 +195,7 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
                                                                           "R-GRAIN-UNK"), why)})
 
     pending_ids, shared, containers, scopes, twins, timeouts = {}, {}, {}, {}, {}, {}
+    ns_fields: dict[str, set] = defaultdict(set)     # cid -> campos de referência ao contêiner de namespace
     typed: dict[str, dict] = defaultdict(dict)       # cid -> {campo: tipo alvo ou None} (T44 reference_target)
     for cid, rs in sorted(by_cid.items()):
         rt = cid.split(".")[0]
@@ -263,6 +271,10 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
                 pending_ids[cid] = (r, [f for f in v.get("required", []) if f not in loc_scope])
             elif a == "shared_identity_key":
                 shared[cid] = (r, [f for f in v.get("fields", []) if f not in loc_scope], list(v.get("peers", [])))
+            elif a == "namespace_container":
+                # fato explícito: o atributo referencia um contêiner de namespace (T52)
+                if v.get("attribute"):
+                    ns_fields[cid].add(_rel(v["attribute"], bp))
             elif a == "twin_type":
                 twins[cid] = (r, v.get("twin"))
             elif a == "reference_target":
@@ -388,6 +400,8 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
             # o contêiner da identidade é o alvo de uma referência tipada: a identidade é relativa a ele (T21)
             f = via_typed[0]
             key_refs[cid][f] = typed[cid][f] if ok_target(typed[cid][f]) else None
+            if r["value"].get("scope_kind") in NAMESPACE_KINDS:
+                ns_fields[cid].add(f)                     # T52: contêiner de namespace, não composição
             continue
         key_refs[cid]["$container"] = None
         reasons[cid].append(f"identity: contido em {r['value'].get('scope_kind')} ({types or 'sem tipo Terraform'}) "
@@ -400,6 +414,11 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
             fm[f] = {"path": f, "ref": True}
             if ok_target(tgt):
                 ent.setdefault("references", {})[f] = tgt
+    for cid, fs in ns_fields.items():
+        fm = out.setdefault(cid, {}).setdefault("field_map", {})
+        for f in fs:
+            fm.setdefault(f, {"path": f, "ref": True})["namespace"] = True
+        reasons[cid].append(f"identity: {sorted(fs)} referencia contêiner de namespace (cascade_delete_by)")
     # identidade e chave de importação
     for key, (r, fields) in sorted(pending_ids.items()):
         cid = key.split("#")[0]

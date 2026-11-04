@@ -63,6 +63,7 @@ class Decision:
     label: str = ""
     notes: list = field(default_factory=list)
     trace: list = field(default_factory=list)
+    cascade: list = field(default_factory=list)       # contêineres de namespace: relação cascade_delete_by
 
 
 def _order_missing(xs) -> list:
@@ -152,6 +153,8 @@ class Context:
         self.n, self.ident, self.decided = n, ident, decided
         ev = n.ev
         self.identity_class = ident.cls
+        # campos de referência que a evidência marca como contêiner de namespace (G4-NS)
+        self.namespace_fields = {f for f, m in ev.field_map.items() if m.get("ref") and m.get("namespace")}
         self.targets = sorted(ident.refs.values()) if n.by_role else sorted(set(ident.refs.values()))
         self.lifecycle: Fact = ev.fact("lifecycle_controller")
         self.owner: Fact = ev.fact("owner")
@@ -252,6 +255,7 @@ def decide_node(n: Node, rs: R.RuleSet, decided: dict, bindings: dict) -> Decisi
                    "target": None if "effective_scope" in d.missing else ctx.scope_target}
         if ctx.owner_via_binding:
             d.notes.append("faceta com vários donos: fica no vínculo entre eles")
+        d.cascade = sorted({t for f, t in ident.refs.items() if f in ctx.namespace_fields})
         d.trace = trace
         return d
 

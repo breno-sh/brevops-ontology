@@ -49,7 +49,9 @@ def relations(res: S.SchemaResult, keep=None) -> tuple[list, list]:
         ends = {t: r for r, t in d.endpoints.items()}
         for f, t in sorted(refs.items()):
             how = None
-            if d.grain == "BINDING" and f in d.identity.refs:
+            if t in d.cascade and f in d.identity.refs and n.ev.field_map.get(f, {}).get("namespace"):
+                how = "cascade_delete_by"
+            elif d.grain == "BINDING" and f in d.identity.refs:
                 how = "endpoint:" + (n.ev.parent_role if f == PARENT else f) if t in ends else None
             elif t == d.parent and (f in d.identity.refs or f == PARENT or
                                     t == (d.lifecycle.get("target"))):
