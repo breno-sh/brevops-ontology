@@ -2913,12 +2913,12 @@
   "oracle_files_sha256": {
    "pilot/net/oracle/ORACLE.html": "f5cc0256e8d4ea7f2f2c5776afdf10db8c1758a8fdff3978d4a8ef8b3721d427",
    "pilot/net/oracle/directions.json": "5ae4bd4939c599a31467014209add4cbbd01d5b599e0f3ef58d3cfc89ccc9e8f",
-   "pilot/net/oracle/disputes.json": "3d7bad34d80014bfcf3a555918c361cca090bfd5d78dd44bc0f894f3d04eeafd",
+   "pilot/net/oracle/disputes.json": "df7167ea8fa0de665988e535fdfd56a14ffbef66af44e59e20862640ffceba7c",
    "pilot/net/oracle/documented_examples.json": "2164d957b0a3dcc522353b7323683b29af4fb2504dfc7be849c166f85a04d13d",
    "pilot/net/oracle/expected_answers.schema.json": "1cd279f77c88d0084795c2c3a317cab6b3a40ca6cd44bb7f0aa33699e71449bc",
    "pilot/net/oracle/net_oracle/__init__.py": "5711d062c8ed0be806ffa2da628472645ea76b170c10eadee66633ef6ebbddfb",
    "pilot/net/oracle/net_oracle/adapters.py": "e51ddefb5b555d2bbce1778b7b53d4ed3cafffd9e7d40185e8c93ae361b0f2e9",
-   "pilot/net/oracle/net_oracle/decomposing.py": "a252dc1e28bf768928cf416745200f60ea51302635f220c00c4940d0cf56c5ba",
+   "pilot/net/oracle/net_oracle/decomposing.py": "eef5afabf31f9a12b593da0d38f168e704e429d90c63dfe6bf42d1ad39cc8006",
    "pilot/net/oracle/net_oracle/evaluate.py": "a6c6fb9dc923e31c2b6357bb247525e52d4947e688fb2f478a6f2e41c6722bee",
    "pilot/net/oracle/net_oracle/judging.py": "0fdb04236387ff641a92ad15e77fb7f1f67dc014296ad0858d45025b8a237e91",
    "pilot/net/oracle/net_oracle/model.py": "1570ebe054d019861a75344bbbca43e81c3cbdcda9aff1e4fbf24a977fe7bacb",
@@ -2926,7 +2926,7 @@
    "pilot/net/oracle/sealed_index.json": "45826019391c70358190c1191e5bfcda25b03114771392691d09becfd0fdf7d8",
    "pilot/net/oracle/semantics_profile.json": "8a7dd62376fa3b9e992f89193a5348ea546edc06d78f4b08e51d5d2521c522b5",
    "pilot/net/oracle/tests/conftest.py": "e3ad840bca01544ce70449864a48a9d3989b73e3bb1d519f2c6eae0cb8827b0f",
-   "pilot/net/oracle/tests/test_calib.py": "2b293ea6311c95e8bd18ee9b258816eca5853bed735bb321f2af75e73d493a65",
+   "pilot/net/oracle/tests/test_calib.py": "8995276fe8cc1ba051efbc75d446f3ac890ea43a4d17ecb02a5c9190c8de2566",
    "pilot/net/oracle/tests/test_commitments.py": "c6dc665464f585f574a03baff68ead42e08e6ee313523f5a04753a86d9d00c47",
    "pilot/net/oracle/tests/test_documented_examples.py": "8c0fb08a00bada42f9ce2fb45c16d4e49656ace08b5aada4c3d876e32c91bd13",
    "pilot/net/oracle/tests/test_judge_rules.py": "5ce385c5150cedb880849289672700981d1cec58c87ead2823c6ae34894b6d26",
@@ -3195,7 +3195,7 @@
    }
   }
  },
- "generated_at": "2026-11-04T14:48:05-03:00",
+ "generated_at": "2026-11-04T18:50:32-03:00",
  "metrics": [
   {
    "axis": "operational",
