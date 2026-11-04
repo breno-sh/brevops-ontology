@@ -1,5 +1,5 @@
 PILOT-STO-ORACLE: notas do oráculo offline do piloto de armazenamento de objeto
-gravado em 2026-11-03T22:00-03:00, revisto em 2026-11-04T10:36:40-03:00 (America/Recife)
+gravado em 2026-11-03T22:00-03:00, revisto em 2026-11-04T12:43:51-03:00 (America/Recife)
 
 O QUE ESTÁ AQUI
 - Avaliador: pilot/sto/oracle/sto_oracle.py (só biblioteca padrão; não importa nada do pipeline). Estado efetivo
@@ -108,3 +108,24 @@ REVISÃO FINAL 2026-11-04 10h (SERVICE-EVIDENCE CC-10 767bb22, ce1e590, CC-9 0a9
   identidade OCI pela spec com chave (namespace, nome), escopo independente (SE-oci-algfats24ripxh6m), o que sustenta
   o contêiner OCI como entidade com chave composta. A criptografia S3 nova (CC-10) fica fora do objetivo do oráculo.
 - Os 19 evidence_id citados nas regras e nestas notas existem no arquivo congelado.
+
+REVISÃO 2026-11-04 12h, TENTATIVA 2 (SERVICE-EVIDENCE iteração 2, 83953b9; SEMANTICS emenda 2, ea53bcf)
+- Rerodei o gabarito sobre o service_evidence.jsonl de 83953b9 (sha256 73047e02...) e o SEMANTICS.html 2.0
+  (sha256 043777b7...). Nenhuma resposta mudou; as 304 retidas não mudaram e o selo D15 NÃO foi refeito
+  (cifrado 572f1333...). O avaliador não mudou (sto_oracle.py 3e4a549c..., oráculo 1.2.0).
+- O que a evidência nova confirma sem mudar resposta:
+  * embalagem (MC-DEC-PACK): gêmeos aws_s3_bucket.versioning <-> aws_s3_bucket_versioning (SE-aws-c4iodqojatmptbdm, R-TWIN)
+    e aws_s3_bucket.lifecycle_rule <-> aws_s3_bucket_lifecycle_configuration.rule (SE-aws-grpls4lwgvs2ec5k,
+    R-TWIN-SPEC); regras de ciclo de vida como membro da faceta BucketLifecycleConfiguration do bucket
+    (SE-aws-74wmvnc7u3bvww6o) e da faceta buckets.lifecycle no Google (SE-google-r25pyxfldp5kqyyu);
+  * ponte de API por bloco: versionamento do Google = buckets.versioning (SE-google-elil7rd6qzhe4qed); blob_properties do
+    Azure = storageAccounts/blobServices, sub-recurso da conta (SE-azurerm-ccykzqylikerehun), o que mantém o
+    versionamento como faceta da conta com alcance nos contêineres dela.
+- Identidade de item de lista pela spec: o gabarito decompõe até a faceta (versionamento, ciclo de vida, bloqueio,
+  concessão) e não decompõe regras em itens; nenhuma unidade dele depende desses fatos.
+- Disputas: 75 no total; na fatia continuam só as duas da política de ciclo de vida OCI (mesmos ids), UNKNOWN com os
+  dois lados. A disputa nova de google_storage_hmac_key (ponte de API) fica fora da fatia.
+- Tensão Azure managementPolicies continua: a spec dá a regra como membro da faceta 'policy' do próprio objeto
+  managementPolicies (SE-azurerm-3jyxtpn5toaf2j7s); o gabarito mantém a política como faceta da conta (CMT-BKT-P01).
+- SEMANTICS 2.0 (coleções no tipo de valor, AmountOfData para bytes): o oráculo julga estado efetivo, não tipo de
+  valor nem grandeza; nenhuma resposta depende disso.

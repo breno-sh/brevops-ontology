@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "PILOT-STO-ORACLE",
- "generated_at": "2026-11-04T10:36:42-03:00",
+ "generated_at": "2026-11-04T12:43:54-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-STO-ORACLE.txt",
@@ -16,7 +16,9 @@
    "providers": "aws:6.71.0,google:8.9.0,azurerm:5.12.0,oci:9.11.0",
    "seal": "openssl-cms-aes256-D15",
    "rules": "79",
-   "service_evidence_commit": "0a9e580"
+   "service_evidence_commit": "83953b9",
+   "semantics_commit": "ea53bcf",
+   "attempt": "2"
   },
   "inputs": [
    {
@@ -27,15 +29,15 @@
    {
     "path": "$BO_REPO/semantics/SEMANTICS.html",
     "kind": "file",
-    "sha256": "28f849eb578fea685935a2499cd13710e8a96b6cd01e4bc34419ae0e51f29596"
+    "sha256": "043777b7eb8a4362f267d5b563083d1e01f2811cb9a74de2377ae986252a2993"
    },
    {
     "path": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl",
     "kind": "file",
-    "sha256": "645b02308424fa4a574912d1c36375939f2f6124ef3cb6a32d3054c3490ead6d"
+    "sha256": "73047e02fdbe29ef9666b7a5e63773946b85e54c3a76e56b26e9210a5ea2af4a"
    }
   ],
-  "recorded_at": "2026-11-04T10:36:42-03:00"
+  "recorded_at": "2026-11-04T12:43:54-03:00"
  },
  "sources": [
   {
@@ -71,7 +73,7 @@
   {
    "uri": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl",
    "license": "interno (SERVICE-EVIDENCE)",
-   "transformation": "dono, alcance e ciclo de vida citados por evidence_id; gabarito rerodado sobre 0a9e580 (congelado)"
+   "transformation": "dono, alcance e ciclo de vida citados por evidence_id; gabarito rerodado sobre 83953b9 (tentativa 2)"
   },
   {
    "uri": "results/SERVICE-EVIDENCE/spec_disputes.json",
@@ -79,5 +81,5 @@
    "transformation": "disputas spec x doc da fatia viram UNKNOWN com os dois lados"
   }
  ],
- "notes": "oráculo offline STO 1.2.0; retidas só cifradas com o certificado da VM (D15); nada lido do glossário ou do mapeamento"
+ "notes": "oráculo offline STO 1.2.0, tentativa 2; retidas só cifradas com o certificado da VM (D15); nada lido do glossário ou do mapeamento"
 }
