@@ -252,7 +252,7 @@ def c26() -> dict:
                                                 "else": {"properties": {"missing": {"minItems": 1}}}}])},
              ["plan_id", "graph_id", "target_provider", "steps", "dependency_closure"])
     return contract_schema(
-        "C26", "graph_ir", "1.2.0", "IR de grafo e plano de lowering", status="amended",
+        "C26", "graph_ir", "1.3.0", "IR de grafo e plano de lowering", status="amended",
         description="IR de grafo: termos simbólicos, recursos, componentes, referências, pré-condições, contextos; plano "
                     "de criação com ordem, nomes derivados, escolhas tipadas, valores sintetizados (marcados), perdas, "
                     "desconhecidos simbólicos; fechamento de dependências. O plano é neutro: tags de execução (bo_run, "
@@ -268,6 +268,9 @@ def c26() -> dict:
                "C26-CHOICE: selected é uma das opções (ou nulo com motivo)",
                "C26-TARGET: reference.target_node (C00 3.0.1), quando há, é nó do grafo criado por passo anterior "
                "(de que o passo depende, direta ou indiretamente)",
+               "C26-LIST: atributo-lista de referências vai como termo list do C00 (security_list_ids = [ref, …]), "
+               "não como campo indexado .0, .1 (aceito, com nota, para os planos já gravados); cada referência da lista obedece ao C26-TARGET (emenda 1.3.0, "
+               "CC-NET-E2E-1)",
                "C26-NOTAG: nenhum valor do plano é tag de execução (campo tags/labels/freeform_tags.bo_*); quem marca "
                "a execução é o harness (emenda 1.2.0, decisão do coordenador sobre o ACHADO 4 do HARNESS-OCI)",
                "C26-STUB: o stub tem exatamente um plano por target_provider (aws, google, azurerm, oci), cada um "

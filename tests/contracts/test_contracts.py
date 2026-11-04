@@ -339,3 +339,25 @@ def test_plano_sem_tag_de_execucao():
     lp = [json.loads(l) for l in (ROOT / "contracts/stubs/C26/lowering_plan.jsonl").read_text().splitlines()]
     fields = [v["field"] for p in lp for st in p["steps"] for v in st["values"]]
     assert not [f for f in fields if ".bo_" in f]
+
+
+# ----------------------------------------------------------------------------------- emenda 7 (E6 do PILOT-EXIT)
+def test_emenda7_tabela_cobre_os_27():
+    from bo.contracts import report
+    rep = report.emenda7()
+    assert rep["n"] == 27 and len({(r["module"], r["item"]) for r in rep["items"]}) == 27
+    lst = (ROOT / "results/PILOT-EXIT/CONTRACT_CHANGE.txt")
+    if lst.is_file():
+        import re as _re
+        pedidos = set(_re.findall(r"- (PILOT-[A-Z0-9-]+) item ([A-Za-z0-9-]+):", lst.read_text(encoding="utf-8")))
+        assert pedidos == {(r["module"], r["item"]) for r in rep["items"]}
+
+
+def test_termo_lista_e_ausencia_do_lado_objeto(sch):
+    reg = catalog.registry(sch)
+    v = jsonschema.Draft202012Validator({"$ref": f"{_base.BASE_URI}C00/conventions.schema.json#/$defs/term"}, registry=reg)
+    assert v.is_valid({"kind": "list", "items": [{"kind": "reference", "target_type": "oci_core_security_list",
+                                                  "target_address": "oci_core_security_list.SYM-0a1b2c3d4e5f",
+                                                  "target_node": "r2"}]})
+    recs = sssom.read_tsv((ROOT / "contracts/stubs/C09/correspondences.sssom.tsv").read_text(encoding="utf-8"))[1]
+    assert any(r["subject_id"] == "sssom:NoTermFound" and r["absence"]["side"] == "object" for r in recs)

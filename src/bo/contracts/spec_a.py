@@ -83,6 +83,9 @@ def c00_defs() -> dict:
                                                                      "opcional (emenda C00 3.0.1)")},
               ["kind", "target_type", "target_address"])
     wh = obj({"kind": const("withheld"), "reason": enum(*WITHHELD_REASONS)}, ["kind", "reason"])
+    lst = obj({"kind": const("list"), "items": arr(local("term"))}, ["kind", "items"],
+              description="lista de termos (literais, símbolos ou referências), ex.: security_list_ids = [ref, ref] "
+                          "(emenda C00 3.1.0, CC-NET-E2E-1)")
     return {
         "stable_id": string(P_STABLE_ID, description="ID do módulo = stable_id (não depende da onda)"),
         "contract_id": string(r"^C([01]\d|2[0-9])$"),
@@ -157,7 +160,7 @@ def c00_defs() -> dict:
                       {"if": {"properties": {"level": {"enum": ["published", "derived"]}}},
                        "then": {"not": {"required": ["model_id"]}}}]},
         "file_ref": obj({"path": local("portable_path"), "sha256": local("sha256")}, ["path", "sha256"]),
-        "term": {"oneOf": [lit, sym, expr, doc, ref, wh],
+        "term": {"oneOf": [lit, sym, expr, doc, ref, wh, lst],
                  "description": "termo tipado da configuração simbólica (C06), sem executar HCL"},
     }
 
@@ -210,7 +213,7 @@ def c00_spec() -> dict:
         "modules": arr(local("module"), 1)},
         ["timezone", "env", "index_sets", "contracts", "modules"], extra=True)
     return contract_schema(
-        "C00", "conventions", "3.0.3", "convenções e definições comuns", status="amended",
+        "C00", "conventions", "3.1.0", "convenções e definições comuns", status="amended",
         description="ID = stable_id; onda calculada do DAG; código em $BO_REPO/src/bo/<pacote>/; dados em "
                     "$BO_DATA/<ID>/; temporário em $BO_TMP=$BO_DATA/tmp/<ID> (nunca /tmp); caminhos só com índices "
                     "declarados em index_sets; datas ISO-8601 com fuso America/Recife. $defs comuns a todos os contratos.",
@@ -233,7 +236,12 @@ def c01() -> dict:
         "resource_type": c00("resource_type"), "path": string(r"^[A-Za-z0-9_]+(\.[A-Za-z0-9_]+)*$"),
         "block_path": arr(obj({"block": string(r"^[A-Za-z0-9_]+$"),
                                "nesting_mode": enum("single", "list", "set", "map", "group"),
-                               "min_items": integer(0), "max_items": integer(0)}, ["block", "nesting_mode"])),
+                               "min_items": integer(0), "max_items": integer(0),
+                               "kind": enum("block", "nested_attribute",
+                                            description="nested_attribute: atributo de coleção de objetos (nested_type "
+                                                        "ou list/set de object) exposto como elemento; ausente = block "
+                                                        "(emenda 2.2.0, CC-NET-1)")},
+                              ["block", "nesting_mode"])),
         "tf_type": {"type": ["string", "array"], "description": "tipo cty do schema do provider"},
         "nesting": enum("none", "single", "list", "set", "map", "group"),
         "required": boolean(), "optional": boolean(), "computed": boolean(), "sensitive": boolean(),
@@ -243,7 +251,7 @@ def c01() -> dict:
         ["atom_id", "provider", "provider_version", "resource_type", "path", "block_path", "tf_type", "nesting",
          "required", "optional", "computed", "sensitive", "deprecated", "configurable"])
     return contract_schema(
-        "C01", "atoms", "2.1.0", "átomos de atributo", status="amended",
+        "C01", "atoms", "2.2.0", "átomos de atributo", status="amended",
         description="Um atributo configurável de um tipo, com o caminho dos blocos aninhados.",
         files=[file_kind("atoms", "atoms.jsonl", "jsonl", "atom", "record")], defs={"atom": atom},
         producers=["SCHEMA-{provider}", "HIST-{provider}", "SCHEMA-POST"],

@@ -46,12 +46,19 @@ def _strip(s: dict) -> dict:
 # ------------------------------------------------------------------------------------------------- C09
 def value_type() -> dict:
     """Tipo de valor do SEMANTICS (ValueType) com os marcadores do C00 no lugar de 'string livre'."""
-    return obj({"datatype": enum("integer", "decimal", "boolean", "string", "enum", "duration", "tuple"),
+    return obj({"datatype": enum("integer", "decimal", "boolean", "string", "enum", "duration", "tuple", "list", "set",
+                                 "map"),
+                "item_type": local("value_type"), "key_type": enum("string", "integer", "enum"),
                 "quantity_kind": c00("quantity_kind"), "unit": c00("unit_qudt"),
                 "rate_window": nullable(c00("xsd_duration")), "byte_convention": enum("SI", "IEC", None),
                 "enum": {"type": "array"}, "range": {"type": "object"}, "step": {"type": ["string", "integer"]},
                 "sentinels": {"type": "object"}, "components": {"type": "array"}, "required": boolean()},
-               ["datatype"])
+               ["datatype"],
+               allOf=[{"if": {"properties": {"datatype": {"enum": ["list", "set", "map"]}}},
+                       "then": {"required": ["item_type"]},
+                       "else": {"not": {"anyOf": [{"required": ["item_type"]}, {"required": ["key_type"]}]}}},
+                      {"if": {"properties": {"datatype": const("map")}}, "then": {"required": ["key_type"]}}],
+               description="list/set/map com tipo do elemento (item_type) e da chave (key_type): emenda C09 3.2.0")
 
 
 def projection() -> dict:
@@ -110,6 +117,8 @@ def correspondence() -> dict:
     props["supersedes"] = c00("claim_version_id")
     props["inverse_of"] = c00("claim_id")
     props["absence"] = obj({"kind": c00("absence_kind"), "block_code": c00("block_code"),
+                            "side": enum("subject", "object", description="lado do átomo sem contraparte; ausente = "
+                                                                          "subject (emenda 3.2.0)"),
                             "searched": arr(text(3), 1), "evidence": arr({"type": "object"})},
                            ["kind", "searched"],
                            description="ausência tipada: object_id = sssom:NoTermFound (emenda 3.1.0)")
@@ -130,7 +139,7 @@ def c09() -> dict:
     defs = {"correspondence": correspondence(), "value_type": value_type(), "projection": projection(),
             "group": group()}
     return contract_schema(
-        "C09", "correspondences", "3.1.0", "alegações de correspondência (SSSOM + EDOAL)", status="amended",
+        "C09", "correspondences", "3.2.0", "alegações de correspondência (SSSOM + EDOAL)", status="amended",
         description="Colunas SSSOM mais claim_id (imutável), claim_version_id, event_id; semantic_relation (predicado "
                     "SKOS na direção correta: 'a skos:broadMatch b' = b mais amplo), value_domain_relation orientada, "
                     "transport_fidelity; guard (gramática tipada do C10); translation_fn; loss_contract; "
@@ -163,7 +172,9 @@ def c09() -> dict:
                "C09-NONE: object_id = sssom:NoTermFound ⇔ ausência tipada (campo absence; a forma provisória "
                "curation_rule = bo:NONE_<tipo> do MAPPER_BRIEF continua aceita e, com os dois, têm de concordar); a "
                "linha é skos:relatedMatch, related, fidelidade none, sem translation_fn; disputes só cita outras "
-               "alegações"])
+               "alegações; absence.side = object põe o átomo sem contraparte como objeto (subject_id = "
+               "sssom:NoTermFound), na orientação canônica do par",
+               "C09-COLL: list/set/map declaram item_type (e map, key_type)"])
 
 
 # ------------------------------------------------------------------------------------------------- C10

@@ -95,7 +95,12 @@ def c01() -> dict:
           "tf_type": ["list", ["object", {"name": "string", "size": "number"}, ["size"]]], "nesting": "none",
           "required": False, "optional": True, "computed": False, "sensitive": False, "deprecated": False,
           "configurable": True}
-    return {"C01/atoms.jsonl": jsonl([a1, a2, a3, a4])}
+    a5 = {"atom_id": "aws:aws_security_group:ingress.from_port", "provider": "aws", "provider_version": "6.71.0",
+          "resource_type": "aws_security_group", "path": "ingress.from_port",
+          "block_path": [{"block": "ingress", "nesting_mode": "set", "kind": "nested_attribute"}],
+          "tf_type": "number", "nesting": "set", "required": False, "optional": True, "computed": False,
+          "sensitive": False, "deprecated": False, "configurable": True}
+    return {"C01/atoms.jsonl": jsonl([a1, a2, a3, a4, a5])}
 
 
 def c02() -> dict:
@@ -220,6 +225,12 @@ def c06() -> dict:
                      "args": [{"kind": "symbol", "symbol_id": SYM3, "name_class": "variable", "scope": "repo"},
                               {"kind": "literal", "datatype": "number", "value": 20}]}}
     wh = {**lit, "attr_path": "password", "term": {"kind": "withheld", "reason": "secret"}}
+    lst = {**lit, "resource_address": f"aws_instance.{SYM4}", "resource_type": "aws_instance",
+           "attr_path": "vpc_security_group_ids",
+           "term": {"kind": "list", "items": [
+               {"kind": "reference", "target_type": "aws_security_group",
+                "target_address": f"aws_security_group.{SYM1}", "attribute": "id"},
+               {"kind": "symbol", "symbol_id": SYM2, "name_class": "variable", "scope": "repo"}]}}
     rows = [{"repo_id": REPO1, "family_id": FAM1, "file": "modules/db/main.tf",
              "resource_address": f"aws_db_instance.{SYM1}", "resource_type": "aws_db_instance", "provider": "aws",
              "n_attrs": 12, "has_count": False, "has_for_each": False, "module_depth": 0},
@@ -235,7 +246,7 @@ def c06() -> dict:
     usage = {"repo_id": REPO1, "family_id": FAM1, "provider": "aws", "resource_type": "aws_db_instance",
              "atom_id": "aws:aws_db_instance:backup_retention_period", "n_resources": 1, "n_set": 1, "n_literal": 1,
              "n_symbolic": 0, "n_withheld": 0}
-    return {"C06/symbolic_config.jsonl": jsonl([lit, ref, doc, expr, wh]), "C06/resources.parquet": buf.getvalue(),
+    return {"C06/symbolic_config.jsonl": jsonl([lit, ref, doc, expr, wh, lst]), "C06/resources.parquet": buf.getvalue(),
             "C06/usage.jsonl": jsonl([usage])}
 
 
@@ -325,7 +336,20 @@ def c09_records() -> list[dict]:
     legacy.pop("absence")
     hunt = claim("CLM-HUNT-01", 1, "pa:spin_rate", "close", "pb:rotation_speed", disputes=["CLM-NONE-01"],
                  evidence_state="STRUCTURALLY_VALID")
-    return [v1, v2, br, none, legacy, hunt]
+    pfx = {"datatype": "list", "item_type": {"datatype": "string", "quantity_kind": "NOT_APPLICABLE",
+                                             "unit": "NOT_APPLICABLE"},
+           "quantity_kind": "NOT_APPLICABLE", "unit": "NOT_APPLICABLE"}
+    lst = claim("CLM-LIST-01", 1, "pb:address_prefixes", "exact", "pc:cidr_blocks", subject_value_type=pfx,
+                object_value_type=pfx, value_domain_relation={"relation": "equal", "orientation": "subject_to_object"},
+                subject_concept="bo:UNGLOSSED", object_concept="bo:UNGLOSSED",
+                proof={"type": "normalization", "evidence": PROOF["evidence"],
+                       "tests": [{"input": ["10.0.0.0/16"], "expected": ["10.0.0.0/16"]}]})
+    obj_none = {**copy.deepcopy(none), "claim_id": "CLM-NONE-03", "claim_version_id": "CLM-NONE-03@1",
+                "event_id": "EV-CLM-NONE-03-1", "subject_id": "sssom:NoTermFound", "object_id": "pb:spin_window",
+                "subject_concept": "bo:UNGLOSSED", "object_concept": "concept:backup_retention",
+                "subject_value_type": none["object_value_type"], "object_value_type": none["subject_value_type"],
+                "absence": {**none["absence"], "side": "object"}}
+    return [v1, v2, br, none, legacy, hunt, lst, obj_none]
 
 
 EDITION_STD = [{"term": "object.edition", "op": "edition_in", "value": ["standard"]}]
@@ -754,7 +778,7 @@ def c20() -> dict:
                                       "result": "nenhum uso com outro significado"},
             "extraction_method": "parser", "evidence_level": "published", "source": EV_DOC["doc"]}
     v1 = {**base, "claim_version_id": "ANC-aws-0001@1", "event_id": "EV-GLOSS-0001", "evidence_state": "STRUCTURALLY_VALID",
-          "recorded_at": TS}
+          "recorded_at": TS, "evidence_ref": {"contract": "C03", "id": "DF-aws-0001"}}
     v2 = {**base, "claim_version_id": "ANC-aws-0001@2", "event_id": "EV-AUDIT-0007", "supersedes": "ANC-aws-0001@1",
           "evidence_state": "DOC_SUPPORTED", "recorded_at": TS2}
     blk = {**{k: v for k, v in base.items() if k != "atom_id"}, "claim_id": "ANC-google-fw-0001",
@@ -789,7 +813,12 @@ def c20() -> dict:
             {**dh, "decision_id": "GD-DB-0004", "kind": "same_kind_distinct", "concept_id": "concept:backup_retention",
              "related_concept": "concept:monitoring_interval", "evidence": [],
              "reason": "mesma grandeza (tempo), significados distintos"}]
-    return {"C20/glossary.jsonl": jsonl(con), "C20/claims.jsonl": jsonl([v1, v2, blk, typ]),
+    unr = {k: v for k, v in base.items() if k not in ("sentence", "source")}
+    unr.update({"claim_id": "ANC-aws-0009", "claim_version_id": "ANC-aws-0009@1", "event_id": "EV-GLOSS-0109",
+                "atom_id": "aws:aws_s3_bucket_acl:access_control_policy.grant.permission",
+                "concept_id": "concept:storage_tier", "evidence_state": "UNRESOLVED", "recorded_at": TS2,
+                "context": "a descrição publicada fala de outra coisa (parece cópia de outra página); sem sentença própria"})
+    return {"C20/glossary.jsonl": jsonl(con), "C20/claims.jsonl": jsonl([v1, v2, blk, typ, unr]),
             "C20/glossary_audit.jsonl": jsonl([aud]), "C20/decisions.jsonl": jsonl(decs)}
 
 
@@ -818,7 +847,8 @@ def c22() -> dict:
             "counts": {"attempts": 3, "observed": 3, "not_observed": 0, "errors": 0}, "negative_control_ok": True},
            {"observation_id": "OBS-B-0001", "pair_case_id": "PC-0001", "side": "B", "provider": "google",
             "probe_type": "item_ttl", "timestamp": TS3, "protocol_version": "1.0.0",
-            "counts": {"attempts": 3, "observed": 2, "not_observed": 0, "errors": 1}, "negative_control_ok": True}]
+            "counts": {"attempts": 3, "observed": 1, "observed_out_of_tolerance": 1, "not_observed": 0, "errors": 1},
+            "negative_control_ok": True}]
     pj = {"judgement_id": "PJ-0001", "pair_case_id": "PC-0001", "case_id": "CASE-AWSGCP-DB-0001",
           "group_id": "G-AWSGCP-DB-0001", "observations": {"A": "OBS-A-0001", "B": "OBS-B-0001"},
           "outcome": {"axis": "behavior", "value": "OBSERVATIONS_MATCH_UNDER_PROTOCOL"}, "protocol_version": "1.0.0",

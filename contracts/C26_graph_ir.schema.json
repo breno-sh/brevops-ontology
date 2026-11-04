@@ -1,12 +1,12 @@
 {
  "$schema": "https://json-schema.org/draft/2020-12/schema",
  "$id": "https://w3id.org/brevops/contracts/C26/graph_ir.schema.json",
- "title": "C26 graph_ir 1.2.0: IR de grafo e plano de lowering",
+ "title": "C26 graph_ir 1.3.0: IR de grafo e plano de lowering",
  "description": "IR de grafo: termos simbólicos, recursos, componentes, referências, pré-condições, contextos; plano de criação com ordem, nomes derivados, escolhas tipadas, valores sintetizados (marcados), perdas, desconhecidos simbólicos; fechamento de dependências. O plano é neutro: tags de execução (bo_run, bo_case…) são do harness e nunca vêm no plano.",
  "x-bo-contract": {
   "id": "C26",
   "name": "graph_ir",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "status": "amended",
   "owner": "CONTRACTS",
   "files": [
@@ -32,6 +32,7 @@
    "C26-TERMS: from_terms e symbolic_unknowns citam termos do graph_ir irmão",
    "C26-CHOICE: selected é uma das opções (ou nulo com motivo)",
    "C26-TARGET: reference.target_node (C00 3.0.1), quando há, é nó do grafo criado por passo anterior (de que o passo depende, direta ou indiretamente)",
+   "C26-LIST: atributo-lista de referências vai como termo list do C00 (security_list_ids = [ref, …]), não como campo indexado .0, .1 (aceito, com nota, para os planos já gravados); cada referência da lista obedece ao C26-TARGET (emenda 1.3.0, CC-NET-E2E-1)",
    "C26-NOTAG: nenhum valor do plano é tag de execução (campo tags/labels/freeform_tags.bo_*); quem marca a execução é o harness (emenda 1.2.0, decisão do coordenador sobre o ACHADO 4 do HARNESS-OCI)",
    "C26-STUB: o stub tem exatamente um plano por target_provider (aws, google, azurerm, oci), cada um renderizável no pin do PINS (gate de render dos HARNESS-*)"
   ],

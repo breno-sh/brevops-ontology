@@ -1,12 +1,12 @@
 {
  "$schema": "https://json-schema.org/draft/2020-12/schema",
  "$id": "https://w3id.org/brevops/contracts/C09/correspondences.schema.json",
- "title": "C09 correspondences 3.1.0: alegações de correspondência (SSSOM + EDOAL)",
+ "title": "C09 correspondences 3.2.0: alegações de correspondência (SSSOM + EDOAL)",
  "description": "Colunas SSSOM mais claim_id (imutável), claim_version_id, event_id; semantic_relation (predicado SKOS na direção correta: 'a skos:broadMatch b' = b mais amplo), value_domain_relation orientada, transport_fidelity; guard (gramática tipada do C10); translation_fn; loss_contract; membership_predicate para broad/narrow; grupo como regra sobre subgrafo (bo_group_id, variáveis e argumentos nomeados, ocorrência do bloco); projection por ocorrência; realizações alternativas guardadas (alternative_to + exclusivity); proof; evidence_state (C20); conceitos ou bo:UNGLOSSED. Colunas estruturadas são JSON numa célula. O I/O passa por bo.contracts.sssom (que delega a bo.semantics.sssom_io e preserva as colunas novas): o sssom-py 0.4.22 descarta extensões em silêncio.",
  "x-bo-contract": {
   "id": "C09",
   "name": "correspondences",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "status": "amended",
   "owner": "CONTRACTS",
   "files": [
@@ -43,7 +43,8 @@
    "C09-GROUP: grupo com variáveis nomeadas, ligadas e únicas, argumentos = assinatura, ocorrências ligadas por junção (G-VARS, G-ARITY, G-OCC); bo_group_id da coluna = do grupo",
    "C09-PROJ: projeção em bloco repetido tem chave de ocorrência que não é posição; extrator roda nos testes; sobreposição declarada (P-OCC, P-EXEC, P-OVERLAP)",
    "C09-ALT: alternativas são mútuas, do mesmo subject_id, com guarda; ProvenExclusive só se a interseção das guardas é UNSAT; senão Ambiguous (A-EXCL)",
-   "C09-NONE: object_id = sssom:NoTermFound ⇔ ausência tipada (campo absence; a forma provisória curation_rule = bo:NONE_<tipo> do MAPPER_BRIEF continua aceita e, com os dois, têm de concordar); a linha é skos:relatedMatch, related, fidelidade none, sem translation_fn; disputes só cita outras alegações"
+   "C09-NONE: object_id = sssom:NoTermFound ⇔ ausência tipada (campo absence; a forma provisória curation_rule = bo:NONE_<tipo> do MAPPER_BRIEF continua aceita e, com os dois, têm de concordar); a linha é skos:relatedMatch, related, fidelidade none, sem translation_fn; disputes só cita outras alegações; absence.side = object põe o átomo sem contraparte como objeto (subject_id = sssom:NoTermFound), na orientação canônica do par",
+   "C09-COLL: list/set/map declaram item_type (e map, key_type)"
   ],
   "producers": [
    "GOLD-*",
@@ -87,6 +88,13 @@
       },
       "block_code": {
        "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/block_code"
+      },
+      "side": {
+       "enum": [
+        "subject",
+        "object"
+       ],
+       "description": "lado do átomo sem contraparte; ausente = subject (emenda 3.2.0)"
       },
       "searched": {
        "type": "array",
@@ -729,7 +737,20 @@
       "string",
       "enum",
       "duration",
-      "tuple"
+      "tuple",
+      "list",
+      "set",
+      "map"
+     ]
+    },
+    "item_type": {
+     "$ref": "#/$defs/value_type"
+    },
+    "key_type": {
+     "enum": [
+      "string",
+      "integer",
+      "enum"
      ]
     },
     "quantity_kind": {
@@ -780,7 +801,58 @@
    "required": [
     "datatype"
    ],
-   "additionalProperties": false
+   "additionalProperties": false,
+   "allOf": [
+    {
+     "if": {
+      "properties": {
+       "datatype": {
+        "enum": [
+         "list",
+         "set",
+         "map"
+        ]
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "item_type"
+      ]
+     },
+     "else": {
+      "not": {
+       "anyOf": [
+        {
+         "required": [
+          "item_type"
+         ]
+        },
+        {
+         "required": [
+          "key_type"
+         ]
+        }
+       ]
+      }
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "datatype": {
+        "const": "map"
+       }
+      }
+     },
+     "then": {
+      "required": [
+       "key_type"
+      ]
+     }
+    }
+   ],
+   "description": "list/set/map com tipo do elemento (item_type) e da chave (key_type): emenda C09 3.2.0"
   },
   "projection": {
    "type": "object",

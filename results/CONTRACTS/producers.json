@@ -1,7 +1,7 @@
 {
  "schema": "bo.contracts_producers/1",
  "module": "CONTRACTS",
- "generated_at": "2026-11-04T08:40:48-03:00",
+ "generated_at": "2026-11-04T12:18:13-03:00",
  "checked": 21,
  "ok": 21,
  "files": [
@@ -190,7 +190,7 @@
    "file": "contracts/stubs/C01/atoms.jsonl",
    "kind": "C01:atoms",
    "why": "C01 2.1.0 (write_only e nested_type)",
-   "items": 4,
+   "items": 5,
    "ok": true,
    "errors": []
   }

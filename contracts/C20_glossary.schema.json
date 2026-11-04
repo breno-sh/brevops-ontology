@@ -1,12 +1,12 @@
 {
  "$schema": "https://json-schema.org/draft/2020-12/schema",
  "$id": "https://w3id.org/brevops/contracts/C20/glossary.schema.json",
- "title": "C20 glossary 3.2.0: glossário, âncoras como alegações, auditoria e decisões",
+ "title": "C20 glossary 3.3.0: glossário, âncoras como alegações, auditoria e decisões",
  "description": "Conceito com grandeza (IRI | NOT_APPLICABLE | UNKNOWN); âncora como alegação com sentença, contexto, contraexemplo procurado, método de extração e evidence_state (STRUCTURALLY_VALID | DOC_SUPPORTED | PERSISTENCE_VERIFIED | OBSERVATION_TESTED | UNRESOLVED).",
  "x-bo-contract": {
   "id": "C20",
   "name": "glossary",
-  "version": "3.2.0",
+  "version": "3.3.0",
   "status": "amended",
   "owner": "CONTRACTS",
   "files": [
@@ -48,7 +48,9 @@
    "C20-DEC-DIR: broader = concept_id ⊂ related_concept (direção de skos:broader); narrower = o inverso",
    "C20-DEC-REF: concept_id e related_concept existem no glossary.jsonl irmão (quando há); nunca o mesmo",
    "C20-DEC-ACYCLIC: a hierarquia (broader e narrower invertido) não tem ciclo",
-   "C20-ANCHOR: anchor_kind atom (ou ausente) ancora em atom_id; block em block_id e type em type_id, sempre com implication (que valor do conceito o bloco/tipo implica); as alternativas citadas são de outro bloco/tipo, com valores distintos"
+   "C20-ANCHOR: anchor_kind atom (ou ausente) ancora em atom_id; block em block_id e type em type_id, sempre com implication (que valor do conceito o bloco/tipo implica); as alternativas citadas são de outro bloco/tipo, com valores distintos",
+   "C20-UNRESOLVED: âncora UNRESOLVED pode vir sem sentença; o motivo vai no context (nunca sentença inventada); as demais exigem sentence (emenda 3.3.0, CC-6 do PILOT-STO-GLOSS)",
+   "C20-EVREF: evidence_ref cita o fato C03 do átomo ou C25 do tipo de onde veio a sentença"
   ],
   "producers": [
    "GLOSSARY-AUDIT",
@@ -238,6 +240,28 @@
      "type": "string",
      "minLength": 5
     },
+    "evidence_ref": {
+     "type": "object",
+     "properties": {
+      "contract": {
+       "enum": [
+        "C03",
+        "C25"
+       ]
+      },
+      "id": {
+       "type": "string",
+       "minLength": 1,
+       "pattern": "^(DF|SE)-[A-Za-z0-9][A-Za-z0-9_.:\\-]*$"
+      }
+     },
+     "required": [
+      "contract",
+      "id"
+     ],
+     "additionalProperties": false,
+     "description": "fato do C03 (do átomo) ou do C25 (do tipo) que dá a sentença (emenda 3.3.0, CC-NET-4)"
+    },
     "counterexample_search": {
      "type": "object",
      "properties": {
@@ -290,7 +314,6 @@
     "claim_version_id",
     "event_id",
     "concept_id",
-    "sentence",
     "context",
     "counterexample_search",
     "extraction_method",
@@ -300,6 +323,28 @@
    ],
    "additionalProperties": false,
    "allOf": [
+    {
+     "if": {
+      "properties": {
+       "evidence_state": {
+        "const": "UNRESOLVED"
+       }
+      }
+     },
+     "then": {
+      "properties": {
+       "context": {
+        "type": "string",
+        "minLength": 15
+       }
+      }
+     },
+     "else": {
+      "required": [
+       "sentence"
+      ]
+     }
+    },
     {
      "if": {
       "anyOf": [

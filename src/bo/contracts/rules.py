@@ -339,7 +339,7 @@ def term_leaks(term: dict, where: str) -> list[str]:
             for name, rx in LEAK:
                 if rx.search(s):
                     errs.append(f"{where}: literal com {name} em claro")
-    for a in term.get("args") or []:
+    for a in (term.get("args") or []) + (term.get("items") or []):
         errs += term_leaks(a, where)
     return errs
 
@@ -550,13 +550,21 @@ def _absences(recs: list[dict], where, meta: dict | None) -> list[str]:
     ids = {r.get("claim_id") for r in recs}
     for i, r in enumerate(recs):
         w = where(i, r)
-        none = r.get("object_id") == NO_TERM
-        legacy = LEGACY_NONE.match(str(r.get("curation_rule") or ""))
         ab = r.get("absence")
+        side = (ab or {}).get("side", "subject")
+        s_none, o_none = r.get("subject_id") == NO_TERM, r.get("object_id") == NO_TERM
+        none = s_none or o_none
+        legacy = LEGACY_NONE.match(str(r.get("curation_rule") or ""))
+        if s_none and o_none:
+            errs.append(f"{w}: sssom:NoTermFound nos dois lados")
         if none and not (ab or legacy):
             errs.append(f"{w}: sssom:NoTermFound sem ausência tipada (absence ou curation_rule bo:NONE_<tipo>)")
-        if ab and not none:
-            errs.append(f"{w}: absence com object_id {r.get('object_id')!r} (ausência é sssom:NoTermFound)")
+        if s_none and not (ab and side == "object"):
+            errs.append(f"{w}: subject_id sssom:NoTermFound só com absence.side = object")
+        if ab and side == "subject" and not o_none:
+            errs.append(f"{w}: absence do lado sujeito exige object_id sssom:NoTermFound")
+        if ab and side == "object" and not s_none:
+            errs.append(f"{w}: absence do lado objeto exige subject_id sssom:NoTermFound")
         if ab and legacy and legacy.group(1) != ab["kind"]:
             errs.append(f"{w}: curation_rule {legacy.group(0)} diverge de absence.kind {ab['kind']}")
         if none:
@@ -1175,8 +1183,8 @@ def r_observations(objs, ctx, path):
     errs = dup([o["observation_id"] for o in objs], "observation_id")
     for i, o in enumerate(objs):
         c = o["counts"]
-        if c["observed"] + c["not_observed"] + c["errors"] != c["attempts"]:
-            errs.append(f"observations[{i + 1}]: observed + not_observed + errors != attempts")
+        if c["observed"] + c.get("observed_out_of_tolerance", 0) + c["not_observed"] + c["errors"] != c["attempts"]:
+            errs.append(f"observations[{i + 1}]: observed + observed_out_of_tolerance + not_observed + errors != attempts")
     return errs
 
 
@@ -1353,7 +1361,10 @@ def r_plan(objs, ctx, path):
                     errs.append(f"{w}: passo {s['order']} traz tag de execução {v['field']} (é do harness, não do plano)")
             prev = _ancestors(p["steps"], s)
             for v in s["values"]:
-                tn = (v.get("term") or {}).get("target_node")
+                if re.search(r"\.[0-9]+$", v["field"]) and (v.get("term") or {}).get("kind") == "reference":
+                    ctx.setdefault("notes", []).append(
+                        f"{w}: passo {s['order']} indexa {v['field']} com referência; prefira termo list (C26-LIST)")
+            for v, tn in ((v, t.get("target_node")) for v in s["values"] for t in _refs(v.get("term") or {})):
                 if tn and tn not in prev:
                     errs.append(f"{w}: passo {s['order']} referencia {tn}, que não é criado por passo de que ele depende")
             for ch in s["typed_choices"]:
@@ -1378,6 +1389,14 @@ def r_plan(objs, ctx, path):
 
 
 # ---------------------------------------------------------------------------------------------------- C27
+def _refs(term: dict):
+    """Termos reference de um termo, inclusive dentro de list/expression."""
+    if term.get("kind") == "reference":
+        yield term
+    for t in (term.get("items") or []) + (term.get("args") or []):
+        yield from _refs(t)
+
+
 RUN_TAG = re.compile(r"^(tags|labels|freeform_tags|defined_tags|tags_all)\.bo_")
 
 

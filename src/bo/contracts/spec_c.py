@@ -273,14 +273,18 @@ def c20() -> dict:
                            ["realization", "value", "rule"],
                            description="que valor do conceito o bloco/tipo implica (ex.: deny{} -> effect = deny)"),
         "sentence": text(10), "context": text(5),
+        "evidence_ref": obj({"contract": enum("C03", "C25"), "id": string(r"^(DF|SE)-[A-Za-z0-9][A-Za-z0-9_.:\-]*$")},
+                            ["contract", "id"], description="fato do C03 (do átomo) ou do C25 (do tipo) que dá a sentença "
+                                                            "(emenda 3.3.0, CC-NET-4)"),
         "counterexample_search": obj({"query": text(3), "found": boolean(), "result": text(3)},
                                      ["query", "found", "result"]),
         "extraction_method": enum("parser", "regex", "table", "manual", "model"),
         "evidence_level": c00("evidence_level"), "model_id": c00("model_id"), "source": c00("doc_source"),
         "evidence_state": c00("evidence_state"), "recorded_at": c00("datetime")},
-        ["claim_id", "claim_version_id", "event_id", "concept_id", "sentence", "context",
+        ["claim_id", "claim_version_id", "event_id", "concept_id", "context",
          "counterexample_search", "extraction_method", "evidence_level", "evidence_state", "recorded_at"],
-        allOf=[{"if": {"anyOf": [{"not": {"required": ["anchor_kind"]}},
+        allOf=[{"if": {"properties": {"evidence_state": const("UNRESOLVED")}},
+                "then": {"properties": {"context": text(15)}}, "else": {"required": ["sentence"]}},{"if": {"anyOf": [{"not": {"required": ["anchor_kind"]}},
                                  {"properties": {"anchor_kind": const("atom")}}]},
                 "then": {"required": ["atom_id"],
                          "not": {"anyOf": [{"required": [k]} for k in ("block_id", "type_id", "implication")]}}},
@@ -325,7 +329,7 @@ def c20() -> dict:
         description="decisão do glossarista; broader: concept_id é o mais estreito (concept_id skos:broader "
                     "related_concept); narrower: o inverso (emenda 3.1.0, formato provisório do GLOSSARY_BRIEF)")
     return contract_schema(
-        "C20", "glossary", "3.2.0", "glossário, âncoras como alegações, auditoria e decisões", status="amended",
+        "C20", "glossary", "3.3.0", "glossário, âncoras como alegações, auditoria e decisões", status="amended",
         description="Conceito com grandeza (IRI | NOT_APPLICABLE | UNKNOWN); âncora como alegação com sentença, contexto, "
                     "contraexemplo procurado, método de extração e evidence_state (STRUCTURALLY_VALID | DOC_SUPPORTED | "
                     "PERSISTENCE_VERIFIED | OBSERVATION_TESTED | UNRESOLVED).",
@@ -346,7 +350,10 @@ def c20() -> dict:
                "C20-DEC-ACYCLIC: a hierarquia (broader e narrower invertido) não tem ciclo",
                "C20-ANCHOR: anchor_kind atom (ou ausente) ancora em atom_id; block em block_id e type em type_id, "
                "sempre com implication (que valor do conceito o bloco/tipo implica); as alternativas citadas são de "
-               "outro bloco/tipo, com valores distintos"])
+               "outro bloco/tipo, com valores distintos",
+               "C20-UNRESOLVED: âncora UNRESOLVED pode vir sem sentença; o motivo vai no context (nunca sentença "
+               "inventada); as demais exigem sentence (emenda 3.3.0, CC-6 do PILOT-STO-GLOSS)",
+               "C20-EVREF: evidence_ref cita o fato C03 do átomo ou C25 do tipo de onde veio a sentença"])
 
 
 # ------------------------------------------------------------------------------------------------- C21
@@ -388,14 +395,17 @@ def c22() -> dict:
                                       "evidence": arr(c00("evidence_item"))}, ["provider", "status", "evidence"]), 1)},
         ["probe_type", "preconditions", "negative_control", "repetitions", "tolerance", "polling", "window",
          "cost_limit", "validated_support"])
-    hp, hr = header("bo.probe_types/1", "C22", "3.0.0", module=True)
+    hp, hr = header("bo.probe_types/1", "C22", "3.1.0", module=True)
     pdoc = obj({**hp, "protocol_version": c00("semver"), "probe_types": arr(local("probe_type"), 1)},
                hr + ["protocol_version", "probe_types"])
     obs = obj({"observation_id": string(r"^OBS-[A-Za-z0-9_\-]+$"), "pair_case_id": string(r"^PC-[A-Za-z0-9_\-]+$"),
                "side": enum("A", "B"), "provider": c00("provider"), "probe_type": text(3), "timestamp": c00("datetime"),
                "protocol_version": c00("semver"),
                "counts": obj({"attempts": integer(0), "observed": integer(0), "not_observed": integer(0),
-                              "errors": integer(0)}, ["attempts", "observed", "not_observed", "errors"]),
+                              "errors": integer(0),
+                              "observed_out_of_tolerance": integer(0, description="efeito visto, mas fora da "
+                                                                                  "tolerância do tipo (emenda 3.1.0)")},
+                             ["attempts", "observed", "not_observed", "errors"]),
                "negative_control_ok": boolean()},
               ["observation_id", "pair_case_id", "side", "provider", "probe_type", "timestamp", "protocol_version",
                "counts", "negative_control_ok"],
@@ -410,7 +420,7 @@ def c22() -> dict:
              ["judgement_id", "pair_case_id", "case_id", "group_id", "observations", "outcome", "protocol_version",
               "judged_by", "judged_at"])
     return contract_schema(
-        "C22", "probes", "3.0.0", "tipos de sonda, observações e julgamentos pareados", status="changed_v3",
+        "C22", "probes", "3.1.0", "tipos de sonda, observações e julgamentos pareados", status="amended",
         description="Tipo: pré-condições, controle negativo, repetição, tolerância, polling, janela e margem sobre o TTL, "
                     "limite de custo, suporte validado. Observação local: pair_case_id, side, timestamp, "
                     "protocol_version, contagens. Julgamento pareado (só o PROBE-JOIN): união discriminada do C00 com "
@@ -421,7 +431,8 @@ def c22() -> dict:
         defs={"probe_type": pt, "probe_types": pdoc, "observation": obs, "pair_judgement": pj},
         producers=["PROBEKIT", "PREREG", "PROBE-{provider}", "PROBE-JOIN"],
         rules=["C22-UNION: outcome do julgamento é a união do C00 com axis = behavior",
-               "C22-COUNTS: observed + not_observed + errors = attempts",
+               "C22-COUNTS: observed + observed_out_of_tolerance + not_observed + errors = attempts (fora da "
+               "tolerância não é censura nem não observado)",
                "C22-PAIR: as duas observações citadas são do mesmo pair_case_id, lados A e B, mesmo protocolo",
                "C22-JOIN: só o PROBE-JOIN julga (judged_by)"])
 

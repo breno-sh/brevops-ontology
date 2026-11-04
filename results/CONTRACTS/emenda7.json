@@ -1,0 +1,222 @@
+{
+ "schema": "bo.contracts_emenda7/1",
+ "module": "CONTRACTS",
+ "generated_at": "2026-11-04T12:18:13-03:00",
+ "source": "$BO_REPO/results/PILOT-EXIT/CONTRACT_CHANGE.txt",
+ "n": 27,
+ "by_decision": {
+  "ACEITO": 4,
+  "ACEITO em parte": 1,
+  "NÃO É DO CONTRACTS": 13,
+  "NÃO É DO CONTRACTS (resolvido)": 5,
+  "RECUSADO (resolvido sem mudança de contrato)": 2,
+  "RECUSADO (sem mudança)": 2
+ },
+ "items": [
+  {
+   "module": "PILOT-NET-E2E",
+   "item": "CC-NET-E2E-1",
+   "decision": "ACEITO",
+   "owner": "CONTRACTS",
+   "why": "C00 3.1.0 termo list; C26 1.3.0 C26-LIST (plano indexado .0 = ref fica aceito com nota). Renderizar o termo list é dos HARNESS-* (oci, aws, azurerm, google)"
+  },
+  {
+   "module": "PILOT-NET-E2E",
+   "item": "CC-NET-E2E-2",
+   "decision": "NÃO É DO CONTRACTS",
+   "owner": "GRAIN, SERVICE-EVIDENCE",
+   "why": "alcance/ciclo de vida da anexação e da seleção (SE); atributo-lista e seleção por rótulo como BINDING e identidade de ocorrência por endereço (GRAIN)"
+  },
+  {
+   "module": "PILOT-NET-E2E",
+   "item": "CC-NET-E2E-3",
+   "decision": "RECUSADO (sem mudança)",
+   "owner": "-",
+   "why": "achado sobre os controles, registrado pelo próprio módulo"
+  },
+  {
+   "module": "PILOT-NET-GLOSS",
+   "item": "CC-1",
+   "decision": "NÃO É DO CONTRACTS (resolvido)",
+   "owner": "GRAIN",
+   "why": "o adaptador do GRAIN lê o C25 por aspecto (d8ada03); fixar a tradução no C25 duplicaria a tabela do GRAIN"
+  },
+  {
+   "module": "PILOT-NET-GLOSS",
+   "item": "CC-NET-1",
+   "decision": "ACEITO em parte",
+   "owner": "CONTRACTS; SCHEMALIB, GRAIN",
+   "why": "C01 2.2.0: block_path[].kind = nested_attribute marca o elemento de coleção de objetos; emitir os átomos é do SCHEMALIB (src/bo/schema) e tratá-los como bloco é do GRAIN (T1)"
+  },
+  {
+   "module": "PILOT-NET-GLOSS",
+   "item": "CC-NET-3",
+   "decision": "NÃO É DO CONTRACTS",
+   "owner": "SERVICE-EVIDENCE, GRAIN, CAND",
+   "why": "alvo das referências e api_resource=payload dos timeouts (SE); deletion_policy como camada Terraform (GRAIN); exclusão dos timeouts dos candidatos (CAND)"
+  },
+  {
+   "module": "PILOT-NET-GLOSS",
+   "item": "CC-NET-4",
+   "decision": "ACEITO",
+   "owner": "CONTRACTS",
+   "why": "C20 3.3.0: evidence_ref {contract C03|C25, id} na âncora; a sentença continua obrigatória fora de UNRESOLVED"
+  },
+  {
+   "module": "PILOT-NET-MAP",
+   "item": "CC-MAP-NET-1",
+   "decision": "NÃO É DO CONTRACTS (resolvido)",
+   "owner": "ARBITERLIB",
+   "why": "recongelamento do árbitro (52371e8/ddcdae7); esta emenda toca contracts/ e exige novo recongelamento (coordenador)"
+  },
+  {
+   "module": "PILOT-NET-MAP",
+   "item": "CC-MAP-NET-2",
+   "decision": "RECUSADO (resolvido sem mudança de contrato)",
+   "owner": "ARBITERLIB",
+   "why": "o ARBITERLIB renomeou as regras (35e299f); o rule_id do C00 continua exigindo hífen"
+  },
+  {
+   "module": "PILOT-NET-MAP",
+   "item": "CC-MAP-NET-4",
+   "decision": "NÃO É DO CONTRACTS",
+   "owner": "COORD, ARBITERLIB",
+   "why": "--out $BO_TMP/arbiter no G3 do catálogo ou saída padrão do bo.arbiter.run em $BO_TMP"
+  },
+  {
+   "module": "PILOT-NET-ORACLE",
+   "item": "3",
+   "decision": "NÃO É DO CONTRACTS",
+   "owner": "SERVICE-EVIDENCE",
+   "why": "evidência publicada de estado de conexão (aws, google, azurerm); o C25 já tem connection_state"
+  },
+  {
+   "module": "PILOT-NET-ORACLE",
+   "item": "4",
+   "decision": "NÃO É DO CONTRACTS",
+   "owner": "SERVICE-EVIDENCE",
+   "why": "publicar a linha do NSG oci com a regra R-CONN-DOC"
+  },
+  {
+   "module": "PILOT-NET-ORACLE",
+   "item": "5",
+   "decision": "RECUSADO (sem mudança)",
+   "owner": "-",
+   "why": "ambiguidade da documentação; o oráculo já trata como UNKNOWN"
+  },
+  {
+   "module": "PILOT-STO-GLOSS",
+   "item": "CC-7",
+   "decision": "NÃO É DO CONTRACTS",
+   "owner": "GRAIN, SERVICE-EVIDENCE",
+   "why": "qual fato dá ciclo de vida, dono e alcance na camada de API para contêiner e faceta"
+  },
+  {
+   "module": "PILOT-STO-GLOSS",
+   "item": "CC-5",
+   "decision": "NÃO É DO CONTRACTS",
+   "owner": "GRAIN, SERVICE-EVIDENCE",
+   "why": "tradução de reference_phrase/reference_target e fonte de effective_scope; teste de integração na fatia sto"
+  },
+  {
+   "module": "PILOT-STO-GLOSS",
+   "item": "CC-6",
+   "decision": "ACEITO",
+   "owner": "CONTRACTS; BRIEFS",
+   "why": "C20 3.3.0: âncora UNRESOLVED sem sentença (motivo no context, ≥ 15); o GLOSSARY_BRIEF já diz isso (BRIEFS alinha o texto)"
+  },
+  {
+   "module": "PILOT-STO-GLOSS",
+   "item": "CC-4",
+   "decision": "NÃO É DO CONTRACTS",
+   "owner": "COORD, CAND",
+   "why": "saídas e versões no catálogo de artefatos e conteúdo declarado do bundle/"
+  },
+  {
+   "module": "PILOT-STO-MAP",
+   "item": "CC-1",
+   "decision": "NÃO É DO CONTRACTS (resolvido)",
+   "owner": "ARBITERLIB",
+   "why": "recongelamento do árbitro"
+  },
+  {
+   "module": "PILOT-STO-MAP",
+   "item": "CC-2",
+   "decision": "RECUSADO (resolvido sem mudança de contrato)",
+   "owner": "ARBITERLIB",
+   "why": "renome das regras (35e299f)"
+  },
+  {
+   "module": "PILOT-STO-MAP",
+   "item": "CC-3",
+   "decision": "NÃO É DO CONTRACTS (resolvido)",
+   "owner": "SEMANTICS",
+   "why": "invert com função do registro (61d6fae)"
+  },
+  {
+   "module": "PILOT-STO-MAP",
+   "item": "CC-4",
+   "decision": "NÃO É DO CONTRACTS",
+   "owner": "PILOT-STO-GLOSS",
+   "why": "reconsumo depois do GRAIN/SE (consume_check --reset)"
+  },
+  {
+   "module": "PILOT-STO-MAP",
+   "item": "CC-10",
+   "decision": "NÃO É DO CONTRACTS (resolvido)",
+   "owner": "COORD",
+   "why": "privacy_lint com o hex16 do event_id (7e444c2)"
+  },
+  {
+   "module": "PILOT-STO-MAP",
+   "item": "CC-5",
+   "decision": "NÃO É DO CONTRACTS",
+   "owner": "UNITS, SEMANTICS",
+   "why": "uma grandeza só para unit:BYTE (InformationEntropy no núcleo × AmountOfData no C05 do UNITS)"
+  },
+  {
+   "module": "PILOT-STO-MAP",
+   "item": "CC-6",
+   "decision": "ACEITO",
+   "owner": "CONTRACTS; SEMANTICS, TRANSFORMS",
+   "why": "C09 3.2.0: value_type list/set/map com item_type e key_type (o C05 já tinha tree list/map). Decidir o KIND de coleção é do SEMANTICS (valuetypes) e os combinadores wrap_list/unwrap_single são do registro do C10 (TRANSFORMS)"
+  },
+  {
+   "module": "PILOT-STO-MAP",
+   "item": "CC-7",
+   "decision": "NÃO É DO CONTRACTS",
+   "owner": "ARBITERLIB",
+   "why": "o C09 já tem a ausência tipada desde a emenda 3; o árbitro precisa de veredito próprio para ela"
+  },
+  {
+   "module": "PILOT-STO-MAP",
+   "item": "CC-8",
+   "decision": "NÃO É DO CONTRACTS",
+   "owner": "GRAIN",
+   "why": "occurrence_key de todo bloco repetido (ou ABSENT com motivo)"
+  },
+  {
+   "module": "PILOT-STO-MAP",
+   "item": "CC-9",
+   "decision": "NÃO É DO CONTRACTS",
+   "owner": "ARBITERLIB, TRANSFORMS",
+   "why": "imagem calculada de função do registro com tabela finita"
+  }
+ ],
+ "coordinator_items": [
+  {
+   "module": "COORD",
+   "item": "(c) linha de ausência do lado objeto (PILOT-NET-MAP F-6, PILOT-STO-MAP D-1)",
+   "decision": "ACEITO",
+   "owner": "CONTRACTS",
+   "why": "C09 3.2.0: absence.side = object com subject_id = sssom:NoTermFound"
+  },
+  {
+   "module": "COORD",
+   "item": "(d) efeito fora da tolerância (PROBEKIT, nota 5)",
+   "decision": "ACEITO",
+   "owner": "CONTRACTS",
+   "why": "C22 3.1.0: counts.observed_out_of_tolerance (opcional; ausente = 0)"
+  }
+ ]
+}

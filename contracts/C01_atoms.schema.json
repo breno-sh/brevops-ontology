@@ -1,12 +1,12 @@
 {
  "$schema": "https://json-schema.org/draft/2020-12/schema",
  "$id": "https://w3id.org/brevops/contracts/C01/atoms.schema.json",
- "title": "C01 atoms 2.1.0: átomos de atributo",
+ "title": "C01 atoms 2.2.0: átomos de atributo",
  "description": "Um atributo configurável de um tipo, com o caminho dos blocos aninhados.",
  "x-bo-contract": {
   "id": "C01",
   "name": "atoms",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "status": "amended",
   "owner": "CONTRACTS",
   "files": [
@@ -81,6 +81,13 @@
        "max_items": {
         "type": "integer",
         "minimum": 0
+       },
+       "kind": {
+        "enum": [
+         "block",
+         "nested_attribute"
+        ],
+        "description": "nested_attribute: atributo de coleção de objetos (nested_type ou list/set de object) exposto como elemento; ausente = block (emenda 2.2.0, CC-NET-1)"
        }
       },
       "required": [

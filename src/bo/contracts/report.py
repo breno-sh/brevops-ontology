@@ -125,6 +125,75 @@ def sha(p) -> str:
     return hashlib.sha256(p.read_bytes()).hexdigest()
 
 
+E7 = [  # (módulo, item, decisão, dono, motivo/onde)
+    ("PILOT-NET-E2E", "CC-NET-E2E-1", "ACEITO", "CONTRACTS",
+     "C00 3.1.0 termo list; C26 1.3.0 C26-LIST (plano indexado .0 = ref fica aceito com nota). Renderizar o termo list é "
+     "dos HARNESS-* (oci, aws, azurerm, google)"),
+    ("PILOT-NET-E2E", "CC-NET-E2E-2", "NÃO É DO CONTRACTS", "GRAIN, SERVICE-EVIDENCE",
+     "alcance/ciclo de vida da anexação e da seleção (SE); atributo-lista e seleção por rótulo como BINDING e identidade "
+     "de ocorrência por endereço (GRAIN)"),
+    ("PILOT-NET-E2E", "CC-NET-E2E-3", "RECUSADO (sem mudança)", "-", "achado sobre os controles, registrado pelo próprio módulo"),
+    ("PILOT-NET-GLOSS", "CC-1", "NÃO É DO CONTRACTS (resolvido)", "GRAIN",
+     "o adaptador do GRAIN lê o C25 por aspecto (d8ada03); fixar a tradução no C25 duplicaria a tabela do GRAIN"),
+    ("PILOT-NET-GLOSS", "CC-NET-1", "ACEITO em parte", "CONTRACTS; SCHEMALIB, GRAIN",
+     "C01 2.2.0: block_path[].kind = nested_attribute marca o elemento de coleção de objetos; emitir os átomos é do "
+     "SCHEMALIB (src/bo/schema) e tratá-los como bloco é do GRAIN (T1)"),
+    ("PILOT-NET-GLOSS", "CC-NET-3", "NÃO É DO CONTRACTS", "SERVICE-EVIDENCE, GRAIN, CAND",
+     "alvo das referências e api_resource=payload dos timeouts (SE); deletion_policy como camada Terraform (GRAIN); "
+     "exclusão dos timeouts dos candidatos (CAND)"),
+    ("PILOT-NET-GLOSS", "CC-NET-4", "ACEITO", "CONTRACTS",
+     "C20 3.3.0: evidence_ref {contract C03|C25, id} na âncora; a sentença continua obrigatória fora de UNRESOLVED"),
+    ("PILOT-NET-MAP", "CC-MAP-NET-1", "NÃO É DO CONTRACTS (resolvido)", "ARBITERLIB",
+     "recongelamento do árbitro (52371e8/ddcdae7); esta emenda toca contracts/ e exige novo recongelamento (coordenador)"),
+    ("PILOT-NET-MAP", "CC-MAP-NET-2", "RECUSADO (resolvido sem mudança de contrato)", "ARBITERLIB",
+     "o ARBITERLIB renomeou as regras (35e299f); o rule_id do C00 continua exigindo hífen"),
+    ("PILOT-NET-MAP", "CC-MAP-NET-4", "NÃO É DO CONTRACTS", "COORD, ARBITERLIB",
+     "--out $BO_TMP/arbiter no G3 do catálogo ou saída padrão do bo.arbiter.run em $BO_TMP"),
+    ("PILOT-NET-ORACLE", "3", "NÃO É DO CONTRACTS", "SERVICE-EVIDENCE",
+     "evidência publicada de estado de conexão (aws, google, azurerm); o C25 já tem connection_state"),
+    ("PILOT-NET-ORACLE", "4", "NÃO É DO CONTRACTS", "SERVICE-EVIDENCE", "publicar a linha do NSG oci com a regra R-CONN-DOC"),
+    ("PILOT-NET-ORACLE", "5", "RECUSADO (sem mudança)", "-", "ambiguidade da documentação; o oráculo já trata como UNKNOWN"),
+    ("PILOT-STO-GLOSS", "CC-7", "NÃO É DO CONTRACTS", "GRAIN, SERVICE-EVIDENCE",
+     "qual fato dá ciclo de vida, dono e alcance na camada de API para contêiner e faceta"),
+    ("PILOT-STO-GLOSS", "CC-5", "NÃO É DO CONTRACTS", "GRAIN, SERVICE-EVIDENCE",
+     "tradução de reference_phrase/reference_target e fonte de effective_scope; teste de integração na fatia sto"),
+    ("PILOT-STO-GLOSS", "CC-6", "ACEITO", "CONTRACTS; BRIEFS",
+     "C20 3.3.0: âncora UNRESOLVED sem sentença (motivo no context, ≥ 15); o GLOSSARY_BRIEF já diz isso (BRIEFS alinha o texto)"),
+    ("PILOT-STO-GLOSS", "CC-4", "NÃO É DO CONTRACTS", "COORD, CAND",
+     "saídas e versões no catálogo de artefatos e conteúdo declarado do bundle/"),
+    ("PILOT-STO-MAP", "CC-1", "NÃO É DO CONTRACTS (resolvido)", "ARBITERLIB", "recongelamento do árbitro"),
+    ("PILOT-STO-MAP", "CC-2", "RECUSADO (resolvido sem mudança de contrato)", "ARBITERLIB", "renome das regras (35e299f)"),
+    ("PILOT-STO-MAP", "CC-3", "NÃO É DO CONTRACTS (resolvido)", "SEMANTICS", "invert com função do registro (61d6fae)"),
+    ("PILOT-STO-MAP", "CC-4", "NÃO É DO CONTRACTS", "PILOT-STO-GLOSS", "reconsumo depois do GRAIN/SE (consume_check --reset)"),
+    ("PILOT-STO-MAP", "CC-10", "NÃO É DO CONTRACTS (resolvido)", "COORD", "privacy_lint com o hex16 do event_id (7e444c2)"),
+    ("PILOT-STO-MAP", "CC-5", "NÃO É DO CONTRACTS", "UNITS, SEMANTICS",
+     "uma grandeza só para unit:BYTE (InformationEntropy no núcleo × AmountOfData no C05 do UNITS)"),
+    ("PILOT-STO-MAP", "CC-6", "ACEITO", "CONTRACTS; SEMANTICS, TRANSFORMS",
+     "C09 3.2.0: value_type list/set/map com item_type e key_type (o C05 já tinha tree list/map). Decidir o KIND de "
+     "coleção é do SEMANTICS (valuetypes) e os combinadores wrap_list/unwrap_single são do registro do C10 (TRANSFORMS)"),
+    ("PILOT-STO-MAP", "CC-7", "NÃO É DO CONTRACTS", "ARBITERLIB",
+     "o C09 já tem a ausência tipada desde a emenda 3; o árbitro precisa de veredito próprio para ela"),
+    ("PILOT-STO-MAP", "CC-8", "NÃO É DO CONTRACTS", "GRAIN", "occurrence_key de todo bloco repetido (ou ABSENT com motivo)"),
+    ("PILOT-STO-MAP", "CC-9", "NÃO É DO CONTRACTS", "ARBITERLIB, TRANSFORMS",
+     "imagem calculada de função do registro com tabela finita"),
+]
+E7_EXTRA = [
+    ("COORD", "(c) linha de ausência do lado objeto (PILOT-NET-MAP F-6, PILOT-STO-MAP D-1)", "ACEITO", "CONTRACTS",
+     "C09 3.2.0: absence.side = object com subject_id = sssom:NoTermFound"),
+    ("COORD", "(d) efeito fora da tolerância (PROBEKIT, nota 5)", "ACEITO", "CONTRACTS",
+     "C22 3.1.0: counts.observed_out_of_tolerance (opcional; ausente = 0)"),
+]
+
+
+def emenda7() -> dict:
+    rows = [{"module": m, "item": i, "decision": d, "owner": o, "why": w} for m, i, d, o, w in E7]
+    extra = [{"module": m, "item": i, "decision": d, "owner": o, "why": w} for m, i, d, o, w in E7_EXTRA]
+    return {"schema": "bo.contracts_emenda7/1", "module": "CONTRACTS", "generated_at": _base.now(),
+            "source": "$BO_REPO/results/PILOT-EXIT/CONTRACT_CHANGE.txt", "n": len(rows),
+            "by_decision": {d: sum(r["decision"] == d for r in rows) for d in sorted({r["decision"] for r in rows})},
+            "items": rows, "coordinator_items": extra}
+
+
 def adoption() -> dict:
     root = _base.repo()
     items = []
@@ -153,7 +222,7 @@ def producers() -> dict:
 def manifest_paths() -> list[str]:
     root = _base.repo()
     out = sorted(str(p.relative_to(root)) for p in (root / "contracts").rglob("*") if p.is_file())
-    out += ["results/CONTRACTS/adoption.json", "results/CONTRACTS/producers.json"]
+    out += ["results/CONTRACTS/adoption.json", "results/CONTRACTS/producers.json", "results/CONTRACTS/emenda7.json"]
     return out
 
 
@@ -165,7 +234,7 @@ def main(argv=None) -> int:
     argv = list(sys.argv[1:] if argv is None else argv)
     root = _base.repo()
     out = _base.results_dir()
-    docs = {"adoption.json": adoption(), "producers.json": producers()}
+    docs = {"adoption.json": adoption(), "producers.json": producers(), "emenda7.json": emenda7()}
     if "--check" in argv:
         bad = []
         for name, d in docs.items():

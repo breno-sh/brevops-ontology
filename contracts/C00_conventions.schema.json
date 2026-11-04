@@ -1,12 +1,12 @@
 {
  "$schema": "https://json-schema.org/draft/2020-12/schema",
  "$id": "https://w3id.org/brevops/contracts/C00/conventions.schema.json",
- "title": "C00 conventions 3.0.3: convenções e definições comuns",
+ "title": "C00 conventions 3.1.0: convenções e definições comuns",
  "description": "ID = stable_id; onda calculada do DAG; código em $BO_REPO/src/bo/<pacote>/; dados em $BO_DATA/<ID>/; temporário em $BO_TMP=$BO_DATA/tmp/<ID> (nunca /tmp); caminhos só com índices declarados em index_sets; datas ISO-8601 com fuso America/Recife. $defs comuns a todos os contratos.",
  "x-bo-contract": {
   "id": "C00",
   "name": "conventions",
-  "version": "3.0.3",
+  "version": "3.1.0",
   "status": "amended",
   "owner": "CONTRACTS",
   "files": [
@@ -825,6 +825,26 @@
       "reason"
      ],
      "additionalProperties": false
+    },
+    {
+     "type": "object",
+     "properties": {
+      "kind": {
+       "const": "list"
+      },
+      "items": {
+       "type": "array",
+       "items": {
+        "$ref": "#/$defs/term"
+       }
+      }
+     },
+     "required": [
+      "kind",
+      "items"
+     ],
+     "additionalProperties": false,
+     "description": "lista de termos (literais, símbolos ou referências), ex.: security_list_ids = [ref, ref] (emenda C00 3.1.0, CC-NET-E2E-1)"
     }
    ],
    "description": "termo tipado da configuração simbólica (C06), sem executar HCL"

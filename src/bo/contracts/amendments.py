@@ -85,6 +85,23 @@ AMENDMENTS = [
     {"contract": "C26", "from": "1.1.0", "to": "1.2.0", "at": "2026-11-04T09:30:00-03:00", "requested_by": "COORD",
      "source": "results/HARNESS-OCI/CONTRACT_CHANGE.txt (ACHADO 4, opção B)",
      "change": "tag de execução nunca vem no plano (C26-NOTAG); stub sem freeform_tags.bo_run (oci) e labels.bo_case (google)"},
+    # ---- emenda 7 (2026-11-04, E6 do PILOT-EXIT: pedidos dos pilotos; tabela em results/CONTRACTS/emenda7.json)
+    {"contract": "C00", "from": "3.0.3", "to": "3.1.0", "at": "2026-11-04T13:00:00-03:00", "requested_by": "PILOT-NET-E2E",
+     "source": "results/PILOT-NET-E2E/CONTRACT_CHANGE.txt (CC-NET-E2E-1)", "change": "termo list"},
+    {"contract": "C01", "from": "2.1.0", "to": "2.2.0", "at": "2026-11-04T13:00:00-03:00", "requested_by": "PILOT-NET-GLOSS",
+     "source": "results/PILOT-NET-GLOSS/CONTRACT_CHANGE.txt (CC-NET-1 a)",
+     "change": "block_path[].kind = nested_attribute para elemento de coleção de objetos"},
+    {"contract": "C09", "from": "3.1.0", "to": "3.2.0", "at": "2026-11-04T13:00:00-03:00",
+     "requested_by": "PILOT-NET-MAP, PILOT-STO-MAP", "source": "PILOT-NET-MAP F-1/F-6, PILOT-STO-MAP CC-6/D-1",
+     "change": "value_type list/set/map (item_type, key_type); absence.side (ausência do lado objeto)"},
+    {"contract": "C20", "from": "3.2.0", "to": "3.3.0", "at": "2026-11-04T13:00:00-03:00",
+     "requested_by": "PILOT-STO-GLOSS, PILOT-NET-GLOSS", "source": "PILOT-STO-GLOSS CC-6, PILOT-NET-GLOSS CC-NET-4",
+     "change": "âncora UNRESOLVED sem sentença (motivo no context); evidence_ref ao fato C03/C25"},
+    {"contract": "C22", "from": "3.0.0", "to": "3.1.0", "at": "2026-11-04T13:00:00-03:00", "requested_by": "PROBEKIT",
+     "source": "results/PROBEKIT/CROSS_MODULE_NOTES.txt (5)", "change": "counts.observed_out_of_tolerance"},
+    {"contract": "C26", "from": "1.2.0", "to": "1.3.0", "at": "2026-11-04T13:00:00-03:00", "requested_by": "PILOT-NET-E2E",
+     "source": "results/PILOT-NET-E2E/CONTRACT_CHANGE.txt (CC-NET-E2E-1)",
+     "change": "C26-LIST: lista de referências como termo list, não campo indexado"},
 ]
 
 

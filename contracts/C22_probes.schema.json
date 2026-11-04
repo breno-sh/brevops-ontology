@@ -1,13 +1,13 @@
 {
  "$schema": "https://json-schema.org/draft/2020-12/schema",
  "$id": "https://w3id.org/brevops/contracts/C22/probes.schema.json",
- "title": "C22 probes 3.0.0: tipos de sonda, observações e julgamentos pareados",
+ "title": "C22 probes 3.1.0: tipos de sonda, observações e julgamentos pareados",
  "description": "Tipo: pré-condições, controle negativo, repetição, tolerância, polling, janela e margem sobre o TTL, limite de custo, suporte validado. Observação local: pair_case_id, side, timestamp, protocol_version, contagens. Julgamento pareado (só o PROBE-JOIN): união discriminada do C00 com axis = behavior.",
  "x-bo-contract": {
   "id": "C22",
   "name": "probes",
-  "version": "3.0.0",
-  "status": "changed_v3",
+  "version": "3.1.0",
+  "status": "amended",
   "owner": "CONTRACTS",
   "files": [
    {
@@ -34,7 +34,7 @@
   ],
   "semantic_rules": [
    "C22-UNION: outcome do julgamento é a união do C00 com axis = behavior",
-   "C22-COUNTS: observed + not_observed + errors = attempts",
+   "C22-COUNTS: observed + observed_out_of_tolerance + not_observed + errors = attempts (fora da tolerância não é censura nem não observado)",
    "C22-PAIR: as duas observações citadas são do mesmo pair_case_id, lados A e B, mesmo protocolo",
    "C22-JOIN: só o PROBE-JOIN julga (judged_by)"
   ],
@@ -216,7 +216,10 @@
      "const": "C22"
     },
     "contract_version": {
-     "const": "3.0.0"
+     "enum": [
+      "3.0.0",
+      "3.1.0"
+     ]
     },
     "module": {
      "$ref": "https://w3id.org/brevops/contracts/C00/conventions.schema.json#/$defs/stable_id"
@@ -296,6 +299,11 @@
       "errors": {
        "type": "integer",
        "minimum": 0
+      },
+      "observed_out_of_tolerance": {
+       "type": "integer",
+       "minimum": 0,
+       "description": "efeito visto, mas fora da tolerância do tipo (emenda 3.1.0)"
       }
      },
      "required": [
