@@ -1,15 +1,19 @@
 {
  "schema": "bo.pilot_net.evidence_recheck/1",
  "module": "PILOT-NET-ORACLE",
- "at": "2026-11-04T08:17:44-03:00",
- "service_evidence": {"path": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl", "base_commit": "69fb76e",
-   "sha256_before": "9ca6eaabab91e52e4cb605559f742bd4266cace83659647862cb2f5c3944eb60",
-   "sha256_after": "cc5260d3ed4a8db4ddbf50f429b9d7d4060f67a43593b127e01e571a49979074"},
+ "at": "2026-11-04T09:00:59-03:00",
+ "service_evidence": {"path": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl", "base_commit": "787ab84 (CC-8)",
+   "sha256_before": "cc5260d3ed4a8db4ddbf50f429b9d7d4060f67a43593b127e01e571a49979074",
+   "sha256_after": "6bc9f724ca4629f9dd73c3921a39919e88fed5f4f3b290a13655ec0b92b05772"},
+ "spec_disputes": {"path": "$BO_REPO/results/SERVICE-EVIDENCE/spec_disputes.json", "sha256": "cb2783f42f393ca11ec5bc4b4cfcba7a7352ab332e9e431d9226aec40de0d239", "total": 12,
+   "in_slice": 2, "in_slice_detail": "oci_core_network_security_group_security_rule: lifecycle_controller e owner (doc: self; spec: parent)"},
  "cited_evidence_present_same_level": true,
  "connection_state_effect_precedence_changed": false,
- "new_cited": ["SE-google-inutw2r3ripq2kl3", "SE-google-547hnybz4swuk7bd", "SE-aws-navjbo6alteaoask", "SE-azurerm-vuuzxoml6azv6jc2"],
- "new_cited_note": "linhas novas de alcance efetivo (attachment_scope, publicadas) citadas no perfil como base da seleção por rótulo e da anexação; o avaliador já usava essa semântica (CMT-FW-P05)",
- "answers_changed": 0,
- "answers_compared": "42 fixtures (decisão, código, validade, decomposição) e 36 traduções (veredito e por fluxo), contra o gabarito anterior (sha do SE 9ca6eaab...)",
- "contract": "C24 1.1.0 (emenda 5): expected_answers.json validado por bo.contracts.validate pilot_expected_answers, 0 erro"
+ "answers_changed": {
+   "decisions": 0, "validity": 0, "translations": 0,
+   "decomposition_units": 3,
+   "detail": ["NETC-C03-OCI-NSG-REV: 2 regras de NSG COMPONENT -> UNKNOWN", "NETC-C03-OCI-NSG-SYM: 1 regra de NSG COMPONENT -> UNKNOWN"],
+   "why": "disputa spec x doc no dono e no controlador de ciclo de vida da regra de NSG OCI: o tipo da unidade (COMPONENT do NSG pela spec, entidade própria pela doc) não se decide; vira UNKNOWN com a disputa e o tipo sem disputa registrados. Decisão de acesso não depende desses fatos."},
+ "retained": "conteúdo das retidas não mudou: a disputa é aplicada pelo oráculo na comparação (net_oracle.decomposing.apply_disputes, pilot/net/oracle/disputes.json); selo D15 mantido",
+ "contract": "C24 1.1.0: expected_answers.json validado por bo.contracts.validate pilot_expected_answers, 0 erro"
 }

@@ -361,7 +361,7 @@ def _oci_rule_unit(parent, d, b, tf):
             "occurrence": _occ(direction=d, protocol=str(b["protocol"]), ports=ports,
                                src_ports=f"{sp['min']}-{sp['max']}" if sp else None,
                                remote=b.get("source") if d == "ingress" else b.get("destination"),
-                               stateless=bool(b.get("stateless", False))),
+                               stateless=b.get("stateless", False) if isinstance(b.get("stateless"), str) else bool(b.get("stateless", False))),
             "tf": tf, "evidence": ["C24:CMT-FW-P01", "SE-oci-bp7mulbmn76camow"]}
 
 

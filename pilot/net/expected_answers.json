@@ -2038,12 +2038,48 @@
      }
     },
     {
+     "accepted_kinds": [
+      "UNKNOWN"
+     ],
+     "dispute": [
+      {
+       "doc": {
+        "kind": "self",
+        "rule": "R-LIFE-API"
+       },
+       "evidence": [
+        "SE-oci-l7vx4ajpaevy2ecg",
+        "SE-oci-ubus4j7ltxpdtqxg"
+       ],
+       "fact": "lifecycle_controller",
+       "spec": {
+        "kind": "parent",
+        "rule": "R-LIFE-SPEC-PARENT"
+       }
+      },
+      {
+       "doc": {
+        "kind": "self",
+        "rule": "R-OWN-API"
+       },
+       "evidence": [
+        "SE-oci-3uf5jwnkdj6kln7h",
+        "SE-oci-zj3vmaqgzxojxf3k"
+       ],
+       "fact": "owner",
+       "spec": {
+        "kind": "parent",
+        "rule": "R-OWN-SPEC"
+       }
+      }
+     ],
      "domain_unit": "filter_rule",
      "evidence": [
       "C24:CMT-FW-P01",
       "SE-oci-bp7mulbmn76camow"
      ],
-     "kind": "COMPONENT",
+     "kind": "UNKNOWN",
+     "kind_without_dispute": "COMPONENT",
      "occurrence": {
       "direction": "ingress",
       "ports": "22-22",
@@ -2054,15 +2090,55 @@
      "parent": "oci_core_network_security_group.web",
      "tf": {
       "resource_type": "oci_core_network_security_group_security_rule"
-     }
+     },
+     "unknown": [
+      "lifecycle_controller",
+      "owner"
+     ]
     },
     {
+     "accepted_kinds": [
+      "UNKNOWN"
+     ],
+     "dispute": [
+      {
+       "doc": {
+        "kind": "self",
+        "rule": "R-LIFE-API"
+       },
+       "evidence": [
+        "SE-oci-l7vx4ajpaevy2ecg",
+        "SE-oci-ubus4j7ltxpdtqxg"
+       ],
+       "fact": "lifecycle_controller",
+       "spec": {
+        "kind": "parent",
+        "rule": "R-LIFE-SPEC-PARENT"
+       }
+      },
+      {
+       "doc": {
+        "kind": "self",
+        "rule": "R-OWN-API"
+       },
+       "evidence": [
+        "SE-oci-3uf5jwnkdj6kln7h",
+        "SE-oci-zj3vmaqgzxojxf3k"
+       ],
+       "fact": "owner",
+       "spec": {
+        "kind": "parent",
+        "rule": "R-OWN-SPEC"
+       }
+      }
+     ],
      "domain_unit": "filter_rule",
      "evidence": [
       "C24:CMT-FW-P01",
       "SE-oci-bp7mulbmn76camow"
      ],
-     "kind": "COMPONENT",
+     "kind": "UNKNOWN",
+     "kind_without_dispute": "COMPONENT",
      "occurrence": {
       "direction": "egress",
       "protocol": "6",
@@ -2073,7 +2149,11 @@
      "parent": "oci_core_network_security_group.web",
      "tf": {
       "resource_type": "oci_core_network_security_group_security_rule"
-     }
+     },
+     "unknown": [
+      "lifecycle_controller",
+      "owner"
+     ]
     },
     {
      "domain_unit": "attachment",
@@ -2136,23 +2216,63 @@
      }
     },
     {
+     "accepted_kinds": [
+      "UNKNOWN"
+     ],
+     "dispute": [
+      {
+       "doc": {
+        "kind": "self",
+        "rule": "R-LIFE-API"
+       },
+       "evidence": [
+        "SE-oci-l7vx4ajpaevy2ecg",
+        "SE-oci-ubus4j7ltxpdtqxg"
+       ],
+       "fact": "lifecycle_controller",
+       "spec": {
+        "kind": "parent",
+        "rule": "R-LIFE-SPEC-PARENT"
+       }
+      },
+      {
+       "doc": {
+        "kind": "self",
+        "rule": "R-OWN-API"
+       },
+       "evidence": [
+        "SE-oci-3uf5jwnkdj6kln7h",
+        "SE-oci-zj3vmaqgzxojxf3k"
+       ],
+       "fact": "owner",
+       "spec": {
+        "kind": "parent",
+        "rule": "R-OWN-SPEC"
+       }
+      }
+     ],
      "domain_unit": "filter_rule",
      "evidence": [
       "C24:CMT-FW-P01",
       "SE-oci-bp7mulbmn76camow"
      ],
-     "kind": "COMPONENT",
+     "kind": "UNKNOWN",
+     "kind_without_dispute": "COMPONENT",
      "occurrence": {
       "direction": "ingress",
       "ports": "22-22",
       "protocol": "6",
       "remote": "203.0.113.0/24",
-      "stateless": true
+      "stateless": "sym:var.stateless"
      },
      "parent": "oci_core_network_security_group.web",
      "tf": {
       "resource_type": "oci_core_network_security_group_security_rule"
-     }
+     },
+     "unknown": [
+      "lifecycle_controller",
+      "owner"
+     ]
     },
     {
      "domain_unit": "attachment",
@@ -5420,8 +5540,9 @@
   }
  },
  "inputs_sha256": {
-  "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl": "cc5260d3ed4a8db4ddbf50f429b9d7d4060f67a43593b127e01e571a49979074",
+  "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl": "6bc9f724ca4629f9dd73c3921a39919e88fed5f4f3b290a13655ec0b92b05772",
   "requirements/commitments.jsonl": "038f73fcebedfbf3b5ff3d23b1ff0758a87e8be2616b141b232628e1a64d1438",
+  "results/SERVICE-EVIDENCE/spec_disputes.json": "cb2783f42f393ca11ec5bc4b4cfcba7a7352ab332e9e431d9226aec40de0d239",
   "semantics/SEMANTICS.html": "28f849eb578fea685935a2499cd13710e8a96b6cd01e4bc34419ae0e51f29596"
  },
  "mandatory_cases": {

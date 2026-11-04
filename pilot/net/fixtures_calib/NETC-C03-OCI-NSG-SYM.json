@@ -97,7 +97,7 @@
      "ports": "22-22",
      "protocol": "6",
      "remote": "203.0.113.0/24",
-     "stateless": true
+     "stateless": "sym:var.stateless"
     },
     "parent": "oci_core_network_security_group.web",
     "tf": {

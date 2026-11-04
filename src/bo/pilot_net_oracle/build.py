@@ -70,6 +70,18 @@ def generate(check_only: bool = False) -> dict:
     dpath = R / "pilot/net/oracle/directions.json"
     if not check_only:
         dpath.write_text(files["pilot/net/oracle/directions.json"], encoding="utf-8")
+    # disputas spec x doc do SERVICE-EVIDENCE que tocam os tipos da fatia
+    slice_types = set(sum((list(v) for v in __import__("net_oracle").adapters.SUPPORTED.values()), []))
+    sd = json.loads((R / "results/SERVICE-EVIDENCE/spec_disputes.json").read_text(encoding="utf-8"))
+    disp = [d for d in sd.get("disputes", []) if d["terraform_resource_type"] in slice_types]
+    files["pilot/net/oracle/disputes.json"] = _dump({"schema": "bo.pilot_net.disputes/1", "module": "PILOT-NET-ORACLE",
+        "source": "$BO_REPO/results/SERVICE-EVIDENCE/spec_disputes.json",
+        "source_sha256": _sha(R / "results/SERVICE-EVIDENCE/spec_disputes.json"),
+        "rule": "disputa spec x doc sobre lifecycle_controller ou owner: a unidade vira UNKNOWN com o motivo (decisões de acesso não dependem desses fatos)",
+        "disputes": disp})
+    if not check_only:
+        (R / "pilot/net/oracle/disputes.json").write_text(files["pilot/net/oracle/disputes.json"], encoding="utf-8")
+    from net_oracle.decomposing import apply_disputes
     sens = {"strict": 0, "lenient": 0, "flows": 0, "flips": []}
     exp_fx = {}
     for f in fx:
@@ -99,6 +111,7 @@ def generate(check_only: bool = False) -> dict:
         files[f"pilot/net/fixtures_calib/{f['fixture_id']}.json"] = _dump(f)
         exp_fx[f["fixture_id"]] = {k: f[k] for k in ("provider", "case", "polarity", "commitment_ids", "check")}
         exp_fx[f["fixture_id"]].update(f["expected"])
+        exp_fx[f["fixture_id"]]["decomposition"] = apply_disputes(f["expected"]["decomposition"])
     exp_tr = {}
     for t in tr:
         src = by_id[t["source_fixture"]]
@@ -136,7 +149,8 @@ def generate(check_only: bool = False) -> dict:
     cal = summarize(fx, tr)
     if retained:
         errors.extend("cobertura: " + e for e in cov_check(cal, retained))
-    inputs = {p: _sha(R / p) for p in ("requirements/commitments.jsonl", "semantics/SEMANTICS.html")}
+    inputs = {p: _sha(R / p) for p in ("requirements/commitments.jsonl", "semantics/SEMANTICS.html",
+                                       "results/SERVICE-EVIDENCE/spec_disputes.json")}
     se = Path(__import__("os").environ.get("BO_DATA", "/Users/breno/doutorado/brevops-data")) / "SERVICE-EVIDENCE/service_evidence.jsonl"
     inputs["$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl"] = _sha(se)
     expected = {

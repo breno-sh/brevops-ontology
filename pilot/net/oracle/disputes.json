@@ -1,0 +1,43 @@
+{
+ "disputes": [
+  {
+   "doc": {
+    "kind": "self",
+    "rule": "R-LIFE-API"
+   },
+   "evidence": [
+    "SE-oci-l7vx4ajpaevy2ecg",
+    "SE-oci-ubus4j7ltxpdtqxg"
+   ],
+   "fact": "lifecycle_controller",
+   "provider": "oci",
+   "spec": {
+    "kind": "parent",
+    "rule": "R-LIFE-SPEC-PARENT"
+   },
+   "terraform_resource_type": "oci_core_network_security_group_security_rule"
+  },
+  {
+   "doc": {
+    "kind": "self",
+    "rule": "R-OWN-API"
+   },
+   "evidence": [
+    "SE-oci-3uf5jwnkdj6kln7h",
+    "SE-oci-zj3vmaqgzxojxf3k"
+   ],
+   "fact": "owner",
+   "provider": "oci",
+   "spec": {
+    "kind": "parent",
+    "rule": "R-OWN-SPEC"
+   },
+   "terraform_resource_type": "oci_core_network_security_group_security_rule"
+  }
+ ],
+ "module": "PILOT-NET-ORACLE",
+ "rule": "disputa spec x doc sobre lifecycle_controller ou owner: a unidade vira UNKNOWN com o motivo (decisões de acesso não dependem desses fatos)",
+ "schema": "bo.pilot_net.disputes/1",
+ "source": "$BO_REPO/results/SERVICE-EVIDENCE/spec_disputes.json",
+ "source_sha256": "cb2783f42f393ca11ec5bc4b4cfcba7a7352ab332e9e431d9226aec40de0d239"
+}

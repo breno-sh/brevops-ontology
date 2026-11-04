@@ -58,3 +58,14 @@ def test_compare_aponta_tipo_errado_e_falta():
     r = compare(exp, act[:-1])
     assert not r["equal"] and r["wrong_kind"] and r["missing"]
     assert compare(exp, FX["NETC-C01-AWS-SEP"]["expected"]["decomposition"])["equal"]
+
+
+def test_disputa_spec_doc_vira_unknown_na_regra_de_nsg_oci():
+    from net_oracle.decomposing import apply_disputes, disputes
+    assert "oci_core_network_security_group_security_rule" in disputes()
+    units = apply_disputes(FX["NETC-C03-OCI-NSG-REV"]["expected"]["decomposition"])
+    rules = [u for u in units if u["tf"]["resource_type"] == "oci_core_network_security_group_security_rule"]
+    assert rules and all(u["kind"] == "UNKNOWN" and u["dispute"] and u["kind_without_dispute"] == "COMPONENT" for u in rules)
+    raw = FX["NETC-C03-OCI-NSG-REV"]["expected"]["decomposition"]
+    assert not compare(raw, raw)["equal"]  # quem afirma COMPONENT na regra disputada erra o tipo
+    assert compare(raw, units)["equal"]
