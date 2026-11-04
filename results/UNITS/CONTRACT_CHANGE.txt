@@ -71,7 +71,8 @@ PILOT-STO-MAP CC-5
   estava assim: o value_space NÃO muda (mesmo sha256, mesmos 1.055 registros AmountOfData).
   Registro legível por máquina: results/UNITS/quantity_kind_decision.json (citação, linhas, sha256 e a tabela por
   unidade). Teste cruzado: python -I -m bo.units.crosscheck (sai 1 enquanto SEMANTICS ou TRANSFORMS divergirem;
-  hoje 20 divergências: 7 unidades no SEMANTICS, 13 no TRANSFORMS).
+  antes 20 divergências: 7 unidades no SEMANTICS, 13 no TRANSFORMS; depois da emenda 2 do SEMANTICS, ea53bcf,
+  12:41: 0 no SEMANTICS e 13 no TRANSFORMS).
   Quem adota (não é posse do UNITS): SEMANTICS (valuetypes.INFO e content), TRANSFORMS (units.INFO e
   transforms.yaml), CONTRACTS (stub C05). valuetypes.py e transforms/units.py estão no arbiter/ARBITER.sha256:
   o ARBITERLIB recongela no mesmo merge (regra do CC-1). Proposta de teste para o SEMANTICS: chamar
