@@ -106,12 +106,40 @@ def shuffled(fx: dict, seed: int) -> dict:
     return g
 
 
+def _inline_lifecycle(rule: dict) -> dict:
+    out = {}
+    if "id" in rule:
+        out["id"] = rule["id"]
+    if "status" in rule:
+        out["enabled"] = rule["status"] == "Enabled"
+    f = (rule.get("filter") or [{}])[0] if isinstance(rule.get("filter"), list) else {}
+    if "prefix" in f:
+        out["prefix"] = f["prefix"]
+    for k, kk in (("expiration", "days"), ("noncurrent_version_expiration", "noncurrent_days")):
+        b = rule.get(k)
+        if isinstance(b, list) and b and kk in b[0]:
+            out[k] = [{"days": b[0][kk]}]
+    return out
+
+
 def repackaged(fx: dict) -> dict | None:
-    """AWS: versionamento separado (aws_s3_bucket_versioning) <-> bloco embutido (versioning) no mesmo contêiner."""
+    """AWS: versionamento separado (aws_s3_bucket_versioning) <-> bloco embutido (versioning) no mesmo contêiner;
+    ciclo de vida separado (aws_s3_bucket_lifecycle_configuration) -> blocos lifecycle_rule embutidos."""
     if fx.get("provider") != "aws":
         return None
     g = copy.deepcopy(fx)
     res = g["terraform"]["resource"]
+    lc = res.get("aws_s3_bucket_lifecycle_configuration") or {}
+    if len(lc) == 1 and "aws_s3_bucket_versioning" not in res:
+        (n, body), = lc.items()
+        tgt = L.ref_target({f"{t}.{k}": b for t, i in res.items() for k, b in i.items()}, body.get("bucket"))
+        rules = body.get("rule") or []
+        if tgt and rules and all(isinstance(r, dict) for r in rules):
+            rt, rn = tgt.split(".", 1)
+            if "lifecycle_rule" not in res[rt][rn]:
+                res[rt][rn]["lifecycle_rule"] = [_inline_lifecycle(r) for r in rules]
+                del res["aws_s3_bucket_lifecycle_configuration"]
+                return g
     sep = res.get("aws_s3_bucket_versioning") or {}
     if len(sep) == 1:
         (n, body), = sep.items()
