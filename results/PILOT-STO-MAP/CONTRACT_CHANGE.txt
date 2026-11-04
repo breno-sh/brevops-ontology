@@ -9,6 +9,11 @@ os gates seguem com o comando do catálogo. Com eles corrigidos, a rerodada é u
   python -I -m bo.pilot_sto_map.pipeline            (staging, entradas por sha256 no pipeline_report.json)
   tools/lock.sh with merge-base --owner PILOT-STO-MAP --wait 600 -- python -I -m bo.pilot_sto_map.pipeline --promote-only
 
+ATUALIZAÇÃO 2026-11-04T18:42:00-03:00 (America/Recife), rodada final 2/2: base bbbff75, pacote do STO-GLOSS
+(MANIFEST 525e20ea), árbitro congelado da base: ARBITER-20261104-6 (a8dbd28, ARBITER.sha256 74c0f33b), que
+recongelou o 4bee77e (e876af9b) sobre a emenda 12 do CONTRACTS; --frozen confere. Mesmas 1593 linhas e mesmos
+vereditos da rodada anterior; nenhuma decisão largada. Segue aberto, sem bloquear: CC-8.
+
 ATUALIZAÇÃO 2026-11-04T14:36:00-03:00 (America/Recife), rodada final: base 83f5d59, pacote do STO-GLOSS
 (MANIFEST 64223069), árbitro final 7fc1a85 (ARBITER.sha256 b4cf2f98).
   CC-13 fechado do meu lado: o árbitro final ainda não calcula a imagem do wrap_list, então "sem perda" não é

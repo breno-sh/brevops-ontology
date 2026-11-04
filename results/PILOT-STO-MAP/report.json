@@ -57,18 +57,18 @@
   "rows": 1593
  },
  "decided_at": "2026-11-04T09:00:00-03:00",
- "generated_at": "2026-11-04T14:37:12-03:00",
+ "generated_at": "2026-11-04T18:41:02-03:00",
  "inputs": {
   "bundle_files": {
    "candidates.jsonl": "bbdf734a7c7c47135e467a459399d50e2ba541f2ea4ccaad13ab6b8e7f87e1ad",
    "canonical_atoms.jsonl": "b29a9c37286b2346f7e7930da37e4c71c010b3c6839716e1ccbd50b549923282",
-   "canonical_units.jsonl": "f6ba09f617c041b307e59d6a26d6bf7e13f55cd4b04279b1010112b874f8f638",
+   "canonical_units.jsonl": "a09655569131891190cbe390e76089152fda02680356143cff4e7b63da4d4225",
    "claims.jsonl": "e318377811db13c1665c51c0264a45724762674f411aca4d10368e99a51f55c4",
    "decisions.jsonl": "2fa8ba4218abbfd5cddcffb49d892862dd362332c6b1222051d3f510a163ed66",
    "glossary.jsonl": "5b5b92a5b3618249e818857a96384e7b5a64c1a200b04a4ec21a31d697a1174a",
    "value_space.jsonl": "ba90b632840ee34ab92f8561742c2d4283ccb0c11694986fe5d660f5c5564d5f"
   },
-  "bundle_manifest_sha256": "642230697618ee631a94202bf7872776667cbe6865a6ae08cb76f41b03a64d65",
+  "bundle_manifest_sha256": "525e20ea8eb7cf05c046180af644b502566959f854fc5324d26c08db7016ebb5",
   "code": {
    "src/bo/pilot_sto_map/build.py": "632cdfefced25a88f3a98c6017df81110f270f6ba05b9d43c386dad0531d3bd1",
    "src/bo/pilot_sto_map/common.py": "270152d9b392f766c25c041aac4cde7a522871c2f4160a61a702a6aec3c294be",
@@ -78,11 +78,11 @@
  },
  "module": "PILOT-STO-MAP",
  "outputs": {
-  "build_record.json": "4737e953944c752505286f84e70e27fac26baf5c860763fa5cd2b2935631ccb1",
+  "build_record.json": "6cd2bba06e954cc395686dbbfab31072b8ac1b6c1c556bfeb23e78998c61701c",
   "mapping.sssom.tsv": "229013d3c9151fa7bea3be48cc253616686bcaad21c639366c3182abb69b10fc",
-  "verdicts.jsonl": "6d796b8ae378b9c93afae3dbf1fb155e4dc653316cd9b263bf514876db422f16"
+  "verdicts.jsonl": "fa32fc8d9c4af1866af46413a37fbbd6e3692e6d99e041067a5fb9945ba175e3"
  },
- "pipeline_generated_at": "2026-11-04T14:36:23-03:00",
+ "pipeline_generated_at": "2026-11-04T18:40:40-03:00",
  "schema": "bo.pilot_sto_map.report/1",
  "steps": [
   {
