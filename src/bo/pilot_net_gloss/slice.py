@@ -29,6 +29,10 @@ SLICE_TYPES = {
             "oci_core_security_list"],
 }
 PROVIDERS = ("aws", "google", "azurerm", "oci")
+# pares embutido × separado da mesma regra (critério E2: a decomposição tem de sair igual nas duas embalagens)
+E2_PAIRS = [("aws", "aws_security_group.ingress", "aws_vpc_security_group_ingress_rule"),
+            ("aws", "aws_security_group.egress", "aws_vpc_security_group_egress_rule"),
+            ("azurerm", "azurerm_network_security_group.security_rule", "azurerm_network_security_rule")]
 PAIR_CODE = {"aws": "AWS", "google": "GCP", "azurerm": "AZ", "oci": "OCI"}
 PAIRS = (("aws", "google"), ("aws", "azurerm"), ("aws", "oci"), ("google", "azurerm"), ("google", "oci"),
          ("azurerm", "oci"))

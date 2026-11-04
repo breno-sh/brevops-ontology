@@ -47,3 +47,22 @@ CC-NET-4 (evidência das âncoras)
   Só com o C25, 7 de 217 átomos têm sentença do próprio átomo; o resto do glossário ficaria sem âncora. Com os
   docs_facts (C03) no catálogo (CC-2/CC-3), as âncoras passam a citar o fato do próprio átomo; o build e o gate F4
   (bo.pilot_net_gloss.anchor_claims, regra A1) já aceitam fonte C25 do tipo ou C03 do átomo.
+
+ADENDO 2026-11-04T03:20:00-03:00 (America/Recife), depois de GRAIN d8ada03, SERVICE-EVIDENCE b952d98, BRIEFS 1.2.0
+e CONTRACTS 469c4d7 em bo/base. O build agora usa o caminho do bo.grain.realdata (C25Adapter por aspecto, átomos
+C01); nenhuma EvidenceError. Diagnóstico: 50 unidades, 50 UNKNOWN (45 G0-IDENTITY, 5 G0-NEEDS), 110 motivos.
+E2 (embutido = separado): 0 de 3 pares iguais (SG ingress, SG egress, regra do NSG).
+
+CC-1b (bloqueia E2; GRAIN × SERVICE-EVIDENCE desencontrados)
+  O SERVICE-EVIDENCE b952d98 grava os aspectos novos twin_type (R-TWIN), reference_target e reference_phrase
+  (R-REF-TARGET) e terraform_timeouts (4755 fatos twin/reference no arquivo), mas a tabela normativa do adaptador
+  (bo.grain.c25_aspects.TABLE, d8ada03, anterior ao b952d98) não os traduz: "aspecto twin_type sem tradução na
+  tabela" é o motivo nos três blocos embutidos, e "reference_target sem tradução" nas regras separadas. Proposta:
+  GRAIN emenda 0.1.2 com linhas da TABLE para twin_type (identidade do gêmeo, escopo within_parent),
+  reference_target (alvo em references/field_map) e terraform_timeouts (meta do Terraform: payload T0).
+
+CC-1c (bloqueia qualquer grão decidido na fatia)
+  effective_scope é not_documented (status unknown) em todos os 13 tipos da fatia; G1–G4 pedem effective_scope em
+  needs, então nenhuma unidade pode sair do UNKNOWN, com ou sem CC-1b. Proposta: o SERVICE-EVIDENCE emite o alcance
+  (a regra vale para os membros do conjunto; o conjunto vale para o que está anexado; a anexação vale para a
+  interface ou a sub-rede) com sentença, ou o GRAIN declara de que fato o alcance de regra e anexação sai.

@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 
-from bo.pilot_net_gloss import anchor_claims, build, grain_apply, hub
+from bo.pilot_net_gloss import anchor_claims, build, hub
 from bo.pilot_net_gloss import slice as SL
 
 DOC = {"repo": "example-org/provider-docs", "tag": "v1.0.0", "file": "docs/rule.md"}
@@ -95,25 +95,20 @@ def test_paths_only_between_providers():
     assert len(ps) == 2 and all(hub.provider_of(x["atom_id"]) != hub.provider_of(y["atom_id"]) for x, y in ps)
 
 
-def test_grain_sanitizer_only_removes_evidence():
-    recs = [{"evidence_id": "SE-x-1", "fact_kind": "identity", "level": "published", "status": "stated",
-             "terraform_resource_type": "pa_box", "api_resource": {"service": "s", "resource": "r"},
-             "value": {"aspect": "resource_identity_schema", "required": ["id"], "rule": "R"}},
-            {"evidence_id": "SE-x-2", "fact_kind": "import_key", "level": "published", "status": "stated",
-             "terraform_resource_type": "pa_box", "api_resource": {"service": "s", "resource": "r"},
-             "value": {"status": "present", "fields": ["name"]}}]
-    table, ledger = grain_apply.sanitized_table(recs)
-    ent = table["pa_box"]
-    assert ent["identity"] == [{"status": "unknown", "source": {"level": "published", "ref": "SE-x-1"}}]
-    assert ent["import_key"][0]["status"] == "present"
-    assert [x["evidence_id"] for x in ledger] == ["SE-x-1"]
-    assert sum(len(v) for k, v in ent.items() if isinstance(v, list)) == 2
+def test_e2_requires_decided_equal_signature():
+    u = lambda uid, k, r, m: {"unit_id": uid, "kind": k, "rule_applied": r, "missing_evidence": m}
+    same = [u("CU-aws-aws_security_group.ingress", "COMPONENT", "GRAIN-G2-COMPONENT", []),
+            u("CU-aws-aws_vpc_security_group_ingress_rule", "COMPONENT", "GRAIN-G2-COMPONENT", [])]
+    assert build.e2(same)[0]["equal"] is True
+    unk = [dict(x, kind="UNKNOWN", rule_applied="GRAIN-G0-IDENTITY", missing_evidence=["identity"]) for x in same]
+    assert build.e2(unk)[0]["equal"] is False      # dois UNKNOWN iguais não provam invariância
+    assert build.e2(same[:1])[0]["equal"] is False
 
 
 def test_build_refuses_incomplete_evidence():
     res = {"grain": {"ledger": [{"x": 1}]}, "inputs": {"docs": [], "schema_atoms": []}}
     bl = build.blockers(res)
-    assert [b.split(":")[0] for b in bl] == ["CC-1", "CC-2", "CC-3"]
+    assert [b.split(":")[0] for b in bl] == ["CC-2", "CC-3"]
     assert build.blockers({"grain": {"ledger": []}, "inputs": {"docs": [1], "schema_atoms": [1]}}) == []
 
 

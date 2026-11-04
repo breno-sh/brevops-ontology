@@ -3,9 +3,9 @@
   python -I -m bo.pilot_net_gloss.build            grava em $BO_DATA/PILOT-NET-GLOSS e results/PILOT-NET-GLOSS
   python -I -m bo.pilot_net_gloss.build --check    regenera em $BO_TMP/regen e compara byte a byte com o gravado
   python -I -m bo.pilot_net_gloss.build --diagnostic   gera só em $BO_TMP/diagnostic, com os bloqueios listados
-O build sem flag recusa (saída 4) gravar a saída oficial enquanto houver bloqueio CC-1, CC-2 ou CC-3.
+O build sem flag recusa (saída 4) gravar a saída oficial enquanto faltar docs_facts (CC-2) ou átomos de schema (CC-3).
 
-Saídas (C19, C20, C08): canonical_units.jsonl, canonical_atoms.jsonl, grain_unreadable.jsonl, glossary.jsonl,
+Saídas (C19, C20, C08): canonical_units.jsonl, canonical_atoms.jsonl, grain_unknown_reasons.jsonl, glossary.jsonl,
 claims.jsonl, decisions.jsonl, anchor_paths.jsonl e bundle/ (pacote fechado do mapeador do piloto).
 """
 
@@ -22,7 +22,7 @@ from pathlib import Path
 from . import grain_apply, hub
 from . import slice as SL
 
-DATA_FILES = ["canonical_units.jsonl", "canonical_atoms.jsonl", "grain_unreadable.jsonl", "glossary.jsonl",
+DATA_FILES = ["canonical_units.jsonl", "canonical_atoms.jsonl", "grain_unknown_reasons.jsonl", "glossary.jsonl",
               "claims.jsonl", "decisions.jsonl", "anchor_paths.jsonl"]
 BUNDLE_FILES = ["glossary.jsonl", "decisions.jsonl", "claims.jsonl", "canonical_units.jsonl",
                 "canonical_atoms.jsonl", "atoms.jsonl", "service_evidence.jsonl", "candidates.jsonl",
@@ -255,15 +255,13 @@ def build_atoms(vs, roles, units, atoms) -> list[dict]:
 def generate(dst: Path) -> dict:
     inp = inputs()
     se, vs, roles = inp["se"], inp["vs"], inp["roles"]
-    atom_ids = sorted(set(vs) | set(roles))
-    g = grain_apply.decompose(se, atom_ids, {k: r["role"] for k, r in roles.items()},
-                              schema_atoms=inp["schema_atoms"] or None)
+    g = grain_apply.decompose(se, inp["schema_atoms"], {k: r["role"] for k, r in roles.items()})
     claims = build_claims(se, vs, inp["docs"])
     glossary = build_glossary(claims)
     decisions = build_decisions(se)
     rows = hub.evaluate(claims, glossary, decisions, vs)
     files = {"canonical_units.jsonl": g["units"], "canonical_atoms.jsonl": g["atoms"],
-             "grain_unreadable.jsonl": g["ledger"], "glossary.jsonl": glossary, "claims.jsonl": claims,
+             "grain_unknown_reasons.jsonl": g["ledger"], "glossary.jsonl": glossary, "claims.jsonl": claims,
              "decisions.jsonl": decisions, "anchor_paths.jsonl": rows}
     for name, recs in files.items():
         write_jsonl(dst / name, recs)
@@ -294,6 +292,18 @@ def generate(dst: Path) -> dict:
             "bundle": bundle}
 
 
+def e2(units: list[dict]) -> list[dict]:
+    """Embutido = separado? Compara grão, regra e o que falta (a camada Terraform não entra)."""
+    by = {u["unit_id"]: u for u in units}
+    out = []
+    for prov, inline, sep in SL.E2_PAIRS:
+        a, b = by.get(f"CU-{prov}-{inline}"), by.get(f"CU-{prov}-{sep}")
+        sig = lambda u: None if u is None else [u["kind"], u["rule_applied"], u["missing_evidence"]]
+        out.append({"inline": inline, "separate": sep, "inline_sig": sig(a), "separate_sig": sig(b),
+                    "equal": a is not None and b is not None and sig(a) == sig(b) and a["kind"] != "UNKNOWN"})
+    return out
+
+
 def report(res: dict) -> dict:
     import collections
     g = res["grain"]
@@ -307,8 +317,7 @@ def report(res: dict) -> dict:
             "grain": {"units": len(g["units"]), "atoms": len(g["atoms"]), "by_kind": dict(sorted(kinds.items())),
                       "by_rule": dict(sorted(rules.items())), "missing": dict(sorted(miss.items())),
                       "units_by_provider": dict(sorted(per_prov.items())),
-                      "unreadable_claims": len(g["ledger"]),
-                      "unreadable_by_field": dict(sorted(collections.Counter(x["field"] for x in g["ledger"]).items()))},
+                      "unknown_reasons": len(g["ledger"])},
             "glossary": {"concepts": len(res["glossary"]), "anchors": len(res["claims"]),
                          "concepts_without_anchor": sum(1 for c in res["glossary"] if c["evidence_state"] == "UNRESOLVED"),
                          "model_extracted_anchors": sum(1 for a in res["claims"] if a["extraction_method"] == "model"),
@@ -317,7 +326,7 @@ def report(res: dict) -> dict:
                          "decisions": dict(sorted(collections.Counter(d["kind"] for d in res["decisions"]).items()))},
             "anchor_paths": {"n": len(rows), "outcomes": dict(sorted(collections.Counter(
                 r["hub_outcome"] for r in rows).items()))},
-            "candidates": len(res["bundle"]["candidates.jsonl"])}
+            "candidates": len(res["bundle"]["candidates.jsonl"]), "e2_inline_vs_separate": e2(g["units"])}
 
 
 def manifest_lines() -> list[str]:
@@ -356,11 +365,9 @@ def check() -> int:
 
 def blockers(res: dict) -> list[str]:
     """Pacote com evidência incompleta passaria nos gates e seria inútil: o build recusa gravar a saída oficial
-    enquanto houver alegação de grão ilegível (CC-1) ou faltar fato de documentação por átomo (CC-2/CC-3)."""
+    enquanto faltar fato de documentação por átomo (CC-2) ou átomo de schema (CC-3) da fatia. O CC-1 (alegação
+    ilegível) não chega aqui: o C25Adapter da biblioteca levanta erro e o build para."""
     out = []
-    n = len(res["grain"]["ledger"])
-    if n:
-        out.append(f"CC-1: {n} alegação(ões) do SERVICE-EVIDENCE ilegível(is) para o adaptador de grão")
     if not res["inputs"]["docs"]:
         out.append("CC-2: nenhum docs_facts (C03) da fatia nas entradas")
     if not res["inputs"]["schema_atoms"]:
