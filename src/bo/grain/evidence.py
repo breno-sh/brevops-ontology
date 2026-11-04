@@ -196,7 +196,7 @@ class C25Adapter:
             val = r.get("value")
             bp = val.get("block_path") if isinstance(val, dict) else None
             cid = rt + ("." + bp if bp else "")
-            src = {"level": r["level"], "ref": r["evidence_id"]}
+            src = {"level": r.get("level") or "published", "ref": r["evidence_id"]}
             if r.get("level") == "interpreted" and r.get("model_id"):
                 src["model_id"] = r["model_id"]
             if r.get("status") == "unknown":

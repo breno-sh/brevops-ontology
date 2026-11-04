@@ -123,3 +123,24 @@ def test_suspend_destroy_effect_means_facet_of_parent():
         r2 = copy.deepcopy(rec)
         r2["value"]["effect"] = eff
         assert C25Adapter([r2]).evidence("x_versioning_like").fact("lifecycle_controller").state == "UNKNOWN"
+
+
+def test_c25_1_1_forms_record_block_path_and_api_bridge():
+    """C25 1.1.0: block_path no registro (não em value) e fact_kind api_bridge são lidos como os anteriores."""
+    def f(eid, kind, value, bp=None):
+        r = _fact(eid, "aws", "x_store", kind, value)
+        if bp:
+            r["block_path"] = bp
+        return r
+    recs = [
+        f("SE-n1", "identity", {"aspect": "block_identity", "schema_identity": "absent", "key_fields": [],
+                                "element_name_candidates": []}, bp="versioning"),
+        f("SE-n2", "owner", {"aspect": "block_config_owner", "kind": "parent", "via": "x_store", "layer": "terraform"},
+          bp="versioning"),
+        f("SE-n3", "api_bridge", {"resource": "Store", "service": "objstore"}),
+    ]
+    ad = C25Adapter(recs)
+    blk = ad.evidence("x_store.versioning")
+    assert blk.fact("identity").value == {"status": "absent"}
+    assert blk.fact("owner").value["kind"] == "parent"
+    assert ad.evidence("x_store").fact("api_resource").value["resource"] == "Store"

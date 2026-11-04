@@ -20,7 +20,7 @@ from __future__ import annotations
 
 from collections import defaultdict
 
-GRAIN_FACTS = ("identity", "import_key", "lifecycle_controller", "owner", "effective_scope")
+GRAIN_FACTS = ("identity", "import_key", "lifecycle_controller", "owner", "effective_scope", "api_bridge")
 
 # campos de identidade que nomeiam o escopo do provedor (conta, região, projeto, assinatura): não são unidades
 PROVIDER_SCOPE_FIELDS = {
@@ -46,6 +46,9 @@ TABLE = [
      "sem tradução: formato do id Terraform, pode incluir atributos opcionais; não é chave natural"),
     ("identity", "api_resource_bridge", "R-GRAIN-T04",
      "api_resource {status: resource, label/resource/service da ponte}; resource UNKNOWN vira UNKNOWN"),
+    ("api_bridge", "(qualquer, C25 1.1.0)", "R-GRAIN-T04",
+     "como api_resource_bridge: api_resource {status: resource} com value.resource/service ou, sem eles, os do "
+     "registro; UNKNOWN vira UNKNOWN"),
     ("identity", "api_reference", "R-GRAIN-T05", "sem tradução: página de referência da API, informativa"),
     ("identity", "cardinality", "R-GRAIN-T06",
      "sem tradução: singular por escopo do provedor; o escopo não é unidade da decomposição"),
@@ -98,7 +101,9 @@ RULE_OF = {(f, a): r for f, a, r, _ in TABLE}
 
 def is_aspect_record(r: dict) -> bool:
     v = r.get("value")
-    return r.get("fact_kind") in GRAIN_FACTS and isinstance(v, dict) and "aspect" in v
+    if r.get("fact_kind") not in GRAIN_FACTS:
+        return False
+    return r.get("fact_kind") == "api_bridge" or bool(r.get("block_path")) or (isinstance(v, dict) and "aspect" in v)
 
 
 def _src(r: dict, rule: str, why: str = "") -> dict:
@@ -117,7 +122,8 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
         if r.get("fact_kind") not in GRAIN_FACTS or not r.get("terraform_resource_type"):
             continue
         v = r.get("value")
-        bp = v.get("block_path") if isinstance(v, dict) else None
+        # C25 1.1.0: block_path no registro; antes, em value.block_path (as duas formas são lidas)
+        bp = r.get("block_path") or (v.get("block_path") if isinstance(v, dict) else None)
         by_cid[r["terraform_resource_type"] + ("." + bp if bp else "")].append(r)
     out: dict[str, dict] = {}
     reasons: dict[str, list] = defaultdict(list)
@@ -151,6 +157,18 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
                 st = "contradictory" if r.get("unknown_reason") == "contradictory" else "unknown"
                 reasons[cid].append(f"{fld}: {r.get('unknown_reason')}")
                 put(cid, fld, {"status": st, "source": _src(r, "R-GRAIN-UNK", r.get("unknown_reason") or "")})
+                continue
+            if fld == "api_bridge":
+                # C25 1.1.0: fato próprio da ponte API ↔ tipo (T04b), mesma tradução de api_resource_bridge
+                res_ = (v or {}).get("resource") if isinstance(v, dict) else None
+                res_ = res_ or (r.get("api_resource") or {}).get("resource")
+                if res_ in (None, "", "UNKNOWN"):
+                    unknown(cid, "api_resource", r, "ponte sem recurso de API")
+                else:
+                    svc = (v.get("service") if isinstance(v, dict) else None) or (r.get("api_resource") or {}).get(
+                        "service") or "UNKNOWN"
+                    put(cid, "api_resource", {"status": "resource", "label": res_, "service": svc, "resource": res_,
+                                              "source": _src(r, "R-GRAIN-T04")})
                 continue
             if not isinstance(v, dict) or "aspect" not in v:
                 # fato sem aspecto: alegação direta na convenção anterior (T99)

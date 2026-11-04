@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "GRAIN",
- "generated_at": "2026-11-04T02:35:07-03:00",
+ "generated_at": "2026-11-04T02:38:54-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/GRAIN.txt",
@@ -17,6 +17,7 @@
    "rules_status": "PROVISIONAL",
    "emendas": "GRAIN-A1,GRAIN-A2,GRAIN-A3",
    "c19": "3.1.0",
+   "c25": "1.1.0",
    "pyyaml": "6.0.3",
    "pytest": "9.1.1",
    "jsonschema": "4.26.0"
@@ -30,7 +31,7 @@
    {
     "path": "$BO_REPO/contracts",
     "kind": "dir",
-    "sha256": "94f3b4e25c5791a1a8bf55b1151804d251b77d719024235d73bafb1492eacee3"
+    "sha256": "db415bb8ae8f2efc96a8dd7e7d5728413ae086b6f042826335c6702b00325e5b"
    },
    {
     "path": "$BO_REPO/semantics/SEMANTICS.html",
@@ -43,7 +44,7 @@
     "sha256": "038f73fcebedfbf3b5ff3d23b1ff0758a87e8be2616b141b232628e1a64d1438"
    }
   ],
-  "recorded_at": "2026-11-04T02:35:07-03:00"
+  "recorded_at": "2026-11-04T02:38:54-03:00"
  },
  "sources": [
   {
@@ -52,5 +53,5 @@
    "transformation": "mundos sintéticos escritos no módulo (provider_a..provider_h), sem dado real"
   }
  ],
- "notes": "Emenda 0.1.1: adaptador C25 por aspecto (CC-1 do PILOT-STO-GLOSS), coleções de objetos como bloco repetido (CC-NET-1 do PILOT-NET-GLOSS) e pontas em endpoints (C19 3.1.0). Testes de integração leem o service_evidence.jsonl e os atoms.jsonl reais em $BO_DATA (volátil, fora das entradas registradas); relatório em $BO_DATA/GRAIN/realdata.json."
+ "notes": "Emenda 0.1.1: adaptador C25 por aspecto (CC-1 do PILOT-STO-GLOSS; lê C25 1.0.0 e 1.1.0), coleções de objetos como bloco repetido (CC-NET-1 do PILOT-NET-GLOSS) e pontas em endpoints (C19 3.1.0). Testes de integração leem o service_evidence.jsonl e os atoms.jsonl reais em $BO_DATA (volátil, fora das entradas registradas); relatório em $BO_DATA/GRAIN/realdata.json."
 }
