@@ -121,8 +121,10 @@ def run(provider: str, out: Path) -> dict:
             "atom_resolution": "sem [n]; dynamic[\"b\"][n].content. -> b.; caminho exato ou maior prefixo "
                                "que é átomo de atributo",
             "explicit_null": "literal null resolve o átomo mas não o configura (Terraform: igual a omitir)",
-            "class": "withheld se contém termo retido; literal se literal ou documento sem símbolo nem termo "
-                     "embutido; senão symbolic; várias ocorrências: withheld > symbolic > literal",
+            "class": "regra comum dos 4 CORPUS (coordenador, 2026-11-04): withheld se contém termo retido; "
+                     "symbolic se depende de variável, recurso, data source, local, saída de módulo, count/each, "
+                     "workspace ou função avaliada no plano; senão literal, inclusive cadeia simbolizada só por "
+                     "privacidade; várias ocorrências: withheld > symbolic > literal",
             "type_record": "registro sem atom_id por (repo, tipo): n_set = recursos com >= 1 átomo",
         },
         "counts": {

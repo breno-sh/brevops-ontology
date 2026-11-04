@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "CORPUS-OCI",
- "generated_at": "2026-11-04T09:33:28-03:00",
+ "generated_at": "2026-11-04T11:05:35-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/CORPUS-OCI.txt",
@@ -15,6 +15,8 @@
    "module_unit": "(repo_id, dirname(file))",
    "atom_resolution": "sem [n]; dynamic content desdobrado; caminho exato ou maior prefixo atributo",
    "class_precedence": "withheld>symbolic>literal",
+   "term_class": "regra comum dos 4 CORPUS, alinhamento entre lanes decidido pelo coordenador em 2026-11-04 (não motivado por número): literal = não depende de variável, recurso, data source, local ou função avaliada no plano; cadeia simbolizada só por privacidade continua literal",
+   "explicit_null": "attr = null não configura o átomo (comum aos 4 CORPUS)",
    "zero_rows": "átomo não configurado num (repo, tipo) não tem registro; denominador no registro do tipo",
    "hcl_branch_data": "bo/hcl, dados em $BO_DATA/HCL (sha nas entradas)"
   },
@@ -40,7 +42,7 @@
     "sha256": "99e3dc9d3434e48675fd71eb817145ae63c2159fd041f3c67dd1d308e814287c"
    }
   ],
-  "recorded_at": "2026-11-04T09:33:28-03:00"
+  "recorded_at": "2026-11-04T11:05:35-03:00"
  },
  "sources": [
   {
@@ -49,5 +51,5 @@
    "transformation": "só contagens agregadas por id sintético, via configuração simbólica do HCL"
   }
  ],
- "notes": "[2026-11-04T09:33:24-03:00] Uso real do oci no TerraDS, sem split. 1554 repositórios, 1308 famílias, 4880 módulos e 39289 recursos gerenciados (13066 blocos data fora). 332373 valores lidos pelas faixas do symbolic_config.index.json (= n_attrs do parquet, conferido); 299553 viram átomo; não atribuídos: attr_not_in_schema 232, block_as_attribute 404, dynamic_meta 5436, explicit_null 128, meta_argument 24613, type_not_in_schema 2007. Classes dos valores: literal 81980, symbolic 245660, withheld 4733. Átomos configurados: 4499 de 27172 (4493 de 19986 configuráveis); em 2+ famílias: 2988. Tipos no corpus: 356, 19 fora do schema 9.11.0. 140087 registros usage (122618 por átomo). Mais difundidos (famílias): oci:oci_core_subnet:compartment_id 902; oci:oci_core_subnet:vcn_id 902; oci:oci_core_subnet:cidr_block 901; oci:oci_core_subnet:display_name 879; oci:oci_core_internet_gateway:compartment_id 782. Definições em build_report.json (definitions) e na docstring de bo.corpus_oci.counting. Contagem por repositório, módulo e recurso em atom_totals.jsonl e type_totals.jsonl."
+ "notes": "[2026-11-04T11:05:32-03:00] Uso real do oci no TerraDS, sem split. 1554 repositórios, 1308 famílias, 4880 módulos e 39289 recursos gerenciados (13066 blocos data fora). 332373 valores lidos pelas faixas do symbolic_config.index.json (= n_attrs do parquet, conferido); 299553 viram átomo; não atribuídos: attr_not_in_schema 232, block_as_attribute 404, dynamic_meta 5436, explicit_null 128, meta_argument 24613, type_not_in_schema 2007. Classes dos valores: literal 124692, symbolic 202948, withheld 4733. Átomos configurados: 4499 de 27172 (4493 de 19986 configuráveis); em 2+ famílias: 2988. Tipos no corpus: 356, 19 fora do schema 9.11.0. 140087 registros usage (122618 por átomo). Mais difundidos (famílias): oci:oci_core_subnet:compartment_id 902; oci:oci_core_subnet:vcn_id 902; oci:oci_core_subnet:cidr_block 901; oci:oci_core_subnet:display_name 879; oci:oci_core_internet_gateway:compartment_id 782. Classe literal/simbólica pela regra comum dos 4 CORPUS (alinhamento entre lanes decidido pelo coordenador em 2026-11-04, não motivado por número; n_set não muda). Definições em build_report.json (definitions) e na docstring de bo.corpus_oci.counting. Contagem por repositório, módulo e recurso em atom_totals.jsonl e type_totals.jsonl."
 }

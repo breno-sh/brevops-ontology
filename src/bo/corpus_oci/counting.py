@@ -17,9 +17,10 @@ Definições (fixadas antes de olhar o resultado; o summary.json repete):
   contado por causa: meta-argumento do Terraform, meta de bloco dynamic, bloco atribuído como atributo,
   atributo fora do schema, tipo fora do schema. Literal ``null`` resolve o átomo mas não o configura (para o
   Terraform, ``attr = null`` é o mesmo que omitir): conta como ``explicit_null``.
-* Classe de um termo: ``withheld`` se o termo contém, em qualquer profundidade, um termo retido; ``literal``
-  se é literal, ou documento sem nenhum identificador simbolizado e sem termo embutido; senão ``symbolic``
-  (símbolo, expressão, referência, documento simbolizado).
+* Classe de um termo (regra comum dos 4 CORPUS, decisão do coordenador de 2026-11-04): ``withheld`` se o
+  termo contém, em qualquer profundidade, um termo retido; ``symbolic`` se o valor depende de variável,
+  recurso, data source, local, saída de módulo, count/each, workspace ou função avaliada no plano; senão
+  ``literal`` (inclusive cadeia constante simbolizada só por privacidade: redação não é dependência).
 * Classe de (recurso, átomo) com várias ocorrências (blocos repetidos, subchaves): withheld > symbolic >
   literal. Literal quer dizer valor inteiro conhecido.
 * usage por (repo, família, tipo, átomo): n_resources = recursos do tipo no repositório; n_set = recursos
@@ -67,38 +68,67 @@ def module_key(file: str) -> str:
     return posixpath.dirname(file) or "."
 
 
-def _contains_withheld(node) -> bool:
-    if isinstance(node, dict):
-        if node.get("kind") == "withheld":
-            return True
-        return any(_contains_withheld(v) for v in node.values())
-    if isinstance(node, list):
-        return any(_contains_withheld(v) for v in node)
-    return False
+# Regra comum dos 4 CORPUS (decisão do coordenador, 2026-11-04): literal = valor que não depende de variável,
+# recurso, data source, local ou função avaliada em tempo de plano. Cadeia constante que o HCL simbolizou só por
+# privacidade (símbolo name_class 'unknown') continua literal: simbolização é redação, não dependência.
+NONGROUND_CLASSES = frozenset({"variable", "local", "module_output", "data_source", "resource_attribute",
+                               "count_index", "each_key", "workspace"})
+NONGROUND_FUNCS = frozenset({"file", "filebase64", "filebase64sha256", "filebase64sha512", "filemd5", "filesha1",
+                             "filesha256", "filesha512", "fileexists", "fileset", "templatefile", "abspath",
+                             "pathexpand", "timestamp", "plantimestamp", "uuid", "bcrypt"})
+PROVIDER_FUNC_OP = "hcl_provider_function"  # função de provedor: avaliada no plano
 
 
-def _contains_term(node) -> bool:
-    if isinstance(node, dict):
-        if "$term" in node:
-            return True
-        return any(_contains_term(v) for v in node.values())
-    if isinstance(node, list):
-        return any(_contains_term(v) for v in node)
-    return False
+def _doc_terms(tree):
+    """Termos embutidos na árvore de um documento: {"$term": termo} e a chave interpolada {"$key": termo}."""
+    stack = [tree]
+    while stack:
+        x = stack.pop()
+        if isinstance(x, dict):
+            emb = False
+            for kk in ("$term", "$key"):
+                t = x.get(kk)
+                if isinstance(t, dict) and "kind" in t:
+                    emb = True
+                    yield t
+            if "$term" in x and emb:
+                continue
+            stack.extend(v for kk, v in x.items() if kk != "$key" or not emb)
+        elif isinstance(x, list):
+            stack.extend(x)
 
 
 def term_class(term: dict) -> str:
-    """literal | symbolic | withheld de um termo C00 (ver docstring do módulo)."""
-    kind = term.get("kind")
-    if kind == "withheld" or _contains_withheld(term.get("args")) or _contains_withheld(term.get("tree")):
-        return "withheld"
-    if kind == "literal":
-        return "literal"
-    if kind == "document" and not term.get("symbolized") and not _contains_term(term.get("tree")):
-        return "literal"
-    if kind in ("symbol", "expression", "reference", "document"):
-        return "symbolic"
-    raise ValueError(f"termo de tipo desconhecido: {kind!r}")
+    """literal | symbolic | withheld de um termo C00 (regra comum dos CORPUS, ver acima).
+
+    withheld: há termo retido em qualquer nível (argumentos de expressão, termos embutidos em documento).
+    symbolic: há referência a recurso, símbolo de variável, local, saída de módulo, data source, atributo de
+    recurso, count.index, each/iterador de dynamic ou workspace, ou função de arquivo, relógio, acaso ou de
+    provedor. literal: o resto, inclusive cadeias, números, CIDR e IP simbolizados por privacidade, documento sem
+    interpolação dependente e funções puras sobre literais."""
+    worst = "literal"
+    stack = [term]
+    while stack:
+        t = stack.pop()
+        k = t.get("kind")
+        if k == "withheld":
+            return "withheld"
+        if k == "literal":
+            continue
+        if k == "reference":
+            worst = "symbolic"
+        elif k == "symbol":
+            if t.get("name_class") in NONGROUND_CLASSES:
+                worst = "symbolic"
+        elif k == "expression":
+            if t.get("op") in NONGROUND_FUNCS or t.get("op") == PROVIDER_FUNC_OP:
+                worst = "symbolic"
+            stack.extend(a for a in t.get("args") or [] if isinstance(a, dict))
+        elif k == "document":
+            stack.extend(_doc_terms(t.get("tree")))
+        else:
+            raise ValueError(f"termo de tipo desconhecido: {k!r}")
+    return worst
 
 
 def normalize_path(attr_path: str) -> str:

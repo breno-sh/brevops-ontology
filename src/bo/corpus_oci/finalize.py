@@ -45,7 +45,8 @@ def main(argv=None) -> int:
         f"{c['types_in_corpus_not_in_schema']} fora do schema {','.join(pv)}. {c['usage_records']} registros usage "
         f"({c['usage_records_with_atom']} por átomo). Mais difundidos (famílias): "
         + "; ".join(f"{x['atom_id']} {x['n_families']}" for x in top)
-        + ". Definições em build_report.json (definitions) e na docstring de bo.corpus_oci.counting. "
+        + ". Classe literal/simbólica pela regra comum dos 4 CORPUS (alinhamento entre lanes decidido pelo "
+        "coordenador em 2026-11-04, não motivado por número; n_set não muda). Definições em build_report.json (definitions) e na docstring de bo.corpus_oci.counting. "
         "Contagem por repositório, módulo e recurso em atom_totals.jsonl e type_totals.jsonl."
     )
     params = {
@@ -54,6 +55,10 @@ def main(argv=None) -> int:
         "module_unit": "(repo_id, dirname(file))",
         "atom_resolution": "sem [n]; dynamic content desdobrado; caminho exato ou maior prefixo atributo",
         "class_precedence": "withheld>symbolic>literal",
+        "term_class": "regra comum dos 4 CORPUS, alinhamento entre lanes decidido pelo coordenador em 2026-11-04 "
+                      "(não motivado por número): literal = não depende de variável, recurso, data source, local "
+                      "ou função avaliada no plano; cadeia simbolizada só por privacidade continua literal",
+        "explicit_null": "attr = null não configura o átomo (comum aos 4 CORPUS)",
         "zero_rows": "átomo não configurado num (repo, tipo) não tem registro; denominador no registro do tipo",
         "hcl_branch_data": "bo/hcl, dados em $BO_DATA/HCL (sha nas entradas)",
     }

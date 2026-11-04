@@ -39,19 +39,32 @@ def test_resolve_causes(ix):
 
 
 def test_term_class():
+    """Regra comum dos 4 CORPUS: literal = não depende de variável, recurso, data, local ou função de plano."""
     c = counting.term_class
     assert c(LIT) == "literal"
-    assert c(SYM) == "symbolic"
+    assert c(SYM) == "symbolic"  # variável
     assert c(REF) == "symbolic"
     assert c(WH) == "withheld"
     assert c(EXPR_WH) == "withheld"  # retido em qualquer profundidade
-    assert c({"kind": "expression", "op": "tolist", "args": [LIT]}) == "symbolic"
+    redacted = {"kind": "symbol", "symbol_id": "SYM-0000000000cc", "name_class": "unknown", "scope": "repo"}
+    assert c(redacted) == "literal"  # cadeia constante simbolizada por privacidade: redação, não dependência
+    for nc in ("local", "module_output", "data_source", "resource_attribute", "count_index", "each_key",
+               "workspace"):
+        assert c({**redacted, "name_class": nc}) == "symbolic", nc
+    assert c({"kind": "expression", "op": "tolist", "args": [LIT, redacted]}) == "literal"  # função pura
+    assert c({"kind": "expression", "op": "upper", "args": [SYM]}) == "symbolic"
+    assert c({"kind": "expression", "op": "file", "args": [LIT]}) == "symbolic"  # lê arquivo no plano
+    assert c({"kind": "expression", "op": "timestamp", "args": []}) == "symbolic"
+    assert c({"kind": "expression", "op": "hcl_provider_function", "args": [LIT]}) == "symbolic"
     doc = {"kind": "document", "format": "json", "tree": {"a": 1}, "symbolized": []}
     assert c(doc) == "literal"
     assert c({**doc, "symbolized": [{"path": "/a", "symbol_id": "SYM-0000000000aa", "role": "identifier"}]}) \
-        == "symbolic"
+        == "literal"  # identificador simbolizado é redação
     assert c({**doc, "tree": {"a": {"$term": REF}}}) == "symbolic"
     assert c({**doc, "tree": {"a": {"$term": WH}}}) == "withheld"
+    assert c({**doc, "tree": {"a": {"$key": SYM, "v": 1}}}) == "symbolic"
+    # valor literal com cara de termo não é termo
+    assert c({"kind": "literal", "datatype": "map", "value": {"kind": "withheld"}}) == "literal"
     with pytest.raises(ValueError):
         c({"kind": "novo"})
 
