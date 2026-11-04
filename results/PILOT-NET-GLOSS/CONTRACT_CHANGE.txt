@@ -118,3 +118,10 @@ attachment_attribute), SE 28faee8, árbitro 7fc1a85, BRIEFS 49293d8. Grão: 40 u
 5 ENTITY, 2 FACET, 26 UNKNOWN; 20 G0-IDENTITY, 6 G0-NEEDS). E2: 3 de 3. As duas anexações do NSG passaram de
 G0-IDENTITY para G0-NEEDS (identidade resolvida; faltam ciclo de vida, dono e alcance). Glossário inalterado.
 F-5 segue sem frase publicada: SN-NET-0001/0002 continuam notas.
+
+ADENDO 2026-11-04T18:30:00-03:00 (America/Recife), rodada final antes do PILOT-EXIT 2/2: GRAIN ed1fc66 (0.1.11),
+SE 365e6ed (fatos observados), árbitro 4bee77e, CONTRACTS emenda 11, BRIEFS/PREREG 70b8d10. Grão: 38 unidades
+(1 BINDING, 6 COMPONENT, 5 ENTITY, 2 FACET, 24 UNKNOWN; 13 G0-IDENTITY, 11 G0-NEEDS). E2: 3 de 3. A regra separada do
+NSG da OCI passou de G0-IDENTITY para G0-NEEDS (só falta effective_scope); os blocos ingress/egress_security_rules
+da security list deixaram de ser unidade (transparentes) e os seus sub-blocos passaram a faltar só api_resource.
+Glossário inalterado; F-5 segue sem frase publicada.

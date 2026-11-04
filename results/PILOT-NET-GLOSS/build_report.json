@@ -54,7 +54,7 @@
    ]
   }
  ],
- "generated_at": "2026-11-04T14:31:21-03:00",
+ "generated_at": "2026-11-04T18:29:55-03:00",
  "glossary": {
   "anchors": 52,
   "anchors_by_kind": {
@@ -84,11 +84,11 @@
    "COMPONENT": 6,
    "ENTITY": 5,
    "FACET": 2,
-   "UNKNOWN": 26
+   "UNKNOWN": 24
   },
   "by_rule": {
-   "GRAIN-G0-IDENTITY": 20,
-   "GRAIN-G0-NEEDS": 6,
+   "GRAIN-G0-IDENTITY": 13,
+   "GRAIN-G0-NEEDS": 11,
    "GRAIN-G1-BINDING": 1,
    "GRAIN-G2-CHILD": 2,
    "GRAIN-G2-COMPONENT": 4,
@@ -97,20 +97,20 @@
    "GRAIN-G4-NS": 1
   },
   "missing": {
-   "api_resource": 4,
-   "effective_scope": 22,
-   "identity": 20,
-   "lifecycle_controller": 22,
-   "owner": 22
+   "api_resource": 8,
+   "effective_scope": 16,
+   "identity": 13,
+   "lifecycle_controller": 15,
+   "owner": 15
   },
-  "units": 40,
+  "units": 38,
   "units_by_provider": {
    "aws": 7,
    "azurerm": 5,
    "google": 6,
-   "oci": 22
+   "oci": 20
   },
-  "unknown_reasons": 190
+  "unknown_reasons": 191
  },
  "module": "PILOT-NET-GLOSS",
  "schema": "bo.pilot_gloss_report/1"
