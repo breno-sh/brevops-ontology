@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "HIST-OCI",
- "generated_at": "2026-11-03T22:00:30-03:00",
+ "generated_at": "2026-11-04T07:28:32-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/HIST-OCI.txt",
@@ -31,7 +31,7 @@
     "sha256": "7186bdf94fb5764d84725f8c5560ee2a1cc505a9aa0f5bd02fef720e8fcea146"
    }
   ],
-  "recorded_at": "2026-11-03T22:00:30-03:00"
+  "recorded_at": "2026-11-04T07:28:32-03:00"
  },
  "sources": [
   {
