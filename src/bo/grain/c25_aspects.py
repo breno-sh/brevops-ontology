@@ -99,7 +99,7 @@ TABLE = [
      "identidade afirmada na camada de API prevalece: resource_identity_schema (T01) e import_formats (T10), que são "
      "da camada Terraform, não são traduzidos para o mesmo candidato (nomes de campo diferentes do mesmo objeto não "
      "viram contradição); T56b: referência tipada num campo da chave de API não vale (é o identificador da "
-     "própria unidade)"),
+     "própria unidade); T56c: o mesmo vale para a identidade de bloco derivada do schema (block_identity)"),
     ("identity", "implicit_facet | spec_facet_member (bloco)", "R-GRAIN-T57",
      "FACETA IMPLÍCITA (emenda 0.1.8): fato da spec, no bloco, que diz que a API só aceita os blocos como membros "
      "de um único objeto-faceta do pai, configurado por uma operação única sobre o pai ({facet, facet_resource, "
@@ -112,6 +112,14 @@ TABLE = [
      "do atributo, o alvo do elemento): referência tipada resolve o alvo; só a frase da doc deixa o alvo sem tipo "
      "(UNRESOLVED); seleção por valor (rótulo) aponta um seletor externo, que não tem grão (G1 não decide). Ciclo de "
      "vida, dono e alcance da ligação só vêm de fatos com attribute = o atributo; sem eles, UNKNOWN com o que falta"),
+    ("(seleção)", "attachment_scope com applies_to | selection | label_selection", "R-GRAIN-T60",
+     "SELEÇÃO POR RÓTULO (emenda 0.1.9): atributo que a evidência descreve, com citação, como seleção ou alvo por "
+     "rótulo/tag: cada valor é um vínculo (G1) entre o dono e um nó SELECTOR, cuja identidade é o predicado "
+     "normalizado (chave do seletor, valor); o seletor não é recurso nem tem ciclo de vida. Referência tipada a tipo "
+     "de recurso (T44) no mesmo atributo prevalece: lista de ids de recurso é referência, nunca seletor. Para toda "
+     "ligação por atributo (T58), o elemento é um valor escalar do dono: dono da configuração = a própria "
+     "associação, ciclo de vida = o do dono (some quando o dono deixa de listá-lo), alcance próprio — derivado do "
+     "schema e do fato que descreve o atributo; fatos próprios da ligação prevalecem"),
     ("api_resource", "(pontes equivalentes)", "R-GRAIN-T53",
      "duas pontes que nomeiam o mesmo recurso só com grafia diferente (caixa, sublinhado, hífen), ainda que o "
      "nome do serviço difira entre a doc e o SDK da spec, são uma alegação só; recursos de fato diferentes "
@@ -173,6 +181,8 @@ RULE_OF = {(f, a): r for f, a, r, _ in TABLE}
 for _f in GRAIN_FACTS:
     RULE_OF[(_f, "implicit_facet")] = RULE_OF[(_f, "spec_facet_member")] = "R-GRAIN-T57"
 RULE_OF[("lifecycle_controller", "spec_operation")] = "R-GRAIN-T57"
+for _f in GRAIN_FACTS:
+    RULE_OF[(_f, "selection")] = RULE_OF[(_f, "label_selection")] = "R-GRAIN-T60"
 
 
 def is_aspect_record(r: dict) -> bool:
@@ -327,13 +337,20 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
                 # operação sobre o pai (fato da spec com a operação citada)
                 if nested and v.get("operation") and v.get("facet") and v.get("single_operation", True) is True:
                     out.setdefault(cid, {})["implicit_facet"] = {
-                        "facet": v["facet"], "label": v.get("facet_resource") or v["facet"],
+                        "facet": v["facet"], "label": str(v.get("facet_resource") or v["facet"]).split(":")[-1],
                         "operation": v["operation"], "member": v.get("member"),
                         "parent_resource": v.get("parent_resource"), "source": _src(r, rule, "faceta implícita")}
                 else:
                     reasons[cid].append("identity: fato de faceta implícita sem operação única citada (T57)")
             elif a == "spec_operation" and nested and v.get("role") in ("create", "delete"):
                 own_ops.add(cid)
+            elif a in ("selection", "label_selection"):
+                # T60: fato explícito de seleção por rótulo/tag (predicado), com citação
+                if v.get("attribute"):
+                    attr = _rel(v["attribute"], bp)
+                    if not links[cid].get(attr, {}).get("target"):
+                        links[cid][attr] = {"kind": "selection", "target": None, "selector_kind":
+                                            v.get("selector_kind") or attr, "source": _src(r, rule)}
             elif a == "path_parent":
                 if v.get("attribute"):
                     path_fields[cid].add(_rel(v["attribute"], bp))
@@ -342,7 +359,9 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
                 if v.get("attribute"):
                     ns_fields[cid].add(_rel(v["attribute"], bp))
             elif a == "twin_type":
-                twins[cid] = (r, v.get("twin"))
+                # o gêmeo pode ser um bloco do tipo gêmeo (twin_block_path): o par desce ao bloco correspondente
+                tw = v.get("twin")
+                twins[cid] = (r, f"{tw}.{v['twin_block_path']}" if tw and v.get("twin_block_path") else tw)
             elif a == "reference_target":
                 attr = _rel(v.get("attribute", ""), bp)
                 tt = v.get("target_types") or []
@@ -546,6 +565,15 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
             rf = [f for f in key_refs.get(cid, {}) if not f.startswith("$")]
             put(cid, "effective_scope", {"kind": "parent", "via": rf[0], "source": _src(r, rule)} if len(rf) == 1
                 else {"kind": "self", "source": _src(r, rule)})
+    # T56c: identidade de API prevalece também sobre a identidade de bloco derivada do schema (block_identity, T07)
+    for cid in api_identity:
+        ent = out.get(cid, {})
+        for fld_ in ("identity", "element_name_key"):
+            cl = ent.get(fld_, [])
+            keep = [c for c in cl if "R-GRAIN-T07" not in str((c.get("source") or {}).get("note", ""))]
+            if len(keep) != len(cl):
+                ent[fld_] = keep
+                reasons[cid].append(f"{fld_}: block_identity (schema) substituída pela identidade de API (T56c)")
     # T56b: campo da chave de identidade de API é o identificador da própria unidade: referência tipada nele (alvo
     # de outro tipo pela frase da doc) não vale para a chave
     for cid in api_identity:
@@ -626,6 +654,8 @@ def translate(records: list[dict], candidates: set[str] | None = None) -> tuple[
     # vira o pai estrutural ($parent)
     for cid, (r, twin) in sorted(twins.items()):
         top = cid.split(".")[0]
+        if twin and "." in twin and twin not in out:
+            out.setdefault(twin, {})                  # bloco gêmeo sem fato próprio: herda vazio (UNKNOWN), não erro
         src_ev = out.get(twin)
         if not twin or src_ev is None:
             reasons[cid].append(f"identity: gêmeo {twin} sem evidência traduzida")

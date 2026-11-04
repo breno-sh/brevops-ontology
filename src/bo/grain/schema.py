@@ -13,7 +13,7 @@ from dataclasses import dataclass, field
 
 from . import rules as R
 from .common import sha256_text, canon
-from .engine import EXT, Decision, Node, decide_graph
+from .engine import EXT, SEL, Decision, Node, decide_graph
 from .evidence import PARENT, CandidateEvidence, from_dict
 
 
@@ -39,20 +39,29 @@ def scalar_list(tf_type) -> bool:
 
 def link_evidence(holder_cid: str, attr: str, link: dict, extra) -> dict:
     """Evidência derivada (T58) do candidato de ligação <holder>:<attr>, mais os fatos próprios da ligação."""
-    sel = link.get("kind") == "selection"
+    sel = link.get("kind") == "selection" and bool(link.get("source"))     # seleção só com citação (T60)
     fld = "selector" if sel else "target"
     src = dict(link.get("source") or {"level": "derived", "ref": "T58"})
     src["note"] = (src.get("note", "") + " (T58: ligação por atributo)").strip()
     out = {"identity": [{"status": "present", "scope": "within_parent", "key_fields": [fld], "source": src}],
-           "field_map": {fld: {"path": "$element", "ref": True}}, "parent_role": "holder", "references": {}}
+           "field_map": {fld: {"path": "$element", "ref": True, "selector": sel}}, "parent_role": "holder",
+           "references": {}}
     if sel:
-        out["references"][fld] = f"selector:{holder_cid}:{attr}"
+        out["references"][fld] = f"{SEL}{link.get('selector_kind') or attr}"
     elif link.get("target"):
         out["references"][fld] = link["target"]
     for k in ("lifecycle_controller", "owner", "effective_scope", "api_resource", "import_key"):
         cl = (extra.claims.get(k) if extra is not None else None) or []
         if cl:
             out[k] = list(cl)
+    # T60: o elemento de um atributo-lista é um valor escalar do dono: não tem configuração além da própria
+    # identidade (dono = a própria associação), existe enquanto o dono o lista (ciclo de vida do dono) e vale onde
+    # está (alcance próprio). Derivado do schema + do fato que descreve o atributo (link.source); fatos próprios da
+    # ligação, se houver, prevalecem
+    d60 = dict(src, note=src.get("note", "") + " (T60: elemento escalar do atributo do dono)")
+    out.setdefault("lifecycle_controller", [{"kind": "parent", "via": "$parent", "source": d60}])
+    out.setdefault("owner", [{"kind": "self", "source": d60}])
+    out.setdefault("effective_scope", [{"kind": "self", "source": d60}])
     return out
 
 
@@ -235,6 +244,8 @@ def decompose_schema(cands: list[Candidate], adapter, rs: R.RuleSet) -> SchemaRe
                     rt[f] = transparent.get(t)
                 elif t in by:
                     rt[f] = t
+                elif t and t.startswith(SEL):
+                    rt[f] = t                            # T60: nó SELECTOR (predicado), não recurso
                 else:
                     rt[f] = EXT + t if t else None      # T51: contêiner externo referenciado
         nodes[cid] = Node(nid=cid, provider=c.provider, cid=cid, resource_type=c.resource_type,
@@ -354,11 +365,13 @@ class _Uid(dict):
         self.provider = provider
 
     def __contains__(self, k):
-        return dict.__contains__(self, k) or (isinstance(k, str) and k.startswith(EXT))
+        return dict.__contains__(self, k) or (isinstance(k, str) and k.startswith((EXT, SEL)))
 
     def __getitem__(self, k):
         if isinstance(k, str) and k.startswith(EXT) and not dict.__contains__(self, k):
             return unit_id(self.provider, k[len(EXT):])
+        if isinstance(k, str) and k.startswith(SEL) and not dict.__contains__(self, k):
+            return unit_id(self.provider, "selector:" + k[len(SEL):].replace("=", ":"))
         return dict.__getitem__(self, k)
 
 
@@ -375,6 +388,8 @@ def signature(res: SchemaResult, cids=None, *, with_tf=False) -> list:
             return ()
         if nid.startswith(EXT):
             return ("EXTERNAL:" + nid[len(EXT):],)
+        if nid.startswith(SEL):
+            return ("SELECTOR:" + nid[len(SEL):],)
         d = decs[nid]
         return path(d.parent, seen + (nid,)) + (d.label,)
 

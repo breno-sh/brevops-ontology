@@ -15,6 +15,7 @@ from . import rules as R
 from .evidence import (C19_MISSING, CONTRADICTORY, KNOWN, PARENT, UNKNOWN, CandidateEvidence, Fact)
 
 EXT = "EXT:"            # prefixo de nó de contêiner externo (T51): referenciado pela evidência, fora da decomposição
+SEL = "SEL:"            # prefixo de nó SELECTOR (T60): predicado de seleção (chave e valor), sem ciclo de vida
 G0_NEEDS = "GRAIN-G0-NEEDS"
 G0_CYCLE = "GRAIN-G0-CYCLE"
 G0_IDENTITY = "GRAIN-G0-IDENTITY"
@@ -226,6 +227,8 @@ class Context:
     def kind_of(self, nid):
         if nid.startswith(EXT):
             return "EXTERNAL"
+        if nid.startswith(SEL):
+            return "SELECTOR"
         d = self.decided.get(nid)
         return d.grain if d else "UNKNOWN"
 
@@ -244,7 +247,7 @@ def _label(n: Node, api: Fact) -> str:
 
 
 def decide_node(n: Node, rs: R.RuleSet, decided: dict, bindings: dict) -> Decision:
-    ident = derive_identity(n, lambda t: "EXTERNAL" if t.startswith(EXT) else
+    ident = derive_identity(n, lambda t: "EXTERNAL" if t.startswith(EXT) else "SELECTOR" if t.startswith(SEL) else
                             (decided[t].grain if t in decided else "UNKNOWN"))
     ctx = Context(n, ident, decided, bindings)
     trace = [f"identity_class={ident.cls}"]

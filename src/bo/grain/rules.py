@@ -81,7 +81,7 @@ def _check_cond(rid: str, where: str, cond: dict):
             if bad:
                 raise RulesError(f"{rid}.{where}: classe de identidade desconhecida: {bad}")
         if k.endswith("_kind_in") and k.startswith(("identity_targets", "owner_targets")):
-            bad = [x for x in v if x not in GRAINS]
+            bad = [x for x in v if x not in GRAINS + ("SELECTOR", "EXTERNAL")]
             if bad:
                 raise RulesError(f"{rid}.{where}: grão desconhecido: {bad}")
 

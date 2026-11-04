@@ -101,25 +101,19 @@ def test_implicit_facet_c19_validates(tmp_path):
     assert r.returncode == 0, r.stdout[-1500:]
 
 
-def test_implicit_facet_real_s3_control():
-    """No dado real (S3), com o fato de spec acrescentado só para o bloco embutido (o SERVICE-EVIDENCE ainda vai
-    emiti-lo, CC-12): o lifecycle_rule embutido pende da faceta implícita lifecycle_configuration, com o mesmo
-    rótulo de API da faceta separada."""
+def test_implicit_facet_real_s3():
+    """No dado real (S3), o SERVICE-EVIDENCE emite spec_facet_member para o lifecycle_rule embutido
+    (PutBucketLifecycleConfiguration{Rules} sobre Bucket): o bloco pende da faceta implícita, com o mesmo rótulo de
+    API da faceta separada. Sem esse fato, não há faceta implícita."""
     p = data_root() / "SERVICE-EVIDENCE" / "service_evidence.jsonl"
     assert p.is_file()
     recs = RD.load_evidence(p)
-    extra = {"evidence_id": "SE-ctl-imp1", "provider": "aws", "pin": {"provider_version": "0.0.1"},
-             "api_resource": {"service": "s3", "resource": "Bucket"}, "terraform_resource_type": "aws_s3_bucket",
-             "block_path": "lifecycle_rule", "fact_kind": "identity", "status": "stated", "level": "derived",
-             "derived_from": ["SE-controle"],
-             "value": {"aspect": "spec_facet_member", "facet": "lifecycle_configuration",
-                       "facet_resource": "BucketLifecycleConfiguration", "operation": "PutBucketLifecycleConfiguration",
-                       "member": "Rules", "parent_resource": "Bucket", "single_operation": True}}
     sl = {"aws": ["aws_s3_bucket", "aws_s3_bucket_lifecycle_configuration"]}
-    res = RD.run(slice_types=sl, records=recs + [extra])["providers"]["aws"]["_res"]
-    fid = "aws_s3_bucket:lifecycle_configuration"
-    assert res.decisions[fid].grain == "FACET" and res.decisions[fid].parent == "aws_s3_bucket"
-    assert res.decisions["aws_s3_bucket.lifecycle_rule"].parent == fid
-    assert res.decisions[fid].label == res.decisions["aws_s3_bucket_lifecycle_configuration"].label
-    sep = RD.run(slice_types=sl, records=recs)["providers"]["aws"]["_res"]
-    assert fid not in sep.decisions                                      # sem o fato da spec, não há faceta implícita
+    res = RD.run(slice_types=sl, records=recs)["providers"]["aws"]["_res"]
+    par = res.nodes["aws_s3_bucket.lifecycle_rule"].parent                # pai estrutural (o grão vem do gêmeo)
+    assert par and par.startswith("aws_s3_bucket:") and res.decisions[par].grain == "FACET"
+    assert res.decisions[par].label == res.decisions["aws_s3_bucket_lifecycle_configuration"].label
+    no = [r for r in recs if not (isinstance(r.get("value"), dict) and r["value"].get("aspect") == "spec_facet_member"
+                                   and r.get("terraform_resource_type") == "aws_s3_bucket")]
+    res2 = RD.run(slice_types=sl, records=no)["providers"]["aws"]["_res"]
+    assert res2.nodes["aws_s3_bucket.lifecycle_rule"].parent == "aws_s3_bucket"

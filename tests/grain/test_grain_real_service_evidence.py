@@ -38,7 +38,7 @@ def test_no_evidence_error_and_every_candidate_decided(real):
     for prov, p in real["providers"].items():
         assert p["candidates"] > 0 and p["evidence_records"] > 0, prov
         ood = p["_res"].out_of_domain
-        assert sum(p["grains"].values()) == p["candidates"] - len(ood), prov
+        assert sum(p["grains"].values()) == len(p["_res"].decisions), prov   # inclui ligações e facetas implícitas
         assert all(c.endswith(".timeouts") or ".timeouts." in c for c in ood), ood   # T45: só configuração do Terraform
         for cid, d in p["top_level"].items():
             assert d is not None, f"{prov}: {cid} sem candidato"

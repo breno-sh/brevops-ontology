@@ -111,11 +111,11 @@ rules:
   - id: GRAIN-G1-BINDING
     priority: 1
     grain: BINDING
-    text: identidade = tupla de referências a duas ou mais unidades independentes e configuração só sobre a associação (dono = a própria associação); prevalece sobre G4 mesmo quando a embalagem é um recurso separado com chave de importação própria
+    text: identidade = tupla de referências a duas ou mais unidades independentes e configuração só sobre a associação (dono = a própria associação); prevalece sobre G4 mesmo quando a embalagem é um recurso separado com chave de importação própria; emenda 0.1.9, a ponta pode ser um nó SELECTOR (predicado de seleção por rótulo descrito pela evidência com citação), que não é recurso nem tem ciclo de vida
     match: {identity_class_in: [REF_TUPLE, REF_TUPLE_PLUS], identity_composition_targets_min: 2}
     needs: [lifecycle_controller, owner, effective_scope]
     guard:
-      identity_targets_kind_in: [ENTITY, COMPONENT, BINDING]
+      identity_targets_kind_in: [ENTITY, COMPONENT, BINDING, SELECTOR]
       owner_kind_in: [self]
     emit: {parent: none, endpoints: identity_targets}
 
@@ -202,7 +202,7 @@ amendments:
   - id: GRAIN-A12
     version: 0.1.9
     origin: saída dos pilotos 1 de 2 (o grão do tipo divergia do gabarito na camada de instância)
-    text: a camada de instância passa a aplicar o mesmo que a de esquema (contêiner externo, faceta implícita, fora do domínio, bloco repetido de coleção de objetos, namespace herdado pelo bloco); ligação por atributo-lista e seleção por valor viram candidatos e ocorrências próprias, decididos só com fatos da ligação; recurso de topo de id opaco é identificado na configuração pelo endereço do recurso; bloco de id opaco segue sem identidade de ocorrência (o endereço é posicional)
+    text: a camada de instância passa a aplicar o mesmo que a de esquema (contêiner externo, faceta implícita, fora do domínio, bloco repetido de coleção de objetos, namespace herdado pelo bloco); ligação por atributo-lista e seleção por valor viram candidatos e ocorrências próprias, decididos só com fatos da ligação; recurso de topo de id opaco é identificado na configuração pelo endereço do recurso; bloco de id opaco segue sem identidade de ocorrência (o endereço é posicional); seleção por rótulo descrita pela evidência com citação é vínculo com um nó seletor (predicado normalizado, sem ciclo de vida), aceito como ponta pela G1; lista de ids de recurso é referência, nunca seletor; o elemento de atributo-lista é valor escalar do dono (dono = a associação, ciclo de vida do dono, alcance próprio); o gêmeo pode apontar o bloco correspondente do tipo gêmeo; a identidade de API prevalece sobre a identidade de bloco do schema
   - id: GRAIN-A11
     version: 0.1.8
     origin: decisão do coordenador sobre o par embutido e separado do conjunto de regras do contêiner

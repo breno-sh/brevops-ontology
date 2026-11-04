@@ -45,12 +45,34 @@ def test_implicit_facet_in_instance_layer():
 
 
 def test_list_attribute_link_and_selection_occurrences():
+    """T58/T60: lista de ids de recurso com alvo tipado = vínculo dono→alvo; seleção por valor descrita com citação =
+    vínculo dono→SELECTOR (predicado normalizado). O elemento é valor escalar do dono (T60)."""
     oc = occs(_cfg())
     links = [o for o in oc if any(":set_ids#" in n for n in o.tf)]
     sels = [o for o in oc if any(":tags#" in n for n in o.tf)]
-    assert len(links) == 1 and len(sels) == 2
-    # sem ciclo de vida, dono e alcance da ligação: UNKNOWN com o que falta (não força BINDING)
-    assert all(o.grain == "UNKNOWN" and set(o.missing) >= {"lifecycle_controller", "owner"} for o in links + sels)
+    assert len(links) == 1 and links[0].grain == "BINDING" and set(links[0].endpoints) == {"holder", "target"}
+    assert len(sels) == 2 and all(o.grain == "BINDING" and set(o.endpoints) == {"holder", "selector"} for o in sels)
+    assert len({o.endpoints["selector"] for o in sels}) == 2          # um seletor por predicado (valor)
+
+
+def test_selection_without_citation_and_reference_list_are_not_selectors():
+    ev = _world()
+    ev["v_host"]["links"]["tags"].pop("source")                      # sem citação: não é seletor
+    oc = I.decompose_config(_cfg(), FixtureAdapter(ev), {"v_set": {"rule"}}, RS)
+    sels = [o for o in oc if any(":tags#" in n for n in o.tf)]
+    assert sels and all(o.grain != "BINDING" or "selector" not in o.endpoints for o in sels)
+    links = [o for o in oc if any(":set_ids#" in n for n in o.tf)]
+    assert "selector" not in links[0].endpoints                      # lista de ids é referência, nunca seletor
+
+
+def test_same_selector_predicate_shared_between_holders():
+    cfg = _cfg()
+    cfg["resources"].append({"type": "v_host", "name": "h2", "values": {"name": "host-2", "set_ids": [],
+                                                                       "tags": ["web"]}})
+    oc = occs(cfg)
+    web = {o.endpoints["selector"] for o in oc if o.grain == "BINDING" and "selector" in o.endpoints
+           and any(":tags#" in n for n in o.tf)}
+    assert len(web) == 2                                             # web e db; web compartilhado pelos dois donos
 
 
 def test_link_decides_binding_with_link_facts():

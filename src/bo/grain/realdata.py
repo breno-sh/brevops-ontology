@@ -126,7 +126,7 @@ def e2_pair(res, inline: str, separate_top: str) -> dict:
     ev = res.nodes[inline].ev if inline in res.nodes else None
     twin = ev.twin if ev else None
     target, why = None, None
-    if twin and twin in res.decisions:
+    if twin and twin in res.decisions and twin.split(".")[0] == separate_top:
         target = twin
     elif twin and twin.split(".")[0] == separate_top:
         why = f"gêmeo {twin} não é candidato"

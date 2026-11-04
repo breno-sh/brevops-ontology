@@ -16,7 +16,7 @@ from dataclasses import dataclass, field
 from . import rules as R
 from .common import canon, sha256_text
 from . import schema as S
-from .engine import EXT, Node, decide_graph
+from .engine import EXT, SEL, Node, decide_graph
 from .evidence import PARENT, CandidateEvidence, from_dict
 
 
@@ -178,8 +178,9 @@ def build_nodes(config: dict, adapter, schema_blocks: dict) -> tuple[dict, dict,
         if isinstance(v, dict) and "$ref" in v:
             return EXT + v["$ref"]                       # T51: ocorrência referenciada fora da configuração
         tgt = ev.references.get(f)
-        if path_el(m) and info["values"].get("$kind") == "selection" and isinstance(v, (str, int)):
-            return f"{EXT}{tgt}={v}"                     # seletor por valor (rótulo): externo, sem grão
+        if path_el(m) and m.get("selector") and isinstance(v, (str, int)) and tgt and tgt.startswith(SEL):
+            # T60: nó SELECTOR com identidade = predicado normalizado (chave do seletor, valor)
+            return f"{tgt}={str(v).strip()}"
         if tgt and isinstance(v, (str, int)) and not isinstance(v, bool) and not m.get("by_name"):
             return f"{EXT}{tgt}#{v}"                     # referência por id literal a objeto fora da configuração
         if m.get("by_name") and isinstance(v, str):
@@ -252,6 +253,10 @@ def decompose_config(config: dict, adapter, schema_blocks: dict, rs: R.RuleSet) 
         if nid.startswith(EXT):
             # T51 na instância: ocorrência externa referenciada, identidade = o endereço ou o valor citado
             memo[nid] = sha256_text(canon({"external": nid[len(EXT):]}))
+            return memo[nid]
+        if nid.startswith(SEL):
+            k, _, val = nid[len(SEL):].partition("=")
+            memo[nid] = sha256_text(canon({"selector": k, "value": val}))
             return memo[nid]
         if nid in stack:
             return None

@@ -416,7 +416,18 @@ herdado pelo bloco (T52b). Ligação por atributo-lista de referências e seleç
 com fatos da ligação (attribute = o atributo) — sem eles, UNKNOWN com o que falta; seleção aponta um seletor externo,
 sem grão. Recurso de topo de id opaco é identificado pelo endereço do recurso (T59, símbolo por configuração); bloco
 de id opaco não (o endereço do bloco é posicional e quebraria a invariância à reordenação). Pontes que nomeiam o
-mesmo recurso com nomes de serviço diferentes entre a doc e o SDK da spec (iaas × core) são uma só (T53).</li>
+mesmo recurso com nomes de serviço diferentes entre a doc e o SDK da spec (iaas × core) são uma só (T53).
+Decisão do coordenador incluída na 0.1.9 (T60): a seleção por rótulo é VÍNCULO com um nó SELECTOR. O seletor não é
+recurso e não tem ciclo de vida: é o predicado (chave do seletor e valor), com identidade = predicado normalizado
+(dois donos que selecionam o mesmo rótulo apontam o mesmo seletor). A G1 aceita a ponta SELECTOR só quando a
+evidência descreve o atributo, com citação, como seleção ou alvo por rótulo (alcance por anexação com "applies_to",
+ou fato selection); sem isso segue UNKNOWN. Lista de ids de recurso com referência tipada é referência, nunca
+seletor (controle negativo). O elemento de atributo-lista é valor escalar do dono: dono da configuração = a própria
+associação (não há outra configuração), ciclo de vida = o do dono (some quando o dono deixa de listá-lo), alcance
+próprio; fatos da ligação, se houver, prevalecem. O gêmeo pode apontar o bloco correspondente (twin_block_path), e
+a identidade de API prevalece sobre a de bloco derivada do schema (T56c): com isso, o E2 STO do lifecycle_rule
+embutido × rule do recurso separado sai igual (COMPONENT sob a faceta de configuração de ciclo de vida, implícita no
+embutido).</li>
 <li>Emenda 0.1.8 (faceta implícita, T3/T57, decisão do coordenador): quando a API só aceita os blocos como membros
 de um único objeto-faceta do pai, configurado por uma operação única sobre o pai (ex.: a configuração de ciclo de vida
 do contêiner, com as regras como membro, gravada por uma só operação sobre o contêiner), a forma embutida — que não
