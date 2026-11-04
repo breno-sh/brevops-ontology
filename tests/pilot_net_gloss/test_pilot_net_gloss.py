@@ -22,6 +22,7 @@ def _anchor(cid, atom, line, sent, state="STRUCTURALLY_VALID"):
             "source": dict(DOC, line=line, sentence=sent),
             "counterexample_search": {"query": "order", "found": False, "result": "nada com outro sentido"},
             "extraction_method": "parser", "evidence_level": "published", "evidence_state": state,
+            "evidence_ref": {"contract": "C25", "id": f"SE-{atom.split(':')[0]}-1"},
             "recorded_at": "2026-11-04T02:30:00-03:00"}
 
 
@@ -77,6 +78,10 @@ def test_positive_control_composes_exact(tmp_path):
     ("claims.jsonl", lambda r: [dict(r[0], sentence="frase que não está em nenhum fato"), r[1]], "A1"),
     ("claims.jsonl", lambda r: [dict(r[0], source=dict(r[0]["source"], line=99)), r[1]], "A1"),
     ("claims.jsonl", lambda r: [dict(r[0], extraction_method="model", evidence_level="published"), r[1]], "A2"),
+    ("claims.jsonl", lambda r: [dict(r[0], evidence_ref={"contract": "C25", "id": "SE-pb-1"}), r[1]], "A1"),
+    ("claims.jsonl", lambda r: [{k: v for k, v in r[0].items() if k != "evidence_ref"}, r[1]], "A1"),
+    ("claims.jsonl", lambda r: [dict({k: v for k, v in r[0].items() if k not in ("sentence",)},
+                                     evidence_state="UNRESOLVED", context="curto"), r[1]], "A1"),
     ("claims.jsonl", lambda r: [dict(r[0], counterexample_search={"query": "x", "found": False, "result": ""}), r[1]], "A1"),
     ("glossary.jsonl", lambda r: [dict(r[0], evidence_state="UNRESOLVED")], "A3"),
 ])

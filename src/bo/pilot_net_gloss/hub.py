@@ -76,7 +76,7 @@ def lift(anchor: dict, concept: dict, decisions: list[dict], vs: dict | None, st
     ot = concept_type(concept, decisions)
     src = anchor.get("source") or {}
     ev = [{"source": f"{src.get('repo')}/{src.get('file')}:{src.get('line')}@{src.get('tag')}",
-           "sentence": anchor["sentence"], "date": anchor["recorded_at"][:10]}] if src else []
+           "sentence": anchor.get("sentence"), "date": anchor["recorded_at"][:10]}] if src else []
     c = {"claim_id": anchor["claim_id"], "claim_version_id": anchor["claim_version_id"],
          "event_id": anchor["event_id"], "subject_id": ref_of(anchor), "predicate_id": "skos:exactMatch",
          "object_id": anchor["concept_id"], "mapping_justification": "semapv:ManualMappingCuration",

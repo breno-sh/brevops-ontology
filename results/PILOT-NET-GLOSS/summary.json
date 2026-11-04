@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "PILOT-NET-GLOSS",
- "generated_at": "2026-11-04T10:55:06-03:00",
+ "generated_at": "2026-11-04T13:06:59-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-NET-GLOSS.txt",
@@ -11,27 +11,28 @@
   "params": {
    "role": "glossarist",
    "role_brief": "briefs/GLOSSARY_BRIEF.txt",
-   "role_brief_version": "1.2.0",
-   "role_brief_sha256": "e3fc6fed52867d5fccce970d2e47f763a5795032389af94a9bd6d2832641281b",
+   "role_brief_version": "1.3.1",
+   "role_brief_sha256": "6a22b8ce1cbaa580c8036bee7c6896cccfc1e2d3afd53dfa745daaf9ebee5828",
    "slice": "net",
    "concepts_n": "19",
    "anchors_n": "52",
    "multi_provider_anchor_paths_n": "56",
-   "model_extracted_anchors_n": "1",
+   "model_extracted_anchors_n": "0",
+   "unresolved_anchors_n": "1",
    "training_projection_receipt": "none",
-   "grain_rules_version": "0.1.8",
+   "grain_rules_version": "0.1.9",
    "e2_inline_equal_decided": "3/3"
   },
   "inputs": [
    {
     "path": "$BO_REPO/grain/grain_rules.yaml",
     "kind": "file",
-    "sha256": "d91d91773ecfeeb62dd385ab857ffe5bd7eefe306b145fba64d79b1e558b632f"
+    "sha256": "8b64e1da690c62a4edb2b05c1ec25585f8c24dc1fb99a375413a91797eb6efa0"
    },
    {
     "path": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl",
     "kind": "file",
-    "sha256": "645b02308424fa4a574912d1c36375939f2f6124ef3cb6a32d3054c3490ead6d"
+    "sha256": "73047e02fdbe29ef9666b7a5e63773946b85e54c3a76e56b26e9210a5ea2af4a"
    },
    {
     "path": "$BO_DATA/UNITS/value_space.jsonl",
@@ -46,7 +47,7 @@
    {
     "path": "$BO_REPO/briefs/GLOSSARY_BRIEF.txt",
     "kind": "file",
-    "sha256": "e3fc6fed52867d5fccce970d2e47f763a5795032389af94a9bd6d2832641281b"
+    "sha256": "6a22b8ce1cbaa580c8036bee7c6896cccfc1e2d3afd53dfa745daaf9ebee5828"
    },
    {
     "path": "$BO_DATA/DOCS-AWS/docs_facts.jsonl",
@@ -89,8 +90,8 @@
     "sha256": "99e3dc9d3434e48675fd71eb817145ae63c2159fd041f3c67dd1d308e814287c"
    }
   ],
-  "recorded_at": "2026-11-04T10:55:06-03:00"
+  "recorded_at": "2026-11-04T13:06:59-03:00"
  },
  "sources": [],
- "notes": "rodada final dos pilotos: E2 3/3 (COMPONENT nas duas formas); grão 6 COMPONENT, 3 ENTITY, 30 UNKNOWN"
+ "notes": "tentativa 2: E2 3/3; grão 40 unidades, 26 UNKNOWN"
 }

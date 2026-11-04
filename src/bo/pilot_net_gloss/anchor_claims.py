@@ -6,6 +6,8 @@ Reprova (saída 1) se:
   A1 alguma âncora não tem sentença, contexto, busca de contraexemplo, ou a fonte publicada não é a sentença de um
      fato do SERVICE-EVIDENCE (C25) do tipo do átomo ou de um docs_facts (C03) do átomo (mesmo repo, tag, arquivo,
      linha e frase);
+     A1 também: âncora com sentença sem evidence_ref, ou evidence_ref que não é o fato C03 do átomo (ou C25 do
+     tipo) com a mesma sentença (C20-EVREF, C20 3.3.0);
   A2 alguma âncora tem estado acima do que o glossarista pode gravar (só UNRESOLVED e STRUCTURALLY_VALID), ou
      método model sem evidence_level interpreted e model_id claude-opus-5-5;
   A3 o conceito da âncora não existe, ou o evidence_state do conceito não é o menor entre as suas âncoras;
@@ -58,16 +60,25 @@ def run(d: Path, inp: dict | None = None) -> tuple[list[str], dict]:
     vs = inp["vs"]
     types = set(inp.get("types") or SL.all_types())
     facts = published_facts(inp)
+    by_id = {("C25", r["evidence_id"]): {"type": r.get("terraform_resource_type"),
+                                         "sentence": (r.get("doc") or {}).get("sentence")} for r in inp.get("se", [])}
+    for r in inp.get("docs", []):
+        by_id[("C03", r.get("fact_id"))] = {"atom": r.get("atom_id"),
+                                            "sentence": (r.get("source") or {}).get("sentence")}
     cmap = {c["concept_id"]: c for c in glossary}
     for a in claims:
         cid = a.get("claim_id")
-        if len(a.get("sentence") or "") < 10 or len(a.get("context") or "") < 5:
+        unres = a.get("evidence_state") == "UNRESOLVED" and not a.get("sentence")
+        if unres:
+            if len(a.get("context") or "") < 15 or a.get("source") or a.get("evidence_ref"):
+                errs.append(f"A1 {cid}: UNRESOLVED sem sentença exige motivo no context e nenhuma fonte (C20-UNRESOLVED)")
+        elif len(a.get("sentence") or "") < 10 or len(a.get("context") or "") < 5:
             errs.append(f"A1 {cid}: sem sentença ou contexto")
         cs = a.get("counterexample_search") or {}
         if not (cs.get("query") and isinstance(cs.get("found"), bool) and cs.get("result")):
             errs.append(f"A1 {cid}: busca de contraexemplo incompleta")
         src = a.get("source")
-        if a.get("evidence_level") in ("published", "derived") or src:
+        if not unres and (a.get("evidence_level") in ("published", "derived") or src):
             if not src:
                 errs.append(f"A1 {cid}: âncora {a.get('evidence_level')} sem fonte")
             else:
@@ -76,6 +87,17 @@ def run(d: Path, inp: dict | None = None) -> tuple[list[str], dict]:
                 if src.get("sentence") not in facts.get(key, set()) or a.get("sentence") != src.get("sentence"):
                     errs.append(f"A1 {cid}: a sentença não é a de um fato do SERVICE-EVIDENCE do tipo {rt} "
                                 f"em {src.get('file')}:{src.get('line')}")
+        er = a.get("evidence_ref")
+        if a.get("sentence"):
+            if not er:
+                errs.append(f"A1 {cid}: âncora com sentença sem evidence_ref (C20-EVREF)")
+            else:
+                f = by_id.get((er.get("contract"), er.get("id")))
+                ok = f is not None and f["sentence"] == a.get("sentence") and (
+                    f["atom"] == hub.ref_of(a) if er["contract"] == "C03" else f["type"] == hub.ref_of(a).split(":")[1])
+                if not ok:
+                    errs.append(f"A1 {cid}: evidence_ref {er} não é fato {'do átomo' if er.get('contract') == 'C03' else 'do tipo'} "
+                                "com esta sentença")
         if a.get("evidence_state") not in ("UNRESOLVED", "STRUCTURALLY_VALID"):
             errs.append(f"A2 {cid}: estado {a.get('evidence_state')} não pode ser gravado pelo glossarista")
         if a.get("extraction_method") == "model" and (a.get("evidence_level") != "interpreted"
@@ -89,7 +111,7 @@ def run(d: Path, inp: dict | None = None) -> tuple[list[str], dict]:
         if a.get("concept_id") not in cmap:
             errs.append(f"A3 {cid}: conceito {a.get('concept_id')} ausente do glossário")
     for c in glossary:
-        sts = [a["evidence_state"] for a in claims if a["concept_id"] == c["concept_id"] and a.get("sentence")]
+        sts = [a["evidence_state"] for a in claims if a["concept_id"] == c["concept_id"]]
         want = min(sts, key=hub.OB_RANK.get) if sts else "UNRESOLVED"
         if c["evidence_state"] != want:
             errs.append(f"A3 {c['concept_id']}: evidence_state {c['evidence_state']} ≠ menor das âncoras ({want})")

@@ -24,9 +24,10 @@ from . import slice as SL
 
 DATA_FILES = ["canonical_units.jsonl", "canonical_atoms.jsonl", "grain_unknown_reasons.jsonl", "glossary.jsonl",
               "claims.jsonl", "decisions.jsonl", "anchor_paths.jsonl"]
-BUNDLE_FILES = ["glossary.jsonl", "decisions.jsonl", "claims.jsonl", "canonical_units.jsonl",
-                "canonical_atoms.jsonl", "atoms.jsonl", "service_evidence.jsonl", "candidates.jsonl",
-                "slice_notes.jsonl", "anchor_paths.jsonl", "bundle.json"]
+# pacote do mapeador: exatamente o que o GLOSSARY_BRIEF 1.3.1 (G1) declara
+BUNDLE_FILES = ["candidates.jsonl", "glossary.jsonl", "decisions.jsonl", "claims.jsonl", "canonical_units.jsonl",
+                "canonical_atoms.jsonl", "value_space.jsonl", "MANIFEST.sha256"]
+EXTRA_FILES = ["slice_notes.jsonl"]
 
 
 def repo() -> Path:
@@ -138,6 +139,17 @@ def anchor_ref(a: dict) -> str:
     return a.get("atom_id") or a.get("block_id") or a.get("type_id")
 
 
+def _unresolved(spec: dict, se: list[dict], docs: list[dict]) -> dict:
+    cid = spec["claim_id"]
+    return {"claim_id": cid, "claim_version_id": f"{cid}@1", "event_id": f"EV-{cid}-1",
+            "concept_id": spec["concept_id"], "atom_id": spec["ref"],
+            "context": ("procurado nos docs_facts do tipo: o átomo não tem description publicada na tag fixada "
+                        f"(status not_documented); a frase disponível é do fato {spec['src']} do SERVICE-EVIDENCE, "
+                        "que pelo GLOSSARY_BRIEF 1.3.1 não sustenta âncora de átomo sozinha"),
+            "counterexample_search": counterexample(spec, se, docs), "extraction_method": "manual",
+            "evidence_level": "derived", "evidence_state": "UNRESOLVED", "recorded_at": SL.RECORDED_AT}
+
+
 def build_claims(se, vs, docs=None, schema_atoms=None) -> list[dict]:
     by = _se_by_id(se)
     docs = docs or []
@@ -157,13 +169,19 @@ def build_claims(se, vs, docs=None, schema_atoms=None) -> list[dict]:
             raise SystemExit(f"{cid}: {ref} não é átomo do C01 (SCHEMA-*)")
         if kind == "block" and ref not in blocks and ref not in c01:   # bloco, ou coleção de objetos (lista)
             raise SystemExit(f"{cid}: {ref} não é bloco nem coleção do C01 (SCHEMA-*)")
-        if spec["src"] == "C03":
-            f = description_fact(docs, ref)
+        f = description_fact(docs, ref) if kind in ("atom", "block") else None
+        if spec["src"] == "C03" or f is not None:     # a sentença do próprio átomo (C03) prevalece sobre a do C25
             if f is None:
                 raise SystemExit(f"{cid}: sem description publicada do próprio átomo no docs_facts")
             doc, level, method = f["source"], f.get("evidence_level", "published"), f.get("extraction_method", "parser")
+            evref = {"contract": "C03", "id": f["fact_id"]}
             if level == "interpreted":
                 method = "model"
+        elif kind == "atom":
+            # BRIEFS 1.3.1 (G6): a sentença do C25 descreve o serviço e não sustenta âncora de átomo sozinha; sem
+            # description publicada do próprio átomo, a âncora sai UNRESOLVED, sem sentença, com o motivo
+            out.append(_unresolved(spec, se, docs))
+            continue
         else:
             r = by.get(spec["src"])
             if r is None or r.get("terraform_resource_type") != rt or not (r.get("doc") or {}).get("sentence"):
@@ -171,10 +189,11 @@ def build_claims(se, vs, docs=None, schema_atoms=None) -> list[dict]:
             doc = r["doc"]
             level = r.get("level")
             method = "model" if level == "interpreted" else "parser"
+            evref = {"contract": "C25", "id": r["evidence_id"]}
         rec = {"claim_id": cid, "claim_version_id": f"{cid}@1", "event_id": f"EV-{cid}-1",
                "concept_id": spec["concept_id"], "sentence": doc["sentence"], "context": spec["context"],
                "source": {k: doc[k] for k in ("repo", "tag", "file", "line", "sentence")},
-               "counterexample_search": counterexample(spec, se, docs),
+               "evidence_ref": evref, "counterexample_search": counterexample(spec, se, docs),
                "evidence_state": "STRUCTURALLY_VALID", "recorded_at": SL.RECORDED_AT,
                "extraction_method": method, "evidence_level": "interpreted" if method == "model" else level}
         if method == "model":
@@ -196,7 +215,7 @@ STATES = sorted(RANK, key=RANK.get)
 def build_glossary(claims) -> list[dict]:
     out = []
     for c in SL.CONCEPTS:
-        sts = [a["evidence_state"] for a in claims if a["concept_id"] == c["concept_id"] and a.get("sentence")]
+        sts = [a["evidence_state"] for a in claims if a["concept_id"] == c["concept_id"]]
         out.append(dict(c, evidence_state=min(sts, key=RANK.get) if sts else "UNRESOLVED"))
     return out
 
@@ -280,36 +299,6 @@ def build_candidates(paths_rows) -> list[dict]:
     return out
 
 
-def se_subset(se: list[dict], types: set) -> list[dict]:
-    """Fatos C25 dos tipos da fatia mais o fecho dos derived_from (C25-DERIVED: a derivação cita fato do arquivo)."""
-    by = {r["evidence_id"]: r for r in se}
-    keep = {r["evidence_id"] for r in se if r.get("terraform_resource_type") in types}
-    stack = list(keep)
-    while stack:
-        for d in by[stack.pop()].get("derived_from") or []:
-            if d in by and d not in keep:
-                keep.add(d)
-                stack.append(d)
-    return [by[k] for k in sorted(keep)]
-
-
-def build_atoms(vs, roles, units, atoms) -> list[dict]:
-    unit_of = {a["atom_id"]: a["unit_id"] for a in atoms}
-    out = []
-    for aid in sorted(vs):
-        v = vs[aid]
-        rec = {"atom_id": aid, "provider": aid.split(":")[0], "resource_type": aid.split(":")[1],
-               "path": aid.split(":", 2)[2], "role": (roles.get(aid) or {}).get("role"),
-               "datatype": v.get("datatype"), "quantity_kind": v.get("quantity_kind"), "unit": v.get("unit_qudt"),
-               "unit_id": unit_of.get(aid)}
-        for k in ("enum", "range"):
-            if v.get(k) is not None:
-                rec[k] = v[k]
-        out.append(rec)
-    return out
-
-
-# ------------------------------------------------------------------------------------------------- tudo
 def generate(dst: Path) -> dict:
     inp = inputs()
     se, vs, roles = inp["se"], inp["vs"], inp["roles"]
@@ -324,27 +313,15 @@ def generate(dst: Path) -> dict:
     for name, recs in files.items():
         write_jsonl(dst / name, recs)
     types = set(SL.all_types())
-    bundle = {"glossary.jsonl": glossary, "decisions.jsonl": decisions, "claims.jsonl": claims,
-              "canonical_units.jsonl": g["units"], "canonical_atoms.jsonl": g["atoms"],
-              "atoms.jsonl": build_atoms(vs, roles, g["units"], g["atoms"]),
-              "service_evidence.jsonl": se_subset(se, types),
-              "candidates.jsonl": build_candidates(rows), "slice_notes.jsonl": build_notes(se),
-              "anchor_paths.jsonl": rows}
+    bundle = {"candidates.jsonl": build_candidates(rows), "glossary.jsonl": glossary,
+              "decisions.jsonl": decisions, "claims.jsonl": claims, "canonical_units.jsonl": g["units"],
+              "canonical_atoms.jsonl": g["atoms"], "value_space.jsonl": [vs[k] for k in sorted(vs)]}
     bdir = dst / "bundle"
     for name, recs in bundle.items():
         write_jsonl(bdir / name, recs)
-    index = {"schema": "bo.pilot_bundle/1", "module": SL.MODULE, "slice": SL.SLICE, "domain": SL.DOMAIN,
-             "contracts": {"canonical_units.jsonl": "C19@3.1.0", "canonical_atoms.jsonl": "C19@3.1.0",
-                           "glossary.jsonl": "C20@3.1.0", "claims.jsonl": "C20@3.1.0", "decisions.jsonl": "C20@3.1.0",
-                           "candidates.jsonl": "C08@3.0.0", "service_evidence.jsonl": "C25@1.0.0"},
-             "types": SL.SLICE_TYPES, "pairs": [SL.PAIR_CODE[a] + SL.PAIR_CODE[b] for a, b in SL.PAIRS],
-             "projection": "treino (o SPLIT ainda não existe em bo/base: toda a fatia é treino; nada de teste ou ouro)",
-             "files": {n: sha(bdir / n) for n in sorted(bundle)},
-             "note": ("pacote fechado do mapeador: glossário, âncoras (hipóteses de alinhamento, STRUCTURALLY_VALID), "
-                      "decisões, grão mecânico, átomos com tipo e papel, fatos de documentação da fatia e candidatos "
-                      "de base shared_concept; sem mapeamento, sem uso, sem valores de deploy, sem ouro")}
-    (bdir / "bundle.json").write_text(json.dumps(index, ensure_ascii=False, indent=1, sort_keys=True) + "\n",
-                                      encoding="utf-8")
+    (bdir / "MANIFEST.sha256").write_text("".join(f"{sha(bdir / n)}  {n}\n" for n in sorted(bundle)),
+                                          encoding="utf-8")
+    write_jsonl(dst / "slice_notes.jsonl", build_notes(se))
     return {"inputs": inp, "grain": g, "claims": claims, "glossary": glossary, "decisions": decisions, "rows": rows,
             "bundle": bundle}
 
@@ -390,7 +367,7 @@ def report(res: dict) -> dict:
 
 def manifest_lines() -> list[str]:
     lines = []
-    for n in DATA_FILES:
+    for n in DATA_FILES + EXTRA_FILES:
         lines.append(f"{sha(out_dir() / n)}  $BO_DATA/{SL.MODULE}/{n}")
     for n in BUNDLE_FILES:
         lines.append(f"{sha(out_dir() / 'bundle' / n)}  $BO_DATA/{SL.MODULE}/bundle/{n}")
@@ -408,7 +385,7 @@ def check() -> int:
             p.unlink() if p.is_file() else p.rmdir()
     generate(regen)
     bad = []
-    for n in DATA_FILES + [f"bundle/{x}" for x in BUNDLE_FILES]:
+    for n in DATA_FILES + EXTRA_FILES + [f"bundle/{x}" for x in BUNDLE_FILES]:
         a, b = out_dir() / n, regen / n
         if not a.is_file() or a.read_bytes() != b.read_bytes():
             bad.append(n)
@@ -418,7 +395,7 @@ def check() -> int:
     if bad:
         print("regeneração diverge do gravado: " + ", ".join(bad))
         return 1
-    print(f"regeneração idêntica: {len(DATA_FILES) + len(BUNDLE_FILES)} arquivos e o MANIFEST conferem")
+    print(f"regeneração idêntica: {len(DATA_FILES) + len(EXTRA_FILES) + len(BUNDLE_FILES)} arquivos e o MANIFEST conferem")
     return 0
 
 

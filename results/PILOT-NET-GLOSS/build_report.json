@@ -54,7 +54,7 @@
    ]
   }
  ],
- "generated_at": "2026-11-04T10:55:29-03:00",
+ "generated_at": "2026-11-04T13:07:17-03:00",
  "glossary": {
   "anchors": 52,
   "anchors_by_kind": {
@@ -69,44 +69,48 @@
    "oci": 10
   },
   "concepts": 19,
-  "concepts_without_anchor": 3,
+  "concepts_without_anchor": 4,
   "decisions": {
    "exclusive": 1,
    "same_kind_distinct": 9,
    "value_type": 16
   },
-  "model_extracted_anchors": 1
+  "model_extracted_anchors": 0
  },
  "grain": {
   "atoms": 219,
   "by_kind": {
+   "BINDING": 1,
    "COMPONENT": 6,
-   "ENTITY": 3,
-   "UNKNOWN": 30
+   "ENTITY": 5,
+   "FACET": 2,
+   "UNKNOWN": 26
   },
   "by_rule": {
-   "GRAIN-G0-IDENTITY": 24,
-   "GRAIN-G0-NEEDS": 6,
+   "GRAIN-G0-IDENTITY": 22,
+   "GRAIN-G0-NEEDS": 4,
+   "GRAIN-G1-BINDING": 1,
    "GRAIN-G2-CHILD": 2,
    "GRAIN-G2-COMPONENT": 4,
-   "GRAIN-G4-ENTITY": 2,
+   "GRAIN-G3-FACET": 2,
+   "GRAIN-G4-ENTITY": 4,
    "GRAIN-G4-NS": 1
   },
   "missing": {
-   "api_resource": 6,
-   "effective_scope": 24,
-   "identity": 24,
-   "lifecycle_controller": 23,
-   "owner": 23
+   "api_resource": 4,
+   "effective_scope": 22,
+   "identity": 22,
+   "lifecycle_controller": 21,
+   "owner": 21
   },
-  "units": 39,
+  "units": 40,
   "units_by_provider": {
    "aws": 7,
    "azurerm": 5,
-   "google": 5,
+   "google": 6,
    "oci": 22
   },
-  "unknown_reasons": 172
+  "unknown_reasons": 181
  },
  "module": "PILOT-NET-GLOSS",
  "schema": "bo.pilot_gloss_report/1"
