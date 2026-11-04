@@ -49,3 +49,16 @@ ATUALIZAÇÃO — 2026-11-03 (America/Recife), pedidos do driver depois da emend
 - 2026-11-03 (America/Recife), pedido do driver: página sem nenhuma linha '# ' cujo nome de arquivo não é tipo do
   schema vira pagina_sem_tipo_no_schema (decidido_por: nome_do_arquivo), com o detalhe tipo_removido quando a
   página declara a remoção (frase citada). oci 9.11.0 agora PASS: oci_database_migration_agent, tipo_removido 5.28.0.
+
+EMENDA 1.1.0 DA BIBLIOTECA — 2026-11-04 (America/Recife), C01 2.2.0 (CONTRACTS emenda 7, CC-NET-1)
+- Atributo coleção de objetos (cty list/set de object, ou nested_type list/set) ganha átomos de elemento
+  <pai>.<membro> com block_path terminando em kind nested_attribute; regra de flags em bo.schema.AMENDMENTS.
+  O 5º átomo do stub C01 2.2.0 (aws_security_group ingress.from_port) sai byte a byte da biblioteca.
+- Regenerado dos 4 SCHEMA-* (bo.schema.regen_check, $BO_DATA/SCHEMALIB/regen_check.json): 0 átomo publicado some
+  ou muda de bytes; types.jsonl idêntico; novos só elementos: AWS 6.71.0 +1204, AZURE 5.12.0 +471,
+  GCP 8.9.0 +2549, OCI 9.11.0 +4978; C01 2.2.0 confere.
+- Refresh: os produtores gravam atoms.jsonl a partir de TypeSchema.atoms e só emitem os elementos se trocarem
+  para TypeSchema.all_atoms() (SCHEMA-AWS/-AZURE/-GCP/-OCI, HIST-AWS/-AZURE/-GCP/-OCI, SCHEMA-POST);
+  depois, os consumidores do atoms.jsonl (inputs/deps no catálogo): ROLES, UNITS, SERVICE-EVIDENCE, CORPUS-*,
+  NONEHUNT-*, GLOSSARY-*, GRAIN-REPRO, DECOMPOSE, DRIFTMAP, KALININ-RECON, PILOT-NET-*/PILOT-STO-* (E2E, GLOSS);
+  o GRAIN trata o elemento como bloco (T1). Usam a biblioteca em código e devem rodar seus testes: DOCS-*, DRIFT.

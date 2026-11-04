@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "SCHEMALIB",
- "generated_at": "2026-11-03T21:29:04-03:00",
+ "generated_at": "2026-11-04T12:25:43-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/SCHEMALIB.txt",
@@ -14,11 +14,12 @@
    "modo": "unlazy",
    "limiar_taxa_iguais": "0.995",
    "terraform": "1.15.8",
+   "biblioteca": "1.1.0",
    "versoes": "aws 5.83.1, azurerm 5.5.0, google 8.2.0, oci 9.1.0 (do catalogo4v2 e dos locks de tfschema4)",
    "regua": "provider_populated = computed, nao required, nome em arn/id/owner_id/region/tags_all",
    "sandbox": "env -i, HOME temporario, sandbox-exec sem credenciais; schema sem rede IP",
-   "pedidos_driver": "so_beta e causas do crosscheck; write_only do C01 2.1.0; pagina_sem_titulo; página sem título pelo nome do arquivo",
-   "motivos_lidos": "results/SCHEMA-GCP/CONTRACT_CHANGE.txt e results/SCHEMA-OCI/CONTRACT_CHANGE.txt (notas vivas de outros módulos: citadas, não fixadas por hash)"
+   "pedidos_driver": "so_beta e causas do crosscheck; write_only do C01 2.1.0; pagina_sem_titulo; elementos de colecao do C01 2.2.0 (CC-NET-1)",
+   "motivos_lidos": "results/SCHEMA-GCP, SCHEMA-OCI, PILOT-NET-GLOSS CONTRACT_CHANGE.txt e results/CONTRACTS/emenda7.json (citados, não fixados por hash)"
   },
   "inputs": [
    {
@@ -52,7 +53,7 @@
     "sha256": "5235c9e4477a936e97f29423456d3c88afc7d7e64f54f55869d7b9f5e2827842"
    }
   ],
-  "recorded_at": "2026-11-03T21:29:04-03:00"
+  "recorded_at": "2026-11-04T12:25:43-03:00"
  },
  "sources": [
   {
@@ -81,5 +82,5 @@
    "transformation": "índice de documentação, só contagem de páginas por tipo (crosscheck)"
   }
  ],
- "notes": "Reprodução do catalogo4v2: 4946/4946 tipos com as 6 contagens iguais (100%), árvore igual em 4946; 158946 átomos C01 e 4946 tipos C02 validados. crosscheck com causas conferidas nas versões dos SCHEMA-*: aws 6.71.0, azurerm 5.12.0, google 8.9.0 e oci 9.11.0 PASS (no oci, a página sem título de tipo removido conta como pagina_sem_tipo_no_schema pelo nome do arquivo)."
+ "notes": "Reprodução do catalogo4v2: 4946/4946 tipos com as 6 contagens iguais (100%). Biblioteca 1.1.0 (C01 2.2.0): elementos de coleção de objetos; regeneração dos 4 SCHEMA-* sem nenhum átomo publicado alterado (+1204/+471/+2549/+4978 elementos). crosscheck: aws 6.71.0, azurerm 5.12.0, google 8.9.0 e oci 9.11.0 PASS."
 }

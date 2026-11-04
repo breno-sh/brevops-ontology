@@ -125,7 +125,7 @@ def test_build_writes_valid_contract_files_deterministically(work):
     s = write_schema(work)
     r1 = build.build(s, "provider_a", None, work / "a1.jsonl", work / "t1.jsonl")
     r2 = build.build(s, "provider_a", "1.0.0", work / "a2.jsonl", work / "t2.jsonl")
-    assert r1 == r2 and (r1["types"], r1["atoms"], r1["provider_version"]) == (2, 24, "1.0.0")
+    assert r1 == r2 and (r1["types"], r1["atoms"], r1["provider_version"]) == (2, 25, "1.0.0")
     assert (work / "a1.jsonl").read_bytes() == (work / "a2.jsonl").read_bytes()
     assert (work / "t1.jsonl").read_bytes() == (work / "t2.jsonl").read_bytes()
     assert V.validate("C01_atoms", work / "a1.jsonl").ok and V.validate("C02_types", work / "t1.jsonl").ok

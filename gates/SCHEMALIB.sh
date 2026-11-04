@@ -39,6 +39,9 @@ for i in 1 2; do
 done
 cmp "$w/a1.jsonl" "$w/a2.jsonl" && cmp "$w/t1.jsonl" "$w/t2.jsonl" && echo "  idêntico"
 
+step "emenda da biblioteca: nenhum átomo publicado dos SCHEMA-* muda de id nem de bytes (só entram elementos)"
+$py -I -B -m bo.schema.regen_check
+
 step "manifesto C17 (results/SCHEMALIB/MANIFEST.sha256)"
 shasum -a 256 -c results/SCHEMALIB/MANIFEST.sha256 --quiet
 echo "  confere"

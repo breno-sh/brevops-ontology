@@ -121,12 +121,22 @@ class TypeSchema:
     provider_version: str
     resource_type: str
     block: dict
-    atoms: list = field(default_factory=list)       # dicts C01
+    atoms: list = field(default_factory=list)       # dicts C01: uma entrada 'attributes' do schema cada
     blocks: list = field(default_factory=list)      # BlockRef, em pré-ordem (nomes ordenados)
+    elements: dict = field(default_factory=dict)    # atom_id do pai -> átomos de elemento de coleção (C01 2.2.0)
 
     @property
     def type_id(self) -> str:
         return f"{self.provider}:{self.resource_type}"
+
+    def all_atoms(self) -> list:
+        """Átomos do schema e, logo depois de cada coleção de objetos, os átomos de elemento dela (C01 2.2.0).
+        As contagens (C02, régua do C1) continuam sobre .atoms; .elements só acrescenta linhas ao atoms.jsonl."""
+        out = []
+        for a in self.atoms:
+            out.append(a)
+            out += self.elements.get(a["atom_id"], [])
+        return out
 
 
 def _block_entry(name: str, bt: dict) -> dict:
@@ -179,11 +189,76 @@ def make_atom(provider: str, version: str, rtype: str, path: tuple, bpath: tuple
     return atom
 
 
+# ------------------------------------------------------------------------------- elementos de coleção (C01 2.2.0)
+def collection_of_objects(a: dict) -> tuple[str, dict, bool] | None:
+    """(modo list|set, {membro: definição}, membros têm flags próprios) se o atributo é coleção de objetos.
+
+    nested_type com nesting_mode list/set: os membros são atributos com flags próprios (protocolo 6).
+    type cty ["list"|"set", ["object", {...}(, opcionais)]]: os membros só têm tipo (sem flags)."""
+    nt = a.get("nested_type")
+    if nt is not None:
+        mode = nt.get("nesting_mode")
+        return (mode, dict(nt.get("attributes") or {}), True) if mode in ("list", "set") else None
+    t = a.get("type")
+    if (isinstance(t, list) and len(t) == 2 and t[0] in ("list", "set") and isinstance(t[1], list)
+            and len(t[1]) >= 2 and t[1][0] == "object" and isinstance(t[1][1], dict)):
+        return t[0], {m: {"type": mt} for m, mt in t[1][1].items()}, False
+    return None
+
+
+def element_flags(parent: dict, member: dict, own_flags: bool) -> dict:
+    """Flags do membro de um elemento de coleção (regra declarada da biblioteca, emenda 1.1.0):
+      * nested_type: os flags do próprio membro (o schema os declara);
+      * objeto cty (sem flags no schema): pai configurável -> optional (o schema não diz se o membro é
+        obrigatório dentro do elemento; o stub C01 2.2.0 do CONTRACTS usa optional), não computed;
+        pai só computed -> computed. sensitive, deprecated e write_only vêm do pai."""
+    if own_flags:
+        a = dict(member)
+        for k in ("sensitive", "deprecated"):
+            a[k] = bool(member.get(k)) or bool(parent.get(k))
+        return a
+    a = {"type": member["type"]}
+    if parent.get("required") or parent.get("optional"):
+        a["optional"] = True
+        if parent.get("write_only"):
+            a["write_only"] = True
+    else:
+        a["computed"] = True
+    for k in ("sensitive", "deprecated"):
+        if parent.get(k):
+            a[k] = True
+    return a
+
+
+def _elements(provider, version, rtype, path, bpath, a) -> list:
+    """Átomos de elemento de um atributo coleção de objetos, recursivo (membro que também é coleção)."""
+    c = collection_of_objects(a)
+    if c is None:
+        return []
+    mode, members, own = c
+    nb = bpath + ({"block": path[-1], "kind": "nested_attribute", "nesting_mode": mode},)
+    out = []
+    for name, m in sorted(members.items()):
+        child = element_flags(a, m, own)
+        out.append(make_atom(provider, version, rtype, path + (name,), nb, child))
+        out += _elements(provider, version, rtype, path + (name,), nb, child)
+    return out
+
+
+def is_element(atom: dict) -> bool:
+    """Átomo de elemento de coleção (C01 2.2.0): algum passo do block_path é nested_attribute."""
+    return any(b.get("kind") == "nested_attribute" for b in atom["block_path"])
+
+
 def type_schema(provider: str, version: str, rtype: str, block: dict) -> TypeSchema:
     ts = TypeSchema(provider, version, rtype, block)
     for kind, path, bpath, a in _walk(block, (), ()):
         if kind == "attr":
-            ts.atoms.append(make_atom(provider, version, rtype, path, bpath, a))
+            atom = make_atom(provider, version, rtype, path, bpath, a)
+            ts.atoms.append(atom)
+            el = _elements(provider, version, rtype, path, bpath, a)
+            if el:
+                ts.elements[atom["atom_id"]] = el
         else:
             ts.blocks.append(BlockRef(path, bpath[-1]["nesting_mode"]))
     return ts

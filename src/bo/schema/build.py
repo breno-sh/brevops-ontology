@@ -38,9 +38,10 @@ def build(schema: Path, provider: str, version: str | None, atoms_out: Path, typ
     if provider not in ps:
         raise SystemExit(f"build: o schema não traz o provedor {provider} (traz: {', '.join(ps)})")
     types = list(core.iter_types(ps[provider], provider, ver))
-    na = core.write_jsonl(atoms_out, (a for ts in types for a in ts.atoms))
+    na = core.write_jsonl(atoms_out, (a for ts in types for a in ts.all_atoms()))
     nt = core.write_jsonl(types_out, (core.type_record(ts) for ts in types))
     return {"provider": provider, "provider_version": ver, "types": nt, "atoms": na,
+            "element_atoms": sum(len(v) for ts in types for v in ts.elements.values()),
             "schema_sha256": core.canonical_sha256(ps[provider])}
 
 

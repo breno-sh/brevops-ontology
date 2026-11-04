@@ -168,6 +168,9 @@ def test_contract_stub_atoms_are_reproduced():
                    "block": {"attributes": {"days": {"type": "number", "optional": True}}}}}}}}}}}
     google = {"google_sql_user": {"block": {"attributes": {
         "password_wo": {"type": "string", "optional": True, "sensitive": True, "write_only": True}}}}}
+    aws["aws_security_group"] = {"block": {"attributes": {"ingress": {
+        "type": ["set", ["object", {"from_port": "number", "description": "string"}]],
+        "optional": True, "computed": True}}}}
     azurerm = {"azurerm_example_nested": {"block": {"attributes": {"settings": {"optional": True, "nested_type": {
         "nesting_mode": "list", "attributes": {"name": {"type": "string", "required": True},
                                                "size": {"type": "number", "optional": True}}}}}}}}
@@ -176,11 +179,16 @@ def test_contract_stub_atoms_are_reproduced():
         "registry.terraform.io/hashicorp/google": {"resource_schemas": google},
         "registry.terraform.io/hashicorp/azurerm": {"resource_schemas": azurerm}}}
     ps = core.providers(doc)
-    got = []
-    for prov, ver in (("aws", "6.0.0"), ("google", "8.2.0"), ("azurerm", "5.5.0")):
-        got += [json.dumps(a, sort_keys=True) for t in core.iter_types(ps[prov], prov, ver) for a in t.atoms]
+    got = {}
+    for prov, ver in (("aws", "6.0.0"), ("google", "8.2.0"), ("azurerm", "5.5.0"), ("aws", "6.71.0")):
+        for t in core.iter_types(ps[prov], prov, ver):
+            for a in t.all_atoms():
+                got[(a["atom_id"], a["provider_version"])] = json.dumps(a, sort_keys=True)
     stub = (REPO / "contracts" / "stubs" / "C01" / "atoms.jsonl").read_text(encoding="utf-8").splitlines()
-    assert got == [json.dumps(json.loads(s), sort_keys=True) for s in stub]
+    assert len(stub) == 5
+    for line in stub:
+        s = json.loads(line)
+        assert got[(s["atom_id"], s["provider_version"])] == json.dumps(s, sort_keys=True), s["atom_id"]
 
 
 def test_write_only_is_optional_field():
@@ -201,3 +209,69 @@ def test_write_only_requires_configurable_not_computed(flags):
     with pytest.raises(core.SchemaError):
         core.type_schema("provider_a", "1.0.0", "provider_a_x",
                          {"attributes": {"v": {"type": "string", "write_only": True, **flags}}})
+
+
+# ----------------------------------------------------------------------- elementos de coleção (C01 2.2.0, lib 1.1.0)
+def sg(attr):
+    return core.type_schema("provider_a", "1.0.0", "provider_a_sg", {"attributes": {"ingress": attr}})
+
+
+def test_cty_collection_elements_follow_parent():
+    ts = sg({"type": ["set", ["object", {"from_port": "number", "cidr": ["list", "string"]}]],
+             "optional": True, "computed": True, "sensitive": True})
+    assert [a["path"] for a in ts.atoms] == ["ingress"]                 # .atoms não muda
+    el = {a["path"]: a for a in ts.all_atoms()[1:]}
+    assert list(el) == ["ingress.cidr", "ingress.from_port"]            # logo depois do pai, nomes ordenados
+    for a in el.values():
+        assert a["block_path"] == [{"block": "ingress", "kind": "nested_attribute", "nesting_mode": "set"}]
+        assert (a["nesting"], a["optional"], a["required"], a["computed"], a["sensitive"]) == \
+            ("set", True, False, False, True)
+        assert core.is_element(a)
+    assert not core.is_element(ts.atoms[0])
+    assert core.type_record(ts)["counts"]["attributes"] == 1             # C02 conta só o schema
+
+
+def test_computed_only_collection_gives_computed_elements():
+    ts = sg({"type": ["list", ["object", {"x": "string"}]], "computed": True})
+    a = ts.all_atoms()[1]
+    assert (a["optional"], a["required"], a["computed"], a["configurable"], a["nesting"]) == \
+        (False, False, True, False, "list")
+
+
+def test_write_only_and_deprecated_inherited():
+    ts = sg({"type": ["list", ["object", {"x": "string"}]], "optional": True, "write_only": True,
+             "deprecated": True})
+    a = ts.all_atoms()[1]
+    assert a["write_only"] is True and a["deprecated"] is True and not a["computed"]
+
+
+def test_nested_collection_is_recursive():
+    ts = sg({"type": ["list", ["object", {"rules": ["set", ["object", {"port": "number"}]], "name": "string"}]],
+             "optional": True})
+    paths = [a["path"] for a in ts.all_atoms()]
+    assert paths == ["ingress", "ingress.name", "ingress.rules", "ingress.rules.port"]
+    deep = ts.all_atoms()[-1]
+    assert [(b["block"], b["kind"], b["nesting_mode"]) for b in deep["block_path"]] == \
+        [("ingress", "nested_attribute", "list"), ("rules", "nested_attribute", "set")]
+
+
+def test_nested_type_list_uses_member_flags():
+    ts = widget()
+    el = {a["path"]: a for a in ts.all_atoms() if core.is_element(a)}
+    assert list(el) == ["listeners.port"]                    # endpoint (nested_type single) não vira coleção
+    assert el["listeners.port"]["required"] and el["listeners.port"]["nesting"] == "list"
+
+
+@pytest.mark.parametrize("t", [["map", ["object", {"x": "string"}]], ["list", "string"], ["object", {"x": "string"}],
+                               ["set", ["list", "string"]]])
+def test_not_a_collection_of_objects(t):
+    assert sg({"type": t, "optional": True}).elements == {}
+
+
+def test_element_atoms_pass_contract(work):
+    ps = core.providers(schema_doc())["provider_a"]
+    types = list(core.iter_types(ps, "provider_a", "1.0.0"))
+    types.append(sg({"type": ["set", ["object", {"from_port": "number"}]], "optional": True, "computed": True}))
+    core.write_jsonl(work / "atoms.jsonl", (a for t in types for a in t.all_atoms()))
+    r = V.validate("C01_atoms", work / "atoms.jsonl")
+    assert r.ok, r.errors[:5]

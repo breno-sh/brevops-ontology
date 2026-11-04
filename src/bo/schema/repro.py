@@ -171,7 +171,7 @@ def run(catalog: Path, sdir: Path, work: Path) -> dict:
              "diferentes": 0, "totais_catalogo": {k: 0 for k in ruler.COUNT_FIELDS},
              "totais_biblioteca": {k: 0 for k in ruler.COUNT_FIELDS}, "atomos": 0,
              "atomos_por_flag": {k: 0 for k in (*core.FLAGS, "configurable")},
-             "atributos_nested_type": 0, "atributos_write_only": 0}
+             "atributos_nested_type": 0, "atributos_write_only": 0, "atomos_elemento": 0}
         for r in cat.values():
             for k in ruler.COUNT_FIELDS:
                 p["totais_catalogo"][k] += r[k]
@@ -188,9 +188,11 @@ def run(catalog: Path, sdir: Path, work: Path) -> dict:
             for ts in core.iter_types(ps, prov, ver):
                 p["tipos_schema"] += 1
                 for a in ts.atoms:
-                    fa.write(json.dumps(a, ensure_ascii=False, sort_keys=True) + "\n")
                     for k in p["atomos_por_flag"]:
                         p["atomos_por_flag"][k] += a[k]
+                for a in ts.all_atoms():     # o arquivo validado leva também os átomos de elemento (C01 2.2.0)
+                    fa.write(json.dumps(a, ensure_ascii=False, sort_keys=True) + "\n")
+                p["atomos_elemento"] += sum(len(v) for v in ts.elements.values())
                 ft.write(json.dumps(core.type_record(ts), ensure_ascii=False, sort_keys=True) + "\n")
                 p["atomos"] += len(ts.atoms)
                 p["atributos_nested_type"] += _count_attr_key(ts.block, "nested_type")
