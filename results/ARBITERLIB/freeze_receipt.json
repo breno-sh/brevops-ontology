@@ -1,0 +1,338 @@
+{
+ "schema": "bo.freeze_receipt/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "name": "ARBITER-20261104",
+ "owner": "ARBITERLIB",
+ "created_at": "2026-11-04T10:13:25-03:00",
+ "note": "recongelamento: emendas 3 a 6 do CONTRACTS mudaram 9 arquivos do fecho (CC-1 do PILOT-STO-MAP); ids EVIDENCE e SENTINEL publicados como EVIDENCE-DOC e SENTINEL-MAP (CC-2). Motivo a montante, não ajuste de resultado.",
+ "git": {
+  "commit": "35e299f82e4753aeb62c8e99459f07be65582307",
+  "tag": null
+ },
+ "modules": [
+  "ARBITERLIB",
+  "SEMANTICS",
+  "ONTPAT",
+  "REQUIREMENTS",
+  "REPO",
+  "GRAIN",
+  "CONTRACTS",
+  "PREREG",
+  "LIT",
+  "TRANSFORMS"
+ ],
+ "artifacts": [
+  {
+   "path": "$BO_REPO/arbiter/ARBITER.sha256",
+   "kind": "file",
+   "sha256": "b7becd9d914406aa109965263423c341c066ee2c19d68f92405f158c2f10294d",
+   "producers": [
+    "ARBITERLIB"
+   ]
+  },
+  {
+   "path": "$BO_REPO/arbiter/RULES.html",
+   "kind": "file",
+   "sha256": "43ffb5c2c9dbf8ae0e8123c5adc06601f98668e4601811b41c4614a5b9d70de7",
+   "producers": [
+    "ARBITERLIB"
+   ]
+  },
+  {
+   "path": "$BO_REPO/src/bo/arbiter",
+   "kind": "dir",
+   "sha256": "e80b0ba809bc9616401c2a6129da28e6274c50cde5f1934ffa13546d2f855719",
+   "files": {
+    "__init__.py": "4bd07c007483e38d2d9128bb6c4a5844489757f7a876b6ec0e2284cf0b3b85d7",
+    "battery.py": "8fd45d56656d6ffbf07e54a533ae65f1666d0f2a1fd64e5f73d035a5f36a0825",
+    "build.py": "64f52482df3099651535f9c2f447f4b86d5440f752b1e4fc738957600e104e58",
+    "claimcheck.py": "2a8f0367892ccc35a3cf3dfe62f70fb5d9cc026f21c28f8dd1e54dd7e1312b64",
+    "common.py": "272fa3a7f1e74db06f23e4af7a24f619edf64a11e1f72a2bffdfc401f007958c",
+    "determinism.py": "452dd6de2824fe8279e1e5d838a7846efaf75889783ab7b5d0da069003049477",
+    "engine.py": "8db969374762554c19ee851108a421fcb55125d8f22863b0fd6c4cc8c8a4cc5d",
+    "freeze.py": "16ab20ff68a73139b00542fd4ebe83c3ce0c69ece36d4efe30f3d1b0e6afab06",
+    "inputs.py": "a74da1bfe84907632d14c6ac5162457dc7d71f2799c166a1c4f04f3aa87f8854",
+    "k4.py": "a4460658297b06e00969159565b3c8a39b211399ff9794c035ca71dc136b4d22",
+    "no_llm.py": "57bb5a2f15c633363125ee0a81bdd25b829e22bb745d7558f0ca844e987d5c9f",
+    "permutation.py": "056e2d2af6b08785e9f5b550833ee9af4a5f16fadc4221252f2d67349734240d",
+    "rules.py": "72042f8e7cb9bfca363d4cae0a830af80f9ac035880abe356133a42dce2fb1bb",
+    "run.py": "2aa98fdfcbb1257bdf849f919c37d7f0ab0987f0deda6e5abc4f7ba8b8c02564",
+    "setcheck.py": "ac57a19e267c939e2a83bbdbcf4abc5d21e0a4f85a013c4ba8bda3c961bd9b94",
+    "unproven.py": "5ff0b9b737833b1360448c0a1af1a981f6cc38a134e422e80ea81f4a28c9de34"
+   },
+   "producers": [
+    "ARBITERLIB"
+   ]
+  }
+ ],
+ "transitive_inputs": [
+  {
+   "path": "$BO_REPO/contracts",
+   "kind": "dir",
+   "sha256": "53a5c1f1fad4a1af88e30f4669f3a7a5f7e347f66143b69d3d6481459cbfd8fd",
+   "files": {
+    "C00_conventions.schema.json": "998c17d709a82d22615d5f9c4e9954ef5d46debda43222a30cf9d64a12448cec",
+    "C01_atoms.schema.json": "8d0908158ebff7f885119e6d77266de2e3269fe8ae7a281b85615bed1d8d2d81",
+    "C02_types.schema.json": "97212d441aa5db0af96b710137480c2de3ced6c22401a1e992d35e0259895bf4",
+    "C03_docs_facts.schema.json": "6847f90b23102f126fc91a65cd543c63545d2350c127712944d4461644613471",
+    "C04_roles.schema.json": "d798146d511f870ca24ee59dad196c0d95fceb83ffba2c38ce1d0cec2086c727",
+    "C05_value_space.schema.json": "75d6fc66dc08aa31ce3b4c885d2fd455874508328228e9bcc816105929b2adf7",
+    "C06_symbolic_config.schema.json": "65a8b5eb479ab7d65d108083b3776a7576541e4ee1e9e7e7c195e1dbb39e2264",
+    "C07_universe.schema.json": "30089c60c7e0fd9505da01ef149885dfc5f7962769012c31ffbb7f257ae4cbaa",
+    "C08_candidates.schema.json": "5e839e4280e3d005cd5468a6a1fd133858d6f6ce72e37b2b4fc5b7a8b259bf3e",
+    "C09_correspondences.schema.json": "e81eebe2d025f3916b16264370ee084e1e798b8226ee4fb45cd1df4a11466a18",
+    "C10_transforms.schema.json": "93c05c9afeea8bb493194bce24430ff21e68ae27832c5ad1ae10fa89cf9c30be",
+    "C11_cases.schema.json": "db0828867f2d89c2d00fe2759cf3509812d57a6f1476b866a0449cfc2f3670e3",
+    "C12_readback_outcomes.schema.json": "303780bfa4a6b50fbde6c0b957e2b207f324540758674bbe0ada88fb5d902021",
+    "C13_versions.schema.json": "99c380f982f847e31b502f65bfdc216a5c0ca9856551bb74bb18317aeeff7484",
+    "C14_ontology_tables.schema.json": "a2ea89006c1283947e38e635e7ed9f324cda5848b964cf1a991e4007a28a44b0",
+    "C15_results.schema.json": "3fb84ca03ac4a9ed56ed6f7fbc153c7fb40ace345aadcdfb534191d824e49df8",
+    "C16_run_manifest.schema.json": "52dd8da448022eebf512dbbb2c42307f846b5d57b94e9f1fd61d2f1d8135b07a",
+    "C17_manifest_receipt.schema.json": "de8551f90d4777bc0178a4ef3743fb11291500029c830ad4d1553bec92048edd",
+    "C18_numbers.schema.json": "244ed7e2af4bc42e6249580137e627079bb105624ef42d35c8b3a9617e987c6c",
+    "C19_canonical_units.schema.json": "a679c34b9d5509099bddb324787d82e368ab63685b705806420b33f8781ba65d",
+    "C20_glossary.schema.json": "a0871f0d7ade697c058abc3008ed68933cc5e02986245fd8e7bddbf02f31f5da",
+    "C21_verdicts.schema.json": "e2959e91b57dea78179d9154b292de0b9129d90a09c253bbf41dfe167b7694a3",
+    "C22_probes.schema.json": "33f455e056f14175df6fedb92a846150ede384670bb461ca097c9cf61bab34cf",
+    "C23_translation_trace.schema.json": "250263a19936df19a198a41bd9ecb848dbc9bf8bd0adad2dfca605c898e51574",
+    "C24_requirements.schema.json": "287c553cd5841f8a23e1b3951cfc3b83138924cfeca947433238f878afa54002",
+    "C25_service_evidence.schema.json": "eba1dc40c7f4baddfcf95cc6dcccbd440c1dcedf8e9186b045105f3e6b7f966a",
+    "C26_graph_ir.schema.json": "1ca7bb521f80781f5b78999e49991b69a8003c39b6ce04114d0c1481d4708c9a",
+    "C27_split.schema.json": "576e129b065fe4e3b792954048b9adec5e187ce6d1a70ca1283a457352c78da8",
+    "C28_comparators.schema.json": "94ecb3eced14429b13076a5dac33d0d766db167785c7b960fb9f42fe9300bdf3",
+    "C29_domain_contracts.schema.json": "0afbf6cae47718720de12d05253ecff564e4bfcbf865c3cf09a830406a9db882",
+    "CONTRACTS.html": "81054e8ce0ff2baaaf9791885d007c9119530d5483c453b6f29e120e5b0d8d29",
+    "stubs/C00/module.json": "e5469cc0872dee1e52878bec1f3d2fb43ebbf0e42a1e37afee43d28a65fb18ed",
+    "stubs/C00/modulos.json": "a008d686a057f9dd73aa904cfebb46f31e3a11b9dd6f96f4dd6b1c81f98f63ba",
+    "stubs/C01/atoms.jsonl": "5d2bf122e3751a91f1330de00068925fd90de5d8520e1437fecf5a57e45aa18f",
+    "stubs/C02/types.jsonl": "b9fb3595fe1d364149255928e45a455310838ca1c7b1d47fbca2c6751b5a42f7",
+    "stubs/C03/docs_facts.jsonl": "043ca0526cdbe1abc59bdd30280bbd2f35394e628562f64692bceff6772cc0e5",
+    "stubs/C03/type_subcategory.jsonl": "658fa8c04efd553929b5338cb43461995a71d2d4a6e9582342a71cfec8bfbf91",
+    "stubs/C04/roles.jsonl": "fb514e6ab5b28a975f31e547acdb8223800ab8a35e1c63134b329b2848a13832",
+    "stubs/C05/value_space.jsonl": "31d5a9e5fcffcfb96a7e437202a6179cbadc47efee943fd5e02dfd9fcd7bda4b",
+    "stubs/C06/resources.parquet": "de923754fc21d8681ae153c6bc8380d89e9483beed9bcad31a30dc27dd631643",
+    "stubs/C06/symbolic_config.jsonl": "549c3eaf6981293dd9f478fe050c3b0f5f877b962b93fdb2015347a12ad93d33",
+    "stubs/C06/usage.jsonl": "4d7f1421f74b3905f8eada72f8026e03ba55c6a6d8ece2a43fcec9631dac86f7",
+    "stubs/C07/universe.json": "f61dcb513839686a3a88e8151cb9936372bbc97f1855b48a26f1353f98a71448",
+    "stubs/C08/candidates.jsonl": "010ec74cf1a66872942c228e508b8de4185340091cffb7d0cf9472657bb7e43a",
+    "stubs/C09/correspondences.edoal.ttl": "0e64128e8e705274ed7fb0b138bc0d21b40a04a3a4e5a37cab17c281efe92553",
+    "stubs/C09/correspondences.jsonl": "bc9117517eba1a5e99cd58163114dcd185bbc5f418086e47b0183ad6534758b0",
+    "stubs/C09/correspondences.sssom.tsv": "3b6b04cc3375a04a33d15c24bf8b5a6ef11e11242007e50b32d9cd6f8ab506e7",
+    "stubs/C10/composition_table.json": "f279876043e13a1d1bcc2e0f645aa761f758681bf7fde1beff3a915c6549c80f",
+    "stubs/C10/conditions.grammar.json": "6890269cd3e6015df1a0088f5b55ff67adcb0c0a568d15f7c2a983cba3dd1cab",
+    "stubs/C10/guard.json": "1867c490339402fe34f7ce2e9ee9b2ebee209beab9a76051abe99b81c85a616d",
+    "stubs/C10/transforms.yaml": "3dc96e0919168b1cb0c44dd555ad60acb2b61a71c9b39dc88c643acc4f3dc0a6",
+    "stubs/C11/cases.jsonl": "4444e426dba230d87806f693a29c6b5618444402609d30cde6e896dedf10bcb4",
+    "stubs/C12/outcomes.jsonl": "b6b05c4f60aac0714ca2c0e4222f2ca12752f4d51d5c471dd3eec1715a0e4639",
+    "stubs/C12/readback.jsonl": "18d621b2ecde125699618a0ebf30c01c9a2cf5b8417d28c9d4916d6485d78316",
+    "stubs/C13/atom_history.jsonl": "79635819fb7c3aad07495a33d4a8b07ccf9b866e242444d6ae6951b5f38b376c",
+    "stubs/C13/events.jsonl": "e3fc990d766a7401c47d2693d47d5a8d62b0ffaa0e2a3be814ce07cdb6c8da1a",
+    "stubs/C13/history_versions.json": "e0495ab3ef6c0eb0e3f4b8f58e9c790df8b598a3e7aa7ddccbf7685cb84ddc49",
+    "stubs/C13/pins.json": "143ff775c15b83e9e5e0d003d7ead53e0a170aa853dfe5fc9b8f8d2a74986346",
+    "stubs/C13/versions.json": "d79eec5c7d9bc15ea698e0fd891d7e1b55cf9ee3278bdb3b07a267bb0a1998ba",
+    "stubs/C14/classes.jsonl": "d39117418f3f65e0c93b419652e3e26bed0785dafde34ff08cdb9cdeb9a1f00e",
+    "stubs/C14/ontology.ttl": "6f7e82f6cde8321ed50cf4bfe45e94580945378810370f5b8284541aa49d9660",
+    "stubs/C14/properties.jsonl": "351d806904f0276e2eda56273c9dd392916bd589f6c35a6c11131fe032ad5b26",
+    "stubs/C14/realizations.jsonl": "f74b2b70d33623edfb5cfcd79c0031e67fbea27e1e9eb0e37284f6845809b10d",
+    "stubs/C15/metrics_spec.yaml": "058abb8294994efb132a804e7e23972cc95414543e56b4c50d216042c0b8fed6",
+    "stubs/C15/result.json": "b906ebecd5ff0f03a0e43c09a874640d58619201f2c888fc5bcf7f154226a95f",
+    "stubs/C15/summary.json": "a926d542a0a48e0702e3ffc1dacbe065be9c7c5f2b6bca4dac8e75b956306264",
+    "stubs/C16/intent_manifest.jsonl": "e44c6c99dbfa8ce83fd626f7d8cc11619b144f0ccae2bdd8f674972179407693",
+    "stubs/C16/run_manifest.jsonl": "0666c8117d4daad0407800ca5bd68f6286477e881448ff05986e01341e34cf66",
+    "stubs/C17/MANIFEST.sha256": "b68a2d0acea3bdcdddfce36e37016da7c338d3b79e46078e6700b5469d7eb03d",
+    "stubs/C17/freeze_receipt.json": "0ed12da9f7fec834553b3cde30c62c5abeddcace231f55ba5fffac0d174d6ccc",
+    "stubs/C17/summary.json": "49cd6743587d225a1084ff4c93d2afc686dcaa87acb2a886c9be3f7ea82defea",
+    "stubs/C18/numbers.json": "420397bb09f09619ec85aab6cddb1a86d111f5d74e928aac3bf5dbd8e1fa6f96",
+    "stubs/C18/numbers.tex": "9180bb1c53a0251c73aa0186e81196ef0367bc34ca5f6a4df4d1b0afe0e705ed",
+    "stubs/C19/canonical_atoms.jsonl": "57c54d715c3f65850b3e306966e479a87c5b4b954b5bde62975b3c76015bd4d6",
+    "stubs/C19/canonical_units.jsonl": "e766180ea985a6bd3d874a40a132084d1311da9ed2f2eb8b74dd51a5bae54761",
+    "stubs/C20/claims.jsonl": "6248e3ab277ae42eb0d2bfc104487de072866f2043761febe3d5f3b6995eefdd",
+    "stubs/C20/decisions.jsonl": "58466ee04593c839a881321bb912b5d3716acb751e6a2526bbc6e4da67508c59",
+    "stubs/C20/glossary.jsonl": "07c5195f4f165e784c6944a9f09550453cba96c78015f69cc2c2a79b6f6f1ce4",
+    "stubs/C20/glossary_audit.jsonl": "d6fe872ae3afe2935ffcb004a132cfb529506a6fd1cb1ef4439182d4f2731985",
+    "stubs/C21/verdicts.jsonl": "bd2f93e973e14a09b7e00ced69f1e6dccabf4f6e6468cbae4051e7a416976137",
+    "stubs/C22/observations.jsonl": "3ea651dc5e5ef70c5f81c46eb1f5d377b28c5d14ca638d3d4b20d3e49442d42c",
+    "stubs/C22/pair_judgements.jsonl": "af1a3bd480ea5c0bef135bd70fa58acead0ca553963457a082eb894a22f0c224",
+    "stubs/C22/probe_types.yaml": "8b8ca488a85bbd06267da3c9f58a201ca0df89a10c0166c1e87532e2a9a70d26",
+    "stubs/C23/translation_trace.jsonl": "40d882564a9228e7f07a6d8ee10ec9dd828bdb362e63e0af6589a2c70b5d9171",
+    "stubs/C24/commitments.jsonl": "38a1b395cef9a5ecd94ca0a360c1e07bf10d7b0f221e1ce90799ae74e4758456",
+    "stubs/C24/cq_spec.jsonl": "4a182f4538256dd49859d09d385713d80712b70a5b80d90b9365240335b6f5c1",
+    "stubs/C24/expected_answers.json": "fa1817469d7c36b3b7c9d120b8765d25792a62edf092dcca5ab27c8d5c4a22bb",
+    "stubs/C24/requirements.jsonl": "1ea33c491f4cecd88cd27608b5dfedc53a9c183b3dd811faaec8f1667058aaa7",
+    "stubs/C25/protocol_support.jsonl": "39f3f13db8778586ff0d5a83806df1a60d0c66b432ad853f2e0d6ab4921f2bab",
+    "stubs/C25/service_evidence.jsonl": "b468349894d481e788318b2618722ab0987f9921d5401b94e314603d5dc9a353",
+    "stubs/C26/graph_ir.jsonl": "ea5155dc2b2b0408437d3e73eb13ff1681a9c9439bd21647fe1dd52a0cf41807",
+    "stubs/C26/lowering_plan.jsonl": "79d8ec36f93c3e343db9bd6932b2ac4f634126249f0423e66ec209581ea2eeea",
+    "stubs/C27/families.jsonl": "62dbdac4f87f4c17bed0c21d439a3aa8587fb3774e0dadfd6e9154824707c6a7",
+    "stubs/C27/split.json": "e33c06e559e291aca4323ad02657402f63062bf91986e3c869859d6ffaf2c7d5",
+    "stubs/C28/comparators.yaml": "4302a8cd7b43b47db4772a4f1db770c4f2494753b4b56b7728d67976d6e286fc",
+    "stubs/C28/h2h_fairness.yaml": "1eab9ec2fe380c454531352c9829135b49da6147dd33c62547a03da94acca132",
+    "stubs/C29/domain_contracts.yaml": "51a07121636fc6530da99364a0f3048bd8ba1f3a7c6622ca6173139c09921643",
+    "stubs/C29/fragments/FRG-NET-01.json": "90ba10b2084e7ad8ff73d31ee48c282a0f420084356f47fffc820dc902120165",
+    "stubs/INDEX.json": "5cdee2a98fc8a7d9292dd585c2b0a5cf269197c1ce1658619195680606773edd",
+    "stubs/complex.sssom.tsv": "3aebf1e2fa929091b9c79b2386f5c13421c3a28af70fec49f0762f65ddc24de5"
+   },
+   "via": "ARBITERLIB"
+  },
+  {
+   "path": "$BO_REPO/transforms/transforms.yaml",
+   "kind": "file",
+   "sha256": "93a32350718f56fa8a832943083bfbe47f45681c5ac9dd92252d6564d0540921",
+   "via": "ARBITERLIB"
+  },
+  {
+   "path": "$BO_REPO/prereg/PREREG.html",
+   "kind": "file",
+   "sha256": "6eeb9b18a5d9512db88fe0c263413b2a5ff3a0a29259fe315a7d2c4a05a65e73",
+   "via": "ARBITERLIB"
+  },
+  {
+   "path": "$BO_REPO/semantics/composition_table.json",
+   "kind": "file",
+   "sha256": "f279876043e13a1d1bcc2e0f645aa761f758681bf7fde1beff3a915c6549c80f",
+   "via": "ARBITERLIB"
+  },
+  {
+   "path": "$BO_REPO/requirements",
+   "kind": "dir",
+   "sha256": "b09d2f301174f7e0cdb7c97483a7729aea19b5f5747cdd8a9e98262237d2cc98",
+   "files": {
+    "REQUIREMENTS.html": "42d850c51a55a0d84e8bad1d5ecef8f5efb4443091ecdd52465cc97b578aa9a6",
+    "REQUIREMENTS.sha256": "488bf64f634b6e62137b1056150129513e7cb6faef285e735a0684f1d0f2616b",
+    "commitments.jsonl": "038f73fcebedfbf3b5ff3d23b1ff0758a87e8be2616b141b232628e1a64d1438",
+    "cq_spec.jsonl": "370bcb7229eedd274f758f3792a570039a4b282416f41a4935bd87426f66ebe1",
+    "requirements.jsonl": "c19361e03c8ab8cb96baa035a76041eab6722d3e00fef628ba1590c3a11b6426"
+   },
+   "via": "SEMANTICS"
+  },
+  {
+   "path": "$BO_REPO/ontology/patterns/ONTPAT.html",
+   "kind": "file",
+   "sha256": "c0e2b37b55e8ed933201d5f72787cf3c8ac9080e97b6c1e913454b858e5a9369",
+   "via": "SEMANTICS"
+  },
+  {
+   "path": "/Users/breno/doutorado/pesquisa/superficie/reports/ontologia_neutra/spec/skeleton.ttl",
+   "kind": "file",
+   "sha256": "a2781d1c1d01a8f32dc529f9858375421abd353ce2a41a06067c78920917979a",
+   "via": "ONTPAT"
+  },
+  {
+   "path": "/Users/breno/doutorado/pesquisa/superficie/reports/ontologia_neutra/revisao_adversarial/R1_engenharia_ontologia.html",
+   "kind": "file",
+   "sha256": "72013f04fbc969c0b2b3f001505c65517e3f7928fa524fd1809e01bad287963e",
+   "via": "ONTPAT"
+  },
+  {
+   "path": "/Users/breno/doutorado/pesquisa/superficie/reports/composite_mapping_design.md",
+   "kind": "file",
+   "sha256": "3928a0a5d3e8aaf4f7e5681cfd62b596d9a896c78ce50230e1a0945b05e719e1",
+   "via": "ONTPAT"
+  },
+  {
+   "path": "$BO_REPO/requirements/commitments.jsonl",
+   "kind": "file",
+   "sha256": "038f73fcebedfbf3b5ff3d23b1ff0758a87e8be2616b141b232628e1a64d1438",
+   "via": "ONTPAT"
+  },
+  {
+   "path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/revisao_adversarial_plano/REVISAO_PLANO_v2_GPT6_CODEX.txt",
+   "kind": "file",
+   "sha256": "29215fd0eb0fabe1f4a3232958fb5020b6d8fd08f241a2e557e47bb4af8be892",
+   "via": "REQUIREMENTS"
+  },
+  {
+   "path": "/Users/breno/doutorado/pesquisa-lanes/c1-37-icsa/superficie/GATES.md",
+   "kind": "file",
+   "sha256": "db23b1a9d8cfc3162857b7ce43b3d1325d644a60a1e705e48a452503d874bf0f",
+   "via": "REPO"
+  },
+  {
+   "path": "$BO_REPO/semantics/SEMANTICS.html",
+   "kind": "file",
+   "sha256": "28f849eb578fea685935a2499cd13710e8a96b6cd01e4bc34419ae0e51f29596",
+   "via": "GRAIN"
+  },
+  {
+   "path": "$BO_REPO/CONVENTIONS.html",
+   "kind": "file",
+   "sha256": "f1b9344f41fb0782c08397cb784a34666854fa7def5335423f1c0764ebad9a4b",
+   "via": "CONTRACTS"
+  },
+  {
+   "path": "/Users/breno/doutorado/pesquisa/superficie/reports/ontologia_neutra/revisao_adversarial/R3_validade_empirica.html",
+   "kind": "file",
+   "sha256": "58620569f9095ea75c197ce4727ae291f8470aae4129129f0c52bb34bbd429d6",
+   "via": "PREREG"
+  },
+  {
+   "path": "/Users/breno/doutorado/pesquisa/superficie/reports/ontologia_neutra/COBERTURA_NEUTRA.html",
+   "kind": "file",
+   "sha256": "e983bd0b9dfb0297f1a157f3d04a9e70a65bffef1c55116d26067ad3bb30d5fa",
+   "via": "PREREG"
+  },
+  {
+   "path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/revisao_adversarial_plano/REVISAO_PLANO_GEMINI_3_8_FLASH.html",
+   "kind": "file",
+   "sha256": "6b984ead51f50c32fc32ff186fcd88593dfd88b50fa83fb21bc3c571c1e8a9f5",
+   "via": "PREREG"
+  },
+  {
+   "path": "$BO_REPO/semantics",
+   "kind": "dir",
+   "sha256": "266f2f28a6f5bee8f281ad755deead688fcde5d5da163eb8dfd8124ad917bd91",
+   "files": {
+    "SEMANTICS.html": "28f849eb578fea685935a2499cd13710e8a96b6cd01e4bc34419ae0e51f29596",
+    "SEMANTICS.sha256": "8fce840c1fcf2dbd40b84a3fc111f2b82d561bbf726fcc75a0ec2544ed5a2830",
+    "composition_table.json": "f279876043e13a1d1bcc2e0f645aa761f758681bf7fde1beff3a915c6549c80f",
+    "counterexamples.jsonl": "137233efe05de8ee562e81aa1b50103177eb9bed4b92c1b088bde3d2e5a42a49"
+   },
+   "via": "PREREG"
+  },
+  {
+   "path": "$BO_REPO/lit/RELATED_WORK.html",
+   "kind": "file",
+   "sha256": "d90fd22639d77e90f98d85436bce2ed62dfa7515e808c6f8984885978ddc3c19",
+   "via": "PREREG"
+  },
+  {
+   "path": "/Users/breno/doutorado/tese_organizada/papers/01_icse2027-positioning/artifact",
+   "kind": "dir",
+   "sha256": "8fc20eb879baa83bd6d1349a158b3a71f258708458c8808a22326adbfb42b43a",
+   "files": {
+    "QUERIES.txt": "22395e75d028141cbbd3b3c76ae9b90d0d2fab426d745ac83d72a8914f645234",
+    "README.txt": "88a7de1fb4d2ba6843cb49c8a3ea1aa14c8ee7fdaab590f86c4f420f6324e554",
+    "RUBRIC.txt": "15ea4bf28f751bee0703149a1484504a1055ca25c2b8880f564660fdd0d5118d",
+    "corpus.csv": "f792d2445cb2462734125a64b1db4b475a1eb62ff6fe9ca53edbc9b0ae88fc27",
+    "labels.csv": "fcec8c9ff5b1cc43cac1dd0ab4f2f5e8c571f8f7dc7a8d0a6467bd5d8044f232",
+    "recall_sample.csv": "d8c45c2968559092e534157b1fe730bb2ba55e25cf8ea87e2bfda1435e502721",
+    "scarce_cell_candidates.csv": "d102fec7b1bfae536d2eec93ec5608196e173715a302aea1df8af022eb547f11"
+   },
+   "via": "LIT"
+  },
+  {
+   "path": "/Users/breno/doutorado/pesquisa/superficie/reports/ontologia_neutra/revisao_adversarial/R4_novidade_posicionamento.html",
+   "kind": "file",
+   "sha256": "44736befbea74f0b00c581e1a2e8ee58e862b26476aaa477e394269192feb0a5",
+   "via": "LIT"
+  },
+  {
+   "path": "/Users/breno/doutorado/pesquisa/superficie/reports/ontologia_neutra/downloads/kalinin2026/FICHAMENTO_KALININ2026.txt",
+   "kind": "file",
+   "sha256": "2b8c338840b299ec758e485c58fa9b20daf00028876d6901fc1e0e0037d119b4",
+   "via": "LIT"
+  },
+  {
+   "path": "/Users/breno/doutorado/pesquisa/superficie/reports/ontologia_neutra/downloads/kalinin2026/pdfs/kalinin2026.pdf",
+   "kind": "file",
+   "sha256": "758b7705ddd4ac05416fa18215df88b88d6165f81253c8f568d0ac5abba6120a",
+   "via": "LIT"
+  }
+ ],
+ "digest": "638faec9a0a7904423695c9b592a4f77b342f54ead5654b7853af3071f906b89",
+ "ots": {
+  "status": "DISABLED",
+  "reason": "--no-ots"
+ }
+}
