@@ -20,7 +20,7 @@ step "execução registrada: código congelado = código do E2E, selo = índice 
 $py -I -m bo.pilot_exit.heldout_run --slices sto,net --verify-only
 
 step "nenhum texto claro das retidas ficou na caixa temporária"
-for d in run t; do
+for d in run t d; do
   if [ -d "$BO_TMP/$d" ]; then echo "sobrou $BO_TMP/$d (árvore com retidas materializadas)"; exit 1; fi
 done
 $py -I -B -c '

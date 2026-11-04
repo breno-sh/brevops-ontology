@@ -68,7 +68,7 @@ def run_commands(cmds: list[str], frozen_repo: Path, data_root: Path, mid: str, 
     """Roda cada comando; grava stdout/stderr em logdir (fica em $BO_TMP, nunca em results/)."""
     # BO_TMP curto: o socket unix do provider Terraform não cabe nos 104 caracteres do macOS com caminho longo
     tmpd = tmp_root or C.tmp() / "t"
-    if tmpd.exists():
+    if tmpd.exists() and not tmpd.is_symlink():
         shutil.rmtree(tmpd)
     tmpd.mkdir(parents=True)
     env = {k: v for k, v in os.environ.items() if k in ("PATH", "HOME", "LANG", "LC_ALL", "USER", "SHELL", "TERM")}

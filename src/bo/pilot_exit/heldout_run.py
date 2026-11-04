@@ -81,7 +81,9 @@ def run_slice(slice_: str, ident: dict, root: Path, workdir: Path, decrypt_argv=
     check = frozen.tree_files(root, ident["base_head"], s["code"])
     if frozen.digest(check) != ident["code_sha256"]:
         raise frozen.FrozenError("cópia exportada ≠ sha do código congelado")
-    data_root = runner.overlay(C.data(), rdir / "data", mid)
+    # BO_DATA sobreposto em caminho curto: o STO exige BO_TMP = $BO_DATA/tmp/<ID> e o soquete unix do provider
+    # Terraform não cabe nos 104 caracteres do macOS com caminho longo
+    data_root = runner.overlay(C.data(), C.tmp() / "d", mid)
     if rehearsal:
         opened = {"bundle": calib_bundle(slice_), "ciphertext_sha256": None, "plaintext_sha256": None,
                   "plaintext_bytes": None, "n_items": None}
@@ -90,7 +92,8 @@ def run_slice(slice_: str, ident: dict, root: Path, workdir: Path, decrypt_argv=
     counts = materialize.materialize(slice_, opened["bundle"], frozen_repo)
     out = rdir / "out"
     cmds = collect.commands(slice_, runner.catalog_gates(mid), frozen_repo, out)
-    res = runner.run_commands(cmds, frozen_repo, data_root, mid, rdir / "logs")
+    res = runner.run_commands(cmds, frozen_repo, data_root, mid, rdir / "logs",
+                              tmp_root=data_root / "tmp" / mid if slice_ == "sto" else None)
     ev = collect.collect(slice_, opened["bundle"], frozen_repo, data_root, res, rdir / "logs", out=out)
     del opened["bundle"]
     return {"slice": slice_, "module": mid, "commands": res, "materialized": counts,
@@ -136,6 +139,8 @@ def main(argv=None) -> int:
             out[s] = run_slice(s, ids[s], root, workdir, rehearsal=True)
             C.say(f"heldout_run --rehearsal: {s}: saídas {[c['rc'] for c in out[s]['commands']]}, {out[s]['seconds']} s")
             C.write_json(workdir / f"{s}_evidence.json", out[s]["evidence"])
+        shutil.rmtree(C.tmp() / "d", ignore_errors=True)
+        shutil.rmtree(C.tmp() / "t", ignore_errors=True)
         C.say(f"heldout_run --rehearsal: evidência do ensaio em {C.portable(workdir)} (não é tentativa)")
         return 0
     rec = C.read_json(record_path(root))
@@ -175,7 +180,7 @@ def main(argv=None) -> int:
         return 2
     finally:
         if not a.keep_workdir:
-            for d in (workdir, C.tmp() / "t"):      # t = BO_TMP do código avaliado (render, OWL das retidas)
+            for d in (workdir, C.tmp() / "t", C.tmp() / "d"):   # t, d = BO_TMP e BO_DATA do código avaliado
                 if d.exists():
                     shutil.rmtree(d, ignore_errors=True)
     stage = C.staging_dir() / "heldout"
