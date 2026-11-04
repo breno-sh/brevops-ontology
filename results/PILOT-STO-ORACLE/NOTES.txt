@@ -1,5 +1,5 @@
 PILOT-STO-ORACLE: notas do oráculo offline do piloto de armazenamento de objeto
-gravado em 2026-11-04T02:38:25-03:00 (America/Recife)
+gravado em 2026-11-03T22:00-03:00, revisto em 2026-11-04T08:18:49-03:00 (America/Recife)
 
 O QUE ESTÁ AQUI
 - Avaliador: pilot/sto/oracle/sto_oracle.py (só biblioteca padrão; não importa nada do pipeline). Estado efetivo
@@ -10,9 +10,9 @@ O QUE ESTÁ AQUI
   de vida, evidência que falta) e julgamento de configuração-alvo (ACCEPT, ACCEPT_WITH_DECLARED_LOSS, REJECT, UNKNOWN).
 - Regras: 78 em RULES (49 publicadas, 13 derivadas, 16 interpretadas com base declarada); toda frase citada está na
   linha declarada dos docs fixados (aws 6.71.0, google 8.9.0, azurerm 5.12.0, oci 9.11.0), conferido por teste.
-- Calibração (git): 121 fixtures de um provedor em 8 casos obrigatórios e 181 entradas de direção (12 direções x 4
-  famílias), 199 conferências; resposta em pilot/sto/expected_answers.json.
-- Retidas: 121 fixtures e 181 entradas novas, sorteadas com o gerador do sistema (nomes, dias, chaves, variantes);
+- Calibração (git): 122 fixtures de um provedor em 8 casos obrigatórios e 181 entradas de direção (12 direções x 4
+  famílias), 201 conferências; resposta em pilot/sto/expected_answers.json.
+- Retidas: 122 fixtures e 181 entradas novas, sorteadas com o gerador do sistema (nomes, dias, chaves, variantes);
   só existem cifradas (openssl cms, AES-256) em $BO_DATA/PILOT-STO-ORACLE/sealed/heldout.cms.pem com o certificado
   público da VM Oracle (D15). O texto claro nunca foi gravado: saiu do gerador direto para o openssl por pipe. A
   decifração na VM foi provada uma vez (seal_verification.json: sha do texto claro remoto = sha do índice).
@@ -30,10 +30,12 @@ COMO A RESPOSTA FOI ESCRITA (independência)
   valores sorteados e as respostas não são.
 
 ACHADOS (resultado, não ajuste)
-1. CMT-BKT-P03 (contêiner componente do namespace) não se realiza em nenhum provedor com a evidência publicada:
-   no Azure o dono do contêiner é a conta (SE-azurerm-n2yvw45ffqgp2565), mas o controlador de ciclo de vida não é
-   documentado (SE-azurerm-f2gheenu5o33ymps): o gabarito do contêiner é kind UNKNOWN com lifecycle_controller em
-   falta. Na OCI o namespace é escopo de unicidade do nome, e os metadados do namespace ficam UNKNOWN.
+1. CMT-BKT-P03 (contêiner componente do namespace) não se realiza em nenhum provedor com a evidência atual:
+   no Azure a identidade do contêiner fica dentro da conta, mas o SERVICE-EVIDENCE (CC-1d) dá controlador de ciclo
+   de vida self na camada de API (SE-azurerm-qvoe5bsgpg3atfy2): pelo CMT-LC-P01 componente exige controlador = pai,
+   então o gabarito é ENTITY no namespace da conta. Se apagar a conta apaga o contêiner segue sem evidência; se
+   isso for documentado, o tipo vira COMPONENT. Na OCI o namespace é escopo de unicidade do nome, e os metadados do
+   namespace ficam UNKNOWN (dono não documentado; ciclo de vida e alcance só na camada Terraform).
 2. Relógios de versão não corrente: aws e google contam desde que a versão virou não corrente; azurerm e oci desde a
    criação/Last-Modified da versão (frase publicada da OCI). Nas direções aws/google -> azurerm/oci não existe
    configuração-alvo sem perda: o mesmo número apaga antes (contraexemplo REJECT EARLY_DELETION); só não apagar com
@@ -46,17 +48,29 @@ ACHADOS (resultado, não ajuste)
    política já existente (frase publicada) e a ordem de aplicação decide.
 5. OCI: DELETE na versão corrente de contêiner versionado fica UNKNOWN: a frase fixada diz 'permanently delete
    objects' sem tratar versões.
+7. Tensão com o SERVICE-EVIDENCE: R-OWN-API dá dono self na API às políticas separadas (managementPolicies do Azure,
+   objectLifecyclePolicy da OCI). O oráculo mantém essas políticas como faceta do contêiner/conta, porque o CMT-BKT-P01
+   (protegido) diz que configuração cujo dono é o contêiner é faceta também como recurso separado. Para o
+   SERVICE-EVIDENCE/GRAIN decidirem: objeto de API próprio não deveria decidir a faceta (seria embalagem de API).
 6. S3 newer_noncurrent_versions K equivale a GCS num_newer_versions K+1 (a viva conta como versão mais nova), mas o
    S3 exige noncurrent_days >= 1: contagem pura não se traduz sem atraso.
 
 CONTRATOS
-- C24 1.0.0 não tem tipo de arquivo para expected_answers.json (só requirements, commitments, cq_spec); segui o
-  precedente do CQFIX (schema próprio bo.pilot.sto.expected_answers/1, rotulado C24). Proposta para a próxima emenda:
-  um tipo C24 'oracle_answers'. Não bloqueia: nenhum consumidor valida esse arquivo hoje.
-- C11 3.0.1: cada entrada de direção leva c11_case_seed com o que o oráculo sabe (case_id, group_id, par, domínio STO,
-  cardinalidade, direção, comparador, classe de custo, valores); claim_id, relação, frame, peso e plano de lowering ficam
-  em 'pending' porque vêm do mapeamento e do E2E, que o oráculo não lê. Nenhum valor de origin do C11 descreve caso
-  de piloto.
+- C24 1.1.0 (emenda 5 do CONTRACTS) tem o tipo pilot_expected_answers: expected_answers.json valida nele (gate do módulo).
+- C11 3.1.0: cada entrada de direção leva c11_case_seed com o que o oráculo sabe (case_id, group_id, par, domínio STO,
+  cardinalidade, direção, origin=pilot, comparador, classe de custo, valores); claim_id, relação, frame, peso e plano de
+  lowering ficam em 'pending' porque vêm do mapeamento e do E2E, que o oráculo não lê.
+
+REVISÃO 2026-11-04 (SERVICE-EVIDENCE CC-1c e CC-1d, 69fb76e)
+- Rerodei o gabarito sobre o service_evidence.jsonl novo (sha256 cc5260d3...). Mudaram 2 respostas, ambas do
+  contêiner Azure (FX-STO-AZ-DEC-PACK-P01 e -U01, e as equivalentes retidas): kind UNKNOWN com lifecycle_controller em
+  falta -> ENTITY com controlador self e namespace = a conta (ou UNKNOWN quando a conta não foi lida). Motivo: o fato
+  SE-azurerm-f2gheenu5o33ymps ('não documentado') saiu e entrou SE-azurerm-qvoe5bsgpg3atfy2 (R-LIFE-API, self).
+- Entrou o contraexemplo FX-STO-AZ-DEC-PACK-N02 (contêiner Azure alegado COMPONENT: rejeitado).
+- Nenhum veredito das 181 entradas de direção mudou; versionamento, acesso público e ciclo de vida não dependem
+  dos fatos regravados. Bases das regras DEC-* atualizadas com os ids novos. Oráculo 1.1.0.
+- As retidas mudaram de conteúdo (o gabarito do contêiner Azure está dentro delas): novo sorteio, novo selo D15,
+  decifração conferida na VM (seal_verification.json).
 
 FORA DO ESCOPO DO ORÁCULO
 - Criptografia (faceta da fatia em §3b) não está no objetivo do oráculo deste módulo; transição de classe de

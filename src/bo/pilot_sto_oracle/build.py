@@ -115,11 +115,11 @@ def c11_seed(e):
     return {"case_id": "CASE-PSTO-" + e["entry_id"], "group_id": f"G-PSTO-{fam.split('-')[0]}-{pair}",
             "stratum_partial": {"pair": pair, "domain": "STO", "cardinality": "1:1",
                                 "direction": "forward" if a == first else "inverse"},
-            "side": "subject", "comparator": {"name": "exact"}, "cost_class": "free", "values": values,
+            "origin": "pilot", "side": "subject", "comparator": {"name": "exact"}, "cost_class": "free", "values": values,
             "pending": {"claim_id": "o oráculo não lê alegações (independente do mapeamento); vem do PILOT-STO-MAP",
                         "claim_version_id": "idem", "stratum.relation": "sai da alegação",
                         "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE", "weight": "idem",
-                        "lowering_plan": "plano C26 do PILOT-STO-E2E", "origin": "nenhum valor do C11 3.0.1 descreve caso de piloto"}}
+                        "lowering_plan": "plano C26 do PILOT-STO-E2E"}}
 
 
 # ------------------------------------------------------------------ escrita da calibração
@@ -154,7 +154,7 @@ def write_calib(root: Path, gen, oracle, index: dict | None, generated_at: str):
         "loss_codes": oracle.LOSS_CODES, "never_coverable": sorted(oracle.NEVER_COVERABLE)}))
     (base / "oracle" / "RULES.json").write_bytes(canon({"schema": "bo.pilot.sto.rules/1", "oracle_version": oracle.ORACLE_VERSION,
                                                         "docs_root": "$BO_DATA/downloads/", "rules": oracle.RULES}))
-    ea = {"schema": SCHEMA_EA, "contract": "C24", "contract_version": "1.0.0", "module": MODULE,
+    ea = {"schema": SCHEMA_EA, "contract": "C24", "contract_version": "1.1.0", "module": MODULE,
           "generated_at": generated_at, "oracle_version": oracle.ORACLE_VERSION,
           "oracle_sha256": sha_file(base / "oracle" / "sto_oracle.py"), "providers": cases.PIN,
           "note": ("resposta esperada escrita a partir dos compromissos (C24), da evidência publicada (SERVICE-EVIDENCE e docs "

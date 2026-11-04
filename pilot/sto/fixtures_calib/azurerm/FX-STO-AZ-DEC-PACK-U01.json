@@ -12,7 +12,7 @@
  },
  "schema": "bo.pilot.sto.fixture/1",
  "split": "calib",
- "summary": "contêiner cuja conta não foi lida: dono UNKNOWN",
+ "summary": "contêiner cuja conta não foi lida: namespace e configuração da conta UNKNOWN",
  "terraform": {
   "resource": {
    "azurerm_storage_container": {

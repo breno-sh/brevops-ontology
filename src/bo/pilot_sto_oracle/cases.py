@@ -222,7 +222,8 @@ def mc_dec_pack(g):
     nu = f"namespace:azurerm_storage_account.{a}"
     g.add("azurerm", "MC-DEC-PACK", "positive", "versionamento na conta: faceta da conta, não do contêiner", r,
           [{"kind": "decomposition", "unit": nu, "expect": {"kind": "ENTITY"}},
-           {"kind": "decomposition", "unit": f"container:{c}", "expect": {"kind": "UNKNOWN", "owner": nu, "missing_evidence": ["lifecycle_controller"]}},
+           {"kind": "decomposition", "unit": f"container:{c}", "expect": {"kind": "ENTITY", "owner": "self", "lifecycle_controller": "self",
+                                                                          "namespace": nu, "missing_evidence": []}},
            {"kind": "decomposition", "unit": f"setting:versioning@{nu}", "expect": _facet(nu, [f"container:{c}"])}])
     # negativos
     r, c = container("aws", n, versioning=True)
@@ -258,9 +259,14 @@ def mc_dec_pack(g):
             "expect": {"kind": "UNKNOWN", "missing_evidence": ["owner"]}},
            {"kind": "public", "container": c, "axis": "anonymous_read", "expect": unk("MISSING_EVIDENCE")}])
     r, c = container("azurerm", n, versioning=True, account_ref="${var.storage_account_id}")
-    g.add("azurerm", "MC-DEC-PACK", "unknown", "contêiner cuja conta não foi lida: dono UNKNOWN", r,
+    g.add("azurerm", "MC-DEC-PACK", "unknown", "contêiner cuja conta não foi lida: namespace e configuração da conta UNKNOWN", r,
           [{"kind": "decomposition", "unit": f"container:{c}",
-            "expect": {"kind": "UNKNOWN", "owner": "UNKNOWN", "missing_evidence": ["lifecycle_controller", "owner"]}}])
+            "expect": {"kind": "ENTITY", "namespace": "UNKNOWN", "missing_evidence": ["namespace"]}},
+           {"kind": "versioning", "container": c, "expect": unk("INCOMPLETE_READ")}])
+    r, c = container("azurerm", n, versioning=True, account=a, account_attrs={})
+    g.add("azurerm", "MC-DEC-PACK", "negative", "contêiner Azure alegado componente da conta: a evidência dá controlador self", r,
+          [{"kind": "claim", "claim": {"about": "decomposition", "unit": f"container:{c}", "value": {"kind": "COMPONENT"}},
+            "expect": {"verdict": "REJECT", "code": "CONTRADICTS_ORACLE"}}])
 
 
 def mc_dec_scope(g):

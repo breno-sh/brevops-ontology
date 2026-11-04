@@ -21,6 +21,9 @@ $py -I -B -m pytest tests/pilot_sto_oracle -q -p no:cacheprovider
 step "regeneração idêntica (fixtures_calib, expected_answers.json, MANDATORY.json, RULES.json) e selo x índice"
 $py -I -B -m bo.pilot_sto_oracle.build --check
 
+step "contrato C24 1.1.0 (pilot_expected_answers) do gabarito"
+$py -I -m bo.contracts.validate pilot_expected_answers pilot/sto/expected_answers.json | tail -1
+
 step "configuração das fixtures de calibração contra o schema do provider fixado"
 $py -I -B -m bo.pilot_sto_oracle.schema_check
 

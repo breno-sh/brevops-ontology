@@ -28,7 +28,7 @@ import json
 import math
 import re
 
-ORACLE_VERSION = "1.0.0"
+ORACLE_VERSION = "1.1.0"
 PROVIDERS = ("aws", "google", "azurerm", "oci")
 PINS = {"aws": "6.71.0", "google": "8.9.0", "azurerm": "5.12.0", "oci": "9.11.0"}
 
@@ -209,11 +209,11 @@ RULES = {
     "REF-UNRESOLVED": {"level": "derived", "basis": "CMT-BKT-U02: referência não resolvida ao contêiner dá UNKNOWN com a evidência que falta", "evidence": []},
     "UNSUPPORTED": {"level": "derived", "basis": "recurso da configuração fora do que o oráculo modela: UNKNOWN, nunca valor inventado", "evidence": []},
     # decomposição
-    "DEC-OWN-ID": {"level": "derived", "basis": "recurso de topo com identidade própria na API e sem pai na evidência = entidade (compromisso CMT-BKT-P03, nota aws/google)", "evidence": []},
+    "DEC-OWN-ID": {"level": "derived", "basis": "recurso de topo com identidade própria na API e sem pai na evidência = entidade (compromisso CMT-BKT-P03, nota aws/google; google: SE-google-ax5cm4zf5mcm6pzq dono self na API)", "evidence": []},
     "DEC-FACET-REF": {"level": "derived", "basis": "recurso separado identificado pelo contêiner (identity schema: bucket obrigatório) é faceta do contêiner (CMT-BKT-P01)", "evidence": []},
-    "DEC-AZ-CONTAINER": {"level": "derived", "basis": "SE-azurerm-n2yvw45ffqgp2565 (dono: blobServices da conta) e SE-azurerm-f2gheenu5o33ymps (controlador de ciclo de vida não documentado): dono conhecido, tipo UNKNOWN", "evidence": []},
-    "DEC-OCI-NAMESPACE": {"level": "derived", "basis": "SE de oci_objectstorage_namespace_metadata: dono, alcance e ciclo de vida não documentados", "evidence": []},
-    "DEC-OCI-BUCKET": {"level": "derived", "basis": "o namespace é escopo de unicidade do nome (bucket_scope NAMESPACE), não pai com ciclo de vida: contêiner é entidade com chave composta", "evidence": [
+    "DEC-AZ-CONTAINER": {"level": "derived", "basis": "SE-azurerm-qvoe5bsgpg3atfy2 (controlador de ciclo de vida self na camada de API, R-LIFE-API) e SE-azurerm-si55lp2kgnkl4qun (dono self na API); a identidade fica dentro da conta (SE-azurerm-n2yvw45ffqgp2565, SE-azurerm-xxozs3v2tmjpca2z). Componente exige controlador = pai (CMT-BKT-P03, CMT-LC-P01): com controlador self o contêiner é entidade no namespace da conta. Se a conta apaga o contêiner junto continua sem evidência", "evidence": []},
+    "DEC-OCI-NAMESPACE": {"level": "derived", "basis": "oci_objectstorage_namespace_metadata: dono não documentado (SE-oci-esq4tizacudkvhhx); ciclo de vida e alcance só na camada Terraform (SE-oci-2jyxv2tqy5eg2i2g, SE-oci-r34zohdkd44rvbid), que pela nota da própria regra não diz quem cria ou apaga o objeto na API: na unidade de domínio continuam UNKNOWN", "evidence": []},
+    "DEC-OCI-BUCKET": {"level": "derived", "basis": "o namespace é escopo de unicidade do nome (bucket_scope NAMESPACE), não pai com ciclo de vida: contêiner é entidade com chave composta (SE-oci-bqtq3hd3wukbga5o dono self e SE-oci-bjc4cjf3tka6ongc ciclo de vida self na API)", "evidence": [
         _ev(D_OCI + "objectstorage_bucket.html.markdown", 66, "Bucket names must be unique within an Object Storage namespace")]},
 }
 
@@ -1209,9 +1209,9 @@ def decompose(fx):
                                                 "missing_evidence": [], "rules": ["DEC-OWN-ID"]}
         for c in cs:
             acct = azure_account(fx, c)
-            units[f"container:{c}"] = {"kind": "UNKNOWN", "owner": f"namespace:{acct}" if acct else "UNKNOWN",
-                                       "lifecycle_controller": "UNKNOWN",
-                                       "missing_evidence": ["lifecycle_controller"] + ([] if acct else ["owner"]),
+            units[f"container:{c}"] = {"kind": "ENTITY", "owner": "self", "lifecycle_controller": "self",
+                                       "namespace": f"namespace:{acct}" if acct else "UNKNOWN",
+                                       "missing_evidence": [] if acct else ["namespace"],
                                        "rules": ["DEC-AZ-CONTAINER"]}
     else:
         for c in cs:

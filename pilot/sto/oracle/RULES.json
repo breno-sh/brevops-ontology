@@ -1,6 +1,6 @@
 {
  "docs_root": "$BO_DATA/downloads/",
- "oracle_version": "1.0.0",
+ "oracle_version": "1.1.0",
  "rules": {
   "AWS-ACL-PUBLIC-READ": {
    "evidence": [
@@ -428,7 +428,7 @@
    "level": "interpreted"
   },
   "DEC-AZ-CONTAINER": {
-   "basis": "SE-azurerm-n2yvw45ffqgp2565 (dono: blobServices da conta) e SE-azurerm-f2gheenu5o33ymps (controlador de ciclo de vida não documentado): dono conhecido, tipo UNKNOWN",
+   "basis": "SE-azurerm-qvoe5bsgpg3atfy2 (controlador de ciclo de vida self na camada de API, R-LIFE-API) e SE-azurerm-si55lp2kgnkl4qun (dono self na API); a identidade fica dentro da conta (SE-azurerm-n2yvw45ffqgp2565, SE-azurerm-xxozs3v2tmjpca2z). Componente exige controlador = pai (CMT-BKT-P03, CMT-LC-P01): com controlador self o contêiner é entidade no namespace da conta. Se a conta apaga o contêiner junto continua sem evidência",
    "evidence": [],
    "level": "derived"
   },
@@ -438,7 +438,7 @@
    "level": "derived"
   },
   "DEC-OCI-BUCKET": {
-   "basis": "o namespace é escopo de unicidade do nome (bucket_scope NAMESPACE), não pai com ciclo de vida: contêiner é entidade com chave composta",
+   "basis": "o namespace é escopo de unicidade do nome (bucket_scope NAMESPACE), não pai com ciclo de vida: contêiner é entidade com chave composta (SE-oci-bqtq3hd3wukbga5o dono self e SE-oci-bjc4cjf3tka6ongc ciclo de vida self na API)",
    "evidence": [
     {
      "file": "docs-oci/website/docs/r/objectstorage_bucket.html.markdown",
@@ -449,12 +449,12 @@
    "level": "derived"
   },
   "DEC-OCI-NAMESPACE": {
-   "basis": "SE de oci_objectstorage_namespace_metadata: dono, alcance e ciclo de vida não documentados",
+   "basis": "oci_objectstorage_namespace_metadata: dono não documentado (SE-oci-esq4tizacudkvhhx); ciclo de vida e alcance só na camada Terraform (SE-oci-2jyxv2tqy5eg2i2g, SE-oci-r34zohdkd44rvbid), que pela nota da própria regra não diz quem cria ou apaga o objeto na API: na unidade de domínio continuam UNKNOWN",
    "evidence": [],
    "level": "derived"
   },
   "DEC-OWN-ID": {
-   "basis": "recurso de topo com identidade própria na API e sem pai na evidência = entidade (compromisso CMT-BKT-P03, nota aws/google)",
+   "basis": "recurso de topo com identidade própria na API e sem pai na evidência = entidade (compromisso CMT-BKT-P03, nota aws/google; google: SE-google-ax5cm4zf5mcm6pzq dono self na API)",
    "evidence": [],
    "level": "derived"
   },

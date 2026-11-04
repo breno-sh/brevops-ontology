@@ -3,16 +3,16 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "PILOT-STO-ORACLE",
- "generated_at": "2026-11-04T02:40:19-03:00",
+ "generated_at": "2026-11-04T08:18:52-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-STO-ORACLE.txt",
   "brief_sha256": "dcc0cad3880b87ac5e3efb55c1feb1b019f4e455d371d3fb8242169c5e6db1d3",
   "params": {
-   "oracle_version": "1.0.0",
-   "calib_fixtures": "121",
+   "oracle_version": "1.1.0",
+   "calib_fixtures": "122",
    "calib_direction_entries": "181",
-   "heldout_items": "302",
+   "heldout_items": "303",
    "providers": "aws:6.71.0,google:8.9.0,azurerm:5.12.0,oci:9.11.0",
    "seal": "openssl-cms-aes256-D15",
    "rules": "78"
@@ -31,11 +31,10 @@
    {
     "path": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl",
     "kind": "file",
-    "sha256": "9ca6eaabab91e52e4cb605559f742bd4266cace83659647862cb2f5c3944eb60",
-    "sha256_before_emendas_4_grain_se": "50bc893ff48a2ce45b76e4260d6642b5a5014ad71a1067b34d70b1933ee5653b"
+    "sha256": "cc5260d3ed4a8db4ddbf50f429b9d7d4060f67a43593b127e01e571a49979074"
    }
   ],
-  "recorded_at": "2026-11-04T02:40:19-03:00"
+  "recorded_at": "2026-11-04T08:18:52-03:00"
  },
  "sources": [
   {
@@ -71,8 +70,8 @@
   {
    "uri": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl",
    "license": "interno (SERVICE-EVIDENCE)",
-   "transformation": "dono, alcance e ciclo de vida citados por evidence_id; reconferidos após a regravação por bloco"
+   "transformation": "dono, alcance e ciclo de vida citados por evidence_id; gabarito rerodado sobre CC-1c/CC-1d (69fb76e)"
   }
  ],
- "notes": "oráculo offline STO; retidas só cifradas com o certificado da VM (D15); nada lido do glossário ou do mapeamento"
+ "notes": "oráculo offline STO 1.1.0; retidas só cifradas com o certificado da VM (D15); nada lido do glossário ou do mapeamento"
 }
