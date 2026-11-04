@@ -1,0 +1,71 @@
+{
+ "schema": "bo.summary/1",
+ "contract": "C17",
+ "contract_version": "3.0.0",
+ "module": "HIST-AWS",
+ "generated_at": "2026-11-04T02:19:08-03:00",
+ "agent_provenance": {
+  "model_id": "claude-opus-5-5",
+  "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/HIST-AWS.txt",
+  "brief_sha256": "92358a4eb92b5b05f2121112c329eb3aaaff49d45a095827d8be77f836e79154",
+  "params": {
+   "onda": "6",
+   "fase": "F1",
+   "modo": "unlazy",
+   "provider": "aws",
+   "versoes": "26",
+   "terraform": "1.15.8",
+   "plataforma": "darwin_arm64",
+   "sandbox": "env -i, HOME temporario, sandbox-exec sem credenciais (nega ~/.aws ~/.config/gcloud ~/.azure ~/.oci ~/.ssh); schema sem rede IP; init so com o registro",
+   "biblioteca": "bo.schema.extract e bo.schema.build (SCHEMALIB 7f2d5b2) + passada write_only do C01 2.1.0",
+   "ancora_gpg": "C874011F0AB405110D02105534365D9472D7468F",
+   "binarios": "zip e pasta desempacotada apagados apos cada versao; o zip do pin 6.71.0 e do SCHEMA-AWS (so lido, nao apagado)"
+  },
+  "inputs": [
+   {
+    "path": "$BO_REPO/universe/history_versions.json",
+    "kind": "file",
+    "sha256": "7186bdf94fb5764d84725f8c5560ee2a1cc505a9aa0f5bd02fef720e8fcea146"
+   },
+   {
+    "path": "$BO_REPO/universe/pins.json",
+    "kind": "file",
+    "sha256": "594a4e878ac489b3ed97cdd6344b9945a8fd3a5d22ae4d6f4bfebd264decfe3d"
+   },
+   {
+    "path": "$BO_DATA/downloads/hist-aws",
+    "kind": "dir",
+    "sha256": "3a86a7e9596ca4627cad74fa9ccf24091ada34552754652d057deed1467b3608"
+   },
+   {
+    "path": "$BO_DATA/downloads/prefetch/aws/6.71.0",
+    "kind": "dir",
+    "sha256": "3f627e8ddb3597601a2f7b2fb671f73498b3482b595c8f75abe5a8b77e57c7ce"
+   },
+   {
+    "path": "$BO_DATA/downloads/terraform-aws-6.71.0/mirror/registry.terraform.io/hashicorp/aws/terraform-provider-aws_6.71.0_darwin_arm64.zip",
+    "kind": "file",
+    "sha256": "885b3290cd48738cbf9ee8a6d47a4452889843f8f53b8cf67fc8c9b16e553721"
+   }
+  ],
+  "recorded_at": "2026-11-04T02:19:08-03:00"
+ },
+ "sources": [
+  {
+   "uri": "https://registry.terraform.io/providers/hashicorp/aws",
+   "license": "MPL-2.0",
+   "transformation": "26 versoes do PINS; pacote assinado conferido (GPG+SHA256SUMS+h1); terraform providers schema -json em sandbox; atomos C01 por versao"
+  },
+  {
+   "uri": "https://releases.hashicorp.com/terraform-provider-aws/",
+   "license": "MPL-2.0",
+   "transformation": "SHA256SUMS assinado e zip darwin_arm64 por versao, so lidos e desempacotados, apagados depois"
+  },
+  {
+   "uri": "https://registry.terraform.io/v1/providers/hashicorp/aws",
+   "license": "termos do Terraform Registry",
+   "transformation": "metadado de download (shasum, URLs, chave publica) por versao"
+  }
+ ],
+ "notes": "26/26 versoes extraidas (3.34.0 a 6.71.0); schema do pin igual ao pins.json e ao SCHEMA-AWS; contagens em results/HIST-AWS/report.json"
+}
