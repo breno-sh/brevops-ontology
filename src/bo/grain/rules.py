@@ -144,7 +144,7 @@ def eval_pred(name: str, arg, ctx) -> bool:
     if name == "identity_targets_min":
         return len(ctx.targets) >= int(arg)
     if name == "identity_targets_kind_in":
-        return all(ctx.kind_of(t) in arg for t in ctx.targets)
+        return all(ctx.kind_of(ctx.unit_of(t)) in arg for t in ctx.targets)
     if name == "owner_kind_in":
         return ctx.owner.known and ctx.owner.value["kind"] in arg
     if name == "owner_targets_count":
@@ -160,7 +160,7 @@ def eval_pred(name: str, arg, ctx) -> bool:
         return ok == bool(arg)
     if name == "identity_composition_targets_min":
         ns = ctx.namespace_fields
-        comp = [t for f, t in ctx.ident.refs.items() if f not in ns]
+        comp = [ctx.unit_of(t) for f, t in ctx.ident.refs.items() if f not in ns]
         return (len(comp) if ctx.n.by_role else len(set(comp))) >= int(arg)
     if name == "identity_path_parent":
         return (ctx.path_parent is not None and bool(ctx.ident.own)) == bool(arg)

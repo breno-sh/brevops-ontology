@@ -124,7 +124,18 @@ def build_nodes(config: dict, adapter, schema_blocks: dict) -> tuple[dict, dict,
         raw[nid] = dict(cid=cid, rt=rtype, values=values, parent=parent_nid, block_path=block_path, index=index,
                         group=None)
         # T58: ligação por atributo-lista ou seleção: um nó por elemento (a posição não entra na identidade)
-        for attr, link in sorted(ev.links.items()):
+        links = dict(ev.links)
+        if S.LISTREF_ENABLED and isinstance(values, dict):
+            # T61 (R-GRAIN-LISTREF): sem fato do SE no atributo, lista de escalares do dono (átomo do schema) com
+            # referências a recursos na configuração; elemento literal ou simbólico não cria a ligação
+            for attr, v in sorted(values.items()):
+                if attr in links or not isinstance(v, list) or not any(
+                        isinstance(x, dict) and "$ref" in x for x in v):
+                    continue
+                aid = f"{provider}:{rtype}:{'.'.join(list(block_path) + [attr])}"
+                if S.scalar_list_atom(provider, aid):
+                    links[attr] = S.listref_link(aid)
+        for attr, link in sorted(links.items()):
             v = values.get(attr) if isinstance(values, dict) else None
             if not isinstance(v, list):
                 continue

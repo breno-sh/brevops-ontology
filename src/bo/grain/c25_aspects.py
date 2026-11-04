@@ -122,6 +122,12 @@ TABLE = [
      "do dono (some quando o dono deixa de listá-lo), alcance próprio. A alegação é level derived com ref = o átomo "
      "do schema que prova que o atributo é do dono (provedor:tipo:caminho). Fato do SERVICE-EVIDENCE sobre o "
      "atributo entra junto: igual, o campo fica KNOWN; diferente, CONTRADICTORY (nunca sobrescrita)"),
+    ("(ligação por atributo)", "(referência na configuração)", "R-GRAIN-LISTREF",
+     "DERIVADO (emenda 0.1.10, T61): sem fato do SERVICE-EVIDENCE sobre o atributo, atributo-lista de escalares do "
+     "dono (átomo do schema citado, ref = provedor:tipo:caminho) cujos elementos são, na configuração, referências a "
+     "recursos: cada elemento designa o objeto referenciado e vira ligação (T58); ciclo de vida, dono e alcance pela "
+     "R-GRAIN-LISTELEM. Elemento literal ou simbólico não cria ligação (UNKNOWN sem ocorrência); fato do SE no "
+     "atributo prevalece; sem o átomo citável, nada. A ponta FACET do vínculo é lida como a unidade dona da faceta"),
     ("api_resource", "(pontes equivalentes)", "R-GRAIN-T53",
      "duas pontes que nomeiam o mesmo recurso só com grafia diferente (caixa, sublinhado, hífen), ainda que o "
      "nome do serviço difira entre a doc e o SDK da spec, são uma alegação só; recursos de fato diferentes "

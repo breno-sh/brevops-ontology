@@ -224,6 +224,16 @@ class Context:
             self.unresolved_fields.add(name)
         return sorted(out) if self.n.by_role else sorted(set(out))
 
+    def unit_of(self, nid):
+        """A13 (0.1.10): a FACET não tem identidade própria (é grupo de atributos do dono); como ponta de vínculo ela
+        é lida como a unidade dona da faceta (o pai que a G3 emitiu), subindo por facetas aninhadas."""
+        seen = set()
+        while nid in self.decided and self.decided[nid].grain == "FACET" and self.decided[nid].parent \
+                and nid not in seen:
+            seen.add(nid)
+            nid = self.decided[nid].parent
+        return nid
+
     def kind_of(self, nid):
         if nid.startswith(EXT):
             return "EXTERNAL"
@@ -306,7 +316,10 @@ def decide_node(n: Node, rs: R.RuleSet, decided: dict, bindings: dict) -> Decisi
             d.parent = ctx.path_parent
             d.own_api_lifecycle = True
         if rule.emit.get("endpoints") == "identity_targets":
-            d.endpoints = {(n.ev.parent_role if f == PARENT else f): t for f, t in ident.refs.items()}
+            d.endpoints = {(n.ev.parent_role if f == PARENT else f): ctx.unit_of(t) for f, t in ident.refs.items()}
+            lifted = sorted(t for t in ident.refs.values() if ctx.unit_of(t) != t)
+            if lifted:
+                d.notes.append(f"ponta FACET lida como a unidade dona da faceta (A13): {lifted}")
         return fill(d)
     raise R.RulesError("nenhuma regra final (G0-NOMATCH ausente)")
 

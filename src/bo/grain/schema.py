@@ -41,6 +41,43 @@ def scalar_list(tf_type) -> bool:
 LISTELEM_ENABLED = True
 
 
+# R-GRAIN-LISTREF (T61) pode ser desligada para medir a sensibilidade do resultado a ela
+LISTREF_ENABLED = True
+# átomos de atributo-lista escalar por provedor (provedor -> {atom_id: tf_type}); injetável nos testes
+ATOM_TYPES: dict = {}
+
+
+def scalar_list_atom(provider: str, atom_id: str):
+    """tf_type do átomo do schema se ele é lista/conjunto de escalares; senão None. Lê SCHEMA-<P>/atoms.jsonl uma vez
+    por provedor (só as linhas de lista/conjunto de string); sem o arquivo, None (sem citação, sem derivação)."""
+    if provider not in ATOM_TYPES:
+        idx = {}
+        try:
+            import json as _json
+            from .realdata import SCHEMA_DIR, data_root
+            with open(data_root() / SCHEMA_DIR[provider] / "atoms.jsonl", encoding="utf-8") as fh:
+                for line in fh:
+                    if '"string"]' not in line:
+                        continue
+                    a = _json.loads(line)
+                    if scalar_list(a.get("tf_type")) and a.get("atom_id"):
+                        idx[a["atom_id"]] = a["tf_type"]
+        except (OSError, KeyError, ValueError):
+            idx = {}
+        ATOM_TYPES[provider] = idx
+    return ATOM_TYPES[provider].get(atom_id)
+
+
+def listref_link(atom_id: str) -> dict:
+    """R-GRAIN-LISTREF (T61): atributo-lista de escalares do dono (átomo citado) cujos elementos, na configuração, são
+    referências a recursos: cada elemento designa o objeto referenciado (o valor do elemento é o id dele). Só vale
+    sem fato do SERVICE-EVIDENCE sobre o atributo; o alvo não ganha tipo (a ponta sai da própria referência)."""
+    return {"kind": "reference", "target": None, "why": "referência na configuração (sem fato do SE no atributo)",
+            "source": {"level": "derived", "ref": atom_id,
+                       "note": "R-GRAIN-LISTREF: elementos do atributo-lista são referências a recursos na "
+                               "configuração (átomo do schema citado)"}}
+
+
 def link_evidence(holder_cid: str, attr: str, link: dict, extra, atom_id: str | None = None) -> dict:
     """Evidência derivada (T58) do candidato de ligação <holder>:<attr>, mais os fatos próprios da ligação."""
     sel = link.get("kind") == "selection" and bool(link.get("source"))     # seleção só com citação (T60)

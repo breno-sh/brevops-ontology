@@ -36,7 +36,7 @@ from . import schema as S
 from .common import data_dir, dump_json, dump_jsonl, now, repo, results_dir, rules_path, sha256_file, stamp
 from .evidence import FixtureAdapter
 
-AUTHORED_AT = "2026-11-04T13:00:00-03:00"
+AUTHORED_AT = "2026-11-04T13:45:00-03:00"
 
 
 def _strip(rep: dict) -> dict:
@@ -408,6 +408,22 @@ vida preso à instância, G1 e G2 aceitam a evidência, e trocar a ordem troca B
 referência <code>by_name</code>; sem ela, o grafo embutido perde relações que o separado tem.</li>
 <li>Emenda 0.1.1 (CC-1): a primeira versão lia uma convenção que o SERVICE-EVIDENCE nunca gravou; os testes
 sintéticos usavam a mesma convenção e não pegaram. Entraram o adaptador por aspecto e testes com o arquivo real.</li>
+<li>Emenda 0.1.10 (rodada final antes do PILOT-EXIT 2/2; E2 NET da calibração com 37 tipos UNKNOWN). Por que a
+R-GRAIN-LISTELEM não cobriu as anexações por <code>vpc_security_group_ids</code>: ela dá ciclo de vida, dono e
+alcance a um elemento de ligação que JÁ existe, e a ligação só nascia de fato do SERVICE-EVIDENCE sobre o atributo
+(alvo tipado, frase da doc, anexação ou seleção); o SE não tem nenhum fato sobre esse atributo, então não havia
+ocorrência. Entrou a R-GRAIN-LISTREF (T61, derivada): atributo-lista de escalares do dono, sem fato do SE, cujos
+elementos são referências a recursos na configuração vira ligação com citação do átomo do schema; elemento literal
+ou simbólico não cria ligação; fato do SE prevalece. Entrou também a leitura da ponta FACET como a unidade dona da
+faceta (a faceta não tem identidade própria): sem ela, a lista dentro de um bloco-faceta sairia COMPONENT da faceta
+e a mesma lista no recurso sairia BINDING. Nenhuma das duas decide sozinha: o vínculo segue UNKNOWN enquanto o dono
+for UNKNOWN (o dono é ponta e a G1 lê o grão dele). O que falta é evidência do SE, não regra: dono
+<code>aws_instance</code> sem ciclo de vida, dono e alcance na camada de API e com ponte sem recurso; dono
+<code>oci_core_instance</code> sem identidade de API e bloco <code>create_vnic_details</code> sem ponte; associações
+azurerm sem identidade (a da NIC também sem ciclo de vida e dono de API); regras da security list sem ponte. Com
+esses fatos postos à mão (contrafactual, não é resultado), as 14 anexações AWS por referência e as 2 OCI saem
+BINDING; a AWS por variável simbólica segue UNKNOWN. Sensibilidade: esquema e STO não mudam; na instância NET a
+LISTREF cria 14 ocorrências AWS e 8 azurerm (lista de NICs da VM), todas UNKNOWN pelo dono.</li>
 <li>Emenda 0.1.9 (PILOT-EXIT 1/2: o E2 NET reprovou porque a camada de instância não tinha as regras 0.1.5–0.1.8): a
 instância aplica agora contêiner externo (T51: <code>$ref</code> fora da configuração ou id literal), faceta implícita
 (T57), fora do domínio (T45), bloco repetido de coleção de objetos detectado pela evidência (T2) e o namespace do pai
