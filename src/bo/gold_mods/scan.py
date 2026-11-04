@@ -3,7 +3,7 @@
   python -I -m bo.gold_mods.scan [--workers W] [--limit N] [--out ARQ]
 
 Unidade de variante = diretório de módulo (dirname do arquivo .tf, símbolo estável dentro do repositório).
-Regras (fixadas antes de olhar os números; vão para families.json e summary.json):
+Regras (fixadas antes de olhar os números, salvo V3b, marcada; vão para families.json e summary.json):
   V1  variante = diretório cujos blocos resource/data são de UM só dos 4 provedores; diretório com dois ou
       mais provedores é 'misto' (configuração multi-nuvem simultânea, não variante) e fica fora;
   V2  interface da variante = conjunto das variáveis (raiz var.<x>) que chegam a algum atributo de bloco

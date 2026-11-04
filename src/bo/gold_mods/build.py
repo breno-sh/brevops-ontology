@@ -12,7 +12,7 @@ Saídas:
   $BO_DATA/GOLD-MODS/resolution.json    contagens de resolução (lidas pelo bo.gold_mods.resolve)
   $BO_REPO/results/GOLD-MODS/families.json  famílias, variantes, pares, regras e números (com carimbo)
 
-Regras de linha (declaradas antes de olhar os números):
+Regras de linha (declaradas antes de olhar os números, salvo L3b, marcada):
   L1  nível DERIVADO em toda linha (proof.evidence[].level = derived; curation_rule); nada de exactMatch;
   L2  close só quando, em pelo menos um par de variantes, a variável é o valor inteiro dos DOIS atributos
       (ops == ()): função identity com perda semântica declarada; senão related (sem função, fidelidade none);
@@ -198,7 +198,7 @@ def collect(kept, lic):
                                   "n_shared": p["n_shared"], "jaccard": p["jaccard"],
                                   "equal_interface": p["equal_interface"],
                                   "common_dir_depth": p["common_dir_depth"], "pivots_traced": len(p["feeds"]),
-                                  "pivots_with_rows": n_piv, "claims": sorted(claims)})
+                                  "pivots_with_rows": n_piv, "n_claims": len(claims)})
         for c in comps:
             fk = fam_of[c[0]]
             fam_out.append({"family": fk, "repo_id": rid, "c06_family_id": r["family_id"],
@@ -384,7 +384,7 @@ def families_report(c, inputs):
         "families_by_providers": dict(sorted(Counter("+".join(f["providers"]) for f in fams).items())),
         "pairs_by_providers": dict(sorted(Counter(f"{p['provider_a']}-{p['provider_b']}" for p in pairs).items())),
         "pairs_equal_interface": sum(1 for p in pairs if p["equal_interface"]),
-        "pairs_without_rows": sum(1 for p in pairs if not p["claims"]),
+        "pairs_without_rows": sum(1 for p in pairs if not p["n_claims"]),
         "pivots_traced": len(c["traces"]),
         "pivots_with_rows": sum(1 for t in c["traces"] if t["claims"]),
         "rows": dict(sorted(kinds.items())), "rows_by_relation": dict(sorted(rel.items())),
