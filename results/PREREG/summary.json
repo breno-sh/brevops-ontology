@@ -50,12 +50,13 @@
    {
     "path": "$BO_REPO/semantics",
     "kind": "dir",
-    "sha256": "f17a9f0628b1f9f86ce2916e7d7a61f9b4b8687b97a5da8162388010ae511f06",
+    "sha256": "718544924bc66a4c266dde7fb852b1c8f9d84957630df02ee8b29d5e058da798",
     "sha256_before_plan_regen_stubpath": "3cc3529700453a0296e86afd57ccca7ba55dcf98ab7bfd19e88cc714e4103a49",
     "sha256_before_coord_fix_0303": "220cf3af45d104d0137cea299259bece821720d0cf69a926fb11e7e1c8fd49ba",
     "sha256_before_emenda3_e_skosfix": "def6d50e835765169ae16480003aecbb316fa298a989e8e353d2c326abc51739",
     "sha256_before_sem61d6fae": "266f2f28a6f5bee8f281ad755deead688fcde5d5da163eb8dfd8124ad917bd91",
-    "sha256_before_semea53bcf": "b5e8d6e941a3e7494fcb3af28074046f43f72ed4c13da1d81dfd264af9a91b11"
+    "sha256_before_semea53bcf": "b5e8d6e941a3e7494fcb3af28074046f43f72ed4c13da1d81dfd264af9a91b11",
+    "sha256_before_semffe8c7f": "f17a9f0628b1f9f86ce2916e7d7a61f9b4b8687b97a5da8162388010ae511f06"
    },
    {
     "path": "$BO_REPO/lit/RELATED_WORK.html",
