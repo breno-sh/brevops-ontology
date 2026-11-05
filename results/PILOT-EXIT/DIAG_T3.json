@@ -1,0 +1,140 @@
+{
+ "schema": "bo.pilot_exit.diag/1",
+ "module": "PILOT-EXIT",
+ "generated_at": "2026-11-05T00:02:02-03:00",
+ "attempt": {
+  "global": 3,
+  "in_retained_set": 1,
+  "cycle": "v4"
+ },
+ "method": "sem rodar a avaliação de novo e sem tentativa nova: a VM decifrou (D15, pipe ssh) só para reabrir os itens já marcados como falha de E2; na caixa sem rede, rodaram apenas a decomposição do código congelado (mesmo sha da tentativa) e o comparador do oráculo nesses itens; o arquivo bruto foi apagado. Classe e regra são julgamento do avaliador, não veredito: o veredito do E2 continua o do exit_report.json",
+ "anti_leak": "sem nome real de recurso, sem valor de caso, sem id de fixture retida e sem conteúdo literal da retida; os componentes recebem só a classe e a regra, e cada correção precisa de um caso sintético ou de calibração que a reproduza",
+ "summary": {
+  "failures": 6,
+  "independent_causes": 5,
+  "gabarito_faults": 1,
+  "by_class": {
+   "regra GRAIN": [
+    "F1",
+    "F2",
+    "F3",
+    "F5"
+   ],
+   "adaptador de decomposição do E2E": [
+    "F3",
+    "F4"
+   ],
+   "gabarito ou oráculo": [
+    "F6"
+   ],
+   "evidência SE ausente": [
+    "F6"
+   ],
+   "árbitro": []
+  },
+  "new_vs_calibration": {
+   "nova": [
+    "F1",
+    "F2",
+    "F3",
+    "F4",
+    "F5"
+   ],
+   "contrária à calibração": [
+    "F6"
+   ]
+  }
+ },
+ "failures": [
+  {
+   "id": "F1",
+   "slice": "net",
+   "criterion": "E2 grain_mismatches",
+   "mandatory_case": "NET-C01",
+   "provider": "aws",
+   "symptom": "regra de filtro em recurso SEPARADO sai UNKNOWN (identity, lifecycle_controller, owner e effective_scope ausentes); o gabarito pede COMPONENT do conjunto-pai",
+   "a_root_cause": "regra GRAIN: a unidade C19 desse tipo de recurso separado de regra fica UNKNOWN porque o aspecto id_template não tem tradução (R-GRAIN-T03) e o ciclo de vida e o dono não saem da referência ao conjunto-pai",
+   "b_in_calibration": "nova: a calibração só tem a outra variante de recurso separado de regra do mesmo provedor, que já decide COMPONENT",
+   "c_owner": "GRAIN (e regeneração do C19 pelo PILOT-NET-GLOSS)",
+   "c_general_fix": "recurso separado cuja identidade é composta pela referência a um conjunto-pai mais campos próprios, sem ciclo de vida próprio na camada de API, herda COMPONENT do pai; o id_template composto (pai + campos) passa a ter tradução em T03",
+   "c_reproducer_needed": "caso sintético ou de calibração com cada variante de recurso separado de regra do provedor, inclusive a que a calibração ainda não tem",
+   "d_gabarito_fault": false,
+   "d_evidence": "o gabarito segue o compromisso de regra separada = componente do conjunto e coincide com o que a própria calibração aceita para a variante irmã; o sistema não chega lá por falta de regra, não por fato contrário"
+  },
+  {
+   "id": "F2",
+   "slice": "net",
+   "criterion": "E2 invariance_failures",
+   "mandatory_case": "NET-C01",
+   "provider": "aws",
+   "symptom": "o par embutido x separado não dá as mesmas unidades: no separado as regras saem UNKNOWN",
+   "a_root_cause": "mesma causa de F1 (consequência direta, não é falha independente)",
+   "b_in_calibration": "nova, pelo mesmo motivo de F1; os pares de embalagem da calibração usam a variante que já decide",
+   "c_owner": "GRAIN (corrigido junto com F1)",
+   "c_general_fix": "a regra de F1; depois dela, a invariância à embalagem tem de valer para TODAS as variantes de recurso separado",
+   "c_reproducer_needed": "par de embalagem sintético (embutido x cada variante separada)",
+   "d_gabarito_fault": false,
+   "d_evidence": "invariância é exigência do E2 independente do gabarito"
+  },
+  {
+   "id": "F3",
+   "slice": "net",
+   "criterion": "E2 grain_mismatches",
+   "mandatory_case": "NET-C01",
+   "provider": "azurerm",
+   "symptom": "regra em recurso separado cujo conjunto-pai é dado por atributo de NOME com valor simbólico (variável): o pai sai UNKNOWN e a ocorrência é chaveada pelo endereço Terraform, não pelo nome do elemento",
+   "a_root_cause": "regra GRAIN (ligação ao pai por atributo de nome, T22 parent_attribute) não aceita valor simbólico; o adaptador de decomposição do E2E, sem pai, troca a chave de ocorrência",
+   "b_in_calibration": "nova: na calibração esse provedor só tem pai por nome literal; os casos simbólicos da calibração são de outro provedor ou de outro campo",
+   "c_owner": "GRAIN (resolução de pai) e PILOT-NET-E2E (chave de ocorrência no adaptador)",
+   "c_general_fix": "referência ao pai por atributo de nome com valor simbólico resolve o pai como o símbolo; a chave de ocorrência de elemento nomeado é sempre o nome do elemento, resolvido ou não o pai",
+   "c_reproducer_needed": "caso sintético com pai por atributo de nome simbólico em cada provedor que liga pai por nome",
+   "d_gabarito_fault": false,
+   "d_evidence": "o gabarito aplica a regra de chave publicada no comparador do oráculo (elemento nomeado -> nome; pai simbólico preservado)"
+  },
+  {
+   "id": "F4",
+   "slice": "net",
+   "criterion": "E2 grain_mismatches",
+   "mandatory_case": "NET-C01",
+   "provider": "oci",
+   "symptom": "regras idênticas repetidas no mesmo conjunto viram UMA unidade; o gabarito conta as duas ocorrências",
+   "a_root_cause": "outra: identidade de ocorrência no adaptador de decomposição (elemento anônimo de bloco repetido tratado como conjunto, não como multiconjunto)",
+   "b_in_calibration": "nova: a única repetição da calibração é de outro provedor, onde a repetição é inválida e a fixture é recusada",
+   "c_owner": "PILOT-NET-E2E (decomposição) e GRAIN (camada de instância, identidade de ocorrência)",
+   "c_general_fix": "elemento anônimo de bloco repetido é contado como multiconjunto quando a evidência publicada diz que repetição idêntica é aceita; fundir só onde a evidência diz que repetição é inválida ou idempotente",
+   "c_reproducer_needed": "caso sintético com repetição idêntica num provedor que a aceita e noutro que a recusa",
+   "d_gabarito_fault": false,
+   "d_evidence": "o comparador do oráculo conta repetição citando fato PUBLISHED do SERVICE-EVIDENCE de que o serviço aceita regras idênticas sem id"
+  },
+  {
+   "id": "F5",
+   "slice": "net",
+   "criterion": "E2 grain_mismatches",
+   "mandatory_case": "NET-C08",
+   "provider": "oci",
+   "symptom": "anexação por atributo-lista cuja ponta do conjunto é simbólica (variável) sai UNKNOWN por falta de identidade; o gabarito pede BINDING",
+   "a_root_cause": "regra GRAIN: identidade de BINDING exige as duas pontas resolvidas em recurso; ponta simbólica não é aceita como identidade",
+   "b_in_calibration": "nova: o caso simbólico da calibração desse provedor tem a lista de anexação vazia",
+   "c_owner": "GRAIN (camada de instância)",
+   "c_general_fix": "ponta simbólica (variável ou valor desconhecido nomeado) é identidade válida de BINDING: identidade = (símbolo, alvo); UNKNOWN só quando a ponta não existe nem como símbolo",
+   "c_reproducer_needed": "caso sintético de anexação por atributo-lista com ponta simbólica em cada provedor da fatia",
+   "d_gabarito_fault": false,
+   "d_evidence": "mesma família de F3 (referência simbólica); o gabarito trata símbolo como ponta, como na calibração de outros campos simbólicos"
+  },
+  {
+   "id": "F6",
+   "slice": "sto",
+   "criterion": "E2 grain_mismatches",
+   "mandatory_case": "MC-DEC-SCOPE",
+   "provider": "google",
+   "symptom": "concessão de acesso em recurso separado sai UNRESOLVED (sem dono); o gabarito pede FACET com dono e alcance no contêiner",
+   "a_root_cause": "defeito no gabarito ou oráculo (principal) e evidência SE ausente (secundária): para esse tipo o SERVICE-EVIDENCE só tem dono e alcance na camada Terraform (self), nenhum fato de dono na camada de API; a regra do próprio pipeline (DEC-NO-API-OWNER) devolve UNKNOWN",
+   "b_in_calibration": "contrária à calibração: o gabarito de CALIBRAÇÃO do mesmo tipo, com a mesma evidência, espera UNKNOWN; a retida espera FACET",
+   "c_owner": "PILOT-STO-ORACLE (coerência do gabarito); SERVICE-EVIDENCE (fato de dono na API, se houver fonte publicada)",
+   "c_general_fix": "o oráculo aplica a mesma regra de dono a todas as fixtures (calibração e retidas): tipo sem fato de dono na camada de API decide UNKNOWN em qualquer caso; e o build do oráculo reprova quando o mesmo tipo recebe tipos diferentes sob a mesma evidência. Se houver frase publicada de que a concessão separada pertence ao contêiner, o SE a publica no nível da API e as duas respostas passam a FACET",
+   "c_reproducer_needed": "conferência no build do oráculo: mesmo tipo, mesma evidência -> mesma resposta em calibração e retidas; caso sintético de concessão separada com e sem fato de dono na API",
+   "d_gabarito_fault": true,
+   "d_evidence": "a fixture de calibração do mesmo tipo espera UNKNOWN; o SERVICE-EVIDENCE do pin só tem dono e alcance na camada Terraform para esse tipo; a resposta retida (FACET) não sai da evidência, sai do compromisso"
+  }
+ ]
+}
