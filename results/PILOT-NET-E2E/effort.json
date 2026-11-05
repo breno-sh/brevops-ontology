@@ -103,21 +103,21 @@
   },
   "expected_h": 6,
   "machine_seconds": {
-   "inputs": 0.052,
-   "lift": 0.004,
-   "oracle.c3": 0.537,
-   "owl": 0.005,
+   "inputs": 0.032,
+   "lift": 0.002,
+   "oracle.c3": 0.227,
+   "owl": 0.003,
    "reason.c1": 0.0,
-   "reason.c2": 0.198,
-   "reason.c3": 0.33,
-   "render.c3": 0.642,
-   "translate.c1": 0.02,
-   "translate.c2": 0.037,
-   "translate.c3": 0.048,
-   "write": 0.079
+   "reason.c2": 0.11,
+   "reason.c3": 0.168,
+   "render.c3": 0.331,
+   "translate.c1": 0.009,
+   "translate.c2": 0.015,
+   "translate.c3": 0.023,
+   "write": 0.05
   }
  },
- "generated_at": "2026-11-04T18:50:32-03:00",
+ "generated_at": "2026-11-04T21:38:01-03:00",
  "metrics": [
   {
    "axis": "operational",
