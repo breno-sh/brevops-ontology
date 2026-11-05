@@ -338,6 +338,9 @@ def sto(bundle: dict, frozen_repo: Path, data_root: Path, out: Path, cmd_results
                                  "canary": {k: {kk: v.get(kk) for kk in ("plans", "rendered", "checked")}
                                             for k, v in (nsi.get("canary") or {}).items()}},
             "grain": {"mandatory_total": want, "compared": got, "mismatches": g_mis,
+                      "mismatch_ids": sorted({m.get("fixture_id") for m in gr.get("decomposition_mismatches") or []}),
+                      "invariance_failure_ids": sorted({str(x.get("fixture_id") or x.get("group")) for x in
+                                                        (gr.get("reorder_failures") or []) + (gr.get("packaging_failures") or [])}),
                       "invariance_variants": int(gr.get("reorder_trials") or 0) + int(gr.get("packaging_trials") or 0),
                       "invariance_failures": g_inv},
             "oracle": {"items": len(prim), "judged": len(judged), "correct": correct, "silent_losses": len(silent),

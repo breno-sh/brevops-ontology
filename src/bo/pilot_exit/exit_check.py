@@ -94,6 +94,28 @@ def prereg_declarations(root: Path) -> list[str]:
     return ["\n".join(b) for b in blocks]
 
 
+def e2_split(ev_slices: dict) -> dict | None:
+    """Declaração D-e do PREREG: o E2 relatado em duas partes, (i) itens nunca reabertos e (ii) itens reabertos no
+    diagnóstico DIAG_T3. A lista de reabertos fica em $BO_DATA/PILOT-EXIT/reopened_T3.json (ids, fora do git);
+    aqui só as contagens. O veredito oficial do E2 continua o do conjunto todo."""
+    ro = C.read_json(C.data_dir() / "reopened_T3.json")
+    if not ro:
+        return None
+    out = {}
+    for s, e in sorted(ev_slices.items()):
+        g = e.get("grain") or {}
+        reo = set(ro.get(s, []))
+        mis = set(g.get("mismatch_ids") or [])
+        inv = set(g.get("invariance_failure_ids") or [])
+        for pr in g.get("packaging_failures") or []:
+            inv.update(pr)
+        out[s] = {"reopened_items": len(reo),
+                  "never_reopened": {"mismatches": len(mis - reo), "invariance_failures": len(inv - reo)},
+                  "reopened": {"mismatches": len(mis & reo), "invariance_failures": len(inv & reo)},
+                  "unattributed": max(0, int(g.get("mismatches") or 0) - len(mis))}
+    return out
+
+
 def load_evidence() -> dict:
     out = {}
     for s in C.SLICES:
@@ -254,7 +276,7 @@ def main(argv=None) -> int:
                        "e5": {"addendum": ev["addendum"],
                               "r_ctrl": {s: (c.get("rule") or {}).get("main") for s, c in controls.items()}},
                        "e8": ev["attempts"], "frozen_state": fstate, "prereg_declarations": decls,
-                       "claims_vs_absences": claims_vs_abs,
+                       "claims_vs_absences": claims_vs_abs, "e2_split_D_e": e2_split(ev_slices),
                        "reseals": rs, "attempt_global": rec.get("attempt_global"),
                        "attempt_scope": "por conjunto retido (PREREG, ciclo v4)"}}
     C.write_json(C.results_dir(root) / "exit_report.json", report)
