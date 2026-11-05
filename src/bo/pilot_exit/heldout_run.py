@@ -202,7 +202,7 @@ def main(argv=None) -> int:
     row = {"key": key, "kind": kind, "attempt": attempt, "attempt_global": attempt_global, "seals": seal_now,
            "started_at": started, "finished_at": finished,
            "code": {s: ids[s]["code_sha256"] for s in slices}}
-    prev = load_attempts()
+    prev = attempts                      # lido ANTES de gravar a evidência no .staging (senão o livro some)
     ap_ = stage / "attempts.jsonl"
     ap_.parent.mkdir(parents=True, exist_ok=True)
     ap_.write_text("".join(C.canon(x).decode() + "\n" for x in prev + [row]), encoding="utf-8")

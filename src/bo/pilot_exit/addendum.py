@@ -118,6 +118,13 @@ def render(doc: dict, yaml_rule: dict) -> str:
     parts.append("<p>Alegações e ausências, sempre separadas (E3 conta só alegações): "
                  + "; ".join(f"{e(s)}: {e(v.get('total'))} alegações, {e(v.get('absences'))} ausências"
                              for s, v in sorted(cva.items())) + ".</p>")
+    for sl, r in sorted((doc.get("reseals") or {}).items()):
+        parts.append(f"<p>Selo ativo {e(sl)}: envelope <code>{e(str(r.get('envelope_sha256'))[:16])}…</code>, versão do "
+                     f"conjunto {e(r.get('set_version'))}, revisão {e(r.get('revision') if not isinstance(r.get('revision'), dict) else r['revision'].get('n'))}"
+                     f"; re-selagem declarada: {e(r.get('reason') or 'nenhuma')}.</p>")
+    if doc.get("attempt_global"):
+        parts.append(f"<p>Tentativa {e(doc['attempt'])} neste conjunto retido (global {e(doc['attempt_global'])}); o limite "
+                     "de 2 tentativas vale por conjunto retido (PREREG, ciclo v4).</p>")
     for d in doc.get("declarations") or []:
         parts.append(f"<pre style='white-space:pre-wrap'>{e(d)}</pre>")
     parts.append("<h2>6. Resultado dos critérios</h2><table><tr><th>critério</th><th>resultado</th></tr>")

@@ -1,5 +1,7 @@
 {
- "attempt": 2,
+ "attempt": 1,
+ "attempt_global": 3,
+ "attempt_scope": "por conjunto retido (PREREG ciclo v4)",
  "criteria": {
   "path": "$BO_REPO/prereg/pilot_exit.yaml",
   "sha256": "17132a424cf68a222c3534b154949d3dabb00973cdaf120ea584542301dc4f09"
@@ -11,24 +13,24 @@
  "evidence": {
   "net": {
    "path": "$BO_DATA/PILOT-EXIT/heldout/net/evidence.json",
-   "sha256": "7bf95f7e9e1cb941c596293bc540de1e22917a63a8fd96b710d2e2bb3fe01d20"
+   "sha256": "f1934a09c0222babd1b57809e320f356a3f8862e5ccc4ef170305fe29ce9675f"
   },
   "sto": {
    "path": "$BO_DATA/PILOT-EXIT/heldout/sto/evidence.json",
-   "sha256": "b656434a33256a54e37a5c17246489691ece0cf9b22971c31385c8d0139cc304"
+   "sha256": "97ffd9db92fa4fb11a8ec7f2346125e2e23224b008be16f672e41b24fb9972b4"
   }
  },
- "finished_at": "2026-11-04T20:52:52-03:00",
+ "finished_at": "2026-11-04T23:55:20-03:00",
  "frozen_code": {
   "net": {
-   "base_head": "aa5995751b89ea6dd19bfe2587fef59e5abe95b8",
-   "code_sha256": "ef78d0ec2f5d5c18059f1b6bd0d849ca33e17c62acbcd5a4a8abf363b3e1103e",
-   "delivery_at": "2026-11-04T18:50:35-03:00",
-   "delivery_commit": "83f78c4774a272b53628860bf9e3eb432c7e9788",
+   "base_head": "2d839de107857a09cf8ebafdb8e40d6ea7e5abac",
+   "code_sha256": "0aac913a49a66a12ceffc19460070ca6f50af7ffd042545b1f91dba198615220",
+   "delivery_at": "2026-11-04T23:44:07-03:00",
+   "delivery_commit": "e18f0aa541b859d404137c852051af99f68d1f4b",
    "files": 29,
    "match": true,
    "module": "PILOT-NET-E2E",
-   "n_delivery_commits": 24,
+   "n_delivery_commits": 35,
    "problems": [],
    "recorded": {
     "manifest_files": 0,
@@ -37,14 +39,14 @@
    "slice": "net"
   },
   "sto": {
-   "base_head": "aa5995751b89ea6dd19bfe2587fef59e5abe95b8",
-   "code_sha256": "106bf40aee2d7f7e381c7b3a5d44a4855f2a5494d30a571a8832cae1b711006e",
-   "delivery_at": "2026-11-04T18:54:45-03:00",
-   "delivery_commit": "aa5995751b89ea6dd19bfe2587fef59e5abe95b8",
+   "base_head": "2d839de107857a09cf8ebafdb8e40d6ea7e5abac",
+   "code_sha256": "667200bfe5f93bf949cca309e3a56ebd4fbc6f729b3d955ef1fa231d0441ae6d",
+   "delivery_at": "2026-11-04T23:46:40-03:00",
+   "delivery_commit": "2d839de107857a09cf8ebafdb8e40d6ea7e5abac",
    "files": 28,
    "match": true,
    "module": "PILOT-STO-E2E",
-   "n_delivery_commits": 11,
+   "n_delivery_commits": 12,
    "problems": [],
    "recorded": {
     "manifest_files": 0,
@@ -54,8 +56,9 @@
   }
  },
  "isolation": "cópia congelada em $BO_TMP/run; BO_DATA sobreposto; sandbox-exec sem escrita fora de $BO_TMP e sem rede; árvore apagada no fim (texto claro nunca gravado fora dela)",
- "key": "bb903e554f2650cecc69c502f4dfcc8caea1382acb6f748963312a2b4d70b2d8",
+ "key": "724260d9e55613efb98e75b96ae38d5d14881830cb4640c1cabf0733403965bd",
  "kind": "attempt",
+ "ledger_note": "livro de tentativas refeito do histórico git (8df8051, f178116): a gravação da tentativa 2 perdeu a linha da 1 (defeito do avaliador, corrigido)",
  "module": "PILOT-EXIT",
  "runs": {
   "net": {
@@ -64,19 +67,19 @@
      "cmd": "python -I -m bo.pilot.grain_check --slice net --fixtures /Users/breno/doutorado/brevops-data/tmp/PILOT-EXIT/run/net/repo/pilot/net/fixtures_calib --out /Users/breno/doutorado/brevops-data/tmp/PILOT-EXIT/run/net/out_grain",
      "i": 1,
      "rc": 1,
-     "seconds": 5.1
+     "seconds": 6.5
     },
     {
      "cmd": "python -I -m bo.pilot.run --slice net --controls c1_table,c2_taxonomy,c3_full --fixtures /Users/breno/doutorado/brevops-data/tmp/PILOT-EXIT/run/net/repo/pilot/net/fixtures_calib --out /Users/breno/doutorado/brevops-data/tmp/PILOT-EXIT/run/net/out",
      "i": 2,
      "rc": 0,
-     "seconds": 4.7
+     "seconds": 5.1
     },
     {
      "cmd": "python -I -m bo.pilot.oracle_eval --slice net --set calib --fixtures /Users/breno/doutorado/brevops-data/tmp/PILOT-EXIT/run/net/repo/pilot/net/fixtures_calib --out /Users/breno/doutorado/brevops-data/tmp/PILOT-EXIT/run/net/out",
      "i": 3,
      "rc": 0,
-     "seconds": 1.3
+     "seconds": 1.4
     },
     {
      "cmd": "python -I -m bo.lower.no_silent_insert --slice net --fixtures /Users/breno/doutorado/brevops-data/tmp/PILOT-EXIT/run/net/repo/pilot/net/fixtures_calib --out /Users/breno/doutorado/brevops-data/tmp/PILOT-EXIT/run/net/out",
@@ -88,82 +91,82 @@
      "cmd": "python -I -m bo.pilot.tf_validate --slice net --plugin-cache $BO_DATA --fixtures /Users/breno/doutorado/brevops-data/tmp/PILOT-EXIT/run/net/repo/pilot/net/fixtures_calib --out /Users/breno/doutorado/brevops-data/tmp/PILOT-EXIT/run/net/out",
      "i": 5,
      "rc": 0,
-     "seconds": 15.9
+     "seconds": 20.7
     }
    ],
    "materialized": {
-    "fixtures": 34,
-    "oracle_manifest_lines": 60,
-    "translations": 24
+    "fixtures": 44,
+    "oracle_manifest_lines": 74,
+    "translations": 28
    },
    "module": "PILOT-NET-E2E",
-   "seconds": 31.6
+   "seconds": 39.1
   },
   "sto": {
    "commands": [
     {
      "cmd": "python -I -m bo.pilot.grain_check --slice sto",
      "i": 1,
-     "rc": 0,
-     "seconds": 4.1
+     "rc": 1,
+     "seconds": 4.2
     },
     {
      "cmd": "python -I -m bo.pilot.run --slice sto --controls c1_table,c2_taxonomy,c3_full --fixtures calib",
      "i": 2,
      "rc": 0,
-     "seconds": 5.1
+     "seconds": 5.2
     },
     {
      "cmd": "python -I -m bo.pilot.oracle_eval --slice sto --set calib",
      "i": 3,
      "rc": 0,
-     "seconds": 4.0
+     "seconds": 4.2
     },
     {
      "cmd": "python -I -m bo.lower.no_silent_insert --slice sto",
      "i": 4,
      "rc": 0,
-     "seconds": 8.3
+     "seconds": 8.4
     },
     {
      "cmd": "python -I -m bo.pilot.tf_validate --slice sto --plugin-cache $BO_DATA",
      "i": 5,
      "rc": 0,
-     "seconds": 21.1
+     "seconds": 21.6
     },
     {
      "cmd": "python -I /Users/breno/doutorado/brevops-data/tmp/PILOT-EXIT/run/sto/out/sto_probe.py /Users/breno/doutorado/brevops-data/tmp/PILOT-EXIT/run/sto/out/sto_probe.json",
      "i": 6,
      "rc": 0,
-     "seconds": 4.0
+     "seconds": 4.2
     }
    ],
    "materialized": {
     "direction_entries": 181,
-    "fixtures": 123,
-    "oracle_manifest_lines": 305
+    "fixtures": 136,
+    "oracle_manifest_lines": 318
    },
    "module": "PILOT-STO-E2E",
-   "seconds": 57.7
+   "seconds": 57.8
   }
  },
  "schema": "bo.pilot_exit.heldout_run/1",
  "seal": {
   "net": {
-   "ciphertext_sha256": "99f53463cbeaeb38b5206344bef56b467c362d359ba85b6c5da58f7190816c29",
-   "envelope": "$BO_DATA/PILOT-NET-ORACLE/sealed/retained.cms.pem",
-   "n_items": 58,
-   "plaintext_bytes": 266240,
-   "plaintext_sha256": "262eb5a53c8f38140114c39b07b9a07124ac51c86443f679ca1f5e044bafbc7d"
+   "ciphertext_sha256": "7cfa2c8ce5322c2fe0501b9be2fcb082c9dc8ccd984bd596c707c1b6e8768365",
+   "envelope": "$BO_DATA/PILOT-NET-ORACLE/sealed/retained_v2r2.cms.pem",
+   "n_items": 72,
+   "plaintext_bytes": 368640,
+   "plaintext_sha256": "b638bfbc85570adf13b94f9d93509e9d8d6f998e0a6d30b2da4bdc43d30cee10"
   },
   "sto": {
-   "ciphertext_sha256": "572f133361bc21d79ae225ba98c42d3f7fa5eba0b6a472c6292264ea735a8ce0",
+   "ciphertext_sha256": "c5be53e93e82e5e432d44d9ea91ec9b22fb002da9ed1f2dfa168fdd303b133d9",
    "envelope": "$BO_DATA/PILOT-STO-ORACLE/sealed/heldout.cms.pem",
-   "n_items": 304,
-   "plaintext_bytes": 810495,
-   "plaintext_sha256": "cb9d9d1187cfe78e5db722b80dc275dfe2b92749c94cdc334395631c2e98fc3b"
+   "n_items": 317,
+   "plaintext_bytes": 975155,
+   "plaintext_sha256": "8fd771189b9cee5b2da3c25b5284b92a516f973fc8236d2595dd44e2000f18dd"
   }
  },
- "started_at": "2026-11-04T20:51:23-03:00",
+ "started_at": "2026-11-04T23:53:43-03:00",
  "status": "COMPLETE"
 }

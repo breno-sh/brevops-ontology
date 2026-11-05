@@ -42,7 +42,24 @@ def scale_started(root: Path, cat: dict) -> list[str]:
 FROZEN_MODULES = ("PILOT-STO-E2E", "PILOT-STO-MAP", "PILOT-STO-GLOSS", "PILOT-STO-ORACLE", "PILOT-NET-E2E",
                   "PILOT-NET-MAP", "PILOT-NET-GLOSS", "PILOT-NET-ORACLE", "GRAIN", "SERVICE-EVIDENCE", "ARBITERLIB",
                   "CONTRACTS", "SEMANTICS")
-DECL_MARKS = ("DESVIO DECLARADO", "REGRA DE CONSOLIDAÇÃO", "DECLARAÇÕES DE INTEGRIDADE", "CORREÇÃO DA R2")
+DECL_MARKS = ("DESVIO DECLARADO", "REGRA DE CONSOLIDAÇÃO", "DECLARAÇÕES DE INTEGRIDADE", "CORREÇÃO DA R2",
+              "CICLO V4", "REGRA R6")
+
+
+def reseals(root: Path) -> dict:
+    """Re-selagens declaradas pelos oráculos no índice selado ativo (sem conteúdo retido)."""
+    from . import unseal
+    out = {}
+    for s in C.SLICES:
+        try:
+            i = unseal.index_of(s, root)
+        except unseal.SealError:
+            continue
+        out[s] = {"envelope_sha256": unseal.envelope_sha(s, i), "plaintext_sha256": i.get("plaintext_sha256"),
+                  "set_version": i.get("set_version"), "revision": i.get("revision"),
+                  "reason": i.get("reseal_reason") or (i.get("revision") or {}).get("reason") if isinstance(
+                      i.get("revision"), dict) else i.get("reseal_reason")}
+    return out
 
 
 def frozen_state(root: Path, base: str) -> dict:
@@ -157,7 +174,8 @@ def main(argv=None) -> int:
     fstate = frozen_state(root, base)
     decls = prereg_declarations(root)
     claims_vs_abs = {s: {k: (e.get("claims") or {}).get(k) for k in ("total", "absences")} for s, e in ev_slices.items()}
-    add_doc = {"written_at": C.now(), "frozen_state": fstate, "declarations": decls, "claims_vs_absences": claims_vs_abs,
+    rs = reseals(root)
+    add_doc = {"written_at": C.now(), "frozen_state": fstate, "reseals": rs, "attempt_global": rec.get("attempt_global"), "declarations": decls, "claims_vs_absences": claims_vs_abs,
                "base": base, "criteria_sha256": crit_sha, "attempt": attempts,
                "attempts_max": crit.get("attempts_max"), "controls": controls, "amendments": led,
                "effort": eff, "criteria": first, "decision": "(provisório: E5 e E8 ainda não avaliados)"}
@@ -236,7 +254,9 @@ def main(argv=None) -> int:
                        "e5": {"addendum": ev["addendum"],
                               "r_ctrl": {s: (c.get("rule") or {}).get("main") for s, c in controls.items()}},
                        "e8": ev["attempts"], "frozen_state": fstate, "prereg_declarations": decls,
-                       "claims_vs_absences": claims_vs_abs}}
+                       "claims_vs_absences": claims_vs_abs,
+                       "reseals": rs, "attempt_global": rec.get("attempt_global"),
+                       "attempt_scope": "por conjunto retido (PREREG, ciclo v4)"}}
     C.write_json(C.results_dir(root) / "exit_report.json", report)
     for k, v in final.items():
         C.say(f"exit_check: {k} {v.get('name', '')}: {'PASSA' if v['pass'] else 'REPROVA'}"

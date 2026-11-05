@@ -1,6 +1,5 @@
-EXPANSÃO BLOQUEADA — PILOT-EXIT, resultado de 2026-11-04T20:52:52-03:00 (America/Recife)
-Tentativa 2 de 2. Critérios E1–E6 reprovados: E2, E3, E6.
-O PLANO VOLTA PARA REVISÃO (v4): E1–E6 falharam duas vezes (E8).
-Caminho de saída: conjunto retido NOVO ou provedor retido (Alibaba); este conjunto retido não é reusado em nenhuma tentativa.
+EXPANSÃO BLOQUEADA — PILOT-EXIT, resultado de 2026-11-04T23:55:20-03:00 (America/Recife)
+Tentativa 1 de 2. Critérios E1–E6 reprovados: E2.
+Corrigir por emenda versionada e repetir (conta uma tentativa); a escala não começa.
 Aviso ao Breno: este arquivo e o relatório do módulo (o coordenador repassa).
 Bloqueia: DECOMPOSE, 6 glossários, 36 mapeadores e 16 módulos de nuvem.

@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "PILOT-EXIT",
- "generated_at": "2026-11-04T20:55:28-03:00",
+ "generated_at": "2026-11-04T23:56:48-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-EXIT.txt",
@@ -11,42 +11,43 @@
   "params": {
    "role": "evaluator",
    "role_brief": "briefs/VALIDATOR_BRIEF.txt",
-   "role_brief_version": "1.2.0",
+   "role_brief_version": "1.3.1",
    "role_brief_sha256": "61d6491c4486cc0a482d7d15d6ac463364056645c5d14653198d7e67b8119c72",
-   "evaluated_code_sha256": "sto:106bf40aee2d7f7e381c7b3a5d44a4855f2a5494d30a571a8832cae1b711006e,net:ef78d0ec2f5d5c18059f1b6bd0d849ca33e17c62acbcd5a4a8abf363b3e1103e",
-   "evaluated_commits": "sto:aa59957,net:83f78c4",
+   "evaluated_code_sha256": "sto:667200bfe5f93bf949cca309e3a56ebd4fbc6f729b3d955ef1fa231d0441ae6d,net:0aac913a49a66a12ceffc19460070ca6f50af7ffd042545b1f91dba198615220",
+   "evaluated_commits": "sto:2d839de,net:e18f0aa",
    "criteria_sha256": "17132a424cf68a222c3534b154949d3dabb00973cdaf120ea584542301dc4f09",
-   "attempt": "2",
+   "attempt": "1",
+   "attempt_global": "3",
+   "cycle": "v4",
    "seeds": "nenhuma",
    "decryption": "VM-Oracle-D15-pipe-ssh",
-   "heldout_items": "sto:304,net:58",
-   "seals": "sto:572f133361bc21d7,net:99f53463cbeaeb38"
+   "seals": "sto:c5be53e93e82e5e4,net:7cfa2c8ce5322c2f"
   },
   "inputs": [
    {
     "path": "$BO_REPO/src/bo/pilot",
     "kind": "dir",
-    "sha256": "9183bafc65cda57b0f429b83b3f47002a449bd6860fcd92761d8afbccfd47977"
+    "sha256": "0d170f2efcaa25621367c63c70fb008c5b12feff675e56e3de0813354dae155a"
    },
    {
     "path": "$BO_DATA/PILOT-STO-ORACLE/sealed",
     "kind": "dir",
-    "sha256": "91590d8946d0ad85dd1be96e70b87145d77ef5643360eddcb02e06013a4e24ca"
+    "sha256": "529f2b4ec2365ff03c05108d4a8e8cb51364ee793e803977c48d31020030a9c3"
    },
    {
     "path": "$BO_DATA/PILOT-NET-ORACLE/sealed",
     "kind": "dir",
-    "sha256": "fc9e870c2bde1d53eeb080f99b92d03b4ef87824e91704cff3edab02dbea38e2"
+    "sha256": "3b24fe95575bf319b3d5d9ebc6522257e14db6bbb233f3580399453da90484f2"
    },
    {
     "path": "$BO_REPO/results/PILOT-STO-E2E",
     "kind": "dir",
-    "sha256": "540d84556f990e6eba78c188202c5126716ff2bf9d683c55753b0599cb3b8250"
+    "sha256": "2c5cb324a636fd93779ed1b6e8f1cbdd7098353853598ad9e7539457419e3002"
    },
    {
     "path": "$BO_REPO/results/PILOT-NET-E2E",
     "kind": "dir",
-    "sha256": "6aec07274dc410af86ec17aa2d935b49b19119b7b946e814ed023800e2ff3fe3"
+    "sha256": "5dcbf9b45b467ee098956ad224b8828a629aa79c98295293723bd2df89ed2e2d"
    },
    {
     "path": "$BO_REPO/prereg/pilot_exit.yaml",
@@ -54,7 +55,7 @@
     "sha256": "17132a424cf68a222c3534b154949d3dabb00973cdaf120ea584542301dc4f09"
    }
   ],
-  "recorded_at": "2026-11-04T20:55:28-03:00"
+  "recorded_at": "2026-11-04T23:56:48-03:00"
  },
  "sources": [
   {
@@ -78,5 +79,5 @@
    "transformation": "declarações copiadas no adendo e no relatório"
   }
  ],
- "notes": "avaliador PILOT-EXIT, tentativa 2 de 2 (autorizada pelo Breno): E2 (net), E3 (sto) e E6 reprovam; plano volta para revisão v4"
+ "notes": "avaliador PILOT-EXIT, ciclo v4 tentativa 1 (global 3) nos conjuntos retidos novos: só E2 reprova (net e sto)"
 }
