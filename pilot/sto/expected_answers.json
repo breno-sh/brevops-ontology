@@ -11187,12 +11187,11 @@
     {
      "expect": {
       "disputed": [
+       "effective_scope",
        "lifecycle_controller",
        "owner"
       ],
-      "effective_scope": [
-       "container:oci_objectstorage_bucket.logs"
-      ],
+      "effective_scope": "UNKNOWN",
       "kind": "UNKNOWN",
       "lifecycle_controller": "UNKNOWN",
       "owner": "UNKNOWN"
@@ -11205,7 +11204,7 @@
    "invariant_group": null,
    "polarity": "unknown",
    "provider": "oci",
-   "summary": "política de ciclo de vida separada: dono e ciclo de vida em disputa spec x doc"
+   "summary": "política de ciclo de vida separada: dono, ciclo de vida e alcance em disputa spec x doc"
   },
   "FX-STO-OCI-DEC-SCOPE-U02": {
    "case": "MC-DEC-SCOPE",
@@ -11694,9 +11693,9 @@
    "summary": "versionamento do contêiner não lido"
   }
  },
- "generated_at": "2026-11-04T21:32:22-03:00",
+ "generated_at": "2026-11-04T23:06:38-03:00",
  "heldout": {
-  "ciphertext_sha256": "8fd31ee6fc09ac596231db4694ec2597b9d59ebb1a76e39f0e805f8c560259d2",
+  "ciphertext_sha256": "c5be53e93e82e5e432d44d9ea91ec9b22fb002da9ed1f2dfa168fdd303b133d9",
   "counts": {
    "checks": 230,
    "checks_derived": 176,
@@ -11707,15 +11706,15 @@
    "entries_published_only": 4,
    "fixtures": 136
   },
-  "plaintext_sha256": "7cc7de68b632caf46422c3fc32b8900c53a58117ac8499815ec568579bb2016a",
+  "plaintext_sha256": "8fd771189b9cee5b2da3c25b5284b92a516f973fc8236d2595dd44e2000f18dd",
   "recipient_fingerprint_sha256": "3677203c7657c3b0043246f3ae13cc25b41ec29dac5a6a99134aad9f6bd43e26",
-  "sealed_at": "2026-11-04T21:32:22-03:00",
+  "sealed_at": "2026-11-04T23:06:38-03:00",
   "sealed_file": "$BO_DATA/PILOT-STO-ORACLE/sealed/heldout.cms.pem"
  },
  "module": "PILOT-STO-ORACLE",
  "note": "resposta esperada escrita a partir dos compromissos (C24), da evidência publicada (SERVICE-EVIDENCE e docs fixados) e das fórmulas de cases.py; conferida contra o avaliador antes de gravar; nunca saída de mapeador. Retidas: só o índice abaixo; o conteúdo existe só cifrado.",
- "oracle_sha256": "3e4a549ce30d8d3d574d42e170799d2c7a6abc65e4f627e8c8b7d45b7b8241e0",
- "oracle_version": "1.2.0",
+ "oracle_sha256": "c84bbc688c9952690d78fafebd79ed24d0ec3d1b4e789eac6e73733999db9e9a",
+ "oracle_version": "1.3.0",
  "providers": {
   "aws": "6.71.0",
   "azurerm": "5.12.0",

@@ -12,7 +12,7 @@
  },
  "schema": "bo.pilot.sto.fixture/1",
  "split": "calib",
- "summary": "política de ciclo de vida separada: dono e ciclo de vida em disputa spec x doc",
+ "summary": "política de ciclo de vida separada: dono, ciclo de vida e alcance em disputa spec x doc",
  "terraform": {
   "resource": {
    "oci_objectstorage_bucket": {

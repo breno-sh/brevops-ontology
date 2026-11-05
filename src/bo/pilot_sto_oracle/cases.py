@@ -320,10 +320,10 @@ def mc_dec_scope(g):
     r = merge(r, expire_current("oci", nb, 30))
     cu = f"container:{c}"
     pol = f"oci_objectstorage_object_lifecycle_policy.{nb}"
-    g.add("oci", "MC-DEC-SCOPE", "unknown", "política de ciclo de vida separada: dono e ciclo de vida em disputa spec x doc", r,
+    g.add("oci", "MC-DEC-SCOPE", "unknown", "política de ciclo de vida separada: dono, ciclo de vida e alcance em disputa spec x doc", r,
           [{"kind": "decomposition", "unit": f"setting:lifecycle@DISPUTED:{pol}",
-            "expect": {"kind": "UNKNOWN", "owner": "UNKNOWN", "lifecycle_controller": "UNKNOWN", "effective_scope": [cu],
-                       "disputed": ["lifecycle_controller", "owner"]}}])
+            "expect": {"kind": "UNKNOWN", "owner": "UNKNOWN", "lifecycle_controller": "UNKNOWN", "effective_scope": "UNKNOWN",
+                       "disputed": ["effective_scope", "lifecycle_controller", "owner"]}}])
     g.add("oci", "MC-DEC-SCOPE", "negative", "disputa resolvida por escolha (faceta do contêiner) tem de ser rejeitada", r,
           [{"kind": "claim", "claim": {"about": "decomposition", "unit": f"setting:lifecycle@{cu}", "value": {"kind": "FACET"}},
             "expect": {"verdict": "REJECT", "code": "NO_SUCH_UNIT"}}])

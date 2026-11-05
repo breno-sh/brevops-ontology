@@ -1,5 +1,5 @@
 PILOT-STO-ORACLE: notas do oráculo offline do piloto de armazenamento de objeto
-gravado em 2026-11-03T22:00-03:00, revisto em 2026-11-04T21:32:50-03:00 (America/Recife)
+gravado em 2026-11-03T22:00-03:00, revisto em 2026-11-04T23:07:03-03:00 (America/Recife)
 
 O QUE ESTÁ AQUI
 - Avaliador: pilot/sto/oracle/sto_oracle.py (só biblioteca padrão; não importa nada do pipeline). Estado efetivo
@@ -170,3 +170,19 @@ CICLO v4 2026-11-04 21h: CONJUNTO RETIDO NOVO (o anterior está queimado: o PILO
   Envelope novo sha256 8fd31ee6fc09ac596231db4694ec2597b9d59ebb1a76e39f0e805f8c560259d2; texto claro sha256 7cc7de68b632caf46422c3fc32b8900c53a58117ac8499815ec568579bb2016a.
 - Calibração NÃO mudou: fixtures_calib, respostas de calibração e oráculo (sto_oracle.py 3e4a549c...) idênticos; só
   a seção heldout do expected_answers.json e o ORACLE.sha256 apontam para o envelope novo.
+
+CICLO v4, REVISÃO 2026-11-04 23h (SERVICE-EVIDENCE 3ba4079 CC-14 e f44b9a6 R6; SEMANTICS emenda 3 ffe8c7f)
+- Rerodei a calibração e o gabarito das retidas sobre f44b9a6 (service_evidence.jsonl sha256 2994da01...). Guias
+  oficiais do CC-14: 31 frases, todas de rede; nenhuma de armazenamento. SEMANTICS emenda 3 (wrap_list/unwrap_single)
+  não toca o oráculo. Os 35 evidence_id citados estão presentes com o mesmo valor.
+- MUDOU 1 resposta, na calibração e nas retidas, pelo mesmo motivo: o alcance efetivo de
+  oci_objectstorage_object_lifecycle_policy entrou em disputa spec x doc (SE-oci-6x3u7oqkpdma2pqw, doc self x
+  SE-oci-tioryzb3iqoydw6m, spec parent; spec_disputes.json, status aberta). Disputa vira UNKNOWN, sem escolha: a unidade
+  setting:lifecycle@DISPUTED:<política> passa a ter effective_scope UNKNOWN, e 'disputed' inclui effective_scope.
+  Calibração: FX-STO-OCI-DEC-SCOPE-U01. Retidas: 1 fixture da mesma família. Oráculo 1.3.0 (tabela DISPUTED).
+  Nenhum veredito das entradas de direção mudou (calibração e retidas).
+- RE-SELO DECLARADO: o conjunto v4 continua o mesmo (mesmas 317 instâncias e o mesmo índice de itens); só a resposta
+  acima mudou. Decifrei na VM (o texto claro bateu com o índice: 7cc7de68...), corrigi, reconferi tudo com o oráculo
+  1.3.0 (230 conferências e 181 entradas) e recifrei lá; o texto claro nunca saiu da VM, e os temporários foram
+  apagados. Envelope revisado sha256 c5be53e93e82e5e432d44d9ea91ec9b22fb002da9ed1f2dfa168fdd303b133d9; texto claro 8fd771189b9cee5b2da3c25b5284b92a516f973fc8236d2595dd44e2000f18dd.
+  O envelope v4 anterior (8fd31ee6...) foi para retired/ com status SUPERSEDED (não queimado).

@@ -1,6 +1,6 @@
 {
  "current": {
-  "ciphertext_sha256": "8fd31ee6fc09ac596231db4694ec2597b9d59ebb1a76e39f0e805f8c560259d2",
+  "ciphertext_sha256": "c5be53e93e82e5e432d44d9ea91ec9b22fb002da9ed1f2dfa168fdd303b133d9",
   "counts": {
    "checks": 230,
    "checks_derived": 176,
@@ -12,8 +12,16 @@
    "fixtures": 136
   },
   "items": 317,
-  "plaintext_sha256": "7cc7de68b632caf46422c3fc32b8900c53a58117ac8499815ec568579bb2016a",
-  "sealed_at": "2026-11-04T21:32:22-03:00",
+  "plaintext_sha256": "8fd771189b9cee5b2da3c25b5284b92a516f973fc8236d2595dd44e2000f18dd",
+  "revision": {
+   "changed_fixtures": 1,
+   "n": 1,
+   "of_plaintext_sha256": "7cc7de68b632caf46422c3fc32b8900c53a58117ac8499815ec568579bb2016a",
+   "reason": "SE f44b9a6: alcance efetivo de oci_objectstorage_object_lifecycle_policy entrou em disputa spec x doc (SE-oci-6x3u7oqkpdma2pqw x SE-oci-tioryzb3iqoydw6m); disputa vira UNKNOWN",
+   "where": "decifrado, corrigido, reconferido (oráculo 1.3.0: 230 conferências e 181 entradas) e recifrado na VM; texto claro nunca saiu de lá"
+  },
+  "sealed_at": "2026-11-04T23:06:38-03:00",
+  "set": "v4",
   "status": "ACTIVE"
  },
  "module": "PILOT-STO-ORACLE",
@@ -26,6 +34,15 @@
    "retired_at": "2026-11-04T21:32:22-03:00",
    "sealed_at": "2026-11-04T09:01:42-03:00",
    "status": "RETIRED"
+  },
+  {
+   "ciphertext_sha256": "8fd31ee6fc09ac596231db4694ec2597b9d59ebb1a76e39f0e805f8c560259d2",
+   "items": 317,
+   "plaintext_sha256": "7cc7de68b632caf46422c3fc32b8900c53a58117ac8499815ec568579bb2016a",
+   "reason": "revisão 1 do conjunto v4: mesmas instâncias; a resposta da fixture da política de ciclo de vida OCI mudou (SE f44b9a6: alcance em disputa spec x doc vira UNKNOWN)",
+   "retired_at": "2026-11-04T23:06:38-03:00",
+   "sealed_at": "2026-11-04T21:32:22-03:00",
+   "status": "SUPERSEDED"
   }
  ],
  "schema": "bo.pilot.sto.retired_sets/1"

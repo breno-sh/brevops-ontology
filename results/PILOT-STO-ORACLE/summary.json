@@ -3,22 +3,22 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "PILOT-STO-ORACLE",
- "generated_at": "2026-11-04T21:32:53-03:00",
+ "generated_at": "2026-11-04T23:07:06-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-STO-ORACLE.txt",
   "brief_sha256": "dcc0cad3880b87ac5e3efb55c1feb1b019f4e455d371d3fb8242169c5e6db1d3",
   "params": {
-   "oracle_version": "1.2.0",
+   "oracle_version": "1.3.0",
    "calib_fixtures": "123",
    "calib_direction_entries": "181",
    "heldout_items": "317",
-   "heldout_set": "v4",
+   "heldout_set": "v4-rev1",
    "providers": "aws:6.71.0,google:8.9.0,azurerm:5.12.0,oci:9.11.0",
    "seal": "openssl-cms-aes256-D15",
    "rules": "79",
-   "service_evidence_commit": "365e6ed",
-   "semantics_commit": "ea53bcf"
+   "service_evidence_commit": "f44b9a6",
+   "semantics_commit": "ffe8c7f"
   },
   "inputs": [
    {
@@ -29,15 +29,15 @@
    {
     "path": "$BO_REPO/semantics/SEMANTICS.html",
     "kind": "file",
-    "sha256": "043777b7eb8a4362f267d5b563083d1e01f2811cb9a74de2377ae986252a2993"
+    "sha256": "e87837dd98dbde50a3d4cf5a418b793eea2131d97b4259c35fe9ec76be9f1640"
    },
    {
     "path": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl",
     "kind": "file",
-    "sha256": "0b5bdd079c88ae3d02f866623f7903d6d0cb6c8251d553aa72efe2decfb61123"
+    "sha256": "2994da012fbc9296a31fd2e82d8e55cd7dd274c8be74c24634681412effe07f1"
    }
   ],
-  "recorded_at": "2026-11-04T21:32:53-03:00"
+  "recorded_at": "2026-11-04T23:07:06-03:00"
  },
  "sources": [
   {
@@ -73,13 +73,13 @@
   {
    "uri": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl",
    "license": "interno (SERVICE-EVIDENCE)",
-   "transformation": "dono, alcance e ciclo de vida citados por evidence_id; conjunto retido v4 sobre 365e6ed"
+   "transformation": "dono, alcance e ciclo de vida citados por evidence_id; gabarito rerodado sobre f44b9a6"
   },
   {
    "uri": "results/SERVICE-EVIDENCE/spec_disputes.json",
    "license": "interno (SERVICE-EVIDENCE)",
-   "transformation": "disputas spec x doc da fatia viram UNKNOWN com os dois lados"
+   "transformation": "disputas spec x doc da fatia viram UNKNOWN com os dois lados (inclui o alcance da política OCI)"
   }
  ],
- "notes": "oráculo offline STO 1.2.0; conjunto retido v4 (317 itens) selado com o certificado da VM (D15); conjunto anterior aposentado; nada lido do GRAIN, GLOSS ou MAP"
+ "notes": "oráculo offline STO 1.3.0; conjunto retido v4 revisão 1 recifrado na VM (D15); nada lido do GRAIN, GLOSS ou MAP"
 }

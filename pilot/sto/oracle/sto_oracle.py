@@ -28,7 +28,7 @@ import json
 import math
 import re
 
-ORACLE_VERSION = "1.2.0"
+ORACLE_VERSION = "1.3.0"
 PROVIDERS = ("aws", "google", "azurerm", "oci")
 PINS = {"aws": "6.71.0", "google": "8.9.0", "azurerm": "5.12.0", "oci": "9.11.0"}
 
@@ -1202,6 +1202,8 @@ def _setting_units(fx):
 DISPUTED = {
     ("oci_objectstorage_object_lifecycle_policy", "owner"): {
         "doc": {"kind": "self", "evidence": "SE-oci-ly3dxhupemtm3r2k"}, "spec": {"kind": "parent", "evidence": "SE-oci-kkzc3zme53bcjzl4"}},
+    ("oci_objectstorage_object_lifecycle_policy", "effective_scope"): {
+        "doc": {"kind": "self", "evidence": "SE-oci-6x3u7oqkpdma2pqw"}, "spec": {"kind": "parent", "evidence": "SE-oci-tioryzb3iqoydw6m"}},
     ("oci_objectstorage_object_lifecycle_policy", "lifecycle_controller"): {
         "doc": {"kind": "self", "evidence": "SE-oci-2iam25lrjrqv3hu6"}, "spec": {"kind": "parent", "evidence": "SE-oci-7o3wovj6unfbibgi"}},
 }
@@ -1247,7 +1249,7 @@ def decompose(fx):
             ds = _disputes_of(by)
             units[f"setting:{kind}@DISPUTED:{by}"] = {
                 "kind": "UNKNOWN", "owner": "UNKNOWN" if "owner" in ds else f"container:{target}",
-                "effective_scope": [f"container:{target}"],
+                "effective_scope": "UNKNOWN" if "effective_scope" in ds else [f"container:{target}"],
                 "lifecycle_controller": "UNKNOWN" if "lifecycle_controller" in ds else "parent",
                 "realized_by": [by], "missing_evidence": [], "disputed": sorted(ds),
                 "dispute": {f: {"doc": d["doc"], "spec": d["spec"]} for f, d in sorted(ds.items())},
