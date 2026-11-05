@@ -3,15 +3,15 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "ARBITERLIB",
- "generated_at": "2026-11-04T18:37:35-03:00",
+ "generated_at": "2026-11-04T22:09:24-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/ARBITERLIB.txt",
   "brief_sha256": "dd1ddac22884c2dc07f631d875f9a6cea7e8c5ffb1ee46dd85cfe0158cd66496",
   "params": {
    "effort_h": "6",
-   "base": "cd6a66e",
-   "refreeze": "emenda12_observed_C00"
+   "base": "da47b62",
+   "refreeze": "v4_SEMANTICS3_GRAIN02"
   },
   "inputs": [
    {
@@ -22,7 +22,7 @@
    {
     "path": "$BO_REPO/transforms/transforms.yaml",
     "kind": "file",
-    "sha256": "8be0b59e4cb848b4ffee28f215d50040ce9fbe33b614f9e125acb6254fb223ac"
+    "sha256": "9f87dec18891ef744aa71e49104170ff6f8aef5ebe6f46b5860b076f06dc9102"
    },
    {
     "path": "$BO_REPO/prereg/PREREG.html",
@@ -35,7 +35,7 @@
     "sha256": "f279876043e13a1d1bcc2e0f645aa761f758681bf7fde1beff3a915c6549c80f"
    }
   ],
-  "recorded_at": "2026-11-04T18:37:35-03:00"
+  "recorded_at": "2026-11-04T22:09:24-03:00"
  },
  "sources": [
   {
@@ -44,5 +44,5 @@
    "transformation": "direção SKOS e disjunção exactMatch/broadMatch/relatedMatch (S46) aplicadas como regra"
   }
  ],
- "notes": "árbitro mecânico v3 (C21); recongelado sobre bo/base cd6a66e (emenda 12 do CONTRACTS: observed no C00)"
+ "notes": "árbitro mecânico v3 (C21); recongelado sobre bo/base da47b62 (ciclo v4: emenda 3 do SEMANTICS, GRAIN 0.2, TRANSFORMS 1.6, piso semântico)"
 }
