@@ -36,7 +36,7 @@ from . import schema as S
 from .common import data_dir, dump_json, dump_jsonl, now, repo, results_dir, rules_path, sha256_file, stamp
 from .evidence import FixtureAdapter
 
-AUTHORED_AT = "2026-11-04T18:20:00-03:00"
+AUTHORED_AT = "2026-11-04T18:40:00-03:00"
 
 
 def _strip(rep: dict) -> dict:
@@ -408,6 +408,18 @@ vida preso à instância, G1 e G2 aceitam a evidência, e trocar a ordem troca B
 referência <code>by_name</code>; sem ela, o grafo embutido perde relações que o separado tem.</li>
 <li>Emenda 0.1.1 (CC-1): a primeira versão lia uma convenção que o SERVICE-EVIDENCE nunca gravou; os testes
 sintéticos usavam a mesma convenção e não pegaram. Entraram o adaptador por aspecto e testes com o arquivo real.</li>
+<li>Propostas para a fase 2 — 2026-11-04T18:40-03:00 (NÃO aplicadas; decisão do coordenador: o GRAIN fica congelado
+em ed1fc66 até o PILOT-EXIT 2/2; nenhuma regra muda). Origem: diagnóstico "só GRAIN" na calibração NET (sem o cache por
+tipo do PILOT-NET-GLOSS: 13/42 e o par AWS embutido × separado quebra; com o cache recalculado pelo caminho do GLOSS na
+0.1.11: 24/42 e embalagem invariante; mesma quebra já na 0.1.9, então não é regressão). Limitação declarada (A12): bloco
+cuja chave de API é atribuída pelo provedor depois da criação (ex.: id da regra do grupo de segurança herdado do tipo
+gêmeo) decide o grão no esquema, mas na instância fica sem identidade de ocorrência, porque o endereço do bloco é
+posicional; o recurso separado usa o endereço (T59). <b>T59b (proposta)</b>: esse bloco ganharia um símbolo de
+ocorrência = (ocorrência do pai, caminho do bloco, conteúdo configurado), independente da posição; muda só a identidade
+da ocorrência, não o grão (cuidado: tem a forma da chave por conteúdo recusada para a regra da security list sem id).
+<b>T51b (proposta)</b>: referência tipada com valor simbólico (variável) viraria ponta externa identificada pelo
+símbolo, como a T51 faz para referência fora da configuração; resolveria o pai simbólico da regra separada e a
+anexação por variável.</li>
 <li>Manutenção de teste — 2026-11-04T18:20-03:00 (sem mudança de regra; GRAIN congelado na 0.1.11): o SE publicou os
 fatos OBSERVED (365e6ed) e as 2 disputas de dono e ciclo de vida da regra de NSG OCI ficaram
 <code>resolvida-por-observação</code> a favor da spec. O teste CC-8 exigia CONTRADICTORY para toda disputa; passa a
