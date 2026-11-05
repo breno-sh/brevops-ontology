@@ -100,6 +100,14 @@
      "step": "v4: axiomas do SE f44b9a6 (estado, regras implícitas, OCI), oráculo b0e0de2, GRAIN 0.2.2"
     }
    ],
+   "steps_v5": [
+    {
+     "agent_hours": 0.32,
+     "end": "23:55",
+     "start": "23:36",
+     "step": "v5: NET-MAP 38d9ce0; OCI sem exclusividade (AX-NET-01 só AWS, AX-NET-13 'a regra permite')"
+    }
+   ],
    "wait": [
     {
      "end": "11:03",
@@ -111,21 +119,21 @@
   },
   "expected_h": 6,
   "machine_seconds": {
-   "inputs": 0.031,
+   "inputs": 0.032,
    "lift": 0.002,
-   "oracle.c3": 0.236,
+   "oracle.c3": 0.223,
    "owl": 0.003,
    "reason.c1": 0.0,
-   "reason.c2": 0.115,
-   "reason.c3": 0.171,
-   "render.c3": 0.359,
+   "reason.c2": 0.117,
+   "reason.c3": 0.158,
+   "render.c3": 0.32,
    "translate.c1": 0.01,
-   "translate.c2": 0.012,
-   "translate.c3": 0.025,
-   "write": 0.098
+   "translate.c2": 0.013,
+   "translate.c3": 0.021,
+   "write": 0.049
   }
  },
- "generated_at": "2026-11-04T23:30:31-03:00",
+ "generated_at": "2026-11-04T23:43:50-03:00",
  "metrics": [
   {
    "axis": "operational",
@@ -133,7 +141,7 @@
     "description": "passos do brief do PILOT-NET-E2E (livro de esforço)",
     "ref": {
      "path": "$BO_REPO/src/bo/pilot_net_e2e/effort_ledger.py",
-     "sha256": "6f31c70b384ea4c93ea1e808ab4d743af6f41d3227aaf3c78557d19cee1958c5"
+     "sha256": "210c149dbf64eb3ca3ae15f3ef414e2e8ac43b4aec90a4d563e9798f72267b0a"
     }
    },
    "inclusion": {

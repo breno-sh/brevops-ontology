@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "PILOT-NET-E2E",
- "generated_at": "2026-11-04T23:30:33-03:00",
+ "generated_at": "2026-11-04T23:43:52-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-NET-E2E.txt",
@@ -15,7 +15,7 @@
    "controls": "c1_table,c2_taxonomy,c3_full",
    "robot": "1.9.11",
    "terraform": "1.15.8",
-   "recorded_at": "2026-11-04T23:30:31-03:00"
+   "recorded_at": "2026-11-04T23:43:50-03:00"
   },
   "inputs": [
    {
@@ -64,7 +64,7 @@
     "sha256": "73defcd79b0d72bfb44ae7dba2f4b5d605c0d344c543e767c2beecc37c28ad52"
    }
   ],
-  "recorded_at": "2026-11-04T23:30:33-03:00"
+  "recorded_at": "2026-11-04T23:43:52-03:00"
  },
  "sources": [
   {

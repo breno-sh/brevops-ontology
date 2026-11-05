@@ -501,7 +501,7 @@
    "verdicts": "$BO_DATA/PILOT-NET-MAP/verdicts.jsonl"
   },
   "invariants": {
-   "abox_sha256": "2ceee0b8e2f3312d2af9327d99ab982ea9e8dda57c43da95733380343cc10438",
+   "abox_sha256": "de9b5bb4524639bcd5c2227dd5e045d4c7b6760c2f7ac2111c2c92d8c78123cc",
    "claims_sha256": {
     "mapping": "b506ee5ebe01ab9e736c4a411d52ec287de8a8d568b85fc5ab45c85eb7c973e4",
     "verdicts": "877f90ba58189127e47517d46811e03eb67189c200b63e68d3dbfb2ad7725498"
@@ -750,14 +750,13 @@
    },
    "c3_full": {
     "block_codes": {
-     "AMBIGUOUS_TARGET": 8,
+     "AMBIGUOUS_TARGET": 5,
      "CONDITION_INDETERMINATE": 1,
-     "OUT_OF_SUBSET": 10,
      "SHACL_VIOLATION": 3,
-     "TRANSFORM_OUT_OF_DOMAIN": 22,
-     "UNKNOWN_INPUT": 3,
+     "TRANSFORM_OUT_OF_DOMAIN": 15,
+     "UNKNOWN_INPUT": 30,
      "UNKNOWN_SYMBOLIC_INPUT": 6,
-     "UNPROVEN": 54
+     "UNPROVEN": 47
     },
     "by_direction": {
      "aws->azurerm": {
@@ -858,7 +857,7 @@
    }
   }
  },
- "generated_at": "2026-11-04T23:30:31-03:00",
+ "generated_at": "2026-11-04T23:43:50-03:00",
  "metrics": [
   {
    "axis": "operational",
