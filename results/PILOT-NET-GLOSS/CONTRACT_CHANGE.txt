@@ -159,7 +159,7 @@ ADENDO 2026-11-04T23:20:00-03:00 (America/Recife), rodada final do v4 sobre GRAI
 CC-NET-6 RESOLVIDO: GRAIN b623374 renomeia a regra para GRAIN-G1B-REFERENCE; canonical_units valida (41 itens,
   0 erro).
 CC-NET-3 RESOLVIDO: (a) SERVICE-EVIDENCE 3ba4079 (reference_target), (b) GRAIN dcb5c52 (deletion_policy fora do
-  controlador de ciclo de vida), (c) PILOT-NET-GLOSS 6e1ddf9, "tira os átomos de timeouts do pacote" (0 de 56
+  controlador de ciclo de vida), (c) PILOT-NET-GLOSS 6de04a5, "tira os átomos de timeouts do pacote" (0 de 56
   candidatos e 0 de 185 tipos de valor com timeouts), em bo/base com este merge.
 Grão: 41 unidades (3 BINDING, 9 COMPONENT, 5 ENTITY, 2 FACET, 22 UNKNOWN). E2: 3 de 3. Glossário inalterado
 (19 conceitos, 52 âncoras, 56 caminhos UNPROVEN, controle 48/48). F-5 segue sem frase publicada.
