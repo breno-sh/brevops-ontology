@@ -49,7 +49,7 @@ LEDGER = {
     ],
     "steps_v5": [
         {"step": "v5: NET-MAP 38d9ce0; OCI sem exclusividade (AX-NET-01 só AWS, AX-NET-13 'a regra permite')",
-         "start": "23:36", "end": "23:55", "agent_hours": 0.32},
+         "start": "23:36", "end": "23:50", "agent_hours": 0.23},
     ],
     "wait": [{"what": "PILOT-NET-MAP em bo/base (rebase sobre GRAIN 0.1.7/0.1.8 e oráculo regerado no meio)",
               "start": "10:29", "end": "11:03", "hours": 0.57}],
