@@ -85,7 +85,7 @@
  ],
  "module": "GRAIN",
  "ok": true,
- "rules_version": "0.2.0",
+ "rules_version": "0.2.1",
  "schema": "bo.grain.priority/1",
- "written_at": "2026-11-04T22:15:00-03:00"
+ "written_at": "2026-11-04T22:30:00-03:00"
 }

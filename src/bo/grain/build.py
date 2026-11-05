@@ -36,7 +36,7 @@ from . import schema as S
 from .common import data_dir, dump_json, dump_jsonl, now, repo, results_dir, rules_path, sha256_file, stamp
 from .evidence import FixtureAdapter
 
-AUTHORED_AT = "2026-11-04T22:15:00-03:00"
+AUTHORED_AT = "2026-11-04T22:30:00-03:00"
 
 
 def _strip(rep: dict) -> dict:
@@ -408,6 +408,13 @@ vida preso à instância, G1 e G2 aceitam a evidência, e trocar a ordem troca B
 referência <code>by_name</code>; sem ela, o grafo embutido perde relações que o separado tem.</li>
 <li>Emenda 0.1.1 (CC-1): a primeira versão lia uma convenção que o SERVICE-EVIDENCE nunca gravou; os testes
 sintéticos usavam a mesma convenção e não pegaram. Entraram o adaptador por aspecto e testes com o arquivo real.</li>
+<li>Emenda 0.2.1 — 2026-11-04T22:30-03:00 (T51b, opção A do pedido de mudança; C19 3.2.0, emenda 14 do CONTRACTS):
+referência tipada com valor simbólico (var., data. ou module.) vira ponta externa do tipo do alvo, identificada pelo
+símbolo; no C19 a ponta é <code>{role, kind: EXTERNAL, symbol, target_type}</code>, sem unit_id. Valor computado ou
+desconhecido de outra forma não é símbolo e não vira ponta: o compromisso CMT-NIC-U02 (interface separada com
+referência computada) continua UNKNOWN. A G1 passa a aceitar a ponta EXTERNAL, como aceita SELECTOR; sem isso a
+ligação com alvo externo caía na G2 e saía COMPONENT, contra a A7. O pedido em results/GRAIN/CONTRACT_CHANGE.txt fica
+atendido. Disputa <code>resolvida-por-publicação</code> (C25 1.6.x) confirmada no adaptador (R6, 0.2.0).</li>
 <li>Complemento da 0.2.0 — 2026-11-04T22:15-03:00 (sem regra nova): disputa com status
 <code>resolvida-por-publicação</code> (R6 do PREREG, b7f804d) vale o lado reproduzido, como a
 <code>resolvida-por-observação</code> (R2). Fatos do SE CC-14 (3ba4079) conferidos no adaptador: estado de conexão,

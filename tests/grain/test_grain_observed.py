@@ -321,3 +321,36 @@ def test_r6_resolved_by_publication_takes_reproduced_side():
     out, _ = A.translate([doc, spec], None, set(), A.load_resolved_disputes([d]))
     g = from_dict(out["t_a"]).fact("lifecycle_controller")
     assert g.known and g.value["kind"] == "self"
+
+
+# ------------------------------------------------------------------ 0.2.1: T51b (C19 3.2.0)
+
+def _vm_cfg(sym):
+    return {"provider": PROV, "resources": [{"type": "t_vm", "name": "a", "values": {"name": "a",
+                                                                                    "sg_ids": [{"$unknown": sym}]}}]}
+
+
+def _vm_records():
+    return entity("t_vm", "Vm") + entity(NSG, "NetworkSecurityGroup") + [
+        rec("t_vm", "identity", {"aspect": "attachment_attribute", "attribute": "sg_ids", "binds_to": NSG,
+                                 "rule": "R-ATTACH-SPEC", "spec_field": "F", "spec_operation": "Op"})]
+
+
+def test_t51b_symbolic_typed_reference_is_external_endpoint():
+    oc = I.decompose_config(_vm_cfg("var.sg"), C25Adapter(_vm_records()), {}, RS)
+    lk = [o for o in oc if any(":sg_ids#" in n for n in o.tf)]
+    assert len(lk) == 1 and lk[0].grain == "BINDING" and set(lk[0].endpoints) == {"holder", "target"}
+
+
+def test_t51b_computed_value_is_not_a_symbol():
+    """Controle (CMT-NIC-U02): valor computado/desconhecido que não é var., data. nem module. não vira ponta."""
+    oc = I.decompose_config(_vm_cfg("computed"), C25Adapter(_vm_records()), {}, RS)
+    lk = [o for o in oc if any(":sg_ids#" in n for n in o.tf)]
+    assert len(lk) == 1 and lk[0].grain == "UNKNOWN"
+
+
+def test_t51b_c19_endpoint_shape():
+    from bo.grain.engine import EXT
+    from bo.grain.schema import _endpoint
+    e = _endpoint("target", f"{EXT}{NSG}#sym:var.sg", {})
+    assert e == {"role": "target", "kind": "EXTERNAL", "symbol": "var.sg", "target_type": NSG}

@@ -11,6 +11,7 @@ evidência declara a ordem como identidade).
 from __future__ import annotations
 
 import ipaddress
+import re
 from dataclasses import dataclass, field
 
 from . import rules as R
@@ -55,6 +56,11 @@ def normalize(norm: str, v):
         vals = v if isinstance(v, (list, tuple, set)) else [v]
         return sorted({canon(normalize(inner, x)) for x in vals})
     raise NormError(f"normalizador desconhecido: {norm}")
+
+
+# símbolo de referência que vira ponta externa (C19 3.2.0, C19-EXTERNAL)
+SYMBOL_RE = re.compile(r'^(var|data|module)\.[A-Za-z_][A-Za-z0-9_\-]*(\.[A-Za-z_*][A-Za-z0-9_\-]*|\[[0-9]+\]|'
+                       r'\["[^"\s]+"\])*$')
 
 
 def content_hash(v) -> str:
@@ -210,6 +216,12 @@ def build_nodes(config: dict, adapter, schema_blocks: dict) -> tuple[dict, dict,
         if isinstance(v, dict) and "$ref" in v:
             return EXT + v["$ref"]                       # T51: ocorrência referenciada fora da configuração
         tgt = ev.references.get(f)
+        if isinstance(v, dict) and "$unknown" in v and tgt and not tgt.startswith(SEL) and not m.get("by_name") \
+                and SYMBOL_RE.match(str(v["$unknown"])):
+            # T51b (0.2.1, C19 3.2.0): referência tipada com valor simbólico (variável, data source ou saída de
+            # módulo) vira ponta externa do tipo do alvo, identificada pelo símbolo; valor computado ou outro
+            # desconhecido não (segue sem alvo)
+            return f"{EXT}{tgt}#sym:{v['$unknown']}"
         if path_el(m) and m.get("selector") and isinstance(v, (str, int)) and tgt and tgt.startswith(SEL):
             # T60: nó SELECTOR com identidade = predicado normalizado (chave do seletor, valor)
             return f"{tgt}={str(v).strip()}"

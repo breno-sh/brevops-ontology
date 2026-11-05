@@ -18,3 +18,7 @@ Enquanto não há decisão, a T51b NÃO está aplicada na 0.2.0 (o código foi r
 Nota: com (A), a G1 precisa aceitar a ponta EXTERNAL (hoje só ENTITY, COMPONENT, BINDING, SELECTOR); sem isso, o
 nó da ligação com ponta externa cai na G2 e sai COMPONENT (verificado na calibração: NETC-C08-AWS-ATTACH-SYM saía
 COMPONENT), o que contraria a emenda A7 (a regra que lê o grão do alvo falha e dá UNKNOWN).
+
+ATENDIDO — 2026-11-04T22:30-03:00: o COORD escolheu a opção (A); o CONTRACTS fez a emenda 14 (C19 3.2.0, ponta
+{kind: EXTERNAL, symbol, target_type}); a T51b entrou na 0.2.1, restrita a símbolos var./data./module. (o
+CMT-NIC-U02, de valor computado, continua UNKNOWN).

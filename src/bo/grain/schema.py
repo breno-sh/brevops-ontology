@@ -379,7 +379,7 @@ def to_c19(res: SchemaResult, atom_roles: dict | None = None) -> tuple[list[dict
                                                          "note": "apagado em cascata pelo contêiner de namespace "
                                                                  "(relação, não dono nem ciclo de vida)"}]
         if d.grain == "BINDING" and d.endpoints:
-            rec["endpoints"] = [{"role": role, "unit_id": uid[t]} for role, t in sorted(d.endpoints.items())]
+            rec["endpoints"] = [_endpoint(role, t, uid) for role, t in sorted(d.endpoints.items())]
         units.append(rec)
     for aid in sorted(res.atom_owner):
         unit, rel = res.atom_owner[aid]
@@ -399,6 +399,15 @@ def _ref(kind, target, uid) -> dict:
     if target is not None and target in uid:
         out["ref"] = uid[target]
     return out
+
+
+def _endpoint(role, t, uid) -> dict:
+    """Ponta do vínculo no C19: unidade {role, unit_id}; ponta externa simbólica (T51b, C19 3.2.0)
+    {role, kind: EXTERNAL, symbol, target_type}, sem unit_id."""
+    if isinstance(t, str) and t.startswith(EXT) and "#sym:" in t:
+        tt, _, sym = t[len(EXT):].partition("#sym:")
+        return {"role": role, "kind": "EXTERNAL", "symbol": sym, "target_type": tt}
+    return {"role": role, "unit_id": uid[t]}
 
 
 class _Uid(dict):
