@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "SAFETY",
- "generated_at": "2026-11-04T18:39:16-03:00",
+ "generated_at": "2026-11-04T23:04:28-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/SAFETY.txt",
@@ -18,10 +18,10 @@
    {
     "path": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl",
     "kind": "file",
-    "sha256": "0b5bdd079c88ae3d02f866623f7903d6d0cb6c8251d553aa72efe2decfb61123"
+    "sha256": "2994da012fbc9296a31fd2e82d8e55cd7dd274c8be74c24634681412effe07f1"
    }
   ],
-  "recorded_at": "2026-11-04T18:39:16-03:00"
+  "recorded_at": "2026-11-04T23:04:28-03:00"
  },
  "sources": [],
  "notes": "kit offline; nenhuma chamada de nuvem; disco de RAM cifrado conferido uma vez no Mac; entrada externa: memória multicloud-teardown-gap"
