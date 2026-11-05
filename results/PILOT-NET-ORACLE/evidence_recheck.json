@@ -1,24 +1,94 @@
 {
  "schema": "bo.pilot_net.evidence_recheck/1",
  "module": "PILOT-NET-ORACLE",
- "at": "2026-11-04T18:19:26-03:00",
+ "at": "2026-11-04T21:35:00-03:00",
  "iteration": 2,
  "purpose": "re-verificação final antes do PILOT-EXIT 2/2 (fatos OBSERVED, regra R1–R5 do PREREG)",
- "service_evidence": {"path": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl", "base_commit": "365e6ed",
-   "sha256_before": "d77a4f6ab71937a3a2f30729d721231f5ceaec764a15de79599d2653c0b83d9e", "sha256_after": "0b5bdd079c88ae3d02f866623f7903d6d0cb6c8251d553aa72efe2decfb61123"},
- "spec_disputes": {"path": "$BO_REPO/results/SERVICE-EVIDENCE/spec_disputes.json", "sha256": "513ba2fa2e11cb1d460e8cdeaa88223688159c25868511b5c3a1f9aada5f340b", "contract": "C25 1.5.0",
-   "in_slice": 2, "open_in_slice": 0,
-   "in_slice_detail": "oci_core_network_security_group_security_rule: lifecycle_controller (SE-oci-x5i5qewnvgmjhurn) e owner (SE-oci-6nluro6igz6yr6tz) resolvidas por observação a favor da spec (pai = NSG)"},
- "answers_changed": {"decisions": 0, "validity": 0, "translations": 0, "decomposition_units": 3,
-   "detail": ["NETC-C03-OCI-NSG-REV: 2 regras de NSG UNKNOWN -> COMPONENT", "NETC-C03-OCI-NSG-SYM: 1 regra de NSG UNKNOWN -> COMPONENT"],
-   "why": "a disputa doc x spec que deixava o tipo indecidido foi resolvida por observação a favor da spec (dono e ciclo de vida = NSG); o gabarito volta ao tipo do CMT-FW-P01 (regra = COMPONENT do conjunto) e guarda a resolução e a observação na evidência da unidade"},
+ "service_evidence": {
+  "path": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl",
+  "base_commit": "365e6ed",
+  "sha256_before": "d77a4f6ab71937a3a2f30729d721231f5ceaec764a15de79599d2653c0b83d9e",
+  "sha256_after": "0b5bdd079c88ae3d02f866623f7903d6d0cb6c8251d553aa72efe2decfb61123"
+ },
+ "spec_disputes": {
+  "path": "$BO_REPO/results/SERVICE-EVIDENCE/spec_disputes.json",
+  "sha256": "513ba2fa2e11cb1d460e8cdeaa88223688159c25868511b5c3a1f9aada5f340b",
+  "contract": "C25 1.5.0",
+  "in_slice": 2,
+  "open_in_slice": 0,
+  "in_slice_detail": "oci_core_network_security_group_security_rule: lifecycle_controller (SE-oci-x5i5qewnvgmjhurn) e owner (SE-oci-6nluro6igz6yr6tz) resolvidas por observação a favor da spec (pai = NSG)"
+ },
+ "answers_changed": {
+  "decisions": 0,
+  "validity": 0,
+  "translations": 0,
+  "decomposition_units": 3,
+  "detail": [
+   "NETC-C03-OCI-NSG-REV: 2 regras de NSG UNKNOWN -> COMPONENT",
+   "NETC-C03-OCI-NSG-SYM: 1 regra de NSG UNKNOWN -> COMPONENT"
+  ],
+  "why": "a disputa doc x spec que deixava o tipo indecidido foi resolvida por observação a favor da spec (dono e ciclo de vida = NSG); o gabarito volta ao tipo do CMT-FW-P01 (regra = COMPONENT do conjunto) e guarda a resolução e a observação na evidência da unidade"
+ },
  "other_observed_facts": {
-   "oci_security_list_item_identity": "regra da security list sem id e com duplicatas aceitas (SE-oci-xalogqqyvlj5ctiu, SE-oci-shvrdze22zdafoyg): coerente com a unidade anônima por ocorrência; a comparação de decomposição passou a contar ocorrências repetidas em vez de fundi-las (net_oracle.decomposing.normalize)",
-   "oci_nsg_rule_item_identity": "regra de NSG com id e pai obrigatório (SE-oci-ciygpeen3r7ssmju): coerente com COMPONENT do NSG; o id só existe depois da criação, a ocorrência no gabarito segue pelos campos",
-   "azure_association": "ciclo e dono = NIC/sub-rede, NSG associado não pode ser apagado: coerente com BINDING da associação; não muda decisão",
-   "namespace_cascade": "grupo de recursos do Azure apaga em cascata: nenhuma fixture NET modela o grupo como unidade; sem efeito",
-   "decision_semantics": "nenhum fato observado de estado de conexão, efeito ou precedência: itens 3 e 5 seguem abertos"},
+  "oci_security_list_item_identity": "regra da security list sem id e com duplicatas aceitas (SE-oci-xalogqqyvlj5ctiu, SE-oci-shvrdze22zdafoyg): coerente com a unidade anônima por ocorrência; a comparação de decomposição passou a contar ocorrências repetidas em vez de fundi-las (net_oracle.decomposing.normalize)",
+  "oci_nsg_rule_item_identity": "regra de NSG com id e pai obrigatório (SE-oci-ciygpeen3r7ssmju): coerente com COMPONENT do NSG; o id só existe depois da criação, a ocorrência no gabarito segue pelos campos",
+  "azure_association": "ciclo e dono = NIC/sub-rede, NSG associado não pode ser apagado: coerente com BINDING da associação; não muda decisão",
+  "namespace_cascade": "grupo de recursos do Azure apaga em cascata: nenhuma fixture NET modela o grupo como unidade; sem efeito",
+  "decision_semantics": "nenhum fato observado de estado de conexão, efeito ou precedência: itens 3 e 5 seguem abertos"
+ },
  "cited_evidence_present_same_level": true,
- "retained": "conteúdo das retidas NÃO mudou (a disputa é aplicada pelo oráculo na comparação); selo D15 NÃO refeito: envelope 99f53463cbeaeb38b5206344bef56b467c362d359ba85b6c5da58f7190816c29, o original de 2026-11-04T02:33 (nenhuma re-selagem até aqui)",
- "contract": "C24 1.1.0: expected_answers.json validado por bo.contracts.validate pilot_expected_answers, 0 erro"
+ "retained": "conjunto v1 aposentado (usado 2×); conjunto NOVO v2 selado com D15 em 2026-11-04T21:34:30-03:00 (não é re-selagem do v1: conteúdo novo); calibração inalterada",
+ "contract": "C24 1.1.0: expected_answers.json validado por bo.contracts.validate pilot_expected_answers, 0 erro",
+ "retained_sets": {
+  "v1": {
+   "status": "usado 2×, aposentado",
+   "envelope_sha256": "99f53463cbeaeb38b5206344bef56b467c362d359ba85b6c5da58f7190816c29",
+   "sealed_at": "2026-11-04T02:33:03-03:00",
+   "size": {
+    "fixtures": 34,
+    "case_fixtures": 28,
+    "translations": 24
+   }
+  },
+  "v2": {
+   "status": "ativo",
+   "cycle": "v4",
+   "envelope": "$BO_DATA/PILOT-NET-ORACLE/sealed/retained_v2.cms.pem",
+   "envelope_sha256": "9ecf8da55e81c2947e8cef708aad008e3f63d7bf4397dd9107073e6f0481555a",
+   "sealed_at": "2026-11-04T21:34:30-03:00",
+   "size": {
+    "fixtures": 42,
+    "case_fixtures": 36,
+    "translations": 28,
+    "flows": 110
+   },
+   "se_commit": "365e6ed",
+   "written_without": [
+    "GRAIN",
+    "PILOT-NET-GLOSS",
+    "PILOT-NET-MAP"
+   ],
+   "edge_cases": [
+    "duplicata na lista da security list OCI (duas ocorrências)",
+    "anexação por variável (security list OCI e NSG Azure da regra separada)",
+    "associação Azure na sub-rede, na NIC e nas duas (de acordo e em desacordo)"
+   ],
+   "basis_counts": {
+    "decisions": {
+     "PUBLISHED_OR_OBSERVED": 76,
+     "DERIVED": 34
+    },
+    "decomposition_units": {
+     "PUBLISHED_OR_OBSERVED": 131,
+     "COMMITMENT_ONLY": 79,
+     "DERIVED": 14
+    },
+    "translations": {
+     "PUBLISHED_OR_OBSERVED": 4,
+     "DERIVED": 24
+    }
+   },
+   "verified": "42 fixtures e 28 traduções: respostas escritas à mão = avaliador; ida e volta na VM conferiu o sha256 do texto claro; texto claro apagado do BO_TMP"
+  }
+ }
 }

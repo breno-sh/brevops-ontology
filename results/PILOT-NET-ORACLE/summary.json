@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "PILOT-NET-ORACLE",
- "generated_at": "2026-11-04T18:19:26-03:00",
+ "generated_at": "2026-11-04T21:34:59-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-NET-ORACLE.txt",
@@ -13,14 +13,18 @@
    "reading": "default",
    "calib_fixtures": "42",
    "calib_translations": "36",
-   "retained_fixtures": "28",
-   "retained_translations": "24",
+   "retained_set": "v2",
+   "retained_fixtures": "36",
+   "retained_sources": "6",
+   "retained_translations": "28",
+   "retained_v1": "usado-2x-aposentado",
    "seal": "CMS-AES256-RSA4096-D15",
-   "seal_envelope_sha256": "99f53463cbeaeb38b5206344bef56b467c362d359ba85b6c5da58f7190816c29",
-   "reseals": "0",
+   "seal_envelope_sha256": "9ecf8da55e81c2947e8cef708aad008e3f63d7bf4397dd9107073e6f0481555a",
+   "sealed_at": "2026-11-04T21:34:30-03:00",
+   "new_sealed_sets": "1",
    "contract": "C24-1.1.0",
    "service_evidence": "365e6ed",
-   "iteration": "2"
+   "cycle": "v4"
   },
   "inputs": [
    {
@@ -44,7 +48,7 @@
     "sha256": "513ba2fa2e11cb1d460e8cdeaa88223688159c25868511b5c3a1f9aada5f340b"
    }
   ],
-  "recorded_at": "2026-11-04T18:19:26-03:00"
+  "recorded_at": "2026-11-04T21:34:59-03:00"
  },
  "sources": [
   {
@@ -63,5 +67,5 @@
    "transformation": "disputa aberta vira UNKNOWN; resolvida por observação fica o lado vencedor"
   }
  ],
- "notes": "oráculo offline NET, re-verificação final (SE 365e6ed): 3 regras de NSG OCI UNKNOWN->COMPONENT por disputa resolvida por observação; 0 decisões mudadas; retidas inalteradas, selo D15 original mantido (0 re-selagens)"
+ "notes": "ciclo v4: conjunto retido NOVO v2 (36+6 fixtures, 28 traduções) selado com D15 em 2026-11-04T21:34:30-03:00, envelope 9ecf8da55e81...; v1 usado 2× e aposentado; calibração inalterada"
 }

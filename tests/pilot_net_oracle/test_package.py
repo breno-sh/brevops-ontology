@@ -48,10 +48,13 @@ def test_envelope_confere_e_adulteracao_reprova(tmp_path, monkeypatch):
     assert seal.verify() == []
     fake = tmp_path / "PILOT-NET-ORACLE" / "sealed"
     fake.mkdir(parents=True)
-    src = seal.sealed_dir() / "retained.cms.pem"
+    idx = json.loads((REPO / "pilot/net/oracle/sealed_index.json").read_text(encoding="utf-8"))
+    src = seal.envelope_path(idx)
+    for old in idx.get("retired_sets", []):
+        shutil.copy(seal.envelope_path(old), fake / seal.envelope_path(old).name)
     data = src.read_text().splitlines()
     data[3] = data[3][:-4] + ("AAAA" if not data[3].endswith("AAAA") else "BBBB")
-    (fake / "retained.cms.pem").write_text("\n".join(data) + "\n")
+    (fake / src.name).write_text("\n".join(data) + "\n")
     monkeypatch.setenv("BO_DATA", str(tmp_path))
     errs = seal.verify()
     assert any("sha256 do envelope" in e for e in errs)
@@ -89,3 +92,15 @@ def test_catalogo_de_perdas_por_direcao():
     e = spec.direction_entry("oci->azurerm")
     assert {"LOSS-NET-STATE", "LOSS-NET-DEFAULT", "LOSS-NET-SRCPORT"} - set(e["expected_losses"]) == {"LOSS-NET-SRCPORT"}
     assert "REQ-T-CATCHALL" in e["acceptable_target"] and "REQ-T-AZ-PRIORITY" in e["acceptable_target"]
+
+
+def test_conjunto_v1_aposentado_e_v2_ativo():
+    idx = json.loads((REPO / "pilot/net/oracle/sealed_index.json").read_text(encoding="utf-8"))
+    assert idx["set_version"] == 2 and idx["status"] == "ativo"
+    old = idx["retired_sets"][0]
+    assert old["set_version"] == 1 and old["status"] == "usado 2×, aposentado"
+    assert idx["envelope_sha256"] != old["envelope_sha256"]
+    ret = json.loads((REPO / "pilot/net/oracle/sealed_index_v1_retired.json").read_text(encoding="utf-8"))
+    assert ret["status"] == "usado 2×, aposentado"
+    assert idx["counts"]["fixtures_total"] >= ret["counts"]["fixtures_total"]
+    assert idx["counts"]["translations_total"] >= ret["counts"]["translations_total"]

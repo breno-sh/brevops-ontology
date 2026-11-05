@@ -141,6 +141,8 @@ def generate(check_only: bool = False) -> dict:
     # índice selado (público): cópia do que a selagem gravou em $BO_DATA
     sidx = sealed_dir() / "sealed_index.json"
     retained = None
+    for rf in sorted(sealed_dir().glob("sealed_index_v*_retired.json")):
+        files[f"pilot/net/oracle/{rf.name}"] = rf.read_text(encoding="utf-8")
     if sidx.is_file():
         files["pilot/net/oracle/sealed_index.json"] = sidx.read_text(encoding="utf-8")
         retained = json.loads(files["pilot/net/oracle/sealed_index.json"])["counts"]

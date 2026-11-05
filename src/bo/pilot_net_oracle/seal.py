@@ -95,18 +95,32 @@ def _tar(files: dict) -> bytes:
 
 
 def index_for(bundle: dict, salt: str) -> dict:
+    from collections import Counter
     from .coverage_lib import summarize
     items = [{"digest": sha(salt.encode() + canon(x))} for x in bundle["fixtures"] + bundle["translations"]]
-    return {"counts": summarize(bundle["fixtures"], bundle["translations"]),
-            "salted_digests": sorted(i["digest"] for i in items)}
+    out = {"counts": summarize(bundle["fixtures"], bundle["translations"]),
+           "salted_digests": sorted(i["digest"] for i in items)}
+    fx = bundle["fixtures"]
+    if fx and isinstance(fx[0].get("basis"), dict):
+        out["basis_counts"] = {
+            "decisions": dict(Counter(e["basis"] for f in fx for e in f["expected"]["decisions"].values())),
+            "decomposition_units": dict(Counter(u["basis"] for f in fx for u in f["expected"]["decomposition"])),
+            "translations": dict(Counter(t["basis"] for t in bundle["translations"])),
+            "rule": bundle.get("basis_rule")}
+    return out
 
 
-def seal(bundle_path: Path, source_path: Path) -> dict:
+def envelope_path(idx: dict) -> Path:
+    e = idx["envelope"]
+    return Path(e.replace("$BO_DATA", str(data_dir().parent))) if e.startswith("$BO_DATA") else Path(e)
+
+
+def seal(bundle_path: Path, source_path: Path, version: int = 1, retire: Path | None = None) -> dict:
     bundle = json.loads(bundle_path.read_text(encoding="utf-8"))
     if any(x.get("split") != "retained" for x in bundle["fixtures"] + bundle["translations"]):
         raise SystemExit("seal: o pacote tem item que não é retido")
     salt = secrets.token_hex(32)
-    files = {"bundle.json": bundle_path.read_bytes(), "retained.py": source_path.read_bytes(),
+    files = {"bundle.json": bundle_path.read_bytes(), source_path.name: source_path.read_bytes(),
              "SALT.txt": (salt + "\n").encode(),
              "README.txt": ("Fixtures RETIDAS da fatia NET (PILOT-NET-ORACLE). Só o PILOT-EXIT abre.\n"
                             "Conferência: sha256(sal || json canônico do item) deve estar em salted_digests do\n"
@@ -114,7 +128,10 @@ def seal(bundle_path: Path, source_path: Path) -> dict:
     plain = _tar(files)
     sd = sealed_dir()
     sd.mkdir(parents=True, exist_ok=True)
-    env = sd / "retained.cms.pem"
+    name = "retained.cms.pem" if version == 1 else f"retained_v{version}.cms.pem"
+    env = sd / name
+    if env.exists():
+        raise SystemExit(f"seal: {env} já existe; selo não se sobrescreve")
     r = subprocess.run(["openssl", "cms", "-encrypt", "-aes256", "-binary", "-outform", "PEM", "-out", str(env),
                         str(cert_path())], input=plain, capture_output=True)
     if r.returncode != 0:
@@ -130,11 +147,21 @@ def seal(bundle_path: Path, source_path: Path) -> dict:
     if vm_sha != sha(plain):
         raise SystemExit(f"seal: ida e volta na VM não confere (vm={vm_sha})")
     idx = {"schema": "bo.pilot_net.sealed_index/1", "module": "PILOT-NET-ORACLE", "slice": "net",
-           "created_at": now(), "envelope": "$BO_DATA/PILOT-NET-ORACLE/sealed/retained.cms.pem",
+           "set_version": version, "status": "ativo",
+           "created_at": now(), "envelope": f"$BO_DATA/PILOT-NET-ORACLE/sealed/{name}",
            "envelope_sha256": sha(env.read_bytes()), "plaintext_sha256": sha(plain),
            "cipher": "CMS EnvelopedData, AES-256-CBC, chave RSA 4096 do certificado brevops-seal-D15",
            "recipient": ci, "roundtrip": {"at": now(), "host": "VM Oracle (D15)", "plaintext_sha256_from_vm": vm_sha},
            "opened_by": "PILOT-EXIT", **index_for(bundle, salt)}
+    if retire is not None:
+        old = json.loads(retire.read_text(encoding="utf-8"))
+        old.update({"status": "usado 2×, aposentado", "retired_at": now(),
+                    "retired_reason": "o PILOT-EXIT 2/2 já usou este conjunto; substituído pelo conjunto v%d (ciclo v4)" % version})
+        old.setdefault("set_version", 1)
+        (sd / f"sealed_index_v{old['set_version']}_retired.json").write_text(
+            json.dumps(old, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+        idx["retired_sets"] = [{"set_version": old["set_version"], "index": f"$BO_DATA/PILOT-NET-ORACLE/sealed/sealed_index_v{old['set_version']}_retired.json",
+                                "envelope": old["envelope"], "envelope_sha256": old["envelope_sha256"], "status": old["status"]}]
     (sd / "sealed_index.json").write_text(json.dumps(idx, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     return idx
 
@@ -142,14 +169,17 @@ def seal(bundle_path: Path, source_path: Path) -> dict:
 def verify(index_path: Path | None = None) -> list:
     """Erros (vazio = ok): envelope existe, sha confere, destinatário é o certificado, índice coerente."""
     errs = []
-    sd = sealed_dir()
-    env = sd / "retained.cms.pem"
     idx_p = index_path or (repo() / "pilot/net/oracle/sealed_index.json")
-    if not env.is_file():
-        return [f"envelope ausente: {env}"]
     if not idx_p.is_file():
         return [f"índice ausente: {idx_p}"]
     idx = json.loads(idx_p.read_text(encoding="utf-8"))
+    env = envelope_path(idx)
+    if not env.is_file():
+        return [f"envelope ausente: {env}"]
+    for old in idx.get("retired_sets", []):
+        oe = envelope_path(old)
+        if not oe.is_file() or sha(oe.read_bytes()) != old["envelope_sha256"]:
+            errs.append(f"conjunto aposentado v{old['set_version']}: envelope ausente ou alterado")
     if sha(env.read_bytes()) != idx["envelope_sha256"]:
         errs.append("sha256 do envelope difere do índice")
     ci = cert_info()
@@ -172,10 +202,12 @@ def main(argv=None) -> int:
     s = sub.add_parser("seal")
     s.add_argument("--bundle", required=True)
     s.add_argument("--source", required=True)
+    s.add_argument("--version", type=int, default=1)
+    s.add_argument("--retire", help="índice do conjunto anterior, a aposentar")
     sub.add_parser("verify")
     a = ap.parse_args(argv)
     if a.cmd == "seal":
-        idx = seal(Path(a.bundle), Path(a.source))
+        idx = seal(Path(a.bundle), Path(a.source), a.version, Path(a.retire) if a.retire else None)
         print(f"[{now()}] selado: {idx['envelope']} sha256={idx['envelope_sha256'][:16]}… itens={len(idx['salted_digests'])}")
         return 0
     errs = verify()
