@@ -271,9 +271,17 @@ def _e2b(vdr, fid, table_out=None):
                tests=[{"input": "Enabled", "expected": True}])
 
 
-def test_bijecao_do_registro_sem_perda_sai_ok():
-    v = v_of(judge([_e2b("equal", "lossless")]), "T-E2B")[0]
-    assert v["verdict"] == "OK", v
+def test_e3_bijecao_do_registro_nao_sai_ok_onde_a_semantica_nao_prova():
+    """Regressão do E3 (PILOT-EXIT 2/2): CLM-AWSAZ-STO-0006 e CLM-AWSOCI-STO-0005 têm esta forma (enum_to_bool
+    Enabled/Disabled -> booleano, exact, sem perda, equal). A semântica congelada dá UNPROVEN (VDR-UNKNOWN); o domínio
+    calculado pelo registro não pode tirar essa falha."""
+    from bo.semantics.obligations import assess
+    for cid in ("CLM-AWSAZ-STO-0006", "CLM-AWSOCI-STO-0005"):
+        r = _e2b("equal", "lossless")
+        r.update(claim_id=cid, claim_version_id=f"{cid}@1", event_id=f"EV-{cid}")
+        assert assess(r).verdict == "UNPROVEN"
+        v = v_of(judge([r]), cid)[0]
+        assert v["verdict"] == "UNPROVEN" and "VDR-UNKNOWN" in v["rules"], v
 
 
 def test_dominio_do_registro_declarado_errado_refuta():
@@ -302,35 +310,46 @@ def _L(it):
     return {"datatype": "list", "item_type": it}
 
 
-def test_wrap_list_com_elemento_contido_sem_perda_sai_ok():
-    c = _coll("T-WRAP", "wrap_list", B.ENUM("logs/", "tmp/"), _L(B.ENUM("logs/", "tmp/", "data/")), "subset", "lossless",
-              {"input": "logs/", "expected": ["logs/"]})
-    assert v_of(judge([c]), "T-WRAP")[0]["verdict"] == "OK"
+@pytest.mark.parametrize("fn,st,ot,vdr,fid,test", [
+    ("wrap_list", B.ENUM("logs/", "tmp/"), _L(B.ENUM("logs/", "tmp/", "data/")), "subset", "lossless",
+     {"input": "logs/", "expected": ["logs/"]}),
+    ("wrap_list", B.STR, _L(B.STR), "subset", "lossless", {"input": "logs/", "expected": ["logs/"]}),
+    ("unwrap_single", _L(B.ENUM("a", "b")), B.ENUM("a", "b"), "superset", "partial", {"input": ["a"], "expected": "a"}),
+])
+def test_colecao_segue_a_semantica_congelada(fn, st, ot, vdr, fid, test):
+    """wrap_list/unwrap_single (CC-13): o veredito nunca é mais permissivo que o da semântica congelada."""
+    from bo.semantics.obligations import assess
+    from bo.arbiter.rules import PRECEDENCE
+    c = _coll("T-COLL", fn, st, ot, vdr, fid, test)
+    a = assess(c).verdict
+    v = v_of(judge([c]), "T-COLL")[0]["verdict"]
+    assert PRECEDENCE.index(v) <= PRECEDENCE.index(a), (v, a)
 
 
-def test_wrap_list_declarado_igual_refuta():
+def test_dominio_da_colecao_calculado_so_acrescenta_refutacao():
     c = _coll("T-WRAP", "wrap_list", B.ENUM("logs/"), _L(B.ENUM("logs/")), "equal", "lossless",
               {"input": "logs/", "expected": ["logs/"]})
     v = v_of(judge([c]), "T-WRAP")[0]
     assert v["verdict"] == "REFUTED_BY_RULE" and "VDR-COMPUTED" in v["rules"]
 
 
-def test_unwrap_single_e_parcial():
-    c = _coll("T-UNW", "unwrap_single", _L(B.ENUM("a", "b")), B.ENUM("a", "b"), "superset", "partial",
-              {"input": ["a"], "expected": "a"})
-    assert v_of(judge([c]), "T-UNW")[0]["verdict"] == "OK"
-    c2 = _coll("T-UNW2", "unwrap_single", _L(B.ENUM("a", "b")), B.ENUM("a", "b"), "equal", "lossless",
-               {"input": ["a"], "expected": "a"})
-    v = v_of(judge([c2]), "T-UNW2")[0]
-    assert v["verdict"] == "REFUTED_BY_RULE" and {"VDR-COMPUTED", "FID-COHERENT"} <= set(v["rules"])
+# ----------------------------------------------- piso semântico geral (E3 do PILOT-EXIT 2/2)
+CALIBRATED = [Path(os.environ.get("BO_DATA", "/Users/breno/doutorado/brevops-data")) / m / "mapping.sssom.tsv"
+              for m in ("PILOT-STO-MAP", "PILOT-NET-MAP")]
 
 
-def test_texto_aberto_continua_sem_prova_como_no_nucleo():
-    """Domínio aberto (texto sem enum) não prova 'sem perda', no núcleo (identity) e na lista (wrap_list)."""
-    S = B.STR
-    w = _coll("T-WOPEN", "wrap_list", S, _L(S), "subset", "lossless", {"input": "logs/", "expected": ["logs/"]})
-    i = B.C("T-IOPEN", "pa:t.p", "exact", "pb:t.p", S, S, B.IDN, "equal", "lossless",
-            tests=[{"input": "x", "expected": "x"}])
-    for cid, r in (("T-WOPEN", w), ("T-IOPEN", i)):
-        v = v_of(judge([r]), cid)[0]
-        assert v["verdict"] == "UNPROVEN" and "VDR-UNKNOWN" in v["rules"], v
+def test_todo_ok_da_bateria_tem_a_semantica_de_acordo():
+    from bo.arbiter import semcheck
+    claims, _, _ = B.world()
+    r = semcheck.check(B.items_of(claims))
+    assert r["ok_claims"] > 20 and r["pass"], r
+
+
+@pytest.mark.parametrize("path", CALIBRATED, ids=["sto", "net"])
+def test_todo_ok_dos_mapeamentos_calibrados_tem_a_semantica_de_acordo(path):
+    from bo.arbiter import semcheck
+    from bo.arbiter.inputs import load
+    if not path.exists():
+        pytest.skip(f"mapeamento calibrado ausente: {path}")
+    r = semcheck.check(load([str(path)]))
+    assert r["ok_claims"] > 0 and r["pass"], r

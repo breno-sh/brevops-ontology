@@ -567,10 +567,11 @@ def collection_vdr(eff: dict) -> str | None:
 def _registry_domain(c: Checked, eff: dict, dis) -> None:
     cv = collection_vdr(eff)
     vdr = cv if cv is not None else registry_vdr(eff)
-    c.computed["vdr"] = vdr
+    c.computed["registry_vdr"] = vdr
     if vdr == "unknown":
         return
-    c.failures = [f for f in c.failures if f["rule"] != "VDR-UNKNOWN"]
+    # E3 do PILOT-EXIT 2/2: o cálculo pelo registro só ACRESCENTA refutação; nunca tira uma falha da semântica
+    # congelada (antes tirava VDR-UNKNOWN e dava OK onde o SEMANTICS dá UNPROVEN).
     decl = (eff.get("value_domain_relation") or {}).get("relation")
     fid = eff.get("transport_fidelity")
     if decl not in (None, "unknown", vdr) and "VDR-COMPUTED" not in dis:
@@ -583,17 +584,28 @@ def _registry_domain(c: Checked, eff: dict, dis) -> None:
 
 
 # ---------------------------------------------------------------------------------------------------- principal
-def _assess_into(c: Checked, rec: dict, drop: tuple, disabled) -> None:
+def _assess_into(c: Checked, rec: dict, drop: tuple, disabled, soft: bool = False) -> bool:
+    """Aplica a referência congelada (bo.semantics.obligations.assess). drop só pode conter EXACT-NORM, e só quando
+    a normalização é julgada por outra regra da própria semântica (passos do grupo: check_group) ou não existe no
+    registro. soft=True: se a referência não consegue julgar, devolve False sem registrar falha (o chamador tenta a
+    forma sem a função)."""
+    assert set(drop) <= {"EXACT-NORM"}, drop
     try:
         a = assess(rec, disabled=disabled)
     except Exception as e:      # noqa: BLE001 - nada de entrada derruba o árbitro
+        if soft:
+            return False
         c.failures.append(F("ARB-MALFORMED", "REFUTED_BY_RULE", f"assess: {type(e).__name__}: {e}"))
-        return
+        c.computed["sem_verdict"] = "REFUTED_BY_RULE"
+        return True
     c.computed.update(a.computed)
-    c.failures.extend(F(f["rule"], f["outcome"], f["detail"]) for f in a.failures if f["rule"] not in drop)
+    kept = [f for f in a.failures if f["rule"] not in drop]
+    c.computed["sem_verdict"] = verdict_of(f["outcome"] for f in kept)
+    c.failures.extend(F(f["rule"], f["outcome"], f["detail"]) for f in kept)
+    return True
 
 
-def _registry_checks(c: Checked, rec: dict, disabled) -> None:
+def _registry_checks(c: Checked, rec: dict, disabled, tests: bool = True) -> None:
     chain = rec.get("translation_fn")
     st, ot = rec.get("subject_value_type"), rec.get("object_value_type")
     if st and ot and "ARB-FN-TYPE" not in disabled and all(isinstance(TR.get(n), TR.Scalar) for n in fn_names(chain)):
@@ -601,7 +613,7 @@ def _registry_checks(c: Checked, rec: dict, disabled) -> None:
             TR.check_chain(chain, st, ot)
         except (TransformError, KeyError, TypeError, ValueError) as e:
             c.failures.append(F("ARB-FN-TYPE", "REFUTED_BY_RULE", f"cadeia do registro não tipa: {e}"))
-    if "EXACT-TESTS" in disabled:
+    if "EXACT-TESTS" in disabled or not tests:
         return
     tests = ((rec.get("proof") or {}).get("tests")) or []
     if not tests:
@@ -686,14 +698,22 @@ def check(item: dict, *, glossary=None, repeated: set | None = None, group_def: 
                                     f"{s.field} ({side}) está em bloco repetido e a alegação não identifica a ocorrência"))
         if path == "core":
             _assess_into(c, eff, (), dis)
+        elif path == "registry" and _assess_into(c, eff, (), dis, soft=True):
+            # o SEMANTICS delega ao registro fechado do TRANSFORMS: a alegação é julgada pela referência inteira,
+            # com a função; o árbitro só acrescenta a tipagem do registro e a refutação pelo domínio calculado
+            _registry_checks(c, eff, dis, tests=False)
+            _registry_domain(c, eff, dis)
         else:
             e2 = dict(eff)
             e2["translation_fn"] = None
             _assess_into(c, e2, ("EXACT-NORM",), dis)
             if path == "registry":
+                # a referência não consegue julgar a função: sem o juízo dela não há OK (piso semântico)
+                c.computed["sem_verdict"] = "UNPROVEN"
                 _registry_checks(c, eff, dis)
                 _registry_domain(c, eff, dis)
         c.eff = eff
+    _semantic_floor(c, dis)
     if rec.get("semantic_relation") == "related" and "ARB-RELATED-EV" not in dis:
         evs = ((rec.get("proof") or {}).get("evidence")) or []
         cited = [e for e in evs if isinstance(e, dict) and e.get("source") and (e.get("sentence") or e.get("observation"))]
@@ -702,6 +722,19 @@ def check(item: dict, *, glossary=None, repeated: set | None = None, group_def: 
                                 f"related em {rec.get('evidence_state')} sem citação que o sustente: hipótese de alinhamento"))
     _anchors(c, glossary, dis)
     return c
+
+
+def _semantic_floor(c: Checked, dis) -> None:
+    """ARB-SEM-FLOOR (E3 do PILOT-EXIT 2/2): o árbitro nunca é mais permissivo que a semântica congelada. Se a
+    referência devolveu UNPROVEN ou REFUTED_BY_RULE na forma julgada e, ainda assim, nenhuma falha com essa saída
+    ficou registrada, a falha é reposta. Defesa em profundidade: por construção nenhuma falha da referência é tirada
+    (salvo EXACT-NORM onde a normalização é julgada por outra regra da semântica)."""
+    sv = c.computed.get("sem_verdict")
+    if sv not in ("UNPROVEN", "REFUTED_BY_RULE") or "ARB-SEM-FLOOR" in dis:
+        return
+    if not any(f["outcome"] == sv for f in c.failures):
+        c.failures.append(F("ARB-SEM-FLOOR", sv, f"a semântica congelada devolve {sv} nesta alegação; o árbitro não "
+                                                 "pode dar veredito mais permissivo"))
 
 
 def guard_of(c: Checked) -> dict:

@@ -26,7 +26,7 @@ from .common import dump_json, dump_jsonl, emit, now, repo, sha256_bytes
 from .freeze import MANIFEST, RULES_HTML, frozen_files, manifest_text
 from .rules import ARB_RULES, PRECEDENCE, RULE_ALIASES, RULE_ID_PATTERN, SEM_RULES, published_id
 
-AUTHORED_AT = "2026-11-04T14:00:00-03:00"
+AUTHORED_AT = "2026-11-04T21:40:00-03:00"
 RES = "results/ARBITERLIB"
 
 CONVENTIONS = [
@@ -75,6 +75,10 @@ CONVENTIONS = [
                             "para a lista (wrap: elemento contido dá subset próprio; unwrap: função parcial, só listas "
                             "de um elemento). A relação do elemento é a do SEMANTICS: texto aberto (sem enum) dá unknown "
                             "e não prova 'sem perda', como identity texto->texto no núcleo. CC-13 do PILOT-STO-MAP."),
+    ("Piso semântico", "O veredito do árbitro nunca é mais permissivo que o da semântica congelada na mesma forma da "
+                       "alegação (ARB-SEM-FLOOR). Função do registro é julgada pelo assess com a função (o SEMANTICS "
+                       "delega ao registro); o domínio calculado pelo registro (CC-9, CC-13) só acrescenta refutação, "
+                       "nunca tira VDR-UNKNOWN. Conferência geral: python -I -m bo.arbiter.semcheck. E3 do PILOT-EXIT 2/2."),
     ("Saída da conferência", "bo.arbiter.run com --check-unproven e sem --out grava em $BO_TMP/arbiter, nunca em $BO_DATA "
                              "(o gate não regrava o dado publicado). CC-MAP-NET-4 do PILOT-NET-MAP."),
     ("Ciclo", "cycle do C21 é a rodada do árbitro (1; com --previous, 1 + a maior já gravada). Os ciclos do grafo K4 "

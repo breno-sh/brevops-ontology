@@ -57,6 +57,10 @@ _r("ARB-ANCHOR", "A3", "âncora", U, "Âncora é alegação auditada do C20: res
    "DOC_SUPPORTED: UNPROVEN. Âncora de outro átomo ou outro conceito: REFUTED.", ["F4"])
 _r("ARB-RELATED-EV", "A3", "âncora", U, "related não transporta, mas continua sendo alegação de alinhamento: sem "
    "DOC_SUPPORTED (ou observação) com citação, é hipótese (UNPROVEN), não OK.", ["F4"])
+_r("ARB-SEM-FLOOR", "A3", "alegação", "UNPROVEN|REFUTED_BY_RULE", "Piso semântico: o veredito do árbitro nunca é mais "
+   "permissivo que o da semântica congelada (bo.semantics.obligations.assess) na mesma forma da alegação; cálculo "
+   "próprio do árbitro (domínio pelo registro, K4, conjunto) só acrescenta falha, nunca tira (E3 do PILOT-EXIT 2/2).",
+   ["F2", "R1-M6"])
 # ---- ausência tipada (C09-NONE, C09 3.2.0; CC-7 do PILOT-STO-MAP) ----------------------------------------
 _r("ARB-ABSENCE-WF", "A1", "ausência", R, "Ausência tipada bem formada: campo absence; sssom:NoTermFound no lado oposto "
    "ao de absence.side (padrão subject); skos:relatedMatch/related, fidelidade none, sem translation_fn.", ["F3"])
