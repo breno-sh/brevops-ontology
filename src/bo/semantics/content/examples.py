@@ -298,3 +298,16 @@ DAYS_LIST = claim(
     "CLM-CO-02", "pa:tier_days", "exact", "pb:tier_seconds",
     T("list", item_type=DAYS(1, 365)), T("list", item_type=SECS(0, 31536000)), UC("unit:DAY", "unit:SEC"),
     "subset", "lossless", tests=[{"input": [1, 30], "expected": [86400, 2592000]}])
+
+
+# Emenda 3: combinadores de coleção do registro fechado com valor posicional. Prefixo único -> lista de prefixos é
+# exact só no domínio (a imagem são listas de UM item: subset do destino, que admite mais); a volta é unwrap_single,
+# parcial (só lista de tamanho 1).
+WRAP_PREFIX = claim(
+    "CLM-CO-03", "pa:lifecycle_rule.prefix", "exact", "pb:lifecycle_rule.prefix_match",
+    T("string"), T("list", item_type=T("string")), {"name": "wrap_list", "params": {}}, "subset", "partial",
+    tests=[{"input": "logs/", "expected": ["logs/"]}])
+UNWRAP_PREFIX = claim(
+    "CLM-CO-04", "pb:lifecycle_rule.prefix_match", "exact", "pa:lifecycle_rule.prefix",
+    T("list", item_type=T("string")), T("string"), {"name": "unwrap_single", "params": {}}, "superset", "partial",
+    tests=[{"input": ["logs/"], "expected": "logs/"}])

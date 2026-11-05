@@ -420,23 +420,9 @@
     {
      "properties": {
       "name": {
-       "enum": [
-        "duration_to_number",
-        "enum_map",
-        "identity",
-        "join_alarm_query",
-        "join_cidr",
-        "join_port_range",
-        "json_get",
-        "map_get",
-        "number_to_duration",
-        "rate_window_convert",
-        "scale",
-        "split_alarm_query",
-        "split_cidr",
-        "split_port_range",
-        "unit_convert"
-       ]
+       "description": "função do núcleo (bo.semantics.transforms) ou do registro fechado do C10; o validador resolve o nome",
+       "pattern": "^[a-z][a-z0-9_]*$",
+       "type": "string"
       },
       "params": {
        "type": "object"
@@ -451,23 +437,9 @@
      "items": {
       "properties": {
        "name": {
-        "enum": [
-         "duration_to_number",
-         "enum_map",
-         "identity",
-         "join_alarm_query",
-         "join_cidr",
-         "join_port_range",
-         "json_get",
-         "map_get",
-         "number_to_duration",
-         "rate_window_convert",
-         "scale",
-         "split_alarm_query",
-         "split_cidr",
-         "split_port_range",
-         "unit_convert"
-        ]
+        "description": "função do núcleo (bo.semantics.transforms) ou do registro fechado do C10; o validador resolve o nome",
+        "pattern": "^[a-z][a-z0-9_]*$",
+        "type": "string"
        },
        "params": {
         "type": "object"

@@ -71,7 +71,7 @@ def render(ctx: dict) -> str:
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>Semântica das correspondências</title>
 <style>{CSS}</style></head><body><main>
 <h1>Semântica das correspondências</h1>
-<div class="meta">versão 2.0 da teoria (emenda 2, 2026-11-04)</div>
+<div class="meta">versão 3.0 da teoria (emenda 3, 2026-11-04)</div>
 <div class="meta">Módulo SEMANTICS · contratos C09 (correspondências) e C10 (guarda, composição) · escrito em {e(ctx['at'])}
 (America/Recife) · conteúdo sha256 {e(ctx['content_sha'][:16])}… · revisão GPT-6 F2, F3, F4, N4 · R1-M6, R2-W1</div>
 <div class="kpis">
@@ -261,7 +261,7 @@ fixo de <code>bo.semantics.fixtures</code>.</p>""")
         A(f"<li>{f}</li>")
     A("</ul>")
     A("""<h2 id="emendas">16. Emendas versionadas</h2>
-<p>Versão da teoria 2.0 (2026-11-04). A emenda 2 responde ao CC-5 e ao CC-6 do PILOT-STO-MAP (CONTRACTS emenda 7).
+<p>Versão 2.0 (2026-11-04). A emenda 2 responde ao CC-5 e ao CC-6 do PILOT-STO-MAP (CONTRACTS emenda 7).
 <b>Coleções</b>: o tipo de valor aceita list, set e map com item_type (e key_type no map), como o C09 3.2.0. A
 grandeza de uma coleção é a do elemento, de modo que lista de texto não é mais KIND-UNKNOWN. Cadeia escalar entre
 coleções do mesmo tipo vale elemento a elemento, com perda registrada por elemento. Entre coleção e escalar é
@@ -269,7 +269,14 @@ preciso combinador de coleção (do registro do C10), e list→set exige perda d
 <b>Grandeza de dado</b>: BYTE, BIT e prefixos passam a quantitykind:AmountOfData, como no UNITS. O QUDT 3.5.3
 (VOCAB_QUDT-UNITS-ALL.ttl, release v3.5.3 de qudt/qudt-public-repo, sha256 em $BO_DATA/downloads/qudt-3.5.3/SOURCE.txt)
 liga essas unidades a AmountOfData e ByteDataVolume por qudt:unitForQuantityKind, e não a InformationEntropy, que a
-versão 1 usava sem conferir. Um teste cruzado compara o núcleo com bo.units.rules e com o arquivo do QUDT.</p>""")
+versão 1 usava sem conferir. Um teste cruzado compara o núcleo com bo.units.rules e com o arquivo do QUDT.</p>
+<p>Versão 3.0 (emenda 3, ciclo v4, pedido do ARBITERLIB b424605). Lista e conjunto tipados do C09 3.2.0 contam como
+lado estruturado para combinador de tupla. Combinador do registro fechado com uma porta só aceita o valor posicional
+(o valor solto da alegação) e devolve o valor solto quando tem uma saída só; entradas nomeadas continuam valendo.
+<b>wrap_list</b> (escalar → lista) é exact só no domínio: a imagem são listas de UM item, subconjunto próprio do
+destino, que admite mais. A relação calculada é subset, e a volta só existe para lista de tamanho 1.
+<b>unwrap_single</b> (lista → escalar) é parcial: definido só em lista de tamanho 1, com relação superset e nunca sem
+perda. A forma dos dois (escalar ↔ lista, mesma grandeza no elemento) é conferida por KIND-COLL e KIND-EQ.</p>""")
     A(table(["versão", "data", "pedido", "o que resolve", "commit"],
             [[e(x["versao"]), e(x["data"]), e(x["pedido"]), e(x["resolve"]),
               code(x["commit"] or ("neste merge: " + x["assunto"]))] for x in ctx["emendas"]]))

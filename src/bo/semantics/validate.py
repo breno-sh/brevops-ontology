@@ -19,6 +19,7 @@ import jsonschema
 
 from . import common
 from . import guards as G
+from . import transforms as T
 from .claims import Claim, check_predicate
 from .obligations import assess
 from .rules import RULES
@@ -41,6 +42,11 @@ def validate_records(kind: str, recs: list[dict]) -> list[str]:
             except G.GuardTypeError as e:
                 errs.append(f"registro {i}: guarda: {e}")
             errs.extend(f"registro {i}: {e}" for e in check_predicate(Claim(r)))
+            for fn in T.chain_of(r.get("translation_fn")):
+                try:
+                    T.get(fn.get("name"))
+                except T.TypeError_ as e:
+                    errs.append(f"registro {i}: translation_fn: {e}")
         if kind == "counterexample":
             ids.append(r.get("ce_id"))
             if r.get("rule_id") not in RULES:

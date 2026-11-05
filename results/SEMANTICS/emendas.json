@@ -26,7 +26,7 @@
   },
   {
    "assunto": "[SEMANTICS] emenda 2: coleções e AmountOfData (CC-5, CC-6)",
-   "commit": null,
+   "commit": "ea53bcf",
    "data": "2026-11-04",
    "pedido": "PILOT-STO-MAP CC-6 (CONTRACTS emenda 7: C09 3.2.0 list/set/map)",
    "resolve": "coleções no tipo de valor: grandeza do elemento; cadeia escalar elemento a elemento; regra KIND-COLL",
@@ -34,11 +34,19 @@
   },
   {
    "assunto": "[SEMANTICS] emenda 2: coleções e AmountOfData (CC-5, CC-6)",
-   "commit": null,
+   "commit": "ea53bcf",
    "data": "2026-11-04",
    "pedido": "PILOT-STO-MAP CC-5 (com o UNITS): grandeza de unit:BYTE",
    "resolve": "dado = quantitykind:AmountOfData (QUDT 3.5.3, qudt:unitForQuantityKind), não InformationEntropy; unidades do núcleo alinhadas ao bo.units.rules",
    "versao": "2.0"
+  },
+  {
+   "assunto": "[SEMANTICS] emenda 3: wrap_list e unwrap_single com lista tipada",
+   "commit": null,
+   "data": "2026-11-04",
+   "pedido": "ARBITERLIB b424605 (ciclo v4): wrap_list/unwrap_single REFUTED por KIND-TUPLE e EXACT-TESTS em 37 alegações (12 STO, 25 NET)",
+   "resolve": "lista/conjunto tipados contam como lado estruturado; combinador de porta única aceita valor posicional; wrap_list exact no domínio com relação subset; unwrap_single parcial (só lista de tamanho 1)",
+   "versao": "3.0"
   }
  ],
  "module": "SEMANTICS",

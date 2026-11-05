@@ -290,12 +290,21 @@ def _from_closed_registry(name: str) -> Spec | None:
         return None
     is_comb = isinstance(item, R.Combinator)
 
-    def run(v, p, ctx, _n=name, _c=is_comb):
+    ins = [i[0] for i in item.inputs] if is_comb else []
+    outs = [o[0] for o in item.outputs] if is_comb else []
+
+    def run(v, p, ctx, _n=name, _c=is_comb, _ins=ins, _outs=outs):
         try:
             if _c:
-                if not isinstance(v, dict):
-                    raise OutOfDomain(f"{_n}: combinador exige entradas nomeadas")
-                return R.apply_combinator(_n, v, ctx)
+                # emenda 3: combinador de porta única aceita o valor posicional (o valor solto da alegação) e,
+                # com saída única, devolve o valor solto; entradas nomeadas continuam valendo
+                named = isinstance(v, dict) and set(v) == set(_ins)
+                if not named:
+                    if len(_ins) != 1:
+                        raise OutOfDomain(f"{_n}: combinador de {len(_ins)} portas exige entradas nomeadas {_ins}")
+                    v = {_ins[0]: v}
+                out = R.apply_combinator(_n, v, ctx)
+                return out[_outs[0]] if len(_outs) == 1 and not named else out
             return R.apply_scalar(_n, v, p, ctx)
         except RE.TransformError as e:
             if getattr(e, "code", "") == RE.DECLARATION_ERROR:
@@ -350,6 +359,19 @@ def chain_of(fn) -> list[dict]:
     if fn is None:
         return []
     return list(fn) if isinstance(fn, list) else [fn]
+
+
+# Emenda 3: forma dos combinadores de coleção do registro fechado (a mesma do _COLL_SHAPE do TRANSFORMS):
+# None = lado não coleção. wrap_list é total e injetiva; unwrap_single é parcial (só lista de tamanho 1).
+COLL_SHAPE = {"wrap_list": (None, "list"), "unwrap_single": ("list", None)}
+PARTIAL_COLL = {"unwrap_single"}
+
+
+def coll_combinator(fn) -> str | None:
+    ch = chain_of(fn)
+    if len(ch) == 1 and ch[0].get("name") in COLL_SHAPE:
+        return ch[0]["name"]
+    return None
 
 
 def apply_lifted(chain: list[dict], v, tin, tout, ctx: dict | None = None):

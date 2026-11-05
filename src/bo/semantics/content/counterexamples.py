@@ -72,6 +72,16 @@ ce("CE-KIND-COLL-1", "KIND-COLL", "claim",
    note="sem a regra, o teste de lista não é admitido pelo tipo escalar do destino (EXACT-TESTS segura)")
 ce("CE-KIND-COLL-2", "KIND-COLL", "claim", "lista -> conjunto sem declarar a perda de ordem e de repetição",
    mut(E.PREFIX_LIST, ("object_value_type", E.T("set", item_type=E.T("string")))), E.PREFIX_LIST)
+ce("CE-KIND-COLL-3", "KIND-COLL", "claim", "wrap_list usado entre duas listas (a forma do combinador é escalar -> lista)",
+   mut(E.WRAP_PREFIX, ("subject_value_type", E.T("list", item_type=E.T("string"))),
+       ("proof/tests", [{"input": ["a/"], "expected": [["a/"]]}]), ("value_domain_relation/relation", "unknown")),
+   E.WRAP_PREFIX, "rule_only", note="sem a regra, a lista de listas não é admitida pelo destino (KIND-TUPLE segura)")
+ce("CE-VDR-COMPUTED-3", "VDR-COMPUTED", "claim",
+   "wrap_list declarado com domínios iguais: a imagem são listas de um item, subconjunto próprio do destino",
+   mut(E.WRAP_PREFIX, ("value_domain_relation/relation", "equal")), E.WRAP_PREFIX)
+ce("CE-FID-COHERENT-3", "FID-COHERENT", "claim",
+   "unwrap_single declarado sem perda: só lista de tamanho 1 tem contraparte (parcial)",
+   mut(E.UNWRAP_PREFIX, ("transport_fidelity", "lossless")), E.UNWRAP_PREFIX)
 ce("CE-UNIT-WINDOW-1", "UNIT-WINDOW", "claim", "taxa por minuto copiada como taxa por segundo (identidade)",
    mut(E.RATE, ("translation_fn", {"name": "identity", "params": {}}), ("proof/tests", [{"input": 60, "expected": 60}]),
        ("value_domain_relation/relation", "superset"), ("transport_fidelity", "partial")),
@@ -154,6 +164,10 @@ def tr(claim, value, asserted, ctx=None, direction="forward"):
     return r
 
 
+ce("CE-T-DOMAIN-2", "T-DOMAIN", "trace", "lista de dois prefixos achatada para o primeiro (unwrap_single fora do domínio)",
+   tr(E.UNWRAP_PREFIX, ["a/", "b/"], {"result": "carried", "value": "a/"}),
+   tr(E.UNWRAP_PREFIX, ["a/"], {"result": "carried", "value": "a/"}), "rule_only",
+   note="sem a regra, a lista passa crua e não é o valor afirmado")
 ce("CE-T-RELATED-1", "T-RELATED", "trace", "related usado para carregar valor (CMT-LOSS-N02)",
    tr(E.RELATED_KMS, "key_x", {"result": "carried", "value": "key_x"}),
    tr(E.RELATED_KMS, "key_x", {"result": "blocked", "code": "RELATED_ONLY"}))

@@ -41,7 +41,9 @@ GUARD = {
                                                        "items": {"type": "string"}}}},
 }
 
-FN = {"type": "object", "required": ["name"], "properties": {"name": {"enum": sorted(TR.REGISTRY)},
+FN = {"type": "object", "required": ["name"], "properties": {"name": {
+    "type": "string", "pattern": "^[a-z][a-z0-9_]*$",
+    "description": "função do núcleo (bo.semantics.transforms) ou do registro fechado do C10; o validador resolve o nome"},
                                                                "params": {"type": "object"}}}
 
 C09_RECORD = {

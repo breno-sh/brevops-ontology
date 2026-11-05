@@ -72,6 +72,9 @@ PARTIAL_ADJUST = {"equal": "superset", "subset": "overlap", "superset": "superse
 def computed_vdr(c: Claim, ts: ValueType, to: ValueType) -> str:
     """Relação entre ν(dom sujeito) e dom objeto. Se a função parcial não está definida em parte do domínio
     finito do sujeito, esses valores ficam sem contraparte (contam como elementos fora do objeto)."""
+    cc = T.coll_combinator(c["translation_fn"])
+    if cc is not None:
+        return _coll_vdr(c, cc, ts, to)
     if T.kind(c["translation_fn"]) == "tuple":
         return "unknown"
     if ts.is_collection or to.is_collection:
@@ -103,6 +106,25 @@ def computed_vdr(c: Claim, ts: ValueType, to: ValueType) -> str:
         if undefined:
             r = PARTIAL_ADJUST[r]
     return r
+
+
+def _coll_vdr(c: Claim, cc: str, ts: ValueType, to: ValueType) -> str:
+    """Emenda 3. wrap_list: imagem = listas de UM elemento de dom(sujeito); destino = listas de qualquer tamanho de
+    dom(item). Com os elementos iguais ou contidos, a imagem é subconjunto PRÓPRIO (o destino admite mais de um
+    item). unwrap_single: definido só em lista de tamanho 1; o resto do domínio fica sem contraparte."""
+    src, dst = T.COLL_SHAPE[cc]
+    if (ts.datatype if ts.is_collection else None, to.datatype if to.is_collection else None) != (src, dst):
+        return "unknown"
+    el_s = ts.item if ts.is_collection else ts
+    el_o = to.item if to.is_collection else to
+    if isinstance(el_s.domain(), AnyDomain) and isinstance(el_o.domain(), AnyDomain):
+        el = "equal" if el_s.signature() == el_o.signature() else "unknown"
+    else:
+        el = relation(el_s.domain(), el_o.domain())
+    if cc == "wrap_list":
+        return {"equal": "subset", "subset": "subset", "superset": "overlap", "overlap": "overlap",
+                "disjoint": "disjoint"}.get(el, "unknown")
+    return PARTIAL_ADJUST.get(el, "unknown")
 
 
 def derive_fidelity(rel: str, vdr: str, losses: list, has_pred: bool, fn_missing: bool) -> str:
@@ -197,8 +219,25 @@ def assess(c: Claim | dict, disabled=frozenset()) -> Assessment:
             a.fail("KIND-EQ", "REFUTED_BY_RULE", f"transformação escalar muda a grandeza: {why}", dis)
         if ts.datatype == "tuple" or to.datatype == "tuple":
             a.fail("KIND-TUPLE", "REFUTED_BY_RULE", "valor estruturado com transformação escalar", dis)
-    if tkind == "tuple" and not (ts.datatype == "tuple" or to.datatype == "tuple"):
+    structured = ("tuple", "list", "set")     # emenda 3: lista e conjunto tipados (C09 3.2.0) são lado estruturado
+    if tkind == "tuple" and not (ts.datatype in structured or to.datatype in structured):
         a.fail("KIND-TUPLE", "REFUTED_BY_RULE", "combinador de tupla sem lado com tipo estruturado declarado", dis)
+    cc = T.coll_combinator(chain) if chain is not None else None
+    if cc is not None:
+        src, dst = T.COLL_SHAPE[cc]
+        shape_s = ts.datatype if ts.is_collection else None
+        shape_o = to.datatype if to.is_collection else None
+        if (shape_s, shape_o) != (src, dst):
+            a.fail("KIND-COLL", "REFUTED_BY_RULE",
+                   f"{cc} liga {src or 'escalar'} -> {dst or 'escalar'}; a alegação liga {ts.datatype} -> {to.datatype}", dis)
+        else:
+            el_s = ts.item if ts.is_collection else ts
+            el_o = to.item if to.is_collection else to
+            if not el_s.kind_unknown() and not el_o.kind_unknown() and \
+                    el_s.element().quantity_kind != el_o.element().quantity_kind:
+                a.fail("KIND-EQ", "REFUTED_BY_RULE",
+                       f"{cc} não muda a grandeza do elemento ({el_s.element().quantity_kind} -> "
+                       f"{el_o.element().quantity_kind})", dis)
 
     # testes da normalização (executados)
     proof = c["proof"] or {}
@@ -216,7 +255,7 @@ def assess(c: Claim | dict, disabled=frozenset()) -> Assessment:
         a.fail("VDR-COMPUTED", "REFUTED_BY_RULE", f"value_domain_relation inválida: {vdr_decl!r}", dis)
     elif orient != VDR_ORIENTATION:
         a.fail("VDR-COMPUTED", "REFUTED_BY_RULE", f"orientação ausente ou errada: {orient!r} (é {VDR_ORIENTATION})", dis)
-    vdr_comp = computed_vdr(c, ts, to) if tkind != "tuple" and chain is not None else "unknown"
+    vdr_comp = computed_vdr(c, ts, to) if chain is not None and (tkind != "tuple" or T.coll_combinator(chain)) else "unknown"
     a.computed["vdr"] = vdr_comp
     if vdr_comp != "unknown" and vdr_decl in VALUE_DOMAIN_RELATIONS and vdr_decl not in ("unknown", vdr_comp):
         a.fail("VDR-COMPUTED", "REFUTED_BY_RULE",
@@ -301,8 +340,10 @@ def _run_test(c, chain, t, ts, to, a, dis, tkind):
         a.fail("EXACT-TESTS", "REFUTED_BY_RULE", f"normalização({x!r}) = {y!r}, teste diz {exp!r}", dis)
         return
     if tkind == "tuple":
-        if to.datatype == "tuple" and not to.admits(y):
+        if to.datatype in ("tuple", "list", "set", "map") and not to.admits(y):
             a.fail("KIND-TUPLE", "REFUTED_BY_RULE", f"saída {y!r} não respeita os tipos dos componentes", dis)
+        elif T.coll_combinator(chain) == "unwrap_single" and not to.admits(y):
+            a.fail("KIND-TUPLE", "REFUTED_BY_RULE", f"saída {y!r} fora do tipo do destino", dis)
         return
     if ts.is_collection and to.is_collection and ts.datatype == to.datatype and not t.get("lossy"):
         xs = list(x.values()) if isinstance(x, dict) else list(x)
