@@ -9,6 +9,15 @@ os gates seguem com o comando do catálogo. Com eles corrigidos, a rerodada é u
   python -I -m bo.pilot_sto_map.pipeline            (staging, entradas por sha256 no pipeline_report.json)
   tools/lock.sh with merge-base --owner PILOT-STO-MAP --wait 600 -- python -I -m bo.pilot_sto_map.pipeline --promote-only
 
+ATUALIZAÇÃO 2026-11-05T01:20:00-03:00 (America/Recife), rodada v4-r2: base 79223e5, pacote do STO-GLOSS cf9d91e
+(MANIFEST 255260f4, GRAIN 0.2.5 3aa6b45, SE 4d48d00), árbitro ARBITER-V4-2 (ARBITER.sha256 1c2d3c34, sem
+recongelar; --frozen confere, fecho sem drift). Do pacote só mudou canonical_units.jsonl; átomos, âncoras,
+decisões e value_space iguais. mapping.sssom.tsv e verdicts.jsonl saem byte a byte iguais aos da rodada final do
+v4 (df236156, f6da4b35); muda só o build_record (sha do pacote). Alegações: 52 OK, 24 AMBIGUOUS, 34 UNPROVEN;
+ausências: 63 OK, 1420 UNPROVEN; nenhuma decisão largada. Lowering nas 181 entradas de calibração (os três
+controles): 0 chegam ao plano, antes e depois (120 sem correspondência, 31 só related, 22 ambíguas, 8 UNPROVEN).
+Seguem abertos, sem bloquear: CC-8 e a regressão do CC-9.
+
 ATUALIZAÇÃO 2026-11-04T23:08:00-03:00 (America/Recife), rodada final do v4: base 70ee3f0, pacote do STO-GLOSS
 (MANIFEST 4c554191), árbitro ARBITER-V4-2 (aa01f20, ARBITER.sha256 1c2d3c34), SEMANTICS emenda 3 (ffe8c7f).
   CC-13 RESOLVIDO: o árbitro calcula a imagem do wrap_list (relação de domínio subset); "sem perda" fica provado, e
