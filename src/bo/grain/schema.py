@@ -374,6 +374,10 @@ def to_c19(res: SchemaResult, atom_roles: dict | None = None) -> tuple[list[dict
         if d.own_api_lifecycle:
             rec["evidence"] = list(rec["evidence"]) + [{"level": "derived", "ref": "own_api_lifecycle=true",
                                                          "note": "componente com operações próprias na API (G2-CHILD)"}]
+        if d.stored_in:
+            rec["evidence"] = list(rec["evidence"]) + [{"level": "derived", "ref": f"stored_in={uid[d.stored_in]}",
+                                                        "note": "G1b: referência guardada na origem; ciclo de vida da "
+                                                                "origem"}]
         for tc in d.cascade:
             rec["evidence"] = list(rec["evidence"]) + [{"level": "derived", "ref": f"cascade_delete_by={uid[tc]}",
                                                          "note": "apagado em cascata pelo contêiner de namespace "

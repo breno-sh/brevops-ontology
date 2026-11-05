@@ -7,10 +7,10 @@
 schema: bo.grain.rules/1
 contract: C19
 contract_version: 3.1.0
-rules_version: 0.2.1
+rules_version: 0.2.2
 status: PROVISIONAL
 written_at: "2026-11-03T02:00:00-03:00"
-amended_at: "2026-11-04T22:30:00-03:00"
+amended_at: "2026-11-04T22:47:00-03:00"
 definitive_after: [GRAIN-REPRO, PILOT-EXIT]
 
 layers:
@@ -80,6 +80,8 @@ predicates:
   lifecycle_target_resolved: o controlador de ciclo de vida resolve a uma unidade decidida
   api_resource_status_in: estado da ligação com a API está na lista
   identity_composition_targets_min: número mínimo de unidades distintas em T sem contar os contêineres de namespace
+  attachment_reference: a evidência descreve um campo da unidade como a ligação da origem a uma unidade-alvo (anexação da spec) e esse campo é referência tipada fora da identidade
+  attachment_targets_kind_in: todo alvo desses campos já decidido com grão nesta lista, ou nó de ponta do tipo listado
   identity_path_parent: as referências da chave que não são de namespace apontam para UM pai que a evidência marca como segmento de caminho acima da unidade (há chave própria)
   identity_targets_all_namespace: toda referência da chave aponta para contêiner de namespace marcado pela evidência (e há chave própria)
 
@@ -119,8 +121,21 @@ rules:
       owner_kind_in: [self]
     emit: {parent: none, endpoints: identity_targets}
 
-  - id: GRAIN-G2-COMPONENT
+  - id: GRAIN-G1b-REFERENCE
     priority: 2
+    grain: BINDING
+    text: emenda 0.2.2; a unidade que É uma referência tipada entre duas unidades (identidade emprestada da origem da referência e um campo que a evidência descreve como a ligação da origem a uma unidade-alvo) é vínculo entre a origem e o alvo, mesmo quando o armazenamento e o ciclo de vida são da origem; registra guardado-em = origem e ciclo de vida = origem; separa onde está guardado do que é (unifica o elemento de atributo-lista e a associação guardada no campo da origem)
+    match: {identity_class_in: [BORROWED], attachment_reference: true}
+    needs: [lifecycle_controller, owner, effective_scope]
+    guard:
+      attachment_targets_kind_in: [ENTITY, COMPONENT, BINDING, SELECTOR, EXTERNAL]
+      identity_targets_kind_in: [ENTITY, COMPONENT, BINDING, EXTERNAL]
+      lifecycle_kind_in: [parent]
+      lifecycle_target_consistent: true
+    emit: {parent: none, endpoints: identity_and_attachment_targets, stored_in: identity_target}
+
+  - id: GRAIN-G2-COMPONENT
+    priority: 3
     grain: COMPONENT
     text: identidade própria dentro do pai e ciclo de vida preso ao pai, qualquer que seja a cardinalidade do bloco
     match: {identity_class_in: [WITHIN, REF_TUPLE, REF_TUPLE_PLUS, INDEPENDENT]}
@@ -132,7 +147,7 @@ rules:
     emit: {parent: lifecycle_target}
 
   - id: GRAIN-G2-CHILD
-    priority: 3
+    priority: 4
     grain: COMPONENT
     text: emenda 0.1.7; sub-recurso com operações próprias na API continua parte do pai; identidade relativa a um pai de composição que a evidência marca como segmento de caminho acima dela, ciclo de vida de API publicado como próprio e apagamento em cascata pelo pai; sai componente do pai, com o ciclo de vida próprio registrado e o pai em cascade_delete_by
     match: {identity_class_in: [WITHIN, REF_TUPLE_PLUS], identity_path_parent: true}
@@ -142,7 +157,7 @@ rules:
     emit: {parent: path_parent}
 
   - id: GRAIN-G3-FACET
-    priority: 4
+    priority: 5
     grain: FACET
     text: sem identidade própria, configura um aspecto, dono da configuração = o pai, seja bloco, grupo de atributos ou recurso separado; faceta com vários donos fica no vínculo entre eles
     match: {identity_class_in: [BORROWED]}
@@ -156,7 +171,7 @@ rules:
     emit: {parent: owner_target}
 
   - id: GRAIN-G4-ENTITY
-    priority: 5
+    priority: 6
     grain: ENTITY
     text: identidade e ciclo de vida independentes de qualquer outra unidade
     match: {identity_class_in: [INDEPENDENT]}
@@ -167,7 +182,7 @@ rules:
     emit: {parent: none}
 
   - id: GRAIN-G4-NS
-    priority: 6
+    priority: 7
     grain: ENTITY
     text: emenda 0.1.6; identidade qualificada por um contêiner de namespace marcado pela evidência não é composição; com ciclo de vida de API próprio e a identidade independente módulo o namespace, a unidade é entidade; o apagamento em cascata pelo namespace vira a relação cascade_delete_by, nunca dono nem ciclo de vida do pai; sem a marca de namespace, segue UNKNOWN
     match: {identity_class_in: [WITHIN, REF_TUPLE_PLUS], identity_targets_all_namespace: true}
@@ -179,7 +194,7 @@ rules:
     emit: {parent: none}
 
   - id: GRAIN-G0-NOMATCH
-    priority: 7
+    priority: 8
     grain: UNKNOWN
     text: a evidência está completa mas nenhuma regra a aceita (ex. identidade dentro do pai com ciclo de vida próprio); UNKNOWN com os campos cujos guards falharam
     match: {}
@@ -199,6 +214,10 @@ amendments:
     version: 0.1.7
     origin: decisão do coordenador sobre a regra de rede filha do conjunto
     text: regra nova G2-CHILD (entre G2 e G3); marca de caminho pai pela evidência (tipo de API da ponte aninhado no tipo de API do pai de contenção, ou fato explícito path_parent); G1 conta pontas sem os contêineres de namespace
+  - id: GRAIN-A17
+    version: 0.2.2
+    origin: decisão do coordenador por coerência interna (mesmo fenômeno saía de dois jeitos)
+    text: regra nova G1b (prioridade entre G1 e G2) — a unidade que É uma referência tipada entre duas unidades (identidade emprestada da origem e campo de anexação descrito pela evidência, com alvo tipado) é vínculo entre origem e alvo mesmo quando o armazenamento e o ciclo de vida são da origem; registra stored_in = origem e ciclo de vida = origem; a origem pode ser externa; o alvo do campo de anexação é dependência de decisão; unifica o elemento de atributo-lista e a associação guardada no campo da origem
   - id: GRAIN-A16
     version: 0.2.1
     origin: decisão do coordenador pela opção A do pedido de mudança (T51b) e emenda 14 do CONTRACTS (C19 3.2.0)

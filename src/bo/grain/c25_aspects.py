@@ -902,6 +902,10 @@ def translate(records: list[dict], candidates: set[str] | None = None, disputes:
         put(f"{cid}:{attr}", "effective_scope", {"kind": "self", "source": src})
         if "." not in cid and any(c.get("kind") == "parent" for c in out.get(cid, {}).get("lifecycle_controller", [])):
             put(cid, "effective_scope", {"kind": "self", "source": src})
+            # G1b (0.2.2): o campo é a ligação que a unidade É (anexação descrita pela spec)
+            if typed.get(cid, {}).get(attr):
+                fm = out.setdefault(cid, {}).setdefault("field_map", {})
+                fm.setdefault(attr, {"path": attr, "ref": True})["attachment"] = True
     for cid, it in sorted(item_facts.items()):
         # T59b (0.2.0): item sem id do provedor é COMPONENT anônimo do dono; identidade = conteúdo do item, com
         # índice de multiplicidade para duplicatas. "Sem id" do schema (block_identity absent) e do experimento

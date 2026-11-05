@@ -66,6 +66,7 @@ class Decision:
     trace: list = field(default_factory=list)
     cascade: list = field(default_factory=list)       # contêineres de namespace: relação cascade_delete_by
     own_api_lifecycle: bool = False                    # G2-CHILD: componente com operações próprias na API
+    stored_in: str | None = None                       # G1b: a referência é guardada na origem (e vive com ela)
 
 
 def _order_missing(xs) -> list:
@@ -166,6 +167,11 @@ class Context:
         if comp and set(comp) <= pp and len(set(comp.values())) == 1:
             self.path_parent = next(iter(comp.values()))
         self.targets = sorted(ident.refs.values()) if n.by_role else sorted(set(ident.refs.values()))
+        # G1b (0.2.2): campos que a evidência descreve como a ligação da origem a uma unidade-alvo (anexação),
+        # referências tipadas fora da identidade
+        self.attachment_fields = sorted(f for f, m in ev.field_map.items()
+                                        if m.get("ref") and m.get("attachment") and f not in ident.refs)
+        self.attachment_targets = {f: n.ref_targets.get(f) for f in self.attachment_fields}
         self.lifecycle: Fact = ev.fact("lifecycle_controller")
         self.owner: Fact = ev.fact("owner")
         self.scope: Fact = ev.fact("effective_scope")
@@ -318,6 +324,13 @@ def decide_node(n: Node, rs: R.RuleSet, decided: dict, bindings: dict) -> Decisi
         elif par == "path_parent":
             d.parent = ctx.path_parent
             d.own_api_lifecycle = True
+        if rule.emit.get("endpoints") == "identity_and_attachment_targets":
+            eps = {(n.ev.parent_role if f == PARENT else f): ctx.unit_of(t) for f, t in ident.refs.items()}
+            eps.update({f: ctx.unit_of(t) for f, t in ctx.attachment_targets.items()})
+            d.endpoints = eps
+            if rule.emit.get("stored_in") == "identity_target" and len(set(ident.refs.values())) == 1:
+                d.stored_in = next(iter(ident.refs.values()))
+                d.notes.append(f"referência guardada na origem (stored_in = {d.stored_in}); ciclo de vida da origem")
         if rule.emit.get("endpoints") == "identity_targets":
             d.endpoints = {(n.ev.parent_role if f == PARENT else f): ctx.unit_of(t) for f, t in ident.refs.items()}
             lifted = sorted(t for t in ident.refs.values() if ctx.unit_of(t) != t)
@@ -345,6 +358,8 @@ def _deps(n: Node) -> set:
         for c in ev.claims.get(fld, []):
             v = c.get("via")
             used |= ({v} if isinstance(v, str) else set(v or []))
+    # G1b: o alvo do campo de anexação é ponta do vínculo e precisa estar decidido antes
+    used |= {f for f, m in ev.field_map.items() if m.get("ref") and m.get("attachment")}
     out = {n.parent} if n.parent else set()
     for f in used:
         t = n.ref_targets.get(f)

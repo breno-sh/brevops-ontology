@@ -354,3 +354,66 @@ def test_t51b_c19_endpoint_shape():
     from bo.grain.schema import _endpoint
     e = _endpoint("target", f"{EXT}{NSG}#sym:var.sg", {})
     assert e == {"role": "target", "kind": "EXTERNAL", "symbol": "var.sg", "target_type": NSG}
+
+
+# ------------------------------------------------------------------ 0.2.2: G1b (referência guardada na origem)
+
+NIC, ASSOC = "t_nic", "t_assoc"
+
+
+def _assoc_records(attachment=True, typed_target=True):
+    recs = entity(NIC, "Nic") + entity(NSG, "NetworkSecurityGroup") + [
+        rec(ASSOC, "identity", {"key_fields": ["nic_id"], "layer": "api", "rule": "R-ID-SPEC-ATTACH",
+                                "scope": "independent", "status": "present"}),
+        rec(ASSOC, "identity", {"aspect": "reference_target", "attribute": "nic_id", "resolved": NIC,
+                                "target_types": [NIC], "references": {"nic_id": NIC}, "rule": "R-REF-TARGET"}),
+        api(ASSOC, "lifecycle_controller", "parent", level="observed"),
+        api(ASSOC, "owner", "parent", level="observed"),
+        rec(ASSOC, "api_bridge", {"aspect": "api_resource_bridge", "resource": "Nic", "service": "core",
+                                  "rule": "R-BRIDGE-SPEC"})]
+    for r in recs[-3:-1]:
+        r["value"]["via"] = ["nic_id"]
+    if typed_target:
+        recs.append(rec(ASSOC, "identity", {"aspect": "reference_target", "attribute": "nsg_id", "resolved": NSG,
+                                            "target_types": [NSG], "references": {"nsg_id": NSG},
+                                            "rule": "R-REF-TARGET"}))
+    if not attachment:
+        recs.append(rec(ASSOC, "effective_scope", {"kind": "parent", "layer": "api", "rule": "R-X",
+                                                   "via": ["nic_id"]}))
+    if attachment:
+        recs.append(rec(ASSOC, "identity", {"aspect": "attachment_attribute", "attribute": "nsg_id",
+                                            "binds_to": NSG, "rule": "R-ATTACH-SPEC", "spec_field": "F",
+                                            "spec_operation": "Op"}))
+    return recs
+
+
+def _assoc_cfg():
+    return {"provider": PROV, "resources": [
+        {"type": NIC, "name": "n", "values": {"name": "n"}},
+        {"type": NSG, "name": "web", "values": {"name": "web"}},
+        {"type": ASSOC, "name": "a", "values": {"nic_id": {"$ref": f"{NIC}.n"}, "nsg_id": {"$ref": f"{NSG}.web"}}}]}
+
+
+def _assoc_decision(recs):
+    from bo.grain import engine as E
+    nodes, _, _ = I.build_nodes(_assoc_cfg(), C25Adapter(recs), {})
+    return E.decide_graph(list(nodes.values()), RS)[f"{ASSOC}.a"]
+
+
+def test_g1b_reference_stored_in_origin_is_binding():
+    d = _assoc_decision(_assoc_records())
+    assert d.grain == "BINDING" and d.rule == "GRAIN-G1b-REFERENCE", (d.grain, d.rule, d.missing)
+    assert set(d.endpoints.values()) == {f"{NIC}.n", f"{NSG}.web"} and d.stored_in == f"{NIC}.n"
+    assert d.lifecycle["kind"] == "parent"
+
+
+def test_g1b_negative_without_attachment_fact_stays_facet():
+    """Controle: sem o fato de anexação, a referência é só atributo da origem (FACET da NIC), não vínculo."""
+    d = _assoc_decision(_assoc_records(attachment=False))
+    assert d.grain == "FACET", (d.grain, d.rule)
+
+
+def test_g1b_negative_untyped_attribute_stays_facet():
+    """Controle: anexação descrita num atributo sem referência tipada a unidade não vira vínculo."""
+    d = _assoc_decision(_assoc_records(typed_target=False))
+    assert d.grain == "FACET", (d.grain, d.rule)

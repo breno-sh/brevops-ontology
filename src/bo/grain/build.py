@@ -36,7 +36,7 @@ from . import schema as S
 from .common import data_dir, dump_json, dump_jsonl, now, repo, results_dir, rules_path, sha256_file, stamp
 from .evidence import FixtureAdapter
 
-AUTHORED_AT = "2026-11-04T22:30:00-03:00"
+AUTHORED_AT = "2026-11-04T22:47:00-03:00"
 
 
 def _strip(rep: dict) -> dict:
@@ -408,6 +408,22 @@ vida preso à instância, G1 e G2 aceitam a evidência, e trocar a ordem troca B
 referência <code>by_name</code>; sem ela, o grafo embutido perde relações que o separado tem.</li>
 <li>Emenda 0.1.1 (CC-1): a primeira versão lia uma convenção que o SERVICE-EVIDENCE nunca gravou; os testes
 sintéticos usavam a mesma convenção e não pegaram. Entraram o adaptador por aspecto e testes com o arquivo real.</li>
+<li>Emenda 0.2.2 — 2026-11-04T22:47-03:00 (regra G1b, decisão do coordenador por coerência interna, não por número). O
+mesmo fenômeno saía de dois jeitos: o elemento de <code>vpc_security_group_ids</code> da AWS, guardado no atributo da
+instância, saía BINDING (R-GRAIN-LISTELEM: ciclo de vida do dono); a associação NSG↔NIC/subnet do Azure, guardada no
+campo <code>networkSecurityGroup</code> da NIC/subnet (OBSERVED), era recusada pela G1 porque o dono observado é a NIC.
+Nos dois casos uma referência guardada na origem liga duas unidades. <b>G1b</b>: a unidade que É uma referência tipada
+entre duas unidades — identidade emprestada da origem e um campo que a evidência descreve como a ligação da origem a uma
+unidade-alvo (anexação da spec, attachment_attribute), com alvo tipado — sai BINDING entre a origem e o alvo, mesmo
+quando o armazenamento e o ciclo de vida são da origem; registra <code>stored_in</code> = origem (item de evidência
+<code>stored_in=&lt;unit_id&gt;</code> no C19) e ciclo de vida = origem. Isso separa onde está guardado do que é, e
+<b>unifica o LISTELEM da AWS e a associação do Azure</b>. A origem pode ser externa à decomposição (como na G1, A16); o
+alvo do campo de anexação passa a ser dependência de decisão. Controles negativos: sem o fato de anexação, a
+referência é só atributo da origem (FACET); anexação descrita num atributo sem referência tipada a unidade não vira
+vínculo; atributo escalar comum continua FACET/atributo. Medida na calibração: NET 40/42 com o cache por tipo
+recalculado pelo caminho do GLOSS (restam as 3 regras do NSG OCI, alcance em disputa aberta, à espera da R6) e
+31/42 só com o GRAIN (na instância a NIC/subnet das fixtures não tem nome nem grupo na configuração, então a origem
+não se resolve); STO 21/21; invariância de reordenação e embalagem nos dois modos.</li>
 <li>Emenda 0.2.1 — 2026-11-04T22:30-03:00 (T51b, opção A do pedido de mudança; C19 3.2.0, emenda 14 do CONTRACTS):
 referência tipada com valor simbólico (var., data. ou module.) vira ponta externa do tipo do alvo, identificada pelo
 símbolo; no C19 a ponta é <code>{role, kind: EXTERNAL, symbol, target_type}</code>, sem unit_id. Valor computado ou

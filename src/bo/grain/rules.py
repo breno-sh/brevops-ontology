@@ -31,6 +31,8 @@ PREDICATES = {
     "identity_targets_all_namespace": "identity",
     "identity_composition_targets_min": "identity",
     "identity_path_parent": "identity",
+    "attachment_reference": "identity",
+    "attachment_targets_kind_in": "identity",
 }
 NEEDS = ("lifecycle_controller", "owner", "effective_scope", "api_resource")
 RULE_KEYS = {"id", "priority", "grain", "text", "match", "needs", "guard", "emit", "missing",
@@ -170,4 +172,10 @@ def eval_pred(name: str, arg, ctx) -> bool:
         return ok == bool(arg)
     if name == "api_resource_status_in":
         return ctx.api.known and ctx.api.value["status"] in arg
+    if name == "attachment_reference":
+        return bool(ctx.attachment_fields) == bool(arg)
+    if name == "attachment_targets_kind_in":
+        ts = list(ctx.attachment_targets.values())
+        return bool(ts) and len(ts) == len(ctx.attachment_fields) and \
+            all(t is not None and ctx.kind_of(ctx.unit_of(t)) in arg for t in ts)
     raise RulesError(f"predicado desconhecido: {name}")
