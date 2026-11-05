@@ -75,8 +75,15 @@ def lift(anchor: dict, concept: dict, decisions: list[dict], vs: dict | None, st
         st = atom_type(vs)
     ot = concept_type(concept, decisions)
     src = anchor.get("source") or {}
-    ev = [{"source": f"{src.get('repo')}/{src.get('file')}:{src.get('line')}@{src.get('tag')}",
-           "sentence": anchor.get("sentence"), "date": anchor["recorded_at"][:10]}] if src else []
+    er = anchor.get("evidence_ref") or {}
+    if src:
+        ev = [{"source": f"{src.get('repo')}/{src.get('file')}:{src.get('line')}@{src.get('tag')}",
+               "sentence": anchor.get("sentence"), "date": anchor["recorded_at"][:10]}]
+    elif er and anchor.get("sentence"):     # fato do guia oficial citado pelo C25 (sem repo/linha)
+        ev = [{"source": f"{er['contract']}:{er['id']}", "sentence": anchor["sentence"],
+               "date": anchor["recorded_at"][:10]}]
+    else:
+        ev = []
     c = {"claim_id": anchor["claim_id"], "claim_version_id": anchor["claim_version_id"],
          "event_id": anchor["event_id"], "subject_id": ref_of(anchor), "predicate_id": "skos:exactMatch",
          "object_id": anchor["concept_id"], "mapping_justification": "semapv:ManualMappingCuration",

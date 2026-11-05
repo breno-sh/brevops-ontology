@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "PILOT-NET-GLOSS",
- "generated_at": "2026-11-04T23:13:08-03:00",
+ "generated_at": "2026-11-04T23:20:51-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-NET-GLOSS.txt",
@@ -15,8 +15,8 @@
    "role_brief_sha256": "6a22b8ce1cbaa580c8036bee7c6896cccfc1e2d3afd53dfa745daaf9ebee5828",
    "slice": "net",
    "concepts_n": "19",
-   "anchors_n": "52",
-   "multi_provider_anchor_paths_n": "56",
+   "anchors_n": "60",
+   "multi_provider_anchor_paths_n": "95",
    "model_extracted_anchors_n": "0",
    "unresolved_anchors_n": "1",
    "training_projection_receipt": "none",
@@ -90,8 +90,8 @@
     "sha256": "99e3dc9d3434e48675fd71eb817145ae63c2159fd041f3c67dd1d308e814287c"
    }
   ],
-  "recorded_at": "2026-11-04T23:13:08-03:00"
+  "recorded_at": "2026-11-04T23:20:51-03:00"
  },
  "sources": [],
- "notes": "rodada final do v4 (GRAIN 0.2.3): E2 3/3; grão 41 unidades, 22 UNKNOWN"
+ "notes": "CC-MAP-NET-5: efeito fixo permitir ancorado (aws e oci) com frase do guia; E2 3/3"
 }

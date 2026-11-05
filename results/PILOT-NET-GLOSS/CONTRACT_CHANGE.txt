@@ -163,3 +163,12 @@ CC-NET-3 RESOLVIDO: (a) SERVICE-EVIDENCE 3ba4079 (reference_target), (b) GRAIN d
   candidatos e 0 de 185 tipos de valor com timeouts), em bo/base com este merge.
 Grão: 41 unidades (3 BINDING, 9 COMPONENT, 5 ENTITY, 2 FACET, 22 UNKNOWN). E2: 3 de 3. Glossário inalterado
 (19 conceitos, 52 âncoras, 56 caminhos UNPROVEN, controle 48/48). F-5 segue sem frase publicada.
+
+ADENDO 2026-11-04T23:22:00-03:00 (America/Recife), pedido CC-MAP-NET-5 (efeito fixo; F-5 do PILOT-NET-MAP).
+Com os fatos effect do SERVICE-EVIDENCE (CC-14, frase do guia oficial em citation): 8 âncoras novas de efeito =
+permitir, publicadas, com evidence_ref C25 e sem source (o guia não tem repo/tag/linha): aws ANC-aws-0018/0019
+(blocos ingress/egress do conjunto) e ANC-aws-0020..0022 (os 3 tipos de regra), "You can specify allow rules, but not
+deny rules."; oci ANC-oci-0011 (tipo de regra do NSG) e ANC-oci-0012/0013 (blocos de regra da security list), "A
+security rule allows a particular type of traffic in or out of a VNIC." A decisão GD-NET-0002 (tipo de valor do
+efeito) cita os dois fatos. Para a OCI, só o literal: a regra permite e, sem regras, nada passa (nota SN-NET-0002);
+nenhuma decisão de exclusividade. Glossário: 60 âncoras, 95 caminhos entre provedores (UNPROVEN), controle 87/87.

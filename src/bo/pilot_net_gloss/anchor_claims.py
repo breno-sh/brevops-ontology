@@ -6,6 +6,7 @@ Reprova (saída 1) se:
   A1 alguma âncora não tem sentença, contexto, busca de contraexemplo, ou a fonte publicada não é a sentença de um
      fato do SERVICE-EVIDENCE (C25) do tipo do átomo ou de um docs_facts (C03) do átomo (mesmo repo, tag, arquivo,
      linha e frase);
+     (fato do guia oficial, citation sem repo/linha: vale pelo evidence_ref, sem source)
      A1 também: âncora com sentença sem evidence_ref, ou evidence_ref que não é o fato C03 do átomo (ou C25 do
      tipo) com a mesma sentença (C20-EVREF, C20 3.3.0);
   A2 alguma âncora tem estado acima do que o glossarista pode gravar (só UNRESOLVED e STRUCTURALLY_VALID), ou
@@ -61,7 +62,10 @@ def run(d: Path, inp: dict | None = None) -> tuple[list[str], dict]:
     types = set(inp.get("types") or SL.all_types())
     facts = published_facts(inp)
     by_id = {("C25", r["evidence_id"]): {"type": r.get("terraform_resource_type"),
-                                         "sentence": (r.get("doc") or {}).get("sentence")} for r in inp.get("se", [])}
+                                         "sentence": build.fact_sentence(r),
+                                         "cited": bool((r.get("citation") or {}).get("sentence"))
+                                         and not (r.get("doc") or {}).get("sentence")}
+             for r in inp.get("se", [])}
     for r in inp.get("docs", []):
         by_id[("C03", r.get("fact_id"))] = {"atom": r.get("atom_id"),
                                             "sentence": (r.get("source") or {}).get("sentence")}
@@ -78,7 +82,9 @@ def run(d: Path, inp: dict | None = None) -> tuple[list[str], dict]:
         if not (cs.get("query") and isinstance(cs.get("found"), bool) and cs.get("result")):
             errs.append(f"A1 {cid}: busca de contraexemplo incompleta")
         src = a.get("source")
-        if not unres and (a.get("evidence_level") in ("published", "derived") or src):
+        er0 = a.get("evidence_ref") or {}
+        cited = (by_id.get((er0.get("contract"), er0.get("id"))) or {}).get("cited", False)
+        if not unres and not cited and (a.get("evidence_level") in ("published", "derived") or src):
             if not src:
                 errs.append(f"A1 {cid}: âncora {a.get('evidence_level')} sem fonte")
             else:

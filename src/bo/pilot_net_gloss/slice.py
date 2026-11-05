@@ -112,12 +112,15 @@ CONCEPTS = [
 # fato description publicado do próprio átomo (docs_facts; a menor linha, que é a da seção de argumentos), ou um
 # evidence_id do SERVICE-EVIDENCE do tipo. query: regex procurada nas sentenças do provedor (C25 e C03); found e note
 # são o julgamento do glossarista sobre o que a busca achou.
+CC_MAP_NET_5_AT = "2026-11-04T23:20:00-03:00"   # âncoras do efeito fixo (pedido CC-MAP-NET-5)
 _N = "nenhum uso com outro significado nos tipos da fatia"
 
 
-def _a(cid, ref, concept, src, context, query, found=False, note=_N, kind="atom", implication=None):
+def _a(cid, ref, concept, src, context, query, found=False, note=_N, kind="atom", implication=None, at=None):
     d = {"claim_id": cid, "ref": ref, "kind": kind, "concept_id": concept, "src": src, "context": context,
          "query": query, "found": found, "note": note}
+    if at:
+        d["recorded_at"] = at
     if implication:
         d["implication"] = implication
     return d
@@ -282,6 +285,39 @@ ANCHORS = [
     _a("ANC-oci-0010", "oci:oci_core_network_security_group_security_rule:network_security_group_id",
        "concept:rule_parent_set_reference", "C03", "argumento network_security_group_id da regra separada",
        r"of the network security group"),
+    # ---- efeito fixo "só permitem" (CC-MAP-NET-5): frase oficial publicada pelo SERVICE-EVIDENCE (fatos effect)
+    _a("ANC-aws-0018", "aws:aws_security_group:ingress", "concept:rule_effect", "SE-aws-6gqdywgpolbhwsgh",
+       "regras embutidas de entrada do conjunto; fato effect allow_only do SERVICE-EVIDENCE (guia de regras)",
+       r"allow rules|deny rules", kind="block",
+       implication=_imp("block_choice", "allow", "toda regra do bloco ingress{} permite: não há regra de negação", []), at=CC_MAP_NET_5_AT),
+    _a("ANC-aws-0019", "aws:aws_security_group:egress", "concept:rule_effect", "SE-aws-6gqdywgpolbhwsgh",
+       "regras embutidas de saída do conjunto; fato effect allow_only do SERVICE-EVIDENCE (guia de regras)",
+       r"allow rules|deny rules", kind="block",
+       implication=_imp("block_choice", "allow", "toda regra do bloco egress{} permite: não há regra de negação", []), at=CC_MAP_NET_5_AT),
+    _a("ANC-aws-0020", "aws:aws_security_group_rule", "concept:rule_effect", "SE-aws-dhmyfhb32dip3gm3",
+       "tipo de regra genérica; fato effect allow_only do SERVICE-EVIDENCE (guia de regras)",
+       r"allow rules|deny rules", kind="type",
+       implication=_imp("type_choice", "allow", "toda instância do tipo de regra genérica permite", []), at=CC_MAP_NET_5_AT),
+    _a("ANC-aws-0021", AI, "concept:rule_effect", "SE-aws-uprjohepvlbrisrj",
+       "tipo de regra de entrada; fato effect allow_only do SERVICE-EVIDENCE (guia de regras)",
+       r"allow rules|deny rules", kind="type",
+       implication=_imp("type_choice", "allow", "toda instância do tipo de regra de entrada permite", []), at=CC_MAP_NET_5_AT),
+    _a("ANC-aws-0022", AE, "concept:rule_effect", "SE-aws-27fce6orje6kwxl7",
+       "tipo de regra de saída; fato effect allow_only do SERVICE-EVIDENCE (guia de regras)",
+       r"allow rules|deny rules", kind="type",
+       implication=_imp("type_choice", "allow", "toda instância do tipo de regra de saída permite", []), at=CC_MAP_NET_5_AT),
+    _a("ANC-oci-0011", "oci:oci_core_network_security_group_security_rule", "concept:rule_effect",
+       "SE-oci-c5zpsmypese5ipku", "tipo de regra separada; fato effect rule_allows do SERVICE-EVIDENCE (guia de regras)",
+       r"rule allows|no traffic is allowed", kind="type",
+       implication=_imp("type_choice", "allow", "a regra permite um tipo de tráfego (literal do guia)", []), at=CC_MAP_NET_5_AT),
+    _a("ANC-oci-0012", SLI, "concept:rule_effect", "SE-oci-i4qhfl5ma4mlbegd",
+       "bloco de regras de entrada do conjunto; fato effect rule_allows do SERVICE-EVIDENCE (guia de regras)",
+       r"rule allows|no traffic is allowed", kind="block",
+       implication=_imp("block_choice", "allow", "a regra do bloco permite um tipo de tráfego (literal do guia)", []), at=CC_MAP_NET_5_AT),
+    _a("ANC-oci-0013", SLE, "concept:rule_effect", "SE-oci-i4qhfl5ma4mlbegd",
+       "bloco de regras de saída do conjunto; fato effect rule_allows do SERVICE-EVIDENCE (guia de regras)",
+       r"rule allows|no traffic is allowed", kind="block",
+       implication=_imp("block_choice", "allow", "a regra do bloco permite um tipo de tráfego (literal do guia)", []), at=CC_MAP_NET_5_AT),
 ]
 
 
@@ -306,7 +342,9 @@ DECISION_SPECS = [
      "inteiro ordinal, o menor prevalece; a faixa admitida é do átomo, não do conceito",
      ["SE-google-n2ccqgtmt4jm72sp", "SE-azurerm-hfppj5whireqkdcl"]),
     (2, "value_type", "concept:rule_effect", None, _vt("enum", "nominal: permitir | negar"),
-     "enum nominal de dois valores; num provedor vem do bloco usado, não de atributo", ["SE-azurerm-x42gvfavlctlsm6r"]),
+     ("enum nominal de dois valores; num provedor vem do bloco usado, não de atributo; em dois provedores as regras "
+      "só permitem (frase oficial do guia publicada pelo SERVICE-EVIDENCE): ali o efeito é fixo = permitir"),
+     ["SE-azurerm-x42gvfavlctlsm6r", "SE-aws-6gqdywgpolbhwsgh", "SE-oci-i4qhfl5ma4mlbegd"]),
     (3, "value_type", "concept:rule_stateless", None,
      _vt("boolean", "verdadeiro = sem estado (a resposta precisa de regra própria); falso = com estado"),
      "booleano com polaridade sem estado = verdadeiro", ["SE-oci-bp7mulbmn76camow", "SE-oci-3ihxku562hxrgq4b"]),
@@ -379,11 +417,13 @@ DECISION_SPECS = [
 # entradas; nada aqui é correspondência
 SLICE_NOTES = [
     {"concept_id": "concept:rule_effect", "provider": "aws",
-     "note": "regras só permitem; o fato effect do tipo de conjunto descreve a regra padrão de saída criada pelo provedor",
-     "evidence": ["SE-aws-jcsq5zrpnuvxzaxv"]},
+     "note": ("regras só permitem (guia: 'You can specify allow rules, but not deny rules'): âncoras ANC-aws-0018..0022 "
+              "com efeito = permitir; à parte, o provedor cria uma regra padrão de saída que o Terraform remove"),
+     "evidence": ["SE-aws-6gqdywgpolbhwsgh", "SE-aws-jcsq5zrpnuvxzaxv"]},
     {"concept_id": "concept:rule_effect", "provider": "oci",
-     "note": "fato effect unknown no SERVICE-EVIDENCE; brief de lançamento (CQFIX): sem negação com precedência",
-     "evidence": [{"provider": "oci", "fact_kind": "effect", "status": "unknown"}]},
+     "note": ("só o literal do guia: a regra permite um tipo de tráfego (âncoras ANC-oci-0011..0013) e, sem regras, "
+              "nenhum tráfego passa; nenhuma decisão de exclusividade"),
+     "evidence": ["SE-oci-i4qhfl5ma4mlbegd", "SE-oci-7fsekbectwthhskg"]},
     {"concept_id": "concept:rule_priority", "provider": "aws",
      "note": "fato precedence unknown no SERVICE-EVIDENCE; regras só permitem, sem atributo de prioridade",
      "evidence": [{"provider": "aws", "fact_kind": "precedence", "status": "unknown"}]},

@@ -125,7 +125,7 @@ def counterexample(spec: dict, se: list[dict], docs: list[dict]) -> dict:
     rx = re.compile(spec["query"], re.I)
     hits, types = set(), set()
     for r in se:
-        s = (r.get("doc") or {}).get("sentence") or ""
+        s = fact_sentence(r) or ""
         if r.get("provider") == prov and rx.search(s):
             hits.add(("se", r["evidence_id"]))
             types.add(r.get("terraform_resource_type"))
@@ -195,18 +195,20 @@ def build_claims(se, vs, docs=None, schema_atoms=None) -> list[dict]:
             continue
         else:
             r = by.get(spec["src"])
-            if r is None or r.get("terraform_resource_type") != rt or not (r.get("doc") or {}).get("sentence"):
+            if r is None or r.get("terraform_resource_type") != rt or not fact_sentence(r):
                 raise SystemExit(f"{cid}: fato {spec['src']} ausente, de outro tipo ou sem sentença")
-            doc = r["doc"]
+            # fato do repositório de docs (doc: repo, tag, arquivo, linha) ou do guia oficial (citation: uri, seção)
+            doc = r["doc"] if (r.get("doc") or {}).get("sentence") else {"sentence": r["citation"]["sentence"]}
             level = r.get("level")
             method = "model" if level == "interpreted" else "parser"
             evref = {"contract": "C25", "id": r["evidence_id"]}
         rec = {"claim_id": cid, "claim_version_id": f"{cid}@1", "event_id": f"EV-{cid}-1",
                "concept_id": spec["concept_id"], "sentence": doc["sentence"], "context": spec["context"],
-               "source": {k: doc[k] for k in ("repo", "tag", "file", "line", "sentence")},
                "evidence_ref": evref, "counterexample_search": counterexample(spec, se, docs),
-               "evidence_state": "STRUCTURALLY_VALID", "recorded_at": SL.RECORDED_AT,
+               "evidence_state": "STRUCTURALLY_VALID", "recorded_at": spec.get("recorded_at", SL.RECORDED_AT),
                "extraction_method": method, "evidence_level": "interpreted" if method == "model" else level}
+        if all(k in doc for k in ("repo", "tag", "file", "line")):
+            rec["source"] = {k: doc[k] for k in ("repo", "tag", "file", "line", "sentence")}
         if method == "model":
             rec["model_id"] = SL.MODEL_ID
         if kind == "atom":
@@ -231,10 +233,16 @@ def build_glossary(claims) -> list[dict]:
     return out
 
 
+def fact_sentence(r: dict) -> str | None:
+    """Sentença de um fato C25: a da documentação do repositório (doc) ou a do guia oficial (citation)."""
+    return (r.get("doc") or {}).get("sentence") or (r.get("citation") or {}).get("sentence")
+
+
 def _ev_item(r: dict) -> dict:
-    d = r.get("doc") or {}
-    return {"source": f"{r['evidence_id']} ({d.get('repo')}/{d.get('file')}:{d.get('line')}@{d.get('tag')})",
-            "sentence": d.get("sentence"), "date": SL.DECIDED_ON}
+    d, c = r.get("doc") or {}, r.get("citation") or {}
+    where = (f"{d.get('repo')}/{d.get('file')}:{d.get('line')}@{d.get('tag')}" if d.get("sentence")
+             else f"{c.get('uri')} {c.get('section')}")
+    return {"source": f"{r['evidence_id']} ({where})", "sentence": fact_sentence(r), "date": SL.DECIDED_ON}
 
 
 def build_decisions(se) -> list[dict]:
@@ -244,7 +252,7 @@ def build_decisions(se) -> list[dict]:
         items = []
         for e in evs:
             r = by.get(e)
-            if r is None or not (r.get("doc") or {}).get("sentence"):
+            if r is None or not fact_sentence(r):
                 raise SystemExit(f"GD-NET-{n:04d}: evidência {e} ausente ou sem sentença")
             items.append(_ev_item(r))
         out.append(SL._dec(n, kind, concept, reason, related=related, value=value, evidence=items))
