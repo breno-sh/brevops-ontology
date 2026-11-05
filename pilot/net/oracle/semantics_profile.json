@@ -93,12 +93,14 @@
       "doc": "aws_security_group e regras separadas (aws_vpc_security_group_ingress_rule/egress_rule, aws_security_group_rule)",
       "evaluation": {
         "value": "allow_only",
-        "level": "oracle_derived",
+        "level": "published",
         "evidence": [
-          "SE-aws-bsnn5lqnhwnjfh23",
-          "SE-aws-jcsq5zrpnuvxzaxv"
+          "SE-aws-6gqdywgpolbhwsgh",
+          "SE-aws-uprjohepvlbrisrj",
+          "SE-aws-27fce6orje6kwxl7",
+          "SE-aws-dhmyfhb32dip3gm3"
         ],
-        "basis": "o bloco de regra referencia IpPermission (permissão) e não tem atributo de efeito; a única regra padrão citada é 'ALLOW ALL egress rule', escrita no mesmo bloco egress; as linhas de efeito das regras separadas estão unknown (SE-aws-wzlaqxutpngxcu2k, SE-aws-q6fiit3gttied36j)",
+        "basis": "'You can specify allow rules, but not deny rules.' (guia oficial, CC-14); antes oracle_derived de IpPermission",
         "values": [
           "allow_only",
           "priority_allow_deny"
@@ -138,18 +140,19 @@
         "basis": "sem evidência, mas com só permissão a decisão não depende de ordem: o único valor possível do efeito combinado é a união"
       },
       "state.default": {
-        "value": null,
-        "level": "unknown",
+        "value": "stateful",
+        "level": "published",
         "evidence": [
-          "SE-aws-ys4irutgmpm2h6os",
-          "SE-aws-uz6oqvxnc7cofhvp",
-          "SE-aws-tapxdlgs26uifflt"
+          "SE-aws-p272pgtmcwbrjsvb",
+          "SE-aws-le3t5sryj5snic3r",
+          "SE-aws-u6ewbeiu7sfj5ooq",
+          "SE-aws-47f7cbu2j2nl4d4b"
         ],
         "values": [
           "stateful",
           "stateless"
         ],
-        "basis": "o SERVICE-EVIDENCE não documenta o estado de conexão do grupo de segurança; o oráculo não assume 'com estado'"
+        "basis": "'Security groups are stateful.' (guia oficial, CC-14)"
       },
       "combination": {
         "value": null,
@@ -222,37 +225,41 @@
       },
       "priority.no_match.ingress": {
         "value": "deny",
-        "level": "interpreted",
+        "level": "published",
         "evidence": [
+          "SE-google-q7fxffs3brh35x6f",
           "SE-google-yz5xmhx36uyxkd2x"
         ],
         "values": [
           "allow",
           "deny"
         ],
-        "basis": "regras implícitas são leitura interpretada: a frase não diz a prioridade"
+        "basis": "'the allow ingress firewall rules override the implied deny ingress rule' (guia oficial, CC-14)"
       },
       "priority.no_match.egress": {
         "value": "allow",
-        "level": "interpreted",
+        "level": "published",
         "evidence": [
+          "SE-google-lczae72rfhtxc6ad",
           "SE-google-yz5xmhx36uyxkd2x"
         ],
         "values": [
           "allow",
           "deny"
-        ]
+        ],
+        "basis": "'the deny egress firewall rules override the implied allow egress rule' (guia oficial, CC-14)"
       },
       "state.default": {
-        "value": null,
-        "level": "unknown",
+        "value": "stateful",
+        "level": "published",
         "evidence": [
-          "SE-google-zpvpswcdzblhsngy"
+          "SE-google-egw54c4ruinm6cgl"
         ],
         "values": [
           "stateful",
           "stateless"
-        ]
+        ],
+        "basis": "'VPC firewall rules are stateful' (guia oficial, CC-14)"
       },
       "target.no_selector": {
         "value": null,
@@ -308,7 +315,8 @@
         "value": "lower_value_first",
         "level": "published",
         "evidence": [
-          "SE-azurerm-hfppj5whireqkdcl"
+          "SE-azurerm-hfppj5whireqkdcl",
+          "SE-azurerm-oskpxxs5q3arnecm"
         ]
       },
       "priority.range": {
@@ -322,12 +330,14 @@
         ]
       },
       "priority.unique": {
-        "value": "collection",
+        "value": "direction",
         "level": "published",
         "evidence": [
+          "SE-azurerm-bzlmoi5ehpxmh43w",
+          "SE-azurerm-cs2vlwldjoldj3ow",
           "SE-azurerm-hfppj5whireqkdcl"
         ],
-        "basis": "'must be unique for each rule in the collection': mesma prioridade na mesma direção é inválida; em direções diferentes a frase não decide se 'coleção' é o NSG ou a direção (validade UNKNOWN)"
+        "basis": "'You can't create two security rules with the same priority and direction.' (guia oficial, CC-14): repetida na mesma direção é inválida; em direções diferentes é válida"
       },
       "priority.tie_break": {
         "value": null,
@@ -345,8 +355,7 @@
         "value": null,
         "level": "unknown",
         "evidence": [
-          "SE-azurerm-yelp5ccfl34shpfr",
-          "SE-azurerm-2hs367zqbbxryvni"
+          "SE-azurerm-yelp5ccfl34shpfr"
         ],
         "values": [
           "allow",
@@ -399,12 +408,12 @@
       "doc": "oci_core_security_list (regras embutidas, ligada à sub-rede) e oci_core_network_security_group(_security_rule) (regras separadas, ligado à VNIC)",
       "evaluation": {
         "value": "allow_only",
-        "level": "oracle_derived",
+        "level": "published",
         "evidence": [
-          "SE-oci-bp7mulbmn76camow",
-          "SE-oci-3ihxku562hxrgq4b"
+          "SE-oci-i4qhfl5ma4mlbegd",
+          "SE-oci-c5zpsmypese5ipku"
         ],
-        "basis": "'A stateless rule allows traffic in one direction': regra permite; não há atributo de efeito; as linhas de efeito estão unknown (SE-oci-bspv6mnqo62q4rry, SE-oci-lxk4kh66cqaee2kd)",
+        "basis": "'A security rule allows a particular type of traffic in or out of a VNIC.' (guia oficial, CC-14)",
         "values": [
           "allow_only",
           "priority_allow_deny"
@@ -412,12 +421,12 @@
       },
       "allow_only.no_match": {
         "value": "deny",
-        "level": "oracle_derived",
+        "level": "published",
         "evidence": [
-          "SE-oci-bp7mulbmn76camow",
-          "SE-oci-3ihxku562hxrgq4b"
+          "SE-oci-7fsekbectwthhskg",
+          "SE-oci-g5m7bluwqpdk5cvi"
         ],
-        "basis": "'Remember to add a corresponding stateless rule in the other direction if you need to support bidirectional traffic': sem regra, o tráfego não passa",
+        "basis": "'Without security rules, no traffic is allowed in and out of VNICs in the VCN.' (guia oficial, CC-14)",
         "values": [
           "allow",
           "deny"
@@ -428,7 +437,8 @@
         "level": "published",
         "evidence": [
           "SE-oci-bp7mulbmn76camow",
-          "SE-oci-3ihxku562hxrgq4b"
+          "SE-oci-3ihxku562hxrgq4b",
+          "SE-oci-wqeohr22pnvffgfk"
         ],
         "basis": "'Defaults to false, which means the rule is stateful'"
       },
@@ -436,7 +446,8 @@
         "value": "per_rule_default_stateful",
         "level": "published",
         "evidence": [
-          "SE-oci-czy2wmgcweke3sq4"
+          "SE-oci-czy2wmgcweke3sq4",
+          "SE-oci-6hiaftoo6zckvajk"
         ],
         "values": [
           "per_rule_default_stateful",
@@ -483,6 +494,16 @@
         "values": [
           "union"
         ]
+      },
+      "nsg_rule_scope": {
+        "value": "vnics_in_group",
+        "level": "published",
+        "evidence": [
+          "SE-oci-dcnwmnkpaldubwdj",
+          "SE-oci-azu2sgmbkqz2d2dc",
+          "SE-oci-zzudmo4ujbncdb2z"
+        ],
+        "basis": "a regra de NSG vale para as VNICs do grupo (nsg_ids da VNIC); escopo = pai (R6, f44b9a6)"
       }
     }
   }

@@ -4,11 +4,18 @@
  "commitment_ids": [
   "CMT-FW-N01"
  ],
- "declared_losses": [],
+ "declared_losses": [
+  {
+   "flows": [
+    "f1r"
+   ],
+   "loss_id": "LOSS-NET-UNKNOWN-INPUT"
+  }
+ ],
  "direction": "azurerm->google",
  "expected": {
-  "verdict": "ACCEPT",
-  "why": "decisões iguais em todos os fluxos"
+  "verdict": "ACCEPT_WITH_DECLARED_LOSS",
+  "why": "retorno UNKNOWN no Azure vira com estado no destino: declarado"
  },
  "polarity": "positive",
  "schema": "bo.pilot_net.translation_case/1",

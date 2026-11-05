@@ -9,7 +9,8 @@
  "expected": {
   "silent_losses": [
    "f1",
-   "f3"
+   "f3",
+   "f1r"
   ],
   "verdict": "REJECT",
   "why": "CIDR simbólico inventado no destino: decisões definidas viram UNKNOWN sem perda declarável"

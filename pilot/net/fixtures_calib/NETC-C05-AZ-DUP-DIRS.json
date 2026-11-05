@@ -1,8 +1,8 @@
 {
  "case": "NET-C05",
  "check": {
-  "assertion": "validade = UNKNOWN ('unique for each rule in the collection')",
-  "kind": "unknown"
+  "assertion": "validade = VALID ('same priority and direction' é o que a guia proíbe)",
+  "kind": "entails"
  },
  "commitment_ids": [
   "CMT-FW-U02"
@@ -214,8 +214,7 @@
    }
   ],
   "validity": {
-   "code": "MISSING_EVIDENCE",
-   "value": "UNKNOWN"
+   "value": "VALID"
   }
  },
  "fixture_id": "NETC-C05-AZ-DUP-DIRS",
@@ -239,7 +238,7 @@
    "target": "vm1"
   }
  ],
- "polarity": "unknown",
+ "polarity": "positive",
  "provider": "azurerm",
  "read": {
   "completeness": "complete",

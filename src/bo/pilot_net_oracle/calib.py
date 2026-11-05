@@ -58,9 +58,14 @@ def s1(provider, catch=True, sym_cidr=False, open_egress=False, wide=False):
     return oci(rules)
 
 
+RET_WHY = {"oci": "security list: regra com estado por padrão ('Defaults to false, which means the rule is stateful')",
+           "aws": "'Security groups are stateful.' (guia oficial, SE CC-14)",
+           "google": "'VPC firewall rules are stateful' (guia oficial, SE CC-14)"}
+
+
 def _s1_expected(provider):
-    ret = E(ALLOW, "security list: regra com estado por padrão ('Defaults to false, which means the rule is stateful')") \
-        if provider == "oci" else E(UNK, "estado de conexão do provedor sem evidência: com estado permite, sem estado nega", ME)
+    ret = E(ALLOW, RET_WHY[provider]) if provider in RET_WHY \
+        else E(UNK, "estado de conexão do NSG Azure sem evidência: com estado permite, sem estado nega", ME)
     return {"f1": E(ALLOW, "regra 443 cobre a origem"), "f2": E(DENY, "nenhuma regra permite 22"),
             "f3": E(DENY, "origem fora da /24"), "f4": E(DENY, "nenhuma permissão de saída"), "f1r": ret}
 
@@ -85,10 +90,11 @@ def s2(provider, swap=False):
     return gcp(rules) if provider == "google" else azure(rules)
 
 
-S2_EXPECTED = {"f1": E(DENY, "negação de prioridade 100 vence a permissão de 200 (menor número, maior precedência)"),
-               "f2": E(ALLOW, "443 permitido de qualquer origem"), "f3": E(DENY, "negação explícita de menor precedência"),
-               "f4": E(DENY, "negação explícita de saída"),
-               "f2r": E(UNK, "estado de conexão sem evidência", ME)}
+def s2_expected(provider):
+    return {"f1": E(DENY, "negação de prioridade 100 vence a permissão de 200 (menor número, maior precedência)"),
+            "f2": E(ALLOW, "443 permitido de qualquer origem"), "f3": E(DENY, "negação explícita de menor precedência"),
+            "f4": E(DENY, "negação explícita de saída"),
+            "f2r": E(ALLOW, RET_WHY["google"]) if provider == "google" else E(UNK, "estado de conexão do NSG Azure sem evidência", ME)}
 
 
 def fixtures() -> list:
@@ -133,8 +139,8 @@ def fixtures() -> list:
     # ======================== NET-C02 estado do conjunto e retorno
     for prov, fid, pol, chk in (
             ("oci", "NETC-C02-OCI-STATEFUL", "positive", {"kind": "entails", "assertion": "decision(retorno de f1) = allow"}),
-            ("aws", "NETC-C02-AWS-RET", "unknown", {"kind": "unknown", "assertion": "decision(retorno de f1) = UNKNOWN"}),
-            ("google", "NETC-C02-GCP-RET", "unknown", {"kind": "unknown", "assertion": "decision(retorno de f1) = UNKNOWN"}),
+            ("aws", "NETC-C02-AWS-RET", "positive", {"kind": "entails", "assertion": "decision(retorno de f1) = allow (SG com estado, publicado)"}),
+            ("google", "NETC-C02-GCP-RET", "positive", {"kind": "entails", "assertion": "decision(retorno de f1) = allow (firewall com estado, publicado)"}),
             ("azurerm", "NETC-C02-AZ-RET", "unknown", {"kind": "unknown", "assertion": "decision(retorno de f1) = UNKNOWN"})):
         add(fixture(fid, S, "NET-C02", pol, prov, s1(prov), S1_FLOWS, _s1_expected(prov),
                     summary=f"cenário S1 em {prov}: só regra de entrada 443; retorno de f1",
@@ -184,14 +190,14 @@ def fixtures() -> list:
                 summary="NSG: regra sem estado e a regra inversa", commitments=["CMT-FW-P03"],
                 check={"kind": "entails", "assertion": "decision(retorno de f1) = allow"}))
     # ======================== NET-C04 precedência
-    add(fixture("NETC-C04-GCP-DENY-WINS", S, "NET-C04", "positive", "google", s2("google"), S2_FLOWS, S2_EXPECTED,
+    add(fixture("NETC-C04-GCP-DENY-WINS", S, "NET-C04", "positive", "google", s2("google"), S2_FLOWS, s2_expected("google"),
                 summary="deny 22 prioridade 100 sobre allow 22 prioridade 200", commitments=["CMT-FW-P04", "CMT-FW-P06"],
                 check={"kind": "entails", "assertion": "decision(f1) = deny"}, invariant_with="NETC-C04-GCP-DENY-WINS-SWAP"))
     add(fixture("NETC-C04-GCP-DENY-WINS-SWAP", S, "NET-C04", "positive", "google", s2("google", swap=True), S2_FLOWS,
-                S2_EXPECTED, summary="as mesmas regras em ordem textual inversa", commitments=["CMT-FW-P06"],
+                s2_expected("google"), summary="as mesmas regras em ordem textual inversa", commitments=["CMT-FW-P06"],
                 check={"kind": "invariant", "assertion": "decision(f1, base) == decision(f1, invertida) == deny"},
                 invariant_with="NETC-C04-GCP-DENY-WINS"))
-    add(fixture("NETC-C04-AZ-DENY-WINS", S, "NET-C04", "positive", "azurerm", s2("azurerm"), S2_FLOWS, S2_EXPECTED,
+    add(fixture("NETC-C04-AZ-DENY-WINS", S, "NET-C04", "positive", "azurerm", s2("azurerm"), S2_FLOWS, s2_expected("azurerm"),
                 summary="NSG: Deny 100 sobre Allow 200", commitments=["CMT-FW-P04"],
                 check={"kind": "entails", "assertion": "decision(f1) = deny"}))
     add(fixture("NETC-C04-GCP-ALLOW-FIRST", S, "NET-C04", "negative", "google",
@@ -224,14 +230,20 @@ def fixtures() -> list:
                 validity={"value": "INVALID", "code": "INCONSISTENT"},
                 summary="duas regras de entrada com a mesma prioridade", commitments=["CMT-FW-U02"],
                 check={"kind": "rejects", "assertion": "configuração com prioridade repetida na mesma direção é inválida"}))
-    add(fixture("NETC-C05-AZ-DUP-DIRS", S, "NET-C05", "unknown", "azurerm",
+    add(fixture("NETC-C05-AZ-DUP-DIRS", S, "NET-C05", "positive", "azurerm",
                 azure([R("ingress", "tcp", (443, 443), NET, "allow", 300, name="allow-web"),
                        R("egress", "tcp", (443, 443), ANY, "allow", 300, name="allow-out")] + az_catch()),
                 [F("f1", "ingress", "tcp", 443, IN_IP), F("f4", "egress", "tcp", 443, OUT_IP)],
                 {"f1": E(ALLOW, "permissão 300 de entrada"), "f4": E(ALLOW, "permissão 300 de saída")},
-                validity={"value": "UNKNOWN", "code": "MISSING_EVIDENCE"},
                 summary="mesma prioridade em direções diferentes", commitments=["CMT-FW-U02"],
-                check={"kind": "unknown", "assertion": "validade = UNKNOWN ('unique for each rule in the collection')"}))
+                check={"kind": "entails", "assertion": "validade = VALID ('same priority and direction' é o que a guia proíbe)"}))
+    add(fixture("NETC-C05-AZ-SYM-PRIO", S, "NET-C05", "unknown", "azurerm",
+                azure([R("ingress", "tcp", (22, 22), NET, "allow", 200, name="allow-ssh"),
+                       R("ingress", "tcp", (22, 22), ANY, "deny", "sym:var.deny_priority", name="deny-ssh")] + az_catch()),
+                [F("f1", "ingress", "tcp", 22, IN_IP5)],
+                {"f1": E(UNK, "a prioridade da negação vem de variável: pode vir antes ou depois de 200", USI)},
+                summary="prioridade simbólica no NSG", commitments=["CMT-FW-U02", "CMT-CFG-U01"],
+                check={"kind": "unknown", "assertion": "decision(f1) = UNKNOWN"}))
     # ======================== NET-C06 direção
     eg = [R("egress", "tcp", (443, 443), ANY)]
     add(fixture("NETC-C06-AWS-EGRESS", S, "NET-C06", "positive", "aws", aws(eg), [F("f4", "egress", "tcp", 443, OUT_IP)],
@@ -246,12 +258,18 @@ def fixtures() -> list:
                 {"f1": E(DENY, "a regra é de saída"), "f4": E(ALLOW, "regra de saída")},
                 summary="security list só com saída", commitments=["CMT-FW-N03"],
                 check={"kind": "not_entails", "assertion": "NOT decision(f1) = allow"}))
-    add(fixture("NETC-C06-GCP-INGRESS-NOMATCH", S, "NET-C06", "unknown", "google",
+    add(fixture("NETC-C06-GCP-INGRESS-NOMATCH", S, "NET-C06", "negative", "google",
                 gcp([R("egress", "tcp", (443, 443), ANY, "allow", 1000, name="allow-out")]),
                 [F("f1", "ingress", "tcp", 443, OUT_IP), F("f4", "egress", "tcp", 443, OUT_IP)],
-                {"f1": E(UNK, "nenhuma regra de entrada; regra implícita de entrada só interpretada", ME),
+                {"f1": E(DENY, "nenhuma regra de entrada; vale a regra implícita de entrada que nega (guia oficial, SE CC-14)"),
                  "f4": E(ALLOW, "regra de saída 443")},
-                summary="firewall só de saída", commitments=["CMT-FW-N03", "CMT-FW-U01"],
+                summary="firewall só de saída", commitments=["CMT-FW-N03"],
+                check={"kind": "not_entails", "assertion": "NOT decision(f1) = allow"}))
+    add(fixture("NETC-C06-AZ-OUT-ONLY", S, "NET-C06", "unknown", "azurerm",
+                azure([R("egress", "tcp", (443, 443), ANY, "allow", 100, name="allow-out")]),
+                [F("f1", "ingress", "tcp", 443, OUT_IP), F("f4", "egress", "tcp", 443, OUT_IP)],
+                {"f1": E(UNK, "nenhuma regra de entrada; regras padrão do NSG sem evidência", ME), "f4": E(ALLOW, "saída 443")},
+                summary="NSG só de saída, sem negação explícita", commitments=["CMT-FW-N03", "CMT-FW-U01"],
                 check={"kind": "unknown", "assertion": "decision(f1) = UNKNOWN (não ALLOW)"}))
     # ======================== NET-C07 leitura parcial
     pr = {"completeness": "partial", "not_read": [{"of": "aws_security_group.web", "what": "rules"}], "withheld": []}
@@ -332,11 +350,18 @@ def fixtures() -> list:
                 {"f4": E(DENY, "'Terraform removes this default rule': sem bloco egress não há saída")},
                 summary="grupo sem bloco egress: a regra padrão de saída foi removida pelo Terraform",
                 commitments=["CMT-FW-N03"], check={"kind": "not_entails", "assertion": "NOT decision(f4) = allow"}))
-    add(fixture("NETC-C09-GCP-NOMATCH", S, "NET-C09", "unknown", "google", s1("google", catch=False),
+    add(fixture("NETC-C09-GCP-NOMATCH", S, "NET-C09", "positive", "google", s1("google", catch=False),
                 [F("f2", "ingress", "tcp", 22, IN_IP), F("f4", "egress", "tcp", 443, OUT_IP)],
-                {"f2": E(UNK, "regra implícita de entrada só interpretada (SE-google-yz5xmhx36uyxkd2x)", ME),
-                 "f4": E(UNK, "regra implícita de saída só interpretada", ME)},
-                summary="firewall sem negação explícita", commitments=["CMT-FW-U01"],
+                {"f2": E(DENY, "regra implícita de entrada nega (guia oficial, SE-google-q7fxffs3brh35x6f)"),
+                 "f4": E(ALLOW, "regra implícita de saída permite (guia oficial, SE-google-lczae72rfhtxc6ad)")},
+                summary="firewall sem negação explícita: regras implícitas", commitments=["CMT-FW-U01"],
+                check={"kind": "entails", "assertion": "decision(f2) = deny AND decision(f4) = allow"}))
+    add(fixture("NETC-C09-AZ-NOMATCH", S, "NET-C09", "unknown", "azurerm",
+                azure([R("ingress", "tcp", (443, 443), NET, "allow", 100, name="allow-web")]),
+                [F("f2", "ingress", "tcp", 22, IN_IP), F("f4", "egress", "tcp", 443, OUT_IP)],
+                {"f2": E(UNK, "sem regra que case; regras padrão do NSG sem evidência", ME),
+                 "f4": E(UNK, "sem regra de saída; padrão sem evidência", ME)},
+                summary="NSG sem negação explícita", commitments=["CMT-FW-U01"],
                 check={"kind": "unknown", "assertion": "decision(f2) = UNKNOWN AND decision(f4) = UNKNOWN"}))
     add(fixture("NETC-C09-OCI-NOMATCH", S, "NET-C09", "positive", "oci", s1("oci"),
                 [F("f2", "ingress", "tcp", 22, IN_IP)],
@@ -364,7 +389,11 @@ def _effective(b):
     return aws(rules) if b == "aws" else oci(rules)
 
 
+STATEFUL = ("aws", "google", "oci")   # retorno de conexão definido (publicado); Azure: sem evidência
+
+
 def translations() -> list:
+    """Vereditos escritos à mão pelas regras do juiz e pela semântica publicada de cada lado (SE f44b9a6)."""
     out = []
     for a in PROVS:
         for b in PROVS:
@@ -372,24 +401,23 @@ def translations() -> list:
                 continue
             d = f"{a}->{b}"
             tag = f"{a[:3].upper()}-{b[:3].upper()}"
-            # ---- positivo: a realização S1 do destino
-            losses, why = [], "decisões iguais em todos os fluxos"
-            verdict = "ACCEPT"
-            if b == "oci" and a != "oci":
-                losses = [{"loss_id": "LOSS-NET-UNKNOWN-INPUT", "flows": ["f1r"]}]
-                verdict, why = "ACCEPT_WITH_DECLARED_LOSS", "retorno UNKNOWN na origem vira com estado no destino: declarado"
-            if a == "oci":
-                losses = [{"loss_id": "LOSS-NET-STATE", "flows": ["f1r"]}]
-                verdict, why = "ACCEPT_WITH_DECLARED_LOSS", "retorno permitido na origem fica UNKNOWN no destino: declarado"
+            # ---- positivo
             if a in S2_SOURCE and b in ("aws", "oci"):
                 src, tgt = S2_SOURCE[a], _effective(b)
                 losses = [{"loss_id": "LOSS-NET-EFFECT-DENY", "flows": []}]
                 verdict, why = "ACCEPT", "conjunto efetivo (443 de qualquer origem) sem a negação: decisões iguais"
-                if b == "oci":
+                if a == "azurerm":
                     losses.append({"loss_id": "LOSS-NET-UNKNOWN-INPUT", "flows": ["f2r"]})
-                    verdict, why = "ACCEPT_WITH_DECLARED_LOSS", why + "; retorno UNKNOWN na origem declarado"
+                    verdict, why = "ACCEPT_WITH_DECLARED_LOSS", why + "; retorno UNKNOWN no Azure declarado"
             else:
                 src, tgt = S1_SOURCE[a], s1(b)
+                losses, verdict, why = [], "ACCEPT", "decisões iguais em todos os fluxos (retorno com estado dos dois lados)"
+                if a in STATEFUL and b == "azurerm":
+                    losses = [{"loss_id": "LOSS-NET-STATE", "flows": ["f1r"]}]
+                    verdict, why = "ACCEPT_WITH_DECLARED_LOSS", "retorno permitido na origem fica UNKNOWN no NSG Azure: declarado"
+                if a == "azurerm" and b in STATEFUL:
+                    losses = [{"loss_id": "LOSS-NET-UNKNOWN-INPUT", "flows": ["f1r"]}]
+                    verdict, why = "ACCEPT_WITH_DECLARED_LOSS", "retorno UNKNOWN no Azure vira com estado no destino: declarado"
             out.append(translation(f"NETC-T-{tag}-P", S, d, "positive", src, tgt, losses, verdict, why=why))
             # ---- negativo
             if a in S2_SOURCE and b in ("aws", "oci"):
@@ -402,16 +430,16 @@ def translations() -> list:
                                        "REJECT", why="443 aberto para qualquer origem: f3 era negado",
                                        counts={"negatives_carried": ["f3"]}))
             # ---- desconhecido
-            if b in ("google", "azurerm"):
+            if b == "azurerm":
                 ls = [{"loss_id": "LOSS-NET-DEFAULT", "flows": ["f2", "f3", "f4"]}]
-                if a == "oci":
+                if a in STATEFUL:
                     ls.append({"loss_id": "LOSS-NET-STATE", "flows": ["f1r"]})
                 out.append(translation(f"NETC-T-{tag}-U", S, d, "unknown", S1_SOURCE[a], s1(b, catch=False), ls,
                                        "ACCEPT_WITH_DECLARED_LOSS",
-                                       why="sem negação explícita o destino fica UNKNOWN em f2, f3 e f4; a perda está declarada",
-                                       counts={"covered": ["f2", "f3", "f4"] + (["f1r"] if a == "oci" else [])}))
+                                       why="sem negação explícita o NSG fica UNKNOWN em f2, f3 e f4; a perda está declarada",
+                                       counts={"covered": ["f2", "f3", "f4"] + (["f1r"] if a in STATEFUL else [])}))
             else:
-                silent = ["f1", "f3"] + (["f1r"] if a == "oci" else [])
+                silent = ["f1", "f3"] + (["f1r"] if a in STATEFUL else [])
                 out.append(translation(f"NETC-T-{tag}-U", S, d, "unknown", S1_SOURCE[a], s1(b, sym_cidr=True), [],
                                        "REJECT", why="CIDR simbólico inventado no destino: decisões definidas viram UNKNOWN sem perda declarável",
                                        counts={"silent_losses": silent}))

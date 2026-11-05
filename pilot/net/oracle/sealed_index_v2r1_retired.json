@@ -1,0 +1,235 @@
+{
+ "schema": "bo.pilot_net.sealed_index/1",
+ "module": "PILOT-NET-ORACLE",
+ "slice": "net",
+ "set_version": 2,
+ "status": "substituído pela revisão 2 antes do uso",
+ "created_at": "2026-11-04T21:34:30-03:00",
+ "envelope": "$BO_DATA/PILOT-NET-ORACLE/sealed/retained_v2.cms.pem",
+ "envelope_sha256": "9ecf8da55e81c2947e8cef708aad008e3f63d7bf4397dd9107073e6f0481555a",
+ "plaintext_sha256": "1ed3dbf03670a000a86455495a335b83934ae6bbcec58ad05ea1f7430fc0f39e",
+ "cipher": "CMS EnvelopedData, AES-256-CBC, chave RSA 4096 do certificado brevops-seal-D15",
+ "recipient": {
+  "serial": "76EB25F686FB04237A5A17A2E83DF4FC97921C35",
+  "fingerprint_sha256": "36:77:20:3C:76:57:C3:B0:04:32:46:F3:AE:13:CC:25:B4:1E:C2:9D:AC:5A:6A:99:13:4A:AD:9F:6B:D4:3E:26",
+  "subject": "CN=brevops-seal-D15",
+  "cert_sha256": "eb95ac5241b1056bb547087bc80a40f5706f4c6e5f598a1ba640dfc54c986934"
+ },
+ "roundtrip": {
+  "at": "2026-11-04T21:34:30-03:00",
+  "host": "VM Oracle (D15)",
+  "plaintext_sha256_from_vm": "1ed3dbf03670a000a86455495a335b83934ae6bbcec58ad05ea1f7430fc0f39e"
+ },
+ "opened_by": "PILOT-EXIT",
+ "counts": {
+  "fixtures_total": 42,
+  "fixtures_in_cases": 36,
+  "flows_total": 110,
+  "translations_total": 28,
+  "by_case": {
+   "NET-C01": {
+    "positive": 3,
+    "negative": 1,
+    "unknown": 1
+   },
+   "NET-C02": {
+    "positive": 1,
+    "negative": 1,
+    "unknown": 2
+   },
+   "NET-C03": {
+    "positive": 1,
+    "negative": 1,
+    "unknown": 2
+   },
+   "NET-C04": {
+    "positive": 2,
+    "negative": 1,
+    "unknown": 1
+   },
+   "NET-C05": {
+    "positive": 1,
+    "negative": 1,
+    "unknown": 1
+   },
+   "NET-C06": {
+    "positive": 1,
+    "negative": 1,
+    "unknown": 1
+   },
+   "NET-C07": {
+    "positive": 2,
+    "negative": 1,
+    "unknown": 1
+   },
+   "NET-C08": {
+    "positive": 2,
+    "negative": 1,
+    "unknown": 2
+   },
+   "NET-C09": {
+    "positive": 1,
+    "negative": 1,
+    "unknown": 2
+   }
+  },
+  "by_direction": {
+   "aws->google": {
+    "positive": 1,
+    "negative": 1,
+    "unknown": 0
+   },
+   "aws->azurerm": {
+    "positive": 0,
+    "negative": 1,
+    "unknown": 1
+   },
+   "aws->oci": {
+    "positive": 1,
+    "negative": 1,
+    "unknown": 0
+   },
+   "google->aws": {
+    "positive": 1,
+    "negative": 1,
+    "unknown": 1
+   },
+   "google->azurerm": {
+    "positive": 1,
+    "negative": 1,
+    "unknown": 0
+   },
+   "google->oci": {
+    "positive": 1,
+    "negative": 1,
+    "unknown": 1
+   },
+   "azurerm->aws": {
+    "positive": 1,
+    "negative": 1,
+    "unknown": 1
+   },
+   "azurerm->google": {
+    "positive": 0,
+    "negative": 1,
+    "unknown": 1
+   },
+   "azurerm->oci": {
+    "positive": 1,
+    "negative": 1,
+    "unknown": 1
+   },
+   "oci->aws": {
+    "positive": 0,
+    "negative": 1,
+    "unknown": 1
+   },
+   "oci->google": {
+    "positive": 1,
+    "negative": 1,
+    "unknown": 0
+   },
+   "oci->azurerm": {
+    "positive": 0,
+    "negative": 1,
+    "unknown": 1
+   }
+  },
+  "by_provider": {
+   "aws": 7,
+   "azurerm": 14,
+   "google": 10,
+   "oci": 11
+  }
+ },
+ "salted_digests": [
+  "022aee4537574156452ab7b556aec31a5a76e6db253d709d43e34a3038a01232",
+  "056cefdd34bfe9c044a7ab50ca66649d738f05ae058e20bed61ef12bff96b49c",
+  "08828e7fbf37c96cc792a2dfdd76ffb3c5fd429773992512a183d17d34776f1e",
+  "0ced6ae4c3ba1f1c347e7a1724fa8bd57fd9b4a6e44a41d1da1769f84e6d5ad2",
+  "14a3ca77a2f03328ace4a9cd00ffe90baa3f40eb1b9605411b774251616845a7",
+  "19f7cf79fa39719872f73c8aa5adbdf11a25d8ab855e89f5f7872b102a046a8e",
+  "210ec1f743f7487ae12094e386b0e6a63c90908be19facba5cf9fb65f27568cd",
+  "2644eb464522c2cabddccf01a3fb6e536f5edea1ec76d399f516766e35892df4",
+  "3095795b39f975a43f27738022fd61568b14e4e9775bd6a62b73870b9ed83a03",
+  "36f8a1bb235881375a95fd6b1272270afe1f466d7a3f2089768c5431daf52b78",
+  "3a3d6190920cebc4804cecb58955b9a0c5e7f57cf1b21eaf055ed774c1870102",
+  "42bd62461a6a92d42af79c450f9b8f638ae4d672746427d5a2f28b0704ebdb34",
+  "45a428b00508ef9debfcf63f48c653a1f8a7a1ad5d3061ce6adf160d0dfce0c8",
+  "46b49d5fd5dd34c464b01d4e676ba7d8b3ff4d00f14f7f498a5189ec7ab93e50",
+  "4a6fe4950d9af7dbe50e8ff7d48d5ce8de446b2e037d7fd90a30deb4216937d8",
+  "5958f1b2b1e61082bf5c4772bb2a3d1de1096c36c85404e8dfe80b45193d58d4",
+  "5e458d776362e7a4b0554d6f723bf18bf943314e4a9ca175e0ce9f7335d0b614",
+  "5ebf8de7ff43ee6f2f48a219ae27403921178f7c218ac8f465ed486da3da5297",
+  "63c41fff2cb7b35e11fec5c18f2d4a93665cf3d8a4134aed03b6528e76b159d4",
+  "6530ccf9ea012596c23fd31fa316ac972361b7384472d846c634d0eb41d094c5",
+  "675ffa59517b0c91cb6655c8237b472aaea5302587c267a3fa228ef859f5df5f",
+  "70b8d36f94bb1aa7acd262b55763650546fdb42f2fb7288d7ffe794a462bc69a",
+  "7314a1132902c8ad93255f0d44470f2f1b19e6ae5adef7c86c54d91eec6b3a4f",
+  "7353cfaa5f3129f25d557d3d36f221c4f06c1d5a5f7de932135b695010c2952f",
+  "770065bf7b8db7d9fb5e23fe6b8a7b01f6dd30b448356e5ddc4eb85c7579613e",
+  "78d522d3389c25814de310a9c7fdc9d61f80e8034a0db00e90bb10693497caf9",
+  "79b9d62c5cbba1268ce5a2ef67f95806d71dcd9381865d0587ae33d5d25bb244",
+  "7adebb7e9849ddd03b3e30babde739f8b66b1428222c65eb201013cb2ca74e13",
+  "7ae379d829d8cece845a33c4ae53018afab2ab2531ad45b23aee355e19d3f00f",
+  "7ba6106ce9e0810710fcd2263aaecd9b3f7933ff8e86fa425bb3eddf48e99a50",
+  "7d06e67eb16ddb44ef3cba4bb5e6e3857b9a048a58ec6fda736c36716ed53366",
+  "891b374677f4d2b12893bf33554135df7edd79c794e550519fa7d6b4b3d0f8f5",
+  "8a08954122743cef84df83f4a2d50cfb3ae14cb7959cc312e216ad8b0461ad92",
+  "8a5a7cc889b8e82521751caa2253a3efa605415f61222d9a83644f64a5a400d6",
+  "8ab3bc566e44926b06fafa1c0dd5dbf8d5bec4d833127b626fa0851fbfd0a2d0",
+  "8fd8a6f4d0846402107cfb3119610da84bd09705e9ad740302a86b0ad31bd326",
+  "8fde74f3845d52b27840cd32453585bcefed57910b5ff5c7185509ddceeec96b",
+  "9604f3f2947fbd2e2c1a1e4d11ad53701fb593ab40342278b84638003ed32b9e",
+  "96b0ab059ce67453341d569c04fe1c1ea6b0e87122d8f46ec2b3f8263fb2b4d5",
+  "9768c51a35ed915c85df09ac02fa90cd7a3d48d4283f3dc0b8fb2d635d32adc0",
+  "98f814aef21141e563c49f67be2f2f29bc1145775cb3a0a830893e4e24bdfd23",
+  "9d2bfcd618cbd768705492391d7c04832a6230f1201945361eb342bb1ed80341",
+  "9e8e07d297c11008d39273ca8a44ec473234a9395f15f972d85c3ec4d399e89f",
+  "9ebf43c52c564f364c24cb097c725c9895a5e522723a510351a1a003195b319c",
+  "a04490580f91df0ae8778ababf75cd20e3fd10c796acb1fc268eedca182a2997",
+  "a2d5716f76e935285a484b5536d959b6e3a58be59c7a60a298a6be45f2810093",
+  "a4c2967c6928666ef7a78dba65551ab3dd3cab9c7aa16834bed126d5434d99e1",
+  "a74c2a148872d5e8723883c9cc03ba7aeb5115db59a0dee5e9175152514ea430",
+  "aaee6f06489637b919e4b4c6e8c58b11a1cf7e0712759ee2b95b17fa540c10c3",
+  "aba88054685821a8385f571d87259af81ed7752f4852cab1f9d997fa3bbaec17",
+  "aecf83eb0cbee8f83b111fd3518a0181f2834b716d678aed4c87ecafda112786",
+  "b1ffc871f5cf338e926e9cd8160013e43989d6d6a9a73ac5d83831cf37a3ee2d",
+  "b387a9a2474d1a67da136533349fb4f06ad302707a38a40e6465fbd48e81849d",
+  "b44af8ec215ac78b17b9493283ae82bba050cf2c9ea1c8412d51b281642b3cd3",
+  "b4b291e4eb8c5b9b8b5cd6e66d0cbc03f3189bf2d4d1b9c3dfcd6f0628c08732",
+  "b525351c7a2f17cad5d25156b3b3d01f20ddab110ac7f959f33993b9cb48ad1f",
+  "b8249ee8fcb3c35fdc8824ba61cd8b1e15379f099ac3ea1b28688f9feee47483",
+  "be5bc2d999c45999c0e77540348dca3f66d051b24f202694620ffc4351fb759f",
+  "bf0044d5993c409d010dfe6ab7c8ee543756f9aaaed62fb3f2b4e490d6f70815",
+  "c29f13dc89b7388abfb76eb09fe091ce8c39d694e9e14eab5b258f8e89892400",
+  "c44e10c0a5dbf051cbc43106b0c2fe013bd8f7ced0065014f81135d34f1500b4",
+  "c54725244845b1aa49cd6fa5cbbdab373959d26a4a0f661f189c6206636c62c5",
+  "c5f0d6f32fbd78f7d9a91a213b05573e8f4bcb167c2fe0718bbfb47452b07570",
+  "d4bb6ad0f68bf97db578fddb01a2213a14ab9367b98358fc41fe3b4321f4d84f",
+  "d983aa63fca421080a792b2aa68f5e4b1fbe06355d2635a87e55f0780595f34a",
+  "dc3799c2501637270cf0f2c42421139c6be58f5cae20de391bf8d172742523ab",
+  "e17ead5c9a1da3d825187f51794038267bd5c7ffa3c68c34216fd5ea5e151435",
+  "e99d69a92ddcbc5498e11d8517dfc3210de1370049077915549ca9639e54e9a0",
+  "ebbda8d6521ee307de9c87de4daa0974c138a2f0836cba38b6c72dfa668742d3",
+  "f6438804c85cd084f5ddbf47d420dff8bc57c6d40f922eb2b0ae398589c47e4d"
+ ],
+ "basis_counts": {
+  "decisions": {
+   "DERIVED": 34,
+   "PUBLISHED_OR_OBSERVED": 76
+  },
+  "decomposition_units": {
+   "PUBLISHED_OR_OBSERVED": 131,
+   "DERIVED": 14,
+   "COMMITMENT_ONLY": 79
+  },
+  "translations": {
+   "DERIVED": 24,
+   "PUBLISHED_OR_OBSERVED": 4
+  },
+  "rule": "published_observed = leitura com só published e observed; DERIVED = resposta muda sem os fatos derived/oracle_derived"
+ },
+ "retired_at": "2026-11-04T23:09:29-03:00",
+ "retired_reason": "evidência nova do SERVICE-EVIDENCE (3ba4079 CC-14 e f44b9a6 R6): SG AWS e firewall GCP com estado publicado, regras implícitas do GCP publicadas, prioridade única por direção no Azure; não é saída do sistema"
+}

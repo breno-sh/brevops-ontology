@@ -15,7 +15,7 @@
  "direction": "oci->azurerm",
  "expected": {
   "verdict": "ACCEPT_WITH_DECLARED_LOSS",
-  "why": "retorno permitido na origem fica UNKNOWN no destino: declarado"
+  "why": "retorno permitido na origem fica UNKNOWN no NSG Azure: declarado"
  },
  "polarity": "positive",
  "schema": "bo.pilot_net.translation_case/1",

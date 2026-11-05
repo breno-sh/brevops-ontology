@@ -29,7 +29,7 @@
    "f1r"
   ],
   "verdict": "ACCEPT_WITH_DECLARED_LOSS",
-  "why": "sem negação explícita o destino fica UNKNOWN em f2, f3 e f4; a perda está declarada"
+  "why": "sem negação explícita o NSG fica UNKNOWN em f2, f3 e f4; a perda está declarada"
  },
  "polarity": "unknown",
  "schema": "bo.pilot_net.translation_case/1",

@@ -8,12 +8,18 @@
   {
    "flows": [],
    "loss_id": "LOSS-NET-EFFECT-DENY"
+  },
+  {
+   "flows": [
+    "f2r"
+   ],
+   "loss_id": "LOSS-NET-UNKNOWN-INPUT"
   }
  ],
  "direction": "azurerm->aws",
  "expected": {
-  "verdict": "ACCEPT",
-  "why": "conjunto efetivo (443 de qualquer origem) sem a negação: decisões iguais"
+  "verdict": "ACCEPT_WITH_DECLARED_LOSS",
+  "why": "conjunto efetivo (443 de qualquer origem) sem a negação: decisões iguais; retorno UNKNOWN no Azure declarado"
  },
  "polarity": "positive",
  "schema": "bo.pilot_net.translation_case/1",

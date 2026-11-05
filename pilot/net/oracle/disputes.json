@@ -3,6 +3,32 @@
   {
    "doc": {
     "kind": "self",
+    "rule": "R-SCOPE-SELF"
+   },
+   "evidence": [
+    "SE-oci-o2hf3vq37da34th5",
+    "SE-oci-owpz72e36oqij7f2"
+   ],
+   "fact": "effective_scope",
+   "kind": "doc_x_spec",
+   "provider": "oci",
+   "publication_id": "SE-oci-azu2sgmbkqz2d2dc",
+   "resolved_at": "2026-11-04T21:40-03:00",
+   "resolved_to": "spec",
+   "sides": [
+    "SE-oci-o2hf3vq37da34th5",
+    "SE-oci-owpz72e36oqij7f2"
+   ],
+   "spec": {
+    "kind": "parent",
+    "rule": "R-SCOPE-SPEC"
+   },
+   "status": "resolvida-por-publicação",
+   "terraform_resource_type": "oci_core_network_security_group_security_rule"
+  },
+  {
+   "doc": {
+    "kind": "self",
     "rule": "R-LIFE-API"
    },
    "evidence": [
@@ -57,5 +83,5 @@
  "rule": "disputa ABERTA spec x doc sobre lifecycle_controller ou owner: a unidade vira UNKNOWN com o motivo; resolvida por observação (R2 do PREREG): fica o tipo do lado vencedor, com a observação na evidência (decisões de acesso não dependem desses fatos)",
  "schema": "bo.pilot_net.disputes/1",
  "source": "$BO_REPO/results/SERVICE-EVIDENCE/spec_disputes.json",
- "source_sha256": "513ba2fa2e11cb1d460e8cdeaa88223688159c25868511b5c3a1f9aada5f340b"
+ "source_sha256": "f566517949c9fdd4c1ccf88917ad48e4d09be8ccd748fc65b849a05770277198"
 }

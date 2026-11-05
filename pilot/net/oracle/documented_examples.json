@@ -1444,6 +1444,576 @@
    },
    "provider": "aws",
    "quote": "Terraform removes this default rule"
+  },
+  {
+   "evidence_id": "SE-aws-p272pgtmcwbrjsvb",
+   "example_id": "DOC-AWS-03",
+   "expected": {
+    "decisions": {
+     "x1": {
+      "value": "ALLOW",
+      "why": "entrada 443"
+     },
+     "x1r": {
+      "value": "ALLOW",
+      "why": "retorno sem regra de saída: o grupo tem estado"
+     }
+    },
+    "validity": {
+     "value": "VALID"
+    }
+   },
+   "fixture": {
+    "config": {
+     "resources": [
+      {
+       "name": "web",
+       "type": "aws_security_group",
+       "values": {
+        "description": "fixture sintética",
+        "ingress": [
+         {
+          "cidr_blocks": [
+           "203.0.113.0/24"
+          ],
+          "from_port": 443,
+          "protocol": "tcp",
+          "to_port": 443
+         }
+        ],
+        "name": "fx-web"
+       }
+      },
+      {
+       "name": "vm1",
+       "type": "aws_instance",
+       "values": {
+        "vpc_security_group_ids": [
+         "ref:aws_security_group.web"
+        ]
+       }
+      }
+     ]
+    },
+    "fixture_id": "DOC-AWS-03",
+    "flows": [
+     {
+      "direction": "ingress",
+      "flow_id": "x1",
+      "port": 443,
+      "protocol": "tcp",
+      "remote": "203.0.113.5",
+      "state": "new",
+      "target": "vm1"
+     },
+     {
+      "flow_id": "x1r",
+      "of": "x1",
+      "reply_port": 49152,
+      "state": "return",
+      "target": "vm1"
+     }
+    ],
+    "provider": "aws",
+    "read": {
+     "completeness": "complete",
+     "not_read": [],
+     "withheld": []
+    },
+    "targets": {
+     "vm1": {
+      "ip": "10.0.1.10",
+      "ref": "aws_instance.vm1"
+     }
+    }
+   },
+   "provider": "aws",
+   "quote": "Security groups are stateful."
+  },
+  {
+   "evidence_id": "SE-aws-6gqdywgpolbhwsgh",
+   "example_id": "DOC-AWS-04",
+   "expected": {
+    "decisions": {
+     "x1": {
+      "value": "ALLOW",
+      "why": "regras só permitem: a mais ampla não nega a mais estreita"
+     }
+    },
+    "validity": {
+     "value": "VALID"
+    }
+   },
+   "fixture": {
+    "config": {
+     "resources": [
+      {
+       "name": "web",
+       "type": "aws_security_group",
+       "values": {
+        "description": "fixture sintética",
+        "ingress": [
+         {
+          "cidr_blocks": [
+           "203.0.113.0/24"
+          ],
+          "from_port": 22,
+          "protocol": "tcp",
+          "to_port": 22
+         },
+         {
+          "cidr_blocks": [
+           "0.0.0.0/0"
+          ],
+          "from_port": 22,
+          "protocol": "tcp",
+          "to_port": 22
+         }
+        ],
+        "name": "fx-web"
+       }
+      },
+      {
+       "name": "vm1",
+       "type": "aws_instance",
+       "values": {
+        "vpc_security_group_ids": [
+         "ref:aws_security_group.web"
+        ]
+       }
+      }
+     ]
+    },
+    "fixture_id": "DOC-AWS-04",
+    "flows": [
+     {
+      "direction": "ingress",
+      "flow_id": "x1",
+      "port": 22,
+      "protocol": "tcp",
+      "remote": "203.0.113.5",
+      "state": "new",
+      "target": "vm1"
+     }
+    ],
+    "provider": "aws",
+    "read": {
+     "completeness": "complete",
+     "not_read": [],
+     "withheld": []
+    },
+    "targets": {
+     "vm1": {
+      "ip": "10.0.1.10",
+      "ref": "aws_instance.vm1"
+     }
+    }
+   },
+   "provider": "aws",
+   "quote": "You can specify allow rules, but not deny rules."
+  },
+  {
+   "evidence_id": "SE-google-q7fxffs3brh35x6f",
+   "example_id": "DOC-GCP-06",
+   "expected": {
+    "decisions": {
+     "x1": {
+      "value": "ALLOW",
+      "why": "a permissão vence a negação implícita"
+     },
+     "x2": {
+      "value": "DENY",
+      "why": "sem regra: negação implícita de entrada"
+     }
+    },
+    "validity": {
+     "value": "VALID"
+    }
+   },
+   "fixture": {
+    "config": {
+     "resources": [
+      {
+       "name": "net",
+       "type": "google_compute_network",
+       "values": {
+        "auto_create_subnetworks": false,
+        "name": "fx-net"
+       }
+      },
+      {
+       "name": "a",
+       "type": "google_compute_firewall",
+       "values": {
+        "allow": [
+         {
+          "ports": [
+           "443"
+          ],
+          "protocol": "tcp"
+         }
+        ],
+        "direction": "INGRESS",
+        "name": "fx-a",
+        "network": "ref:google_compute_network.net",
+        "priority": 1000,
+        "source_ranges": [
+         "0.0.0.0/0"
+        ],
+        "target_tags": [
+         "web"
+        ]
+       }
+      },
+      {
+       "name": "vm1",
+       "type": "google_compute_instance",
+       "values": {
+        "network_interface": [
+         {
+          "network": "ref:google_compute_network.net"
+         }
+        ],
+        "tags": [
+         "web"
+        ]
+       }
+      }
+     ]
+    },
+    "fixture_id": "DOC-GCP-06",
+    "flows": [
+     {
+      "direction": "ingress",
+      "flow_id": "x1",
+      "port": 443,
+      "protocol": "tcp",
+      "remote": "203.0.113.5",
+      "state": "new",
+      "target": "vm1"
+     },
+     {
+      "direction": "ingress",
+      "flow_id": "x2",
+      "port": 22,
+      "protocol": "tcp",
+      "remote": "203.0.113.5",
+      "state": "new",
+      "target": "vm1"
+     }
+    ],
+    "provider": "google",
+    "read": {
+     "completeness": "complete",
+     "not_read": [],
+     "withheld": []
+    },
+    "targets": {
+     "vm1": {
+      "ip": "10.0.1.10",
+      "ref": "google_compute_instance.vm1"
+     }
+    }
+   },
+   "provider": "google",
+   "quote": "the allow ingress firewall rules override the implied deny ingress rule"
+  },
+  {
+   "evidence_id": "SE-google-lczae72rfhtxc6ad",
+   "example_id": "DOC-GCP-07",
+   "expected": {
+    "decisions": {
+     "x1": {
+      "value": "DENY",
+      "why": "a negação vence a permissão implícita"
+     },
+     "x2": {
+      "value": "ALLOW",
+      "why": "sem regra: permissão implícita de saída"
+     }
+    },
+    "validity": {
+     "value": "VALID"
+    }
+   },
+   "fixture": {
+    "config": {
+     "resources": [
+      {
+       "name": "net",
+       "type": "google_compute_network",
+       "values": {
+        "auto_create_subnetworks": false,
+        "name": "fx-net"
+       }
+      },
+      {
+       "name": "d",
+       "type": "google_compute_firewall",
+       "values": {
+        "deny": [
+         {
+          "ports": [
+           "25"
+          ],
+          "protocol": "tcp"
+         }
+        ],
+        "destination_ranges": [
+         "0.0.0.0/0"
+        ],
+        "direction": "EGRESS",
+        "name": "fx-d",
+        "network": "ref:google_compute_network.net",
+        "priority": 1000,
+        "target_tags": [
+         "web"
+        ]
+       }
+      },
+      {
+       "name": "vm1",
+       "type": "google_compute_instance",
+       "values": {
+        "network_interface": [
+         {
+          "network": "ref:google_compute_network.net"
+         }
+        ],
+        "tags": [
+         "web"
+        ]
+       }
+      }
+     ]
+    },
+    "fixture_id": "DOC-GCP-07",
+    "flows": [
+     {
+      "direction": "egress",
+      "flow_id": "x1",
+      "port": 25,
+      "protocol": "tcp",
+      "remote": "198.51.100.7",
+      "state": "new",
+      "target": "vm1"
+     },
+     {
+      "direction": "egress",
+      "flow_id": "x2",
+      "port": 443,
+      "protocol": "tcp",
+      "remote": "198.51.100.7",
+      "state": "new",
+      "target": "vm1"
+     }
+    ],
+    "provider": "google",
+    "read": {
+     "completeness": "complete",
+     "not_read": [],
+     "withheld": []
+    },
+    "targets": {
+     "vm1": {
+      "ip": "10.0.1.10",
+      "ref": "google_compute_instance.vm1"
+     }
+    }
+   },
+   "provider": "google",
+   "quote": "the deny egress firewall rules override the implied allow egress rule"
+  },
+  {
+   "evidence_id": "SE-azurerm-bzlmoi5ehpxmh43w",
+   "example_id": "DOC-AZ-05",
+   "expected": {
+    "decisions": {
+     "x1": {
+      "value": "ALLOW",
+      "why": "a regra de entrada casa"
+     }
+    },
+    "validity": {
+     "value": "VALID"
+    }
+   },
+   "fixture": {
+    "config": {
+     "resources": [
+      {
+       "name": "web",
+       "type": "azurerm_network_security_group",
+       "values": {
+        "location": "fixture",
+        "name": "fx-web",
+        "resource_group_name": "fx-rg",
+        "security_rule": [
+         {
+          "access": "Allow",
+          "destination_address_prefix": "*",
+          "destination_port_range": "22",
+          "direction": "Inbound",
+          "name": "a",
+          "priority": 300,
+          "protocol": "Tcp",
+          "source_address_prefix": "*",
+          "source_port_range": "*"
+         },
+         {
+          "access": "Allow",
+          "destination_address_prefix": "*",
+          "destination_port_range": "443",
+          "direction": "Outbound",
+          "name": "b",
+          "priority": 300,
+          "protocol": "Tcp",
+          "source_address_prefix": "*",
+          "source_port_range": "*"
+         }
+        ]
+       }
+      },
+      {
+       "name": "sa",
+       "type": "azurerm_subnet",
+       "values": {
+        "name": "fx-sa"
+       }
+      },
+      {
+       "name": "nic1",
+       "type": "azurerm_network_interface",
+       "values": {
+        "ip_configuration": [
+         {
+          "name": "ipc",
+          "subnet_id": "ref:azurerm_subnet.sa"
+         }
+        ]
+       }
+      },
+      {
+       "name": "vm1",
+       "type": "azurerm_linux_virtual_machine",
+       "values": {
+        "network_interface_ids": [
+         "ref:azurerm_network_interface.nic1"
+        ]
+       }
+      },
+      {
+       "name": "nic_web",
+       "type": "azurerm_network_interface_security_group_association",
+       "values": {
+        "network_interface_id": "ref:azurerm_network_interface.nic1",
+        "network_security_group_id": "ref:azurerm_network_security_group.web"
+       }
+      }
+     ]
+    },
+    "fixture_id": "DOC-AZ-05",
+    "flows": [
+     {
+      "direction": "ingress",
+      "flow_id": "x1",
+      "port": 22,
+      "protocol": "tcp",
+      "remote": "203.0.113.5",
+      "state": "new",
+      "target": "vm1"
+     }
+    ],
+    "provider": "azurerm",
+    "read": {
+     "completeness": "complete",
+     "not_read": [],
+     "withheld": []
+    },
+    "targets": {
+     "vm1": {
+      "ip": "10.0.1.10",
+      "ref": "azurerm_linux_virtual_machine.vm1"
+     }
+    }
+   },
+   "provider": "azurerm",
+   "quote": "You can't create two security rules with the same priority and direction."
+  },
+  {
+   "evidence_id": "SE-oci-7fsekbectwthhskg",
+   "example_id": "DOC-OCI-04",
+   "expected": {
+    "decisions": {
+     "x1": {
+      "value": "DENY",
+      "why": "sem regras, nada passa"
+     }
+    },
+    "validity": {
+     "value": "VALID"
+    }
+   },
+   "fixture": {
+    "config": {
+     "resources": [
+      {
+       "name": "web",
+       "type": "oci_core_security_list",
+       "values": {
+        "compartment_id": "ref:oci_identity_compartment.fx",
+        "egress_security_rules": [],
+        "ingress_security_rules": [],
+        "vcn_id": "ref:oci_core_vcn.fx"
+       }
+      },
+      {
+       "name": "sa",
+       "type": "oci_core_subnet",
+       "values": {
+        "security_list_ids": [
+         "ref:oci_core_security_list.web"
+        ]
+       }
+      },
+      {
+       "name": "vm1",
+       "type": "oci_core_instance",
+       "values": {
+        "create_vnic_details": {
+         "subnet_id": "ref:oci_core_subnet.sa"
+        }
+       }
+      }
+     ]
+    },
+    "fixture_id": "DOC-OCI-04",
+    "flows": [
+     {
+      "direction": "ingress",
+      "flow_id": "x1",
+      "port": 22,
+      "protocol": "tcp",
+      "remote": "203.0.113.5",
+      "state": "new",
+      "target": "vm1"
+     }
+    ],
+    "provider": "oci",
+    "read": {
+     "completeness": "complete",
+     "not_read": [],
+     "withheld": []
+    },
+    "targets": {
+     "vm1": {
+      "ip": "10.0.1.10",
+      "ref": "oci_core_instance.vm1"
+     }
+    }
+   },
+   "provider": "oci",
+   "quote": "Without security rules, no traffic is allowed in and out of VNICs in the VCN."
   }
  ],
  "schema": "bo.pilot_net.documented_examples/1"

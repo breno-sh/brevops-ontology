@@ -1,12 +1,11 @@
 {
  "case": "NET-C06",
  "check": {
-  "assertion": "decision(f1) = UNKNOWN (não ALLOW)",
-  "kind": "unknown"
+  "assertion": "NOT decision(f1) = allow",
+  "kind": "not_entails"
  },
  "commitment_ids": [
-  "CMT-FW-N03",
-  "CMT-FW-U01"
+  "CMT-FW-N03"
  ],
  "config": {
   "resources": [
@@ -61,9 +60,8 @@
  "expected": {
   "decisions": {
    "f1": {
-    "code": "MISSING_EVIDENCE",
-    "value": "UNKNOWN",
-    "why": "nenhuma regra de entrada; regra implícita de entrada só interpretada"
+    "value": "DENY",
+    "why": "nenhuma regra de entrada; vale a regra implícita de entrada que nega (guia oficial, SE CC-14)"
    },
    "f4": {
     "value": "ALLOW",
@@ -148,7 +146,7 @@
    "target": "vm1"
   }
  ],
- "polarity": "unknown",
+ "polarity": "negative",
  "provider": "google",
  "read": {
   "completeness": "complete",

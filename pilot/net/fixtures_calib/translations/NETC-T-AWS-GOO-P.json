@@ -8,7 +8,7 @@
  "direction": "aws->google",
  "expected": {
   "verdict": "ACCEPT",
-  "why": "decisões iguais em todos os fluxos"
+  "why": "decisões iguais em todos os fluxos (retorno com estado dos dois lados)"
  },
  "polarity": "positive",
  "schema": "bo.pilot_net.translation_case/1",

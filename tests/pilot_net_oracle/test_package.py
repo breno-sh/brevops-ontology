@@ -96,10 +96,11 @@ def test_catalogo_de_perdas_por_direcao():
 
 def test_conjunto_v1_aposentado_e_v2_ativo():
     idx = json.loads((REPO / "pilot/net/oracle/sealed_index.json").read_text(encoding="utf-8"))
-    assert idx["set_version"] == 2 and idx["status"] == "ativo"
-    old = idx["retired_sets"][0]
-    assert old["set_version"] == 1 and old["status"] == "usado 2×, aposentado"
-    assert idx["envelope_sha256"] != old["envelope_sha256"]
+    assert idx["set_version"] == 2 and idx["status"] == "ativo" and idx.get("revision") == 2 and idx["reseal_reason"]
+    olds = {(o["set_version"], o.get("revision", 1)): o for o in idx["retired_sets"]}
+    assert olds[(1, 1)]["status"] == "usado 2×, aposentado"
+    assert olds[(2, 1)]["status"].startswith("substituído")
+    assert idx["envelope_sha256"] not in {o["envelope_sha256"] for o in olds.values()}
     ret = json.loads((REPO / "pilot/net/oracle/sealed_index_v1_retired.json").read_text(encoding="utf-8"))
     assert ret["status"] == "usado 2×, aposentado"
     assert idx["counts"]["fixtures_total"] >= ret["counts"]["fixtures_total"]

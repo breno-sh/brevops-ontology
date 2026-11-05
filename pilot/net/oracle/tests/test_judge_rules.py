@@ -25,10 +25,9 @@ def test_deny_virou_allow_reprova_mesmo_com_todas_as_perdas():
 def test_bloqueio_conservador_coberto_so_por_perda_declarada():
     tgt = _aws([])
     j = no.judge(SRC, tgt, [], "google->aws")
-    # f2 (443 permitido) vira negado; f2r (retorno UNKNOWN na origem) vira negado por não haver conexão
+    # f2 (443 permitido) vira negado; f2r (retorno permitido: firewall com estado) vira negado por não haver conexão
     assert j["verdict"] == "REJECT" and j["silent_losses"] == ["f2", "f2r"]
-    j = no.judge(SRC, tgt, [{"loss_id": "LOSS-NET-EFFECT-DENY", "flows": ["f2"]},
-                            {"loss_id": "LOSS-NET-UNKNOWN-INPUT", "flows": ["f2r"]}], "google->aws")
+    j = no.judge(SRC, tgt, [{"loss_id": "LOSS-NET-EFFECT-DENY", "flows": ["f2", "f2r"]}], "google->aws")
     assert j["verdict"] == "ACCEPT_WITH_DECLARED_LOSS" and j["covered"] == ["f2", "f2r"]
 
 
@@ -47,3 +46,18 @@ def test_alvo_invalido_reprova():
     assert no.evaluate_fixture(tgt)["validity"]["value"] == "INVALID"
     j = no.judge(src, tgt, [], "azurerm->azurerm")  # mesma origem: nenhuma perda declarável
     assert j["target_validity"] == "INVALID" and j["verdict"] == "REJECT"
+
+
+def test_porta_simbolica_em_gcp_e_azure_vira_unknown():
+    for p in ("google", "azurerm"):
+        f = load(NETDIR / ("fixtures_calib/NETC-C09-GCP-NOMATCH.json" if p == "google" else "fixtures_calib/NETC-C01-AZ-INLINE.json"))
+        f = copy.deepcopy(f)
+        for r in f["config"]["resources"]:
+            if r["type"] == "google_compute_firewall" and "allow" in r["values"]:
+                r["values"]["allow"][0]["ports"] = ["sym:var.port"]
+            if r["type"] == "azurerm_network_security_group":
+                r["values"]["security_rule"][0]["destination_port_range"] = "sym:var.port"
+        flows = [x for x in f["flows"] if x.get("port") == 443 and x.get("direction") == "ingress"] or f["flows"][:1]
+        f["flows"] = flows
+        d = no.evaluate_fixture(f)["decisions"]
+        assert any(v["value"] == "UNKNOWN" and v["code"] == "UNKNOWN_SYMBOLIC_INPUT" for v in d.values()), p

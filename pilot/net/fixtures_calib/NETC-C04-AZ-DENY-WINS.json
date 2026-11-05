@@ -126,7 +126,7 @@
    "f2r": {
     "code": "MISSING_EVIDENCE",
     "value": "UNKNOWN",
-    "why": "estado de conexão sem evidência"
+    "why": "estado de conexão do NSG Azure sem evidência"
    },
    "f3": {
     "value": "DENY",

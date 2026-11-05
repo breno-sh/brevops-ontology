@@ -28,7 +28,6 @@
    "target": "azurerm",
    "unknowns": [
     "retorno de conexão no destino: UNKNOWN (estado sem evidência)",
-    "retorno de conexão na origem: UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
     "fluxo sem regra no destino: UNKNOWN sem negação explícita",
     "NSG na NIC e na sub-rede com decisões diferentes: UNKNOWN (combinação sem evidência)"
    ]
@@ -47,8 +46,6 @@
     "NETC-T-AWS-GOO-U"
    ],
    "expected_losses": [
-    "LOSS-NET-STATE",
-    "LOSS-NET-DEFAULT",
     "LOSS-NET-UNKNOWN-INPUT"
    ],
    "negatives": [
@@ -60,9 +57,7 @@
    "source": "aws",
    "target": "google",
    "unknowns": [
-    "retorno de conexão no destino: UNKNOWN (estado sem evidência)",
-    "retorno de conexão na origem: UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
-    "fluxo sem regra no destino: UNKNOWN sem negação explícita"
+    "saída sem regra no GCP: a regra implícita permite; sem negação explícita é contraexemplo (não UNKNOWN)"
    ]
   },
   "aws->oci": {
@@ -88,7 +83,6 @@
    "source": "aws",
    "target": "oci",
    "unknowns": [
-    "retorno de conexão na origem: UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
     "security list e NSG no mesmo alvo com decisões diferentes: UNKNOWN (combinação sem evidência)"
    ]
   },
@@ -106,7 +100,6 @@
    ],
    "expected_losses": [
     "LOSS-NET-EFFECT-DENY",
-    "LOSS-NET-STATE",
     "LOSS-NET-SRCPORT",
     "LOSS-NET-UNKNOWN-INPUT"
    ],
@@ -119,8 +112,7 @@
    "source": "azurerm",
    "target": "aws",
    "unknowns": [
-    "retorno de conexão no destino: UNKNOWN (estado sem evidência)",
-    "retorno de conexão na origem: UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
+    "retorno de conexão na origem (NSG Azure): UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
     "fluxo sem regra na origem: UNKNOWN"
    ]
   },
@@ -138,8 +130,6 @@
     "NETC-T-AZU-GOO-U"
    ],
    "expected_losses": [
-    "LOSS-NET-STATE",
-    "LOSS-NET-DEFAULT",
     "LOSS-NET-SRCPORT",
     "LOSS-NET-UNKNOWN-INPUT"
    ],
@@ -152,10 +142,9 @@
    "source": "azurerm",
    "target": "google",
    "unknowns": [
-    "retorno de conexão no destino: UNKNOWN (estado sem evidência)",
-    "retorno de conexão na origem: UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
-    "fluxo sem regra no destino: UNKNOWN sem negação explícita",
-    "fluxo sem regra na origem: UNKNOWN"
+    "retorno de conexão na origem (NSG Azure): UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
+    "fluxo sem regra na origem: UNKNOWN",
+    "saída sem regra no GCP: a regra implícita permite; sem negação explícita é contraexemplo (não UNKNOWN)"
    ]
   },
   "azurerm->oci": {
@@ -183,7 +172,7 @@
    "source": "azurerm",
    "target": "oci",
    "unknowns": [
-    "retorno de conexão na origem: UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
+    "retorno de conexão na origem (NSG Azure): UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
     "fluxo sem regra na origem: UNKNOWN",
     "security list e NSG no mesmo alvo com decisões diferentes: UNKNOWN (combinação sem evidência)"
    ]
@@ -202,7 +191,6 @@
    ],
    "expected_losses": [
     "LOSS-NET-EFFECT-DENY",
-    "LOSS-NET-STATE",
     "LOSS-NET-SELECTOR",
     "LOSS-NET-UNKNOWN-INPUT"
    ],
@@ -214,11 +202,7 @@
    ],
    "source": "google",
    "target": "aws",
-   "unknowns": [
-    "retorno de conexão no destino: UNKNOWN (estado sem evidência)",
-    "retorno de conexão na origem: UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
-    "fluxo sem regra na origem: UNKNOWN"
-   ]
+   "unknowns": []
   },
   "google->azurerm": {
    "acceptable_target": [
@@ -249,9 +233,7 @@
    "target": "azurerm",
    "unknowns": [
     "retorno de conexão no destino: UNKNOWN (estado sem evidência)",
-    "retorno de conexão na origem: UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
     "fluxo sem regra no destino: UNKNOWN sem negação explícita",
-    "fluxo sem regra na origem: UNKNOWN",
     "NSG na NIC e na sub-rede com decisões diferentes: UNKNOWN (combinação sem evidência)"
    ]
   },
@@ -281,8 +263,6 @@
    "source": "google",
    "target": "oci",
    "unknowns": [
-    "retorno de conexão na origem: UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
-    "fluxo sem regra na origem: UNKNOWN",
     "security list e NSG no mesmo alvo com decisões diferentes: UNKNOWN (combinação sem evidência)"
    ]
   },
@@ -298,7 +278,6 @@
     "NETC-T-OCI-AWS-U"
    ],
    "expected_losses": [
-    "LOSS-NET-STATE",
     "LOSS-NET-SRCPORT",
     "LOSS-NET-UNKNOWN-INPUT"
    ],
@@ -310,9 +289,7 @@
    ],
    "source": "oci",
    "target": "aws",
-   "unknowns": [
-    "retorno de conexão no destino: UNKNOWN (estado sem evidência)"
-   ]
+   "unknowns": []
   },
   "oci->azurerm": {
    "acceptable_target": [
@@ -360,8 +337,6 @@
     "NETC-T-OCI-GOO-U"
    ],
    "expected_losses": [
-    "LOSS-NET-STATE",
-    "LOSS-NET-DEFAULT",
     "LOSS-NET-SRCPORT",
     "LOSS-NET-UNKNOWN-INPUT"
    ],
@@ -374,8 +349,7 @@
    "source": "oci",
    "target": "google",
    "unknowns": [
-    "retorno de conexão no destino: UNKNOWN (estado sem evidência)",
-    "fluxo sem regra no destino: UNKNOWN sem negação explícita"
+    "saída sem regra no GCP: a regra implícita permite; sem negação explícita é contraexemplo (não UNKNOWN)"
    ]
   }
  },
@@ -386,7 +360,7 @@
     "ALLOW->UNKNOWN",
     "DENY->UNKNOWN"
    ],
-   "text": "o padrão do destino para fluxo sem regra não tem evidência publicada (GCP: regras implícitas só interpretadas; Azure: regras padrão ausentes); evitável com negação explícita de menor precedência",
+   "text": "o padrão do NSG Azure para fluxo sem regra não tem evidência publicada (regras padrão ausentes); evitável com negação explícita de menor precedência. No GCP as regras implícitas são publicadas (entrada nega, saída permite): sem negação explícita de saída, a saída fica PERMITIDA, o que é transporte em caso negativo, não perda",
    "when": {
     "source": [
      "aws",
@@ -395,7 +369,6 @@
      "oci"
     ],
     "target": [
-     "google",
      "azurerm"
     ]
    }
@@ -459,7 +432,7 @@
     "ALLOW->UNKNOWN",
     "DENY->UNKNOWN"
    ],
-   "text": "o estado de conexão do destino não tem evidência no SERVICE-EVIDENCE: a decisão do tráfego de retorno no destino é UNKNOWN",
+   "text": "o estado de conexão do NSG Azure não tem evidência no SERVICE-EVIDENCE: a decisão do tráfego de retorno no destino é UNKNOWN (SG AWS, firewall GCP e OCI: com estado, publicado desde o CC-14)",
    "when": {
     "source": [
      "aws",
@@ -468,8 +441,6 @@
      "oci"
     ],
     "target": [
-     "aws",
-     "google",
      "azurerm"
     ]
    }
@@ -502,7 +473,7 @@
  "target_requirements": {
   "REQ-T-ATTACH": "o conjunto do destino aplica-se aos mesmos alvos (anexação ou rótulo equivalente)",
   "REQ-T-AZ-PRIORITY": "prioridades entre 100 e 4096, distintas entre si (também entre direções, para a validade não ficar UNKNOWN)",
-  "REQ-T-CATCHALL": "negação explícita de entrada e de saída na menor precedência, para não depender do padrão sem evidência",
+  "REQ-T-CATCHALL": "negação explícita de entrada e de saída na menor precedência: no Azure, para não depender do padrão sem evidência; no GCP, porque a regra implícita de saída PERMITE",
   "REQ-T-DECISIONS": "decisão igual à da origem em todo fluxo da fixture, salvo divergência coberta por perda declarada do catálogo da direção",
   "REQ-T-EFFECTIVE-SET": "destino só-permissão: permitir só o conjunto efetivo da origem (permissões menos negações de precedência maior)",
   "REQ-T-GCP-TIE": "nenhuma permissão na mesma prioridade da negação que deveria perder para ela (empate: deny vence)",

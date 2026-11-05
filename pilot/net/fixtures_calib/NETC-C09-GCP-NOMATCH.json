@@ -1,8 +1,8 @@
 {
  "case": "NET-C09",
  "check": {
-  "assertion": "decision(f2) = UNKNOWN AND decision(f4) = UNKNOWN",
-  "kind": "unknown"
+  "assertion": "decision(f2) = deny AND decision(f4) = allow",
+  "kind": "entails"
  },
  "commitment_ids": [
   "CMT-FW-U01"
@@ -60,14 +60,12 @@
  "expected": {
   "decisions": {
    "f2": {
-    "code": "MISSING_EVIDENCE",
-    "value": "UNKNOWN",
-    "why": "regra implícita de entrada só interpretada (SE-google-yz5xmhx36uyxkd2x)"
+    "value": "DENY",
+    "why": "regra implícita de entrada nega (guia oficial, SE-google-q7fxffs3brh35x6f)"
    },
    "f4": {
-    "code": "MISSING_EVIDENCE",
-    "value": "UNKNOWN",
-    "why": "regra implícita de saída só interpretada"
+    "value": "ALLOW",
+    "why": "regra implícita de saída permite (guia oficial, SE-google-lczae72rfhtxc6ad)"
    }
   },
   "decomposition": [
@@ -148,7 +146,7 @@
    "target": "vm1"
   }
  ],
- "polarity": "unknown",
+ "polarity": "positive",
  "provider": "google",
  "read": {
   "completeness": "complete",
@@ -157,7 +155,7 @@
  },
  "schema": "bo.pilot_net.fixture/1",
  "split": "calib",
- "summary": "firewall sem negação explícita",
+ "summary": "firewall sem negação explícita: regras implícitas",
  "targets": {
   "vm1": {
    "ip": "10.0.1.10",

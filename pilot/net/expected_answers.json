@@ -11,8 +11,8 @@
     },
     "NET-C02": {
      "negative": 1,
-     "positive": 1,
-     "unknown": 3
+     "positive": 3,
+     "unknown": 1
     },
     "NET-C03": {
      "negative": 1,
@@ -26,11 +26,11 @@
     },
     "NET-C05": {
      "negative": 1,
-     "positive": 1,
+     "positive": 2,
      "unknown": 1
     },
     "NET-C06": {
-     "negative": 2,
+     "negative": 3,
      "positive": 1,
      "unknown": 1
     },
@@ -46,7 +46,7 @@
     },
     "NET-C09": {
      "negative": 1,
-     "positive": 2,
+     "positive": 3,
      "unknown": 1
     }
    },
@@ -114,13 +114,13 @@
    },
    "by_provider": {
     "aws": 14,
-    "azurerm": 8,
+    "azurerm": 11,
     "google": 11,
     "oci": 9
    },
-   "fixtures_in_cases": 42,
-   "fixtures_total": 42,
-   "flows_total": 97,
+   "fixtures_in_cases": 45,
+   "fixtures_total": 45,
+   "flows_total": 102,
    "translations_total": 36
   },
   "retained": {
@@ -132,8 +132,8 @@
     },
     "NET-C02": {
      "negative": 1,
-     "positive": 1,
-     "unknown": 2
+     "positive": 3,
+     "unknown": 1
     },
     "NET-C03": {
      "negative": 1,
@@ -147,7 +147,7 @@
     },
     "NET-C05": {
      "negative": 1,
-     "positive": 1,
+     "positive": 2,
      "unknown": 1
     },
     "NET-C06": {
@@ -166,9 +166,9 @@
      "unknown": 2
     },
     "NET-C09": {
-     "negative": 1,
+     "negative": 2,
      "positive": 1,
-     "unknown": 2
+     "unknown": 1
     }
    },
    "by_direction": {
@@ -235,13 +235,13 @@
    },
    "by_provider": {
     "aws": 7,
-    "azurerm": 14,
-    "google": 10,
+    "azurerm": 15,
+    "google": 11,
     "oci": 11
    },
-   "fixtures_in_cases": 36,
-   "fixtures_total": 42,
-   "flows_total": 110,
+   "fixtures_in_cases": 38,
+   "fixtures_total": 44,
+   "flows_total": 118,
    "translations_total": 28
   }
  },
@@ -274,7 +274,6 @@
    "target": "azurerm",
    "unknowns": [
     "retorno de conexão no destino: UNKNOWN (estado sem evidência)",
-    "retorno de conexão na origem: UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
     "fluxo sem regra no destino: UNKNOWN sem negação explícita",
     "NSG na NIC e na sub-rede com decisões diferentes: UNKNOWN (combinação sem evidência)"
    ]
@@ -293,8 +292,6 @@
     "NETC-T-AWS-GOO-U"
    ],
    "expected_losses": [
-    "LOSS-NET-STATE",
-    "LOSS-NET-DEFAULT",
     "LOSS-NET-UNKNOWN-INPUT"
    ],
    "negatives": [
@@ -306,9 +303,7 @@
    "source": "aws",
    "target": "google",
    "unknowns": [
-    "retorno de conexão no destino: UNKNOWN (estado sem evidência)",
-    "retorno de conexão na origem: UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
-    "fluxo sem regra no destino: UNKNOWN sem negação explícita"
+    "saída sem regra no GCP: a regra implícita permite; sem negação explícita é contraexemplo (não UNKNOWN)"
    ]
   },
   "aws->oci": {
@@ -334,7 +329,6 @@
    "source": "aws",
    "target": "oci",
    "unknowns": [
-    "retorno de conexão na origem: UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
     "security list e NSG no mesmo alvo com decisões diferentes: UNKNOWN (combinação sem evidência)"
    ]
   },
@@ -352,7 +346,6 @@
    ],
    "expected_losses": [
     "LOSS-NET-EFFECT-DENY",
-    "LOSS-NET-STATE",
     "LOSS-NET-SRCPORT",
     "LOSS-NET-UNKNOWN-INPUT"
    ],
@@ -365,8 +358,7 @@
    "source": "azurerm",
    "target": "aws",
    "unknowns": [
-    "retorno de conexão no destino: UNKNOWN (estado sem evidência)",
-    "retorno de conexão na origem: UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
+    "retorno de conexão na origem (NSG Azure): UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
     "fluxo sem regra na origem: UNKNOWN"
    ]
   },
@@ -384,8 +376,6 @@
     "NETC-T-AZU-GOO-U"
    ],
    "expected_losses": [
-    "LOSS-NET-STATE",
-    "LOSS-NET-DEFAULT",
     "LOSS-NET-SRCPORT",
     "LOSS-NET-UNKNOWN-INPUT"
    ],
@@ -398,10 +388,9 @@
    "source": "azurerm",
    "target": "google",
    "unknowns": [
-    "retorno de conexão no destino: UNKNOWN (estado sem evidência)",
-    "retorno de conexão na origem: UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
-    "fluxo sem regra no destino: UNKNOWN sem negação explícita",
-    "fluxo sem regra na origem: UNKNOWN"
+    "retorno de conexão na origem (NSG Azure): UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
+    "fluxo sem regra na origem: UNKNOWN",
+    "saída sem regra no GCP: a regra implícita permite; sem negação explícita é contraexemplo (não UNKNOWN)"
    ]
   },
   "azurerm->oci": {
@@ -429,7 +418,7 @@
    "source": "azurerm",
    "target": "oci",
    "unknowns": [
-    "retorno de conexão na origem: UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
+    "retorno de conexão na origem (NSG Azure): UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
     "fluxo sem regra na origem: UNKNOWN",
     "security list e NSG no mesmo alvo com decisões diferentes: UNKNOWN (combinação sem evidência)"
    ]
@@ -448,7 +437,6 @@
    ],
    "expected_losses": [
     "LOSS-NET-EFFECT-DENY",
-    "LOSS-NET-STATE",
     "LOSS-NET-SELECTOR",
     "LOSS-NET-UNKNOWN-INPUT"
    ],
@@ -460,11 +448,7 @@
    ],
    "source": "google",
    "target": "aws",
-   "unknowns": [
-    "retorno de conexão no destino: UNKNOWN (estado sem evidência)",
-    "retorno de conexão na origem: UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
-    "fluxo sem regra na origem: UNKNOWN"
-   ]
+   "unknowns": []
   },
   "google->azurerm": {
    "acceptable_target": [
@@ -495,9 +479,7 @@
    "target": "azurerm",
    "unknowns": [
     "retorno de conexão no destino: UNKNOWN (estado sem evidência)",
-    "retorno de conexão na origem: UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
     "fluxo sem regra no destino: UNKNOWN sem negação explícita",
-    "fluxo sem regra na origem: UNKNOWN",
     "NSG na NIC e na sub-rede com decisões diferentes: UNKNOWN (combinação sem evidência)"
    ]
   },
@@ -527,8 +509,6 @@
    "source": "google",
    "target": "oci",
    "unknowns": [
-    "retorno de conexão na origem: UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)",
-    "fluxo sem regra na origem: UNKNOWN",
     "security list e NSG no mesmo alvo com decisões diferentes: UNKNOWN (combinação sem evidência)"
    ]
   },
@@ -544,7 +524,6 @@
     "NETC-T-OCI-AWS-U"
    ],
    "expected_losses": [
-    "LOSS-NET-STATE",
     "LOSS-NET-SRCPORT",
     "LOSS-NET-UNKNOWN-INPUT"
    ],
@@ -556,9 +535,7 @@
    ],
    "source": "oci",
    "target": "aws",
-   "unknowns": [
-    "retorno de conexão no destino: UNKNOWN (estado sem evidência)"
-   ]
+   "unknowns": []
   },
   "oci->azurerm": {
    "acceptable_target": [
@@ -606,8 +583,6 @@
     "NETC-T-OCI-GOO-U"
    ],
    "expected_losses": [
-    "LOSS-NET-STATE",
-    "LOSS-NET-DEFAULT",
     "LOSS-NET-SRCPORT",
     "LOSS-NET-UNKNOWN-INPUT"
    ],
@@ -620,8 +595,7 @@
    "source": "oci",
    "target": "google",
    "unknowns": [
-    "retorno de conexão no destino: UNKNOWN (estado sem evidência)",
-    "fluxo sem regra no destino: UNKNOWN sem negação explícita"
+    "saída sem regra no GCP: a regra implícita permite; sem negação explícita é contraexemplo (não UNKNOWN)"
    ]
   }
  },
@@ -1219,8 +1193,8 @@
   "NETC-C02-AWS-RET": {
    "case": "NET-C02",
    "check": {
-    "assertion": "decision(retorno de f1) = UNKNOWN",
-    "kind": "unknown"
+    "assertion": "decision(retorno de f1) = allow (SG com estado, publicado)",
+    "kind": "entails"
    },
    "commitment_ids": [
     "CMT-FW-P02",
@@ -1232,9 +1206,8 @@
      "why": "regra 443 cobre a origem"
     },
     "f1r": {
-     "code": "MISSING_EVIDENCE",
-     "value": "UNKNOWN",
-     "why": "estado de conexão do provedor sem evidência: com estado permite, sem estado nega"
+     "value": "ALLOW",
+     "why": "'Security groups are stateful.' (guia oficial, SE CC-14)"
     },
     "f2": {
      "value": "DENY",
@@ -1303,7 +1276,7 @@
      }
     }
    ],
-   "polarity": "unknown",
+   "polarity": "positive",
    "provider": "aws",
    "validity": {
     "value": "VALID"
@@ -1327,7 +1300,7 @@
     "f1r": {
      "code": "MISSING_EVIDENCE",
      "value": "UNKNOWN",
-     "why": "estado de conexão do provedor sem evidência: com estado permite, sem estado nega"
+     "why": "estado de conexão do NSG Azure sem evidência: com estado permite, sem estado nega"
     },
     "f2": {
      "value": "DENY",
@@ -1434,8 +1407,8 @@
   "NETC-C02-GCP-RET": {
    "case": "NET-C02",
    "check": {
-    "assertion": "decision(retorno de f1) = UNKNOWN",
-    "kind": "unknown"
+    "assertion": "decision(retorno de f1) = allow (firewall com estado, publicado)",
+    "kind": "entails"
    },
    "commitment_ids": [
     "CMT-FW-P02",
@@ -1447,9 +1420,8 @@
      "why": "regra 443 cobre a origem"
     },
     "f1r": {
-     "code": "MISSING_EVIDENCE",
-     "value": "UNKNOWN",
-     "why": "estado de conexão do provedor sem evidência: com estado permite, sem estado nega"
+     "value": "ALLOW",
+     "why": "'VPC firewall rules are stateful' (guia oficial, SE CC-14)"
     },
     "f2": {
      "value": "DENY",
@@ -1591,7 +1563,7 @@
      }
     }
    ],
-   "polarity": "unknown",
+   "polarity": "positive",
    "provider": "google",
    "validity": {
     "value": "VALID"
@@ -2345,7 +2317,7 @@
     "f2r": {
      "code": "MISSING_EVIDENCE",
      "value": "UNKNOWN",
-     "why": "estado de conexão sem evidência"
+     "why": "estado de conexão do NSG Azure sem evidência"
     },
     "f3": {
      "value": "DENY",
@@ -2768,9 +2740,8 @@
      "why": "443 permitido de qualquer origem"
     },
     "f2r": {
-     "code": "MISSING_EVIDENCE",
-     "value": "UNKNOWN",
-     "why": "estado de conexão sem evidência"
+     "value": "ALLOW",
+     "why": "'VPC firewall rules are stateful' (guia oficial, SE CC-14)"
     },
     "f3": {
      "value": "DENY",
@@ -3008,9 +2979,8 @@
      "why": "443 permitido de qualquer origem"
     },
     "f2r": {
-     "code": "MISSING_EVIDENCE",
-     "value": "UNKNOWN",
-     "why": "estado de conexão sem evidência"
+     "value": "ALLOW",
+     "why": "'VPC firewall rules are stateful' (guia oficial, SE CC-14)"
     },
     "f3": {
      "value": "DENY",
@@ -3355,8 +3325,8 @@
   "NETC-C05-AZ-DUP-DIRS": {
    "case": "NET-C05",
    "check": {
-    "assertion": "validade = UNKNOWN ('unique for each rule in the collection')",
-    "kind": "unknown"
+    "assertion": "validade = VALID ('same priority and direction' é o que a guia proíbe)",
+    "kind": "entails"
    },
    "commitment_ids": [
     "CMT-FW-U02"
@@ -3471,11 +3441,133 @@
      }
     }
    ],
+   "polarity": "positive",
+   "provider": "azurerm",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C05-AZ-SYM-PRIO": {
+   "case": "NET-C05",
+   "check": {
+    "assertion": "decision(f1) = UNKNOWN",
+    "kind": "unknown"
+   },
+   "commitment_ids": [
+    "CMT-FW-U02",
+    "CMT-CFG-U01"
+   ],
+   "decisions": {
+    "f1": {
+     "code": "UNKNOWN_SYMBOLIC_INPUT",
+     "value": "UNKNOWN",
+     "why": "a prioridade da negação vem de variável: pode vir antes ou depois de 200"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-zvfleucvpmt7gzna"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "azurerm_network_security_group.web"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-qvepgdtxoh7qzmyl",
+      "SE-azurerm-xexh22d7kybt736y"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "name": "allow-ssh"
+     },
+     "parent": "azurerm_network_security_group.web",
+     "tf": {
+      "block_path": "security_rule",
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-qvepgdtxoh7qzmyl",
+      "SE-azurerm-xexh22d7kybt736y"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "name": "deny-ssh"
+     },
+     "parent": "azurerm_network_security_group.web",
+     "tf": {
+      "block_path": "security_rule",
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-qvepgdtxoh7qzmyl",
+      "SE-azurerm-xexh22d7kybt736y"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "name": "deny-in"
+     },
+     "parent": "azurerm_network_security_group.web",
+     "tf": {
+      "block_path": "security_rule",
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-qvepgdtxoh7qzmyl",
+      "SE-azurerm-xexh22d7kybt736y"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "name": "deny-out"
+     },
+     "parent": "azurerm_network_security_group.web",
+     "tf": {
+      "block_path": "security_rule",
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "attachment",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "set": "azurerm_network_security_group.web",
+      "target": "azurerm_network_interface.nic1"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "azurerm_network_interface_security_group_association"
+     }
+    }
+   ],
    "polarity": "unknown",
    "provider": "azurerm",
    "validity": {
-    "code": "MISSING_EVIDENCE",
-    "value": "UNKNOWN"
+    "value": "VALID"
    }
   },
   "NETC-C05-GCP-TIE": {
@@ -3813,7 +3905,7 @@
     "value": "VALID"
    }
   },
-  "NETC-C06-GCP-INGRESS-NOMATCH": {
+  "NETC-C06-AZ-OUT-ONLY": {
    "case": "NET-C06",
    "check": {
     "assertion": "decision(f1) = UNKNOWN (não ALLOW)",
@@ -3827,7 +3919,81 @@
     "f1": {
      "code": "MISSING_EVIDENCE",
      "value": "UNKNOWN",
-     "why": "nenhuma regra de entrada; regra implícita de entrada só interpretada"
+     "why": "nenhuma regra de entrada; regras padrão do NSG sem evidência"
+    },
+    "f4": {
+     "value": "ALLOW",
+     "why": "saída 443"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-zvfleucvpmt7gzna"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "azurerm_network_security_group.web"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-qvepgdtxoh7qzmyl",
+      "SE-azurerm-xexh22d7kybt736y"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "name": "allow-out"
+     },
+     "parent": "azurerm_network_security_group.web",
+     "tf": {
+      "block_path": "security_rule",
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "attachment",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "set": "azurerm_network_security_group.web",
+      "target": "azurerm_network_interface.nic1"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "azurerm_network_interface_security_group_association"
+     }
+    }
+   ],
+   "polarity": "unknown",
+   "provider": "azurerm",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C06-GCP-INGRESS-NOMATCH": {
+   "case": "NET-C06",
+   "check": {
+    "assertion": "NOT decision(f1) = allow",
+    "kind": "not_entails"
+   },
+   "commitment_ids": [
+    "CMT-FW-N03"
+   ],
+   "decisions": {
+    "f1": {
+     "value": "DENY",
+     "why": "nenhuma regra de entrada; vale a regra implícita de entrada que nega (guia oficial, SE CC-14)"
     },
     "f4": {
      "value": "ALLOW",
@@ -3887,7 +4053,7 @@
      }
     }
    ],
-   "polarity": "unknown",
+   "polarity": "negative",
    "provider": "google",
    "validity": {
     "value": "VALID"
@@ -5312,7 +5478,7 @@
     "value": "VALID"
    }
   },
-  "NETC-C09-GCP-NOMATCH": {
+  "NETC-C09-AZ-NOMATCH": {
    "case": "NET-C09",
    "check": {
     "assertion": "decision(f2) = UNKNOWN AND decision(f4) = UNKNOWN",
@@ -5325,12 +5491,86 @@
     "f2": {
      "code": "MISSING_EVIDENCE",
      "value": "UNKNOWN",
-     "why": "regra implícita de entrada só interpretada (SE-google-yz5xmhx36uyxkd2x)"
+     "why": "sem regra que case; regras padrão do NSG sem evidência"
     },
     "f4": {
      "code": "MISSING_EVIDENCE",
      "value": "UNKNOWN",
-     "why": "regra implícita de saída só interpretada"
+     "why": "sem regra de saída; padrão sem evidência"
+    }
+   },
+   "decomposition": [
+    {
+     "domain_unit": "rule_set",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-zvfleucvpmt7gzna"
+     ],
+     "kind": "ENTITY",
+     "occurrence": {
+      "set": "azurerm_network_security_group.web"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "filter_rule",
+     "evidence": [
+      "C24:CMT-FW-P01",
+      "SE-azurerm-qvepgdtxoh7qzmyl",
+      "SE-azurerm-xexh22d7kybt736y"
+     ],
+     "kind": "COMPONENT",
+     "occurrence": {
+      "name": "allow-web"
+     },
+     "parent": "azurerm_network_security_group.web",
+     "tf": {
+      "block_path": "security_rule",
+      "resource_type": "azurerm_network_security_group"
+     }
+    },
+    {
+     "domain_unit": "attachment",
+     "evidence": [
+      "C24:CMT-FW-P05"
+     ],
+     "kind": "BINDING",
+     "occurrence": {
+      "set": "azurerm_network_security_group.web",
+      "target": "azurerm_network_interface.nic1"
+     },
+     "parent": null,
+     "tf": {
+      "resource_type": "azurerm_network_interface_security_group_association"
+     }
+    }
+   ],
+   "polarity": "unknown",
+   "provider": "azurerm",
+   "validity": {
+    "value": "VALID"
+   }
+  },
+  "NETC-C09-GCP-NOMATCH": {
+   "case": "NET-C09",
+   "check": {
+    "assertion": "decision(f2) = deny AND decision(f4) = allow",
+    "kind": "entails"
+   },
+   "commitment_ids": [
+    "CMT-FW-U01"
+   ],
+   "decisions": {
+    "f2": {
+     "value": "DENY",
+     "why": "regra implícita de entrada nega (guia oficial, SE-google-q7fxffs3brh35x6f)"
+    },
+    "f4": {
+     "value": "ALLOW",
+     "why": "regra implícita de saída permite (guia oficial, SE-google-lczae72rfhtxc6ad)"
     }
    },
    "decomposition": [
@@ -5386,7 +5626,7 @@
      }
     }
    ],
-   "polarity": "unknown",
+   "polarity": "positive",
    "provider": "google",
    "validity": {
     "value": "VALID"
@@ -5468,10 +5708,10 @@
   }
  },
  "inputs_sha256": {
-  "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl": "0b5bdd079c88ae3d02f866623f7903d6d0cb6c8251d553aa72efe2decfb61123",
+  "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl": "2994da012fbc9296a31fd2e82d8e55cd7dd274c8be74c24634681412effe07f1",
   "requirements/commitments.jsonl": "038f73fcebedfbf3b5ff3d23b1ff0758a87e8be2616b141b232628e1a64d1438",
-  "results/SERVICE-EVIDENCE/spec_disputes.json": "513ba2fa2e11cb1d460e8cdeaa88223688159c25868511b5c3a1f9aada5f340b",
-  "semantics/SEMANTICS.html": "043777b7eb8a4362f267d5b563083d1e01f2811cb9a74de2377ae986252a2993"
+  "results/SERVICE-EVIDENCE/spec_disputes.json": "f566517949c9fdd4c1ccf88917ad48e4d09be8ccd748fc65b849a05770277198",
+  "semantics/SEMANTICS.html": "e87837dd98dbde50a3d4cf5a418b793eea2131d97b4259c35fe9ec76be9f1640"
  },
  "mandatory_cases": {
   "NET-C01": {
@@ -5510,12 +5750,12 @@
      "NETC-C02-OCI-STATELESS"
     ],
     "positive": [
+     "NETC-C02-AWS-RET",
+     "NETC-C02-GCP-RET",
      "NETC-C02-OCI-STATEFUL"
     ],
     "unknown": [
-     "NETC-C02-AWS-RET",
-     "NETC-C02-AZ-RET",
-     "NETC-C02-GCP-RET"
+     "NETC-C02-AZ-RET"
     ]
    },
    "commitments": [
@@ -5531,8 +5771,8 @@
    ],
    "retained": {
     "negative": 1,
-    "positive": 1,
-    "unknown": 2
+    "positive": 3,
+    "unknown": 1
    }
   },
   "NET-C03": {
@@ -5602,10 +5842,11 @@
      "NETC-C05-AZ-DUP"
     ],
     "positive": [
+     "NETC-C05-AZ-DUP-DIRS",
      "NETC-C05-GCP-TIE"
     ],
     "unknown": [
-     "NETC-C05-AZ-DUP-DIRS"
+     "NETC-C05-AZ-SYM-PRIO"
     ]
    },
    "commitments": [
@@ -5619,7 +5860,7 @@
    ],
    "retained": {
     "negative": 1,
-    "positive": 1,
+    "positive": 2,
     "unknown": 1
    }
   },
@@ -5627,13 +5868,14 @@
    "calib": {
     "negative": [
      "NETC-C06-AWS-INGRESS-NEW",
+     "NETC-C06-GCP-INGRESS-NOMATCH",
      "NETC-C06-OCI-INGRESS-NEW"
     ],
     "positive": [
      "NETC-C06-AWS-EGRESS"
     ],
     "unknown": [
-     "NETC-C06-GCP-INGRESS-NOMATCH"
+     "NETC-C06-AZ-OUT-ONLY"
     ]
    },
    "commitments": [
@@ -5715,10 +5957,11 @@
     ],
     "positive": [
      "NETC-C09-AWS-NOMATCH",
+     "NETC-C09-GCP-NOMATCH",
      "NETC-C09-OCI-NOMATCH"
     ],
     "unknown": [
-     "NETC-C09-GCP-NOMATCH"
+     "NETC-C09-AZ-NOMATCH"
     ]
    },
    "commitments": [
@@ -5732,9 +5975,9 @@
     "REQ-LOSS-01"
    ],
    "retained": {
-    "negative": 1,
+    "negative": 2,
     "positive": 1,
-    "unknown": 2
+    "unknown": 1
    }
   },
   "NET-C10": {
@@ -5853,8 +6096,8 @@
      "target": "ALLOW"
     },
     "f1r": {
-     "result": "equal",
-     "source": "UNKNOWN",
+     "result": "silent_loss",
+     "source": "ALLOW",
      "target": "UNKNOWN"
     },
     "f2": {
@@ -5902,11 +6145,18 @@
      "pair": "AWSAZ"
     }
    },
-   "declared_losses": [],
+   "declared_losses": [
+    {
+     "flows": [
+      "f1r"
+     ],
+     "loss_id": "LOSS-NET-STATE"
+    }
+   ],
    "direction": "aws->azurerm",
    "expected": {
-    "verdict": "ACCEPT",
-    "why": "decisões iguais em todos os fluxos"
+    "verdict": "ACCEPT_WITH_DECLARED_LOSS",
+    "why": "retorno permitido na origem fica UNKNOWN no NSG Azure: declarado"
    },
    "per_flow": {
     "f1": {
@@ -5915,8 +6165,8 @@
      "target": "ALLOW"
     },
     "f1r": {
-     "result": "equal",
-     "source": "UNKNOWN",
+     "result": "covered",
+     "source": "ALLOW",
      "target": "UNKNOWN"
     },
     "f2": {
@@ -5972,6 +6222,12 @@
       "f4"
      ],
      "loss_id": "LOSS-NET-DEFAULT"
+    },
+    {
+     "flows": [
+      "f1r"
+     ],
+     "loss_id": "LOSS-NET-STATE"
     }
    ],
    "direction": "aws->azurerm",
@@ -5979,10 +6235,11 @@
     "covered": [
      "f2",
      "f3",
-     "f4"
+     "f4",
+     "f1r"
     ],
     "verdict": "ACCEPT_WITH_DECLARED_LOSS",
-    "why": "sem negação explícita o destino fica UNKNOWN em f2, f3 e f4; a perda está declarada"
+    "why": "sem negação explícita o NSG fica UNKNOWN em f2, f3 e f4; a perda está declarada"
    },
    "per_flow": {
     "f1": {
@@ -5991,8 +6248,8 @@
      "target": "ALLOW"
     },
     "f1r": {
-     "result": "equal",
-     "source": "UNKNOWN",
+     "result": "covered",
+     "source": "ALLOW",
      "target": "UNKNOWN"
     },
     "f2": {
@@ -6057,8 +6314,8 @@
     },
     "f1r": {
      "result": "equal",
-     "source": "UNKNOWN",
-     "target": "UNKNOWN"
+     "source": "ALLOW",
+     "target": "ALLOW"
     },
     "f2": {
      "result": "equal",
@@ -6109,7 +6366,7 @@
    "direction": "aws->google",
    "expected": {
     "verdict": "ACCEPT",
-    "why": "decisões iguais em todos os fluxos"
+    "why": "decisões iguais em todos os fluxos (retorno com estado dos dois lados)"
    },
    "per_flow": {
     "f1": {
@@ -6119,8 +6376,8 @@
     },
     "f1r": {
      "result": "equal",
-     "source": "UNKNOWN",
-     "target": "UNKNOWN"
+     "source": "ALLOW",
+     "target": "ALLOW"
     },
     "f2": {
      "result": "equal",
@@ -6167,51 +6424,42 @@
      "pair": "AWSGCP"
     }
    },
-   "declared_losses": [
-    {
-     "flows": [
-      "f2",
-      "f3",
-      "f4"
-     ],
-     "loss_id": "LOSS-NET-DEFAULT"
-    }
-   ],
+   "declared_losses": [],
    "direction": "aws->google",
    "expected": {
-    "covered": [
-     "f2",
+    "silent_losses": [
+     "f1",
      "f3",
-     "f4"
+     "f1r"
     ],
-    "verdict": "ACCEPT_WITH_DECLARED_LOSS",
-    "why": "sem negação explícita o destino fica UNKNOWN em f2, f3 e f4; a perda está declarada"
+    "verdict": "REJECT",
+    "why": "CIDR simbólico inventado no destino: decisões definidas viram UNKNOWN sem perda declarável"
    },
    "per_flow": {
     "f1": {
-     "result": "equal",
+     "result": "silent_loss",
      "source": "ALLOW",
-     "target": "ALLOW"
+     "target": "UNKNOWN"
     },
     "f1r": {
-     "result": "equal",
-     "source": "UNKNOWN",
+     "result": "silent_loss",
+     "source": "ALLOW",
      "target": "UNKNOWN"
     },
     "f2": {
-     "result": "covered",
+     "result": "equal",
      "source": "DENY",
-     "target": "UNKNOWN"
+     "target": "DENY"
     },
     "f3": {
-     "result": "covered",
+     "result": "silent_loss",
      "source": "DENY",
      "target": "UNKNOWN"
     },
     "f4": {
-     "result": "covered",
+     "result": "equal",
      "source": "DENY",
-     "target": "UNKNOWN"
+     "target": "DENY"
     }
    },
    "polarity": "unknown",
@@ -6259,8 +6507,8 @@
      "target": "ALLOW"
     },
     "f1r": {
-     "result": "undetermined",
-     "source": "UNKNOWN",
+     "result": "equal",
+     "source": "ALLOW",
      "target": "ALLOW"
     },
     "f2": {
@@ -6308,18 +6556,11 @@
      "pair": "AWSOCI"
     }
    },
-   "declared_losses": [
-    {
-     "flows": [
-      "f1r"
-     ],
-     "loss_id": "LOSS-NET-UNKNOWN-INPUT"
-    }
-   ],
+   "declared_losses": [],
    "direction": "aws->oci",
    "expected": {
-    "verdict": "ACCEPT_WITH_DECLARED_LOSS",
-    "why": "retorno UNKNOWN na origem vira com estado no destino: declarado"
+    "verdict": "ACCEPT",
+    "why": "decisões iguais em todos os fluxos (retorno com estado dos dois lados)"
    },
    "per_flow": {
     "f1": {
@@ -6328,8 +6569,8 @@
      "target": "ALLOW"
     },
     "f1r": {
-     "result": "covered",
-     "source": "UNKNOWN",
+     "result": "equal",
+     "source": "ALLOW",
      "target": "ALLOW"
     },
     "f2": {
@@ -6382,7 +6623,8 @@
    "expected": {
     "silent_losses": [
      "f1",
-     "f3"
+     "f3",
+     "f1r"
     ],
     "verdict": "REJECT",
     "why": "CIDR simbólico inventado no destino: decisões definidas viram UNKNOWN sem perda declarável"
@@ -6394,8 +6636,8 @@
      "target": "UNKNOWN"
     },
     "f1r": {
-     "result": "equal",
-     "source": "UNKNOWN",
+     "result": "silent_loss",
+     "source": "ALLOW",
      "target": "UNKNOWN"
     },
     "f2": {
@@ -6471,9 +6713,9 @@
      "target": "ALLOW"
     },
     "f2r": {
-     "result": "equal",
+     "result": "undetermined",
      "source": "UNKNOWN",
-     "target": "UNKNOWN"
+     "target": "ALLOW"
     },
     "f3": {
      "result": "equal",
@@ -6519,12 +6761,18 @@
     {
      "flows": [],
      "loss_id": "LOSS-NET-EFFECT-DENY"
+    },
+    {
+     "flows": [
+      "f2r"
+     ],
+     "loss_id": "LOSS-NET-UNKNOWN-INPUT"
     }
    ],
    "direction": "azurerm->aws",
    "expected": {
-    "verdict": "ACCEPT",
-    "why": "conjunto efetivo (443 de qualquer origem) sem a negação: decisões iguais"
+    "verdict": "ACCEPT_WITH_DECLARED_LOSS",
+    "why": "conjunto efetivo (443 de qualquer origem) sem a negação: decisões iguais; retorno UNKNOWN no Azure declarado"
    },
    "per_flow": {
     "f1": {
@@ -6538,9 +6786,9 @@
      "target": "ALLOW"
     },
     "f2r": {
-     "result": "equal",
+     "result": "covered",
      "source": "UNKNOWN",
-     "target": "UNKNOWN"
+     "target": "ALLOW"
     },
     "f3": {
      "result": "equal",
@@ -6664,9 +6912,9 @@
      "target": "ALLOW"
     },
     "f1r": {
-     "result": "equal",
+     "result": "undetermined",
      "source": "UNKNOWN",
-     "target": "UNKNOWN"
+     "target": "ALLOW"
     },
     "f2": {
      "result": "equal",
@@ -6713,11 +6961,18 @@
      "pair": "GCPAZ"
     }
    },
-   "declared_losses": [],
+   "declared_losses": [
+    {
+     "flows": [
+      "f1r"
+     ],
+     "loss_id": "LOSS-NET-UNKNOWN-INPUT"
+    }
+   ],
    "direction": "azurerm->google",
    "expected": {
-    "verdict": "ACCEPT",
-    "why": "decisões iguais em todos os fluxos"
+    "verdict": "ACCEPT_WITH_DECLARED_LOSS",
+    "why": "retorno UNKNOWN no Azure vira com estado no destino: declarado"
    },
    "per_flow": {
     "f1": {
@@ -6726,9 +6981,9 @@
      "target": "ALLOW"
     },
     "f1r": {
-     "result": "equal",
+     "result": "covered",
      "source": "UNKNOWN",
-     "target": "UNKNOWN"
+     "target": "ALLOW"
     },
     "f2": {
      "result": "equal",
@@ -6775,31 +7030,21 @@
      "pair": "GCPAZ"
     }
    },
-   "declared_losses": [
-    {
-     "flows": [
-      "f2",
-      "f3",
-      "f4"
-     ],
-     "loss_id": "LOSS-NET-DEFAULT"
-    }
-   ],
+   "declared_losses": [],
    "direction": "azurerm->google",
    "expected": {
-    "covered": [
-     "f2",
-     "f3",
-     "f4"
+    "silent_losses": [
+     "f1",
+     "f3"
     ],
-    "verdict": "ACCEPT_WITH_DECLARED_LOSS",
-    "why": "sem negação explícita o destino fica UNKNOWN em f2, f3 e f4; a perda está declarada"
+    "verdict": "REJECT",
+    "why": "CIDR simbólico inventado no destino: decisões definidas viram UNKNOWN sem perda declarável"
    },
    "per_flow": {
     "f1": {
-     "result": "equal",
+     "result": "silent_loss",
      "source": "ALLOW",
-     "target": "ALLOW"
+     "target": "UNKNOWN"
     },
     "f1r": {
      "result": "equal",
@@ -6807,19 +7052,19 @@
      "target": "UNKNOWN"
     },
     "f2": {
-     "result": "covered",
+     "result": "equal",
      "source": "DENY",
-     "target": "UNKNOWN"
+     "target": "DENY"
     },
     "f3": {
-     "result": "covered",
+     "result": "silent_loss",
      "source": "DENY",
      "target": "UNKNOWN"
     },
     "f4": {
-     "result": "covered",
+     "result": "equal",
      "source": "DENY",
-     "target": "UNKNOWN"
+     "target": "DENY"
     }
    },
    "polarity": "unknown",
@@ -6938,7 +7183,7 @@
    "direction": "azurerm->oci",
    "expected": {
     "verdict": "ACCEPT_WITH_DECLARED_LOSS",
-    "why": "conjunto efetivo (443 de qualquer origem) sem a negação: decisões iguais; retorno UNKNOWN na origem declarado"
+    "why": "conjunto efetivo (443 de qualquer origem) sem a negação: decisões iguais; retorno UNKNOWN no Azure declarado"
    },
    "per_flow": {
     "f1": {
@@ -7091,8 +7336,8 @@
     },
     "f2r": {
      "result": "equal",
-     "source": "UNKNOWN",
-     "target": "UNKNOWN"
+     "source": "ALLOW",
+     "target": "ALLOW"
     },
     "f3": {
      "result": "equal",
@@ -7158,8 +7403,8 @@
     },
     "f2r": {
      "result": "equal",
-     "source": "UNKNOWN",
-     "target": "UNKNOWN"
+     "source": "ALLOW",
+     "target": "ALLOW"
     },
     "f3": {
      "result": "equal",
@@ -7206,7 +7451,8 @@
    "expected": {
     "silent_losses": [
      "f1",
-     "f3"
+     "f3",
+     "f1r"
     ],
     "verdict": "REJECT",
     "why": "CIDR simbólico inventado no destino: decisões definidas viram UNKNOWN sem perda declarável"
@@ -7218,8 +7464,8 @@
      "target": "UNKNOWN"
     },
     "f1r": {
-     "result": "equal",
-     "source": "UNKNOWN",
+     "result": "silent_loss",
+     "source": "ALLOW",
      "target": "UNKNOWN"
     },
     "f2": {
@@ -7283,8 +7529,8 @@
      "target": "ALLOW"
     },
     "f1r": {
-     "result": "equal",
-     "source": "UNKNOWN",
+     "result": "silent_loss",
+     "source": "ALLOW",
      "target": "UNKNOWN"
     },
     "f2": {
@@ -7332,11 +7578,18 @@
      "pair": "GCPAZ"
     }
    },
-   "declared_losses": [],
+   "declared_losses": [
+    {
+     "flows": [
+      "f1r"
+     ],
+     "loss_id": "LOSS-NET-STATE"
+    }
+   ],
    "direction": "google->azurerm",
    "expected": {
-    "verdict": "ACCEPT",
-    "why": "decisões iguais em todos os fluxos"
+    "verdict": "ACCEPT_WITH_DECLARED_LOSS",
+    "why": "retorno permitido na origem fica UNKNOWN no NSG Azure: declarado"
    },
    "per_flow": {
     "f1": {
@@ -7345,8 +7598,8 @@
      "target": "ALLOW"
     },
     "f1r": {
-     "result": "equal",
-     "source": "UNKNOWN",
+     "result": "covered",
+     "source": "ALLOW",
      "target": "UNKNOWN"
     },
     "f2": {
@@ -7402,6 +7655,12 @@
       "f4"
      ],
      "loss_id": "LOSS-NET-DEFAULT"
+    },
+    {
+     "flows": [
+      "f1r"
+     ],
+     "loss_id": "LOSS-NET-STATE"
     }
    ],
    "direction": "google->azurerm",
@@ -7409,10 +7668,11 @@
     "covered": [
      "f2",
      "f3",
-     "f4"
+     "f4",
+     "f1r"
     ],
     "verdict": "ACCEPT_WITH_DECLARED_LOSS",
-    "why": "sem negação explícita o destino fica UNKNOWN em f2, f3 e f4; a perda está declarada"
+    "why": "sem negação explícita o NSG fica UNKNOWN em f2, f3 e f4; a perda está declarada"
    },
    "per_flow": {
     "f1": {
@@ -7421,8 +7681,8 @@
      "target": "ALLOW"
     },
     "f1r": {
-     "result": "equal",
-     "source": "UNKNOWN",
+     "result": "covered",
+     "source": "ALLOW",
      "target": "UNKNOWN"
     },
     "f2": {
@@ -7498,8 +7758,8 @@
      "target": "ALLOW"
     },
     "f2r": {
-     "result": "undetermined",
-     "source": "UNKNOWN",
+     "result": "equal",
+     "source": "ALLOW",
      "target": "ALLOW"
     },
     "f3": {
@@ -7546,18 +7806,12 @@
     {
      "flows": [],
      "loss_id": "LOSS-NET-EFFECT-DENY"
-    },
-    {
-     "flows": [
-      "f2r"
-     ],
-     "loss_id": "LOSS-NET-UNKNOWN-INPUT"
     }
    ],
    "direction": "google->oci",
    "expected": {
-    "verdict": "ACCEPT_WITH_DECLARED_LOSS",
-    "why": "conjunto efetivo (443 de qualquer origem) sem a negação: decisões iguais; retorno UNKNOWN na origem declarado"
+    "verdict": "ACCEPT",
+    "why": "conjunto efetivo (443 de qualquer origem) sem a negação: decisões iguais"
    },
    "per_flow": {
     "f1": {
@@ -7571,8 +7825,8 @@
      "target": "ALLOW"
     },
     "f2r": {
-     "result": "covered",
-     "source": "UNKNOWN",
+     "result": "equal",
+     "source": "ALLOW",
      "target": "ALLOW"
     },
     "f3": {
@@ -7620,7 +7874,8 @@
    "expected": {
     "silent_losses": [
      "f1",
-     "f3"
+     "f3",
+     "f1r"
     ],
     "verdict": "REJECT",
     "why": "CIDR simbólico inventado no destino: decisões definidas viram UNKNOWN sem perda declarável"
@@ -7632,8 +7887,8 @@
      "target": "UNKNOWN"
     },
     "f1r": {
-     "result": "equal",
-     "source": "UNKNOWN",
+     "result": "silent_loss",
+     "source": "ALLOW",
      "target": "UNKNOWN"
     },
     "f2": {
@@ -7697,9 +7952,9 @@
      "target": "ALLOW"
     },
     "f1r": {
-     "result": "silent_loss",
+     "result": "equal",
      "source": "ALLOW",
-     "target": "UNKNOWN"
+     "target": "ALLOW"
     },
     "f2": {
      "result": "equal",
@@ -7746,18 +8001,11 @@
      "pair": "AWSOCI"
     }
    },
-   "declared_losses": [
-    {
-     "flows": [
-      "f1r"
-     ],
-     "loss_id": "LOSS-NET-STATE"
-    }
-   ],
+   "declared_losses": [],
    "direction": "oci->aws",
    "expected": {
-    "verdict": "ACCEPT_WITH_DECLARED_LOSS",
-    "why": "retorno permitido na origem fica UNKNOWN no destino: declarado"
+    "verdict": "ACCEPT",
+    "why": "decisões iguais em todos os fluxos (retorno com estado dos dois lados)"
    },
    "per_flow": {
     "f1": {
@@ -7766,9 +8014,9 @@
      "target": "ALLOW"
     },
     "f1r": {
-     "result": "covered",
+     "result": "equal",
      "source": "ALLOW",
-     "target": "UNKNOWN"
+     "target": "ALLOW"
     },
     "f2": {
      "result": "equal",
@@ -7958,7 +8206,7 @@
    "direction": "oci->azurerm",
    "expected": {
     "verdict": "ACCEPT_WITH_DECLARED_LOSS",
-    "why": "retorno permitido na origem fica UNKNOWN no destino: declarado"
+    "why": "retorno permitido na origem fica UNKNOWN no NSG Azure: declarado"
    },
    "per_flow": {
     "f1": {
@@ -8041,7 +8289,7 @@
      "f1r"
     ],
     "verdict": "ACCEPT_WITH_DECLARED_LOSS",
-    "why": "sem negação explícita o destino fica UNKNOWN em f2, f3 e f4; a perda está declarada"
+    "why": "sem negação explícita o NSG fica UNKNOWN em f2, f3 e f4; a perda está declarada"
    },
    "per_flow": {
     "f1": {
@@ -8115,9 +8363,9 @@
      "target": "ALLOW"
     },
     "f1r": {
-     "result": "silent_loss",
+     "result": "equal",
      "source": "ALLOW",
-     "target": "UNKNOWN"
+     "target": "ALLOW"
     },
     "f2": {
      "result": "equal",
@@ -8164,18 +8412,11 @@
      "pair": "GCPOCI"
     }
    },
-   "declared_losses": [
-    {
-     "flows": [
-      "f1r"
-     ],
-     "loss_id": "LOSS-NET-STATE"
-    }
-   ],
+   "declared_losses": [],
    "direction": "oci->google",
    "expected": {
-    "verdict": "ACCEPT_WITH_DECLARED_LOSS",
-    "why": "retorno permitido na origem fica UNKNOWN no destino: declarado"
+    "verdict": "ACCEPT",
+    "why": "decisões iguais em todos os fluxos (retorno com estado dos dois lados)"
    },
    "per_flow": {
     "f1": {
@@ -8184,9 +8425,9 @@
      "target": "ALLOW"
     },
     "f1r": {
-     "result": "covered",
+     "result": "equal",
      "source": "ALLOW",
-     "target": "UNKNOWN"
+     "target": "ALLOW"
     },
     "f2": {
      "result": "equal",
@@ -8233,58 +8474,42 @@
      "pair": "GCPOCI"
     }
    },
-   "declared_losses": [
-    {
-     "flows": [
-      "f2",
-      "f3",
-      "f4"
-     ],
-     "loss_id": "LOSS-NET-DEFAULT"
-    },
-    {
-     "flows": [
-      "f1r"
-     ],
-     "loss_id": "LOSS-NET-STATE"
-    }
-   ],
+   "declared_losses": [],
    "direction": "oci->google",
    "expected": {
-    "covered": [
-     "f2",
+    "silent_losses": [
+     "f1",
      "f3",
-     "f4",
      "f1r"
     ],
-    "verdict": "ACCEPT_WITH_DECLARED_LOSS",
-    "why": "sem negação explícita o destino fica UNKNOWN em f2, f3 e f4; a perda está declarada"
+    "verdict": "REJECT",
+    "why": "CIDR simbólico inventado no destino: decisões definidas viram UNKNOWN sem perda declarável"
    },
    "per_flow": {
     "f1": {
-     "result": "equal",
+     "result": "silent_loss",
      "source": "ALLOW",
-     "target": "ALLOW"
+     "target": "UNKNOWN"
     },
     "f1r": {
-     "result": "covered",
+     "result": "silent_loss",
      "source": "ALLOW",
      "target": "UNKNOWN"
     },
     "f2": {
-     "result": "covered",
+     "result": "equal",
      "source": "DENY",
-     "target": "UNKNOWN"
+     "target": "DENY"
     },
     "f3": {
-     "result": "covered",
+     "result": "silent_loss",
      "source": "DENY",
      "target": "UNKNOWN"
     },
     "f4": {
-     "result": "covered",
+     "result": "equal",
      "source": "DENY",
-     "target": "UNKNOWN"
+     "target": "DENY"
     }
    },
    "polarity": "unknown",

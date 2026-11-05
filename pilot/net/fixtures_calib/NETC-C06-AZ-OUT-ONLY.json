@@ -1,0 +1,175 @@
+{
+ "case": "NET-C06",
+ "check": {
+  "assertion": "decision(f1) = UNKNOWN (não ALLOW)",
+  "kind": "unknown"
+ },
+ "commitment_ids": [
+  "CMT-FW-N03",
+  "CMT-FW-U01"
+ ],
+ "config": {
+  "resources": [
+   {
+    "name": "web",
+    "type": "azurerm_network_security_group",
+    "values": {
+     "location": "fixture",
+     "name": "fx-web",
+     "resource_group_name": "fx-rg",
+     "security_rule": [
+      {
+       "access": "Allow",
+       "destination_address_prefix": "*",
+       "destination_port_range": "443",
+       "direction": "Outbound",
+       "name": "allow-out",
+       "priority": 100,
+       "protocol": "Tcp",
+       "source_address_prefix": "*",
+       "source_port_range": "*"
+      }
+     ]
+    }
+   },
+   {
+    "name": "sa",
+    "type": "azurerm_subnet",
+    "values": {
+     "name": "fx-sa"
+    }
+   },
+   {
+    "name": "nic1",
+    "type": "azurerm_network_interface",
+    "values": {
+     "ip_configuration": [
+      {
+       "name": "ipc",
+       "subnet_id": "ref:azurerm_subnet.sa"
+      }
+     ]
+    }
+   },
+   {
+    "name": "vm1",
+    "type": "azurerm_linux_virtual_machine",
+    "values": {
+     "network_interface_ids": [
+      "ref:azurerm_network_interface.nic1"
+     ]
+    }
+   },
+   {
+    "name": "nic_web",
+    "type": "azurerm_network_interface_security_group_association",
+    "values": {
+     "network_interface_id": "ref:azurerm_network_interface.nic1",
+     "network_security_group_id": "ref:azurerm_network_security_group.web"
+    }
+   }
+  ]
+ },
+ "expected": {
+  "decisions": {
+   "f1": {
+    "code": "MISSING_EVIDENCE",
+    "value": "UNKNOWN",
+    "why": "nenhuma regra de entrada; regras padrão do NSG sem evidência"
+   },
+   "f4": {
+    "value": "ALLOW",
+    "why": "saída 443"
+   }
+  },
+  "decomposition": [
+   {
+    "domain_unit": "rule_set",
+    "evidence": [
+     "C24:CMT-FW-P01",
+     "SE-azurerm-zvfleucvpmt7gzna"
+    ],
+    "kind": "ENTITY",
+    "occurrence": {
+     "set": "azurerm_network_security_group.web"
+    },
+    "parent": null,
+    "tf": {
+     "resource_type": "azurerm_network_security_group"
+    }
+   },
+   {
+    "domain_unit": "filter_rule",
+    "evidence": [
+     "C24:CMT-FW-P01",
+     "SE-azurerm-qvepgdtxoh7qzmyl",
+     "SE-azurerm-xexh22d7kybt736y"
+    ],
+    "kind": "COMPONENT",
+    "occurrence": {
+     "name": "allow-out"
+    },
+    "parent": "azurerm_network_security_group.web",
+    "tf": {
+     "block_path": "security_rule",
+     "resource_type": "azurerm_network_security_group"
+    }
+   },
+   {
+    "domain_unit": "attachment",
+    "evidence": [
+     "C24:CMT-FW-P05"
+    ],
+    "kind": "BINDING",
+    "occurrence": {
+     "set": "azurerm_network_security_group.web",
+     "target": "azurerm_network_interface.nic1"
+    },
+    "parent": null,
+    "tf": {
+     "resource_type": "azurerm_network_interface_security_group_association"
+    }
+   }
+  ],
+  "validity": {
+   "value": "VALID"
+  }
+ },
+ "fixture_id": "NETC-C06-AZ-OUT-ONLY",
+ "flows": [
+  {
+   "direction": "ingress",
+   "flow_id": "f1",
+   "port": 443,
+   "protocol": "tcp",
+   "remote": "198.51.100.7",
+   "state": "new",
+   "target": "vm1"
+  },
+  {
+   "direction": "egress",
+   "flow_id": "f4",
+   "port": 443,
+   "protocol": "tcp",
+   "remote": "198.51.100.7",
+   "state": "new",
+   "target": "vm1"
+  }
+ ],
+ "polarity": "unknown",
+ "provider": "azurerm",
+ "read": {
+  "completeness": "complete",
+  "not_read": [],
+  "withheld": []
+ },
+ "schema": "bo.pilot_net.fixture/1",
+ "split": "calib",
+ "summary": "NSG só de saída, sem negação explícita",
+ "targets": {
+  "vm1": {
+   "ip": "10.0.1.10",
+   "ref": "azurerm_linux_virtual_machine.vm1"
+  }
+ }
+}

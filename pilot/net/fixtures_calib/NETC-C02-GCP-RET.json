@@ -1,8 +1,8 @@
 {
  "case": "NET-C02",
  "check": {
-  "assertion": "decision(retorno de f1) = UNKNOWN",
-  "kind": "unknown"
+  "assertion": "decision(retorno de f1) = allow (firewall com estado, publicado)",
+  "kind": "entails"
  },
  "commitment_ids": [
   "CMT-FW-P02",
@@ -107,9 +107,8 @@
     "why": "regra 443 cobre a origem"
    },
    "f1r": {
-    "code": "MISSING_EVIDENCE",
-    "value": "UNKNOWN",
-    "why": "estado de conexão do provedor sem evidência: com estado permite, sem estado nega"
+    "value": "ALLOW",
+    "why": "'VPC firewall rules are stateful' (guia oficial, SE CC-14)"
    },
    "f2": {
     "value": "DENY",
@@ -301,7 +300,7 @@
    "target": "vm1"
   }
  ],
- "polarity": "unknown",
+ "polarity": "positive",
  "provider": "google",
  "read": {
   "completeness": "complete",

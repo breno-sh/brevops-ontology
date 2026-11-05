@@ -195,7 +195,7 @@ def _gcp(fx, net, res, nr):
         for i, (eff, b) in enumerate(blocks):
             pos += 1
             proto = _proto_num(b.get("protocol"))
-            ports = None if proto not in ("tcp", "udp") else parse_ports(b.get("ports")) if b.get("ports") else None
+            ports = None if proto not in ("tcp", "udp") else parse_ports([_v(x) for x in b["ports"]]) if b.get("ports") else None
             rid = f"{addr}.{eff}[{i}]"
             net.sets[sid].rules.append(Rule(rid, sid, d, proto, remote, dst_ports=ports, local=local, effect=eff,
                                             priority=pri, text_position=pos, origin=addr, inline=False, selector=sel))
@@ -242,8 +242,10 @@ def _az_rule(b, sid, rid, pos, inline):
     d = _AZ_DIR.get(str(b.get("direction", "")).lower(), Symbolic(f"{rid}.direction"))
     src = _az_prefixes(b.get("source_address_prefix"), b.get("source_address_prefixes"))
     dst = _az_prefixes(b.get("destination_address_prefix"), b.get("destination_address_prefixes"))
-    sp = parse_ports(b.get("source_port_ranges") or b.get("source_port_range"))
-    dp = parse_ports(b.get("destination_port_ranges") or b.get("destination_port_range"))
+    def _pp(x):
+        return parse_ports([_v(i) for i in x] if isinstance(x, list) else _v(x))
+    sp = _pp(b.get("source_port_ranges") or b.get("source_port_range"))
+    dp = _pp(b.get("destination_port_ranges") or b.get("destination_port_range"))
     remote, local = (src, dst) if d == "ingress" else (dst, src)
     local = None if local == ["0.0.0.0/0"] else local
     return Rule(rid, sid, d, _proto_num(b.get("protocol")), remote, dst_ports=dp, src_ports=sp, local=local,
@@ -288,7 +290,12 @@ def _azure(fx, net, res, nr):
                     if other_dir == ru.direction:
                         net.validity.append(("INVALID", "INCONSISTENT", f"{ru.rule_id} e {other}: prioridade {p} repetida na mesma direção"))
                     else:
-                        net.validity.append(("UNKNOWN", "MISSING_EVIDENCE", f"{ru.rule_id} e {other}: prioridade {p} repetida em direções diferentes ('collection' ambíguo)"))
+                        from .semantics import param
+                        uq = param("azurerm", "priority.unique")
+                        if not uq.known:
+                            net.validity.append(("UNKNOWN", "MISSING_EVIDENCE", f"{ru.rule_id} e {other}: prioridade {p} repetida em direções diferentes (unicidade sem evidência)"))
+                        elif uq.value != "direction":
+                            net.validity.append(("INVALID", "INCONSISTENT", f"{ru.rule_id} e {other}: prioridade {p} repetida no NSG"))
                 seen.setdefault(p, []).append((ru.direction, ru.rule_id))
 
 

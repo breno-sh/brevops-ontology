@@ -101,7 +101,7 @@
    "f1r": {
     "code": "MISSING_EVIDENCE",
     "value": "UNKNOWN",
-    "why": "estado de conexão do provedor sem evidência: com estado permite, sem estado nega"
+    "why": "estado de conexão do NSG Azure sem evidência: com estado permite, sem estado nega"
    },
    "f2": {
     "value": "DENY",

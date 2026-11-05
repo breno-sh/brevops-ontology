@@ -6,8 +6,8 @@ DIRECTIONS = [f"{a}->{b}" for a in PROVIDERS for b in PROVIDERS if a != b]
 
 # capacidades lidas do semantics_profile.json (leitura default)
 CAPS = {
-    "aws": {"deny": False, "priority": False, "state": "unevidenced", "no_match": "deny", "selector": "attachment", "src_ports": False},
-    "google": {"deny": True, "priority": True, "state": "unevidenced", "no_match": "unevidenced", "selector": "tags", "src_ports": False},
+    "aws": {"deny": False, "priority": False, "state": "stateful", "no_match": "deny", "selector": "attachment", "src_ports": False},
+    "google": {"deny": True, "priority": True, "state": "stateful", "no_match": "implied_deny_in_allow_out", "selector": "tags", "src_ports": False},
     "azurerm": {"deny": True, "priority": True, "state": "unevidenced", "no_match": "unevidenced", "selector": "attachment", "src_ports": True},
     "oci": {"deny": False, "priority": False, "state": "per_rule", "no_match": "deny", "selector": "attachment", "src_ports": True},
 }
@@ -31,13 +31,13 @@ LOSS_CATALOG = {
         "covers": ["ALLOW->DENY"],
         "text": "o destino só exprime permissão: regra de negação e precedência não viram regra; o alvo aceitável permite só o conjunto efetivo (negação compilada fora) ou bloqueia; nunca permite o que a origem nega"},
     "LOSS-NET-STATE": {
-        "code": "MISSING_EVIDENCE", "when": {"source": list(PROVIDERS), "target": ["aws", "google", "azurerm"]},
+        "code": "MISSING_EVIDENCE", "when": {"source": list(PROVIDERS), "target": ["azurerm"]},
         "covers": ["ALLOW->UNKNOWN", "DENY->UNKNOWN"],
-        "text": "o estado de conexão do destino não tem evidência no SERVICE-EVIDENCE: a decisão do tráfego de retorno no destino é UNKNOWN"},
+        "text": "o estado de conexão do NSG Azure não tem evidência no SERVICE-EVIDENCE: a decisão do tráfego de retorno no destino é UNKNOWN (SG AWS, firewall GCP e OCI: com estado, publicado desde o CC-14)"},
     "LOSS-NET-DEFAULT": {
-        "code": "MISSING_EVIDENCE", "when": {"source": list(PROVIDERS), "target": ["google", "azurerm"]},
+        "code": "MISSING_EVIDENCE", "when": {"source": list(PROVIDERS), "target": ["azurerm"]},
         "covers": ["ALLOW->UNKNOWN", "DENY->UNKNOWN"],
-        "text": "o padrão do destino para fluxo sem regra não tem evidência publicada (GCP: regras implícitas só interpretadas; Azure: regras padrão ausentes); evitável com negação explícita de menor precedência"},
+        "text": "o padrão do NSG Azure para fluxo sem regra não tem evidência publicada (regras padrão ausentes); evitável com negação explícita de menor precedência. No GCP as regras implícitas são publicadas (entrada nega, saída permite): sem negação explícita de saída, a saída fica PERMITIDA, o que é transporte em caso negativo, não perda"},
     "LOSS-NET-SRCPORT": {
         "code": "DECLARED_LOSS", "when": {"source": ["azurerm", "oci"], "target": ["aws", "google"]},
         "covers": ["ALLOW->DENY"],
@@ -55,7 +55,7 @@ LOSS_CATALOG = {
 TARGET_REQUIREMENTS = {
     "REQ-T-DECISIONS": "decisão igual à da origem em todo fluxo da fixture, salvo divergência coberta por perda declarada do catálogo da direção",
     "REQ-T-NO-DENY-TO-ALLOW": "nenhum fluxo negado na origem é permitido no destino (perda declarada não cobre)",
-    "REQ-T-CATCHALL": "negação explícita de entrada e de saída na menor precedência, para não depender do padrão sem evidência",
+    "REQ-T-CATCHALL": "negação explícita de entrada e de saída na menor precedência: no Azure, para não depender do padrão sem evidência; no GCP, porque a regra implícita de saída PERMITE",
     "REQ-T-AZ-PRIORITY": "prioridades entre 100 e 4096, distintas entre si (também entre direções, para a validade não ficar UNKNOWN)",
     "REQ-T-GCP-TIE": "nenhuma permissão na mesma prioridade da negação que deveria perder para ela (empate: deny vence)",
     "REQ-T-EFFECTIVE-SET": "destino só-permissão: permitir só o conjunto efetivo da origem (permissões menos negações de precedência maior)",
@@ -86,11 +86,13 @@ def direction_entry(d: str) -> dict:
     if CAPS[b]["state"] == "unevidenced":
         unknowns.append("retorno de conexão no destino: UNKNOWN (estado sem evidência)")
     if CAPS[a]["state"] == "unevidenced":
-        unknowns.append("retorno de conexão na origem: UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)")
+        unknowns.append("retorno de conexão na origem (NSG Azure): UNKNOWN; destino com estado definido não prova transporte (UNDETERMINED sem LOSS-NET-UNKNOWN-INPUT)")
     if CAPS[b]["no_match"] == "unevidenced":
         unknowns.append("fluxo sem regra no destino: UNKNOWN sem negação explícita")
     if CAPS[a]["no_match"] == "unevidenced":
         unknowns.append("fluxo sem regra na origem: UNKNOWN")
+    if b == "google" and a != "google":
+        unknowns.append("saída sem regra no GCP: a regra implícita permite; sem negação explícita é contraexemplo (não UNKNOWN)")
     if b == "oci":
         unknowns.append("security list e NSG no mesmo alvo com decisões diferentes: UNKNOWN (combinação sem evidência)")
     if b == "azurerm":

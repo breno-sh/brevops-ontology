@@ -6,7 +6,9 @@ Donos: CONTRACTS (C11, C24) e SERVICE-EVIDENCE (C25).
 
 ATUALIZAÇÃO 2026-11-04T08:20-03:00: os itens 1 e 2 foram adotados pela emenda 5 do CONTRACTS (79d04b7: C24 1.1.0 com
 pilot_expected_answers e C11 3.1.0 com origin=pilot). O gabarito passou a contract_version 1.1.0, a semente C11 diz em
-pending que a origem é "pilot" (o schema da semente põe origin em pending) e o gate do módulo roda o validador único. Os itens 3 e 5 seguem abertos; o item 4 foi fechado pelo SERVICE-EVIDENCE em 83953b9
+pending que a origem é "pilot" (o schema da semente põe origin em pending) e o gate do módulo roda o validador único. ATUALIZAÇÃO 2026-11-04T23:10-03:00 (SE 3ba4079 CC-14 e f44b9a6): o item 5 está fechado (prioridade única por
+direção, SE-azurerm-bzlmoi5ehpxmh43w) e o item 3 fechou para o SG AWS (SE-aws-p272pgtmcwbrjsvb) e o firewall GCP
+(SE-google-egw54c4ruinm6cgl); segue aberto só para o NSG Azure. Os itens 3 (Azure) e 5 seguiam abertos antes disso; o item 4 foi fechado pelo SERVICE-EVIDENCE em 83953b9
 (SE-oci-czy2wmgcweke3sq4, estado da regra de NSG publicado; o perfil do oráculo passou o parâmetro a published) (C25 regravado em
 69fb76e: estado de conexão, efeito e precedência dos recursos de rede sem mudança; alcance efetivo novo citado).
 

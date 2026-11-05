@@ -12,6 +12,12 @@
     "f4"
    ],
    "loss_id": "LOSS-NET-DEFAULT"
+  },
+  {
+   "flows": [
+    "f1r"
+   ],
+   "loss_id": "LOSS-NET-STATE"
   }
  ],
  "direction": "aws->azurerm",
@@ -19,10 +25,11 @@
   "covered": [
    "f2",
    "f3",
-   "f4"
+   "f4",
+   "f1r"
   ],
   "verdict": "ACCEPT_WITH_DECLARED_LOSS",
-  "why": "sem negação explícita o destino fica UNKNOWN em f2, f3 e f4; a perda está declarada"
+  "why": "sem negação explícita o NSG fica UNKNOWN em f2, f3 e f4; a perda está declarada"
  },
  "polarity": "unknown",
  "schema": "bo.pilot_net.translation_case/1",

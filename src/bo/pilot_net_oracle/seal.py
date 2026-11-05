@@ -115,7 +115,8 @@ def envelope_path(idx: dict) -> Path:
     return Path(e.replace("$BO_DATA", str(data_dir().parent))) if e.startswith("$BO_DATA") else Path(e)
 
 
-def seal(bundle_path: Path, source_path: Path, version: int = 1, retire: Path | None = None) -> dict:
+def seal(bundle_path: Path, source_path: Path, version: int = 1, retire: Path | None = None, revision: int = 1,
+         retire_status: str = "usado 2×, aposentado", reason: str = "") -> dict:
     bundle = json.loads(bundle_path.read_text(encoding="utf-8"))
     if any(x.get("split") != "retained" for x in bundle["fixtures"] + bundle["translations"]):
         raise SystemExit("seal: o pacote tem item que não é retido")
@@ -128,7 +129,7 @@ def seal(bundle_path: Path, source_path: Path, version: int = 1, retire: Path | 
     plain = _tar(files)
     sd = sealed_dir()
     sd.mkdir(parents=True, exist_ok=True)
-    name = "retained.cms.pem" if version == 1 else f"retained_v{version}.cms.pem"
+    name = "retained.cms.pem" if version == 1 else (f"retained_v{version}.cms.pem" if revision == 1 else f"retained_v{version}r{revision}.cms.pem")
     env = sd / name
     if env.exists():
         raise SystemExit(f"seal: {env} já existe; selo não se sobrescreve")
@@ -147,7 +148,7 @@ def seal(bundle_path: Path, source_path: Path, version: int = 1, retire: Path | 
     if vm_sha != sha(plain):
         raise SystemExit(f"seal: ida e volta na VM não confere (vm={vm_sha})")
     idx = {"schema": "bo.pilot_net.sealed_index/1", "module": "PILOT-NET-ORACLE", "slice": "net",
-           "set_version": version, "status": "ativo",
+           "set_version": version, "revision": revision, "status": "ativo", "reseal_reason": reason or None,
            "created_at": now(), "envelope": f"$BO_DATA/PILOT-NET-ORACLE/sealed/{name}",
            "envelope_sha256": sha(env.read_bytes()), "plaintext_sha256": sha(plain),
            "cipher": "CMS EnvelopedData, AES-256-CBC, chave RSA 4096 do certificado brevops-seal-D15",
@@ -155,13 +156,16 @@ def seal(bundle_path: Path, source_path: Path, version: int = 1, retire: Path | 
            "opened_by": "PILOT-EXIT", **index_for(bundle, salt)}
     if retire is not None:
         old = json.loads(retire.read_text(encoding="utf-8"))
-        old.update({"status": "usado 2×, aposentado", "retired_at": now(),
-                    "retired_reason": "o PILOT-EXIT 2/2 já usou este conjunto; substituído pelo conjunto v%d (ciclo v4)" % version})
+        carried = old.pop("retired_sets", [])
+        old.update({"status": retire_status, "retired_at": now(),
+                    "retired_reason": reason or ("o PILOT-EXIT 2/2 já usou este conjunto; substituído pelo conjunto v%d (ciclo v4)" % version)})
         old.setdefault("set_version", 1)
-        (sd / f"sealed_index_v{old['set_version']}_retired.json").write_text(
+        tag = f"v{old['set_version']}" + (f"r{old.get('revision', 1)}" if old.get("revision", 1) > 1 or old["set_version"] == version else "")
+        (sd / f"sealed_index_{tag}_retired.json").write_text(
             json.dumps(old, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
-        idx["retired_sets"] = [{"set_version": old["set_version"], "index": f"$BO_DATA/PILOT-NET-ORACLE/sealed/sealed_index_v{old['set_version']}_retired.json",
-                                "envelope": old["envelope"], "envelope_sha256": old["envelope_sha256"], "status": old["status"]}]
+        idx["retired_sets"] = carried + [{"set_version": old["set_version"], "revision": old.get("revision", 1),
+                                          "index": f"$BO_DATA/PILOT-NET-ORACLE/sealed/sealed_index_{tag}_retired.json",
+                                          "envelope": old["envelope"], "envelope_sha256": old["envelope_sha256"], "status": old["status"]}]
     (sd / "sealed_index.json").write_text(json.dumps(idx, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     return idx
 
@@ -204,10 +208,14 @@ def main(argv=None) -> int:
     s.add_argument("--source", required=True)
     s.add_argument("--version", type=int, default=1)
     s.add_argument("--retire", help="índice do conjunto anterior, a aposentar")
+    s.add_argument("--revision", type=int, default=1)
+    s.add_argument("--retire-status", default="usado 2×, aposentado")
+    s.add_argument("--reason", default="")
     sub.add_parser("verify")
     a = ap.parse_args(argv)
     if a.cmd == "seal":
-        idx = seal(Path(a.bundle), Path(a.source), a.version, Path(a.retire) if a.retire else None)
+        idx = seal(Path(a.bundle), Path(a.source), a.version, Path(a.retire) if a.retire else None, a.revision,
+                   a.retire_status, a.reason)
         print(f"[{now()}] selado: {idx['envelope']} sha256={idx['envelope_sha256'][:16]}… itens={len(idx['salted_digests'])}")
         return 0
     errs = verify()

@@ -159,9 +159,8 @@
     "why": "443 permitido de qualquer origem"
    },
    "f2r": {
-    "code": "MISSING_EVIDENCE",
-    "value": "UNKNOWN",
-    "why": "estado de conexão sem evidência"
+    "value": "ALLOW",
+    "why": "'VPC firewall rules are stateful' (guia oficial, SE CC-14)"
    },
    "f3": {
     "value": "DENY",

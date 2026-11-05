@@ -37,19 +37,20 @@ def test_nivel_publicado_so_com_linha_publicada(se_rows):
                 assert p.get("value") is None and p.get("values"), (prov, name)
 
 
-def test_estado_aws_gcp_azure_nao_assumido(se_rows):
-    for prov, ev in (("aws", "SE-aws-ys4irutgmpm2h6os"), ("google", "SE-google-zpvpswcdzblhsngy"),
-                     ("azurerm", "SE-azurerm-x6ikfm2ljwnl4tca")):
-        assert se_rows[ev]["status"] == "unknown"
-        assert not semantics.param(prov, "state.default").known
+def test_estado_do_nsg_azure_nao_assumido(se_rows):
+    # desde o CC-14 o SG AWS e o firewall GCP têm estado publicado; o NSG Azure segue sem evidência
+    assert se_rows["SE-azurerm-x6ikfm2ljwnl4tca"]["status"] == "unknown"
+    assert not semantics.param("azurerm", "state.default").known
+    for prov, ev in (("aws", "SE-aws-p272pgtmcwbrjsvb"), ("google", "SE-google-egw54c4ruinm6cgl")):
+        assert se_rows[ev]["level"] == "published" and se_rows[ev]["value"]["stateful"] is True
+        assert semantics.param(prov, "state.default", "strict").value == "stateful"
 
 
-def test_leitura_lenient_usa_regras_implicitas_interpretadas():
+def test_regras_implicitas_do_gcp_publicadas_valem_na_strict():
     f = load(NETDIR / "fixtures_calib/NETC-C09-GCP-NOMATCH.json")
-    d = no.evaluate_fixture(f, "lenient")["decisions"]
-    assert (d["f2"]["value"], d["f4"]["value"]) == ("DENY", "ALLOW")
-    d = no.evaluate_fixture(f, "default")["decisions"]
-    assert d["f2"]["value"] == d["f4"]["value"] == "UNKNOWN"
+    for rd in ("strict", "default", "lenient"):
+        d = no.evaluate_fixture(f, rd)["decisions"]
+        assert (d["f2"]["value"], d["f4"]["value"]) == ("DENY", "ALLOW"), rd
 
 
 def test_estado_da_regra_de_nsg_oci_publicado_vale_na_strict():
@@ -59,8 +60,7 @@ def test_estado_da_regra_de_nsg_oci_publicado_vale_na_strict():
     # desde 83953b9 o estado da regra de NSG é publicado: a strict não o tira; o que cai na strict é o efeito
     # 'só permissão' (oracle_derived) e o padrão sem regra, por isso o retorno fica UNKNOWN lá pelo outro motivo
     assert semantics.param("oci", "state.nsg_rule", "strict").known
-    # na strict também cai o efeito 'só permissão' (derivado deste oráculo): até o fluxo novo fica UNKNOWN
+    # desde o CC-14 o efeito 'só permissão' e o 'sem regra, nada passa' da OCI são publicados: a strict decide
     f2 = load(NETDIR / "fixtures_calib/NETC-C02-OCI-STATEFUL.json")
     d = no.evaluate_fixture(f2, "strict")["decisions"]
-    assert d["f1"]["value"] == "UNKNOWN" and d["f1r"]["value"] == "UNKNOWN"
-    assert no.evaluate_fixture(f2, "default")["decisions"]["f1r"]["value"] == "ALLOW"
+    assert d["f1"]["value"] == "ALLOW" and d["f1r"]["value"] == "ALLOW"
