@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "PILOT-NET-GLOSS",
- "generated_at": "2026-11-04T23:27:15-03:00",
+ "generated_at": "2026-11-05T01:06:54-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-NET-GLOSS.txt",
@@ -20,19 +20,19 @@
    "model_extracted_anchors_n": "0",
    "unresolved_anchors_n": "1",
    "training_projection_receipt": "none",
-   "grain_rules_version": "0.2.3",
-   "e2_inline_equal_decided": "3/3"
+   "grain_rules_version": "0.2.5",
+   "e2_inline_equal_decided": "5/5"
   },
   "inputs": [
    {
     "path": "$BO_REPO/grain/grain_rules.yaml",
     "kind": "file",
-    "sha256": "e3a57c5a96edd2547c6ef32ae427a5b0a34b77e95797958a16400cedb6c9f519"
+    "sha256": "2272d93a25b52a9fb4efe394849b0433105188fa3e311f7aeff447bcad73f073"
    },
    {
     "path": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl",
     "kind": "file",
-    "sha256": "2994da012fbc9296a31fd2e82d8e55cd7dd274c8be74c24634681412effe07f1"
+    "sha256": "d17a11b5334b69fdf60ae130c230cc9a18b0d8e81c0f66b47e4484c4647a7e40"
    },
    {
     "path": "$BO_DATA/UNITS/value_space.jsonl",
@@ -90,8 +90,8 @@
     "sha256": "99e3dc9d3434e48675fd71eb817145ae63c2159fd041f3c67dd1d308e814287c"
    }
   ],
-  "recorded_at": "2026-11-04T23:27:15-03:00"
+  "recorded_at": "2026-11-05T01:06:54-03:00"
  },
  "sources": [],
- "notes": "correção do efeito: aws fixo permitir (guia), oci allow_capable sem exclusividade"
+ "notes": "v4-r2: GRAIN 0.2.5 e SE com alvo tipado do pai; regra separada aws vira COMPONENT do conjunto; E2 5/5"
 }

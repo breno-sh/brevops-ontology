@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 
-from bo.pilot_net_gloss import anchor_claims, build, hub
+from bo.pilot_net_gloss import anchor_claims, build, grain_apply, hub
 from bo.pilot_net_gloss import slice as SL
 
 DOC = {"repo": "example-org/provider-docs", "tag": "v1.0.0", "file": "docs/rule.md"}
@@ -186,3 +186,22 @@ def test_candidates_never_carry_terraform_timeouts():
     assert len(cands) == 1 and "timeouts" not in json.dumps(cands)
     assert build.terraform_meta("oci:oci_core_security_list:timeouts.update")
     assert not build.terraform_meta("oci:oci_core_security_list:vcn_id")
+
+
+def test_separate_rule_without_own_lifecycle_is_component_in_schema_layer():
+    """DIAG_T3 F1/F2 (GRAIN 0.2.4, T03): na CAMADA DE ESQUEMA, com as entradas reais, todo recurso separado de regra
+    sai COMPONENT, com ciclo de vida, dono e alcance no conjunto-pai quando a API não dá vida própria, e a assinatura
+    é a da forma embutida em todo par de embalagem (inclusive a variante que a calibração não tinha)."""
+    inp = build.inputs()
+    roles = {k: r["role"] for k, r in inp["roles"].items()}
+    g = grain_apply.decompose(inp["se"], inp["schema_atoms"], roles)
+    by = grain_apply.by_unit(g["units"])
+    u = by["CU-aws-aws_security_group_rule"]
+    assert u["kind"] == "COMPONENT" and u["missing_evidence"] == []
+    for f in ("lifecycle_controller", "owner", "effective_scope"):
+        assert u[f]["kind"] == "parent" and u[f]["ref"] == "CU-aws-aws_security_group", (f, u[f])
+    pairs = build.e2(g["units"])
+    assert {(p["inline"], p["separate"]) for p in pairs} >= {
+        ("aws_security_group.ingress", "aws_security_group_rule"),
+        ("aws_security_group.egress", "aws_security_group_rule")}
+    assert all(p["equal"] for p in pairs), [p for p in pairs if not p["equal"]]

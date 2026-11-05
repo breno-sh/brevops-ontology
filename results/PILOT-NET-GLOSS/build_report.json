@@ -52,9 +52,39 @@
     "GRAIN-G2-CHILD",
     []
    ]
+  },
+  {
+   "equal": true,
+   "inline": "aws_security_group.ingress",
+   "inline_sig": [
+    "COMPONENT",
+    "GRAIN-G2-COMPONENT",
+    []
+   ],
+   "separate": "aws_security_group_rule",
+   "separate_sig": [
+    "COMPONENT",
+    "GRAIN-G2-COMPONENT",
+    []
+   ]
+  },
+  {
+   "equal": true,
+   "inline": "aws_security_group.egress",
+   "inline_sig": [
+    "COMPONENT",
+    "GRAIN-G2-COMPONENT",
+    []
+   ],
+   "separate": "aws_security_group_rule",
+   "separate_sig": [
+    "COMPONENT",
+    "GRAIN-G2-COMPONENT",
+    []
+   ]
   }
  ],
- "generated_at": "2026-11-04T23:27:36-03:00",
+ "generated_at": "2026-11-05T01:06:35-03:00",
  "glossary": {
   "anchors": 60,
   "anchors_by_kind": {
@@ -80,29 +110,29 @@
  "grain": {
   "atoms": 219,
   "by_kind": {
-   "BINDING": 3,
-   "COMPONENT": 9,
+   "BINDING": 4,
+   "COMPONENT": 10,
    "ENTITY": 5,
    "FACET": 2,
-   "UNKNOWN": 22
+   "UNKNOWN": 20
   },
   "by_rule": {
-   "GRAIN-G0-IDENTITY": 11,
+   "GRAIN-G0-IDENTITY": 9,
    "GRAIN-G0-NEEDS": 11,
-   "GRAIN-G1-BINDING": 1,
+   "GRAIN-G1-BINDING": 2,
    "GRAIN-G1B-REFERENCE": 2,
    "GRAIN-G2-CHILD": 2,
-   "GRAIN-G2-COMPONENT": 7,
+   "GRAIN-G2-COMPONENT": 8,
    "GRAIN-G3-FACET": 2,
    "GRAIN-G4-ENTITY": 4,
    "GRAIN-G4-NS": 1
   },
   "missing": {
    "api_resource": 11,
-   "effective_scope": 10,
-   "identity": 11,
-   "lifecycle_controller": 11,
-   "owner": 10
+   "effective_scope": 9,
+   "identity": 9,
+   "lifecycle_controller": 9,
+   "owner": 9
   },
   "units": 41,
   "units_by_provider": {
@@ -111,7 +141,7 @@
    "google": 6,
    "oci": 22
   },
-  "unknown_reasons": 202
+  "unknown_reasons": 203
  },
  "module": "PILOT-NET-GLOSS",
  "schema": "bo.pilot_gloss_report/1"
