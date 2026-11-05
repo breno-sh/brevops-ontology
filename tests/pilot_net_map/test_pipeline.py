@@ -263,3 +263,15 @@ def test_interpreted_anchor_does_not_fix_effect(tmp_path):
     b = BU.load(_write_bundle(tmp_path / "eff2", anchors=ANCHORS + [imp]))
     _, st = GN.generate(b)
     assert st["effect_resolved"] == {}
+
+
+def test_allow_capable_does_not_fix_effect(tmp_path):
+    imp = {"anchor_kind": "type", "claim_id": "ANC-t-0102", "concept_id": "concept:rule_effect",
+           "type_id": "aws:aws_vpc_security_group_ingress_rule", "evidence_level": "published",
+           "extraction_method": "parser", "sentence": "frase sintética publicada",
+           "implication": {"realization": "type_choice", "value": "allow_capable", "rule": "o tipo admite regra de permitir"}}
+    b = BU.load(_write_bundle(tmp_path / "eff3", anchors=ANCHORS + [imp]))
+    recs, st = GN.generate(b)
+    assert st["effect_resolved"] == {}
+    rows = _by(recs, "aws:aws_vpc_security_group_ingress_rule:ip_protocol", "azurerm:azurerm_network_security_rule:protocol")
+    assert rows and not [x for x in rows[0]["guard"]["all"] if x["term"] == "object.access"]

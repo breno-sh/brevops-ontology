@@ -46,10 +46,13 @@ def resolved_shapes(b: Bundle) -> dict:
             refs = [f"{sh['prov']}:{sh['rtype']}"]
             if sh.get("prefix"):
                 refs.insert(0, f"{sh['prov']}:{sh['rtype']}:{sh['prefix'].rstrip('.')}")
-            vals = sorted({x["value"] for r in refs for x in b.implied("concept:rule_effect", r)} & {"allow", "deny"})
+            # só exclusividade publicada fixa o efeito: valor allow/deny exato; allow_capable (pode permitir, sem dizer
+            # que só permite) ou implicação marcada exclusive=false não dispara guarda
+            imps = [x for r in refs for x in b.implied("concept:rule_effect", r) if x.get("exclusive") is not False]
+            vals = sorted({x["value"] for x in imps} & {"allow", "deny"})
             if len(vals) == 1:
                 sh["eff"] = vals[0]
-                sh["eff_source"] = sorted({x["claim_id"] for r in refs for x in b.implied("concept:rule_effect", r)})
+                sh["eff_source"] = sorted({x["claim_id"] for x in imps if x["value"] == vals[0]})
         out[sid] = sh
     return out
 

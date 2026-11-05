@@ -173,6 +173,7 @@ def load(root: Path) -> Bundle:
             if ref and imp and c.get("evidence_level") == "published" and c.get("extraction_method") != "model":
                 src = c.get("source") or {}
                 implications.append({"concept": c["concept_id"], "ref": ref, "value": imp.get("value"),
+                                     "exclusive": imp.get("exclusive", c.get("exclusive")),
                                      "realization": imp.get("realization"), "claim_id": c["claim_id"],
                                      "sentence": c.get("sentence"),
                                      "source": _src(src) if src.get("repo") else c["claim_id"]})
