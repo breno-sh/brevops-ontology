@@ -8,6 +8,25 @@
   {
    "provider": "azurerm",
    "terraform_resource_type": "azurerm_app_service_slot_virtual_network_swift_connection",
+   "fact": "effective_scope",
+   "kind": "doc_x_spec",
+   "status": "aberta",
+   "doc": {
+    "kind": "self",
+    "rule": "R-SCOPE-SELF"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-SCOPE-SPEC"
+   },
+   "evidence": [
+    "SE-azurerm-yykxehagbaq2th6c",
+    "SE-azurerm-psalhnlw2bxiucyq"
+   ]
+  },
+  {
+   "provider": "azurerm",
+   "terraform_resource_type": "azurerm_app_service_slot_virtual_network_swift_connection",
    "fact": "lifecycle_controller",
    "kind": "doc_x_spec",
    "doc": {
@@ -39,6 +58,25 @@
    "evidence": [
     "SE-azurerm-wnwgrfspqhhvqdfo",
     "SE-azurerm-oe7uytj4cfpiaxzq"
+   ]
+  },
+  {
+   "provider": "azurerm",
+   "terraform_resource_type": "azurerm_app_service_virtual_network_swift_connection",
+   "fact": "effective_scope",
+   "kind": "doc_x_spec",
+   "status": "aberta",
+   "doc": {
+    "kind": "self",
+    "rule": "R-SCOPE-SELF"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-SCOPE-SPEC"
+   },
+   "evidence": [
+    "SE-azurerm-46l7midi2jkrweil",
+    "SE-azurerm-7nqinf4jdjqi3myj"
    ]
   },
   {
@@ -556,6 +594,25 @@
   {
    "provider": "oci",
    "terraform_resource_type": "oci_bds_auto_scaling_configuration",
+   "fact": "effective_scope",
+   "kind": "doc_x_spec",
+   "status": "aberta",
+   "doc": {
+    "kind": "self",
+    "rule": "R-SCOPE-SELF"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-SCOPE-SPEC"
+   },
+   "evidence": [
+    "SE-oci-5dxuvfqsmbjzrjql",
+    "SE-oci-xrqajoyu2eoiq4lt"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_bds_auto_scaling_configuration",
    "fact": "lifecycle_controller",
    "kind": "doc_x_spec",
    "doc": {
@@ -587,6 +644,25 @@
    "evidence": [
     "SE-oci-s3a35dan7gkcudih",
     "SE-oci-244yfwyiq4hldp5d"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_containerengine_addon",
+   "fact": "effective_scope",
+   "kind": "doc_x_spec",
+   "status": "aberta",
+   "doc": {
+    "kind": "self",
+    "rule": "R-SCOPE-SELF"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-SCOPE-SPEC"
+   },
+   "evidence": [
+    "SE-oci-jk4fzndvnl7il7ri",
+    "SE-oci-5frlrg4goy2wq5xc"
    ]
   },
   {
@@ -628,6 +704,25 @@
   {
    "provider": "oci",
    "terraform_resource_type": "oci_core_drg_nat_policy_drg_nat_rule",
+   "fact": "effective_scope",
+   "kind": "doc_x_spec",
+   "status": "aberta",
+   "doc": {
+    "kind": "self",
+    "rule": "R-SCOPE-SELF"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-SCOPE-SPEC"
+   },
+   "evidence": [
+    "SE-oci-wi54vzkkog6rl7ck",
+    "SE-oci-kxuo6umaqudd4erg"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_core_drg_nat_policy_drg_nat_rule",
    "fact": "lifecycle_controller",
    "kind": "doc_x_spec",
    "doc": {
@@ -664,6 +759,25 @@
   {
    "provider": "oci",
    "terraform_resource_type": "oci_core_drg_route_distribution_statement",
+   "fact": "effective_scope",
+   "kind": "doc_x_spec",
+   "status": "aberta",
+   "doc": {
+    "kind": "self",
+    "rule": "R-SCOPE-SELF"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-SCOPE-SPEC"
+   },
+   "evidence": [
+    "SE-oci-vbwbnqiep2qhi24p",
+    "SE-oci-htvu5lbj34vxmtw3"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_core_drg_route_distribution_statement",
    "fact": "lifecycle_controller",
    "kind": "doc_x_spec",
    "doc": {
@@ -695,6 +809,25 @@
    "evidence": [
     "SE-oci-2opovrh5cwxahts7",
     "SE-oci-j27xaxhdphh7bd3z"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_core_network_security_group_security_rule",
+   "fact": "effective_scope",
+   "kind": "doc_x_spec",
+   "status": "aberta",
+   "doc": {
+    "kind": "self",
+    "rule": "R-SCOPE-SELF"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-SCOPE-SPEC"
+   },
+   "evidence": [
+    "SE-oci-o2hf3vq37da34th5",
+    "SE-oci-owpz72e36oqij7f2"
    ]
   },
   {
@@ -752,6 +885,25 @@
   {
    "provider": "oci",
    "terraform_resource_type": "oci_database_autonomous_container_database_dataguard_association",
+   "fact": "effective_scope",
+   "kind": "doc_x_spec",
+   "status": "aberta",
+   "doc": {
+    "kind": "self",
+    "rule": "R-SCOPE-SELF"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-SCOPE-SPEC"
+   },
+   "evidence": [
+    "SE-oci-lfh7rmh3kfv542md",
+    "SE-oci-6lj4lg3xc3lur76s"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_database_autonomous_container_database_dataguard_association",
    "fact": "lifecycle_controller",
    "kind": "doc_x_spec",
    "doc": {
@@ -783,6 +935,25 @@
    "evidence": [
     "SE-oci-dmstpelhmcuq6nxd",
     "SE-oci-ftpyrqpzsucifo73"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_database_autonomous_database_wallet",
+   "fact": "effective_scope",
+   "kind": "doc_x_spec",
+   "status": "aberta",
+   "doc": {
+    "kind": "self",
+    "rule": "R-SCOPE-SELF"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-SCOPE-SPEC"
+   },
+   "evidence": [
+    "SE-oci-n2xm5jq7suouridl",
+    "SE-oci-jzqf5pss7k3pm775"
    ]
   },
   {
@@ -824,6 +995,25 @@
   {
    "provider": "oci",
    "terraform_resource_type": "oci_database_cloud_vm_cluster_iorm_config",
+   "fact": "effective_scope",
+   "kind": "doc_x_spec",
+   "status": "aberta",
+   "doc": {
+    "kind": "self",
+    "rule": "R-SCOPE-SELF"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-SCOPE-SPEC"
+   },
+   "evidence": [
+    "SE-oci-gz6gqyr4qgyngwdb",
+    "SE-oci-cu7cfj7brdsi5k6q"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_database_cloud_vm_cluster_iorm_config",
    "fact": "lifecycle_controller",
    "kind": "doc_x_spec",
    "doc": {
@@ -855,6 +1045,25 @@
    "evidence": [
     "SE-oci-fhd5p3oq5buwytsr",
     "SE-oci-yagucxhbpzcd4r6k"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_database_data_guard_association",
+   "fact": "effective_scope",
+   "kind": "doc_x_spec",
+   "status": "aberta",
+   "doc": {
+    "kind": "self",
+    "rule": "R-SCOPE-SELF"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-SCOPE-SPEC"
+   },
+   "evidence": [
+    "SE-oci-rei2hylzhingeyvk",
+    "SE-oci-upalojbxi6osanhu"
    ]
   },
   {
@@ -896,6 +1105,25 @@
   {
    "provider": "oci",
    "terraform_resource_type": "oci_database_exadata_iorm_config",
+   "fact": "effective_scope",
+   "kind": "doc_x_spec",
+   "status": "aberta",
+   "doc": {
+    "kind": "self",
+    "rule": "R-SCOPE-SELF"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-SCOPE-SPEC"
+   },
+   "evidence": [
+    "SE-oci-v37mfs2yl5y7zf63",
+    "SE-oci-z7m3l6orxcxuy3wh"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_database_exadata_iorm_config",
    "fact": "lifecycle_controller",
    "kind": "doc_x_spec",
    "doc": {
@@ -927,6 +1155,25 @@
    "evidence": [
     "SE-oci-bjkl7vo6nt2lsnhu",
     "SE-oci-nicp2fu3jxcbwbtr"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_datascience_model_provenance",
+   "fact": "effective_scope",
+   "kind": "doc_x_spec",
+   "status": "aberta",
+   "doc": {
+    "kind": "self",
+    "rule": "R-SCOPE-SELF"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-SCOPE-SPEC"
+   },
+   "evidence": [
+    "SE-oci-tlyksgadz4ixordj",
+    "SE-oci-d3tilzt3j6ekjrz3"
    ]
   },
   {
@@ -968,6 +1215,25 @@
   {
    "provider": "oci",
    "terraform_resource_type": "oci_devops_project_repository_setting",
+   "fact": "effective_scope",
+   "kind": "doc_x_spec",
+   "status": "aberta",
+   "doc": {
+    "kind": "self",
+    "rule": "R-SCOPE-SELF"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-SCOPE-SPEC"
+   },
+   "evidence": [
+    "SE-oci-swaw7sazr7ahtmlc",
+    "SE-oci-p2gknwp2gxpkmbbf"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_devops_project_repository_setting",
    "fact": "lifecycle_controller",
    "kind": "doc_x_spec",
    "doc": {
@@ -1004,6 +1270,25 @@
   {
    "provider": "oci",
    "terraform_resource_type": "oci_devops_repository_ref",
+   "fact": "effective_scope",
+   "kind": "doc_x_spec",
+   "status": "aberta",
+   "doc": {
+    "kind": "self",
+    "rule": "R-SCOPE-SELF"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-SCOPE-SPEC"
+   },
+   "evidence": [
+    "SE-oci-hkrsund5vemjyauk",
+    "SE-oci-lx2xngbceilfwiau"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_devops_repository_ref",
    "fact": "lifecycle_controller",
    "kind": "doc_x_spec",
    "doc": {
@@ -1035,6 +1320,25 @@
    "evidence": [
     "SE-oci-cg3oig5miw7scksm",
     "SE-oci-q5vcnrn7zj5t75b5"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_devops_repository_setting",
+   "fact": "effective_scope",
+   "kind": "doc_x_spec",
+   "status": "aberta",
+   "doc": {
+    "kind": "self",
+    "rule": "R-SCOPE-SELF"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-SCOPE-SPEC"
+   },
+   "evidence": [
+    "SE-oci-bnasx24gcd7rmp3y",
+    "SE-oci-ysu3b77plnhkqf5y"
    ]
   },
   {
@@ -1110,6 +1414,25 @@
   {
    "provider": "oci",
    "terraform_resource_type": "oci_iot_iot_flow_runtime_flow",
+   "fact": "effective_scope",
+   "kind": "doc_x_spec",
+   "status": "aberta",
+   "doc": {
+    "kind": "self",
+    "rule": "R-SCOPE-SELF"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-SCOPE-SPEC"
+   },
+   "evidence": [
+    "SE-oci-fpuswtzvanocga6d",
+    "SE-oci-lvfsmvrd5qbt5voa"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_iot_iot_flow_runtime_flow",
    "fact": "lifecycle_controller",
    "kind": "doc_x_spec",
    "doc": {
@@ -1141,6 +1464,25 @@
    "evidence": [
     "SE-oci-mayppf32jrqouzna",
     "SE-oci-4mf66fll62hoinar"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_jms_fleet_advanced_feature_configuration",
+   "fact": "effective_scope",
+   "kind": "doc_x_spec",
+   "status": "aberta",
+   "doc": {
+    "kind": "self",
+    "rule": "R-SCOPE-SELF"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-SCOPE-SPEC"
+   },
+   "evidence": [
+    "SE-oci-xzllgx2u3v232qhx",
+    "SE-oci-dmgdcebdattjb7uk"
    ]
   },
   {
@@ -1182,6 +1524,25 @@
   {
    "provider": "oci",
    "terraform_resource_type": "oci_managed_kafka_kafka_cluster_addon",
+   "fact": "effective_scope",
+   "kind": "doc_x_spec",
+   "status": "aberta",
+   "doc": {
+    "kind": "self",
+    "rule": "R-SCOPE-SELF"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-SCOPE-SPEC"
+   },
+   "evidence": [
+    "SE-oci-fzh27zosizdxa6il",
+    "SE-oci-m6aznmlpbauhbnl6"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_managed_kafka_kafka_cluster_addon",
    "fact": "lifecycle_controller",
    "kind": "doc_x_spec",
    "doc": {
@@ -1218,6 +1579,25 @@
   {
    "provider": "oci",
    "terraform_resource_type": "oci_mysql_heat_wave_cluster",
+   "fact": "effective_scope",
+   "kind": "doc_x_spec",
+   "status": "aberta",
+   "doc": {
+    "kind": "self",
+    "rule": "R-SCOPE-SELF"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-SCOPE-SPEC"
+   },
+   "evidence": [
+    "SE-oci-as2m62nuwesxhu52",
+    "SE-oci-tsuxdgavqgiyzyga"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_mysql_heat_wave_cluster",
    "fact": "lifecycle_controller",
    "kind": "doc_x_spec",
    "doc": {
@@ -1249,6 +1629,25 @@
    "evidence": [
     "SE-oci-l7degyexwdegna7k",
     "SE-oci-hfui3xjlrc62npjv"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_objectstorage_object_lifecycle_policy",
+   "fact": "effective_scope",
+   "kind": "doc_x_spec",
+   "status": "aberta",
+   "doc": {
+    "kind": "self",
+    "rule": "R-SCOPE-SELF"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-SCOPE-SPEC"
+   },
+   "evidence": [
+    "SE-oci-6x3u7oqkpdma2pqw",
+    "SE-oci-tioryzb3iqoydw6m"
    ]
   },
   {
@@ -1307,6 +1706,25 @@
   {
    "provider": "oci",
    "terraform_resource_type": "oci_os_management_hub_software_source_manifest",
+   "fact": "effective_scope",
+   "kind": "doc_x_spec",
+   "status": "aberta",
+   "doc": {
+    "kind": "self",
+    "rule": "R-SCOPE-SELF"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-SCOPE-SPEC"
+   },
+   "evidence": [
+    "SE-oci-6ysvw4kdqedkmkrv",
+    "SE-oci-bcjkcpebr76bg4uk"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_os_management_hub_software_source_manifest",
    "fact": "lifecycle_controller",
    "kind": "doc_x_spec",
    "doc": {
@@ -1338,6 +1756,25 @@
    "evidence": [
     "SE-oci-ft7mibl6o5ombvse",
     "SE-oci-rwlfgc7gybnlitgh"
+   ]
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_waas_protection_rule",
+   "fact": "effective_scope",
+   "kind": "doc_x_spec",
+   "status": "aberta",
+   "doc": {
+    "kind": "self",
+    "rule": "R-SCOPE-SELF"
+   },
+   "spec": {
+    "kind": "parent",
+    "rule": "R-SCOPE-SPEC"
+   },
+   "evidence": [
+    "SE-oci-nfkhpfefua4q54yi",
+    "SE-oci-g2kk3ba5iebo3qpi"
    ]
   },
   {

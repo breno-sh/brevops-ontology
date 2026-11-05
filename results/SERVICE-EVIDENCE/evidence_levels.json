@@ -3,14 +3,14 @@
  "module": "SERVICE-EVIDENCE",
  "contract": "C25",
  "contract_version": "1.0.0",
- "generated_at": "2026-11-04T17:29:12-03:00",
- "records": 200273,
+ "generated_at": "2026-11-04T21:31:35-03:00",
+ "records": 200275,
  "by_level": {
   "derived": 132581,
   "interpreted": 11,
   "observed": 10,
-  "published": 67671,
-  "status:stated": 194178,
+  "published": 67673,
+  "status:stated": 194180,
   "status:unknown": 6095
  },
  "by_provider": {
@@ -101,7 +101,7 @@
    "connection_state|interpreted|stated": 3,
    "connection_state|published|stated": 3,
    "effective_scope|derived|stated": 4968,
-   "effective_scope|published|stated": 26,
+   "effective_scope|published|stated": 28,
    "effect|published|stated": 3,
    "effect|published|unknown": 2,
    "identity|derived|stated": 4970,
@@ -198,9 +198,13 @@
    "emitidos": 5,
    "faltando": [],
    "identidade_associacao": 2
+  },
+  "spec_sentences": {
+   "published": 2,
+   "missing": []
   }
  },
- "spec_disputes": 77,
+ "spec_disputes": 100,
  "observed": {
   "observations": 227,
   "facts": 10,
@@ -2285,6 +2289,7 @@
     "R-SCOPE-DOC_tipo": 1,
     "R-SCOPE-PARENT_api": 1285,
     "R-SCOPE-PARENT": 2611,
+    "disputa_alcance_doc_x_spec": 2,
     "lifecycle_controller:observed:stated": 3,
     "owner:observed:stated": 2
    }
@@ -2336,7 +2341,7 @@
     "precedence:published:stated": 13,
     "import_key:published:unknown": 147,
     "identity:published:unknown": 50,
-    "effective_scope:published:stated": 26,
+    "effective_scope:published:stated": 28,
     "connection_state:published:stated": 3,
     "effect:published:stated": 3,
     "connection_state:interpreted:stated": 3,
@@ -2364,6 +2369,7 @@
     "R-SCOPE-DOC_tipo": 7,
     "R-SCOPE-PARENT_api": 2837,
     "R-SCOPE-PARENT": 2956,
+    "disputa_alcance_doc_x_spec": 21,
     "identity:observed:stated": 3,
     "owner:observed:stated": 1,
     "lifecycle_controller:observed:stated": 1

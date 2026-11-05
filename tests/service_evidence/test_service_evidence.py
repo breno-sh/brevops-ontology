@@ -298,3 +298,15 @@ def test_r1_r4_consolidation_counts():
     d = _j.loads((common.results_dir() / "spec_disputes.json").read_text(encoding="utf-8"))["disputes"]
     res = [x for x in d if x.get("status") == "resolvida-por-observação"]
     assert all(x["resolved_to"] in ("spec", "doc") and len(x["sides"]) == 2 and x["observation_id"] for x in res)
+
+
+def test_nsg_rule_scope_dispute_open_and_sentence_published():
+    import json as _j
+    d = _j.loads((common.results_dir() / "spec_disputes.json").read_text(encoding="utf-8"))["disputes"]
+    sc = [x for x in d if x["terraform_resource_type"] == "oci_core_network_security_group_security_rule"
+          and x["fact"] == "effective_scope"]
+    assert len(sc) == 1 and sc[0]["status"] == "aberta"
+    got = _out_by_type({"oci_core_network_security_group_security_rule"})
+    pub = [r for r in got["oci_core_network_security_group_security_rule"] if r["status"] == "stated"
+           and (r.get("value") or {}).get("aspect") == "rule_applies_to"]
+    assert pub and all(r["level"] == "published" and "kind" not in r["value"] for r in pub)

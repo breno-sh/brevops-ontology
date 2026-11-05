@@ -42,6 +42,7 @@ def generate() -> dict:
         stats[p]["out_of_pin_examples"] = extra["out_of_pin_examples"]
     _, cur = curated.records(ctxs, bridges)
     cur["attach"] = attach.run(ctxs)
+    cur["spec_sentences"] = curated.spec_sentence_records(ctxs, bridges)
     disputes = []
     for p in common.PROVIDERS:
         prim = grainfacts.api_layer(ctxs[p])  # CC-1d: camada de API só com ponte citada na doc
@@ -50,6 +51,8 @@ def generate() -> dict:
         spec_own = {r["terraform_resource_type"] for r in ctxs[p].recs
                     if (r.get("value") or {}).get("rule") == "R-LIFE-SPEC"}
         grainfacts.scopes(ctxs[p], prim | spec_own)  # depois da curadoria: R-SCOPE-DOC prevalece
+    for p in common.PROVIDERS:
+        _scope_disputes(ctxs[p], disputes)  # alcance doc x spec na camada api: disputa aberta, nunca escolha
     obs_st = observed.records(ctxs, disputes)  # nível OBSERVED (só entra no C25 com a emenda 10)
     for p in common.PROVIDERS:
         stats[p]["counters"] = dict(ctxs[p].st)
@@ -76,6 +79,32 @@ def generate() -> dict:
     return {"recs": recs, "protocol": prow, "protocol_missing": pmiss, "stats": stats, "curated": cur,
             "observed": obs_st,
             "disputes": sorted(disputes, key=lambda d: (d["provider"], d["terraform_resource_type"], d["fact"]))}
+
+
+SPEC_SCOPE = {"R-SCOPE-SPEC", "R-OWN-SPEC-BLOCK"}
+DOC_SCOPE = {"R-SCOPE-SELF", "R-SCOPE-PARENT"}
+
+
+def _scope_disputes(ctx, disputes: list) -> None:
+    """effective_scope na camada api: lado da doc (R-SCOPE-SELF/PARENT com layer api) x lado da spec
+    (R-SCOPE-SPEC/R-OWN-SPEC-BLOCK) com kind diferente -> disputa doc_x_spec aberta (uma por tipo e bloco)."""
+    by = {}
+    for r in ctx.recs:
+        v = r.get("value") or {}
+        if r["fact_kind"] != "effective_scope" or r["status"] != "stated" or v.get("layer") != "api":
+            continue
+        side = "spec" if v.get("rule") in SPEC_SCOPE else ("doc" if v.get("rule") in DOC_SCOPE else None)
+        if side:
+            by.setdefault((r["terraform_resource_type"], r.get("block_path")), {}).setdefault(side, r)
+    for (T, bp), sides in sorted(by.items(), key=lambda kv: (kv[0][0], kv[0][1] or "")):
+        d, sp = sides.get("doc"), sides.get("spec")
+        if d and sp and d["value"]["kind"] != sp["value"]["kind"]:
+            disputes.append({"provider": ctx.p, "terraform_resource_type": T, "fact": "effective_scope",
+                             **({"block_path": bp} if bp else {}), "kind": "doc_x_spec", "status": "aberta",
+                             "doc": {"kind": d["value"]["kind"], "rule": d["value"]["rule"]},
+                             "spec": {"kind": sp["value"]["kind"], "rule": sp["value"]["rule"]},
+                             "evidence": [d["evidence_id"], sp["evidence_id"]]})
+            ctx.st["disputa_alcance_doc_x_spec"] += 1
 
 
 def evidence_levels(g: dict) -> dict:

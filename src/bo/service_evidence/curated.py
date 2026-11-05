@@ -160,6 +160,37 @@ ENTRIES = [
 ]
 
 
+# frases do SDK OCI fixado (modelos) sobre a quem a regra de NSG se aplica; publicadas sem kind (não resolvem a
+# disputa de alcance doc x spec, que só observação resolve, R1-R5 do PREREG)
+SPEC_SENTENCES = [
+    ("oci", "oci_core_network_security_group_security_rule", "effective_scope", "applies_to_vnics_rule",
+     "security_rule", "It is a virtual firewall rule for the VNICs in the network security group.",
+     {"aspect": "rule_applies_to", "rule": "C-PILOT-LITERAL",
+      "applies_to": "VNICs in the network security group", "source_model": "SecurityRule"}),
+    ("oci", "oci_core_network_security_group_security_rule", "effective_scope", "applies_to_vnics_nsg",
+     "network_security_group", "* A set of NSG :class:`SecurityRule` that apply to the VNICs in the group",
+     {"aspect": "rule_applies_to", "rule": "C-PILOT-LITERAL",
+      "applies_to": "VNICs in the group (network security group)", "source_model": "NetworkSecurityGroup"}),
+]
+
+
+def spec_sentence_records(ctx_by_provider: dict, bridges: dict) -> dict:
+    from . import apispec as A
+    st = {"published": 0, "missing": []}
+    for p, T, kind, key, model, needle, value in SPEC_SENTENCES:
+        fid = next((f for f in A.SPEC[p].get("models", {}) if f.endswith(f"/core/models/{model}.py")), None)
+        lines = A.load_lines(p, fid) if fid else ()
+        ln = next((i + 1 for i, x in enumerate(lines) if needle in x), None)
+        if not ln:
+            st["missing"].append(f"{T}:{key}")
+            continue
+        api = bridges[p].get(T) or {"service": "core", "resource": T}
+        ctx_by_provider[p].add(T, kind, f"specsentence:{key}", api, "stated", "published", value=dict(value),
+                               cit=A.cite(p, fid, f"M{ln}"))
+        st["published"] += 1
+    return st
+
+
 def records(ctx_by_provider: dict, bridges: dict) -> tuple[list[dict], dict]:
     out, st = [], {"published": 0, "interpreted": 0, "gap_unknown": 0, "missing": []}
     for (p, T, kind, key, rel, needle, sentence, level, value) in ENTRIES:
