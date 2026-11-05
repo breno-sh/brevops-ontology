@@ -126,3 +126,16 @@ ADENDO 2026-11-04T23:31:00-03:00 (America/Recife): bo/base e9bde7e, PILOT-NET-GL
   O pacote corrigido traz aws com a frase literal nos 5 formatos (ANC-aws-0018..0022, inclusive os blocos) e oci como
   allow_capable (ANC-oci-0011..0013). Efeito fixo só nas 5 formas aws; oci volta a não restringir, e suas realizações
   contra deny voltam: AMBIGUOUS 7 -> 11.
+
+ADENDO 2026-11-05T01:14:12-03:00 (America/Recife), rodada v4-r2: bo/base 93094bf, PILOT-NET-GLOSS 93094bf (GRAIN 0.2.5 3aa6b45,
+SE 4d48d00), mesmo árbitro ARBITER-V4-2 (ARBITER.sha256 1c2d3c34f4181d21..., fecho confere arquivo a arquivo, sem recongelar).
+  Pacote novo (manifest e6574115...): mudaram canonical_units.jsonl e claims.jsonl. As 2 unidades novas não mexem no mapa:
+  - CU-aws-aws_security_group_rule UNKNOWN -> COMPONENT (pai aws_security_group): o mapeador mapeia átomos; tipo e pai
+    da unidade não entram em linha do C09.
+  - CU-aws-aws_security_group_rule:prefix_list_ids UNKNOWN -> BINDING (holder -> aws_ec2_managed_prefix_list): o leitor só
+    lê alvo de referência quando o papel da ponta é atributo (forma de anexação do azurerm); a forma holder/target com o
+    atributo no sufixo do unit_id não é lida. Efeito nulo nesta rodada: o átomo aws:aws_security_group_rule:prefix_list_ids
+    só aparece em 3 ausências (AWSGCP/AWSAZ/AWSOCI), e o alvo só vira guarda refers_to_kind em alegação de política ref.
+    Fica registrado para quando o átomo entrar numa alegação.
+  mapping.sssom.tsv (b506ee5e...) e decisions_log.jsonl (e966303d...) idênticos byte a byte; mapa de vereditos idêntico
+  (9f787fb6...): alegações OK 33, UNPROVEN 165, AMBIGUOUS 11; ausências OK 316, UNPROVEN 110; compostas OK 202, UNPROVEN 12.

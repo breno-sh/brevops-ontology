@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "PILOT-NET-MAP",
- "generated_at": "2026-11-04T23:30:24-03:00",
+ "generated_at": "2026-11-05T01:14:03-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-NET-MAP.txt",
@@ -14,19 +14,19 @@
    "role_brief_version": "1.3.1",
    "role_brief_sha256": "751880c609ed7cf5efcf439ba75c2dfd4e6c1f8ec0055023414ecd1f2243d822",
    "slice": "net",
-   "bundle_sha256": "95065c263630f166afe3a2eb625a915d4b401000cc904746a6c53507a94a5f7e",
+   "bundle_sha256": "e657411505f5149cd7f33d7f886b052aba036b7b518907979e0f26938fead6aa",
    "rows_n": "635",
    "none_n": "426",
    "groups_n": "15",
    "mapping_set_id": "https://w3id.org/brevops/mapping/PILOT-NET-MAP/1",
-   "base": "e9bde7e",
+   "base": "93094bf",
    "arbiter_sha256": "1c2d3c34f4181d2134f75b9f075950f07837744d622825a7ea6a349ddcf97c57"
   },
   "inputs": [
    {
     "path": "$BO_DATA/PILOT-NET-GLOSS/bundle",
     "kind": "dir",
-    "sha256": "fd08a63267707c838b4048bc12b93e84bc0c24ddd7282b0a40c62b14b0ef86d5"
+    "sha256": "53f6424f5e99f0c1373757eba270ef5c8867209c9a2c6a08d3cd045ed48c4c14"
    },
    {
     "path": "$BO_REPO/briefs/MAPPER_BRIEF.txt",
@@ -34,8 +34,8 @@
     "sha256": "751880c609ed7cf5efcf439ba75c2dfd4e6c1f8ec0055023414ecd1f2243d822"
    }
   ],
-  "recorded_at": "2026-11-04T23:30:24-03:00"
+  "recorded_at": "2026-11-05T01:14:03-03:00"
  },
  "sources": [],
- "notes": "PILOT-NET-GLOSS e9bde7e: efeito exclusivo só aws; oci allow_capable"
+ "notes": "PILOT-NET-GLOSS 93094bf (GRAIN 0.2.5, SE 4d48d00): mapeamento e vereditos idênticos"
 }
