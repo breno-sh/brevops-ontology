@@ -223,23 +223,32 @@ def c25() -> dict:
                    "block_path": string(r"^[A-Za-z0-9_]+(\.[A-Za-z0-9_]+)*$"), "fact": enum(*FACTS),
                    "doc": side, "spec": side, "evidence": arr(string(r"^SE-[A-Za-z0-9_\-]+$"), 1, unique=True),
                    "kind": string(r"^[a-z]+_x_[a-z]+$", description="natureza da disputa (ex.: observed_x_derived)"),
-                   "status": enum("aberta", "resolvida-por-observação",
-                                  description="ausente = aberta (registros anteriores à emenda 1.5.0)"),
+                   "status": enum("aberta", "resolvida-por-observação", "resolvida-por-publicação",
+                                  description="ausente = aberta (registros anteriores à emenda 1.5.0); "
+                                              "resolvida-por-publicação = R6 do PREREG (emenda 1.6.0)"),
                    "sides": arr(string(r"^SE-[A-Za-z0-9_\-]+$"), 2, unique=True, maxItems=2,
                                 description="ids dos dois lados (PUBLISHED ou DERIVED, R2 corrigida)"),
                    "resolved_to": string(r"^(spec|doc|SE-[A-Za-z0-9_\-]+)$"),
-                   "observation_id": string(r"^SE-[A-Za-z0-9_\-]+$"), "resolved_at": c00("datetime")},
+                   "observation_id": string(r"^SE-[A-Za-z0-9_\-]+$"),
+                   "publication_id": string(r"^SE-[A-Za-z0-9_\-]+$",
+                                            description="fato PUBLISHED literal de fonte fixada que resolveu (R6)"),
+                   "resolved_at": c00("datetime")},
                   ["provider", "terraform_resource_type", "fact", "evidence"],
                   allOf=[{"if": {"properties": {"status": const("resolvida-por-observação")}, "required": ["status"]},
-                          "then": {"required": ["sides", "resolved_to", "observation_id"]},
-                          "else": {"not": {"anyOf": [{"required": ["resolved_to"]}, {"required": ["observation_id"]}]}}}])
-    dp, dr = header("bo.spec_disputes/1", "C25", "1.5.0", module=False, generated=False)
+                          "then": {"required": ["sides", "resolved_to", "observation_id"]}},
+                         {"if": {"properties": {"status": const("resolvida-por-publicação")}, "required": ["status"]},
+                          "then": {"required": ["sides", "resolved_to", "publication_id"]}},
+                         {"if": {"properties": {"status": enum("resolvida-por-observação", "resolvida-por-publicação")},
+                                 "required": ["status"]},
+                          "else": {"not": {"anyOf": [{"required": [k]} for k in
+                                                     ("resolved_to", "observation_id", "publication_id")]}}}])
+    dp, dr = header("bo.spec_disputes/1", "C25", "1.6.0", module=False, generated=False)
     dp.pop("contract_version"); dp.pop("contract")
     disputes_doc = obj({**dp, "module": c00("stable_id"), "note": text(3), "contract": const("C25"),
-                        "contract_version": enum("1.5.0"), "generated_at": c00("datetime"),
+                        "contract_version": enum("1.5.0", "1.6.0"), "generated_at": c00("datetime"),
                         "disputes": arr(local("spec_dispute"))}, ["schema", "module", "disputes"])
     return contract_schema(
-        "C25", "service_evidence", "1.5.0", "evidência de API e docs ligada ao pin", status="amended",
+        "C25", "service_evidence", "1.6.0", "evidência de API e docs ligada ao pin", status="amended",
         description="Fato de API/docs ligado ao pin: recurso de API, identidade, chave de importação, controlador de "
                     "ciclo de vida, dono, alcance, estado de conexão, efeito, precedência, suporte a tag/TTL; nível "
                     "(publicado | derivado | interpretado) e citação. Citação publicada separada de inferência; "
@@ -248,7 +257,7 @@ def c25() -> dict:
                file_kind("protocol_support", "protocol_support.jsonl", "jsonl", "protocol_support", "record",
                          "suporte documentado de cada tipo de sonda por provedor (emenda 1.2.0; consumido pelo PROBEKIT)"),
                file_kind("spec_disputes", "spec_disputes.json", "json", "spec_disputes", "document",
-                         "disputas spec x doc e a resolução por observação (emenda 1.5.0)")],
+                         "disputas spec x doc e a resolução por observação (1.5.0) ou por publicação literal (R6, 1.6.0)")],
         defs={"service_evidence": se, "protocol_support": protocol_support(), "item_identity": item_identity,
               "spec_dispute": dispute, "spec_disputes": disputes_doc}, producers=["SERVICE-EVIDENCE"],
         rules=["C25-LEVEL: publicado cita a sentença (citation, doc ou schema do binário assinado); derivado aponta "
@@ -263,6 +272,9 @@ def c25() -> dict:
                "C25-DISPUTE-REG: spec_disputes.json registra cada disputa; resolvida-por-observação exige os dois "
                "lados (sides), resolved_to (spec, doc ou o id do lado) e observation_id; o lado vencedor é um dos lados "
                "e a observação não é um deles; uma disputa por (fato, natureza) (emenda 1.5.0)",
+               "C25-DISPUTE-PUB: resolvida-por-publicação (R6 do PREREG) só em disputa derived_x_derived; exige sides, "
+               "resolved_to e publication_id (fato PUBLISHED literal de fonte fixada), não exige observation_id; o "
+               "fato publicado não é um dos lados e o vencedor é um dos lados (emenda 1.6.0)",
                "C25-ITEM: item_identity tem has_id; com id, requires_parent; exigindo o pai, parent_attribute e "
                "parent_type; namespace_cascade tem cascade booleano (GRAIN 0.1.11)",
                "C25-UNKNOWN: unknown cita a publicação consultada (consulted, citation, doc ou schema); level é opcional",

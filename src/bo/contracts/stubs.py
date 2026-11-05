@@ -1037,7 +1037,7 @@ def c25() -> dict:
            "status": "stated", "value": {"aspect": "namespace_cascade", "cascade": False}, "level": "published",
            "citation": {"uri": "https://docs.example.org/provider-d/object-storage", "retrieved_at": TS,
                         "sentence": "frase sintética: o contêiner precisa estar vazio para ser apagado"}}
-    disp = {"schema": "bo.spec_disputes/1", "module": "SERVICE-EVIDENCE", "contract": "C25", "contract_version": "1.5.0",
+    disp = {"schema": "bo.spec_disputes/1", "module": "SERVICE-EVIDENCE", "contract": "C25", "contract_version": "1.6.0",
             "generated_at": TS3, "note": "conflito spec x doc: os dois fatos ficam no C25",
             "disputes": [
                 {"provider": "azurerm", "terraform_resource_type": "azurerm_network_interface_security_group_association",
@@ -1047,7 +1047,12 @@ def c25() -> dict:
                  "fact": "lifecycle_controller", "doc": {"kind": "self", "rule": "R-LIFE-API"},
                  "spec": {"kind": "parent", "rule": "R-LIFE-SPEC-PARENT"}, "evidence": ["SE-oci-0008", "SE-oci-0010"],
                  "status": "resolvida-por-observação", "sides": ["SE-oci-0008", "SE-oci-0010"],
-                 "resolved_to": "spec", "observation_id": "SE-oci-0009", "resolved_at": TS3}]}
+                 "resolved_to": "spec", "observation_id": "SE-oci-0009", "resolved_at": TS3},
+                {"provider": "oci", "terraform_resource_type": "oci_core_network_security_group",
+                 "fact": "effective_scope", "kind": "derived_x_derived", "doc": {"kind": "vnic", "rule": "R-REACH-A"},
+                 "spec": {"kind": "subnet", "rule": "R-REACH-B"}, "evidence": ["SE-oci-0011", "SE-oci-0012"],
+                 "status": "resolvida-por-publicação", "sides": ["SE-oci-0011", "SE-oci-0012"],
+                 "resolved_to": "SE-oci-0011", "publication_id": "SE-oci-0013", "resolved_at": TS3}]}
     return {"C25/service_evidence.jsonl": jsonl([e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12]),
             "C25/protocol_support.jsonl": jsonl(ps), "C25/spec_disputes.json": dumps(disp)}
 

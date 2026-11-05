@@ -1373,6 +1373,14 @@ def r_spec_disputes(objs, ctx, path):
                 errs.append(f"{w}: a observação é um dos lados da disputa")
             if not set(sides) <= set(d["evidence"]) | set(sides):
                 errs.append(f"{w}: lados fora da evidência")
+        elif d.get("status") == "resolvida-por-publicação":
+            sides = d["sides"]
+            if d.get("kind", "derived_x_derived") != "derived_x_derived":
+                errs.append(f"{w}: resolvida-por-publicação só em disputa derived_x_derived (R6), não {d['kind']}")
+            if d["resolved_to"].startswith("SE-") and d["resolved_to"] not in sides:
+                errs.append(f"{w}: resolved_to {d['resolved_to']} não é um dos lados")
+            if d["publication_id"] in sides:
+                errs.append(f"{w}: o fato publicado é um dos lados da disputa")
     errs += dup(keys, "disputa (provider, tipo, bloco, fato, natureza)")
     return errs
 

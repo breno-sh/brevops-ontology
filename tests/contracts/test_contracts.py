@@ -393,7 +393,7 @@ def test_emenda9_c05_unidades(sch):
 
 # ----------------------------------------------------------------------------------- emenda 10 (nível observed)
 def test_c25_observado_e_disputa(sch):
-    assert sch["C25"]["x-bo-contract"]["version"] in ("1.4.0", "1.5.0")
+    assert sch["C25"]["x-bo-contract"]["version"] in ("1.4.0", "1.5.0", "1.6.0")
     recs = [json.loads(l) for l in (ROOT / "contracts/stubs/C25/service_evidence.jsonl").read_text().splitlines()]
     obs = [r for r in recs if r.get("level") == "observed"]
     assert obs and all(r["repetitions"] >= 2 and r["observation_ref"]["path"].startswith(("$BO_DATA/OBS-GAPS/", "$BO_DATA/OBS-GAPS-AZ/"))
@@ -404,7 +404,7 @@ def test_c25_observado_e_disputa(sch):
 
 # ----------------------------------------------------------------------------------- emenda 11 (C25 1.5.0)
 def test_c25_disputas_e_aspectos(sch):
-    assert sch["C25"]["x-bo-contract"]["version"] == "1.5.0"
+    assert sch["C25"]["x-bo-contract"]["version"] in ("1.5.0", "1.6.0")
     assert validate.validate("spec_disputes", ROOT / "contracts/stubs/C25/spec_disputes.json").ok
     real = ROOT / "results/SERVICE-EVIDENCE/spec_disputes.json"
     if real.is_file():
@@ -421,3 +421,12 @@ def test_registro_externo_nao_mexe_nas_cadeias():
     for cid in catalog.NAMES:
         ch = amendments.chain(cid)
         assert len(ch) == len(set(ch))
+
+
+# ----------------------------------------------------------------------------------- emenda 13 (C25 1.6.0, R6)
+def test_c25_resolvida_por_publicacao(sch):
+    assert sch["C25"]["x-bo-contract"]["version"] == "1.6.0"
+    doc = json.loads((ROOT / "contracts/stubs/C25/spec_disputes.json").read_text())
+    pub = [d for d in doc["disputes"] if d.get("status") == "resolvida-por-publicação"]
+    assert pub and all("observation_id" not in d and d.get("publication_id") for d in pub)
+    assert validate.validate("spec_disputes", ROOT / "contracts/stubs/C25/spec_disputes.json").ok

@@ -2,7 +2,7 @@
  "schema": "bo.spec_disputes/1",
  "module": "SERVICE-EVIDENCE",
  "contract": "C25",
- "contract_version": "1.5.0",
+ "contract_version": "1.6.0",
  "generated_at": "2026-11-03T11:00:00-03:00",
  "note": "conflito spec x doc: os dois fatos ficam no C25",
  "disputes": [
@@ -46,6 +46,32 @@
    ],
    "resolved_to": "spec",
    "observation_id": "SE-oci-0009",
+   "resolved_at": "2026-11-03T11:00:00-03:00"
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_core_network_security_group",
+   "fact": "effective_scope",
+   "kind": "derived_x_derived",
+   "doc": {
+    "kind": "vnic",
+    "rule": "R-REACH-A"
+   },
+   "spec": {
+    "kind": "subnet",
+    "rule": "R-REACH-B"
+   },
+   "evidence": [
+    "SE-oci-0011",
+    "SE-oci-0012"
+   ],
+   "status": "resolvida-por-publicação",
+   "sides": [
+    "SE-oci-0011",
+    "SE-oci-0012"
+   ],
+   "resolved_to": "SE-oci-0011",
+   "publication_id": "SE-oci-0013",
    "resolved_at": "2026-11-03T11:00:00-03:00"
   }
  ]

@@ -132,6 +132,11 @@ AMENDMENTS = [
     {"contract": "C00", "from": "3.2.0", "to": "3.3.0", "at": "2026-11-04T18:45:00-03:00", "requested_by": "PILOT-NET-GLOSS",
      "source": "results/PILOT-NET-GLOSS/CONTRACT_CHANGE.txt (CC-NET-5)",
      "change": "evidence_level aceita observed (mesma semântica do C25 1.4.0; sem model_id); o C19 herda"},
+    # ---- emenda 13 (2026-11-04, R6 do PREREG b7f804d)
+    {"contract": "C25", "from": "1.5.0", "to": "1.6.0", "at": "2026-11-04T22:15:00-03:00", "requested_by": "COORD",
+     "source": "PREREG R6 (b7f804d)",
+     "change": "spec_disputes: status resolvida-por-publicação (derived_x_derived) com resolved_to e publication_id; "
+               "observation_id não exigido"},
 ]
 
 
