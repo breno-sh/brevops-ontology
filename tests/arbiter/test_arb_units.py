@@ -353,3 +353,26 @@ def test_todo_ok_dos_mapeamentos_calibrados_tem_a_semantica_de_acordo(path):
         pytest.skip(f"mapeamento calibrado ausente: {path}")
     r = semcheck.check(load([str(path)]))
     assert r["ok_claims"] > 0 and r["pass"], r
+
+
+# ------------------------------------ combinadores de entrada posicional única (TRANSFORMS 1.6.0, 474923d)
+@pytest.mark.parametrize("name,value,expected", [
+    ("wrap_list", "logs/", ["logs/"]),
+    ("wrap_list", {"from_port": 80, "to_port": 443}, [{"from_port": 80, "to_port": 443}]),
+    ("unwrap_single", [{"k": "v"}], {"k": "v"}),
+    ("unwrap_single", ["a"], "a"),
+])
+def test_combinador_posicional_aceita_objeto_e_escalar(name, value, expected):
+    """Objeto JSON vai como VALOR (apply_positional), não como entradas nomeadas do combinador."""
+    from bo.arbiter.claimcheck import _reg_apply
+    assert _reg_apply({"name": name, "params": {}}, value) == expected
+
+
+def test_dominio_de_wrap_list_com_objetos_no_dominio():
+    from bo.arbiter.claimcheck import collection_vdr
+    m = {"datatype": "map", "key_type": "string", "item_type": B.STR}
+    e = {"translation_fn": {"name": "wrap_list", "params": {}}, "subject_value_type": B.ENUM("a", "b"),
+         "object_value_type": {"datatype": "list", "item_type": B.ENUM("a", "b", "c")}}
+    assert collection_vdr(e) == "subset"
+    assert collection_vdr(dict(e, subject_value_type=m, object_value_type={"datatype": "list", "item_type": m})) \
+        in ("unknown", "subset")

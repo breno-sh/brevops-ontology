@@ -134,6 +134,9 @@ def _reg_apply(chain, v, ctx=None):
         p = item.get("params") or {}
         if isinstance(t, TR.Scalar):
             v = TR.apply_scalar(item["name"], v, p, ctx)
+        elif getattr(t, "positional", ()):
+            # entrada posicional única (TRANSFORMS 1.6.0): o valor vai como valor, inclusive objeto JSON
+            v = TR.apply_positional(item["name"], v, ctx)
         else:
             ports = [i[0] for i in t.inputs]
             out = TR.apply_combinator(item["name"], v if isinstance(v, dict) else {ports[0]: v}, ctx)

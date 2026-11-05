@@ -59,7 +59,8 @@ CONVENTIONS = [
                        "terceira vez (ARBITER-20261104-3), pela quarta (ARBITER-20261104-4) sobre a emenda 9 do "
                        "CONTRACTS e o último SERVICE-EVIDENCE e GRAIN da rodada, pela quinta (ARBITER-20261104-5) "
                        "sobre a emenda 10 do CONTRACTS e os fatos OBSERVED do SERVICE-EVIDENCE consumidos pelo GRAIN, "
-                       "e pela sexta (ARBITER-20261104-6) sobre a emenda 12 do CONTRACTS (observed no C00), sempre com o HEAD de bo/base conferido "
+                       "pela sexta (ARBITER-20261104-6) sobre a emenda 12 do CONTRACTS (observed no C00), "
+                       "e no ciclo v4 (ARBITER-V4) sobre a emenda 3 do SEMANTICS e o GRAIN 0.2, com o piso semântico, sempre com o HEAD de bo/base conferido "
                        "dentro da trava. Comprovante vigente: o de nome mais recente em "
                        "results/ARBITERLIB/freeze_receipt_ARBITER-*.json; os anteriores ficam como histórico. Motivo: contrato e referência a montante, "
                        "não ajuste de resultado (CC-1 do PILOT-STO-MAP)."),
