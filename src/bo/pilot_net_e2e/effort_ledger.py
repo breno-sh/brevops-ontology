@@ -57,7 +57,7 @@ LEDGER = {
         {"step": "v4-r2: integração com o GRAIN 0.2.4 (parent_symbol, name_key, multiplicity)", "start": "00:27",
          "end": "00:32", "agent_hours": 0.08},
         {"step": "v4-r2: rebase sobre GLOSS 93094bf e NET-MAP 79223e5, E2E de ponta a ponta, gates e merge",
-         "start": "01:18", "end": "01:35", "agent_hours": 0.28},
+         "start": "01:18", "end": "01:27", "agent_hours": 0.15},
     ],
     "wait": [{"what": "PILOT-NET-MAP em bo/base (rebase sobre GRAIN 0.1.7/0.1.8 e oráculo regerado no meio)",
               "start": "10:29", "end": "11:03", "hours": 0.57},
