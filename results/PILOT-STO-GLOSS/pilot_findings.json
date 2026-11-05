@@ -1,7 +1,7 @@
 {
  "c25_shape": {
-  "grain_fact_records": 1086,
-  "stated": 1081,
+  "grain_fact_records": 1106,
+  "stated": 1101,
   "stated_by_aspect": {
    "effective_scope/None": 200,
    "effective_scope/attribute_scope": 2,
@@ -13,21 +13,21 @@
    "identity/block_schema": 93,
    "identity/cardinality": 1,
    "identity/id_template": 17,
-   "identity/reference_phrase": 25,
-   "identity/reference_target": 15,
+   "identity/reference_phrase": 36,
+   "identity/reference_target": 20,
    "identity/resource_identity_schema": 21,
    "identity/shared_identity_key": 12,
    "identity/spec_facet_member": 5,
    "identity/spec_field": 60,
    "identity/twin_type": 8,
    "import_key/import_formats": 22,
-   "lifecycle_controller/None": 109,
+   "lifecycle_controller/None": 111,
    "lifecycle_controller/block_lifecycle": 93,
    "lifecycle_controller/deletion_policy": 3,
    "lifecycle_controller/destroy_effect": 6,
    "lifecycle_controller/spec_operation": 15,
    "lifecycle_controller/terraform_timeouts": 15,
-   "owner/None": 121,
+   "owner/None": 123,
    "owner/block_config_owner": 93,
    "owner/identity_scope": 9,
    "owner/parent": 5,
@@ -35,7 +35,7 @@
    "owner/spec_operation": 18
   },
   "status_unknown": 5,
-  "with_block_path": 744
+  "with_block_path": 754
  },
  "decided_units": 65,
  "excluded": {
@@ -54,7 +54,7 @@
   "oci_objectstorage_private_endpoint": "acesso de rede, não acesso público ao conteúdo",
   "oci_objectstorage_replication_policy": "replicação: fora das quatro facetas"
  },
- "generated_at": "2026-11-04T18:28:38-03:00",
+ "generated_at": "2026-11-04T23:04:51-03:00",
  "grain": {
   "aws": {
    "atoms": 161,
@@ -68,6 +68,8 @@
      "api_resource: ponte sem recurso de API",
      "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
      "identity: aspecto spec_field sem tradução na tabela",
+     "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
+     "identity: referência hosted_zone_id com alvo ambíguo ['aws_controltower_landing_zone', 'aws_route53_zone']",
      "lifecycle_controller: aspecto spec_operation: sem tradução (R-GRAIN-T57)",
      "lifecycle_controller: camada Terraform: create/delete do provider, não o objeto na API",
      "lifecycle_controller: terraform_timeouts é configuração do Terraform (fora do domínio)",
@@ -78,7 +80,7 @@
     "rule": "GRAIN-G4-ENTITY",
     "type": "aws_s3_bucket"
    },
-   "evidence_records": 491,
+   "evidence_records": 497,
    "grains": {
     "COMPONENT": 2,
     "ENTITY": 1,
@@ -128,6 +130,8 @@
       "api_resource: ponte sem recurso de API",
       "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
       "identity: aspecto spec_field sem tradução na tabela",
+      "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
+      "identity: referência hosted_zone_id com alvo ambíguo ['aws_controltower_landing_zone', 'aws_route53_zone']",
       "lifecycle_controller: aspecto spec_operation: sem tradução (R-GRAIN-T57)",
       "lifecycle_controller: camada Terraform: create/delete do provider, não o objeto na API",
       "lifecycle_controller: terraform_timeouts é configuração do Terraform (fora do domínio)",
@@ -279,22 +283,22 @@
     "rule": "GRAIN-G0-IDENTITY",
     "type": "azurerm_storage_container"
    },
-   "evidence_records": 364,
+   "evidence_records": 376,
    "grains": {
     "COMPONENT": 1,
     "ENTITY": 1,
     "FACET": 9,
-    "UNKNOWN": 22
+    "UNKNOWN": 24
    },
    "missing": {
     "api_resource": 4,
     "effective_scope": 15,
-    "identity": 18,
-    "lifecycle_controller": 15,
-    "owner": 15
+    "identity": 20,
+    "lifecycle_controller": 14,
+    "owner": 13
    },
    "rules": {
-    "GRAIN-G0-IDENTITY": 18,
+    "GRAIN-G0-IDENTITY": 20,
     "GRAIN-G0-NEEDS": 4,
     "GRAIN-G2-CHILD": 1,
     "GRAIN-G3-FACET": 9,
@@ -328,12 +332,11 @@
      "identity_class": "UNRESOLVED",
      "missing": [
       "identity",
-      "lifecycle_controller",
-      "owner",
       "effective_scope"
      ],
      "reasons": [
       "api_resource: aspecto spec_bridge_candidates: sem tradução (R-GRAIN-T48)",
+      "api_resource: objeto da ponte com ciclo de vida do pai: aspecto (T49)",
       "effective_scope: camada Terraform: não é o alcance na API",
       "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
       "identity: chave compartilhada ['resource_group_name', 'storage_account_name'] sem raiz única com ciclo de vida self entre os pares (0 raiz(es))",
@@ -391,9 +394,10 @@
       "identity"
      ],
      "reasons": [
+      "identity: ['storage_account_id'] referencia o pai de caminho da spec (G2-CHILD)",
       "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
       "identity: aspecto spec_field sem tradução na tabela",
-      "identity: contido em resource (['azurerm_security_center_storage_defender', 'azurerm_storage_account', 'azurerm_storage_account_customer_managed_key', 'azurerm_storage_account_network_rules', 'azurerm_storage_account_queue_properties', 'azurerm_storage_account_static_website', 'azurerm_storage_account_table_properties', 'azurerm_storage_blob_inventory_policy']) sem atributo de referência ao contêiner na identidade",
+      "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
       "import_key: formato de importação sem atributos nomeados",
       "lifecycle_controller: aspecto spec_operation: sem tradução (R-GRAIN-T57)",
       "lifecycle_controller: camada Terraform: create/delete do provider, não o objeto na API",
@@ -405,7 +409,7 @@
      "rule": "GRAIN-G0-IDENTITY"
     }
    },
-   "units": 33
+   "units": 35
   },
   "google": {
    "atoms": 112,
@@ -423,7 +427,7 @@
      "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
      "import_key: formato de importação sem atributos nomeados",
      "lifecycle_controller: aspecto spec_operation: sem tradução (R-GRAIN-T57)",
-     "lifecycle_controller: política de remoção sem valores documentados",
+     "lifecycle_controller: deletion_policy do Terraform (o que o destroy faz), fora da decisão de grão (T31, CC-NET-3)",
      "lifecycle_controller: terraform_timeouts é configuração do Terraform (fora do domínio)",
      "owner: aspecto spec_operation sem tradução na tabela",
      "owner: camada Terraform: onde o código escreve, não o dono da configuração"
@@ -462,7 +466,7 @@
       "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
       "import_key: formato de importação sem atributos nomeados",
       "lifecycle_controller: aspecto spec_operation: sem tradução (R-GRAIN-T57)",
-      "lifecycle_controller: política de remoção sem valores documentados",
+      "lifecycle_controller: deletion_policy do Terraform (o que o destroy faz), fora da decisão de grão (T31, CC-NET-3)",
       "lifecycle_controller: terraform_timeouts é configuração do Terraform (fora do domínio)",
       "owner: aspecto spec_operation sem tradução na tabela",
       "owner: camada Terraform: onde o código escreve, não o dono da configuração"
@@ -478,7 +482,7 @@
       "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
       "lifecycle_controller: aspecto spec_operation: sem tradução (R-GRAIN-T57)",
       "lifecycle_controller: camada Terraform: create/delete do provider, não o objeto na API",
-      "lifecycle_controller: política de remoção sem valores documentados",
+      "lifecycle_controller: deletion_policy do Terraform (o que o destroy faz), fora da decisão de grão (T31, CC-NET-3)",
       "lifecycle_controller: terraform_timeouts é configuração do Terraform (fora do domínio)",
       "owner: camada Terraform: onde o código escreve, não o dono da configuração"
      ],
@@ -494,8 +498,8 @@
      ],
      "reasons": [
       "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
+      "lifecycle_controller: deletion_policy do Terraform (o que o destroy faz), fora da decisão de grão (T31, CC-NET-3)",
       "lifecycle_controller: destroy_effect not_deleted: não diz quem apaga",
-      "lifecycle_controller: política de remoção sem valores documentados",
       "owner: not_documented"
      ],
      "rule": "GRAIN-G0-IDENTITY"
@@ -580,7 +584,7 @@
     "rule": "GRAIN-G4-ENTITY",
     "type": "oci_objectstorage_bucket"
    },
-   "evidence_records": 73,
+   "evidence_records": 75,
    "grains": {
     "ENTITY": 1,
     "UNKNOWN": 6
@@ -841,7 +845,7 @@
   ]
  },
  "slice_atoms": 562,
- "slice_evidence_records": 1243,
+ "slice_evidence_records": 1263,
  "slice_types": 23,
- "units": 121
+ "units": 123
 }
