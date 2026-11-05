@@ -2,117 +2,117 @@
  "arbiter": {
   "by_kind": {
    "absence|OK": 316,
-   "absence|UNPROVEN": 107,
+   "absence|UNPROVEN": 117,
    "close|OK": 16,
-   "close|UNPROVEN": 49,
-   "composite|OK": 302,
+   "close|UNPROVEN": 45,
+   "composite|OK": 138,
    "composite|UNPROVEN": 12,
-   "exact|AMBIGUOUS": 15,
-   "exact|OK": 15,
-   "exact|UNPROVEN": 87,
+   "exact|AMBIGUOUS": 7,
+   "exact|OK": 19,
+   "exact|UNPROVEN": 79,
    "group|UNPROVEN": 15,
    "related|UNPROVEN": 19
   },
   "rules": {
-   "ARB-ABSENCE-KIND": 107,
-   "ARB-REAL-MULTI": 15,
+   "ARB-ABSENCE-KIND": 117,
+   "ARB-REAL-MULTI": 7,
    "ARB-RELATED-EV": 19,
-   "EVIDENCE-DOC": 105,
-   "KIND-UNKNOWN": 74
+   "EVIDENCE-DOC": 103,
+   "KIND-UNKNOWN": 64
   },
-  "verdict_map_sha256": "f208e4bb36f27317a7f5aea3bb9ed61546e2cc45e2f41ff0944748992aff2f2e",
+  "verdict_map_sha256": "bbd1678a3568082ac5e4ab4371081625a862ccdf8f4b5f07b5b3ce3118303ed3",
   "verdicts": {
-   "AMBIGUOUS": 15,
-   "OK": 347,
-   "UNPROVEN": 277
+   "AMBIGUOUS": 7,
+   "OK": 351,
+   "UNPROVEN": 275
   },
   "verdicts_separated": {
    "absences": {
     "OK": 316,
-    "UNPROVEN": 107
+    "UNPROVEN": 117
    },
    "claims": {
-    "AMBIGUOUS": 15,
-    "OK": 31,
-    "UNPROVEN": 170
+    "AMBIGUOUS": 7,
+    "OK": 35,
+    "UNPROVEN": 158
    },
    "composites": {
-    "OK": 302,
+    "OK": 138,
     "UNPROVEN": 12
    }
   }
  },
  "bundle": {
   "files": {
-   "candidates.jsonl": "e423aa830c6426572ad010d99caf400e7fff8d4efc3155da99b42330e206721b",
+   "candidates.jsonl": "757d8f6cf79ec6592af2f84ed6d18eb5eaf8168638050c35c104e5699a31263d",
    "canonical_atoms.jsonl": "84148889876d60ed3ebc89f0e7e7efbf9aa221b8987e71ffcce3590599e88483",
    "canonical_units.jsonl": "c100663a179983873a303353a6591ad16b0d59ba46ec5a4428be1421613fe315",
-   "claims.jsonl": "02818e1a6795159d35a6c488974cdeb3eda289c531f7b13a8188a19d4af2490a",
-   "decisions.jsonl": "46d62cf365afc25f4fe7d6b6431b02312bce777efd7e5abb43499560cf01dc89",
+   "claims.jsonl": "8d47b796f587d0e2719d29ead341d6de21a1d80d41fedaf4743beec88370ef9e",
+   "decisions.jsonl": "ac6804377596004de486de2f2760e0b500e5aaeddef6359dddd26df4ddf2b631",
    "glossary.jsonl": "70df8523a26a755f1eb03a275d4908bbcaaf4965c0b36ebcd6f64736af5de96e",
    "value_space.jsonl": "c1bd8ce4f969a3aedf722374d7c2af1ceeecb320e23acda47a8215f660ee0f75"
   },
   "form": "official",
-  "manifest_sha256": "977981a8e480836f807b403fce09b83c645dd7679cec5d32b9594dbd4ad59c5e",
+  "manifest_sha256": "08f04210447aa303c1f5271945e9ea4623f9775d7ce4b6fdfa9cd8fea0f30c22",
   "official": true,
   "path": "/Users/breno/doutorado/brevops-data/PILOT-NET-GLOSS/bundle"
  },
  "candidates": {
-  "n": 56,
-  "taken_as_direct": 42
+  "n": 95,
+  "taken_as_direct": 38
  },
  "checks": {
   "arbiter": {
    "frozen_ok": true,
    "rc": 0,
    "tail": [
-    "check-unproven: 0 OK sem prova mínima; UNPROVEN = 170",
-    "[2026-11-04T23:15:45-03:00] run: 216 alegação(ões) correntes de 1 arquivo(s); {\"AMBIGUOUS\": 15, \"OK\": 31, \"UNPROVEN\": 170}; compostos {\"OK\": 302, \"UNPROVEN\": 12}; -> /Users/breno/doutorado/brevops-data/PILOT-NET-MAP/.staging/verdicts.jsonl"
+    "check-unproven: 0 OK sem prova mínima; UNPROVEN = 158",
+    "[2026-11-04T23:24:51-03:00] run: 200 alegação(ões) correntes de 1 arquivo(s); {\"AMBIGUOUS\": 7, \"OK\": 35, \"UNPROVEN\": 158}; compostos {\"OK\": 138, \"UNPROVEN\": 12}; -> /Users/breno/doutorado/brevops-data/PILOT-NET-MAP/.staging/verdicts.jsonl"
    ]
   },
   "c09_validate": {
    "rc": 0,
    "tail": [
-    "[2026-11-04T23:15:41-03:00] C09:correspondences /Users/breno/doutorado/brevops-data/PILOT-NET-MAP/.staging/mapping.sssom.tsv: 639 item(ns), 0 erro(s) -> OK"
+    "[2026-11-04T23:24:48-03:00] C09:correspondences /Users/breno/doutorado/brevops-data/PILOT-NET-MAP/.staging/mapping.sssom.tsv: 633 item(ns), 0 erro(s) -> OK"
    ]
   },
   "skos_roundtrip": {
    "rc": 0,
    "tail": [
-    "[2026-11-04T23:15:43-03:00] skos_roundtrip --file /Users/breno/doutorado/brevops-data/PILOT-NET-MAP/.staging/mapping.sssom.tsv: 639 linha(s), 9/9 -> PASS"
+    "[2026-11-04T23:24:50-03:00] skos_roundtrip --file /Users/breno/doutorado/brevops-data/PILOT-NET-MAP/.staging/mapping.sssom.tsv: 633 linha(s), 9/9 -> PASS"
    ]
   }
  },
  "counts": {
   "absence_by_kind": {
    "ABSENCE_DEMONSTRATED": 176,
-   "UNRESOLVED": 107,
+   "UNRESOLVED": 117,
    "UNSUPPORTED_BY_TRANSLATOR": 140
   },
   "by_evidence_state": {
-   "DOC_SUPPORTED": 46,
-   "STRUCTURALLY_VALID": 593
+   "DOC_SUPPORTED": 42,
+   "STRUCTURALLY_VALID": 591
   },
   "by_pair_kind": {
-   "AWSAZ|absence": 76,
-   "AWSAZ|claim": 46,
+   "AWSAZ|absence": 78,
+   "AWSAZ|claim": 44,
    "AWSAZ|group": 3,
-   "AWSGCP|absence": 75,
-   "AWSGCP|claim": 33,
+   "AWSGCP|absence": 76,
+   "AWSGCP|claim": 28,
    "AWSOCI|absence": 86,
    "AWSOCI|claim": 53,
-   "AZOCI|absence": 59,
-   "AZOCI|claim": 25,
+   "AZOCI|absence": 65,
+   "AZOCI|claim": 19,
    "AZOCI|group": 12,
    "GCPAZ|absence": 51,
    "GCPAZ|claim": 30,
-   "GCPOCI|absence": 76,
-   "GCPOCI|claim": 14
+   "GCPOCI|absence": 77,
+   "GCPOCI|claim": 11
   },
   "by_relation": {
-   "close": 65,
-   "exact": 132,
-   "related": 442
+   "close": 61,
+   "exact": 120,
+   "related": 452
   },
   "canonical_atoms": 219,
   "canonical_atoms_by_provider": {
@@ -123,18 +123,43 @@
   },
   "fixed_default": 0,
   "groups": 15,
-  "rows": 639,
-  "rows_with_projection": 126
+  "rows": 633,
+  "rows_with_projection": 120
  },
- "decisions_log_sha256": "13d127aaec69c85e6b5e782bbe7f381600ac12171374d11af0bbcff3e07968f5",
- "effect_resolved": {},
- "generated_at": "2026-11-04T23:15:45-03:00",
+ "decisions_log_sha256": "d3fa5946ef1c4d8c6f3ce9e074a419d6ecbe373bb39157e8081c9c4579e6ffc6",
+ "effect_resolved": {
+  "a_sge": [
+   "ANC-aws-0019"
+  ],
+  "a_sgi": [
+   "ANC-aws-0018"
+  ],
+  "a_sgr": [
+   "ANC-aws-0020"
+  ],
+  "a_veg": [
+   "ANC-aws-0022"
+  ],
+  "a_vin": [
+   "ANC-aws-0021"
+  ],
+  "o_nsg": [
+   "ANC-oci-0011"
+  ],
+  "o_sle": [
+   "ANC-oci-0013"
+  ],
+  "o_sli": [
+   "ANC-oci-0012"
+  ]
+ },
+ "generated_at": "2026-11-04T23:24:51-03:00",
  "mapping_date": "2026-11-04",
  "mapping_set_id": "https://w3id.org/brevops/mapping/PILOT-NET-MAP/1",
- "mapping_sha256": "4293370123073c0b7924f02075fdf7a160c0fc54e6384990d1450254b70ca679",
+ "mapping_sha256": "e18e45e70edbd692ddd4d4c9917e22cb19b3c06e293a7e99d00ca3ca60be02ec",
  "missing_members": [],
  "module": "PILOT-NET-MAP",
  "schema": "bo.pilot_net_map_report/1",
- "skipped_pairings": 204,
+ "skipped_pairings": 220,
  "timezone": "America/Recife"
 }

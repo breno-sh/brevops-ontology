@@ -107,3 +107,15 @@ ARBITER-V4-2 (aa01f20; ARBITER.sha256 1c2d3c34f4181d21...).
   no pacote, a rodada seguinte escreve a guarda de efeito e tira as realizações deny. OCI segue sem frase literal.
   Alvos de referência novos: lidos das pontas das unidades BINDING do C19 (4 átomos de anexação do azurerm), que
   viram guarda refers_to_kind e perda context_dependence; os vereditos não mudam (falta frase publicada nos dois lados).
+
+ADENDO 2026-11-04T23:26:00-03:00 (America/Recife): bo/base c6ba8ea, PILOT-NET-GLOSS c6ba8ea, mesmo árbitro (1c2d3c34f4181d21...).
+  CC-MAP-NET-5 atendido: o pacote traz âncoras publicadas de efeito (type/block, implication allow) para os 5 formatos
+  de regra aws (ANC-aws-0018..0022) e os 3 da oci (ANC-oci-0011..0013). O efeito fica fixo em permitir nas 8 formas;
+  as guardas de efeito voltam e as realizações contra deny saem: AMBIGUOUS 15 -> 7 (os 7 restantes são realizações
+  múltiplas de referência, ARB-REAL-MULTI, não de efeito).
+  Para o GLOSSARY-AUDIT (não muda nada aqui; o mapeador usa o pacote como vem): as âncoras oci citam "A security rule
+  allows a particular type of traffic in or out of a VNIC.", que não diz exclusividade; ANC-aws-0018/0019 citam
+  "Configuration block for ingress/egress rules.", que não fala de efeito. Só as três âncoras de tipo aws trazem a
+  frase literal "You can specify allow rules, but not deny rules."
+  O fixed_default do AZOCI (efeito fixo do destino com predicado de pertença) continua fora: precisa de contexto de
+  versão fixada do provider, e o pacote oficial não traz o pin.
