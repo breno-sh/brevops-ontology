@@ -26,15 +26,17 @@
    {
     "path": "$BO_REPO/contracts",
     "kind": "dir",
-    "sha256": "a09b0768287c61b41c973bfc1d208395761fd153ab0d10afbc96badc6c1c022f",
+    "sha256": "f803cb54f15381db3abb8a51ce2d7ea36dcbe19f60bd9ac1e31a1e2f79f77009",
     "sha256_before_grain0110": "22effd7f76cd425d75668364234de3d1e373d5e80f880a08d588b37d8bf59076",
     "sha256_before_grain0111": "872d043a5f9dee87d25ff9e525448ed615c00e227cb7a60eb5eb0fc13a5a8185",
-    "sha256_before_emenda12": "0e7cc1fd6a996e1807b407300c4327b905270a7a0ef52610902099a27103a8b2"
+    "sha256_before_emenda12": "0e7cc1fd6a996e1807b407300c4327b905270a7a0ef52610902099a27103a8b2",
+    "sha256_before_v4emendas": "a09b0768287c61b41c973bfc1d208395761fd153ab0d10afbc96badc6c1c022f"
    },
    {
     "path": "$BO_REPO/transforms/transforms.yaml",
     "kind": "file",
-    "sha256": "8be0b59e4cb848b4ffee28f215d50040ce9fbe33b614f9e125acb6254fb223ac"
+    "sha256": "9f87dec18891ef744aa71e49104170ff6f8aef5ebe6f46b5860b076f06dc9102",
+    "sha256_before_v4emendas": "8be0b59e4cb848b4ffee28f215d50040ce9fbe33b614f9e125acb6254fb223ac"
    },
    {
     "path": "$BO_REPO/ontology/patterns/ONTPAT.html",
@@ -49,16 +51,18 @@
    {
     "path": "$BO_REPO/grain/GRAIN.html",
     "kind": "file",
-    "sha256": "18e46c111d6b79eebf35ea2d92b410f538a0078fed8602e7ae9106814dc8ad19",
+    "sha256": "9d387959bc30ca06627905834013cf85dd59e6b2b85ffc27bff107dd76099d97",
     "sha256_before_grain019": "27553697c43d4d22cdb9298c2004f0f01983617081580307db1d9b9a6b10d589",
     "sha256_before_grain0110": "695f7161df695ce5102ad54aa20c7e46e195e1bbec9fca4244d6116595959257",
     "sha256_before_grain0111": "99145c339a82fbed742151621b50679779401ee6fac076dbc01749083d25fdd0",
-    "sha256_before_graintest": "b17220e462aa5295a6f7ae9ccb098144ba6b5f7d1d12f60780b7691443d57c69"
+    "sha256_before_graintest": "b17220e462aa5295a6f7ae9ccb098144ba6b5f7d1d12f60780b7691443d57c69",
+    "sha256_before_v4emendas": "18e46c111d6b79eebf35ea2d92b410f538a0078fed8602e7ae9106814dc8ad19"
    },
    {
     "path": "$BO_REPO/semantics/SEMANTICS.html",
     "kind": "file",
-    "sha256": "043777b7eb8a4362f267d5b563083d1e01f2811cb9a74de2377ae986252a2993"
+    "sha256": "e87837dd98dbde50a3d4cf5a418b793eea2131d97b4259c35fe9ec76be9f1640",
+    "sha256_before_v4emendas": "043777b7eb8a4362f267d5b563083d1e01f2811cb9a74de2377ae986252a2993"
    }
   ],
   "recorded_at": "2026-11-04T13:00:46-03:00"
