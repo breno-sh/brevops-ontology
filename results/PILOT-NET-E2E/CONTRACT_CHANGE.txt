@@ -32,6 +32,12 @@ CC-NET-E2E-2 (achado para o GRAIN/SERVICE-EVIDENCE; mantém o gate G1 reprovado)
   instância usa o endereço do recurso como identidade de ocorrência da entidade de id opaco.
 
 CC-NET-E2E-3 (achado sobre os controles, não é mudança de contrato)
+  RESOLVIDO em 2026-11-04T19:05:00-03:00 (America/Recife): no controls.json final (commit 83f78c4, mapeamento real
+  PILOT-NET-MAP 10c4134) a fixture NETC-C05-AZ-DUP sai UNSUPPORTED no c1_table e no c2_taxonomy e REFUSED no c3_full
+  (SHACL_VIOLATION, AX-NET-06) nas três direções azurerm -> aws, google e oci, de modo que "o c2 traduz a origem
+  inválida" já não ocorre; o caso também não entra na R-CTRL-6 do prereg/PREREG.html (c3 rejeita fixture negativa
+  que c1/c2 aceitam), porque c1 e c2 não a aceitam, e fica fora da contagem de efeito em detecção de erro.
+  Texto original (rodada com alegações sintéticas):
   Com alegações sintéticas que passam nas obrigações de prova, o c2_taxonomy traduz a fixture inválida
   NETC-C05-AZ-DUP (prioridade repetida no mesmo sentido) para o google e o juiz reprova (UNKNOWN -> DENY sem perda);
   o c3_full recusa a origem pela forma SHACL do AX-NET-06. É resultado do controle (o que os axiomas acrescentam), e
