@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "PILOT-STO-E2E",
- "generated_at": "2026-11-05T00:30:21-03:00",
+ "generated_at": "2026-11-05T01:45:28-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-STO-E2E.txt",
@@ -86,7 +86,7 @@
    {
     "path": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl",
     "kind": "file",
-    "sha256": "2994da012fbc9296a31fd2e82d8e55cd7dd274c8be74c24634681412effe07f1"
+    "sha256": "d17a11b5334b69fdf60ae130c230cc9a18b0d8e81c0f66b47e4484c4647a7e40"
    },
    {
     "path": "$BO_REPO/results/SERVICE-EVIDENCE/spec_disputes.json",
@@ -109,7 +109,7 @@
     "sha256": "594a4e878ac489b3ed97cdd6344b9945a8fd3a5d22ae4d6f4bfebd264decfe3d"
    }
   ],
-  "recorded_at": "2026-11-05T00:30:21-03:00"
+  "recorded_at": "2026-11-05T01:45:28-03:00"
  },
  "sources": [
   {
