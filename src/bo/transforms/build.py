@@ -39,17 +39,16 @@ FINDINGS = [
     "O comparador numeric_tolerance do C11 tem só {name, tolerance}, sem dizer se a tolerância é absoluta ou "
     "relativa (o C22 tem kind). O registro declara ABSOLUTA, na unidade do expected; tipos de unidade diferentes "
     "dos dois lados vão por compare_quantity_tolerance. Sugestão ao CONTRACTS: tolerance_kind no C11.",
-    "O C10 3.1.0 (emenda 8 do CONTRACTS) aceita list/set/map com item_type nas portas; o registro 1.4.0 usa onde o "
-    "elemento é concreto (etiquetas). Os combinadores de coleção polimórficos ficam com porta 'tuple' e a coleção na "
-    "restrição, porque o value_type do C09 não tem 'any' para item_type; o tipo exato de cada uso sai de "
-    "collection_type_out (proposta em results/TRANSFORMS/CONTRACT_CHANGE.txt).",
+    "O C10 3.2.0 (emendas 8 e 9 do CONTRACTS, pedidas pelo TRANSFORMS) aceita list/set/map com item_type nas "
+    "portas e item_type {datatype: any} para porta polimórfica: o registro 1.5.0 usa os dois; o tipo exato de cada "
+    "uso sai de collection_type_out.",
     "O C10 combinador não tem params: o que é parâmetro no núcleo do SEMANTICS (key de json_get/map_get) vira porta "
     "de entrada aqui; json_get e map_get ficam com duas entradas e uma saída.",
     "xsd:duration segue o espaço de valores do XSD 1.1 (meses, segundos): P0M1D não tem meses e vira 86400 s sem "
     "contexto; P1M e P1Y sem contexto de calendário são TRANSFORM_OUT_OF_DOMAIN; P1M = P30D é falso (duration_equal).",
-    "BYTE e BIT sem prefixo: o registro dá convenção de byte None (fator 1 em SI e IEC); bo.units.rules grava SI "
-    "(UNITS-BYTE-00, convenção vácua) e propôs ao CONTRACTS aceitar NOT_APPLICABLE no C05; nos prefixados as duas "
-    "tabelas concordam (teste test_tr_units_rules).",
+    "BYTE e BIT sem prefixo: o registro dá convenção de byte None (fator 1 em SI e IEC) e aceita a convenção vácua "
+    "que o UNITS grava (SI, UNITS-BYTE-00) ou NOT_APPLICABLE (C05 3.1.0); grandeza e convenção dos prefixados "
+    "iguais a bo.units.rules, e bo.units.crosscheck dá 0 divergências (test_tr_units_rules).",
     "Os IRIs de unidade seguem o padrão do C00 e as grandezas do UNITS (QUDT 3.5.3); a existência de cada IRI no QUDT "
     "(iri_status = pattern_only) é conferida pelo UNITS, não aqui.",
     "O núcleo do SEMANTICS tem scale (fator sem unidade) e rate_window_convert sem grandeza; o registro fechado não "
@@ -84,6 +83,13 @@ EMENDAS = [
                "(tags_list_to_map, tags_map_to_list); portas polimórficas (wrap_list, map_list, list_to_set...) "
                "continuam tuple porque o value_type do C09 não tem 'any' para item_type (nova proposta no "
                "CONTRACT_CHANGE.txt)"},
+    {"registry_version": "1.5.0", "commit_subject": "[TRANSFORMS] emenda 1.5.0: porta any do C10 3.2.0 e bytes do UNITS",
+     "request": "adoção do C10 3.2.0 (CONTRACTS emenda 9, 2367bcd, item_type any pedido no CONTRACT_CHANGE.txt) e "
+                "alinhamento com bo.units.rules pedido pelo coordenador (STO-MAP CC-5, continuação)",
+     "change": "portas polimórficas de coleção (wrap_list, unwrap_single, list_to_set, set_to_list, map_list, map_set, "
+               "map_values, map_get, compare_set_equal) saem list/set/map com item_type {datatype: any}; UnitType "
+               "aceita a convenção vácua SI/IEC/NOT_APPLICABLE em BYTE e BIT sem prefixo (UNITS-BYTE-00, C05 3.1.0); "
+               "teste contra bo.units.rules e bo.units.crosscheck (0 divergências)"},
 ]
 
 
