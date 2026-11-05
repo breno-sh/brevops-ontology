@@ -20,6 +20,9 @@ from __future__ import annotations
 
 from collections import defaultdict
 
+import re
+
+ATTR_RE = re.compile(r"^[a-z][a-z0-9_]*$")      # atributo nomeado do id composto (T03); "_" é placeholder
 GRAIN_FACTS = ("identity", "import_key", "lifecycle_controller", "owner", "effective_scope", "api_bridge")
 
 # campos de identidade que nomeiam o escopo do provedor (conta, região, projeto, assinatura): não são unidades
@@ -47,7 +50,14 @@ TABLE = [
      "desempata o parent_resource dos fatos de API do próprio candidato contra a ponte de cada par; nenhum ou mais "
      "de um: alvo não resolvido"),
     ("identity", "id_template", "R-GRAIN-T03",
-     "sem tradução: formato do id Terraform, pode incluir atributos opcionais; não é chave natural"),
+     "emenda 0.2.4 (DIAG_T3 F1/F2): id COMPOSTO (dois ou mais atributos nomeados da configuração, sem placeholder nem "
+     "campo de escopo do provedor) de candidato sem outra alegação de identidade, com referência tipada (T44) entre os "
+     "atributos: identity present within_parent com key_fields = os atributos; com UMA referência tipada e nenhum ciclo "
+     "de vida afirmado (o id é sintetizado do pai + campos próprios, a API não dá identidade nem ciclo de vida "
+     "próprios): lifecycle_controller, owner e effective_scope {kind: parent, via: a referência} nos campos ainda "
+     "UNKNOWN; sem referência tipada, o esquema não sabe qual campo nomeia o pai e a identidade fica UNKNOWN (nunca "
+     "independente por omissão); a instância promove o ÚNICO campo da chave cujo valor na configuração é referência a "
+     "um recurso (derivado, mesma regra). Id de um atributo só (opaco) ou só caminho: sem tradução"),
     ("identity", "api_resource_bridge", "R-GRAIN-T04",
      "api_resource {status: resource, label/resource/service da ponte}; resource UNKNOWN vira UNKNOWN"),
     ("api_bridge", "(qualquer, C25 1.1.0)", "R-GRAIN-T04",
@@ -139,6 +149,17 @@ TABLE = [
      "nada é sobrescrito; R2 disputa PUBLISHED x PUBLISHED já existente com status resolvida-por-observação vale o "
      "lado reproduzido (o vencido continua citado, sem voto); R6 o mesmo para resolvida-por-publicação; R3 OBSERVED x PUBLISHED sem disputa prévia: "
      "CONTRADICTORY; R4 OBSERVED sozinho preenche o campo; R5 vale para qualquer resultado"),
+    ("(referência)", "(valor simbólico, sem alvo tipado)", "R-GRAIN-T51C",
+     "emenda 0.2.4 (DIAG_T3 F3/F5): na instância, campo de referência (pai por nome, chave ou ponta de vínculo) com "
+     "valor simbólico (var., data. ou module.) vira ponta externa identificada SÓ pelo símbolo, com ou sem alvo tipado; "
+     "o tipo, quando há, é atributo, não identidade; o vínculo com ponta simbólica tem identidade = (símbolo, alvo) e o "
+     "pai simbólico é o símbolo; a ocorrência de elemento nomeado expõe o nome (name_key), resolvido ou não o pai. "
+     "Valor que não existe nem como símbolo (computado, outro desconhecido) segue sem alvo (UNKNOWN)"),
+    ("identity", "item_identity (duplicates_accepted | duplicates)", "R-GRAIN-T59C",
+     "emenda 0.2.4 (DIAG_T3 F4): repetição idêntica (mesmo conteúdo, mesmo pai) de elemento anônimo: duplicates_accepted "
+     "true (ou duplicates accepted) = multiconjunto, um item por ocorrência (índice de multiplicidade); duplicates_accepted "
+     "false (repetição inválida) ou duplicates idempotent = uma ocorrência só, com as declarações fundidas e a nota; sem "
+     "evidência, as repetições saem UNKNOWN (GRAIN-G0-REPEAT); nunca deduplicadas em silêncio"),
     ("identity", "attachment_attribute", "R-GRAIN-T63",
      "campo da spec que liga o dono a objetos do tipo binds_to, casado ao atributo pela leitura do modelo: ligação "
      "por atributo (T58) com alvo tipado; o nível INTERPRETED do fato vai para a citação (com model_id) e não é "
@@ -335,6 +356,7 @@ def translate(records: list[dict], candidates: set[str] | None = None, disputes:
     list_items: dict[str, dict] = {}                  # cid -> ponte para campo-lista de itens (T62)
     attach_scope: dict[str, tuple] = {}               # cid -> (atributo, fonte) da anexação da spec (T63/T47)
     item_facts: dict[str, dict] = {}                  # cid -> item sem id observado/publicado (T64)
+    templates: dict[str, tuple] = {}                  # cid -> (registro, atributos) do id composto (T03)
     typed: dict[str, dict] = defaultdict(dict)       # cid -> {campo: tipo alvo ou None} (T44 reference_target)
     for cid, rs in sorted(by_cid.items()):
         rt = cid.split(".")[0]
@@ -434,6 +456,15 @@ def translate(records: list[dict], candidates: set[str] | None = None, disputes:
                 rule = "R-GRAIN-T43"
             if rule is None:
                 unknown(cid, fld, r, f"aspecto {a} sem tradução na tabela")
+            elif a == "id_template":
+                # T03 (0.2.4): id composto pelos atributos nomeados da configuração (o placeholder e os campos de
+                # escopo do provedor não contam); um atributo só é id opaco, não chave composta
+                attrs = [x for x in (v.get("attributes") or []) if isinstance(x, str) and ATTR_RE.match(x)
+                         and x not in loc_scope]
+                if len(attrs) >= 2:
+                    templates[cid] = (r, attrs)
+                else:
+                    unknown(cid, fld, r, f"aspecto {a}: sem tradução ({rule})")
             elif a == "resource_identity_schema":
                 pending_ids[cid] = (r, [f for f in v.get("required", []) if f not in loc_scope])
             elif a == "shared_identity_key":
@@ -731,6 +762,41 @@ def translate(records: list[dict], candidates: set[str] | None = None, disputes:
             rel = any(f in is_ref for f in kf)
             put(cid, "identity", {"status": "present", "scope": "within_parent" if rel else "independent",
                                   "key_fields": kf, "source": _src(r, RULE_OF[("identity", "resource_identity_schema")])})
+    # T03 (0.2.4, DIAG_T3 F1/F2): id composto do candidato sem outra alegação de identidade
+    for cid, (r, attrs) in sorted(templates.items()):
+        ent = out.setdefault(cid, {})
+        if cid in api_identity or any(c.get("status") in ("present", "absent") for c in ent.get("identity", [])):
+            reasons[cid].append("identity: id_template composto não traduzido: outra alegação de identidade "
+                                "prevalece (T03)")
+            unknown(cid, "identity", r, "id composto: outra alegação de identidade prevalece (T03)")
+            continue
+        tref = [f for f in attrs if typed.get(cid, {}).get(f)]
+        fm = ent.setdefault("field_map", {})
+        for f in attrs:
+            fm.setdefault(f, {"path": f, "norm": "str"})["template"] = True
+        if not tref:
+            # sem referência tipada, o esquema não sabe qual campo nomeia o pai: a identidade fica UNKNOWN (nunca
+            # independente por omissão); a instância promove o campo cuja configuração é referência a um recurso
+            unknown(cid, "identity", r, "id composto sem referência tipada entre os campos (T03): o pai só sai na "
+                    "instância")
+            ent["template_parent"] = {"fields": list(attrs), "source": _src(
+                r, "R-GRAIN-T03", "referência ao pai na configuração (campo da chave composta)")}
+            continue
+        src = _src(r, "R-GRAIN-T03", "id composto: pai + campos próprios")
+        put(cid, "identity", {"status": "present", "scope": "within_parent", "key_fields": list(attrs),
+                              "source": src})
+        lc = consolidate("lifecycle_controller", ent.get("lifecycle_controller", []))
+        if lc.state != "UNKNOWN":
+            reasons[cid].append(f"lifecycle_controller: ciclo de vida afirmado ({lc.state}); o id composto não dá "
+                                "ciclo de vida pelo pai (T03)")
+        elif len(tref) == 1:
+            why = "id composto sem ciclo de vida próprio na API: ciclo de vida, dono e alcance pelo pai"
+            for fld_ in ("lifecycle_controller", "owner", "effective_scope"):
+                if consolidate(fld_, ent.get(fld_, [])).state == "UNKNOWN":
+                    put(cid, fld_, {"kind": "parent", "via": tref[0], "source": _src(r, "R-GRAIN-T03", why)})
+            reasons[cid].append(f"identity: id composto com o pai {tref[0]} ({typed[cid][tref[0]]}) (T03)")
+        else:
+            reasons[cid].append(f"identity: id composto com {len(tref)} referências tipadas; pai ambíguo (T03)")
     for cid, (r, scope) in sorted(scopes.items()):
         rule = RULE_OF[("effective_scope", "type_scope")]
         if scope in PROVIDER_SCOPE_KINDS:
@@ -918,6 +984,15 @@ def translate(records: list[dict], candidates: set[str] | None = None, disputes:
         ent["element_name_key"] = list(ent.get("element_name_key", [])) + [{"status": "absent", "source": it["_src"]}]
         ent.setdefault("field_map", {})["$content"] = {"path": "$content", "norm": "content"}
         reasons[cid].append("identity: item sem id do provedor: COMPONENT anônimo, chave = conteúdo (T59b)")
+        # T59c (0.2.4): o que a evidência diz da repetição idêntica (aceita, inválida ou idempotente)
+        dup = it.get("duplicates")
+        if dup not in ("accepted", "rejected", "idempotent"):
+            dup = {True: "accepted", False: "rejected"}.get(it.get("duplicates_accepted"))
+        if dup:
+            ent["multiplicity"] = {"duplicates": dup, "source": dict(it["_src"], note=it["_src"]["note"] + (
+                f" (T59c: repetição {dup})"))}
+        else:
+            reasons[cid].append("identity: sem evidência sobre repetição idêntica do item (T59c): repetição sai UNKNOWN")
     for cid, ls in links.items():
         if ls:
             out.setdefault(cid, {})["links"] = {k: dict(x) for k, x in ls.items()}

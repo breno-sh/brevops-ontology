@@ -408,6 +408,38 @@ vida preso à instância, G1 e G2 aceitam a evidência, e trocar a ordem troca B
 referência <code>by_name</code>; sem ela, o grafo embutido perde relações que o separado tem.</li>
 <li>Emenda 0.1.1 (CC-1): a primeira versão lia uma convenção que o SERVICE-EVIDENCE nunca gravou; os testes
 sintéticos usavam a mesma convenção e não pegaram. Entraram o adaptador por aspecto e testes com o arquivo real.</li>
+<li>Emenda 0.2.4 — 2026-11-05T00:20-03:00 (motivo: <code>results/PILOT-EXIT/DIAG_T3.json</code>, PILOT-EXIT tentativa 3, E2
+reprovado; F1, F2, F3 e F5 de classe "regra GRAIN", F4 de classe "adaptador" com a camada de instância do GRAIN). Cada
+regra tem caso sintético e, quando o pin reproduz a classe, caso de calibração sobre o SERVICE-EVIDENCE com configuração
+escrita no teste (<code>tests/grain/test_grain_diag_t3.py</code>; vermelho antes da emenda: 16 de 23, em
+$BO_DATA/GRAIN/diag_t3/red_before.txt). Nenhuma fixture retida foi lida. <b>F1/F2 (T03)</b>: id composto (dois ou mais
+atributos nomeados da configuração) de candidato sem outra alegação de identidade passa a ter tradução: identidade com
+esses campos, relativa ao pai se um deles é referência tipada; com UMA referência tipada e nenhum ciclo de vida afirmado,
+ciclo de vida, dono e alcance = o pai (o id é sintetizado do pai + campos próprios: a API não dá identidade nem vida
+próprias), e o recurso separado sai COMPONENT do pai, como a forma embutida e como a variante irmã de id de API. Controles:
+ciclo de vida próprio afirmado bloqueia a herança; id de um atributo só (opaco) segue sem tradução; dois campos com
+referência na configuração não promovem nada. <b>Achado no dado real</b>: a variante de regra separada de id composto
+da AWS não tem <code>reference_target</code> no campo do conjunto-pai no SERVICE-EVIDENCE do pin (só nos campos de origem
+e de lista de prefixos); sem alvo tipado, o esquema não sabe qual campo da chave nomeia o pai, e a identidade fica
+UNKNOWN (nunca independente por omissão): a unidade de esquema continua G0-IDENTITY. Na instância, o único campo da chave composta cuja
+configuração é referência a um recurso é o pai (derivado, citado com o fato do id composto) e a regra sai COMPONENT do
+grupo, igual ao bloco embutido e à outra variante (teste de calibração). A unidade C19 de esquema que o PILOT-NET-GLOSS
+regenera continua UNKNOWN para esse tipo até o SE publicar o alvo tipado. <b>F3/F5 (T51c)</b>: referência com valor
+simbólico (var., data. ou module.) vira ponta externa identificada só pelo símbolo, com ou sem alvo tipado (antes, só
+com alvo tipado); o pai simbólico é o símbolo; vínculo com ponta simbólica tem identidade = (símbolo, alvo); o tipo,
+quando há, não entra na identidade da ponta. Valor computado continua sem ponta (CMT-NIC-U02). <b>F4 (T59c)</b>:
+repetição idêntica de elemento anônimo é multiconjunto só com evidência de que a repetição é aceita (o OBSERVED da
+security list da OCI tem <code>duplicates_accepted</code>); repetição inválida ou idempotente funde as declarações com
+nota; sem evidência, as declarações saem UNKNOWN (desfecho novo GRAIN-G0-REPEAT); o teste antigo que fundia a regra
+anônima repetida em silêncio foi trocado por três (sem evidência, idempotente, aceita). <b>Fronteira com o PILOT-NET-E2E</b>
+(que corrige o adaptador em paralelo): a ocorrência passa a expor <code>parent_symbol</code> (o símbolo do pai),
+<code>endpoint_symbols</code> (papel → símbolo), <code>name_key</code> (chave de nome do elemento, calculada mesmo
+quando o pai não resolve) e <code>multiplicity</code> ({index, count, evidence, rule} da repetição); o adaptador lê
+esses campos para escrever o pai, a chave de ocorrência e as pontas, e não deduplica ocorrências que o GRAIN dá como
+distintas. O símbolo <code>local.</code> fica fora (o padrão de símbolo do C19 só aceita var., data. e module.).
+Medida: calibração NET 45/45 com as unidades do GLOSS, reordenação 45/45, embalagem 3/3; só com o GRAIN 33/45, igual à
+0.2.3; STO 21/21, reordenação 1455/1455, embalagem 80/80; no esquema real das fatias NET e STO (164 candidatos), nenhuma
+decisão muda (grão, regra, falta e pai iguais aos da 0.2.3).</li>
 <li>Manutenção 0.2.3 — 2026-11-04T23:06-03:00 (CC-NET-6 do PILOT-NET-GLOSS; nenhuma lógica muda): o rule_id da regra G1b
 passa a <code>GRAIN-G1B-REFERENCE</code>, no padrão rule_id do C00 (<code>^[A-Z][A-Z0-9]*(-[A-Z0-9]+)+$</code>); o
 nome antigo, com letra minúscula, fazia o canonical_units reprovar. Teste novo confere todo rule_id do GRAIN (regras e

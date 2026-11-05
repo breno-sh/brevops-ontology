@@ -7,10 +7,10 @@
 schema: bo.grain.rules/1
 contract: C19
 contract_version: 3.1.0
-rules_version: 0.2.3
+rules_version: 0.2.4
 status: PROVISIONAL
 written_at: "2026-11-03T02:00:00-03:00"
-amended_at: "2026-11-04T23:06:00-03:00"
+amended_at: "2026-11-05T00:19:00-03:00"
 definitive_after: [GRAIN-REPRO, PILOT-EXIT]
 
 layers:
@@ -214,6 +214,10 @@ amendments:
     version: 0.1.7
     origin: decisão do coordenador sobre a regra de rede filha do conjunto
     text: regra nova G2-CHILD (entre G2 e G3); marca de caminho pai pela evidência (tipo de API da ponte aninhado no tipo de API do pai de contenção, ou fato explícito path_parent); G1 conta pontas sem os contêineres de namespace
+  - id: GRAIN-A19
+    version: 0.2.4
+    origin: PILOT-EXIT tentativa 3, E2 reprovado; diagnóstico por classe em results/PILOT-EXIT/DIAG_T3.json (F1 a F5, as falhas de classe regra GRAIN); casos sintéticos e de calibração em tests/grain/test_grain_diag_t3.py, vermelhos antes da emenda
+    text: as regras G0-G4 e os predicados não mudam; muda a leitura da evidência e a identidade de ocorrência. (F1/F2, T03) id composto (dois ou mais atributos nomeados da configuração) de candidato sem outra alegação de identidade vira identidade; com uma referência tipada ao conjunto-pai e nenhum ciclo de vida afirmado, o ciclo de vida, o dono e o alcance são o pai (a API não dá identidade nem vida próprias), então o recurso separado sai COMPONENT do pai, igual à forma embutida; sem referência tipada, o esquema fica sem pai (UNKNOWN, nunca ENTITY) e a instância promove o único campo da chave cujo valor na configuração é referência a um recurso. (F3/F5, T51c) referência com valor simbólico (var., data. ou module.) vira ponta externa identificada só pelo símbolo, com ou sem alvo tipado; o pai simbólico é o símbolo e o vínculo com ponta simbólica tem identidade = (símbolo, alvo); a ocorrência expõe o pai simbólico, as pontas simbólicas e a chave de nome do elemento, resolvido ou não o pai; valor que não existe nem como símbolo segue sem alvo. (F4, T59c) repetição idêntica de elemento anônimo é multiconjunto (um item por ocorrência) só quando a evidência publicada ou observada diz que a repetição é aceita; repetição inválida ou idempotente funde as declarações com nota; sem evidência, UNKNOWN (GRAIN-G0-REPEAT); nunca deduplicada em silêncio. Fronteira com o adaptador de decomposição do E2E (PILOT-NET-E2E) nos campos parent_symbol, endpoint_symbols, name_key e multiplicity da ocorrência
   - id: GRAIN-A18
     version: 0.2.3
     origin: manutenção (CC-NET-6 do PILOT-NET-GLOSS)
@@ -286,6 +290,9 @@ procedural_outcomes:
   - id: GRAIN-G0-DUPLICATE
     grain: UNKNOWN
     text: na camada de instância, duas declarações distintas dão a mesma identidade de ocorrência com valores diferentes; as duas viram UNKNOWN com identity
+  - id: GRAIN-G0-REPEAT
+    grain: UNKNOWN
+    text: emenda 0.2.4 (T59c); na camada de instância, elemento anônimo repetido de forma idêntica (mesmo conteúdo, mesmo pai) sem evidência de que a repetição é aceita, inválida ou idempotente; as declarações viram UNKNOWN com identity (nunca deduplicadas em silêncio)
   - id: GRAIN-T0-PAYLOAD
     grain: none
     text: candidato transparente (carga útil da API do pai, sem identidade própria); não vira unidade, seus átomos ficam com o pai efetivo

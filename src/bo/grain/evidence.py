@@ -144,6 +144,11 @@ class CandidateEvidence:
     implicit_facet: dict | None = None
     # ligações por atributo (T58): atributo -> {"kind": reference|selection, "target": tipo|None, "why", "source"}
     links: dict = field(default_factory=dict)
+    # id composto sem alvo tipado (T03, 0.2.4): {"fields": [...], "source": {...}}; a instância promove o campo da
+    # chave cujo valor, na configuração, é referência a um recurso
+    template_parent: dict | None = None
+    # multiplicidade do elemento anônimo (T59c, 0.2.4): {"duplicates": accepted|rejected|idempotent, "source"}
+    multiplicity: dict | None = None
 
     def fact(self, fld: str) -> Fact:
         return consolidate(fld, self.claims.get(fld, []))
@@ -169,7 +174,8 @@ def from_dict(d: dict) -> CandidateEvidence:
                              groups=dict(d.get("groups", {})), roles=dict(d.get("roles", {})),
                              twin=d.get("twin"), out_of_domain=d.get("out_of_domain"),
                              parent_is_path_parent=bool(d.get("parent_is_path_parent")),
-                             implicit_facet=d.get("implicit_facet"), links=dict(d.get("links", {})))
+                             implicit_facet=d.get("implicit_facet"), links=dict(d.get("links", {})),
+                             template_parent=d.get("template_parent"), multiplicity=d.get("multiplicity"))
 
 
 class FixtureAdapter:

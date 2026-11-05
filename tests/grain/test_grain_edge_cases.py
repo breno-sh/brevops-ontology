@@ -23,17 +23,36 @@ def test_dependency_cycle_is_unknown():
     assert all(x.grain == "UNKNOWN" and x.rule == "GRAIN-G0-CYCLE" and x.missing == ["identity"] for x in d.values())
 
 
-def _fw_rules(rules):
+def _fw_rules(rules, duplicates=None):
     w = B.all_worlds()["firewall"]
+    ev = copy.deepcopy(w["evidence"])
+    if duplicates:
+        ev["c_rule_set.rule"]["multiplicity"] = {"duplicates": duplicates,
+                                                 "source": {"level": "derived", "ref": "fx-mult"}}
     cfg = {"provider": w["provider"], "resources": [{"type": "c_rule_set", "name": "rs1", "values": {
         "name": "set-one", "rule": [dict(zip(["direction", "protocol", "ports", "cidr", "action"], r)) for r in rules]}}]}
-    return I.decompose_config(cfg, FixtureAdapter(w["evidence"]), F.schema_blocks(w["schema"]), RS)
+    return I.decompose_config(cfg, FixtureAdapter(ev), F.schema_blocks(w["schema"]), RS)
 
 
-def test_duplicate_occurrence_same_config_merges():
+def test_duplicate_anonymous_without_multiplicity_evidence_is_unknown():
+    """0.2.4 (T59c, DIAG_T3 F4): a repetição idêntica de regra anônima não é deduplicada em silêncio; sem evidência
+    sobre repetição, as duas declarações saem UNKNOWN (antes da 0.2.4 elas se fundiam sem nota)."""
     r = ("ingress", "tcp", "443", "10.0.0.0/8", "allow")
     oc = [o for o in _fw_rules([r, r]) if o.label == "network rule"]
+    assert len(oc) == 2 and all(o.grain == "UNKNOWN" and o.rule == "GRAIN-G0-REPEAT" for o in oc)
+
+
+def test_duplicate_anonymous_idempotent_merges_with_note():
+    r = ("ingress", "tcp", "443", "10.0.0.0/8", "allow")
+    oc = [o for o in _fw_rules([r, r], "idempotent") if o.label == "network rule"]
     assert len(oc) == 1 and len(oc[0].tf) == 2 and oc[0].grain == "COMPONENT"
+    assert any("R-GRAIN-T59C" in n for n in oc[0].notes)
+
+
+def test_duplicate_anonymous_accepted_is_two_members():
+    r = ("ingress", "tcp", "443", "10.0.0.0/8", "allow")
+    oc = [o for o in _fw_rules([r, r], "accepted") if o.label == "network rule"]
+    assert len(oc) == 2 and len({o.occ_id for o in oc}) == 2 and all(o.grain == "COMPONENT" for o in oc)
 
 
 def test_duplicate_occurrence_conflicting_config_is_unknown():

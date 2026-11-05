@@ -10,6 +10,7 @@ evidência declara a ordem como identidade).
 
 from __future__ import annotations
 
+import copy
 import ipaddress
 import re
 from dataclasses import dataclass, field
@@ -63,6 +64,17 @@ SYMBOL_RE = re.compile(r'^(var|data|module)\.[A-Za-z_][A-Za-z0-9_\-]*(\.[A-Za-z_
                        r'\["[^"\s]+"\])*$')
 
 
+def symbol_of(nid) -> str | None:
+    """T51c (0.2.4): símbolo da ponta externa simbólica (EXT:<tipo ou vazio>#sym:<símbolo>), senão None."""
+    if isinstance(nid, str) and nid.startswith(EXT) and "#sym:" in nid:
+        return nid.split("#sym:", 1)[1]
+    return None
+
+
+class RepeatError(NormError):
+    """T59c: repetição idêntica de elemento anônimo sem evidência de multiplicidade."""
+
+
 def content_hash(v) -> str:
     """T59b: conteúdo canônico do item; símbolo e referência entram como marcas da configuração (não completados)."""
     def mark(x):
@@ -108,6 +120,11 @@ class Occurrence:
     tf: list = field(default_factory=list)
     notes: list = field(default_factory=list)
     refs: dict = field(default_factory=dict)      # referências simples (fora da identidade): campo -> ocorrência
+    # 0.2.4 (DIAG_T3): o que o adaptador de decomposição lê sem refazer a regra
+    parent_symbol: str | None = None              # T51c: pai simbólico (o símbolo), quando o pai é ponta externa
+    endpoint_symbols: dict = field(default_factory=dict)   # T51c: papel -> símbolo das pontas simbólicas
+    name_key: dict = field(default_factory=dict)  # chave de nome do elemento (campos próprios), resolvido ou não o pai
+    multiplicity: dict | None = None              # T59c: {index, count, evidence, rule} da repetição idêntica
 
     def row(self):
         return (self.occ_id, self.grain, self.label, self.parent, tuple(sorted(self.endpoints.items())),
@@ -197,6 +214,36 @@ def build_nodes(config: dict, adapter, schema_blocks: dict) -> tuple[dict, dict,
     for r in config["resources"]:
         walk(r["type"], r["type"], f"{r['type']}.{r['name']}", r.get("values", {}), None, (), None)
 
+    # T03 (0.2.4): id composto sem alvo tipado no esquema; o ÚNICO campo da chave cujo valor na configuração é
+    # referência a um recurso é o pai (evidência derivada da configuração, citada com o fato do id composto)
+    node_ev: dict[str, CandidateEvidence] = {}
+    for nid, info in raw.items():
+        tp = ev_of(info["cid"]).template_parent
+        vals = info["values"] if isinstance(info["values"], dict) else {}
+        if not tp:
+            continue
+        hits = [f for f in tp["fields"] if isinstance(vals.get(f), dict) and "$ref" in vals[f]]
+        if len(hits) != 1:
+            continue
+        f = hits[0]
+        ev2 = copy.deepcopy(ev_of(info["cid"]))
+        ev2.template_parent = None
+        ev2.field_map[f] = {"path": f, "ref": True, "template": True}
+        ev2.references[f] = str(vals[f]["$ref"]).split(".")[0]
+        src = dict(tp["source"], note=tp["source"].get("note", "") + f" (campo {f})")
+        if ev2.fact("identity").state == "UNKNOWN":
+            ev2.claims.setdefault("identity", []).append({"status": "present", "scope": "within_parent",
+                                                          "key_fields": list(tp["fields"]), "source": src})
+        if ev2.fact("lifecycle_controller").state == "UNKNOWN":
+            # sem ciclo de vida afirmado: ciclo de vida, dono e alcance pelo pai (o que ainda é UNKNOWN)
+            for fld in ("lifecycle_controller", "owner", "effective_scope"):
+                if ev2.fact(fld).state == "UNKNOWN":
+                    ev2.claims.setdefault(fld, []).append({"kind": "parent", "via": f, "source": src})
+        node_ev[nid] = ev2
+
+    def ev_node(nid):
+        return node_ev.get(nid) or ev_of(raw[nid]["cid"])
+
     def payload(cid):
         ev = ev_of(cid)
         api, idf = ev.fact("api_resource"), ev.fact("identity")
@@ -204,7 +251,7 @@ def build_nodes(config: dict, adapter, schema_blocks: dict) -> tuple[dict, dict,
 
     def ref_target(nid, f):
         info = raw[nid]
-        ev = ev_of(info["cid"])
+        ev = ev_node(nid)
         m = ev.field_map.get(f, {})
         v = _get(info["values"], m.get("path", f), info["index"])
         if v is None and m.get("namespace") and info["parent"] is not None:
@@ -216,12 +263,13 @@ def build_nodes(config: dict, adapter, schema_blocks: dict) -> tuple[dict, dict,
         if isinstance(v, dict) and "$ref" in v:
             return EXT + v["$ref"]                       # T51: ocorrência referenciada fora da configuração
         tgt = ev.references.get(f)
-        if isinstance(v, dict) and "$unknown" in v and tgt and not tgt.startswith(SEL) and not m.get("by_name") \
-                and SYMBOL_RE.match(str(v["$unknown"])):
+        if isinstance(v, dict) and "$unknown" in v and not (tgt or "").startswith(SEL) and not m.get("by_name") \
+                and not m.get("selector") and SYMBOL_RE.match(str(v["$unknown"])):
             # T51b (0.2.1, C19 3.2.0): referência tipada com valor simbólico (variável, data source ou saída de
-            # módulo) vira ponta externa do tipo do alvo, identificada pelo símbolo; valor computado ou outro
-            # desconhecido não (segue sem alvo)
-            return f"{EXT}{tgt}#sym:{v['$unknown']}"
+            # módulo) vira ponta externa do tipo do alvo, identificada pelo símbolo; T51c (0.2.4, DIAG_T3 F3/F5): o
+            # mesmo sem alvo tipado (o campo é referência pela evidência, o tipo fica em aberto); valor computado ou
+            # outro desconhecido não (segue sem alvo)
+            return f"{EXT}{tgt or ''}#sym:{v['$unknown']}"
         if path_el(m) and m.get("selector") and isinstance(v, (str, int)) and tgt and tgt.startswith(SEL):
             # T60: nó SELECTOR com identidade = predicado normalizado (chave do seletor, valor)
             return f"{tgt}={str(v).strip()}"
@@ -265,7 +313,7 @@ def build_nodes(config: dict, adapter, schema_blocks: dict) -> tuple[dict, dict,
     for nid, info in sorted(raw.items()):
         if nid in transparent:
             continue
-        ev = ev_of(info["cid"])
+        ev = ev_node(nid)
         rts = {}
         for f, m in ev.field_map.items():
             if m.get("ref"):
@@ -301,26 +349,49 @@ def decompose_config(config: dict, adapter, schema_blocks: dict, rs: R.RuleSet) 
                 return False
         return True
 
-    def dup_index(nid, c):
-        """Índice de multiplicidade: quantos irmãos (mesmo candidato e pai) de conteúdo igual vêm antes na ordem
-        dos nós; o conjunto de índices não depende da posição (os iguais são intercambiáveis)."""
+    def repeat_group(nid, c):
+        """Irmãos (mesmo candidato e pai) de conteúdo igual, na ordem dos nós: a posição de nid nesse grupo é o índice
+        de multiplicidade; o conjunto de índices não depende da posição (os iguais são intercambiáveis)."""
         info = raw[nid]
-        n = 0
-        for x in sorted(raw):
-            if x == nid:
-                break
-            r = raw[x]
-            if r["cid"] == info["cid"] and r["parent"] == info["parent"] and \
-                    content_hash(_get(r["values"], "$content", None)) == c:
-                n += 1
-        return n
+        return [x for x in sorted(raw) if raw[x]["cid"] == info["cid"] and raw[x]["parent"] == info["parent"]
+                and content_hash(_get(raw[x]["values"], "$content", None)) == c]
+
+    repeated: set = set()
+    mult: dict = {}
+
+    def multiplicity(nid, d, key):
+        """T59c (0.2.4, DIAG_T3 F4): repetição idêntica de elemento anônimo. Aceita pela evidência: multiconjunto
+        ($dup = índice); inválida ou idempotente: uma ocorrência (as declarações se fundem, com nota); sem
+        evidência: UNKNOWN (GRAIN-G0-REPEAT). Elemento sem repetição: $dup 0 na chave por conteúdo, como antes."""
+        if not (d.identity.anonymous or "$content" in key):
+            return
+        c = key.get("$content") or content_hash(_get(raw[nid]["values"], "$content", None))
+        group = repeat_group(nid, c)
+        if len(group) <= 1:
+            if "$content" in key:
+                key["$dup"] = 0
+            return
+        m = nodes[nid].ev.multiplicity or {}
+        kind = m.get("duplicates")
+        mult[nid] = {"index": group.index(nid), "count": len(group), "evidence": kind or "UNKNOWN",
+                     "rule": "R-GRAIN-T59C", "source": m.get("source")}
+        if kind == "accepted":
+            key["$dup"] = group.index(nid)
+        elif kind in ("rejected", "idempotent"):
+            if "$content" in key:
+                key["$dup"] = 0
+        else:
+            repeated.add(nid)
+            raise RepeatError(f"repetição idêntica ({len(group)} declarações) sem evidência de multiplicidade (T59c)")
 
     def ident(nid, stack=()):
         if nid in memo:
             return memo[nid]
         if nid.startswith(EXT):
-            # T51 na instância: ocorrência externa referenciada, identidade = o endereço ou o valor citado
-            memo[nid] = sha256_text(canon({"external": nid[len(EXT):]}))
+            # T51 na instância: ocorrência externa referenciada, identidade = o endereço ou o valor citado; T51c
+            # (0.2.4): a ponta simbólica é identificada só pelo símbolo (o tipo, quando há, não entra)
+            sym = symbol_of(nid)
+            memo[nid] = sha256_text(canon({"external_symbol": sym} if sym else {"external": nid[len(EXT):]}))
             return memo[nid]
         if nid.startswith(SEL):
             k, _, val = nid[len(SEL):].partition("=")
@@ -341,22 +412,20 @@ def decompose_config(config: dict, adapter, schema_blocks: dict, rs: R.RuleSet) 
                     raise NormError("identidade só por id opaco: sem valor na configuração")
                 for f in own:
                     key[f] = field_val(nid, f)
-                if "$content" in key:
-                    key["$dup"] = dup_index(nid, key["$content"])
             except NormError as e0:
                 if nid in raw and raw[nid]["parent"] is not None:
                     if not (d.grain == "COMPONENT" and own_absent(nid, own)):
                         raise             # bloco: o endereço é posicional e não serve de identidade (reordenação)
                     # T59b (0.2.0): item sem id na configuração (id atribuído pelo provedor depois da criação): a
                     # ocorrência é (pai, caminho, conteúdo, índice de multiplicidade), independente da posição
-                    c = content_hash(_get(raw[nid]["values"], "$content", None))
-                    key = {"$content": c, "$dup": dup_index(nid, c)}
+                    key = {"$content": content_hash(_get(raw[nid]["values"], "$content", None))}
                     d.notes.append(f"identidade de ocorrência por conteúdo (T59b): {e0}")
                 else:
                     # T59: recurso de topo de id opaco (ou chave sem valor na configuração): antes da criação não
                     # há id; a ocorrência declarada é identificada pelo endereço do recurso (símbolo)
                     key = {"$address": nid}
                     d.notes.append(f"identidade de ocorrência simbólica (endereço): {e0}")
+            multiplicity(nid, d, key)
             if d.grain in ("COMPONENT", "FACET"):
                 parent = ident(d.parent, st)
                 if parent is None:
@@ -400,17 +469,35 @@ def decompose_config(config: dict, adapter, schema_blocks: dict, rs: R.RuleSet) 
                         out[f] = {"symbolic": True}
         return out
 
+    def name_key(nid, d):
+        """Chave de nome do elemento (campos próprios da identidade nomeada), independente do pai (DIAG_T3 F3)."""
+        out = {}
+        if d.identity.anonymous:
+            return out
+        for f in d.identity.own:
+            if f.startswith("$"):
+                continue
+            try:
+                out[f] = field_val(nid, f)
+            except NormError:
+                return {}
+        return out
+
     occ_by: dict = {}
     out: list[Occurrence] = []
     for nid in sorted(nodes):
         d = decs[nid]
         h = ident(nid)
+        rep = nid in repeated
+        rule = "GRAIN-G0-REPEAT" if rep else (d.rule if h or d.grain == "UNKNOWN" else "GRAIN-G0-IDENTITY")
         o = Occurrence(occ_id=h, grain=d.grain if h or d.grain == "UNKNOWN" else "UNKNOWN", label=d.label,
                        parent=memo.get(d.parent) if d.parent else None,
                        endpoints={r: memo.get(t) for r, t in d.endpoints.items()}, key=keys.get(nid, {}),
-                       config=config_of(nid), rule=d.rule if h or d.grain == "UNKNOWN" else "GRAIN-G0-IDENTITY",
-                       missing=list(d.missing) if (h or d.grain == "UNKNOWN") else ["identity"], tf=[nid],
-                       notes=list(d.notes))
+                       config=config_of(nid), rule=rule,
+                       missing=list(d.missing) if (h or d.grain == "UNKNOWN") and not rep else ["identity"], tf=[nid],
+                       notes=list(d.notes), parent_symbol=symbol_of(d.parent),
+                       endpoint_symbols={r: symbol_of(t) for r, t in d.endpoints.items() if symbol_of(t)},
+                       name_key=name_key(nid, d), multiplicity=dict(mult[nid]) if nid in mult else None)
         n = nodes[nid]
         for f, t in sorted(n.ref_targets.items()):
             if f not in d.identity.refs and n.ev.field_map.get(f, {}).get("ref"):
@@ -419,6 +506,10 @@ def decompose_config(config: dict, adapter, schema_blocks: dict, rs: R.RuleSet) 
             prev = occ_by[o.occ_id]
             if canon(prev.config) == canon(o.config):
                 prev.tf.append(nid)
+                ev_kind = (o.multiplicity or {}).get("evidence")
+                prev.notes.append(f"repetição idêntica fundida em uma ocorrência: evidência {ev_kind} (R-GRAIN-T59C)"
+                                  if ev_kind in ("rejected", "idempotent") else
+                                  f"mesma identidade declarada mais de uma vez ({nid}): declarações fundidas")
                 continue
             for x in (prev, o):
                 x.grain, x.rule, x.missing = "UNKNOWN", "GRAIN-G0-DUPLICATE", ["identity"]

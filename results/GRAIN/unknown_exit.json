@@ -12,7 +12,7 @@
  },
  "module": "GRAIN",
  "ok": true,
- "rules_version": "0.2.3",
+ "rules_version": "0.2.4",
  "schema": "bo.grain.unknown_exit/1",
  "stats": {
   "became_unknown": 587,
