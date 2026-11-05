@@ -43,6 +43,10 @@ LEDGER = {
         {"step": "rodada final 2/2: GRAIN ed1fc66, oráculo b55e10b, NET-MAP 10c4134, A12, gates e merge",
          "start": "18:28", "end": "18:55", "agent_hours": 0.15},
     ],
+    "steps_v4": [
+        {"step": "v4: axiomas do SE f44b9a6 (estado, regras implícitas, OCI), oráculo b0e0de2, GRAIN 0.2.2",
+         "start": "23:04", "end": "23:25", "agent_hours": 0.35},
+    ],
     "wait": [{"what": "PILOT-NET-MAP em bo/base (rebase sobre GRAIN 0.1.7/0.1.8 e oráculo regerado no meio)",
               "start": "10:29", "end": "11:03", "hours": 0.57}],
 }
