@@ -96,3 +96,14 @@ nas fontes fixadas: o efeito de aws e oci segue não documentado e os 15 AMBIGUO
 ADENDO 2026-11-04T18:47:00-03:00 (America/Recife), rodada final 2/2: bo/base 6c43bb5, PILOT-NET-GLOSS 6c43bb5,
 árbitro recongelado ARBITERLIB 28b9ba0 sobre a emenda 12 do CONTRACTS (cd6a66e); ARBITER.sha256 74c0f33bbaf57020...
 Relatório com vereditos de alegações, ausências e compostos separados (report.json, arbiter.verdicts_separated).
+
+ADENDO 2026-11-04T23:17:00-03:00 (America/Recife), rodada final do v4: bo/base 1af8375, PILOT-NET-GLOSS 1af8375, árbitro
+ARBITER-V4-2 (aa01f20; ARBITER.sha256 1c2d3c34f4181d21...).
+  CC-MAP-NET-5 (pedido ao PILOT-NET-GLOSS): a frase publicada da AWS de "só permite" (SE, CC-14) não chegou ao pacote
+  do mapeador. O pacote só traz âncoras de efeito para os blocos allow{}/deny{} do google; nenhuma âncora de tipo ou
+  bloco aws com implication rule_effect = allow. O mapeador não lê o C25 (fora da lista de leitura), então o efeito
+  aws continua não documentado e os 15 AMBIGUOUS ficam. O código já resolve o efeito por âncora publicada
+  (anchor_kind type/block, concept:rule_effect, implication.value allow; teste em tests/pilot_net_map): com a âncora
+  no pacote, a rodada seguinte escreve a guarda de efeito e tira as realizações deny. OCI segue sem frase literal.
+  Alvos de referência novos: lidos das pontas das unidades BINDING do C19 (4 átomos de anexação do azurerm), que
+  viram guarda refers_to_kind e perda context_dependence; os vereditos não mudam (falta frase publicada nos dois lados).
