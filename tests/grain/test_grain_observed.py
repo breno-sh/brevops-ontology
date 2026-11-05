@@ -402,7 +402,7 @@ def _assoc_decision(recs):
 
 def test_g1b_reference_stored_in_origin_is_binding():
     d = _assoc_decision(_assoc_records())
-    assert d.grain == "BINDING" and d.rule == "GRAIN-G1b-REFERENCE", (d.grain, d.rule, d.missing)
+    assert d.grain == "BINDING" and d.rule == "GRAIN-G1B-REFERENCE", (d.grain, d.rule, d.missing)
     assert set(d.endpoints.values()) == {f"{NIC}.n", f"{NSG}.web"} and d.stored_in == f"{NIC}.n"
     assert d.lifecycle["kind"] == "parent"
 

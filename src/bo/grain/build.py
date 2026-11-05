@@ -36,7 +36,7 @@ from . import schema as S
 from .common import data_dir, dump_json, dump_jsonl, now, repo, results_dir, rules_path, sha256_file, stamp
 from .evidence import FixtureAdapter
 
-AUTHORED_AT = "2026-11-04T22:47:00-03:00"
+AUTHORED_AT = "2026-11-04T23:06:00-03:00"
 
 
 def _strip(rep: dict) -> dict:
@@ -408,6 +408,10 @@ vida preso à instância, G1 e G2 aceitam a evidência, e trocar a ordem troca B
 referência <code>by_name</code>; sem ela, o grafo embutido perde relações que o separado tem.</li>
 <li>Emenda 0.1.1 (CC-1): a primeira versão lia uma convenção que o SERVICE-EVIDENCE nunca gravou; os testes
 sintéticos usavam a mesma convenção e não pegaram. Entraram o adaptador por aspecto e testes com o arquivo real.</li>
+<li>Manutenção 0.2.3 — 2026-11-04T23:06-03:00 (CC-NET-6 do PILOT-NET-GLOSS; nenhuma lógica muda): o rule_id da regra G1b
+passa a <code>GRAIN-G1B-REFERENCE</code>, no padrão rule_id do C00 (<code>^[A-Z][A-Z0-9]*(-[A-Z0-9]+)+$</code>); o
+nome antigo, com letra minúscula, fazia o canonical_units reprovar. Teste novo confere todo rule_id do GRAIN (regras e
+desfechos do procedimento) contra o padrão do C00.</li>
 <li>Emenda 0.2.2 — 2026-11-04T22:47-03:00 (regra G1b, decisão do coordenador por coerência interna, não por número). O
 mesmo fenômeno saía de dois jeitos: o elemento de <code>vpc_security_group_ids</code> da AWS, guardado no atributo da
 instância, saía BINDING (R-GRAIN-LISTELEM: ciclo de vida do dono); a associação NSG↔NIC/subnet do Azure, guardada no

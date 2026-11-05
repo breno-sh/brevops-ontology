@@ -21,7 +21,7 @@ RAW = yaml.safe_load(rules_path().read_text(encoding="utf-8"))
 
 def test_rules_load_and_order():
     rs = R.load()
-    assert [r.id for r in rs.rules] == ["GRAIN-G0-IDENTITY", "GRAIN-G1-BINDING", "GRAIN-G1b-REFERENCE", "GRAIN-G2-COMPONENT",
+    assert [r.id for r in rs.rules] == ["GRAIN-G0-IDENTITY", "GRAIN-G1-BINDING", "GRAIN-G1B-REFERENCE", "GRAIN-G2-COMPONENT",
                                         "GRAIN-G2-CHILD",
                                         "GRAIN-G3-FACET", "GRAIN-G4-ENTITY", "GRAIN-G4-NS", "GRAIN-G0-NOMATCH"]
     assert rs.status == "PROVISIONAL"
@@ -126,3 +126,17 @@ def test_c25_adapter_matches_fixture_adapter(tmp_path):
                               rs)
     d = res2.decisions["b_nic_attachment"]
     assert d.grain == "UNKNOWN" and "lifecycle_controller" in d.missing
+
+
+def test_every_rule_id_matches_c00_pattern():
+    """0.2.3 (CC-NET-6): todo rule_id que o GRAIN pode gravar em rule_applied (regras e desfechos do procedimento)
+    segue o padrão rule_id do C00."""
+    import json
+    import re as _re
+    import yaml
+    from bo.grain.common import repo
+    pat = json.loads((repo() / "contracts" / "C00_conventions.schema.json").read_text(encoding="utf-8"))
+    rx = _re.compile(pat["$defs"]["rule_id"]["pattern"])
+    raw = yaml.safe_load((repo() / "grain" / "grain_rules.yaml").read_text(encoding="utf-8"))
+    ids = [r["id"] for r in raw["rules"]] + [p["id"] for p in raw.get("procedural_outcomes", [])]
+    assert ids and all(rx.match(i) for i in ids), [i for i in ids if not rx.match(i)]
