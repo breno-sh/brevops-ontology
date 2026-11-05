@@ -248,10 +248,18 @@ class Builder:
         if r is None or tr.get("compiled"):
             return
         T = self.T
-        for prop, why, axs in (("effect", "efeito permitir realizado pela própria regra no destino só-permissão",
-                                ["AX-NET-01", "AX-NET-10"]),
-                               ("priority", "ordem irrelevante entre permissões no destino só-permissão",
-                                ["AX-NET-02"])):
+        if self.provider == "oci":
+            # OCI: a regra emitida permite (AX-NET-13) e sem regra nega (AX-NET-03); só regras que permitem são
+            # emitidas, então nenhuma anula outra e a ordem não muda a decisão
+            pairs = (("effect", "efeito permitir realizado pela própria regra no destino (a regra OCI permite)",
+                      ["AX-NET-13", "AX-NET-10"]),
+                     ("priority", "só regras que permitem são emitidas no destino: a ordem não muda a decisão",
+                      ["AX-NET-13", "AX-NET-03"]))
+        else:
+            pairs = (("effect", "efeito permitir realizado pela própria regra no destino só-permissão",
+                      ["AX-NET-01", "AX-NET-10"]),
+                     ("priority", "ordem irrelevante entre permissões no destino só-permissão", ["AX-NET-02"]))
+        for prop, why, axs in pairs:
             f = r.facts.get(prop)
             if f is not None and f.atom:
                 T.consumed[(r.rid, f.atom)] = (axs, why)

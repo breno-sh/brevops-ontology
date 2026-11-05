@@ -101,6 +101,20 @@ def test_controls_differ_only_in_knowledge(cs, tmpdir_mod):
     assert k3.value(rid, "state") == "stateful" and k2.value(rid, "state") is None
 
 
+def test_oci_allows_but_only_aws_is_exclusive(cs, tmpdir_mod):
+    """OCI: a frase publicada diz que a regra permite e que sem regra nada passa; não diz que só pode permitir."""
+    assert not [e for e in AX.by_id()["AX-NET-01"]["evidence"] if e.startswith("SE-oci-")]
+    for t in ("oci_core_security_list", "oci_core_network_security_group"):
+        assert "bo:PermissionListRuleSet" not in AX.REALIZATION_CLASSES[t]
+        assert {"bo:AllowCapableRuleSet", "bo:NoMatchDenyRuleSet"} <= set(AX.REALIZATION_CLASSES[t])
+    L = [LF.lift(FX["NETC-C09-OCI-NOMATCH"])]
+    k3 = RS.run("c3_full", L, cs, tmpdir_mod / "rc")[L[0].fixture_id]
+    sid = next(iter(L[0].sets))
+    assert k3.value(sid, "no_match_ingress") == "deny" and "AX-NET-03" in k3.justification(sid, "no_match_ingress")
+    assert k3.value(sid, "precedence") is None
+    assert all(k3.value(rid, "effect") is None for rid in L[0].rules)
+
+
 def test_shacl_rejects_duplicate_priority(cs, tmpdir_mod):
     L = [LF.lift(FX["NETC-C05-AZ-DUP"])]
     k3 = RS.run("c3_full", L, cs, tmpdir_mod / "rc")[L[0].fixture_id]

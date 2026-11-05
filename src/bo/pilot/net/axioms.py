@@ -15,8 +15,11 @@ from __future__ import annotations
 REALIZATION_CLASSES = {
     "aws_security_group": ["bo:FilterRuleSet", "bo:PermissionListRuleSet", "bo:NoMatchDenyRuleSet",
                            "bo:StatefulRuleSet"],
-    "oci_core_security_list": ["bo:FilterRuleSet", "bo:PermissionListRuleSet", "bo:NoMatchDenyRuleSet"],
-    "oci_core_network_security_group": ["bo:FilterRuleSet", "bo:PermissionListRuleSet", "bo:NoMatchDenyRuleSet"],
+    # OCI: a frase publicada diz que a regra permite e que sem regra nada passa; NÃO diz que a regra só pode
+    # permitir. Fica sem a classe de lista de permissão (exclusividade não sustentada) e com "sem regra nega".
+    "oci_core_security_list": ["bo:FilterRuleSet", "bo:AllowCapableRuleSet", "bo:NoMatchDenyRuleSet"],
+    "oci_core_network_security_group": ["bo:FilterRuleSet", "bo:AllowCapableRuleSet",
+                                        "bo:NoMatchDenyRuleSet"],
     "google_compute_network": ["bo:FilterRuleSet", "bo:PrecedenceRuleSet", "bo:DenyTieRuleSet",
                                "bo:ImpliedRulesRuleSet", "bo:StatefulRuleSet"],
     "azurerm_network_security_group": ["bo:FilterRuleSet", "bo:PrecedenceRuleSet", "bo:UniquePriorityRuleSet"],
@@ -51,6 +54,7 @@ TAXONOMY = [
     ("bo:NoMatchDenyRuleSet", "bo:FilterRuleSet"),
     ("bo:ImpliedRulesRuleSet", "bo:PrecedenceRuleSet"),
     ("bo:StatefulRuleSet", "bo:FilterRuleSet"),
+    ("bo:AllowCapableRuleSet", "bo:FilterRuleSet"),
 ]
 
 P = "bo:"
@@ -63,12 +67,10 @@ AXIOMS = [
         "entails": ["effect"],
         "level": "published",
         "evidence": ["SE-aws-6gqdywgpolbhwsgh", "SE-aws-uprjohepvlbrisrj", "SE-aws-27fce6orje6kwxl7",
-                     "SE-aws-dhmyfhb32dip3gm3", "SE-oci-i4qhfl5ma4mlbegd", "SE-oci-c5zpsmypese5ipku",
-                     "C24:REQ-NET-01"],
-        "basis": "o schema fixado (C01) não tem átomo de efeito nesses tipos de regra; a frase publicada da AWS diz "
-                 "que sem regra o tráfego é bloqueado e a da OCI que a regra 'allows traffic'; num conjunto em que "
-                 "a regra só pode permitir, o efeito de toda regra é permitir (definição de lista de permissão, "
-                 "REQ-NET-01)",
+                     "SE-aws-dhmyfhb32dip3gm3", "C24:REQ-NET-01"],
+        "basis": "guia da AWS: 'You can specify allow rules, but not deny rules.' (exclusividade publicada); num "
+                 "conjunto em que a regra só pode permitir, o efeito de toda regra é permitir (REQ-NET-01). Só a "
+                 "AWS: a OCI não tem frase de exclusividade",
     },
     {
         "axiom_id": "AX-NET-02",
@@ -82,7 +84,7 @@ AXIOMS = [
     },
     {
         "axiom_id": "AX-NET-03",
-        "text": "lista de permissão sem regra que case nega, nos dois sentidos",
+        "text": "conjunto sem regra que case nega, nos dois sentidos",
         "ttl": "bo:NoMatchDenyRuleSet rdfs:subClassOf [ a owl:Restriction ; owl:onProperty bo:hasNoMatchIngress ; "
                "owl:hasValue bo:Deny ] , [ a owl:Restriction ; owl:onProperty bo:hasNoMatchEgress ; "
                "owl:hasValue bo:Deny ] .",
@@ -90,7 +92,7 @@ AXIOMS = [
         "level": "published",
         "evidence": ["SE-aws-jcsq5zrpnuvxzaxv", "SE-oci-7fsekbectwthhskg", "SE-oci-g5m7bluwqpdk5cvi"],
         "basis": "'If nothing is specified, traffic will be blocked' (o Terraform remove a regra padrão de saída); "
-                 "na OCI, sem regra nenhum tráfego é permitido",
+                 "OCI: 'Without security rules, no traffic is allowed in and out of VNICs in the VCN.'",
         "applies_to_types": ["aws_security_group", "oci_core_security_list", "oci_core_network_security_group"],
     },
     {
@@ -203,6 +205,27 @@ AXIOMS += [
         "basis": "guia oficial: regra implícita de negar entrada e de permitir saída, de menor prioridade",
         "applies_to_types": ["google_compute_network"],
     },
+    {
+        "axiom_id": "AX-NET-13",
+        "text": "conjunto cujas regras permitem: a regra permite um tipo de tráfego (não diz que só pode permitir)",
+        "ttl": "bo:AllowCapableRuleSet rdfs:subClassOf [ a owl:Restriction ; owl:onProperty bo:admitsEffect ; "
+               "owl:hasValue bo:Allow ] .",
+        "entails": ["admitted_effect"],
+        "level": "published",
+        "evidence": ["SE-oci-i4qhfl5ma4mlbegd", "SE-oci-c5zpsmypese5ipku"],
+        "basis": "OCI: 'A security rule allows a particular type of traffic in or out of a VNIC.' Sustenta que uma "
+                 "regra emitida no destino OCI permite; não sustenta que toda regra de origem OCI permite, então "
+                 "não dá efeito nem ordem à regra de origem",
+        "applies_to_types": ["oci_core_security_list", "oci_core_network_security_group"],
+    },
+]
+
+EXCLUDED_CLAIMS = [
+    {"ref": "SE-oci-i4qhfl5ma4mlbegd/SE-oci-c5zpsmypese5ipku",
+     "why": "'A security rule allows a particular type of traffic' diz que a regra pode permitir, não que só pode "
+            "permitir: a OCI fica fora do AX-NET-01 (lista de permissão) e do AX-NET-02 (independente de ordem); "
+            "o efeito da regra OCI de origem fica desconhecido no c3; a frase entra só como AX-NET-13 (a regra emitida no "
+            "destino OCI permite)"},
 ]
 
 EXCLUDED = [

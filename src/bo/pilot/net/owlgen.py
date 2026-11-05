@@ -45,6 +45,9 @@ CLASSES = {
                            "(interface, sub-rede ou instância).", []),
     "bo:PermissionListRuleSet": ("conjunto lista de permissão", "Conjunto lista de permissão é um conjunto de regras "
                                  "cujas regras só podem permitir.", ["bo:FilterRuleSet"]),
+    "bo:AllowCapableRuleSet": ("conjunto cujas regras permitem", "Conjunto cujas regras permitem é um conjunto de "
+                               "regras em que cada regra permite um tipo de tráfego, sem afirmar que a regra só pode "
+                               "permitir.", ["bo:FilterRuleSet"]),
     "bo:PrecedenceRuleSet": ("conjunto por precedência", "Conjunto por precedência é um conjunto de regras em que a "
                              "regra de maior precedência decide entre permitir e negar.", ["bo:FilterRuleSet"]),
     "bo:DenyTieRuleSet": ("conjunto com desempate por negação", "Conjunto com desempate por negação é um conjunto por "
@@ -88,6 +91,7 @@ OBJECT_PROPS = {
     "bo:hasConnectionTracking": ("tem rastreio de conexão", "bo:FilterRule", "bo:ControlledValue"),
     "bo:hasNoMatchIngress": ("tem decisão sem regra na entrada", "bo:FilterRuleSet", "bo:ControlledValue"),
     "bo:hasNoMatchEgress": ("tem decisão sem regra na saída", "bo:FilterRuleSet", "bo:ControlledValue"),
+    "bo:admitsEffect": ("admite efeito", "bo:FilterRuleSet", "bo:ControlledValue"),
     "bo:hasPrecedenceOrder": ("tem ordem de precedência", "bo:FilterRuleSet", "bo:ControlledValue"),
     "bo:hasTieBreak": ("tem desempate", "bo:FilterRuleSet", "bo:ControlledValue"),
     "bo:hasPriorityRule": ("tem regra de prioridade", "bo:FilterRuleSet", "bo:ControlledValue"),
@@ -228,6 +232,8 @@ def _class_evidence(key, cls) -> list:
         ev += AX.by_id()["AX-NET-01"]["evidence"]
     if cls in ("bo:PrecedenceRuleSet", "bo:DenyTieRuleSet", "bo:UniquePriorityRuleSet"):
         ev += AX.by_id()["AX-NET-04"]["evidence"]
+    if cls == "bo:AllowCapableRuleSet":
+        ev += AX.by_id()["AX-NET-13"]["evidence"]
     if cls == "bo:DeclaredDefaultStateRule":
         ev += AX.by_id()["AX-NET-07"]["evidence"]
     return sorted(set(ev)) or ["C24:REQ-NET-01"]
