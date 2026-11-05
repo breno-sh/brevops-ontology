@@ -180,7 +180,9 @@ def build_claims(se, vs, docs=None, schema_atoms=None) -> list[dict]:
             raise SystemExit(f"{cid}: {ref} não é átomo do C01 (SCHEMA-*)")
         if kind == "block" and ref not in blocks and ref not in c01:   # bloco, ou coleção de objetos (lista)
             raise SystemExit(f"{cid}: {ref} não é bloco nem coleção do C01 (SCHEMA-*)")
-        f = description_fact(docs, ref) if kind in ("atom", "block") else None
+        # C03 do próprio átomo: obrigatório quando a especificação pede C03, preferido em âncora de átomo; âncora de
+        # bloco ou tipo com fato C25 explícito cita esse fato (a description de coleção não fala de efeito)
+        f = description_fact(docs, ref) if (spec["src"] == "C03" or kind == "atom") else None
         if spec["src"] == "C03" or f is not None:     # a sentença do próprio átomo (C03) prevalece sobre a do C25
             if f is None:
                 raise SystemExit(f"{cid}: sem description publicada do próprio átomo no docs_facts")

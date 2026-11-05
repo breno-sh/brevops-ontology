@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "PILOT-NET-GLOSS",
- "generated_at": "2026-11-04T23:20:51-03:00",
+ "generated_at": "2026-11-04T23:27:15-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-NET-GLOSS.txt",
@@ -90,8 +90,8 @@
     "sha256": "99e3dc9d3434e48675fd71eb817145ae63c2159fd041f3c67dd1d308e814287c"
    }
   ],
-  "recorded_at": "2026-11-04T23:20:51-03:00"
+  "recorded_at": "2026-11-04T23:27:15-03:00"
  },
  "sources": [],
- "notes": "CC-MAP-NET-5: efeito fixo permitir ancorado (aws e oci) com frase do guia; E2 3/3"
+ "notes": "correção do efeito: aws fixo permitir (guia), oci allow_capable sem exclusividade"
 }

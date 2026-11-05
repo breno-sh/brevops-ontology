@@ -172,3 +172,12 @@ deny rules."; oci ANC-oci-0011 (tipo de regra do NSG) e ANC-oci-0012/0013 (bloco
 security rule allows a particular type of traffic in or out of a VNIC." A decisão GD-NET-0002 (tipo de valor do
 efeito) cita os dois fatos. Para a OCI, só o literal: a regra permite e, sem regras, nada passa (nota SN-NET-0002);
 nenhuma decisão de exclusividade. Glossário: 60 âncoras, 95 caminhos entre provedores (UNPROVEN), controle 87/87.
+
+ADENDO 2026-11-04T23:40:00-03:00 (America/Recife), correção das âncoras de efeito (apontada pelo PILOT-NET-MAP).
+(1) ANC-aws-0018/0019 (blocos ingress/egress do conjunto) citavam, por engano, a description C03 da coleção
+("Configuration block for ingress/egress rules.", que não fala de efeito): o build preferia C03 também em âncora de
+bloco. Corrigido: âncora de bloco ou tipo com fato C25 explícito cita esse fato; as duas agora citam
+SE-aws-6gqdywgpolbhwsgh ("You can specify allow rules, but not deny rules.").
+(2) ANC-oci-0011..0013: a frase diz que a regra permite, não que só permite. A implicação passou de allow para
+allow_capable, e a GD-NET-0002 diz: aws = efeito fixo permitir (literal publicado); oci = permite, exclusividade não
+publicada (nenhuma guarda de 'só permite'). AMBIGUOUS na oci podem voltar, e é o correto.

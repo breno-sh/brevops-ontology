@@ -309,15 +309,15 @@ ANCHORS = [
     _a("ANC-oci-0011", "oci:oci_core_network_security_group_security_rule", "concept:rule_effect",
        "SE-oci-c5zpsmypese5ipku", "tipo de regra separada; fato effect rule_allows do SERVICE-EVIDENCE (guia de regras)",
        r"rule allows|no traffic is allowed", kind="type",
-       implication=_imp("type_choice", "allow", "a regra permite um tipo de tráfego (literal do guia)", []), at=CC_MAP_NET_5_AT),
+       implication=_imp("type_choice", "allow_capable", "a regra pode permitir um tipo de tráfego (literal do guia); que só permite não está publicado", []), at=CC_MAP_NET_5_AT),
     _a("ANC-oci-0012", SLI, "concept:rule_effect", "SE-oci-i4qhfl5ma4mlbegd",
        "bloco de regras de entrada do conjunto; fato effect rule_allows do SERVICE-EVIDENCE (guia de regras)",
        r"rule allows|no traffic is allowed", kind="block",
-       implication=_imp("block_choice", "allow", "a regra do bloco permite um tipo de tráfego (literal do guia)", []), at=CC_MAP_NET_5_AT),
+       implication=_imp("block_choice", "allow_capable", "a regra do bloco pode permitir um tipo de tráfego (literal do guia); que só permite não está publicado", []), at=CC_MAP_NET_5_AT),
     _a("ANC-oci-0013", SLE, "concept:rule_effect", "SE-oci-i4qhfl5ma4mlbegd",
        "bloco de regras de saída do conjunto; fato effect rule_allows do SERVICE-EVIDENCE (guia de regras)",
        r"rule allows|no traffic is allowed", kind="block",
-       implication=_imp("block_choice", "allow", "a regra do bloco permite um tipo de tráfego (literal do guia)", []), at=CC_MAP_NET_5_AT),
+       implication=_imp("block_choice", "allow_capable", "a regra do bloco pode permitir um tipo de tráfego (literal do guia); que só permite não está publicado", []), at=CC_MAP_NET_5_AT),
 ]
 
 
@@ -342,8 +342,9 @@ DECISION_SPECS = [
      "inteiro ordinal, o menor prevalece; a faixa admitida é do átomo, não do conceito",
      ["SE-google-n2ccqgtmt4jm72sp", "SE-azurerm-hfppj5whireqkdcl"]),
     (2, "value_type", "concept:rule_effect", None, _vt("enum", "nominal: permitir | negar"),
-     ("enum nominal de dois valores; num provedor vem do bloco usado, não de atributo; em dois provedores as regras "
-      "só permitem (frase oficial do guia publicada pelo SERVICE-EVIDENCE): ali o efeito é fixo = permitir"),
+     ("enum nominal de dois valores; num provedor vem do bloco usado, não de atributo. Provedor aws: efeito fixo = "
+      "permitir (literal publicado no guia: só regras de permissão). Provedor oci: a regra permite (allow_capable), "
+      "mas a exclusividade (só permite) não está publicada: nenhuma guarda de 'só permite' sai daqui"),
      ["SE-azurerm-x42gvfavlctlsm6r", "SE-aws-6gqdywgpolbhwsgh", "SE-oci-i4qhfl5ma4mlbegd"]),
     (3, "value_type", "concept:rule_stateless", None,
      _vt("boolean", "verdadeiro = sem estado (a resposta precisa de regra própria); falso = com estado"),
@@ -421,8 +422,9 @@ SLICE_NOTES = [
               "com efeito = permitir; à parte, o provedor cria uma regra padrão de saída que o Terraform remove"),
      "evidence": ["SE-aws-6gqdywgpolbhwsgh", "SE-aws-jcsq5zrpnuvxzaxv"]},
     {"concept_id": "concept:rule_effect", "provider": "oci",
-     "note": ("só o literal do guia: a regra permite um tipo de tráfego (âncoras ANC-oci-0011..0013) e, sem regras, "
-              "nenhum tráfego passa; nenhuma decisão de exclusividade"),
+     "note": ("só o literal do guia: a regra permite um tipo de tráfego (âncoras ANC-oci-0011..0013, efeito "
+              "allow_capable) e, sem regras, nenhum tráfego passa; que a regra só permite não está publicado: nenhuma "
+              "exclusividade"),
      "evidence": ["SE-oci-i4qhfl5ma4mlbegd", "SE-oci-7fsekbectwthhskg"]},
     {"concept_id": "concept:rule_priority", "provider": "aws",
      "note": "fato precedence unknown no SERVICE-EVIDENCE; regras só permitem, sem atributo de prioridade",
