@@ -55,6 +55,7 @@ def generate() -> dict:
     for p in common.PROVIDERS:
         _scope_disputes(ctxs[p], disputes)  # alcance doc x spec na camada api: disputa aberta, nunca escolha
     obs_st = observed.records(ctxs, disputes)  # nível OBSERVED (só entra no C25 com a emenda 10)
+    r6 = _r6(ctxs, disputes)  # R6 do PREREG: derivado x derivado resolvido por publicação literal
     for p in common.PROVIDERS:
         stats[p]["counters"] = dict(ctxs[p].st)
     recs = []
@@ -78,7 +79,7 @@ def generate() -> dict:
     if perr:
         raise SystemExit("protocol_support fora do formato: " + "; ".join(perr[:5]))
     return {"recs": recs, "protocol": prow, "protocol_missing": pmiss, "stats": stats, "curated": cur,
-            "observed": obs_st,
+            "observed": obs_st, "r6": r6,
             "disputes": sorted(disputes, key=lambda d: (d["provider"], d["terraform_resource_type"], d["fact"]))}
 
 
@@ -106,6 +107,51 @@ def _scope_disputes(ctx, disputes: list) -> None:
                              "spec": {"kind": sp["value"]["kind"], "rule": sp["value"]["rule"]},
                              "evidence": [d["evidence_id"], sp["evidence_id"]]})
             ctx.st["disputa_alcance_doc_x_spec"] += 1
+
+
+# R6 (PREREG b7f804d): só fato PUBLICADO literal que diz o valor de um dos lados. Leitura declarada e estreita:
+# rule_applies_to cujo texto nomeia os membros do pai ("VNICs in the network security group/group/NSG") diz kind
+# parent (a regra vale para os membros do pai). Nada além do literal.
+R6_PARENT_WORDS = ("network security group", "nsg", "group")
+
+
+def _r6(ctxs: dict, disputes: list) -> dict:
+    st = {"resolved": [], "open_scope": 0}
+    for d in disputes:
+        if d.get("status") not in (None, "aberta") or d["fact"] != "effective_scope" or len(d.get("evidence") or []) != 2:
+            continue
+        ctx = ctxs[d["provider"]]
+        sides = [ctx.by_id.get(e) for e in d["evidence"]]
+        if not all(sides) or any(sd["level"] != "derived" for sd in sides):
+            continue
+        if d["kind"] != "derived_x_derived":  # C25-DISPUTE-PUB (1.6.0) só aceita essa natureza: CONTRACT_CHANGE item 12
+            st.setdefault("blocked_kind", []).append({"type": d["terraform_resource_type"], "kind": d["kind"]})
+        pubs = [r for r in ctx.recs if r["terraform_resource_type"] == d["terraform_resource_type"]
+                and r.get("block_path") == d.get("block_path") and r["fact_kind"] == "effective_scope"
+                and r["status"] == "stated" and r["level"] == "published"
+                and (r.get("value") or {}).get("aspect") == "rule_applies_to"
+                and any(w in (r["value"].get("applies_to") or "").lower() for w in R6_PARENT_WORDS)]
+        pubs.sort(key=lambda r: (r["value"].get("rule") != "C-GUIDE-LITERAL", r["evidence_id"]))
+        if not pubs:
+            st["open_scope"] += 1
+            continue
+        side = "spec" if d["spec"].get("kind") == "parent" else ("doc" if d["doc"].get("kind") == "parent" else None)
+        if not side:
+            st["open_scope"] += 1
+            continue
+        pub = pubs[0]
+        if d["kind"] != "derived_x_derived":
+            st["open_scope"] += 1
+            st.setdefault("ready_if_kind", []).append({"type": d["terraform_resource_type"], "resolved_to": side,
+                                                       "publication_id": pub["evidence_id"]})
+            continue
+        d.update({"status": "resolvida-por-publicação", "sides": list(d["evidence"]), "resolved_to": side,
+                  "publication_id": pub["evidence_id"],
+                  "resolved_at": (pub.get("citation") or {}).get("retrieved_at") or common.now()})
+        st["resolved"].append({"type": d["terraform_resource_type"], "resolved_to": side,
+                               "publication_id": pub["evidence_id"],
+                               "sentence": (pub.get("citation") or pub.get("doc") or {}).get("sentence")})
+    return st
 
 
 def evidence_levels(g: dict) -> dict:
@@ -150,6 +196,7 @@ def evidence_levels(g: dict) -> dict:
                              "missing": g["protocol_missing"]},
         "curated": g["curated"],
         "spec_disputes": len(g["disputes"]),
+        "r6": g["r6"],
         "observed": {k: v for k, v in g["observed"].items() if k != "candidates"},
         "spec_coverage": {p: {"types": c["types"], "bridged": len(c["bridged"]), "ambiguous": len(c["ambiguous"]),
                               "no_candidate": len(c["no_candidate"])} for p, c in specfacts.COVERAGE.items()},
@@ -228,7 +275,7 @@ def render(g: dict) -> dict[str, str]:
     srcs = json.dumps(sources_doc(), ensure_ascii=False, indent=1) + "\n"
     sch = json.dumps(protocol.SCHEMA, ensure_ascii=False, indent=1) + "\n"
     disp = json.dumps({"schema": "bo.spec_disputes/1", "module": common.MODULE, "contract": "C25",
-                       "contract_version": "1.5.0",
+                       "contract_version": "1.6.0",
                        "note": "conflito spec x doc e observado x publicado: os fatos ficam no C25; resolução só por "
                                "observação (R2 do PREREG)",
                        "disputes": g["disputes"]}, ensure_ascii=False, indent=1) + "\n"

@@ -119,3 +119,18 @@ descrita abaixo e em results/SERVICE-EVIDENCE/evidence_levels.json (level_policy
    Pedido ao coordenador/PREREG: decidir se a disputa DERIVADO x DERIVADO conta como a "disputa existente" do R2
    (e onde gravar o status), antes de eu promover. O staging está pronto e validado (testes, níveis e pins sem
    falha); a promoção espera essa decisão.
+
+12. R6 (PREREG b7f804d, C25 1.6.0) — BLOQUEANTE para a R6, 2026-11-04T22:20-03:00. Nada foi promovido.
+   O C25-DISPUTE-PUB aceita resolvida-por-publicação só em disputa de kind derived_x_derived. As 23 disputas de
+   alcance (e todas as 99 do spec_disputes.json) têm kind doc_x_spec desde a 1.5.0 (rótulo das fontes: doc do
+   Terraform x spec da API), embora os dois lados sejam DERIVADOS em todas. O stub do contrato usa o rótulo por nível.
+   Com a disputa como está, o validador reprova: "resolvida-por-publicação só em disputa derived_x_derived (R6),
+   não doc_x_spec".
+   Achado da R6, pronto e não gravado: 1 de 23 resolve. oci_core_network_security_group_security_rule, lados
+   SE-oci-o2hf3vq37da34th5 (doc, self) x SE-oci-owpz72e36oqij7f2 (spec, parent), resolved_to spec (parent = as VNICs
+   do NSG), publication_id SE-oci-azu2sgmbkqz2d2dc (guia oci-nsg.html L16: "security rules that apply only to a set
+   of VNICs in a single VCN"). As outras 22 não têm frase publicada literal e ficam abertas.
+   Mudança proposta, escolha do CONTRACTS: (a) o C25-DISPUTE-PUB olha o nível dos dois lados (ambos derived) em vez
+   do rótulo; ou (b) eu passo o kind de todas as disputas para a natureza por nível (derived_x_derived, que é o que
+   as 99 são) e guardo a origem em doc/spec, que já existem. Com qualquer das duas, é regerar e promover; o código
+   da R6 já está no ramo, preso só a esse teste de kind.

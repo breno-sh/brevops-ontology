@@ -2,7 +2,7 @@
  "schema": "bo.spec_disputes/1",
  "module": "SERVICE-EVIDENCE",
  "contract": "C25",
- "contract_version": "1.5.0",
+ "contract_version": "1.6.0",
  "note": "conflito spec x doc e observado x publicado: os fatos ficam no C25; resolução só por observação (R2 do PREREG)",
  "disputes": [
   {

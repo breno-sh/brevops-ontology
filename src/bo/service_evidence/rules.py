@@ -205,6 +205,9 @@ RULES = {
                           "a dissociação não é automática.",
     "C-GUIDE-LITERAL": "fato de frase literal curta de guia oficial do provedor (CC-14; lote guides-cc14 com URL, "
                        "data e sha256); o valor repete o que a frase diz, sem kind de grão (não resolve disputa).",
+    "R6-PUB": "R6 do PREREG: disputa DERIVADO x DERIVADO de alcance fica resolvida-por-publicação quando um fato "
+              "PUBLICADO literal (rule_applies_to) nomeia os membros do pai (VNICs do NSG): resolve para o lado kind "
+              "parent; sem frase literal, a disputa continua aberta.",
     # curadoria das fatias dos pilotos (curated.py): C-* publicado (o valor está escrito na frase), I-* interpretado
     "C-PILOT-LITERAL": "fato escolhido à mão numa frase da página fixada; o valor repete o que a frase diz.",
     "C-PILOT-GAP": "tipo das fatias dos pilotos sem frase para este tipo de fato na página fixada: UNKNOWN explícito "
