@@ -408,6 +408,26 @@ vida preso à instância, G1 e G2 aceitam a evidência, e trocar a ordem troca B
 referência <code>by_name</code>; sem ela, o grafo embutido perde relações que o separado tem.</li>
 <li>Emenda 0.1.1 (CC-1): a primeira versão lia uma convenção que o SERVICE-EVIDENCE nunca gravou; os testes
 sintéticos usavam a mesma convenção e não pegaram. Entraram o adaptador por aspecto e testes com o arquivo real.</li>
+<li>Emenda 0.2.5 — 2026-11-05T00:58-03:00 (rodada v4-r2b do coordenador). O SERVICE-EVIDENCE publicou o alvo tipado de 14 campos de pai
+(4d48d00) e duas decisões de STO de 123 caíram para UNKNOWN, deixando vermelho o
+<code>test_cc8_s3_container_and_facet_from_spec</code> em bo/base. Casos em <code>tests/grain/test_grain_r2b.py</code>
+(sintéticos e de calibração; vermelho antes em $BO_DATA/GRAIN/r2b/red_before.txt). <b>T40b</b>: no alcance do tipo
+(type_scope) que não é escopo do provedor, a referência da chave conta seja de contenção (T02, T21), seja tipada (T44);
+antes só a de contenção contava, e tipar <code>bucket</code> levava o alcance a self, contra o alcance pai da spec
+(campo CONTRADICTORY). Com a chave inteira = a referência ao pai, a unidade é uma por pai: o bloqueio de acesso público
+volta a FACET do contêiner, com alcance = o contêiner. <b>T52c</b>: chave = uma referência tipada + campos próprios,
+ciclo de vida próprio afirmado e sem pai de caminho marcado: o referenciado qualifica o nome (namespace) e a unidade sai
+ENTITY pela G4-NS; o controle de acesso do bucket do Google volta a ENTITY (agora G4-NS, antes G4-ENTITY porque o campo
+não era tipado). Coerência: ciclo de vida do pai dá COMPONENT (T03, F1) e pai de caminho marcado dá a G2-CHILD; ciclo de
+vida desconhecido não muda nada. O controle antigo da G4-NS (tirar a marca de namespace do NSG do Azure) passou a tirar
+também o ciclo de vida, porque com ele a marca agora é derivada (T52c). <b>T46b</b>: <code>reference_example</code> é a
+premissa publicada do <code>reference_target</code> derivado pelo SE; não vira alegação nem UNKNOWN "sem tradução", e
+sozinho não tipa (o mesmo exemplo não conta duas vezes). Correção junto: os fatos explícitos <code>path_parent</code> e
+<code>namespace_container</code> estavam fora da busca da tabela e caíam em "sem tradução"; passam a ser lidos (T54, T52).
+Medida no esquema real (164 candidatos NET+STO) contra a 0.2.4 com o SE de antes: mudam só as 2 decisões esperadas do F1
+(regra separada de id composto da AWS: COMPONENT do grupo; a ligação dela por lista de prefixos: BINDING) e a regra do
+controle de acesso do Google (ENTITY por G4-NS em vez de G4-ENTITY); STO decide 65 de 123 como antes. Calibração NET 45/45,
+só com o GRAIN 33/45 (igual), STO 21/21, reordenação 1455/1455, embalagem 80/80.</li>
 <li>Emenda 0.2.4 — 2026-11-05T00:20-03:00 (motivo: <code>results/PILOT-EXIT/DIAG_T3.json</code>, PILOT-EXIT tentativa 3, E2
 reprovado; F1, F2, F3 e F5 de classe "regra GRAIN", F4 de classe "adaptador" com a camada de instância do GRAIN). Cada
 regra tem caso sintético e, quando o pin reproduz a classe, caso de calibração sobre o SERVICE-EVIDENCE com configuração

@@ -304,6 +304,14 @@ def test_g4ns_without_namespace_mark_stays_unknown(records):
     recs = [r for r in records if not (r.get("terraform_resource_type") == "azurerm_network_security_group"
                                        and isinstance(r.get("value"), dict) and (r["value"].get("aspect") == "parent"
                                        or r["value"].get("rule") == "R-ID-SPEC"))]
+    # 0.2.5 (T52c, rodada v4-r2b): chave = referência tipada ao grupo + nome próprio, com ciclo de vida próprio
+    # afirmado, deriva a marca de namespace (G4-NS); o controle passa a tirar também o ciclo de vida para medir só a
+    # marca. Com o ciclo de vida, a marca derivada decide ENTITY pela G4-NS, citando a T52c
+    rep = RD.run(slice_types={"azurerm": ["azurerm_network_security_group"]}, records=recs)
+    d = rep["providers"]["azurerm"]["_res"].decisions["azurerm_network_security_group"]
+    assert d.grain == "ENTITY" and d.rule == "GRAIN-G4-NS", (d.grain, d.rule)
+    recs = [r for r in recs if not (r.get("terraform_resource_type") == "azurerm_network_security_group"
+                                    and r.get("fact_kind") == "lifecycle_controller")]
     rep = RD.run(slice_types={"azurerm": ["azurerm_network_security_group"]}, records=recs)
     d = rep["providers"]["azurerm"]["_res"].decisions["azurerm_network_security_group"]
     assert d.grain != "ENTITY", (d.grain, d.rule)

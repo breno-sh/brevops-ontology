@@ -73,6 +73,10 @@ TABLE = [
      "o atributo (relativo ao bloco) é referência tipada ao resolved quando target_types é ele só; senão "
      "referência sem alvo; é o que liga chave, dono e pontas do vínculo (endpoints do C19) a unidades"),
     ("identity", "reference_phrase", "R-GRAIN-T46", "sem tradução: frase da doc; o alvo vem de reference_target"),
+    ("identity", "reference_example", "R-GRAIN-T46B",
+     "emenda 0.2.5: exemplo oficial (atributo = tipo.nome...) é a premissa publicada de que o SERVICE-EVIDENCE deriva o "
+     "reference_target (R-REF-EXAMPLE-TARGET); não vira alegação por si (nem UNKNOWN 'sem tradução') e sozinho não "
+     "tipa a referência: o alvo vem só do reference_target, para o mesmo exemplo não contar duas vezes"),
     ("lifecycle_controller", "terraform_timeouts", "R-GRAIN-T45",
      "o bloco timeouts do tipo é configuração do Terraform, não do recurso: fora do domínio (não vira unidade; "
      "os átomos vão para a lista fora_do_domínio); não dá ciclo de vida"),
@@ -98,6 +102,12 @@ TABLE = [
      "compõe a unidade (G4-NS) e vira a relação cascade_delete_by. Também o fato explícito namespace_container "
      "{attribute}. T52b: no filho de um pai de caminho (T54), a referência ao MESMO tipo de contêiner de namespace "
      "do pai também é namespace. Sem a marca, a contenção segue composição (T21) e a regra G4-NS não se aplica"),
+    ("identity", "(chave relativa ao pai + ciclo de vida próprio)", "R-GRAIN-T52C",
+     "emenda 0.2.5: identidade cuja chave é UMA referência tipada a outra unidade mais campos próprios, com ciclo de "
+     "vida consolidado self e sem marca de pai de caminho (T54): o referenciado qualifica o nome e não compõe a unidade; "
+     "a referência é marcada namespace e a unidade sai ENTITY pela G4-NS (cascade_delete_by só com evidência de "
+     "cascata). Coerente com T03/F1 (ciclo de vida do pai: COMPONENT pela G2) e com a G2-CHILD (pai de caminho "
+     "marcado: COMPONENT); ciclo de vida desconhecido: nada muda (UNKNOWN)"),
     ("owner", "parent (composição, tipo de API aninhado)", "R-GRAIN-T54",
      "marca de PAI DE CAMINHO: contenção que não é namespace, com referência tipada ao pai (T21), cujo tipo de API "
      "da ponte do candidato está aninhado no parent_api_type (…/pai/filho): a referência é marcada path_parent "
@@ -209,7 +219,10 @@ TABLE = [
      "lifecycle_controller {kind: parent, via: $parent} quando via é o pai estrutural do bloco; senão UNKNOWN"),
     ("effective_scope", "type_scope", "R-GRAIN-T40",
      "scope de escopo do provedor (account, project, organization, ...): {kind: global}; outro scope: {kind: "
-     "parent, via: o campo de referência da chave} se a chave tem uma referência, senão {kind: self}"),
+     "parent, via: o campo de referência da chave} se a chave tem uma referência, senão {kind: self}. T40b (0.2.5): "
+     "conta como referência da chave tanto a de contenção (T02, T21) quanto a tipada (T44); tipar a referência ao pai "
+     "não derruba o alcance para self. Com a chave inteira = a referência ao pai, a unidade é uma por pai: FACET do pai "
+     "com alcance = o pai (G3)"),
     ("effective_scope", "attachment_scope", "R-GRAIN-T47",
      "effective_scope {kind: self}: a configuração da unidade vale onde ela está anexada, e a anexação é relação "
      "(o atributo vira referência; vínculos de outros tipos), não alcance de outra unidade"),
@@ -232,6 +245,11 @@ RULE_OF = {(f, a): r for f, a, r, _ in TABLE}
 for _f in GRAIN_FACTS:
     RULE_OF[(_f, "implicit_facet")] = RULE_OF[(_f, "spec_facet_member")] = "R-GRAIN-T57"
 RULE_OF[("lifecycle_controller", "spec_operation")] = "R-GRAIN-T57"
+for _f in GRAIN_FACTS:
+    # fatos explícitos de marca (T54, T52) e o exemplo oficial (T46b, 0.2.5): chaves de busca explícitas
+    RULE_OF[(_f, "path_parent")] = "R-GRAIN-T54"
+    RULE_OF[(_f, "namespace_container")] = "R-GRAIN-T52"
+    RULE_OF[(_f, "reference_example")] = "R-GRAIN-T46B"
 for _f in GRAIN_FACTS:
     RULE_OF[(_f, "selection")] = RULE_OF[(_f, "label_selection")] = "R-GRAIN-T60"
 
@@ -556,6 +574,10 @@ def translate(records: list[dict], candidates: set[str] | None = None, disputes:
                                             "source": src}
                     elif not prev:
                         links[cid][attr] = {"kind": "reference", "target": v["binds_to"], "source": src}
+            elif a == "reference_example":
+                # T46b (0.2.5): premissa do reference_target derivado pelo SE; sem alegação própria
+                reasons[cid].append(f"identity: reference_example de {v.get('attribute')} ({v.get('example_type')}) é "
+                                    "premissa do reference_target; sozinho não tipa (T46b)")
             elif a == "reference_phrase":
                 reasons[cid].append("identity: reference_phrase é frase da doc; o alvo vem de reference_target")
                 if v.get("attribute"):
@@ -722,6 +744,23 @@ def translate(records: list[dict], candidates: set[str] | None = None, disputes:
         for f in fs:
             fm.setdefault(f, {"path": f, "ref": True})["path_parent"] = True
         reasons[cid].append(f"identity: {sorted(fs)} referencia o pai de caminho da spec (G2-CHILD)")
+    # T52c (0.2.5): chave = UMA referência tipada + campos próprios, ciclo de vida próprio afirmado e sem pai de
+    # caminho: o referenciado qualifica o nome (namespace), não compõe a unidade (G4-NS)
+    for cid, tmap in sorted(typed.items()):
+        kf: set = set()
+        for c in out.get(cid, {}).get("identity", []):
+            if c.get("status") == "present" and c.get("scope") in ("within_parent", None):
+                kf |= set(c.get("key_fields") or [])
+        if cid in pending_ids:
+            kf |= set(pending_ids[cid][1])
+        refs_k = sorted(f for f in kf if tmap.get(f))
+        own_k = [f for f in kf if f not in tmap and f not in key_refs.get(cid, {}) and not f.startswith("$")]
+        if len(refs_k) != 1 or not own_k or refs_k[0] in path_fields.get(cid, set()) or ns_fields.get(cid) \
+                or not lc_self(cid):
+            continue
+        ns_fields[cid].add(refs_k[0])
+        reasons[cid].append(f"identity: {refs_k[0]} ({tmap[refs_k[0]]}) qualifica o nome de unidade com ciclo de vida "
+                            "próprio: namespace (T52c)")
     # cascata do namespace (emenda 0.1.11): cascade_delete_by só quando o TIPO de namespace tem evidência de que
     # apagá-lo apaga o conteúdo (namespace_cascade cascade=true, ou destroy_effect cascade); exigir contêiner vazio
     # (cascade=false / requires_empty) ou nenhuma evidência: namespace sem a relação
@@ -802,7 +841,12 @@ def translate(records: list[dict], candidates: set[str] | None = None, disputes:
         if scope in PROVIDER_SCOPE_KINDS:
             put(cid, "effective_scope", {"kind": "global", "source": _src(r, rule)})
         else:
-            rf = [f for f in key_refs.get(cid, {}) if not f.startswith("$")]
+            # T40b (0.2.5): referência da chave de contenção (T02, T21) ou tipada (T44)
+            kf = set(pending_ids[cid][1]) if cid in pending_ids else set()
+            for c in out.get(cid, {}).get("identity", []):
+                kf |= set(c.get("key_fields") or []) if c.get("status") == "present" else set()
+            rf = sorted({f for f in key_refs.get(cid, {}) if not f.startswith("$")}
+                        | {f for f in kf if typed.get(cid, {}).get(f)})
             put(cid, "effective_scope", {"kind": "parent", "via": rf[0], "source": _src(r, rule)} if len(rf) == 1
                 else {"kind": "self", "source": _src(r, rule)})
     # T56c: identidade de API prevalece também sobre a identidade de bloco derivada do schema (block_identity, T07)

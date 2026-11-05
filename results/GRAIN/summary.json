@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "GRAIN",
- "generated_at": "2026-11-05T00:23:08-03:00",
+ "generated_at": "2026-11-05T00:58:26-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/GRAIN.txt",
@@ -13,15 +13,15 @@
    "modo": "unlazy",
    "onda": "5",
    "fase": "F1",
-   "rules_version": "0.2.4",
+   "rules_version": "0.2.5",
    "rules_status": "PROVISIONAL",
-   "emendas": "GRAIN-A1..A19",
+   "emendas": "GRAIN-A1..A20",
    "c19": "3.2.0",
    "c25": "1.6.1",
    "pyyaml": "6.0.3",
    "pytest": "9.1.1",
    "jsonschema": "4.26.0",
-   "motivo": "DIAG_T3"
+   "motivo": "DIAG_T3 e rodada v4-r2b"
   },
   "inputs": [
    {
@@ -50,14 +50,14 @@
     "sha256": "a80b72d33c304681bf41858dead0796993368643d08cc8713021ac79c8029e06"
    }
   ],
-  "recorded_at": "2026-11-05T00:23:08-03:00"
+  "recorded_at": "2026-11-05T00:58:26-03:00"
  },
  "sources": [
   {
    "uri": "bo:fixtures-sinteticas",
    "license": "CC0-1.0",
-   "transformation": "mundos sintéticos escritos no módulo (provider_a..provider_h e provider_t3), sem dado real"
+   "transformation": "mundos sintéticos escritos no módulo (provider_a..provider_h, provider_t3 e provider_r2b), sem dado real"
   }
  ],
- "notes": "Emenda 0.2.4 (motivo results/PILOT-EXIT/DIAG_T3.json, F1-F5): T03 id composto, T51c ponta simbólica, T59c multiconjunto por evidência; vermelho antes/verde depois em $BO_DATA/GRAIN/diag_t3. Testes de integração leem o dado real de $BO_DATA (volátil)."
+ "notes": "Emendas 0.2.4 (DIAG_T3: T03, T51c, T59c) e 0.2.5 (v4-r2b: T40b, T52c, T46b); vermelho antes/verde depois em $BO_DATA/GRAIN/diag_t3 e $BO_DATA/GRAIN/r2b. Testes de integração leem o dado real de $BO_DATA (volátil)."
 }
