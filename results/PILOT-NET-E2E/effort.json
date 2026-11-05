@@ -100,6 +100,26 @@
      "step": "v4: axiomas do SE f44b9a6 (estado, regras implícitas, OCI), oráculo b0e0de2, GRAIN 0.2.2"
     }
    ],
+   "steps_v4r2": [
+    {
+     "agent_hours": 0.1,
+     "end": "00:09",
+     "start": "00:03",
+     "step": "v4-r2 (DIAG_T3 F3/F4): adaptador do E2, casos sintéticos vermelhos e correção"
+    },
+    {
+     "agent_hours": 0.08,
+     "end": "00:32",
+     "start": "00:27",
+     "step": "v4-r2: integração com o GRAIN 0.2.4 (parent_symbol, name_key, multiplicity)"
+    },
+    {
+     "agent_hours": 0.28,
+     "end": "01:35",
+     "start": "01:18",
+     "step": "v4-r2: rebase sobre GLOSS 93094bf e NET-MAP 79223e5, E2E de ponta a ponta, gates e merge"
+    }
+   ],
    "steps_v5": [
     {
      "agent_hours": 0.23,
@@ -114,6 +134,18 @@
      "hours": 0.57,
      "start": "10:29",
      "what": "PILOT-NET-MAP em bo/base (rebase sobre GRAIN 0.1.7/0.1.8 e oráculo regerado no meio)"
+    },
+    {
+     "end": "00:27",
+     "hours": 0.3,
+     "start": "00:09",
+     "what": "v4-r2: GRAIN 0.2.4 em bo/base"
+    },
+    {
+     "end": "01:18",
+     "hours": 0.77,
+     "start": "00:32",
+     "what": "v4-r2: SE, GRAIN 0.2.5, PILOT-NET-GLOSS e PILOT-NET-MAP regenerados em bo/base"
     }
    ]
   },
@@ -121,19 +153,19 @@
   "machine_seconds": {
    "inputs": 0.03,
    "lift": 0.002,
-   "oracle.c3": 0.228,
+   "oracle.c3": 0.212,
    "owl": 0.003,
    "reason.c1": 0.0,
-   "reason.c2": 0.115,
-   "reason.c3": 0.154,
-   "render.c3": 0.325,
+   "reason.c2": 0.113,
+   "reason.c3": 0.148,
+   "render.c3": 0.314,
    "translate.c1": 0.01,
-   "translate.c2": 0.013,
-   "translate.c3": 0.021,
-   "write": 0.049
+   "translate.c2": 0.012,
+   "translate.c3": 0.02,
+   "write": 0.048
   }
  },
- "generated_at": "2026-11-04T23:44:05-03:00",
+ "generated_at": "2026-11-05T01:20:50-03:00",
  "metrics": [
   {
    "axis": "operational",
@@ -141,7 +173,7 @@
     "description": "passos do brief do PILOT-NET-E2E (livro de esforço)",
     "ref": {
      "path": "$BO_REPO/src/bo/pilot_net_e2e/effort_ledger.py",
-     "sha256": "0cbd215aa8b67950bf4afa8493251c8205e3a2ba914a4b47250d17ac79acdce3"
+     "sha256": "f04c88e579ee0ff7430e1a09fe7c8d08cb5fe47430124c8f2b3955e670cef73f"
     }
    },
    "inclusion": {

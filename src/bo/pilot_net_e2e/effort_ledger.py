@@ -51,6 +51,17 @@ LEDGER = {
         {"step": "v5: NET-MAP 38d9ce0; OCI sem exclusividade (AX-NET-01 só AWS, AX-NET-13 'a regra permite')",
          "start": "23:36", "end": "23:50", "agent_hours": 0.23},
     ],
+    "steps_v4r2": [
+        {"step": "v4-r2 (DIAG_T3 F3/F4): adaptador do E2, casos sintéticos vermelhos e correção", "start": "00:03",
+         "end": "00:09", "agent_hours": 0.10},
+        {"step": "v4-r2: integração com o GRAIN 0.2.4 (parent_symbol, name_key, multiplicity)", "start": "00:27",
+         "end": "00:32", "agent_hours": 0.08},
+        {"step": "v4-r2: rebase sobre GLOSS 93094bf e NET-MAP 79223e5, E2E de ponta a ponta, gates e merge",
+         "start": "01:18", "end": "01:35", "agent_hours": 0.28},
+    ],
     "wait": [{"what": "PILOT-NET-MAP em bo/base (rebase sobre GRAIN 0.1.7/0.1.8 e oráculo regerado no meio)",
-              "start": "10:29", "end": "11:03", "hours": 0.57}],
+              "start": "10:29", "end": "11:03", "hours": 0.57},
+             {"what": "v4-r2: GRAIN 0.2.4 em bo/base", "start": "00:09", "end": "00:27", "hours": 0.30},
+             {"what": "v4-r2: SE, GRAIN 0.2.5, PILOT-NET-GLOSS e PILOT-NET-MAP regenerados em bo/base",
+              "start": "00:32", "end": "01:18", "hours": 0.77}],
 }
