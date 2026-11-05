@@ -1,7 +1,7 @@
 {
  "c25_shape": {
-  "grain_fact_records": 1106,
-  "stated": 1101,
+  "grain_fact_records": 1148,
+  "stated": 1143,
   "stated_by_aspect": {
    "effective_scope/None": 200,
    "effective_scope/attribute_scope": 2,
@@ -13,8 +13,9 @@
    "identity/block_schema": 93,
    "identity/cardinality": 1,
    "identity/id_template": 17,
+   "identity/reference_example": 30,
    "identity/reference_phrase": 36,
-   "identity/reference_target": 20,
+   "identity/reference_target": 32,
    "identity/resource_identity_schema": 21,
    "identity/shared_identity_key": 12,
    "identity/spec_facet_member": 5,
@@ -54,7 +55,7 @@
   "oci_objectstorage_private_endpoint": "acesso de rede, não acesso público ao conteúdo",
   "oci_objectstorage_replication_policy": "replicação: fora das quatro facetas"
  },
- "generated_at": "2026-11-04T23:04:51-03:00",
+ "generated_at": "2026-11-05T01:13:14-03:00",
  "grain": {
   "aws": {
    "atoms": 161,
@@ -80,7 +81,7 @@
     "rule": "GRAIN-G4-ENTITY",
     "type": "aws_s3_bucket"
    },
-   "evidence_records": 497,
+   "evidence_records": 526,
    "grains": {
     "COMPONENT": 2,
     "ENTITY": 1,
@@ -149,8 +150,10 @@
       "api_resource: objeto da ponte com ciclo de vida do pai: aspecto (T49)",
       "api_resource: ponte sem recurso de API",
       "effective_scope: camada Terraform: não é o alcance na API",
-      "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
       "identity: aspecto spec_field sem tradução na tabela",
+      "identity: id composto: outra alegação de identidade prevalece (T03)",
+      "identity: id_template composto não traduzido: outra alegação de identidade prevalece (T03)",
+      "identity: reference_example de bucket (aws_s3_bucket) é premissa do reference_target; sozinho não tipa (T46b)",
       "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
       "lifecycle_controller: destroy_effect state_only: não diz quem apaga",
       "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)",
@@ -167,8 +170,10 @@
       "api_resource: objeto da ponte com ciclo de vida do pai: aspecto (T49)",
       "api_resource: ponte sem recurso de API",
       "effective_scope: camada Terraform: não é o alcance na API",
-      "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
       "identity: aspecto spec_field sem tradução na tabela",
+      "identity: id composto: outra alegação de identidade prevalece (T03)",
+      "identity: id_template composto não traduzido: outra alegação de identidade prevalece (T03)",
+      "identity: reference_example de bucket (aws_s3_bucket) é premissa do reference_target; sozinho não tipa (T46b)",
       "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
       "lifecycle_controller: terraform_timeouts é configuração do Terraform (fora do domínio)",
       "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)",
@@ -186,6 +191,7 @@
       "api_resource: ponte sem recurso de API",
       "effective_scope: camada Terraform: não é o alcance na API",
       "identity: aspecto spec_field sem tradução na tabela",
+      "identity: reference_example de bucket (aws_s3_bucket) é premissa do reference_target; sozinho não tipa (T46b)",
       "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)",
       "owner: aspecto spec_operation sem tradução na tabela",
       "owner: camada Terraform: onde o código escreve, não o dono da configuração"
@@ -200,6 +206,7 @@
       "api_resource: objeto da ponte com ciclo de vida do pai: aspecto (T49)",
       "api_resource: ponte sem recurso de API",
       "effective_scope: camada Terraform: não é o alcance na API",
+      "identity: reference_example de bucket (aws_s3_bucket) é premissa do reference_target; sozinho não tipa (T46b)",
       "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)",
       "owner: aspecto spec_operation sem tradução na tabela",
       "owner: camada Terraform: onde o código escreve, não o dono da configuração"
@@ -213,6 +220,7 @@
      "reasons": [
       "api_resource: objeto da ponte com ciclo de vida do pai: aspecto (T49)",
       "api_resource: ponte sem recurso de API",
+      "identity: reference_example de bucket (aws_s3_bucket) é premissa do reference_target; sozinho não tipa (T46b)",
       "lifecycle_controller: destroy_effect not_deleted: não diz quem apaga",
       "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)",
       "owner: aspecto spec_operation sem tradução na tabela",
@@ -228,8 +236,10 @@
       "api_resource: objeto da ponte com ciclo de vida do pai: aspecto (T49)",
       "api_resource: ponte sem recurso de API",
       "effective_scope: camada Terraform: não é o alcance na API",
-      "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
       "identity: aspecto spec_field sem tradução na tabela",
+      "identity: id composto: outra alegação de identidade prevalece (T03)",
+      "identity: id_template composto não traduzido: outra alegação de identidade prevalece (T03)",
+      "identity: reference_example de bucket (aws_s3_bucket) é premissa do reference_target; sozinho não tipa (T46b)",
       "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
       "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)",
       "owner: aspecto spec_operation sem tradução na tabela",
@@ -245,8 +255,10 @@
       "api_resource: objeto da ponte com ciclo de vida do pai: aspecto (T49)",
       "api_resource: ponte sem recurso de API",
       "effective_scope: camada Terraform: não é o alcance na API",
-      "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
       "identity: aspecto spec_field sem tradução na tabela",
+      "identity: id composto: outra alegação de identidade prevalece (T03)",
+      "identity: id_template composto não traduzido: outra alegação de identidade prevalece (T03)",
+      "identity: reference_example de bucket (aws_s3_bucket) é premissa do reference_target; sozinho não tipa (T46b)",
       "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
       "lifecycle_controller: destroy_effect state_only: não diz quem apaga",
       "owner: aspecto identity_scope: sem tradução (R-GRAIN-T20)",
@@ -435,7 +447,7 @@
     "rule": "GRAIN-G4-ENTITY",
     "type": "google_storage_bucket"
    },
-   "evidence_records": 315,
+   "evidence_records": 328,
    "grains": {
     "ENTITY": 2,
     "FACET": 21,
@@ -451,7 +463,8 @@
     "GRAIN-G0-IDENTITY": 5,
     "GRAIN-G0-NEEDS": 1,
     "GRAIN-G3-FACET": 21,
-    "GRAIN-G4-ENTITY": 2
+    "GRAIN-G4-ENTITY": 1,
+    "GRAIN-G4-NS": 1
    },
    "top_level": {
     "google_storage_bucket": {
@@ -475,10 +488,14 @@
     },
     "google_storage_bucket_access_control": {
      "grain": "ENTITY",
-     "identity_class": "INDEPENDENT",
+     "identity_class": "WITHIN",
      "missing": [],
      "reasons": [
+      "identity: ['bucket'] referencia contêiner de namespace (cascade_delete_by)",
       "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
+      "identity: bucket (google_storage_bucket) qualifica o nome de unidade com ciclo de vida próprio: namespace (T52c)",
+      "identity: namespace bucket (google_storage_bucket) sem evidência de cascata: sem cascade_delete_by",
+      "identity: reference_example de bucket (google_storage_bucket) é premissa do reference_target; sozinho não tipa (T46b)",
       "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
       "lifecycle_controller: aspecto spec_operation: sem tradução (R-GRAIN-T57)",
       "lifecycle_controller: camada Terraform: create/delete do provider, não o objeto na API",
@@ -486,7 +503,7 @@
       "lifecycle_controller: terraform_timeouts é configuração do Terraform (fora do domínio)",
       "owner: camada Terraform: onde o código escreve, não o dono da configuração"
      ],
-     "rule": "GRAIN-G4-ENTITY"
+     "rule": "GRAIN-G4-NS"
     },
     "google_storage_bucket_acl": {
      "grain": "UNKNOWN",
@@ -497,6 +514,7 @@
       "owner"
      ],
      "reasons": [
+      "identity: reference_example de bucket (google_storage_bucket) é premissa do reference_target; sozinho não tipa (T46b)",
       "identity: reference_phrase é frase da doc; o alvo vem de reference_target",
       "lifecycle_controller: deletion_policy do Terraform (o que o destroy faz), fora da decisão de grão (T31, CC-NET-3)",
       "lifecycle_controller: destroy_effect not_deleted: não diz quem apaga",
@@ -516,6 +534,7 @@
      "reasons": [
       "effective_scope: camada Terraform: não é o alcance na API",
       "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
+      "identity: reference_example de bucket (google_storage_bucket) é premissa do reference_target; sozinho não tipa (T46b)",
       "import_key: formato de importação sem atributos nomeados",
       "lifecycle_controller: terraform_timeouts é configuração do Terraform (fora do domínio)",
       "owner: camada Terraform: onde o código escreve, não o dono da configuração"
@@ -524,7 +543,7 @@
     },
     "google_storage_bucket_iam_member": {
      "grain": "UNKNOWN",
-     "identity_class": "INDEPENDENT",
+     "identity_class": "WITHIN",
      "missing": [
       "lifecycle_controller",
       "owner",
@@ -533,6 +552,7 @@
      "reasons": [
       "effective_scope: camada Terraform: não é o alcance na API",
       "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
+      "identity: reference_example de bucket (google_storage_bucket) é premissa do reference_target; sozinho não tipa (T46b)",
       "import_key: formato de importação sem atributos nomeados",
       "lifecycle_controller: terraform_timeouts é configuração do Terraform (fora do domínio)",
       "owner: camada Terraform: onde o código escreve, não o dono da configuração"
@@ -551,6 +571,7 @@
      "reasons": [
       "effective_scope: camada Terraform: não é o alcance na API",
       "identity: aspecto id_template: sem tradução (R-GRAIN-T03)",
+      "identity: reference_example de bucket (google_storage_bucket) é premissa do reference_target; sozinho não tipa (T46b)",
       "import_key: formato de importação sem atributos nomeados",
       "lifecycle_controller: terraform_timeouts é configuração do Terraform (fora do domínio)",
       "owner: camada Terraform: onde o código escreve, não o dono da configuração"
@@ -845,7 +866,7 @@
   ]
  },
  "slice_atoms": 562,
- "slice_evidence_records": 1263,
+ "slice_evidence_records": 1305,
  "slice_types": 23,
  "units": 123
 }

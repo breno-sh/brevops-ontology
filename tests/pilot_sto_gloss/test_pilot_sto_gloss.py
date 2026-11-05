@@ -301,3 +301,16 @@ def test_target_dir_prefers_pending_staging(tmp_path, monkeypatch):
     (tmp_path / C.MODULE / ".staging").mkdir(parents=True)
     (tmp_path / C.MODULE / ".staging" / "glossary.jsonl").write_text("")
     assert B.target_dir() == tmp_path / C.MODULE / ".staging"
+
+
+def test_grain_025_parent_typed_settings_with_real_inputs():
+    """GRAIN 0.2.5 (T40b/T52c) com o reference_target do campo do pai (SE 4d48d00), entradas reais: a configuração
+    separada de acesso público do contêiner aws é FACET do contêiner com alcance no contêiner (chave inteira = a
+    referência ao pai), e a entrada de ACL gcp é ENTITY pela G4-NS (o contêiner só qualifica o nome)."""
+    by = {u["unit_id"]: u for u in DEC.run()["units"]}
+    pab = by["CU-aws-aws_s3_bucket_public_access_block"]
+    assert pab["kind"] == "FACET" and pab["missing_evidence"] == []
+    assert pab["effective_scope"] == {"kind": "parent", "ref": "CU-aws-aws_s3_bucket"}
+    acl = by["CU-google-google_storage_bucket_access_control"]
+    assert acl["kind"] == "ENTITY" and acl["rule_applied"] == "GRAIN-G4-NS" and acl["missing_evidence"] == []
+    assert acl["identity"]["key_fields"] == ["bucket", "entity"]

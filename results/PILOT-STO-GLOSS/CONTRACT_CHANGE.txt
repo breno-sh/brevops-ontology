@@ -4,6 +4,14 @@ CC-4 RESOLVIDO no catálogo v3 (gerador_pre_pilotgloss_20261104_0215 → modulos
   saídas do PILOT-STO-GLOSS no catálogo e versão do C20 em contracts/. O conteúdo do bundle está declarado no GLOSSARY_BRIEF 1.3.1
   (G1) e conferido por gates/PILOT-STO-GLOSS.sh e por bundle/MANIFEST.sha256; o summary.json só traz a contagem candidates_n.)
 
+ATUALIZAÇÃO 2026-11-05T01:15:00-03:00 (America/Recife), rodada v4-r2: GRAIN 0.2.5 (3aa6b45) e SE 4d48d00
+(reference_target do campo do pai). Regerado em .staging: diff de unidades C19 por classe = 0 de 123 (nenhuma troca
+de kind); 7 unidades mudam sem trocar de classe: CU-google-google_storage_bucket_access_control ENTITY fica ENTITY,
+regra GRAIN-G4-ENTITY -> GRAIN-G4-NS (namespace no contêiner); 6 FACET aws (acl, lifecycle_configuration,
+server_side_encryption_configuration x2, versioning x2) só mudam as notas de identidade/evidência (T03 id composto).
+aws_s3_bucket_public_access_block já saía FACET com alcance no contêiner e continua igual. Glossário, alegações,
+decisões e candidatos idênticos; decididas 65/123; embalagem invariante 3/5.
+
 ATUALIZAÇÃO 2026-11-04T23:45:00-03:00 (America/Recife): GRAIN 0.2.3 (b623374, só renomeia uma regra de rede de G1b
 para G1B). Regerado em .staging e comparado byte a byte com o publicado: 14/14 arquivos idênticos (saídas e
 pacote). Nada promovido; atualizados só a proveniência (summary.json) e o livro de consumo.
