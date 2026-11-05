@@ -67,3 +67,12 @@ ADENDO 2026-11-04T18:50:00-03:00 (America/Recife), rodada final 2/2: GRAIN ed1fc
   security list OCI fica UNKNOWN na instância. O piloto toma o tipo da unidade C19 de esquema do PILOT-NET-GLOSS
   quando a construção está na fatia e, fora dela, da instância; onde os dois discordarem vale o C19, e a divergência
   é do GRAIN, não do piloto. Nesta rodada C19 e instância concordam em todas as unidades comparadas.
+
+ADENDO 2026-11-04T23:31:00-03:00 (America/Recife), rodada final do v4: GRAIN 0.2.2, árbitro aa01f20, oráculo b0e0de2
+(guias oficiais, SE f44b9a6), PILOT-NET-MAP 3ff10fb.
+CC-NET-E2E-2 RESOLVIDO no GRAIN 0.2.2 e no gabarito b0e0de2: decomposição igual ao gabarito em 45/45 fixtures de calibração, reordenação 45/45, embalagem 3/3; o G1 passa e o ABANDON saiu.
+  O catálogo de axiomas foi refeito sobre as linhas publicadas do SE f44b9a6 (AX-NET-01 e 03 publicados para AWS e
+  OCI; AX-NET-07 também no NSG OCI; novos AX-NET-11, conjunto que só rastreia conexão, e AX-NET-12, regras
+  implícitas da rede GCP). Consequência no tradutor: regra sem estado declarada não desce para destino que só
+  rastreia conexão (bloqueio OUT_OF_SUBSET), e a saída implícita permitida da origem GCP vira regra explícita no
+  destino só-permissão; a perda STATE e a DEFAULT só se declaram para o azurerm, como no catálogo novo.
