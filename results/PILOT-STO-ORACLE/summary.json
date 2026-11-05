@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "PILOT-STO-ORACLE",
- "generated_at": "2026-11-05T00:21:38-03:00",
+ "generated_at": "2026-11-05T01:41:22-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-STO-ORACLE.txt",
@@ -17,10 +17,11 @@
    "providers": "aws:6.71.0,google:8.9.0,azurerm:5.12.0,oci:9.11.0",
    "seal": "openssl-cms-aes256-D15",
    "rules": "80",
-   "service_evidence_commit": "f44b9a6",
+   "service_evidence_commit": "4d48d00",
    "semantics_commit": "ffe8c7f",
    "diag": "PILOT-EXIT/DIAG_T3.json@95dbf33",
-   "reseal_where": "VM-D15-unshare-net"
+   "reseal_where": "VM-D15-unshare-net",
+   "heldout_rechecked_on": "4d48d00"
   },
   "inputs": [
    {
@@ -36,10 +37,10 @@
    {
     "path": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl",
     "kind": "file",
-    "sha256": "2994da012fbc9296a31fd2e82d8e55cd7dd274c8be74c24634681412effe07f1"
+    "sha256": "d17a11b5334b69fdf60ae130c230cc9a18b0d8e81c0f66b47e4484c4647a7e40"
    }
   ],
-  "recorded_at": "2026-11-05T00:21:38-03:00"
+  "recorded_at": "2026-11-05T01:41:22-03:00"
  },
  "sources": [
   {
@@ -83,5 +84,5 @@
    "transformation": "disputas spec x doc da fatia viram UNKNOWN com os dois lados (inclui o alcance da política OCI)"
   }
  ],
- "notes": "oráculo offline STO 1.4.0 (regra de dono única, DIAG_T3 F6); conjunto retido v4 revisão 2 recifrado na VM (D15) sem rede; nada lido do GRAIN, GLOSS ou MAP"
+ "notes": "oráculo offline STO 1.4.0 (regra de dono única, DIAG_T3 F6); conjunto retido v4 revisão 2; pin do SE em 4d48d00 sem mudança de resposta (retidas conferidas na VM, sem re-selo); nada lido do GRAIN, GLOSS ou MAP"
 }

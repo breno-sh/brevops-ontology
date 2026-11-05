@@ -1,5 +1,5 @@
 PILOT-STO-ORACLE: notas do oráculo offline do piloto de armazenamento de objeto
-gravado em 2026-11-03T22:00-03:00, revisto em 2026-11-05T00:21:23-03:00 (America/Recife)
+gravado em 2026-11-03T22:00-03:00, revisto em 2026-11-05T01:41:21-03:00 (America/Recife)
 
 O QUE ESTÁ AQUI
 - Avaliador: pilot/sto/oracle/sto_oracle.py (só biblioteca padrão; não importa nada do pipeline). Estado efetivo
@@ -219,3 +219,11 @@ CICLO v4, REVISÃO 2 2026-11-05T00:21:23-03:00 (PILOT-EXIT DIAG_T3 95dbf33, F6: 
   novo a1e3e62cb9db95d94e53c3364126d2e4347c99cd35a56055e2c118b3695598db; texto claro b89345d0668cdceea8e20128baa460a8e1720cee202ec55dce07ea294b51ac0c.
 - Limite: a calibração não tem concessão do Google com contêiner resolvido; essa assinatura só é conferida dentro
   das retidas (nenhuma resposta divergente lá).
+
+PIN DO SERVICE-EVIDENCE 2026-11-05T01:41:21-03:00 (4d48d00: alvo tipado do campo do pai; service_evidence.jsonl sha256 d17a11b5...)
+- Os fatos novos são de identidade (reference_target, R-REF-*), não de dono: a tabela OWNER_EVIDENCE da regra de dono
+  única continua igual ao arquivo (teste test_owner_table_matches_frozen_service_evidence passa sem mudança).
+- Calibração regenerada: idêntica (build --check OK). Retidas conferidas na VM D15, num namespace de rede vazio, sem
+  re-selar: 230 conferências e 181 entradas reproduzidas pelo oráculo 1.4.0, 0 respostas mudadas, 0 assinaturas
+  divergentes; texto claro b89345d0... (o mesmo do índice). Envelope a1e3e62c... mantido.
+- Só o pin (livro de consumo e entradas do summary.json) e os hashes mudaram.
