@@ -111,10 +111,16 @@ def envelope_sha(slice_: str, idx: dict) -> str:
     return idx["ciphertext_sha256"] if slice_ == "sto" else idx["envelope_sha256"]
 
 
+def envelope_path(slice_: str, idx: dict, root=None):
+    """O envelope ativo é o que o índice selado aponta (re-selagens trocam o arquivo); sem campo, o padrão."""
+    p = idx.get("envelope") if slice_ == "net" else idx.get("sealed_file")
+    return C.expand(p or C.SLICES[slice_]["envelope"], root)
+
+
 def check_envelope(slice_: str, root=None) -> dict:
     """Sem decifrar: envelope existe e o sha bate com o índice."""
     idx = index_of(slice_, root)
-    env = C.expand(C.SLICES[slice_]["envelope"], root)
+    env = envelope_path(slice_, idx, root)
     if not env.is_file():
         raise SealError(f"envelope ausente: {C.portable(env)}")
     h = C.sha_file(env)
@@ -128,7 +134,7 @@ def open_slice(slice_: str, decrypt_argv=C.VM_DECRYPT_ARGV, root=None, idx: dict
     """Decifra (pela VM) e confere. Devolve o pacote em memória e os hashes; nunca grava o texto claro."""
     idx = idx if idx is not None else index_of(slice_, root)
     if envelope is None:
-        env_p = C.expand(C.SLICES[slice_]["envelope"], root)
+        env_p = envelope_path(slice_, idx, root)
         envelope = env_p.read_bytes()
     if C.sha_bytes(envelope) != envelope_sha(slice_, idx):
         raise SealError(f"envelope {slice_} ≠ índice selado")

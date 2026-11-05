@@ -156,15 +156,24 @@ def main(argv=None) -> int:
         C.say("heldout_run: nenhuma execução registrada para este código congelado e este selo" if not rec or
               rec.get("key") != key else "heldout_run: --verify-only com --reproduce não executa")
         return 1
+    # Limite de tentativas POR conjunto retido (PREREG, ciclo v4, 3b3d4cb): um conjunto novo abre ciclo novo.
+    # Linha antiga sem 'seals' pertence ao primeiro conjunto (selos STO 572f1333…, NET 99f53463…).
+    seal_now = {s: seals[s]["ciphertext_sha256"] for s in slices}
+    first_set = {"sto": "572f133361bc21d79ae225ba98c42d3f7fa5eba0b6a472c6292264ea735a8ce0",
+                 "net": "99f53463cbeaeb38b5206344bef56b467c362d359ba85b6c5da58f7190816c29"}
     attempts = load_attempts()
-    keys = []
+    keys, keys_all = [], []
     for x in attempts:
-        if x["key"] not in keys:
+        if x["key"] not in keys_all:
+            keys_all.append(x["key"])
+        if (x.get("seals") or first_set) == seal_now and x["key"] not in keys:
             keys.append(x["key"])
     attempt = keys.index(key) + 1 if key in keys else len(keys) + 1
+    attempt_global = keys_all.index(key) + 1 if key in keys_all else len(keys_all) + 1
     kind = "reproduction" if key in keys else "attempt"
     if attempt > int(crit.get("attempts_max", 2)):
-        C.say(f"heldout_run: tentativa {attempt} > {crit.get('attempts_max')} (E8): a expansão fica bloqueada; nada roda")
+        C.say(f"heldout_run: tentativa {attempt} neste conjunto retido > {crit.get('attempts_max')} (E8): "
+              "a expansão fica bloqueada; nada roda")
         return 1
     started = C.now()
     workdir = C.tmp() / "run"
@@ -190,14 +199,16 @@ def main(argv=None) -> int:
         C.write_json(p, out[s]["evidence"])
         evid[s] = {"path": f"$BO_DATA/{C.MODULE}/heldout/{s}/evidence.json", "sha256": C.sha_file(p)}
     finished = C.now()
-    row = {"key": key, "kind": kind, "attempt": attempt, "started_at": started, "finished_at": finished,
+    row = {"key": key, "kind": kind, "attempt": attempt, "attempt_global": attempt_global, "seals": seal_now,
+           "started_at": started, "finished_at": finished,
            "code": {s: ids[s]["code_sha256"] for s in slices}}
     prev = load_attempts()
     ap_ = stage / "attempts.jsonl"
     ap_.parent.mkdir(parents=True, exist_ok=True)
     ap_.write_text("".join(C.canon(x).decode() + "\n" for x in prev + [row]), encoding="utf-8")
     record = {"schema": "bo.pilot_exit.heldout_run/1", "module": C.MODULE, "status": "COMPLETE", "key": key,
-              "attempt": attempt, "kind": kind, "started_at": started, "finished_at": finished,
+              "attempt": attempt, "attempt_global": attempt_global, "attempt_scope": "por conjunto retido (PREREG ciclo v4)",
+              "kind": kind, "started_at": started, "finished_at": finished,
               "criteria": {"path": "$BO_REPO/prereg/pilot_exit.yaml", "sha256": C.sha_file(crit_p)},
               "decryption": {"where": "VM Oracle do Breno (D15), pipe ssh; chave privada nunca saiu de lá",
                              "command": C.REMOTE_DECRYPT},
@@ -207,7 +218,8 @@ def main(argv=None) -> int:
               "isolation": "cópia congelada em $BO_TMP/run; BO_DATA sobreposto; sandbox-exec sem escrita fora de "
                            "$BO_TMP e sem rede; árvore apagada no fim (texto claro nunca gravado fora dela)"}
     C.write_json(record_path(root), record)
-    C.say(f"heldout_run: tentativa {attempt} ({kind}) gravada em {C.portable(record_path(root))}")
+    C.say(f"heldout_run: tentativa {attempt} neste conjunto retido (global {attempt_global}, {kind}) gravada em "
+          f"{C.portable(record_path(root))}")
     return 0
 
 
