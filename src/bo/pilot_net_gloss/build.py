@@ -273,6 +273,12 @@ def build_notes(se) -> list[dict]:
     return out
 
 
+def terraform_meta(ref: str) -> bool:
+    """Átomo do bloco timeouts: configuração do Terraform, fora do domínio (GRAIN R-GRAIN-T45, CC-NET-3)."""
+    parts = ref.split(":", 2)
+    return len(parts) == 3 and "timeouts" in parts[2].split(".")
+
+
 def _node(ref: str, kind: str) -> dict:
     if kind == "atom":
         return {"node_id": "n0", "kind": "atom", "ref": ref}
@@ -292,6 +298,8 @@ def build_candidates(paths_rows) -> list[dict]:
         kinds[row["object_atom"]] = row["object_kind"]
     for row in paths_rows:
         a, b = row["subject_atom"], row["object_atom"]
+        if terraform_meta(a) or terraform_meta(b):
+            continue
         pa, pb = hub.provider_of(a), hub.provider_of(b)
         if order[pa] > order[pb]:
             a, b, pa, pb = b, a, pb, pa
@@ -326,7 +334,8 @@ def generate(dst: Path) -> dict:
     types = set(SL.all_types())
     bundle = {"candidates.jsonl": build_candidates(rows), "glossary.jsonl": glossary,
               "decisions.jsonl": decisions, "claims.jsonl": claims, "canonical_units.jsonl": g["units"],
-              "canonical_atoms.jsonl": g["atoms"], "value_space.jsonl": [vs[k] for k in sorted(vs)]}
+              "canonical_atoms.jsonl": g["atoms"],
+              "value_space.jsonl": [vs[k] for k in sorted(vs) if not terraform_meta(k)]}
     bdir = dst / "bundle"
     for name, recs in bundle.items():
         write_jsonl(bdir / name, recs)

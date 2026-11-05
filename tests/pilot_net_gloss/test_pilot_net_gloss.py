@@ -174,3 +174,15 @@ def test_publish_swaps_only_from_complete_staging(tmp_path, monkeypatch):
     assert build.current_dir() == st
     assert build.publish() == 0
     assert (out / "claims.jsonl").read_text() == "novo\n" and not st.exists() and build.current_dir() == out
+
+
+def test_candidates_never_carry_terraform_timeouts():
+    row = lambda a, b: {"subject_atom": a, "object_atom": b, "subject_kind": "atom", "object_kind": "atom",
+                        "concept_id": "concept:rule_priority", "hub_outcome": "UNPROVEN",
+                        "subject_anchor_state": "STRUCTURALLY_VALID", "object_anchor_state": "STRUCTURALLY_VALID"}
+    rows = [row("google:google_compute_firewall:timeouts.create", "azurerm:azurerm_network_security_rule:timeouts.create"),
+            row("google:google_compute_firewall:priority", "azurerm:azurerm_network_security_rule:priority")]
+    cands = build.build_candidates(rows)
+    assert len(cands) == 1 and "timeouts" not in json.dumps(cands)
+    assert build.terraform_meta("oci:oci_core_security_list:timeouts.update")
+    assert not build.terraform_meta("oci:oci_core_security_list:vcn_id")

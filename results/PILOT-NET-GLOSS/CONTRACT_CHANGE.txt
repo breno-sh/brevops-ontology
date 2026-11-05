@@ -135,3 +135,10 @@ CC-NET-5 (2026-11-04T18:35:00-03:00, BLOQUEIA o publish desta rodada): o C25 1.5
   Também em aberto: o BRIEFS consumiu o GRAIN.html antes do ed1fc66 (consume_check, manifestos_transitivos).
   RESOLVIDO 2026-11-04T18:41:00-03:00: emenda 12 do CONTRACTS (cd6a66e) põe observed no C00; árbitro recongelado
   (28b9ba0); BRIEFS corrigido (58c47da). canonical_units valida (38 itens, 0 erro). E2 3/3.
+
+ADENDO 2026-11-04T21:40:00-03:00 (America/Recife), ciclo v4. CC-NET-3 em três partes: (a) alvo das referências
+(SERVICE-EVIDENCE, reference_target); (b) deletion_policy fora do controlador de ciclo de vida (GRAIN); (c) átomos de
+timeouts fora do pacote do mapeador (PILOT-NET-GLOSS). Parte (c) PRONTA NA BRANCH, não publicada: candidates.jsonl
+e value_space.jsonl do bundle excluem os átomos de timeouts (o GRAIN já os exclui pela R-GRAIN-T45; canonical_atoms
+já não os tinha); no diagnóstico, 0 de 56 candidatos e 0 de 185 tipos de valor (antes, 32 linhas de timeouts no
+value_space). Status do CC-NET-3: ABERTO até as três partes estarem em bo/base; aí marco RESOLVIDO com os commits.
