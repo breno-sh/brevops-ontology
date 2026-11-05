@@ -59,6 +59,49 @@ def _norm_thing(x: str) -> str:
     return re.sub(r"[\s\-]+", "_", x.strip().lower())
 
 
+_IDW = r"(?:ID|IDs|Id|id|ids|OCID|OCIDs|ARN|ARNs|name|names|resource ID|resource IDs|resource id|self[_ ]link|identifier|URI)"
+REF_FORMS = [  # (regex, de onde vêm as palavras da coisa); a coisa é casada do mais curto ao mais longo
+    (re.compile(r"\b" + _IDW + r"\s+of\s+(?:the|a|an|an existing|the existing)\s+([A-Za-z0-9][A-Za-z0-9 \-()']{0,80})"),
+     "after"),
+    (re.compile(r"\b(?:list|set) of (?:the )?([A-Za-z0-9][A-Za-z0-9 \-]{0,60}?)\s+" + _IDW + r"\b"), "before"),
+    (re.compile(r"^(?:The |A |An )?([A-Za-z0-9][A-Za-z0-9 \-]{0,60}?)\s+" + _IDW + r"\b"), "before"),
+]
+_STOP = re.compile(r"\s+(?:to|that|which|in|for|where|with|used|this|associated|from|on|whose|you|under|the|"
+                   r"will|is|are|belongs|resource|object|or)\b")
+
+
+def _demark(t: str) -> str:
+    return re.sub(r"\[([^\]]+)\]\([^)]*\)", r"\1", t)
+
+
+def _match_type(p: str, words: list, types: set, from_end: bool) -> list:
+    """Do mais curto ao mais longo (a partir do fim das palavras em 'before', do começo em 'after'): o 1º
+    trecho que casa um tipo pela regra de R-REF-TARGET."""
+    words = [re.sub(r"[.,;:]+$", "", w) for w in words]
+    poss = [i for i, w in enumerate(words) if w.endswith("'s")]
+    if poss and poss[-1] + 1 < len(words):  # "the instance's primary network interface": a coisa vem depois do 's
+        words = words[poss[-1] + 1:]
+    words = [re.sub(r"'s$", "", w) for w in words if w]
+    # 'before' (... <coisa> ID): do mais curto a partir do fim; 'after' (ID of the <coisa> ...): do mais longo
+    if from_end:
+        segs = [words[-k:] for k in range(1, len(words) + 1)]
+    else:  # trechos contíguos, do mais longo ao mais curto, da esquerda para a direita
+        segs = [words[i:i + k] for k in range(len(words), 0, -1) for i in range(0, len(words) - k + 1)]
+    for seg in segs:
+        j = re.sub(r"\(s\)", "s", " ".join(seg))
+        for cand in (j, j[:-1] if j.endswith("s") else None):
+            if not cand:
+                continue
+            n = _norm_thing(re.sub(r"[()]", "", cand))
+            if not n:
+                continue
+            exact = f"{p}_{n}"
+            hits = [exact] if exact in types else sorted(t for t in types if t.endswith("_" + n))
+            if hits and len(hits) <= 3:
+                return hits
+    return []
+
+
 def references(ctx, T: str, api: dict) -> None:
     p = ctx.p
     refs = sources.references(p).get(T)
@@ -75,22 +118,28 @@ def references(ctx, T: str, api: dict) -> None:
         doc = fdoc(desc, p)
         if not doc:
             continue
-        m = REF_RX.search(doc["sentence"])
-        if not m:
+        text = _demark(doc["sentence"])
+        thing, cands = None, []
+        for rx, side in REF_FORMS:
+            m = rx.search(text)
+            if not m:
+                continue
+            raw = m.group(1).strip()
+            if side == "after":
+                raw = _STOP.split(raw)[0]
+            words = [w for w in re.split(r"\s+", raw) if w]
+            cands = _match_type(p, words, types, from_end=(side == "before"))
+            thing = raw
+            if cands:
+                break
+        if not thing:
             continue
-        thing = m.group(1).strip()
         depth = depths.get(path, 0)
         v = with_bp({"aspect": "reference_phrase", "rule": "R-REF-PHRASE", "attribute": path, "phrase": thing,
                      "c03_fact_id": desc["fact_id"]}, path, depth)
         pid = ctx.add(T, "identity", f"refphrase:{path}", api, "stated", "published", value=v, doc=doc)
         ctx.st["R-REF-PHRASE"] += 1
-        n = _norm_thing(thing)
-        exact = f"{p}_{n}"
-        if exact in types:
-            cands = [exact]
-        else:
-            cands = sorted(t for t in types if t.endswith("_" + n))
-        if not cands or len(cands) > 3:
+        if not cands:
             ctx.st["R-REF-TARGET_sem_alvo"] += 1
             continue
         v2 = with_bp({"aspect": "reference_target", "rule": "R-REF-TARGET", "attribute": path,

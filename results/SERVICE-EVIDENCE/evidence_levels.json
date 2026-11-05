@@ -3,29 +3,27 @@
  "module": "SERVICE-EVIDENCE",
  "contract": "C25",
  "contract_version": "1.0.0",
- "generated_at": "2026-11-04T21:31:35-03:00",
- "records": 200275,
+ "generated_at": "2026-11-04T21:44:35-03:00",
+ "records": 208973,
  "by_level": {
-  "derived": 132581,
+  "derived": 137317,
   "interpreted": 11,
   "observed": 10,
-  "published": 67673,
-  "status:stated": 194180,
-  "status:unknown": 6095
+  "published": 71635,
+  "status:stated": 202905,
+  "status:unknown": 6068
  },
  "by_provider": {
   "aws": {
    "api_bridge|derived|stated": 1445,
    "api_bridge|published|stated": 1746,
-   "connection_state|published|stated": 18,
-   "connection_state|published|unknown": 5,
+   "connection_state|published|stated": 24,
    "effective_scope|derived|stated": 9011,
    "effective_scope|published|stated": 24,
-   "effect|published|stated": 17,
-   "effect|published|unknown": 3,
-   "identity|derived|stated": 8927,
+   "effect|published|stated": 23,
+   "identity|derived|stated": 10469,
    "identity|interpreted|stated": 1,
-   "identity|published|stated": 10238,
+   "identity|published|stated": 11546,
    "import_key|published|stated": 1654,
    "import_key|published|unknown": 92,
    "lifecycle_controller|derived|stated": 8692,
@@ -43,16 +41,15 @@
   "google": {
    "api_bridge|derived|stated": 2510,
    "api_bridge|published|stated": 679,
-   "connection_state|published|stated": 9,
-   "connection_state|published|unknown": 1,
+   "connection_state|published|stated": 10,
    "effective_scope|derived|stated": 10254,
    "effective_scope|interpreted|stated": 1,
    "effective_scope|published|stated": 63,
    "effect|interpreted|stated": 1,
-   "effect|published|stated": 16,
-   "identity|derived|stated": 9533,
-   "identity|published|stated": 10689,
-   "identity|published|unknown": 5,
+   "effect|published|stated": 18,
+   "identity|derived|stated": 9972,
+   "identity|published|stated": 11262,
+   "identity|published|unknown": 1,
    "import_key|published|stated": 1386,
    "import_key|published|unknown": 6,
    "lifecycle_controller|derived|stated": 10715,
@@ -68,29 +65,29 @@
    "ttl_support|published|unknown": 1312
   },
   "azurerm": {
-   "api_bridge|derived|stated": 2317,
+   "api_bridge|derived|stated": 2322,
    "connection_state|published|stated": 6,
    "connection_state|published|unknown": 2,
-   "effective_scope|derived|stated": 4812,
+   "effective_scope|derived|stated": 4842,
    "effective_scope|interpreted|stated": 1,
    "effective_scope|published|stated": 4,
    "effect|published|stated": 52,
    "effect|published|unknown": 1,
-   "identity|derived|stated": 5581,
+   "identity|derived|stated": 6468,
    "identity|interpreted|stated": 2,
-   "identity|published|stated": 5584,
-   "identity|published|unknown": 10,
+   "identity|published|stated": 5853,
+   "identity|published|unknown": 9,
    "import_key|published|stated": 1102,
    "import_key|published|unknown": 5,
-   "lifecycle_controller|derived|stated": 6013,
+   "lifecycle_controller|derived|stated": 6072,
    "lifecycle_controller|observed|stated": 3,
-   "lifecycle_controller|published|stated": 2413,
-   "owner|derived|stated": 7053,
+   "lifecycle_controller|published|stated": 2418,
+   "owner|derived|stated": 7112,
    "owner|observed|stated": 2,
-   "owner|published|stated": 353,
+   "owner|published|stated": 358,
    "owner|published|unknown": 4,
-   "precedence|published|stated": 77,
-   "precedence|published|unknown": 3,
+   "precedence|published|stated": 81,
+   "precedence|published|unknown": 2,
    "tag_support|published|stated": 1107,
    "ttl_support|published|stated": 198,
    "ttl_support|published|unknown": 990
@@ -99,26 +96,25 @@
    "api_bridge|derived|stated": 695,
    "api_bridge|published|stated": 887,
    "connection_state|interpreted|stated": 3,
-   "connection_state|published|stated": 3,
+   "connection_state|published|stated": 5,
    "effective_scope|derived|stated": 4968,
-   "effective_scope|published|stated": 28,
-   "effect|published|stated": 3,
-   "effect|published|unknown": 2,
-   "identity|derived|stated": 4970,
+   "effective_scope|published|stated": 30,
+   "effect|published|stated": 7,
+   "identity|derived|stated": 6669,
    "identity|interpreted|stated": 2,
    "identity|observed|stated": 3,
-   "identity|published|stated": 4269,
-   "identity|published|unknown": 32,
+   "identity|published|stated": 6071,
+   "identity|published|unknown": 24,
    "import_key|published|stated": 879,
    "import_key|published|unknown": 147,
-   "lifecycle_controller|derived|stated": 6403,
+   "lifecycle_controller|derived|stated": 6411,
    "lifecycle_controller|observed|stated": 1,
    "lifecycle_controller|published|stated": 2232,
    "lifecycle_controller|published|unknown": 1,
-   "owner|derived|stated": 6269,
+   "owner|derived|stated": 6277,
    "owner|observed|stated": 1,
    "owner|published|stated": 942,
-   "owner|published|unknown": 52,
+   "owner|published|unknown": 50,
    "precedence|published|stated": 13,
    "precedence|published|unknown": 3,
    "tag_support|published|stated": 1628,
@@ -129,10 +125,10 @@
  "types_with_stated_fact": {
   "aws": {
    "api_bridge": 1746,
-   "connection_state": 2,
-   "effect": 14,
+   "connection_state": 8,
+   "effect": 18,
    "effective_scope": 1746,
-   "identity": 1617,
+   "identity": 1668,
    "import_key": 1654,
    "lifecycle_controller": 1539,
    "owner": 1700,
@@ -142,10 +138,10 @@
   },
   "google": {
    "api_bridge": 787,
-   "connection_state": 5,
+   "connection_state": 6,
    "effect": 12,
    "effective_scope": 1392,
-   "identity": 1389,
+   "identity": 1392,
    "import_key": 1386,
    "lifecycle_controller": 1242,
    "owner": 1382,
@@ -162,19 +158,19 @@
    "import_key": 1102,
    "lifecycle_controller": 1107,
    "owner": 1104,
-   "precedence": 55,
+   "precedence": 56,
    "tag_support": 1107,
    "ttl_support": 117
   },
   "oci": {
    "api_bridge": 942,
    "connection_state": 2,
-   "effect": 3,
+   "effect": 5,
    "effective_scope": 1026,
-   "identity": 960,
+   "identity": 991,
    "import_key": 879,
    "lifecycle_controller": 1025,
-   "owner": 991,
+   "owner": 993,
    "precedence": 11,
    "tag_support": 1026,
    "ttl_support": 68
@@ -202,6 +198,165 @@
   "spec_sentences": {
    "published": 2,
    "missing": []
+  },
+  "guides": {
+   "published": 27,
+   "missing": [],
+   "list": [
+    {
+     "key": "aws_sg_stateful",
+     "file": "aws-vpc-security-groups.html",
+     "line": 46,
+     "sentence": "Security groups are stateful.",
+     "types": [
+      "aws_security_group",
+      "aws_security_group_rule",
+      "aws_vpc_security_group_ingress_rule",
+      "aws_vpc_security_group_egress_rule"
+     ],
+     "fact_kind": "connection_state"
+    },
+    {
+     "key": "aws_sg_allow_only",
+     "file": "aws-vpc-security-group-rules.html",
+     "line": 22,
+     "sentence": "You can specify allow rules, but not deny rules.",
+     "types": [
+      "aws_security_group",
+      "aws_security_group_rule",
+      "aws_vpc_security_group_ingress_rule",
+      "aws_vpc_security_group_egress_rule"
+     ],
+     "fact_kind": "effect"
+    },
+    {
+     "key": "aws_nacl_stateless",
+     "file": "aws-vpc-network-acls.html",
+     "line": 52,
+     "sentence": "NACLs are stateless",
+     "types": [
+      "aws_network_acl",
+      "aws_network_acl_rule"
+     ],
+     "fact_kind": "connection_state"
+    },
+    {
+     "key": "aws_nacl_allow_deny",
+     "file": "aws-vpc-network-acls.html",
+     "line": 44,
+     "sentence": "rule can either allow or deny traffic",
+     "types": [
+      "aws_network_acl",
+      "aws_network_acl_rule"
+     ],
+     "fact_kind": "effect"
+    },
+    {
+     "key": "gcp_fw_stateful",
+     "file": "gcp-firewalls.html",
+     "line": 345,
+     "sentence": "VPC firewall rules are stateful",
+     "types": [
+      "google_compute_firewall"
+     ],
+     "fact_kind": "connection_state"
+    },
+    {
+     "key": "gcp_fw_implied_deny_ingress",
+     "file": "gcp-firewalls.html",
+     "line": 1125,
+     "sentence": "the allow ingress firewall rules override the implied deny ingress rule",
+     "types": [
+      "google_compute_firewall"
+     ],
+     "fact_kind": "effect"
+    },
+    {
+     "key": "gcp_fw_implied_allow_egress",
+     "file": "gcp-firewalls.html",
+     "line": 1165,
+     "sentence": "the deny egress firewall rules override the implied allow egress rule",
+     "types": [
+      "google_compute_firewall"
+     ],
+     "fact_kind": "effect"
+    },
+    {
+     "key": "az_nsg_priority_unique",
+     "file": "azure-nsg-overview.html",
+     "line": 50,
+     "sentence": "You can't create two security rules with the same priority and direction.",
+     "types": [
+      "azurerm_network_security_group",
+      "azurerm_network_security_rule"
+     ],
+     "fact_kind": "precedence"
+    },
+    {
+     "key": "az_nsg_evaluation",
+     "file": "azure-nsg-overview.html",
+     "line": 36,
+     "sentence": "Rules are processed in priority order, with lower numbers processed before higher numbers because lower numbers have higher priority. Once traffic matches a rule, processing stops.",
+     "types": [
+      "azurerm_network_security_group",
+      "azurerm_network_security_rule"
+     ],
+     "fact_kind": "precedence"
+    },
+    {
+     "key": "oci_rule_stateful_default",
+     "file": "oci-securityrules.html",
+     "line": 172,
+     "sentence": "When you create a security rule, you select whether it's stateful or stateless . The difference is described in the next sections. The default is stateful.",
+     "types": [
+      "oci_core_security_list",
+      "oci_core_network_security_group_security_rule"
+     ],
+     "fact_kind": "connection_state"
+    },
+    {
+     "key": "oci_rule_allows",
+     "file": "oci-securityrules.html",
+     "line": 127,
+     "sentence": "A security rule allows a particular type of traffic in or out of a VNIC.",
+     "types": [
+      "oci_core_security_list",
+      "oci_core_network_security_group_security_rule"
+     ],
+     "fact_kind": "effect"
+    },
+    {
+     "key": "oci_no_rules_no_traffic",
+     "file": "oci-securityrules.html",
+     "line": 127,
+     "sentence": "Without security rules, no traffic is allowed in and out of VNICs in the VCN.",
+     "types": [
+      "oci_core_security_list",
+      "oci_core_network_security_group_security_rule"
+     ],
+     "fact_kind": "effect"
+    },
+    {
+     "key": "oci_nsg_rules_apply_vnics",
+     "file": "oci-nsg.html",
+     "line": 16,
+     "sentence": "security rules that apply only to a set of VNICs in a single VCN",
+     "types": [
+      "oci_core_network_security_group_security_rule"
+     ],
+     "fact_kind": "effective_scope"
+    },
+    {
+     "key": "oci_nsg_rules_define_vnics",
+     "file": "oci-nsg.html",
+     "line": 48,
+     "sentence": "The NSG's Security rules define the types of traffic allowed in and out of the VNICs in the group.",
+     "types": [
+      "oci_core_network_security_group_security_rule"
+     ],
+     "fact_kind": "effective_scope"
+    }
+   ]
   }
  },
  "spec_disputes": 100,
@@ -235,8 +390,8 @@
   },
   "azurerm": {
    "types": 1107,
-   "bridged": 511,
-   "ambiguous": 284,
+   "bridged": 516,
+   "ambiguous": 279,
    "no_candidate": 312
   },
   "oci": {
@@ -1639,22 +1794,12 @@
   },
   {
    "provider": "aws",
-   "terraform_resource_type": "aws_vpc_security_group_egress_rule",
-   "fact_kind": "connection_state"
-  },
-  {
-   "provider": "aws",
    "terraform_resource_type": "aws_s3_bucket_public_access_block",
    "fact_kind": "precedence"
   },
   {
    "provider": "aws",
    "terraform_resource_type": "aws_security_group_rule",
-   "fact_kind": "effect"
-  },
-  {
-   "provider": "aws",
-   "terraform_resource_type": "aws_security_group_rule",
    "fact_kind": "ttl_support"
   },
   {
@@ -1664,28 +1809,8 @@
   },
   {
    "provider": "aws",
-   "terraform_resource_type": "aws_security_group_rule",
-   "fact_kind": "connection_state"
-  },
-  {
-   "provider": "aws",
-   "terraform_resource_type": "aws_network_acl_rule",
-   "fact_kind": "connection_state"
-  },
-  {
-   "provider": "aws",
-   "terraform_resource_type": "aws_vpc_security_group_ingress_rule",
-   "fact_kind": "connection_state"
-  },
-  {
-   "provider": "aws",
    "terraform_resource_type": "aws_s3_account_public_access_block",
    "fact_kind": "ttl_support"
-  },
-  {
-   "provider": "aws",
-   "terraform_resource_type": "aws_vpc_security_group_ingress_rule",
-   "fact_kind": "effect"
   },
   {
    "provider": "aws",
@@ -1696,16 +1821,6 @@
    "provider": "aws",
    "terraform_resource_type": "aws_vpc_security_group_egress_rule",
    "fact_kind": "ttl_support"
-  },
-  {
-   "provider": "aws",
-   "terraform_resource_type": "aws_vpc_security_group_egress_rule",
-   "fact_kind": "effect"
-  },
-  {
-   "provider": "aws",
-   "terraform_resource_type": "aws_security_group",
-   "fact_kind": "connection_state"
   },
   {
    "provider": "aws",
@@ -1716,11 +1831,6 @@
    "provider": "azurerm",
    "terraform_resource_type": "azurerm_network_security_rule",
    "fact_kind": "ttl_support"
-  },
-  {
-   "provider": "azurerm",
-   "terraform_resource_type": "azurerm_network_security_group",
-   "fact_kind": "precedence"
   },
   {
    "provider": "azurerm",
@@ -1768,11 +1878,6 @@
    "fact_kind": "ttl_support"
   },
   {
-   "provider": "google",
-   "terraform_resource_type": "google_compute_firewall",
-   "fact_kind": "connection_state"
-  },
-  {
    "provider": "oci",
    "terraform_resource_type": "oci_core_network_security_group_security_rule",
    "fact_kind": "ttl_support"
@@ -1786,16 +1891,6 @@
    "provider": "oci",
    "terraform_resource_type": "oci_objectstorage_bucket",
    "fact_kind": "ttl_support"
-  },
-  {
-   "provider": "oci",
-   "terraform_resource_type": "oci_core_security_list",
-   "fact_kind": "effect"
-  },
-  {
-   "provider": "oci",
-   "terraform_resource_type": "oci_core_network_security_group_security_rule",
-   "fact_kind": "effect"
   },
   {
    "provider": "oci",
@@ -1857,8 +1952,8 @@
   "R-LIFE-TF": "tipo de topo cujo timeouts tem create e delete tem ciclo de vida próprio NO TERRAFORM: {kind: self, layer: terraform}. Não diz quem cria ou apaga o objeto na API.",
   "R-BRIDGE-DOC": "ponte só quando a página cita a API: link de referência de API na introdução (google: cloud.google.com/.../reference|json_api|rest; aws: APIReference/API_<Op>, recurso = o que vem depois do verbo Create|Put|Register|Allocate|Associate|Enable|Start|Run|Import|Request). Sem citação, a ponte continua UNKNOWN.",
   "R-TWIN": "bloco (ou coleção) B do tipo T tem gêmeo separado U quando uma linha da página de T ou de U cita `B` e `U` (ou `T`) entre crases e o nome passa na regra declarada (termos de B no nome de U; U tem um termo próprio de T; o resto de U fora de B e T é só rule/configuration/vpc); o bloco herda de U a ponte de API e a identidade do schema (derived_from = o vínculo publicado + o fato de U).",
-  "R-REF-PHRASE": "descrição literal de atributo de papel REFERENCE (ROLES) no padrão '<ID|ARN|OCID|name|...> of the <coisa>': a coisa nomeada.",
-  "R-REF-TARGET": "tipo-alvo da referência: <provedor>_<coisa> (termos com _) se existe no schema fixado; senão os tipos que terminam em _<coisa> (até 3); mais que isso, sem alvo.",
+  "R-REF-PHRASE": "descrição literal de atributo de papel REFERENCE (ROLES) num destes padrões (links markdown lidos pelo texto): '<ID|ARN|OCID|name|...> of the <coisa>', 'list of <coisa> <IDs|OCIDs>' ou '<coisa> <ID|IDs|OCID>' no começo da frase: a coisa nomeada.",
+  "R-REF-TARGET": "tipo-alvo da referência: nos padrões '... <ID>', o trecho mais curto a partir do fim; em '<ID> of the ...', o trecho contíguo mais longo (depois de um 's possessivo; plural e (s) sem s) cujo <provedor>_<trecho> existe no schema fixado, ou que é sufixo _<trecho> de até 3 tipos; senão sem alvo.",
   "R-SCOPE-SELF": "tipo de recurso de topo sem alcance publicado (R-SCOPE-DOC) tem alcance sobre ele mesmo: {kind: self}; layer api quando o tipo é primário de R-OWN-API (derived_from inclui a ponte), senão terraform; derived_from = fato publicado do tipo no pin (importação, identidade ou tag), que mostra que ele é recurso de topo do schema fixado.",
   "R-SCOPE-PARENT": "PREMISSA: um bloco aninhado (ou coleção como bloco) só existe dentro da configuração do pai, então, sem frase própria de alcance, o que ele configura vale para o pai: {kind: parent} (via ausente = pai estrutural); layer api quando o tipo é primário de R-OWN-API, senão terraform. Bloco com R-SCOPE-DOC não recebe esta regra.",
   "R-OWN-API": "camada de API: tipo com ponte para recurso de API (R-BRIDGE-*, resource conhecido) que é o único do seu grupo de ponte (mesmo serviço e recurso) sem referência resolvida (R-REF-TARGET) a outro membro: a configuração é do próprio objeto de API, {kind: self, layer: api}. Sem ponte, ou com mais de um membro assim, nada (UNKNOWN).",
@@ -1883,6 +1978,7 @@
   "R-OBS-CASCADE": "regras do NSG OCI somem com o NSG (delete do NSG, list/update das regras depois falham): ciclo de vida = pai. Só com o report.json do OBS-GAPS fechando o experimento.",
   "R-OBS-ASSOC-LIFE": "OBS-GAPS-AZ: a associação NSG<->NIC/subnet não é recurso (sem tipo ARM nem comando próprio), some com a NIC/subnet: ciclo de vida = o do dono do campo (kind parent, via o atributo).",
   "R-OBS-BLOCK-DELETE": "OBS-GAPS-AZ: apagar o NSG associado é recusado (InUseNetworkSecurityGroupCannotBeDeleted) e a dissociação não é automática.",
+  "C-GUIDE-LITERAL": "fato de frase literal curta de guia oficial do provedor (CC-14; lote guides-cc14 com URL, data e sha256); o valor repete o que a frase diz, sem kind de grão (não resolve disputa).",
   "C-PILOT-LITERAL": "fato escolhido à mão numa frase da página fixada; o valor repete o que a frase diz.",
   "C-PILOT-GAP": "tipo das fatias dos pilotos sem frase para este tipo de fato na página fixada: UNKNOWN explícito (a lacuna é resultado; não se preenche com conhecimento de fora do pin).",
   "I-PILOT-READING": "leitura do modelo sobre a frase citada (granularidade, interação entre níveis, regra implícita); value.basis diz o que foi inferido além do texto."
@@ -2051,7 +2147,7 @@
     "subcategory:block;import{id_attributes,id_text,identity,methods,separators,source,status,supported}": 1
    },
    "out_of_pin_examples": [],
-   "unknown_dropped_because_stated": 4438,
+   "unknown_dropped_because_stated": 4446,
    "docs_facts_read": {
     "lidos": 163851,
     "guardados": 13230,
@@ -2064,8 +2160,8 @@
    "extract_counters": {
     "api_bridge:published:stated": 1746,
     "import_key:published:stated": 1654,
-    "identity:derived:stated": 8927,
-    "identity:published:stated": 10238,
+    "identity:derived:stated": 10469,
+    "identity:published:stated": 11546,
     "owner:published:unknown": 1355,
     "effective_scope:published:stated": 24,
     "lifecycle_controller:published:unknown": 1691,
@@ -2075,12 +2171,12 @@
     "owner:derived:stated": 10203,
     "lifecycle_controller:derived:stated": 8692,
     "R-OWN-TOP": 1654,
+    "R-REF-PHRASE": 4505,
+    "R-REF-TARGET_sem_alvo": 1371,
     "effective_scope:published:unknown": 1725,
+    "R-REF-TARGET": 3134,
     "lifecycle_controller:published:stated": 3506,
     "R-LIFE-TF": 528,
-    "R-REF-PHRASE": 3197,
-    "R-REF-TARGET_sem_alvo": 1605,
-    "R-REF-TARGET": 1592,
     "colecoes_como_bloco": 205,
     "import_key:published:unknown": 92,
     "ttl_support:published:stated": 118,
@@ -2089,10 +2185,10 @@
     "precedence:published:stated": 2527,
     "owner:published:stated": 600,
     "ttl_aninhado_sem_frase": 9,
-    "effect:published:stated": 17,
+    "effect:published:stated": 23,
     "api_bridge:derived:stated": 1445,
     "aws_ponte_por_operacao": 16,
-    "connection_state:published:stated": 18,
+    "connection_state:published:stated": 24,
     "tipos_com_identidade_compartilhada": 97,
     "R-TWIN_vinculos": 12,
     "R-TWIN_herdados": 10,
@@ -2138,7 +2234,7 @@
     "subcategory:block;import{status,unknown_reason}": 6
    },
    "out_of_pin_examples": [],
-   "unknown_dropped_because_stated": 1737,
+   "unknown_dropped_because_stated": 1742,
    "docs_facts_read": {
     "lidos": 42822,
     "guardados": 6120,
@@ -2150,8 +2246,8 @@
    "extract_counters": {
     "api_bridge:published:stated": 679,
     "import_key:published:stated": 1386,
-    "identity:published:stated": 10689,
-    "identity:derived:stated": 9533,
+    "identity:published:stated": 11262,
+    "identity:derived:stated": 9972,
     "owner:published:unknown": 334,
     "lifecycle_controller:published:stated": 2637,
     "effective_scope:published:unknown": 1342,
@@ -2162,21 +2258,21 @@
     "lifecycle_controller:derived:stated": 10715,
     "R-OWN-TOP": 1355,
     "R-LIFE-TF": 919,
-    "R-REF-PHRASE": 1775,
-    "R-REF-TARGET_sem_alvo": 568,
+    "R-REF-PHRASE": 2348,
+    "R-REF-TARGET": 1646,
     "blocos_abaixo_do_corte": 882,
     "lifecycle_controller:published:unknown": 520,
     "owner:published:stated": 441,
     "effective_scope:published:stated": 63,
     "blocos_de_faceta": 317,
-    "R-REF-TARGET": 1207,
     "colecoes_como_bloco": 340,
+    "R-REF-TARGET_sem_alvo": 702,
     "ttl_support:published:stated": 132,
-    "effect:published:stated": 16,
+    "effect:published:stated": 18,
     "precedence:published:stated": 44,
     "ttl_aninhado_sem_frase": 14,
     "import_key:published:unknown": 6,
-    "connection_state:published:stated": 9,
+    "connection_state:published:stated": 10,
     "identity:published:unknown": 10,
     "tipos_com_identidade_compartilhada": 205,
     "R-TWIN_vinculos": 1,
@@ -2217,7 +2313,7 @@
     "subcategory:block;import{status,unknown_reason}": 5
    },
    "out_of_pin_examples": [],
-   "unknown_dropped_because_stated": 2298,
+   "unknown_dropped_because_stated": 2300,
    "docs_facts_read": {
     "lidos": 42571,
     "guardados": 7738,
@@ -2227,30 +2323,30 @@
     "arquivo": "ausente"
    },
    "extract_counters": {
-    "api_bridge:derived:stated": 2317,
+    "api_bridge:derived:stated": 2322,
     "import_key:published:stated": 1102,
-    "identity:derived:stated": 5581,
-    "owner:derived:stated": 7053,
+    "identity:derived:stated": 6468,
+    "owner:derived:stated": 7112,
     "effective_scope:published:unknown": 1105,
     "lifecycle_controller:published:unknown": 1104,
     "tag_support:published:stated": 1107,
     "ttl_support:published:unknown": 990,
     "R-OWN-TOP": 1102,
-    "lifecycle_controller:published:stated": 2413,
-    "lifecycle_controller:derived:stated": 6013,
+    "lifecycle_controller:published:stated": 2418,
+    "lifecycle_controller:derived:stated": 6072,
     "R-LIFE-TF": 1107,
-    "identity:published:stated": 5584,
-    "R-REF-PHRASE": 2259,
-    "R-REF-TARGET_sem_alvo": 881,
-    "R-REF-TARGET": 1378,
+    "identity:published:stated": 5853,
+    "R-REF-PHRASE": 2522,
+    "R-REF-TARGET_sem_alvo": 261,
+    "R-REF-TARGET": 2261,
     "blocos": 2611,
-    "owner:published:stated": 353,
+    "owner:published:stated": 358,
     "ttl_support:published:stated": 198,
     "blocos_de_faceta": 140,
     "colecoes_como_bloco": 107,
     "identity:published:unknown": 48,
     "owner:published:unknown": 55,
-    "precedence:published:stated": 77,
+    "precedence:published:stated": 81,
     "effect:published:stated": 52,
     "import_key:published:unknown": 5,
     "effective_scope:published:stated": 4,
@@ -2264,30 +2360,30 @@
     "effect:published:unknown": 1,
     "precedence:published:unknown": 3,
     "identity:interpreted:stated": 2,
-    "R-OWN-API": 679,
-    "R-LIFE-API": 679,
-    "R-OWN-API_ambiguo": 367,
-    "R-OWN-API-SHARED": 12,
-    "R-LIFE-API-SHARED": 12,
+    "R-OWN-API": 687,
+    "R-LIFE-API": 687,
+    "R-OWN-API_ambiguo": 343,
+    "R-OWN-API-SHARED": 28,
+    "R-LIFE-API-SHARED": 28,
     "R-BRIDGE-SPEC_grupo": 89,
-    "R-BRIDGE-SPEC": 511,
-    "R-ID-SPEC_sem_atributo": 264,
-    "R-LIFE-SPEC": 509,
-    "R-OWN-SPEC": 511,
-    "R-BRIDGE-SPEC_ambiguo": 284,
-    "R-OWN-SPEC-BLOCK": 636,
-    "effective_scope:derived:stated": 4812,
-    "R-ID-SPEC": 245,
+    "R-BRIDGE-SPEC": 516,
+    "R-ID-SPEC_sem_atributo": 265,
+    "R-LIFE-SPEC": 514,
+    "R-OWN-SPEC": 516,
+    "R-BRIDGE-SPEC_ambiguo": 279,
+    "R-OWN-SPEC-BLOCK": 661,
+    "effective_scope:derived:stated": 4842,
+    "R-ID-SPEC": 249,
     "R-LIFE-SPEC-PARENT": 2,
     "R-SCOPE-SPEC": 2,
-    "R-BRIDGE-SPEC-BLOCK": 457,
+    "R-BRIDGE-SPEC-BLOCK": 462,
     "R-ID-SPEC_bloco": 148,
     "R-FACET-SPEC": 73,
     "R-ID-SPEC_bloco_sem_atributo": 12,
-    "R-SCOPE-SELF_api": 684,
+    "R-SCOPE-SELF_api": 690,
     "R-SCOPE-SELF": 1106,
     "R-SCOPE-DOC_tipo": 1,
-    "R-SCOPE-PARENT_api": 1285,
+    "R-SCOPE-PARENT_api": 1322,
     "R-SCOPE-PARENT": 2611,
     "disputa_alcance_doc_x_spec": 2,
     "lifecycle_controller:observed:stated": 3,
@@ -2305,7 +2401,7 @@
     "subcategory:block;import{status,unknown_reason}": 55
    },
    "out_of_pin_examples": [],
-   "unknown_dropped_because_stated": 2500,
+   "unknown_dropped_because_stated": 2512,
    "docs_facts_read": {
     "lidos": 63840,
     "guardados": 19283,
@@ -2317,40 +2413,42 @@
    "extract_counters": {
     "api_bridge:published:stated": 887,
     "import_key:published:stated": 879,
-    "identity:derived:stated": 4970,
+    "identity:derived:stated": 6669,
     "owner:published:stated": 942,
     "effective_scope:published:unknown": 1008,
     "lifecycle_controller:published:unknown": 1021,
     "tag_support:published:stated": 1628,
     "ttl_support:published:unknown": 958,
-    "owner:derived:stated": 6269,
+    "owner:derived:stated": 6277,
     "R-OWN-TOP": 879,
     "lifecycle_controller:published:stated": 2232,
-    "lifecycle_controller:derived:stated": 6403,
+    "lifecycle_controller:derived:stated": 6411,
     "R-LIFE-TF": 1018,
     "blocos": 2956,
-    "identity:published:stated": 4269,
-    "R-REF-PHRASE": 1252,
-    "R-REF-TARGET_sem_alvo": 694,
+    "identity:published:stated": 6071,
+    "R-REF-PHRASE": 3054,
+    "R-REF-TARGET_sem_alvo": 797,
     "owner:published:unknown": 506,
     "colecoes_como_bloco": 668,
-    "R-REF-TARGET": 558,
+    "R-REF-TARGET": 2257,
     "ttl_support:published:stated": 116,
     "blocos_abaixo_do_corte": 112,
     "blocos_de_faceta": 236,
     "precedence:published:stated": 13,
     "import_key:published:unknown": 147,
     "identity:published:unknown": 50,
-    "effective_scope:published:stated": 28,
-    "connection_state:published:stated": 3,
-    "effect:published:stated": 3,
+    "effective_scope:published:stated": 30,
+    "connection_state:published:stated": 5,
+    "effect:published:stated": 7,
     "connection_state:interpreted:stated": 3,
     "effect:published:unknown": 2,
     "precedence:published:unknown": 3,
     "identity:interpreted:stated": 2,
-    "R-OWN-API": 852,
-    "R-LIFE-API": 847,
-    "R-OWN-API_ambiguo": 35,
+    "R-OWN-API": 854,
+    "R-LIFE-API": 849,
+    "R-OWN-API_ambiguo": 27,
+    "R-OWN-API-SHARED": 6,
+    "R-LIFE-API-SHARED": 6,
     "R-BRIDGE-SPEC_grupo": 13,
     "api_bridge:derived:stated": 695,
     "R-BRIDGE-SPEC": 613,

@@ -310,3 +310,20 @@ def test_nsg_rule_scope_dispute_open_and_sentence_published():
     pub = [r for r in got["oci_core_network_security_group_security_rule"] if r["status"] == "stated"
            and (r.get("value") or {}).get("aspect") == "rule_applies_to"]
     assert pub and all(r["level"] == "published" and "kind" not in r["value"] for r in pub)
+
+
+def test_cc14_guides_and_reference_targets():
+    from bo.service_evidence import guides
+    got = _out_by_type({"aws_security_group", "azurerm_network_security_rule", "aws_instance"})
+    sg = {(r["fact_kind"], (r.get("value") or {}).get("aspect")) for r in got["aws_security_group"]
+          if r["status"] == "stated" and r["level"] == "published" and (r.get("value") or {}).get("rule") == "C-GUIDE-LITERAL"}
+    assert ("connection_state", "stateful") in sg and ("effect", "allow_only") in sg
+    for r in got["aws_security_group"]:
+        c = r.get("citation") or {}
+        if c.get("section", "").startswith("guide "):
+            assert guides.resolve(c) is None
+    pr = [r for r in got["azurerm_network_security_rule"] if (r.get("value") or {}).get("aspect") == "priority_unique_scope"]
+    assert pr and pr[0]["value"]["unique_within"] == ["network_security_group", "direction"]
+    tg = {r["value"]["attribute"]: r["value"]["target_types"] for r in got["aws_instance"]
+          if r["status"] == "stated" and (r.get("value") or {}).get("aspect") == "reference_target"}
+    assert tg.get("vpc_security_group_ids") == ["aws_security_group"]

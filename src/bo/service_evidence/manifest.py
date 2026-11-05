@@ -25,6 +25,7 @@ FILES = [
     "$BO_DATA/downloads/apispec-google-cc9/SHA256SUMS",
     "$BO_DATA/downloads/apispec-azurerm-cc9/SHA256SUMS",
     "$BO_DATA/downloads/apispec-oci-models/SHA256SUMS",
+    "$BO_DATA/downloads/guides-cc14/SHA256SUMS",
     "$BO_DATA/downloads/apispec-aws/SHA256SUMS",
     "$BO_DATA/downloads/apispec-google/SHA256SUMS",
     "$BO_DATA/downloads/apispec-azurerm/SHA256SUMS",

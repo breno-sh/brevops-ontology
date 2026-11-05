@@ -22,7 +22,7 @@ import json
 import os
 import sys
 
-from . import apispec, attach, blocks, observed, common, curated, extract, grainfacts, protocol, rules, sources, specfacts
+from . import apispec, attach, blocks, guides, observed, common, curated, extract, grainfacts, protocol, rules, sources, specfacts
 
 
 def _protocol_atoms():
@@ -43,6 +43,7 @@ def generate() -> dict:
     _, cur = curated.records(ctxs, bridges)
     cur["attach"] = attach.run(ctxs)
     cur["spec_sentences"] = curated.spec_sentence_records(ctxs, bridges)
+    cur["guides"] = guides.records(ctxs, bridges)
     disputes = []
     for p in common.PROVIDERS:
         prim = grainfacts.api_layer(ctxs[p])  # CC-1d: camada de API só com ponte citada na doc
@@ -312,7 +313,7 @@ def promote() -> int:
         print("promote: nada em .staging para " + ", ".join(miss))
         return 1
     prev.mkdir(parents=True, exist_ok=True)
-    for d in [x for p in common.PROVIDERS for x in apispec.batch_dirs(p)]:  # lotes em <pasta>.staging: na trava
+    for d in [x for p in common.PROVIDERS for x in apispec.batch_dirs(p)] + [guides.DIR]:  # lotes .staging: na trava
         src, dst = common.bo_data() / "downloads" / (d + ".staging"), common.bo_data() / "downloads" / d
         if src.exists() and not dst.exists():
             os.replace(src, dst)
@@ -336,7 +337,7 @@ def rollback() -> int:
     for f in DATA_FILES:
         if (prev / f).exists():
             os.replace(prev / f, common.out_dir() / f)
-    for d in [x for p in common.PROVIDERS for x in apispec.batch_dirs(p)]:
+    for d in [x for p in common.PROVIDERS for x in apispec.batch_dirs(p)] + [guides.DIR]:
         mark = prev / f"promoted_{d}"
         if mark.exists():
             os.replace(common.bo_data() / "downloads" / d, common.bo_data() / "downloads" / (d + ".staging"))

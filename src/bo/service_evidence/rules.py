@@ -102,10 +102,12 @@ RULES = {
               "termo próprio de T; o resto de U fora de B e T é só rule/configuration/vpc); o bloco herda de U a "
               "ponte de API e "
               "a identidade do schema (derived_from = o vínculo publicado + o fato de U).",
-    "R-REF-PHRASE": "descrição literal de atributo de papel REFERENCE (ROLES) no padrão '<ID|ARN|OCID|name|...> "
-                    "of the <coisa>': a coisa nomeada.",
-    "R-REF-TARGET": "tipo-alvo da referência: <provedor>_<coisa> (termos com _) se existe no schema fixado; "
-                    "senão os tipos que terminam em _<coisa> (até 3); mais que isso, sem alvo.",
+    "R-REF-PHRASE": "descrição literal de atributo de papel REFERENCE (ROLES) num destes padrões (links markdown "
+                    "lidos pelo texto): '<ID|ARN|OCID|name|...> of the <coisa>', 'list of <coisa> <IDs|OCIDs>' ou "
+                    "'<coisa> <ID|IDs|OCID>' no começo da frase: a coisa nomeada.",
+    "R-REF-TARGET": "tipo-alvo da referência: nos padrões '... <ID>', o trecho mais curto a partir do fim; em "
+                    "'<ID> of the ...', o trecho contíguo mais longo (depois de um 's possessivo; plural e (s) sem s) cujo <provedor>_<trecho> existe no schema fixado, "
+                    "ou que é sufixo _<trecho> de até 3 tipos; senão sem alvo.",
     "R-SCOPE-SELF": "tipo de recurso de topo sem alcance publicado (R-SCOPE-DOC) tem alcance sobre ele mesmo: "
                     "{kind: self}; layer api quando o tipo é primário de R-OWN-API (derived_from inclui a ponte), "
                     "senão terraform; derived_from = fato publicado do tipo no pin (importação, identidade ou tag), que "
@@ -201,6 +203,8 @@ RULES = {
                         "some com a NIC/subnet: ciclo de vida = o do dono do campo (kind parent, via o atributo).",
     "R-OBS-BLOCK-DELETE": "OBS-GAPS-AZ: apagar o NSG associado é recusado (InUseNetworkSecurityGroupCannotBeDeleted) e "
                           "a dissociação não é automática.",
+    "C-GUIDE-LITERAL": "fato de frase literal curta de guia oficial do provedor (CC-14; lote guides-cc14 com URL, "
+                       "data e sha256); o valor repete o que a frase diz, sem kind de grão (não resolve disputa).",
     # curadoria das fatias dos pilotos (curated.py): C-* publicado (o valor está escrito na frase), I-* interpretado
     "C-PILOT-LITERAL": "fato escolhido à mão numa frase da página fixada; o valor repete o que a frase diz.",
     "C-PILOT-GAP": "tipo das fatias dos pilotos sem frase para este tipo de fato na página fixada: UNKNOWN explícito "

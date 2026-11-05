@@ -95,7 +95,14 @@ def main(argv=None) -> int:
                 bad.append(f"{eid}: doc fora do pin")
             cnt["doc"] += 1
         c = r.get("citation")
-        if c and c.get("section", "").startswith("apispec "):
+        if c and c.get("section", "").startswith("guide "):
+            from . import guides
+            m3 = guides.SECTION_RX.match(c["section"])
+            meta = guides.meta()["files"].get(m3["file"]) if m3 else None
+            if not meta or meta["sha256"] != m3["sha"] or not DT.match(c.get("retrieved_at", "")):
+                bad.append(f"{eid}: citação de guia sem sha256 fixado ou sem data")
+            cnt["guide"] += 1
+        elif c and c.get("section", "").startswith("apispec "):
             m2 = apispec.SECTION_RX.match(c["section"])
             if not m2 or (m2["file"] not in apispec.SPEC[p]["files"] and m2["file"] not in
                           apispec.SPEC[p].get("models", {})) or m2["sha"] != apispec.sha(p, m2["file"]):

@@ -58,7 +58,14 @@ def check_record(r: dict, ids: dict, bad: list, cnt: collections.Counter) -> Non
                 err(f"doc não resolve: {why}")
             else:
                 cnt["doc_resolvido"] += 1
-        if cit and cit.get("section", "").startswith("apispec "):
+        if cit and cit.get("section", "").startswith("guide "):
+            from . import guides
+            why = guides.resolve(cit)
+            if why:
+                err(f"citação do guia não resolve: {why}")
+            else:
+                cnt["guia_resolvido"] += 1
+        elif cit and cit.get("section", "").startswith("apispec "):
             why = apispec.resolve(p, cit)
             if why:
                 err(f"citação da spec não resolve: {why}")
