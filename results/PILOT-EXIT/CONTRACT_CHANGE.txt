@@ -1,0 +1,4 @@
+CONTRACT_CHANGE — PILOT-EXIT, resultado de 2026-11-05T01:54:03-03:00 (America/Recife)
+
+C17 (dono: REPO, tools/freeze.py e bo.repo.receipts; e CONTRACTS, C17): o comprovante que o tools/freeze.py grava para o FREEZE-P não passa no validador do C17: 15 erro(s), 15 deles em transitive_inputs[].path com caminho absoluto fora de $BO_REPO/$BO_DATA (entradas externas do catálogo nos fechos das deps; a CONVENTIONS diz que entrada externa é ext:... e não é conferida por hash).
+Proposta: o freeze.py grava entrada externa como 'ext:<caminho>' (ou a omite), ou o C17 aceita o prefixo ext: em transitive_inputs[].path. O comprovante em si confere (freeze.py verify).

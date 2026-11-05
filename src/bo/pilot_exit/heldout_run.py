@@ -39,6 +39,29 @@ def key_of(ids: dict, seals: dict) -> str:
     return C.sha_bytes(C.canon({s: [ids[s]["code_sha256"], seals[s]["ciphertext_sha256"]] for s in sorted(ids)}))
 
 
+def seal_lineage(slice_: str, root: Path) -> set:
+    """Envelopes do MESMO conjunto retido: o atual e os que ele substituiu por re-selagem declarada (o índice
+    ativo aponta o texto claro anterior em revision.of_plaintext_sha256; o índice aposentado dá o envelope).
+    Conjunto novo (ciclo novo, PREREG 3b3d4cb) não tem esse elo e começa a contagem do zero."""
+    idx = unseal.index_of(slice_, root)
+    out = {unseal.envelope_sha(slice_, idx)}
+    sealed = C.expand(C.SLICES[slice_]["index"], root).parent
+    retired = {}
+    for p in list(sealed.parent.glob("retired/*/SEALED_INDEX.json")) + list(sealed.glob("sealed_index_*retired*.json")):
+        r = C.read_json(p) or {}
+        if r.get("plaintext_sha256"):
+            retired[r["plaintext_sha256"]] = r
+    cur = idx
+    for _ in range(20):
+        rev = cur.get("revision")
+        prev = rev.get("of_plaintext_sha256") if isinstance(rev, dict) else None
+        if not prev or prev not in retired:
+            break
+        cur = retired[prev]
+        out.add(unseal.envelope_sha(slice_, cur))
+    return out
+
+
 def load_attempts() -> list:
     p = attempts_path()
     return C.read_jsonl(p) if p.is_file() else []
@@ -162,11 +185,13 @@ def main(argv=None) -> int:
     first_set = {"sto": "572f133361bc21d79ae225ba98c42d3f7fa5eba0b6a472c6292264ea735a8ce0",
                  "net": "99f53463cbeaeb38b5206344bef56b467c362d359ba85b6c5da58f7190816c29"}
     attempts = load_attempts()
+    lineage = {s: seal_lineage(s, root) for s in slices}
     keys, keys_all = [], []
     for x in attempts:
         if x["key"] not in keys_all:
             keys_all.append(x["key"])
-        if (x.get("seals") or first_set) == seal_now and x["key"] not in keys:
+        xs = x.get("seals") or first_set
+        if all(xs.get(s) in lineage[s] for s in slices) and x["key"] not in keys:
             keys.append(x["key"])
     attempt = keys.index(key) + 1 if key in keys else len(keys) + 1
     attempt_global = keys_all.index(key) + 1 if key in keys_all else len(keys_all) + 1

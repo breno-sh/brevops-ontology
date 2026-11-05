@@ -239,11 +239,27 @@ def main(argv=None) -> int:
     write_if_changed(add_p, AD.render(add_doc, crit["reasoning_controls_rule"]), STAMP)
     open_items = [r for r in led["requests"] if r["status"] == "OPEN"]
     cc = C.results_dir(root) / "CONTRACT_CHANGE.txt"
+    parts = []
     if open_items:
-        write_if_changed(cc, "CONTRACT_CHANGE — PILOT-EXIT (E6: mudanças pedidas pelos pilotos sem emenda versionada)\n"
-                         f"Resultado de {gen_at} (America/Recife). O avaliador não escreve em contracts/, grain/, briefs/ "
-                         "nem arbiter/: cada dono aplica a emenda (versão nova, motivo, invalidate.py check --apply).\n\n"
-                         + "".join(f"- {r['module']} item {r['item']}: {r['file']}\n" for r in open_items))
+        parts.append("E6: mudanças pedidas pelos pilotos sem emenda versionada. O avaliador não escreve em contracts/, "
+                     "grain/, briefs/ nem arbiter/: cada dono aplica a emenda (versão nova, motivo, invalidate.py check "
+                     "--apply).\n" + "".join(f"- {r['module']} item {r['item']}: {r['file']}\n" for r in open_items))
+    rp = root / "freeze" / "FREEZE-P" / "freeze_receipt.json"
+    if rp.is_file():
+        v = subprocess.run([sys.executable, "-I", "-m", "bo.contracts.validate", "manifest_receipt", str(rp)],
+                           capture_output=True, text=True, cwd=str(root))
+        errs = [l.strip() for l in (v.stdout + v.stderr).splitlines() if "ERRO" in l]
+        if errs:
+            n_ext = sum(1 for e in errs if "transitive_inputs" in e)
+            parts.append("C17 (dono: REPO, tools/freeze.py e bo.repo.receipts; e CONTRACTS, C17): o comprovante que o "
+                         "tools/freeze.py grava para o FREEZE-P não passa no validador do C17: "
+                         f"{len(errs)} erro(s), {n_ext} deles em transitive_inputs[].path com caminho absoluto fora de "
+                         "$BO_REPO/$BO_DATA (entradas externas do catálogo nos fechos das deps; a CONVENTIONS diz que "
+                         "entrada externa é ext:... e não é conferida por hash).\n"
+                         "Proposta: o freeze.py grava entrada externa como 'ext:<caminho>' (ou a omite), ou o C17 aceita "
+                         "o prefixo ext: em transitive_inputs[].path. O comprovante em si confere (freeze.py verify).\n")
+    if parts:
+        write_if_changed(cc, f"CONTRACT_CHANGE — PILOT-EXIT, resultado de {gen_at} (America/Recife)\n\n" + "\n".join(parts))
     elif cc.is_file():
         cc.unlink()
     metrics = []
@@ -288,7 +304,7 @@ def main(argv=None) -> int:
         r = subprocess.run([sys.executable, "-I", str(root / "tools/freeze.py"), "create", "FREEZE-P", "--paths",
                             "$BO_REPO/prereg/ADDENDUM_PILOTS.html", "$BO_REPO/results/PILOT-EXIT/exit_report.json",
                             "$BO_REPO/results/PILOT-EXIT/effort_calibration.json", "$BO_REPO/prereg/pilot_exit.yaml",
-                            "--owner", C.MODULE, "--no-tag", "--out", str(root / "freeze/FREEZE-P/freeze_receipt.json"),
+                            "--owner", C.MODULE, "--out", str(root / "freeze/FREEZE-P/freeze_receipt.json"),
                             "--note", "FREEZE-P (§9.3): emendas dos pilotos e adendo do pré-registro"],
                            capture_output=True, text=True)
         if r.returncode != 0 and not (root / "freeze/FREEZE-P/freeze_receipt.json").is_file():

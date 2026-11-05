@@ -88,6 +88,8 @@ def stale_not_marked(root: Path) -> dict:
     from bo.repo import catalog, receipts, state
     cat = catalog.load(root)
     scan = receipts.invalidate_scan(cat, root)
+    # o FREEZE-P é saída deste módulo: medir E6 contra ele seria autorreferência (o relatório entra nele)
+    scan["receipts"] = [r for r in scan["receipts"] if r.get("name") != "FREEZE-P"]
     st = state.load(root, cat)
     missing = sorted(m for m in scan["stale"] if (st["modules"].get(m) or {}).get("status") != "STALE")
     return {"receipts": len(scan["receipts"]), "should_be_stale": sorted(scan["stale"]),

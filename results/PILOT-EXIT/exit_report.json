@@ -2,8 +2,8 @@
  "contract": "C15",
  "contract_version": "3.1.0",
  "data": {
-  "attempt": 1,
-  "attempt_global": 3,
+  "attempt": 2,
+  "attempt_global": 4,
   "attempt_scope": "por conjunto retido (PREREG, ciclo v4)",
   "claims_vs_absences": {
    "net": {
@@ -41,22 +41,22 @@
    },
    "E2": {
     "name": "grão",
-    "pass": false,
+    "pass": true,
     "pass_rule": "grain_mismatches == 0 and invariance_failures == 0",
     "per_slice": {
      "net": {
       "measures": {
-       "grain_mismatches": 4,
-       "invariance_failures": 1
+       "grain_mismatches": 0,
+       "invariance_failures": 0
       },
-      "pass": false
+      "pass": true
      },
      "sto": {
       "measures": {
-       "grain_mismatches": 1,
+       "grain_mismatches": 0,
        "invariance_failures": 0
       },
-      "pass": false
+      "pass": true
      }
     }
    },
@@ -137,9 +137,9 @@
    },
    "E8": {
     "measures": {
-     "attempts": 1,
-     "breno_notified": true,
-     "expansion_blocked": true,
+     "attempts": 2,
+     "breno_notified": false,
+     "expansion_blocked": false,
      "plan_returned_v4": false
     },
     "name": "limite de tentativas",
@@ -151,7 +151,33 @@
    "path": "$BO_REPO/prereg/pilot_exit.yaml",
    "sha256": "17132a424cf68a222c3534b154949d3dabb00973cdaf120ea584542301dc4f09"
   },
-  "decision": "SAÍDA REPROVADA (tentativa 1): E2 reprovam; a expansão não começa",
+  "decision": "SAÍDA APROVADA: E1–E8 passam; a escala pode começar depois do FREEZE-P",
+  "e2_split_D_e": {
+   "net": {
+    "never_reopened": {
+     "invariance_failures": 0,
+     "mismatches": 0
+    },
+    "reopened": {
+     "invariance_failures": 0,
+     "mismatches": 0
+    },
+    "reopened_items": 5,
+    "unattributed": 0
+   },
+   "sto": {
+    "never_reopened": {
+     "invariance_failures": 0,
+     "mismatches": 0
+    },
+    "reopened": {
+     "invariance_failures": 0,
+     "mismatches": 0
+    },
+    "reopened_items": 1,
+    "unattributed": 0
+   }
+  },
   "e5": {
    "addendum": {
     "has_r_ctrl_lines": true,
@@ -447,39 +473,41 @@
    "steps_without_effort": 0
   },
   "e8": {
-   "attempts": 1,
-   "breno_notified": true,
-   "expansion_blocked": true,
+   "attempts": 2,
+   "breno_notified": false,
+   "expansion_blocked": false,
    "plan_returned_v4": false
   },
   "evaluated_code": {
-   "net": "0aac913a49a66a12ceffc19460070ca6f50af7ffd042545b1f91dba198615220",
-   "sto": "667200bfe5f93bf949cca309e3a56ebd4fbc6f729b3d955ef1fa231d0441ae6d"
+   "net": "d8d7f240c3708254619938a0448fc8449b73465c05fbc43fcf92750e9aba4512",
+   "sto": "c113df284c785cd0e6db211b20dcd19a8e1ad65cf621dc5a37c3f742a0fbfecf"
   },
   "frozen_state": {
    "ARBITERLIB": "aa01f20",
    "CONTRACTS": "0e2ce71",
-   "GRAIN": "b623374",
-   "PILOT-NET-E2E": "e18f0aa",
-   "PILOT-NET-GLOSS": "e9bde7e",
-   "PILOT-NET-MAP": "38d9ce0",
-   "PILOT-NET-ORACLE": "b0e0de2",
-   "PILOT-STO-E2E": "2d839de",
-   "PILOT-STO-GLOSS": "f6c6e10",
-   "PILOT-STO-MAP": "c6e4b9f",
-   "PILOT-STO-ORACLE": "2e975e7",
+   "GRAIN": "3aa6b45",
+   "PILOT-NET-E2E": "5b73d31",
+   "PILOT-NET-GLOSS": "93094bf",
+   "PILOT-NET-MAP": "79223e5",
+   "PILOT-NET-ORACLE": "fd82d93",
+   "PILOT-STO-E2E": "73dbbe5",
+   "PILOT-STO-GLOSS": "8d55040",
+   "PILOT-STO-MAP": "f937aad",
+   "PILOT-STO-ORACLE": "738543c",
    "SEMANTICS": "ffe8c7f",
-   "SERVICE-EVIDENCE": "f44b9a6",
+   "SERVICE-EVIDENCE": "4d48d00",
    "arbiter/ARBITER.sha256": "1c2d3c34f4181d21"
   },
-  "passed": false,
+  "passed": true,
   "prereg_declarations": [
    "2026-11-04T16:17-0300 COORD, DESVIO DECLARADO (decisão do Breno, 04/11 ~15h): depois do PILOT-EXIT 1/2, três lacunas sem fonte publicada (identidade de regra da security list OCI, dono e cascata da regra do NSG OCI, ciclo de vida da associação NSG↔NIC/subnet no Azure) passam a ser respondidas por evidência OBSERVADA: experimento reprodutível na API real (2 repetições, controle, resíduo zero; só OCI e Azure, recursos gratuitos). Novo nível no C25 (emenda 10). Não muda hipótese, critérios E1–E8, limiares nem o conjunto retido. Conflito OBSERVED × PUBLISHED fica registrado como disputa. Justificativa: o E2 reprovava por falta de informação nas fontes e não por erro do método; a observação distingue os dois casos. Adendo: ADENDO_2026-11-04_OBSERVADO_ALIBABA.html.",
    "2026-11-04T17:05-0300 COORD, REGRA DE CONSOLIDAÇÃO OBSERVED, escrita ANTES de qualquer fato OBSERVED ser publicado no SERVICE-EVIDENCE (que está segurado até este commit):\n R1. OBSERVED nunca sobrescreve PUBLISHED; o fato publicado continua no arquivo.\n R2. Um OBSERVED com >=2 repetições e controle resolve uma disputa PUBLISHED x PUBLISHED JÁ EXISTENTE a favor do lado que ele reproduz; a disputa continua registrada com o id da observação e passa a ter status 'resolvida-por-observação'.\n R3. Um OBSERVED que contradiz um PUBLISHED sem disputa prévia ABRE disputa nova (OBSERVED x PUBLISHED); nesse caso o GRAIN trata o campo como CONTRADICTORY (sem desempate), exatamente como as demais disputas.\n R4. Um OBSERVED sobre um campo sem nenhum fato PUBLISHED preenche o campo com nível OBSERVED.\n R5. A regra vale para qualquer resultado; não se escolhe por caso.\n Aplicação conhecida antes de publicar: dono e ciclo de vida da regra do NSG OCI eram disputa PUBLISHED(doc) x PUBLISHED(spec); a observação reproduz a spec -> R2. Identidade da regra da security list OCI e ciclo de vida da associação NSG<->NIC/subnet Azure não tinham fato publicado -> R4.",
    "2026-11-04T17:05-0300 COORD, DECLARAÇÕES DE INTEGRIDADE antes do PILOT-EXIT 2/2 (vindas da revisão adversarial REVISAO_DOC_DECK_FABLE.html):\n D-a. Entre as tentativas 1 e 2, o GRAIN teve as versões 0.1.2 a 0.1.10, os contratos tiveram as emendas 5 a 10 e o árbitro foi recongelado 4 vezes. Tudo foi ajustado olhando só a CALIBRAÇÃO (E2 calib 11/42 -> 26/42). As retidas continuam cifradas fora da máquina (chave D15 na VM) e não foram lidas por nenhum módulo ajustado. O GRAIN, o SE, os contratos e o árbitro são CONGELADOS na versão em bo/base quando o EXIT 2 começar; o hash vai no relatório.\n D-b. As retidas do PILOT-STO-ORACLE foram re-seladas em 04/11, depois que uma resposta do gabarito mudou (política de ciclo de vida OCI -> UNKNOWN, por disputa) e a família de fixtures foi renumerada. A re-selagem foi feita pelo oráculo, que não vê o sistema; o conteúdo novo é o do selo 572f133361bc21d7. Isso fica declarado como desvio.\n D-c. Limitação conhecida: os oráculos leem a mesma SERVICE-EVIDENCE que o GRAIN, então erro de evidência é correlacionado entre sistema e gabarito. Isso é mitigado só nas 3 lacunas cobertas por OBSERVED. Gabarito de fonte independente (conta nova, GOLD-MODS, provedor retido Alibaba) fica para a fase 2.\n D-d. A comparação de OK antes x depois no MAP é incomparável: o veredito próprio de ausência (ARBITERLIB, emenda 9) muda a régua. Os relatórios separam alegações de ausências.",
    "2026-11-04T17:17-0300 COORD, CORREÇÃO DA R2, também antes de qualquer fato OBSERVED ser publicado (nada foi promovido; o SE parou por esta divergência): a premissa de que dono e ciclo de vida da regra do NSG OCI eram disputa PUBLISHED x PUBLISHED estava errada; no arquivo, os dois lados são DERIVED (doc: R-OWN-API/R-LIFE-API; spec: R-OWN-SPEC/R-LIFE-SPEC-PARENT). Texto corrigido da R2: um OBSERVED com >=2 repetições e controle resolve uma disputa JÁ EXISTENTE entre fatos não observados (PUBLISHED ou DERIVED) a favor do lado que ele reproduz; a disputa continua registrada com o id da observação e status 'resolvida-por-observação'. R1, R3, R4 e R5 ficam como estão. Mudança de escopo: de PUBLISHED x PUBLISHED para (PUBLISHED|DERIVED) x (PUBLISHED|DERIVED); vale para qualquer resultado.",
    "2026-11-04T21:30-0300 COORD, CICLO V4 (decisão do Breno depois do PILOT-EXIT 2/2 reprovado em E2, E3 e E6): o conjunto retido de 02:33 (NET) e 04/11 (STO) está APOSENTADO (usado 2x) e não será reusado. A tentativa 3 vai usar um conjunto retido NOVO, construído e selado (chave D15) pelos oráculos ANTES de o sistema v4 ficar pronto e sem acesso às saídas do sistema. Os critérios E1–E8, os limiares e o pilot_exit.yaml (sha 17132a42…) NÃO mudam. Ajustes do sistema só com a calibração. Cada pedido de mudança precisa de entrada versionada (E6), inclusive os recusados e os adiados. A regra de no máximo 2 tentativas vale POR conjunto retido; um conjunto novo abre um ciclo novo, que fica declarado aqui. A Alibaba fica para o fim, como provedor retido.",
-   "2026-11-04T22:07-0300 COORD, ciclo v4, REGRA R6 (antes de aplicar e antes da tentativa 3): uma disputa entre fatos DERIVED (inferência por regra) passa a 'resolvida-por-publicação' quando um fato PUBLISHED com frase literal de fonte oficial FIXADA (spec, SDK ou guia oficial, com sha256) diz expressamente o valor de um dos lados. Hierarquia: OBSERVED (R2) e PUBLISHED literal (R6) prevalecem sobre DERIVED. PUBLISHED x PUBLISHED continua aberta, salvo R2. A disputa fica registrada com o id do fato que a resolveu. A regra é geral e vale para qualquer resultado; não se escolhe por caso. Motivo: CC-14 trouxe frases oficiais (ex.: SDK e guia OCI: regras do NSG se aplicam às VNICs do grupo) sobre disputas DERIVED x DERIVED que R1–R5 deixavam sem caminho."
+   "2026-11-04T22:07-0300 COORD, ciclo v4, REGRA R6 (antes de aplicar e antes da tentativa 3): uma disputa entre fatos DERIVED (inferência por regra) passa a 'resolvida-por-publicação' quando um fato PUBLISHED com frase literal de fonte oficial FIXADA (spec, SDK ou guia oficial, com sha256) diz expressamente o valor de um dos lados. Hierarquia: OBSERVED (R2) e PUBLISHED literal (R6) prevalecem sobre DERIVED. PUBLISHED x PUBLISHED continua aberta, salvo R2. A disputa fica registrada com o id do fato que a resolveu. A regra é geral e vale para qualquer resultado; não se escolhe por caso. Motivo: CC-14 trouxe frases oficiais (ex.: SDK e guia OCI: regras do NSG se aplicam às VNICs do grupo) sobre disputas DERIVED x DERIVED que R1–R5 deixavam sem caminho.",
+   "2026-11-05T00:30-0300 COORD, ciclo v4, DECLARAÇÃO D-e (antes da tentativa 4, a ÚLTIMA no conjunto retido v4): a tentativa 3 (93f6e01) reprovou só em E2 (NET 4 grão + 1 invariância; STO 1 decomposição). O PILOT-EXIT reabriu, numa caixa sem rede, só os 6 itens que falharam, com o código congelado da tentativa, para diagnosticar a causa (DIAG_T3.json, 95dbf33). Para os módulos foram só a CLASSE de causa e a regra geral, sem id, nome ou valor de caso retido. Cada correção (GRAIN 0.2.4, adaptador do PILOT-NET-E2E) exige um caso sintético ou de calibração que a reproduza. RISCO DECLARADO: corrigir com base em falhas observadas no retido gera vazamento por classe; por isso a tentativa 4 reporta o E2 duas vezes, nos itens que não foram reabertos e nos 6 que foram. F6 era defeito do GABARITO STO: a regra de dono na camada de API era aplicada de forma diferente na calibração e nas retidas. O PILOT-STO-ORACLE 1.4.0 (77b6b5e) usa uma função única de dono e reprova o build quando as assinaturas divergem. Re-selagem pela VM D15: o envelope c5be53e9… é substituído por a1e3e62c…, e só 1 de 317 itens mudou de resposta (positivo → UNKNOWN). Critérios E1–E8, limiares e pilot_exit.yaml não mudam.",
+   "2026-11-05T01:58-0300 COORD, ciclo v4, DECLARAÇÃO D-f (antes da tentativa 4; a regra mecânica do E6 não muda): a conferência do PILOT-EXIT achou pendências que a regra do E6 conta como fechadas ou nem enxerga. Ficam declaradas como ADIADAS para a fase 2, sem efeito na contagem:\n (1) STO-MAP CC-9: a regressão no ARBITER-V4-2 (o árbitro não calcula o domínio do enum_to_bool) não tem entrada própria. O ledger conta o item por TRANSFORMS 1.0.0->1.1.0. Fica adiada, com um teste de regressão no ARBITERLIB depois do congelamento.\n (2) STO-MAP CC-8: blocos repetidos sem chave seguem abertos no MAP. O ledger conta o item por GRAIN 0.1.11->0.2.0. O GRAIN 0.2.4 já trata a repetição (multiconjunto ou GRAIN-G0-REPEAT), mas o MAP ainda não consome isso.\n (3) PILOT-NET-MAP, adendo de 01:14: o BINDING na forma holder/target (prefix_list_ids) não é lido pelo mapeador. Hoje o efeito é nulo: 3 ausências, nenhuma alegação.\n (4) As correções vindas de DIAG_T3.json (F1..F6) foram pedidas pelo PILOT-EXIT, que fica fora do escopo do ledger por definição: GRAIN 0.2.4 (422164f) e 0.2.5 (3aa6b45), SE parent_refs (4d48d00), PILOT-STO-ORACLE 1.4.0 (77b6b5e, 738543c) e o adaptador do PILOT-NET-E2E (5b73d31)."
   ],
   "problems": [],
   "reseals": {
@@ -491,21 +519,21 @@
     "set_version": 2
    },
    "sto": {
-    "envelope_sha256": "c5be53e93e82e5e432d44d9ea91ec9b22fb002da9ed1f2dfa168fdd303b133d9",
-    "plaintext_sha256": "8fd771189b9cee5b2da3c25b5284b92a516f973fc8236d2595dd44e2000f18dd",
-    "reason": "SE f44b9a6: alcance efetivo de oci_objectstorage_object_lifecycle_policy entrou em disputa spec x doc (SE-oci-6x3u7oqkpdma2pqw x SE-oci-tioryzb3iqoydw6m); disputa vira UNKNOWN",
+    "envelope_sha256": "a1e3e62cb9db95d94e53c3364126d2e4347c99cd35a56055e2c118b3695598db",
+    "plaintext_sha256": "b89345d0668cdceea8e20128baa460a8e1720cee202ec55dce07ea294b51ac0c",
+    "reason": "PILOT-EXIT DIAG_T3 F6 (classe MC-DEC-SCOPE, defeito do gabarito): regra de dono única em calibração e retidas; tipo sem fato de dono fora da camada Terraform no SERVICE-EVIDENCE vira UNKNOWN",
     "revision": {
      "changed_fixtures": 1,
-     "n": 1,
-     "of_plaintext_sha256": "7cc7de68b632caf46422c3fc32b8900c53a58117ac8499815ec568579bb2016a",
-     "reason": "SE f44b9a6: alcance efetivo de oci_objectstorage_object_lifecycle_policy entrou em disputa spec x doc (SE-oci-6x3u7oqkpdma2pqw x SE-oci-tioryzb3iqoydw6m); disputa vira UNKNOWN",
-     "where": "decifrado, corrigido, reconferido (oráculo 1.3.0: 230 conferências e 181 entradas) e recifrado na VM; texto claro nunca saiu de lá"
+     "n": 2,
+     "of_plaintext_sha256": "8fd771189b9cee5b2da3c25b5284b92a516f973fc8236d2595dd44e2000f18dd",
+     "reason": "PILOT-EXIT DIAG_T3 F6 (classe MC-DEC-SCOPE, defeito do gabarito): regra de dono única em calibração e retidas; tipo sem fato de dono fora da camada Terraform no SERVICE-EVIDENCE vira UNKNOWN",
+     "where": "decifrado, corrigido, reconferido (oráculo 1.4.0: 230 conferências e 181 entradas) e recifrado na VM, num namespace de rede vazio; texto claro nunca saiu de lá"
     },
     "set_version": null
    }
   }
  },
- "generated_at": "2026-11-04T23:55:20-03:00",
+ "generated_at": "2026-11-05T01:54:03-03:00",
  "metrics": [
   {
    "axis": "operational",
