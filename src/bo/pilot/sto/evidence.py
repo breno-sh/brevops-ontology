@@ -15,6 +15,12 @@ from pathlib import Path
 from . import common as C
 
 FACTS = ("owner", "lifecycle_controller", "effective_scope", "identity")
+# Regra de dono única (contrato do PILOT-STO-ORACLE 1.4.0, DEC-NO-API-OWNER; DIAG_T3 F6), reimplementada aqui só pelo
+# contrato, sem importar o oráculo: o dono de uma configuração só é conhecido quando o SERVICE-EVIDENCE tem, para o
+# tipo (ou o bloco de topo), fato de dono "stated" FORA da camada Terraform: camada de API ou identidade/pai do objeto
+# remoto. Só camada Terraform (R-OWN-TOP, R-BLOCK-OWNER) ou nada documentado decide UNKNOWN. Atributo de topo é campo
+# do objeto de API do próprio recurso e herda o fato do recurso.
+OWNER_IDENTITY_RULES = ("R-OWN-AWS-IDENTITY", "R-OWN-AZ-PARENT", "R-OWN-GCP-PARENT", "R-OWN-DOC-PARENT")
 
 
 @dataclass
@@ -34,6 +40,7 @@ class TypeEvidence:
     identity_refs: dict = field(default_factory=dict)    # atributo -> tipo Terraform referenciado
     block_scope_parent: set = field(default_factory=set)  # caminhos de bloco com alcance = pai (api)
     disputed: dict = field(default_factory=dict)         # fato -> {doc, spec, evidence}
+    owner_layers: dict = field(default_factory=dict)     # block_path ou None -> {"api": [...], "terraform": [...]}
 
 
 class Evidence:
@@ -54,6 +61,11 @@ class Evidence:
     def _add(self, r: dict) -> None:
         te = self._te(r["terraform_resource_type"])
         fk, v, eid, bp = r["fact_kind"], r.get("value") or {}, r["evidence_id"], r.get("block_path")
+        if fk == "owner" and r.get("status") == "stated":
+            layer = "api" if (v.get("layer") == "api" or v.get("rule") in OWNER_IDENTITY_RULES) else (
+                "terraform" if v.get("layer") == "terraform" else None)
+            if layer:
+                te.owner_layers.setdefault(bp or None, {"api": [], "terraform": []})[layer].append(eid)
         if bp:
             if fk == "effective_scope" and v.get("layer") == "api" and v.get("kind") == "parent":
                 te.block_scope_parent.add(bp)
@@ -129,6 +141,14 @@ class Evidence:
         if "self" in te.owner_kinds:
             return {"kind": "self", "via": [], "parent_types": [], "evidence": te.owner_kinds["self"]}
         return {"kind": "UNKNOWN", "via": [], "parent_types": [], "evidence": te.owner_unknown}
+
+    def owner_rule(self, rtype: str, block: str | None = None) -> dict:
+        """Regra de dono única: (tipo, bloco de topo ou None) -> {'class': API | TERRAFORM_ONLY | UNDOCUMENTED, ...}.
+        Bloco usa os fatos do próprio caminho; tipo (e atributo de topo) usa os fatos do recurso."""
+        e = self.get(rtype).owner_layers.get(block or None, {"api": [], "terraform": []})
+        cls = "API" if e["api"] else ("TERRAFORM_ONLY" if e["terraform"] else "UNDOCUMENTED")
+        return {"class": cls, "api_evidence": sorted(e["api"]), "terraform_evidence": sorted(e["terraform"]),
+                "key": rtype if not block else f"{rtype}/{block}"}
 
     def lifecycle(self, rtype: str) -> dict:
         te = self.get(rtype)

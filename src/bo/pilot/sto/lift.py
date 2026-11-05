@@ -6,9 +6,10 @@ Decomposição pelo procedimento de grão com a evidência de serviço (C25), in
   faceta        bloco ou atributo de um contêiner/namespace cujo conceito pertence a uma classe de configuração, ou
                 recurso separado cujo dono (API) é o pai alcançado pela referência; ciclo de vida = o do pai;
   conta         tipo com alcance de conta (C25 type_scope): dono account:context, alcance todo contêiner da conta;
-  UNKNOWN       dono em disputa (spec × doc), referência que não resolve, ou dono sem evidência de API.
+  UNKNOWN       dono em disputa (spec × doc), referência que não resolve, ou dono sem fato fora da camada Terraform
+                (regra de dono única, evidence.owner_rule: vale para bloco embutido, recurso separado e conta).
 Ids neutros: container:<endereço>, namespace:<endereço>, setting:<classe>@<dono> (dono = id da unidade,
-account:context, namespace:context, UNRESOLVED:<endereço> ou DISPUTED:<endereço>).
+account:context, namespace:context, UNRESOLVED:<endereço>, DISPUTED:<endereço> ou NO-API-OWNER:<endereço[/bloco]>).
 O alcance efetivo segue as regras do c3 (cadeias de appliesTo); o ABox de bo.pilot.sto.abox materializa as
 mesmas consequências por raciocínio e o teste confere que coincidem.
 """
@@ -309,6 +310,12 @@ def lift(fx: dict, claims, evidence) -> Lifted:
         u.rules = sorted(set(u.rules) | set(rules))
         return uid
 
+    def no_api_owner(cls: str, by: str, orule: dict) -> str:
+        uid = f"setting:{T.CLASSES[cls]['token']}@NO-API-OWNER:{by}"
+        units[uid] = Unit(uid, cls, "UNKNOWN", "UNKNOWN", "UNKNOWN", "UNKNOWN", [by], ["owner"],
+                          rules=["DEC-NO-API-OWNER", f"OWNER-{orule['class']}"])
+        return uid
+
     block_unit: dict[tuple[str, str], str] = {}     # (endereço, chave de topo) -> unidade de configuração
     res_unit: dict[str, str] = {}
     for a in containers:
@@ -328,6 +335,13 @@ def lift(fx: dict, claims, evidence) -> Lifted:
             if cls in (None, "AMBIGUOUS"):
                 if cls == "AMBIGUOUS":
                     notes.append(f"{a}/{key}: bloco com conceitos de mais de uma classe")
+                continue
+            is_block = isinstance(body[key], dict) or (isinstance(body[key], list) and bool(body[key])
+                                                       and all(isinstance(x, dict) for x in body[key]))
+            orule = evidence.owner_rule(rtype, key if is_block else None)
+            if orule["class"] != "API" and not evidence.disputes_of(rtype):
+                # regra de dono única: sem fato de dono fora da camada Terraform a faceta embutida é UNKNOWN
+                block_unit[(a, key)] = no_api_owner(cls, f"{a}/{key}", orule)
                 continue
             if uid.startswith("container:"):
                 scope = [uid]
@@ -360,6 +374,10 @@ def lift(fx: dict, claims, evidence) -> Lifted:
                               rules=["DEC-NAMESPACE-CONTEXT"])
             res_unit[a] = uid
             continue
+        orule = evidence.owner_rule(rt)
+        if te.account_scoped and orule["class"] != "API" and not evidence.disputes_of(rt):
+            res_unit[a] = no_api_owner(cls, a, orule)
+            continue
         if te.account_scoped:
             uid = add_setting(cls, "account:context", a, {"all_in": "account:context", "known": sorted(f"container:{c}" for c in containers)},
                               lifecycle=lc["kind"] if lc["kind"] != "UNKNOWN" else "UNKNOWN",
@@ -379,6 +397,14 @@ def lift(fx: dict, claims, evidence) -> Lifted:
                 if t2 and t2.split(".", 1)[0] in ow["parent_types"]:
                     target, via = t2, [attr]
                     break
+        if target is None and orule["class"] != "API":
+            # sem dono na API a evidência não nomeia o atributo do pai: basta a referência a um contêiner ou namespace
+            # da fixture para a unidade ser NO-API-OWNER (pai resolvido) e não UNRESOLVED (contrato do oráculo 1.4.0)
+            for attr in sorted(body):
+                t2 = ref_target(res_by_addr, body.get(attr))
+                if t2 and t2 in res_unit:
+                    target, via = t2, [attr]
+                    break
         owner_unit = res_unit.get(target) if target else None
         if target:
             refs[a] = target
@@ -395,11 +421,14 @@ def lift(fx: dict, claims, evidence) -> Lifted:
                               rules=["DEC-DISPUTED"])
             res_unit[a] = uid
             continue
-        if ow["kind"] != "parent" or owner_unit is None:
+        if owner_unit is None:
             uid = f"setting:{token}@UNRESOLVED:{a}"
             units[uid] = Unit(uid, cls, "UNKNOWN", "UNKNOWN", "UNKNOWN", "UNKNOWN", [a], ["owner"],
-                              rules=["REF-UNRESOLVED" if ow["kind"] == "parent" else "DEC-NO-API-OWNER"])
+                              rules=["REF-UNRESOLVED"])
             res_unit[a] = uid
+            continue
+        if orule["class"] != "API":
+            res_unit[a] = no_api_owner(cls, a, orule)
             continue
         if owner_unit.startswith("namespace:"):
             ns_addr = owner_unit[len("namespace:"):]
