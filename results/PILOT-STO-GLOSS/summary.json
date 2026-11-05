@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "PILOT-STO-GLOSS",
- "generated_at": "2026-11-04T23:05:08-03:00",
+ "generated_at": "2026-11-04T23:45:18-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-STO-GLOSS.txt",
@@ -29,15 +29,15 @@
    "candidates_n": "52",
    "decisions_n": "65",
    "packaging_invariant": "3_of_5",
-   "round": "final_v4",
+   "round": "final_v4_grain_0_2_3_identical",
    "arbiter": "aa01f20",
-   "base": "dce034d"
+   "base": "3963f9c"
   },
   "inputs": [
    {
     "path": "$BO_REPO/grain/grain_rules.yaml",
     "kind": "file",
-    "sha256": "0b8c74bf29d2ebfc0778fc6d17de47e8fce671abb05cf9c142bfb55866bf1848"
+    "sha256": "e3a57c5a96edd2547c6ef32ae427a5b0a34b77e95797958a16400cedb6c9f519"
    },
    {
     "path": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl",
@@ -100,7 +100,7 @@
     "sha256": "99e3dc9d3434e48675fd71eb817145ae63c2159fd041f3c67dd1d308e814287c"
    }
   ],
-  "recorded_at": "2026-11-04T23:05:08-03:00"
+  "recorded_at": "2026-11-04T23:45:18-03:00"
  },
  "sources": []
 }
