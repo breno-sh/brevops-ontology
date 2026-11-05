@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "GRAIN",
- "generated_at": "2026-11-04T17:12:44-03:00",
+ "generated_at": "2026-11-04T21:40:33-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/GRAIN.txt",
@@ -13,11 +13,11 @@
    "modo": "unlazy",
    "onda": "5",
    "fase": "F1",
-   "rules_version": "0.1.11",
+   "rules_version": "0.2.0",
    "rules_status": "PROVISIONAL",
-   "emendas": "GRAIN-A1..A14",
+   "emendas": "GRAIN-A1..A15",
    "c19": "3.1.0",
-   "c25": "1.4.0",
+   "c25": "1.5.0",
    "pyyaml": "6.0.3",
    "pytest": "9.1.1",
    "jsonschema": "4.26.0"
@@ -31,9 +31,7 @@
    {
     "path": "$BO_REPO/contracts",
     "kind": "dir",
-    "sha256": "a09b0768287c61b41c973bfc1d208395761fd153ab0d10afbc96badc6c1c022f",
-    "sha256_before_emenda11": "d690beea15abe5b90ed1cf1e4cb85ecd4f09c82ae22d1338f0e0ddf184ee2ff5",
-    "sha256_before_emenda12": "0e7cc1fd6a996e1807b407300c4327b905270a7a0ef52610902099a27103a8b2"
+    "sha256": "a09b0768287c61b41c973bfc1d208395761fd153ab0d10afbc96badc6c1c022f"
    },
    {
     "path": "$BO_REPO/semantics/SEMANTICS.html",
@@ -46,7 +44,7 @@
     "sha256": "038f73fcebedfbf3b5ff3d23b1ff0758a87e8be2616b141b232628e1a64d1438"
    }
   ],
-  "recorded_at": "2026-11-04T17:12:44-03:00"
+  "recorded_at": "2026-11-04T21:40:33-03:00"
  },
  "sources": [
   {

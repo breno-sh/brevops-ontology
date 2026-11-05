@@ -2,7 +2,7 @@
 
 Consolidação R1–R5 do PREREG (04/11 17:05): R1 nada é sobrescrito; R2 disputa já existente resolvida por observação
 vale o lado reproduzido; R3 observação contra publicado sem disputa prévia é CONTRADICTORY; R4 observação sozinha
-preenche. T64: item sem id da lista do pai = valor-lista do dono, sem unidade (T0). Item com id que não existe sem o
+preenche. T64/T59b (0.2.0): item sem id da lista do pai = COMPONENT anônimo do dono, chave = conteúdo. Item com id que não existe sem o
 pai = COMPONENT do pai (G2-CHILD). Cascata do namespace só com evidência por tipo."""
 
 import random
@@ -154,13 +154,24 @@ def _occs(recs, cfg):
     return I.decompose_config(cfg, C25Adapter(recs), {SL: {BP}}, RS)
 
 
-def test_item_without_id_is_value_list_of_the_owner_without_unit():
-    """T64 + T0: item sem id da lista do pai é carga útil do pai e some como unidade (valor-lista do dono)."""
+def test_item_without_id_is_anonymous_component_keyed_by_content():
+    """0.2.0 (T59b): item sem id do provedor é COMPONENT anônimo do dono; ocorrência = (pai, caminho, conteúdo,
+    índice de multiplicidade); a duplicata aceita é outro membro; nada depende da posição."""
     oc = _occs(_sl_records(), _sl_cfg(RULES))
     top = [o for o in oc if o.tf == [f"{SL}.web"]][0]
+    rules = [o for o in oc if any(f"/{BP}#" in n for n in o.tf)]
     assert top.grain == "ENTITY"
-    assert not any(o for o in oc if any(f"/{BP}#" in n for n in o.tf) and o.grain != "UNKNOWN")
-    assert not any(o.grain == "COMPONENT" for o in oc)                  # não força COMPONENT
+    assert len(rules) == 3 and all(o.grain == "COMPONENT" and o.parent == top.occ_id for o in rules)
+    assert len({o.occ_id for o in rules}) == 3
+    assert sorted(o.key["$dup"] for o in rules) == [0, 0, 1]
+
+
+def test_item_without_id_identity_does_not_depend_on_position():
+    ids = []
+    for seed in (None, 1, 2, 3):
+        oc = _occs(_sl_records(), _sl_cfg(RULES, seed))
+        ids.append(sorted(o.occ_id for o in oc if any(f"/{BP}#" in n for n in o.tf)))
+    assert all(x == ids[0] for x in ids)
 
 
 def test_without_observation_list_item_stays_unknown():
@@ -257,3 +268,47 @@ def test_namespace_without_cascade_evidence_has_no_cascade_delete_by():
 def test_namespace_with_cascade_evidence_has_cascade_delete_by():
     d = _db_decision(_ns_records(True))
     assert d.grain == "ENTITY" and d.cascade == ["t_ns.g"], (d.grain, d.rule, d.cascade)
+
+
+# ------------------------------------------------------------------ 0.2.0: T59b na instância, T51b, G1 com EXTERNAL
+
+SG, R_IN = "t_sg", "t_sg.ingress"
+
+
+def _sg_records():
+    recs = entity(SG, "SecurityGroup") + [
+        rec(SG, "identity", {"key_fields": ["rule_id"], "layer": "api", "rule": "R-ID-SPEC", "scope": "within_parent",
+                             "status": "present"}, bp="ingress")]
+    for k in ("lifecycle_controller", "owner", "effective_scope"):
+        recs.append(rec(SG, k, {"kind": "parent", "layer": "api", "rule": "R-X"}, bp="ingress"))
+    recs.append(rec(SG, "api_bridge", {"aspect": "api_resource_bridge", "resource": "SecurityGroupRule",
+                                       "service": "core", "rule": "R-BRIDGE-SPEC"}, bp="ingress"))
+    return recs
+
+
+def _sg_cfg(rules, seed=None):
+    rs = list(rules)
+    if seed is not None:
+        random.Random(seed).shuffle(rs)
+    return {"provider": PROV, "resources": [{"type": SG, "name": "web", "values": {"name": "web", "ingress": rs}}]}
+
+
+def test_t59b_block_with_provider_assigned_id_gets_content_occurrence():
+    """Bloco cuja chave de API (rule_id) o provedor atribui depois da criação: sem o valor na configuração, a
+    ocorrência é por conteúdo, e não depende da posição (A12 fechada)."""
+    rules = [{"proto": "tcp", "port": 443}, {"proto": "tcp", "port": 80}]
+    ids = []
+    for seed in (None, 1, 2):
+        oc = I.decompose_config(_sg_cfg(rules, seed), C25Adapter(_sg_records()), {SG: {"ingress"}}, RS)
+        r = [o for o in oc if any("/ingress#" in n for n in o.tf)]
+        assert len(r) == 2 and all(o.grain == "COMPONENT" and o.occ_id for o in r)
+        ids.append(sorted(o.occ_id for o in r))
+    assert all(x == ids[0] for x in ids)
+
+
+def test_t59b_does_not_apply_when_key_is_symbolic():
+    """Controle: chave própria simbólica (variável) não é id do provedor; a ocorrência segue sem identidade."""
+    rules = [{"proto": "tcp", "port": 443, "rule_id": {"$unknown": "var.rid"}}]
+    oc = I.decompose_config(_sg_cfg(rules), C25Adapter(_sg_records()), {SG: {"ingress"}}, RS)
+    r = [o for o in oc if any("/ingress#" in n for n in o.tf)]
+    assert r and r[0].grain == "UNKNOWN"

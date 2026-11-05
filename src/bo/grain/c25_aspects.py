@@ -180,8 +180,10 @@ TABLE = [
      "suspend: lifecycle_controller {kind: parent} e api_resource {status: aspect} (indício de faceta do pai); "
      "not_deleted e state_only: UNKNOWN (o destroy não apaga; não diz quem apaga)"),
     ("lifecycle_controller", "deletion_policy", "R-GRAIN-T31",
-     "values com DELETE: lifecycle_controller {kind: self}; values vazio: UNKNOWN (política sem valores "
-     "documentados)"),
+     "camadas separadas (0.2.0, CC-NET-3 do PILOT-NET-GLOSS): a política de remoção do Terraform (argumento "
+     "deletion_policy: o que o terraform destroy faz) fica FORA da decisão de grão, como dono, ciclo de vida e alcance "
+     "da camada Terraform; só a política da API conta (layer api): values com DELETE: lifecycle_controller {kind: "
+     "self}; sem DELETE ou sem valores: UNKNOWN"),
     ("lifecycle_controller", "block_lifecycle", "R-GRAIN-T32",
      "lifecycle_controller {kind: parent, via: $parent} quando via é o pai estrutural do bloco; senão UNKNOWN"),
     ("effective_scope", "type_scope", "R-GRAIN-T40",
@@ -329,6 +331,7 @@ def translate(records: list[dict], candidates: set[str] | None = None, disputes:
     links: dict[str, dict] = defaultdict(dict)       # cid -> atributo -> ligação (T58)
     path_fields: dict[str, set] = defaultdict(set)   # cid -> campos de referência ao pai de caminho (T54)
     list_items: dict[str, dict] = {}                  # cid -> ponte para campo-lista de itens (T62)
+    attach_scope: dict[str, tuple] = {}               # cid -> (atributo, fonte) da anexação da spec (T63/T47)
     item_facts: dict[str, dict] = {}                  # cid -> item sem id observado/publicado (T64)
     typed: dict[str, dict] = defaultdict(dict)       # cid -> {campo: tipo alvo ou None} (T44 reference_target)
     for cid, rs in sorted(by_cid.items()):
@@ -480,13 +483,13 @@ def translate(records: list[dict], candidates: set[str] | None = None, disputes:
                 elif not (prev.get("target") and prev["target"] == typed[cid][attr]):
                     links[cid][attr] = {"kind": "reference", "target": typed[cid][attr], "source": _src(r, rule)}
             elif a == "item_identity":
-                # T64: identidade do item (fato do experimento ou da doc). Sem id: identity absent (o item não tem
-                # identidade própria nem chave declarada; a lista é valor do dono). Com id: identidade própria;
-                # requires_parent com parent_attribute: a referência ao pai entra na chave como pai de caminho.
+                # T64: identidade do item (fato do experimento ou da doc). Sem id (0.2.0, T59b): membro anônimo da
+                # coleção do pai, identidade = conteúdo (resolvido depois do laço, com a ponte para o campo-lista).
+                # Com id: identidade própria; requires_parent com parent_attribute: a referência ao pai entra na
+                # chave como pai de caminho.
                 src = _src(r, "R-GRAIN-T64")
-                if v.get("has_id") is False:
-                    put(cid, "identity", {"status": "absent", "source": src})
-                    item_facts[cid] = v
+                if v.get("has_id") is False and nested:
+                    item_facts[cid] = dict(v, _src=src)
                 elif v.get("has_id") is True:
                     kf = [v.get("id_field") or "id"]
                     pa = _rel(v.get("parent_attribute") or "", bp) if v.get("requires_parent") else ""
@@ -509,6 +512,9 @@ def translate(records: list[dict], candidates: set[str] | None = None, disputes:
                     src = _src(r, "R-GRAIN-T63", f"{v.get('spec_operation')}/{v.get('spec_field')}")
                     if r.get("level") == "interpreted":
                         src = dict(src, level="interpreted", model_id=r.get("model_id") or "UNKNOWN")
+                    # 0.2.0: anexação descrita pela spec = a regra declarada T47 (a configuração vale onde está
+                    # anexada; o alcance da unidade é ela mesma), com o mesmo nível da fonte
+                    attach_scope[cid] = (attr, dict(src, note=src["note"] + " (T47)"))
                     prev = links[cid].get(attr, {}).get("target")
                     if prev and prev != v["binds_to"]:
                         reasons[cid].append(f"identity: anexação {attr} diverge do alvo tipado ({prev} x "
@@ -573,7 +579,11 @@ def translate(records: list[dict], candidates: set[str] | None = None, disputes:
                     unknown(cid, "lifecycle_controller", r, f"destroy_effect {eff}: não diz quem apaga")
             elif a == "deletion_policy":
                 vals = [str(x).upper() for x in v.get("values") or []]
-                if "DELETE" in vals:
+                if v.get("layer") != "api":
+                    # T31 (0.2.0, CC-NET-3): política do Terraform, fora da decisão de grão (sem alegação)
+                    reasons[cid].append("lifecycle_controller: deletion_policy do Terraform (o que o destroy faz), "
+                                        "fora da decisão de grão (T31, CC-NET-3)")
+                elif "DELETE" in vals:
                     put(cid, "lifecycle_controller", {"kind": "self", "source": _src(r, rule)})
                 else:
                     unknown(cid, "lifecycle_controller", r, "política de remoção sem valores documentados")
@@ -745,6 +755,13 @@ def translate(records: list[dict], candidates: set[str] | None = None, disputes:
         # continua referência ao contêiner. T56b só vale para os demais campos da identidade independente
         keyf = {f for c in ent.get("identity", []) if c.get("scope") != "within_parent"
                 for f in (c.get("key_fields") or [])} - set(ns_fields.get(cid, set()))
+        # 0.2.0: campo que a evidência dá como via do pai (ciclo de vida ou dono kind parent/container) referencia o
+        # pai, não é o identificador próprio: continua referência (sem isso, o fato OBSERVED do dono não resolve)
+        for fld_ in ("lifecycle_controller", "owner"):
+            for c in ent.get(fld_, []):
+                if c.get("kind") in ("parent", "container"):
+                    via = c.get("via")
+                    keyf -= set(via) if isinstance(via, list) else ({via} if isinstance(via, str) else set())
         fm = ent.get("field_map", {})
         for f in sorted(keyf):
             if fm.get(f, {}).get("ref"):
@@ -871,14 +888,30 @@ def translate(records: list[dict], candidates: set[str] | None = None, disputes:
     for cid, r in sorted(list_items.items()):
         v = r["value"]
         if cid in item_facts:
-            # item sem id da coleção do pai (T64): carga útil da API do pai; com identity absent, a procedura T0 o
-            # torna transparente: valor-lista do dono, sem unidade própria
+            # item sem id da coleção do pai: carga útil (item) da API do pai, membro da lista
             put(cid, "api_resource", {"status": "payload", "label": v.get("item_model"),
                                       "source": _src(r, "R-GRAIN-T62", "item sem id da coleção do pai (T64)")})
-            reasons[cid].append("api_resource: item sem id da lista do pai: carga útil, valor-lista do dono (T0)")
         else:
             unknown(cid, "api_resource", r, f"ponte para campo-lista de itens ({v.get('field_type')}): o item não "
                     "é aspecto do pai e a identidade do item não tem evidência (T62)")
+    for cid, (attr, src) in sorted(attach_scope.items()):
+        # T47 para a anexação da spec: o alcance é a própria ligação (candidato <tipo>:<atributo>); quando a unidade
+        # É a anexação (recurso de topo cujo ciclo de vida é o do dono do campo), o alcance dela é ela mesma
+        put(f"{cid}:{attr}", "effective_scope", {"kind": "self", "source": src})
+        if "." not in cid and any(c.get("kind") == "parent" for c in out.get(cid, {}).get("lifecycle_controller", [])):
+            put(cid, "effective_scope", {"kind": "self", "source": src})
+    for cid, it in sorted(item_facts.items()):
+        # T59b (0.2.0): item sem id do provedor é COMPONENT anônimo do dono; identidade = conteúdo do item, com
+        # índice de multiplicidade para duplicatas. "Sem id" do schema (block_identity absent) e do experimento
+        # (item_identity has_id=false) dizem a mesma coisa: as alegações absent viram a forma anônima (sem disputa)
+        ent = out.setdefault(cid, {})
+        anon = {"status": "present", "scope": "within_parent", "key_fields": ["$content"], "anonymous": True}
+        ent["identity"] = [dict(anon, source=dict(c["source"], note=c["source"].get("note", "") + " (T59b)"))
+                           if c.get("status") == "absent" else c for c in ent.get("identity", [])]
+        ent["identity"].append(dict(anon, source=it["_src"]))
+        ent["element_name_key"] = list(ent.get("element_name_key", [])) + [{"status": "absent", "source": it["_src"]}]
+        ent.setdefault("field_map", {})["$content"] = {"path": "$content", "norm": "content"}
+        reasons[cid].append("identity: item sem id do provedor: COMPONENT anônimo, chave = conteúdo (T59b)")
     for cid, ls in links.items():
         if ls:
             out.setdefault(cid, {})["links"] = {k: dict(x) for k, x in ls.items()}

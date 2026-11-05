@@ -36,7 +36,7 @@ from . import schema as S
 from .common import data_dir, dump_json, dump_jsonl, now, repo, results_dir, rules_path, sha256_file, stamp
 from .evidence import FixtureAdapter
 
-AUTHORED_AT = "2026-11-04T18:40:00-03:00"
+AUTHORED_AT = "2026-11-04T21:40:00-03:00"
 
 
 def _strip(rep: dict) -> dict:
@@ -408,6 +408,33 @@ vida preso à instância, G1 e G2 aceitam a evidência, e trocar a ordem troca B
 referência <code>by_name</code>; sem ela, o grafo embutido perde relações que o separado tem.</li>
 <li>Emenda 0.1.1 (CC-1): a primeira versão lia uma convenção que o SERVICE-EVIDENCE nunca gravou; os testes
 sintéticos usavam a mesma convenção e não pegaram. Entraram o adaptador por aspecto e testes com o arquivo real.</li>
+<li>Emenda 0.2.0 — 2026-11-04T21:40-03:00 (ciclo v4, depois do PILOT-EXIT 2/2; ajuste olhando só a calibração).
+<b>(a) Item sem id do provedor = COMPONENT anônimo do dono (T59b)</b>. Ocorrência = (pai, caminho, conteúdo configurado,
+índice de multiplicidade), independente da posição. Justificativa pelo OBSERVED (OBS-GAPS, OCI, 2 repetições com
+controle): a regra da security list não tem id, a lista é substituída inteira e aceita duplicata. O item não tem nome
+nem id, mas é membro distinto da coleção do dono, com semântica própria (direção, protocolo, estado por regra) e
+ciclo de vida preso ao dono: é unidade, não aspecto (não é um por pai) nem carga transparente (o domínio o emite e
+compara). Como a duplicata é aceita, duas regras iguais são dois membros (índice de multiplicidade); como a lista é
+substituída inteira, a posição não identifica. "Sem id" no schema (block_identity absent) e no experimento
+(item_identity has_id=false) dizem a mesma coisa e viram a forma anônima, sem disputa. O mesmo vale, na instância,
+para o bloco cuja chave de API o provedor atribui depois da criação (regra embutida do grupo de segurança AWS): sem o
+valor na configuração, a ocorrência é por conteúdo, o que fecha a limitação A12 (a regra embutida e a separada saem
+iguais também sem o cache por tipo). Chave própria simbólica não entra (controle). Substitui a decisão "valor-lista
+do dono, sem unidade" da 0.1.11 para esse caso. <b>(b) T51b</b>: NÃO aplicada — conflita com o compromisso
+CMT-NIC-U02 ("referência simbólica não resolvida não vira anexação"); pedido em results/GRAIN/CONTRACT_CHANGE.txt.
+<b>(c) Associação NSG↔NIC/subnet do Azure</b>: os fatos OBSERVED de ciclo de vida e dono (= a NIC/subnet, via o campo
+de referência) não chegavam à decisão porque a T56b tirava a referência do campo que também é a chave de API da
+associação (R-ID-SPEC-ATTACH); sem a referência, o via do pai não resolvia. Agora o campo que a evidência dá como via
+do pai continua referência. O alcance que faltava sai pela regra declarada T47 (a anexação descrita pela spec,
+attachment_attribute, vale onde está anexada: alcance próprio). Com isso, pelas regras declaradas: identidade
+emprestada da NIC/subnet, ciclo de vida e dono do pai → G3 FACET; a da subnet sai FACET da subnet, a da NIC fica
+UNKNOWN por falta de ponte de API (api_resource). O gabarito diz BINDING; a G1 exige dono = a própria associação e o
+OBSERVED diz que o dono é a NIC/subnet: divergência declarada, não ajustada. <b>(d) Alcance da regra do NSG OCI</b>
+(doc self × spec parent): aguarda o SE; segue CONTRADICTORY. <b>T31 (CC-NET-3 do PILOT-NET-GLOSS)</b>: a política de
+remoção do Terraform (argumento deletion_policy, o que o terraform destroy faz) fica fora da decisão de grão, como
+dono, ciclo de vida e alcance da camada Terraform; só a política da API (layer api) conta. Medida: calibração NET
+31/42 com o cache por tipo recalculado e 30/42 só com o GRAIN, invariância de reordenação e embalagem nos dois; STO
+21/21 com invariância.</li>
 <li>Propostas para a fase 2 — 2026-11-04T18:40-03:00 (NÃO aplicadas; decisão do coordenador: o GRAIN fica congelado
 em ed1fc66 até o PILOT-EXIT 2/2; nenhuma regra muda). Origem: diagnóstico "só GRAIN" na calibração NET (sem o cache por
 tipo do PILOT-NET-GLOSS: 13/42 e o par AWS embutido × separado quebra; com o cache recalculado pelo caminho do GLOSS na

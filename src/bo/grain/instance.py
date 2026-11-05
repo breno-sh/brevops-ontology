@@ -31,6 +31,8 @@ def _sym(v) -> bool:
 def normalize(norm: str, v):
     if v is None or _sym(v):
         raise NormError("valor ausente ou simbólico")
+    if norm == "content":
+        return content_hash(v)
     if norm == "str":
         return str(v).strip()
     if norm == "lower":
@@ -55,11 +57,29 @@ def normalize(norm: str, v):
     raise NormError(f"normalizador desconhecido: {norm}")
 
 
+def content_hash(v) -> str:
+    """T59b: conteúdo canônico do item; símbolo e referência entram como marcas da configuração (não completados)."""
+    def mark(x):
+        if isinstance(x, dict) and "$unknown" in x:
+            return "sym:" + str(x["$unknown"])
+        if isinstance(x, dict) and "$ref" in x:
+            return "ref:" + str(x["$ref"])
+        if isinstance(x, dict):
+            return {k: mark(y) for k, y in x.items()}
+        if isinstance(x, list):
+            return [mark(y) for y in x]
+        return x
+    return sha256_text(canon(mark(v)))
+
+
 def _get(values: dict, path: str, index):
     if path == "$index":
         return index
     if path == "$element":
         return values.get("$element") if isinstance(values, dict) else None
+    if path == "$content":
+        # T59b: conteúdo configurado do item (blocos internos incluídos)
+        return {k: x for k, x in values.items() if not k.startswith("$")} if isinstance(values, dict) else None
     cur = values
     for part in path.split("."):
         if not isinstance(cur, dict) or part not in cur:
@@ -259,6 +279,30 @@ def decompose_config(config: dict, adapter, schema_blocks: dict, rs: R.RuleSet) 
             raise NormError(f"campo {f} sem mapa")
         return normalize(m.get("norm", "str"), _get(info["values"], m.get("path", f), info["index"]))
 
+    def own_absent(nid, own):
+        """T59b: todo campo da chave própria está ausente da configuração (não simbólico): id do provedor."""
+        info = raw[nid]
+        ev = nodes[nid].ev
+        for f in own:
+            m = ev.field_map.get(f, {})
+            if f == "$content" or _get(info["values"], m.get("path", f), info["index"]) is not None:
+                return False
+        return True
+
+    def dup_index(nid, c):
+        """Índice de multiplicidade: quantos irmãos (mesmo candidato e pai) de conteúdo igual vêm antes na ordem
+        dos nós; o conjunto de índices não depende da posição (os iguais são intercambiáveis)."""
+        info = raw[nid]
+        n = 0
+        for x in sorted(raw):
+            if x == nid:
+                break
+            r = raw[x]
+            if r["cid"] == info["cid"] and r["parent"] == info["parent"] and \
+                    content_hash(_get(r["values"], "$content", None)) == c:
+                n += 1
+        return n
+
     def ident(nid, stack=()):
         if nid in memo:
             return memo[nid]
@@ -285,13 +329,22 @@ def decompose_config(config: dict, adapter, schema_blocks: dict, rs: R.RuleSet) 
                     raise NormError("identidade só por id opaco: sem valor na configuração")
                 for f in own:
                     key[f] = field_val(nid, f)
+                if "$content" in key:
+                    key["$dup"] = dup_index(nid, key["$content"])
             except NormError as e0:
-                if nid not in raw or raw[nid]["parent"] is not None:
-                    raise                 # bloco: o endereço é posicional e não serve de identidade (reordenação)
-                # T59: recurso de topo de id opaco (ou chave sem valor na configuração): antes da criação não há
-                # id; a ocorrência declarada é identificada pelo endereço do recurso (símbolo por configuração)
-                key = {"$address": nid}
-                d.notes.append(f"identidade de ocorrência simbólica (endereço): {e0}")
+                if nid in raw and raw[nid]["parent"] is not None:
+                    if not (d.grain == "COMPONENT" and own_absent(nid, own)):
+                        raise             # bloco: o endereço é posicional e não serve de identidade (reordenação)
+                    # T59b (0.2.0): item sem id na configuração (id atribuído pelo provedor depois da criação): a
+                    # ocorrência é (pai, caminho, conteúdo, índice de multiplicidade), independente da posição
+                    c = content_hash(_get(raw[nid]["values"], "$content", None))
+                    key = {"$content": c, "$dup": dup_index(nid, c)}
+                    d.notes.append(f"identidade de ocorrência por conteúdo (T59b): {e0}")
+                else:
+                    # T59: recurso de topo de id opaco (ou chave sem valor na configuração): antes da criação não
+                    # há id; a ocorrência declarada é identificada pelo endereço do recurso (símbolo)
+                    key = {"$address": nid}
+                    d.notes.append(f"identidade de ocorrência simbólica (endereço): {e0}")
             if d.grain in ("COMPONENT", "FACET"):
                 parent = ident(d.parent, st)
                 if parent is None:
