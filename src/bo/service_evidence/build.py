@@ -354,6 +354,8 @@ def promote() -> int:
         print("promote: nada em .staging para " + ", ".join(miss))
         return 1
     prev.mkdir(parents=True, exist_ok=True)
+    for m in prev.glob("promoted_*"):  # marcas de promoções anteriores já mergeadas: o rollback só desfaz ESTA
+        m.unlink()
     for d in [x for p in common.PROVIDERS for x in apispec.batch_dirs(p)] + [guides.DIR]:  # lotes .staging: na trava
         src, dst = common.bo_data() / "downloads" / (d + ".staging"), common.bo_data() / "downloads" / d
         if src.exists() and not dst.exists():
