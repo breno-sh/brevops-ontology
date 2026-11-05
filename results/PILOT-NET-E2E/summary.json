@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "PILOT-NET-E2E",
- "generated_at": "2026-11-04T21:38:03-03:00",
+ "generated_at": "2026-11-04T23:30:33-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-NET-E2E.txt",
@@ -15,28 +15,28 @@
    "controls": "c1_table,c2_taxonomy,c3_full",
    "robot": "1.9.11",
    "terraform": "1.15.8",
-   "recorded_at": "2026-11-04T21:38:01-03:00"
+   "recorded_at": "2026-11-04T23:30:31-03:00"
   },
   "inputs": [
    {
     "path": "$BO_DATA/PILOT-NET-MAP/mapping.sssom.tsv",
     "kind": "file",
-    "sha256": "8b281bd2e0eeb7420d85dcd4989993c9ac5cf7ae5649f4d738ae47baef0b54c1"
+    "sha256": "b506ee5ebe01ab9e736c4a411d52ec287de8a8d568b85fc5ab45c85eb7c973e4"
    },
    {
     "path": "$BO_DATA/PILOT-NET-MAP/verdicts.jsonl",
     "kind": "file",
-    "sha256": "a28180b73ba79931549c1fd2b1afaa7c34973f8a47312d57ecf47f06c79247b3"
+    "sha256": "877f90ba58189127e47517d46811e03eb67189c200b63e68d3dbfb2ad7725498"
    },
    {
     "path": "$BO_REPO/pilot/net/oracle",
     "kind": "dir",
-    "sha256": "d21bd6c17c27c388e1d955fb746a231a23e55d794844fede4dd6b1a38c6e54ea"
+    "sha256": "31653b716f0d2aec1ff62b768e416f98c6cb5e6376fd1802df3b6269ad715eb4"
    },
    {
     "path": "$BO_REPO/pilot/net/fixtures_calib",
     "kind": "dir",
-    "sha256": "511250ef390af5490b2dcd1dedb446360fccf47bbebf09206a44de8c5a4f0923"
+    "sha256": "2f1f9fe001d54eddf43cd150e53a1366f5abd27bf014f50c6049239760512c1b"
    },
    {
     "path": "$BO_REPO/ontology/patterns",
@@ -64,7 +64,7 @@
     "sha256": "73defcd79b0d72bfb44ae7dba2f4b5d605c0d344c543e767c2beecc37c28ad52"
    }
   ],
-  "recorded_at": "2026-11-04T21:38:03-03:00"
+  "recorded_at": "2026-11-04T23:30:33-03:00"
  },
  "sources": [
   {

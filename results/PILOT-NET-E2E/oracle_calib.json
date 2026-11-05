@@ -578,7 +578,28 @@
     "verdict": null
    },
    {
+    "case_id": "CASE-NETC-C05-AZ-SYM-PRIO-azurerm-aws-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-AZ-OUT-ONLY-azurerm-aws-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
     "case_id": "CASE-NETC-C08-AZ-NIC-SUBNET-azurerm-aws-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-AZ-NOMATCH-azurerm-aws-c1",
     "declared_losses": [],
     "status": "UNSUPPORTED",
     "undeclarable": [],
@@ -634,7 +655,28 @@
     "verdict": null
    },
    {
+    "case_id": "CASE-NETC-C05-AZ-SYM-PRIO-azurerm-google-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-AZ-OUT-ONLY-azurerm-google-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
     "case_id": "CASE-NETC-C08-AZ-NIC-SUBNET-azurerm-google-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-AZ-NOMATCH-azurerm-google-c1",
     "declared_losses": [],
     "status": "UNSUPPORTED",
     "undeclarable": [],
@@ -690,7 +732,28 @@
     "verdict": null
    },
    {
+    "case_id": "CASE-NETC-C05-AZ-SYM-PRIO-azurerm-oci-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-AZ-OUT-ONLY-azurerm-oci-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
     "case_id": "CASE-NETC-C08-AZ-NIC-SUBNET-azurerm-oci-c1",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-AZ-NOMATCH-azurerm-oci-c1",
     "declared_losses": [],
     "status": "UNSUPPORTED",
     "undeclarable": [],
@@ -1460,7 +1523,28 @@
     "verdict": null
    },
    {
+    "case_id": "CASE-NETC-C05-AZ-SYM-PRIO-azurerm-aws-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-AZ-OUT-ONLY-azurerm-aws-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
     "case_id": "CASE-NETC-C08-AZ-NIC-SUBNET-azurerm-aws-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-AZ-NOMATCH-azurerm-aws-c2",
     "declared_losses": [],
     "status": "UNSUPPORTED",
     "undeclarable": [],
@@ -1516,7 +1600,28 @@
     "verdict": null
    },
    {
+    "case_id": "CASE-NETC-C05-AZ-SYM-PRIO-azurerm-google-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-AZ-OUT-ONLY-azurerm-google-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
     "case_id": "CASE-NETC-C08-AZ-NIC-SUBNET-azurerm-google-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-AZ-NOMATCH-azurerm-google-c2",
     "declared_losses": [],
     "status": "UNSUPPORTED",
     "undeclarable": [],
@@ -1572,7 +1677,28 @@
     "verdict": null
    },
    {
+    "case_id": "CASE-NETC-C05-AZ-SYM-PRIO-azurerm-oci-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-AZ-OUT-ONLY-azurerm-oci-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
     "case_id": "CASE-NETC-C08-AZ-NIC-SUBNET-azurerm-oci-c2",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-AZ-NOMATCH-azurerm-oci-c2",
     "declared_losses": [],
     "status": "UNSUPPORTED",
     "undeclarable": [],
@@ -2064,9 +2190,7 @@
    {
     "case_id": "CASE-NETC-C02-GCP-RET-google-aws-c3",
     "declared_losses": [
-     "LOSS-NET-EFFECT-DENY",
-     "LOSS-NET-STATE",
-     "LOSS-NET-UNKNOWN-INPUT"
+     "LOSS-NET-EFFECT-DENY"
     ],
     "status": "TRANSLATED",
     "undeclarable": [],
@@ -2075,9 +2199,7 @@
    {
     "case_id": "CASE-NETC-C04-GCP-ALLOW-FIRST-google-aws-c3",
     "declared_losses": [
-     "LOSS-NET-EFFECT-DENY",
-     "LOSS-NET-STATE",
-     "LOSS-NET-UNKNOWN-INPUT"
+     "LOSS-NET-EFFECT-DENY"
     ],
     "status": "TRANSLATED",
     "undeclarable": [],
@@ -2086,9 +2208,7 @@
    {
     "case_id": "CASE-NETC-C04-GCP-DENY-WINS-SWAP-google-aws-c3",
     "declared_losses": [
-     "LOSS-NET-EFFECT-DENY",
-     "LOSS-NET-STATE",
-     "LOSS-NET-UNKNOWN-INPUT"
+     "LOSS-NET-EFFECT-DENY"
     ],
     "status": "TRANSLATED",
     "undeclarable": [],
@@ -2097,9 +2217,7 @@
    {
     "case_id": "CASE-NETC-C04-GCP-DENY-WINS-google-aws-c3",
     "declared_losses": [
-     "LOSS-NET-EFFECT-DENY",
-     "LOSS-NET-STATE",
-     "LOSS-NET-UNKNOWN-INPUT"
+     "LOSS-NET-EFFECT-DENY"
     ],
     "status": "TRANSLATED",
     "undeclarable": [],
@@ -2108,9 +2226,7 @@
    {
     "case_id": "CASE-NETC-C05-GCP-TIE-google-aws-c3",
     "declared_losses": [
-     "LOSS-NET-EFFECT-DENY",
-     "LOSS-NET-STATE",
-     "LOSS-NET-UNKNOWN-INPUT"
+     "LOSS-NET-EFFECT-DENY"
     ],
     "status": "TRANSLATED",
     "undeclarable": [],
@@ -2127,7 +2243,6 @@
     "case_id": "CASE-NETC-C07-GCP-PARTIAL-DENY0-google-aws-c3",
     "declared_losses": [
      "LOSS-NET-EFFECT-DENY",
-     "LOSS-NET-STATE",
      "LOSS-NET-UNKNOWN-INPUT"
     ],
     "status": "TRANSLATED",
@@ -2138,7 +2253,6 @@
     "case_id": "CASE-NETC-C07-GCP-PARTIAL-google-aws-c3",
     "declared_losses": [
      "LOSS-NET-EFFECT-DENY",
-     "LOSS-NET-STATE",
      "LOSS-NET-UNKNOWN-INPUT"
     ],
     "status": "TRANSLATED",
@@ -2148,9 +2262,7 @@
    {
     "case_id": "CASE-NETC-C08-GCP-TAG-google-aws-c3",
     "declared_losses": [
-     "LOSS-NET-EFFECT-DENY",
-     "LOSS-NET-STATE",
-     "LOSS-NET-UNKNOWN-INPUT"
+     "LOSS-NET-EFFECT-DENY"
     ],
     "status": "TRANSLATED",
     "undeclarable": [],
@@ -2159,9 +2271,7 @@
    {
     "case_id": "CASE-NETC-C08-GCP-UNTAGGED-google-aws-c3",
     "declared_losses": [
-     "LOSS-NET-EFFECT-DENY",
-     "LOSS-NET-STATE",
-     "LOSS-NET-UNKNOWN-INPUT"
+     "LOSS-NET-EFFECT-DENY"
     ],
     "status": "TRANSLATED",
     "undeclarable": [],
@@ -2254,66 +2364,46 @@
    {
     "case_id": "CASE-NETC-C02-GCP-RET-google-oci-c3",
     "declared_losses": [
-     "LOSS-NET-DEFAULT",
-     "LOSS-NET-EFFECT-DENY",
-     "LOSS-NET-UNKNOWN-INPUT"
+     "LOSS-NET-EFFECT-DENY"
     ],
     "status": "TRANSLATED",
-    "undeclarable": [
-     "LOSS-NET-DEFAULT"
-    ],
-    "verdict": "ACCEPT_WITH_DECLARED_LOSS"
+    "undeclarable": [],
+    "verdict": "ACCEPT"
    },
    {
     "case_id": "CASE-NETC-C04-GCP-ALLOW-FIRST-google-oci-c3",
     "declared_losses": [
-     "LOSS-NET-DEFAULT",
-     "LOSS-NET-EFFECT-DENY",
-     "LOSS-NET-UNKNOWN-INPUT"
+     "LOSS-NET-EFFECT-DENY"
     ],
     "status": "TRANSLATED",
-    "undeclarable": [
-     "LOSS-NET-DEFAULT"
-    ],
+    "undeclarable": [],
     "verdict": "ACCEPT"
    },
    {
     "case_id": "CASE-NETC-C04-GCP-DENY-WINS-SWAP-google-oci-c3",
     "declared_losses": [
-     "LOSS-NET-DEFAULT",
-     "LOSS-NET-EFFECT-DENY",
-     "LOSS-NET-UNKNOWN-INPUT"
+     "LOSS-NET-EFFECT-DENY"
     ],
     "status": "TRANSLATED",
-    "undeclarable": [
-     "LOSS-NET-DEFAULT"
-    ],
-    "verdict": "ACCEPT_WITH_DECLARED_LOSS"
+    "undeclarable": [],
+    "verdict": "ACCEPT"
    },
    {
     "case_id": "CASE-NETC-C04-GCP-DENY-WINS-google-oci-c3",
     "declared_losses": [
-     "LOSS-NET-DEFAULT",
-     "LOSS-NET-EFFECT-DENY",
-     "LOSS-NET-UNKNOWN-INPUT"
+     "LOSS-NET-EFFECT-DENY"
     ],
     "status": "TRANSLATED",
-    "undeclarable": [
-     "LOSS-NET-DEFAULT"
-    ],
-    "verdict": "ACCEPT_WITH_DECLARED_LOSS"
+    "undeclarable": [],
+    "verdict": "ACCEPT"
    },
    {
     "case_id": "CASE-NETC-C05-GCP-TIE-google-oci-c3",
     "declared_losses": [
-     "LOSS-NET-DEFAULT",
-     "LOSS-NET-EFFECT-DENY",
-     "LOSS-NET-UNKNOWN-INPUT"
+     "LOSS-NET-EFFECT-DENY"
     ],
     "status": "TRANSLATED",
-    "undeclarable": [
-     "LOSS-NET-DEFAULT"
-    ],
+    "undeclarable": [],
     "verdict": "ACCEPT"
    },
    {
@@ -2326,53 +2416,39 @@
    {
     "case_id": "CASE-NETC-C07-GCP-PARTIAL-DENY0-google-oci-c3",
     "declared_losses": [
-     "LOSS-NET-DEFAULT",
      "LOSS-NET-EFFECT-DENY",
      "LOSS-NET-UNKNOWN-INPUT"
     ],
     "status": "TRANSLATED",
-    "undeclarable": [
-     "LOSS-NET-DEFAULT"
-    ],
+    "undeclarable": [],
     "verdict": "ACCEPT_WITH_DECLARED_LOSS"
    },
    {
     "case_id": "CASE-NETC-C07-GCP-PARTIAL-google-oci-c3",
     "declared_losses": [
-     "LOSS-NET-DEFAULT",
      "LOSS-NET-EFFECT-DENY",
      "LOSS-NET-UNKNOWN-INPUT"
     ],
     "status": "TRANSLATED",
-    "undeclarable": [
-     "LOSS-NET-DEFAULT"
-    ],
+    "undeclarable": [],
     "verdict": "ACCEPT_WITH_DECLARED_LOSS"
    },
    {
     "case_id": "CASE-NETC-C08-GCP-TAG-google-oci-c3",
     "declared_losses": [
-     "LOSS-NET-DEFAULT",
-     "LOSS-NET-EFFECT-DENY",
-     "LOSS-NET-UNKNOWN-INPUT"
+     "LOSS-NET-EFFECT-DENY"
     ],
     "status": "TRANSLATED",
-    "undeclarable": [
-     "LOSS-NET-DEFAULT"
-    ],
+    "undeclarable": [],
     "verdict": "ACCEPT"
    },
    {
     "case_id": "CASE-NETC-C08-GCP-UNTAGGED-google-oci-c3",
     "declared_losses": [
-     "LOSS-NET-DEFAULT",
-     "LOSS-NET-EFFECT-DENY",
-     "LOSS-NET-UNKNOWN-INPUT"
+     "LOSS-NET-EFFECT-DENY"
     ],
     "status": "TRANSLATED",
-    "undeclarable": [
-     "LOSS-NET-DEFAULT"
-    ],
+    "undeclarable": [],
     "verdict": "ACCEPT"
    },
    {
@@ -2386,7 +2462,6 @@
     "case_id": "CASE-NETC-C01-AZ-INLINE-azurerm-aws-c3",
     "declared_losses": [
      "LOSS-NET-EFFECT-DENY",
-     "LOSS-NET-STATE",
      "LOSS-NET-UNKNOWN-INPUT"
     ],
     "status": "TRANSLATED",
@@ -2397,7 +2472,6 @@
     "case_id": "CASE-NETC-C01-AZ-SEP-azurerm-aws-c3",
     "declared_losses": [
      "LOSS-NET-EFFECT-DENY",
-     "LOSS-NET-STATE",
      "LOSS-NET-UNKNOWN-INPUT"
     ],
     "status": "TRANSLATED",
@@ -2408,23 +2482,21 @@
     "case_id": "CASE-NETC-C02-AZ-RET-azurerm-aws-c3",
     "declared_losses": [
      "LOSS-NET-EFFECT-DENY",
-     "LOSS-NET-STATE",
      "LOSS-NET-UNKNOWN-INPUT"
     ],
     "status": "TRANSLATED",
     "undeclarable": [],
-    "verdict": "ACCEPT"
+    "verdict": "ACCEPT_WITH_DECLARED_LOSS"
    },
    {
     "case_id": "CASE-NETC-C04-AZ-DENY-WINS-azurerm-aws-c3",
     "declared_losses": [
      "LOSS-NET-EFFECT-DENY",
-     "LOSS-NET-STATE",
      "LOSS-NET-UNKNOWN-INPUT"
     ],
     "status": "TRANSLATED",
     "undeclarable": [],
-    "verdict": "ACCEPT"
+    "verdict": "ACCEPT_WITH_DECLARED_LOSS"
    },
    {
     "case_id": "CASE-NETC-C04-AZ-NOCATCH-azurerm-aws-c3",
@@ -2437,7 +2509,6 @@
     "case_id": "CASE-NETC-C05-AZ-DUP-DIRS-azurerm-aws-c3",
     "declared_losses": [
      "LOSS-NET-EFFECT-DENY",
-     "LOSS-NET-STATE",
      "LOSS-NET-UNKNOWN-INPUT"
     ],
     "status": "TRANSLATED",
@@ -2452,7 +2523,28 @@
     "verdict": null
    },
    {
+    "case_id": "CASE-NETC-C05-AZ-SYM-PRIO-azurerm-aws-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-AZ-OUT-ONLY-azurerm-aws-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
     "case_id": "CASE-NETC-C08-AZ-NIC-SUBNET-azurerm-aws-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-AZ-NOMATCH-azurerm-aws-c3",
     "declared_losses": [],
     "status": "UNSUPPORTED",
     "undeclarable": [],
@@ -2508,7 +2600,28 @@
     "verdict": null
    },
    {
+    "case_id": "CASE-NETC-C05-AZ-SYM-PRIO-azurerm-google-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-AZ-OUT-ONLY-azurerm-google-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
     "case_id": "CASE-NETC-C08-AZ-NIC-SUBNET-azurerm-google-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-AZ-NOMATCH-azurerm-google-c3",
     "declared_losses": [],
     "status": "UNSUPPORTED",
     "undeclarable": [],
@@ -2517,53 +2630,41 @@
    {
     "case_id": "CASE-NETC-C01-AZ-INLINE-azurerm-oci-c3",
     "declared_losses": [
-     "LOSS-NET-DEFAULT",
      "LOSS-NET-EFFECT-DENY",
      "LOSS-NET-UNKNOWN-INPUT"
     ],
     "status": "TRANSLATED",
-    "undeclarable": [
-     "LOSS-NET-DEFAULT"
-    ],
+    "undeclarable": [],
     "verdict": "ACCEPT"
    },
    {
     "case_id": "CASE-NETC-C01-AZ-SEP-azurerm-oci-c3",
     "declared_losses": [
-     "LOSS-NET-DEFAULT",
      "LOSS-NET-EFFECT-DENY",
      "LOSS-NET-UNKNOWN-INPUT"
     ],
     "status": "TRANSLATED",
-    "undeclarable": [
-     "LOSS-NET-DEFAULT"
-    ],
+    "undeclarable": [],
     "verdict": "ACCEPT"
    },
    {
     "case_id": "CASE-NETC-C02-AZ-RET-azurerm-oci-c3",
     "declared_losses": [
-     "LOSS-NET-DEFAULT",
      "LOSS-NET-EFFECT-DENY",
      "LOSS-NET-UNKNOWN-INPUT"
     ],
     "status": "TRANSLATED",
-    "undeclarable": [
-     "LOSS-NET-DEFAULT"
-    ],
+    "undeclarable": [],
     "verdict": "ACCEPT_WITH_DECLARED_LOSS"
    },
    {
     "case_id": "CASE-NETC-C04-AZ-DENY-WINS-azurerm-oci-c3",
     "declared_losses": [
-     "LOSS-NET-DEFAULT",
      "LOSS-NET-EFFECT-DENY",
      "LOSS-NET-UNKNOWN-INPUT"
     ],
     "status": "TRANSLATED",
-    "undeclarable": [
-     "LOSS-NET-DEFAULT"
-    ],
+    "undeclarable": [],
     "verdict": "ACCEPT_WITH_DECLARED_LOSS"
    },
    {
@@ -2576,14 +2677,11 @@
    {
     "case_id": "CASE-NETC-C05-AZ-DUP-DIRS-azurerm-oci-c3",
     "declared_losses": [
-     "LOSS-NET-DEFAULT",
      "LOSS-NET-EFFECT-DENY",
      "LOSS-NET-UNKNOWN-INPUT"
     ],
     "status": "TRANSLATED",
-    "undeclarable": [
-     "LOSS-NET-DEFAULT"
-    ],
+    "undeclarable": [],
     "verdict": "ACCEPT"
    },
    {
@@ -2594,7 +2692,28 @@
     "verdict": null
    },
    {
+    "case_id": "CASE-NETC-C05-AZ-SYM-PRIO-azurerm-oci-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C06-AZ-OUT-ONLY-azurerm-oci-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
     "case_id": "CASE-NETC-C08-AZ-NIC-SUBNET-azurerm-oci-c3",
+    "declared_losses": [],
+    "status": "UNSUPPORTED",
+    "undeclarable": [],
+    "verdict": null
+   },
+   {
+    "case_id": "CASE-NETC-C09-AZ-NOMATCH-azurerm-oci-c3",
     "declared_losses": [],
     "status": "UNSUPPORTED",
     "undeclarable": [],
@@ -2861,6 +2980,16 @@
    },
    {
     "check": "not_entails",
+    "fixture_id": "NETC-C06-GCP-INGRESS-NOMATCH",
+    "outcomes": {
+     "google->aws": "UNSUPPORTED",
+     "google->azurerm": "UNSUPPORTED",
+     "google->oci": "UNSUPPORTED"
+    },
+    "transported_when_must_reject": []
+   },
+   {
+    "check": "not_entails",
     "fixture_id": "NETC-C06-OCI-INGRESS-NEW",
     "outcomes": {
      "oci->aws": "UNSUPPORTED",
@@ -2912,26 +3041,27 @@
   ],
   "oracle_files_sha256": {
    "pilot/net/oracle/ORACLE.html": "f5cc0256e8d4ea7f2f2c5776afdf10db8c1758a8fdff3978d4a8ef8b3721d427",
-   "pilot/net/oracle/directions.json": "5ae4bd4939c599a31467014209add4cbbd01d5b599e0f3ef58d3cfc89ccc9e8f",
-   "pilot/net/oracle/disputes.json": "df7167ea8fa0de665988e535fdfd56a14ffbef66af44e59e20862640ffceba7c",
-   "pilot/net/oracle/documented_examples.json": "2164d957b0a3dcc522353b7323683b29af4fb2504dfc7be849c166f85a04d13d",
+   "pilot/net/oracle/directions.json": "f2bf498aad327ca5cdbb45a84739a6f2739fd70824e577b7d6feb255dc434db4",
+   "pilot/net/oracle/disputes.json": "d46e976e862394eb2e473ce63c709d47e86e0adfd07fd472e39b570a23dd3a4a",
+   "pilot/net/oracle/documented_examples.json": "176acd7844a35a54d7ad85a300472d7c8585443db90e705db0ca7e51907e4f9e",
    "pilot/net/oracle/expected_answers.schema.json": "1cd279f77c88d0084795c2c3a317cab6b3a40ca6cd44bb7f0aa33699e71449bc",
    "pilot/net/oracle/net_oracle/__init__.py": "5711d062c8ed0be806ffa2da628472645ea76b170c10eadee66633ef6ebbddfb",
-   "pilot/net/oracle/net_oracle/adapters.py": "e51ddefb5b555d2bbce1778b7b53d4ed3cafffd9e7d40185e8c93ae361b0f2e9",
+   "pilot/net/oracle/net_oracle/adapters.py": "814136b88cf80758be20da4571adb6cdbcc1c8a335f6023071c594bc75524817",
    "pilot/net/oracle/net_oracle/decomposing.py": "eef5afabf31f9a12b593da0d38f168e704e429d90c63dfe6bf42d1ad39cc8006",
    "pilot/net/oracle/net_oracle/evaluate.py": "a6c6fb9dc923e31c2b6357bb247525e52d4947e688fb2f478a6f2e41c6722bee",
    "pilot/net/oracle/net_oracle/judging.py": "0fdb04236387ff641a92ad15e77fb7f1f67dc014296ad0858d45025b8a237e91",
    "pilot/net/oracle/net_oracle/model.py": "1570ebe054d019861a75344bbbca43e81c3cbdcda9aff1e4fbf24a977fe7bacb",
    "pilot/net/oracle/net_oracle/semantics.py": "ad446967b946ab17471a71236d124c5d646003be671366d33ae995831862ab03",
-   "pilot/net/oracle/sealed_index.json": "949946470f085bdfd7fb16a9a871f5d4159c6d3f50b69e58d0e5594d1b21a99b",
+   "pilot/net/oracle/sealed_index.json": "c21ef9f852c2e7118ead6ea81e0b08c37447ca8d892e88c9af6aca8680531b32",
    "pilot/net/oracle/sealed_index_v1_retired.json": "96ff422cb8b0a9e1869efff95b18453179162e0a82f5428dbae4998981e06052",
-   "pilot/net/oracle/semantics_profile.json": "8a7dd62376fa3b9e992f89193a5348ea546edc06d78f4b08e51d5d2521c522b5",
+   "pilot/net/oracle/sealed_index_v2r1_retired.json": "02620e97a61e5db24e67b286ae65bc16147480fc02d08b27a7384d486136cf82",
+   "pilot/net/oracle/semantics_profile.json": "04211e7ae003e46fc751a4b105fb707df12eda265e19c6eb61799e17350c25e4",
    "pilot/net/oracle/tests/conftest.py": "e3ad840bca01544ce70449864a48a9d3989b73e3bb1d519f2c6eae0cb8827b0f",
    "pilot/net/oracle/tests/test_calib.py": "8995276fe8cc1ba051efbc75d446f3ac890ea43a4d17ecb02a5c9190c8de2566",
    "pilot/net/oracle/tests/test_commitments.py": "c6dc665464f585f574a03baff68ead42e08e6ee313523f5a04753a86d9d00c47",
    "pilot/net/oracle/tests/test_documented_examples.py": "8c0fb08a00bada42f9ce2fb45c16d4e49656ace08b5aada4c3d876e32c91bd13",
-   "pilot/net/oracle/tests/test_judge_rules.py": "5ce385c5150cedb880849289672700981d1cec58c87ead2823c6ae34894b6d26",
-   "pilot/net/oracle/tests/test_profile_readings.py": "7e678cd1c5774b9d2c35be6aa7fe77a61927edcd647816fb4d5fbd8133168d29"
+   "pilot/net/oracle/tests/test_judge_rules.py": "a5fa59e5afec7ca198945d78e4db54ad4f56ac8bfd0f94b2dc039b3447659cd3",
+   "pilot/net/oracle/tests/test_profile_readings.py": "aa062b6276ab7c40648f8c74cd3449254dbef2a2bb0f5c2ee5c67c391bafb629"
   },
   "reference_cases": [
    {
@@ -2943,8 +3073,8 @@
    },
    {
     "case_id": "NETC-T-AWS-AZU-P",
-    "expected": "ACCEPT",
-    "judge": "ACCEPT",
+    "expected": "ACCEPT_WITH_DECLARED_LOSS",
+    "judge": "ACCEPT_WITH_DECLARED_LOSS",
     "ok": true,
     "polarity": "positive"
    },
@@ -2971,8 +3101,8 @@
    },
    {
     "case_id": "NETC-T-AWS-GOO-U",
-    "expected": "ACCEPT_WITH_DECLARED_LOSS",
-    "judge": "ACCEPT_WITH_DECLARED_LOSS",
+    "expected": "REJECT",
+    "judge": "REJECT",
     "ok": true,
     "polarity": "unknown"
    },
@@ -2985,8 +3115,8 @@
    },
    {
     "case_id": "NETC-T-AWS-OCI-P",
-    "expected": "ACCEPT_WITH_DECLARED_LOSS",
-    "judge": "ACCEPT_WITH_DECLARED_LOSS",
+    "expected": "ACCEPT",
+    "judge": "ACCEPT",
     "ok": true,
     "polarity": "positive"
    },
@@ -3006,8 +3136,8 @@
    },
    {
     "case_id": "NETC-T-AZU-AWS-P",
-    "expected": "ACCEPT",
-    "judge": "ACCEPT",
+    "expected": "ACCEPT_WITH_DECLARED_LOSS",
+    "judge": "ACCEPT_WITH_DECLARED_LOSS",
     "ok": true,
     "polarity": "positive"
    },
@@ -3027,15 +3157,15 @@
    },
    {
     "case_id": "NETC-T-AZU-GOO-P",
-    "expected": "ACCEPT",
-    "judge": "ACCEPT",
+    "expected": "ACCEPT_WITH_DECLARED_LOSS",
+    "judge": "ACCEPT_WITH_DECLARED_LOSS",
     "ok": true,
     "polarity": "positive"
    },
    {
     "case_id": "NETC-T-AZU-GOO-U",
-    "expected": "ACCEPT_WITH_DECLARED_LOSS",
-    "judge": "ACCEPT_WITH_DECLARED_LOSS",
+    "expected": "REJECT",
+    "judge": "REJECT",
     "ok": true,
     "polarity": "unknown"
    },
@@ -3090,8 +3220,8 @@
    },
    {
     "case_id": "NETC-T-GOO-AZU-P",
-    "expected": "ACCEPT",
-    "judge": "ACCEPT",
+    "expected": "ACCEPT_WITH_DECLARED_LOSS",
+    "judge": "ACCEPT_WITH_DECLARED_LOSS",
     "ok": true,
     "polarity": "positive"
    },
@@ -3111,8 +3241,8 @@
    },
    {
     "case_id": "NETC-T-GOO-OCI-P",
-    "expected": "ACCEPT_WITH_DECLARED_LOSS",
-    "judge": "ACCEPT_WITH_DECLARED_LOSS",
+    "expected": "ACCEPT",
+    "judge": "ACCEPT",
     "ok": true,
     "polarity": "positive"
    },
@@ -3132,8 +3262,8 @@
    },
    {
     "case_id": "NETC-T-OCI-AWS-P",
-    "expected": "ACCEPT_WITH_DECLARED_LOSS",
-    "judge": "ACCEPT_WITH_DECLARED_LOSS",
+    "expected": "ACCEPT",
+    "judge": "ACCEPT",
     "ok": true,
     "polarity": "positive"
    },
@@ -3174,15 +3304,15 @@
    },
    {
     "case_id": "NETC-T-OCI-GOO-P",
-    "expected": "ACCEPT_WITH_DECLARED_LOSS",
-    "judge": "ACCEPT_WITH_DECLARED_LOSS",
+    "expected": "ACCEPT",
+    "judge": "ACCEPT",
     "ok": true,
     "polarity": "positive"
    },
    {
     "case_id": "NETC-T-OCI-GOO-U",
-    "expected": "ACCEPT_WITH_DECLARED_LOSS",
-    "judge": "ACCEPT_WITH_DECLARED_LOSS",
+    "expected": "REJECT",
+    "judge": "REJECT",
     "ok": true,
     "polarity": "unknown"
    }
@@ -3191,12 +3321,12 @@
    "c1_table": {},
    "c2_taxonomy": {},
    "c3_full": {
-    "ACCEPT": 19,
-    "ACCEPT_WITH_DECLARED_LOSS": 9
+    "ACCEPT": 20,
+    "ACCEPT_WITH_DECLARED_LOSS": 8
    }
   }
  },
- "generated_at": "2026-11-04T21:38:01-03:00",
+ "generated_at": "2026-11-04T23:30:31-03:00",
  "metrics": [
   {
    "axis": "operational",
@@ -3204,7 +3334,7 @@
     "description": "fixtures de calibração do PILOT-NET-ORACLE x 12 direções",
     "ref": {
      "path": "$BO_REPO/pilot/net/fixtures_calib/",
-     "sha256": "2db533988db3b9abc1eb2fdbffed50e765c51c6fd0277359124fd610f037ecaf"
+     "sha256": "8ee233d327d9f6b30144cb92b592375ec2bab4a43f52476581cf03f6da61e9af"
     }
    },
    "inclusion": {
@@ -3234,7 +3364,7 @@
     "description": "fixtures de calibração do PILOT-NET-ORACLE x 12 direções",
     "ref": {
      "path": "$BO_REPO/pilot/net/fixtures_calib/",
-     "sha256": "2db533988db3b9abc1eb2fdbffed50e765c51c6fd0277359124fd610f037ecaf"
+     "sha256": "8ee233d327d9f6b30144cb92b592375ec2bab4a43f52476581cf03f6da61e9af"
     }
    },
    "inclusion": {

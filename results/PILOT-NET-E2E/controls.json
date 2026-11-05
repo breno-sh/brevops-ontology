@@ -59,7 +59,7 @@
     {
      "c1": "UNSUPPORTED",
      "c2": "UNSUPPORTED",
-     "c3": "ACCEPT",
+     "c3": "ACCEPT_WITH_DECLARED_LOSS",
      "consequences": [
       "effective_set_compiled"
      ],
@@ -87,33 +87,40 @@
      "c2": "UNSUPPORTED",
      "c3": "ACCEPT",
      "consequences": [
-      "effective_set_compiled"
+      "effective_set_compiled",
+      "implied_allow_made_explicit",
+      "state_preserved"
      ],
      "direction": "google->aws",
      "fixture_id": "NETC-C02-GCP-RET",
      "justifying_axioms": [
       "AX-NET-04",
-      "AX-NET-05"
-     ]
-    },
-    {
-     "c1": "UNSUPPORTED",
-     "c2": "UNSUPPORTED",
-     "c3": "ACCEPT_WITH_DECLARED_LOSS",
-     "consequences": [
-      "effective_set_compiled"
-     ],
-     "direction": "google->oci",
-     "fixture_id": "NETC-C02-GCP-RET",
-     "justifying_axioms": [
-      "AX-NET-04",
-      "AX-NET-05"
+      "AX-NET-05",
+      "AX-NET-07",
+      "AX-NET-11",
+      "AX-NET-12"
      ]
     },
     {
      "c1": "UNSUPPORTED",
      "c2": "UNSUPPORTED",
      "c3": "ACCEPT",
+     "consequences": [
+      "effective_set_compiled",
+      "implied_allow_made_explicit"
+     ],
+     "direction": "google->oci",
+     "fixture_id": "NETC-C02-GCP-RET",
+     "justifying_axioms": [
+      "AX-NET-04",
+      "AX-NET-05",
+      "AX-NET-12"
+     ]
+    },
+    {
+     "c1": "UNSUPPORTED",
+     "c2": "UNSUPPORTED",
+     "c3": "ACCEPT_WITH_DECLARED_LOSS",
      "consequences": [
       "effective_set_compiled"
      ],
@@ -141,13 +148,18 @@
      "c2": "UNSUPPORTED",
      "c3": "ACCEPT",
      "consequences": [
-      "effective_set_compiled"
+      "effective_set_compiled",
+      "implied_allow_made_explicit",
+      "state_preserved"
      ],
      "direction": "google->aws",
      "fixture_id": "NETC-C04-GCP-ALLOW-FIRST",
      "justifying_axioms": [
       "AX-NET-04",
-      "AX-NET-05"
+      "AX-NET-05",
+      "AX-NET-07",
+      "AX-NET-11",
+      "AX-NET-12"
      ]
     },
     {
@@ -155,13 +167,15 @@
      "c2": "UNSUPPORTED",
      "c3": "ACCEPT",
      "consequences": [
-      "effective_set_compiled"
+      "effective_set_compiled",
+      "implied_allow_made_explicit"
      ],
      "direction": "google->oci",
      "fixture_id": "NETC-C04-GCP-ALLOW-FIRST",
      "justifying_axioms": [
       "AX-NET-04",
-      "AX-NET-05"
+      "AX-NET-05",
+      "AX-NET-12"
      ]
     },
     {
@@ -169,27 +183,18 @@
      "c2": "UNSUPPORTED",
      "c3": "ACCEPT",
      "consequences": [
-      "effective_set_compiled"
+      "effective_set_compiled",
+      "implied_allow_made_explicit",
+      "state_preserved"
      ],
      "direction": "google->aws",
      "fixture_id": "NETC-C04-GCP-DENY-WINS",
      "justifying_axioms": [
       "AX-NET-04",
-      "AX-NET-05"
-     ]
-    },
-    {
-     "c1": "UNSUPPORTED",
-     "c2": "UNSUPPORTED",
-     "c3": "ACCEPT_WITH_DECLARED_LOSS",
-     "consequences": [
-      "effective_set_compiled"
-     ],
-     "direction": "google->oci",
-     "fixture_id": "NETC-C04-GCP-DENY-WINS",
-     "justifying_axioms": [
-      "AX-NET-04",
-      "AX-NET-05"
+      "AX-NET-05",
+      "AX-NET-07",
+      "AX-NET-11",
+      "AX-NET-12"
      ]
     },
     {
@@ -197,27 +202,50 @@
      "c2": "UNSUPPORTED",
      "c3": "ACCEPT",
      "consequences": [
-      "effective_set_compiled"
+      "effective_set_compiled",
+      "implied_allow_made_explicit"
      ],
-     "direction": "google->aws",
-     "fixture_id": "NETC-C04-GCP-DENY-WINS-SWAP",
+     "direction": "google->oci",
+     "fixture_id": "NETC-C04-GCP-DENY-WINS",
      "justifying_axioms": [
       "AX-NET-04",
-      "AX-NET-05"
+      "AX-NET-05",
+      "AX-NET-12"
      ]
     },
     {
      "c1": "UNSUPPORTED",
      "c2": "UNSUPPORTED",
-     "c3": "ACCEPT_WITH_DECLARED_LOSS",
+     "c3": "ACCEPT",
      "consequences": [
-      "effective_set_compiled"
+      "effective_set_compiled",
+      "implied_allow_made_explicit",
+      "state_preserved"
+     ],
+     "direction": "google->aws",
+     "fixture_id": "NETC-C04-GCP-DENY-WINS-SWAP",
+     "justifying_axioms": [
+      "AX-NET-04",
+      "AX-NET-05",
+      "AX-NET-07",
+      "AX-NET-11",
+      "AX-NET-12"
+     ]
+    },
+    {
+     "c1": "UNSUPPORTED",
+     "c2": "UNSUPPORTED",
+     "c3": "ACCEPT",
+     "consequences": [
+      "effective_set_compiled",
+      "implied_allow_made_explicit"
      ],
      "direction": "google->oci",
      "fixture_id": "NETC-C04-GCP-DENY-WINS-SWAP",
      "justifying_axioms": [
       "AX-NET-04",
-      "AX-NET-05"
+      "AX-NET-05",
+      "AX-NET-12"
      ]
     },
     {
@@ -290,13 +318,18 @@
      "c2": "UNSUPPORTED",
      "c3": "ACCEPT",
      "consequences": [
-      "effective_set_compiled"
+      "effective_set_compiled",
+      "implied_allow_made_explicit",
+      "state_preserved"
      ],
      "direction": "google->aws",
      "fixture_id": "NETC-C05-GCP-TIE",
      "justifying_axioms": [
       "AX-NET-04",
-      "AX-NET-05"
+      "AX-NET-05",
+      "AX-NET-07",
+      "AX-NET-11",
+      "AX-NET-12"
      ]
     },
     {
@@ -304,13 +337,32 @@
      "c2": "UNSUPPORTED",
      "c3": "ACCEPT",
      "consequences": [
-      "effective_set_compiled"
+      "effective_set_compiled",
+      "implied_allow_made_explicit"
      ],
      "direction": "google->oci",
      "fixture_id": "NETC-C05-GCP-TIE",
      "justifying_axioms": [
       "AX-NET-04",
-      "AX-NET-05"
+      "AX-NET-05",
+      "AX-NET-12"
+     ]
+    },
+    {
+     "c1": "UNSUPPORTED",
+     "c2": "UNSUPPORTED",
+     "c3": "ACCEPT_WITH_DECLARED_LOSS",
+     "consequences": [
+      "effective_set_compiled",
+      "state_preserved"
+     ],
+     "direction": "google->aws",
+     "fixture_id": "NETC-C07-GCP-PARTIAL",
+     "justifying_axioms": [
+      "AX-NET-04",
+      "AX-NET-05",
+      "AX-NET-07",
+      "AX-NET-11"
      ]
     },
     {
@@ -320,7 +372,7 @@
      "consequences": [
       "effective_set_compiled"
      ],
-     "direction": "google->aws",
+     "direction": "google->oci",
      "fixture_id": "NETC-C07-GCP-PARTIAL",
      "justifying_axioms": [
       "AX-NET-04",
@@ -332,27 +384,16 @@
      "c2": "UNSUPPORTED",
      "c3": "ACCEPT_WITH_DECLARED_LOSS",
      "consequences": [
-      "effective_set_compiled"
-     ],
-     "direction": "google->oci",
-     "fixture_id": "NETC-C07-GCP-PARTIAL",
-     "justifying_axioms": [
-      "AX-NET-04",
-      "AX-NET-05"
-     ]
-    },
-    {
-     "c1": "UNSUPPORTED",
-     "c2": "UNSUPPORTED",
-     "c3": "ACCEPT_WITH_DECLARED_LOSS",
-     "consequences": [
-      "effective_set_compiled"
+      "effective_set_compiled",
+      "state_preserved"
      ],
      "direction": "google->aws",
      "fixture_id": "NETC-C07-GCP-PARTIAL-DENY0",
      "justifying_axioms": [
       "AX-NET-04",
-      "AX-NET-05"
+      "AX-NET-05",
+      "AX-NET-07",
+      "AX-NET-11"
      ]
     },
     {
@@ -374,13 +415,18 @@
      "c2": "UNSUPPORTED",
      "c3": "ACCEPT",
      "consequences": [
-      "effective_set_compiled"
+      "effective_set_compiled",
+      "implied_allow_made_explicit",
+      "state_preserved"
      ],
      "direction": "google->aws",
      "fixture_id": "NETC-C08-GCP-TAG",
      "justifying_axioms": [
       "AX-NET-04",
-      "AX-NET-05"
+      "AX-NET-05",
+      "AX-NET-07",
+      "AX-NET-11",
+      "AX-NET-12"
      ]
     },
     {
@@ -388,13 +434,15 @@
      "c2": "UNSUPPORTED",
      "c3": "ACCEPT",
      "consequences": [
-      "effective_set_compiled"
+      "effective_set_compiled",
+      "implied_allow_made_explicit"
      ],
      "direction": "google->oci",
      "fixture_id": "NETC-C08-GCP-TAG",
      "justifying_axioms": [
       "AX-NET-04",
-      "AX-NET-05"
+      "AX-NET-05",
+      "AX-NET-12"
      ]
     },
     {
@@ -402,13 +450,18 @@
      "c2": "UNSUPPORTED",
      "c3": "ACCEPT",
      "consequences": [
-      "effective_set_compiled"
+      "effective_set_compiled",
+      "implied_allow_made_explicit",
+      "state_preserved"
      ],
      "direction": "google->aws",
      "fixture_id": "NETC-C08-GCP-UNTAGGED",
      "justifying_axioms": [
       "AX-NET-04",
-      "AX-NET-05"
+      "AX-NET-05",
+      "AX-NET-07",
+      "AX-NET-11",
+      "AX-NET-12"
      ]
     },
     {
@@ -416,46 +469,48 @@
      "c2": "UNSUPPORTED",
      "c3": "ACCEPT",
      "consequences": [
-      "effective_set_compiled"
+      "effective_set_compiled",
+      "implied_allow_made_explicit"
      ],
      "direction": "google->oci",
      "fixture_id": "NETC-C08-GCP-UNTAGGED",
      "justifying_axioms": [
       "AX-NET-04",
-      "AX-NET-05"
+      "AX-NET-05",
+      "AX-NET-12"
      ]
     }
    ],
    "families": {
     "effective_set_compiled": 28,
-    "source_rejected": 3
+    "implied_allow_made_explicit": 14,
+    "source_rejected": 3,
+    "state_preserved": 9
    },
    "n_cases": 31
   },
   "claims": {
    "mapping": "$BO_DATA/PILOT-NET-MAP/mapping.sssom.tsv",
    "mode": "mapping",
-   "ok": 347,
-   "records": 639,
+   "ok": 349,
+   "records": 635,
    "sha256": {
-    "mapping": "8b281bd2e0eeb7420d85dcd4989993c9ac5cf7ae5649f4d738ae47baef0b54c1",
-    "verdicts": "a28180b73ba79931549c1fd2b1afaa7c34973f8a47312d57ecf47f06c79247b3"
+    "mapping": "b506ee5ebe01ab9e736c4a411d52ec287de8a8d568b85fc5ab45c85eb7c973e4",
+    "verdicts": "877f90ba58189127e47517d46811e03eb67189c200b63e68d3dbfb2ad7725498"
    },
    "verdicts": "$BO_DATA/PILOT-NET-MAP/verdicts.jsonl"
   },
   "invariants": {
-   "abox_sha256": "1e2b76b39de46e392b7ae4467a6aa92dc5a85d866a61804e1fa0a85096c45f99",
+   "abox_sha256": "2ceee0b8e2f3312d2af9327d99ab982ea9e8dda57c43da95733380343cc10438",
    "claims_sha256": {
-    "mapping": "8b281bd2e0eeb7420d85dcd4989993c9ac5cf7ae5649f4d738ae47baef0b54c1",
-    "verdicts": "a28180b73ba79931549c1fd2b1afaa7c34973f8a47312d57ecf47f06c79247b3"
+    "mapping": "b506ee5ebe01ab9e736c4a411d52ec287de8a8d568b85fc5ab45c85eb7c973e4",
+    "verdicts": "877f90ba58189127e47517d46811e03eb67189c200b63e68d3dbfb2ad7725498"
    },
    "loss_policy_codes_used": {
     "c1_table": [],
     "c2_taxonomy": [],
     "c3_full": [
-     "DEFAULT_NO_EVIDENCE",
      "DENY_COMPILED",
-     "STATE_NOT_EXPRESSIBLE",
      "UNKNOWN_INPUT"
     ]
    },
@@ -495,11 +550,11 @@
    "c1_table": {
     "block_codes": {
      "AMBIGUOUS_TARGET": 3,
-     "NO_REALIZATION": 47,
+     "NO_REALIZATION": 53,
      "TRANSFORM_OUT_OF_DOMAIN": 2,
      "UNKNOWN_INPUT": 61,
      "UNKNOWN_SYMBOLIC_INPUT": 6,
-     "UNPROVEN": 7
+     "UNPROVEN": 10
     },
     "by_direction": {
      "aws->azurerm": {
@@ -525,24 +580,24 @@
      },
      "azurerm->aws": {
       "accepted": 0,
-      "n": 8,
+      "n": 11,
       "refused": 0,
       "rejected": 0,
-      "unsupported": 8
+      "unsupported": 11
      },
      "azurerm->google": {
       "accepted": 0,
-      "n": 8,
+      "n": 11,
       "refused": 0,
       "rejected": 0,
-      "unsupported": 8
+      "unsupported": 11
      },
      "azurerm->oci": {
       "accepted": 0,
-      "n": 8,
+      "n": 11,
       "refused": 0,
       "rejected": 0,
-      "unsupported": 8
+      "unsupported": 11
      },
      "google->aws": {
       "accepted": 0,
@@ -588,7 +643,7 @@
      }
     },
     "status": {
-     "UNSUPPORTED": 126
+     "UNSUPPORTED": 135
     },
     "unsafe": [],
     "verdicts": {}
@@ -597,9 +652,9 @@
     "block_codes": {
      "AMBIGUOUS_TARGET": 5,
      "TRANSFORM_OUT_OF_DOMAIN": 2,
-     "UNKNOWN_INPUT": 91,
+     "UNKNOWN_INPUT": 93,
      "UNKNOWN_SYMBOLIC_INPUT": 6,
-     "UNPROVEN": 22
+     "UNPROVEN": 29
     },
     "by_direction": {
      "aws->azurerm": {
@@ -625,24 +680,24 @@
      },
      "azurerm->aws": {
       "accepted": 0,
-      "n": 8,
+      "n": 11,
       "refused": 0,
       "rejected": 0,
-      "unsupported": 8
+      "unsupported": 11
      },
      "azurerm->google": {
       "accepted": 0,
-      "n": 8,
+      "n": 11,
       "refused": 0,
       "rejected": 0,
-      "unsupported": 8
+      "unsupported": 11
      },
      "azurerm->oci": {
       "accepted": 0,
-      "n": 8,
+      "n": 11,
       "refused": 0,
       "rejected": 0,
-      "unsupported": 8
+      "unsupported": 11
      },
      "google->aws": {
       "accepted": 0,
@@ -688,19 +743,21 @@
      }
     },
     "status": {
-     "UNSUPPORTED": 126
+     "UNSUPPORTED": 135
     },
     "unsafe": [],
     "verdicts": {}
    },
    "c3_full": {
     "block_codes": {
-     "AMBIGUOUS_TARGET": 14,
+     "AMBIGUOUS_TARGET": 8,
      "CONDITION_INDETERMINATE": 1,
+     "OUT_OF_SUBSET": 10,
      "SHACL_VIOLATION": 3,
      "TRANSFORM_OUT_OF_DOMAIN": 22,
+     "UNKNOWN_INPUT": 3,
      "UNKNOWN_SYMBOLIC_INPUT": 6,
-     "UNPROVEN": 52
+     "UNPROVEN": 54
     },
     "by_direction": {
      "aws->azurerm": {
@@ -726,24 +783,24 @@
      },
      "azurerm->aws": {
       "accepted": 5,
-      "n": 8,
+      "n": 11,
       "refused": 1,
       "rejected": 0,
-      "unsupported": 2
+      "unsupported": 5
      },
      "azurerm->google": {
       "accepted": 0,
-      "n": 8,
+      "n": 11,
       "refused": 1,
       "rejected": 0,
-      "unsupported": 7
+      "unsupported": 10
      },
      "azurerm->oci": {
       "accepted": 5,
-      "n": 8,
+      "n": 11,
       "refused": 1,
       "rejected": 0,
-      "unsupported": 2
+      "unsupported": 5
      },
      "google->aws": {
       "accepted": 9,
@@ -791,17 +848,17 @@
     "status": {
      "REFUSED": 3,
      "TRANSLATED": 28,
-     "UNSUPPORTED": 95
+     "UNSUPPORTED": 104
     },
     "unsafe": [],
     "verdicts": {
-     "ACCEPT": 19,
-     "ACCEPT_WITH_DECLARED_LOSS": 9
+     "ACCEPT": 20,
+     "ACCEPT_WITH_DECLARED_LOSS": 8
     }
    }
   }
  },
- "generated_at": "2026-11-04T21:38:01-03:00",
+ "generated_at": "2026-11-04T23:30:31-03:00",
  "metrics": [
   {
    "axis": "operational",
@@ -809,7 +866,7 @@
     "description": "fixtures de calibração do PILOT-NET-ORACLE x 12 direções",
     "ref": {
      "path": "$BO_REPO/pilot/net/fixtures_calib/",
-     "sha256": "2db533988db3b9abc1eb2fdbffed50e765c51c6fd0277359124fd610f037ecaf"
+     "sha256": "8ee233d327d9f6b30144cb92b592375ec2bab4a43f52476581cf03f6da61e9af"
     }
    },
    "inclusion": {
@@ -824,7 +881,7 @@
    "operational_coverage": {
     "est": 0.0,
     "lower": 0.0,
-    "n": 126,
+    "n": 135,
     "upper": 0.0
    },
    "quantifier": "observed_fraction",
@@ -839,7 +896,7 @@
     "description": "fixtures de calibração do PILOT-NET-ORACLE x 12 direções",
     "ref": {
      "path": "$BO_REPO/pilot/net/fixtures_calib/",
-     "sha256": "2db533988db3b9abc1eb2fdbffed50e765c51c6fd0277359124fd610f037ecaf"
+     "sha256": "8ee233d327d9f6b30144cb92b592375ec2bab4a43f52476581cf03f6da61e9af"
     }
    },
    "inclusion": {
@@ -854,7 +911,7 @@
    "operational_coverage": {
     "est": 0.0,
     "lower": 0.0,
-    "n": 291,
+    "n": 306,
     "upper": 0.0
    },
    "quantifier": "observed_fraction",
@@ -869,7 +926,7 @@
     "description": "fixtures de calibração do PILOT-NET-ORACLE x 12 direções",
     "ref": {
      "path": "$BO_REPO/pilot/net/fixtures_calib/",
-     "sha256": "2db533988db3b9abc1eb2fdbffed50e765c51c6fd0277359124fd610f037ecaf"
+     "sha256": "8ee233d327d9f6b30144cb92b592375ec2bab4a43f52476581cf03f6da61e9af"
     }
    },
    "inclusion": {
@@ -884,7 +941,7 @@
    "operational_coverage": {
     "est": 0.0,
     "lower": 0.0,
-    "n": 126,
+    "n": 135,
     "upper": 0.0
    },
    "quantifier": "observed_fraction",
@@ -899,7 +956,7 @@
     "description": "fixtures de calibração do PILOT-NET-ORACLE x 12 direções",
     "ref": {
      "path": "$BO_REPO/pilot/net/fixtures_calib/",
-     "sha256": "2db533988db3b9abc1eb2fdbffed50e765c51c6fd0277359124fd610f037ecaf"
+     "sha256": "8ee233d327d9f6b30144cb92b592375ec2bab4a43f52476581cf03f6da61e9af"
     }
    },
    "inclusion": {
@@ -914,7 +971,7 @@
    "operational_coverage": {
     "est": 0.0,
     "lower": 0.0,
-    "n": 291,
+    "n": 306,
     "upper": 0.0
    },
    "quantifier": "observed_fraction",
@@ -929,7 +986,7 @@
     "description": "fixtures de calibração do PILOT-NET-ORACLE x 12 direções",
     "ref": {
      "path": "$BO_REPO/pilot/net/fixtures_calib/",
-     "sha256": "2db533988db3b9abc1eb2fdbffed50e765c51c6fd0277359124fd610f037ecaf"
+     "sha256": "8ee233d327d9f6b30144cb92b592375ec2bab4a43f52476581cf03f6da61e9af"
     }
    },
    "inclusion": {
@@ -942,10 +999,10 @@
    "metric_id": "M-NET-C3-UNIT",
    "name": "unidade completa atravessada (c3_full)",
    "operational_coverage": {
-    "est": 0.2222,
-    "lower": 0.2222,
-    "n": 126,
-    "upper": 0.2222
+    "est": 0.2074,
+    "lower": 0.2074,
+    "n": 135,
+    "upper": 0.2074
    },
    "quantifier": "observed_fraction",
    "reading": "complete_unit",
@@ -959,7 +1016,7 @@
     "description": "fixtures de calibração do PILOT-NET-ORACLE x 12 direções",
     "ref": {
      "path": "$BO_REPO/pilot/net/fixtures_calib/",
-     "sha256": "2db533988db3b9abc1eb2fdbffed50e765c51c6fd0277359124fd610f037ecaf"
+     "sha256": "8ee233d327d9f6b30144cb92b592375ec2bab4a43f52476581cf03f6da61e9af"
     }
    },
    "inclusion": {
@@ -972,10 +1029,10 @@
    "metric_id": "M-NET-C3-DECISION",
    "name": "decisão de fluxo atravessada (c3_full)",
    "operational_coverage": {
-    "est": 0.2371,
-    "lower": 0.2371,
-    "n": 291,
-    "upper": 0.268
+    "est": 0.2288,
+    "lower": 0.2288,
+    "n": 306,
+    "upper": 0.2549
    },
    "quantifier": "observed_fraction",
    "reading": "decision",
