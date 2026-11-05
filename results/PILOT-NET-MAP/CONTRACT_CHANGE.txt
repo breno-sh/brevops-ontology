@@ -119,3 +119,10 @@ ADENDO 2026-11-04T23:26:00-03:00 (America/Recife): bo/base c6ba8ea, PILOT-NET-GL
   frase literal "You can specify allow rules, but not deny rules."
   O fixed_default do AZOCI (efeito fixo do destino com predicado de pertença) continua fora: precisa de contexto de
   versão fixada do provider, e o pacote oficial não traz o pin.
+
+ADENDO 2026-11-04T23:31:00-03:00 (America/Recife): bo/base e9bde7e, PILOT-NET-GLOSS e9bde7e, mesmo árbitro (1c2d3c34f4181d21...).
+  Regra do coordenador aplicada no código: a guarda de efeito só dispara com exclusividade publicada (implicação com
+  valor allow/deny exato; allow_capable ou exclusive=false não dispara; teste test_allow_capable_does_not_fix_effect).
+  O pacote corrigido traz aws com a frase literal nos 5 formatos (ANC-aws-0018..0022, inclusive os blocos) e oci como
+  allow_capable (ANC-oci-0011..0013). Efeito fixo só nas 5 formas aws; oci volta a não restringir, e suas realizações
+  contra deny voltam: AMBIGUOUS 7 -> 11.

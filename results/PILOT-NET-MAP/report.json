@@ -2,42 +2,42 @@
  "arbiter": {
   "by_kind": {
    "absence|OK": 316,
-   "absence|UNPROVEN": 117,
+   "absence|UNPROVEN": 110,
    "close|OK": 16,
-   "close|UNPROVEN": 45,
-   "composite|OK": 138,
+   "close|UNPROVEN": 49,
+   "composite|OK": 202,
    "composite|UNPROVEN": 12,
-   "exact|AMBIGUOUS": 7,
-   "exact|OK": 19,
-   "exact|UNPROVEN": 79,
+   "exact|AMBIGUOUS": 11,
+   "exact|OK": 17,
+   "exact|UNPROVEN": 82,
    "group|UNPROVEN": 15,
    "related|UNPROVEN": 19
   },
   "rules": {
-   "ARB-ABSENCE-KIND": 117,
-   "ARB-REAL-MULTI": 7,
+   "ARB-ABSENCE-KIND": 110,
+   "ARB-REAL-MULTI": 11,
    "ARB-RELATED-EV": 19,
-   "EVIDENCE-DOC": 103,
-   "KIND-UNKNOWN": 64
+   "EVIDENCE-DOC": 104,
+   "KIND-UNKNOWN": 70
   },
-  "verdict_map_sha256": "bbd1678a3568082ac5e4ab4371081625a862ccdf8f4b5f07b5b3ce3118303ed3",
+  "verdict_map_sha256": "9f787fb6e43b5a266012343fd317ed41e6f23dd8a33a41ec7d33551c8a385d2a",
   "verdicts": {
-   "AMBIGUOUS": 7,
-   "OK": 351,
+   "AMBIGUOUS": 11,
+   "OK": 349,
    "UNPROVEN": 275
   },
   "verdicts_separated": {
    "absences": {
     "OK": 316,
-    "UNPROVEN": 117
+    "UNPROVEN": 110
    },
    "claims": {
-    "AMBIGUOUS": 7,
-    "OK": 35,
-    "UNPROVEN": 158
+    "AMBIGUOUS": 11,
+    "OK": 33,
+    "UNPROVEN": 165
    },
    "composites": {
-    "OK": 138,
+    "OK": 202,
     "UNPROVEN": 12
    }
   }
@@ -47,50 +47,50 @@
    "candidates.jsonl": "757d8f6cf79ec6592af2f84ed6d18eb5eaf8168638050c35c104e5699a31263d",
    "canonical_atoms.jsonl": "84148889876d60ed3ebc89f0e7e7efbf9aa221b8987e71ffcce3590599e88483",
    "canonical_units.jsonl": "c100663a179983873a303353a6591ad16b0d59ba46ec5a4428be1421613fe315",
-   "claims.jsonl": "8d47b796f587d0e2719d29ead341d6de21a1d80d41fedaf4743beec88370ef9e",
-   "decisions.jsonl": "ac6804377596004de486de2f2760e0b500e5aaeddef6359dddd26df4ddf2b631",
+   "claims.jsonl": "f1623297f9c83be8690e8c794e20a08ef5bebc5785202bd37150153d47618653",
+   "decisions.jsonl": "5f0d20413149877b48887e06837fdab78044584e9ba201e37abb41f8362be887",
    "glossary.jsonl": "70df8523a26a755f1eb03a275d4908bbcaaf4965c0b36ebcd6f64736af5de96e",
    "value_space.jsonl": "c1bd8ce4f969a3aedf722374d7c2af1ceeecb320e23acda47a8215f660ee0f75"
   },
   "form": "official",
-  "manifest_sha256": "08f04210447aa303c1f5271945e9ea4623f9775d7ce4b6fdfa9cd8fea0f30c22",
+  "manifest_sha256": "95065c263630f166afe3a2eb625a915d4b401000cc904746a6c53507a94a5f7e",
   "official": true,
   "path": "/Users/breno/doutorado/brevops-data/PILOT-NET-GLOSS/bundle"
  },
  "candidates": {
   "n": 95,
-  "taken_as_direct": 38
+  "taken_as_direct": 40
  },
  "checks": {
   "arbiter": {
    "frozen_ok": true,
    "rc": 0,
    "tail": [
-    "check-unproven: 0 OK sem prova mínima; UNPROVEN = 158",
-    "[2026-11-04T23:24:51-03:00] run: 200 alegação(ões) correntes de 1 arquivo(s); {\"AMBIGUOUS\": 7, \"OK\": 35, \"UNPROVEN\": 158}; compostos {\"OK\": 138, \"UNPROVEN\": 12}; -> /Users/breno/doutorado/brevops-data/PILOT-NET-MAP/.staging/verdicts.jsonl"
+    "check-unproven: 0 OK sem prova mínima; UNPROVEN = 165",
+    "[2026-11-04T23:30:24-03:00] run: 209 alegação(ões) correntes de 1 arquivo(s); {\"AMBIGUOUS\": 11, \"OK\": 33, \"UNPROVEN\": 165}; compostos {\"OK\": 202, \"UNPROVEN\": 12}; -> /Users/breno/doutorado/brevops-data/PILOT-NET-MAP/.staging/verdicts.jsonl"
    ]
   },
   "c09_validate": {
    "rc": 0,
    "tail": [
-    "[2026-11-04T23:24:48-03:00] C09:correspondences /Users/breno/doutorado/brevops-data/PILOT-NET-MAP/.staging/mapping.sssom.tsv: 633 item(ns), 0 erro(s) -> OK"
+    "[2026-11-04T23:30:21-03:00] C09:correspondences /Users/breno/doutorado/brevops-data/PILOT-NET-MAP/.staging/mapping.sssom.tsv: 635 item(ns), 0 erro(s) -> OK"
    ]
   },
   "skos_roundtrip": {
    "rc": 0,
    "tail": [
-    "[2026-11-04T23:24:50-03:00] skos_roundtrip --file /Users/breno/doutorado/brevops-data/PILOT-NET-MAP/.staging/mapping.sssom.tsv: 633 linha(s), 9/9 -> PASS"
+    "[2026-11-04T23:30:23-03:00] skos_roundtrip --file /Users/breno/doutorado/brevops-data/PILOT-NET-MAP/.staging/mapping.sssom.tsv: 635 linha(s), 9/9 -> PASS"
    ]
   }
  },
  "counts": {
   "absence_by_kind": {
    "ABSENCE_DEMONSTRATED": 176,
-   "UNRESOLVED": 117,
+   "UNRESOLVED": 110,
    "UNSUPPORTED_BY_TRANSLATOR": 140
   },
   "by_evidence_state": {
-   "DOC_SUPPORTED": 42,
+   "DOC_SUPPORTED": 44,
    "STRUCTURALLY_VALID": 591
   },
   "by_pair_kind": {
@@ -101,18 +101,18 @@
    "AWSGCP|claim": 28,
    "AWSOCI|absence": 86,
    "AWSOCI|claim": 53,
-   "AZOCI|absence": 65,
-   "AZOCI|claim": 19,
+   "AZOCI|absence": 59,
+   "AZOCI|claim": 25,
    "AZOCI|group": 12,
    "GCPAZ|absence": 51,
    "GCPAZ|claim": 30,
-   "GCPOCI|absence": 77,
-   "GCPOCI|claim": 11
+   "GCPOCI|absence": 76,
+   "GCPOCI|claim": 14
   },
   "by_relation": {
-   "close": 61,
-   "exact": 120,
-   "related": 452
+   "close": 65,
+   "exact": 125,
+   "related": 445
   },
   "canonical_atoms": 219,
   "canonical_atoms_by_provider": {
@@ -123,10 +123,10 @@
   },
   "fixed_default": 0,
   "groups": 15,
-  "rows": 633,
-  "rows_with_projection": 120
+  "rows": 635,
+  "rows_with_projection": 122
  },
- "decisions_log_sha256": "d3fa5946ef1c4d8c6f3ce9e074a419d6ecbe373bb39157e8081c9c4579e6ffc6",
+ "decisions_log_sha256": "e966303d73005aee24e94d6fdb76ba8610001a853964fed4914c1fba2e9f13b3",
  "effect_resolved": {
   "a_sge": [
    "ANC-aws-0019"
@@ -142,24 +142,15 @@
   ],
   "a_vin": [
    "ANC-aws-0021"
-  ],
-  "o_nsg": [
-   "ANC-oci-0011"
-  ],
-  "o_sle": [
-   "ANC-oci-0013"
-  ],
-  "o_sli": [
-   "ANC-oci-0012"
   ]
  },
- "generated_at": "2026-11-04T23:24:51-03:00",
+ "generated_at": "2026-11-04T23:30:24-03:00",
  "mapping_date": "2026-11-04",
  "mapping_set_id": "https://w3id.org/brevops/mapping/PILOT-NET-MAP/1",
- "mapping_sha256": "e18e45e70edbd692ddd4d4c9917e22cb19b3c06e293a7e99d00ca3ca60be02ec",
+ "mapping_sha256": "b506ee5ebe01ab9e736c4a411d52ec287de8a8d568b85fc5ab45c85eb7c973e4",
  "missing_members": [],
  "module": "PILOT-NET-MAP",
  "schema": "bo.pilot_net_map_report/1",
- "skipped_pairings": 220,
+ "skipped_pairings": 211,
  "timezone": "America/Recife"
 }
