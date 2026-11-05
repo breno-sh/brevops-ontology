@@ -3,8 +3,8 @@
  "contract_version": "3.1.0",
  "data": {
   "expected_h": 6,
-  "measured_h_total": 3.52,
-  "measured_minutes_total": 210.9,
+  "measured_h_total": 3.63,
+  "measured_minutes_total": 217.7,
   "recalibration": "o caminho offline levou bem menos que o previsto; o que dominou foi ler contratos e adaptar os quatro harness (interfaces diferentes), não o raciocínio; o custo real da escala está no mapeamento (transporte) e não no E2E",
   "steps": [
    {
@@ -142,10 +142,18 @@
     "start": "2026-11-04T23:04:42-03:00",
     "status": "done",
     "step": "rodada final do v4: espera do MAP c6e4b9f e do ORACLE 2e975e7; disputa de alcance do SE no grão; corrida de ponta a ponta"
+   },
+   {
+    "end": "2026-11-05T00:30:40-03:00",
+    "evidence": "grão 21/21; lowering 0/181 nos três controles; oráculo 1.4.0 sem falha; 12 direções; NSI e terraform validate verdes; 4 testes novos da regra de dono (2 vermelhos no código antigo)",
+    "minutes": 6.8,
+    "start": "2026-11-05T00:23:55-03:00",
+    "status": "done",
+    "step": "v4-r2: oráculo 1.4.0 (regra de dono única) alinhado por contrato no lifting; espera do GRAIN 0.2.4 (422164f) e corrida de ponta a ponta"
    }
   ]
  },
- "generated_at": "2026-11-04T23:11:25-03:00",
+ "generated_at": "2026-11-05T00:30:40-03:00",
  "metrics": [
   {
    "axis": "operational",
@@ -163,9 +171,9 @@
    "name": "passos do piloto concluídos (esforço medido)",
    "operational_coverage": {
     "est": 1.0,
-    "lower": 0.815682,
-    "n": 17,
-    "upper": 1.0
+    "lower": 0.824121,
+    "n": 18,
+    "upper": 1
    },
    "quantifier": "observed_fraction",
    "reading": "decision",

@@ -238,7 +238,7 @@
   "controls": {
    "c1_table": {
     "carried_values": 226,
-    "config_values": 998,
+    "config_values": 986,
     "entries": 181,
     "inconsistent_sources": 0,
     "lowered_units": 0,
@@ -251,14 +251,14 @@
     },
     "value_blocks": {
      "AMBIGUOUS_TARGET": 85,
-     "NO_REALIZATION": 515,
+     "NO_REALIZATION": 503,
      "RELATED_ONLY": 99,
      "UNPROVEN": 73
     }
    },
    "c2_taxonomy": {
     "carried_values": 189,
-    "config_values": 998,
+    "config_values": 986,
     "entries": 181,
     "inconsistent_sources": 0,
     "lowered_units": 0,
@@ -271,7 +271,7 @@
     },
     "value_blocks": {
      "AMBIGUOUS_TARGET": 85,
-     "NO_REALIZATION": 515,
+     "NO_REALIZATION": 503,
      "NO_UNIT": 37,
      "RELATED_ONLY": 99,
      "UNPROVEN": 73
@@ -279,7 +279,7 @@
    },
    "c3_full": {
     "carried_values": 210,
-    "config_values": 998,
+    "config_values": 986,
     "entries": 181,
     "inconsistent_sources": 0,
     "lowered_units": 0,
@@ -292,7 +292,7 @@
     },
     "value_blocks": {
      "AMBIGUOUS_TARGET": 85,
-     "NO_REALIZATION": 515,
+     "NO_REALIZATION": 503,
      "NO_UNIT": 16,
      "RELATED_ONLY": 99,
      "UNPROVEN": 73
@@ -563,7 +563,7 @@
    }
   }
  },
- "generated_at": "2026-11-04T23:10:11-03:00",
+ "generated_at": "2026-11-05T00:28:56-03:00",
  "metrics": [
   {
    "axis": "transportability",
@@ -580,10 +580,10 @@
    "metric_id": "M-PSTO-C1-FIELD",
    "name": "c1_table: valores de configuração da fatia transportados",
    "operational_coverage": {
-    "est": 0.226453,
-    "lower": 0.201564,
-    "n": 998,
-    "upper": 0.25344
+    "est": 0.229209,
+    "lower": 0.204054,
+    "n": 986,
+    "upper": 0.256466
    },
    "quantifier": "observed_fraction",
    "reading": "field",
@@ -632,10 +632,10 @@
    "metric_id": "M-PSTO-C2-FIELD",
    "name": "c2_taxonomy: valores de configuração da fatia transportados",
    "operational_coverage": {
-    "est": 0.189379,
-    "lower": 0.166279,
-    "n": 998,
-    "upper": 0.214861
+    "est": 0.191684,
+    "lower": 0.168329,
+    "n": 986,
+    "upper": 0.217431
    },
    "quantifier": "observed_fraction",
    "reading": "field",
@@ -684,10 +684,10 @@
    "metric_id": "M-PSTO-C3-FIELD",
    "name": "c3_full: valores de configuração da fatia transportados",
    "operational_coverage": {
-    "est": 0.210421,
-    "lower": 0.186267,
-    "n": 998,
-    "upper": 0.236796
+    "est": 0.212982,
+    "lower": 0.188566,
+    "n": 986,
+    "upper": 0.239625
    },
    "quantifier": "observed_fraction",
    "reading": "field",
