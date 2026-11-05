@@ -383,12 +383,12 @@ def lift(fx: dict, claims, evidence) -> Lifted:
         if target:
             refs[a] = target
             wiring.setdefault(a, set()).update(x for x in via if body.get(x) is not None)
-        if ow["kind"] == "DISPUTED" or lc["kind"] == "DISPUTED":
-            ds = sorted(f for f in ("owner", "lifecycle_controller")
-                        if (ow if f == "owner" else lc)["kind"] == "DISPUTED")
+        published = evidence.disputes_of(rt)          # disputas spec × doc publicadas pelo SE (qualquer fato)
+        if ow["kind"] == "DISPUTED" or lc["kind"] == "DISPUTED" or "effective_scope" in published:
+            ds = sorted(f for f in ("owner", "lifecycle_controller", "effective_scope") if f in published)
             uid = f"setting:{token}@DISPUTED:{a}"
             units[uid] = Unit(uid, cls, "UNKNOWN", "UNKNOWN" if "owner" in ds else (owner_unit or "UNKNOWN"),
-                              [owner_unit] if owner_unit else "UNKNOWN",
+                              "UNKNOWN" if "effective_scope" in ds else ([owner_unit] if owner_unit else "UNKNOWN"),
                               "UNKNOWN" if "lifecycle_controller" in ds else "parent", [a], [],
                               disputed=ds, dispute={f: {"doc": evidence.get(rt).disputed[f]["doc"],
                                                         "spec": evidence.get(rt).disputed[f]["spec"]} for f in ds},
