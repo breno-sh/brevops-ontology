@@ -54,7 +54,7 @@
    ]
   }
  ],
- "generated_at": "2026-11-04T18:41:11-03:00",
+ "generated_at": "2026-11-04T23:13:33-03:00",
  "glossary": {
   "anchors": 52,
   "anchors_by_kind": {
@@ -80,37 +80,38 @@
  "grain": {
   "atoms": 219,
   "by_kind": {
-   "BINDING": 1,
-   "COMPONENT": 6,
+   "BINDING": 3,
+   "COMPONENT": 9,
    "ENTITY": 5,
    "FACET": 2,
-   "UNKNOWN": 24
+   "UNKNOWN": 22
   },
   "by_rule": {
-   "GRAIN-G0-IDENTITY": 13,
+   "GRAIN-G0-IDENTITY": 11,
    "GRAIN-G0-NEEDS": 11,
    "GRAIN-G1-BINDING": 1,
+   "GRAIN-G1B-REFERENCE": 2,
    "GRAIN-G2-CHILD": 2,
-   "GRAIN-G2-COMPONENT": 4,
+   "GRAIN-G2-COMPONENT": 7,
    "GRAIN-G3-FACET": 2,
    "GRAIN-G4-ENTITY": 4,
    "GRAIN-G4-NS": 1
   },
   "missing": {
-   "api_resource": 8,
-   "effective_scope": 16,
-   "identity": 13,
-   "lifecycle_controller": 15,
-   "owner": 15
+   "api_resource": 11,
+   "effective_scope": 10,
+   "identity": 11,
+   "lifecycle_controller": 11,
+   "owner": 10
   },
-  "units": 38,
+  "units": 41,
   "units_by_provider": {
-   "aws": 7,
+   "aws": 8,
    "azurerm": 5,
    "google": 6,
-   "oci": 20
+   "oci": 22
   },
-  "unknown_reasons": 191
+  "unknown_reasons": 202
  },
  "module": "PILOT-NET-GLOSS",
  "schema": "bo.pilot_gloss_report/1"
