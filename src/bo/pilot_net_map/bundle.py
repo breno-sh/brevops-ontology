@@ -114,6 +114,11 @@ class Bundle:
     candidates: list[dict]
     concepts: dict[str, dict]
     se_by_type: dict[str, list[dict]] = field(default_factory=dict)
+    implications: list[dict] = field(default_factory=list)   # âncoras de tipo/bloco com implicação (C20 3.x)
+
+    def implied(self, concept: str, ref: str) -> list[dict]:
+        """Implicações publicadas do conceito para o tipo ('prov:tipo') ou bloco ('prov:tipo:bloco')."""
+        return [x for x in self.implications if x["concept"] == concept and x["ref"] == ref]
 
     def provider_atoms(self, prov: str) -> list[str]:
         return sorted(a for a in self.canonical if provider_of(a) == prov)
@@ -159,9 +164,18 @@ def load(root: Path) -> Bundle:
             if "datatype" in d and isinstance(d["datatype"], dict):
                 types[r["atom_id"]] = value_type(d)
     concept_of, anchor_of = {}, {}
+    implications = []
     for c in rd("claims.jsonl"):
         a = c.get("atom_id")
         if not a:
+            imp = c.get("implication") or {}
+            ref = c.get("type_id") or c.get("block_id")
+            if ref and imp and c.get("evidence_level") == "published" and c.get("extraction_method") != "model":
+                src = c.get("source") or {}
+                implications.append({"concept": c["concept_id"], "ref": ref, "value": imp.get("value"),
+                                     "realization": imp.get("realization"), "claim_id": c["claim_id"],
+                                     "sentence": c.get("sentence"),
+                                     "source": _src(src) if src.get("repo") else c["claim_id"]})
             continue
         concept_of[a] = c["concept_id"]
         anchor_of[a] = c
@@ -181,6 +195,20 @@ def load(root: Path) -> Bundle:
             ref_target[atom] = v["resolved"]
         if s.get("status") == "stated":
             add_ev(atom, s.get("doc"), s.get("level"), s["evidence_id"])
+    # alvo de referência pelas pontas das unidades de ligação (C19 BINDING): papel = atributo do tipo da unidade,
+    # ponta = unidade do tipo alcançado. Só papel que é átomo canônico do pacote (holder/selector não são atributos).
+    for u in rd("canonical_units.jsonl"):
+        prov = u.get("provider")
+        pre = f"CU-{prov}-"
+        if not u.get("endpoints") or not str(u.get("unit_id", "")).startswith(pre):
+            continue
+        rtype = u["unit_id"][len(pre):].split(":")[0]
+        for e in u["endpoints"]:
+            atom = f"{prov}:{rtype}:{e.get('role')}"
+            tgt = e.get("target_type") or (e.get("unit_id", "")[len(pre):] if str(e.get("unit_id", "")).startswith(pre)
+                                           else None)
+            if atom in canonical and tgt and ":" not in tgt:
+                ref_target.setdefault(atom, tgt)
     meta = json.loads((root / "bundle.json").read_text(encoding="utf-8")) if (root / "bundle.json").exists() else {}
     tbp: dict[str, list[str]] = {}
     for a in canonical:
@@ -195,7 +223,7 @@ def load(root: Path) -> Bundle:
                   types_by_provider={k: sorted(v) for k, v in tbp.items()}, canonical=canonical, types=types,
                   concept_of=concept_of, anchor_of=anchor_of, evidence=evidence, ref_target=ref_target,
                   candidates=rd("candidates.jsonl"), concepts={g["concept_id"]: g for g in rd("glossary.jsonl")},
-                  se_by_type=se_by_type)
+                  se_by_type=se_by_type, implications=implications)
 
 
 __all__ = ["Bundle", "BundleError", "load", "verify", "value_type", "path_of"]

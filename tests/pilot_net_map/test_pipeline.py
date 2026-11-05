@@ -237,3 +237,29 @@ def test_official_bundle_exhaustive():
     assert VF.check_orientation(recs) == []
     assert VF.check_bundle_only(recs, b) == []
     assert {r["claim_id"].split("-")[1] for r in recs} == set(PAIRS)
+
+
+def test_effect_from_published_type_anchor(tmp_path):
+    imp = {"anchor_kind": "type", "claim_id": "ANC-t-0100", "concept_id": "concept:rule_effect",
+           "type_id": "aws:aws_vpc_security_group_ingress_rule", "evidence_level": "published",
+           "evidence_state": "STRUCTURALLY_VALID", "extraction_method": "parser",
+           "implication": {"realization": "type_choice", "value": "allow", "rule": "o tipo só tem regra de permitir"},
+           "sentence": "frase sintética publicada", "source": {"repo": "example/repo", "file": "doc.md", "line": 9,
+                                                               "tag": "v1.0.0", "sentence": "frase sintética publicada"}}
+    b = BU.load(_write_bundle(tmp_path / "eff", anchors=ANCHORS + [imp]))
+    recs, st = GN.generate(b)
+    assert st["effect_resolved"] == {"a_vin": ["ANC-t-0100"]}
+    rows = _by(recs, "aws:aws_vpc_security_group_ingress_rule:ip_protocol", "azurerm:azurerm_network_security_rule:protocol")
+    assert len(rows) == 1 and {"term": "object.access", "op": "eq", "value": "Allow"} in rows[0]["guard"]["all"]
+    # deny do outro lado não é realização de regra só de permitir
+    assert not _by(recs, "aws:aws_vpc_security_group_ingress_rule:ip_protocol", "google:google_compute_firewall:deny.protocol")
+
+
+def test_interpreted_anchor_does_not_fix_effect(tmp_path):
+    imp = {"anchor_kind": "type", "claim_id": "ANC-t-0101", "concept_id": "concept:rule_effect",
+           "type_id": "aws:aws_vpc_security_group_ingress_rule", "evidence_level": "interpreted",
+           "extraction_method": "model", "implication": {"realization": "type_choice", "value": "allow",
+                                                         "rule": "o tipo só tem regra de permitir"}}
+    b = BU.load(_write_bundle(tmp_path / "eff2", anchors=ANCHORS + [imp]))
+    _, st = GN.generate(b)
+    assert st["effect_resolved"] == {}

@@ -204,6 +204,7 @@ def main(argv=None) -> int:
            "mapping_sha256": sha256_file(stage / "mapping.sssom.tsv"),
            "decisions_log_sha256": sha256_file(stage / "decisions_log.jsonl"),
            "counts": counts(recs, b), "skipped_pairings": stats["skipped_pairings"],
+           "effect_resolved": stats.get("effect_resolved", {}),
            "missing_members": stats["missing_members"], "checks": checks, "arbiter": vsum,
            "candidates": {"n": len(log), "taken_as_direct": sum(1 for x in log if x["taken_as_direct"])}}
     (stage / "build_report.json").write_text(dump_json(rep), encoding="utf-8")

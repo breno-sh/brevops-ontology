@@ -36,9 +36,28 @@ def field_of(atom: str) -> str:
     return f"{p}:{t}.{path}"
 
 
+def resolved_shapes(b: Bundle) -> dict:
+    """Formas com o efeito resolvido pelo pacote: efeito "unknown" vira fixo quando uma âncora publicada de tipo
+    ou de bloco (C20 implication) diz o efeito do tipo/bloco daquela forma (ex.: regra só de permitir)."""
+    out = {}
+    for sid, sh in D.SHAPES.items():
+        sh = dict(sh)
+        if sh.get("eff") == "unknown":
+            refs = [f"{sh['prov']}:{sh['rtype']}"]
+            if sh.get("prefix"):
+                refs.insert(0, f"{sh['prov']}:{sh['rtype']}:{sh['prefix'].rstrip('.')}")
+            vals = sorted({x["value"] for r in refs for x in b.implied("concept:rule_effect", r)} & {"allow", "deny"})
+            if len(vals) == 1:
+                sh["eff"] = vals[0]
+                sh["eff_source"] = sorted({x["claim_id"] for r in refs for x in b.implied("concept:rule_effect", r)})
+        out[sid] = sh
+    return out
+
+
 def realizations(b: Bundle) -> tuple[dict, list[dict]]:
     """{faixa: [real]}, [membro declarado que o pacote não tem]."""
     out, missing = {}, []
+    shapes = resolved_shapes(b)
     for sl in D.SLOTS:
         lst = []
         for m in sl["members"]:
@@ -47,7 +66,7 @@ def realizations(b: Bundle) -> tuple[dict, list[dict]]:
             if atom not in b.canonical:
                 missing.append({"slot": sl["slot"], "atom": atom})
                 continue
-            lst.append({"atom": atom, "shape_id": shape_id, "shape": D.SHAPES[shape_id], "path": path,
+            lst.append({"atom": atom, "shape_id": shape_id, "shape": shapes[shape_id], "path": path,
                         "dir_override": m[2] if len(m) > 2 else None, "slot": sl["slot"]})
         out[sl["slot"]] = lst
     return out, missing
@@ -466,9 +485,14 @@ def _rule_match(rule, atom: str, other: str) -> bool:
     return rtype_path == pat
 
 
-def absence_for(pair, atom: str, other: str, b: Bundle, related_ids: list[str], skipped: list[str]) -> dict:
+def absence_for(pair, atom: str, other: str, b: Bundle, related_ids: list[str], skipped: list[str],
+                eff_fixed: dict | None = None) -> dict:
     kind, why = None, None
-    for rule in D.ABSENCE_RULES:
+    if atom.endswith(":access") and atom.startswith("azurerm:") and (eff_fixed or {}).get(other):
+        kind = "UNRESOLVED"
+        why = (f"o outro lado só tem regra de permitir (âncoras publicadas {', '.join(eff_fixed[other])}), sem "
+               "atributo; o fixed_default não se exprime com o lado sem atributo como sujeito do par")
+    for rule in ([] if kind else D.ABSENCE_RULES):
         if _rule_match(rule, atom, other):
             kind, why = rule[3], rule[4]
             break
@@ -530,6 +554,13 @@ def generate(b: Bundle) -> tuple[list[dict], dict]:
     stats = {"missing_members": missing, "skipped_pairings": 0}
     slot_cfg = {s["slot"]: s for s in D.SLOTS}
     set_level = {"set_name", "set_tags", "set_network", "attach_set", "attach_nic"}
+    shapes = resolved_shapes(b)
+    stats["effect_resolved"] = {sid: sh["eff_source"] for sid, sh in shapes.items() if sh.get("eff_source")}
+    eff_fixed: dict[str, list[str]] = {}
+    for sh in shapes.values():
+        if sh.get("eff_source") and sh["eff"] == "allow":
+            eff_fixed.setdefault(sh["prov"], [])
+            eff_fixed[sh["prov"]] = sorted(set(eff_fixed[sh["prov"]]) | set(sh["eff_source"]))
     for pair, (P, Q) in PAIRS.items():
         for slot, lst in reals.items():
             pol = slot_cfg[slot]["policy"]
@@ -554,8 +585,8 @@ def generate(b: Bundle) -> tuple[list[dict], dict]:
                     if {pp, tp} != {P, Q}:
                         continue
                     subj_pair = pp == P
-                    ra = {"atom": atom_of(rp[0], rp[1]), "shape": D.SHAPES[rp[0]], "dir_override": None}
-                    rb = {"atom": atom_of(rt[0], rt[1]), "shape": D.SHAPES[rt[0]], "dir_override": None}
+                    ra = {"atom": atom_of(rp[0], rp[1]), "shape": shapes[rp[0]], "dir_override": None}
+                    rb = {"atom": atom_of(rt[0], rt[1]), "shape": shapes[rt[0]], "dir_override": None}
                     try:
                         gs = guards_for(b, ra, rb) if subj_pair else guards_for(b, rb, ra)
                         for g in gs:
@@ -591,7 +622,7 @@ def generate(b: Bundle) -> tuple[list[dict], dict]:
                     continue
                 rel_ids = [x["subject_id"] + " ~ " + x["object_id"] for x in related.get(atom, [])]
                 rows.append({"_kind": "absence", **absence_for(pair, atom, other, b, rel_ids,
-                                                                 skipped.get((pair, atom), []))})
+                                                                 skipped.get((pair, atom), []), eff_fixed)})
     # numeração determinística
     out = []
     for pair in PAIRS:
