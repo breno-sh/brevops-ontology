@@ -96,7 +96,9 @@ def test_controls_differ_only_in_knowledge(cs, tmpdir_mod):
     assert not k1.values
     assert k2.value(rid, "direction") == "ingress" and k2.value(rid, "effect") is None
     assert k3.value(rid, "effect") == "allow" and "AX-NET-01" in k3.justification(rid, "effect")
-    assert k3.value(sid, "no_match") == "deny" and k2.value(sid, "no_match") is None
+    assert k3.value(sid, "no_match_ingress") == "deny" and k3.value(sid, "no_match_egress") == "deny"
+    assert k2.value(sid, "no_match_ingress") is None
+    assert k3.value(rid, "state") == "stateful" and k2.value(rid, "state") is None
 
 
 def test_shacl_rejects_duplicate_priority(cs, tmpdir_mod):

@@ -381,43 +381,78 @@ class Translator:
                        prop="bo:hasEffect", detail="efeito da regra desconhecido no controle: não há como emitir")
             raise Blocked("UNKNOWN_INPUT", "efeito de regra desconhecido no controle")
         has_deny = any(v == "deny" for v in known.values())
-        # ordem e decisão sem regra do conjunto de origem (por grupo)
         prec = {self.knows(s.sid, "precedence") for s in sets}
+        # decisão sem regra que case, por sentido (c3: AX-NET-03 nas listas de permissão, AX-NET-12 na rede GCP)
+        nm = {d: {self.knows(s.sid, f"no_match_{d}") for s in sets} for d in ("ingress", "egress")}
+        nm_known = not unread and all(len(v) == 1 and None not in v for v in nm.values())
+        nm_val = {d: next(iter(v)) for d, v in nm.items()} if nm_known else {}
+        nm_axioms = sorted({a for s in sets for d in ("ingress", "egress")
+                            for a in self.K.justification(s.sid, f"no_match_{d}") if a.startswith("AX-")})
+        implied = [d for d, v in nm_val.items() if v == "allow"] if allow_only_tgt else []
         if allow_only_tgt and has_deny:
-            out = self._compile_effective(g, rules, effects, sets)
+            out = self._compile_effective(g, rules, effects, sets, implied)
             self.loss("DENY_COMPILED", "rules", "destino só-permissão: negação compilada fora (conjunto efetivo)")
         else:
             for r in rules:
                 for tr in self._expand(r, effects[r.rid]):
                     out.append(tr)
+            for d in implied:
+                out.append({"compiled": True, "synth": "implied", "direction": d, "effect": "allow", "protocol": "all",
+                            "dst_ports": None, "remote": ["0.0.0.0/0"], "src_rule": None, "fields": {},
+                            "why": nm_axioms})
+        if implied:
+            self.out.consequences.append({"kind": "implied_allow_made_explicit", "sets": g["sets"],
+                                          "directions": implied, "axioms": nm_axioms})
         # prioridades no destino por precedência
         if self.tgt in ("google", "azurerm"):
             self._priorities(out, sets, rules, prec)
-        # decisão sem regra que case
-        nm = {self.knows(s.sid, "no_match") for s in sets}
         if self.tgt in ("google", "azurerm"):
-            if nm == {"deny"} and not unread:
+            if nm_known:
                 for d in ("ingress", "egress"):
-                    out.append({"synth": "catch_all", "direction": d, "effect": "deny", "protocol": "all",
+                    out.append({"synth": "catch_all", "direction": d, "effect": nm_val[d], "protocol": "all",
                                 "dst_ports": None, "remote": ["0.0.0.0/0"], "local": None, "src_ports": None,
                                 "priority": MAXP[self.tgt] - (1 if d == "ingress" and self.tgt == "azurerm" else 0),
-                                "src_rule": None, "fields": {}, "why": ["AX-NET-03"]})
-                self.out.consequences.append({"kind": "catch_all_deny", "sets": g["sets"], "axioms": ["AX-NET-03"]})
+                                "src_rule": None, "fields": {}, "why": nm_axioms})
+                self.out.consequences.append({"kind": "catch_all_from_no_match", "sets": g["sets"],
+                                              "values": nm_val, "axioms": nm_axioms})
             else:
-                self.loss("DEFAULT_NO_EVIDENCE", "default_rule",
-                          "padrão do destino para fluxo sem regra sem evidência; decisão sem regra da origem "
-                          + ("não conhecida no controle" if nm != {"deny"} else "conhecida, mas conjunto lido pela metade"))
-        else:
-            if nm != {"deny"}:
                 self.loss("UNKNOWN_INPUT", "default_rule", "decisão da origem para fluxo sem regra não conhecida no "
-                                                           "controle; o destino nega por padrão")
-            if self.tgt == "oci":
-                self.loss("DEFAULT_NO_EVIDENCE", "default_rule", "o destino só exprime permissão; o padrão de negar "
-                                                                 "sem regra não tem evidência publicada no SERVICE-EVIDENCE")
+                                                           "controle (ou conjunto lido pela metade)")
+                if self.tgt == "azurerm":
+                    self.loss("DEFAULT_NO_EVIDENCE", "default_rule",
+                              "padrão do destino para fluxo sem regra sem evidência publicada")
+        elif not nm_known or any(v != "deny" for d, v in nm_val.items() if d not in implied):
+            self.loss("UNKNOWN_INPUT", "default_rule", "decisão da origem para fluxo sem regra não conhecida no "
+                                                       "controle; o destino nega por padrão")
         # estado de conexão
-        if self.tgt in ("aws", "google", "azurerm"):
-            self.loss("STATE_NOT_EXPRESSIBLE", "state", "estado de conexão do destino sem evidência: retorno UNKNOWN")
+        self._state_policy(rules)
         return out
+
+    def _state_policy(self, rules):
+        """Regra sem estado declarada na origem não cabe em destino que só rastreia conexão (abriria o retorno):
+        bloqueio. Destino azurerm: estado sem evidência (perda STATE). aws/google: o c3 sabe que o destino tem
+        estado (AX-NET-11); se o estado da origem também é conhecido, nada se perde; senão, UNKNOWN_INPUT."""
+        from . import axioms as AX
+        from .lift import is_sym
+        self.state_known = True
+        for r in rules:
+            st = r.facts.get("stateless")
+            if st is not None and st.status == "known" and st.raw is True and self.tgt in ("aws", "google"):
+                self.trace(atom=st.atom, raw=st.raw, result="blocked", code="OUT_OF_SUBSET", individual=r.rid,
+                           prop="bo:hasConnectionTracking",
+                           detail="regra sem estado na origem; o destino só rastreia conexão: abriria o retorno")
+                raise Blocked("OUT_OF_SUBSET", "regra sem estado não exprimível em destino que só rastreia conexão")
+            if self.knows(r.rid, "state") not in ("stateful", "stateless"):
+                self.state_known = False
+        if self.tgt == "azurerm":
+            self.loss("STATE_NOT_EXPRESSIBLE", "state", "estado de conexão do destino sem evidência: retorno UNKNOWN")
+        elif self.tgt in AX.TARGET_STATEFUL:
+            if not (self.control == "c3_full" and self.state_known):
+                self.loss("UNKNOWN_INPUT", "state", "estado da origem ou do destino não conhecido no controle")
+            else:
+                self.out.consequences.append({"kind": "state_preserved", "axioms": ["AX-NET-11", "AX-NET-07"]})
+        elif self.tgt == "oci" and not (self.control == "c3_full" and self.state_known):
+            self.loss("UNKNOWN_INPUT", "stateless", "estado de conexão escolhido no destino (origem sem evidência)")
 
     def _effect(self, r):
         """Efeito neutro da regra no controle; registra a consequência quando só o axioma a dá."""
@@ -541,7 +576,7 @@ class Translator:
             o["priority_order"] = None
 
     # ---------------------------------------------------------------- conjunto efetivo (c3)
-    def _compile_effective(self, g, rules, effects, sets) -> list:
+    def _compile_effective(self, g, rules, effects, sets, implied=()) -> list:
         prec = {self.knows(s.sid, "precedence") for s in sets}
         if prec != {"lower_value_first"}:
             raise Blocked("UNKNOWN_INPUT", "negação na origem e destino só-permissão: compilar exige a ordem de "
@@ -578,6 +613,9 @@ class Translator:
                         raise Blocked("OUT_OF_SUBSET", f"etiqueta de serviço {c} não exprimível no destino")
                     boxes.append({"prio": pv, "eff": eff, "dir": dv, "proto": m["protocol"].value,
                                   "ports": m["dst_ports"].value, "cidr": c, "rule": r})
+        for d in implied:
+            boxes.append({"prio": 10 ** 9, "eff": "allow", "dir": d, "proto": "all", "ports": None,
+                          "cidr": "0.0.0.0/0", "rule": None})
         ties = {}
         for b in boxes:
             ties.setdefault(b["prio"], set()).add(b["eff"])
@@ -599,7 +637,7 @@ class Translator:
             # como já decidido (sai do espaço restante), como a negação
             denied.append(me)
         for b in boxes:
-            for a in b["rule"].atoms:
+            for a in (b["rule"].atoms if b["rule"] is not None else []):
                 self.consumed[(b["rule"].rid, a)] = (["AX-NET-04", "AX-NET-05", "AX-NET-10"],
                                                     "compilado no conjunto efetivo do destino só-permissão")
         self.out.consequences.append({"kind": "effective_set_compiled", "sets": g["sets"],

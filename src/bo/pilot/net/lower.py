@@ -856,13 +856,18 @@ class OciBuilder(Builder):
                 else:
                     t, o = lit(e), "synthesized"
                 vals.append(val(base + remote, t, o))
-                vals.append(val(base + "stateless", lit(False), "synthesized"))
-                if k == 0 and i == 0:
-                    choices.append({"choice_id": f"CH-OCI-STATE-{gi}", "options": ["stateful", "stateless"],
-                                    "selected": "stateful",
-                                    "reason": "estado da origem sem evidência no controle: escolha declarada no destino "
-                                              "(perda UNKNOWN_INPUT)"})
-                T.loss("UNKNOWN_INPUT", "stateless", "estado de conexão escolhido no destino (origem sem evidência)")
+                known_state = T.knows(tr["src_rule"].rid, "state") if tr.get("src_rule") is not None else None
+                if T.control == "c3_full" and known_state in ("stateful", "stateless"):
+                    t_st = self.resolve(tr, "stateless", base + "stateless", S + "stateless",
+                                        neutral=known_state, codec=lambda v: v == "stateless")
+                    vals.append(val(base + "stateless", t_st[0], t_st[1]))
+                else:
+                    vals.append(val(base + "stateless", lit(False), "synthesized"))
+                    if not any(c["choice_id"] == f"CH-OCI-STATE-{gi}" for c in choices):
+                        choices.append({"choice_id": f"CH-OCI-STATE-{gi}", "options": ["stateful", "stateless"],
+                                        "selected": "stateful",
+                                        "reason": "estado da origem sem evidência no controle: escolha declarada no "
+                                                  "destino (perda UNKNOWN_INPUT)"})
                 if pt["value"] in ("6", "17"):
                     opt = "tcp_options" if pt["value"] == "6" else "udp_options"
                     self._ports(tr, vals, base + opt, S + opt)

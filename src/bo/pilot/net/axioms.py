@@ -13,10 +13,12 @@ from __future__ import annotations
 
 # classes de realização: a construção do provedor é instância delas (c2 já sabe disso; é taxonomia)
 REALIZATION_CLASSES = {
-    "aws_security_group": ["bo:FilterRuleSet", "bo:PermissionListRuleSet", "bo:NoMatchDenyRuleSet"],
-    "oci_core_security_list": ["bo:FilterRuleSet", "bo:PermissionListRuleSet"],
-    "oci_core_network_security_group": ["bo:FilterRuleSet", "bo:PermissionListRuleSet"],
-    "google_compute_network": ["bo:FilterRuleSet", "bo:PrecedenceRuleSet", "bo:DenyTieRuleSet"],
+    "aws_security_group": ["bo:FilterRuleSet", "bo:PermissionListRuleSet", "bo:NoMatchDenyRuleSet",
+                           "bo:StatefulRuleSet"],
+    "oci_core_security_list": ["bo:FilterRuleSet", "bo:PermissionListRuleSet", "bo:NoMatchDenyRuleSet"],
+    "oci_core_network_security_group": ["bo:FilterRuleSet", "bo:PermissionListRuleSet", "bo:NoMatchDenyRuleSet"],
+    "google_compute_network": ["bo:FilterRuleSet", "bo:PrecedenceRuleSet", "bo:DenyTieRuleSet",
+                               "bo:ImpliedRulesRuleSet", "bo:StatefulRuleSet"],
     "azurerm_network_security_group": ["bo:FilterRuleSet", "bo:PrecedenceRuleSet", "bo:UniquePriorityRuleSet"],
 }
 RULE_REALIZATION_CLASSES = {
@@ -30,8 +32,10 @@ RULE_REALIZATION_CLASSES = {
     "azurerm_network_security_rule": ["bo:FilterRule"],
     ("oci_core_security_list", "ingress_security_rules"): ["bo:FilterRule", "bo:DeclaredDefaultStateRule"],
     ("oci_core_security_list", "egress_security_rules"): ["bo:FilterRule", "bo:DeclaredDefaultStateRule"],
-    "oci_core_network_security_group_security_rule": ["bo:FilterRule"],
+    "oci_core_network_security_group_security_rule": ["bo:FilterRule", "bo:DeclaredDefaultStateRule"],
 }
+# o que o c3 sabe do DESTINO (mesmo catálogo): o conjunto do destino só rastreia conexão (sem campo por regra)
+TARGET_STATEFUL = {"aws": "AX-NET-11", "google": "AX-NET-11"}
 
 # taxonomia (c2 e c3): só rdfs:subClassOf entre classes nomeadas e disjunções não entram aqui
 TAXONOMY = [
@@ -45,6 +49,8 @@ TAXONOMY = [
     ("bo:DenyingRule", "bo:FilterRule"),
     ("bo:DeclaredDefaultStateRule", "bo:FilterRule"),
     ("bo:NoMatchDenyRuleSet", "bo:FilterRuleSet"),
+    ("bo:ImpliedRulesRuleSet", "bo:PrecedenceRuleSet"),
+    ("bo:StatefulRuleSet", "bo:FilterRuleSet"),
 ]
 
 P = "bo:"
@@ -55,9 +61,10 @@ AXIOMS = [
         "ttl": "bo:PermissionListRuleSet rdfs:subClassOf [ a owl:Restriction ; owl:onProperty bo:hasRule ; "
                "owl:allValuesFrom [ a owl:Restriction ; owl:onProperty bo:hasEffect ; owl:hasValue bo:Allow ] ] .",
         "entails": ["effect"],
-        "level": "derived",
-        "evidence": ["SE-aws-jcsq5zrpnuvxzaxv", "SE-oci-bp7mulbmn76camow", "C24:REQ-NET-01",
-                     "C01:sem-atomo-de-efeito"],
+        "level": "published",
+        "evidence": ["SE-aws-6gqdywgpolbhwsgh", "SE-aws-uprjohepvlbrisrj", "SE-aws-27fce6orje6kwxl7",
+                     "SE-aws-dhmyfhb32dip3gm3", "SE-oci-i4qhfl5ma4mlbegd", "SE-oci-c5zpsmypese5ipku",
+                     "C24:REQ-NET-01"],
         "basis": "o schema fixado (C01) não tem átomo de efeito nesses tipos de regra; a frase publicada da AWS diz "
                  "que sem regra o tráfego é bloqueado e a da OCI que a regra 'allows traffic'; num conjunto em que "
                  "a regra só pode permitir, o efeito de toda regra é permitir (definição de lista de permissão, "
@@ -75,14 +82,16 @@ AXIOMS = [
     },
     {
         "axiom_id": "AX-NET-03",
-        "text": "grupo de segurança sem regra que case nega",
-        "ttl": "bo:NoMatchDenyRuleSet rdfs:subClassOf [ a owl:Restriction ; owl:onProperty bo:hasNoMatchDecision ; "
+        "text": "lista de permissão sem regra que case nega, nos dois sentidos",
+        "ttl": "bo:NoMatchDenyRuleSet rdfs:subClassOf [ a owl:Restriction ; owl:onProperty bo:hasNoMatchIngress ; "
+               "owl:hasValue bo:Deny ] , [ a owl:Restriction ; owl:onProperty bo:hasNoMatchEgress ; "
                "owl:hasValue bo:Deny ] .",
         "entails": ["no_match"],
         "level": "published",
-        "evidence": ["SE-aws-jcsq5zrpnuvxzaxv"],
-        "basis": "'If nothing is specified, traffic will be blocked'; e o Terraform remove a regra padrão de saída",
-        "applies_to_types": ["aws_security_group"],
+        "evidence": ["SE-aws-jcsq5zrpnuvxzaxv", "SE-oci-7fsekbectwthhskg", "SE-oci-g5m7bluwqpdk5cvi"],
+        "basis": "'If nothing is specified, traffic will be blocked' (o Terraform remove a regra padrão de saída); "
+                 "na OCI, sem regra nenhum tráfego é permitido",
+        "applies_to_types": ["aws_security_group", "oci_core_security_list", "oci_core_network_security_group"],
     },
     {
         "axiom_id": "AX-NET-04",
@@ -125,8 +134,10 @@ AXIOMS = [
                "bo:StateNotDeclaredRule owl:disjointWith bo:StateDeclaredRule .",
         "entails": ["state"],
         "level": "published",
-        "evidence": ["SE-oci-bp7mulbmn76camow", "SE-oci-3ihxku562hxrgq4b"],
-        "basis": "'stateless - (Optional) ... default false' no atributo da regra da security list (por regra)",
+        "evidence": ["SE-oci-bp7mulbmn76camow", "SE-oci-3ihxku562hxrgq4b", "SE-oci-wqeohr22pnvffgfk",
+                     "SE-oci-czy2wmgcweke3sq4", "SE-oci-6hiaftoo6zckvajk"],
+        "basis": "'stateless - (Optional) ... default false' no atributo da regra (security list e NSG), por regra; "
+                 "o guia dá stateful como padrão",
     },
     {
         "axiom_id": "AX-NET-08",
@@ -166,12 +177,39 @@ AXIOMS = [
     },
 ]
 
+AXIOMS += [
+    {
+        "axiom_id": "AX-NET-11",
+        "text": "conjunto que só rastreia conexão: toda regra dele tem estado",
+        "ttl": "bo:StatefulRuleSet rdfs:subClassOf [ a owl:Restriction ; owl:onProperty bo:hasRule ; "
+               "owl:allValuesFrom [ a owl:Restriction ; owl:onProperty bo:hasConnectionTracking ; "
+               "owl:hasValue bo:Stateful ] ] .",
+        "entails": ["state"],
+        "level": "published",
+        "evidence": ["SE-aws-p272pgtmcwbrjsvb", "SE-aws-le3t5sryj5snic3r", "SE-aws-u6ewbeiu7sfj5ooq",
+                     "SE-aws-47f7cbu2j2nl4d4b", "SE-google-egw54c4ruinm6cgl"],
+        "basis": "guias oficiais: security group e firewall são stateful (o retorno da conexão permitida passa)",
+        "applies_to_types": ["aws_security_group", "google_compute_network"],
+    },
+    {
+        "axiom_id": "AX-NET-12",
+        "text": "regras implícitas da rede: sem regra que case, entrada nega e saída permite",
+        "ttl": "bo:ImpliedRulesRuleSet rdfs:subClassOf [ a owl:Restriction ; owl:onProperty bo:hasNoMatchIngress ; "
+               "owl:hasValue bo:Deny ] , [ a owl:Restriction ; owl:onProperty bo:hasNoMatchEgress ; "
+               "owl:hasValue bo:Allow ] .",
+        "entails": ["no_match"],
+        "level": "published",
+        "evidence": ["SE-google-q7fxffs3brh35x6f", "SE-google-lczae72rfhtxc6ad"],
+        "basis": "guia oficial: regra implícita de negar entrada e de permitir saída, de menor prioridade",
+        "applies_to_types": ["google_compute_network"],
+    },
+]
+
 EXCLUDED = [
     {"ref": "SE-google-yz5xmhx36uyxkd2x", "level": "interpreted",
-     "why": "regras implícitas do firewall (deny de entrada, allow de saída) só interpretadas: fora do c3; "
-            "o padrão sem regra que case no destino google fica desconhecido"},
+     "why": "leitura interpretada das regras implícitas: fora do c3 (o AX-NET-12 usa as linhas publicadas do guia)"},
     {"ref": "SE-oci-cxwuvxzhyrwz3j6f", "level": "interpreted",
-     "why": "padrão de estado da regra de NSG da OCI só interpretado: fora do c3"},
+     "why": "padrão de estado da regra de NSG só interpretado: fora do c3 (o AX-NET-07 usa as linhas publicadas)"},
     {"ref": "SE-oci-6gjp2guok3t6gzb7", "level": "interpreted",
      "why": "granularidade por regra lida por interpretação; o c3 usa só a frase publicada do atributo"},
 ]

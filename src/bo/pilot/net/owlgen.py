@@ -54,6 +54,11 @@ CLASSES = {
                                  ["bo:PrecedenceRuleSet"]),
     "bo:NoMatchDenyRuleSet": ("conjunto que nega sem regra", "Conjunto que nega sem regra é um conjunto de regras em "
                               "que o fluxo sem regra que case é negado.", ["bo:FilterRuleSet"]),
+    "bo:ImpliedRulesRuleSet": ("conjunto com regras implícitas", "Conjunto com regras implícitas é um conjunto por "
+                               "precedência cujo fluxo sem regra que case segue regras implícitas por sentido.",
+                               ["bo:PrecedenceRuleSet"]),
+    "bo:StatefulRuleSet": ("conjunto que rastreia conexão", "Conjunto que rastreia conexão é um conjunto de regras "
+                           "em que toda regra tem estado de conexão.", ["bo:FilterRuleSet"]),
     "bo:IngressRule": ("regra de entrada", "Regra de entrada é uma regra de filtragem sobre tráfego que chega.",
                        ["bo:FilterRule"]),
     "bo:EgressRule": ("regra de saída", "Regra de saída é uma regra de filtragem sobre tráfego que sai.",
@@ -81,7 +86,8 @@ OBJECT_PROPS = {
     "bo:hasEffect": ("tem efeito", "bo:FilterRule", "bo:ControlledValue"),
     "bo:hasDirection": ("tem sentido", "bo:FilterRule", "bo:ControlledValue"),
     "bo:hasConnectionTracking": ("tem rastreio de conexão", "bo:FilterRule", "bo:ControlledValue"),
-    "bo:hasNoMatchDecision": ("tem decisão sem regra", "bo:FilterRuleSet", "bo:ControlledValue"),
+    "bo:hasNoMatchIngress": ("tem decisão sem regra na entrada", "bo:FilterRuleSet", "bo:ControlledValue"),
+    "bo:hasNoMatchEgress": ("tem decisão sem regra na saída", "bo:FilterRuleSet", "bo:ControlledValue"),
     "bo:hasPrecedenceOrder": ("tem ordem de precedência", "bo:FilterRuleSet", "bo:ControlledValue"),
     "bo:hasTieBreak": ("tem desempate", "bo:FilterRuleSet", "bo:ControlledValue"),
     "bo:hasPriorityRule": ("tem regra de prioridade", "bo:FilterRuleSet", "bo:ControlledValue"),

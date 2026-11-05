@@ -29,7 +29,7 @@ BO = Namespace("https://w3id.org/brevops/ontology#")
 EX = Namespace("https://example.org/bo-example/")
 ROBOT_VERSION = "1.9.11"
 WATCH = {"hasEffect": "effect", "hasDirection": "direction", "hasConnectionTracking": "state",
-         "hasNoMatchDecision": "no_match", "hasPrecedenceOrder": "precedence", "hasTieBreak": "tie_break",
+         "hasNoMatchIngress": "no_match_ingress", "hasNoMatchEgress": "no_match_egress", "hasPrecedenceOrder": "precedence", "hasTieBreak": "tie_break",
          "hasPriorityRule": "priority_rule"}
 VALUE_NEUTRAL = {"Allow": "allow", "Deny": "deny", "Ingress": "ingress", "Egress": "egress", "Stateful": "stateful",
                  "Stateless": "stateless", "OrderIndependent": "order_independent",
@@ -152,20 +152,25 @@ def _collect(g: rdflib.Graph, lifted: list, control: str, asserted: rdflib.Graph
                 K.why.setdefault((local, prop), []).append("realização (fato estrutural ou codec do átomo)")
             else:
                 K.why[(local, prop)] = _justify(prop, val)
+    for K in out.values():
+        for (local, prop) in list(K.why):
+            if prop.startswith("no_match") and K.why[(local, prop)] and K.why[(local, prop)][0].startswith("AX-"):
+                K.why[(local, prop)] = (["AX-NET-12"] if "bo:ImpliedRulesRuleSet" in K.types.get(local, set())
+                                        else ["AX-NET-03"])
     return out
 
 
 def _justify(prop: str, val: str) -> list:
     if prop == "effect":
         return ["AX-NET-01", "AX-NET-10"]
-    if prop == "no_match":
-        return ["AX-NET-03"]
+    if prop.startswith("no_match"):
+        return ["AX-NET-12"] if val == "allow" else ["AX-NET-03", "AX-NET-12"]
     if prop == "precedence":
         return ["AX-NET-02"] if val == "order_independent" else ["AX-NET-04"]
     if prop == "tie_break":
         return ["AX-NET-05"]
     if prop == "state":
-        return ["AX-NET-07", "AX-NET-08"]
+        return ["AX-NET-07", "AX-NET-08", "AX-NET-11"]
     if prop == "priority_rule":
         return ["AX-NET-06"]
     return AX.for_entailment(prop)
