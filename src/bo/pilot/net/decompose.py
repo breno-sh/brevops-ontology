@@ -4,8 +4,10 @@ O tipo da unidade (ENTITY | COMPONENT | FACET | BINDING | UNKNOWN), o pai e a id
 bo.grain.instance.decompose_config com o mesmo adaptador de evidência do PILOT-NET-GLOSS e do bo.grain.realdata
 (C25Adapter sobre o SERVICE-EVIDENCE do pin, átomos C01 do SCHEMA-*). Nada aqui decide grão: o que o GRAIN não
 decide sai UNKNOWN com a evidência que falta. Este módulo só (1) diz que construção levantada (lift.py) é qual
-unidade neutra do vocabulário dos compromissos (rule_set, filter_rule, attachment, selection) e (2) escreve a chave
-de ocorrência na forma do gabarito: elemento com nome -> {"name"}; anônimo -> campos de identidade normalizados.
+unidade neutra do vocabulário dos compromissos (rule_set, filter_rule, attachment, selection), (2) escreve a chave
+de ocorrência na forma do gabarito: elemento com nome -> {"name"}, resolvido ou não o pai; anônimo -> campos de
+identidade normalizados; pai dado por atributo de nome com valor simbólico -> o símbolo (F3 do DIAG_T3), e (3)
+conta a repetição de elementos distintos com a mesma chave pela evidência publicada (F4, ver _dedupe).
 
 Fonte do TIPO, em ordem: (1) a unidade canônica C19 oficial do PILOT-NET-GLOSS ($BO_DATA/PILOT-NET-GLOSS/
 canonical_units.jsonl: a mesma biblioteca aplicada no nível de esquema) da construção (tipo[.bloco]); (2) para
@@ -23,6 +25,7 @@ import json
 import random
 
 from . import lift as LF
+from . import vocab as V
 
 SCHEMA_DIR = {"aws": "SCHEMA-AWS", "google": "SCHEMA-GCP", "azurerm": "SCHEMA-AZURE", "oci": "SCHEMA-OCI"}
 _cache: dict = {}
@@ -150,7 +153,9 @@ def decompose(fx: dict) -> list:
              "tf": {"resource_type": s.kind}}
         if k == "UNKNOWN":
             u["unknown"] = miss
+        u["_src"] = s.tf["address"]
         units.append(u)
+    by_addr = {f"{r['type']}.{r['name']}": r for r in fx["config"]["resources"]}
     for rid, r in L.rules.items():
         if "block_path" in r.tf:
             nid = f"{r.tf['address']}/{r.tf['block_path']}#{r.tf['index']}"
@@ -160,15 +165,15 @@ def decompose(fx: dict) -> list:
             tf = {"resource_type": r.tf["resource_type"]}
         cid = f"{r.tf['resource_type']}.{r.tf['block_path']}" if "block_path" in r.tf else r.tf["resource_type"]
         k, miss, o = _kind_c19(go, nid, cid)
-        parent = L.sets[r.set_id].tf["address"] if r.set_id else "UNKNOWN"
+        parent = L.sets[r.set_id].tf["address"] if r.set_id else _parent_symbol(fx["provider"], r, by_addr)
         name = r.facts.get("name")
-        if r.set_id is None:
+        if name is not None and name.known():
+            occ = {"name": name.raw}           # elemento nomeado: sempre o nome, resolvido ou não o pai (F3)
+        elif r.set_id is None:
             occ = {"rule": r.tf["address"]}
-        elif name is not None and name.known():
-            occ = {"name": name.raw}
         else:
             occ = _content_key(r)
-        u = {"domain_unit": "filter_rule", "kind": k, "parent": parent, "occurrence": occ, "tf": tf}
+        u = {"domain_unit": "filter_rule", "kind": k, "parent": parent, "occurrence": occ, "tf": tf, "_src": nid}
         if k == "UNKNOWN":
             u["unknown"] = miss
         units.append(u)
@@ -192,6 +197,7 @@ def decompose(fx: dict) -> list:
             u["unknown"] = miss
         if fx["provider"] == "google":
             continue        # na fatia do gabarito, a rede é o conjunto e o vínculo é a seleção por rótulo
+        u["_src"] = f"{nid}/{a.tf.get('block_path', '')}#{a.tf.get('index', '')}->{set_addr}"
         units.append(u)
     for sel in L.selections:
         r = L.rules[sel.rule_id]
@@ -203,8 +209,47 @@ def decompose(fx: dict) -> list:
                  "tf": {"resource_type": r.tf["resource_type"], "block_path": "target_tags"}}
             if k == "UNKNOWN":
                 u["unknown"] = list(o.missing) if o is not None else ["grain_occurrence"]
+            u["_src"] = f"{r.tf['address']}:target_tags#{i}"
             units.append(u)
-    return _dedupe(units)
+    return _dedupe(units, fx["provider"])
+
+
+def _parent_symbol(provider: str, r, by_addr: dict) -> str:
+    """Pai de regra em recurso separado que o lift não ligou a um conjunto da configuração (F3 do DIAG_T3).
+
+    Atributo de NOME do pai (vocab parent_by = "name") com valor simbólico: o pai é o símbolo (rótulo sem o
+    prefixo "sym:"), como a ponta simbólica de anexação. Atributo de id simbólico, nome literal fora da
+    configuração ou referência não resolvida: "UNKNOWN" (comportamento da calibração, NETC-C01-AWS-SYM)."""
+    spec = V.STANDALONE_RULES.get(provider, {}).get(r.tf["resource_type"])
+    res = by_addr.get(r.tf["address"])
+    if spec is None or res is None or spec.get("parent_by") != "name":
+        return "UNKNOWN"
+    pv = res["values"].get(spec["parent"])
+    return pv[4:] if LF.is_sym(pv) and pv[4:] else "UNKNOWN"
+
+
+def repetition_evidence(provider: str, rtype: str, block: str | None):
+    """(duplicates_accepted, evidence_ids) do SERVICE-EVIDENCE do pin para o item da coleção (aspecto
+    item_identity, R-OBS-ID), ou (None, []) sem fato. True = repetição idêntica aceita (multiconjunto);
+    False = repetição recusada ou idempotente (funde)."""
+    if "ev" not in _cache:
+        from bo.grain.realdata import load_evidence
+        _cache["ev"] = load_evidence()
+    key = ("rep", provider, rtype, block or "")
+    if key not in _cache:
+        vals, ids = set(), []
+        for rec in _cache["ev"]:
+            v = rec.get("value")
+            if (rec.get("provider") != provider or rec.get("terraform_resource_type") != rtype
+                    or not isinstance(v, dict) or "duplicates_accepted" not in v
+                    or (v.get("block_path") or rec.get("block_path") or "") != (block or "")
+                    or rec.get("status") not in (None, "stated")):
+                continue
+            vals.add(bool(v["duplicates_accepted"]))
+            ids.append(rec["evidence_id"])
+        # fatos contraditórios não decidem
+        _cache[key] = (vals.pop(), sorted(ids)) if len(vals) == 1 else (None, sorted(ids) if vals else [])
+    return _cache[key]
 
 
 def _binding_occ(go, holder: str, block_path: str, set_addr: str | None):
@@ -220,14 +265,36 @@ def _binding_occ(go, holder: str, block_path: str, set_addr: str | None):
     return "UNKNOWN", ["grain_occurrence"]
 
 
-def _dedupe(units):
-    seen, out = set(), []
+def _dedupe(units, provider: str):
+    """Funde só o MESMO elemento Terraform emitido duas vezes (mesma origem `_src`). Elementos distintos com a
+    mesma chave são REPETIÇÃO (F4 do DIAG_T3): multiconjunto quando o SERVICE-EVIDENCE diz que a repetição
+    idêntica é aceita; fusão só quando diz que é recusada ou idempotente; sem fato, cada repetição sai UNKNOWN
+    (missing item_identity), nunca fundida em silêncio. Ordem: a da primeira ocorrência de cada chave."""
+    groups: dict = {}
     for u in units:
         k = json.dumps([u["domain_unit"], u["parent"], u["occurrence"]], sort_keys=True)
-        if k in seen:
+        g = groups.setdefault(k, {})
+        g.setdefault(u.get("_src") or id(u), u)
+    out = []
+    for g in groups.values():
+        us = list(g.values())
+        if len(us) == 1:
+            out.append(us[0])
             continue
-        seen.add(k)
-        out.append(u)
+        tf = us[0]["tf"]
+        acc, ev = repetition_evidence(provider, tf.get("resource_type"), tf.get("block_path"))
+        rep = {"count": len(us), "evidence": ev}
+        if acc is False:
+            out.append(dict(us[0], repetition=dict(rep, policy="merged")))
+        elif acc is True:
+            out.extend(dict(u, repetition=dict(rep, policy="multiset")) for u in us)
+        else:
+            for u in us:
+                miss = sorted(set(u.get("unknown") or []) | {"item_identity"})
+                out.append(dict(u, kind="UNKNOWN", unknown=miss, repetition=dict(rep, policy="unknown"),
+                                kind_without_repetition=u["kind"]))
+    for u in out:
+        u.pop("_src", None)
     return out
 
 
