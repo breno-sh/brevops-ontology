@@ -1,7 +1,7 @@
 {
  "schema": "bo.contracts_adoption/1",
  "module": "CONTRACTS",
- "generated_at": "2026-11-04T18:34:08-03:00",
+ "generated_at": "2026-11-04T21:32:12-03:00",
  "adopted": [
   {
    "source": "results/REQUIREMENTS/C24_proposta/requirements.schema.json",
@@ -440,6 +440,182 @@
    "requested_by": "PILOT-NET-GLOSS",
    "source": "results/PILOT-NET-GLOSS/CONTRACT_CHANGE.txt (CC-NET-5)",
    "change": "evidence_level aceita observed (mesma semântica do C25 1.4.0; sem model_id); o C19 herda"
+  },
+  {
+   "contract": "GRAIN",
+   "kind": "external",
+   "from": "0.1.0",
+   "to": "0.1.1",
+   "commit": "04f37f6",
+   "at": "2026-11-04T19:30:00-03:00",
+   "requested_by": "PILOT-NET-GLOSS",
+   "source": "results/PILOT-NET-GLOSS/CONTRACT_CHANGE.txt (CC-1)",
+   "change": "emenda 0.1.1 do GRAIN: adaptador do C25 por aspecto"
+  },
+  {
+   "contract": "GRAIN",
+   "kind": "external",
+   "from": "0.1.3",
+   "to": "0.1.9",
+   "commit": "a296cd0..071daf6",
+   "at": "2026-11-04T19:30:00-03:00",
+   "requested_by": "PILOT-STO-GLOSS",
+   "source": "results/PILOT-STO-GLOSS/CONTRACT_CHANGE.txt (CC-5, CC-7)",
+   "change": "emendas 0.1.4–0.1.9 do GRAIN com os fatos da camada de API do SERVICE-EVIDENCE (767bb22, ce1e590, 83953b9)"
+  },
+  {
+   "contract": "ARBITERLIB",
+   "kind": "external",
+   "from": "ARBITER-20261104",
+   "to": "ARBITER-20261104-2",
+   "commit": "52371e8",
+   "at": "2026-11-04T19:30:00-03:00",
+   "requested_by": "PILOT-NET-MAP",
+   "source": "results/PILOT-NET-MAP/CONTRACT_CHANGE.txt (CC-MAP-NET-1)",
+   "change": "recongelamento do árbitro sobre a base (freeze_receipt_ARBITER-20261104-2)"
+  },
+  {
+   "contract": "ARBITERLIB",
+   "kind": "external",
+   "from": "ARBITER-20261104",
+   "to": "ARBITER-20261104-2",
+   "commit": "52371e8",
+   "at": "2026-11-04T19:30:00-03:00",
+   "requested_by": "PILOT-STO-MAP",
+   "source": "results/PILOT-STO-MAP/CONTRACT_CHANGE.txt (CC-1)",
+   "change": "recongelamento do árbitro sobre a base (freeze_receipt_ARBITER-20261104-2)"
+  },
+  {
+   "contract": "ARBITERLIB",
+   "kind": "external",
+   "from": "5c5662d",
+   "to": "ARBITER-20261104",
+   "commit": "35e299f",
+   "at": "2026-11-04T19:30:00-03:00",
+   "requested_by": "PILOT-NET-MAP",
+   "source": "results/PILOT-NET-MAP/CONTRACT_CHANGE.txt (CC-MAP-NET-2)",
+   "change": "recongelamento com os ids de regra do C21 renomeados (EVIDENCE, SENTINEL)"
+  },
+  {
+   "contract": "ARBITERLIB",
+   "kind": "external",
+   "from": "5c5662d",
+   "to": "ARBITER-20261104",
+   "commit": "35e299f",
+   "at": "2026-11-04T19:30:00-03:00",
+   "requested_by": "PILOT-STO-MAP",
+   "source": "results/PILOT-STO-MAP/CONTRACT_CHANGE.txt (CC-2)",
+   "change": "recongelamento com os ids de regra do C21 renomeados"
+  },
+  {
+   "contract": "ARBITERLIB",
+   "kind": "external",
+   "from": "ARBITER-20261104-2",
+   "to": "ARBITER-20261104-3",
+   "commit": "2028169, cc57c0a",
+   "at": "2026-11-04T19:30:00-03:00",
+   "requested_by": "PILOT-NET-MAP",
+   "source": "results/PILOT-NET-MAP/CONTRACT_CHANGE.txt (CC-MAP-NET-4)",
+   "change": "saída padrão em $BO_TMP/arbiter com --check-unproven sem --out"
+  },
+  {
+   "contract": "ARBITERLIB",
+   "kind": "external",
+   "from": "ARBITER-20261104-2",
+   "to": "ARBITER-20261104-3",
+   "commit": "2028169, cc57c0a",
+   "at": "2026-11-04T19:30:00-03:00",
+   "requested_by": "PILOT-STO-MAP",
+   "source": "results/PILOT-STO-MAP/CONTRACT_CHANGE.txt (CC-7)",
+   "change": "veredito próprio para ausência tipada"
+  },
+  {
+   "contract": "TRANSFORMS",
+   "kind": "external",
+   "from": "1.0.0",
+   "to": "1.1.0",
+   "commit": "e3f14b1",
+   "at": "2026-11-04T19:30:00-03:00",
+   "requested_by": "PILOT-STO-MAP",
+   "source": "results/PILOT-STO-MAP/CONTRACT_CHANGE.txt (CC-9)",
+   "change": "domínio finito de enum_to_bool"
+  },
+  {
+   "contract": "TRANSFORMS",
+   "kind": "external",
+   "from": "1.2.0",
+   "to": "1.3.0",
+   "commit": "325a84b",
+   "at": "2026-11-04T19:30:00-03:00",
+   "requested_by": "PILOT-STO-MAP",
+   "source": "results/PILOT-STO-MAP/CONTRACT_CHANGE.txt (CC-5)",
+   "change": "bytes e bits em AmountOfData (com SEMANTICS ea53bcf, UNITS emenda 1 e C05 3.1.0)"
+  },
+  {
+   "contract": "SEMANTICS",
+   "kind": "external",
+   "from": "1.2",
+   "to": "1.3",
+   "commit": "61d6fae",
+   "at": "2026-11-04T19:30:00-03:00",
+   "requested_by": "PILOT-STO-MAP",
+   "source": "results/PILOT-STO-MAP/CONTRACT_CHANGE.txt (CC-3)",
+   "change": "invert aceita funções do registro fechado"
+  },
+  {
+   "contract": "PILOT-STO-GLOSS",
+   "kind": "external",
+   "from": "MANIFEST 7d2efa60",
+   "to": "MANIFEST f5f2131d",
+   "commit": "5f0ebb5",
+   "at": "2026-11-04T19:30:00-03:00",
+   "requested_by": "PILOT-STO-MAP",
+   "source": "results/PILOT-STO-MAP/CONTRACT_CHANGE.txt (CC-4)",
+   "change": "pacote novo do glossário sobre o GRAIN 0.1.6 e o SERVICE-EVIDENCE 767bb22"
+  },
+  {
+   "contract": "REPO",
+   "kind": "external",
+   "from": "privacy_lint d4559dd",
+   "to": "privacy_lint 7e444c2",
+   "commit": "7e444c2",
+   "at": "2026-11-04T19:30:00-03:00",
+   "requested_by": "PILOT-STO-MAP",
+   "source": "results/PILOT-STO-MAP/CONTRACT_CHANGE.txt (CC-10)",
+   "change": "regra de 12 dígitos ignora id hex curto com letra"
+  },
+  {
+   "contract": "SERVICE-EVIDENCE",
+   "kind": "external",
+   "from": "37fbcf0",
+   "to": "83953b9",
+   "commit": "83953b9",
+   "at": "2026-11-04T19:30:00-03:00",
+   "requested_by": "PILOT-NET-ORACLE",
+   "source": "results/PILOT-NET-ORACLE/CONTRACT_CHANGE.txt (4)",
+   "change": "linha do NSG oci publicada (R-CONN-DOC)"
+  },
+  {
+   "contract": "C20",
+   "kind": "citation",
+   "from": "3.2.0",
+   "to": "3.3.0",
+   "commit": "9919e4c",
+   "at": "2026-11-04T19:30:00-03:00",
+   "requested_by": "PILOT-NET-GLOSS",
+   "source": "results/PILOT-NET-GLOSS/CONTRACT_CHANGE.txt (CC-NET-4)",
+   "change": "mesma emenda C20 3.2.0->3.3.0 do CONTRACTS, citada por módulo"
+  },
+  {
+   "contract": "C09",
+   "kind": "citation",
+   "from": "3.1.0",
+   "to": "3.2.0",
+   "commit": "9919e4c",
+   "at": "2026-11-04T19:30:00-03:00",
+   "requested_by": "PILOT-STO-MAP",
+   "source": "results/PILOT-STO-MAP/CONTRACT_CHANGE.txt (CC-6)",
+   "change": "mesma emenda C09 3.1.0->3.2.0 do CONTRACTS, citada por módulo"
   }
  ],
  "findings": [

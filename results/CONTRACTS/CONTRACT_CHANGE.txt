@@ -1,0 +1,29 @@
+CONTRACT_CHANGE — CONTRACTS -> COORD/PREREG (E6 do PILOT-EXIT, ciclo v4)
+Gravado em 2026-11-04T21:35:00-03:00 (America/Recife). Decisão do pré-registro; o CONTRACTS não mexe no avaliador
+nem no critério.
+
+Regra do avaliador (src/bo/pilot_exit/amendments.py, ledger): um item de results/PILOT-*/CONTRACT_CHANGE.txt é
+VERSIONED só quando (a) uma entrada do registro bo.contracts.amendments.AMENDMENTS cita
+'results/<módulo>/CONTRACT_CHANGE.txt (<item>)', ou (b) o próprio pedido o marca RESOLVIDO/adotado com versão ou
+commit na mesma frase. Recusa e adiamento não têm via: o registro é de emendas (mudança de versão de->para), e não
+houve mudança versionada nesses itens. Pôr uma "decisão" ali como se fosse emenda faria o E6 contar como versionado o
+que não mudou; por isso não foi feito.
+
+Recalculado agora em modo leitura (só os CONTRACT_CHANGE dos pilotos e o registro; nada das retidas): 34 pedidos,
+27 VERSIONED, 7 OPEN. Os 7, todos sem mudança versionada possível hoje:
+
+  recusados / achados (nenhuma mudança cabe; a resposta foi "não há evidência" ou "é resultado do controle")
+    PILOT-NET-E2E CC-NET-E2E-3   c2_taxonomy traduz fixture inválida; é o resultado do controle (controls.json)
+    PILOT-NET-ORACLE 3           estado de conexão sem evidência publicada (SE 83953b9/28faee8: continua UNKNOWN)
+    PILOT-NET-ORACLE 5           prioridade única do NSG Azure ambígua na doc e na spec (continua UNKNOWN)
+  adiados para a fase 2 (decisão do coordenador; lacuna de evidência ou de outro dono)
+    PILOT-NET-E2E CC-NET-E2E-2   resolvido em parte (GRAIN cbe1f08, SE 28faee8; E2 11 -> 26/42); o resto é lacuna
+    PILOT-NET-GLOSS CC-NET-3     alvo das referências e timeouts (dono CAND)
+    PILOT-STO-GLOSS CC-4         metadado do catálogo (carimbos C19/C20); regenerar o plano reabre todos os gates
+    PILOT-STO-MAP CC-8           a spec não dá chave de ocorrência ao item (lifecycle_rule google, rules oci, grants)
+
+Pedido (escolher uma, no pré-registro, antes da próxima tentativa):
+  A. O E6 passa a contar recusa e adiamento DECLARADOS (com motivo e dono em results/CONTRACTS/requests_ledger.json,
+     já gravado) como fechados, separados de VERSIONED: E6 = 0 pedidos sem decisão. Exige mudar o critério.
+  B. O critério fica: E6 reprova enquanto houver esses 7, e eles só fecham com mudança versionada (fase 2).
+Fonte única das decisões: results/CONTRACTS/requests_ledger.json (114 pedidos, 0 abertos sem decisão).

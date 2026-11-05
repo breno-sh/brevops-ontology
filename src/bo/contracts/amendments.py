@@ -135,11 +135,63 @@ AMENDMENTS = [
 ]
 
 
+# ---- registro do E6 (ciclo v4): pedidos dos pilotos resolvidos por mudança VERSIONADA de outro dono, e citações
+# por módulo de emendas do CONTRACTS que já existiam (uma entrada por módulo, para o avaliador do PILOT-EXIT ler
+# 'results/<módulo>/CONTRACT_CHANGE.txt (<item>)' sem misturar itens de módulos diferentes). Cada entrada aponta a
+# versão de->para e o commit em bo/base; nenhuma é emenda de contrato do CONTRACTS ('kind' external | citation).
+# Recusados e adiados NÃO entram aqui (não houve mudança versionada): ver results/CONTRACTS/CONTRACT_CHANGE.txt.
+_X = "2026-11-04T19:30:00-03:00"
+
+
+def _ext(owner, frm, to, commit, module, items, change):
+    return {"contract": owner, "kind": "external", "from": frm, "to": to, "commit": commit, "at": _X,
+            "requested_by": module, "source": f"results/{module}/CONTRACT_CHANGE.txt ({', '.join(items)})",
+            "change": change}
+
+
+def _cite(cid, frm, to, commit, module, items):
+    return {"contract": cid, "kind": "citation", "from": frm, "to": to, "commit": commit, "at": _X,
+            "requested_by": module, "source": f"results/{module}/CONTRACT_CHANGE.txt ({', '.join(items)})",
+            "change": f"mesma emenda {cid} {frm}->{to} do CONTRACTS, citada por módulo"}
+
+
+AMENDMENTS += [
+    _ext("GRAIN", "0.1.0", "0.1.1", "04f37f6", "PILOT-NET-GLOSS", ["CC-1"],
+         "emenda 0.1.1 do GRAIN: adaptador do C25 por aspecto"),
+    _ext("GRAIN", "0.1.3", "0.1.9", "a296cd0..071daf6", "PILOT-STO-GLOSS", ["CC-5", "CC-7"],
+         "emendas 0.1.4–0.1.9 do GRAIN com os fatos da camada de API do SERVICE-EVIDENCE (767bb22, ce1e590, 83953b9)"),
+    _ext("ARBITERLIB", "ARBITER-20261104", "ARBITER-20261104-2", "52371e8", "PILOT-NET-MAP", ["CC-MAP-NET-1"],
+         "recongelamento do árbitro sobre a base (freeze_receipt_ARBITER-20261104-2)"),
+    _ext("ARBITERLIB", "ARBITER-20261104", "ARBITER-20261104-2", "52371e8", "PILOT-STO-MAP", ["CC-1"],
+         "recongelamento do árbitro sobre a base (freeze_receipt_ARBITER-20261104-2)"),
+    _ext("ARBITERLIB", "5c5662d", "ARBITER-20261104", "35e299f", "PILOT-NET-MAP", ["CC-MAP-NET-2"],
+         "recongelamento com os ids de regra do C21 renomeados (EVIDENCE, SENTINEL)"),
+    _ext("ARBITERLIB", "5c5662d", "ARBITER-20261104", "35e299f", "PILOT-STO-MAP", ["CC-2"],
+         "recongelamento com os ids de regra do C21 renomeados"),
+    _ext("ARBITERLIB", "ARBITER-20261104-2", "ARBITER-20261104-3", "2028169, cc57c0a", "PILOT-NET-MAP",
+         ["CC-MAP-NET-4"], "saída padrão em $BO_TMP/arbiter com --check-unproven sem --out"),
+    _ext("ARBITERLIB", "ARBITER-20261104-2", "ARBITER-20261104-3", "2028169, cc57c0a", "PILOT-STO-MAP", ["CC-7"],
+         "veredito próprio para ausência tipada"),
+    _ext("TRANSFORMS", "1.0.0", "1.1.0", "e3f14b1", "PILOT-STO-MAP", ["CC-9"], "domínio finito de enum_to_bool"),
+    _ext("TRANSFORMS", "1.2.0", "1.3.0", "325a84b", "PILOT-STO-MAP", ["CC-5"],
+         "bytes e bits em AmountOfData (com SEMANTICS ea53bcf, UNITS emenda 1 e C05 3.1.0)"),
+    _ext("SEMANTICS", "1.2", "1.3", "61d6fae", "PILOT-STO-MAP", ["CC-3"], "invert aceita funções do registro fechado"),
+    _ext("PILOT-STO-GLOSS", "MANIFEST 7d2efa60", "MANIFEST f5f2131d", "5f0ebb5", "PILOT-STO-MAP", ["CC-4"],
+         "pacote novo do glossário sobre o GRAIN 0.1.6 e o SERVICE-EVIDENCE 767bb22"),
+    _ext("REPO", "privacy_lint d4559dd", "privacy_lint 7e444c2", "7e444c2", "PILOT-STO-MAP", ["CC-10"],
+         "regra de 12 dígitos ignora id hex curto com letra"),
+    _ext("SERVICE-EVIDENCE", "37fbcf0", "83953b9", "83953b9", "PILOT-NET-ORACLE", ["4"],
+         "linha do NSG oci publicada (R-CONN-DOC)"),
+    _cite("C20", "3.2.0", "3.3.0", "9919e4c", "PILOT-NET-GLOSS", ["CC-NET-4"]),
+    _cite("C09", "3.1.0", "3.2.0", "9919e4c", "PILOT-STO-MAP", ["CC-6"]),
+]
+
+
 def chain(cid: str) -> list[str]:
-    """Versões aceitas de um contrato, da mais antiga à publicada."""
+    """Versões aceitas de um contrato, da mais antiga à publicada (só as emendas do CONTRACTS)."""
     vs = []
     for a in AMENDMENTS:
-        if a["contract"] == cid:
+        if a["contract"] == cid and not a.get("kind"):
             if not vs:
                 vs.append(a["from"])
             vs.append(a["to"])
