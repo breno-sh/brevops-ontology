@@ -11694,17 +11694,22 @@
    "summary": "versionamento do contêiner não lido"
   }
  },
- "generated_at": "2026-11-04T09:01:42-03:00",
+ "generated_at": "2026-11-04T21:32:22-03:00",
  "heldout": {
-  "ciphertext_sha256": "572f133361bc21d79ae225ba98c42d3f7fa5eba0b6a472c6292264ea735a8ce0",
+  "ciphertext_sha256": "8fd31ee6fc09ac596231db4694ec2597b9d59ebb1a76e39f0e805f8c560259d2",
   "counts": {
-   "checks": 204,
+   "checks": 230,
+   "checks_derived": 176,
+   "checks_published_only": 54,
    "direction_entries": 181,
-   "fixtures": 123
+   "edge_v4_fixtures": 13,
+   "entries_derived": 177,
+   "entries_published_only": 4,
+   "fixtures": 136
   },
-  "plaintext_sha256": "cb9d9d1187cfe78e5db722b80dc275dfe2b92749c94cdc334395631c2e98fc3b",
+  "plaintext_sha256": "7cc7de68b632caf46422c3fc32b8900c53a58117ac8499815ec568579bb2016a",
   "recipient_fingerprint_sha256": "3677203c7657c3b0043246f3ae13cc25b41ec29dac5a6a99134aad9f6bd43e26",
-  "sealed_at": "2026-11-04T09:01:42-03:00",
+  "sealed_at": "2026-11-04T21:32:22-03:00",
   "sealed_file": "$BO_DATA/PILOT-STO-ORACLE/sealed/heldout.cms.pem"
  },
  "module": "PILOT-STO-ORACLE",

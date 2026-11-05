@@ -4,11 +4,16 @@
   "direction_entries": 181,
   "fixtures": 123
  },
- "generated_at": "2026-11-04T09:01:43-03:00",
+ "generated_at": "2026-11-04T21:32:22-03:00",
  "heldout": {
-  "checks": 204,
+  "checks": 230,
+  "checks_derived": 176,
+  "checks_published_only": 54,
   "direction_entries": 181,
-  "fixtures": 123
+  "edge_v4_fixtures": 13,
+  "entries_derived": 177,
+  "entries_published_only": 4,
+  "fixtures": 136
  },
  "module": "PILOT-STO-ORACLE",
  "schema": "bo.pilot.sto.build_report/1",

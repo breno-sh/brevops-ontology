@@ -90,7 +90,7 @@ class Gen:
         fx["split"], fx["case"], fx["polarity"] = self.split, mc, pol
         if invariant_group:
             fx["invariant_group"] = invariant_group if self.split == "calib" else f"{invariant_group}-{_tok(4)}"
-        self.fixtures.append({"fixture": fx, "checks": checks})
+        self.fixtures.append({"fixture": fx, "checks": checks, **({"edge_v4": True} if getattr(self, "_edge", False) else {})})
         return fx
 
 
@@ -674,6 +674,116 @@ def mc_pub_gran(g):
 MC_BUILDERS = (mc_ver, mc_dec_pack, mc_dec_scope, mc_lc_cur, mc_lc_noncur, mc_lc_filter, mc_pub_level, mc_pub_gran)
 
 
+# ======================================================================== bordas novas (ciclo v4, só retidas)
+def _shuffled(g, xs):
+    xs = list(xs)
+    g._rnd.shuffle(xs)
+    return xs
+
+
+def mc_edge_v4(g):
+    """Casos de borda do ciclo v4, só na partição retida (a calibração não muda): regra de ciclo de vida
+    embutida x separada na AWS, facetas embutidas do Google, facetas de conta do Azure com política de prefixos em
+    ordem sorteada, contêineres Azure de mesmo nome em contas diferentes."""
+    assert g.split == "heldout"
+    # 1. AWS: lifecycle_rule embutido x aws_s3_bucket_lifecycle_configuration: mesmo efeito e mesma decomposição
+    E = g.pick(30, 3, 80)
+    T = E + g.pick(5, 2, 25)
+    pre = g.choice("logs/", ["logs/", "tmp/", "archive/", "cache/"])
+    ka, kb, kc = f"{pre}{g.key('a.bin')}", f"{pre}{g.key('b.bin')}", g.key("keep.bin")
+    evs = [put(0, ka), put(T - E, kb), put(T - E + 1, ka.replace("a.bin", "c.bin")), put(0, kc)]
+    kc2 = ka.replace("a.bin", "c.bin")
+    grp = "INV-AWS-LIFECYCLE"
+    n = g.name("data")
+    for form in _shuffled(g, ["inline", "separate"]):
+        r, c = container("aws", n)
+        if form == "inline":
+            r["aws_s3_bucket"][n]["lifecycle_rule"] = [{"id": "expire", "enabled": True, "prefix": pre, "expiration": [{"days": E}]}]
+            unit_by = f"{c}/lifecycle_rule"
+        else:
+            r = merge(r, expire_current("aws", n, E, prefix=pre))
+        cu = f"container:{c}"
+        g.add("aws", "MC-DEC-PACK", "positive", f"regra de ciclo de vida {form}: mesma faceta e mesmo efeito", r,
+              [{"kind": "decomposition", "unit": f"setting:lifecycle@{cu}", "expect": _facet(cu, [cu])},
+               {"kind": "version_state", "version": f"{ka}#1", "expect": "DELETED"},
+               {"kind": "version_state", "version": f"{kb}#1", "expect": "DELETED"},
+               {"kind": "version_state", "version": f"{kc2}#1", "expect": "CURRENT"},
+               {"kind": "version_state", "version": f"{kc}#1", "expect": "CURRENT"}],
+              timeline=tl(c, T, evs), invariant_group=grp)
+    r, c = container("aws", n)
+    r["aws_s3_bucket"][n]["lifecycle_rule"] = [{"id": "expire", "enabled": True, "prefix": pre, "expiration": [{"days": E}]}]
+    g.add("aws", "MC-DEC-PACK", "negative", "regra embutida alegada entidade própria", r,
+          [{"kind": "claim", "claim": {"about": "decomposition", "unit": f"setting:lifecycle@container:{c}", "value": {"kind": "ENTITY"}},
+            "expect": {"verdict": "REJECT", "code": "CONTRADICTS_ORACLE"}}])
+    r2 = merge(copy.deepcopy(r), expire_current("aws", n, E + 1, prefix=pre))
+    g.add("aws", "MC-LC-CUR", "unknown", "regra embutida e recurso separado no mesmo contêiner: a doc proíbe misturar", r2,
+          [{"kind": "timeline", "expect": unk("UNRESOLVED")}], timeline=tl(c, T, evs))
+    # 2. Google: facetas embutidas (versionamento, ciclo de vida, prevenção) e concessão separada
+    n = g.name("site")
+    r, c = container("google", n, versioning=True, access="read")
+    r["google_storage_bucket"][n]["public_access_prevention"] = g.choice("inherited", ["inherited", "enforced"])
+    r["google_storage_bucket"][n]["lifecycle_rule"] = _shuffled(g, [
+        {"action": [{"type": "Delete"}], "condition": [{"age": E, "with_state": "LIVE"}]},
+        {"action": [{"type": "Delete"}], "condition": [{"days_since_noncurrent_time": E, "with_state": "ARCHIVED"}]}])
+    cu = f"container:{c}"
+    g.add("google", "MC-DEC-SCOPE", "positive", "facetas embutidas do Google e concessão separada: todas com alcance do contêiner", r,
+          [{"kind": "decomposition", "unit": f"setting:versioning@{cu}", "expect": _facet(cu, [cu])},
+           {"kind": "decomposition", "unit": f"setting:lifecycle@{cu}", "expect": _facet(cu, [cu])},
+           {"kind": "decomposition", "unit": f"setting:public_access_block@{cu}", "expect": _facet(cu, [cu])},
+           {"kind": "decomposition", "unit": f"setting:access_grant@{cu}", "expect": _facet(cu, [cu])}],
+          context={"org_policy_public_access_prevention": False})
+    g.add("google", "MC-DEC-SCOPE", "negative", "faceta embutida alegada de outro dono", r,
+          [{"kind": "claim", "claim": {"about": "decomposition", "unit": f"setting:lifecycle@{cu}", "value": {"owner": "self"}},
+            "expect": {"verdict": "REJECT", "code": "CONTRADICTS_ORACLE"}}], context={"org_policy_public_access_prevention": False})
+    # 3. Azure: facetas de conta; política com prefixos de dois contêineres em ordem sorteada, terceiro fora
+    a = g.name("acct")
+    names = [g.name(x) for x in ("logs", "media", "backup")]
+    parts, cs = [], []
+    for i, nm in enumerate(names):
+        rr, cc = container("azurerm", nm, versioning=True if i == 0 else None, account=a, account_attrs={} if i == 0 else None)
+        parts.append(rr)
+        cs.append(cc)
+    rr = merge(*parts)
+    rr["azurerm_storage_account"][a]["allow_nested_items_to_be_public"] = g.choice(False, [False, True])
+    hit = _shuffled(g, [names[0], names[1]])
+    rr["azurerm_storage_management_policy"] = {f"{a}_policy": {"storage_account_id": f"${{azurerm_storage_account.{a}.id}}", "rule": _shuffled(g, [
+        {"name": f"r{i}", "enabled": True, "filters": [{"blob_types": ["blockBlob"], "prefix_match": [f"{nm.replace('_', '-')}/{pre}"]}],
+         "actions": [{"base_blob": [{"delete_after_days_since_modification_greater_than": E - 1}]}]} for i, nm in enumerate(hit)])}}
+    nu = f"namespace:azurerm_storage_account.{a}"
+    allc = sorted(f"container:{x}" for x in cs)
+    g.add("azurerm", "MC-DEC-SCOPE", "positive", "conta com três contêineres: versionamento e público alcançam todos; política só os prefixados", rr,
+          [{"kind": "decomposition", "unit": f"setting:versioning@{nu}", "expect": _facet(nu, allc)},
+           {"kind": "decomposition", "unit": f"setting:public_access_block@{nu}", "expect": _facet(nu, allc)},
+           {"kind": "decomposition", "unit": f"setting:lifecycle@{nu}", "expect": _facet(nu, sorted(f"container:{x}" for x in cs[:2]))},
+           {"kind": "versioning", "container": cs[2], "expect": "ENABLED"}])
+    g.add("azurerm", "MC-DEC-SCOPE", "negative", "política de prefixos alegada com alcance na conta inteira", rr,
+          [{"kind": "claim", "claim": {"about": "decomposition", "unit": f"setting:lifecycle@{nu}", "value": {"effective_scope": allc}},
+            "expect": {"verdict": "REJECT", "code": "CONTRADICTS_ORACLE"}}])
+    k3 = f"{pre}{g.key('z.bin')}"
+    g.add("azurerm", "MC-LC-FILTER", "positive", "terceiro contêiner da conta fora dos prefixos: nada expira", rr,
+          [{"kind": "version_state", "version": f"{k3}#1", "expect": "CURRENT"}],
+          timeline=tl(cs[2], T, [put(0, k3)]))
+    # 4. Azure: contêineres de mesmo nome em contas diferentes são entidades distintas (namespace diferente)
+    same = g.name("shared").replace("_", "-")
+    a1, a2 = g.name("acct"), g.name("acct")
+    r1, c1 = container("azurerm", "c_one", account=a1, account_attrs={}, cname=same)
+    r2_, c2 = container("azurerm", "c_two", account=a2, account_attrs={}, cname=same)
+    g.add("azurerm", "MC-DEC-PACK", "positive", "mesmo nome de contêiner em contas diferentes: duas entidades", merge(r1, r2_),
+          [{"kind": "decomposition", "unit": f"container:{c1}", "expect": {"kind": "ENTITY", "namespace": f"namespace:azurerm_storage_account.{a1}"}},
+           {"kind": "decomposition", "unit": f"container:{c2}", "expect": {"kind": "ENTITY", "namespace": f"namespace:azurerm_storage_account.{a2}"}}])
+    g.add("azurerm", "MC-DEC-PACK", "negative", "contêiner alegado no namespace da outra conta", merge(r1, r2_),
+          [{"kind": "claim", "claim": {"about": "decomposition", "unit": f"container:{c1}", "value": {"namespace": f"namespace:azurerm_storage_account.{a2}"}},
+            "expect": {"verdict": "REJECT", "code": "CONTRADICTS_ORACLE"}}])
+    # 5. Google sem bloco de versionamento: padrão (DISABLED) e nenhuma faceta de versionamento
+    n = g.name("plain")
+    r, c = container("google", n)
+    g.add("google", "MC-VER", "positive", "sem bloco de versionamento: nunca versionado, marcado como padrão", r,
+          [{"kind": "versioning", "container": c, "expect": "DISABLED"}])
+    g.add("google", "MC-DEC-PACK", "negative", "faceta de versionamento alegada sem bloco declarado", r,
+          [{"kind": "claim", "claim": {"about": "decomposition", "unit": f"setting:versioning@container:{c}", "value": {"kind": "FACET"}},
+            "expect": {"verdict": "REJECT", "code": "NO_SUCH_UNIT"}}])
+
+
 # ======================================================================== famílias por direção
 def _side(g, p, role, *, versioning=None, access=None, lc=None, read=None, ctx=None, bystander=False, account_ref=None):
     """Monta o lado de uma direção: devolve (fixture, contêiner)."""
@@ -857,6 +967,10 @@ def generate(split):
     g = Gen(split)
     for f in MC_BUILDERS:
         f(g)
+    if split == "heldout":
+        g._edge = True
+        mc_edge_v4(g)
+        g._edge = False
     for a, b in DIRECTIONS:
         for f in DIR_BUILDERS:
             f(g, a, b)

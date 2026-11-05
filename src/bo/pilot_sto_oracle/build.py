@@ -188,6 +188,88 @@ def cert_fingerprint(cert: Path) -> str:
     return out.strip().split("=", 1)[1].replace(":", "").lower()
 
 
+# ------------------------------------------------------------------ base de evidência de cada resposta
+def _rules_of(fx, chk, oracle):
+    k = chk["kind"]
+    if k == "claim":
+        cl = chk["claim"]
+        if cl["about"] == "disjoint_kinds":
+            return ["COMMITMENT:CMT-BKT-N01"]
+        sub = {"versioning": "versioning", "public_access": "public", "version_state": "version_state",
+               "decomposition": "decomposition"}[cl["about"]]
+        return _rules_of(fx, dict(cl, kind=sub), oracle)
+    if k == "versioning":
+        v = oracle.versioning(fx, chk["container"])
+        return v.rules if oracle.is_unk(v) else v["rules"]
+    if k in ("public", "apply_rejection"):
+        pa = oracle.public_access(fx, chk["container"])
+        out = list(pa["rules"])
+        ax = pa["axes"].get(chk.get("axis")) if chk.get("axis") else None
+        if oracle.is_unk(ax):
+            out += ax.rules
+        return out
+    if k in ("version_state", "timeline", "key_unknown"):
+        sres = oracle.simulate(fx)
+        if oracle.is_unk(sres):
+            return sres.rules
+        out = list(sres["rules"])
+        for u in sres["unknown_keys"].values():
+            out += u.get("rules", [])
+        return out
+    if k == "decomposition":
+        units = oracle.decompose(fx)
+        u = units.get(chk["unit"])
+        return list(u["rules"]) if u else sorted({r for x in units.values() for r in x["rules"]})
+    raise ValueError(k)
+
+
+def basis(rules, oracle):
+    """PUBLISHED_ONLY se toda regra usada é de nível published (nenhum fato OBSERVED atinge a fatia); DERIVED se alguma
+    é derived ou interpreted (levels diz quais). Compromisso protegido conta à parte."""
+    levels = sorted({("commitment" if r.startswith("COMMITMENT:") else oracle.RULES[r]["level"]) for r in rules})
+    cls = "PUBLISHED_ONLY" if levels and set(levels) <= {"published", "observed", "commitment"} else "DERIVED"
+    return {"class": cls, "levels": levels, "rules": sorted(set(rules))}
+
+
+def entry_rules(e, oracle):
+    out = []
+    for side, c in (("source", list(e["container_map"])[0]), ("target", list(e["container_map"].values())[0])):
+        fx = e[side]
+        for chk in ({"kind": "versioning", "container": c}, {"kind": "public", "container": c}):
+            out += _rules_of(fx, chk, oracle)
+        if fx.get("timeline"):
+            out += _rules_of(fx, {"kind": "timeline"}, oracle)
+    return out
+
+
+def mark_basis(gen, oracle):
+    for f in gen.fixtures:
+        for c in f["checks"]:
+            c["basis"] = basis(_rules_of(f["fixture"], c, oracle), oracle)
+        f["basis"] = "DERIVED" if any(c["basis"]["class"] == "DERIVED" for c in f["checks"]) else "PUBLISHED_ONLY"
+    for e in gen.entries:
+        e["basis"] = basis(entry_rules(e, oracle), oracle)
+
+
+def retire_current(reason):
+    """Move o conjunto retido selado atual para retired/<data>/ com RETIRED.json; o diretório sealed/ fica só com o certificado."""
+    sd = sealed_dir()
+    idx_p = sd / "SEALED_INDEX.json"
+    if not idx_p.exists():
+        return None
+    idx = json.loads(idx_p.read_text(encoding="utf-8"))
+    stamp = now_iso()
+    dest = data() / MODULE / "retired" / (stamp[:19].replace(":", "") + "-" + sha_file(sd / "heldout.cms.pem")[:12])
+    dest.mkdir(parents=True, exist_ok=False)
+    shutil.move(str(sd / "heldout.cms.pem"), dest / "heldout.cms.pem")
+    shutil.move(str(idx_p), dest / "SEALED_INDEX.json")
+    rec = {"schema": "bo.pilot.sto.retired_set/1", "module": MODULE, "retired_at": stamp, "reason": reason,
+           "status": "RETIRED", "ciphertext_sha256": idx["ciphertext_sha256"], "plaintext_sha256": idx["plaintext_sha256"],
+           "sealed_at": idx["sealed_at"], "items": len(idx["items"]), "counts": idx["counts"]}
+    (dest / "RETIRED.json").write_bytes(canon(rec))
+    return rec
+
+
 def item_hash(obj) -> str:
     return sha(canon(obj))
 
@@ -210,11 +292,18 @@ def seal(gen, oracle) -> dict:
     for f in gen.fixtures:
         fx = f["fixture"]
         items.append({"item_id": fx["fixture_id"], "kind": "fixture", "case": fx["case"], "polarity": fx["polarity"],
-                      "provider": fx["provider"], "n_checks": len(f["checks"]), "sha256": item_hash(fx)})
+                      "provider": fx["provider"], "n_checks": len(f["checks"]), "basis": f.get("basis"), "sha256": item_hash(fx)})
     for e in gen.entries:
         items.append({"item_id": e["entry_id"], "kind": "direction_entry", "family": e["family"], "polarity": e["polarity"],
-                      "direction": e["direction"], "sha256": item_hash({"source": e["source"], "target": e["target"]})})
-    counts = {"fixtures": len(gen.fixtures), "direction_entries": len(gen.entries), "checks": sum(len(f["checks"]) for f in gen.fixtures)}
+                      "direction": e["direction"], "basis": (e.get("basis") or {}).get("class"),
+                      "sha256": item_hash({"source": e["source"], "target": e["target"]})})
+    checks = [c for f in gen.fixtures for c in f["checks"]]
+    counts = {"fixtures": len(gen.fixtures), "direction_entries": len(gen.entries), "checks": len(checks),
+              "checks_published_only": sum(1 for c in checks if c.get("basis", {}).get("class") == "PUBLISHED_ONLY"),
+              "checks_derived": sum(1 for c in checks if c.get("basis", {}).get("class") == "DERIVED"),
+              "entries_published_only": sum(1 for e in gen.entries if (e.get("basis") or {}).get("class") == "PUBLISHED_ONLY"),
+              "entries_derived": sum(1 for e in gen.entries if (e.get("basis") or {}).get("class") == "DERIVED"),
+              "edge_v4_fixtures": sum(1 for f in gen.fixtures if f.get("edge_v4"))}
     idx = {"schema": SCHEMA_INDEX, "module": MODULE, "sealed_at": now_iso(),
            "sealed_file": f"$BO_DATA/{MODULE}/sealed/heldout.cms.pem", "cipher": "openssl cms -encrypt -aes256 (PEM)",
            "ciphertext_sha256": sha_file(sd / "heldout.cms.pem"), "plaintext_sha256": sha(plain),
@@ -241,6 +330,10 @@ def build(root: Path, do_seal: bool, generated_at: str | None = None):
         bad = verify(held, oracle)
         if bad:
             raise SystemExit(f"retidas: {len(bad)} divergência(s) (texto não impresso: partição selada)")
+        mark_basis(held, oracle)
+        retired = retire_current(os.environ.get("BO_RETIRE_REASON", "substituído por conjunto novo"))
+        if retired:
+            print(json.dumps({"retired": retired["ciphertext_sha256"], "items": retired["items"]}))
         index = seal(held, oracle)
         del held
     elif (sealed_dir() / "SEALED_INDEX.json").exists():

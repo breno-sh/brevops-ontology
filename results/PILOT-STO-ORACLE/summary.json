@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "PILOT-STO-ORACLE",
- "generated_at": "2026-11-04T18:19:13-03:00",
+ "generated_at": "2026-11-04T21:32:53-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-STO-ORACLE.txt",
@@ -12,13 +12,13 @@
    "oracle_version": "1.2.0",
    "calib_fixtures": "123",
    "calib_direction_entries": "181",
-   "heldout_items": "304",
+   "heldout_items": "317",
+   "heldout_set": "v4",
    "providers": "aws:6.71.0,google:8.9.0,azurerm:5.12.0,oci:9.11.0",
    "seal": "openssl-cms-aes256-D15",
    "rules": "79",
    "service_evidence_commit": "365e6ed",
-   "semantics_commit": "ea53bcf",
-   "attempt": "2"
+   "semantics_commit": "ea53bcf"
   },
   "inputs": [
    {
@@ -37,7 +37,7 @@
     "sha256": "0b5bdd079c88ae3d02f866623f7903d6d0cb6c8251d553aa72efe2decfb61123"
    }
   ],
-  "recorded_at": "2026-11-04T18:19:13-03:00"
+  "recorded_at": "2026-11-04T21:32:53-03:00"
  },
  "sources": [
   {
@@ -73,7 +73,7 @@
   {
    "uri": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl",
    "license": "interno (SERVICE-EVIDENCE)",
-   "transformation": "dono, alcance e ciclo de vida citados por evidence_id; gabarito rerodado sobre 365e6ed (antes do PILOT-EXIT 2/2)"
+   "transformation": "dono, alcance e ciclo de vida citados por evidence_id; conjunto retido v4 sobre 365e6ed"
   },
   {
    "uri": "results/SERVICE-EVIDENCE/spec_disputes.json",
@@ -81,5 +81,5 @@
    "transformation": "disputas spec x doc da fatia viram UNKNOWN com os dois lados"
   }
  ],
- "notes": "oráculo offline STO 1.2.0, tentativa 2; retidas só cifradas com o certificado da VM (D15); nada lido do glossário ou do mapeamento"
+ "notes": "oráculo offline STO 1.2.0; conjunto retido v4 (317 itens) selado com o certificado da VM (D15); conjunto anterior aposentado; nada lido do GRAIN, GLOSS ou MAP"
 }

@@ -307,7 +307,7 @@ bfefa5f2409643a1ef7079174255a086c193b45709f28e79ca2250ba568aff9a  pilot/sto/fixt
 c86d349c3a83ea2063dfeeb4271ffce5510915e33a0a4ba2add7424cded1239f  pilot/sto/fixtures_calib/oci/FX-STO-OCI-VER-N02.json
 79a34e92b58e6cb710648ae7aade4763d5e296e2e741a187eee07f81a60aa3f3  pilot/sto/fixtures_calib/oci/FX-STO-OCI-VER-P01.json
 ca43f4e5c597caa35ee602310afe02e4281259bd9e946671c31343b5283480d3  pilot/sto/fixtures_calib/oci/FX-STO-OCI-VER-U01.json
-9dfc58e25e9efbfa0369f0ecaf13a6cb5053482f843d38facb2d2db1d1b738fd  pilot/sto/expected_answers.json
-572f133361bc21d79ae225ba98c42d3f7fa5eba0b6a472c6292264ea735a8ce0  /Users/breno/doutorado/brevops-data/PILOT-STO-ORACLE/sealed/heldout.cms.pem
-c3669d6cc032a300a36d3e90a23d7654cd7c6277c6b7caac29994c4378c45f69  /Users/breno/doutorado/brevops-data/PILOT-STO-ORACLE/sealed/SEALED_INDEX.json
+bb755d356c2e4592f13847f3d8ae9029a6356f07002b0400668942d9074db391  pilot/sto/expected_answers.json
+8fd31ee6fc09ac596231db4694ec2597b9d59ebb1a76e39f0e805f8c560259d2  /Users/breno/doutorado/brevops-data/PILOT-STO-ORACLE/sealed/heldout.cms.pem
+3ef0ef807c8131d2968e20c9d01aad2602c6b56d4d50797a62345abc10bc0163  /Users/breno/doutorado/brevops-data/PILOT-STO-ORACLE/sealed/SEALED_INDEX.json
 eb95ac5241b1056bb547087bc80a40f5706f4c6e5f598a1ba640dfc54c986934  /Users/breno/doutorado/brevops-data/PILOT-STO-ORACLE/sealed/recipient_cert.pem

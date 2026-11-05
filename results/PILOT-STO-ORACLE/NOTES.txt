@@ -1,5 +1,5 @@
 PILOT-STO-ORACLE: notas do oráculo offline do piloto de armazenamento de objeto
-gravado em 2026-11-03T22:00-03:00, revisto em 2026-11-04T18:19:10-03:00 (America/Recife)
+gravado em 2026-11-03T22:00-03:00, revisto em 2026-11-04T21:32:50-03:00 (America/Recife)
 
 O QUE ESTÁ AQUI
 - Avaliador: pilot/sto/oracle/sto_oracle.py (só biblioteca padrão; não importa nada do pipeline). Estado efetivo
@@ -12,7 +12,7 @@ O QUE ESTÁ AQUI
   linha declarada dos docs fixados (aws 6.71.0, google 8.9.0, azurerm 5.12.0, oci 9.11.0), conferido por teste.
 - Calibração (git): 123 fixtures de um provedor em 8 casos obrigatórios e 181 entradas de direção (12 direções x 4
   famílias), 202 conferências; resposta em pilot/sto/expected_answers.json.
-- Retidas: 123 fixtures e 181 entradas novas, sorteadas com o gerador do sistema (nomes, dias, chaves, variantes);
+- Retidas (conjunto v4, ver abaixo): 136 fixtures e 181 entradas novas, sorteadas com o gerador do sistema (nomes, dias, chaves, variantes);
   só existem cifradas (openssl cms, AES-256) em $BO_DATA/PILOT-STO-ORACLE/sealed/heldout.cms.pem com o certificado
   público da VM Oracle (D15). O texto claro nunca foi gravado: saiu do gerador direto para o openssl por pipe. A
   decifração na VM foi provada uma vez (seal_verification.json: sha do texto claro remoto = sha do índice).
@@ -148,3 +148,25 @@ REVISÃO FINAL 2026-11-04 18h, ANTES DO PILOT-EXIT 2/2 (SERVICE-EVIDENCE 365e6ed
   (CMT-BKT-P03 segue sem realização na evidência).
 - Os 34 evidence_id citados estão presentes com o mesmo valor. Disputas: 77; na fatia só as duas da política OCI.
 - Nenhuma resposta mudou; as 304 retidas não mudaram; selo D15 NÃO refeito (cifrado 572f1333...).
+
+CICLO v4 2026-11-04 21h: CONJUNTO RETIDO NOVO (o anterior está queimado: o PILOT-EXIT 2/2 o usou)
+- Aposentado: envelope 572f1333... (304 itens, selado em 2026-11-04T09:01:42-03:00), movido para
+  $BO_DATA/PILOT-STO-ORACLE/retired/ com RETIRED.json (status RETIRED, motivo registrado); results/PILOT-STO-ORACLE/
+  retired_sets.json lista o ativo e os aposentados. sealed/ só tem o envelope ativo, o índice e o certificado público.
+- Novo: 136 fixtures + 181 entradas de direção = 317 itens (anterior: 304), 230 conferências; sorteio novo de nomes,
+  dias, chaves, prefixos, ordem de regras e variantes, com o gerador do sistema operacional. Mesmas famílias e mais
+  13 casos de borda só das retidas (mc_edge_v4): regra de ciclo de vida AWS embutida x separada (mesma faceta, mesmo
+  efeito, grupo de invariância), misturar as duas (UNRESOLVED), facetas embutidas do Google (versionamento, ciclo de
+  vida, prevenção) e concessão separada, conta Azure com três contêineres e política de prefixos em ordem sorteada
+  (alcance só dos prefixados), contêineres Azure de mesmo nome em contas diferentes, Google sem bloco de versionamento.
+- Gabarito: regras do oráculo (procedimento de grão do plano §0 e compromissos C24 para a decomposição; docs fixados
+  para o efeito) com a evidência do SE 365e6ed; conferido avaliador == fórmula analítica e schema fixado antes de
+  selar. Nada lido do GRAIN, do GLOSS nem do MAP.
+- Base de cada resposta (campo basis em cada conferência e entrada, e no índice): PUBLISHED_ONLY quando toda regra
+  consultada é de nível published (não há fato OBSERVED na fatia STO), DERIVED quando alguma é derived ou
+  interpreted (levels diz quais). Marcação conservadora: usa todas as regras que a avaliação consultou.
+  Contagem: conferências 54 PUBLISHED_ONLY e 176 DERIVED; entradas de direção 4 PUBLISHED_ONLY e 177 DERIVED.
+- Selo D15: openssl cms com o certificado público da VM; decifração conferida na VM (seal_verification.json, MATCH).
+  Envelope novo sha256 8fd31ee6fc09ac596231db4694ec2597b9d59ebb1a76e39f0e805f8c560259d2; texto claro sha256 7cc7de68b632caf46422c3fc32b8900c53a58117ac8499815ec568579bb2016a.
+- Calibração NÃO mudou: fixtures_calib, respostas de calibração e oráculo (sto_oracle.py 3e4a549c...) idênticos; só
+  a seção heldout do expected_answers.json e o ORACLE.sha256 apontam para o envelope novo.
