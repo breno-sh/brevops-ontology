@@ -127,16 +127,34 @@ def test_f4_repetition_without_evidence_is_unknown_never_silently_merged():
     for u in rs:
         assert u["kind"] == "UNKNOWN" and "item_identity" in u["unknown"], u
         assert u["repetition"]["policy"] == "unknown" and u["repetition"]["count"] == 2
+        assert u["repetition"]["evidence"] == []
 
 
 def test_f4_repetition_merged_only_when_evidence_says_invalid_or_idempotent(monkeypatch):
-    fx = _variant("NETC-C08-AWS-ATTACH", "SYN-F4-AWS-DUP-IDEMP")
-    v = _res(fx, "aws_security_group.web")["values"]
-    v["ingress"] = [copy.deepcopy(v["ingress"][0]), copy.deepcopy(v["ingress"][0])]
-    monkeypatch.setattr(DC, "repetition_evidence", lambda prov, rtype, block: (False, ["SE-synthetic-dup-rejected"]))
-    rs = _rules(DC.decompose(fx))
-    assert len(rs) == 1 and rs[0]["kind"] != "UNKNOWN"
-    assert rs[0]["repetition"] == {"policy": "merged", "count": 2, "evidence": ["SE-synthetic-dup-rejected"]}
+    # evidência SINTÉTICA: o fato observado da security list OCI com o valor invertido (repetição recusada), lido
+    # pelo GRAIN (T59c); o adaptador só segue a multiplicidade que o GRAIN devolve
+    from bo.grain.realdata import load_evidence
+    ev = []
+    for r in load_evidence():
+        v = r.get("value")
+        if isinstance(v, dict) and v.get("duplicates_accepted") is True and r["provider"] == "oci":
+            r = dict(r, evidence_id=r["evidence_id"] + "-syn-rejected", value=dict(v, duplicates_accepted=False))
+        ev.append(r)
+    monkeypatch.setattr(DC, "_cache", {"ev": ev})
+    fx = _oci_dup("ingress_security_rules")
+    rs = [u for u in _rules(DC.decompose(fx)) if u["tf"].get("block_path") == "ingress_security_rules"]
+    assert len(rs) == 1 and rs[0]["kind"] != "UNKNOWN", rs
+    rp = rs[0]["repetition"]
+    assert rp["policy"] == "merged" and rp["duplicates"] == "rejected" and rp["count"] == 2
+    assert rp["evidence"] and all(e.endswith("-syn-rejected") for e in rp["evidence"])
+
+
+def test_f3_id_attribute_with_symbol_follows_grain_t51c():
+    # pai por id com símbolo var./data./module.: o GRAIN 0.2.4 (T51c) dá o símbolo como pai; o adaptador só o lê
+    fx = _variant("NETC-C01-AWS-SYM", "SYN-F3-AWS-VAR-PARENT")
+    _res(fx, "aws_vpc_security_group_ingress_rule.web_r1")["values"]["security_group_id"] = "sym:var.sg_id"
+    (u,) = _rules(DC.decompose(fx))
+    assert u["parent"] == "var.sg_id" and u["occurrence"] == {"rule": "aws_vpc_security_group_ingress_rule.web_r1"}
 
 
 def test_same_element_emitted_twice_is_still_one_unit():
