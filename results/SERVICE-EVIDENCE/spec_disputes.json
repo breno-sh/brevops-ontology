@@ -816,7 +816,7 @@
    "terraform_resource_type": "oci_core_network_security_group_security_rule",
    "fact": "effective_scope",
    "kind": "doc_x_spec",
-   "status": "aberta",
+   "status": "resolvida-por-publicação",
    "doc": {
     "kind": "self",
     "rule": "R-SCOPE-SELF"
@@ -828,7 +828,14 @@
    "evidence": [
     "SE-oci-o2hf3vq37da34th5",
     "SE-oci-owpz72e36oqij7f2"
-   ]
+   ],
+   "sides": [
+    "SE-oci-o2hf3vq37da34th5",
+    "SE-oci-owpz72e36oqij7f2"
+   ],
+   "resolved_to": "spec",
+   "publication_id": "SE-oci-azu2sgmbkqz2d2dc",
+   "resolved_at": "2026-11-04T21:40-03:00"
   },
   {
    "provider": "oci",

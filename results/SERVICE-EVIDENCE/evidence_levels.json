@@ -3,7 +3,7 @@
  "module": "SERVICE-EVIDENCE",
  "contract": "C25",
  "contract_version": "1.0.0",
- "generated_at": "2026-11-04T22:17:14-03:00",
+ "generated_at": "2026-11-04T22:24:52-03:00",
  "records": 208973,
  "by_level": {
   "derived": 137317,
@@ -361,109 +361,15 @@
  },
  "spec_disputes": 100,
  "r6": {
-  "resolved": [],
-  "open_scope": 23,
-  "blocked_kind": [
-   {
-    "type": "azurerm_app_service_slot_virtual_network_swift_connection",
-    "kind": "doc_x_spec"
-   },
-   {
-    "type": "azurerm_app_service_virtual_network_swift_connection",
-    "kind": "doc_x_spec"
-   },
-   {
-    "type": "oci_bds_auto_scaling_configuration",
-    "kind": "doc_x_spec"
-   },
-   {
-    "type": "oci_containerengine_addon",
-    "kind": "doc_x_spec"
-   },
-   {
-    "type": "oci_core_drg_nat_policy_drg_nat_rule",
-    "kind": "doc_x_spec"
-   },
-   {
-    "type": "oci_core_drg_route_distribution_statement",
-    "kind": "doc_x_spec"
-   },
-   {
-    "type": "oci_core_network_security_group_security_rule",
-    "kind": "doc_x_spec"
-   },
-   {
-    "type": "oci_database_autonomous_container_database_dataguard_association",
-    "kind": "doc_x_spec"
-   },
-   {
-    "type": "oci_database_autonomous_database_wallet",
-    "kind": "doc_x_spec"
-   },
-   {
-    "type": "oci_database_cloud_vm_cluster_iorm_config",
-    "kind": "doc_x_spec"
-   },
-   {
-    "type": "oci_database_data_guard_association",
-    "kind": "doc_x_spec"
-   },
-   {
-    "type": "oci_database_exadata_iorm_config",
-    "kind": "doc_x_spec"
-   },
-   {
-    "type": "oci_datascience_model_provenance",
-    "kind": "doc_x_spec"
-   },
-   {
-    "type": "oci_devops_project_repository_setting",
-    "kind": "doc_x_spec"
-   },
-   {
-    "type": "oci_devops_repository_ref",
-    "kind": "doc_x_spec"
-   },
-   {
-    "type": "oci_devops_repository_setting",
-    "kind": "doc_x_spec"
-   },
-   {
-    "type": "oci_iot_iot_flow_runtime_flow",
-    "kind": "doc_x_spec"
-   },
-   {
-    "type": "oci_jms_fleet_advanced_feature_configuration",
-    "kind": "doc_x_spec"
-   },
-   {
-    "type": "oci_managed_kafka_kafka_cluster_addon",
-    "kind": "doc_x_spec"
-   },
-   {
-    "type": "oci_mysql_heat_wave_cluster",
-    "kind": "doc_x_spec"
-   },
-   {
-    "type": "oci_objectstorage_object_lifecycle_policy",
-    "kind": "doc_x_spec"
-   },
-   {
-    "type": "oci_os_management_hub_software_source_manifest",
-    "kind": "doc_x_spec"
-   },
-   {
-    "type": "oci_waas_protection_rule",
-    "kind": "doc_x_spec"
-   }
-  ],
-  "ready_if_kind": [
+  "resolved": [
    {
     "type": "oci_core_network_security_group_security_rule",
     "resolved_to": "spec",
-    "publication_id": "SE-oci-azu2sgmbkqz2d2dc"
+    "publication_id": "SE-oci-azu2sgmbkqz2d2dc",
+    "sentence": "security rules that apply only to a set of VNICs in a single VCN"
    }
-  ]
+  ],
+  "open_scope": 22
  },
  "observed": {
   "observations": 227,

@@ -124,8 +124,7 @@ def _r6(ctxs: dict, disputes: list) -> dict:
         sides = [ctx.by_id.get(e) for e in d["evidence"]]
         if not all(sides) or any(sd["level"] != "derived" for sd in sides):
             continue
-        if d["kind"] != "derived_x_derived":  # C25-DISPUTE-PUB (1.6.0) só aceita essa natureza: CONTRACT_CHANGE item 12
-            st.setdefault("blocked_kind", []).append({"type": d["terraform_resource_type"], "kind": d["kind"]})
+
         pubs = [r for r in ctx.recs if r["terraform_resource_type"] == d["terraform_resource_type"]
                 and r.get("block_path") == d.get("block_path") and r["fact_kind"] == "effective_scope"
                 and r["status"] == "stated" and r["level"] == "published"
@@ -140,11 +139,6 @@ def _r6(ctxs: dict, disputes: list) -> dict:
             st["open_scope"] += 1
             continue
         pub = pubs[0]
-        if d["kind"] != "derived_x_derived":
-            st["open_scope"] += 1
-            st.setdefault("ready_if_kind", []).append({"type": d["terraform_resource_type"], "resolved_to": side,
-                                                       "publication_id": pub["evidence_id"]})
-            continue
         d.update({"status": "resolvida-por-publicação", "sides": list(d["evidence"]), "resolved_to": side,
                   "publication_id": pub["evidence_id"],
                   "resolved_at": (pub.get("citation") or {}).get("retrieved_at") or common.now()})

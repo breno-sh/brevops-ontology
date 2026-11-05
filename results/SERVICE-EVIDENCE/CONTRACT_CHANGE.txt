@@ -134,3 +134,4 @@ descrita abaixo e em results/SERVICE-EVIDENCE/evidence_levels.json (level_policy
    do rótulo; ou (b) eu passo o kind de todas as disputas para a natureza por nível (derived_x_derived, que é o que
    as 99 são) e guardo a origem em doc/spec, que já existem. Com qualquer das duas, é regerar e promover; o código
    da R6 já está no ramo, preso só a esse teste de kind.
+   Resolvido pela emenda 14 (0e2ce71, decisão (a)): R6 por nível dos lados; o kind doc_x_spec fica. 2026-11-04T22:26-03:00.
