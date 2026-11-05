@@ -137,6 +137,15 @@ AMENDMENTS = [
      "source": "PREREG R6 (b7f804d)",
      "change": "spec_disputes: status resolvida-por-publicação (derived_x_derived) com resolved_to e publication_id; "
                "observation_id não exigido"},
+    # ---- emenda 14 (2026-11-04, T51b do GRAIN, opção A do COORD)
+    {"contract": "C19", "from": "3.1.0", "to": "3.2.0", "at": "2026-11-04T22:30:00-03:00", "requested_by": "GRAIN, COORD",
+     "source": "results/GRAIN/CONTRACT_CHANGE.txt (T51b, opção A)",
+     "change": "ponta de vínculo {kind: EXTERNAL, symbol, target_type} sem unit_id para referência tipada com valor "
+               "simbólico; target_type obrigatório; ao menos uma ponta é unidade"},
+    {"contract": "C25", "from": "1.6.0", "to": "1.6.1", "at": "2026-11-04T22:30:00-03:00",
+     "requested_by": "SERVICE-EVIDENCE, COORD", "source": "results/SERVICE-EVIDENCE/CONTRACT_CHANGE.txt (12)",
+     "change": "resolvida-por-publicação confere o nível dos lados (os dois derived) e da publicação (published) "
+               "no service_evidence.jsonl, não o rótulo kind"},
 ]
 
 

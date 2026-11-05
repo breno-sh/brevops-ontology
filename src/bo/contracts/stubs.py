@@ -791,7 +791,17 @@ def c19() -> dict:
           "owner": {"kind": "parent", "ref": "CU-aws-vpc-peering", "refs": ["CU-aws-vpc-peering", "CU-aws-vpc"]},
           "effective_scope": {"kind": "parent", "ref": "CU-aws-vpc-peering"}, "evidence": [EV_REF],
           "rule_applied": "GRAIN-G3-FACET", "missing_evidence": []}
-    return {"C19/canonical_units.jsonl": jsonl([u1, u2, u3, u4, u5]), "C19/canonical_atoms.jsonl": jsonl(atoms)}
+    u6 = {"unit_id": "CU-aws-nic-sg-attach-sym", "provider": "aws", "kind": "BINDING",
+          "layers": {"terraform": {"resource_type": "aws_network_interface_sg_attachment"},
+                     "domain_unit": "anexação de grupo por referência simbólica"},
+          "identity": {"evidence": [EV_REF], "key_fields": ["network_interface_id", "security_group_id"],
+                       "anonymous": False, "occurrence_key": []},
+          "endpoints": [{"role": "network_interface", "unit_id": "CU-aws-eni"},
+                        {"role": "security_group", "kind": "EXTERNAL", "symbol": "var.sg_id",
+                         "target_type": "aws_security_group"}],
+          "lifecycle_controller": {"kind": "self"}, "owner": {"kind": "self"}, "effective_scope": {"kind": "self"},
+          "evidence": [EV_REF], "rule_applied": "R-GRAIN-T51B", "missing_evidence": []}
+    return {"C19/canonical_units.jsonl": jsonl([u1, u2, u3, u4, u5, u6]), "C19/canonical_atoms.jsonl": jsonl(atoms)}
 
 
 def c20() -> dict:
@@ -1037,7 +1047,7 @@ def c25() -> dict:
            "status": "stated", "value": {"aspect": "namespace_cascade", "cascade": False}, "level": "published",
            "citation": {"uri": "https://docs.example.org/provider-d/object-storage", "retrieved_at": TS,
                         "sentence": "frase sintética: o contêiner precisa estar vazio para ser apagado"}}
-    disp = {"schema": "bo.spec_disputes/1", "module": "SERVICE-EVIDENCE", "contract": "C25", "contract_version": "1.6.0",
+    disp = {"schema": "bo.spec_disputes/1", "module": "SERVICE-EVIDENCE", "contract": "C25", "contract_version": "1.6.1",
             "generated_at": TS3, "note": "conflito spec x doc: os dois fatos ficam no C25",
             "disputes": [
                 {"provider": "azurerm", "terraform_resource_type": "azurerm_network_interface_security_group_association",
@@ -1048,12 +1058,23 @@ def c25() -> dict:
                  "spec": {"kind": "parent", "rule": "R-LIFE-SPEC-PARENT"}, "evidence": ["SE-oci-0008", "SE-oci-0010"],
                  "status": "resolvida-por-observação", "sides": ["SE-oci-0008", "SE-oci-0010"],
                  "resolved_to": "spec", "observation_id": "SE-oci-0009", "resolved_at": TS3},
-                {"provider": "oci", "terraform_resource_type": "oci_core_network_security_group",
-                 "fact": "effective_scope", "kind": "derived_x_derived", "doc": {"kind": "vnic", "rule": "R-REACH-A"},
-                 "spec": {"kind": "subnet", "rule": "R-REACH-B"}, "evidence": ["SE-oci-0011", "SE-oci-0012"],
-                 "status": "resolvida-por-publicação", "sides": ["SE-oci-0011", "SE-oci-0012"],
-                 "resolved_to": "SE-oci-0011", "publication_id": "SE-oci-0013", "resolved_at": TS3}]}
-    return {"C25/service_evidence.jsonl": jsonl([e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12]),
+                {"provider": "oci", "terraform_resource_type": "oci_core_network_security_group_security_rule",
+                 "fact": "effective_scope", "kind": "doc_x_spec", "doc": {"kind": "self", "rule": "R-SCOPE-SELF"},
+                 "spec": {"kind": "parent", "rule": "R-SCOPE-SPEC"}, "evidence": ["SE-oci-0013", "SE-oci-0014"],
+                 "status": "resolvida-por-publicação", "sides": ["SE-oci-0013", "SE-oci-0014"],
+                 "resolved_to": "spec", "publication_id": "SE-oci-0015", "resolved_at": TS3}]}
+    nsg = {"provider": "oci", "pin": {"provider_version": "9.11.0"},
+           "api_resource": {"service": "core", "resource": "NetworkSecurityGroupSecurityRule"},
+           "terraform_resource_type": "oci_core_network_security_group_security_rule", "fact_kind": "effective_scope",
+           "status": "stated"}
+    e13 = {"evidence_id": "SE-oci-0013", **nsg, "value": {"kind": "self"}, "level": "derived",
+           "derived_from": ["SE-oci-0008"], "rule_id": "R-SCOPE-SELF"}
+    e14 = {"evidence_id": "SE-oci-0014", **nsg, "value": {"kind": "parent"}, "level": "derived",
+           "derived_from": ["SE-oci-0008"], "rule_id": "R-SCOPE-SPEC"}
+    e15 = {"evidence_id": "SE-oci-0015", **nsg, "value": {"kind": "parent"}, "level": "published",
+           "citation": {"uri": "https://docs.example.org/provider-d/nsg", "retrieved_at": TS,
+                        "sentence": "frase sintética: as regras do grupo valem para as interfaces do grupo"}}
+    return {"C25/service_evidence.jsonl": jsonl([e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15]),
             "C25/protocol_support.jsonl": jsonl(ps), "C25/spec_disputes.json": dumps(disp)}
 
 

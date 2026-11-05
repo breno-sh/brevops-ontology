@@ -242,13 +242,13 @@ def c25() -> dict:
                                  "required": ["status"]},
                           "else": {"not": {"anyOf": [{"required": [k]} for k in
                                                      ("resolved_to", "observation_id", "publication_id")]}}}])
-    dp, dr = header("bo.spec_disputes/1", "C25", "1.6.0", module=False, generated=False)
+    dp, dr = header("bo.spec_disputes/1", "C25", "1.6.1", module=False, generated=False)
     dp.pop("contract_version"); dp.pop("contract")
     disputes_doc = obj({**dp, "module": c00("stable_id"), "note": text(3), "contract": const("C25"),
-                        "contract_version": enum("1.5.0", "1.6.0"), "generated_at": c00("datetime"),
+                        "contract_version": enum("1.5.0", "1.6.0", "1.6.1"), "generated_at": c00("datetime"),
                         "disputes": arr(local("spec_dispute"))}, ["schema", "module", "disputes"])
     return contract_schema(
-        "C25", "service_evidence", "1.6.0", "evidência de API e docs ligada ao pin", status="amended",
+        "C25", "service_evidence", "1.6.1", "evidência de API e docs ligada ao pin", status="amended",
         description="Fato de API/docs ligado ao pin: recurso de API, identidade, chave de importação, controlador de "
                     "ciclo de vida, dono, alcance, estado de conexão, efeito, precedência, suporte a tag/TTL; nível "
                     "(publicado | derivado | interpretado) e citação. Citação publicada separada de inferência; "
@@ -272,9 +272,11 @@ def c25() -> dict:
                "C25-DISPUTE-REG: spec_disputes.json registra cada disputa; resolvida-por-observação exige os dois "
                "lados (sides), resolved_to (spec, doc ou o id do lado) e observation_id; o lado vencedor é um dos lados "
                "e a observação não é um deles; uma disputa por (fato, natureza) (emenda 1.5.0)",
-               "C25-DISPUTE-PUB: resolvida-por-publicação (R6 do PREREG) só em disputa derived_x_derived; exige sides, "
-               "resolved_to e publication_id (fato PUBLISHED literal de fonte fixada), não exige observation_id; o "
-               "fato publicado não é um dos lados e o vencedor é um dos lados (emenda 1.6.0)",
+               "C25-DISPUTE-PUB: resolvida-por-publicação (R6 do PREREG) exige sides, resolved_to e publication_id "
+               "(fato PUBLISHED literal de fonte fixada), não exige observation_id; os dois lados têm nível derived e "
+               "o publication_id nível published no service_evidence.jsonl (irmão ou o do módulo em $BO_DATA); o "
+               "rótulo kind da disputa não decide (emenda 1.6.0, conferência por nível na emenda 14); o fato "
+               "publicado não é um dos lados e o vencedor é um dos lados",
                "C25-ITEM: item_identity tem has_id; com id, requires_parent; exigindo o pai, parent_attribute e "
                "parent_type; namespace_cascade tem cascade booleano (GRAIN 0.1.11)",
                "C25-UNKNOWN: unknown cita a publicação consultada (consulted, citation, doc ou schema); level é opcional",

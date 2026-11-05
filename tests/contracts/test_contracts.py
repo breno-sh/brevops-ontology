@@ -278,7 +278,7 @@ def test_c03_tipo_por_arquivo(alias, path, kind):
 def test_emenda2_versoes():
     pub = catalog.schemas()
     for cid, v in {"C03": "3.1.0", "C19": "3.1.0"}.items():
-        assert pub[cid]["x-bo-contract"]["version"] == v
+        assert v in amendments.chain(cid)
         assert "3.0.0" in amendments.chain(cid) or "1.0.0" in amendments.chain(cid)
 
 
@@ -393,7 +393,7 @@ def test_emenda9_c05_unidades(sch):
 
 # ----------------------------------------------------------------------------------- emenda 10 (nível observed)
 def test_c25_observado_e_disputa(sch):
-    assert sch["C25"]["x-bo-contract"]["version"] in ("1.4.0", "1.5.0", "1.6.0")
+    assert sch["C25"]["x-bo-contract"]["version"] in ("1.4.0", "1.5.0", "1.6.0", "1.6.1")
     recs = [json.loads(l) for l in (ROOT / "contracts/stubs/C25/service_evidence.jsonl").read_text().splitlines()]
     obs = [r for r in recs if r.get("level") == "observed"]
     assert obs and all(r["repetitions"] >= 2 and r["observation_ref"]["path"].startswith(("$BO_DATA/OBS-GAPS/", "$BO_DATA/OBS-GAPS-AZ/"))
@@ -404,7 +404,7 @@ def test_c25_observado_e_disputa(sch):
 
 # ----------------------------------------------------------------------------------- emenda 11 (C25 1.5.0)
 def test_c25_disputas_e_aspectos(sch):
-    assert sch["C25"]["x-bo-contract"]["version"] in ("1.5.0", "1.6.0")
+    assert sch["C25"]["x-bo-contract"]["version"] in ("1.5.0", "1.6.0", "1.6.1")
     assert validate.validate("spec_disputes", ROOT / "contracts/stubs/C25/spec_disputes.json").ok
     real = ROOT / "results/SERVICE-EVIDENCE/spec_disputes.json"
     if real.is_file():
@@ -425,8 +425,17 @@ def test_registro_externo_nao_mexe_nas_cadeias():
 
 # ----------------------------------------------------------------------------------- emenda 13 (C25 1.6.0, R6)
 def test_c25_resolvida_por_publicacao(sch):
-    assert sch["C25"]["x-bo-contract"]["version"] == "1.6.0"
+    assert sch["C25"]["x-bo-contract"]["version"] in ("1.6.0", "1.6.1")
     doc = json.loads((ROOT / "contracts/stubs/C25/spec_disputes.json").read_text())
     pub = [d for d in doc["disputes"] if d.get("status") == "resolvida-por-publicação"]
     assert pub and all("observation_id" not in d and d.get("publication_id") for d in pub)
     assert validate.validate("spec_disputes", ROOT / "contracts/stubs/C25/spec_disputes.json").ok
+
+
+# ----------------------------------------------------------------------------------- emenda 14 (C19 3.2.0, T51b)
+def test_c19_ponta_externa(sch):
+    assert sch["C19"]["x-bo-contract"]["version"] == "3.2.0"
+    us = [json.loads(l) for l in (ROOT / "contracts/stubs/C19/canonical_units.jsonl").read_text().splitlines()]
+    ext = [e for u in us for e in u.get("endpoints", []) if e.get("kind") == "EXTERNAL"]
+    assert ext and all("unit_id" not in e and e["target_type"] and e["symbol"].startswith("var.") for e in ext)
+    assert validate.validate("canonical_units", ROOT / "contracts/stubs/C19/canonical_units.jsonl").ok

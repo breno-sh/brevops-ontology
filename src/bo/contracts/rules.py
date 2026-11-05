@@ -1081,8 +1081,12 @@ def r_units(objs, ctx, path):
             if u["kind"] not in ("BINDING", "UNKNOWN"):
                 errs.append(f"{w}: endpoints em {u['kind']} (só BINDING ou UNKNOWN)")
             errs += [f"{w}: {e}" for e in dup([e["role"] for e in ep], "papel de ponta")]
-            if any(e["unit_id"] == u["unit_id"] for e in ep):
+            if any(e.get("unit_id") == u["unit_id"] for e in ep):
                 errs.append(f"{w}: a unidade é ponta de si mesma")
+            ext = [e for e in ep if e.get("kind") == "EXTERNAL"]
+            if ext and len(ext) == len(ep):
+                errs.append(f"{w}: todas as pontas são EXTERNAL (ao menos uma é unidade)")
+            errs += [f"{w}: {e}" for e in dup([e["symbol"] for e in ext], "símbolo de ponta EXTERNAL")]
         o = u["owner"]
         if o.get("refs"):
             if o.get("ref") and o["ref"] not in o["refs"]:
@@ -1358,10 +1362,23 @@ def r_service(objs, ctx, path):
 
 
 # ---------------------------------------------------------------------------------------------------- C26
+def _se_levels(path: Path, module: str | None) -> dict | None:
+    """Nível de cada fato do C25 que a disputa cita: service_evidence.jsonl irmão ou o do módulo em $BO_DATA."""
+    from . import _base
+    p = sibling(path, "service_evidence.jsonl")
+    if p is None and module:
+        q = _base.data_root() / module / "service_evidence.jsonl"
+        p = q if q.is_file() else None
+    if p is None:
+        return None
+    return {o.get("evidence_id"): o.get("level") for _, o in fileio._jsonl(p)[0] if isinstance(o, dict)}
+
+
 @rule("C25", "spec_disputes")
 def r_spec_disputes(objs, ctx, path):
     errs = []
     keys = []
+    levels = None
     for i, d in enumerate(objs[0]["disputes"]):
         w = f"disputes[{i + 1}] {d['terraform_resource_type']}/{d['fact']}"
         keys.append((d["provider"], d["terraform_resource_type"], d.get("block_path"), d["fact"], d.get("kind")))
@@ -1375,8 +1392,18 @@ def r_spec_disputes(objs, ctx, path):
                 errs.append(f"{w}: lados fora da evidência")
         elif d.get("status") == "resolvida-por-publicação":
             sides = d["sides"]
-            if d.get("kind", "derived_x_derived") != "derived_x_derived":
-                errs.append(f"{w}: resolvida-por-publicação só em disputa derived_x_derived (R6), não {d['kind']}")
+            # R6 olha o NÍVEL dos dois lados (os dois derived), não o rótulo kind da disputa (emenda 14)
+            if levels is None:
+                levels = _se_levels(Path(path), objs[0].get("module")) or {}
+            if not levels:
+                errs.append(f"{w}: resolvida-por-publicação sem service_evidence.jsonl para conferir o nível dos lados")
+            else:
+                for s in sides:
+                    if levels.get(s) != "derived":
+                        errs.append(f"{w}: lado {s} é {levels.get(s) or 'ausente'}; a R6 exige os dois lados derived")
+                if levels.get(d["publication_id"]) != "published":
+                    errs.append(f"{w}: publication_id {d['publication_id']} é "
+                                f"{levels.get(d['publication_id']) or 'ausente'}, não published")
             if d["resolved_to"].startswith("SE-") and d["resolved_to"] not in sides:
                 errs.append(f"{w}: resolved_to {d['resolved_to']} não é um dos lados")
             if d["publication_id"] in sides:

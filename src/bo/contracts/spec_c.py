@@ -194,6 +194,10 @@ def c18() -> dict:
 
 
 # ------------------------------------------------------------------------------------------------- C19
+# símbolo normalizado de referência não resolvida: var.X, data.TIPO.NOME[.attr...], module.M.saída (índices [n] ou ["k"])
+SYMBOL = r'^(var|data|module)\.[A-Za-z_][A-Za-z0-9_\-]*(\.[A-Za-z_*][A-Za-z0-9_\-]*|\[[0-9]+\]|\["[^"\s]+"\])*$'
+
+
 def c19() -> dict:
     ctl = obj({"kind": enum("self", "parent", "provider", "external", "UNKNOWN"), "ref": text(1)}, ["kind"])
     owner = obj({"kind": enum("self", "parent", "provider", "external", "UNKNOWN"), "ref": text(1),
@@ -212,8 +216,16 @@ def c19() -> dict:
                          "anonymous": boolean(), "occurrence_key": arr(text(1), unique=True)},
                         ["evidence", "key_fields", "anonymous", "occurrence_key"]),
         "lifecycle_controller": ctl, "owner": owner,
-        "endpoints": arr(obj({"role": string(r"^[a-z][a-z0-9_]*$"), "unit_id": c00("unit_id")}, ["role", "unit_id"]),
-                         2, description="pontas do vínculo (BINDING): a identidade é a tupla das pontas (emenda 3.1.0)"),
+        "endpoints": arr({"oneOf": [
+            obj({"role": string(r"^[a-z][a-z0-9_]*$"), "unit_id": c00("unit_id")}, ["role", "unit_id"]),
+            obj({"role": string(r"^[a-z][a-z0-9_]*$"), "kind": const("EXTERNAL"),
+                 "symbol": string(SYMBOL, description="símbolo normalizado da referência tipada (variável, data "
+                                                      "source ou saída de módulo)"),
+                 "target_type": c00("resource_type")}, ["role", "kind", "symbol", "target_type"],
+                description="ponta externa (emenda 3.2.0, T51b): valor simbólico, sem unit_id; o tipo-alvo vem do "
+                            "reference_target")]},
+                         2, description="pontas do vínculo (BINDING): a identidade é a tupla das pontas (emenda 3.1.0); "
+                                        "ponta EXTERNAL por símbolo (emenda 3.2.0)"),
         "effective_scope": obj({"kind": enum("self", "parent", "container", "global", "UNKNOWN"), "ref": text(1)},
                                ["kind"]),
         "evidence": arr(c00("evidence_item")), "rule_applied": c00("rule_id"),
@@ -231,7 +243,7 @@ def c19() -> dict:
                 "role": enum("CONFIG", "IDENTIFIER", "NAME", "TAG", "REFERENCE", "TIMESTAMP", "SECRET")},
                ["atom_id", "unit_id", "path_in_unit"])
     return contract_schema(
-        "C19", "canonical_units", "3.1.0", "unidades e átomos canônicos", status="amended",
+        "C19", "canonical_units", "3.2.0", "unidades e átomos canônicos", status="amended",
         description="Unidade: kind (ENTITY | COMPONENT | FACET | BINDING | UNKNOWN), identity{evidência, campos-chave, "
                     "anonymous, occurrence_key}, lifecycle_controller, owner, effective_scope, evidence[], rule_applied, "
                     "missing_evidence[]; ligação unidade canônica ↔ recurso/bloco Terraform ↔ recurso de API. Sem "
@@ -245,6 +257,9 @@ def c19() -> dict:
                "C19-LINK: canonical_atoms citam unit_id do canonical_units irmão",
                "C19-UNIQ: unit_id único; atom_id em uma unidade só",
                "C19-ENDPOINTS: endpoints só em BINDING (ou UNKNOWN), papéis distintos, nenhuma ponta é a própria unidade",
+               "C19-EXTERNAL: ponta {kind: EXTERNAL, symbol, target_type} quando a referência tipada tem valor "
+               "simbólico (var., data. ou module.), sem unit_id; target_type obrigatório (do reference_target); ao "
+               "menos uma ponta é unidade; o mesmo símbolo não aparece em duas pontas (emenda 3.2.0)",
                "C19-OWNERS: owner.refs com 2+ donos distintos; owner.ref, se presente, está em refs; a unidade não é "
                "dona de si em refs"])
 
