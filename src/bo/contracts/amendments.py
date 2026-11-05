@@ -187,6 +187,17 @@ AMENDMENTS += [
          "regra de 12 dígitos ignora id hex curto com letra"),
     _ext("SERVICE-EVIDENCE", "37fbcf0", "83953b9", "83953b9", "PILOT-NET-ORACLE", ["4"],
          "linha do NSG oci publicada (R-CONN-DOC)"),
+    _ext("SERVICE-EVIDENCE", "3bcf3b6", "3ba4079", "3ba4079", "PILOT-NET-ORACLE", ["3", "5"],
+         "CC-14: guias oficiais como fonte publicada; (3) estado de conexão publicado no SG aws e no firewall gcp, "
+         "no NSG azurerm continua unknown publicado; (5) prioridade única por NSG e direção (frase do guia)"),
+    _ext("GRAIN", "0.1.11", "0.2.0", "dcb5c52", "PILOT-NET-E2E", ["CC-NET-E2E-2"],
+         "T59b (item sem id é COMPONENT anônimo do dono) e associação NSG azurerm; T51b recusada na 0.2.0 até a "
+         "decisão do pedido do GRAIN sobre o CMT-NIC-U02 (results/GRAIN/CONTRACT_CHANGE.txt)"),
+    _ext("GRAIN", "0.1.11", "0.2.0", "dcb5c52", "PILOT-STO-MAP", ["CC-8"],
+         "T59b: bloco repetido sem id do provedor tem chave de ocorrência pelo conteúdo configurado"),
+    _ext("GRAIN", "0.1.11", "0.2.0", "dcb5c52", "PILOT-NET-GLOSS", ["CC-NET-3"],
+         "(c) T31: deletion_policy do Terraform fora do grão, só a política da API conta; (b) timeouts fora do "
+         "domínio desde a 0.1.2 (T45, 957870a); (a) alvos de referência da fatia no SERVICE-EVIDENCE (b952d98)"),
     _cite("C20", "3.2.0", "3.3.0", "9919e4c", "PILOT-NET-GLOSS", ["CC-NET-4"]),
     _cite("C09", "3.1.0", "3.2.0", "9919e4c", "PILOT-STO-MAP", ["CC-6"]),
 ]

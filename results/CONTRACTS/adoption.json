@@ -1,7 +1,7 @@
 {
  "schema": "bo.contracts_adoption/1",
  "module": "CONTRACTS",
- "generated_at": "2026-11-04T22:09:54-03:00",
+ "generated_at": "2026-11-04T22:13:34-03:00",
  "adopted": [
   {
    "source": "results/REQUIREMENTS/C24_proposta/requirements.schema.json",
@@ -603,6 +603,50 @@
    "requested_by": "PILOT-NET-ORACLE",
    "source": "results/PILOT-NET-ORACLE/CONTRACT_CHANGE.txt (4)",
    "change": "linha do NSG oci publicada (R-CONN-DOC)"
+  },
+  {
+   "contract": "SERVICE-EVIDENCE",
+   "kind": "external",
+   "from": "3bcf3b6",
+   "to": "3ba4079",
+   "commit": "3ba4079",
+   "at": "2026-11-04T19:30:00-03:00",
+   "requested_by": "PILOT-NET-ORACLE",
+   "source": "results/PILOT-NET-ORACLE/CONTRACT_CHANGE.txt (3, 5)",
+   "change": "CC-14: guias oficiais como fonte publicada; (3) estado de conexão publicado no SG aws e no firewall gcp, no NSG azurerm continua unknown publicado; (5) prioridade única por NSG e direção (frase do guia)"
+  },
+  {
+   "contract": "GRAIN",
+   "kind": "external",
+   "from": "0.1.11",
+   "to": "0.2.0",
+   "commit": "dcb5c52",
+   "at": "2026-11-04T19:30:00-03:00",
+   "requested_by": "PILOT-NET-E2E",
+   "source": "results/PILOT-NET-E2E/CONTRACT_CHANGE.txt (CC-NET-E2E-2)",
+   "change": "T59b (item sem id é COMPONENT anônimo do dono) e associação NSG azurerm; T51b recusada na 0.2.0 até a decisão do pedido do GRAIN sobre o CMT-NIC-U02 (results/GRAIN/CONTRACT_CHANGE.txt)"
+  },
+  {
+   "contract": "GRAIN",
+   "kind": "external",
+   "from": "0.1.11",
+   "to": "0.2.0",
+   "commit": "dcb5c52",
+   "at": "2026-11-04T19:30:00-03:00",
+   "requested_by": "PILOT-STO-MAP",
+   "source": "results/PILOT-STO-MAP/CONTRACT_CHANGE.txt (CC-8)",
+   "change": "T59b: bloco repetido sem id do provedor tem chave de ocorrência pelo conteúdo configurado"
+  },
+  {
+   "contract": "GRAIN",
+   "kind": "external",
+   "from": "0.1.11",
+   "to": "0.2.0",
+   "commit": "dcb5c52",
+   "at": "2026-11-04T19:30:00-03:00",
+   "requested_by": "PILOT-NET-GLOSS",
+   "source": "results/PILOT-NET-GLOSS/CONTRACT_CHANGE.txt (CC-NET-3)",
+   "change": "(c) T31: deletion_policy do Terraform fora do grão, só a política da API conta; (b) timeouts fora do domínio desde a 0.1.2 (T45, 957870a); (a) alvos de referência da fatia no SERVICE-EVIDENCE (b952d98)"
   },
   {
    "contract": "C20",
