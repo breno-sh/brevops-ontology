@@ -1,8 +1,8 @@
 {
  "schema": "bo.transforms_index/1",
  "module": "TRANSFORMS",
- "registry_version": "1.5.0",
- "generated_at": "2026-11-04T14:27:00-03:00",
+ "registry_version": "1.6.0",
+ "generated_at": "2026-11-04T21:40:00-03:00",
  "counts": {
   "scalar": 27,
   "combinators": 24,

@@ -37,8 +37,8 @@ from . import units as U
 from .errors import DeclarationError, NoUnit, OutOfDomain, SymbolicInput, TransformError, UnknownInput
 from .markers import ABSENT, is_absent, is_not_read, is_symbolic
 
-REGISTRY_VERSION = "1.5.0"
-GENERATED_AT = "2026-11-04T14:27:00-03:00"     # data da versão do registro (fixa: a regeneração é idêntica)
+REGISTRY_VERSION = "1.6.0"
+GENERATED_AT = "2026-11-04T21:40:00-03:00"     # data da versão do registro (fixa: a regeneração é idêntica)
 LOSS_KINDS = ("rounding", "saturation", "absence", "sentinel", "context_dependence", "not_expressible", "semantic")
 DATATYPES = ("integer", "decimal", "boolean", "string", "enum", "duration", "tuple", "number", "any", "list", "set",
              "map")
@@ -99,6 +99,7 @@ class Combinator:
     collection: tuple = ()        # ((porta, list|set|map), ...): coleção do C09 3.2.0 levada numa porta tuple do C10
     inv_inputs: Callable | None = None   # (entradas, saídas) -> entradas da inversa | None (sem inversa)
     port_types: tuple = ()        # ((porta, value_type do C09 3.2.0), ...): porta publicada como list/set/map (C10 3.1.0)
+    positional: tuple = ()        # (forma da entrada, forma da saída), ex. ("T", "list[T]"): entrada posicional única
 
 
 # ============================================================================================== parâmetros
@@ -1247,7 +1248,7 @@ COMBINATORS += [
                "nenhuma", "unwrap_single", False, _wrap_list,
                (Ex({"value": "logs/"}, out={"list": ["logs/"]}, roundtrip=True),
                 Ex({"value": {"k": 1}}, out={"list": [{"k": 1}]}, roundtrip=True)),
-               collection=(("list", "list"),)),
+               positional=('T', 'list[T]'), collection=(("list", "list"),)),
     Combinator("unwrap_single", (("list", "tuple", "lista (C09 list) de exatamente um elemento"),),
                (("value", "any", "o elemento"),), "lista com exatamente um elemento",
                (("TRANSFORM_OUT_OF_DOMAIN", "não é lista, ou lista vazia ou com mais de um elemento"),), (),
@@ -1256,7 +1257,7 @@ COMBINATORS += [
                 Ex({"list": []}, err="TRANSFORM_OUT_OF_DOMAIN"),
                 Ex({"list": ["a", "b"]}, err="TRANSFORM_OUT_OF_DOMAIN", note="lista de dois não vira escalar"),
                 Ex({"list": "a"}, err="TRANSFORM_OUT_OF_DOMAIN")),
-               collection=(("list", "list"),)),
+               positional=('list[T]', 'T'), collection=(("list", "list"),)),
     Combinator("list_to_set", (("list", "tuple", "lista (C09 list) de valores JSON"),),
                (("set", "tuple", "conjunto (C09 set): lista sem repetição em ordem canônica"),),
                "lista de valores JSON", (("TRANSFORM_OUT_OF_DOMAIN", "não é lista"),),
@@ -1265,7 +1266,7 @@ COMBINATORS += [
                (Ex({"list": ["b", "a", "b"]}, out={"set": ["a", "b"]}, note="ordem e repetição somem"),
                 Ex({"list": ["a", "b"]}, out={"set": ["a", "b"]}, roundtrip=True),
                 Ex({"list": {"a": 1}}, err="TRANSFORM_OUT_OF_DOMAIN")),
-               collection=(("list", "list"), ("set", "set"))),
+               positional=('list[T]', 'set[T]'), collection=(("list", "list"), ("set", "set"))),
     Combinator("set_to_list", (("set", "tuple", "conjunto (C09 set): lista sem repetição, qualquer ordem"),),
                (("list", "tuple", "lista (C09 list) na ordem canônica"),), "conjunto sem elemento repetido",
                (("TRANSFORM_OUT_OF_DOMAIN", "não é lista, ou tem elemento repetido"),), (),
@@ -1274,7 +1275,7 @@ COMBINATORS += [
                (Ex({"set": ["b", "a"]}, out={"list": ["a", "b"]}, roundtrip=True),
                 Ex({"set": [3, 1, 2]}, out={"list": [1, 2, 3]}, roundtrip=True),
                 Ex({"set": ["a", "a"]}, err="TRANSFORM_OUT_OF_DOMAIN")),
-               collection=(("set", "set"), ("list", "list"))),
+               positional=('set[T]', 'list[T]'), collection=(("set", "set"), ("list", "list"))),
     Combinator("map_list", (("list", "tuple", "lista (C09 list)"),) + _FN_PORTS,
                (("list", "tuple", "lista do mesmo tamanho e ordem, item_type = saída da escalar"),),
                "aplica a escalar fn (com params) a cada elemento, na ordem; a grandeza do elemento é a da escalar "
@@ -1355,6 +1356,10 @@ def _with_marker_examples(t):
 
 SCALARS = [_with_marker_examples(s) for s in SCALARS]
 COMBINATORS = [_with_marker_examples(c) for c in COMBINATORS]
+
+for _c in COMBINATORS:
+    if _c.positional and (len(_c.inputs), len(_c.outputs)) != (1, 1):
+        raise RuntimeError(f"{_c.name}: posicional exige uma entrada e uma saída")
 
 REGISTRY: dict[str, Scalar | Combinator] = {}
 for _t in SCALARS + COMBINATORS:
@@ -1471,6 +1476,31 @@ def finite_image(name: str, params: dict | None = None, values=None):
         r = apply_scalar(name, v, p)
         out.add(CMP._canon(r) if isinstance(r, (dict, list)) else r)
     return frozenset(out)
+
+
+# ------------------------------------------------------- entrada posicional única (emenda 1.6.0, ciclo v4)
+def signature(name: str) -> dict:
+    """Assinatura estrutural de um combinador para quem julga a alegação (SEMANTICS, ARBITERLIB): portas nomeadas e,
+    quando a entrada é posicional única, a forma 'T -> list[T]' etc. (T = tipo do elemento; o tipo exato de um uso
+    sai de collection_type_out)."""
+    t = get(name)
+    if not isinstance(t, Combinator):
+        raise DeclarationError(f"{name} é escalar")
+    out = {"name": name, "kind": "tuple", "inputs": [p[0] for p in t.inputs], "outputs": [p[0] for p in t.outputs],
+           "positional": bool(t.positional)}
+    if t.positional:
+        out.update({"input": t.inputs[0][0], "output": t.outputs[0][0], "in": t.positional[0],
+                    "out": t.positional[1]})
+    return out
+
+
+def apply_positional(name: str, value, ctx: dict | None = None):
+    """Aplica um combinador de entrada posicional única ao valor (sem embrulhar em {porta: valor}); devolve o valor da
+    única saída. Valor que é objeto JSON vai como valor, nunca como entradas nomeadas."""
+    t = get(name)
+    if not isinstance(t, Combinator) or not t.positional:
+        raise DeclarationError(f"{name} não tem entrada posicional única")
+    return apply_combinator(name, {t.inputs[0][0]: value}, ctx)[t.outputs[0][0]]
 
 
 def invert(name: str, params: dict | None, inputs, outputs):
@@ -1625,7 +1655,9 @@ def to_item(t) -> dict:
     return {"name": t.name, "kind": "tuple",
             "inputs": [_port(t, n, dt) for n, dt, _ in t.inputs],
             "outputs": [_port(t, n, dt) for n, dt, _ in t.outputs],
-            "precondition": t.precondition + "; portas: " + "; ".join(
+            "precondition": t.precondition + (
+                f"; entrada posicional única {t.inputs[0][0]}: {t.positional[0]} -> saída {t.outputs[0][0]}: "
+                f"{t.positional[1]}" if t.positional else "") + "; portas: " + "; ".join(
                 f"{n} ({r})" for n, _, r in t.inputs + t.outputs) + (
                 "; coleção (C09 3.2.0) por porta: " + ", ".join(f"{p} = {k}" for p, k in t.collection)
                 if t.collection else ""),
@@ -1658,6 +1690,6 @@ def parse_loss_field(text: str) -> list[str]:
     return [k.strip() for k in kinds.split(",")] if sep else ["<sem tipo>"]
 
 
-__all__ = ["invert", "collection_type_out", "finite_domain", "finite_image", "REGISTRY", "SCALARS", "COMBINATORS", "Scalar", "Combinator", "Ex", "apply_scalar", "apply_combinator",
+__all__ = ["signature", "apply_positional", "invert", "collection_type_out", "finite_domain", "finite_image", "REGISTRY", "SCALARS", "COMBINATORS", "Scalar", "Combinator", "Ex", "apply_scalar", "apply_combinator",
            "apply_chain", "inverse_of", "type_out", "check_chain", "resolve_kernel", "document", "to_item", "get",
            "LOSS_KINDS", "DATATYPES", "parse_error_field", "parse_loss_field", "REGISTRY_VERSION", "GENERATED_AT"]

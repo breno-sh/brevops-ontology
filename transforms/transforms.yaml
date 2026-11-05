@@ -2,7 +2,7 @@ schema: bo.transforms/1
 contract: C10
 contract_version: 3.2.0
 module: TRANSFORMS
-generated_at: '2026-11-04T14:27:00-03:00'
+generated_at: '2026-11-04T21:40:00-03:00'
 scalar:
 - name: identity
   kind: scalar
@@ -1037,8 +1037,9 @@ combinators:
     datatype: list
     item_type:
       datatype: any
-  precondition: 'qualquer valor; escalar -> lista de um elemento (ex. prefixo escalar -> lista de prefixos); portas:
-    value (qualquer valor); list (lista (C09 list) de um elemento); coleção (C09 3.2.0) por porta: list = list'
+  precondition: 'qualquer valor; escalar -> lista de um elemento (ex. prefixo escalar -> lista de prefixos); entrada
+    posicional única value: T -> saída list: list[T]; portas: value (qualquer valor); list (lista (C09 list) de
+    um elemento); coleção (C09 3.2.0) por porta: list = list'
   error: 'UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido'
   loss: nenhuma
   inverse:
@@ -1054,8 +1055,9 @@ combinators:
   outputs:
   - name: value
     datatype: any
-  precondition: 'lista com exatamente um elemento; portas: list (lista (C09 list) de exatamente um elemento); value
-    (o elemento); coleção (C09 3.2.0) por porta: list = list'
+  precondition: 'lista com exatamente um elemento; entrada posicional única list: list[T] -> saída value: T; portas:
+    list (lista (C09 list) de exatamente um elemento); value (o elemento); coleção (C09 3.2.0) por porta: list =
+    list'
   error: 'TRANSFORM_OUT_OF_DOMAIN: não é lista, ou lista vazia ou com mais de um elemento | UNKNOWN_INPUT: valor
     não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido'
   loss: nenhuma
@@ -1074,8 +1076,9 @@ combinators:
     datatype: set
     item_type:
       datatype: any
-  precondition: 'lista de valores JSON; portas: list (lista (C09 list) de valores JSON); set (conjunto (C09 set):
-    lista sem repetição em ordem canônica); coleção (C09 3.2.0) por porta: list = list, set = set'
+  precondition: 'lista de valores JSON; entrada posicional única list: list[T] -> saída set: set[T]; portas: list
+    (lista (C09 list) de valores JSON); set (conjunto (C09 set): lista sem repetição em ordem canônica); coleção
+    (C09 3.2.0) por porta: list = list, set = set'
   error: 'TRANSFORM_OUT_OF_DOMAIN: não é lista | UNKNOWN_INPUT: valor não lido (NOT_READ) | UNKNOWN_SYMBOLIC_INPUT:
     valor simbólico ainda não resolvido'
   loss: 'not_expressible: a ordem e a repetição da lista não se recuperam'
@@ -1094,8 +1097,9 @@ combinators:
     datatype: list
     item_type:
       datatype: any
-  precondition: 'conjunto sem elemento repetido; portas: set (conjunto (C09 set): lista sem repetição, qualquer
-    ordem); list (lista (C09 list) na ordem canônica); coleção (C09 3.2.0) por porta: set = set, list = list'
+  precondition: 'conjunto sem elemento repetido; entrada posicional única set: set[T] -> saída list: list[T]; portas:
+    set (conjunto (C09 set): lista sem repetição, qualquer ordem); list (lista (C09 list) na ordem canônica); coleção
+    (C09 3.2.0) por porta: set = set, list = list'
   error: 'TRANSFORM_OUT_OF_DOMAIN: não é lista, ou tem elemento repetido | UNKNOWN_INPUT: valor não lido (NOT_READ)
     | UNKNOWN_SYMBOLIC_INPUT: valor simbólico ainda não resolvido'
   loss: 'nenhuma (a ordem da lista é a canônica: o conjunto não tem ordem para perder)'

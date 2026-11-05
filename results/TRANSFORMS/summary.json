@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "TRANSFORMS",
- "generated_at": "2026-11-04T21:38:38-03:00",
+ "generated_at": "2026-11-04T21:39:15-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/TRANSFORMS.txt",
@@ -31,7 +31,7 @@
     "sha256": "a09b0768287c61b41c973bfc1d208395761fd153ab0d10afbc96badc6c1c022f"
    }
   ],
-  "recorded_at": "2026-11-04T21:38:38-03:00"
+  "recorded_at": "2026-11-04T21:39:15-03:00"
  },
  "sources": [
   {
@@ -55,5 +55,5 @@
    "transformation": "IRIs de unidade e grandeza só como identificadores (padrão do C00); existência conferida pelo UNITS"
   }
  ],
- "notes": "Registro fechado C10: registro 1.5.0: 27 escalares, 24 combinadores (7 comparadores da leitura de volta e 7 de coleção), gramática de guarda com 30 sat_tests; achados em results/TRANSFORMS/registro.json. Entradas hasheadas = as do catálogo (SEMANTICS.html, contracts/); o plano (§0, §4, §9, §10, §14), o modulos.json e a revisão GPT-6 foram lidos como contexto, sem hash, para não acoplar consumidores a edições do plano."
+ "notes": "Registro fechado C10: registro 1.6.0: 27 escalares, 24 combinadores (7 comparadores da leitura de volta e 7 de coleção), gramática de guarda com 30 sat_tests; achados em results/TRANSFORMS/registro.json. Entradas hasheadas = as do catálogo (SEMANTICS.html, contracts/); o plano (§0, §4, §9, §10, §14), o modulos.json e a revisão GPT-6 foram lidos como contexto, sem hash, para não acoplar consumidores a edições do plano."
 }

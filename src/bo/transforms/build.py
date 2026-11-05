@@ -90,6 +90,15 @@ EMENDAS = [
                "map_values, map_get, compare_set_equal) saem list/set/map com item_type {datatype: any}; UnitType "
                "aceita a convenção vácua SI/IEC/NOT_APPLICABLE em BYTE e BIT sem prefixo (UNITS-BYTE-00, C05 3.1.0); "
                "teste contra bo.units.rules e bo.units.crosscheck (0 divergências)"},
+    {"registry_version": "1.5.0", "commit_subject": "[TRANSFORMS] reaplica a emenda 1.5.0 no ciclo v4 (reverte 9d17ced)",
+     "request": "coordenador, ciclo v4: fim do congelamento do árbitro para o PILOT-EXIT 2",
+     "change": "a 1.5.0 foi desfeita em 9d17ced (árbitro congelado) e volta igual"},
+    {"registry_version": "1.6.0", "commit_subject": "[TRANSFORMS] emenda 1.6.0: entrada posicional única",
+     "request": "coordenador, ciclo v4: wrap_list/unwrap_single com entrada posicional única e saída list[T] num formato "
+                "que o SEMANTICS julgue (emenda 3 do SEMANTICS: lista como lado estruturado)",
+     "change": "wrap_list (T -> list[T]), unwrap_single (list[T] -> T), list_to_set (list[T] -> set[T]) e set_to_list "
+               "(set[T] -> list[T]) declaram entrada posicional única (pré-condição publicada e signature()); "
+               "apply_positional aplica sem embrulhar o valor, inclusive quando o valor é objeto JSON"},
 ]
 
 

@@ -335,3 +335,33 @@ def test_c10_3_1_0_collection_ports():
     mv = next(c for c in doc["combinators"] if c["name"] == "map_values")
     assert mv["outputs"][0] == {"name": "map", "datatype": "map", "item_type": {"datatype": "any"}, "key_type": "string"}
     assert "&id" not in (ROOT / "transforms/transforms.yaml").read_text(encoding="utf-8")
+
+
+# ------------------------------------------------------------------ emenda 1.6.0: entrada posicional única
+def test_positional_wrap_unwrap():
+    sig = R.signature("wrap_list")
+    assert sig["positional"] and (sig["in"], sig["out"]) == ("T", "list[T]")
+    assert (sig["input"], sig["output"]) == ("value", "list")
+    assert (R.signature("unwrap_single")["in"], R.signature("unwrap_single")["out"]) == ("list[T]", "T")
+    assert R.apply_positional("wrap_list", {"k": 1}) == [{"k": 1}]          # objeto vai como valor
+    assert R.apply_positional("unwrap_single", [{"k": 1}]) == {"k": 1}
+    assert R.apply_positional("list_to_set", ["b", "a", "b"]) == ["a", "b"]
+    assert not R.signature("map_list")["positional"]
+    with pytest.raises(DeclarationError):
+        R.apply_positional("map_list", [1])
+    with pytest.raises(DeclarationError):
+        R.signature("identity")
+
+
+def test_positional_shapes_agree_with_types():
+    t = {"datatype": "string", "quantity_kind": "NOT_APPLICABLE"}
+    lt = R.collection_type_out("wrap_list", t)
+    assert lt == {"datatype": "list", "item_type": t}
+    assert R.collection_type_out("unwrap_single", lt) == t
+    doc = R.document()
+    wl = next(c for c in doc["combinators"] if c["name"] == "wrap_list")
+    assert "entrada posicional única value: T -> saída list: list[T]" in wl["precondition"]
+    assert wl["outputs"][0] == {"name": "list", "datatype": "list", "item_type": {"datatype": "any"}}
+    for c in R.COMBINATORS:
+        if c.positional:
+            assert len(c.inputs) == len(c.outputs) == 1
