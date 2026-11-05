@@ -312,3 +312,12 @@ def test_t59b_does_not_apply_when_key_is_symbolic():
     oc = I.decompose_config(_sg_cfg(rules), C25Adapter(_sg_records()), {SG: {"ingress"}}, RS)
     r = [o for o in oc if any("/ingress#" in n for n in o.tf)]
     assert r and r[0].grain == "UNKNOWN"
+
+
+def test_r6_resolved_by_publication_takes_reproduced_side():
+    d = _dispute("resolvida-por-publicação", "doc")
+    doc = rec("t_a", "lifecycle_controller", {"kind": "self", "layer": "api", "rule": "R-DOC"})
+    spec = rec("t_a", "lifecycle_controller", {"kind": "parent", "layer": "api", "rule": "R-SPEC"})
+    out, _ = A.translate([doc, spec], None, set(), A.load_resolved_disputes([d]))
+    g = from_dict(out["t_a"]).fact("lifecycle_controller")
+    assert g.known and g.value["kind"] == "self"

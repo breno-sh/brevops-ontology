@@ -36,7 +36,7 @@ from . import schema as S
 from .common import data_dir, dump_json, dump_jsonl, now, repo, results_dir, rules_path, sha256_file, stamp
 from .evidence import FixtureAdapter
 
-AUTHORED_AT = "2026-11-04T21:40:00-03:00"
+AUTHORED_AT = "2026-11-04T22:15:00-03:00"
 
 
 def _strip(rep: dict) -> dict:
@@ -408,6 +408,13 @@ vida preso à instância, G1 e G2 aceitam a evidência, e trocar a ordem troca B
 referência <code>by_name</code>; sem ela, o grafo embutido perde relações que o separado tem.</li>
 <li>Emenda 0.1.1 (CC-1): a primeira versão lia uma convenção que o SERVICE-EVIDENCE nunca gravou; os testes
 sintéticos usavam a mesma convenção e não pegaram. Entraram o adaptador por aspecto e testes com o arquivo real.</li>
+<li>Complemento da 0.2.0 — 2026-11-04T22:15-03:00 (sem regra nova): disputa com status
+<code>resolvida-por-publicação</code> (R6 do PREREG, b7f804d) vale o lado reproduzido, como a
+<code>resolvida-por-observação</code> (R2). Fatos do SE CC-14 (3ba4079) conferidos no adaptador: estado de conexão,
+efeito "só permite", precedência e suporte a tag/TTL não são fatos de grão e ficam fora; os
+<code>reference_target</code> entram pela T44; <code>rule_applies_to</code>, <code>spec_field</code>,
+<code>spec_member</code> e <code>delete_blocked_while_referenced</code> não têm tradução na tabela e entram como
+alegação desconhecida, sem voto (o alcance da regra do NSG OCI segue pela disputa, hoje aberta).</li>
 <li>Emenda 0.2.0 — 2026-11-04T21:40-03:00 (ciclo v4, depois do PILOT-EXIT 2/2; ajuste olhando só a calibração).
 <b>(a) Item sem id do provedor = COMPONENT anônimo do dono (T59b)</b>. Ocorrência = (pai, caminho, conteúdo configurado,
 índice de multiplicidade), independente da posição. Justificativa pelo OBSERVED (OBS-GAPS, OCI, 2 repetições com

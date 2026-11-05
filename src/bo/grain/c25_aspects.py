@@ -137,7 +137,7 @@ TABLE = [
     ("(qualquer)", "(nível observed)", "R-GRAIN-R1..R5",
      "OBSERVED (C25 1.4.0) entra com o nível na citação; consolidação pela regra R1–R5 do PREREG (04/11 17:05): R1 "
      "nada é sobrescrito; R2 disputa PUBLISHED x PUBLISHED já existente com status resolvida-por-observação vale o "
-     "lado reproduzido (o vencido continua citado, sem voto); R3 OBSERVED x PUBLISHED sem disputa prévia: "
+     "lado reproduzido (o vencido continua citado, sem voto); R6 o mesmo para resolvida-por-publicação; R3 OBSERVED x PUBLISHED sem disputa prévia: "
      "CONTRADICTORY; R4 OBSERVED sozinho preenche o campo; R5 vale para qualquer resultado"),
     ("identity", "attachment_attribute", "R-GRAIN-T63",
      "campo da spec que liga o dono a objetos do tipo binds_to, casado ao atributo pela leitura do modelo: ligação "
@@ -247,6 +247,7 @@ def _rel(attr: str, block_path: str | None) -> str:
 
 
 RESOLVED = "resolvida-por-observação"
+RESOLVED_STATUSES = (RESOLVED, "resolvida-por-publicação")    # R2 e R6 do PREREG: vale o lado reproduzido
 
 
 def _dispute_file():
@@ -263,7 +264,7 @@ def load_resolved_disputes(items: list | None = None) -> dict:
     resolvida (segue CONTRADICTORY)."""
     out = {}
     for d in (items if items is not None else _dispute_file()):
-        if d.get("status") != RESOLVED:
+        if d.get("status") not in RESOLVED_STATUSES:
             continue
         win = d.get("resolved_to") or d.get("reproduces") or d.get("winner")
         if win not in ("doc", "spec") or not isinstance(d.get(win), dict):
@@ -274,7 +275,8 @@ def load_resolved_disputes(items: list | None = None) -> dict:
             continue
         out[(d.get("provider"), d.get("terraform_resource_type"), d.get("fact"))] = {
             "losing_rule": lr, "winning_rule": wr,
-            "observation": d.get("observation") or d.get("resolved_by") or d.get("observation_id")}
+            "observation": d.get("observation") or d.get("resolved_by") or d.get("observation_id")
+            or d.get("publication_id") or d.get("status")}
     return out
 
 
@@ -287,8 +289,8 @@ def load_disputes() -> set:
         return set()
     out = set()
     for d in json.loads(p.read_text(encoding="utf-8")).get("disputes", []):
-        if d.get("status") == RESOLVED:
-            continue                                  # R2: resolvida por observação, não é mais disputa aberta
+        if d.get("status") in RESOLVED_STATUSES:
+            continue                                  # R2/R6: resolvida, não é mais disputa aberta
         fld = "api_resource" if d.get("fact") == "api_bridge" else d.get("fact")
         out.add((d.get("provider"), d.get("terraform_resource_type"), fld))
     return out

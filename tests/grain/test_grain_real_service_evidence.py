@@ -218,7 +218,7 @@ def test_cc8_spec_disputes_are_contradictory(records):
     for d in disputes:
         fld = "api_resource" if d["fact"] == "api_bridge" else d["fact"]
         ev = C25Adapter(by[(d["provider"], d["terraform_resource_type"])]).evidence(d["terraform_resource_type"])
-        if d.get("status") == A.RESOLVED:
+        if d.get("status") in A.RESOLVED_STATUSES:
             f = ev.fact(fld)
             assert f.known and f.value["kind"] == d[d["resolved_to"]]["kind"], d
         else:
