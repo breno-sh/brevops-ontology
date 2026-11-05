@@ -4,7 +4,7 @@
   "direction_entries": 181,
   "fixtures": 123
  },
- "generated_at": "2026-11-04T23:06:38-03:00",
+ "generated_at": "2026-11-05T00:20:36-03:00",
  "heldout": {
   "checks": 230,
   "checks_derived": 176,
@@ -17,5 +17,15 @@
  },
  "module": "PILOT-STO-ORACLE",
  "schema": "bo.pilot.sto.build_report/1",
- "verification": "avaliador == resposta analítica e schema fixado em todas as fixtures (calibração e retidas)"
+ "signature_check": {
+  "calib_signatures_sha256": "32ca3076f5e769ead8ab3b19fe6da46ecbf28241bbfc2a2bf4314c8682c7a483",
+  "divergent": 0,
+  "heldout_signatures_sha256": "323e40bdc2e23c46e2608e34375645ec8d790d4f7bfcfed875c6500debe11254",
+  "keys_calib": 12,
+  "keys_heldout": 17,
+  "keys_shared": 12,
+  "result": "PASS",
+  "rule": "mesmo (provedor, tipo, evidência de dono, referência) -> mesma resposta"
+ },
+ "verification": "avaliador == resposta analítica e schema fixado em todas as fixtures (calibração e retidas); regra de dono única (oracle.owner_rule) nas duas partições; assinaturas (tipo, evidência, resposta) sem divergência entre calibração e retidas (signature_check do índice)"
 }

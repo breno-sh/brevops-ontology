@@ -1,6 +1,6 @@
 {
  "docs_root": "$BO_DATA/downloads/",
- "oracle_version": "1.3.0",
+ "oracle_version": "1.4.0",
  "rules": {
   "AWS-ACL-PUBLIC-READ": {
    "evidence": [
@@ -438,7 +438,12 @@
    "level": "derived"
   },
   "DEC-FACET-REF": {
-   "basis": "recurso separado identificado pelo contêiner (identity schema: bucket obrigatório) é faceta do contêiner (CMT-BKT-P01)",
+   "basis": "recurso separado identificado pelo contêiner (identity schema: bucket obrigatório) é faceta do contêiner (CMT-BKT-P01), desde que a regra de dono única (owner_rule, OWNER_EVIDENCE) ache fato de dono fora da camada Terraform; sem ele vale DEC-NO-API-OWNER",
+   "evidence": [],
+   "level": "derived"
+  },
+  "DEC-NO-API-OWNER": {
+   "basis": "regra de dono única (DIAG_T3 F6): o tipo ou bloco que realiza a configuração não tem, no SERVICE-EVIDENCE congelado, fato de dono fora da camada Terraform (só R-OWN-TOP ou R-BLOCK-OWNER, ou dono não documentado; tabela OWNER_EVIDENCE): a unidade fica UNKNOWN com o dono em falta, com o contêiner resolvido ou não, na calibração e nas retidas. Ex.: google_storage_bucket_iam_member (SE-google-vovo2coaylref2sn, camada Terraform), aws_s3_bucket.grant (SE-aws-swfmj2jyvh57cdk7)",
    "evidence": [],
    "level": "derived"
   },

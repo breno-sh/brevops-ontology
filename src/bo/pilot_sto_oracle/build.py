@@ -8,6 +8,12 @@
   python -I -m bo.pilot_sto_oracle.build --check    regenera a calibração em $BO_TMP e compara byte a byte
                                                     (generated_at não conta); confere o selo contra o índice
 
+A regra de dono é UMA (oracle.owner_rule), usada pelo gerador das duas partições e pelo avaliador. O build
+REPROVA quando o mesmo (provedor, tipo, evidência de dono, referência) dá respostas diferentes dentro de uma
+partição ou entre calibração e retidas (signatures / cross_check); a conferência com as retidas é feita onde o
+texto claro existe (selagem em memória ou re-selagem na VM) e fica no índice; o build e o --check reprovam se
+as assinaturas da calibração mudarem depois dela. Só assinaturas vão para a mensagem, nunca caso.
+
 Antes de gravar qualquer coisa, toda conferência analítica tem de bater com o avaliador (pilot/sto/oracle).
 """
 from __future__ import annotations
@@ -121,6 +127,112 @@ def c11_seed(e):
                         "frame_ref": "piloto não sorteia: sem frame do DEPSAMPLE", "weight": "idem",
                         "lowering_plan": "plano C26 do PILOT-STO-E2E",
                         "origin": "pilot (C11 3.1.0); a semente do C24 1.1.0 não leva origin"}}
+
+
+# ------------------------------------------------------------------ assinaturas (tipo, evidência, resposta)
+# DIAG_T3 F6: o mesmo tipo, com a mesma evidência, não pode ter respostas diferentes entre calibração e retidas.
+# Assinatura de cada conferência de decomposição de configuração: (provedor, tipo[/bloco ou atributo] que a
+# realiza, classe da evidência de dono pela regra única, estado da referência ao contêiner) -> (kind, forma do
+# dono). Nada de id, nome ou valor de caso entra na assinatura nem na mensagem.
+def _owner_form(o):
+    if not isinstance(o, str):
+        return "-"
+    return o if o in ("UNKNOWN", "self") else o.split(":", 1)[0]
+
+
+def _realizers(fx, unit, oracle):
+    kind, _, where = unit[len("setting:"):].partition("@")
+    p = fx["provider"]
+    out = []
+    for k, by, target, lvl in oracle._setting_units(fx):
+        if k != kind:
+            continue
+        if where.split(":", 1)[0] in ("UNRESOLVED", "DISPUTED", "NO-API-OWNER"):
+            hit = by == where.split(":", 1)[1]
+        elif where == "account:context":
+            hit = lvl == "account" and p == "aws"
+        elif where == "namespace:context":
+            hit = lvl == "namespace"
+        elif where.startswith("namespace:"):
+            hit = lvl == "account" and target == where.split(":", 1)[1]
+        elif where.startswith("container:"):
+            hit = lvl == "bucket" and target == where.split(":", 1)[1]
+        else:
+            hit = False
+        if hit:
+            ref = "context" if (lvl == "account" and p == "aws") or lvl == "namespace" else (
+                "resolved" if target is not None else "unresolved")
+            out.append((by, ref))
+    return out
+
+
+def signatures(gen, oracle) -> dict:
+    """{assinatura: {respostas}} das conferências de decomposição de configuração de uma partição."""
+    sig = {}
+    for f in gen.fixtures:
+        fx = f["fixture"]
+        for c in f["checks"]:
+            if c["kind"] != "decomposition" or not c["unit"].startswith("setting:"):
+                continue
+            ans = (str(c["expect"].get("kind")), _owner_form(c["expect"].get("owner")))
+            rs = _realizers(fx, c["unit"], oracle)
+            if not rs:
+                sig.setdefault((fx["provider"], "SEM-REALIZADOR", "-", "-"), set()).add(ans)
+            for by, ref in rs:
+                rtype = by.split("/", 1)[0].split(".", 1)[0] + ("/" + by.split("/", 1)[1] if "/" in by else "")
+                sig.setdefault((fx["provider"], rtype, oracle.owner_rule(fx["provider"], by)["class"], ref), set()).add(ans)
+    return sig
+
+
+def signature_table(sig: dict) -> dict:
+    return {"|".join(k): sorted("|".join(a) for a in v) for k, v in sorted(sig.items())}
+
+
+def signature_divergences(sig_calib: dict, sig_held: dict) -> list:
+    out = []
+    for k in sorted(set(sig_calib) | set(sig_held)):
+        a, b = sig_calib.get(k, set()), sig_held.get(k, set())
+        why = []
+        if k[1] == "SEM-REALIZADOR":
+            why.append("conferência sem recurso que a realize")
+        if len(a) > 1 or len(b) > 1:
+            why.append("respostas diferentes dentro de uma partição")
+        if a and b and a != b:
+            why.append("respostas diferentes entre calibração e retidas")
+        if why:
+            out.append({"signature": list(k), "calib": sorted(list(x) for x in a), "heldout": sorted(list(x) for x in b),
+                        "why": why})
+    return out
+
+
+def cross_check(calib, held, oracle) -> dict:
+    """Reprova (SystemExit) se o mesmo (tipo, evidência) dá respostas diferentes; devolve o registro do índice."""
+    sc, sh = signatures(calib, oracle), signatures(held, oracle)
+    div = signature_divergences(sc, sh)
+    rep = {"result": "PASS" if not div else "FAIL", "rule": "mesmo (provedor, tipo, evidência de dono, referência) -> mesma resposta",
+           "keys_calib": len(sc), "keys_heldout": len(sh), "keys_shared": len(set(sc) & set(sh)), "divergent": len(div),
+           "calib_signatures_sha256": sha(canon(signature_table(sc))),
+           "heldout_signatures_sha256": sha(canon(signature_table(sh)))}
+    if div:
+        raise SystemExit("REPROVADO: assinaturas (tipo, evidência, resposta) divergentes: "
+                         + json.dumps(div, ensure_ascii=False))
+    return rep
+
+
+def calib_signature_guard(calib, oracle, index):
+    """A conferência com as retidas, gravada no índice, tem de valer para a calibração atual."""
+    own = signature_divergences(signatures(calib, oracle), {})
+    if own:
+        raise SystemExit("REPROVADO: assinaturas divergentes na calibração: " + json.dumps(own, ensure_ascii=False))
+    if index is None:
+        return
+    sc = (index.get("signature_check") or {})
+    if sc.get("result") != "PASS":
+        raise SystemExit("REPROVADO: o índice selado não tem conferência de assinaturas calibração x retidas (PASS)")
+    now = sha(canon(signature_table(signatures(calib, oracle))))
+    if sc.get("calib_signatures_sha256") != now:
+        raise SystemExit("REPROVADO: as assinaturas da calibração mudaram depois da conferência com as retidas; "
+                         "refaça a conferência na re-selagem")
 
 
 # ------------------------------------------------------------------ escrita da calibração
@@ -274,7 +386,7 @@ def item_hash(obj) -> str:
     return sha(canon(obj))
 
 
-def seal(gen, oracle) -> dict:
+def seal(gen, oracle, signature_check=None) -> dict:
     sd = sealed_dir()
     cert = sd / "recipient_cert.pem"
     if not cert.is_file():
@@ -310,7 +422,7 @@ def seal(gen, oracle) -> dict:
            "recipient_fingerprint_sha256": cert_fingerprint(cert),
            "recipient_note": "certificado público da VM Oracle do Breno (D15); a chave privada nunca saiu de lá",
            "reader": "PILOT-EXIT (o Breno decifra na VM; nenhum agente lê o texto claro antes)",
-           "counts": counts, "items": items}
+           "counts": counts, "signature_check": signature_check, "items": items}
     (sd / "SEALED_INDEX.json").write_bytes(canon(idx))
     return idx
 
@@ -318,7 +430,7 @@ def seal(gen, oracle) -> dict:
 # ------------------------------------------------------------------ main
 def build(root: Path, do_seal: bool, generated_at: str | None = None):
     oracle = load_oracle(root)
-    calib = cases.generate("calib")
+    calib = cases.generate("calib", oracle)
     bad = verify(calib, oracle)
     if bad:
         for b in bad[:30]:
@@ -326,18 +438,20 @@ def build(root: Path, do_seal: bool, generated_at: str | None = None):
         raise SystemExit(f"calibração: {len(bad)} divergência(s) entre a resposta analítica e o avaliador")
     index = None
     if do_seal:
-        held = cases.generate("heldout")
+        held = cases.generate("heldout", oracle)
         bad = verify(held, oracle)
         if bad:
             raise SystemExit(f"retidas: {len(bad)} divergência(s) (texto não impresso: partição selada)")
+        sigchk = cross_check(calib, held, oracle)
         mark_basis(held, oracle)
         retired = retire_current(os.environ.get("BO_RETIRE_REASON", "substituído por conjunto novo"))
         if retired:
             print(json.dumps({"retired": retired["ciphertext_sha256"], "items": retired["items"]}))
-        index = seal(held, oracle)
+        index = seal(held, oracle, sigchk)
         del held
     elif (sealed_dir() / "SEALED_INDEX.json").exists():
         index = json.loads((sealed_dir() / "SEALED_INDEX.json").read_text(encoding="utf-8"))
+    calib_signature_guard(calib, oracle, index)
     write_calib(root, calib, oracle, index, generated_at or now_iso())
     return calib, index
 
@@ -392,7 +506,10 @@ def main(argv=None) -> int:
            "calib": {"fixtures": len(calib.fixtures), "direction_entries": len(calib.entries),
                      "checks": sum(len(f["checks"]) for f in calib.fixtures)},
            "heldout": None if index is None else index["counts"],
-           "verification": "avaliador == resposta analítica e schema fixado em todas as fixtures (calibração e retidas)"}
+           "verification": "avaliador == resposta analítica e schema fixado em todas as fixtures (calibração e retidas); "
+                           "regra de dono única (oracle.owner_rule) nas duas partições; assinaturas (tipo, evidência, resposta) "
+                           "sem divergência entre calibração e retidas (signature_check do índice)",
+           "signature_check": None if index is None else index.get("signature_check")}
     out = root / "results" / MODULE
     out.mkdir(parents=True, exist_ok=True)
     (out / "build_report.json").write_bytes(canon(rep))

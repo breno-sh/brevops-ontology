@@ -1,5 +1,5 @@
 PILOT-STO-ORACLE: notas do oráculo offline do piloto de armazenamento de objeto
-gravado em 2026-11-03T22:00-03:00, revisto em 2026-11-04T23:07:03-03:00 (America/Recife)
+gravado em 2026-11-03T22:00-03:00, revisto em 2026-11-05T00:21:23-03:00 (America/Recife)
 
 O QUE ESTÁ AQUI
 - Avaliador: pilot/sto/oracle/sto_oracle.py (só biblioteca padrão; não importa nada do pipeline). Estado efetivo
@@ -186,3 +186,36 @@ CICLO v4, REVISÃO 2026-11-04 23h (SERVICE-EVIDENCE 3ba4079 CC-14 e f44b9a6 R6; 
   1.3.0 (230 conferências e 181 entradas) e recifrei lá; o texto claro nunca saiu da VM, e os temporários foram
   apagados. Envelope revisado sha256 c5be53e93e82e5e432d44d9ea91ec9b22fb002da9ed1f2dfa168fdd303b133d9; texto claro 8fd771189b9cee5b2da3c25b5284b92a516f973fc8236d2595dd44e2000f18dd.
   O envelope v4 anterior (8fd31ee6...) foi para retired/ com status SUPERSEDED (não queimado).
+
+CICLO v4, REVISÃO 2 2026-11-05T00:21:23-03:00 (PILOT-EXIT DIAG_T3 95dbf33, F6: defeito do gabarito, classe MC-DEC-SCOPE)
+- Defeito: para a concessão separada do Google (google_storage_bucket_iam_member) o SERVICE-EVIDENCE só tem dono e
+  alcance na camada Terraform (SE-google-vovo2coaylref2sn, R-OWN-TOP); a calibração do tipo esperava UNKNOWN e a
+  retida da borda v4 esperava FACET do contêiner, escrita à mão no gerador sem passar por regra de dono.
+- Correção geral: regra de dono ÚNICA, sto_oracle.owner_rule, sobre a tabela OWNER_EVIDENCE que sai do
+  service_evidence.jsonl congelado (teste confere tabela == arquivo). Dono conhecido só com fato de dono fora da
+  camada Terraform (camada de API ou identidade/pai do objeto remoto); só R-OWN-TOP/R-BLOCK-OWNER ou dono não
+  documentado vira a unidade setting:<tipo>@NO-API-OWNER:<recurso>, UNKNOWN, regra DEC-NO-API-OWNER, com o
+  contêiner resolvido ou não. O avaliador (decompose), o gerador das duas partições (cases.setting_check) e a
+  re-selagem usam a mesma função. Na tabela, além das concessões do Google, ficam sem dono: aws_s3_bucket.grant
+  (bloco, só camada Terraform), google_storage_bucket_acl e o namespace OCI (não documentados); nenhuma
+  conferência de calibração ou retida usa esses três.
+- Conferência no build: assinatura (provedor, tipo[/bloco], classe da evidência de dono, referência) -> (kind,
+  forma do dono) de cada conferência de decomposição de configuração; o build reprova se a mesma assinatura tem
+  respostas diferentes dentro de uma partição ou entre calibração e retidas. A mensagem traz só assinaturas.
+  A conferência com as retidas roda onde o texto claro existe (na VM, aqui) e fica no índice (signature_check);
+  build e --check reprovam se as assinaturas da calibração mudarem depois. Calibração: 12 assinaturas; retidas:
+  17; 12 em comum; 0 divergentes.
+- Teste vermelho antes (commit 04da090): 7 falhas, entre elas a concessão sintética que saía FACET.
+- Política de polaridade apertada: positivo não pode ter unidade UNKNOWN (era só o docstring).
+- Calibração: nenhuma resposta mudou (0 de 123 fixtures e 181 entradas); mudaram só RULES.json (regra nova),
+  versão e sha do oráculo (1.4.0).
+- Retidas, RE-SELO DECLARADO (mesmas 317 instâncias): na VM, num namespace de rede vazio (unshare --net), decifrei,
+  apliquei a regra única, reconferi tudo com o oráculo 1.4.0 (230 conferências, 181 entradas), conferi as assinaturas
+  contra a calibração e recifrei lá; o texto claro nunca saiu da VM e o diretório de trabalho foi apagado. Mudou a
+  resposta de 1 item, da classe MC-DEC-SCOPE; nenhum item de outra classe mudou. Unidades NÃO conferidas do
+  avaliador mudaram em outras fixtures com concessão separada do Google, sem mudar resposta (o E2 só compara
+  conferências de decomposição).
+  Envelope antigo sha256 c5be53e93e82e5e432d44d9ea91ec9b22fb002da9ed1f2dfa168fdd303b133d9 (SUPERSEDED, em retired/);
+  novo a1e3e62cb9db95d94e53c3364126d2e4347c99cd35a56055e2c118b3695598db; texto claro b89345d0668cdceea8e20128baa460a8e1720cee202ec55dce07ea294b51ac0c.
+- Limite: a calibração não tem concessão do Google com contêiner resolvido; essa assinatura só é conferida dentro
+  das retidas (nenhuma resposta divergente lá).

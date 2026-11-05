@@ -100,3 +100,32 @@ def test_sealed_dir_holds_only_ciphertext_index_and_public_cert():
     assert sorted(p.name for p in sd.iterdir()) == ["SEALED_INDEX.json", "heldout.cms.pem", "recipient_cert.pem"]
     assert "PRIVATE" not in (sd / "recipient_cert.pem").read_text()
     assert (sd / "heldout.cms.pem").read_text().startswith("-----BEGIN CMS-----")
+
+
+def _set_sigcheck(data, fn):
+    ip = data / "PILOT-STO-ORACLE" / "sealed" / "SEALED_INDEX.json"
+    idx = json.loads(ip.read_text())
+    fn(idx)
+    ip.write_text(json.dumps(idx))
+
+
+def test_check_needs_signature_check_in_sealed_index(sandbox):
+    _, data = sandbox
+    _set_sigcheck(data, lambda idx: idx.pop("signature_check", None))
+    with pytest.raises(SystemExit) as ex:
+        build.check()
+    assert "não tem conferência de assinaturas" in str(ex.value)
+
+
+def test_check_fails_when_calibration_signatures_changed_after_seal(sandbox):
+    _, data = sandbox
+    _set_sigcheck(data, lambda idx: idx["signature_check"].update(calib_signatures_sha256="0" * 64))
+    with pytest.raises(SystemExit) as ex:
+        build.check()
+    assert "assinaturas da calibração mudaram" in str(ex.value)
+
+
+def test_sealed_index_records_passing_signature_check():
+    idx = json.loads((DATA / "PILOT-STO-ORACLE" / "sealed" / "SEALED_INDEX.json").read_text())
+    sc = idx["signature_check"]
+    assert sc["result"] == "PASS" and sc["divergent"] == 0 and sc["keys_shared"] >= 1

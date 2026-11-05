@@ -10,6 +10,8 @@ sintética de objetos) e devolve o ESTADO EFETIVO pela semântica documentada da
                            marcador de exclusão à parte), dia a dia, com os eventos e as regras de ciclo de vida
   decompose(fx)            unidades neutras (contêiner, namespace, configuração) com dono, alcance efetivo,
                            controlador de ciclo de vida e evidência que falta
+  owner_rule(p, by)        regra de dono ÚNICA (calibração, retidas e avaliador): API | TERRAFORM_ONLY |
+                           UNDOCUMENTED | NOT_IN_TABLE; só API dá dono conhecido (DIAG_T3 F6)
   judge(src, tgt, losses)  julga uma configuração-alvo contra a de origem: ACCEPT | ACCEPT_WITH_DECLARED_LOSS |
                            REJECT | UNKNOWN; divergência não declarada é perda silenciosa (REJECT)
   judge_claim(fx, claim)   julga uma alegação (contraexemplo) sobre o estado efetivo ou a decomposição
@@ -28,7 +30,7 @@ import json
 import math
 import re
 
-ORACLE_VERSION = "1.3.0"
+ORACLE_VERSION = "1.4.0"
 PROVIDERS = ("aws", "google", "azurerm", "oci")
 PINS = {"aws": "6.71.0", "google": "8.9.0", "azurerm": "5.12.0", "oci": "9.11.0"}
 
@@ -210,9 +212,10 @@ RULES = {
     "UNSUPPORTED": {"level": "derived", "basis": "recurso da configuração fora do que o oráculo modela: UNKNOWN, nunca valor inventado", "evidence": []},
     # decomposição
     "DEC-OWN-ID": {"level": "derived", "basis": "recurso de topo com identidade própria na API e sem pai na evidência = entidade (compromisso CMT-BKT-P03, nota aws/google; google: SE-google-ax5cm4zf5mcm6pzq dono self na API)", "evidence": []},
-    "DEC-FACET-REF": {"level": "derived", "basis": "recurso separado identificado pelo contêiner (identity schema: bucket obrigatório) é faceta do contêiner (CMT-BKT-P01)", "evidence": []},
+    "DEC-FACET-REF": {"level": "derived", "basis": "recurso separado identificado pelo contêiner (identity schema: bucket obrigatório) é faceta do contêiner (CMT-BKT-P01), desde que a regra de dono única (owner_rule, OWNER_EVIDENCE) ache fato de dono fora da camada Terraform; sem ele vale DEC-NO-API-OWNER", "evidence": []},
     "DEC-AZ-CONTAINER": {"level": "derived", "basis": "SE-azurerm-qvoe5bsgpg3atfy2 (controlador de ciclo de vida self na camada de API, R-LIFE-API) e SE-azurerm-si55lp2kgnkl4qun (dono self na API); a identidade fica dentro da conta (SE-azurerm-n2yvw45ffqgp2565, SE-azurerm-xxozs3v2tmjpca2z). Componente exige controlador = pai (CMT-BKT-P03, CMT-LC-P01): com controlador self o contêiner é entidade no namespace da conta. Se a conta apaga o contêiner junto continua sem evidência", "evidence": []},
     "DEC-OCI-NAMESPACE": {"level": "derived", "basis": "oci_objectstorage_namespace_metadata: dono não documentado (SE-oci-esq4tizacudkvhhx); ciclo de vida e alcance só na camada Terraform (SE-oci-2jyxv2tqy5eg2i2g, SE-oci-r34zohdkd44rvbid), que pela nota da própria regra não diz quem cria ou apaga o objeto na API: na unidade de domínio continuam UNKNOWN", "evidence": []},
+    "DEC-NO-API-OWNER": {"level": "derived", "basis": "regra de dono única (DIAG_T3 F6): o tipo ou bloco que realiza a configuração não tem, no SERVICE-EVIDENCE congelado, fato de dono fora da camada Terraform (só R-OWN-TOP ou R-BLOCK-OWNER, ou dono não documentado; tabela OWNER_EVIDENCE): a unidade fica UNKNOWN com o dono em falta, com o contêiner resolvido ou não, na calibração e nas retidas. Ex.: google_storage_bucket_iam_member (SE-google-vovo2coaylref2sn, camada Terraform), aws_s3_bucket.grant (SE-aws-swfmj2jyvh57cdk7)", "evidence": []},
     "DEC-DISPUTED": {"level": "derived", "basis": "fato em disputa no SERVICE-EVIDENCE (results/SERVICE-EVIDENCE/spec_disputes.json, CC-8): a doc dá um valor e a spec do provedor outro; o oráculo não escolhe, o campo fica UNKNOWN com o motivo", "evidence": []},
     "DEC-OCI-BUCKET": {"level": "derived", "basis": "o namespace é escopo de unicidade do nome (bucket_scope NAMESPACE), não pai com ciclo de vida: contêiner é entidade com chave composta (SE-oci-bqtq3hd3wukbga5o dono self e SE-oci-bjc4cjf3tka6ongc ciclo de vida self na API)", "evidence": [
         _ev(D_OCI + "objectstorage_bucket.html.markdown", 66, "Bucket names must be unique within an Object Storage namespace")]},
@@ -1143,6 +1146,108 @@ def simulate(fx):
 # ----------------------------------------------------------------------------------------------------------
 # Decomposição esperada (unidades neutras)
 # ----------------------------------------------------------------------------------------------------------
+# Regra de dono ÚNICA (DIAG_T3 F6, classe MC-DEC-SCOPE): o dono de uma configuração só é conhecido quando o
+# SERVICE-EVIDENCE tem, para o tipo (ou o bloco), um fato de dono FORA da camada Terraform: camada de API
+# (R-OWN-API, R-OWN-SPEC, R-OWN-SPEC-BLOCK, R-OWN-API-SHARED, R-OBS-OWNER) ou identidade/pai do objeto remoto
+# (R-OWN-AWS-IDENTITY, R-OWN-AZ-PARENT, R-OWN-GCP-PARENT, R-OWN-DOC-PARENT). Só R-OWN-TOP/R-BLOCK-OWNER (camada
+# Terraform) ou dono não documentado decide UNKNOWN em qualquer fixture, de calibração ou retida. Atributo é campo
+# do objeto de API do próprio recurso e herda o fato do recurso. A tabela abaixo sai do service_evidence.jsonl
+# congelado (owner_table_from_facts); um teste confere que ela é igual ao arquivo.
+OWNER_API_LAYER = "api"
+OWNER_IDENTITY_RULES = ("R-OWN-AWS-IDENTITY", "R-OWN-AZ-PARENT", "R-OWN-GCP-PARENT", "R-OWN-DOC-PARENT")
+OWNER_PATHS = {
+    "aws_s3_bucket": {"blocks": ["grant", "lifecycle_rule", "versioning"], "attributes": ["acl", "policy"]},
+    "aws_s3_bucket_versioning": {}, "aws_s3_bucket_lifecycle_configuration": {}, "aws_s3_bucket_public_access_block": {},
+    "aws_s3_bucket_policy": {}, "aws_s3_bucket_acl": {}, "aws_s3_bucket_ownership_controls": {},
+    "aws_s3_account_public_access_block": {},
+    "google_storage_bucket": {"blocks": ["lifecycle_rule", "versioning"], "attributes": ["public_access_prevention"]},
+    "google_storage_bucket_iam_member": {}, "google_storage_bucket_iam_binding": {}, "google_storage_bucket_acl": {},
+    "azurerm_storage_account": {"blocks": ["blob_properties"], "attributes": ["allow_nested_items_to_be_public"]},
+    "azurerm_storage_container": {"attributes": ["container_access_type"]}, "azurerm_storage_management_policy": {},
+    "oci_objectstorage_bucket": {"attributes": ["access_type", "versioning"]},
+    "oci_objectstorage_object_lifecycle_policy": {}, "oci_objectstorage_namespace_metadata": {},
+}
+OWNER_TYPES = frozenset(OWNER_PATHS)
+NO_API_OWNER_EXPECT = {"kind": "UNKNOWN", "owner": "UNKNOWN", "effective_scope": "UNKNOWN", "lifecycle_controller": "UNKNOWN",
+                       "missing_evidence": ["owner"]}
+
+
+def _owner_entry(records, via):
+    api, tf = set(), set()
+    for r in records:
+        if r.get("status") != "stated":
+            continue
+        v = r.get("value") or {}
+        if v.get("layer") == OWNER_API_LAYER or v.get("rule") in OWNER_IDENTITY_RULES:
+            api.add(r["evidence_id"])
+        elif v.get("layer") == "terraform":
+            tf.add(r["evidence_id"])
+    cls = "API" if api else ("TERRAFORM_ONLY" if tf else "UNDOCUMENTED")
+    return {"class": cls, "api_evidence": sorted(api), "terraform_evidence": sorted(tf), "via": via}
+
+
+def owner_table_from_facts(facts):
+    """facts: {(tipo, block_path ou None): [registros owner do SERVICE-EVIDENCE]} -> tabela OWNER_EVIDENCE."""
+    out = {}
+    for rtype, paths in sorted(OWNER_PATHS.items()):
+        top = _owner_entry(facts.get((rtype, None), []), "resource")
+        out[rtype] = top
+        for b in paths.get("blocks", []):
+            out[f"{rtype}/{b}"] = _owner_entry(facts.get((rtype, b), []), "block")
+        for a in paths.get("attributes", []):
+            out[f"{rtype}/{a}"] = dict(top, via="attribute")
+    return out
+
+
+def owner_rule(provider, by):
+    """A regra de dono: (provedor, recurso que realiza a configuração, 'tipo.nome' ou 'tipo.nome/caminho') ->
+    {'class': API | TERRAFORM_ONLY | UNDOCUMENTED | NOT_IN_TABLE, evidência, chave}. Usada pelo avaliador
+    (decompose), pelo gerador das duas partições (cases.setting_check) e pela re-selagem das retidas."""
+    rtype = by.split("/", 1)[0].split(".", 1)[0]
+    path = by.split("/", 1)[1] if "/" in by else None
+    key = rtype if path is None else f"{rtype}/{path}"
+    e = OWNER_EVIDENCE.get(key) if rtype.startswith(PROVIDER_PREFIX[provider]) else None
+    if e is None:
+        return {"class": "NOT_IN_TABLE", "api_evidence": [], "terraform_evidence": [], "via": None, "key": key}
+    return dict(e, key=key)
+
+
+PROVIDER_PREFIX = {"aws": "aws_", "google": "google_", "azurerm": "azurerm_", "oci": "oci_"}
+OWNER_EVIDENCE = {
+    'aws_s3_account_public_access_block': {"class": "API", "api_evidence": ["SE-aws-wdljvuo5trk3rlz3"], "terraform_evidence": ["SE-aws-pyb33hijgs36qcha"], "via": "resource"},
+    'aws_s3_bucket': {"class": "API", "api_evidence": ["SE-aws-hhfgtixsm34bxgrn", "SE-aws-n6oge7wbfjshhjk7"], "terraform_evidence": ["SE-aws-cannzqqtlkfoddtz"], "via": "resource"},
+    'aws_s3_bucket/grant': {"class": "TERRAFORM_ONLY", "api_evidence": [], "terraform_evidence": ["SE-aws-swfmj2jyvh57cdk7"], "via": "block"},
+    'aws_s3_bucket/lifecycle_rule': {"class": "API", "api_evidence": ["SE-aws-ec5jlttoumrktg3a"], "terraform_evidence": ["SE-aws-3xneptqwjsze56kx"], "via": "block"},
+    'aws_s3_bucket/versioning': {"class": "API", "api_evidence": ["SE-aws-slphap5idarbyucs"], "terraform_evidence": ["SE-aws-iobhav46uiyd2jle"], "via": "block"},
+    'aws_s3_bucket/acl': {"class": "API", "api_evidence": ["SE-aws-hhfgtixsm34bxgrn", "SE-aws-n6oge7wbfjshhjk7"], "terraform_evidence": ["SE-aws-cannzqqtlkfoddtz"], "via": "attribute"},
+    'aws_s3_bucket/policy': {"class": "API", "api_evidence": ["SE-aws-hhfgtixsm34bxgrn", "SE-aws-n6oge7wbfjshhjk7"], "terraform_evidence": ["SE-aws-cannzqqtlkfoddtz"], "via": "attribute"},
+    'aws_s3_bucket_acl': {"class": "API", "api_evidence": ["SE-aws-2wn62dvhmginfh4i", "SE-aws-b65234nznn4eynut"], "terraform_evidence": ["SE-aws-lumkxscawtygsaji"], "via": "resource"},
+    'aws_s3_bucket_lifecycle_configuration': {"class": "API", "api_evidence": ["SE-aws-ofym2bwvcap27x2z", "SE-aws-xxgia5xfl4yuklrh"], "terraform_evidence": ["SE-aws-hfavdkhfshj2hwpq"], "via": "resource"},
+    'aws_s3_bucket_ownership_controls': {"class": "API", "api_evidence": ["SE-aws-plkki2wkz3737cgr", "SE-aws-z6gpqabllssungyc"], "terraform_evidence": ["SE-aws-4cw5ty5maubywpbd"], "via": "resource"},
+    'aws_s3_bucket_policy': {"class": "API", "api_evidence": ["SE-aws-mm4chugxxqwhukdf", "SE-aws-uhcgdjim76bjrirm"], "terraform_evidence": ["SE-aws-trn4ykerimetj3or"], "via": "resource"},
+    'aws_s3_bucket_public_access_block': {"class": "API", "api_evidence": ["SE-aws-5ttdvlzbtm3pxytw", "SE-aws-6n7jizfrk2ijdnwc"], "terraform_evidence": ["SE-aws-36xdb7fzcekh5lck"], "via": "resource"},
+    'aws_s3_bucket_versioning': {"class": "API", "api_evidence": ["SE-aws-u6uynqsxtfvisxk5", "SE-aws-ytgamlrcghq3wjha"], "terraform_evidence": ["SE-aws-xj72iatedyvvg4px"], "via": "resource"},
+    'azurerm_storage_account': {"class": "API", "api_evidence": ["SE-azurerm-hylslal5wsgr56zo", "SE-azurerm-kycjar5kfzljsje5", "SE-azurerm-tjcbygmkxilw6dfv"], "terraform_evidence": ["SE-azurerm-33lggvxksmvkn7i7"], "via": "resource"},
+    'azurerm_storage_account/blob_properties': {"class": "API", "api_evidence": ["SE-azurerm-eohejgyc6735qyo6", "SE-azurerm-fxhhol4u27syw5va"], "terraform_evidence": ["SE-azurerm-t3v6fuja7a2oaamp"], "via": "block"},
+    'azurerm_storage_account/allow_nested_items_to_be_public': {"class": "API", "api_evidence": ["SE-azurerm-hylslal5wsgr56zo", "SE-azurerm-kycjar5kfzljsje5", "SE-azurerm-tjcbygmkxilw6dfv"], "terraform_evidence": ["SE-azurerm-33lggvxksmvkn7i7"], "via": "attribute"},
+    'azurerm_storage_container': {"class": "API", "api_evidence": ["SE-azurerm-h5wxtbv6mxksjtql", "SE-azurerm-n2yvw45ffqgp2565", "SE-azurerm-si55lp2kgnkl4qun"], "terraform_evidence": ["SE-azurerm-f6mkpvz42ztrgxjp"], "via": "resource"},
+    'azurerm_storage_container/container_access_type': {"class": "API", "api_evidence": ["SE-azurerm-h5wxtbv6mxksjtql", "SE-azurerm-n2yvw45ffqgp2565", "SE-azurerm-si55lp2kgnkl4qun"], "terraform_evidence": ["SE-azurerm-f6mkpvz42ztrgxjp"], "via": "attribute"},
+    'azurerm_storage_management_policy': {"class": "API", "api_evidence": ["SE-azurerm-d6irliwgoiejnff5", "SE-azurerm-evkdl2a4hqbz7xmr", "SE-azurerm-zxeyi23thypb5gig"], "terraform_evidence": ["SE-azurerm-gbdxno423ip7kfak"], "via": "resource"},
+    'google_storage_bucket': {"class": "API", "api_evidence": ["SE-google-ax5cm4zf5mcm6pzq", "SE-google-gfonfdbbhbnr77es"], "terraform_evidence": ["SE-google-3sueqyivahzxovy6"], "via": "resource"},
+    'google_storage_bucket/lifecycle_rule': {"class": "API", "api_evidence": ["SE-google-mbb467jy2cf2ir2q", "SE-google-rfz3oyhebz6c4yu2"], "terraform_evidence": ["SE-google-e5nqxb6xdl536ish"], "via": "block"},
+    'google_storage_bucket/versioning': {"class": "API", "api_evidence": ["SE-google-jnkuw2wflsmchc6b", "SE-google-rknjx4my4psdov4x"], "terraform_evidence": ["SE-google-7m7442uwn7yorjuy"], "via": "block"},
+    'google_storage_bucket/public_access_prevention': {"class": "API", "api_evidence": ["SE-google-ax5cm4zf5mcm6pzq", "SE-google-gfonfdbbhbnr77es"], "terraform_evidence": ["SE-google-3sueqyivahzxovy6"], "via": "attribute"},
+    'google_storage_bucket_acl': {"class": "UNDOCUMENTED", "api_evidence": [], "terraform_evidence": [], "via": "resource"},
+    'google_storage_bucket_iam_binding': {"class": "TERRAFORM_ONLY", "api_evidence": [], "terraform_evidence": ["SE-google-bkrcekd2cmmxl64c"], "via": "resource"},
+    'google_storage_bucket_iam_member': {"class": "TERRAFORM_ONLY", "api_evidence": [], "terraform_evidence": ["SE-google-vovo2coaylref2sn"], "via": "resource"},
+    'oci_objectstorage_bucket': {"class": "API", "api_evidence": ["SE-oci-5o6focymhvtglg6t", "SE-oci-bob3blyj7zay7pgn", "SE-oci-bqtq3hd3wukbga5o"], "terraform_evidence": ["SE-oci-dep6wcbm4k6sne2o"], "via": "resource"},
+    'oci_objectstorage_bucket/access_type': {"class": "API", "api_evidence": ["SE-oci-5o6focymhvtglg6t", "SE-oci-bob3blyj7zay7pgn", "SE-oci-bqtq3hd3wukbga5o"], "terraform_evidence": ["SE-oci-dep6wcbm4k6sne2o"], "via": "attribute"},
+    'oci_objectstorage_bucket/versioning': {"class": "API", "api_evidence": ["SE-oci-5o6focymhvtglg6t", "SE-oci-bob3blyj7zay7pgn", "SE-oci-bqtq3hd3wukbga5o"], "terraform_evidence": ["SE-oci-dep6wcbm4k6sne2o"], "via": "attribute"},
+    'oci_objectstorage_namespace_metadata': {"class": "UNDOCUMENTED", "api_evidence": [], "terraform_evidence": [], "via": "resource"},
+    'oci_objectstorage_object_lifecycle_policy': {"class": "API", "api_evidence": ["SE-oci-kkzc3zme53bcjzl4", "SE-oci-ly3dxhupemtm3r2k"], "terraform_evidence": ["SE-oci-n2bb4ulpxxn3moze"], "via": "resource"},
+}
+
+
 def _setting_units(fx):
     """(tipo de configuração, recurso que a realiza, contêiner-alvo ou None, dono) para cada configuração da fatia."""
     p = fx["provider"]
@@ -1241,6 +1346,13 @@ def decompose(fx):
                                                           "missing_evidence": ["owner", "effective_scope", "lifecycle_controller"],
                                                           "rules": ["DEC-OCI-NAMESPACE"]}
             continue
+        if target is not None or owner_level == "account":
+            # a regra de dono única vale antes de qualquer forma de faceta (conta, conta Azure, contêiner)
+            orule = owner_rule(p, by)
+            if orule["class"] != "API" and not _disputes_of(by):
+                units[f"setting:{kind}@NO-API-OWNER:{by}"] = dict(copy.deepcopy(NO_API_OWNER_EXPECT), realized_by=[by],
+                                                                  owner_evidence=orule["class"], rules=["DEC-NO-API-OWNER"])
+                continue
         if owner_level == "account" and p == "aws":
             owner = "account:context"
             scope = {"all_in": "account:context", "known": sorted(f"container:{c}" for c in cs)}
@@ -1514,5 +1626,4 @@ def polarity_consistent(polarity, checks):
         return any(c["kind"] == "claim" and c["expect"].get("verdict") == "REJECT" for c in checks)
     if polarity == "unknown":
         return any(is_unknown(c) for c in checks)
-    return bool(checks) and not any(c["kind"] == "claim" for c in checks) and not any(
-        isinstance(c["expect"], dict) and "unknown" in c["expect"] for c in checks)
+    return bool(checks) and not any(c["kind"] == "claim" for c in checks) and not any(is_unknown(c) for c in checks)

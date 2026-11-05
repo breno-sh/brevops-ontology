@@ -51,9 +51,10 @@ def _tok(n=6):
 
 
 class Gen:
-    def __init__(self, split):
+    def __init__(self, split, oracle):
         assert split in ("calib", "heldout")
         self.split = split
+        self.oracle = oracle
         self.fixtures, self.entries = [], []
         self._n = {}
         self._rnd = secrets.SystemRandom() if split == "heldout" else None
@@ -200,6 +201,23 @@ def _facet(owner, scope, lc="parent", missing=()):
     return {"kind": "FACET", "owner": owner, "effective_scope": scope, "lifecycle_controller": lc, "missing_evidence": list(missing)}
 
 
+def setting_check(oracle, p, kind, by, owner, scope, lc="parent", missing=(), keys=None):
+    """Conferência de decomposição de uma configuração realizada por 'by' ('tipo.nome' ou 'tipo.nome/caminho').
+    O dono passa SEMPRE pela regra de dono única do oráculo (oracle.owner_rule), nas duas partições e na
+    re-selagem: tipo sem fato de dono fora da camada Terraform vira a unidade NO-API-OWNER, UNKNOWN."""
+    if oracle.owner_rule(p, by)["class"] == "API":
+        e = _facet(owner, scope, lc, missing)
+        return {"kind": "decomposition", "unit": f"setting:{kind}@{owner}", "expect": e if keys is None else {k: e[k] for k in keys}}
+    return {"kind": "decomposition", "unit": f"setting:{kind}@NO-API-OWNER:{by}", "expect": copy.deepcopy(oracle.NO_API_OWNER_EXPECT)}
+
+
+def _polarity_of(checks, wanted):
+    """Positivo só com respostas definidas: se a regra de dono deixou uma unidade UNKNOWN, o caso é desconhecido."""
+    if wanted == "positive" and any(c["kind"] == "decomposition" and c["expect"].get("kind") == "UNKNOWN" for c in checks):
+        return "unknown"
+    return wanted
+
+
 def mc_dec_pack(g):
     n = g.name("data")
     # AWS: embutido × separado
@@ -209,14 +227,14 @@ def mc_dec_pack(g):
         cu = f"container:{c}"
         g.add("aws", "MC-DEC-PACK", "positive", f"versionamento {form}", r,
               [{"kind": "decomposition", "unit": cu, "expect": {"kind": "ENTITY", "owner": "self", "missing_evidence": []}},
-               {"kind": "decomposition", "unit": f"setting:versioning@{cu}", "expect": _facet(cu, [cu])},
+               setting_check(g.oracle, "aws", "versioning", f"{c}/versioning" if form == "inline" else f"aws_s3_bucket_versioning.{n}", cu, [cu]),
                {"kind": "versioning", "container": c, "expect": "ENABLED"}], invariant_group=grp)
     for p in ("google", "oci"):
         r, c = bucket(p, g, n, versioning=True)
         cu = f"container:{c}"
         g.add(p, "MC-DEC-PACK", "positive", "versionamento embutido/atributo do contêiner", r,
               [{"kind": "decomposition", "unit": cu, "expect": {"kind": "ENTITY", "owner": "self", "missing_evidence": []}},
-               {"kind": "decomposition", "unit": f"setting:versioning@{cu}", "expect": _facet(cu, [cu])}])
+               setting_check(g.oracle, p, "versioning", f"{c}/versioning", cu, [cu])])
     a = g.name("acct")
     r, c = container("azurerm", n, versioning=True, account=a, account_attrs={})
     nu = f"namespace:azurerm_storage_account.{a}"
@@ -224,7 +242,7 @@ def mc_dec_pack(g):
           [{"kind": "decomposition", "unit": nu, "expect": {"kind": "ENTITY"}},
            {"kind": "decomposition", "unit": f"container:{c}", "expect": {"kind": "ENTITY", "owner": "self", "lifecycle_controller": "self",
                                                                           "namespace": nu, "missing_evidence": []}},
-           {"kind": "decomposition", "unit": f"setting:versioning@{nu}", "expect": _facet(nu, [f"container:{c}"])}])
+           setting_check(g.oracle, "azurerm", "versioning", f"azurerm_storage_account.{a}/blob_properties", nu, [f"container:{c}"])])
     # negativos
     r, c = container("aws", n, versioning=True)
     cu = f"container:{c}"
@@ -279,8 +297,8 @@ def mc_dec_scope(g):
     lc = expire_current("azurerm", n1, 30, prefix=pref, acct=a, cname=n1.replace("_", "-"))
     g.add("azurerm", "MC-DEC-SCOPE", "positive", "conta com dois contêineres: versionamento alcança os dois; política com prefixo só um",
           merge(r1, r2, lc),
-          [{"kind": "decomposition", "unit": f"setting:versioning@{nu}", "expect": _facet(nu, scope)},
-           {"kind": "decomposition", "unit": f"setting:lifecycle@{nu}", "expect": _facet(nu, [f"container:{c1}"])},
+          [setting_check(g.oracle, "azurerm", "versioning", f"azurerm_storage_account.{a}/blob_properties", nu, scope),
+           setting_check(g.oracle, "azurerm", "lifecycle", f"azurerm_storage_management_policy.{a}_policy", nu, [f"container:{c1}"]),
            {"kind": "versioning", "container": c2, "expect": "ENABLED"}])
     g.add("azurerm", "MC-DEC-SCOPE", "negative", "indivíduo conta e contêiner ao mesmo tempo (CMT-BKT-N01)", merge(r1, r2),
           [{"kind": "claim", "claim": {"about": "disjoint_kinds", "kinds": ["storage_namespace", "object_container"]},
@@ -292,7 +310,7 @@ def mc_dec_scope(g):
             "expect": {"verdict": "REJECT", "code": "CONTRADICTS_ORACLE"}}])
     r3, c3 = container("azurerm", n2, account_ref="${var.storage_account_id}")
     g.add("azurerm", "MC-DEC-SCOPE", "unknown", "segundo contêiner de conta não lida: fora do alcance conhecido", merge(r1, r3),
-          [{"kind": "decomposition", "unit": f"setting:versioning@{nu}", "expect": _facet(nu, [f"container:{c1}"])},
+          [setting_check(g.oracle, "azurerm", "versioning", f"azurerm_storage_account.{a}/blob_properties", nu, [f"container:{c1}"]),
            {"kind": "versioning", "container": c3, "expect": unk("INCOMPLETE_READ")}])
     # AWS: bloqueio de nível de conta
     b1, b2 = g.name("logs"), g.name("media")
@@ -302,9 +320,9 @@ def mc_dec_scope(g):
                                                            "ignore_public_acls": True, "restrict_public_buckets": True}}}
     known = sorted([f"container:{ca}", f"container:{cb}"])
     g.add("aws", "MC-DEC-SCOPE", "positive", "bloqueio de conta alcança todo contêiner da conta", merge(ra, rb, acc),
-          [{"kind": "decomposition", "unit": "setting:public_access_block@account:context",
-            "expect": {"kind": "FACET", "owner": "account:context", "effective_scope": {"all_in": "account:context", "known": known},
-                       "lifecycle_controller": "external"}}])
+          [setting_check(g.oracle, "aws", "public_access_block", "aws_s3_account_public_access_block.this", "account:context",
+                         {"all_in": "account:context", "known": known}, lc="external",
+                         keys=("kind", "owner", "effective_scope", "lifecycle_controller"))])
     g.add("aws", "MC-DEC-SCOPE", "negative", "bloqueio de conta alegado faceta de um contêiner", merge(ra, rb, acc),
           [{"kind": "claim", "claim": {"about": "decomposition", "unit": f"setting:public_access_block@container:{ca}", "value": {"kind": "FACET"}},
             "expect": {"verdict": "REJECT", "code": "NO_SUCH_UNIT"}}])
@@ -314,7 +332,7 @@ def mc_dec_scope(g):
     r = merge(r, expire_current("google", nb, 30))
     cu = f"container:{c}"
     g.add("google", "MC-DEC-SCOPE", "positive", "ciclo de vida do contêiner: faceta com alcance próprio", r,
-          [{"kind": "decomposition", "unit": f"setting:lifecycle@{cu}", "expect": _facet(cu, [cu])}])
+          [setting_check(g.oracle, "google", "lifecycle", f"{c}/lifecycle_rule", cu, [cu])])
     # OCI: dono e controlador da política separada estão em disputa (doc self x spec parent): UNKNOWN, sem escolha
     r, c = bucket("oci", g, nb)
     r = merge(r, expire_current("oci", nb, 30))
@@ -675,6 +693,12 @@ MC_BUILDERS = (mc_ver, mc_dec_pack, mc_dec_scope, mc_lc_cur, mc_lc_noncur, mc_lc
 
 
 # ======================================================================== bordas novas (ciclo v4, só retidas)
+EDGE_GCP_SUMMARY = {
+    "positive": "facetas embutidas do Google e concessão separada: todas com alcance do contêiner",
+    "unknown": "facetas embutidas do Google com alcance do contêiner; concessão separada sem dono na API: UNKNOWN",
+}
+
+
 def _shuffled(g, xs):
     xs = list(xs)
     g._rnd.shuffle(xs)
@@ -704,7 +728,7 @@ def mc_edge_v4(g):
             r = merge(r, expire_current("aws", n, E, prefix=pre))
         cu = f"container:{c}"
         g.add("aws", "MC-DEC-PACK", "positive", f"regra de ciclo de vida {form}: mesma faceta e mesmo efeito", r,
-              [{"kind": "decomposition", "unit": f"setting:lifecycle@{cu}", "expect": _facet(cu, [cu])},
+              [setting_check(g.oracle, "aws", "lifecycle", f"{c}/lifecycle_rule" if form == "inline" else f"aws_s3_bucket_lifecycle_configuration.{n}", cu, [cu]),
                {"kind": "version_state", "version": f"{ka}#1", "expect": "DELETED"},
                {"kind": "version_state", "version": f"{kb}#1", "expect": "DELETED"},
                {"kind": "version_state", "version": f"{kc2}#1", "expect": "CURRENT"},
@@ -726,12 +750,12 @@ def mc_edge_v4(g):
         {"action": [{"type": "Delete"}], "condition": [{"age": E, "with_state": "LIVE"}]},
         {"action": [{"type": "Delete"}], "condition": [{"days_since_noncurrent_time": E, "with_state": "ARCHIVED"}]}])
     cu = f"container:{c}"
-    g.add("google", "MC-DEC-SCOPE", "positive", "facetas embutidas do Google e concessão separada: todas com alcance do contêiner", r,
-          [{"kind": "decomposition", "unit": f"setting:versioning@{cu}", "expect": _facet(cu, [cu])},
-           {"kind": "decomposition", "unit": f"setting:lifecycle@{cu}", "expect": _facet(cu, [cu])},
-           {"kind": "decomposition", "unit": f"setting:public_access_block@{cu}", "expect": _facet(cu, [cu])},
-           {"kind": "decomposition", "unit": f"setting:access_grant@{cu}", "expect": _facet(cu, [cu])}],
-          context={"org_policy_public_access_prevention": False})
+    chks = [setting_check(g.oracle, "google", "versioning", f"{c}/versioning", cu, [cu]),
+            setting_check(g.oracle, "google", "lifecycle", f"{c}/lifecycle_rule", cu, [cu]),
+            setting_check(g.oracle, "google", "public_access_block", f"{c}/public_access_prevention", cu, [cu]),
+            setting_check(g.oracle, "google", "access_grant", f"google_storage_bucket_iam_member.{n}_public", cu, [cu])]
+    pol = _polarity_of(chks, "positive")
+    g.add("google", "MC-DEC-SCOPE", pol, EDGE_GCP_SUMMARY[pol], r, chks, context={"org_policy_public_access_prevention": False})
     g.add("google", "MC-DEC-SCOPE", "negative", "faceta embutida alegada de outro dono", r,
           [{"kind": "claim", "claim": {"about": "decomposition", "unit": f"setting:lifecycle@{cu}", "value": {"owner": "self"}},
             "expect": {"verdict": "REJECT", "code": "CONTRADICTS_ORACLE"}}], context={"org_policy_public_access_prevention": False})
@@ -752,9 +776,10 @@ def mc_edge_v4(g):
     nu = f"namespace:azurerm_storage_account.{a}"
     allc = sorted(f"container:{x}" for x in cs)
     g.add("azurerm", "MC-DEC-SCOPE", "positive", "conta com três contêineres: versionamento e público alcançam todos; política só os prefixados", rr,
-          [{"kind": "decomposition", "unit": f"setting:versioning@{nu}", "expect": _facet(nu, allc)},
-           {"kind": "decomposition", "unit": f"setting:public_access_block@{nu}", "expect": _facet(nu, allc)},
-           {"kind": "decomposition", "unit": f"setting:lifecycle@{nu}", "expect": _facet(nu, sorted(f"container:{x}" for x in cs[:2]))},
+          [setting_check(g.oracle, "azurerm", "versioning", f"azurerm_storage_account.{a}/blob_properties", nu, allc),
+           setting_check(g.oracle, "azurerm", "public_access_block", f"azurerm_storage_account.{a}/allow_nested_items_to_be_public", nu, allc),
+           setting_check(g.oracle, "azurerm", "lifecycle", f"azurerm_storage_management_policy.{a}_policy", nu,
+                         sorted(f"container:{x}" for x in cs[:2])),
            {"kind": "versioning", "container": cs[2], "expect": "ENABLED"}])
     g.add("azurerm", "MC-DEC-SCOPE", "negative", "política de prefixos alegada com alcance na conta inteira", rr,
           [{"kind": "claim", "claim": {"about": "decomposition", "unit": f"setting:lifecycle@{nu}", "value": {"effective_scope": allc}},
@@ -963,8 +988,13 @@ DIR_BUILDERS = (dir_t1, dir_t2, dir_t3, dir_t4)
 DIRECTIONS = [(a, b) for a in PROVIDERS for b in PROVIDERS if a != b]
 
 
-def generate(split):
-    g = Gen(split)
+def generate(split, oracle=None):
+    """oracle: o avaliador carregado de pilot/sto/oracle (o build passa o mesmo que confere); a regra de dono das
+    duas partições é a dele (oracle.owner_rule)."""
+    if oracle is None:
+        from .build import load_oracle
+        oracle = load_oracle()
+    g = Gen(split, oracle)
     for f in MC_BUILDERS:
         f(g)
     if split == "heldout":

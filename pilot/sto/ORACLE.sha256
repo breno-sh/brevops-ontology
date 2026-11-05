@@ -1,8 +1,9 @@
 f4c8bb118924c27362afbb2dc48c7aee00fa39216587f3803c2ee9005cc80aa8  pilot/sto/oracle/MANDATORY.json
-c80ad9efdc8308724c5332ad99cd397f6786fd0549ed711400c97806c6dede96  pilot/sto/oracle/RULES.json
-c84bbc688c9952690d78fafebd79ed24d0ec3d1b4e789eac6e73733999db9e9a  pilot/sto/oracle/sto_oracle.py
+6dd5c8b14dc66c330daf28901b1e62746701a8d48ad4437820b58d50dc2fb427  pilot/sto/oracle/RULES.json
+c66ff479176f4227b4dc9df6e48ccafa0df1d42fcb24a845e65114b9f8fa31e4  pilot/sto/oracle/sto_oracle.py
 dbd35ad347765fdd2c65bced49fa6b664d684259ab093f5ad7a2e7b24fe2f544  pilot/sto/oracle/test_calibration.py
 e3ac6e82968ba8360c99a0afaa156841198998301179a35df77f9afed75716af  pilot/sto/oracle/test_documented_examples.py
+33fda90150011c070fc5e95023a0c4ca15d49b916e34ba658546b97627609cad  pilot/sto/oracle/test_owner_rule.py
 854ec9da5eeff41fd576840f3156d6d0ac2a06a7fe63cda4b987e7d94d1bb978  pilot/sto/fixtures_calib/aws/FX-STO-AWS-DEC-PACK-N01.json
 7e1b0330ec108e1dd84e184655b24d3278c8d4a16fbc467e781c0ebd14ad5685  pilot/sto/fixtures_calib/aws/FX-STO-AWS-DEC-PACK-P01.json
 4365bbcba7014aca4b6e035e85dd63baa31c610fe0dfff713631e4c3bd36ee4d  pilot/sto/fixtures_calib/aws/FX-STO-AWS-DEC-PACK-P02.json
@@ -307,7 +308,7 @@ bfefa5f2409643a1ef7079174255a086c193b45709f28e79ca2250ba568aff9a  pilot/sto/fixt
 c86d349c3a83ea2063dfeeb4271ffce5510915e33a0a4ba2add7424cded1239f  pilot/sto/fixtures_calib/oci/FX-STO-OCI-VER-N02.json
 79a34e92b58e6cb710648ae7aade4763d5e296e2e741a187eee07f81a60aa3f3  pilot/sto/fixtures_calib/oci/FX-STO-OCI-VER-P01.json
 ca43f4e5c597caa35ee602310afe02e4281259bd9e946671c31343b5283480d3  pilot/sto/fixtures_calib/oci/FX-STO-OCI-VER-U01.json
-1b139d2541fa30489ffc5776c3bad75ffccf7fb9e97319407031b4f9e871adea  pilot/sto/expected_answers.json
-c5be53e93e82e5e432d44d9ea91ec9b22fb002da9ed1f2dfa168fdd303b133d9  /Users/breno/doutorado/brevops-data/PILOT-STO-ORACLE/sealed/heldout.cms.pem
-55ce9e6632f69202e057f40b2e6419e3da94532a6b2ea1b1defbcd5a2e6556e0  /Users/breno/doutorado/brevops-data/PILOT-STO-ORACLE/sealed/SEALED_INDEX.json
+62a50c7d57d2ee0ad10dec9553f65b41fb239753933d57b4c180675f3357bc24  pilot/sto/expected_answers.json
+a1e3e62cb9db95d94e53c3364126d2e4347c99cd35a56055e2c118b3695598db  /Users/breno/doutorado/brevops-data/PILOT-STO-ORACLE/sealed/heldout.cms.pem
+9799fbc8d8f2666c7b258dba1c1d86a106908f11708b6d0ec2145d057a57b84b  /Users/breno/doutorado/brevops-data/PILOT-STO-ORACLE/sealed/SEALED_INDEX.json
 eb95ac5241b1056bb547087bc80a40f5706f4c6e5f598a1ba640dfc54c986934  /Users/breno/doutorado/brevops-data/PILOT-STO-ORACLE/sealed/recipient_cert.pem
