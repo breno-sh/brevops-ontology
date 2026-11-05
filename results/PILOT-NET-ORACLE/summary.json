@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "PILOT-NET-ORACLE",
- "generated_at": "2026-11-04T23:10:11-03:00",
+ "generated_at": "2026-11-05T00:54:30-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/PILOT-NET-ORACLE.txt",
@@ -25,7 +25,7 @@
    "reseal": "true",
    "reseal_reason": "evidência nova do SE (3ba4079 CC-14, f44b9a6 R6), não saída do sistema",
    "contract": "C24-1.1.0",
-   "service_evidence": "f44b9a6",
+   "service_evidence": "4d48d00",
    "cycle": "v4"
   },
   "inputs": [
@@ -42,7 +42,7 @@
    {
     "path": "$BO_DATA/SERVICE-EVIDENCE/service_evidence.jsonl",
     "kind": "file",
-    "sha256": "2994da012fbc9296a31fd2e82d8e55cd7dd274c8be74c24634681412effe07f1"
+    "sha256": "d17a11b5334b69fdf60ae130c230cc9a18b0d8e81c0f66b47e4484c4647a7e40"
    },
    {
     "path": "$BO_REPO/results/SERVICE-EVIDENCE/spec_disputes.json",
@@ -50,7 +50,7 @@
     "sha256": "f566517949c9fdd4c1ccf88917ad48e4d09be8ccd748fc65b849a05770277198"
    }
   ],
-  "recorded_at": "2026-11-04T23:10:11-03:00"
+  "recorded_at": "2026-11-05T00:54:30-03:00"
  },
  "sources": [
   {
@@ -69,5 +69,5 @@
    "transformation": "disputa aberta vira UNKNOWN; resolvida fica o lado vencedor"
   }
  ],
- "notes": "ciclo v4 sobre SE f44b9a6: calibração refeita (8 decisões, 1 validade, 3 fixtures novas); retidas v2 RE-SELADAS como r2 por evidência nova (envelope 7cfa2c8ce532..., 2026-11-04T23:09:29-03:00); v2r1 substituída antes do uso; v1 usado 2×, aposentado"
+ "notes": "ciclo v4 sobre SE f44b9a6: calibração refeita (8 decisões, 1 validade, 3 fixtures novas); retidas v2 RE-SELADAS como r2 por evidência nova (envelope 7cfa2c8ce532..., 2026-11-04T23:09:29-03:00); v2r1 substituída antes do uso; v1 usado 2×, aposentado; pin do SE atualizado para 4d48d00 (alvo tipado do campo do pai): gabarito de calibração sem resposta alterada, retidas v2r2 intactas (sem re-selar)"
 }
