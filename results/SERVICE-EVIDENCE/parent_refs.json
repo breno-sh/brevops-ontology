@@ -1,0 +1,353 @@
+{
+ "schema": "bo.service_evidence.parent_refs/1",
+ "module": "SERVICE-EVIDENCE",
+ "motivo": "results/PILOT-EXIT/DIAG_T3.json F1/F2; GRAIN 0.2.4 (R-GRAIN-T03): sem reference_target no campo do pai, a unidade C19 de esquema da regra separada fica UNKNOWN",
+ "rules": "O ESCOPO (tipo, campo do pai) é a lista de auditoria: diz QUAL campo conferir, nunca o alvo. O alvo sai só de fonte\nfixada, por uma destas regras declaradas (todas DERIVADAS sobre fatos publicados do pin):",
+ "lifecycle": "nenhuma frase oficial nova de ciclo de vida nas páginas fixadas desses tipos (busca por destroy/delete/remove/lifecycle/parent): nenhum lifecycle_controller publicado nesta rodada; os que já existiam (R-LIFE-SPEC-PARENT, R-LIFE-DOC, R-OBS-*) ficam como estavam",
+ "totals": {
+  "checked": 28,
+  "already": 12,
+  "published": 14,
+  "published_by_level": {
+   "derived": 14
+  },
+  "published_by_rule": {
+   "R-REF-EXAMPLE-TARGET": 6,
+   "R-REF-SPEC-PARENT": 7,
+   "R-REF-STEM": 1
+  },
+  "unknown": 2
+ },
+ "checked": [
+  {
+   "provider": "aws",
+   "terraform_resource_type": "aws_network_interface_sg_attachment",
+   "attribute": "security_group_id",
+   "role": "NET anexação do conjunto",
+   "status": "já tinha",
+   "target": "aws_security_group",
+   "level": "derived",
+   "rule": "R-REF-TARGET",
+   "evidence_id": "SE-aws-agebqyolcllz3kdh"
+  },
+  {
+   "provider": "aws",
+   "terraform_resource_type": "aws_s3_account_public_access_block",
+   "attribute": "account_id",
+   "role": "STO configuração separada (nível da conta)",
+   "status": "UNKNOWN",
+   "reason": "spec: o tipo não é faceta de um recurso-pai na spec; exemplo: nenhum bloco do tipo atribui referência a um recurso a este campo; radical: <provedor>_<radical do campo> não é tipo do pin"
+  },
+  {
+   "provider": "aws",
+   "terraform_resource_type": "aws_s3_bucket_acl",
+   "attribute": "bucket",
+   "role": "STO política separada (ACL)",
+   "status": "publicado",
+   "target": "aws_s3_bucket",
+   "level": "derived",
+   "rule": "R-REF-SPEC-PARENT",
+   "corroborated_by": [
+    "R-REF-EXAMPLE-TARGET"
+   ],
+   "evidence_id": "SE-aws-qluefmyvhfi4w7ne"
+  },
+  {
+   "provider": "aws",
+   "terraform_resource_type": "aws_s3_bucket_lifecycle_configuration",
+   "attribute": "bucket",
+   "role": "STO configuração separada",
+   "status": "publicado",
+   "target": "aws_s3_bucket",
+   "level": "derived",
+   "rule": "R-REF-SPEC-PARENT",
+   "corroborated_by": [
+    "R-REF-EXAMPLE-TARGET"
+   ],
+   "evidence_id": "SE-aws-jfuk62zg4fpykmtf"
+  },
+  {
+   "provider": "aws",
+   "terraform_resource_type": "aws_s3_bucket_ownership_controls",
+   "attribute": "bucket",
+   "role": "STO configuração separada",
+   "status": "publicado",
+   "target": "aws_s3_bucket",
+   "level": "derived",
+   "rule": "R-REF-SPEC-PARENT",
+   "corroborated_by": [
+    "R-REF-EXAMPLE-TARGET"
+   ],
+   "evidence_id": "SE-aws-qs6nqsc6yabunjmq"
+  },
+  {
+   "provider": "aws",
+   "terraform_resource_type": "aws_s3_bucket_policy",
+   "attribute": "bucket",
+   "role": "STO política separada",
+   "status": "publicado",
+   "target": "aws_s3_bucket",
+   "level": "derived",
+   "rule": "R-REF-SPEC-PARENT",
+   "corroborated_by": [
+    "R-REF-EXAMPLE-TARGET"
+   ],
+   "evidence_id": "SE-aws-wwlgrg5e3pnp2ooc"
+  },
+  {
+   "provider": "aws",
+   "terraform_resource_type": "aws_s3_bucket_public_access_block",
+   "attribute": "bucket",
+   "role": "STO configuração separada",
+   "status": "publicado",
+   "target": "aws_s3_bucket",
+   "level": "derived",
+   "rule": "R-REF-SPEC-PARENT",
+   "corroborated_by": [
+    "R-REF-EXAMPLE-TARGET"
+   ],
+   "evidence_id": "SE-aws-ajbsp6dxbysg7dzl"
+  },
+  {
+   "provider": "aws",
+   "terraform_resource_type": "aws_s3_bucket_server_side_encryption_configuration",
+   "attribute": "bucket",
+   "role": "STO configuração separada",
+   "status": "publicado",
+   "target": "aws_s3_bucket",
+   "level": "derived",
+   "rule": "R-REF-SPEC-PARENT",
+   "corroborated_by": [
+    "R-REF-EXAMPLE-TARGET"
+   ],
+   "evidence_id": "SE-aws-zxjxkenbtmgdo5eq"
+  },
+  {
+   "provider": "aws",
+   "terraform_resource_type": "aws_s3_bucket_versioning",
+   "attribute": "bucket",
+   "role": "STO configuração separada",
+   "status": "publicado",
+   "target": "aws_s3_bucket",
+   "level": "derived",
+   "rule": "R-REF-SPEC-PARENT",
+   "corroborated_by": [
+    "R-REF-EXAMPLE-TARGET"
+   ],
+   "evidence_id": "SE-aws-o4ctypr5ywiyfigk"
+  },
+  {
+   "provider": "aws",
+   "terraform_resource_type": "aws_security_group_rule",
+   "attribute": "security_group_id",
+   "role": "NET regra separada (id composto)",
+   "status": "publicado",
+   "target": "aws_security_group",
+   "level": "derived",
+   "rule": "R-REF-STEM",
+   "corroborated_by": [],
+   "evidence_id": "SE-aws-hxiylz25kyjjnwy6"
+  },
+  {
+   "provider": "aws",
+   "terraform_resource_type": "aws_vpc_security_group_egress_rule",
+   "attribute": "security_group_id",
+   "role": "NET regra separada (id de API)",
+   "status": "já tinha",
+   "target": "aws_security_group",
+   "level": "derived",
+   "rule": "R-REF-TARGET",
+   "evidence_id": "SE-aws-bhigmp32nt424clc"
+  },
+  {
+   "provider": "aws",
+   "terraform_resource_type": "aws_vpc_security_group_ingress_rule",
+   "attribute": "security_group_id",
+   "role": "NET regra separada (id de API)",
+   "status": "já tinha",
+   "target": "aws_security_group",
+   "level": "derived",
+   "rule": "R-REF-TARGET",
+   "evidence_id": "SE-aws-36h5eeaelzqzlf44"
+  },
+  {
+   "provider": "azurerm",
+   "terraform_resource_type": "azurerm_network_interface_security_group_association",
+   "attribute": "network_security_group_id",
+   "role": "NET anexação do conjunto",
+   "status": "já tinha",
+   "target": "azurerm_network_security_group",
+   "level": "derived",
+   "rule": "R-REF-TARGET",
+   "evidence_id": "SE-azurerm-japw4b5olddl6u52"
+  },
+  {
+   "provider": "azurerm",
+   "terraform_resource_type": "azurerm_network_security_rule",
+   "attribute": "network_security_group_name",
+   "role": "NET regra separada (pai por nome)",
+   "status": "já tinha",
+   "target": "azurerm_network_security_group",
+   "level": "derived",
+   "rule": "R-REF-TARGET",
+   "evidence_id": "SE-azurerm-ufncwrnkmp56zmkb"
+  },
+  {
+   "provider": "azurerm",
+   "terraform_resource_type": "azurerm_storage_account_customer_managed_key",
+   "attribute": "storage_account_id",
+   "role": "STO configuração separada",
+   "status": "já tinha",
+   "target": "azurerm_storage_account",
+   "level": "derived",
+   "rule": "R-REF-TARGET",
+   "evidence_id": "SE-azurerm-bg6r43yw3pdzrfyj"
+  },
+  {
+   "provider": "azurerm",
+   "terraform_resource_type": "azurerm_storage_container",
+   "attribute": "storage_account_id",
+   "role": "STO contêiner separado da conta",
+   "status": "já tinha",
+   "target": "azurerm_storage_account",
+   "level": "derived",
+   "rule": "R-REF-TARGET",
+   "evidence_id": "SE-azurerm-qqogihuka55mp3hk"
+  },
+  {
+   "provider": "azurerm",
+   "terraform_resource_type": "azurerm_storage_encryption_scope",
+   "attribute": "storage_account_id",
+   "role": "STO configuração separada",
+   "status": "já tinha",
+   "target": "azurerm_storage_account",
+   "level": "derived",
+   "rule": "R-REF-TARGET",
+   "evidence_id": "SE-azurerm-oy2tjlktktnl5ocl"
+  },
+  {
+   "provider": "azurerm",
+   "terraform_resource_type": "azurerm_storage_management_policy",
+   "attribute": "storage_account_id",
+   "role": "STO política separada",
+   "status": "já tinha",
+   "target": "azurerm_storage_account",
+   "level": "derived",
+   "rule": "R-REF-TARGET",
+   "evidence_id": "SE-azurerm-cf4nvb37xlm3tyt3"
+  },
+  {
+   "provider": "azurerm",
+   "terraform_resource_type": "azurerm_subnet_network_security_group_association",
+   "attribute": "network_security_group_id",
+   "role": "NET anexação do conjunto",
+   "status": "já tinha",
+   "target": "azurerm_network_security_group",
+   "level": "derived",
+   "rule": "R-REF-TARGET",
+   "evidence_id": "SE-azurerm-utzgmnqovaq65pxt"
+  },
+  {
+   "provider": "google",
+   "terraform_resource_type": "google_compute_firewall",
+   "attribute": "network",
+   "role": "NET regra separada (rede do conjunto)",
+   "status": "publicado",
+   "target": "google_compute_network",
+   "level": "derived",
+   "rule": "R-REF-EXAMPLE-TARGET",
+   "corroborated_by": [],
+   "evidence_id": "SE-google-cromjoecu7wdmgbw"
+  },
+  {
+   "provider": "google",
+   "terraform_resource_type": "google_storage_bucket_access_control",
+   "attribute": "bucket",
+   "role": "STO política separada (entrada de ACL)",
+   "status": "publicado",
+   "target": "google_storage_bucket",
+   "level": "derived",
+   "rule": "R-REF-EXAMPLE-TARGET",
+   "corroborated_by": [],
+   "evidence_id": "SE-google-gvahhdbo3xcfwnep"
+  },
+  {
+   "provider": "google",
+   "terraform_resource_type": "google_storage_bucket_acl",
+   "attribute": "bucket",
+   "role": "STO política separada (ACL)",
+   "status": "publicado",
+   "target": "google_storage_bucket",
+   "level": "derived",
+   "rule": "R-REF-EXAMPLE-TARGET",
+   "corroborated_by": [],
+   "evidence_id": "SE-google-x46dbpcs6qqb5evy"
+  },
+  {
+   "provider": "google",
+   "terraform_resource_type": "google_storage_bucket_iam_binding",
+   "attribute": "bucket",
+   "role": "STO política separada (IAM)",
+   "status": "publicado",
+   "target": "google_storage_bucket",
+   "level": "derived",
+   "rule": "R-REF-EXAMPLE-TARGET",
+   "corroborated_by": [],
+   "evidence_id": "SE-google-lp5gzhz2xi747xvb"
+  },
+  {
+   "provider": "google",
+   "terraform_resource_type": "google_storage_bucket_iam_member",
+   "attribute": "bucket",
+   "role": "STO política separada (IAM)",
+   "status": "publicado",
+   "target": "google_storage_bucket",
+   "level": "derived",
+   "rule": "R-REF-EXAMPLE-TARGET",
+   "corroborated_by": [],
+   "evidence_id": "SE-google-wn5ik2ls2lkuc25m"
+  },
+  {
+   "provider": "google",
+   "terraform_resource_type": "google_storage_bucket_iam_policy",
+   "attribute": "bucket",
+   "role": "STO política separada (IAM)",
+   "status": "publicado",
+   "target": "google_storage_bucket",
+   "level": "derived",
+   "rule": "R-REF-EXAMPLE-TARGET",
+   "corroborated_by": [],
+   "evidence_id": "SE-google-fe554iczkbi5u5xj"
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_core_network_security_group_security_rule",
+   "attribute": "network_security_group_id",
+   "role": "NET regra separada",
+   "status": "já tinha",
+   "target": "oci_core_network_security_group",
+   "level": "derived",
+   "rule": "R-REF-TARGET",
+   "evidence_id": "SE-oci-2rdg45dn54zv4t2k"
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_objectstorage_namespace_metadata",
+   "attribute": "namespace",
+   "role": "STO configuração do namespace",
+   "status": "UNKNOWN",
+   "reason": "spec: o tipo não é faceta de um recurso-pai na spec; exemplo: nenhum bloco do tipo atribui referência a um recurso a este campo; radical: <provedor>_<radical do campo> não é tipo do pin"
+  },
+  {
+   "provider": "oci",
+   "terraform_resource_type": "oci_objectstorage_object_lifecycle_policy",
+   "attribute": "bucket",
+   "role": "STO política separada",
+   "status": "já tinha",
+   "target": "oci_objectstorage_bucket",
+   "level": "derived",
+   "rule": "R-REF-TARGET",
+   "evidence_id": "SE-oci-bihaalmc4ytbc3z5"
+  }
+ ]
+}

@@ -108,6 +108,18 @@ RULES = {
     "R-REF-TARGET": "tipo-alvo da referência: nos padrões '... <ID>', o trecho mais curto a partir do fim; em "
                     "'<ID> of the ...', o trecho contíguo mais longo (depois de um 's possessivo; plural e (s) sem s) cujo <provedor>_<trecho> existe no schema fixado, "
                     "ou que é sufixo _<trecho> de até 3 tipos; senão sem alvo.",
+    "R-REF-EXAMPLE": "linha literal de exemplo da página oficial do tipo, dentro de um bloco resource do próprio "
+                     "tipo, que atribui ao campo uma referência <tipo>.<nome>.<atributo> a um tipo do pin "
+                     "(value.page_sha256 = sha256 da página fixada).",
+    "R-REF-PHRASE-LEAD": "descrição literal do campo de pai (ESCOPO do parentref) que nomeia por extenso o radical "
+                         "do nome do campo (security_group_id -> 'security group'); a coisa nomeada.",
+    "R-REF-SPEC-PARENT": "alvo do campo do pai pela spec: o tipo é faceta (R-LIFE-SPEC-PARENT/R-OWN-SPEC kind "
+                         "parent) de um recurso-pai P da spec via exatamente este campo, e um único tipo do pin tem "
+                         "ponte da spec (R-BRIDGE-SPEC) para o mesmo serviço e P: alvo = esse tipo.",
+    "R-REF-EXAMPLE-TARGET": "alvo do campo do pai pelos exemplos oficiais: todas as linhas R-REF-EXAMPLE do campo "
+                            "nomeiam o mesmo tipo do pin: alvo = esse tipo; tipos diferentes: sem alvo.",
+    "R-REF-STEM": "alvo do campo do pai pelo nome: o campo é <radical>[_id|_name], <provedor>_<radical> é tipo do "
+                  "pin e a descrição publicada nomeia o radical (R-REF-PHRASE-LEAD): alvo = esse tipo.",
     "R-SCOPE-SELF": "tipo de recurso de topo sem alcance publicado (R-SCOPE-DOC) tem alcance sobre ele mesmo: "
                     "{kind: self}; layer api quando o tipo é primário de R-OWN-API (derived_from inclui a ponte), "
                     "senão terraform; derived_from = fato publicado do tipo no pin (importação, identidade ou tag), que "

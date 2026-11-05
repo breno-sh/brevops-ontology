@@ -22,7 +22,7 @@ import json
 import os
 import sys
 
-from . import apispec, attach, blocks, guides, observed, common, curated, extract, grainfacts, protocol, rules, sources, specfacts
+from . import apispec, attach, blocks, guides, observed, common, curated, extract, grainfacts, parentref, protocol, rules, sources, specfacts
 
 
 def _protocol_atoms():
@@ -44,11 +44,12 @@ def generate() -> dict:
     cur["attach"] = attach.run(ctxs)
     cur["spec_sentences"] = curated.spec_sentence_records(ctxs, bridges)
     cur["guides"] = guides.records(ctxs, bridges)
-    disputes = []
+    disputes, parent_rows = [], []
     for p in common.PROVIDERS:
         prim = grainfacts.api_layer(ctxs[p])  # CC-1d: camada de API só com ponte citada na doc
         specfacts.run(ctxs[p], bridges[p], disputes)  # CC-8: camada de API pela spec do provedor
         specfacts._after(ctxs[p])  # CC-12: ponte de API no nível de bloco
+        parent_rows += parentref.run(ctxs[p], bridges[p])  # v4-r2: alvo tipado do campo do pai (DIAG_T3 F1/F2)
         spec_own = {r["terraform_resource_type"] for r in ctxs[p].recs
                     if (r.get("value") or {}).get("rule") == "R-LIFE-SPEC"}
         grainfacts.scopes(ctxs[p], prim | spec_own)  # depois da curadoria: R-SCOPE-DOC prevalece
@@ -79,7 +80,7 @@ def generate() -> dict:
     if perr:
         raise SystemExit("protocol_support fora do formato: " + "; ".join(perr[:5]))
     return {"recs": recs, "protocol": prow, "protocol_missing": pmiss, "stats": stats, "curated": cur,
-            "observed": obs_st, "r6": r6,
+            "observed": obs_st, "r6": r6, "parent_refs": parentref.report(parent_rows),
             "disputes": sorted(disputes, key=lambda d: (d["provider"], d["terraform_resource_type"], d["fact"]))}
 
 
@@ -289,6 +290,8 @@ def render(g: dict) -> dict[str, str]:
                                "no_candidate_by_prefix": _by_prefix(c["no_candidate"])}
                            for p, c in specfacts.COVERAGE.items()}},
             ensure_ascii=False, indent=1) + "\n",
+        str(common.results_dir() / "parent_refs.json"): json.dumps(g["parent_refs"], ensure_ascii=False,
+                                                                    indent=1) + "\n",
     }
 
 

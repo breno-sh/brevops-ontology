@@ -3,7 +3,7 @@
  "contract": "C17",
  "contract_version": "3.0.0",
  "module": "SERVICE-EVIDENCE",
- "generated_at": "2026-11-04T08:48:16-03:00",
+ "generated_at": "2026-11-05T00:44:16-03:00",
  "agent_provenance": {
   "model_id": "claude-opus-5-5",
   "brief_path": "/Users/breno/doutorado/pesquisa/superficie/reports/brevops_ontology/execucao/briefs/SERVICE-EVIDENCE.txt",
@@ -14,7 +14,9 @@
    "versions": "6.71.0,8.9.0,5.12.0,9.11.0",
    "block_max_depth": "4",
    "c25": "1.1.0",
-   "cc": "CC-8"
+   "cc": "CC-8",
+   "round": "v4-r2",
+   "motivo": "DIAG_T3-F1F2+GRAIN-0.2.4"
   },
   "inputs": [
    {
@@ -23,14 +25,14 @@
     "sha256": "0e60c72f0e407cb698731ca109a14c88a844e8923cb1e8797807a96fd8bffa12"
    },
    {
-    "path": "$BO_DATA/DOCS-GCP/docs_facts.jsonl",
-    "kind": "file",
-    "sha256": "f9a43bef915e80e27f30f694d2fafc2639b072546742cf328baa1f64e7b5c603"
-   },
-   {
     "path": "$BO_DATA/DOCS-AZURE/docs_facts.jsonl",
     "kind": "file",
     "sha256": "23efd739b2bd9f16a1088c29b4bc1dacaa78bbd4d91cfd7c26bfa38351763ced"
+   },
+   {
+    "path": "$BO_DATA/DOCS-GCP/docs_facts.jsonl",
+    "kind": "file",
+    "sha256": "f9a43bef915e80e27f30f694d2fafc2639b072546742cf328baa1f64e7b5c603"
    },
    {
     "path": "$BO_DATA/DOCS-OCI/docs_facts.jsonl",
@@ -38,39 +40,9 @@
     "sha256": "a016f68e90104e0cd48472e0d2b86f982722ca889be9e9ff9591f61405e2fa34"
    },
    {
-    "path": "$BO_DATA/DOCS-AWS/type_subcategory.jsonl",
-    "kind": "file",
-    "sha256": "c0433f58335f504e757ee3bd83a31212e5378e7cf15d3d2fbbc921a819f40440"
-   },
-   {
-    "path": "$BO_DATA/DOCS-GCP/type_subcategory.jsonl",
-    "kind": "file",
-    "sha256": "3fbdbd52ae4a5f0c9c6c7193b3e17315b92b308ecc787648f7ad95cecbb8ed30"
-   },
-   {
-    "path": "$BO_DATA/DOCS-AZURE/type_subcategory.jsonl",
-    "kind": "file",
-    "sha256": "2c50571b0f1e12239e706e67ac07f844fa50c49d29e979f8aa9f9f3bef233824"
-   },
-   {
-    "path": "$BO_DATA/DOCS-OCI/type_subcategory.jsonl",
-    "kind": "file",
-    "sha256": "1ee2cfa06fdadd11ee06f8ac97ed7a02826ef2d3a7c2e550f88264f0f0a80b07"
-   },
-   {
-    "path": "$BO_DATA/DOCS-AWS/shared_block_map.jsonl",
-    "kind": "file",
-    "sha256": "e6e90db53b3440d78799e260095dba5e2f24e2b011a1fd230f58e82c3c90eab7"
-   },
-   {
     "path": "$BO_DATA/SCHEMA-AWS/atoms.jsonl",
     "kind": "file",
     "sha256": "5c6aba0585cb0e30f26877fd0ed6ba1a471092c792ecfa0b38f22d43d1e862a7"
-   },
-   {
-    "path": "$BO_DATA/SCHEMA-GCP/atoms.jsonl",
-    "kind": "file",
-    "sha256": "a00b9d3fb50a717fe3ba17ec0f4b2012f89ee7a3cb65e7ea5f21298afc75e4e1"
    },
    {
     "path": "$BO_DATA/SCHEMA-AZURE/atoms.jsonl",
@@ -78,42 +50,22 @@
     "sha256": "3e7a8160b3272bc0652427989d72860cb84cc198dfde1a9ae14405babfbbb915"
    },
    {
+    "path": "$BO_DATA/SCHEMA-GCP/atoms.jsonl",
+    "kind": "file",
+    "sha256": "a00b9d3fb50a717fe3ba17ec0f4b2012f89ee7a3cb65e7ea5f21298afc75e4e1"
+   },
+   {
     "path": "$BO_DATA/SCHEMA-OCI/atoms.jsonl",
     "kind": "file",
     "sha256": "99e3dc9d3434e48675fd71eb817145ae63c2159fd041f3c67dd1d308e814287c"
    },
    {
-    "path": "$BO_DATA/ROLES/roles.jsonl",
-    "kind": "file",
-    "sha256": "ed9356faacc1b2c91230af13ea20c76b90d3372bb250b7b1a98e354281fb43b6"
-   },
-   {
     "path": "$BO_REPO/universe/pins.json",
     "kind": "file",
     "sha256": "594a4e878ac489b3ed97cdd6344b9945a8fd3a5d22ae4d6f4bfebd264decfe3d"
-   },
-   {
-    "path": "$BO_DATA/downloads/apispec-aws/SHA256SUMS",
-    "kind": "file",
-    "sha256": "1cfdcdaf7ae3cacd79b705fac28ca39d44de5338c574464de88cb24c30673796"
-   },
-   {
-    "path": "$BO_DATA/downloads/apispec-google/SHA256SUMS",
-    "kind": "file",
-    "sha256": "77cf079a23cb5a05f2183b18c6f91f4f6ebdb3f7ac6b87d7bb26706da4e85aee"
-   },
-   {
-    "path": "$BO_DATA/downloads/apispec-azurerm/SHA256SUMS",
-    "kind": "file",
-    "sha256": "99272a6ff4955c576c87c97b3dc146e0def704808a839f1685dc5bdf8236aedc"
-   },
-   {
-    "path": "$BO_DATA/downloads/apispec-oci/SHA256SUMS",
-    "kind": "file",
-    "sha256": "31561697762dbf8ab7bacff561ff2d95d3f0fb4e54b1be1813e8e037c0ca2b38"
    }
   ],
-  "recorded_at": "2026-11-04T08:48:16-03:00"
+  "recorded_at": "2026-11-05T00:44:16-03:00"
  },
  "sources": [
   {
@@ -162,5 +114,5 @@
    "transformation": "código lido como texto por expressão regular; nunca importado"
   }
  ],
- "notes": "fatos mecânicos por regra declarada; camada API da spec do provedor (CC-8, fatias STO e NET: s3, ec2, storage, compute, Microsoft.Storage, Microsoft.Network, objectstorage, core); 6 interpretados e a seleção do protocol_support por claude-opus-5-5"
+ "notes": "fatos mecânicos por regra declarada; camada API da spec do provedor (CC-8, fatias STO e NET: s3, ec2, storage, compute, Microsoft.Storage, Microsoft.Network, objectstorage, core); 6 interpretados e a seleção do protocol_support por claude-opus-5-5; v4-r2 (2026-11-05): alvo tipado do campo do pai nas regras e configurações separadas de NET e STO (results/SERVICE-EVIDENCE/parent_refs.json), só regras derivadas sobre fatos publicados do pin"
 }

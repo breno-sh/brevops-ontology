@@ -20,6 +20,7 @@ FILES = [
     "$BO_REPO/results/SERVICE-EVIDENCE/protocol_support.schema.json",
     "$BO_REPO/results/SERVICE-EVIDENCE/spec_disputes.json",
     "$BO_REPO/results/SERVICE-EVIDENCE/spec_coverage.json",
+    "$BO_REPO/results/SERVICE-EVIDENCE/parent_refs.json",
     "$BO_DATA/downloads/apispec-oci-cc9/SHA256SUMS",
     "$BO_DATA/downloads/apispec-aws-cc9/SHA256SUMS",
     "$BO_DATA/downloads/apispec-google-cc9/SHA256SUMS",
