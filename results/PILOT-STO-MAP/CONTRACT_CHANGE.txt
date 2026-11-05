@@ -9,6 +9,17 @@ os gates seguem com o comando do catálogo. Com eles corrigidos, a rerodada é u
   python -I -m bo.pilot_sto_map.pipeline            (staging, entradas por sha256 no pipeline_report.json)
   tools/lock.sh with merge-base --owner PILOT-STO-MAP --wait 600 -- python -I -m bo.pilot_sto_map.pipeline --promote-only
 
+ATUALIZAÇÃO 2026-11-04T23:08:00-03:00 (America/Recife), rodada final do v4: base 70ee3f0, pacote do STO-GLOSS
+(MANIFEST 4c554191), árbitro ARBITER-V4-2 (aa01f20, ARBITER.sha256 1c2d3c34), SEMANTICS emenda 3 (ffe8c7f).
+  CC-13 RESOLVIDO: o árbitro calcula a imagem do wrap_list (relação de domínio subset); "sem perda" fica provado, e
+  os 12 prefixos escalar->lista voltam a declarar lossless, que é o que a tradução faz (a declaração partial da
+  rodada anterior era só porque não se provava). Cumprem as obrigações; saem AMBIGUOUS pelas 4 realizações do aws.
+  CC-9 REGREDIU (não bloqueante): no ARBITER-V4-2 o domínio do enum_to_bool não é mais calculado (vdr unknown),
+  e as 2 bijeções Enabled/Disabled <-> true/false declaradas lossless (CLM-AWSAZ-STO-0006, CLM-AWSOCI-STO-0005), que
+  saíam OK no ARBITER-20261104-3, voltam a UNPROVEN por VDR-UNKNOWN. Não troquei para partial: o domínio é finito
+  e a bijeção é provável; o defeito é do árbitro. Proposta: teste de regressão no ARBITERLIB com essa bijeção.
+  Segue aberto: CC-8.
+
 ATUALIZAÇÃO 2026-11-04T18:42:00-03:00 (America/Recife), rodada final 2/2: base bbbff75, pacote do STO-GLOSS
 (MANIFEST 525e20ea), árbitro congelado da base: ARBITER-20261104-6 (a8dbd28, ARBITER.sha256 74c0f33b), que
 recongelou o 4bee77e (e876af9b) sobre a emenda 12 do CONTRACTS; --frozen confere. Mesmas 1593 linhas e mesmos

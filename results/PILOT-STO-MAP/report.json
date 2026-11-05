@@ -57,32 +57,32 @@
   "rows": 1593
  },
  "decided_at": "2026-11-04T09:00:00-03:00",
- "generated_at": "2026-11-04T18:41:02-03:00",
+ "generated_at": "2026-11-04T23:06:44-03:00",
  "inputs": {
   "bundle_files": {
    "candidates.jsonl": "bbdf734a7c7c47135e467a459399d50e2ba541f2ea4ccaad13ab6b8e7f87e1ad",
    "canonical_atoms.jsonl": "b29a9c37286b2346f7e7930da37e4c71c010b3c6839716e1ccbd50b549923282",
-   "canonical_units.jsonl": "a09655569131891190cbe390e76089152fda02680356143cff4e7b63da4d4225",
+   "canonical_units.jsonl": "6ce2cabdfb21f546cdc367c6ad97e83983192cb24e4567ca885d6534646b7754",
    "claims.jsonl": "e318377811db13c1665c51c0264a45724762674f411aca4d10368e99a51f55c4",
    "decisions.jsonl": "2fa8ba4218abbfd5cddcffb49d892862dd362332c6b1222051d3f510a163ed66",
    "glossary.jsonl": "5b5b92a5b3618249e818857a96384e7b5a64c1a200b04a4ec21a31d697a1174a",
    "value_space.jsonl": "ba90b632840ee34ab92f8561742c2d4283ccb0c11694986fe5d660f5c5564d5f"
   },
-  "bundle_manifest_sha256": "525e20ea8eb7cf05c046180af644b502566959f854fc5324d26c08db7016ebb5",
+  "bundle_manifest_sha256": "4c554191d088b5625393d183af97b1ebb2c4586bf882c0ff8d6be79a254068ff",
   "code": {
    "src/bo/pilot_sto_map/build.py": "632cdfefced25a88f3a98c6017df81110f270f6ba05b9d43c386dad0531d3bd1",
    "src/bo/pilot_sto_map/common.py": "270152d9b392f766c25c041aac4cde7a522871c2f4160a61a702a6aec3c294be",
-   "src/bo/pilot_sto_map/decisions.py": "ac6dfd28ebb016726147b434ed6c6524c5e6571283dd326ff3c12c2306b7e5da"
+   "src/bo/pilot_sto_map/decisions.py": "ad3f07bd7baffc1772c9c0fae1b9c95690bc30c980e4e58b8eadaeb29307cad2"
   },
   "mapper_brief_sha256": "751880c609ed7cf5efcf439ba75c2dfd4e6c1f8ec0055023414ecd1f2243d822"
  },
  "module": "PILOT-STO-MAP",
  "outputs": {
-  "build_record.json": "6cd2bba06e954cc395686dbbfab31072b8ac1b6c1c556bfeb23e78998c61701c",
-  "mapping.sssom.tsv": "229013d3c9151fa7bea3be48cc253616686bcaad21c639366c3182abb69b10fc",
-  "verdicts.jsonl": "fa32fc8d9c4af1866af46413a37fbbd6e3692e6d99e041067a5fb9945ba175e3"
+  "build_record.json": "7949816c1d225efb8ebf1800ae73774451232c7a0fbcf631ffd2f8af857263eb",
+  "mapping.sssom.tsv": "df23615602306195676020701255c642a5883f143d1b5398b721f9c7f1c5cd52",
+  "verdicts.jsonl": "f6da4b358273e4af4f0208a2b4dcb6b40c5bee6f7dce8641bc4563317e643df4"
  },
- "pipeline_generated_at": "2026-11-04T18:40:40-03:00",
+ "pipeline_generated_at": "2026-11-04T23:06:36-03:00",
  "schema": "bo.pilot_sto_map.report/1",
  "steps": [
   {
@@ -107,7 +107,7 @@
   {
    "c21_errors": [],
    "check_unproven": [
-    "check-unproven: 0 OK sem prova mínima; UNPROVEN = 32"
+    "check-unproven: 0 OK sem prova mínima; UNPROVEN = 34"
    ],
    "freeze_drift": [],
    "frozen_checked": true,
@@ -132,8 +132,8 @@
   },
   "claims": {
    "AMBIGUOUS": 24,
-   "OK": 54,
-   "UNPROVEN": 32
+   "OK": 52,
+   "UNPROVEN": 34
   },
   "composites": {
    "OK": 88,
@@ -143,7 +143,8 @@
    "ARB-REAL-MULTI": 24,
    "ARB-RELATED-EV": 27,
    "EVIDENCE-DOC": 5,
-   "KIND-UNKNOWN": 2
+   "KIND-UNKNOWN": 2,
+   "VDR-UNKNOWN": 2
   }
  }
 }
