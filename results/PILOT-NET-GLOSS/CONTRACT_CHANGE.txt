@@ -142,3 +142,15 @@ timeouts fora do pacote do mapeador (PILOT-NET-GLOSS). Parte (c) PRONTA NA BRANC
 e value_space.jsonl do bundle excluem os átomos de timeouts (o GRAIN já os exclui pela R-GRAIN-T45; canonical_atoms
 já não os tinha); no diagnóstico, 0 de 56 candidatos e 0 de 185 tipos de valor (antes, 32 linhas de timeouts no
 value_space). Status do CC-NET-3: ABERTO até as três partes estarem em bo/base; aí marco RESOLVIDO com os commits.
+
+ADENDO 2026-11-04T23:10:00-03:00 (America/Recife), rodada final do v4: GRAIN 0.2.2 (158808f), SE f44b9a6, árbitro
+ARBITER-V4-2 (aa01f20), CONTRACTS até a emenda 14, COORD dce034d. Grão no staging: 41 unidades (3 BINDING,
+9 COMPONENT, 5 ENTITY, 2 FACET, 22 UNKNOWN). E2: 3 de 3. As duas anexações do NSG do provedor azurerm passaram a
+BINDING (interface e sub-rede como pontas) e o alvo por etiqueta do firewall virou vínculo com o seletor.
+CC-NET-3: partes (a) SE 3ba4079 (reference_target) e (b) GRAIN dcb5c52 (deletion_policy) em bo/base; parte (c)
+PILOT-NET-GLOSS 12c515c (timeouts fora do pacote) na branch: o RESOLVIDO entra com o merge dela.
+CC-NET-6 (BLOQUEIA o publish desta rodada): a regra GRAIN-G1b-REFERENCE do GRAIN 0.2.2 tem minúscula e viola o
+  padrão rule_id do C00 (^[A-Z][A-Z0-9]*(-[A-Z0-9]+)+$): o canonical_units desta rodada reprova no validador único
+  (2 erros, as duas anexações). Não altero a saída mecânica. Proposta: GRAIN renomeia a regra (ex.:
+  GRAIN-G1B-REFERENCE) ou CONTRACTS emenda o padrão do rule_id; e o lint do GRAIN passa a conferir o rule_id contra
+  o C00.
