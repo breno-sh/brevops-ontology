@@ -1,0 +1,42 @@
+BrevOps Ontology
+Copyright (C) 2026 Breno Vasconcelos
+
+Licensed under the GNU Affero General Public License v3.0 (see LICENSE).
+A commercial license is available from the copyright holder (see README.md).
+
+This repository includes or derives data from the third-party works below.
+They remain under their own licenses; the AGPL does not apply to them.
+
+Compliance control metadata (cq/cis_controls.csv and files derived from it)
+  Control ids, titles and query names extracted from:
+    turbot/steampipe-mod-aws-compliance
+    turbot/steampipe-mod-azure-compliance
+    turbot/steampipe-mod-gcp-compliance
+    turbot/steampipe-mod-oci-compliance
+  https://github.com/turbot
+  License: Apache License 2.0
+  Each row records the source repository, tag, commit, file and line.
+  CIS and CIS Benchmarks are trademarks of the Center for Internet Security, Inc.
+  This project is not affiliated with or endorsed by CIS.
+
+Terraform provider schemas (schema tables and indexes under src/bo/harness/
+and deploy/fixtures/, and the schema extraction outputs)
+  hashicorp/terraform-provider-aws
+  hashicorp/terraform-provider-azurerm
+  hashicorp/terraform-provider-google
+  oracle/terraform-provider-oci
+  License: Mozilla Public License 2.0
+
+Upper ontologies referenced by IRI only (not redistributed here):
+  BFO   http://purl.obolibrary.org/obo/
+  DUL   DOLCE+DnS Ultralite, http://www.ontologydesignpatterns.org/ont/dul/DUL.owl
+  gUFO  http://purl.org/nemo/gufo#
+  QUDT  https://github.com/qudt/qudt-public-repo
+
+Gold-standard comparisons (results/GOLD-*) store derived statistics and
+identifiers only, each with its source reference in summary.json:
+  GOLD-CARTO     cartography-cncf/cartography              Apache License 2.0
+  GOLD-LIBCLOUD  Apache Libcloud 3.9.1                     Apache License 2.0
+  GOLD-XPLANE    crossplane/crossplane documentation       Apache License 2.0
+  GOLD-MODS      Terraform module dataset,
+                 https://doi.org/10.5281/zenodo.20339474   CC BY 4.0
